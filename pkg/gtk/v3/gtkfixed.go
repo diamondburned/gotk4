@@ -65,9 +65,9 @@ type Fixed interface {
 	Buildable
 
 	// Move moves a child of a Fixed container to the given position.
-	Move(f Fixed, widget Widget, x int, y int)
+	Move(widget Widget, x int, y int)
 	// Put adds a widget to a Fixed container at the given position.
-	Put(f Fixed, widget Widget, x int, y int)
+	Put(widget Widget, x int, y int)
 }
 
 // fixed implements the Fixed interface.
@@ -94,12 +94,19 @@ func marshalFixed(p uintptr) (interface{}, error) {
 }
 
 // NewFixed constructs a class Fixed.
-func NewFixed() {
-	C.gtk_fixed_new()
+func NewFixed() Fixed {
+	var cret C.GtkFixed
+	var goret Fixed
+
+	cret = C.gtk_fixed_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
+
+	return goret
 }
 
 // Move moves a child of a Fixed container to the given position.
-func (f fixed) Move(f Fixed, widget Widget, x int, y int) {
+func (f fixed) Move(widget Widget, x int, y int) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -114,7 +121,7 @@ func (f fixed) Move(f Fixed, widget Widget, x int, y int) {
 }
 
 // Put adds a widget to a Fixed container at the given position.
-func (f fixed) Put(f Fixed, widget Widget, x int, y int) {
+func (f fixed) Put(widget Widget, x int, y int) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 	var arg2 C.gint

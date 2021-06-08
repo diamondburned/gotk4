@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,15 +22,17 @@ func init() {
 	})
 }
 
-// ScaleButton provides a button which pops up a scale widget. This kind of
-// widget is commonly used for volume controls in multimedia applications, and
-// GTK provides a VolumeButton subclass that is tailored for this use case.
+// ScaleButton: `GtkScaleButton` provides a button which pops up a scale widget.
+//
+// This kind of widget is commonly used for volume controls in multimedia
+// applications, and GTK provides a [class@Gtk.VolumeButton] subclass that is
+// tailored for this use case.
 //
 //
 // CSS nodes
 //
-// GtkScaleButton has a single CSS node with name button. To differentiate it
-// from a plain Button, it gets the .scale style class.
+// `GtkScaleButton` has a single CSS node with name button. To differentiate it
+// from a plain `GtkButton`, it gets the .scale style class.
 type ScaleButton interface {
 	Widget
 	Accessible
@@ -34,28 +40,34 @@ type ScaleButton interface {
 	ConstraintTarget
 	Orientable
 
-	// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
-	// See gtk_range_get_adjustment() for details.
-	Adjustment(b ScaleButton)
-	// MinusButton retrieves the minus button of the ScaleButton.
-	MinusButton(b ScaleButton)
-	// PlusButton retrieves the plus button of the ScaleButton.
-	PlusButton(b ScaleButton)
-	// Popup retrieves the popup of the ScaleButton.
-	Popup(b ScaleButton)
+	// Adjustment gets the `GtkAdjustment` associated with the
+	// `GtkScaleButton`’s scale.
+	//
+	// See [method@Gtk.Range.get_adjustment] for details.
+	Adjustment() Adjustment
+	// MinusButton retrieves the minus button of the `GtkScaleButton`.
+	MinusButton() Button
+	// PlusButton retrieves the plus button of the `GtkScaleButton.`
+	PlusButton() Button
+	// Popup retrieves the popup of the `GtkScaleButton`.
+	Popup() Widget
 	// Value gets the current value of the scale button.
-	Value(b ScaleButton)
-	// SetAdjustment sets the Adjustment to be used as a model for the
-	// ScaleButton’s scale. See gtk_range_set_adjustment() for details.
-	SetAdjustment(b ScaleButton, adjustment Adjustment)
-	// SetIcons sets the icons to be used by the scale button. For details, see
-	// the ScaleButton:icons property.
-	SetIcons(b ScaleButton, icons []string)
-	// SetValue sets the current value of the scale; if the value is outside the
-	// minimum or maximum range values, it will be clamped to fit inside them.
-	// The scale button emits the ScaleButton::value-changed signal if the value
-	// changes.
-	SetValue(b ScaleButton, value float64)
+	Value() float64
+	// SetAdjustment sets the `GtkAdjustment` to be used as a model for the
+	// `GtkScaleButton`’s scale.
+	//
+	// See [method@Gtk.Range.set_adjustment] for details.
+	SetAdjustment(adjustment Adjustment)
+	// SetIcons sets the icons to be used by the scale button.
+	SetIcons(icons []string)
+	// SetValue sets the current value of the scale.
+	//
+	// If the value is outside the minimum or maximum range values, it will be
+	// clamped to fit inside them.
+	//
+	// The scale button emits the [signal@Gtk.ScaleButton::value-changed] signal
+	// if the value changes.
+	SetValue(value float64)
 }
 
 // scaleButton implements the ScaleButton interface.
@@ -88,7 +100,7 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 }
 
 // NewScaleButton constructs a class ScaleButton.
-func NewScaleButton(min float64, max float64, step float64, icons []string) {
+func NewScaleButton(min float64, max float64, step float64, icons []string) ScaleButton {
 	var arg1 C.double
 	var arg2 C.double
 	var arg3 C.double
@@ -97,7 +109,7 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) {
 	arg1 = C.double(min)
 	arg2 = C.double(max)
 	arg3 = C.double(step)
-	arg4 = C.malloc(len(icons) * (unsafe.Sizeof(int(0)) + 1))
+	arg4 = (**C.char)(C.malloc((len(icons) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg4))
 
 	{
@@ -110,58 +122,104 @@ func NewScaleButton(min float64, max float64, step float64, icons []string) {
 		}
 	}
 
-	C.gtk_scale_button_new(arg1, arg2, arg3, arg4)
+	var cret C.GtkScaleButton
+	var goret ScaleButton
+
+	cret = C.gtk_scale_button_new(arg1, arg2, arg3, arg4)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ScaleButton)
+
+	return goret
 }
 
-// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
-// See gtk_range_get_adjustment() for details.
-func (b scaleButton) Adjustment(b ScaleButton) {
+// Adjustment gets the `GtkAdjustment` associated with the
+// `GtkScaleButton`’s scale.
+//
+// See [method@Gtk.Range.get_adjustment] for details.
+func (b scaleButton) Adjustment() Adjustment {
 	var arg0 *C.GtkScaleButton
 
 	arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_scale_button_get_adjustment(arg0)
+	var cret *C.GtkAdjustment
+	var goret Adjustment
+
+	cret = C.gtk_scale_button_get_adjustment(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return goret
 }
 
-// MinusButton retrieves the minus button of the ScaleButton.
-func (b scaleButton) MinusButton(b ScaleButton) {
+// MinusButton retrieves the minus button of the `GtkScaleButton`.
+func (b scaleButton) MinusButton() Button {
 	var arg0 *C.GtkScaleButton
 
 	arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_scale_button_get_minus_button(arg0)
+	var cret *C.GtkWidget
+	var goret Button
+
+	cret = C.gtk_scale_button_get_minus_button(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
-// PlusButton retrieves the plus button of the ScaleButton.
-func (b scaleButton) PlusButton(b ScaleButton) {
+// PlusButton retrieves the plus button of the `GtkScaleButton.`
+func (b scaleButton) PlusButton() Button {
 	var arg0 *C.GtkScaleButton
 
 	arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_scale_button_get_plus_button(arg0)
+	var cret *C.GtkWidget
+	var goret Button
+
+	cret = C.gtk_scale_button_get_plus_button(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
-// Popup retrieves the popup of the ScaleButton.
-func (b scaleButton) Popup(b ScaleButton) {
+// Popup retrieves the popup of the `GtkScaleButton`.
+func (b scaleButton) Popup() Widget {
 	var arg0 *C.GtkScaleButton
 
 	arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_scale_button_get_popup(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_scale_button_get_popup(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // Value gets the current value of the scale button.
-func (b scaleButton) Value(b ScaleButton) {
+func (b scaleButton) Value() float64 {
 	var arg0 *C.GtkScaleButton
 
 	arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_scale_button_get_value(arg0)
+	var cret C.double
+	var goret float64
+
+	cret = C.gtk_scale_button_get_value(arg0)
+
+	goret = float64(cret)
+
+	return goret
 }
 
-// SetAdjustment sets the Adjustment to be used as a model for the
-// ScaleButton’s scale. See gtk_range_set_adjustment() for details.
-func (b scaleButton) SetAdjustment(b ScaleButton, adjustment Adjustment) {
+// SetAdjustment sets the `GtkAdjustment` to be used as a model for the
+// `GtkScaleButton`’s scale.
+//
+// See [method@Gtk.Range.set_adjustment] for details.
+func (b scaleButton) SetAdjustment(adjustment Adjustment) {
 	var arg0 *C.GtkScaleButton
 	var arg1 *C.GtkAdjustment
 
@@ -171,14 +229,13 @@ func (b scaleButton) SetAdjustment(b ScaleButton, adjustment Adjustment) {
 	C.gtk_scale_button_set_adjustment(arg0, arg1)
 }
 
-// SetIcons sets the icons to be used by the scale button. For details, see
-// the ScaleButton:icons property.
-func (b scaleButton) SetIcons(b ScaleButton, icons []string) {
+// SetIcons sets the icons to be used by the scale button.
+func (b scaleButton) SetIcons(icons []string) {
 	var arg0 *C.GtkScaleButton
 	var arg1 **C.char
 
 	arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
-	arg1 = C.malloc(len(icons) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.char)(C.malloc((len(icons) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -194,11 +251,14 @@ func (b scaleButton) SetIcons(b ScaleButton, icons []string) {
 	C.gtk_scale_button_set_icons(arg0, arg1)
 }
 
-// SetValue sets the current value of the scale; if the value is outside the
-// minimum or maximum range values, it will be clamped to fit inside them.
-// The scale button emits the ScaleButton::value-changed signal if the value
-// changes.
-func (b scaleButton) SetValue(b ScaleButton, value float64) {
+// SetValue sets the current value of the scale.
+//
+// If the value is outside the minimum or maximum range values, it will be
+// clamped to fit inside them.
+//
+// The scale button emits the [signal@Gtk.ScaleButton::value-changed] signal
+// if the value changes.
+func (b scaleButton) SetValue(value float64) {
 	var arg0 *C.GtkScaleButton
 	var arg1 C.double
 

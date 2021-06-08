@@ -25,7 +25,7 @@ func init() {
 
 // EventFunc specifies the type of function passed to gdk_event_handler_set() to
 // handle all GDK events.
-type EventFunc func(event *Event)
+type EventFunc func()
 
 //export gotk4_EventFunc
 func gotk4_EventFunc(arg0 *C.GdkEvent, arg1 C.gpointer) {
@@ -35,7 +35,7 @@ func gotk4_EventFunc(arg0 *C.GdkEvent, arg1 C.gpointer) {
 	}
 
 	fn := v.(EventFunc)
-	fn(event, data)
+	fn()
 }
 
 // FilterFunc specifies the type of function used to filter native events before
@@ -45,7 +45,7 @@ func gotk4_EventFunc(arg0 *C.GdkEvent, arg1 C.gpointer) {
 // The filter may translate the native event to a GDK event and store the result
 // in @event, or handle it without translation. If the filter translates the
 // event and processing should continue, it should return GDK_FILTER_TRANSLATE.
-type FilterFunc func(xevent *XEvent, event *Event) FilterReturn
+type FilterFunc func() (filterReturn FilterReturn)
 
 //export gotk4_FilterFunc
 func gotk4_FilterFunc(arg0 *C.GdkXEvent, arg1 *C.GdkEvent, arg2 C.gpointer) C.GdkFilterReturn {
@@ -55,85 +55,37 @@ func gotk4_FilterFunc(arg0 *C.GdkXEvent, arg1 *C.GdkEvent, arg2 C.gpointer) C.Gd
 	}
 
 	fn := v.(FilterFunc)
-	ret := fn(xevent, event, data)
+	fn(filterReturn)
 
-	cret = (C.GdkFilterReturn)(ret)
-
-	return cret
-}
-
-// EventGet checks all open displays for a Event to process,to be processed on,
-// fetching events from the windowing system if necessary. See
-// gdk_display_get_event().
-func EventGet() {
-	C.gdk_event_get()
-}
-
-// EventHandlerSet sets the function to call to handle all events from GDK.
-//
-// Note that GTK+ uses this to install its own event handler, so it is usually
-// not useful for GTK+ applications. (Although an application can call this
-// function then call gtk_main_do_event() to pass events to GTK+.)
-func EventHandlerSet() {
-	C.gdk_event_handler_set(arg1, arg2, arg3)
-}
-
-// EventPeek: if there is an event waiting in the event queue of some open
-// display, returns a copy of it. See gdk_display_peek_event().
-func EventPeek() {
-	C.gdk_event_peek()
-}
-
-// EventRequestMotions: request more motion notifies if @event is a motion
-// notify hint event.
-//
-// This function should be used instead of gdk_window_get_pointer() to request
-// further motion notifies, because it also works for extension events where
-// motion notifies are provided for devices other than the core pointer.
-// Coordinate extraction, processing and requesting more motion events from a
-// GDK_MOTION_NOTIFY event usually works like this:
-//
-//    {
-//      // motion_event handler
-//      x = motion_event->x;
-//      y = motion_event->y;
-//      // handle (x,y) motion
-//      gdk_event_request_motions (motion_event); // handles is_hint events
-//    }
-func EventRequestMotions(event *EventMotion) {
-	var arg1 *C.GdkEventMotion
-
-	arg1 = (*C.GdkEventMotion)(unsafe.Pointer(event.Native()))
-
-	C.gdk_event_request_motions(arg1)
+	cret = (C.GdkFilterReturn)(filterReturn)
 }
 
 // EventsPending checks if any events are ready to be processed for any display.
 func EventsPending() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_events_pending()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // GetShowEvents gets whether event debugging output is enabled.
 func GetShowEvents() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_get_show_events()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetShowEvents sets whether a trace of received events is output. Note that
@@ -160,15 +112,15 @@ func SettingGet(name string, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_setting_get(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // EventAny contains the fields which are common to all event structs. Any event
@@ -667,7 +619,7 @@ func (e *EventExpose) SendEvent() int8 {
 // Area gets the field inside the struct.
 func (e *EventExpose) Area() Rectangle {
 	var v Rectangle
-	v = WrapRectangle(unsafe.Pointer(e.native.area))
+	v = *WrapRectangle(unsafe.Pointer(&e.native.area))
 	return v
 }
 
@@ -1082,7 +1034,7 @@ func (e *EventOwnerChange) Reason() OwnerChange {
 // Selection gets the field inside the struct.
 func (e *EventOwnerChange) Selection() Atom {
 	var v Atom
-	v = WrapAtom(unsafe.Pointer(e.native.selection))
+	v = *WrapAtom(unsafe.Pointer(&e.native.selection))
 	return v
 }
 
@@ -1374,7 +1326,7 @@ func (e *EventProperty) SendEvent() int8 {
 // Atom gets the field inside the struct.
 func (e *EventProperty) Atom() Atom {
 	var v Atom
-	v = WrapAtom(unsafe.Pointer(e.native.atom))
+	v = *WrapAtom(unsafe.Pointer(&e.native.atom))
 	return v
 }
 
@@ -1632,21 +1584,21 @@ func (e *EventSelection) SendEvent() int8 {
 // Selection gets the field inside the struct.
 func (e *EventSelection) Selection() Atom {
 	var v Atom
-	v = WrapAtom(unsafe.Pointer(e.native.selection))
+	v = *WrapAtom(unsafe.Pointer(&e.native.selection))
 	return v
 }
 
 // Target gets the field inside the struct.
 func (e *EventSelection) Target() Atom {
 	var v Atom
-	v = WrapAtom(unsafe.Pointer(e.native.target))
+	v = *WrapAtom(unsafe.Pointer(&e.native.target))
 	return v
 }
 
 // Property gets the field inside the struct.
 func (e *EventSelection) Property() Atom {
 	var v Atom
-	v = WrapAtom(unsafe.Pointer(e.native.property))
+	v = *WrapAtom(unsafe.Pointer(&e.native.property))
 	return v
 }
 

@@ -3,6 +3,11 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,14 +77,14 @@ type Action interface {
 	// activated.
 	//
 	// It can also be used to manually activate an action.
-	Activate(a Action)
+	Activate()
 	// BlockActivate: disable activation signals from the action
 	//
 	// This is needed when updating the state of your proxy Activatable widget
 	// could result in calling gtk_action_activate(), this is a convenience
 	// function to avoid recursing in those cases (updating toggle state for
 	// instance).
-	BlockActivate(a Action)
+	BlockActivate()
 	// ConnectAccelerator installs the accelerator for @action if @action has an
 	// accel path and group. See gtk_action_set_accel_path() and
 	// gtk_action_set_accel_group()
@@ -88,68 +93,66 @@ type Action interface {
 	// accelerator, the @action counts the number of times this function has
 	// been called and doesn’t remove the accelerator until
 	// gtk_action_disconnect_accelerator() has been called as many times.
-	ConnectAccelerator(a Action)
+	ConnectAccelerator()
 	// CreateIcon: this function is intended for use by action implementations
 	// to create icons displayed in the proxy widgets.
-	CreateIcon(a Action, iconSize int)
+	CreateIcon(iconSize int) Widget
 	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
 	// item or the toolbar item it creates, this function returns an instance of
 	// that menu.
-	CreateMenu(a Action)
+	CreateMenu() Widget
 	// CreateMenuItem creates a menu item widget that proxies for the given
 	// action.
-	CreateMenuItem(a Action)
+	CreateMenuItem() Widget
 	// CreateToolItem creates a toolbar item widget that proxies for the given
 	// action.
-	CreateToolItem(a Action)
+	CreateToolItem() Widget
 	// DisconnectAccelerator undoes the effect of one call to
 	// gtk_action_connect_accelerator().
-	DisconnectAccelerator(a Action)
-	// AccelClosure returns the accel closure for this action.
-	AccelClosure(a Action)
+	DisconnectAccelerator()
 	// AccelPath returns the accel path for this action.
-	AccelPath(a Action)
+	AccelPath() string
 	// AlwaysShowImage returns whether @action's menu item proxies will always
 	// show their image, if available.
-	AlwaysShowImage(a Action) bool
+	AlwaysShowImage() bool
 	// GIcon gets the gicon of @action.
-	GIcon(a Action)
+	GIcon() gio.Icon
 	// IconName gets the icon name of @action.
-	IconName(a Action)
+	IconName() string
 	// IsImportant checks whether @action is important or not
-	IsImportant(a Action) bool
+	IsImportant() bool
 	// Label gets the label text of @action.
-	Label(a Action)
+	Label() string
 	// Name returns the name of the action.
-	Name(a Action)
+	Name() string
 	// Proxies returns the proxy widgets for an action. See also
 	// gtk_activatable_get_related_action().
-	Proxies(a Action)
+	Proxies() *glib.SList
 	// Sensitive returns whether the action itself is sensitive. Note that this
 	// doesn’t necessarily mean effective sensitivity. See
 	// gtk_action_is_sensitive() for that.
-	Sensitive(a Action) bool
+	Sensitive() bool
 	// ShortLabel gets the short label text of @action.
-	ShortLabel(a Action)
+	ShortLabel() string
 	// StockID gets the stock id of @action.
-	StockID(a Action)
+	StockID() string
 	// Tooltip gets the tooltip text of @action.
-	Tooltip(a Action)
+	Tooltip() string
 	// Visible returns whether the action itself is visible. Note that this
 	// doesn’t necessarily mean effective visibility. See
 	// gtk_action_is_sensitive() for that.
-	Visible(a Action) bool
+	Visible() bool
 	// VisibleHorizontal checks whether @action is visible when horizontal
-	VisibleHorizontal(a Action) bool
+	VisibleHorizontal() bool
 	// VisibleVertical checks whether @action is visible when horizontal
-	VisibleVertical(a Action) bool
+	VisibleVertical() bool
 	// IsSensitive returns whether the action is effectively sensitive.
-	IsSensitive(a Action) bool
+	IsSensitive() bool
 	// IsVisible returns whether the action is effectively visible.
-	IsVisible(a Action) bool
+	IsVisible() bool
 	// SetAccelGroup sets the AccelGroup in which the accelerator for this
 	// action will be installed.
-	SetAccelGroup(a Action, accelGroup AccelGroup)
+	SetAccelGroup(accelGroup AccelGroup)
 	// SetAccelPath sets the accel path for this action. All proxy widgets
 	// associated with the action will have this accel path, so that their
 	// accelerators are consistent.
@@ -157,43 +160,43 @@ type Action interface {
 	// Note that @accel_path string will be stored in a #GQuark. Therefore, if
 	// you pass a static string, you can save some memory by interning it first
 	// with g_intern_static_string().
-	SetAccelPath(a Action, accelPath string)
+	SetAccelPath(accelPath string)
 	// SetAlwaysShowImage sets whether @action's menu item proxies will ignore
 	// the Settings:gtk-menu-images setting and always show their image, if
 	// available.
 	//
 	// Use this if the menu item would be useless or hard to use without their
 	// image.
-	SetAlwaysShowImage(a Action, alwaysShow bool)
+	SetAlwaysShowImage(alwaysShow bool)
 	// SetGIcon sets the icon of @action.
-	SetGIcon(a Action, icon gio.Icon)
+	SetGIcon(icon gio.Icon)
 	// SetIconName sets the icon name on @action
-	SetIconName(a Action, iconName string)
+	SetIconName(iconName string)
 	// SetIsImportant sets whether the action is important, this attribute is
 	// used primarily by toolbar items to decide whether to show a label or not.
-	SetIsImportant(a Action, isImportant bool)
+	SetIsImportant(isImportant bool)
 	// SetLabel sets the label of @action.
-	SetLabel(a Action, label string)
+	SetLabel(label string)
 	// SetSensitive sets the :sensitive property of the action to @sensitive.
 	// Note that this doesn’t necessarily mean effective sensitivity. See
 	// gtk_action_is_sensitive() for that.
-	SetSensitive(a Action, sensitive bool)
+	SetSensitive(sensitive bool)
 	// SetShortLabel sets a shorter label text on @action.
-	SetShortLabel(a Action, shortLabel string)
+	SetShortLabel(shortLabel string)
 	// SetStockID sets the stock id on @action
-	SetStockID(a Action, stockID string)
+	SetStockID(stockID string)
 	// SetTooltip sets the tooltip text on @action
-	SetTooltip(a Action, tooltip string)
+	SetTooltip(tooltip string)
 	// SetVisible sets the :visible property of the action to @visible. Note
 	// that this doesn’t necessarily mean effective visibility. See
 	// gtk_action_is_visible() for that.
-	SetVisible(a Action, visible bool)
+	SetVisible(visible bool)
 	// SetVisibleHorizontal sets whether @action is visible when horizontal
-	SetVisibleHorizontal(a Action, visibleHorizontal bool)
+	SetVisibleHorizontal(visibleHorizontal bool)
 	// SetVisibleVertical sets whether @action is visible when vertical
-	SetVisibleVertical(a Action, visibleVertical bool)
+	SetVisibleVertical(visibleVertical bool)
 	// UnblockActivate: reenable activation signals from the action
-	UnblockActivate(a Action)
+	UnblockActivate()
 }
 
 // action implements the Action interface.
@@ -220,7 +223,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 }
 
 // NewAction constructs a class Action.
-func NewAction(name string, label string, tooltip string, stockID string) {
+func NewAction(name string, label string, tooltip string, stockID string) Action {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -235,7 +238,14 @@ func NewAction(name string, label string, tooltip string, stockID string) {
 	arg4 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg4))
 
-	C.gtk_action_new(arg1, arg2, arg3, arg4)
+	cret := new(C.GtkAction)
+	var goret Action
+
+	cret = C.gtk_action_new(arg1, arg2, arg3, arg4)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Action)
+
+	return goret
 }
 
 // Activate emits the “activate” signal on the specified action, if it isn't
@@ -243,7 +253,7 @@ func NewAction(name string, label string, tooltip string, stockID string) {
 // activated.
 //
 // It can also be used to manually activate an action.
-func (a action) Activate(a Action) {
+func (a action) Activate() {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -257,7 +267,7 @@ func (a action) Activate(a Action) {
 // could result in calling gtk_action_activate(), this is a convenience
 // function to avoid recursing in those cases (updating toggle state for
 // instance).
-func (a action) BlockActivate(a Action) {
+func (a action) BlockActivate() {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -273,7 +283,7 @@ func (a action) BlockActivate(a Action) {
 // accelerator, the @action counts the number of times this function has
 // been called and doesn’t remove the accelerator until
 // gtk_action_disconnect_accelerator() has been called as many times.
-func (a action) ConnectAccelerator(a Action) {
+func (a action) ConnectAccelerator() {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -283,50 +293,78 @@ func (a action) ConnectAccelerator(a Action) {
 
 // CreateIcon: this function is intended for use by action implementations
 // to create icons displayed in the proxy widgets.
-func (a action) CreateIcon(a Action, iconSize int) {
+func (a action) CreateIcon(iconSize int) Widget {
 	var arg0 *C.GtkAction
 	var arg1 C.GtkIconSize
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	arg1 = C.GtkIconSize(iconSize)
 
-	C.gtk_action_create_icon(arg0, arg1)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_action_create_icon(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // CreateMenu: if @action provides a Menu widget as a submenu for the menu
 // item or the toolbar item it creates, this function returns an instance of
 // that menu.
-func (a action) CreateMenu(a Action) {
+func (a action) CreateMenu() Widget {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_create_menu(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_action_create_menu(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // CreateMenuItem creates a menu item widget that proxies for the given
 // action.
-func (a action) CreateMenuItem(a Action) {
+func (a action) CreateMenuItem() Widget {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_create_menu_item(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_action_create_menu_item(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // CreateToolItem creates a toolbar item widget that proxies for the given
 // action.
-func (a action) CreateToolItem(a Action) {
+func (a action) CreateToolItem() Widget {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_create_tool_item(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_action_create_tool_item(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // DisconnectAccelerator undoes the effect of one call to
 // gtk_action_connect_accelerator().
-func (a action) DisconnectAccelerator(a Action) {
+func (a action) DisconnectAccelerator() {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
@@ -334,249 +372,303 @@ func (a action) DisconnectAccelerator(a Action) {
 	C.gtk_action_disconnect_accelerator(arg0)
 }
 
-// AccelClosure returns the accel closure for this action.
-func (a action) AccelClosure(a Action) {
-	var arg0 *C.GtkAction
-
-	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	C.gtk_action_get_accel_closure(arg0)
-}
-
 // AccelPath returns the accel path for this action.
-func (a action) AccelPath(a Action) {
+func (a action) AccelPath() string {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_accel_path(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_get_accel_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // AlwaysShowImage returns whether @action's menu item proxies will always
 // show their image, if available.
-func (a action) AlwaysShowImage(a Action) bool {
+func (a action) AlwaysShowImage() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_get_always_show_image(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // GIcon gets the gicon of @action.
-func (a action) GIcon(a Action) {
+func (a action) GIcon() gio.Icon {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_gicon(arg0)
+	var cret *C.GIcon
+	var goret gio.Icon
+
+	cret = C.gtk_action_get_gicon(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+
+	return goret
 }
 
 // IconName gets the icon name of @action.
-func (a action) IconName(a Action) {
+func (a action) IconName() string {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_icon_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_get_icon_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // IsImportant checks whether @action is important or not
-func (a action) IsImportant(a Action) bool {
+func (a action) IsImportant() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_get_is_important(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Label gets the label text of @action.
-func (a action) Label(a Action) {
+func (a action) Label() string {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_label(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_get_label(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Name returns the name of the action.
-func (a action) Name(a Action) {
+func (a action) Name() string {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_get_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Proxies returns the proxy widgets for an action. See also
 // gtk_activatable_get_related_action().
-func (a action) Proxies(a Action) {
+func (a action) Proxies() *glib.SList {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_proxies(arg0)
+	var cret *C.GSList
+	var goret *glib.SList
+
+	cret = C.gtk_action_get_proxies(arg0)
+
+	goret = glib.WrapSList(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Sensitive returns whether the action itself is sensitive. Note that this
 // doesn’t necessarily mean effective sensitivity. See
 // gtk_action_is_sensitive() for that.
-func (a action) Sensitive(a Action) bool {
+func (a action) Sensitive() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_get_sensitive(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ShortLabel gets the short label text of @action.
-func (a action) ShortLabel(a Action) {
+func (a action) ShortLabel() string {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_short_label(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_get_short_label(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // StockID gets the stock id of @action.
-func (a action) StockID(a Action) {
+func (a action) StockID() string {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_stock_id(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_get_stock_id(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Tooltip gets the tooltip text of @action.
-func (a action) Tooltip(a Action) {
+func (a action) Tooltip() string {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_get_tooltip(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_get_tooltip(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Visible returns whether the action itself is visible. Note that this
 // doesn’t necessarily mean effective visibility. See
 // gtk_action_is_sensitive() for that.
-func (a action) Visible(a Action) bool {
+func (a action) Visible() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_get_visible(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // VisibleHorizontal checks whether @action is visible when horizontal
-func (a action) VisibleHorizontal(a Action) bool {
+func (a action) VisibleHorizontal() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_get_visible_horizontal(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // VisibleVertical checks whether @action is visible when horizontal
-func (a action) VisibleVertical(a Action) bool {
+func (a action) VisibleVertical() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_get_visible_vertical(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsSensitive returns whether the action is effectively sensitive.
-func (a action) IsSensitive(a Action) bool {
+func (a action) IsSensitive() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_is_sensitive(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsVisible returns whether the action is effectively visible.
-func (a action) IsVisible(a Action) bool {
+func (a action) IsVisible() bool {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_is_visible(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetAccelGroup sets the AccelGroup in which the accelerator for this
 // action will be installed.
-func (a action) SetAccelGroup(a Action, accelGroup AccelGroup) {
+func (a action) SetAccelGroup(accelGroup AccelGroup) {
 	var arg0 *C.GtkAction
 	var arg1 *C.GtkAccelGroup
 
@@ -593,7 +685,7 @@ func (a action) SetAccelGroup(a Action, accelGroup AccelGroup) {
 // Note that @accel_path string will be stored in a #GQuark. Therefore, if
 // you pass a static string, you can save some memory by interning it first
 // with g_intern_static_string().
-func (a action) SetAccelPath(a Action, accelPath string) {
+func (a action) SetAccelPath(accelPath string) {
 	var arg0 *C.GtkAction
 	var arg1 *C.gchar
 
@@ -610,7 +702,7 @@ func (a action) SetAccelPath(a Action, accelPath string) {
 //
 // Use this if the menu item would be useless or hard to use without their
 // image.
-func (a action) SetAlwaysShowImage(a Action, alwaysShow bool) {
+func (a action) SetAlwaysShowImage(alwaysShow bool) {
 	var arg0 *C.GtkAction
 	var arg1 C.gboolean
 
@@ -623,7 +715,7 @@ func (a action) SetAlwaysShowImage(a Action, alwaysShow bool) {
 }
 
 // SetGIcon sets the icon of @action.
-func (a action) SetGIcon(a Action, icon gio.Icon) {
+func (a action) SetGIcon(icon gio.Icon) {
 	var arg0 *C.GtkAction
 	var arg1 *C.GIcon
 
@@ -634,7 +726,7 @@ func (a action) SetGIcon(a Action, icon gio.Icon) {
 }
 
 // SetIconName sets the icon name on @action
-func (a action) SetIconName(a Action, iconName string) {
+func (a action) SetIconName(iconName string) {
 	var arg0 *C.GtkAction
 	var arg1 *C.gchar
 
@@ -647,7 +739,7 @@ func (a action) SetIconName(a Action, iconName string) {
 
 // SetIsImportant sets whether the action is important, this attribute is
 // used primarily by toolbar items to decide whether to show a label or not.
-func (a action) SetIsImportant(a Action, isImportant bool) {
+func (a action) SetIsImportant(isImportant bool) {
 	var arg0 *C.GtkAction
 	var arg1 C.gboolean
 
@@ -660,7 +752,7 @@ func (a action) SetIsImportant(a Action, isImportant bool) {
 }
 
 // SetLabel sets the label of @action.
-func (a action) SetLabel(a Action, label string) {
+func (a action) SetLabel(label string) {
 	var arg0 *C.GtkAction
 	var arg1 *C.gchar
 
@@ -674,7 +766,7 @@ func (a action) SetLabel(a Action, label string) {
 // SetSensitive sets the :sensitive property of the action to @sensitive.
 // Note that this doesn’t necessarily mean effective sensitivity. See
 // gtk_action_is_sensitive() for that.
-func (a action) SetSensitive(a Action, sensitive bool) {
+func (a action) SetSensitive(sensitive bool) {
 	var arg0 *C.GtkAction
 	var arg1 C.gboolean
 
@@ -687,7 +779,7 @@ func (a action) SetSensitive(a Action, sensitive bool) {
 }
 
 // SetShortLabel sets a shorter label text on @action.
-func (a action) SetShortLabel(a Action, shortLabel string) {
+func (a action) SetShortLabel(shortLabel string) {
 	var arg0 *C.GtkAction
 	var arg1 *C.gchar
 
@@ -699,7 +791,7 @@ func (a action) SetShortLabel(a Action, shortLabel string) {
 }
 
 // SetStockID sets the stock id on @action
-func (a action) SetStockID(a Action, stockID string) {
+func (a action) SetStockID(stockID string) {
 	var arg0 *C.GtkAction
 	var arg1 *C.gchar
 
@@ -711,7 +803,7 @@ func (a action) SetStockID(a Action, stockID string) {
 }
 
 // SetTooltip sets the tooltip text on @action
-func (a action) SetTooltip(a Action, tooltip string) {
+func (a action) SetTooltip(tooltip string) {
 	var arg0 *C.GtkAction
 	var arg1 *C.gchar
 
@@ -725,7 +817,7 @@ func (a action) SetTooltip(a Action, tooltip string) {
 // SetVisible sets the :visible property of the action to @visible. Note
 // that this doesn’t necessarily mean effective visibility. See
 // gtk_action_is_visible() for that.
-func (a action) SetVisible(a Action, visible bool) {
+func (a action) SetVisible(visible bool) {
 	var arg0 *C.GtkAction
 	var arg1 C.gboolean
 
@@ -738,7 +830,7 @@ func (a action) SetVisible(a Action, visible bool) {
 }
 
 // SetVisibleHorizontal sets whether @action is visible when horizontal
-func (a action) SetVisibleHorizontal(a Action, visibleHorizontal bool) {
+func (a action) SetVisibleHorizontal(visibleHorizontal bool) {
 	var arg0 *C.GtkAction
 	var arg1 C.gboolean
 
@@ -751,7 +843,7 @@ func (a action) SetVisibleHorizontal(a Action, visibleHorizontal bool) {
 }
 
 // SetVisibleVertical sets whether @action is visible when vertical
-func (a action) SetVisibleVertical(a Action, visibleVertical bool) {
+func (a action) SetVisibleVertical(visibleVertical bool) {
 	var arg0 *C.GtkAction
 	var arg1 C.gboolean
 
@@ -764,7 +856,7 @@ func (a action) SetVisibleVertical(a Action, visibleVertical bool) {
 }
 
 // UnblockActivate: reenable activation signals from the action
-func (a action) UnblockActivate(a Action) {
+func (a action) UnblockActivate() {
 	var arg0 *C.GtkAction
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))

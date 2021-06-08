@@ -5,6 +5,9 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,11 +76,11 @@ type PadController interface {
 	// The given @label should be considered user-visible, so
 	// internationalization rules apply. Some windowing systems may be able to
 	// use those for user feedback.
-	SetAction(c PadController, typ PadActionType, index int, mode int, label string, actionName string)
+	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
 	// SetActionEntries: this is a convenience function to add a group of action
 	// entries on @controller. See PadActionEntry and
 	// gtk_pad_controller_set_action().
-	SetActionEntries(c PadController)
+	SetActionEntries()
 }
 
 // padController implements the PadController interface.
@@ -102,7 +105,7 @@ func marshalPadController(p uintptr) (interface{}, error) {
 }
 
 // NewPadController constructs a class PadController.
-func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) {
+func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadController {
 	var arg1 *C.GtkWindow
 	var arg2 *C.GActionGroup
 	var arg3 *C.GdkDevice
@@ -111,7 +114,14 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) {
 	arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
 	arg3 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
-	C.gtk_pad_controller_new(arg1, arg2, arg3)
+	cret := new(C.GtkPadController)
+	var goret PadController
+
+	cret = C.gtk_pad_controller_new(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
+
+	return goret
 }
 
 // SetAction adds an individual action to @controller. This action will only
@@ -122,7 +132,7 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) {
 // The given @label should be considered user-visible, so
 // internationalization rules apply. Some windowing systems may be able to
 // use those for user feedback.
-func (c padController) SetAction(c PadController, typ PadActionType, index int, mode int, label string, actionName string) {
+func (c padController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
 	var arg0 *C.GtkPadController
 	var arg1 C.GtkPadActionType
 	var arg2 C.gint
@@ -145,7 +155,7 @@ func (c padController) SetAction(c PadController, typ PadActionType, index int, 
 // SetActionEntries: this is a convenience function to add a group of action
 // entries on @controller. See PadActionEntry and
 // gtk_pad_controller_set_action().
-func (c padController) SetActionEntries(c PadController) {
+func (c padController) SetActionEntries() {
 	var arg0 *C.GtkPadController
 
 	arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))

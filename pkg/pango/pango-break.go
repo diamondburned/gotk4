@@ -62,17 +62,17 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(length)
 
-	var arg3 C.gint
-	var paragraphDelimiterIndex int
-	var arg4 C.gint
-	var nextParagraphStart int
+	arg3 := new(C.gint)
+	var ret3 int
+	arg4 := new(C.gint)
+	var ret4 int
 
-	C.pango_find_paragraph_boundary(arg1, arg2, &arg3, &arg4)
+	C.pango_find_paragraph_boundary(arg1, arg2, arg3, arg4)
 
-	paragraphDelimiterIndex = int(&arg3)
-	nextParagraphStart = int(&arg4)
+	ret3 = int(*arg3)
+	ret4 = int(*arg4)
 
-	return paragraphDelimiterIndex, nextParagraphStart
+	return ret3, ret4
 }
 
 // GetLogAttrs computes a `PangoLogAttr` for each character in @text.

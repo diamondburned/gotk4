@@ -23,7 +23,7 @@ import "C"
 
 // BusAcquiredCallback: invoked when a connection to a message bus has been
 // obtained.
-type BusAcquiredCallback func(connection DBusConnection, name string)
+type BusAcquiredCallback func()
 
 //export gotk4_BusAcquiredCallback
 func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -33,11 +33,11 @@ func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	}
 
 	fn := v.(BusAcquiredCallback)
-	fn(connection, name, userData)
+	fn()
 }
 
 // BusNameAcquiredCallback: invoked when the name is acquired.
-type BusNameAcquiredCallback func(connection DBusConnection, name string)
+type BusNameAcquiredCallback func()
 
 //export gotk4_BusNameAcquiredCallback
 func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -47,12 +47,12 @@ func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	}
 
 	fn := v.(BusNameAcquiredCallback)
-	fn(connection, name, userData)
+	fn()
 }
 
 // BusNameLostCallback: invoked when the name is lost or @connection has been
 // closed.
-type BusNameLostCallback func(connection DBusConnection, name string)
+type BusNameLostCallback func()
 
 //export gotk4_BusNameLostCallback
 func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -62,7 +62,7 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 	}
 
 	fn := v.(BusNameLostCallback)
-	fn(connection, name, userData)
+	fn()
 }
 
 // BusUnownName stops owning a name.

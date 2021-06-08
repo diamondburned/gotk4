@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,10 +70,17 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 }
 
 // NewThreadedSocketService constructs a class ThreadedSocketService.
-func NewThreadedSocketService(maxThreads int) {
+func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 	var arg1 C.int
 
 	arg1 = C.int(maxThreads)
 
-	C.g_threaded_socket_service_new(arg1)
+	cret := new(C.GThreadedSocketService)
+	var goret ThreadedSocketService
+
+	cret = C.g_threaded_socket_service_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThreadedSocketService)
+
+	return goret
 }

@@ -2,6 +2,12 @@
 
 package pango
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango.h>

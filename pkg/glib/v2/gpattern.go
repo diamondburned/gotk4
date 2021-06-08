@@ -42,15 +42,15 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 	defer C.free(unsafe.Pointer(arg4))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_pattern_match(arg1, arg2, arg3, arg4)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // PatternMatchSimple matches a string against a pattern given as a string. If
@@ -67,15 +67,15 @@ func PatternMatchSimple(pattern string, string string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_pattern_match_simple(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // PatternMatchString matches a string against a compiled pattern. If the string
@@ -90,15 +90,15 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_pattern_match_string(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // PatternSpec: a GPatternSpec struct is the 'compiled' form of a pattern. This
@@ -129,7 +129,7 @@ func (p *PatternSpec) Native() unsafe.Pointer {
 
 // Equal compares two compiled pattern specs and returns whether they will match
 // the same set of strings.
-func (p *PatternSpec) Equal(p *PatternSpec, pspec2 *PatternSpec) bool {
+func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 	var arg0 *C.GPatternSpec
 	var arg1 *C.GPatternSpec
 
@@ -137,19 +137,19 @@ func (p *PatternSpec) Equal(p *PatternSpec, pspec2 *PatternSpec) bool {
 	arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec2.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_pattern_spec_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees the memory allocated for the Spec.
-func (p *PatternSpec) Free(p *PatternSpec) {
+func (p *PatternSpec) Free() {
 	var arg0 *C.GPatternSpec
 
 	arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))

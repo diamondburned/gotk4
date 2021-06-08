@@ -3,7 +3,12 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -14,7 +19,7 @@ import "C"
 // TreeSelectionForeachFunc: a function used by
 // gtk_tree_selection_selected_foreach() to map all selected rows. It will be
 // called on every selected row in the view.
-type TreeSelectionForeachFunc func(model TreeModel, path *TreePath, iter *TreeIter)
+type TreeSelectionForeachFunc func()
 
 //export gotk4_TreeSelectionForeachFunc
 func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
@@ -24,14 +29,16 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 	}
 
 	fn := v.(TreeSelectionForeachFunc)
-	fn(model, path, iter, data)
+	fn()
 }
 
 // TreeSelectionFunc: a function used by
 // gtk_tree_selection_set_select_function() to filter whether or not a row may
-// be selected. It is called whenever a row's state might change. A return value
-// of true indicates to @selection that it is okay to change the selection.
-type TreeSelectionFunc func(selection TreeSelection, model TreeModel, path *TreePath, pathCurrentlySelected bool) bool
+// be selected. It is called whenever a row's state might change.
+//
+// A return value of true indicates to @selection that it is okay to change the
+// selection.
+type TreeSelectionFunc func() (ok bool)
 
 //export gotk4_TreeSelectionFunc
 func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
@@ -41,11 +48,9 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	}
 
 	fn := v.(TreeSelectionFunc)
-	ret := fn(selection, model, path, pathCurrentlySelected, data)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }

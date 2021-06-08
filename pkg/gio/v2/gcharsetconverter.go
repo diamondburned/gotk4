@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,11 +40,11 @@ type CharsetConverter interface {
 
 	// NumFallbacks gets the number of fallbacks that @converter has applied so
 	// far.
-	NumFallbacks(c CharsetConverter)
+	NumFallbacks() uint
 	// UseFallback gets the Converter:use-fallback property.
-	UseFallback(c CharsetConverter) bool
+	UseFallback() bool
 	// SetUseFallback sets the Converter:use-fallback property.
-	SetUseFallback(c CharsetConverter, useFallback bool)
+	SetUseFallback(useFallback bool)
 }
 
 // charsetConverter implements the CharsetConverter interface.
@@ -69,7 +73,7 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 }
 
 // NewCharsetConverter constructs a class CharsetConverter.
-func NewCharsetConverter(toCharset string, fromCharset string) error {
+func NewCharsetConverter(toCharset string, fromCharset string) (charsetConverter CharsetConverter, err error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -78,46 +82,56 @@ func NewCharsetConverter(toCharset string, fromCharset string) error {
 	arg2 = (*C.gchar)(C.CString(fromCharset))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GCharsetConverter)
+	var goret CharsetConverter
+	var cerr *C.GError
+	var goerr error
 
-	C.g_charset_converter_new(arg1, arg2, &errout)
+	cret = C.g_charset_converter_new(arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CharsetConverter)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // NumFallbacks gets the number of fallbacks that @converter has applied so
 // far.
-func (c charsetConverter) NumFallbacks(c CharsetConverter) {
+func (c charsetConverter) NumFallbacks() uint {
 	var arg0 *C.GCharsetConverter
 
 	arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
-	C.g_charset_converter_get_num_fallbacks(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_charset_converter_get_num_fallbacks(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // UseFallback gets the Converter:use-fallback property.
-func (c charsetConverter) UseFallback(c CharsetConverter) bool {
+func (c charsetConverter) UseFallback() bool {
 	var arg0 *C.GCharsetConverter
 
 	arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_charset_converter_get_use_fallback(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetUseFallback sets the Converter:use-fallback property.
-func (c charsetConverter) SetUseFallback(c CharsetConverter, useFallback bool) {
+func (c charsetConverter) SetUseFallback(useFallback bool) {
 	var arg0 *C.GCharsetConverter
 	var arg1 C.gboolean
 

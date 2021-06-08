@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,7 +39,7 @@ type GestureSwipe interface {
 	// Velocity: if the gesture is recognized, this function returns true and
 	// fill in @velocity_x and @velocity_y with the recorded velocity, as per
 	// the last event(s) processed.
-	Velocity(g GestureSwipe) (velocityX float64, velocityY float64, ok bool)
+	Velocity() (velocityX float64, velocityY float64, ok bool)
 }
 
 // gestureSwipe implements the GestureSwipe interface.
@@ -61,36 +64,43 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 }
 
 // NewGestureSwipe constructs a class GestureSwipe.
-func NewGestureSwipe(widget Widget) {
+func NewGestureSwipe(widget Widget) GestureSwipe {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_gesture_swipe_new(arg1)
+	cret := new(C.GtkGestureSwipe)
+	var goret GestureSwipe
+
+	cret = C.gtk_gesture_swipe_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureSwipe)
+
+	return goret
 }
 
 // Velocity: if the gesture is recognized, this function returns true and
 // fill in @velocity_x and @velocity_y with the recorded velocity, as per
 // the last event(s) processed.
-func (g gestureSwipe) Velocity(g GestureSwipe) (velocityX float64, velocityY float64, ok bool) {
+func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
 	var arg0 *C.GtkGestureSwipe
 
 	arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
 
-	var arg1 C.gdouble
-	var velocityX float64
-	var arg2 C.gdouble
-	var velocityY float64
+	arg1 := new(C.gdouble)
+	var ret1 float64
+	arg2 := new(C.gdouble)
+	var ret2 float64
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_gesture_swipe_get_velocity(arg0, &arg1, &arg2)
+	cret = C.gtk_gesture_swipe_get_velocity(arg0, arg1, arg2)
 
-	velocityX = float64(&arg1)
-	velocityY = float64(&arg2)
+	ret1 = float64(*arg1)
+	ret2 = float64(*arg2)
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return velocityX, velocityY, ok
+	return ret1, ret2, goret
 }

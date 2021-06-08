@@ -3,7 +3,11 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -24,7 +28,7 @@ func init() {
 
 // FontFilterFunc: the type of function that is used for deciding what fonts get
 // shown in a FontChooser. See gtk_font_chooser_set_filter_func().
-type FontFilterFunc func(family pango.FontFamily, face pango.FontFace) bool
+type FontFilterFunc func() (ok bool)
 
 //export gotk4_FontFilterFunc
 func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C.gpointer) C.gboolean {
@@ -34,37 +38,35 @@ func gotk4_FontFilterFunc(arg0 *C.PangoFontFamily, arg1 *C.PangoFontFace, arg2 C
 	}
 
 	fn := v.(FontFilterFunc)
-	ret := fn(family, face, data)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
 // FontChooserOverrider contains methods that are overridable. This
 // interface is a subset of the interface FontChooser.
 type FontChooserOverrider interface {
-	FontActivated(c FontChooser, fontname string)
+	FontActivated(fontname string)
 	// FontFace gets the FontFace representing the selected font group details
 	// (i.e. family, slant, weight, width, etc).
 	//
 	// If the selected font is not installed, returns nil.
-	FontFace(f FontChooser)
+	FontFace() pango.FontFace
 	// FontFamily gets the FontFamily representing the selected font family.
 	// Font families are a collection of font faces.
 	//
 	// If the selected font is not installed, returns nil.
-	FontFamily(f FontChooser)
+	FontFamily() pango.FontFamily
 	// FontMap gets the custom font map of this font chooser widget, or nil if
 	// it does not have one.
-	FontMap(f FontChooser)
+	FontMap() pango.FontMap
 	// FontSize: the selected font size.
-	FontSize(f FontChooser)
+	FontSize() int
 	// SetFilterFunc adds a filter function that decides which fonts to display
 	// in the font chooser.
-	SetFilterFunc(f FontChooser)
+	SetFilterFunc()
 	// SetFontMap sets a custom font map to use for this font chooser widget. A
 	// custom font map can be used to present application-specific fonts instead
 	// of or in addition to the normal system fonts.
@@ -85,7 +87,7 @@ type FontChooserOverrider interface {
 	//
 	//    context = gtk_widget_get_pango_context (label);
 	//    pango_context_set_font_map (context, fontmap);
-	SetFontMap(f FontChooser, fontmap pango.FontMap)
+	SetFontMap(fontmap pango.FontMap)
 }
 
 // FontChooser is an interface that can be implemented by widgets displaying the
@@ -106,7 +108,7 @@ type FontChooser interface {
 	//
 	// Use pango_font_description_equal() if you want to compare two font
 	// descriptions.
-	Font(f FontChooser)
+	Font() string
 	// FontDesc gets the currently-selected font.
 	//
 	// Note that this can be a different string than what you set with
@@ -117,30 +119,30 @@ type FontChooser interface {
 	//
 	// Use pango_font_description_equal() if you want to compare two font
 	// descriptions.
-	FontDesc(f FontChooser)
+	FontDesc() *pango.FontDescription
 	// FontFeatures gets the currently-selected font features.
-	FontFeatures(f FontChooser)
+	FontFeatures() string
 	// Language gets the language that is used for font features.
-	Language(f FontChooser)
+	Language() string
 	// Level returns the current level of granularity for selecting fonts.
-	Level(f FontChooser)
+	Level() FontChooserLevel
 	// PreviewText gets the text displayed in the preview area.
-	PreviewText(f FontChooser)
+	PreviewText() string
 	// ShowPreviewEntry returns whether the preview entry is shown or not.
-	ShowPreviewEntry(f FontChooser) bool
+	ShowPreviewEntry() bool
 	// SetFont sets the currently-selected font.
-	SetFont(f FontChooser, fontname string)
+	SetFont(fontname string)
 	// SetFontDesc sets the currently-selected font from @font_desc.
-	SetFontDesc(f FontChooser, fontDesc *pango.FontDescription)
+	SetFontDesc(fontDesc *pango.FontDescription)
 	// SetLanguage sets the language to use for font features.
-	SetLanguage(f FontChooser, language string)
+	SetLanguage(language string)
 	// SetLevel sets the desired level of granularity for selecting fonts.
-	SetLevel(f FontChooser, level FontChooserLevel)
+	SetLevel(level FontChooserLevel)
 	// SetPreviewText sets the text displayed in the preview area. The @text is
 	// used to show how the selected font looks.
-	SetPreviewText(f FontChooser, text string)
+	SetPreviewText(text string)
 	// SetShowPreviewEntry shows or hides the editable preview entry.
-	SetShowPreviewEntry(f FontChooser, showPreviewEntry bool)
+	SetShowPreviewEntry(showPreviewEntry bool)
 }
 
 // fontChooser implements the FontChooser interface.
@@ -174,12 +176,20 @@ func marshalFontChooser(p uintptr) (interface{}, error) {
 //
 // Use pango_font_description_equal() if you want to compare two font
 // descriptions.
-func (f fontChooser) Font(f FontChooser) {
+func (f fontChooser) Font() string {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_font(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_font_chooser_get_font(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // FontDesc gets the currently-selected font.
@@ -192,114 +202,183 @@ func (f fontChooser) Font(f FontChooser) {
 //
 // Use pango_font_description_equal() if you want to compare two font
 // descriptions.
-func (f fontChooser) FontDesc(f FontChooser) {
+func (f fontChooser) FontDesc() *pango.FontDescription {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_font_desc(arg0)
+	cret := new(C.PangoFontDescription)
+	var goret *pango.FontDescription
+
+	cret = C.gtk_font_chooser_get_font_desc(arg0)
+
+	goret = pango.WrapFontDescription(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *pango.FontDescription) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // FontFace gets the FontFace representing the selected font group details
 // (i.e. family, slant, weight, width, etc).
 //
 // If the selected font is not installed, returns nil.
-func (f fontChooser) FontFace(f FontChooser) {
+func (f fontChooser) FontFace() pango.FontFace {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_font_face(arg0)
+	var cret *C.PangoFontFace
+	var goret pango.FontFace
+
+	cret = C.gtk_font_chooser_get_font_face(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFace)
+
+	return goret
 }
 
 // FontFamily gets the FontFamily representing the selected font family.
 // Font families are a collection of font faces.
 //
 // If the selected font is not installed, returns nil.
-func (f fontChooser) FontFamily(f FontChooser) {
+func (f fontChooser) FontFamily() pango.FontFamily {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_font_family(arg0)
+	var cret *C.PangoFontFamily
+	var goret pango.FontFamily
+
+	cret = C.gtk_font_chooser_get_font_family(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFamily)
+
+	return goret
 }
 
 // FontFeatures gets the currently-selected font features.
-func (f fontChooser) FontFeatures(f FontChooser) {
+func (f fontChooser) FontFeatures() string {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_font_features(arg0)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.gtk_font_chooser_get_font_features(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // FontMap gets the custom font map of this font chooser widget, or nil if
 // it does not have one.
-func (f fontChooser) FontMap(f FontChooser) {
+func (f fontChooser) FontMap() pango.FontMap {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_font_map(arg0)
+	cret := new(C.PangoFontMap)
+	var goret pango.FontMap
+
+	cret = C.gtk_font_chooser_get_font_map(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.FontMap)
+
+	return goret
 }
 
 // FontSize: the selected font size.
-func (f fontChooser) FontSize(f FontChooser) {
+func (f fontChooser) FontSize() int {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_font_size(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_font_chooser_get_font_size(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Language gets the language that is used for font features.
-func (f fontChooser) Language(f FontChooser) {
+func (f fontChooser) Language() string {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_language(arg0)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.gtk_font_chooser_get_language(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Level returns the current level of granularity for selecting fonts.
-func (f fontChooser) Level(f FontChooser) {
+func (f fontChooser) Level() FontChooserLevel {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_level(arg0)
+	var cret C.GtkFontChooserLevel
+	var goret FontChooserLevel
+
+	cret = C.gtk_font_chooser_get_level(arg0)
+
+	goret = FontChooserLevel(cret)
+
+	return goret
 }
 
 // PreviewText gets the text displayed in the preview area.
-func (f fontChooser) PreviewText(f FontChooser) {
+func (f fontChooser) PreviewText() string {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_chooser_get_preview_text(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_font_chooser_get_preview_text(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ShowPreviewEntry returns whether the preview entry is shown or not.
-func (f fontChooser) ShowPreviewEntry(f FontChooser) bool {
+func (f fontChooser) ShowPreviewEntry() bool {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_font_chooser_get_show_preview_entry(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetFilterFunc adds a filter function that decides which fonts to display
 // in the font chooser.
-func (f fontChooser) SetFilterFunc(f FontChooser) {
+func (f fontChooser) SetFilterFunc() {
 	var arg0 *C.GtkFontChooser
 
 	arg0 = (*C.GtkFontChooser)(unsafe.Pointer(f.Native()))
@@ -308,7 +387,7 @@ func (f fontChooser) SetFilterFunc(f FontChooser) {
 }
 
 // SetFont sets the currently-selected font.
-func (f fontChooser) SetFont(f FontChooser, fontname string) {
+func (f fontChooser) SetFont(fontname string) {
 	var arg0 *C.GtkFontChooser
 	var arg1 *C.gchar
 
@@ -320,7 +399,7 @@ func (f fontChooser) SetFont(f FontChooser, fontname string) {
 }
 
 // SetFontDesc sets the currently-selected font from @font_desc.
-func (f fontChooser) SetFontDesc(f FontChooser, fontDesc *pango.FontDescription) {
+func (f fontChooser) SetFontDesc(fontDesc *pango.FontDescription) {
 	var arg0 *C.GtkFontChooser
 	var arg1 *C.PangoFontDescription
 
@@ -350,7 +429,7 @@ func (f fontChooser) SetFontDesc(f FontChooser, fontDesc *pango.FontDescription)
 //
 //    context = gtk_widget_get_pango_context (label);
 //    pango_context_set_font_map (context, fontmap);
-func (f fontChooser) SetFontMap(f FontChooser, fontmap pango.FontMap) {
+func (f fontChooser) SetFontMap(fontmap pango.FontMap) {
 	var arg0 *C.GtkFontChooser
 	var arg1 *C.PangoFontMap
 
@@ -361,7 +440,7 @@ func (f fontChooser) SetFontMap(f FontChooser, fontmap pango.FontMap) {
 }
 
 // SetLanguage sets the language to use for font features.
-func (f fontChooser) SetLanguage(f FontChooser, language string) {
+func (f fontChooser) SetLanguage(language string) {
 	var arg0 *C.GtkFontChooser
 	var arg1 *C.char
 
@@ -373,7 +452,7 @@ func (f fontChooser) SetLanguage(f FontChooser, language string) {
 }
 
 // SetLevel sets the desired level of granularity for selecting fonts.
-func (f fontChooser) SetLevel(f FontChooser, level FontChooserLevel) {
+func (f fontChooser) SetLevel(level FontChooserLevel) {
 	var arg0 *C.GtkFontChooser
 	var arg1 C.GtkFontChooserLevel
 
@@ -385,7 +464,7 @@ func (f fontChooser) SetLevel(f FontChooser, level FontChooserLevel) {
 
 // SetPreviewText sets the text displayed in the preview area. The @text is
 // used to show how the selected font looks.
-func (f fontChooser) SetPreviewText(f FontChooser, text string) {
+func (f fontChooser) SetPreviewText(text string) {
 	var arg0 *C.GtkFontChooser
 	var arg1 *C.gchar
 
@@ -397,7 +476,7 @@ func (f fontChooser) SetPreviewText(f FontChooser, text string) {
 }
 
 // SetShowPreviewEntry shows or hides the editable preview entry.
-func (f fontChooser) SetShowPreviewEntry(f FontChooser, showPreviewEntry bool) {
+func (f fontChooser) SetShowPreviewEntry(showPreviewEntry bool) {
 	var arg0 *C.GtkFontChooser
 	var arg1 C.gboolean
 

@@ -2,6 +2,11 @@
 
 package glib
 
+import (
+	"runtime"
+	"unsafe"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -10,30 +15,49 @@ import "C"
 // Base64Decode: decode a sequence of Base-64 encoded text into binary data.
 // Note that the returned binary data is not necessarily zero-terminated, so it
 // should not be used as a character string.
-func Base64Decode(text string) uint {
+func Base64Decode(text string) []byte {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 C.gsize
-	var outLen uint
+	var cret *C.guchar
+	var arg2 *C.gsize
+	var goret []byte
 
-	C.g_base64_decode(arg1, &arg2)
+	cret = C.g_base64_decode(arg1, arg2)
 
-	outLen = uint(&arg2)
+	ptr.SetSlice(unsafe.Pointer(&goret), unsafe.Pointer(cret), int(arg2))
+	runtime.SetFinalizer(&goret, func(v *[]byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 
-	return outLen
+	return ret2, goret
 }
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
 // data by overwriting the input data.
-func Base64DecodeInplace() {
-	C.g_base64_decode_inplace(arg1, arg2)
+func Base64DecodeInplace() byte {
+	var cret *C.guchar
+	var goret byte
+
+	cret = C.g_base64_decode_inplace(arg1, arg2)
+
+	goret = byte(cret)
+
+	return goret
 }
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
-func Base64Encode() {
-	C.g_base64_encode(arg1, arg2)
+func Base64Encode() string {
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_base64_encode(arg1, arg2)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

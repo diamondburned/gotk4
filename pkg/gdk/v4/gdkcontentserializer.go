@@ -2,21 +2,36 @@
 
 package gdk
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
 
-// ContentRegisterSerializer registers a function to convert objects of the
-// given @type to a serialized representation with the given mime type.
+// ContentRegisterSerializer registers a function to serialize objects of a
+// given type.
 func ContentRegisterSerializer() {
 	C.gdk_content_register_serializer(arg1, arg2, arg3, arg4, arg5)
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
-// stream, asynchronously. When the operation is finished, @callback will be
-// called. You can then call gdk_content_serialize_finish() to get the result of
-// the operation.
+// stream, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, @callback will be called. You must then call
+// [func@content_serialize_finish] to get the result of the operation.
 func ContentSerializeAsync() {
 	C.gdk_content_serialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
@@ -27,12 +42,12 @@ func ContentSerializeFinish(result gio.AsyncResult) error {
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.gdk_content_serialize_finish(arg1, &errout)
+	C.gdk_content_serialize_finish(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }

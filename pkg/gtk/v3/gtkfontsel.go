@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,15 +32,15 @@ type FontSelection interface {
 
 	// Face gets the FontFace representing the selected font group details (i.e.
 	// family, slant, weight, width, etc).
-	Face(f FontSelection)
+	Face() pango.FontFace
 	// FaceList: this returns the TreeView which lists all styles available for
 	// the selected font. For example, “Regular”, “Bold”, etc.
-	FaceList(f FontSelection)
+	FaceList() Widget
 	// Family gets the FontFamily representing the selected font family.
-	Family(f FontSelection)
+	Family() pango.FontFamily
 	// FamilyList: this returns the TreeView that lists font families, for
 	// example, “Sans”, “Serif”, etc.
-	FamilyList(f FontSelection)
+	FamilyList() Widget
 	// FontName gets the currently-selected font name.
 	//
 	// Note that this can be a different string than what you set with
@@ -45,28 +49,28 @@ type FontSelection interface {
 	// For example, “Helvetica Italic Bold 12” could be normalized to “Helvetica
 	// Bold Italic 12”. Use pango_font_description_equal() if you want to
 	// compare two font descriptions.
-	FontName(f FontSelection)
+	FontName() string
 	// PreviewEntry: this returns the Entry used to display the font as a
 	// preview.
-	PreviewEntry(f FontSelection)
+	PreviewEntry() Widget
 	// PreviewText gets the text displayed in the preview area.
-	PreviewText(f FontSelection)
+	PreviewText() string
 	// Size: the selected font size.
-	Size(f FontSelection)
+	Size() int
 	// SizeEntry: this returns the Entry used to allow the user to edit the font
 	// number manually instead of selecting it from the list of font sizes.
-	SizeEntry(f FontSelection)
+	SizeEntry() Widget
 	// SizeList: this returns the TreeView used to list font sizes.
-	SizeList(f FontSelection)
+	SizeList() Widget
 	// SetFontName sets the currently-selected font.
 	//
 	// Note that the @fontsel needs to know the screen in which it will appear
 	// for this to work; this can be guaranteed by simply making sure that the
 	// @fontsel is inserted in a toplevel window before you call this function.
-	SetFontName(f FontSelection, fontname string) bool
+	SetFontName(fontname string) bool
 	// SetPreviewText sets the text displayed in the preview area. The @text is
 	// used to show how the selected font looks.
-	SetPreviewText(f FontSelection, text string)
+	SetPreviewText(text string)
 }
 
 // fontSelection implements the FontSelection interface.
@@ -95,47 +99,82 @@ func marshalFontSelection(p uintptr) (interface{}, error) {
 }
 
 // NewFontSelection constructs a class FontSelection.
-func NewFontSelection() {
-	C.gtk_font_selection_new()
+func NewFontSelection() FontSelection {
+	var cret C.GtkFontSelection
+	var goret FontSelection
+
+	cret = C.gtk_font_selection_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontSelection)
+
+	return goret
 }
 
 // Face gets the FontFace representing the selected font group details (i.e.
 // family, slant, weight, width, etc).
-func (f fontSelection) Face(f FontSelection) {
+func (f fontSelection) Face() pango.FontFace {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_face(arg0)
+	var cret *C.PangoFontFace
+	var goret pango.FontFace
+
+	cret = C.gtk_font_selection_get_face(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFace)
+
+	return goret
 }
 
 // FaceList: this returns the TreeView which lists all styles available for
 // the selected font. For example, “Regular”, “Bold”, etc.
-func (f fontSelection) FaceList(f FontSelection) {
+func (f fontSelection) FaceList() Widget {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_face_list(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_get_face_list(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // Family gets the FontFamily representing the selected font family.
-func (f fontSelection) Family(f FontSelection) {
+func (f fontSelection) Family() pango.FontFamily {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_family(arg0)
+	var cret *C.PangoFontFamily
+	var goret pango.FontFamily
+
+	cret = C.gtk_font_selection_get_family(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontFamily)
+
+	return goret
 }
 
 // FamilyList: this returns the TreeView that lists font families, for
 // example, “Sans”, “Serif”, etc.
-func (f fontSelection) FamilyList(f FontSelection) {
+func (f fontSelection) FamilyList() Widget {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_family_list(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_get_family_list(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // FontName gets the currently-selected font name.
@@ -146,59 +185,102 @@ func (f fontSelection) FamilyList(f FontSelection) {
 // For example, “Helvetica Italic Bold 12” could be normalized to “Helvetica
 // Bold Italic 12”. Use pango_font_description_equal() if you want to
 // compare two font descriptions.
-func (f fontSelection) FontName(f FontSelection) {
+func (f fontSelection) FontName() string {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_font_name(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_font_selection_get_font_name(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // PreviewEntry: this returns the Entry used to display the font as a
 // preview.
-func (f fontSelection) PreviewEntry(f FontSelection) {
+func (f fontSelection) PreviewEntry() Widget {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_preview_entry(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_get_preview_entry(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // PreviewText gets the text displayed in the preview area.
-func (f fontSelection) PreviewText(f FontSelection) {
+func (f fontSelection) PreviewText() string {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_preview_text(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_font_selection_get_preview_text(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Size: the selected font size.
-func (f fontSelection) Size(f FontSelection) {
+func (f fontSelection) Size() int {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_size(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_font_selection_get_size(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // SizeEntry: this returns the Entry used to allow the user to edit the font
 // number manually instead of selecting it from the list of font sizes.
-func (f fontSelection) SizeEntry(f FontSelection) {
+func (f fontSelection) SizeEntry() Widget {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_size_entry(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_get_size_entry(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // SizeList: this returns the TreeView used to list font sizes.
-func (f fontSelection) SizeList(f FontSelection) {
+func (f fontSelection) SizeList() Widget {
 	var arg0 *C.GtkFontSelection
 
 	arg0 = (*C.GtkFontSelection)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_get_size_list(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_get_size_list(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // SetFontName sets the currently-selected font.
@@ -206,7 +288,7 @@ func (f fontSelection) SizeList(f FontSelection) {
 // Note that the @fontsel needs to know the screen in which it will appear
 // for this to work; this can be guaranteed by simply making sure that the
 // @fontsel is inserted in a toplevel window before you call this function.
-func (f fontSelection) SetFontName(f FontSelection, fontname string) bool {
+func (f fontSelection) SetFontName(fontname string) bool {
 	var arg0 *C.GtkFontSelection
 	var arg1 *C.gchar
 
@@ -215,20 +297,20 @@ func (f fontSelection) SetFontName(f FontSelection, fontname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_font_selection_set_font_name(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetPreviewText sets the text displayed in the preview area. The @text is
 // used to show how the selected font looks.
-func (f fontSelection) SetPreviewText(f FontSelection, text string) {
+func (f fontSelection) SetPreviewText(text string) {
 	var arg0 *C.GtkFontSelection
 	var arg1 *C.gchar
 
@@ -244,7 +326,7 @@ type FontSelectionDialog interface {
 	Buildable
 
 	// CancelButton gets the “Cancel” button.
-	CancelButton(f FontSelectionDialog)
+	CancelButton() Widget
 	// FontName gets the currently-selected font name.
 	//
 	// Note that this can be a different string than what you set with
@@ -253,17 +335,17 @@ type FontSelectionDialog interface {
 	// structure. For example, “Helvetica Italic Bold 12” could be normalized to
 	// “Helvetica Bold Italic 12”. Use pango_font_description_equal() if you
 	// want to compare two font descriptions.
-	FontName(f FontSelectionDialog)
+	FontName() string
 	// FontSelection retrieves the FontSelection widget embedded in the dialog.
-	FontSelection(f FontSelectionDialog)
+	FontSelection() Widget
 	// OkButton gets the “OK” button.
-	OkButton(f FontSelectionDialog)
+	OkButton() Widget
 	// PreviewText gets the text displayed in the preview area.
-	PreviewText(f FontSelectionDialog)
+	PreviewText() string
 	// SetFontName sets the currently selected font.
-	SetFontName(f FontSelectionDialog, fontname string) bool
+	SetFontName(fontname string) bool
 	// SetPreviewText sets the text displayed in the preview area.
-	SetPreviewText(f FontSelectionDialog, text string)
+	SetPreviewText(text string)
 }
 
 // fontSelectionDialog implements the FontSelectionDialog interface.
@@ -290,22 +372,36 @@ func marshalFontSelectionDialog(p uintptr) (interface{}, error) {
 }
 
 // NewFontSelectionDialog constructs a class FontSelectionDialog.
-func NewFontSelectionDialog(title string) {
+func NewFontSelectionDialog(title string) FontSelectionDialog {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_font_selection_dialog_new(arg1)
+	var cret C.GtkFontSelectionDialog
+	var goret FontSelectionDialog
+
+	cret = C.gtk_font_selection_dialog_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontSelectionDialog)
+
+	return goret
 }
 
 // CancelButton gets the “Cancel” button.
-func (f fontSelectionDialog) CancelButton(f FontSelectionDialog) {
+func (f fontSelectionDialog) CancelButton() Widget {
 	var arg0 *C.GtkFontSelectionDialog
 
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_dialog_get_cancel_button(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_dialog_get_cancel_button(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // FontName gets the currently-selected font name.
@@ -316,43 +412,72 @@ func (f fontSelectionDialog) CancelButton(f FontSelectionDialog) {
 // structure. For example, “Helvetica Italic Bold 12” could be normalized to
 // “Helvetica Bold Italic 12”. Use pango_font_description_equal() if you
 // want to compare two font descriptions.
-func (f fontSelectionDialog) FontName(f FontSelectionDialog) {
+func (f fontSelectionDialog) FontName() string {
 	var arg0 *C.GtkFontSelectionDialog
 
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_dialog_get_font_name(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_font_selection_dialog_get_font_name(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // FontSelection retrieves the FontSelection widget embedded in the dialog.
-func (f fontSelectionDialog) FontSelection(f FontSelectionDialog) {
+func (f fontSelectionDialog) FontSelection() Widget {
 	var arg0 *C.GtkFontSelectionDialog
 
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_dialog_get_font_selection(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_dialog_get_font_selection(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // OkButton gets the “OK” button.
-func (f fontSelectionDialog) OkButton(f FontSelectionDialog) {
+func (f fontSelectionDialog) OkButton() Widget {
 	var arg0 *C.GtkFontSelectionDialog
 
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_dialog_get_ok_button(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_font_selection_dialog_get_ok_button(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // PreviewText gets the text displayed in the preview area.
-func (f fontSelectionDialog) PreviewText(f FontSelectionDialog) {
+func (f fontSelectionDialog) PreviewText() string {
 	var arg0 *C.GtkFontSelectionDialog
 
 	arg0 = (*C.GtkFontSelectionDialog)(unsafe.Pointer(f.Native()))
 
-	C.gtk_font_selection_dialog_get_preview_text(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_font_selection_dialog_get_preview_text(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // SetFontName sets the currently selected font.
-func (f fontSelectionDialog) SetFontName(f FontSelectionDialog, fontname string) bool {
+func (f fontSelectionDialog) SetFontName(fontname string) bool {
 	var arg0 *C.GtkFontSelectionDialog
 	var arg1 *C.gchar
 
@@ -361,19 +486,19 @@ func (f fontSelectionDialog) SetFontName(f FontSelectionDialog, fontname string)
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_font_selection_dialog_set_font_name(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetPreviewText sets the text displayed in the preview area.
-func (f fontSelectionDialog) SetPreviewText(f FontSelectionDialog, text string) {
+func (f fontSelectionDialog) SetPreviewText(text string) {
 	var arg0 *C.GtkFontSelectionDialog
 	var arg1 *C.gchar
 

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -78,6 +81,13 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 }
 
 // NewSearchEntry constructs a class SearchEntry.
-func NewSearchEntry() {
-	C.gtk_search_entry_new()
+func NewSearchEntry() SearchEntry {
+	var cret C.GtkSearchEntry
+	var goret SearchEntry
+
+	cret = C.gtk_search_entry_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchEntry)
+
+	return goret
 }

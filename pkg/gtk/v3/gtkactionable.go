@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,11 +29,11 @@ type ActionableOverrider interface {
 	// ActionName gets the action name for @actionable.
 	//
 	// See gtk_actionable_set_action_name() for more information.
-	ActionName(a Actionable)
+	ActionName() string
 	// ActionTargetValue gets the current target value of @actionable.
 	//
 	// See gtk_actionable_set_action_target_value() for more information.
-	ActionTargetValue(a Actionable)
+	ActionTargetValue() *glib.Variant
 	// SetActionName specifies the name of the action with which this widget
 	// should be associated. If @action_name is nil then the widget will be
 	// unassociated from any previous action.
@@ -42,7 +45,7 @@ type ActionableOverrider interface {
 	// containing ApplicationWindow or its associated Application, respectively.
 	// This is the same form used for actions in the #GMenu associated with the
 	// window.
-	SetActionName(a Actionable, actionName string)
+	SetActionName(actionName string)
 	// SetActionTargetValue sets the target value of an actionable widget.
 	//
 	// If @target_value is nil then the target value is unset.
@@ -60,7 +63,7 @@ type ActionableOverrider interface {
 	// state to change to that value. Since the action’s state is now equal to
 	// the target value of the button, the button will now be rendered as active
 	// (and the other buttons, with different targets, rendered inactive).
-	SetActionTargetValue(a Actionable, targetValue *glib.Variant)
+	SetActionTargetValue(targetValue *glib.Variant)
 }
 
 // Actionable: this interface provides a convenient way of associating widgets
@@ -89,7 +92,7 @@ type Actionable interface {
 	// actions with a simple "s" target, and @detailed_action_name must be of
 	// the form `"action::target"` where `action` is the action name and
 	// `target` is the string to use as the target.)
-	SetDetailedActionName(a Actionable, detailedActionName string)
+	SetDetailedActionName(detailedActionName string)
 }
 
 // actionable implements the Actionable interface.
@@ -116,23 +119,37 @@ func marshalActionable(p uintptr) (interface{}, error) {
 // ActionName gets the action name for @actionable.
 //
 // See gtk_actionable_set_action_name() for more information.
-func (a actionable) ActionName(a Actionable) {
+func (a actionable) ActionName() string {
 	var arg0 *C.GtkActionable
 
 	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 
-	C.gtk_actionable_get_action_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_actionable_get_action_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ActionTargetValue gets the current target value of @actionable.
 //
 // See gtk_actionable_set_action_target_value() for more information.
-func (a actionable) ActionTargetValue(a Actionable) {
+func (a actionable) ActionTargetValue() *glib.Variant {
 	var arg0 *C.GtkActionable
 
 	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 
-	C.gtk_actionable_get_action_target_value(arg0)
+	var cret *C.GVariant
+	var goret *glib.Variant
+
+	cret = C.gtk_actionable_get_action_target_value(arg0)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // SetActionName specifies the name of the action with which this widget
@@ -146,7 +163,7 @@ func (a actionable) ActionTargetValue(a Actionable) {
 // containing ApplicationWindow or its associated Application, respectively.
 // This is the same form used for actions in the #GMenu associated with the
 // window.
-func (a actionable) SetActionName(a Actionable, actionName string) {
+func (a actionable) SetActionName(actionName string) {
 	var arg0 *C.GtkActionable
 	var arg1 *C.gchar
 
@@ -174,7 +191,7 @@ func (a actionable) SetActionName(a Actionable, actionName string) {
 // state to change to that value. Since the action’s state is now equal to
 // the target value of the button, the button will now be rendered as active
 // (and the other buttons, with different targets, rendered inactive).
-func (a actionable) SetActionTargetValue(a Actionable, targetValue *glib.Variant) {
+func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
 	var arg0 *C.GtkActionable
 	var arg1 *C.GVariant
 
@@ -194,7 +211,7 @@ func (a actionable) SetActionTargetValue(a Actionable, targetValue *glib.Variant
 // actions with a simple "s" target, and @detailed_action_name must be of
 // the form `"action::target"` where `action` is the action name and
 // `target` is the string to use as the target.)
-func (a actionable) SetDetailedActionName(a Actionable, detailedActionName string) {
+func (a actionable) SetDetailedActionName(detailedActionName string) {
 	var arg0 *C.GtkActionable
 	var arg1 *C.gchar
 

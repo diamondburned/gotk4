@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -87,7 +91,7 @@ type RadioButton interface {
 	Buildable
 
 	// Group retrieves the group assigned to a radio button.
-	Group(r RadioButton)
+	Group() *glib.SList
 	// JoinGroup joins a RadioButton object to the group of another RadioButton
 	// object
 	//
@@ -106,12 +110,12 @@ type RadioButton interface {
 	//           gtk_radio_button_join_group (radio_button, last_button);
 	//           last_button = radio_button;
 	//        }
-	JoinGroup(r RadioButton, groupSource RadioButton)
+	JoinGroup(groupSource RadioButton)
 	// SetGroup sets a RadioButton’s group. It should be noted that this does
 	// not change the layout of your interface in any way, so if you are
 	// changing the group, it is likely you will need to re-arrange the user
 	// interface to reflect these changes.
-	SetGroup(r RadioButton, group *glib.SList)
+	SetGroup(group *glib.SList)
 }
 
 // radioButton implements the RadioButton interface.
@@ -142,25 +146,39 @@ func marshalRadioButton(p uintptr) (interface{}, error) {
 }
 
 // NewRadioButton constructs a class RadioButton.
-func NewRadioButton(group *glib.SList) {
+func NewRadioButton(group *glib.SList) RadioButton {
 	var arg1 *C.GSList
 
 	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
 
-	C.gtk_radio_button_new(arg1)
+	var cret C.GtkRadioButton
+	var goret RadioButton
+
+	cret = C.gtk_radio_button_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioButton)
+
+	return goret
 }
 
 // NewRadioButtonFromWidget constructs a class RadioButton.
-func NewRadioButtonFromWidget(radioGroupMember RadioButton) {
+func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
 	var arg1 *C.GtkRadioButton
 
 	arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
 
-	C.gtk_radio_button_new_from_widget(arg1)
+	var cret C.GtkRadioButton
+	var goret RadioButton
+
+	cret = C.gtk_radio_button_new_from_widget(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioButton)
+
+	return goret
 }
 
 // NewRadioButtonWithLabel constructs a class RadioButton.
-func NewRadioButtonWithLabel(group *glib.SList, label string) {
+func NewRadioButtonWithLabel(group *glib.SList, label string) RadioButton {
 	var arg1 *C.GSList
 	var arg2 *C.gchar
 
@@ -168,11 +186,18 @@ func NewRadioButtonWithLabel(group *glib.SList, label string) {
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_radio_button_new_with_label(arg1, arg2)
+	var cret C.GtkRadioButton
+	var goret RadioButton
+
+	cret = C.gtk_radio_button_new_with_label(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioButton)
+
+	return goret
 }
 
 // NewRadioButtonWithLabelFromWidget constructs a class RadioButton.
-func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) {
+func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var arg1 *C.GtkRadioButton
 	var arg2 *C.gchar
 
@@ -180,11 +205,18 @@ func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label strin
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_radio_button_new_with_label_from_widget(arg1, arg2)
+	var cret C.GtkRadioButton
+	var goret RadioButton
+
+	cret = C.gtk_radio_button_new_with_label_from_widget(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioButton)
+
+	return goret
 }
 
 // NewRadioButtonWithMnemonic constructs a class RadioButton.
-func NewRadioButtonWithMnemonic(group *glib.SList, label string) {
+func NewRadioButtonWithMnemonic(group *glib.SList, label string) RadioButton {
 	var arg1 *C.GSList
 	var arg2 *C.gchar
 
@@ -192,11 +224,18 @@ func NewRadioButtonWithMnemonic(group *glib.SList, label string) {
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_radio_button_new_with_mnemonic(arg1, arg2)
+	var cret C.GtkRadioButton
+	var goret RadioButton
+
+	cret = C.gtk_radio_button_new_with_mnemonic(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioButton)
+
+	return goret
 }
 
 // NewRadioButtonWithMnemonicFromWidget constructs a class RadioButton.
-func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) {
+func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) RadioButton {
 	var arg1 *C.GtkRadioButton
 	var arg2 *C.gchar
 
@@ -204,16 +243,30 @@ func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label st
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_radio_button_new_with_mnemonic_from_widget(arg1, arg2)
+	var cret C.GtkRadioButton
+	var goret RadioButton
+
+	cret = C.gtk_radio_button_new_with_mnemonic_from_widget(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioButton)
+
+	return goret
 }
 
 // Group retrieves the group assigned to a radio button.
-func (r radioButton) Group(r RadioButton) {
+func (r radioButton) Group() *glib.SList {
 	var arg0 *C.GtkRadioButton
 
 	arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
 
-	C.gtk_radio_button_get_group(arg0)
+	var cret *C.GSList
+	var goret *glib.SList
+
+	cret = C.gtk_radio_button_get_group(arg0)
+
+	goret = glib.WrapSList(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // JoinGroup joins a RadioButton object to the group of another RadioButton
@@ -234,7 +287,7 @@ func (r radioButton) Group(r RadioButton) {
 //           gtk_radio_button_join_group (radio_button, last_button);
 //           last_button = radio_button;
 //        }
-func (r radioButton) JoinGroup(r RadioButton, groupSource RadioButton) {
+func (r radioButton) JoinGroup(groupSource RadioButton) {
 	var arg0 *C.GtkRadioButton
 	var arg1 *C.GtkRadioButton
 
@@ -248,7 +301,7 @@ func (r radioButton) JoinGroup(r RadioButton, groupSource RadioButton) {
 // not change the layout of your interface in any way, so if you are
 // changing the group, it is likely you will need to re-arrange the user
 // interface to reflect these changes.
-func (r radioButton) SetGroup(r RadioButton, group *glib.SList) {
+func (r radioButton) SetGroup(group *glib.SList) {
 	var arg0 *C.GtkRadioButton
 	var arg1 *C.GSList
 

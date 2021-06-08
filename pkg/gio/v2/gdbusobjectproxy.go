@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +40,7 @@ type DBusObjectProxy interface {
 	DBusObject
 
 	// Connection gets the connection that @proxy is for.
-	Connection(p DBusObjectProxy)
+	Connection() DBusConnection
 }
 
 // dBusObjectProxy implements the DBusObjectProxy interface.
@@ -64,7 +67,7 @@ func marshalDBusObjectProxy(p uintptr) (interface{}, error) {
 }
 
 // NewDBusObjectProxy constructs a class DBusObjectProxy.
-func NewDBusObjectProxy(connection DBusConnection, objectPath string) {
+func NewDBusObjectProxy(connection DBusConnection, objectPath string) DBusObjectProxy {
 	var arg1 *C.GDBusConnection
 	var arg2 *C.gchar
 
@@ -72,14 +75,28 @@ func NewDBusObjectProxy(connection DBusConnection, objectPath string) {
 	arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_dbus_object_proxy_new(arg1, arg2)
+	cret := new(C.GDBusObjectProxy)
+	var goret DBusObjectProxy
+
+	cret = C.g_dbus_object_proxy_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectProxy)
+
+	return goret
 }
 
 // Connection gets the connection that @proxy is for.
-func (p dBusObjectProxy) Connection(p DBusObjectProxy) {
+func (p dBusObjectProxy) Connection() DBusConnection {
 	var arg0 *C.GDBusObjectProxy
 
 	arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(p.Native()))
 
-	C.g_dbus_object_proxy_get_connection(arg0)
+	var cret *C.GDBusConnection
+	var goret DBusConnection
+
+	cret = C.g_dbus_object_proxy_get_connection(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return goret
 }

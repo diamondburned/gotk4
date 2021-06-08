@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"runtime"
+
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,102 +31,6 @@ func init() {
 	})
 }
 
-// ActionNameIsValid checks if @action_name is valid.
-//
-// @action_name is valid if it consists only of alphanumeric characters, plus
-// '-' and '.'. The empty string is not a valid action name.
-//
-// It is an error to call this function with a non-utf8 @action_name.
-// @action_name must not be nil.
-func ActionNameIsValid(actionName string) bool {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-
-	var cret C.gboolean
-	var ok bool
-
-	cret = C.g_action_name_is_valid(arg1)
-
-	if cret {
-		ok = true
-	}
-
-	return ok
-}
-
-// ActionParseDetailedName parses a detailed action name into its separate name
-// and target components.
-//
-// Detailed action names can have three formats.
-//
-// The first format is used to represent an action name with no target value and
-// consists of just an action name containing no whitespace nor the characters
-// ':', '(' or ')'. For example: "app.action".
-//
-// The second format is used to represent an action with a target value that is
-// a non-empty string consisting only of alphanumerics, plus '-' and '.'. In
-// that case, the action name and target value are separated by a double colon
-// ("::"). For example: "app.action::target".
-//
-// The third format is used to represent an action with any type of target
-// value, including strings. The target value follows the action name,
-// surrounded in parens. For example: "app.action(42)". The target value is
-// parsed using g_variant_parse(). If a tuple-typed value is desired, it must be
-// specified in the same way, resulting in two sets of parens, for example:
-// "app.action((1,2,3))". A string target can be specified this way as well:
-// "app.action('target')". For strings, this third format must be used if *
-// target value is empty or contains characters other than alphanumerics, '-'
-// and '.'.
-func ActionParseDetailedName(detailedName string) (actionName string, targetValue **glib.Variant, err error) {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(detailedName))
-	defer C.free(unsafe.Pointer(arg1))
-
-	var arg2 *C.gchar
-	var actionName string
-	var arg3 *C.GVariant
-	var targetValue **glib.Variant
-	var errout *C.GError
-	var err error
-
-	C.g_action_parse_detailed_name(arg1, &arg2, &arg3, &errout)
-
-	actionName = C.GoString(&arg2)
-	defer C.free(unsafe.Pointer(&arg2))
-	targetValue = glib.WrapVariant(unsafe.Pointer(&arg3))
-	runtime.SetFinalizer(targetValue, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	err = gerror.Take(unsafe.Pointer(errout))
-
-	return actionName, targetValue, err
-}
-
-// ActionPrintDetailedName formats a detailed action name from @action_name and
-// @target_value.
-//
-// It is an error to call this function with an invalid action name.
-//
-// This function is the opposite of g_action_parse_detailed_name(). It will
-// produce a string that can be parsed back to the @action_name and
-// @target_value by that function.
-//
-// See that function for the types of strings that will be printed by this
-// function.
-func ActionPrintDetailedName(actionName string, targetValue *glib.Variant) {
-	var arg1 *C.gchar
-	var arg2 *C.GVariant
-
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
-
-	C.g_action_print_detailed_name(arg1, arg2)
-}
-
 // ActionOverrider contains methods that are overridable. This
 // interface is a subset of the interface Action.
 type ActionOverrider interface {
@@ -134,7 +41,7 @@ type ActionOverrider interface {
 	// then @parameter must also be nil.
 	//
 	// If the @parameter GVariant is floating, it is consumed.
-	Activate(a Action, parameter *glib.Variant)
+	Activate(parameter *glib.Variant)
 	// ChangeState: request for the state of @action to be changed to @value.
 	//
 	// The action must be stateful and @value must be of the correct type. See
@@ -145,14 +52,14 @@ type ActionOverrider interface {
 	// g_action_get_state_hint().
 	//
 	// If the @value GVariant is floating, it is consumed.
-	ChangeState(a Action, value *glib.Variant)
+	ChangeState(value *glib.Variant)
 	// Enabled checks if @action is currently enabled.
 	//
 	// An action must be enabled in order to be activated or in order to have
 	// its state changed from outside callers.
-	Enabled(a Action) bool
+	Enabled() bool
 	// Name queries the name of @action.
-	Name(a Action)
+	Name() string
 	// ParameterType queries the type of the parameter that must be given when
 	// activating @action.
 	//
@@ -161,7 +68,7 @@ type ActionOverrider interface {
 	//
 	// In the case that this function returns nil, you must not give any
 	// #GVariant, but nil instead.
-	ParameterType(a Action)
+	ParameterType() *glib.VariantType
 	// State queries the current state of @action.
 	//
 	// If the action is not stateful then nil will be returned. If the action is
@@ -170,7 +77,7 @@ type ActionOverrider interface {
 	//
 	// The return value (if non-nil) should be freed with g_variant_unref() when
 	// it is no longer required.
-	State(a Action)
+	State() *glib.Variant
 	// StateHint requests a hint about the valid range of values for the state
 	// of @action.
 	//
@@ -189,7 +96,7 @@ type ActionOverrider interface {
 	//
 	// The return value (if non-nil) should be freed with g_variant_unref() when
 	// it is no longer required.
-	StateHint(a Action)
+	StateHint() *glib.Variant
 	// StateType queries the type of the state of @action.
 	//
 	// If the action is stateful (e.g. created with
@@ -201,7 +108,7 @@ type ActionOverrider interface {
 	// If the action is not stateful (e.g. created with g_simple_action_new())
 	// then this function will return nil. In that case, g_action_get_state()
 	// will return nil and you must not call g_action_change_state().
-	StateType(a Action)
+	StateType() *glib.VariantType
 }
 
 // Action represents a single named action.
@@ -263,7 +170,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 // then @parameter must also be nil.
 //
 // If the @parameter GVariant is floating, it is consumed.
-func (a action) Activate(a Action, parameter *glib.Variant) {
+func (a action) Activate(parameter *glib.Variant) {
 	var arg0 *C.GAction
 	var arg1 *C.GVariant
 
@@ -283,7 +190,7 @@ func (a action) Activate(a Action, parameter *glib.Variant) {
 // g_action_get_state_hint().
 //
 // If the @value GVariant is floating, it is consumed.
-func (a action) ChangeState(a Action, value *glib.Variant) {
+func (a action) ChangeState(value *glib.Variant) {
 	var arg0 *C.GAction
 	var arg1 *C.GVariant
 
@@ -297,30 +204,37 @@ func (a action) ChangeState(a Action, value *glib.Variant) {
 //
 // An action must be enabled in order to be activated or in order to have
 // its state changed from outside callers.
-func (a action) Enabled(a Action) bool {
+func (a action) Enabled() bool {
 	var arg0 *C.GAction
 
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_action_get_enabled(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Name queries the name of @action.
-func (a action) Name(a Action) {
+func (a action) Name() string {
 	var arg0 *C.GAction
 
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	C.g_action_get_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_action_get_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ParameterType queries the type of the parameter that must be given when
@@ -331,12 +245,19 @@ func (a action) Name(a Action) {
 //
 // In the case that this function returns nil, you must not give any
 // #GVariant, but nil instead.
-func (a action) ParameterType(a Action) {
+func (a action) ParameterType() *glib.VariantType {
 	var arg0 *C.GAction
 
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	C.g_action_get_parameter_type(arg0)
+	var cret *C.GVariantType
+	var goret *glib.VariantType
+
+	cret = C.g_action_get_parameter_type(arg0)
+
+	goret = glib.WrapVariantType(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // State queries the current state of @action.
@@ -347,12 +268,22 @@ func (a action) ParameterType(a Action) {
 //
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
-func (a action) State(a Action) {
+func (a action) State() *glib.Variant {
 	var arg0 *C.GAction
 
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	C.g_action_get_state(arg0)
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+
+	cret = C.g_action_get_state(arg0)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // StateHint requests a hint about the valid range of values for the state
@@ -373,12 +304,22 @@ func (a action) State(a Action) {
 //
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
-func (a action) StateHint(a Action) {
+func (a action) StateHint() *glib.Variant {
 	var arg0 *C.GAction
 
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	C.g_action_get_state_hint(arg0)
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+
+	cret = C.g_action_get_state_hint(arg0)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // StateType queries the type of the state of @action.
@@ -392,10 +333,17 @@ func (a action) StateHint(a Action) {
 // If the action is not stateful (e.g. created with g_simple_action_new())
 // then this function will return nil. In that case, g_action_get_state()
 // will return nil and you must not call g_action_change_state().
-func (a action) StateType(a Action) {
+func (a action) StateType() *glib.VariantType {
 	var arg0 *C.GAction
 
 	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	C.g_action_get_state_type(arg0)
+	var cret *C.GVariantType
+	var goret *glib.VariantType
+
+	cret = C.g_action_get_state_type(arg0)
+
+	goret = glib.WrapVariantType(unsafe.Pointer(cret))
+
+	return goret
 }

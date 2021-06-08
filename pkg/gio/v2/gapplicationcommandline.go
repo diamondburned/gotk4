@@ -3,6 +3,12 @@
 package gio
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -108,7 +114,7 @@ type ApplicationCommandLine interface {
 	// This differs from g_file_new_for_commandline_arg() in that it resolves
 	// relative pathnames using the current working directory of the invoking
 	// process rather than the local process.
-	CreateFileForArg(c ApplicationCommandLine, arg string)
+	CreateFileForArg(arg string) File
 	// Arguments gets the list of arguments that was passed on the command line.
 	//
 	// The strings in the array may contain non-UTF-8 data on UNIX (such as
@@ -120,7 +126,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value is nil-terminated and should be freed using
 	// g_strfreev().
-	Arguments(c ApplicationCommandLine) int
+	Arguments() []string
 	// Cwd gets the working directory of the command line invocation. The string
 	// may contain non-utf8 data.
 	//
@@ -129,7 +135,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
-	Cwd(c ApplicationCommandLine)
+	Cwd() string
 	// Environ gets the contents of the 'environ' variable of the command line
 	// invocation, as would be returned by g_get_environ(), ie as a
 	// nil-terminated list of strings in the form 'NAME=VALUE'. The strings may
@@ -145,12 +151,12 @@ type ApplicationCommandLine interface {
 	//
 	// See g_application_command_line_getenv() if you are only interested in the
 	// value of a single environment variable.
-	Environ(c ApplicationCommandLine)
+	Environ() []string
 	// ExitStatus gets the exit status of @cmdline. See
 	// g_application_command_line_set_exit_status() for more information.
-	ExitStatus(c ApplicationCommandLine)
+	ExitStatus() int
 	// IsRemote determines if @cmdline represents a remote invocation.
-	IsRemote(c ApplicationCommandLine) bool
+	IsRemote() bool
 	// OptionsDict gets the options there were passed to
 	// g_application_command_line().
 	//
@@ -161,7 +167,7 @@ type ApplicationCommandLine interface {
 	//
 	// If no options were sent then an empty dictionary is returned so that you
 	// don't need to check for nil.
-	OptionsDict(c ApplicationCommandLine)
+	OptionsDict() *glib.VariantDict
 	// PlatformData gets the platform data associated with the invocation of
 	// @cmdline.
 	//
@@ -170,17 +176,17 @@ type ApplicationCommandLine interface {
 	// the current working directory and the startup notification ID.
 	//
 	// For local invocation, it will be nil.
-	PlatformData(c ApplicationCommandLine)
+	PlatformData() *glib.Variant
 	// Stdin gets the stdin of the invoking process.
 	//
 	// The Stream can be used to read data passed to the standard input of the
 	// invoking process. This doesn't work on all platforms. Presently, it is
-	// only available on UNIX when using a DBus daemon capable of passing file
+	// only available on UNIX when using a D-Bus daemon capable of passing file
 	// descriptors. If stdin is not available then nil will be returned. In the
 	// future, support may be expanded to other platforms.
 	//
 	// You must only call this function once per commandline invocation.
-	Stdin(c ApplicationCommandLine)
+	Stdin() InputStream
 	// env gets the value of a particular environment variable of the command
 	// line invocation, as would be returned by g_getenv(). The strings may
 	// contain non-utf8 data.
@@ -192,7 +198,7 @@ type ApplicationCommandLine interface {
 	//
 	// The return value should not be modified or freed and is valid for as long
 	// as @cmdline exists.
-	env(c ApplicationCommandLine, name string)
+	env(name string) string
 	// SetExitStatus sets the exit status that will be used when the invoking
 	// process exits.
 	//
@@ -214,7 +220,7 @@ type ApplicationCommandLine interface {
 	// 'successful' in a certain sense, and the exit status is always zero. If
 	// the application use count is zero, though, the exit status of the local
 	// CommandLine is used.
-	SetExitStatus(c ApplicationCommandLine, exitStatus int)
+	SetExitStatus(exitStatus int)
 }
 
 // applicationCommandLine implements the ApplicationCommandLine interface.
@@ -244,7 +250,7 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 // This differs from g_file_new_for_commandline_arg() in that it resolves
 // relative pathnames using the current working directory of the invoking
 // process rather than the local process.
-func (c applicationCommandLine) CreateFileForArg(c ApplicationCommandLine, arg string) {
+func (c applicationCommandLine) CreateFileForArg(arg string) File {
 	var arg0 *C.GApplicationCommandLine
 	var arg1 *C.gchar
 
@@ -252,7 +258,14 @@ func (c applicationCommandLine) CreateFileForArg(c ApplicationCommandLine, arg s
 	arg1 = (*C.gchar)(C.CString(arg))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_application_command_line_create_file_for_arg(arg0, arg1)
+	cret := new(C.GFile)
+	var goret File
+
+	cret = C.g_application_command_line_create_file_for_arg(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+
+	return goret
 }
 
 // Arguments gets the list of arguments that was passed on the command line.
@@ -266,19 +279,25 @@ func (c applicationCommandLine) CreateFileForArg(c ApplicationCommandLine, arg s
 //
 // The return value is nil-terminated and should be freed using
 // g_strfreev().
-func (c applicationCommandLine) Arguments(c ApplicationCommandLine) int {
+func (c applicationCommandLine) Arguments() []string {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.int
-	var argc int
+	var cret **C.gchar
+	var arg1 *C.int
+	var goret []string
 
-	C.g_application_command_line_get_arguments(arg0, &arg1)
+	cret = C.g_application_command_line_get_arguments(arg0, arg1)
 
-	argc = int(&arg1)
+	goret = make([]string, arg1)
+	for i := 0; i < uintptr(arg1); i++ {
+		src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+		goret[i] = C.GoString(src)
+		defer C.free(unsafe.Pointer(src))
+	}
 
-	return argc
+	return ret1, goret
 }
 
 // Cwd gets the working directory of the command line invocation. The string
@@ -289,12 +308,19 @@ func (c applicationCommandLine) Arguments(c ApplicationCommandLine) int {
 //
 // The return value should not be modified or freed and is valid for as long
 // as @cmdline exists.
-func (c applicationCommandLine) Cwd(c ApplicationCommandLine) {
+func (c applicationCommandLine) Cwd() string {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	C.g_application_command_line_get_cwd(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_application_command_line_get_cwd(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Environ gets the contents of the 'environ' variable of the command line
@@ -312,40 +338,68 @@ func (c applicationCommandLine) Cwd(c ApplicationCommandLine) {
 //
 // See g_application_command_line_getenv() if you are only interested in the
 // value of a single environment variable.
-func (c applicationCommandLine) Environ(c ApplicationCommandLine) {
+func (c applicationCommandLine) Environ() []string {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	C.g_application_command_line_get_environ(arg0)
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_application_command_line_get_environ(arg0)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+		}
+	}
+
+	return goret
 }
 
 // ExitStatus gets the exit status of @cmdline. See
 // g_application_command_line_set_exit_status() for more information.
-func (c applicationCommandLine) ExitStatus(c ApplicationCommandLine) {
+func (c applicationCommandLine) ExitStatus() int {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	C.g_application_command_line_get_exit_status(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.g_application_command_line_get_exit_status(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // IsRemote determines if @cmdline represents a remote invocation.
-func (c applicationCommandLine) IsRemote(c ApplicationCommandLine) bool {
+func (c applicationCommandLine) IsRemote() bool {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_application_command_line_get_is_remote(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // OptionsDict gets the options there were passed to
@@ -358,12 +412,19 @@ func (c applicationCommandLine) IsRemote(c ApplicationCommandLine) bool {
 //
 // If no options were sent then an empty dictionary is returned so that you
 // don't need to check for nil.
-func (c applicationCommandLine) OptionsDict(c ApplicationCommandLine) {
+func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	C.g_application_command_line_get_options_dict(arg0)
+	var cret *C.GVariantDict
+	var goret *glib.VariantDict
+
+	cret = C.g_application_command_line_get_options_dict(arg0)
+
+	goret = glib.WrapVariantDict(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // PlatformData gets the platform data associated with the invocation of
@@ -374,29 +435,46 @@ func (c applicationCommandLine) OptionsDict(c ApplicationCommandLine) {
 // the current working directory and the startup notification ID.
 //
 // For local invocation, it will be nil.
-func (c applicationCommandLine) PlatformData(c ApplicationCommandLine) {
+func (c applicationCommandLine) PlatformData() *glib.Variant {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	C.g_application_command_line_get_platform_data(arg0)
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+
+	cret = C.g_application_command_line_get_platform_data(arg0)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Stdin gets the stdin of the invoking process.
 //
 // The Stream can be used to read data passed to the standard input of the
 // invoking process. This doesn't work on all platforms. Presently, it is
-// only available on UNIX when using a DBus daemon capable of passing file
+// only available on UNIX when using a D-Bus daemon capable of passing file
 // descriptors. If stdin is not available then nil will be returned. In the
 // future, support may be expanded to other platforms.
 //
 // You must only call this function once per commandline invocation.
-func (c applicationCommandLine) Stdin(c ApplicationCommandLine) {
+func (c applicationCommandLine) Stdin() InputStream {
 	var arg0 *C.GApplicationCommandLine
 
 	arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	C.g_application_command_line_get_stdin(arg0)
+	cret := new(C.GInputStream)
+	var goret InputStream
+
+	cret = C.g_application_command_line_get_stdin(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+
+	return goret
 }
 
 // env gets the value of a particular environment variable of the command
@@ -410,7 +488,7 @@ func (c applicationCommandLine) Stdin(c ApplicationCommandLine) {
 //
 // The return value should not be modified or freed and is valid for as long
 // as @cmdline exists.
-func (c applicationCommandLine) env(c ApplicationCommandLine, name string) {
+func (c applicationCommandLine) env(name string) string {
 	var arg0 *C.GApplicationCommandLine
 	var arg1 *C.gchar
 
@@ -418,7 +496,14 @@ func (c applicationCommandLine) env(c ApplicationCommandLine, name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_application_command_line_getenv(arg0, arg1)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_application_command_line_getenv(arg0, arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // SetExitStatus sets the exit status that will be used when the invoking
@@ -442,7 +527,7 @@ func (c applicationCommandLine) env(c ApplicationCommandLine, name string) {
 // 'successful' in a certain sense, and the exit status is always zero. If
 // the application use count is zero, though, the exit status of the local
 // CommandLine is used.
-func (c applicationCommandLine) SetExitStatus(c ApplicationCommandLine, exitStatus int) {
+func (c applicationCommandLine) SetExitStatus(exitStatus int) {
 	var arg0 *C.GApplicationCommandLine
 	var arg1 C.int
 

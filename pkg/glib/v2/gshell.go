@@ -2,6 +2,12 @@
 
 package glib
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
@@ -25,13 +31,21 @@ const (
 // for example, you should first quote it with this function. The return value
 // must be freed with g_free(). The quoting style used is undefined (single or
 // double quotes may be used).
-func ShellQuote(unquotedString string) {
+func ShellQuote(unquotedString string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(unquotedString))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_shell_quote(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_shell_quote(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ShellUnquote unquotes a string as the shell (/bin/sh) would. Only handles
@@ -52,18 +66,22 @@ func ShellQuote(unquotedString string) {
 // ' in the quoted text, you have to do something like 'foo'\”bar'. Double
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
-func ShellUnquote(quotedString string) error {
+func ShellUnquote(quotedString string) (filename string, err error) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(quotedString))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.gchar)
+	var goret string
+	var cerr *C.GError
+	var goerr error
 
-	C.g_shell_unquote(arg1, &errout)
+	cret = C.g_shell_unquote(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }

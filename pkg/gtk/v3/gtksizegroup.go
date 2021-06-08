@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -95,26 +99,26 @@ type SizeGroup interface {
 	//
 	// When the widget is destroyed or no longer referenced elsewhere, it will
 	// be removed from the size group.
-	AddWidget(s SizeGroup, widget Widget)
+	AddWidget(widget Widget)
 	// IgnoreHidden returns if invisible widgets are ignored when calculating
 	// the size.
-	IgnoreHidden(s SizeGroup) bool
+	IgnoreHidden() bool
 	// Mode gets the current mode of the size group. See
 	// gtk_size_group_set_mode().
-	Mode(s SizeGroup)
+	Mode() SizeGroupMode
 	// Widgets returns the list of widgets associated with @size_group.
-	Widgets(s SizeGroup)
+	Widgets() *glib.SList
 	// RemoveWidget removes a widget from a SizeGroup.
-	RemoveWidget(s SizeGroup, widget Widget)
+	RemoveWidget(widget Widget)
 	// SetIgnoreHidden sets whether unmapped widgets should be ignored when
 	// calculating the size.
-	SetIgnoreHidden(s SizeGroup, ignoreHidden bool)
+	SetIgnoreHidden(ignoreHidden bool)
 	// SetMode sets the SizeGroupMode of the size group. The mode of the size
 	// group determines whether the widgets in the size group should all have
 	// the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL) all have the
 	// same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should all have
 	// the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
-	SetMode(s SizeGroup, mode SizeGroupMode)
+	SetMode(mode SizeGroupMode)
 }
 
 // sizeGroup implements the SizeGroup interface.
@@ -141,12 +145,19 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 }
 
 // NewSizeGroup constructs a class SizeGroup.
-func NewSizeGroup(mode SizeGroupMode) {
+func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 	var arg1 C.GtkSizeGroupMode
 
 	arg1 = (C.GtkSizeGroupMode)(mode)
 
-	C.gtk_size_group_new(arg1)
+	cret := new(C.GtkSizeGroup)
+	var goret SizeGroup
+
+	cret = C.gtk_size_group_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SizeGroup)
+
+	return goret
 }
 
 // AddWidget adds a widget to a SizeGroup. In the future, the requisition of
@@ -157,7 +168,7 @@ func NewSizeGroup(mode SizeGroupMode) {
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will
 // be removed from the size group.
-func (s sizeGroup) AddWidget(s SizeGroup, widget Widget) {
+func (s sizeGroup) AddWidget(widget Widget) {
 	var arg0 *C.GtkSizeGroup
 	var arg1 *C.GtkWidget
 
@@ -169,44 +180,58 @@ func (s sizeGroup) AddWidget(s SizeGroup, widget Widget) {
 
 // IgnoreHidden returns if invisible widgets are ignored when calculating
 // the size.
-func (s sizeGroup) IgnoreHidden(s SizeGroup) bool {
+func (s sizeGroup) IgnoreHidden() bool {
 	var arg0 *C.GtkSizeGroup
 
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_size_group_get_ignore_hidden(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Mode gets the current mode of the size group. See
 // gtk_size_group_set_mode().
-func (s sizeGroup) Mode(s SizeGroup) {
+func (s sizeGroup) Mode() SizeGroupMode {
 	var arg0 *C.GtkSizeGroup
 
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
-	C.gtk_size_group_get_mode(arg0)
+	var cret C.GtkSizeGroupMode
+	var goret SizeGroupMode
+
+	cret = C.gtk_size_group_get_mode(arg0)
+
+	goret = SizeGroupMode(cret)
+
+	return goret
 }
 
 // Widgets returns the list of widgets associated with @size_group.
-func (s sizeGroup) Widgets(s SizeGroup) {
+func (s sizeGroup) Widgets() *glib.SList {
 	var arg0 *C.GtkSizeGroup
 
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
-	C.gtk_size_group_get_widgets(arg0)
+	var cret *C.GSList
+	var goret *glib.SList
+
+	cret = C.gtk_size_group_get_widgets(arg0)
+
+	goret = glib.WrapSList(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RemoveWidget removes a widget from a SizeGroup.
-func (s sizeGroup) RemoveWidget(s SizeGroup, widget Widget) {
+func (s sizeGroup) RemoveWidget(widget Widget) {
 	var arg0 *C.GtkSizeGroup
 	var arg1 *C.GtkWidget
 
@@ -218,7 +243,7 @@ func (s sizeGroup) RemoveWidget(s SizeGroup, widget Widget) {
 
 // SetIgnoreHidden sets whether unmapped widgets should be ignored when
 // calculating the size.
-func (s sizeGroup) SetIgnoreHidden(s SizeGroup, ignoreHidden bool) {
+func (s sizeGroup) SetIgnoreHidden(ignoreHidden bool) {
 	var arg0 *C.GtkSizeGroup
 	var arg1 C.gboolean
 
@@ -235,7 +260,7 @@ func (s sizeGroup) SetIgnoreHidden(s SizeGroup, ignoreHidden bool) {
 // the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL) all have the
 // same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should all have
 // the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
-func (s sizeGroup) SetMode(s SizeGroup, mode SizeGroupMode) {
+func (s sizeGroup) SetMode(mode SizeGroupMode) {
 	var arg0 *C.GtkSizeGroup
 	var arg1 C.GtkSizeGroupMode
 

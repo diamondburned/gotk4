@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,42 +42,42 @@ type InetAddress interface {
 	gextras.Objector
 
 	// Equal checks if two Address instances are equal, e.g. the same address.
-	Equal(a InetAddress, otherAddress InetAddress) bool
+	Equal(otherAddress InetAddress) bool
 	// Family gets @address's family
-	Family(a InetAddress)
+	Family() SocketFamily
 	// IsAny tests whether @address is the "any" address for its family.
-	IsAny(a InetAddress) bool
+	IsAny() bool
 	// IsLinkLocal tests whether @address is a link-local address (that is, if
 	// it identifies a host on a local network that is not connected to the
 	// Internet).
-	IsLinkLocal(a InetAddress) bool
+	IsLinkLocal() bool
 	// IsLoopback tests whether @address is the loopback address for its family.
-	IsLoopback(a InetAddress) bool
+	IsLoopback() bool
 	// IsMcGlobal tests whether @address is a global multicast address.
-	IsMcGlobal(a InetAddress) bool
+	IsMcGlobal() bool
 	// IsMcLinkLocal tests whether @address is a link-local multicast address.
-	IsMcLinkLocal(a InetAddress) bool
+	IsMcLinkLocal() bool
 	// IsMcNodeLocal tests whether @address is a node-local multicast address.
-	IsMcNodeLocal(a InetAddress) bool
+	IsMcNodeLocal() bool
 	// IsMcOrgLocal tests whether @address is an organization-local multicast
 	// address.
-	IsMcOrgLocal(a InetAddress) bool
+	IsMcOrgLocal() bool
 	// IsMcSiteLocal tests whether @address is a site-local multicast address.
-	IsMcSiteLocal(a InetAddress) bool
+	IsMcSiteLocal() bool
 	// IsMulticast tests whether @address is a multicast address.
-	IsMulticast(a InetAddress) bool
+	IsMulticast() bool
 	// IsSiteLocal tests whether @address is a site-local address such as
 	// 10.0.0.1 (that is, the address identifies a host on a local network that
 	// can not be reached directly from the Internet, but which may have
 	// outgoing Internet connectivity via a NAT or firewall).
-	IsSiteLocal(a InetAddress) bool
+	IsSiteLocal() bool
 	// NativeSize gets the size of the native raw binary address for @address.
 	// This is the size of the data that you get from g_inet_address_to_bytes().
-	NativeSize(a InetAddress)
+	NativeSize() uint
 	// ToBytes gets the raw binary address data from @address.
-	ToBytes(a InetAddress)
+	ToBytes() byte
 	// String converts @address to string form.
-	String(a InetAddress)
+	String() string
 }
 
 // inetAddress implements the InetAddress interface.
@@ -99,35 +102,56 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 }
 
 // NewInetAddressAny constructs a class InetAddress.
-func NewInetAddressAny(family SocketFamily) {
+func NewInetAddressAny(family SocketFamily) InetAddress {
 	var arg1 C.GSocketFamily
 
 	arg1 = (C.GSocketFamily)(family)
 
-	C.g_inet_address_new_any(arg1)
+	cret := new(C.GInetAddress)
+	var goret InetAddress
+
+	cret = C.g_inet_address_new_any(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddress)
+
+	return goret
 }
 
 // NewInetAddressFromString constructs a class InetAddress.
-func NewInetAddressFromString(string string) {
+func NewInetAddressFromString(string string) InetAddress {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_inet_address_new_from_string(arg1)
+	cret := new(C.GInetAddress)
+	var goret InetAddress
+
+	cret = C.g_inet_address_new_from_string(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddress)
+
+	return goret
 }
 
 // NewInetAddressLoopback constructs a class InetAddress.
-func NewInetAddressLoopback(family SocketFamily) {
+func NewInetAddressLoopback(family SocketFamily) InetAddress {
 	var arg1 C.GSocketFamily
 
 	arg1 = (C.GSocketFamily)(family)
 
-	C.g_inet_address_new_loopback(arg1)
+	cret := new(C.GInetAddress)
+	var goret InetAddress
+
+	cret = C.g_inet_address_new_loopback(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddress)
+
+	return goret
 }
 
 // Equal checks if two Address instances are equal, e.g. the same address.
-func (a inetAddress) Equal(a InetAddress, otherAddress InetAddress) bool {
+func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	var arg0 *C.GInetAddress
 	var arg1 *C.GInetAddress
 
@@ -135,236 +159,265 @@ func (a inetAddress) Equal(a InetAddress, otherAddress InetAddress) bool {
 	arg1 = (*C.GInetAddress)(unsafe.Pointer(otherAddress.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Family gets @address's family
-func (a inetAddress) Family(a InetAddress) {
+func (a inetAddress) Family() SocketFamily {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_address_get_family(arg0)
+	var cret C.GSocketFamily
+	var goret SocketFamily
+
+	cret = C.g_inet_address_get_family(arg0)
+
+	goret = SocketFamily(cret)
+
+	return goret
 }
 
 // IsAny tests whether @address is the "any" address for its family.
-func (a inetAddress) IsAny(a InetAddress) bool {
+func (a inetAddress) IsAny() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_any(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsLinkLocal tests whether @address is a link-local address (that is, if
 // it identifies a host on a local network that is not connected to the
 // Internet).
-func (a inetAddress) IsLinkLocal(a InetAddress) bool {
+func (a inetAddress) IsLinkLocal() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_link_local(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsLoopback tests whether @address is the loopback address for its family.
-func (a inetAddress) IsLoopback(a InetAddress) bool {
+func (a inetAddress) IsLoopback() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_loopback(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsMcGlobal tests whether @address is a global multicast address.
-func (a inetAddress) IsMcGlobal(a InetAddress) bool {
+func (a inetAddress) IsMcGlobal() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_mc_global(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsMcLinkLocal tests whether @address is a link-local multicast address.
-func (a inetAddress) IsMcLinkLocal(a InetAddress) bool {
+func (a inetAddress) IsMcLinkLocal() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_mc_link_local(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsMcNodeLocal tests whether @address is a node-local multicast address.
-func (a inetAddress) IsMcNodeLocal(a InetAddress) bool {
+func (a inetAddress) IsMcNodeLocal() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_mc_node_local(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsMcOrgLocal tests whether @address is an organization-local multicast
 // address.
-func (a inetAddress) IsMcOrgLocal(a InetAddress) bool {
+func (a inetAddress) IsMcOrgLocal() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_mc_org_local(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsMcSiteLocal tests whether @address is a site-local multicast address.
-func (a inetAddress) IsMcSiteLocal(a InetAddress) bool {
+func (a inetAddress) IsMcSiteLocal() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_mc_site_local(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsMulticast tests whether @address is a multicast address.
-func (a inetAddress) IsMulticast(a InetAddress) bool {
+func (a inetAddress) IsMulticast() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_multicast(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsSiteLocal tests whether @address is a site-local address such as
 // 10.0.0.1 (that is, the address identifies a host on a local network that
 // can not be reached directly from the Internet, but which may have
 // outgoing Internet connectivity via a NAT or firewall).
-func (a inetAddress) IsSiteLocal(a InetAddress) bool {
+func (a inetAddress) IsSiteLocal() bool {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_get_is_site_local(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // NativeSize gets the size of the native raw binary address for @address.
 // This is the size of the data that you get from g_inet_address_to_bytes().
-func (a inetAddress) NativeSize(a InetAddress) {
+func (a inetAddress) NativeSize() uint {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_address_get_native_size(arg0)
+	var cret C.gsize
+	var goret uint
+
+	cret = C.g_inet_address_get_native_size(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // ToBytes gets the raw binary address data from @address.
-func (a inetAddress) ToBytes(a InetAddress) {
+func (a inetAddress) ToBytes() byte {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_address_to_bytes(arg0)
+	var cret *C.guint8
+	var goret byte
+
+	cret = C.g_inet_address_to_bytes(arg0)
+
+	goret = byte(cret)
+
+	return goret
 }
 
 // String converts @address to string form.
-func (a inetAddress) String(a InetAddress) {
+func (a inetAddress) String() string {
 	var arg0 *C.GInetAddress
 
 	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_address_to_string(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_inet_address_to_string(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,13 +30,13 @@ func init() {
 type EventControllerKey interface {
 	EventController
 
-	Forward(c EventControllerKey, widget Widget) bool
+	Forward(widget Widget) bool
 
-	Group(c EventControllerKey)
+	Group() uint
 	// ImContext gets the IM context of a key controller.
-	ImContext(c EventControllerKey)
+	ImContext() IMContext
 
-	SetImContext(c EventControllerKey, imContext IMContext)
+	SetImContext(imContext IMContext)
 }
 
 // eventControllerKey implements the EventControllerKey interface.
@@ -58,15 +61,22 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerKey constructs a class EventControllerKey.
-func NewEventControllerKey(widget Widget) {
+func NewEventControllerKey(widget Widget) EventControllerKey {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_event_controller_key_new(arg1)
+	cret := new(C.GtkEventControllerKey)
+	var goret EventControllerKey
+
+	cret = C.gtk_event_controller_key_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerKey)
+
+	return goret
 }
 
-func (c eventControllerKey) Forward(c EventControllerKey, widget Widget) bool {
+func (c eventControllerKey) Forward(widget Widget) bool {
 	var arg0 *C.GtkEventControllerKey
 	var arg1 *C.GtkWidget
 
@@ -74,35 +84,49 @@ func (c eventControllerKey) Forward(c EventControllerKey, widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_event_controller_key_forward(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-func (c eventControllerKey) Group(c EventControllerKey) {
+func (c eventControllerKey) Group() uint {
 	var arg0 *C.GtkEventControllerKey
 
 	arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 
-	C.gtk_event_controller_key_get_group(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_event_controller_key_get_group(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // ImContext gets the IM context of a key controller.
-func (c eventControllerKey) ImContext(c EventControllerKey) {
+func (c eventControllerKey) ImContext() IMContext {
 	var arg0 *C.GtkEventControllerKey
 
 	arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 
-	C.gtk_event_controller_key_get_im_context(arg0)
+	var cret *C.GtkIMContext
+	var goret IMContext
+
+	cret = C.gtk_event_controller_key_get_im_context(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IMContext)
+
+	return goret
 }
 
-func (c eventControllerKey) SetImContext(c EventControllerKey, imContext IMContext) {
+func (c eventControllerKey) SetImContext(imContext IMContext) {
 	var arg0 *C.GtkEventControllerKey
 	var arg1 *C.GtkIMContext
 

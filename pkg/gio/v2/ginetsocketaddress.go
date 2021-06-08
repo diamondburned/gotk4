@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,15 +38,15 @@ type InetSocketAddress interface {
 	SocketConnectable
 
 	// Address gets @address's Address.
-	Address(a InetSocketAddress)
+	Address() InetAddress
 	// Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 	// IPv6 address.
-	Flowinfo(a InetSocketAddress)
+	Flowinfo() uint32
 	// Port gets @address's port.
-	Port(a InetSocketAddress)
+	Port() uint16
 	// ScopeID gets the `sin6_scope_id` field from @address, which must be an
 	// IPv6 address.
-	ScopeID(a InetSocketAddress)
+	ScopeID() uint32
 }
 
 // inetSocketAddress implements the InetSocketAddress interface.
@@ -70,18 +73,25 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 }
 
 // NewInetSocketAddress constructs a class InetSocketAddress.
-func NewInetSocketAddress(address InetAddress, port uint16) {
+func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint16
 
 	arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 	arg2 = C.guint16(port)
 
-	C.g_inet_socket_address_new(arg1, arg2)
+	cret := new(C.GInetSocketAddress)
+	var goret InetSocketAddress
+
+	cret = C.g_inet_socket_address_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
+
+	return goret
 }
 
 // NewInetSocketAddressFromString constructs a class InetSocketAddress.
-func NewInetSocketAddressFromString(address string, port uint) {
+func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
 	var arg1 *C.char
 	var arg2 C.guint
 
@@ -89,43 +99,78 @@ func NewInetSocketAddressFromString(address string, port uint) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.guint(port)
 
-	C.g_inet_socket_address_new_from_string(arg1, arg2)
+	cret := new(C.GInetSocketAddress)
+	var goret InetSocketAddress
+
+	cret = C.g_inet_socket_address_new_from_string(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
+
+	return goret
 }
 
 // Address gets @address's Address.
-func (a inetSocketAddress) Address(a InetSocketAddress) {
+func (a inetSocketAddress) Address() InetAddress {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_socket_address_get_address(arg0)
+	var cret *C.GInetAddress
+	var goret InetAddress
+
+	cret = C.g_inet_socket_address_get_address(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InetAddress)
+
+	return goret
 }
 
 // Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 // IPv6 address.
-func (a inetSocketAddress) Flowinfo(a InetSocketAddress) {
+func (a inetSocketAddress) Flowinfo() uint32 {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_socket_address_get_flowinfo(arg0)
+	var cret C.guint32
+	var goret uint32
+
+	cret = C.g_inet_socket_address_get_flowinfo(arg0)
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // Port gets @address's port.
-func (a inetSocketAddress) Port(a InetSocketAddress) {
+func (a inetSocketAddress) Port() uint16 {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_socket_address_get_port(arg0)
+	var cret C.guint16
+	var goret uint16
+
+	cret = C.g_inet_socket_address_get_port(arg0)
+
+	goret = uint16(cret)
+
+	return goret
 }
 
 // ScopeID gets the `sin6_scope_id` field from @address, which must be an
 // IPv6 address.
-func (a inetSocketAddress) ScopeID(a InetSocketAddress) {
+func (a inetSocketAddress) ScopeID() uint32 {
 	var arg0 *C.GInetSocketAddress
 
 	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_inet_socket_address_get_scope_id(arg0)
+	var cret C.guint32
+	var goret uint32
+
+	cret = C.g_inet_socket_address_get_scope_id(arg0)
+
+	goret = uint32(cret)
+
+	return goret
 }

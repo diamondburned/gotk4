@@ -121,7 +121,6 @@ func init() {
 		{T: externglib.Type(C.g_simple_action_get_type()), F: marshalSimpleAction},
 		{T: externglib.Type(C.g_simple_io_stream_get_type()), F: marshalSimpleIOStream},
 		{T: externglib.Type(C.g_simple_permission_get_type()), F: marshalSimplePermission},
-		{T: externglib.Type(C.g_subprocess_get_type()), F: marshalSubprocess},
 		{T: externglib.Type(C.g_subprocess_launcher_get_type()), F: marshalSubprocessLauncher},
 		{T: externglib.Type(C.g_test_dbus_get_type()), F: marshalTestDBus},
 	})
@@ -1560,6 +1559,10 @@ const (
 	// messages is delayed until g_dbus_connection_start_message_processing() is
 	// called.
 	DBusConnectionFlagsDelayMessageProcessing DBusConnectionFlags = 16
+	// DBusConnectionFlagsAuthenticationRequireSameUser: when authenticating as
+	// a server, require the UID of the peer to be the same as the UID of the
+	// server. (Since: 2.68)
+	DBusConnectionFlagsAuthenticationRequireSameUser DBusConnectionFlags = 32
 )
 
 func marshalDBusConnectionFlags(p uintptr) (interface{}, error) {
@@ -1706,6 +1709,10 @@ const (
 	// DBusServerFlagsAuthenticationAllowAnonymous: allow the anonymous
 	// authentication method.
 	DBusServerFlagsAuthenticationAllowAnonymous DBusServerFlags = 2
+	// DBusServerFlagsAuthenticationRequireSameUser: require the UID of the peer
+	// to be the same as the UID of the server when authenticating. (Since:
+	// 2.68)
+	DBusServerFlagsAuthenticationRequireSameUser DBusServerFlags = 4
 )
 
 func marshalDBusServerFlags(p uintptr) (interface{}, error) {
@@ -2193,35 +2200,6 @@ func marshalTLSPasswordFlags(p uintptr) (interface{}, error) {
 	return TLSPasswordFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-func DBusErrorQuark() {
-	C.g_dbus_error_quark()
-}
-
-// IOErrorQuark gets the GIO Error Quark.
-func IOErrorQuark() {
-	C.g_io_error_quark()
-}
-
-// ResolverErrorQuark gets the #GResolver Error Quark.
-func ResolverErrorQuark() {
-	C.g_resolver_error_quark()
-}
-
-// ResourceErrorQuark gets the #GResource Error Quark.
-func ResourceErrorQuark() {
-	C.g_resource_error_quark()
-}
-
-// TLSChannelBindingErrorQuark gets the TLS channel binding error quark.
-func TLSChannelBindingErrorQuark() {
-	C.g_tls_channel_binding_error_quark()
-}
-
-// TLSErrorQuark gets the TLS error quark.
-func TLSErrorQuark() {
-	C.g_tls_error_quark()
-}
-
 // AppInfoMonitor is a very simple object used for monitoring the app info
 // database for changes (ie: newly installed or removed applications).
 //
@@ -2270,7 +2248,7 @@ type BytesIcon interface {
 	LoadableIcon
 
 	// Bytes gets the #GBytes associated with the given @icon.
-	Bytes(i BytesIcon)
+	Bytes() *glib.Bytes
 }
 
 // bytesIcon implements the BytesIcon interface.
@@ -2299,21 +2277,35 @@ func marshalBytesIcon(p uintptr) (interface{}, error) {
 }
 
 // NewBytesIcon constructs a class BytesIcon.
-func NewBytesIcon(bytes *glib.Bytes) {
+func NewBytesIcon(bytes *glib.Bytes) BytesIcon {
 	var arg1 *C.GBytes
 
 	arg1 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
-	C.g_bytes_icon_new(arg1)
+	cret := new(C.GBytesIcon)
+	var goret BytesIcon
+
+	cret = C.g_bytes_icon_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BytesIcon)
+
+	return goret
 }
 
 // Bytes gets the #GBytes associated with the given @icon.
-func (i bytesIcon) Bytes(i BytesIcon) {
+func (i bytesIcon) Bytes() *glib.Bytes {
 	var arg0 *C.GBytesIcon
 
 	arg0 = (*C.GBytesIcon)(unsafe.Pointer(i.Native()))
 
-	C.g_bytes_icon_get_bytes(arg0)
+	var cret *C.GBytes
+	var goret *glib.Bytes
+
+	cret = C.g_bytes_icon_get_bytes(arg0)
+
+	goret = glib.WrapBytes(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // DBusActionGroup is an implementation of the Group interface that can be used
@@ -2389,10 +2381,10 @@ type DBusAuthObserver interface {
 
 	// AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
 	// @observer.
-	AllowMechanism(o DBusAuthObserver, mechanism string) bool
+	AllowMechanism(mechanism string) bool
 	// AuthorizeAuthenticatedPeer emits the
 	// BusAuthObserver::authorize-authenticated-peer signal on @observer.
-	AuthorizeAuthenticatedPeer(o DBusAuthObserver, stream IOStream, credentials Credentials) bool
+	AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool
 }
 
 // dBusAuthObserver implements the DBusAuthObserver interface.
@@ -2417,13 +2409,20 @@ func marshalDBusAuthObserver(p uintptr) (interface{}, error) {
 }
 
 // NewDBusAuthObserver constructs a class DBusAuthObserver.
-func NewDBusAuthObserver() {
-	C.g_dbus_auth_observer_new()
+func NewDBusAuthObserver() DBusAuthObserver {
+	cret := new(C.GDBusAuthObserver)
+	var goret DBusAuthObserver
+
+	cret = C.g_dbus_auth_observer_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusAuthObserver)
+
+	return goret
 }
 
 // AllowMechanism emits the BusAuthObserver::allow-mechanism signal on
 // @observer.
-func (o dBusAuthObserver) AllowMechanism(o DBusAuthObserver, mechanism string) bool {
+func (o dBusAuthObserver) AllowMechanism(mechanism string) bool {
 	var arg0 *C.GDBusAuthObserver
 	var arg1 *C.gchar
 
@@ -2432,20 +2431,20 @@ func (o dBusAuthObserver) AllowMechanism(o DBusAuthObserver, mechanism string) b
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_auth_observer_allow_mechanism(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // AuthorizeAuthenticatedPeer emits the
 // BusAuthObserver::authorize-authenticated-peer signal on @observer.
-func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(o DBusAuthObserver, stream IOStream, credentials Credentials) bool {
+func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(stream IOStream, credentials Credentials) bool {
 	var arg0 *C.GDBusAuthObserver
 	var arg1 *C.GIOStream
 	var arg2 *C.GCredentials
@@ -2455,15 +2454,15 @@ func (o dBusAuthObserver) AuthorizeAuthenticatedPeer(o DBusAuthObserver, stream 
 	arg2 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_auth_observer_authorize_authenticated_peer(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // DBusConnection: the BusConnection type is used for D-Bus connections to
@@ -2547,7 +2546,7 @@ type DBusConnection interface {
 	// from) at some point after @user_data is no longer needed. (It is not
 	// guaranteed to be called synchronously when the filter is removed, and may
 	// be called after @connection has been destroyed.)
-	AddFilter(c DBusConnection)
+	AddFilter() uint
 	// Call: asynchronously invokes the @method_name method on the
 	// @interface_name D-Bus interface on the remote object at @object_path
 	// owned by @bus_name.
@@ -2592,9 +2591,9 @@ type DBusConnection interface {
 	//
 	// If @callback is nil then the D-Bus method call message will be sent with
 	// the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-	Call(c DBusConnection)
+	Call()
 	// CallFinish finishes an operation started with g_dbus_connection_call().
-	CallFinish(c DBusConnection, res AsyncResult) error
+	CallFinish(res AsyncResult) (variant *glib.Variant, err error)
 	// CallSync: synchronously invokes the @method_name method on the
 	// @interface_name D-Bus interface on the remote object at @object_path
 	// owned by @bus_name.
@@ -2629,20 +2628,44 @@ type DBusConnection interface {
 	//
 	// The calling thread is blocked until a reply is received. See
 	// g_dbus_connection_call() for the asynchronous version of this method.
-	CallSync(c DBusConnection, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) error
+	CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (variant *glib.Variant, err error)
 	// CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
 	// object.
 	//
-	// This method is only available on UNIX.
-	CallWithUnixFdList(c DBusConnection)
-	// CallWithUnixFdListFinish finishes an operation started with
-	// g_dbus_connection_call_with_unix_fd_list().
-	CallWithUnixFdListFinish(c DBusConnection, res AsyncResult) (outFdList UnixFDList, err error)
-	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
-	// and returns FDList objects.
+	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+	// in the body of the message. For example, if a message contains two file
+	// descriptors, @fd_list would have length 2, and `g_variant_new_handle (0)`
+	// and `g_variant_new_handle (1)` would appear somewhere in the body of the
+	// message (not necessarily in that order!) to represent the file
+	// descriptors at indexes 0 and 1 respectively.
+	//
+	// When designing D-Bus APIs that are intended to be interoperable, please
+	// note that non-GDBus implementations of D-Bus can usually only access file
+	// descriptors if they are referenced in this way by a value of type
+	// G_VARIANT_TYPE_HANDLE in the body of the message.
 	//
 	// This method is only available on UNIX.
-	CallWithUnixFdListSync(c DBusConnection, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, err error)
+	CallWithUnixFdList()
+	// CallWithUnixFdListFinish finishes an operation started with
+	// g_dbus_connection_call_with_unix_fd_list().
+	//
+	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+	// in the body of the message. For example, if g_variant_get_handle()
+	// returns 5, that is intended to be a reference to the file descriptor that
+	// can be accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+	//
+	// When designing D-Bus APIs that are intended to be interoperable, please
+	// note that non-GDBus implementations of D-Bus can usually only access file
+	// descriptors if they are referenced in this way by a value of type
+	// G_VARIANT_TYPE_HANDLE in the body of the message.
+	CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error)
+	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
+	// and returns FDList objects. See
+	// g_dbus_connection_call_with_unix_fd_list() and
+	// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
+	//
+	// This method is only available on UNIX.
+	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant, err error)
 	// Close closes @connection. Note that this never causes the process to exit
 	// (this might only happen if the other end of a shared message bus
 	// connection disconnects, see BusConnection:exit-on-close).
@@ -2666,13 +2689,13 @@ type DBusConnection interface {
 	// calling this method from. You can then call
 	// g_dbus_connection_close_finish() to get the result of the operation. See
 	// g_dbus_connection_close_sync() for the synchronous version.
-	Close(c DBusConnection)
+	Close()
 	// CloseFinish finishes an operation started with g_dbus_connection_close().
-	CloseFinish(c DBusConnection, res AsyncResult) error
+	CloseFinish(res AsyncResult) error
 	// CloseSync: synchronously closes @connection. The calling thread is
 	// blocked until this is done. See g_dbus_connection_close() for the
 	// asynchronous version of this method and more details about what it does.
-	CloseSync(c DBusConnection, cancellable Cancellable) error
+	CloseSync(cancellable Cancellable) error
 	// EmitSignal emits a signal.
 	//
 	// If the parameters GVariant is floating, it is consumed.
@@ -2680,7 +2703,7 @@ type DBusConnection interface {
 	// This can only fail if @parameters is not compatible with the D-Bus
 	// protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
 	// (G_IO_ERROR_CLOSED).
-	EmitSignal(c DBusConnection, destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
+	EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error
 	// ExportActionGroup exports @action_group on @connection at @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
@@ -2701,7 +2724,7 @@ type DBusConnection interface {
 	// activations and state change requests are rather likely to cause changes
 	// on the action group, this effectively limits a given action group to
 	// being exported from only one main context.
-	ExportActionGroup(c DBusConnection, objectPath string, actionGroup ActionGroup) error
+	ExportActionGroup(objectPath string, actionGroup ActionGroup) (guint uint, err error)
 	// ExportMenuModel exports @menu on @connection at @object_path.
 	//
 	// The implemented D-Bus API should be considered private. It is subject to
@@ -2714,7 +2737,7 @@ type DBusConnection interface {
 	// You can unexport the menu model using
 	// g_dbus_connection_unexport_menu_model() with the return value of this
 	// function.
-	ExportMenuModel(c DBusConnection, objectPath string, menu MenuModel) error
+	ExportMenuModel(objectPath string, menu MenuModel) (guint uint, err error)
 	// Flush: asynchronously flushes @connection, that is, writes all queued
 	// outgoing message to the transport and then flushes the transport (using
 	// g_output_stream_flush_async()). This is useful in programs that wants to
@@ -2728,30 +2751,30 @@ type DBusConnection interface {
 	// calling this method from. You can then call
 	// g_dbus_connection_flush_finish() to get the result of the operation. See
 	// g_dbus_connection_flush_sync() for the synchronous version.
-	Flush(c DBusConnection)
+	Flush()
 	// FlushFinish finishes an operation started with g_dbus_connection_flush().
-	FlushFinish(c DBusConnection, res AsyncResult) error
+	FlushFinish(res AsyncResult) error
 	// FlushSync: synchronously flushes @connection. The calling thread is
 	// blocked until this is done. See g_dbus_connection_flush() for the
 	// asynchronous version of this method and more details about what it does.
-	FlushSync(c DBusConnection, cancellable Cancellable) error
+	FlushSync(cancellable Cancellable) error
 	// Capabilities gets the capabilities negotiated with the remote peer
-	Capabilities(c DBusConnection)
+	Capabilities() DBusCapabilityFlags
 	// ExitOnClose gets whether the process is terminated when @connection is
 	// closed by the remote peer. See BusConnection:exit-on-close for more
 	// details.
-	ExitOnClose(c DBusConnection) bool
+	ExitOnClose() bool
 	// Flags gets the flags used to construct this connection
-	Flags(c DBusConnection)
+	Flags() DBusConnectionFlags
 	// Guid: the GUID of the peer performing the role of server when
 	// authenticating. See BusConnection:guid for more details.
-	Guid(c DBusConnection)
+	Guid() string
 	// LastSerial retrieves the last serial number assigned to a BusMessage on
 	// the current thread. This includes messages sent via both low-level API
 	// such as g_dbus_connection_send_message() as well as high-level API such
 	// as g_dbus_connection_emit_signal(), g_dbus_connection_call() or
 	// g_dbus_proxy_call().
-	LastSerial(c DBusConnection)
+	LastSerial() uint32
 	// PeerCredentials gets the credentials of the authenticated peer. This will
 	// always return nil unless @connection acted as a server (e.g.
 	// G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER was passed) when set up and
@@ -2760,18 +2783,18 @@ type DBusConnection interface {
 	// In a message bus setup, the message bus is always the server and each
 	// application is a client. So this method will always return nil for
 	// message bus clients.
-	PeerCredentials(c DBusConnection)
+	PeerCredentials() Credentials
 	// Stream gets the underlying stream used for IO.
 	//
 	// While the BusConnection is active, it will interact with this stream from
 	// a worker thread, so it is not safe to interact with the stream directly.
-	Stream(c DBusConnection)
+	Stream() IOStream
 	// UniqueName gets the unique name of @connection as assigned by the message
 	// bus. This can also be used to figure out if @connection is a message bus
 	// connection.
-	UniqueName(c DBusConnection)
+	UniqueName() string
 	// IsClosed gets whether @connection is closed.
-	IsClosed(c DBusConnection) bool
+	IsClosed() bool
 	// RemoveFilter removes a filter.
 	//
 	// Note that since filters run in a different thread, there is a race
@@ -2780,7 +2803,7 @@ type DBusConnection interface {
 	// that the filter might be using. Instead, you should pass a Notify to
 	// g_dbus_connection_add_filter(), which will be called when it is
 	// guaranteed that the data is no longer needed.
-	RemoveFilter(c DBusConnection, filterID uint)
+	RemoveFilter(filterID uint)
 	// SendMessage: asynchronously sends @message to the peer represented by
 	// @connection.
 	//
@@ -2788,7 +2811,9 @@ type DBusConnection interface {
 	// the serial number will be assigned by @connection and set on @message via
 	// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 	// number used will be written to this location prior to submitting the
-	// message to the underlying transport.
+	// message to the underlying transport. While it has a `volatile` qualifier,
+	// this is a historical artifact and the argument passed to it should not be
+	// `volatile`.
 	//
 	// If @connection is closed then the operation will fail with
 	// G_IO_ERROR_CLOSED. If @message is not well-formed, the operation fails
@@ -2800,7 +2825,7 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessage(c DBusConnection, message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, err error)
+	SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, err error)
 	// SendMessageWithReply: asynchronously sends @message to the peer
 	// represented by @connection.
 	//
@@ -2808,7 +2833,9 @@ type DBusConnection interface {
 	// the serial number will be assigned by @connection and set on @message via
 	// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 	// number used will be written to this location prior to submitting the
-	// message to the underlying transport.
+	// message to the underlying transport. While it has a `volatile` qualifier,
+	// this is a historical artifact and the argument passed to it should not be
+	// `volatile`.
 	//
 	// If @connection is closed then the operation will fail with
 	// G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -2829,7 +2856,7 @@ type DBusConnection interface {
 	// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 	// example of how to use this low-level API to send and receive UNIX file
 	// descriptors.
-	SendMessageWithReply(c DBusConnection) uint32
+	SendMessageWithReply() uint32
 	// SendMessageWithReplyFinish finishes an operation started with
 	// g_dbus_connection_send_message_with_reply().
 	//
@@ -2841,7 +2868,7 @@ type DBusConnection interface {
 	// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 	// example of how to use this low-level API to send and receive UNIX file
 	// descriptors.
-	SendMessageWithReplyFinish(c DBusConnection, res AsyncResult) error
+	SendMessageWithReplyFinish(res AsyncResult) (dBusMessage DBusMessage, err error)
 	// SendMessageWithReplySync: synchronously sends @message to the peer
 	// represented by @connection and blocks the calling thread until a reply is
 	// received or the timeout is reached. See
@@ -2852,7 +2879,9 @@ type DBusConnection interface {
 	// the serial number will be assigned by @connection and set on @message via
 	// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 	// number used will be written to this location prior to submitting the
-	// message to the underlying transport.
+	// message to the underlying transport. While it has a `volatile` qualifier,
+	// this is a historical artifact and the argument passed to it should not be
+	// `volatile`.
 	//
 	// If @connection is closed then the operation will fail with
 	// G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -2870,7 +2899,7 @@ type DBusConnection interface {
 	//
 	// Note that @message must be unlocked, unless @flags contain the
 	// G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-	SendMessageWithReplySync(c DBusConnection, message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, err error)
+	SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage, err error)
 	// SetExitOnClose sets whether the process should be terminated when
 	// @connection is closed by the remote peer. See BusConnection:exit-on-close
 	// for more details.
@@ -2881,7 +2910,7 @@ type DBusConnection interface {
 	// goes away. If you are setting @exit_on_close to false for the shared
 	// session bus connection, you should make sure that your application exits
 	// when the user session ends.
-	SetExitOnClose(c DBusConnection, exitOnClose bool)
+	SetExitOnClose(exitOnClose bool)
 	// SignalSubscribe subscribes to signals on @connection and invokes
 	// @callback with a whenever the signal is received. Note that @callback
 	// will be invoked in the [thread-default main
@@ -2929,7 +2958,7 @@ type DBusConnection interface {
 	// guaranteed to never be zero.
 	//
 	// This function can never fail.
-	SignalSubscribe(c DBusConnection)
+	SignalSubscribe() uint
 	// SignalUnsubscribe unsubscribes from signals.
 	//
 	// Note that there may still be D-Bus traffic to process (relating to this
@@ -2938,30 +2967,30 @@ type DBusConnection interface {
 	// the Notify function passed to g_dbus_connection_signal_subscribe() is
 	// called, in order to avoid memory leaks through callbacks queued on the
 	// Context after it’s stopped being iterated.
-	SignalUnsubscribe(c DBusConnection, subscriptionID uint)
+	SignalUnsubscribe(subscriptionID uint)
 	// StartMessageProcessing: if @connection was created with
 	// G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method starts
 	// processing messages. Does nothing on if @connection wasn't created with
 	// this flag or if the method has already been called.
-	StartMessageProcessing(c DBusConnection)
+	StartMessageProcessing()
 	// UnexportActionGroup reverses the effect of a previous call to
 	// g_dbus_connection_export_action_group().
 	//
 	// It is an error to call this function with an ID that wasn't returned from
 	// g_dbus_connection_export_action_group() or to call it with the same ID
 	// more than once.
-	UnexportActionGroup(c DBusConnection, exportID uint)
+	UnexportActionGroup(exportID uint)
 	// UnexportMenuModel reverses the effect of a previous call to
 	// g_dbus_connection_export_menu_model().
 	//
 	// It is an error to call this function with an ID that wasn't returned from
 	// g_dbus_connection_export_menu_model() or to call it with the same ID more
 	// than once.
-	UnexportMenuModel(c DBusConnection, exportID uint)
+	UnexportMenuModel(exportID uint)
 	// UnregisterObject unregisters an object.
-	UnregisterObject(c DBusConnection, registrationID uint) bool
+	UnregisterObject(registrationID uint) bool
 	// UnregisterSubtree unregisters a subtree.
-	UnregisterSubtree(c DBusConnection, registrationID uint) bool
+	UnregisterSubtree(registrationID uint) bool
 }
 
 // dBusConnection implements the DBusConnection interface.
@@ -2990,39 +3019,45 @@ func marshalDBusConnection(p uintptr) (interface{}, error) {
 }
 
 // NewDBusConnectionFinish constructs a class DBusConnection.
-func NewDBusConnectionFinish(res AsyncResult) error {
+func NewDBusConnectionFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusConnection)
+	var goret DBusConnection
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_new_finish(arg1, &errout)
+	cret = C.g_dbus_connection_new_finish(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // NewDBusConnectionForAddressFinish constructs a class DBusConnection.
-func NewDBusConnectionForAddressFinish(res AsyncResult) error {
+func NewDBusConnectionForAddressFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GAsyncResult
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusConnection)
+	var goret DBusConnection
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_new_for_address_finish(arg1, &errout)
+	cret = C.g_dbus_connection_new_for_address_finish(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // NewDBusConnectionForAddressSync constructs a class DBusConnection.
-func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) error {
+func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GDBusConnectionFlags
 	var arg3 *C.GDBusAuthObserver
@@ -3034,18 +3069,21 @@ func NewDBusConnectionForAddressSync(address string, flags DBusConnectionFlags, 
 	arg3 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusConnection)
+	var goret DBusConnection
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_new_for_address_sync(arg1, arg2, arg3, arg4, &errout)
+	cret = C.g_dbus_connection_new_for_address_sync(arg1, arg2, arg3, arg4, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // NewDBusConnectionSync constructs a class DBusConnection.
-func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) error {
+func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFlags, observer DBusAuthObserver, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
 	var arg1 *C.GIOStream
 	var arg2 *C.gchar
 	var arg3 C.GDBusConnectionFlags
@@ -3059,14 +3097,17 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 	arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusConnection)
+	var goret DBusConnection
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_new_sync(arg1, arg2, arg3, arg4, arg5, &errout)
+	cret = C.g_dbus_connection_new_sync(arg1, arg2, arg3, arg4, arg5, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // AddFilter adds a message filter. Filters are handlers that are run on all
@@ -3094,12 +3135,19 @@ func NewDBusConnectionSync(stream IOStream, guid string, flags DBusConnectionFla
 // from) at some point after @user_data is no longer needed. (It is not
 // guaranteed to be called synchronously when the filter is removed, and may
 // be called after @connection has been destroyed.)
-func (c dBusConnection) AddFilter(c DBusConnection) {
+func (c dBusConnection) AddFilter() uint {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_add_filter(arg0, arg1, arg2, arg3)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_dbus_connection_add_filter(arg0, arg1, arg2, arg3)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Call: asynchronously invokes the @method_name method on the
@@ -3146,7 +3194,7 @@ func (c dBusConnection) AddFilter(c DBusConnection) {
 //
 // If @callback is nil then the D-Bus method call message will be sent with
 // the G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED flag set.
-func (c dBusConnection) Call(c DBusConnection) {
+func (c dBusConnection) Call() {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
@@ -3155,21 +3203,27 @@ func (c dBusConnection) Call(c DBusConnection) {
 }
 
 // CallFinish finishes an operation started with g_dbus_connection_call().
-func (c dBusConnection) CallFinish(c DBusConnection, res AsyncResult) error {
+func (c dBusConnection) CallFinish(res AsyncResult) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_call_finish(arg0, arg1, &errout)
+	cret = C.g_dbus_connection_call_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // CallSync: synchronously invokes the @method_name method on the
@@ -3206,7 +3260,7 @@ func (c dBusConnection) CallFinish(c DBusConnection, res AsyncResult) error {
 //
 // The calling thread is blocked until a reply is received. See
 // g_dbus_connection_call() for the asynchronous version of this method.
-func (c dBusConnection) CallSync(c DBusConnection, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) error {
+func (c dBusConnection) CallSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, cancellable Cancellable) (variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -3233,21 +3287,39 @@ func (c dBusConnection) CallSync(c DBusConnection, busName string, objectPath st
 	arg8 = C.gint(timeoutMsec)
 	arg9 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_call_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, &errout)
+	cret = C.g_dbus_connection_call_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
 // object.
 //
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+// in the body of the message. For example, if a message contains two file
+// descriptors, @fd_list would have length 2, and `g_variant_new_handle (0)`
+// and `g_variant_new_handle (1)` would appear somewhere in the body of the
+// message (not necessarily in that order!) to represent the file
+// descriptors at indexes 0 and 1 respectively.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please
+// note that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced in this way by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
+//
 // This method is only available on UNIX.
-func (c dBusConnection) CallWithUnixFdList(c DBusConnection) {
+func (c dBusConnection) CallWithUnixFdList() {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
@@ -3257,31 +3329,49 @@ func (c dBusConnection) CallWithUnixFdList(c DBusConnection) {
 
 // CallWithUnixFdListFinish finishes an operation started with
 // g_dbus_connection_call_with_unix_fd_list().
-func (c dBusConnection) CallWithUnixFdListFinish(c DBusConnection, res AsyncResult) (outFdList UnixFDList, err error) {
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+// in the body of the message. For example, if g_variant_get_handle()
+// returns 5, that is intended to be a reference to the file descriptor that
+// can be accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please
+// note that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced in this way by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
+func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg2 *C.GAsyncResult
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg2 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var arg1 *C.GUnixFDList
-	var outFdList UnixFDList
-	var errout *C.GError
-	var err error
+	arg1 := new(*C.GUnixFDList)
+	var ret1 UnixFDList
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_call_with_unix_fd_list_finish(arg0, &arg1, arg2, &errout)
+	cret = C.g_dbus_connection_call_with_unix_fd_list_finish(arg0, arg1, arg2, &cerr)
 
-	outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(&arg1.Native()))).(UnixFDList)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret1 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg1.Native()))).(UnixFDList)
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return outFdList, err
+	return ret1, goret, goerr
 }
 
 // CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
-// and returns FDList objects.
+// and returns FDList objects. See
+// g_dbus_connection_call_with_unix_fd_list() and
+// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 //
 // This method is only available on UNIX.
-func (c dBusConnection) CallWithUnixFdListSync(c DBusConnection, busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, err error) {
+func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (outFdList UnixFDList, variant *glib.Variant, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -3310,17 +3400,23 @@ func (c dBusConnection) CallWithUnixFdListSync(c DBusConnection, busName string,
 	arg9 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 	arg11 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg10 *C.GUnixFDList
-	var outFdList UnixFDList
-	var errout *C.GError
-	var err error
+	arg10 := new(*C.GUnixFDList)
+	var ret10 UnixFDList
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_call_with_unix_fd_list_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, &arg10, arg11, &errout)
+	cret = C.g_dbus_connection_call_with_unix_fd_list_sync(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, &cerr)
 
-	outFdList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(&arg10.Native()))).(UnixFDList)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret10 = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg10.Native()))).(UnixFDList)
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return outFdList, err
+	return ret10, goret, goerr
 }
 
 // Close closes @connection. Note that this never causes the process to exit
@@ -3346,7 +3442,7 @@ func (c dBusConnection) CallWithUnixFdListSync(c DBusConnection, busName string,
 // calling this method from. You can then call
 // g_dbus_connection_close_finish() to get the result of the operation. See
 // g_dbus_connection_close_sync() for the synchronous version.
-func (c dBusConnection) Close(c DBusConnection) {
+func (c dBusConnection) Close() {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
@@ -3355,41 +3451,41 @@ func (c dBusConnection) Close(c DBusConnection) {
 }
 
 // CloseFinish finishes an operation started with g_dbus_connection_close().
-func (c dBusConnection) CloseFinish(c DBusConnection, res AsyncResult) error {
+func (c dBusConnection) CloseFinish(res AsyncResult) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_close_finish(arg0, arg1, &errout)
+	C.g_dbus_connection_close_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // CloseSync: synchronously closes @connection. The calling thread is
 // blocked until this is done. See g_dbus_connection_close() for the
 // asynchronous version of this method and more details about what it does.
-func (c dBusConnection) CloseSync(c DBusConnection, cancellable Cancellable) error {
+func (c dBusConnection) CloseSync(cancellable Cancellable) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_close_sync(arg0, arg1, &errout)
+	C.g_dbus_connection_close_sync(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // EmitSignal emits a signal.
@@ -3399,7 +3495,7 @@ func (c dBusConnection) CloseSync(c DBusConnection, cancellable Cancellable) err
 // This can only fail if @parameters is not compatible with the D-Bus
 // protocol (G_IO_ERROR_INVALID_ARGUMENT), or if @connection has been closed
 // (G_IO_ERROR_CLOSED).
-func (c dBusConnection) EmitSignal(c DBusConnection, destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
+func (c dBusConnection) EmitSignal(destinationBusName string, objectPath string, interfaceName string, signalName string, parameters *glib.Variant) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -3418,14 +3514,14 @@ func (c dBusConnection) EmitSignal(c DBusConnection, destinationBusName string, 
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.GVariant)(unsafe.Pointer(parameters.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_emit_signal(arg0, arg1, arg2, arg3, arg4, arg5, &errout)
+	C.g_dbus_connection_emit_signal(arg0, arg1, arg2, arg3, arg4, arg5, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // ExportActionGroup exports @action_group on @connection at @object_path.
@@ -3448,7 +3544,7 @@ func (c dBusConnection) EmitSignal(c DBusConnection, destinationBusName string, 
 // activations and state change requests are rather likely to cause changes
 // on the action group, this effectively limits a given action group to
 // being exported from only one main context.
-func (c dBusConnection) ExportActionGroup(c DBusConnection, objectPath string, actionGroup ActionGroup) error {
+func (c dBusConnection) ExportActionGroup(objectPath string, actionGroup ActionGroup) (guint uint, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.GActionGroup
@@ -3458,14 +3554,17 @@ func (c dBusConnection) ExportActionGroup(c DBusConnection, objectPath string, a
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
-	var errout *C.GError
-	var err error
+	var cret C.guint
+	var goret uint
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_export_action_group(arg0, arg1, arg2, &errout)
+	cret = C.g_dbus_connection_export_action_group(arg0, arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = uint(cret)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // ExportMenuModel exports @menu on @connection at @object_path.
@@ -3480,7 +3579,7 @@ func (c dBusConnection) ExportActionGroup(c DBusConnection, objectPath string, a
 // You can unexport the menu model using
 // g_dbus_connection_unexport_menu_model() with the return value of this
 // function.
-func (c dBusConnection) ExportMenuModel(c DBusConnection, objectPath string, menu MenuModel) error {
+func (c dBusConnection) ExportMenuModel(objectPath string, menu MenuModel) (guint uint, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
@@ -3490,14 +3589,17 @@ func (c dBusConnection) ExportMenuModel(c DBusConnection, objectPath string, men
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GMenuModel)(unsafe.Pointer(menu.Native()))
 
-	var errout *C.GError
-	var err error
+	var cret C.guint
+	var goret uint
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_export_menu_model(arg0, arg1, arg2, &errout)
+	cret = C.g_dbus_connection_export_menu_model(arg0, arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = uint(cret)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // Flush: asynchronously flushes @connection, that is, writes all queued
@@ -3513,7 +3615,7 @@ func (c dBusConnection) ExportMenuModel(c DBusConnection, objectPath string, men
 // calling this method from. You can then call
 // g_dbus_connection_flush_finish() to get the result of the operation. See
 // g_dbus_connection_flush_sync() for the synchronous version.
-func (c dBusConnection) Flush(c DBusConnection) {
+func (c dBusConnection) Flush() {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
@@ -3522,89 +3624,110 @@ func (c dBusConnection) Flush(c DBusConnection) {
 }
 
 // FlushFinish finishes an operation started with g_dbus_connection_flush().
-func (c dBusConnection) FlushFinish(c DBusConnection, res AsyncResult) error {
+func (c dBusConnection) FlushFinish(res AsyncResult) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_flush_finish(arg0, arg1, &errout)
+	C.g_dbus_connection_flush_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // FlushSync: synchronously flushes @connection. The calling thread is
 // blocked until this is done. See g_dbus_connection_flush() for the
 // asynchronous version of this method and more details about what it does.
-func (c dBusConnection) FlushSync(c DBusConnection, cancellable Cancellable) error {
+func (c dBusConnection) FlushSync(cancellable Cancellable) error {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_flush_sync(arg0, arg1, &errout)
+	C.g_dbus_connection_flush_sync(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // Capabilities gets the capabilities negotiated with the remote peer
-func (c dBusConnection) Capabilities(c DBusConnection) {
+func (c dBusConnection) Capabilities() DBusCapabilityFlags {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_get_capabilities(arg0)
+	var cret C.GDBusCapabilityFlags
+	var goret DBusCapabilityFlags
+
+	cret = C.g_dbus_connection_get_capabilities(arg0)
+
+	goret = DBusCapabilityFlags(cret)
+
+	return goret
 }
 
 // ExitOnClose gets whether the process is terminated when @connection is
 // closed by the remote peer. See BusConnection:exit-on-close for more
 // details.
-func (c dBusConnection) ExitOnClose(c DBusConnection) bool {
+func (c dBusConnection) ExitOnClose() bool {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_connection_get_exit_on_close(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Flags gets the flags used to construct this connection
-func (c dBusConnection) Flags(c DBusConnection) {
+func (c dBusConnection) Flags() DBusConnectionFlags {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_get_flags(arg0)
+	var cret C.GDBusConnectionFlags
+	var goret DBusConnectionFlags
+
+	cret = C.g_dbus_connection_get_flags(arg0)
+
+	goret = DBusConnectionFlags(cret)
+
+	return goret
 }
 
 // Guid: the GUID of the peer performing the role of server when
 // authenticating. See BusConnection:guid for more details.
-func (c dBusConnection) Guid(c DBusConnection) {
+func (c dBusConnection) Guid() string {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_get_guid(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_connection_get_guid(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // LastSerial retrieves the last serial number assigned to a BusMessage on
@@ -3612,12 +3735,19 @@ func (c dBusConnection) Guid(c DBusConnection) {
 // such as g_dbus_connection_send_message() as well as high-level API such
 // as g_dbus_connection_emit_signal(), g_dbus_connection_call() or
 // g_dbus_proxy_call().
-func (c dBusConnection) LastSerial(c DBusConnection) {
+func (c dBusConnection) LastSerial() uint32 {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_get_last_serial(arg0)
+	var cret C.guint32
+	var goret uint32
+
+	cret = C.g_dbus_connection_get_last_serial(arg0)
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // PeerCredentials gets the credentials of the authenticated peer. This will
@@ -3628,53 +3758,74 @@ func (c dBusConnection) LastSerial(c DBusConnection) {
 // In a message bus setup, the message bus is always the server and each
 // application is a client. So this method will always return nil for
 // message bus clients.
-func (c dBusConnection) PeerCredentials(c DBusConnection) {
+func (c dBusConnection) PeerCredentials() Credentials {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_get_peer_credentials(arg0)
+	var cret *C.GCredentials
+	var goret Credentials
+
+	cret = C.g_dbus_connection_get_peer_credentials(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Credentials)
+
+	return goret
 }
 
 // Stream gets the underlying stream used for IO.
 //
 // While the BusConnection is active, it will interact with this stream from
 // a worker thread, so it is not safe to interact with the stream directly.
-func (c dBusConnection) Stream(c DBusConnection) {
+func (c dBusConnection) Stream() IOStream {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_get_stream(arg0)
+	var cret *C.GIOStream
+	var goret IOStream
+
+	cret = C.g_dbus_connection_get_stream(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IOStream)
+
+	return goret
 }
 
 // UniqueName gets the unique name of @connection as assigned by the message
 // bus. This can also be used to figure out if @connection is a message bus
 // connection.
-func (c dBusConnection) UniqueName(c DBusConnection) {
+func (c dBusConnection) UniqueName() string {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_get_unique_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_connection_get_unique_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // IsClosed gets whether @connection is closed.
-func (c dBusConnection) IsClosed(c DBusConnection) bool {
+func (c dBusConnection) IsClosed() bool {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_connection_is_closed(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // RemoveFilter removes a filter.
@@ -3685,7 +3836,7 @@ func (c dBusConnection) IsClosed(c DBusConnection) bool {
 // that the filter might be using. Instead, you should pass a Notify to
 // g_dbus_connection_add_filter(), which will be called when it is
 // guaranteed that the data is no longer needed.
-func (c dBusConnection) RemoveFilter(c DBusConnection, filterID uint) {
+func (c dBusConnection) RemoveFilter(filterID uint) {
 	var arg0 *C.GDBusConnection
 	var arg1 C.guint
 
@@ -3702,7 +3853,9 @@ func (c dBusConnection) RemoveFilter(c DBusConnection, filterID uint) {
 // the serial number will be assigned by @connection and set on @message via
 // g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 // number used will be written to this location prior to submitting the
-// message to the underlying transport.
+// message to the underlying transport. While it has a `volatile` qualifier,
+// this is a historical artifact and the argument passed to it should not be
+// `volatile`.
 //
 // If @connection is closed then the operation will fail with
 // G_IO_ERROR_CLOSED. If @message is not well-formed, the operation fails
@@ -3714,7 +3867,7 @@ func (c dBusConnection) RemoveFilter(c DBusConnection, filterID uint) {
 //
 // Note that @message must be unlocked, unless @flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-func (c dBusConnection) SendMessage(c DBusConnection, message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, err error) {
+func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFlags) (outSerial uint32, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GDBusMessage
 	var arg2 C.GDBusSendMessageFlags
@@ -3723,17 +3876,17 @@ func (c dBusConnection) SendMessage(c DBusConnection, message DBusMessage, flags
 	arg1 = (*C.GDBusMessage)(unsafe.Pointer(message.Native()))
 	arg2 = (C.GDBusSendMessageFlags)(flags)
 
-	var arg3 C.guint32
-	var outSerial uint32
-	var errout *C.GError
-	var err error
+	arg3 := new(C.guint32)
+	var ret3 uint32
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_send_message(arg0, arg1, arg2, &arg3, &errout)
+	C.g_dbus_connection_send_message(arg0, arg1, arg2, arg3, &cerr)
 
-	outSerial = uint32(&arg3)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret3 = uint32(*arg3)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return outSerial, err
+	return ret3, goerr
 }
 
 // SendMessageWithReply: asynchronously sends @message to the peer
@@ -3743,7 +3896,9 @@ func (c dBusConnection) SendMessage(c DBusConnection, message DBusMessage, flags
 // the serial number will be assigned by @connection and set on @message via
 // g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 // number used will be written to this location prior to submitting the
-// message to the underlying transport.
+// message to the underlying transport. While it has a `volatile` qualifier,
+// this is a historical artifact and the argument passed to it should not be
+// `volatile`.
 //
 // If @connection is closed then the operation will fail with
 // G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -3764,19 +3919,19 @@ func (c dBusConnection) SendMessage(c DBusConnection, message DBusMessage, flags
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
-func (c dBusConnection) SendMessageWithReply(c DBusConnection) uint32 {
+func (c dBusConnection) SendMessageWithReply() uint32 {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	var arg4 C.guint32
-	var outSerial uint32
+	arg4 := new(C.guint32)
+	var ret4 uint32
 
-	C.g_dbus_connection_send_message_with_reply(arg0, arg1, arg2, arg3, &arg4, arg5, arg6, arg7)
+	C.g_dbus_connection_send_message_with_reply(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
-	outSerial = uint32(&arg4)
+	ret4 = uint32(*arg4)
 
-	return outSerial
+	return ret4
 }
 
 // SendMessageWithReplyFinish finishes an operation started with
@@ -3790,21 +3945,24 @@ func (c dBusConnection) SendMessageWithReply(c DBusConnection) uint32 {
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
-func (c dBusConnection) SendMessageWithReplyFinish(c DBusConnection, res AsyncResult) error {
+func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_send_message_with_reply_finish(arg0, arg1, &errout)
+	cret = C.g_dbus_connection_send_message_with_reply_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // SendMessageWithReplySync: synchronously sends @message to the peer
@@ -3817,7 +3975,9 @@ func (c dBusConnection) SendMessageWithReplyFinish(c DBusConnection, res AsyncRe
 // the serial number will be assigned by @connection and set on @message via
 // g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 // number used will be written to this location prior to submitting the
-// message to the underlying transport.
+// message to the underlying transport. While it has a `volatile` qualifier,
+// this is a historical artifact and the argument passed to it should not be
+// `volatile`.
 //
 // If @connection is closed then the operation will fail with
 // G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -3835,7 +3995,7 @@ func (c dBusConnection) SendMessageWithReplyFinish(c DBusConnection, res AsyncRe
 //
 // Note that @message must be unlocked, unless @flags contain the
 // G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
-func (c dBusConnection) SendMessageWithReplySync(c DBusConnection, message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, err error) {
+func (c dBusConnection) SendMessageWithReplySync(message DBusMessage, flags DBusSendMessageFlags, timeoutMsec int, cancellable Cancellable) (outSerial uint32, dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusConnection
 	var arg1 *C.GDBusMessage
 	var arg2 C.GDBusSendMessageFlags
@@ -3848,17 +4008,20 @@ func (c dBusConnection) SendMessageWithReplySync(c DBusConnection, message DBusM
 	arg3 = C.gint(timeoutMsec)
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg4 C.guint32
-	var outSerial uint32
-	var errout *C.GError
-	var err error
+	arg4 := new(C.guint32)
+	var ret4 uint32
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_connection_send_message_with_reply_sync(arg0, arg1, arg2, arg3, &arg4, arg5, &errout)
+	cret = C.g_dbus_connection_send_message_with_reply_sync(arg0, arg1, arg2, arg3, arg4, arg5, &cerr)
 
-	outSerial = uint32(&arg4)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret4 = uint32(*arg4)
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return outSerial, err
+	return ret4, goret, goerr
 }
 
 // SetExitOnClose sets whether the process should be terminated when
@@ -3871,7 +4034,7 @@ func (c dBusConnection) SendMessageWithReplySync(c DBusConnection, message DBusM
 // goes away. If you are setting @exit_on_close to false for the shared
 // session bus connection, you should make sure that your application exits
 // when the user session ends.
-func (c dBusConnection) SetExitOnClose(c DBusConnection, exitOnClose bool) {
+func (c dBusConnection) SetExitOnClose(exitOnClose bool) {
 	var arg0 *C.GDBusConnection
 	var arg1 C.gboolean
 
@@ -3930,12 +4093,19 @@ func (c dBusConnection) SetExitOnClose(c DBusConnection, exitOnClose bool) {
 // guaranteed to never be zero.
 //
 // This function can never fail.
-func (c dBusConnection) SignalSubscribe(c DBusConnection) {
+func (c dBusConnection) SignalSubscribe() uint {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
 
-	C.g_dbus_connection_signal_subscribe(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_dbus_connection_signal_subscribe(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // SignalUnsubscribe unsubscribes from signals.
@@ -3946,7 +4116,7 @@ func (c dBusConnection) SignalSubscribe(c DBusConnection) {
 // the Notify function passed to g_dbus_connection_signal_subscribe() is
 // called, in order to avoid memory leaks through callbacks queued on the
 // Context after it’s stopped being iterated.
-func (c dBusConnection) SignalUnsubscribe(c DBusConnection, subscriptionID uint) {
+func (c dBusConnection) SignalUnsubscribe(subscriptionID uint) {
 	var arg0 *C.GDBusConnection
 	var arg1 C.guint
 
@@ -3960,7 +4130,7 @@ func (c dBusConnection) SignalUnsubscribe(c DBusConnection, subscriptionID uint)
 // G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method starts
 // processing messages. Does nothing on if @connection wasn't created with
 // this flag or if the method has already been called.
-func (c dBusConnection) StartMessageProcessing(c DBusConnection) {
+func (c dBusConnection) StartMessageProcessing() {
 	var arg0 *C.GDBusConnection
 
 	arg0 = (*C.GDBusConnection)(unsafe.Pointer(c.Native()))
@@ -3974,7 +4144,7 @@ func (c dBusConnection) StartMessageProcessing(c DBusConnection) {
 // It is an error to call this function with an ID that wasn't returned from
 // g_dbus_connection_export_action_group() or to call it with the same ID
 // more than once.
-func (c dBusConnection) UnexportActionGroup(c DBusConnection, exportID uint) {
+func (c dBusConnection) UnexportActionGroup(exportID uint) {
 	var arg0 *C.GDBusConnection
 	var arg1 C.guint
 
@@ -3990,7 +4160,7 @@ func (c dBusConnection) UnexportActionGroup(c DBusConnection, exportID uint) {
 // It is an error to call this function with an ID that wasn't returned from
 // g_dbus_connection_export_menu_model() or to call it with the same ID more
 // than once.
-func (c dBusConnection) UnexportMenuModel(c DBusConnection, exportID uint) {
+func (c dBusConnection) UnexportMenuModel(exportID uint) {
 	var arg0 *C.GDBusConnection
 	var arg1 C.guint
 
@@ -4001,7 +4171,7 @@ func (c dBusConnection) UnexportMenuModel(c DBusConnection, exportID uint) {
 }
 
 // UnregisterObject unregisters an object.
-func (c dBusConnection) UnregisterObject(c DBusConnection, registrationID uint) bool {
+func (c dBusConnection) UnregisterObject(registrationID uint) bool {
 	var arg0 *C.GDBusConnection
 	var arg1 C.guint
 
@@ -4009,19 +4179,19 @@ func (c dBusConnection) UnregisterObject(c DBusConnection, registrationID uint) 
 	arg1 = C.guint(registrationID)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_connection_unregister_object(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // UnregisterSubtree unregisters a subtree.
-func (c dBusConnection) UnregisterSubtree(c DBusConnection, registrationID uint) bool {
+func (c dBusConnection) UnregisterSubtree(registrationID uint) bool {
 	var arg0 *C.GDBusConnection
 	var arg1 C.guint
 
@@ -4029,15 +4199,15 @@ func (c dBusConnection) UnregisterSubtree(c DBusConnection, registrationID uint)
 	arg1 = C.guint(registrationID)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_connection_unregister_subtree(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // DBusMenuModel is an implementation of Model that can be used as a proxy for a
@@ -4078,70 +4248,75 @@ type DBusMessage interface {
 	//
 	// This operation can fail if e.g. @message contains file descriptors and
 	// the per-process or system-wide open files limit is reached.
-	Copy(m DBusMessage) error
+	Copy() (dBusMessage DBusMessage, err error)
 	// Arg0: convenience to get the first item in the body of @message.
-	Arg0(m DBusMessage)
+	Arg0() string
 	// Body gets the body of a message.
-	Body(m DBusMessage)
+	Body() *glib.Variant
 	// ByteOrder gets the byte order of @message.
-	ByteOrder(m DBusMessage)
+	ByteOrder() DBusMessageByteOrder
 	// Destination: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-	Destination(m DBusMessage)
+	Destination() string
 	// ErrorName: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-	ErrorName(m DBusMessage)
+	ErrorName() string
 	// Flags gets the flags for @message.
-	Flags(m DBusMessage)
+	Flags() DBusMessageFlags
 	// Header gets a header field on @message.
 	//
 	// The caller is responsible for checking the type of the returned #GVariant
 	// matches what is expected.
-	Header(m DBusMessage, headerField DBusMessageHeaderField)
+	Header(headerField DBusMessageHeaderField) *glib.Variant
 	// HeaderFields gets an array of all header fields on @message that are set.
-	HeaderFields(m DBusMessage)
+	HeaderFields() []byte
 	// Interface: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-	Interface(m DBusMessage)
+	Interface() string
 	// Locked checks whether @message is locked. To monitor changes to this
 	// value, conncet to the #GObject::notify signal to listen for changes on
 	// the BusMessage:locked property.
-	Locked(m DBusMessage) bool
+	Locked() bool
 	// Member: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
 	// header field.
-	Member(m DBusMessage)
+	Member() string
 	// MessageType gets the type of @message.
-	MessageType(m DBusMessage)
+	MessageType() DBusMessageType
 	// NumUnixFds: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-	NumUnixFds(m DBusMessage)
+	NumUnixFds() uint32
 	// Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
 	// field.
-	Path(m DBusMessage)
+	Path() string
 	// ReplySerial: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-	ReplySerial(m DBusMessage)
+	ReplySerial() uint32
 	// Sender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
 	// header field.
-	Sender(m DBusMessage)
+	Sender() string
 	// Serial gets the serial for @message.
-	Serial(m DBusMessage)
+	Serial() uint32
 	// Signature: convenience getter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-	Signature(m DBusMessage)
+	Signature() string
 	// UnixFdList gets the UNIX file descriptors associated with @message, if
 	// any.
 	//
 	// This method is only available on UNIX.
-	UnixFdList(m DBusMessage)
+	//
+	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+	// in the body of the message. For example, if g_variant_get_handle()
+	// returns 5, that is intended to be a reference to the file descriptor that
+	// can be accessed by `g_unix_fd_list_get (list, 5, ...)`.
+	UnixFdList() UnixFDList
 	// Lock: if @message is locked, does nothing. Otherwise locks the message.
-	Lock(m DBusMessage)
+	Lock()
 	// NewMethodErrorLiteral creates a new BusMessage that is an error reply to
 	// @method_call_message.
-	NewMethodErrorLiteral(m DBusMessage, errorName string, errorMessage string)
+	NewMethodErrorLiteral(errorName string, errorMessage string) DBusMessage
 	// NewMethodReply creates a new BusMessage that is a reply to
 	// @method_call_message.
-	NewMethodReply(m DBusMessage)
+	NewMethodReply() DBusMessage
 	// Print produces a human-readable multi-line description of @message.
 	//
 	// The contents of the description has no ABI guarantees, the contents and
@@ -4173,61 +4348,63 @@ type DBusMessage interface {
 	//    Body: ()
 	//    UNIX File Descriptors:
 	//      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
-	Print(m DBusMessage, indent uint)
+	Print(indent uint) string
 	// SetBody sets the body @message. As a side-effect the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field is set to the type
 	// string of @body (or cleared if @body is nil).
 	//
 	// If @body is floating, @message assumes ownership of @body.
-	SetBody(m DBusMessage, body *glib.Variant)
+	SetBody(body *glib.Variant)
 	// SetByteOrder sets the byte order of @message.
-	SetByteOrder(m DBusMessage, byteOrder DBusMessageByteOrder)
+	SetByteOrder(byteOrder DBusMessageByteOrder)
 	// SetDestination: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-	SetDestination(m DBusMessage, value string)
+	SetDestination(value string)
 	// SetErrorName: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-	SetErrorName(m DBusMessage, value string)
+	SetErrorName(value string)
 	// SetFlags sets the flags to set on @message.
-	SetFlags(m DBusMessage, flags DBusMessageFlags)
+	SetFlags(flags DBusMessageFlags)
 	// SetHeader sets a header field on @message.
 	//
 	// If @value is floating, @message assumes ownership of @value.
-	SetHeader(m DBusMessage, headerField DBusMessageHeaderField, value *glib.Variant)
+	SetHeader(headerField DBusMessageHeaderField, value *glib.Variant)
 	// SetInterface: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-	SetInterface(m DBusMessage, value string)
+	SetInterface(value string)
 	// SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
 	// header field.
-	SetMember(m DBusMessage, value string)
+	SetMember(value string)
 	// SetMessageType sets @message to be of @type.
-	SetMessageType(m DBusMessage, typ DBusMessageType)
+	SetMessageType(typ DBusMessageType)
 	// SetNumUnixFds: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-	SetNumUnixFds(m DBusMessage, value uint32)
+	SetNumUnixFds(value uint32)
 	// SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH
 	// header field.
-	SetPath(m DBusMessage, value string)
+	SetPath(value string)
 	// SetReplySerial: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-	SetReplySerial(m DBusMessage, value uint32)
+	SetReplySerial(value uint32)
 	// SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
 	// header field.
-	SetSender(m DBusMessage, value string)
+	SetSender(value string)
 	// SetSerial sets the serial for @message.
-	SetSerial(m DBusMessage, serial uint32)
+	SetSerial(serial uint32)
 	// SetSignature: convenience setter for the
 	// G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-	SetSignature(m DBusMessage, value string)
+	SetSignature(value string)
 	// SetUnixFdList sets the UNIX file descriptors associated with @message. As
 	// a side-effect the G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field
 	// is set to the number of fds in @fd_list (or cleared if @fd_list is nil).
 	//
 	// This method is only available on UNIX.
-	SetUnixFdList(m DBusMessage, fdList UnixFDList)
-	// ToBlob serializes @message to a blob. The byte order returned by
-	// g_dbus_message_get_byte_order() will be used.
-	ToBlob(m DBusMessage, capabilities DBusCapabilityFlags) (outSize uint, err error)
+	//
+	// When designing D-Bus APIs that are intended to be interoperable, please
+	// note that non-GDBus implementations of D-Bus can usually only access file
+	// descriptors if they are referenced by a value of type
+	// G_VARIANT_TYPE_HANDLE in the body of the message.
+	SetUnixFdList(fdList UnixFDList)
 	// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
 	// nothing and returns false.
 	//
@@ -4235,7 +4412,7 @@ type DBusMessage interface {
 	// g_dbus_error_set_dbus_error() using the information in the
 	// G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as well
 	// as the first string item in @message's body.
-	ToGerror(m DBusMessage) error
+	ToGerror() error
 }
 
 // dBusMessage implements the DBusMessage interface.
@@ -4260,12 +4437,19 @@ func marshalDBusMessage(p uintptr) (interface{}, error) {
 }
 
 // NewDBusMessage constructs a class DBusMessage.
-func NewDBusMessage() {
-	C.g_dbus_message_new()
+func NewDBusMessage() DBusMessage {
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+
+	cret = C.g_dbus_message_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+
+	return goret
 }
 
 // NewDBusMessageMethodCall constructs a class DBusMessage.
-func NewDBusMessageMethodCall(name string, path string, interface_ string, method string) {
+func NewDBusMessageMethodCall(name string, path string, interface_ string, method string) DBusMessage {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -4280,11 +4464,18 @@ func NewDBusMessageMethodCall(name string, path string, interface_ string, metho
 	arg4 = (*C.gchar)(C.CString(method))
 	defer C.free(unsafe.Pointer(arg4))
 
-	C.g_dbus_message_new_method_call(arg1, arg2, arg3, arg4)
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+
+	cret = C.g_dbus_message_new_method_call(arg1, arg2, arg3, arg4)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+
+	return goret
 }
 
 // NewDBusMessageSignal constructs a class DBusMessage.
-func NewDBusMessageSignal(path string, interface_ string, signal string) {
+func NewDBusMessageSignal(path string, interface_ string, signal string) DBusMessage {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -4296,7 +4487,14 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) {
 	arg3 = (*C.gchar)(C.CString(signal))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_dbus_message_new_signal(arg1, arg2, arg3)
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+
+	cret = C.g_dbus_message_new_signal(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+
+	return goret
 }
 
 // Copy copies @message. The copy is a deep copy and the returned BusMessage
@@ -4304,222 +4502,370 @@ func NewDBusMessageSignal(path string, interface_ string, signal string) {
 //
 // This operation can fail if e.g. @message contains file descriptors and
 // the per-process or system-wide open files limit is reached.
-func (m dBusMessage) Copy(m DBusMessage) error {
+func (m dBusMessage) Copy() (dBusMessage DBusMessage, err error) {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_message_copy(arg0, &errout)
+	cret = C.g_dbus_message_copy(arg0, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // Arg0: convenience to get the first item in the body of @message.
-func (m dBusMessage) Arg0(m DBusMessage) {
+func (m dBusMessage) Arg0() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_arg0(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_arg0(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Body gets the body of a message.
-func (m dBusMessage) Body(m DBusMessage) {
+func (m dBusMessage) Body() *glib.Variant {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_body(arg0)
+	var cret *C.GVariant
+	var goret *glib.Variant
+
+	cret = C.g_dbus_message_get_body(arg0)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ByteOrder gets the byte order of @message.
-func (m dBusMessage) ByteOrder(m DBusMessage) {
+func (m dBusMessage) ByteOrder() DBusMessageByteOrder {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_byte_order(arg0)
+	var cret C.GDBusMessageByteOrder
+	var goret DBusMessageByteOrder
+
+	cret = C.g_dbus_message_get_byte_order(arg0)
+
+	goret = DBusMessageByteOrder(cret)
+
+	return goret
 }
 
 // Destination: convenience getter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-func (m dBusMessage) Destination(m DBusMessage) {
+func (m dBusMessage) Destination() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_destination(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_destination(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ErrorName: convenience getter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-func (m dBusMessage) ErrorName(m DBusMessage) {
+func (m dBusMessage) ErrorName() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_error_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_error_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Flags gets the flags for @message.
-func (m dBusMessage) Flags(m DBusMessage) {
+func (m dBusMessage) Flags() DBusMessageFlags {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_flags(arg0)
+	var cret C.GDBusMessageFlags
+	var goret DBusMessageFlags
+
+	cret = C.g_dbus_message_get_flags(arg0)
+
+	goret = DBusMessageFlags(cret)
+
+	return goret
 }
 
 // Header gets a header field on @message.
 //
 // The caller is responsible for checking the type of the returned #GVariant
 // matches what is expected.
-func (m dBusMessage) Header(m DBusMessage, headerField DBusMessageHeaderField) {
+func (m dBusMessage) Header(headerField DBusMessageHeaderField) *glib.Variant {
 	var arg0 *C.GDBusMessage
 	var arg1 C.GDBusMessageHeaderField
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 	arg1 = (C.GDBusMessageHeaderField)(headerField)
 
-	C.g_dbus_message_get_header(arg0, arg1)
+	var cret *C.GVariant
+	var goret *glib.Variant
+
+	cret = C.g_dbus_message_get_header(arg0, arg1)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // HeaderFields gets an array of all header fields on @message that are set.
-func (m dBusMessage) HeaderFields(m DBusMessage) {
+func (m dBusMessage) HeaderFields() []byte {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_header_fields(arg0)
+	var cret *C.guchar
+	var goret []byte
+
+	cret = C.g_dbus_message_get_header_fields(arg0)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (*C.guchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guchar)) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]byte, length)
+		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guchar {
+			src := (C.guchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = byte(src)
+		}
+	}
+
+	return goret
 }
 
 // Interface: convenience getter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-func (m dBusMessage) Interface(m DBusMessage) {
+func (m dBusMessage) Interface() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_interface(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_interface(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Locked checks whether @message is locked. To monitor changes to this
 // value, conncet to the #GObject::notify signal to listen for changes on
 // the BusMessage:locked property.
-func (m dBusMessage) Locked(m DBusMessage) bool {
+func (m dBusMessage) Locked() bool {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_message_get_locked(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Member: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
 // header field.
-func (m dBusMessage) Member(m DBusMessage) {
+func (m dBusMessage) Member() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_member(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_member(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // MessageType gets the type of @message.
-func (m dBusMessage) MessageType(m DBusMessage) {
+func (m dBusMessage) MessageType() DBusMessageType {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_message_type(arg0)
+	var cret C.GDBusMessageType
+	var goret DBusMessageType
+
+	cret = C.g_dbus_message_get_message_type(arg0)
+
+	goret = DBusMessageType(cret)
+
+	return goret
 }
 
 // NumUnixFds: convenience getter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-func (m dBusMessage) NumUnixFds(m DBusMessage) {
+func (m dBusMessage) NumUnixFds() uint32 {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_num_unix_fds(arg0)
+	var cret C.guint32
+	var goret uint32
+
+	cret = C.g_dbus_message_get_num_unix_fds(arg0)
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // Path: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH header
 // field.
-func (m dBusMessage) Path(m DBusMessage) {
+func (m dBusMessage) Path() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_path(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ReplySerial: convenience getter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-func (m dBusMessage) ReplySerial(m DBusMessage) {
+func (m dBusMessage) ReplySerial() uint32 {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_reply_serial(arg0)
+	var cret C.guint32
+	var goret uint32
+
+	cret = C.g_dbus_message_get_reply_serial(arg0)
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // Sender: convenience getter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
 // header field.
-func (m dBusMessage) Sender(m DBusMessage) {
+func (m dBusMessage) Sender() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_sender(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_sender(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Serial gets the serial for @message.
-func (m dBusMessage) Serial(m DBusMessage) {
+func (m dBusMessage) Serial() uint32 {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_serial(arg0)
+	var cret C.guint32
+	var goret uint32
+
+	cret = C.g_dbus_message_get_serial(arg0)
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // Signature: convenience getter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-func (m dBusMessage) Signature(m DBusMessage) {
+func (m dBusMessage) Signature() string {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_signature(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_message_get_signature(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // UnixFdList gets the UNIX file descriptors associated with @message, if
 // any.
 //
 // This method is only available on UNIX.
-func (m dBusMessage) UnixFdList(m DBusMessage) {
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+// in the body of the message. For example, if g_variant_get_handle()
+// returns 5, that is intended to be a reference to the file descriptor that
+// can be accessed by `g_unix_fd_list_get (list, 5, ...)`.
+func (m dBusMessage) UnixFdList() UnixFDList {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_get_unix_fd_list(arg0)
+	var cret *C.GUnixFDList
+	var goret UnixFDList
+
+	cret = C.g_dbus_message_get_unix_fd_list(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(UnixFDList)
+
+	return goret
 }
 
 // Lock: if @message is locked, does nothing. Otherwise locks the message.
-func (m dBusMessage) Lock(m DBusMessage) {
+func (m dBusMessage) Lock() {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
@@ -4529,7 +4875,7 @@ func (m dBusMessage) Lock(m DBusMessage) {
 
 // NewMethodErrorLiteral creates a new BusMessage that is an error reply to
 // @method_call_message.
-func (m dBusMessage) NewMethodErrorLiteral(m DBusMessage, errorName string, errorMessage string) {
+func (m dBusMessage) NewMethodErrorLiteral(errorName string, errorMessage string) DBusMessage {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -4540,17 +4886,31 @@ func (m dBusMessage) NewMethodErrorLiteral(m DBusMessage, errorName string, erro
 	arg2 = (*C.gchar)(C.CString(errorMessage))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_dbus_message_new_method_error_literal(arg0, arg1, arg2)
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+
+	cret = C.g_dbus_message_new_method_error_literal(arg0, arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+
+	return goret
 }
 
 // NewMethodReply creates a new BusMessage that is a reply to
 // @method_call_message.
-func (m dBusMessage) NewMethodReply(m DBusMessage) {
+func (m dBusMessage) NewMethodReply() DBusMessage {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_message_new_method_reply(arg0)
+	cret := new(C.GDBusMessage)
+	var goret DBusMessage
+
+	cret = C.g_dbus_message_new_method_reply(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusMessage)
+
+	return goret
 }
 
 // Print produces a human-readable multi-line description of @message.
@@ -4584,14 +4944,22 @@ func (m dBusMessage) NewMethodReply(m DBusMessage) {
 //    Body: ()
 //    UNIX File Descriptors:
 //      fd 12: dev=0:10,mode=020620,ino=5,uid=500,gid=5,rdev=136:2,size=0,atime=1273085037,mtime=1273085851,ctime=1272982635
-func (m dBusMessage) Print(m DBusMessage, indent uint) {
+func (m dBusMessage) Print(indent uint) string {
 	var arg0 *C.GDBusMessage
 	var arg1 C.guint
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 	arg1 = C.guint(indent)
 
-	C.g_dbus_message_print(arg0, arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_dbus_message_print(arg0, arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // SetBody sets the body @message. As a side-effect the
@@ -4599,7 +4967,7 @@ func (m dBusMessage) Print(m DBusMessage, indent uint) {
 // string of @body (or cleared if @body is nil).
 //
 // If @body is floating, @message assumes ownership of @body.
-func (m dBusMessage) SetBody(m DBusMessage, body *glib.Variant) {
+func (m dBusMessage) SetBody(body *glib.Variant) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.GVariant
 
@@ -4610,7 +4978,7 @@ func (m dBusMessage) SetBody(m DBusMessage, body *glib.Variant) {
 }
 
 // SetByteOrder sets the byte order of @message.
-func (m dBusMessage) SetByteOrder(m DBusMessage, byteOrder DBusMessageByteOrder) {
+func (m dBusMessage) SetByteOrder(byteOrder DBusMessageByteOrder) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.GDBusMessageByteOrder
 
@@ -4622,7 +4990,7 @@ func (m dBusMessage) SetByteOrder(m DBusMessage, byteOrder DBusMessageByteOrder)
 
 // SetDestination: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_DESTINATION header field.
-func (m dBusMessage) SetDestination(m DBusMessage, value string) {
+func (m dBusMessage) SetDestination(value string) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 
@@ -4635,7 +5003,7 @@ func (m dBusMessage) SetDestination(m DBusMessage, value string) {
 
 // SetErrorName: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field.
-func (m dBusMessage) SetErrorName(m DBusMessage, value string) {
+func (m dBusMessage) SetErrorName(value string) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 
@@ -4647,7 +5015,7 @@ func (m dBusMessage) SetErrorName(m DBusMessage, value string) {
 }
 
 // SetFlags sets the flags to set on @message.
-func (m dBusMessage) SetFlags(m DBusMessage, flags DBusMessageFlags) {
+func (m dBusMessage) SetFlags(flags DBusMessageFlags) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.GDBusMessageFlags
 
@@ -4660,7 +5028,7 @@ func (m dBusMessage) SetFlags(m DBusMessage, flags DBusMessageFlags) {
 // SetHeader sets a header field on @message.
 //
 // If @value is floating, @message assumes ownership of @value.
-func (m dBusMessage) SetHeader(m DBusMessage, headerField DBusMessageHeaderField, value *glib.Variant) {
+func (m dBusMessage) SetHeader(headerField DBusMessageHeaderField, value *glib.Variant) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.GDBusMessageHeaderField
 	var arg2 *C.GVariant
@@ -4674,7 +5042,7 @@ func (m dBusMessage) SetHeader(m DBusMessage, headerField DBusMessageHeaderField
 
 // SetInterface: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE header field.
-func (m dBusMessage) SetInterface(m DBusMessage, value string) {
+func (m dBusMessage) SetInterface(value string) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 
@@ -4687,7 +5055,7 @@ func (m dBusMessage) SetInterface(m DBusMessage, value string) {
 
 // SetMember: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_MEMBER
 // header field.
-func (m dBusMessage) SetMember(m DBusMessage, value string) {
+func (m dBusMessage) SetMember(value string) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 
@@ -4699,7 +5067,7 @@ func (m dBusMessage) SetMember(m DBusMessage, value string) {
 }
 
 // SetMessageType sets @message to be of @type.
-func (m dBusMessage) SetMessageType(m DBusMessage, typ DBusMessageType) {
+func (m dBusMessage) SetMessageType(typ DBusMessageType) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.GDBusMessageType
 
@@ -4711,7 +5079,7 @@ func (m dBusMessage) SetMessageType(m DBusMessage, typ DBusMessageType) {
 
 // SetNumUnixFds: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header field.
-func (m dBusMessage) SetNumUnixFds(m DBusMessage, value uint32) {
+func (m dBusMessage) SetNumUnixFds(value uint32) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.guint32
 
@@ -4723,7 +5091,7 @@ func (m dBusMessage) SetNumUnixFds(m DBusMessage, value uint32) {
 
 // SetPath: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_PATH
 // header field.
-func (m dBusMessage) SetPath(m DBusMessage, value string) {
+func (m dBusMessage) SetPath(value string) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 
@@ -4736,7 +5104,7 @@ func (m dBusMessage) SetPath(m DBusMessage, value string) {
 
 // SetReplySerial: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL header field.
-func (m dBusMessage) SetReplySerial(m DBusMessage, value uint32) {
+func (m dBusMessage) SetReplySerial(value uint32) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.guint32
 
@@ -4748,7 +5116,7 @@ func (m dBusMessage) SetReplySerial(m DBusMessage, value uint32) {
 
 // SetSender: convenience setter for the G_DBUS_MESSAGE_HEADER_FIELD_SENDER
 // header field.
-func (m dBusMessage) SetSender(m DBusMessage, value string) {
+func (m dBusMessage) SetSender(value string) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 
@@ -4760,7 +5128,7 @@ func (m dBusMessage) SetSender(m DBusMessage, value string) {
 }
 
 // SetSerial sets the serial for @message.
-func (m dBusMessage) SetSerial(m DBusMessage, serial uint32) {
+func (m dBusMessage) SetSerial(serial uint32) {
 	var arg0 *C.GDBusMessage
 	var arg1 C.guint32
 
@@ -4772,7 +5140,7 @@ func (m dBusMessage) SetSerial(m DBusMessage, serial uint32) {
 
 // SetSignature: convenience setter for the
 // G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE header field.
-func (m dBusMessage) SetSignature(m DBusMessage, value string) {
+func (m dBusMessage) SetSignature(value string) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.gchar
 
@@ -4788,7 +5156,12 @@ func (m dBusMessage) SetSignature(m DBusMessage, value string) {
 // is set to the number of fds in @fd_list (or cleared if @fd_list is nil).
 //
 // This method is only available on UNIX.
-func (m dBusMessage) SetUnixFdList(m DBusMessage, fdList UnixFDList) {
+//
+// When designing D-Bus APIs that are intended to be interoperable, please
+// note that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
+func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
 	var arg0 *C.GDBusMessage
 	var arg1 *C.GUnixFDList
 
@@ -4798,28 +5171,6 @@ func (m dBusMessage) SetUnixFdList(m DBusMessage, fdList UnixFDList) {
 	C.g_dbus_message_set_unix_fd_list(arg0, arg1)
 }
 
-// ToBlob serializes @message to a blob. The byte order returned by
-// g_dbus_message_get_byte_order() will be used.
-func (m dBusMessage) ToBlob(m DBusMessage, capabilities DBusCapabilityFlags) (outSize uint, err error) {
-	var arg0 *C.GDBusMessage
-	var arg2 C.GDBusCapabilityFlags
-
-	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
-	arg2 = (C.GDBusCapabilityFlags)(capabilities)
-
-	var arg1 C.gsize
-	var outSize uint
-	var errout *C.GError
-	var err error
-
-	C.g_dbus_message_to_blob(arg0, &arg1, arg2, &errout)
-
-	outSize = uint(&arg1)
-	err = gerror.Take(unsafe.Pointer(errout))
-
-	return outSize, err
-}
-
 // ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
 // nothing and returns false.
 //
@@ -4827,19 +5178,19 @@ func (m dBusMessage) ToBlob(m DBusMessage, capabilities DBusCapabilityFlags) (ou
 // g_dbus_error_set_dbus_error() using the information in the
 // G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME header field of @message as well
 // as the first string item in @message's body.
-func (m dBusMessage) ToGerror(m DBusMessage) error {
+func (m dBusMessage) ToGerror() error {
 	var arg0 *C.GDBusMessage
 
 	arg0 = (*C.GDBusMessage)(unsafe.Pointer(m.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_message_to_gerror(arg0, &errout)
+	C.g_dbus_message_to_gerror(arg0, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // DBusMethodInvocation instances of the BusMethodInvocation class are used when
@@ -4853,7 +5204,7 @@ type DBusMethodInvocation interface {
 	gextras.Objector
 
 	// Connection gets the BusConnection the method was invoked on.
-	Connection(i DBusMethodInvocation)
+	Connection() DBusConnection
 	// InterfaceName gets the name of the D-Bus interface the method was invoked
 	// on.
 	//
@@ -4861,7 +5212,7 @@ type DBusMethodInvocation interface {
 	// redirected to the method call handler then
 	// "org.freedesktop.DBus.Properties" will be returned. See
 	// BusInterfaceVTable for more information.
-	InterfaceName(i DBusMethodInvocation)
+	InterfaceName() string
 	// Message gets the BusMessage for the method invocation. This is useful if
 	// you need to use low-level protocol features, such as UNIX file descriptor
 	// passing, that cannot be properly expressed in the #GVariant API.
@@ -4869,22 +5220,22 @@ type DBusMethodInvocation interface {
 	// See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 	// example of how to use this low-level API to send and receive UNIX file
 	// descriptors.
-	Message(i DBusMethodInvocation)
+	Message() DBusMessage
 	// MethodInfo gets information about the method call, if any.
 	//
 	// If this method invocation is a property Get, Set or GetAll call that has
 	// been redirected to the method call handler then nil will be returned. See
 	// g_dbus_method_invocation_get_property_info() and BusInterfaceVTable for
 	// more information.
-	MethodInfo(i DBusMethodInvocation)
+	MethodInfo() *DBusMethodInfo
 	// MethodName gets the name of the method that was invoked.
-	MethodName(i DBusMethodInvocation)
+	MethodName() string
 	// ObjectPath gets the object path the method was invoked on.
-	ObjectPath(i DBusMethodInvocation)
+	ObjectPath() string
 	// Parameters gets the parameters of the method invocation. If there are no
 	// input parameters then this will return a GVariant with 0 children rather
 	// than NULL.
-	Parameters(i DBusMethodInvocation)
+	Parameters() *glib.Variant
 	// PropertyInfo gets information about the property that this method call is
 	// for, if any.
 	//
@@ -4896,24 +5247,24 @@ type DBusMethodInvocation interface {
 	// See BusInterfaceVTable for more information.
 	//
 	// If the call was GetAll, nil will be returned.
-	PropertyInfo(i DBusMethodInvocation)
+	PropertyInfo() *DBusPropertyInfo
 	// Sender gets the bus name that invoked the method.
-	Sender(i DBusMethodInvocation)
+	Sender() string
 	// UserData gets the @user_data #gpointer passed to
 	// g_dbus_connection_register_object().
-	UserData(i DBusMethodInvocation)
+	UserData() interface{}
 	// ReturnDBusError finishes handling a D-Bus method call by returning an
 	// error.
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnDBusError(i DBusMethodInvocation, errorName string, errorMessage string)
+	ReturnDBusError(errorName string, errorMessage string)
 	// ReturnGerror: like g_dbus_method_invocation_return_error() but takes a
 	// #GError instead of the error domain, error code and message.
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnGerror(i DBusMethodInvocation, error error)
+	ReturnGerror(err error)
 	// ReturnValue finishes handling a D-Bus method call by returning
 	// @parameters. If the @parameters GVariant is floating, it is consumed.
 	//
@@ -4943,7 +5294,7 @@ type DBusMethodInvocation interface {
 	// Since 2.48, if the method call requested for a reply not to be sent then
 	// this call will sink @parameters and free @invocation, but otherwise do
 	// nothing (as per the recommendations of the D-Bus specification).
-	ReturnValue(i DBusMethodInvocation, parameters *glib.Variant)
+	ReturnValue(parameters *glib.Variant)
 	// ReturnValueWithUnixFdList: like g_dbus_method_invocation_return_value()
 	// but also takes a FDList.
 	//
@@ -4951,13 +5302,13 @@ type DBusMethodInvocation interface {
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	ReturnValueWithUnixFdList(i DBusMethodInvocation, parameters *glib.Variant, fdList UnixFDList)
+	ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList)
 	// TakeError: like g_dbus_method_invocation_return_gerror() but takes
 	// ownership of @error so the caller does not need to free it.
 	//
 	// This method will take ownership of @invocation. See BusInterfaceVTable
 	// for more information about the ownership of @invocation.
-	TakeError(i DBusMethodInvocation, error error)
+	TakeError(err error)
 }
 
 // dBusMethodInvocation implements the DBusMethodInvocation interface.
@@ -4982,12 +5333,19 @@ func marshalDBusMethodInvocation(p uintptr) (interface{}, error) {
 }
 
 // Connection gets the BusConnection the method was invoked on.
-func (i dBusMethodInvocation) Connection(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) Connection() DBusConnection {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_connection(arg0)
+	var cret *C.GDBusConnection
+	var goret DBusConnection
+
+	cret = C.g_dbus_method_invocation_get_connection(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return goret
 }
 
 // InterfaceName gets the name of the D-Bus interface the method was invoked
@@ -4997,12 +5355,19 @@ func (i dBusMethodInvocation) Connection(i DBusMethodInvocation) {
 // redirected to the method call handler then
 // "org.freedesktop.DBus.Properties" will be returned. See
 // BusInterfaceVTable for more information.
-func (i dBusMethodInvocation) InterfaceName(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) InterfaceName() string {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_interface_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_method_invocation_get_interface_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Message gets the BusMessage for the method invocation. This is useful if
@@ -5012,12 +5377,19 @@ func (i dBusMethodInvocation) InterfaceName(i DBusMethodInvocation) {
 // See this [server][gdbus-server] and [client][gdbus-unix-fd-client] for an
 // example of how to use this low-level API to send and receive UNIX file
 // descriptors.
-func (i dBusMethodInvocation) Message(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) Message() DBusMessage {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_message(arg0)
+	var cret *C.GDBusMessage
+	var goret DBusMessage
+
+	cret = C.g_dbus_method_invocation_get_message(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusMessage)
+
+	return goret
 }
 
 // MethodInfo gets information about the method call, if any.
@@ -5026,41 +5398,69 @@ func (i dBusMethodInvocation) Message(i DBusMethodInvocation) {
 // been redirected to the method call handler then nil will be returned. See
 // g_dbus_method_invocation_get_property_info() and BusInterfaceVTable for
 // more information.
-func (i dBusMethodInvocation) MethodInfo(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) MethodInfo() *DBusMethodInfo {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_method_info(arg0)
+	var cret *C.GDBusMethodInfo
+	var goret *DBusMethodInfo
+
+	cret = C.g_dbus_method_invocation_get_method_info(arg0)
+
+	goret = WrapDBusMethodInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // MethodName gets the name of the method that was invoked.
-func (i dBusMethodInvocation) MethodName(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) MethodName() string {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_method_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_method_invocation_get_method_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ObjectPath gets the object path the method was invoked on.
-func (i dBusMethodInvocation) ObjectPath(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) ObjectPath() string {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_object_path(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_method_invocation_get_object_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Parameters gets the parameters of the method invocation. If there are no
 // input parameters then this will return a GVariant with 0 children rather
 // than NULL.
-func (i dBusMethodInvocation) Parameters(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) Parameters() *glib.Variant {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_parameters(arg0)
+	var cret *C.GVariant
+	var goret *glib.Variant
+
+	cret = C.g_dbus_method_invocation_get_parameters(arg0)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // PropertyInfo gets information about the property that this method call is
@@ -5074,31 +5474,52 @@ func (i dBusMethodInvocation) Parameters(i DBusMethodInvocation) {
 // See BusInterfaceVTable for more information.
 //
 // If the call was GetAll, nil will be returned.
-func (i dBusMethodInvocation) PropertyInfo(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) PropertyInfo() *DBusPropertyInfo {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_property_info(arg0)
+	var cret *C.GDBusPropertyInfo
+	var goret *DBusPropertyInfo
+
+	cret = C.g_dbus_method_invocation_get_property_info(arg0)
+
+	goret = WrapDBusPropertyInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Sender gets the bus name that invoked the method.
-func (i dBusMethodInvocation) Sender(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) Sender() string {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_sender(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_method_invocation_get_sender(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // UserData gets the @user_data #gpointer passed to
 // g_dbus_connection_register_object().
-func (i dBusMethodInvocation) UserData(i DBusMethodInvocation) {
+func (i dBusMethodInvocation) UserData() interface{} {
 	var arg0 *C.GDBusMethodInvocation
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_invocation_get_user_data(arg0)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_dbus_method_invocation_get_user_data(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // ReturnDBusError finishes handling a D-Bus method call by returning an
@@ -5106,7 +5527,7 @@ func (i dBusMethodInvocation) UserData(i DBusMethodInvocation) {
 //
 // This method will take ownership of @invocation. See BusInterfaceVTable
 // for more information about the ownership of @invocation.
-func (i dBusMethodInvocation) ReturnDBusError(i DBusMethodInvocation, errorName string, errorMessage string) {
+func (i dBusMethodInvocation) ReturnDBusError(errorName string, errorMessage string) {
 	var arg0 *C.GDBusMethodInvocation
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -5125,12 +5546,12 @@ func (i dBusMethodInvocation) ReturnDBusError(i DBusMethodInvocation, errorName 
 //
 // This method will take ownership of @invocation. See BusInterfaceVTable
 // for more information about the ownership of @invocation.
-func (i dBusMethodInvocation) ReturnGerror(i DBusMethodInvocation, error error) {
+func (i dBusMethodInvocation) ReturnGerror(err error) {
 	var arg0 *C.GDBusMethodInvocation
 	var arg1 *C.GError
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
 	defer C.g_error_free(arg1)
 
 	C.g_dbus_method_invocation_return_gerror(arg0, arg1)
@@ -5165,7 +5586,7 @@ func (i dBusMethodInvocation) ReturnGerror(i DBusMethodInvocation, error error) 
 // Since 2.48, if the method call requested for a reply not to be sent then
 // this call will sink @parameters and free @invocation, but otherwise do
 // nothing (as per the recommendations of the D-Bus specification).
-func (i dBusMethodInvocation) ReturnValue(i DBusMethodInvocation, parameters *glib.Variant) {
+func (i dBusMethodInvocation) ReturnValue(parameters *glib.Variant) {
 	var arg0 *C.GDBusMethodInvocation
 	var arg1 *C.GVariant
 
@@ -5182,7 +5603,7 @@ func (i dBusMethodInvocation) ReturnValue(i DBusMethodInvocation, parameters *gl
 //
 // This method will take ownership of @invocation. See BusInterfaceVTable
 // for more information about the ownership of @invocation.
-func (i dBusMethodInvocation) ReturnValueWithUnixFdList(i DBusMethodInvocation, parameters *glib.Variant, fdList UnixFDList) {
+func (i dBusMethodInvocation) ReturnValueWithUnixFdList(parameters *glib.Variant, fdList UnixFDList) {
 	var arg0 *C.GDBusMethodInvocation
 	var arg1 *C.GVariant
 	var arg2 *C.GUnixFDList
@@ -5199,12 +5620,12 @@ func (i dBusMethodInvocation) ReturnValueWithUnixFdList(i DBusMethodInvocation, 
 //
 // This method will take ownership of @invocation. See BusInterfaceVTable
 // for more information about the ownership of @invocation.
-func (i dBusMethodInvocation) TakeError(i DBusMethodInvocation, error error) {
+func (i dBusMethodInvocation) TakeError(err error) {
 	var arg0 *C.GDBusMethodInvocation
 	var arg1 *C.GError
 
 	arg0 = (*C.GDBusMethodInvocation)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
 
 	C.g_dbus_method_invocation_take_error(arg0, arg1)
 }
@@ -5218,14 +5639,16 @@ func (i dBusMethodInvocation) TakeError(i DBusMethodInvocation, error error) {
 // To just export an object on a well-known name on a message bus, such as the
 // session or system bus, you should instead use g_bus_own_name().
 //
-// An example of peer-to-peer communication with G-DBus can be found in
+// An example of peer-to-peer communication with GDBus can be found in
 // gdbus-example-peer.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
 //
 // Note that a minimal BusServer will accept connections from any peer. In many
 // use-cases it will be necessary to add a BusAuthObserver that only accepts
 // connections that have successfully authenticated as the same user that is
-// running the BusServer.
+// running the BusServer. Since GLib 2.68 this can be achieved more simply by
+// passing the G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flag to the
+// server.
 type DBusServer interface {
 	gextras.Objector
 	Initable
@@ -5233,17 +5656,17 @@ type DBusServer interface {
 	// ClientAddress gets a D-Bus address
 	// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
 	// string that can be used by clients to connect to @server.
-	ClientAddress(s DBusServer)
+	ClientAddress() string
 	// Flags gets the flags for @server.
-	Flags(s DBusServer)
+	Flags() DBusServerFlags
 	// Guid gets the GUID for @server.
-	Guid(s DBusServer)
+	Guid() string
 	// IsActive gets whether @server is active.
-	IsActive(s DBusServer) bool
+	IsActive() bool
 	// Start starts @server.
-	Start(s DBusServer)
+	Start()
 	// Stop stops @server.
-	Stop(s DBusServer)
+	Stop()
 }
 
 // dBusServer implements the DBusServer interface.
@@ -5270,7 +5693,7 @@ func marshalDBusServer(p uintptr) (interface{}, error) {
 }
 
 // NewDBusServerSync constructs a class DBusServer.
-func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) error {
+func NewDBusServerSync(address string, flags DBusServerFlags, guid string, observer DBusAuthObserver, cancellable Cancellable) (dBusServer DBusServer, err error) {
 	var arg1 *C.gchar
 	var arg2 C.GDBusServerFlags
 	var arg3 *C.gchar
@@ -5285,65 +5708,89 @@ func NewDBusServerSync(address string, flags DBusServerFlags, guid string, obser
 	arg4 = (*C.GDBusAuthObserver)(unsafe.Pointer(observer.Native()))
 	arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusServer)
+	var goret DBusServer
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_server_new_sync(arg1, arg2, arg3, arg4, arg5, &errout)
+	cret = C.g_dbus_server_new_sync(arg1, arg2, arg3, arg4, arg5, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusServer)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // ClientAddress gets a D-Bus address
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses)
 // string that can be used by clients to connect to @server.
-func (s dBusServer) ClientAddress(s DBusServer) {
+func (s dBusServer) ClientAddress() string {
 	var arg0 *C.GDBusServer
 
 	arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
 
-	C.g_dbus_server_get_client_address(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_server_get_client_address(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Flags gets the flags for @server.
-func (s dBusServer) Flags(s DBusServer) {
+func (s dBusServer) Flags() DBusServerFlags {
 	var arg0 *C.GDBusServer
 
 	arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
 
-	C.g_dbus_server_get_flags(arg0)
+	var cret C.GDBusServerFlags
+	var goret DBusServerFlags
+
+	cret = C.g_dbus_server_get_flags(arg0)
+
+	goret = DBusServerFlags(cret)
+
+	return goret
 }
 
 // Guid gets the GUID for @server.
-func (s dBusServer) Guid(s DBusServer) {
+func (s dBusServer) Guid() string {
 	var arg0 *C.GDBusServer
 
 	arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
 
-	C.g_dbus_server_get_guid(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_server_get_guid(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // IsActive gets whether @server is active.
-func (s dBusServer) IsActive(s DBusServer) bool {
+func (s dBusServer) IsActive() bool {
 	var arg0 *C.GDBusServer
 
 	arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_server_is_active(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Start starts @server.
-func (s dBusServer) Start(s DBusServer) {
+func (s dBusServer) Start() {
 	var arg0 *C.GDBusServer
 
 	arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
@@ -5352,7 +5799,7 @@ func (s dBusServer) Start(s DBusServer) {
 }
 
 // Stop stops @server.
-func (s dBusServer) Stop(s DBusServer) {
+func (s dBusServer) Stop() {
 	var arg0 *C.GDBusServer
 
 	arg0 = (*C.GDBusServer)(unsafe.Pointer(s.Native()))
@@ -5373,19 +5820,19 @@ type Menu interface {
 	// Append: convenience function for appending a normal menu item to the end
 	// of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
 	// flexible alternative.
-	Append(m Menu, label string, detailedAction string)
+	Append(label string, detailedAction string)
 	// AppendItem appends @item to the end of @menu.
 	//
 	// See g_menu_insert_item() for more information.
-	AppendItem(m Menu, item MenuItem)
+	AppendItem(item MenuItem)
 	// AppendSection: convenience function for appending a section menu item to
 	// the end of @menu. Combine g_menu_item_new_section() and
 	// g_menu_insert_item() for a more flexible alternative.
-	AppendSection(m Menu, label string, section MenuModel)
+	AppendSection(label string, section MenuModel)
 	// AppendSubmenu: convenience function for appending a submenu menu item to
 	// the end of @menu. Combine g_menu_item_new_submenu() and
 	// g_menu_insert_item() for a more flexible alternative.
-	AppendSubmenu(m Menu, label string, submenu MenuModel)
+	AppendSubmenu(label string, submenu MenuModel)
 	// Freeze marks @menu as frozen.
 	//
 	// After the menu is frozen, it is an error to attempt to make any changes
@@ -5393,11 +5840,11 @@ type Menu interface {
 	//
 	// This function causes g_menu_model_is_mutable() to begin returning false,
 	// which has some positive performance implications.
-	Freeze(m Menu)
+	Freeze()
 	// Insert: convenience function for inserting a normal menu item into @menu.
 	// Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
 	// alternative.
-	Insert(m Menu, position int, label string, detailedAction string)
+	Insert(position int, label string, detailedAction string)
 	// InsertItem inserts @item into @menu.
 	//
 	// The "insertion" is actually done by copying all of the attribute and link
@@ -5414,31 +5861,31 @@ type Menu interface {
 	// There are many convenience functions to take care of common cases. See
 	// g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as
 	// well as "prepend" and "append" variants of each of these functions.
-	InsertItem(m Menu, position int, item MenuItem)
+	InsertItem(position int, item MenuItem)
 	// InsertSection: convenience function for inserting a section menu item
 	// into @menu. Combine g_menu_item_new_section() and g_menu_insert_item()
 	// for a more flexible alternative.
-	InsertSection(m Menu, position int, label string, section MenuModel)
+	InsertSection(position int, label string, section MenuModel)
 	// InsertSubmenu: convenience function for inserting a submenu menu item
 	// into @menu. Combine g_menu_item_new_submenu() and g_menu_insert_item()
 	// for a more flexible alternative.
-	InsertSubmenu(m Menu, position int, label string, submenu MenuModel)
+	InsertSubmenu(position int, label string, submenu MenuModel)
 	// Prepend: convenience function for prepending a normal menu item to the
 	// start of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a
 	// more flexible alternative.
-	Prepend(m Menu, label string, detailedAction string)
+	Prepend(label string, detailedAction string)
 	// PrependItem prepends @item to the start of @menu.
 	//
 	// See g_menu_insert_item() for more information.
-	PrependItem(m Menu, item MenuItem)
+	PrependItem(item MenuItem)
 	// PrependSection: convenience function for prepending a section menu item
 	// to the start of @menu. Combine g_menu_item_new_section() and
 	// g_menu_insert_item() for a more flexible alternative.
-	PrependSection(m Menu, label string, section MenuModel)
+	PrependSection(label string, section MenuModel)
 	// PrependSubmenu: convenience function for prepending a submenu menu item
 	// to the start of @menu. Combine g_menu_item_new_submenu() and
 	// g_menu_insert_item() for a more flexible alternative.
-	PrependSubmenu(m Menu, label string, submenu MenuModel)
+	PrependSubmenu(label string, submenu MenuModel)
 	// Remove removes an item from the menu.
 	//
 	// @position gives the index of the item to remove.
@@ -5449,9 +5896,9 @@ type Menu interface {
 	// It is not possible to remove items by identity since items are added to
 	// the menu simply by copying their links and attributes (ie: identity of
 	// the item itself is not preserved).
-	Remove(m Menu, position int)
+	Remove(position int)
 	// RemoveAll removes all items in the menu.
-	RemoveAll(m Menu)
+	RemoveAll()
 }
 
 // menu implements the Menu interface.
@@ -5476,14 +5923,21 @@ func marshalMenu(p uintptr) (interface{}, error) {
 }
 
 // NewMenu constructs a class Menu.
-func NewMenu() {
-	C.g_menu_new()
+func NewMenu() Menu {
+	cret := new(C.GMenu)
+	var goret Menu
+
+	cret = C.g_menu_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Menu)
+
+	return goret
 }
 
 // Append: convenience function for appending a normal menu item to the end
 // of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a more
 // flexible alternative.
-func (m menu) Append(m Menu, label string, detailedAction string) {
+func (m menu) Append(label string, detailedAction string) {
 	var arg0 *C.GMenu
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -5500,7 +5954,7 @@ func (m menu) Append(m Menu, label string, detailedAction string) {
 // AppendItem appends @item to the end of @menu.
 //
 // See g_menu_insert_item() for more information.
-func (m menu) AppendItem(m Menu, item MenuItem) {
+func (m menu) AppendItem(item MenuItem) {
 	var arg0 *C.GMenu
 	var arg1 *C.GMenuItem
 
@@ -5513,7 +5967,7 @@ func (m menu) AppendItem(m Menu, item MenuItem) {
 // AppendSection: convenience function for appending a section menu item to
 // the end of @menu. Combine g_menu_item_new_section() and
 // g_menu_insert_item() for a more flexible alternative.
-func (m menu) AppendSection(m Menu, label string, section MenuModel) {
+func (m menu) AppendSection(label string, section MenuModel) {
 	var arg0 *C.GMenu
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
@@ -5529,7 +5983,7 @@ func (m menu) AppendSection(m Menu, label string, section MenuModel) {
 // AppendSubmenu: convenience function for appending a submenu menu item to
 // the end of @menu. Combine g_menu_item_new_submenu() and
 // g_menu_insert_item() for a more flexible alternative.
-func (m menu) AppendSubmenu(m Menu, label string, submenu MenuModel) {
+func (m menu) AppendSubmenu(label string, submenu MenuModel) {
 	var arg0 *C.GMenu
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
@@ -5549,7 +6003,7 @@ func (m menu) AppendSubmenu(m Menu, label string, submenu MenuModel) {
 //
 // This function causes g_menu_model_is_mutable() to begin returning false,
 // which has some positive performance implications.
-func (m menu) Freeze(m Menu) {
+func (m menu) Freeze() {
 	var arg0 *C.GMenu
 
 	arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
@@ -5560,7 +6014,7 @@ func (m menu) Freeze(m Menu) {
 // Insert: convenience function for inserting a normal menu item into @menu.
 // Combine g_menu_item_new() and g_menu_insert_item() for a more flexible
 // alternative.
-func (m menu) Insert(m Menu, position int, label string, detailedAction string) {
+func (m menu) Insert(position int, label string, detailedAction string) {
 	var arg0 *C.GMenu
 	var arg1 C.gint
 	var arg2 *C.gchar
@@ -5592,7 +6046,7 @@ func (m menu) Insert(m Menu, position int, label string, detailedAction string) 
 // There are many convenience functions to take care of common cases. See
 // g_menu_insert(), g_menu_insert_section() and g_menu_insert_submenu() as
 // well as "prepend" and "append" variants of each of these functions.
-func (m menu) InsertItem(m Menu, position int, item MenuItem) {
+func (m menu) InsertItem(position int, item MenuItem) {
 	var arg0 *C.GMenu
 	var arg1 C.gint
 	var arg2 *C.GMenuItem
@@ -5607,7 +6061,7 @@ func (m menu) InsertItem(m Menu, position int, item MenuItem) {
 // InsertSection: convenience function for inserting a section menu item
 // into @menu. Combine g_menu_item_new_section() and g_menu_insert_item()
 // for a more flexible alternative.
-func (m menu) InsertSection(m Menu, position int, label string, section MenuModel) {
+func (m menu) InsertSection(position int, label string, section MenuModel) {
 	var arg0 *C.GMenu
 	var arg1 C.gint
 	var arg2 *C.gchar
@@ -5625,7 +6079,7 @@ func (m menu) InsertSection(m Menu, position int, label string, section MenuMode
 // InsertSubmenu: convenience function for inserting a submenu menu item
 // into @menu. Combine g_menu_item_new_submenu() and g_menu_insert_item()
 // for a more flexible alternative.
-func (m menu) InsertSubmenu(m Menu, position int, label string, submenu MenuModel) {
+func (m menu) InsertSubmenu(position int, label string, submenu MenuModel) {
 	var arg0 *C.GMenu
 	var arg1 C.gint
 	var arg2 *C.gchar
@@ -5643,7 +6097,7 @@ func (m menu) InsertSubmenu(m Menu, position int, label string, submenu MenuMode
 // Prepend: convenience function for prepending a normal menu item to the
 // start of @menu. Combine g_menu_item_new() and g_menu_insert_item() for a
 // more flexible alternative.
-func (m menu) Prepend(m Menu, label string, detailedAction string) {
+func (m menu) Prepend(label string, detailedAction string) {
 	var arg0 *C.GMenu
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -5660,7 +6114,7 @@ func (m menu) Prepend(m Menu, label string, detailedAction string) {
 // PrependItem prepends @item to the start of @menu.
 //
 // See g_menu_insert_item() for more information.
-func (m menu) PrependItem(m Menu, item MenuItem) {
+func (m menu) PrependItem(item MenuItem) {
 	var arg0 *C.GMenu
 	var arg1 *C.GMenuItem
 
@@ -5673,7 +6127,7 @@ func (m menu) PrependItem(m Menu, item MenuItem) {
 // PrependSection: convenience function for prepending a section menu item
 // to the start of @menu. Combine g_menu_item_new_section() and
 // g_menu_insert_item() for a more flexible alternative.
-func (m menu) PrependSection(m Menu, label string, section MenuModel) {
+func (m menu) PrependSection(label string, section MenuModel) {
 	var arg0 *C.GMenu
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
@@ -5689,7 +6143,7 @@ func (m menu) PrependSection(m Menu, label string, section MenuModel) {
 // PrependSubmenu: convenience function for prepending a submenu menu item
 // to the start of @menu. Combine g_menu_item_new_submenu() and
 // g_menu_insert_item() for a more flexible alternative.
-func (m menu) PrependSubmenu(m Menu, label string, submenu MenuModel) {
+func (m menu) PrependSubmenu(label string, submenu MenuModel) {
 	var arg0 *C.GMenu
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
@@ -5712,7 +6166,7 @@ func (m menu) PrependSubmenu(m Menu, label string, submenu MenuModel) {
 // It is not possible to remove items by identity since items are added to
 // the menu simply by copying their links and attributes (ie: identity of
 // the item itself is not preserved).
-func (m menu) Remove(m Menu, position int) {
+func (m menu) Remove(position int) {
 	var arg0 *C.GMenu
 	var arg1 C.gint
 
@@ -5723,7 +6177,7 @@ func (m menu) Remove(m Menu, position int) {
 }
 
 // RemoveAll removes all items in the menu.
-func (m menu) RemoveAll(m Menu) {
+func (m menu) RemoveAll() {
 	var arg0 *C.GMenu
 
 	arg0 = (*C.GMenu)(unsafe.Pointer(m.Native()))
@@ -5741,9 +6195,9 @@ type MenuItem interface {
 	// If @expected_type is specified and the attribute does not have this type,
 	// nil is returned. nil is also returned if the attribute simply does not
 	// exist.
-	AttributeValue(m MenuItem, attribute string, expectedType *glib.VariantType)
+	AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant
 	// Link queries the named @link on @menu_item.
-	Link(m MenuItem, link string)
+	Link(link string) MenuModel
 	// SetActionAndTargetValue sets or unsets the "action" and "target"
 	// attributes of @menu_item.
 	//
@@ -5781,7 +6235,7 @@ type MenuItem interface {
 	// See g_menu_item_set_action_and_target() or
 	// g_menu_item_set_detailed_action() for two equivalent calls that are
 	// probably more convenient for most uses.
-	SetActionAndTargetValue(m MenuItem, action string, targetValue *glib.Variant)
+	SetActionAndTargetValue(action string, targetValue *glib.Variant)
 	// SetAttributeValue sets or unsets an attribute on @menu_item.
 	//
 	// The attribute to set or unset is specified by @attribute. This can be one
@@ -5799,7 +6253,7 @@ type MenuItem interface {
 	//
 	// See also g_menu_item_set_attribute() for a more convenient way to do the
 	// same.
-	SetAttributeValue(m MenuItem, attribute string, value *glib.Variant)
+	SetAttributeValue(attribute string, value *glib.Variant)
 	// SetDetailedAction sets the "action" and possibly the "target" attribute
 	// of @menu_item.
 	//
@@ -5812,7 +6266,7 @@ type MenuItem interface {
 	//
 	// See also g_menu_item_set_action_and_target_value() for a description of
 	// the semantics of the action and target attributes.
-	SetDetailedAction(m MenuItem, detailedAction string)
+	SetDetailedAction(detailedAction string)
 	// SetIcon sets (or unsets) the icon on @menu_item.
 	//
 	// This call is the same as calling g_icon_serialize() and using the result
@@ -5824,12 +6278,12 @@ type MenuItem interface {
 	// items corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 	//
 	// If @icon is nil then the icon is unset.
-	SetIcon(m MenuItem, icon Icon)
+	SetIcon(icon Icon)
 	// SetLabel sets or unsets the "label" attribute of @menu_item.
 	//
 	// If @label is non-nil it is used as the label for the menu item. If it is
 	// nil then the label attribute is unset.
-	SetLabel(m MenuItem, label string)
+	SetLabel(label string)
 	// SetLink creates a link from @menu_item to @model if non-nil, or unsets
 	// it.
 	//
@@ -5841,14 +6295,14 @@ type MenuItem interface {
 	// restricted to lowercase characters, numbers and '-'. Furthermore, the
 	// names must begin with a lowercase character, must not end with a '-', and
 	// must not contain consecutive dashes.
-	SetLink(m MenuItem, link string, model MenuModel)
+	SetLink(link string, model MenuModel)
 	// SetSection sets or unsets the "section" link of @menu_item to @section.
 	//
 	// The effect of having one menu appear as a section of another is exactly
 	// as it sounds: the items from @section become a direct part of the menu
 	// that @menu_item is added to. See g_menu_item_new_section() for more
 	// information about what it means for a menu item to be a section.
-	SetSection(m MenuItem, section MenuModel)
+	SetSection(section MenuModel)
 	// SetSubmenu sets or unsets the "submenu" link of @menu_item to @submenu.
 	//
 	// If @submenu is non-nil, it is linked to. If it is nil then the link is
@@ -5856,7 +6310,7 @@ type MenuItem interface {
 	//
 	// The effect of having one menu appear as a submenu of another is exactly
 	// as it sounds.
-	SetSubmenu(m MenuItem, submenu MenuModel)
+	SetSubmenu(submenu MenuModel)
 }
 
 // menuItem implements the MenuItem interface.
@@ -5881,7 +6335,7 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 }
 
 // NewMenuItem constructs a class MenuItem.
-func NewMenuItem(label string, detailedAction string) {
+func NewMenuItem(label string, detailedAction string) MenuItem {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -5890,22 +6344,36 @@ func NewMenuItem(label string, detailedAction string) {
 	arg2 = (*C.gchar)(C.CString(detailedAction))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_menu_item_new(arg1, arg2)
+	cret := new(C.GMenuItem)
+	var goret MenuItem
+
+	cret = C.g_menu_item_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MenuItem)
+
+	return goret
 }
 
 // NewMenuItemFromModel constructs a class MenuItem.
-func NewMenuItemFromModel(model MenuModel, itemIndex int) {
+func NewMenuItemFromModel(model MenuModel, itemIndex int) MenuItem {
 	var arg1 *C.GMenuModel
 	var arg2 C.gint
 
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	arg2 = C.gint(itemIndex)
 
-	C.g_menu_item_new_from_model(arg1, arg2)
+	cret := new(C.GMenuItem)
+	var goret MenuItem
+
+	cret = C.g_menu_item_new_from_model(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MenuItem)
+
+	return goret
 }
 
 // NewMenuItemSection constructs a class MenuItem.
-func NewMenuItemSection(label string, section MenuModel) {
+func NewMenuItemSection(label string, section MenuModel) MenuItem {
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
 
@@ -5913,11 +6381,18 @@ func NewMenuItemSection(label string, section MenuModel) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GMenuModel)(unsafe.Pointer(section.Native()))
 
-	C.g_menu_item_new_section(arg1, arg2)
+	cret := new(C.GMenuItem)
+	var goret MenuItem
+
+	cret = C.g_menu_item_new_section(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MenuItem)
+
+	return goret
 }
 
 // NewMenuItemSubmenu constructs a class MenuItem.
-func NewMenuItemSubmenu(label string, submenu MenuModel) {
+func NewMenuItemSubmenu(label string, submenu MenuModel) MenuItem {
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
 
@@ -5925,7 +6400,14 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GMenuModel)(unsafe.Pointer(submenu.Native()))
 
-	C.g_menu_item_new_submenu(arg1, arg2)
+	cret := new(C.GMenuItem)
+	var goret MenuItem
+
+	cret = C.g_menu_item_new_submenu(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MenuItem)
+
+	return goret
 }
 
 // AttributeValue queries the named @attribute on @menu_item.
@@ -5933,7 +6415,7 @@ func NewMenuItemSubmenu(label string, submenu MenuModel) {
 // If @expected_type is specified and the attribute does not have this type,
 // nil is returned. nil is also returned if the attribute simply does not
 // exist.
-func (m menuItem) AttributeValue(m MenuItem, attribute string, expectedType *glib.VariantType) {
+func (m menuItem) AttributeValue(attribute string, expectedType *glib.VariantType) *glib.Variant {
 	var arg0 *C.GMenuItem
 	var arg1 *C.gchar
 	var arg2 *C.GVariantType
@@ -5943,11 +6425,21 @@ func (m menuItem) AttributeValue(m MenuItem, attribute string, expectedType *gli
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GVariantType)(unsafe.Pointer(expectedType.Native()))
 
-	C.g_menu_item_get_attribute_value(arg0, arg1, arg2)
+	cret := new(C.GVariant)
+	var goret *glib.Variant
+
+	cret = C.g_menu_item_get_attribute_value(arg0, arg1, arg2)
+
+	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Link queries the named @link on @menu_item.
-func (m menuItem) Link(m MenuItem, link string) {
+func (m menuItem) Link(link string) MenuModel {
 	var arg0 *C.GMenuItem
 	var arg1 *C.gchar
 
@@ -5955,7 +6447,14 @@ func (m menuItem) Link(m MenuItem, link string) {
 	arg1 = (*C.gchar)(C.CString(link))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_menu_item_get_link(arg0, arg1)
+	cret := new(C.GMenuModel)
+	var goret MenuModel
+
+	cret = C.g_menu_item_get_link(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MenuModel)
+
+	return goret
 }
 
 // SetActionAndTargetValue sets or unsets the "action" and "target"
@@ -5995,7 +6494,7 @@ func (m menuItem) Link(m MenuItem, link string) {
 // See g_menu_item_set_action_and_target() or
 // g_menu_item_set_detailed_action() for two equivalent calls that are
 // probably more convenient for most uses.
-func (m menuItem) SetActionAndTargetValue(m MenuItem, action string, targetValue *glib.Variant) {
+func (m menuItem) SetActionAndTargetValue(action string, targetValue *glib.Variant) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.gchar
 	var arg2 *C.GVariant
@@ -6025,7 +6524,7 @@ func (m menuItem) SetActionAndTargetValue(m MenuItem, action string, targetValue
 //
 // See also g_menu_item_set_attribute() for a more convenient way to do the
 // same.
-func (m menuItem) SetAttributeValue(m MenuItem, attribute string, value *glib.Variant) {
+func (m menuItem) SetAttributeValue(attribute string, value *glib.Variant) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.gchar
 	var arg2 *C.GVariant
@@ -6050,7 +6549,7 @@ func (m menuItem) SetAttributeValue(m MenuItem, attribute string, value *glib.Va
 //
 // See also g_menu_item_set_action_and_target_value() for a description of
 // the semantics of the action and target attributes.
-func (m menuItem) SetDetailedAction(m MenuItem, detailedAction string) {
+func (m menuItem) SetDetailedAction(detailedAction string) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.gchar
 
@@ -6072,7 +6571,7 @@ func (m menuItem) SetDetailedAction(m MenuItem, detailedAction string) {
 // items corresponding to verbs (eg: stock icons for 'Save' or 'Quit').
 //
 // If @icon is nil then the icon is unset.
-func (m menuItem) SetIcon(m MenuItem, icon Icon) {
+func (m menuItem) SetIcon(icon Icon) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.GIcon
 
@@ -6086,7 +6585,7 @@ func (m menuItem) SetIcon(m MenuItem, icon Icon) {
 //
 // If @label is non-nil it is used as the label for the menu item. If it is
 // nil then the label attribute is unset.
-func (m menuItem) SetLabel(m MenuItem, label string) {
+func (m menuItem) SetLabel(label string) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.gchar
 
@@ -6108,7 +6607,7 @@ func (m menuItem) SetLabel(m MenuItem, label string) {
 // restricted to lowercase characters, numbers and '-'. Furthermore, the
 // names must begin with a lowercase character, must not end with a '-', and
 // must not contain consecutive dashes.
-func (m menuItem) SetLink(m MenuItem, link string, model MenuModel) {
+func (m menuItem) SetLink(link string, model MenuModel) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.gchar
 	var arg2 *C.GMenuModel
@@ -6127,7 +6626,7 @@ func (m menuItem) SetLink(m MenuItem, link string, model MenuModel) {
 // as it sounds: the items from @section become a direct part of the menu
 // that @menu_item is added to. See g_menu_item_new_section() for more
 // information about what it means for a menu item to be a section.
-func (m menuItem) SetSection(m MenuItem, section MenuModel) {
+func (m menuItem) SetSection(section MenuModel) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.GMenuModel
 
@@ -6144,7 +6643,7 @@ func (m menuItem) SetSection(m MenuItem, section MenuModel) {
 //
 // The effect of having one menu appear as a submenu of another is exactly
 // as it sounds.
-func (m menuItem) SetSubmenu(m MenuItem, submenu MenuModel) {
+func (m menuItem) SetSubmenu(submenu MenuModel) {
 	var arg0 *C.GMenuItem
 	var arg1 *C.GMenuModel
 
@@ -6184,16 +6683,16 @@ type Notification interface {
 	//
 	// See g_action_parse_detailed_name() for a description of the format for
 	// @detailed_action.
-	AddButton(n Notification, label string, detailedAction string)
+	AddButton(label string, detailedAction string)
 	// AddButtonWithTargetValue adds a button to @notification that activates
 	// @action when clicked. @action must be an application-wide action (it must
 	// start with "app.").
 	//
 	// If @target is non-nil, @action will be activated with @target as its
 	// parameter.
-	AddButtonWithTargetValue(n Notification, label string, action string, target *glib.Variant)
+	AddButtonWithTargetValue(label string, action string, target *glib.Variant)
 	// SetBody sets the body of @notification to @body.
-	SetBody(n Notification, body string)
+	SetBody(body string)
 	// SetDefaultAction sets the default action of @notification to
 	// @detailed_action. This action is activated when the notification is
 	// clicked on.
@@ -6206,7 +6705,7 @@ type Notification interface {
 	//
 	// When no default action is set, the application that the notification was
 	// sent on is activated.
-	SetDefaultAction(n Notification, detailedAction string)
+	SetDefaultAction(detailedAction string)
 	// SetDefaultActionAndTargetValue sets the default action of @notification
 	// to @action. This action is activated when the notification is clicked on.
 	// It must be an application-wide action (start with "app.").
@@ -6216,16 +6715,16 @@ type Notification interface {
 	//
 	// When no default action is set, the application that the notification was
 	// sent on is activated.
-	SetDefaultActionAndTargetValue(n Notification, action string, target *glib.Variant)
+	SetDefaultActionAndTargetValue(action string, target *glib.Variant)
 	// SetIcon sets the icon of @notification to @icon.
-	SetIcon(n Notification, icon Icon)
+	SetIcon(icon Icon)
 	// SetPriority sets the priority of @notification to @priority. See Priority
 	// for possible values.
-	SetPriority(n Notification, priority NotificationPriority)
+	SetPriority(priority NotificationPriority)
 	// SetTitle sets the title of @notification to @title.
-	SetTitle(n Notification, title string)
+	SetTitle(title string)
 	// SetUrgent: deprecated in favor of g_notification_set_priority().
-	SetUrgent(n Notification, urgent bool)
+	SetUrgent(urgent bool)
 }
 
 // notification implements the Notification interface.
@@ -6250,13 +6749,20 @@ func marshalNotification(p uintptr) (interface{}, error) {
 }
 
 // NewNotification constructs a class Notification.
-func NewNotification(title string) {
+func NewNotification(title string) Notification {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_notification_new(arg1)
+	cret := new(C.GNotification)
+	var goret Notification
+
+	cret = C.g_notification_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Notification)
+
+	return goret
 }
 
 // AddButton adds a button to @notification that activates the action in
@@ -6266,7 +6772,7 @@ func NewNotification(title string) {
 //
 // See g_action_parse_detailed_name() for a description of the format for
 // @detailed_action.
-func (n notification) AddButton(n Notification, label string, detailedAction string) {
+func (n notification) AddButton(label string, detailedAction string) {
 	var arg0 *C.GNotification
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -6286,7 +6792,7 @@ func (n notification) AddButton(n Notification, label string, detailedAction str
 //
 // If @target is non-nil, @action will be activated with @target as its
 // parameter.
-func (n notification) AddButtonWithTargetValue(n Notification, label string, action string, target *glib.Variant) {
+func (n notification) AddButtonWithTargetValue(label string, action string, target *glib.Variant) {
 	var arg0 *C.GNotification
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -6303,7 +6809,7 @@ func (n notification) AddButtonWithTargetValue(n Notification, label string, act
 }
 
 // SetBody sets the body of @notification to @body.
-func (n notification) SetBody(n Notification, body string) {
+func (n notification) SetBody(body string) {
 	var arg0 *C.GNotification
 	var arg1 *C.gchar
 
@@ -6326,7 +6832,7 @@ func (n notification) SetBody(n Notification, body string) {
 //
 // When no default action is set, the application that the notification was
 // sent on is activated.
-func (n notification) SetDefaultAction(n Notification, detailedAction string) {
+func (n notification) SetDefaultAction(detailedAction string) {
 	var arg0 *C.GNotification
 	var arg1 *C.gchar
 
@@ -6346,7 +6852,7 @@ func (n notification) SetDefaultAction(n Notification, detailedAction string) {
 //
 // When no default action is set, the application that the notification was
 // sent on is activated.
-func (n notification) SetDefaultActionAndTargetValue(n Notification, action string, target *glib.Variant) {
+func (n notification) SetDefaultActionAndTargetValue(action string, target *glib.Variant) {
 	var arg0 *C.GNotification
 	var arg1 *C.gchar
 	var arg2 *C.GVariant
@@ -6360,7 +6866,7 @@ func (n notification) SetDefaultActionAndTargetValue(n Notification, action stri
 }
 
 // SetIcon sets the icon of @notification to @icon.
-func (n notification) SetIcon(n Notification, icon Icon) {
+func (n notification) SetIcon(icon Icon) {
 	var arg0 *C.GNotification
 	var arg1 *C.GIcon
 
@@ -6372,7 +6878,7 @@ func (n notification) SetIcon(n Notification, icon Icon) {
 
 // SetPriority sets the priority of @notification to @priority. See Priority
 // for possible values.
-func (n notification) SetPriority(n Notification, priority NotificationPriority) {
+func (n notification) SetPriority(priority NotificationPriority) {
 	var arg0 *C.GNotification
 	var arg1 C.GNotificationPriority
 
@@ -6383,7 +6889,7 @@ func (n notification) SetPriority(n Notification, priority NotificationPriority)
 }
 
 // SetTitle sets the title of @notification to @title.
-func (n notification) SetTitle(n Notification, title string) {
+func (n notification) SetTitle(title string) {
 	var arg0 *C.GNotification
 	var arg1 *C.gchar
 
@@ -6395,7 +6901,7 @@ func (n notification) SetTitle(n Notification, title string) {
 }
 
 // SetUrgent: deprecated in favor of g_notification_set_priority().
-func (n notification) SetUrgent(n Notification, urgent bool) {
+func (n notification) SetUrgent(urgent bool) {
 	var arg0 *C.GNotification
 	var arg1 C.gboolean
 
@@ -6484,7 +6990,7 @@ func marshalPropertyAction(p uintptr) (interface{}, error) {
 }
 
 // NewPropertyAction constructs a class PropertyAction.
-func NewPropertyAction(name string, object gextras.Objector, propertyName string) {
+func NewPropertyAction(name string, object gextras.Objector, propertyName string) PropertyAction {
 	var arg1 *C.gchar
 	var arg2 C.gpointer
 	var arg3 *C.gchar
@@ -6495,7 +7001,14 @@ func NewPropertyAction(name string, object gextras.Objector, propertyName string
 	arg3 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_property_action_new(arg1, arg2, arg3)
+	cret := new(C.GPropertyAction)
+	var goret PropertyAction
+
+	cret = C.g_property_action_new(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PropertyAction)
+
+	return goret
 }
 
 // SimpleAction: a Action is the obvious simple implementation of the #GAction
@@ -6514,7 +7027,7 @@ type SimpleAction interface {
 	//
 	// This should only be called by the implementor of the action. Users of the
 	// action should not attempt to modify its enabled flag.
-	SetEnabled(s SimpleAction, enabled bool)
+	SetEnabled(enabled bool)
 	// SetState sets the state of the action.
 	//
 	// This directly updates the 'state' property to the given value.
@@ -6524,12 +7037,12 @@ type SimpleAction interface {
 	// Instead, they should call g_action_change_state() to request the change.
 	//
 	// If the @value GVariant is floating, it is consumed.
-	SetState(s SimpleAction, value *glib.Variant)
+	SetState(value *glib.Variant)
 	// SetStateHint sets the state hint for the action.
 	//
 	// See g_action_get_state_hint() for more information about action state
 	// hints.
-	SetStateHint(s SimpleAction, stateHint *glib.Variant)
+	SetStateHint(stateHint *glib.Variant)
 }
 
 // simpleAction implements the SimpleAction interface.
@@ -6556,7 +7069,7 @@ func marshalSimpleAction(p uintptr) (interface{}, error) {
 }
 
 // NewSimpleAction constructs a class SimpleAction.
-func NewSimpleAction(name string, parameterType *glib.VariantType) {
+func NewSimpleAction(name string, parameterType *glib.VariantType) SimpleAction {
 	var arg1 *C.gchar
 	var arg2 *C.GVariantType
 
@@ -6564,11 +7077,18 @@ func NewSimpleAction(name string, parameterType *glib.VariantType) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GVariantType)(unsafe.Pointer(parameterType.Native()))
 
-	C.g_simple_action_new(arg1, arg2)
+	cret := new(C.GSimpleAction)
+	var goret SimpleAction
+
+	cret = C.g_simple_action_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SimpleAction)
+
+	return goret
 }
 
 // NewSimpleActionStateful constructs a class SimpleAction.
-func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) {
+func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state *glib.Variant) SimpleAction {
 	var arg1 *C.gchar
 	var arg2 *C.GVariantType
 	var arg3 *C.GVariant
@@ -6578,7 +7098,14 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 	arg2 = (*C.GVariantType)(unsafe.Pointer(parameterType.Native()))
 	arg3 = (*C.GVariant)(unsafe.Pointer(state.Native()))
 
-	C.g_simple_action_new_stateful(arg1, arg2, arg3)
+	cret := new(C.GSimpleAction)
+	var goret SimpleAction
+
+	cret = C.g_simple_action_new_stateful(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SimpleAction)
+
+	return goret
 }
 
 // SetEnabled sets the action as enabled or not.
@@ -6588,7 +7115,7 @@ func NewSimpleActionStateful(name string, parameterType *glib.VariantType, state
 //
 // This should only be called by the implementor of the action. Users of the
 // action should not attempt to modify its enabled flag.
-func (s simpleAction) SetEnabled(s SimpleAction, enabled bool) {
+func (s simpleAction) SetEnabled(enabled bool) {
 	var arg0 *C.GSimpleAction
 	var arg1 C.gboolean
 
@@ -6609,7 +7136,7 @@ func (s simpleAction) SetEnabled(s SimpleAction, enabled bool) {
 // Instead, they should call g_action_change_state() to request the change.
 //
 // If the @value GVariant is floating, it is consumed.
-func (s simpleAction) SetState(s SimpleAction, value *glib.Variant) {
+func (s simpleAction) SetState(value *glib.Variant) {
 	var arg0 *C.GSimpleAction
 	var arg1 *C.GVariant
 
@@ -6623,7 +7150,7 @@ func (s simpleAction) SetState(s SimpleAction, value *glib.Variant) {
 //
 // See g_action_get_state_hint() for more information about action state
 // hints.
-func (s simpleAction) SetStateHint(s SimpleAction, stateHint *glib.Variant) {
+func (s simpleAction) SetStateHint(stateHint *glib.Variant) {
 	var arg0 *C.GSimpleAction
 	var arg1 *C.GVariant
 
@@ -6667,14 +7194,21 @@ func marshalSimpleIOStream(p uintptr) (interface{}, error) {
 }
 
 // NewSimpleIOStream constructs a class SimpleIOStream.
-func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) {
+func NewSimpleIOStream(inputStream InputStream, outputStream OutputStream) SimpleIOStream {
 	var arg1 *C.GInputStream
 	var arg2 *C.GOutputStream
 
 	arg1 = (*C.GInputStream)(unsafe.Pointer(inputStream.Native()))
 	arg2 = (*C.GOutputStream)(unsafe.Pointer(outputStream.Native()))
 
-	C.g_simple_io_stream_new(arg1, arg2)
+	cret := new(C.GSimpleIOStream)
+	var goret SimpleIOStream
+
+	cret = C.g_simple_io_stream_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SimpleIOStream)
+
+	return goret
 }
 
 // SimplePermission is a trivial implementation of #GPermission that represents
@@ -6708,14 +7242,21 @@ func marshalSimplePermission(p uintptr) (interface{}, error) {
 }
 
 // NewSimplePermission constructs a class SimplePermission.
-func NewSimplePermission(allowed bool) {
+func NewSimplePermission(allowed bool) SimplePermission {
 	var arg1 C.gboolean
 
 	if allowed {
 		arg1 = C.gboolean(1)
 	}
 
-	C.g_simple_permission_new(arg1)
+	cret := new(C.GSimplePermission)
+	var goret SimplePermission
+
+	cret = C.g_simple_permission_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SimplePermission)
+
+	return goret
 }
 
 // Subprocess allows the creation of and interaction with child processes.
@@ -6810,27 +7351,27 @@ type Subprocess interface {
 	// operation was cancelled. You should especially not attempt to interact
 	// with the pipes while the operation is in progress (either from another
 	// thread or if using the asynchronous version).
-	Communicate(s Subprocess, stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error)
+	Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error)
 	// CommunicateAsync asynchronous version of g_subprocess_communicate().
 	// Complete invocation with g_subprocess_communicate_finish().
-	CommunicateAsync(s Subprocess)
+	CommunicateAsync()
 	// CommunicateFinish: complete an invocation of
 	// g_subprocess_communicate_async().
-	CommunicateFinish(s Subprocess, result AsyncResult) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error)
+	CommunicateFinish(result AsyncResult) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error)
 	// CommunicateUTF8: like g_subprocess_communicate(), but validates the
 	// output of the process as UTF-8, and returns it as a regular NUL
 	// terminated string.
 	//
 	// On error, @stdout_buf and @stderr_buf will be set to undefined values and
 	// should not be used.
-	CommunicateUTF8(s Subprocess, stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, err error)
+	CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, err error)
 	// CommunicateUTF8Async asynchronous version of
 	// g_subprocess_communicate_utf8(). Complete invocation with
 	// g_subprocess_communicate_utf8_finish().
-	CommunicateUTF8Async(s Subprocess)
+	CommunicateUTF8Async()
 	// CommunicateUTF8Finish: complete an invocation of
 	// g_subprocess_communicate_utf8_async().
-	CommunicateUTF8Finish(s Subprocess, result AsyncResult) (stdoutBuf string, stderrBuf string, err error)
+	CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, err error)
 	// ForceExit: use an operating-system specific method to attempt an
 	// immediate, forceful termination of the process. There is no mechanism to
 	// determine whether or not the request itself was successful; however, you
@@ -6838,7 +7379,7 @@ type Subprocess interface {
 	// calling this function.
 	//
 	// On Unix, this function sends SIGKILL.
-	ForceExit(s Subprocess)
+	ForceExit()
 	// ExitStatus: check the exit status of the subprocess, given that it exited
 	// normally. This is the value passed to the exit() system call or the
 	// return value from main.
@@ -6847,11 +7388,11 @@ type Subprocess interface {
 	//
 	// It is an error to call this function before g_subprocess_wait() and
 	// unless g_subprocess_get_if_exited() returned true.
-	ExitStatus(s Subprocess)
+	ExitStatus() int
 	// Identifier: on UNIX, returns the process ID as a decimal string. On
 	// Windows, returns the result of GetProcessId() also as a string. If the
 	// subprocess has terminated, this will return nil.
-	Identifier(s Subprocess)
+	Identifier() string
 	// IfExited: check if the given subprocess exited normally (ie: by way of
 	// exit() or return from main()).
 	//
@@ -6859,7 +7400,7 @@ type Subprocess interface {
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	IfExited(s Subprocess) bool
+	IfExited() bool
 	// IfSignaled: check if the given subprocess terminated in response to a
 	// signal.
 	//
@@ -6867,7 +7408,7 @@ type Subprocess interface {
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	IfSignaled(s Subprocess) bool
+	IfSignaled() bool
 	// Status gets the raw status code of the process, as from waitpid().
 	//
 	// This value has no particular meaning, but it can be used with the macros
@@ -6879,29 +7420,32 @@ type Subprocess interface {
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	Status(s Subprocess)
+	Status() int
 	// StderrPipe gets the Stream from which to read the stderr output of
 	// @subprocess.
 	//
-	// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE.
-	StderrPipe(s Subprocess)
+	// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE,
+	// otherwise nil will be returned.
+	StderrPipe() InputStream
 	// StdinPipe gets the Stream that you can write to in order to give data to
 	// the stdin of @subprocess.
 	//
-	// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE.
-	StdinPipe(s Subprocess)
+	// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE and
+	// not G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise nil will be returned.
+	StdinPipe() OutputStream
 	// StdoutPipe gets the Stream from which to read the stdout output of
 	// @subprocess.
 	//
-	// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE.
-	StdoutPipe(s Subprocess)
+	// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+	// otherwise nil will be returned.
+	StdoutPipe() InputStream
 	// Successful checks if the process was "successful". A process is
 	// considered successful if it exited cleanly with an exit status of 0,
 	// either by way of the exit() system call or return from main().
 	//
 	// It is an error to call this function before g_subprocess_wait() has
 	// returned.
-	Successful(s Subprocess) bool
+	Successful() bool
 	// TermSig: get the signal number that caused the subprocess to terminate,
 	// given that it terminated due to a signal.
 	//
@@ -6909,7 +7453,7 @@ type Subprocess interface {
 	//
 	// It is an error to call this function before g_subprocess_wait() and
 	// unless g_subprocess_get_if_signaled() returned true.
-	TermSig(s Subprocess)
+	TermSig() int
 	// SendSignal sends the UNIX signal @signal_num to the subprocess, if it is
 	// still running.
 	//
@@ -6917,7 +7461,7 @@ type Subprocess interface {
 	// signalled.
 	//
 	// This API is not available on Windows.
-	SendSignal(s Subprocess, signalNum int)
+	SendSignal(signalNum int)
 	// Wait: synchronously wait for the subprocess to terminate.
 	//
 	// After the process terminates you can query its exit status with functions
@@ -6928,24 +7472,24 @@ type Subprocess interface {
 	//
 	// Cancelling @cancellable doesn't kill the subprocess. Call
 	// g_subprocess_force_exit() if it is desirable.
-	Wait(s Subprocess, cancellable Cancellable) error
+	Wait(cancellable Cancellable) error
 	// WaitAsync: wait for the subprocess to terminate.
 	//
 	// This is the asynchronous version of g_subprocess_wait().
-	WaitAsync(s Subprocess)
+	WaitAsync()
 	// WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
-	WaitCheck(s Subprocess, cancellable Cancellable) error
+	WaitCheck(cancellable Cancellable) error
 	// WaitCheckAsync combines g_subprocess_wait_async() with
 	// g_spawn_check_exit_status().
 	//
 	// This is the asynchronous version of g_subprocess_wait_check().
-	WaitCheckAsync(s Subprocess)
+	WaitCheckAsync()
 	// WaitCheckFinish collects the result of a previous call to
 	// g_subprocess_wait_check_async().
-	WaitCheckFinish(s Subprocess, result AsyncResult) error
+	WaitCheckFinish(result AsyncResult) error
 	// WaitFinish collects the result of a previous call to
 	// g_subprocess_wait_async().
-	WaitFinish(s Subprocess, result AsyncResult) error
+	WaitFinish(result AsyncResult) error
 }
 
 // subprocess implements the Subprocess interface.
@@ -6972,11 +7516,11 @@ func marshalSubprocess(p uintptr) (interface{}, error) {
 }
 
 // NewSubprocessV constructs a class Subprocess.
-func NewSubprocessV(argv []string, flags SubprocessFlags) error {
+func NewSubprocessV(argv []string, flags SubprocessFlags) (subprocess Subprocess, err error) {
 	var arg1 **C.gchar
 	var arg2 C.GSubprocessFlags
 
-	arg1 = C.malloc(len(argv) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(argv) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -6990,14 +7534,17 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) error {
 	}
 	arg2 = (C.GSubprocessFlags)(flags)
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GSubprocess)
+	var goret Subprocess
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_newv(arg1, arg2, &errout)
+	cret = C.g_subprocess_newv(arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Subprocess)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // Communicate: communicate with the subprocess until it terminates, and all
@@ -7040,7 +7587,7 @@ func NewSubprocessV(argv []string, flags SubprocessFlags) error {
 // operation was cancelled. You should especially not attempt to interact
 // with the pipes while the operation is in progress (either from another
 // thread or if using the asynchronous version).
-func (s subprocess) Communicate(s Subprocess, stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error) {
+func (s subprocess) Communicate(stdinBuf *glib.Bytes, cancellable Cancellable) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GBytes
 	var arg2 *C.GCancellable
@@ -7049,31 +7596,31 @@ func (s subprocess) Communicate(s Subprocess, stdinBuf *glib.Bytes, cancellable 
 	arg1 = (*C.GBytes)(unsafe.Pointer(stdinBuf.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg3 *C.GBytes
-	var stdoutBuf **glib.Bytes
-	var arg4 *C.GBytes
-	var stderrBuf **glib.Bytes
-	var errout *C.GError
-	var err error
+	arg3 := new(*C.GBytes)
+	var ret3 **glib.Bytes
+	arg4 := new(*C.GBytes)
+	var ret4 **glib.Bytes
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_communicate(arg0, arg1, arg2, &arg3, &arg4, &errout)
+	C.g_subprocess_communicate(arg0, arg1, arg2, arg3, arg4, &cerr)
 
-	stdoutBuf = glib.WrapBytes(unsafe.Pointer(&arg3))
-	runtime.SetFinalizer(stdoutBuf, func(v **glib.Bytes) {
+	ret3 = glib.WrapBytes(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(ret3, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	stderrBuf = glib.WrapBytes(unsafe.Pointer(&arg4))
-	runtime.SetFinalizer(stderrBuf, func(v **glib.Bytes) {
+	ret4 = glib.WrapBytes(unsafe.Pointer(arg4))
+	runtime.SetFinalizer(ret4, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return stdoutBuf, stderrBuf, err
+	return ret3, ret4, goerr
 }
 
 // CommunicateAsync asynchronous version of g_subprocess_communicate().
 // Complete invocation with g_subprocess_communicate_finish().
-func (s subprocess) CommunicateAsync(s Subprocess) {
+func (s subprocess) CommunicateAsync() {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
@@ -7083,33 +7630,33 @@ func (s subprocess) CommunicateAsync(s Subprocess) {
 
 // CommunicateFinish: complete an invocation of
 // g_subprocess_communicate_async().
-func (s subprocess) CommunicateFinish(s Subprocess, result AsyncResult) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error) {
+func (s subprocess) CommunicateFinish(result AsyncResult) (stdoutBuf **glib.Bytes, stderrBuf **glib.Bytes, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 *C.GBytes
-	var stdoutBuf **glib.Bytes
-	var arg3 *C.GBytes
-	var stderrBuf **glib.Bytes
-	var errout *C.GError
-	var err error
+	arg2 := new(*C.GBytes)
+	var ret2 **glib.Bytes
+	arg3 := new(*C.GBytes)
+	var ret3 **glib.Bytes
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_communicate_finish(arg0, arg1, &arg2, &arg3, &errout)
+	C.g_subprocess_communicate_finish(arg0, arg1, arg2, arg3, &cerr)
 
-	stdoutBuf = glib.WrapBytes(unsafe.Pointer(&arg2))
-	runtime.SetFinalizer(stdoutBuf, func(v **glib.Bytes) {
+	ret2 = glib.WrapBytes(unsafe.Pointer(arg2))
+	runtime.SetFinalizer(ret2, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	stderrBuf = glib.WrapBytes(unsafe.Pointer(&arg3))
-	runtime.SetFinalizer(stderrBuf, func(v **glib.Bytes) {
+	ret3 = glib.WrapBytes(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(ret3, func(v **glib.Bytes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return stdoutBuf, stderrBuf, err
+	return ret2, ret3, goerr
 }
 
 // CommunicateUTF8: like g_subprocess_communicate(), but validates the
@@ -7118,7 +7665,7 @@ func (s subprocess) CommunicateFinish(s Subprocess, result AsyncResult) (stdoutB
 //
 // On error, @stdout_buf and @stderr_buf will be set to undefined values and
 // should not be used.
-func (s subprocess) CommunicateUTF8(s Subprocess, stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, err error) {
+func (s subprocess) CommunicateUTF8(stdinBuf string, cancellable Cancellable) (stdoutBuf string, stderrBuf string, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.char
 	var arg2 *C.GCancellable
@@ -7128,28 +7675,28 @@ func (s subprocess) CommunicateUTF8(s Subprocess, stdinBuf string, cancellable C
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg3 *C.char
-	var stdoutBuf string
-	var arg4 *C.char
-	var stderrBuf string
-	var errout *C.GError
-	var err error
+	arg3 := new(*C.char)
+	var ret3 string
+	arg4 := new(*C.char)
+	var ret4 string
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_communicate_utf8(arg0, arg1, arg2, &arg3, &arg4, &errout)
+	C.g_subprocess_communicate_utf8(arg0, arg1, arg2, arg3, arg4, &cerr)
 
-	stdoutBuf = C.GoString(&arg3)
-	defer C.free(unsafe.Pointer(&arg3))
-	stderrBuf = C.GoString(&arg4)
-	defer C.free(unsafe.Pointer(&arg4))
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret3 = C.GoString(*arg3)
+	defer C.free(unsafe.Pointer(*arg3))
+	ret4 = C.GoString(*arg4)
+	defer C.free(unsafe.Pointer(*arg4))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return stdoutBuf, stderrBuf, err
+	return ret3, ret4, goerr
 }
 
 // CommunicateUTF8Async asynchronous version of
 // g_subprocess_communicate_utf8(). Complete invocation with
 // g_subprocess_communicate_utf8_finish().
-func (s subprocess) CommunicateUTF8Async(s Subprocess) {
+func (s subprocess) CommunicateUTF8Async() {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
@@ -7159,29 +7706,29 @@ func (s subprocess) CommunicateUTF8Async(s Subprocess) {
 
 // CommunicateUTF8Finish: complete an invocation of
 // g_subprocess_communicate_utf8_async().
-func (s subprocess) CommunicateUTF8Finish(s Subprocess, result AsyncResult) (stdoutBuf string, stderrBuf string, err error) {
+func (s subprocess) CommunicateUTF8Finish(result AsyncResult) (stdoutBuf string, stderrBuf string, err error) {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 *C.char
-	var stdoutBuf string
-	var arg3 *C.char
-	var stderrBuf string
-	var errout *C.GError
-	var err error
+	arg2 := new(*C.char)
+	var ret2 string
+	arg3 := new(*C.char)
+	var ret3 string
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_communicate_utf8_finish(arg0, arg1, &arg2, &arg3, &errout)
+	C.g_subprocess_communicate_utf8_finish(arg0, arg1, arg2, arg3, &cerr)
 
-	stdoutBuf = C.GoString(&arg2)
-	defer C.free(unsafe.Pointer(&arg2))
-	stderrBuf = C.GoString(&arg3)
-	defer C.free(unsafe.Pointer(&arg3))
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(*arg2)
+	defer C.free(unsafe.Pointer(*arg2))
+	ret3 = C.GoString(*arg3)
+	defer C.free(unsafe.Pointer(*arg3))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return stdoutBuf, stderrBuf, err
+	return ret2, ret3, goerr
 }
 
 // ForceExit: use an operating-system specific method to attempt an
@@ -7191,7 +7738,7 @@ func (s subprocess) CommunicateUTF8Finish(s Subprocess, result AsyncResult) (std
 // calling this function.
 //
 // On Unix, this function sends SIGKILL.
-func (s subprocess) ForceExit(s Subprocess) {
+func (s subprocess) ForceExit() {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
@@ -7207,23 +7754,37 @@ func (s subprocess) ForceExit(s Subprocess) {
 //
 // It is an error to call this function before g_subprocess_wait() and
 // unless g_subprocess_get_if_exited() returned true.
-func (s subprocess) ExitStatus(s Subprocess) {
+func (s subprocess) ExitStatus() int {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
-	C.g_subprocess_get_exit_status(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_subprocess_get_exit_status(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Identifier: on UNIX, returns the process ID as a decimal string. On
 // Windows, returns the result of GetProcessId() also as a string. If the
 // subprocess has terminated, this will return nil.
-func (s subprocess) Identifier(s Subprocess) {
+func (s subprocess) Identifier() string {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
-	C.g_subprocess_get_identifier(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_subprocess_get_identifier(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // IfExited: check if the given subprocess exited normally (ie: by way of
@@ -7233,21 +7794,21 @@ func (s subprocess) Identifier(s Subprocess) {
 //
 // It is an error to call this function before g_subprocess_wait() has
 // returned.
-func (s subprocess) IfExited(s Subprocess) bool {
+func (s subprocess) IfExited() bool {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_subprocess_get_if_exited(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IfSignaled: check if the given subprocess terminated in response to a
@@ -7257,21 +7818,21 @@ func (s subprocess) IfExited(s Subprocess) bool {
 //
 // It is an error to call this function before g_subprocess_wait() has
 // returned.
-func (s subprocess) IfSignaled(s Subprocess) bool {
+func (s subprocess) IfSignaled() bool {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_subprocess_get_if_signaled(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Status gets the raw status code of the process, as from waitpid().
@@ -7285,48 +7846,79 @@ func (s subprocess) IfSignaled(s Subprocess) bool {
 //
 // It is an error to call this function before g_subprocess_wait() has
 // returned.
-func (s subprocess) Status(s Subprocess) {
+func (s subprocess) Status() int {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
-	C.g_subprocess_get_status(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_subprocess_get_status(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // StderrPipe gets the Stream from which to read the stderr output of
 // @subprocess.
 //
-// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE.
-func (s subprocess) StderrPipe(s Subprocess) {
+// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE,
+// otherwise nil will be returned.
+func (s subprocess) StderrPipe() InputStream {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
-	C.g_subprocess_get_stderr_pipe(arg0)
+	var cret *C.GInputStream
+	var goret InputStream
+
+	cret = C.g_subprocess_get_stderr_pipe(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
+
+	return goret
 }
 
 // StdinPipe gets the Stream that you can write to in order to give data to
 // the stdin of @subprocess.
 //
-// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE.
-func (s subprocess) StdinPipe(s Subprocess) {
+// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE and
+// not G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise nil will be returned.
+func (s subprocess) StdinPipe() OutputStream {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
-	C.g_subprocess_get_stdin_pipe(arg0)
+	var cret *C.GOutputStream
+	var goret OutputStream
+
+	cret = C.g_subprocess_get_stdin_pipe(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
+
+	return goret
 }
 
 // StdoutPipe gets the Stream from which to read the stdout output of
 // @subprocess.
 //
-// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE.
-func (s subprocess) StdoutPipe(s Subprocess) {
+// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+// otherwise nil will be returned.
+func (s subprocess) StdoutPipe() InputStream {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
-	C.g_subprocess_get_stdout_pipe(arg0)
+	var cret *C.GInputStream
+	var goret InputStream
+
+	cret = C.g_subprocess_get_stdout_pipe(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
+
+	return goret
 }
 
 // Successful checks if the process was "successful". A process is
@@ -7335,21 +7927,21 @@ func (s subprocess) StdoutPipe(s Subprocess) {
 //
 // It is an error to call this function before g_subprocess_wait() has
 // returned.
-func (s subprocess) Successful(s Subprocess) bool {
+func (s subprocess) Successful() bool {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_subprocess_get_successful(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TermSig: get the signal number that caused the subprocess to terminate,
@@ -7359,12 +7951,19 @@ func (s subprocess) Successful(s Subprocess) bool {
 //
 // It is an error to call this function before g_subprocess_wait() and
 // unless g_subprocess_get_if_signaled() returned true.
-func (s subprocess) TermSig(s Subprocess) {
+func (s subprocess) TermSig() int {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 
-	C.g_subprocess_get_term_sig(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_subprocess_get_term_sig(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // SendSignal sends the UNIX signal @signal_num to the subprocess, if it is
@@ -7374,7 +7973,7 @@ func (s subprocess) TermSig(s Subprocess) {
 // signalled.
 //
 // This API is not available on Windows.
-func (s subprocess) SendSignal(s Subprocess, signalNum int) {
+func (s subprocess) SendSignal(signalNum int) {
 	var arg0 *C.GSubprocess
 	var arg1 C.gint
 
@@ -7394,27 +7993,27 @@ func (s subprocess) SendSignal(s Subprocess, signalNum int) {
 //
 // Cancelling @cancellable doesn't kill the subprocess. Call
 // g_subprocess_force_exit() if it is desirable.
-func (s subprocess) Wait(s Subprocess, cancellable Cancellable) error {
+func (s subprocess) Wait(cancellable Cancellable) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_wait(arg0, arg1, &errout)
+	C.g_subprocess_wait(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // WaitAsync: wait for the subprocess to terminate.
 //
 // This is the asynchronous version of g_subprocess_wait().
-func (s subprocess) WaitAsync(s Subprocess) {
+func (s subprocess) WaitAsync() {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
@@ -7423,28 +8022,28 @@ func (s subprocess) WaitAsync(s Subprocess) {
 }
 
 // WaitCheck combines g_subprocess_wait() with g_spawn_check_exit_status().
-func (s subprocess) WaitCheck(s Subprocess, cancellable Cancellable) error {
+func (s subprocess) WaitCheck(cancellable Cancellable) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_wait_check(arg0, arg1, &errout)
+	C.g_subprocess_wait_check(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // WaitCheckAsync combines g_subprocess_wait_async() with
 // g_spawn_check_exit_status().
 //
 // This is the asynchronous version of g_subprocess_wait_check().
-func (s subprocess) WaitCheckAsync(s Subprocess) {
+func (s subprocess) WaitCheckAsync() {
 	var arg0 *C.GSubprocess
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
@@ -7454,40 +8053,40 @@ func (s subprocess) WaitCheckAsync(s Subprocess) {
 
 // WaitCheckFinish collects the result of a previous call to
 // g_subprocess_wait_check_async().
-func (s subprocess) WaitCheckFinish(s Subprocess, result AsyncResult) error {
+func (s subprocess) WaitCheckFinish(result AsyncResult) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_wait_check_finish(arg0, arg1, &errout)
+	C.g_subprocess_wait_check_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // WaitFinish collects the result of a previous call to
 // g_subprocess_wait_async().
-func (s subprocess) WaitFinish(s Subprocess, result AsyncResult) error {
+func (s subprocess) WaitFinish(result AsyncResult) error {
 	var arg0 *C.GSubprocess
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GSubprocess)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_wait_finish(arg0, arg1, &errout)
+	C.g_subprocess_wait_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // SubprocessLauncher: this class contains a set of options for launching child
@@ -7500,12 +8099,25 @@ func (s subprocess) WaitFinish(s Subprocess, result AsyncResult) error {
 type SubprocessLauncher interface {
 	gextras.Objector
 
+	// Close closes all the file descriptors previously passed to the object
+	// with g_subprocess_launcher_take_fd(),
+	// g_subprocess_launcher_take_stderr_fd(), etc.
+	//
+	// After calling this method, any subsequent calls to
+	// g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will
+	// return G_IO_ERROR_CLOSED. This method is idempotent if called more than
+	// once.
+	//
+	// This function is called automatically when the Launcher is disposed, but
+	// is provided separately so that garbage collected language bindings can
+	// call it earlier to guarantee when FDs are closed.
+	Close()
 	// env returns the value of the environment variable @variable in the
 	// environment of processes launched from this launcher.
 	//
 	// On UNIX, the returned string can be an arbitrary byte string. On Windows,
 	// it will be UTF-8.
-	env(s SubprocessLauncher, variable string)
+	env(variable string) string
 	// SetChildSetup sets up a child setup function.
 	//
 	// The child setup function will be called after fork() but before exec() on
@@ -7518,13 +8130,13 @@ type SubprocessLauncher interface {
 	// nil can be given as @child_setup to disable the functionality.
 	//
 	// Child setup functions are only available on UNIX.
-	SetChildSetup(s SubprocessLauncher)
+	SetChildSetup()
 	// SetCwd sets the current working directory that processes will be launched
 	// with.
 	//
 	// By default processes are launched with the current working directory of
 	// the launching process at the time of launch.
-	SetCwd(s SubprocessLauncher, cwd string)
+	SetCwd(cwd string)
 	// SetEnviron: replace the entire environment of processes launched from
 	// this launcher with the given 'environ' variable.
 	//
@@ -7544,7 +8156,7 @@ type SubprocessLauncher interface {
 	//
 	// On UNIX, all strings in this array can be arbitrary byte strings. On
 	// Windows, they should be in UTF-8.
-	SetEnviron(s SubprocessLauncher, env []string)
+	SetEnviron(env []string)
 	// SetFlags sets the flags on the launcher.
 	//
 	// The default flags are G_SUBPROCESS_FLAGS_NONE.
@@ -7556,7 +8168,7 @@ type SubprocessLauncher interface {
 	// You may also not set a flag that conflicts with a previous call to a
 	// function like g_subprocess_launcher_set_stdin_file_path() or
 	// g_subprocess_launcher_take_stdout_fd().
-	SetFlags(s SubprocessLauncher, flags SubprocessFlags)
+	SetFlags(flags SubprocessFlags)
 	// SetStderrFilePath sets the file path to use as the stderr for spawned
 	// processes.
 	//
@@ -7572,7 +8184,7 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stderr elsewhere.
 	//
 	// This feature is only available on UNIX.
-	SetStderrFilePath(s SubprocessLauncher, path string)
+	SetStderrFilePath(path string)
 	// SetStdinFilePath sets the file path to use as the stdin for spawned
 	// processes.
 	//
@@ -7584,7 +8196,7 @@ type SubprocessLauncher interface {
 	// launcher flags contain any flags directing stdin elsewhere.
 	//
 	// This feature is only available on UNIX.
-	SetStdinFilePath(s SubprocessLauncher, path string)
+	SetStdinFilePath(path string)
 	// SetStdoutFilePath sets the file path to use as the stdout for spawned
 	// processes.
 	//
@@ -7597,29 +8209,29 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stdout elsewhere.
 	//
 	// This feature is only available on UNIX.
-	SetStdoutFilePath(s SubprocessLauncher, path string)
+	SetStdoutFilePath(path string)
 	// Setenv sets the environment variable @variable in the environment of
 	// processes launched from this launcher.
 	//
 	// On UNIX, both the variable's name and value can be arbitrary byte
 	// strings, except that the variable's name cannot contain '='. On Windows,
 	// they should be in UTF-8.
-	Setenv(s SubprocessLauncher, variable string, value string, overwrite bool)
+	Setenv(variable string, value string, overwrite bool)
 	// Spawnv creates a #GSubprocess given a provided array of arguments.
-	Spawnv(s SubprocessLauncher, argv []string) error
+	Spawnv(argv []string) (subprocess Subprocess, err error)
 	// TakeFd: transfer an arbitrary file descriptor from parent process to the
-	// child. This function takes "ownership" of the fd; it will be closed in
-	// the parent when @self is freed.
+	// child. This function takes ownership of the @source_fd; it will be closed
+	// in the parent when @self is freed.
 	//
 	// By default, all file descriptors from the parent will be closed. This
-	// function allows you to create (for example) a custom pipe() or
-	// socketpair() before launching the process, and choose the target
+	// function allows you to create (for example) a custom `pipe()` or
+	// `socketpair()` before launching the process, and choose the target
 	// descriptor in the child.
 	//
 	// An example use case is GNUPG, which has a command line argument
-	// --passphrase-fd providing a file descriptor number where it expects the
+	// `--passphrase-fd` providing a file descriptor number where it expects the
 	// passphrase to be written.
-	TakeFd(s SubprocessLauncher, sourceFd int, targetFd int)
+	TakeFd(sourceFd int, targetFd int)
 	// TakeStderrFd sets the file descriptor to use as the stderr for spawned
 	// processes.
 	//
@@ -7636,7 +8248,7 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stderr elsewhere.
 	//
 	// This feature is only available on UNIX.
-	TakeStderrFd(s SubprocessLauncher, fd int)
+	TakeStderrFd(fd int)
 	// TakeStdinFd sets the file descriptor to use as the stdin for spawned
 	// processes.
 	//
@@ -7656,7 +8268,7 @@ type SubprocessLauncher interface {
 	// launcher flags contain any flags directing stdin elsewhere.
 	//
 	// This feature is only available on UNIX.
-	TakeStdinFd(s SubprocessLauncher, fd int)
+	TakeStdinFd(fd int)
 	// TakeStdoutFd sets the file descriptor to use as the stdout for spawned
 	// processes.
 	//
@@ -7675,13 +8287,13 @@ type SubprocessLauncher interface {
 	// the launcher flags contain any flags directing stdout elsewhere.
 	//
 	// This feature is only available on UNIX.
-	TakeStdoutFd(s SubprocessLauncher, fd int)
+	TakeStdoutFd(fd int)
 	// Unsetenv removes the environment variable @variable from the environment
 	// of processes launched from this launcher.
 	//
 	// On UNIX, the variable's name can be an arbitrary byte string not
 	// containing '='. On Windows, it should be in UTF-8.
-	Unsetenv(s SubprocessLauncher, variable string)
+	Unsetenv(variable string)
 }
 
 // subprocessLauncher implements the SubprocessLauncher interface.
@@ -7706,12 +8318,39 @@ func marshalSubprocessLauncher(p uintptr) (interface{}, error) {
 }
 
 // NewSubprocessLauncher constructs a class SubprocessLauncher.
-func NewSubprocessLauncher(flags SubprocessFlags) {
+func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	var arg1 C.GSubprocessFlags
 
 	arg1 = (C.GSubprocessFlags)(flags)
 
-	C.g_subprocess_launcher_new(arg1)
+	cret := new(C.GSubprocessLauncher)
+	var goret SubprocessLauncher
+
+	cret = C.g_subprocess_launcher_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SubprocessLauncher)
+
+	return goret
+}
+
+// Close closes all the file descriptors previously passed to the object
+// with g_subprocess_launcher_take_fd(),
+// g_subprocess_launcher_take_stderr_fd(), etc.
+//
+// After calling this method, any subsequent calls to
+// g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will
+// return G_IO_ERROR_CLOSED. This method is idempotent if called more than
+// once.
+//
+// This function is called automatically when the Launcher is disposed, but
+// is provided separately so that garbage collected language bindings can
+// call it earlier to guarantee when FDs are closed.
+func (s subprocessLauncher) Close() {
+	var arg0 *C.GSubprocessLauncher
+
+	arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
+
+	C.g_subprocess_launcher_close(arg0)
 }
 
 // env returns the value of the environment variable @variable in the
@@ -7719,7 +8358,7 @@ func NewSubprocessLauncher(flags SubprocessFlags) {
 //
 // On UNIX, the returned string can be an arbitrary byte string. On Windows,
 // it will be UTF-8.
-func (s subprocessLauncher) env(s SubprocessLauncher, variable string) {
+func (s subprocessLauncher) env(variable string) string {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 *C.gchar
 
@@ -7727,7 +8366,14 @@ func (s subprocessLauncher) env(s SubprocessLauncher, variable string) {
 	arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_subprocess_launcher_getenv(arg0, arg1)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_subprocess_launcher_getenv(arg0, arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // SetChildSetup sets up a child setup function.
@@ -7742,7 +8388,7 @@ func (s subprocessLauncher) env(s SubprocessLauncher, variable string) {
 // nil can be given as @child_setup to disable the functionality.
 //
 // Child setup functions are only available on UNIX.
-func (s subprocessLauncher) SetChildSetup(s SubprocessLauncher) {
+func (s subprocessLauncher) SetChildSetup() {
 	var arg0 *C.GSubprocessLauncher
 
 	arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
@@ -7755,7 +8401,7 @@ func (s subprocessLauncher) SetChildSetup(s SubprocessLauncher) {
 //
 // By default processes are launched with the current working directory of
 // the launching process at the time of launch.
-func (s subprocessLauncher) SetCwd(s SubprocessLauncher, cwd string) {
+func (s subprocessLauncher) SetCwd(cwd string) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 *C.gchar
 
@@ -7785,12 +8431,12 @@ func (s subprocessLauncher) SetCwd(s SubprocessLauncher, cwd string) {
 //
 // On UNIX, all strings in this array can be arbitrary byte strings. On
 // Windows, they should be in UTF-8.
-func (s subprocessLauncher) SetEnviron(s SubprocessLauncher, env []string) {
+func (s subprocessLauncher) SetEnviron(env []string) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 **C.gchar
 
 	arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
-	arg1 = C.malloc(len(env) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(env) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -7817,7 +8463,7 @@ func (s subprocessLauncher) SetEnviron(s SubprocessLauncher, env []string) {
 // You may also not set a flag that conflicts with a previous call to a
 // function like g_subprocess_launcher_set_stdin_file_path() or
 // g_subprocess_launcher_take_stdout_fd().
-func (s subprocessLauncher) SetFlags(s SubprocessLauncher, flags SubprocessFlags) {
+func (s subprocessLauncher) SetFlags(flags SubprocessFlags) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 C.GSubprocessFlags
 
@@ -7842,7 +8488,7 @@ func (s subprocessLauncher) SetFlags(s SubprocessLauncher, flags SubprocessFlags
 // the launcher flags contain any flags directing stderr elsewhere.
 //
 // This feature is only available on UNIX.
-func (s subprocessLauncher) SetStderrFilePath(s SubprocessLauncher, path string) {
+func (s subprocessLauncher) SetStderrFilePath(path string) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 *C.gchar
 
@@ -7864,7 +8510,7 @@ func (s subprocessLauncher) SetStderrFilePath(s SubprocessLauncher, path string)
 // launcher flags contain any flags directing stdin elsewhere.
 //
 // This feature is only available on UNIX.
-func (s subprocessLauncher) SetStdinFilePath(s SubprocessLauncher, path string) {
+func (s subprocessLauncher) SetStdinFilePath(path string) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 *C.gchar
 
@@ -7887,7 +8533,7 @@ func (s subprocessLauncher) SetStdinFilePath(s SubprocessLauncher, path string) 
 // the launcher flags contain any flags directing stdout elsewhere.
 //
 // This feature is only available on UNIX.
-func (s subprocessLauncher) SetStdoutFilePath(s SubprocessLauncher, path string) {
+func (s subprocessLauncher) SetStdoutFilePath(path string) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 *C.gchar
 
@@ -7904,7 +8550,7 @@ func (s subprocessLauncher) SetStdoutFilePath(s SubprocessLauncher, path string)
 // On UNIX, both the variable's name and value can be arbitrary byte
 // strings, except that the variable's name cannot contain '='. On Windows,
 // they should be in UTF-8.
-func (s subprocessLauncher) Setenv(s SubprocessLauncher, variable string, value string, overwrite bool) {
+func (s subprocessLauncher) Setenv(variable string, value string, overwrite bool) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -7923,12 +8569,12 @@ func (s subprocessLauncher) Setenv(s SubprocessLauncher, variable string, value 
 }
 
 // Spawnv creates a #GSubprocess given a provided array of arguments.
-func (s subprocessLauncher) Spawnv(s SubprocessLauncher, argv []string) error {
+func (s subprocessLauncher) Spawnv(argv []string) (subprocess Subprocess, err error) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 **C.gchar
 
 	arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
-	arg1 = C.malloc(len(argv) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(argv) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -7941,29 +8587,32 @@ func (s subprocessLauncher) Spawnv(s SubprocessLauncher, argv []string) error {
 		}
 	}
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GSubprocess)
+	var goret Subprocess
+	var cerr *C.GError
+	var goerr error
 
-	C.g_subprocess_launcher_spawnv(arg0, arg1, &errout)
+	cret = C.g_subprocess_launcher_spawnv(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Subprocess)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // TakeFd: transfer an arbitrary file descriptor from parent process to the
-// child. This function takes "ownership" of the fd; it will be closed in
-// the parent when @self is freed.
+// child. This function takes ownership of the @source_fd; it will be closed
+// in the parent when @self is freed.
 //
 // By default, all file descriptors from the parent will be closed. This
-// function allows you to create (for example) a custom pipe() or
-// socketpair() before launching the process, and choose the target
+// function allows you to create (for example) a custom `pipe()` or
+// `socketpair()` before launching the process, and choose the target
 // descriptor in the child.
 //
 // An example use case is GNUPG, which has a command line argument
-// --passphrase-fd providing a file descriptor number where it expects the
+// `--passphrase-fd` providing a file descriptor number where it expects the
 // passphrase to be written.
-func (s subprocessLauncher) TakeFd(s SubprocessLauncher, sourceFd int, targetFd int) {
+func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 C.gint
 	var arg2 C.gint
@@ -7991,7 +8640,7 @@ func (s subprocessLauncher) TakeFd(s SubprocessLauncher, sourceFd int, targetFd 
 // the launcher flags contain any flags directing stderr elsewhere.
 //
 // This feature is only available on UNIX.
-func (s subprocessLauncher) TakeStderrFd(s SubprocessLauncher, fd int) {
+func (s subprocessLauncher) TakeStderrFd(fd int) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 C.gint
 
@@ -8020,7 +8669,7 @@ func (s subprocessLauncher) TakeStderrFd(s SubprocessLauncher, fd int) {
 // launcher flags contain any flags directing stdin elsewhere.
 //
 // This feature is only available on UNIX.
-func (s subprocessLauncher) TakeStdinFd(s SubprocessLauncher, fd int) {
+func (s subprocessLauncher) TakeStdinFd(fd int) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 C.gint
 
@@ -8048,7 +8697,7 @@ func (s subprocessLauncher) TakeStdinFd(s SubprocessLauncher, fd int) {
 // the launcher flags contain any flags directing stdout elsewhere.
 //
 // This feature is only available on UNIX.
-func (s subprocessLauncher) TakeStdoutFd(s SubprocessLauncher, fd int) {
+func (s subprocessLauncher) TakeStdoutFd(fd int) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 C.gint
 
@@ -8063,7 +8712,7 @@ func (s subprocessLauncher) TakeStdoutFd(s SubprocessLauncher, fd int) {
 //
 // On UNIX, the variable's name can be an arbitrary byte string not
 // containing '='. On Windows, it should be in UTF-8.
-func (s subprocessLauncher) Unsetenv(s SubprocessLauncher, variable string) {
+func (s subprocessLauncher) Unsetenv(variable string) {
 	var arg0 *C.GSubprocessLauncher
 	var arg1 *C.gchar
 
@@ -8150,26 +8799,26 @@ type TestDBus interface {
 
 	// AddServiceDir: add a path where dbus-daemon will look up .service files.
 	// This can't be called after g_test_dbus_up().
-	AddServiceDir(s TestDBus, path string)
+	AddServiceDir(path string)
 	// Down: stop the session bus started by g_test_dbus_up().
 	//
 	// This will wait for the singleton returned by g_bus_get() or
 	// g_bus_get_sync() to be destroyed. This is done to ensure that the next
 	// unit test won't get a leaked singleton from this test.
-	Down(s TestDBus)
+	Down()
 	// BusAddress: get the address on which dbus-daemon is running. If
 	// g_test_dbus_up() has not been called yet, nil is returned. This can be
 	// used with g_dbus_connection_new_for_address().
-	BusAddress(s TestDBus)
+	BusAddress() string
 	// Flags: get the flags of the DBus object.
-	Flags(s TestDBus)
+	Flags() TestDBusFlags
 	// Stop: stop the session bus started by g_test_dbus_up().
 	//
 	// Unlike g_test_dbus_down(), this won't verify the BusConnection singleton
 	// returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit tests
 	// wanting to verify behaviour after the session bus has been stopped can
 	// use this function but should still call g_test_dbus_down() when done.
-	Stop(s TestDBus)
+	Stop()
 	// Up: start a dbus-daemon instance and set DBUS_SESSION_BUS_ADDRESS. After
 	// this call, it is safe for unit tests to start sending messages on the
 	// session bus.
@@ -8179,7 +8828,7 @@ type TestDBus interface {
 	//
 	// If this function is called from unit test's main(), then
 	// g_test_dbus_down() must be called after g_test_run().
-	Up(s TestDBus)
+	Up()
 }
 
 // testDBus implements the TestDBus interface.
@@ -8204,17 +8853,24 @@ func marshalTestDBus(p uintptr) (interface{}, error) {
 }
 
 // NewTestDBus constructs a class TestDBus.
-func NewTestDBus(flags TestDBusFlags) {
+func NewTestDBus(flags TestDBusFlags) TestDBus {
 	var arg1 C.GTestDBusFlags
 
 	arg1 = (C.GTestDBusFlags)(flags)
 
-	C.g_test_dbus_new(arg1)
+	cret := new(C.GTestDBus)
+	var goret TestDBus
+
+	cret = C.g_test_dbus_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TestDBus)
+
+	return goret
 }
 
 // AddServiceDir: add a path where dbus-daemon will look up .service files.
 // This can't be called after g_test_dbus_up().
-func (s testDBus) AddServiceDir(s TestDBus, path string) {
+func (s testDBus) AddServiceDir(path string) {
 	var arg0 *C.GTestDBus
 	var arg1 *C.gchar
 
@@ -8230,7 +8886,7 @@ func (s testDBus) AddServiceDir(s TestDBus, path string) {
 // This will wait for the singleton returned by g_bus_get() or
 // g_bus_get_sync() to be destroyed. This is done to ensure that the next
 // unit test won't get a leaked singleton from this test.
-func (s testDBus) Down(s TestDBus) {
+func (s testDBus) Down() {
 	var arg0 *C.GTestDBus
 
 	arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
@@ -8241,21 +8897,35 @@ func (s testDBus) Down(s TestDBus) {
 // BusAddress: get the address on which dbus-daemon is running. If
 // g_test_dbus_up() has not been called yet, nil is returned. This can be
 // used with g_dbus_connection_new_for_address().
-func (s testDBus) BusAddress(s TestDBus) {
+func (s testDBus) BusAddress() string {
 	var arg0 *C.GTestDBus
 
 	arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
 
-	C.g_test_dbus_get_bus_address(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_test_dbus_get_bus_address(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Flags: get the flags of the DBus object.
-func (s testDBus) Flags(s TestDBus) {
+func (s testDBus) Flags() TestDBusFlags {
 	var arg0 *C.GTestDBus
 
 	arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
 
-	C.g_test_dbus_get_flags(arg0)
+	var cret C.GTestDBusFlags
+	var goret TestDBusFlags
+
+	cret = C.g_test_dbus_get_flags(arg0)
+
+	goret = TestDBusFlags(cret)
+
+	return goret
 }
 
 // Stop: stop the session bus started by g_test_dbus_up().
@@ -8264,7 +8934,7 @@ func (s testDBus) Flags(s TestDBus) {
 // returned by g_bus_get() or g_bus_get_sync() is destroyed. Unit tests
 // wanting to verify behaviour after the session bus has been stopped can
 // use this function but should still call g_test_dbus_down() when done.
-func (s testDBus) Stop(s TestDBus) {
+func (s testDBus) Stop() {
 	var arg0 *C.GTestDBus
 
 	arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))
@@ -8281,7 +8951,7 @@ func (s testDBus) Stop(s TestDBus) {
 //
 // If this function is called from unit test's main(), then
 // g_test_dbus_down() must be called after g_test_run().
-func (s testDBus) Up(s TestDBus) {
+func (s testDBus) Up() {
 	var arg0 *C.GTestDBus
 
 	arg0 = (*C.GTestDBus)(unsafe.Pointer(s.Native()))

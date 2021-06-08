@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,12 +46,12 @@ type UnixOutputStream interface {
 
 	// CloseFd returns whether the file descriptor of @stream will be closed
 	// when the stream is closed.
-	CloseFd(s UnixOutputStream) bool
+	CloseFd() bool
 	// Fd: return the UNIX file descriptor that the stream writes to.
-	Fd(s UnixOutputStream)
+	Fd() int
 	// SetCloseFd sets whether the file descriptor of @stream shall be closed
 	// when the stream is closed.
-	SetCloseFd(s UnixOutputStream, closeFd bool)
+	SetCloseFd(closeFd bool)
 }
 
 // unixOutputStream implements the UnixOutputStream interface.
@@ -77,7 +80,7 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 }
 
 // NewUnixOutputStream constructs a class UnixOutputStream.
-func NewUnixOutputStream(fd int, closeFd bool) {
+func NewUnixOutputStream(fd int, closeFd bool) UnixOutputStream {
 	var arg1 C.gint
 	var arg2 C.gboolean
 
@@ -86,40 +89,54 @@ func NewUnixOutputStream(fd int, closeFd bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.g_unix_output_stream_new(arg1, arg2)
+	cret := new(C.GUnixOutputStream)
+	var goret UnixOutputStream
+
+	cret = C.g_unix_output_stream_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixOutputStream)
+
+	return goret
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed
 // when the stream is closed.
-func (s unixOutputStream) CloseFd(s UnixOutputStream) bool {
+func (s unixOutputStream) CloseFd() bool {
 	var arg0 *C.GUnixOutputStream
 
 	arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_unix_output_stream_get_close_fd(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Fd: return the UNIX file descriptor that the stream writes to.
-func (s unixOutputStream) Fd(s UnixOutputStream) {
+func (s unixOutputStream) Fd() int {
 	var arg0 *C.GUnixOutputStream
 
 	arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_unix_output_stream_get_fd(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_unix_output_stream_get_fd(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // SetCloseFd sets whether the file descriptor of @stream shall be closed
 // when the stream is closed.
-func (s unixOutputStream) SetCloseFd(s UnixOutputStream, closeFd bool) {
+func (s unixOutputStream) SetCloseFd(closeFd bool) {
 	var arg0 *C.GUnixOutputStream
 	var arg1 C.gboolean
 

@@ -4,6 +4,9 @@ package gdk
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config:
@@ -54,6 +57,6 @@ func (t *TimeCoord) Flags() AxisFlags {
 // Axes gets the field inside the struct.
 func (t *TimeCoord) Axes() [12]float64 {
 	var v [12]float64
-	v = ([12]float64)(t.native.axes)
+	v = *(*[12]float64)(unsafe.Pointer(t.native.axes))
 	return v
 }

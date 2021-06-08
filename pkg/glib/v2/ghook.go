@@ -25,87 +25,6 @@ const (
 	HookFlagMaskMask HookFlagMask = 15
 )
 
-// HookDestroy destroys a #GHook, given its ID.
-func HookDestroy(hookList *HookList, hookID uint32) bool {
-	var arg1 *C.GHookList
-	var arg2 C.gulong
-
-	arg1 = (*C.GHookList)(unsafe.Pointer(hookList.Native()))
-	arg2 = C.gulong(hookID)
-
-	var cret C.gboolean
-	var ok bool
-
-	cret = C.g_hook_destroy(arg1, arg2)
-
-	if cret {
-		ok = true
-	}
-
-	return ok
-}
-
-// HookDestroyLink removes one #GHook from a List, marking it inactive and
-// calling g_hook_unref() on it.
-func HookDestroyLink(hookList *HookList, hook *Hook) {
-	var arg1 *C.GHookList
-	var arg2 *C.GHook
-
-	arg1 = (*C.GHookList)(unsafe.Pointer(hookList.Native()))
-	arg2 = (*C.GHook)(unsafe.Pointer(hook.Native()))
-
-	C.g_hook_destroy_link(arg1, arg2)
-}
-
-// HookFree calls the List @finalize_hook function if it exists, and frees the
-// memory allocated for the #GHook.
-func HookFree(hookList *HookList, hook *Hook) {
-	var arg1 *C.GHookList
-	var arg2 *C.GHook
-
-	arg1 = (*C.GHookList)(unsafe.Pointer(hookList.Native()))
-	arg2 = (*C.GHook)(unsafe.Pointer(hook.Native()))
-
-	C.g_hook_free(arg1, arg2)
-}
-
-// HookInsertBefore inserts a #GHook into a List, before a given #GHook.
-func HookInsertBefore(hookList *HookList, sibling *Hook, hook *Hook) {
-	var arg1 *C.GHookList
-	var arg2 *C.GHook
-	var arg3 *C.GHook
-
-	arg1 = (*C.GHookList)(unsafe.Pointer(hookList.Native()))
-	arg2 = (*C.GHook)(unsafe.Pointer(sibling.Native()))
-	arg3 = (*C.GHook)(unsafe.Pointer(hook.Native()))
-
-	C.g_hook_insert_before(arg1, arg2, arg3)
-}
-
-// HookPrepend prepends a #GHook on the start of a List.
-func HookPrepend(hookList *HookList, hook *Hook) {
-	var arg1 *C.GHookList
-	var arg2 *C.GHook
-
-	arg1 = (*C.GHookList)(unsafe.Pointer(hookList.Native()))
-	arg2 = (*C.GHook)(unsafe.Pointer(hook.Native()))
-
-	C.g_hook_prepend(arg1, arg2)
-}
-
-// HookUnref decrements the reference count of a #GHook. If the reference count
-// falls to 0, the #GHook is removed from the List and g_hook_free() is called
-// to free it.
-func HookUnref(hookList *HookList, hook *Hook) {
-	var arg1 *C.GHookList
-	var arg2 *C.GHook
-
-	arg1 = (*C.GHookList)(unsafe.Pointer(hookList.Native()))
-	arg2 = (*C.GHook)(unsafe.Pointer(hook.Native()))
-
-	C.g_hook_unref(arg1, arg2)
-}
-
 // Hook: the #GHook struct represents a single hook function in a List.
 type Hook struct {
 	native C.GHook
@@ -182,14 +101,21 @@ func (h *Hook) Func() interface{} {
 
 // CompareIds compares the ids of two #GHook elements, returning a negative
 // value if the second id is greater than the first.
-func (n *Hook) CompareIds(n *Hook, sibling *Hook) {
+func (n *Hook) CompareIds(sibling *Hook) int {
 	var arg0 *C.GHook
 	var arg1 *C.GHook
 
 	arg0 = (*C.GHook)(unsafe.Pointer(n.Native()))
 	arg1 = (*C.GHook)(unsafe.Pointer(sibling.Native()))
 
-	C.g_hook_compare_ids(arg0, arg1)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_hook_compare_ids(arg0, arg1)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // HookList: the List struct represents a list of hook functions.
@@ -241,12 +167,12 @@ func (h *HookList) Dummy3() interface{} {
 // Dummy gets the field inside the struct.
 func (h *HookList) Dummy() [2]interface{} {
 	var v [2]interface{}
-	v = ([2]interface{})(h.native.dummy)
+	v = *(*[2]interface{})(unsafe.Pointer(h.native.dummy))
 	return v
 }
 
 // Clear removes all the #GHook elements from a List.
-func (h *HookList) Clear(h *HookList) {
+func (h *HookList) Clear() {
 	var arg0 *C.GHookList
 
 	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
@@ -255,7 +181,7 @@ func (h *HookList) Clear(h *HookList) {
 }
 
 // Init initializes a List. This must be called before the List is used.
-func (h *HookList) Init(h *HookList, hookSize uint) {
+func (h *HookList) Init(hookSize uint) {
 	var arg0 *C.GHookList
 	var arg1 C.guint
 
@@ -266,7 +192,7 @@ func (h *HookList) Init(h *HookList, hookSize uint) {
 }
 
 // Invoke calls all of the #GHook functions in a List.
-func (h *HookList) Invoke(h *HookList, mayRecurse bool) {
+func (h *HookList) Invoke(mayRecurse bool) {
 	var arg0 *C.GHookList
 	var arg1 C.gboolean
 
@@ -280,7 +206,7 @@ func (h *HookList) Invoke(h *HookList, mayRecurse bool) {
 
 // InvokeCheck calls all of the #GHook functions in a List. Any function which
 // returns false is removed from the List.
-func (h *HookList) InvokeCheck(h *HookList, mayRecurse bool) {
+func (h *HookList) InvokeCheck(mayRecurse bool) {
 	var arg0 *C.GHookList
 	var arg1 C.gboolean
 
@@ -293,7 +219,7 @@ func (h *HookList) InvokeCheck(h *HookList, mayRecurse bool) {
 }
 
 // Marshal calls a function on each valid #GHook.
-func (h *HookList) Marshal(h *HookList) {
+func (h *HookList) Marshal() {
 	var arg0 *C.GHookList
 
 	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
@@ -303,7 +229,7 @@ func (h *HookList) Marshal(h *HookList) {
 
 // MarshalCheck calls a function on each valid #GHook and destroys it if the
 // function returns false.
-func (h *HookList) MarshalCheck(h *HookList) {
+func (h *HookList) MarshalCheck() {
 	var arg0 *C.GHookList
 
 	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))

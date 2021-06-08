@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,8 +42,18 @@ func marshalTriangle(p uintptr) (interface{}, error) {
 }
 
 // NewTriangleAlloc constructs a struct Triangle.
-func NewTriangleAlloc() {
-	C.graphene_triangle_alloc()
+func NewTriangleAlloc() *Triangle {
+	cret := new(C.graphene_triangle_t)
+	var goret *Triangle
+
+	cret = C.graphene_triangle_alloc()
+
+	goret = WrapTriangle(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Triangle) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -51,7 +62,7 @@ func (t *Triangle) Native() unsafe.Pointer {
 }
 
 // ContainsPoint checks whether the given triangle @t contains the point @p.
-func (t *Triangle) ContainsPoint(t *Triangle, p *Point3D) bool {
+func (t *Triangle) ContainsPoint(p *Point3D) bool {
 	var arg0 *C.graphene_triangle_t
 	var arg1 *C.graphene_point3d_t
 
@@ -59,19 +70,19 @@ func (t *Triangle) ContainsPoint(t *Triangle, p *Point3D) bool {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_triangle_contains_point(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Equal checks whether the two given #graphene_triangle_t are equal.
-func (a *Triangle) Equal(a *Triangle, b *Triangle) bool {
+func (a *Triangle) Equal(b *Triangle) bool {
 	var arg0 *C.graphene_triangle_t
 	var arg1 *C.graphene_triangle_t
 
@@ -79,19 +90,19 @@ func (a *Triangle) Equal(a *Triangle, b *Triangle) bool {
 	arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_triangle_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees the resources allocated by graphene_triangle_alloc().
-func (t *Triangle) Free(t *Triangle) {
+func (t *Triangle) Free() {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
@@ -100,12 +111,19 @@ func (t *Triangle) Free(t *Triangle) {
 }
 
 // Area computes the area of the given #graphene_triangle_t.
-func (t *Triangle) Area(t *Triangle) {
+func (t *Triangle) Area() float32 {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	C.graphene_triangle_get_area(arg0)
+	var cret C.float
+	var goret float32
+
+	cret = C.graphene_triangle_get_area(arg0)
+
+	goret = float32(cret)
+
+	return goret
 }
 
 // Barycoords computes the barycentric coordinates
@@ -125,42 +143,42 @@ func (t *Triangle) Area(t *Triangle) {
 //
 //    - `res.x = u`
 //    - `res.y = v`
-func (t *Triangle) Barycoords(t *Triangle, p *Point3D) (res *Vec2, ok bool) {
+func (t *Triangle) Barycoords(p *Point3D) (res *Vec2, ok bool) {
 	var arg0 *C.graphene_triangle_t
 	var arg1 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
-	cret = C.graphene_triangle_get_barycoords(arg0, arg1, &arg2)
+	cret = C.graphene_triangle_get_barycoords(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return res, ok
+	return ret2, goret
 }
 
 // BoundingBox computes the bounding box of the given #graphene_triangle_t.
-func (t *Triangle) BoundingBox(t *Triangle) *Box {
+func (t *Triangle) BoundingBox() *Box {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var arg1 C.graphene_box_t
-	var res *Box
+	arg1 := new(C.graphene_box_t)
+	var ret1 *Box
 
-	C.graphene_triangle_get_bounding_box(arg0, &arg1)
+	C.graphene_triangle_get_bounding_box(arg0, arg1)
 
-	res = WrapBox(unsafe.Pointer(&arg1))
+	ret1 = WrapBox(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Midpoint computes the coordinates of the midpoint of the given
@@ -169,75 +187,75 @@ func (t *Triangle) BoundingBox(t *Triangle) *Box {
 // The midpoint G is the centroid
 // (https://en.wikipedia.org/wiki/Centroid#Triangle_centroid) of the triangle,
 // i.e. the intersection of its medians.
-func (t *Triangle) Midpoint(t *Triangle) *Point3D {
+func (t *Triangle) Midpoint() *Point3D {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var arg1 C.graphene_point3d_t
-	var res *Point3D
+	arg1 := new(C.graphene_point3d_t)
+	var ret1 *Point3D
 
-	C.graphene_triangle_get_midpoint(arg0, &arg1)
+	C.graphene_triangle_get_midpoint(arg0, arg1)
 
-	res = WrapPoint3D(unsafe.Pointer(&arg1))
+	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Normal computes the normal vector of the given #graphene_triangle_t.
-func (t *Triangle) Normal(t *Triangle) *Vec3 {
+func (t *Triangle) Normal() *Vec3 {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var arg1 C.graphene_vec3_t
-	var res *Vec3
+	arg1 := new(C.graphene_vec3_t)
+	var ret1 *Vec3
 
-	C.graphene_triangle_get_normal(arg0, &arg1)
+	C.graphene_triangle_get_normal(arg0, arg1)
 
-	res = WrapVec3(unsafe.Pointer(&arg1))
+	ret1 = WrapVec3(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Plane computes the plane based on the vertices of the given
 // #graphene_triangle_t.
-func (t *Triangle) Plane(t *Triangle) *Plane {
+func (t *Triangle) Plane() *Plane {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var arg1 C.graphene_plane_t
-	var res *Plane
+	arg1 := new(C.graphene_plane_t)
+	var ret1 *Plane
 
-	C.graphene_triangle_get_plane(arg0, &arg1)
+	C.graphene_triangle_get_plane(arg0, arg1)
 
-	res = WrapPlane(unsafe.Pointer(&arg1))
+	ret1 = WrapPlane(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Points retrieves the three vertices of the given #graphene_triangle_t and
 // returns their coordinates as #graphene_point3d_t.
-func (t *Triangle) Points(t *Triangle) (a *Point3D, b *Point3D, c *Point3D) {
+func (t *Triangle) Points() (a *Point3D, b *Point3D, c *Point3D) {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var arg1 C.graphene_point3d_t
-	var a *Point3D
-	var arg2 C.graphene_point3d_t
-	var b *Point3D
-	var arg3 C.graphene_point3d_t
-	var c *Point3D
+	arg1 := new(C.graphene_point3d_t)
+	var ret1 *Point3D
+	arg2 := new(C.graphene_point3d_t)
+	var ret2 *Point3D
+	arg3 := new(C.graphene_point3d_t)
+	var ret3 *Point3D
 
-	C.graphene_triangle_get_points(arg0, &arg1, &arg2, &arg3)
+	C.graphene_triangle_get_points(arg0, arg1, arg2, arg3)
 
-	a = WrapPoint3D(unsafe.Pointer(&arg1))
-	b = WrapPoint3D(unsafe.Pointer(&arg2))
-	c = WrapPoint3D(unsafe.Pointer(&arg3))
+	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
+	ret2 = WrapPoint3D(unsafe.Pointer(arg2))
+	ret3 = WrapPoint3D(unsafe.Pointer(arg3))
 
-	return a, b, c
+	return ret1, ret2, ret3
 }
 
 // Uv computes the UV coordinates of the given point @p.
@@ -252,7 +270,7 @@ func (t *Triangle) Points(t *Triangle) (a *Point3D, b *Point3D, c *Point3D) {
 //    - `res.y = v`
 //
 // See also: graphene_triangle_get_barycoords()
-func (t *Triangle) Uv(t *Triangle, p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (res *Vec2, ok bool) {
+func (t *Triangle) Uv(p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) (res *Vec2, ok bool) {
 	var arg0 *C.graphene_triangle_t
 	var arg1 *C.graphene_point3d_t
 	var arg2 *C.graphene_vec2_t
@@ -265,66 +283,73 @@ func (t *Triangle) Uv(t *Triangle, p *Point3D, uvA *Vec2, uvB *Vec2, uvC *Vec2) 
 	arg3 = (*C.graphene_vec2_t)(unsafe.Pointer(uvB.Native()))
 	arg4 = (*C.graphene_vec2_t)(unsafe.Pointer(uvC.Native()))
 
-	var arg5 C.graphene_vec2_t
-	var res *Vec2
+	arg5 := new(C.graphene_vec2_t)
+	var ret5 *Vec2
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
-	cret = C.graphene_triangle_get_uv(arg0, arg1, arg2, arg3, arg4, &arg5)
+	cret = C.graphene_triangle_get_uv(arg0, arg1, arg2, arg3, arg4, arg5)
 
-	res = WrapVec2(unsafe.Pointer(&arg5))
+	ret5 = WrapVec2(unsafe.Pointer(arg5))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return res, ok
+	return ret5, goret
 }
 
 // Vertices retrieves the three vertices of the given #graphene_triangle_t.
-func (t *Triangle) Vertices(t *Triangle) (a *Vec3, b *Vec3, c *Vec3) {
+func (t *Triangle) Vertices() (a *Vec3, b *Vec3, c *Vec3) {
 	var arg0 *C.graphene_triangle_t
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var arg1 C.graphene_vec3_t
-	var a *Vec3
-	var arg2 C.graphene_vec3_t
-	var b *Vec3
-	var arg3 C.graphene_vec3_t
-	var c *Vec3
+	arg1 := new(C.graphene_vec3_t)
+	var ret1 *Vec3
+	arg2 := new(C.graphene_vec3_t)
+	var ret2 *Vec3
+	arg3 := new(C.graphene_vec3_t)
+	var ret3 *Vec3
 
-	C.graphene_triangle_get_vertices(arg0, &arg1, &arg2, &arg3)
+	C.graphene_triangle_get_vertices(arg0, arg1, arg2, arg3)
 
-	a = WrapVec3(unsafe.Pointer(&arg1))
-	b = WrapVec3(unsafe.Pointer(&arg2))
-	c = WrapVec3(unsafe.Pointer(&arg3))
+	ret1 = WrapVec3(unsafe.Pointer(arg1))
+	ret2 = WrapVec3(unsafe.Pointer(arg2))
+	ret3 = WrapVec3(unsafe.Pointer(arg3))
 
-	return a, b, c
+	return ret1, ret2, ret3
 }
 
 // InitFromFloat initializes a #graphene_triangle_t using the three given arrays
 // of floating point values, each representing the coordinates of a point in 3D
 // space.
-func (t *Triangle) InitFromFloat(t *Triangle, a [3]float32, b [3]float32, c [3]float32) {
+func (t *Triangle) InitFromFloat(a [3]float32, b [3]float32, c [3]float32) *Triangle {
 	var arg0 *C.graphene_triangle_t
 	var arg1 *C.float
 	var arg2 *C.float
 	var arg3 *C.float
 
 	arg0 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.float)(&a)
+	arg1 = (*C.float)(unsafe.Pointer(&a))
 	defer runtime.KeepAlive(&arg1)
-	arg2 = (*C.float)(&b)
+	arg2 = (*C.float)(unsafe.Pointer(&b))
 	defer runtime.KeepAlive(&arg2)
-	arg3 = (*C.float)(&c)
+	arg3 = (*C.float)(unsafe.Pointer(&c))
 	defer runtime.KeepAlive(&arg3)
 
-	C.graphene_triangle_init_from_float(arg0, arg1, arg2, arg3)
+	var cret *C.graphene_triangle_t
+	var goret *Triangle
+
+	cret = C.graphene_triangle_init_from_float(arg0, arg1, arg2, arg3)
+
+	goret = WrapTriangle(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromPoint3D initializes a #graphene_triangle_t using the three given 3D
 // points.
-func (t *Triangle) InitFromPoint3D(t *Triangle, a *Point3D, b *Point3D, c *Point3D) {
+func (t *Triangle) InitFromPoint3D(a *Point3D, b *Point3D, c *Point3D) *Triangle {
 	var arg0 *C.graphene_triangle_t
 	var arg1 *C.graphene_point3d_t
 	var arg2 *C.graphene_point3d_t
@@ -335,12 +360,19 @@ func (t *Triangle) InitFromPoint3D(t *Triangle, a *Point3D, b *Point3D, c *Point
 	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 	arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(c.Native()))
 
-	C.graphene_triangle_init_from_point3d(arg0, arg1, arg2, arg3)
+	var cret *C.graphene_triangle_t
+	var goret *Triangle
+
+	cret = C.graphene_triangle_init_from_point3d(arg0, arg1, arg2, arg3)
+
+	goret = WrapTriangle(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromVec3 initializes a #graphene_triangle_t using the three given
 // vectors.
-func (t *Triangle) InitFromVec3(t *Triangle, a *Vec3, b *Vec3, c *Vec3) {
+func (t *Triangle) InitFromVec3(a *Vec3, b *Vec3, c *Vec3) *Triangle {
 	var arg0 *C.graphene_triangle_t
 	var arg1 *C.graphene_vec3_t
 	var arg2 *C.graphene_vec3_t
@@ -351,5 +383,12 @@ func (t *Triangle) InitFromVec3(t *Triangle, a *Vec3, b *Vec3, c *Vec3) {
 	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(b.Native()))
 	arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(c.Native()))
 
-	C.graphene_triangle_init_from_vec3(arg0, arg1, arg2, arg3)
+	var cret *C.graphene_triangle_t
+	var goret *Triangle
+
+	cret = C.graphene_triangle_init_from_vec3(arg0, arg1, arg2, arg3)
+
+	goret = WrapTriangle(unsafe.Pointer(cret))
+
+	return goret
 }

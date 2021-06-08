@@ -18,16 +18,19 @@ func init() {
 	})
 }
 
-// ShortcutsSection: a GtkShortcutsSection collects all the keyboard shortcuts
-// and gestures for a major application mode. If your application needs multiple
-// sections, you should give each section a unique ShortcutsSection:section-name
-// and a ShortcutsSection:title that can be shown in the section selector of the
-// GtkShortcutsWindow.
+// ShortcutsSection: a `GtkShortcutsSection` collects all the keyboard shortcuts
+// and gestures for a major application mode.
 //
-// The ShortcutsSection:max-height property can be used to influence how the
-// groups in the section are distributed over pages and columns.
+// If your application needs multiple sections, you should give each section a
+// unique [property@Gtk.ShortcutsSection:section-name] and a
+// [property@Gtk.ShortcutsSection:title] that can be shown in the section
+// selector of the [class@Gtk.ShortcutsWindow].
 //
-// This widget is only meant to be used with ShortcutsWindow.
+// The [property@Gtk.ShortcutsSection:max-height] property can be used to
+// influence how the groups in the section are distributed over pages and
+// columns.
+//
+// This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
 type ShortcutsSection interface {
 	Box
 	Accessible

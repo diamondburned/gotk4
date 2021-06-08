@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,14 +21,15 @@ func init() {
 	})
 }
 
-// DragIcon: gtkDragIcon is a Root implementation with the sole purpose to serve
-// as a drag icon during DND operations. A drag icon moves with the pointer
-// during a drag operation and is destroyed when the drag ends.
+// DragIcon: `GtkDragIcon` is a `GtkRoot` implementation for drag icons.
+//
+// A drag icon moves with the pointer during a Drag-and-Drop operation and is
+// destroyed when the drag ends.
 //
 // To set up a drag icon and associate it with an ongoing drag operation, use
-// gtk_drag_icon_get_for_drag() to get the icon for a drag. You can then use it
-// like any other widget and use gtk_drag_icon_set_child() to set whatever
-// widget should be used for the drag icon.
+// [func@Gtk.DragIcon.get_for_drag] to get the icon for a drag. You can then use
+// it like any other widget and use [method@Gtk.DragIcon.set_child] to set
+// whatever widget should be used for the drag icon.
 //
 // Keep in mind that drag icons do not allow user input.
 type DragIcon interface {
@@ -37,9 +41,9 @@ type DragIcon interface {
 	Root
 
 	// Child gets the widget currently used as drag icon.
-	Child(s DragIcon)
+	Child() Widget
 	// SetChild sets the widget to display as the drag icon.
-	SetChild(s DragIcon, child Widget)
+	SetChild(child Widget)
 }
 
 // dragIcon implements the DragIcon interface.
@@ -74,16 +78,23 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 }
 
 // Child gets the widget currently used as drag icon.
-func (s dragIcon) Child(s DragIcon) {
+func (s dragIcon) Child() Widget {
 	var arg0 *C.GtkDragIcon
 
 	arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
 
-	C.gtk_drag_icon_get_child(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_drag_icon_get_child(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // SetChild sets the widget to display as the drag icon.
-func (s dragIcon) SetChild(s DragIcon, child Widget) {
+func (s dragIcon) SetChild(child Widget) {
 	var arg0 *C.GtkDragIcon
 	var arg1 *C.GtkWidget
 

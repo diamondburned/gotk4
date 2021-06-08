@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,33 +58,33 @@ type AppChooserButton interface {
 	// AppChooserButton::custom-item-activated signal, to add a callback for the
 	// activation of a particular custom item in the list. See also
 	// gtk_app_chooser_button_append_separator().
-	AppendCustomItem(s AppChooserButton, name string, label string, icon gio.Icon)
+	AppendCustomItem(name string, label string, icon gio.Icon)
 	// AppendSeparator appends a separator to the list of applications that is
 	// shown in the popup.
-	AppendSeparator(s AppChooserButton)
+	AppendSeparator()
 	// Heading returns the text to display at the top of the dialog.
-	Heading(s AppChooserButton)
+	Heading() string
 	// ShowDefaultItem returns the current value of the
 	// AppChooserButton:show-default-item property.
-	ShowDefaultItem(s AppChooserButton) bool
+	ShowDefaultItem() bool
 	// ShowDialogItem returns the current value of the
 	// AppChooserButton:show-dialog-item property.
-	ShowDialogItem(s AppChooserButton) bool
+	ShowDialogItem() bool
 	// SetActiveCustomItem selects a custom item previously added with
 	// gtk_app_chooser_button_append_custom_item().
 	//
 	// Use gtk_app_chooser_refresh() to bring the selection to its initial
 	// state.
-	SetActiveCustomItem(s AppChooserButton, name string)
+	SetActiveCustomItem(name string)
 	// SetHeading sets the text to display at the top of the dialog. If the
 	// heading is not set, the dialog displays a default text.
-	SetHeading(s AppChooserButton, heading string)
+	SetHeading(heading string)
 	// SetShowDefaultItem sets whether the dropdown menu of this button should
 	// show the default application for the given content type at top.
-	SetShowDefaultItem(s AppChooserButton, setting bool)
+	SetShowDefaultItem(setting bool)
 	// SetShowDialogItem sets whether the dropdown menu of this button should
 	// show an entry to trigger a AppChooserDialog.
-	SetShowDialogItem(s AppChooserButton, setting bool)
+	SetShowDialogItem(setting bool)
 }
 
 // appChooserButton implements the AppChooserButton interface.
@@ -113,13 +117,20 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 }
 
 // NewAppChooserButton constructs a class AppChooserButton.
-func NewAppChooserButton(contentType string) {
+func NewAppChooserButton(contentType string) AppChooserButton {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(contentType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_app_chooser_button_new(arg1)
+	var cret C.GtkAppChooserButton
+	var goret AppChooserButton
+
+	cret = C.gtk_app_chooser_button_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
+
+	return goret
 }
 
 // AppendCustomItem appends a custom item to the list of applications that
@@ -128,7 +139,7 @@ func NewAppChooserButton(contentType string) {
 // AppChooserButton::custom-item-activated signal, to add a callback for the
 // activation of a particular custom item in the list. See also
 // gtk_app_chooser_button_append_separator().
-func (s appChooserButton) AppendCustomItem(s AppChooserButton, name string, label string, icon gio.Icon) {
+func (s appChooserButton) AppendCustomItem(name string, label string, icon gio.Icon) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -146,7 +157,7 @@ func (s appChooserButton) AppendCustomItem(s AppChooserButton, name string, labe
 
 // AppendSeparator appends a separator to the list of applications that is
 // shown in the popup.
-func (s appChooserButton) AppendSeparator(s AppChooserButton) {
+func (s appChooserButton) AppendSeparator() {
 	var arg0 *C.GtkAppChooserButton
 
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
@@ -155,50 +166,57 @@ func (s appChooserButton) AppendSeparator(s AppChooserButton) {
 }
 
 // Heading returns the text to display at the top of the dialog.
-func (s appChooserButton) Heading(s AppChooserButton) {
+func (s appChooserButton) Heading() string {
 	var arg0 *C.GtkAppChooserButton
 
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
-	C.gtk_app_chooser_button_get_heading(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_app_chooser_button_get_heading(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ShowDefaultItem returns the current value of the
 // AppChooserButton:show-default-item property.
-func (s appChooserButton) ShowDefaultItem(s AppChooserButton) bool {
+func (s appChooserButton) ShowDefaultItem() bool {
 	var arg0 *C.GtkAppChooserButton
 
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_app_chooser_button_get_show_default_item(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ShowDialogItem returns the current value of the
 // AppChooserButton:show-dialog-item property.
-func (s appChooserButton) ShowDialogItem(s AppChooserButton) bool {
+func (s appChooserButton) ShowDialogItem() bool {
 	var arg0 *C.GtkAppChooserButton
 
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_app_chooser_button_get_show_dialog_item(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetActiveCustomItem selects a custom item previously added with
@@ -206,7 +224,7 @@ func (s appChooserButton) ShowDialogItem(s AppChooserButton) bool {
 //
 // Use gtk_app_chooser_refresh() to bring the selection to its initial
 // state.
-func (s appChooserButton) SetActiveCustomItem(s AppChooserButton, name string) {
+func (s appChooserButton) SetActiveCustomItem(name string) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 *C.gchar
 
@@ -219,7 +237,7 @@ func (s appChooserButton) SetActiveCustomItem(s AppChooserButton, name string) {
 
 // SetHeading sets the text to display at the top of the dialog. If the
 // heading is not set, the dialog displays a default text.
-func (s appChooserButton) SetHeading(s AppChooserButton, heading string) {
+func (s appChooserButton) SetHeading(heading string) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 *C.gchar
 
@@ -232,7 +250,7 @@ func (s appChooserButton) SetHeading(s AppChooserButton, heading string) {
 
 // SetShowDefaultItem sets whether the dropdown menu of this button should
 // show the default application for the given content type at top.
-func (s appChooserButton) SetShowDefaultItem(s AppChooserButton, setting bool) {
+func (s appChooserButton) SetShowDefaultItem(setting bool) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 C.gboolean
 
@@ -246,7 +264,7 @@ func (s appChooserButton) SetShowDefaultItem(s AppChooserButton, setting bool) {
 
 // SetShowDialogItem sets whether the dropdown menu of this button should
 // show an entry to trigger a AppChooserDialog.
-func (s appChooserButton) SetShowDialogItem(s AppChooserButton, setting bool) {
+func (s appChooserButton) SetShowDialogItem(setting bool) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 C.gboolean
 

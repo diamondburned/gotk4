@@ -2,6 +2,10 @@
 
 package gtk
 
+import (
+	"unsafe"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -42,15 +46,15 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 	arg2 = (C.GtkAccessibleProperty)(property)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_test_accessible_has_property(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestAccessibleHasRelation checks whether the Accessible has @relation set.
@@ -62,15 +66,15 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 	arg2 = (C.GtkAccessibleRelation)(relation)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_test_accessible_has_relation(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestAccessibleHasRole checks whether the Accessible:accessible-role of the
@@ -83,15 +87,15 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 	arg2 = (C.GtkAccessibleRole)(role)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_test_accessible_has_role(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestAccessibleHasState checks whether the Accessible has @state set.
@@ -103,13 +107,13 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 	arg2 = (C.GtkAccessibleState)(state)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_test_accessible_has_state(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,7 +35,7 @@ func init() {
 // interface is a subset of the interface SocketConnectable.
 type SocketConnectableOverrider interface {
 	// Enumerate creates a AddressEnumerator for @connectable.
-	Enumerate(c SocketConnectable)
+	Enumerate() SocketAddressEnumerator
 	// ProxyEnumerate creates a AddressEnumerator for @connectable that will
 	// return a Address for each of its addresses that you must connect to via a
 	// proxy.
@@ -40,7 +43,7 @@ type SocketConnectableOverrider interface {
 	// If @connectable does not implement
 	// g_socket_connectable_proxy_enumerate(), this will fall back to calling
 	// g_socket_connectable_enumerate().
-	ProxyEnumerate(c SocketConnectable)
+	ProxyEnumerate() SocketAddressEnumerator
 	// String: format a Connectable as a string. This is a human-readable format
 	// for use in debugging output, and is not a stable serialization format. It
 	// is not suitable for use in user interfaces as it exposes too much
@@ -48,7 +51,7 @@ type SocketConnectableOverrider interface {
 	//
 	// If the Connectable implementation does not support string formatting, the
 	// implementation’s type name will be returned as a fallback.
-	String(c SocketConnectable)
+	String() string
 }
 
 // SocketConnectable objects that describe one or more potential socket
@@ -132,12 +135,19 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 }
 
 // Enumerate creates a AddressEnumerator for @connectable.
-func (c socketConnectable) Enumerate(c SocketConnectable) {
+func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 	var arg0 *C.GSocketConnectable
 
 	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
-	C.g_socket_connectable_enumerate(arg0)
+	cret := new(C.GSocketAddressEnumerator)
+	var goret SocketAddressEnumerator
+
+	cret = C.g_socket_connectable_enumerate(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
+
+	return goret
 }
 
 // ProxyEnumerate creates a AddressEnumerator for @connectable that will
@@ -147,12 +157,19 @@ func (c socketConnectable) Enumerate(c SocketConnectable) {
 // If @connectable does not implement
 // g_socket_connectable_proxy_enumerate(), this will fall back to calling
 // g_socket_connectable_enumerate().
-func (c socketConnectable) ProxyEnumerate(c SocketConnectable) {
+func (c socketConnectable) ProxyEnumerate() SocketAddressEnumerator {
 	var arg0 *C.GSocketConnectable
 
 	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
-	C.g_socket_connectable_proxy_enumerate(arg0)
+	cret := new(C.GSocketAddressEnumerator)
+	var goret SocketAddressEnumerator
+
+	cret = C.g_socket_connectable_proxy_enumerate(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
+
+	return goret
 }
 
 // String: format a Connectable as a string. This is a human-readable format
@@ -162,10 +179,18 @@ func (c socketConnectable) ProxyEnumerate(c SocketConnectable) {
 //
 // If the Connectable implementation does not support string formatting, the
 // implementation’s type name will be returned as a fallback.
-func (c socketConnectable) String(c SocketConnectable) {
+func (c socketConnectable) String() string {
 	var arg0 *C.GSocketConnectable
 
 	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
-	C.g_socket_connectable_to_string(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_socket_connectable_to_string(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

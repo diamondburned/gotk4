@@ -3,7 +3,11 @@
 package pango
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,7 +26,7 @@ func init() {
 
 // FontsetForeachFunc: callback used by pango_fontset_foreach() when enumerating
 // fonts in a fontset.
-type FontsetForeachFunc func(fontset Fontset, font Font) bool
+type FontsetForeachFunc func() (ok bool)
 
 //export gotk4_FontsetForeachFunc
 func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gpointer) C.gboolean {
@@ -32,13 +36,11 @@ func gotk4_FontsetForeachFunc(arg0 *C.PangoFontset, arg1 *C.PangoFont, arg2 C.gp
 	}
 
 	fn := v.(FontsetForeachFunc)
-	ret := fn(fontset, font, userData)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
 // Fontset: a `PangoFontset` represents a set of `PangoFont` to use when
@@ -55,12 +57,12 @@ type Fontset interface {
 	// each one.
 	//
 	// If @func returns true, that stops the iteration.
-	Foreach(f Fontset)
+	Foreach()
 	// Font returns the font in the fontset that contains the best glyph for a
 	// Unicode character.
-	Font(f Fontset, wc uint)
+	Font(wc uint) Font
 	// Metrics: get overall metric information for the fonts in the fontset.
-	Metrics(f Fontset)
+	Metrics() *FontMetrics
 }
 
 // fontset implements the Fontset interface.
@@ -88,7 +90,7 @@ func marshalFontset(p uintptr) (interface{}, error) {
 // each one.
 //
 // If @func returns true, that stops the iteration.
-func (f fontset) Foreach(f Fontset) {
+func (f fontset) Foreach() {
 	var arg0 *C.PangoFontset
 
 	arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
@@ -98,23 +100,40 @@ func (f fontset) Foreach(f Fontset) {
 
 // Font returns the font in the fontset that contains the best glyph for a
 // Unicode character.
-func (f fontset) Font(f Fontset, wc uint) {
+func (f fontset) Font(wc uint) Font {
 	var arg0 *C.PangoFontset
 	var arg1 C.guint
 
 	arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
 	arg1 = C.guint(wc)
 
-	C.pango_fontset_get_font(arg0, arg1)
+	cret := new(C.PangoFont)
+	var goret Font
+
+	cret = C.pango_fontset_get_font(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
+
+	return goret
 }
 
 // Metrics: get overall metric information for the fonts in the fontset.
-func (f fontset) Metrics(f Fontset) {
+func (f fontset) Metrics() *FontMetrics {
 	var arg0 *C.PangoFontset
 
 	arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
 
-	C.pango_fontset_get_metrics(arg0)
+	cret := new(C.PangoFontMetrics)
+	var goret *FontMetrics
+
+	cret = C.pango_fontset_get_metrics(arg0)
+
+	goret = WrapFontMetrics(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *FontMetrics) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // FontsetSimple: `PangoFontsetSimple` is a implementation of the abstract
@@ -126,9 +145,9 @@ type FontsetSimple interface {
 	Fontset
 
 	// Append adds a font to the fontset.
-	Append(f FontsetSimple, font Font)
+	Append(font Font)
 	// Size returns the number of fonts in the fontset.
-	Size(f FontsetSimple)
+	Size() int
 }
 
 // fontsetSimple implements the FontsetSimple interface.
@@ -153,16 +172,23 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 }
 
 // NewFontsetSimple constructs a class FontsetSimple.
-func NewFontsetSimple(language *Language) {
+func NewFontsetSimple(language *Language) FontsetSimple {
 	var arg1 *C.PangoLanguage
 
 	arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	C.pango_fontset_simple_new(arg1)
+	cret := new(C.PangoFontsetSimple)
+	var goret FontsetSimple
+
+	cret = C.pango_fontset_simple_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontsetSimple)
+
+	return goret
 }
 
 // Append adds a font to the fontset.
-func (f fontsetSimple) Append(f FontsetSimple, font Font) {
+func (f fontsetSimple) Append(font Font) {
 	var arg0 *C.PangoFontsetSimple
 	var arg1 *C.PangoFont
 
@@ -173,10 +199,17 @@ func (f fontsetSimple) Append(f FontsetSimple, font Font) {
 }
 
 // Size returns the number of fonts in the fontset.
-func (f fontsetSimple) Size(f FontsetSimple) {
+func (f fontsetSimple) Size() int {
 	var arg0 *C.PangoFontsetSimple
 
 	arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
 
-	C.pango_fontset_simple_size(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.pango_fontset_simple_size(arg0)
+
+	goret = int(cret)
+
+	return goret
 }

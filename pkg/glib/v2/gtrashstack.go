@@ -12,47 +12,6 @@ import (
 // #include <glib.h>
 import "C"
 
-// TrashStackHeight returns the height of a Stack.
-//
-// Note that execution of this function is of O(N) complexity where N denotes
-// the number of items on the stack.
-func TrashStackHeight(stackP **TrashStack) {
-	var arg1 **C.GTrashStack
-
-	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
-
-	C.g_trash_stack_height(arg1)
-}
-
-// TrashStackPeek returns the element at the top of a Stack which may be nil.
-func TrashStackPeek(stackP **TrashStack) {
-	var arg1 **C.GTrashStack
-
-	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
-
-	C.g_trash_stack_peek(arg1)
-}
-
-// TrashStackPop pops a piece of memory off a Stack.
-func TrashStackPop(stackP **TrashStack) {
-	var arg1 **C.GTrashStack
-
-	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
-
-	C.g_trash_stack_pop(arg1)
-}
-
-// TrashStackPush pushes a piece of memory onto a Stack.
-func TrashStackPush(stackP **TrashStack, dataP interface{}) {
-	var arg1 **C.GTrashStack
-	var arg2 C.gpointer
-
-	arg1 = (**C.GTrashStack)(unsafe.Pointer(stackP.Native()))
-	arg2 = C.gpointer(dataP)
-
-	C.g_trash_stack_push(arg1, arg2)
-}
-
 // TrashStack: each piece of memory that is pushed onto the stack is cast to a
 // GTrashStack*.
 type TrashStack struct {

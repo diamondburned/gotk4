@@ -2,15 +2,30 @@
 
 package gdk
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
 
 // ContentDeserializeAsync: read content from the given input stream and
-// deserialize it, asynchronously. When the operation is finished, @callback
-// will be called. You can then call gdk_content_deserialize_finish() to get the
-// result of the operation.
+// deserialize it, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, @callback will be called. You must then call
+// [func@content_deserialize_finish] to get the result of the operation.
 func ContentDeserializeAsync() {
 	C.gdk_content_deserialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
@@ -23,18 +38,18 @@ func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) e
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 	arg2 = (*C.GValue)(value.GValue)
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.gdk_content_deserialize_finish(arg1, arg2, &errout)
+	C.gdk_content_deserialize_finish(arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
-// ContentRegisterDeserializer registers a function to create objects of a given
-// @type from a serialized representation with the given mime type.
+// ContentRegisterDeserializer registers a function to deserialize object of a
+// given type.
 func ContentRegisterDeserializer() {
 	C.gdk_content_register_deserializer(arg1, arg2, arg3, arg4, arg5)
 }

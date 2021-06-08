@@ -45,8 +45,15 @@ import "C"
 //         g_source_remove (self->idle_id);
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
-func ThreadsAddIdleFull() {
-	C.gdk_threads_add_idle_full(arg1, arg2, arg3, arg4)
+func ThreadsAddIdleFull() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gdk_threads_add_idle_full(arg1, arg2, arg3, arg4)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // ThreadsAddTimeoutFull sets a function to be called at regular intervals
@@ -90,16 +97,30 @@ func ThreadsAddIdleFull() {
 //
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
-func ThreadsAddTimeoutFull() {
-	C.gdk_threads_add_timeout_full(arg1, arg2, arg3, arg4, arg5)
+func ThreadsAddTimeoutFull() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gdk_threads_add_timeout_full(arg1, arg2, arg3, arg4, arg5)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // ThreadsAddTimeoutSecondsFull: a variant of gdk_threads_add_timeout_full()
 // with second-granularity. See g_timeout_add_seconds_full() for a discussion of
 // why it is a good idea to use this function if you don’t need finer
 // granularity.
-func ThreadsAddTimeoutSecondsFull() {
-	C.gdk_threads_add_timeout_seconds_full(arg1, arg2, arg3, arg4, arg5)
+func ThreadsAddTimeoutSecondsFull() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gdk_threads_add_timeout_seconds_full(arg1, arg2, arg3, arg4, arg5)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // ThreadsEnter: this function marks the beginning of a critical section in

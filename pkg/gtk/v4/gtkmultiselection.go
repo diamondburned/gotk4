@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -19,18 +22,19 @@ func init() {
 	})
 }
 
-// MultiSelection: gtkMultiSelection is an implementation of the SelectionModel
-// interface that allows selecting multiple elements.
+// MultiSelection: `GtkMultiSelection` is a `GtkSelectionModel` that allows
+// selecting multiple elements.
 type MultiSelection interface {
 	gextras.Objector
 	gio.ListModel
 	SelectionModel
 
 	// Model returns the underlying model of @self.
-	Model(s MultiSelection)
-	// SetModel sets the model that @self should wrap. If @model is nil, @self
-	// will be empty.
-	SetModel(s MultiSelection, model gio.ListModel)
+	Model() gio.ListModel
+	// SetModel sets the model that @self should wrap.
+	//
+	// If @model is nil, @self will be empty.
+	SetModel(model gio.ListModel)
 }
 
 // multiSelection implements the MultiSelection interface.
@@ -59,26 +63,41 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 }
 
 // NewMultiSelection constructs a class MultiSelection.
-func NewMultiSelection(model gio.ListModel) {
+func NewMultiSelection(model gio.ListModel) MultiSelection {
 	var arg1 *C.GListModel
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_multi_selection_new(arg1)
+	cret := new(C.GtkMultiSelection)
+	var goret MultiSelection
+
+	cret = C.gtk_multi_selection_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSelection)
+
+	return goret
 }
 
 // Model returns the underlying model of @self.
-func (s multiSelection) Model(s MultiSelection) {
+func (s multiSelection) Model() gio.ListModel {
 	var arg0 *C.GtkMultiSelection
 
 	arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
 
-	C.gtk_multi_selection_get_model(arg0)
+	var cret *C.GListModel
+	var goret gio.ListModel
+
+	cret = C.gtk_multi_selection_get_model(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return goret
 }
 
-// SetModel sets the model that @self should wrap. If @model is nil, @self
-// will be empty.
-func (s multiSelection) SetModel(s MultiSelection, model gio.ListModel) {
+// SetModel sets the model that @self should wrap.
+//
+// If @model is nil, @self will be empty.
+func (s multiSelection) SetModel(model gio.ListModel) {
 	var arg0 *C.GtkMultiSelection
 	var arg1 *C.GListModel
 

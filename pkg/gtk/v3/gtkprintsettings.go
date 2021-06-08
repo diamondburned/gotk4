@@ -3,9 +3,13 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -16,7 +20,7 @@ import (
 // #include <gtk/gtkx.h>
 import "C"
 
-type PrintSettingsFunc func(key string, value string)
+type PrintSettingsFunc func()
 
 //export gotk4_PrintSettingsFunc
 func gotk4_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
@@ -26,7 +30,7 @@ func gotk4_PrintSettingsFunc(arg0 *C.gchar, arg1 *C.gchar, arg2 C.gpointer) {
 	}
 
 	fn := v.(PrintSettingsFunc)
-	fn(key, value, userData)
+	fn()
 }
 
 // PageRange: see also gtk_print_settings_set_page_ranges().

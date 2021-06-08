@@ -24,6 +24,11 @@ var filters = []girgen.FilterMatcher{
 	girgen.AbsoluteFilter("C.cairo_image_surface_create"),
 
 	girgen.FileFilter("gdate.h"),
+	girgen.FileFilter("gstdio.h"),
+	girgen.FileFilter("gatomic.h"),
+	girgen.FileFilter("gmacros.h"),
+	girgen.FileFilter("gthread.h"),
+	girgen.FileFilter("gbitlock.h"),
 	girgen.FileFilter("glib-unix.h"),
 
 	// These are missing on build for some reason.

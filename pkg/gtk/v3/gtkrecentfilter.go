@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
@@ -19,7 +20,7 @@ import "C"
 
 // RecentFilterFunc: the type of function that is used with custom filters, see
 // gtk_recent_filter_add_custom().
-type RecentFilterFunc func(filterInfo *RecentFilterInfo) bool
+type RecentFilterFunc func() (ok bool)
 
 //export gotk4_RecentFilterFunc
 func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
@@ -29,13 +30,11 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboo
 	}
 
 	fn := v.(RecentFilterFunc)
-	ret := fn(filterInfo, userData)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
 // RecentFilterInfo: a GtkRecentFilterInfo struct is used to pass information

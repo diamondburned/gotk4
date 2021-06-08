@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,7 +41,7 @@ type ZlibDecompressor interface {
 	// Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
 	// header data was not fully processed yet, or it not present in the data
 	// stream at all.
-	FileInfo(d ZlibDecompressor)
+	FileInfo() FileInfo
 }
 
 // zlibDecompressor implements the ZlibDecompressor interface.
@@ -65,12 +68,19 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 }
 
 // NewZlibDecompressor constructs a class ZlibDecompressor.
-func NewZlibDecompressor(format ZlibCompressorFormat) {
+func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 	var arg1 C.GZlibCompressorFormat
 
 	arg1 = (C.GZlibCompressorFormat)(format)
 
-	C.g_zlib_decompressor_new(arg1)
+	cret := new(C.GZlibDecompressor)
+	var goret ZlibDecompressor
+
+	cret = C.g_zlib_decompressor_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibDecompressor)
+
+	return goret
 }
 
 // FileInfo retrieves the Info constructed from the GZIP header data of
@@ -78,10 +88,17 @@ func NewZlibDecompressor(format ZlibCompressorFormat) {
 // Decompressor:format property is not G_ZLIB_COMPRESSOR_FORMAT_GZIP, or the
 // header data was not fully processed yet, or it not present in the data
 // stream at all.
-func (d zlibDecompressor) FileInfo(d ZlibDecompressor) {
+func (d zlibDecompressor) FileInfo() FileInfo {
 	var arg0 *C.GZlibDecompressor
 
 	arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(d.Native()))
 
-	C.g_zlib_decompressor_get_file_info(arg0)
+	var cret *C.GFileInfo
+	var goret FileInfo
+
+	cret = C.g_zlib_decompressor_get_file_info(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
+
+	return goret
 }

@@ -2,6 +2,13 @@
 
 package gdk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+)
+
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>

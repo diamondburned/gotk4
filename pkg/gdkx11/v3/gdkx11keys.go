@@ -25,13 +25,13 @@ type X11Keymap interface {
 	// GroupForState extracts the group from the state field sent in an X Key
 	// event. This is only needed for code processing raw X events, since
 	// EventKey directly includes an is_modifier field.
-	GroupForState(k X11Keymap, state uint)
+	GroupForState(state uint) int
 	// KeyIsModifier determines whether a particular key code represents a key
 	// that is a modifier. That is, it’s a key that normally just affects the
 	// keyboard state and the behavior of other keys rather than producing a
 	// direct effect itself. This is only needed for code processing raw X
 	// events, since EventKey directly includes an is_modifier field.
-	KeyIsModifier(k X11Keymap, keycode uint) bool
+	KeyIsModifier(keycode uint) bool
 }
 
 // x11Keymap implements the X11Keymap interface.
@@ -58,14 +58,21 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 // GroupForState extracts the group from the state field sent in an X Key
 // event. This is only needed for code processing raw X events, since
 // EventKey directly includes an is_modifier field.
-func (k x11Keymap) GroupForState(k X11Keymap, state uint) {
+func (k x11Keymap) GroupForState(state uint) int {
 	var arg0 *C.GdkKeymap
 	var arg1 C.guint
 
 	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	arg1 = C.guint(state)
 
-	C.gdk_x11_keymap_get_group_for_state(arg0, arg1)
+	var cret C.gint
+	var goret int
+
+	cret = C.gdk_x11_keymap_get_group_for_state(arg0, arg1)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // KeyIsModifier determines whether a particular key code represents a key
@@ -73,7 +80,7 @@ func (k x11Keymap) GroupForState(k X11Keymap, state uint) {
 // keyboard state and the behavior of other keys rather than producing a
 // direct effect itself. This is only needed for code processing raw X
 // events, since EventKey directly includes an is_modifier field.
-func (k x11Keymap) KeyIsModifier(k X11Keymap, keycode uint) bool {
+func (k x11Keymap) KeyIsModifier(keycode uint) bool {
 	var arg0 *C.GdkKeymap
 	var arg1 C.guint
 
@@ -81,13 +88,13 @@ func (k x11Keymap) KeyIsModifier(k X11Keymap, keycode uint) bool {
 	arg1 = C.guint(keycode)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_x11_keymap_key_is_modifier(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,20 +49,20 @@ type UnixSocketAddress interface {
 	SocketConnectable
 
 	// AddressType gets @address's type.
-	AddressType(a UnixSocketAddress)
+	AddressType() UnixSocketAddressType
 	// IsAbstract tests if @address is abstract.
-	IsAbstract(a UnixSocketAddress) bool
+	IsAbstract() bool
 	// Path gets @address's path, or for abstract sockets the "name".
 	//
 	// Guaranteed to be zero-terminated, but an abstract socket may contain
 	// embedded zeros, and thus you should use
 	// g_unix_socket_address_get_path_len() to get the true length of this
 	// string.
-	Path(a UnixSocketAddress)
+	Path() string
 	// PathLen gets the length of @address's path.
 	//
 	// For details, see g_unix_socket_address_get_path().
-	PathLen(a UnixSocketAddress)
+	PathLen() uint
 }
 
 // unixSocketAddress implements the UnixSocketAddress interface.
@@ -86,45 +89,66 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 }
 
 // NewUnixSocketAddress constructs a class UnixSocketAddress.
-func NewUnixSocketAddress(path string) {
+func NewUnixSocketAddress(path string) UnixSocketAddress {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_unix_socket_address_new(arg1)
+	cret := new(C.GUnixSocketAddress)
+	var goret UnixSocketAddress
+
+	cret = C.g_unix_socket_address_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
+
+	return goret
 }
 
 // NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
-func NewUnixSocketAddressAbstract() {
-	C.g_unix_socket_address_new_abstract(arg1, arg2)
+func NewUnixSocketAddressAbstract() UnixSocketAddress {
+	cret := new(C.GUnixSocketAddress)
+	var goret UnixSocketAddress
+
+	cret = C.g_unix_socket_address_new_abstract(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
+
+	return goret
 }
 
 // AddressType gets @address's type.
-func (a unixSocketAddress) AddressType(a UnixSocketAddress) {
+func (a unixSocketAddress) AddressType() UnixSocketAddressType {
 	var arg0 *C.GUnixSocketAddress
 
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_unix_socket_address_get_address_type(arg0)
+	var cret C.GUnixSocketAddressType
+	var goret UnixSocketAddressType
+
+	cret = C.g_unix_socket_address_get_address_type(arg0)
+
+	goret = UnixSocketAddressType(cret)
+
+	return goret
 }
 
 // IsAbstract tests if @address is abstract.
-func (a unixSocketAddress) IsAbstract(a UnixSocketAddress) bool {
+func (a unixSocketAddress) IsAbstract() bool {
 	var arg0 *C.GUnixSocketAddress
 
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_unix_socket_address_get_is_abstract(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Path gets @address's path, or for abstract sockets the "name".
@@ -133,21 +157,35 @@ func (a unixSocketAddress) IsAbstract(a UnixSocketAddress) bool {
 // embedded zeros, and thus you should use
 // g_unix_socket_address_get_path_len() to get the true length of this
 // string.
-func (a unixSocketAddress) Path(a UnixSocketAddress) {
+func (a unixSocketAddress) Path() string {
 	var arg0 *C.GUnixSocketAddress
 
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_unix_socket_address_get_path(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.g_unix_socket_address_get_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // PathLen gets the length of @address's path.
 //
 // For details, see g_unix_socket_address_get_path().
-func (a unixSocketAddress) PathLen(a UnixSocketAddress) {
+func (a unixSocketAddress) PathLen() uint {
 	var arg0 *C.GUnixSocketAddress
 
 	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	C.g_unix_socket_address_get_path_len(arg0)
+	var cret C.gsize
+	var goret uint
+
+	cret = C.g_unix_socket_address_get_path_len(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }

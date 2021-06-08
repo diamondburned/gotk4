@@ -3,7 +3,11 @@
 package glib
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -139,7 +143,7 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 	}
 
 	fn := v.(SpawnChildSetupFunc)
-	fn(userData)
+	fn()
 }
 
 // SpawnCheckExitStatus: set @error if @exit_status indicates the child exited
@@ -182,14 +186,14 @@ func SpawnCheckExitStatus(exitStatus int) error {
 
 	arg1 = C.gint(exitStatus)
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_spawn_check_exit_status(arg1, &errout)
+	C.g_spawn_check_exit_status(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
@@ -207,14 +211,14 @@ func SpawnCommandLineAsync(commandLine string) error {
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_spawn_command_line_async(arg1, &errout)
+	C.g_spawn_command_line_async(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
@@ -244,15 +248,15 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 	defer C.free(unsafe.Pointer(arg1))
 
 	var arg2 **C.gchar
-	var standardOutput []byte
+	var ret2 []byte
 	var arg3 **C.gchar
-	var standardError []byte
-	var arg4 C.gint
-	var exitStatus int
-	var errout *C.GError
-	var err error
+	var ret3 []byte
+	arg4 := new(C.gint)
+	var ret4 int
+	var cerr *C.GError
+	var goerr error
 
-	C.g_spawn_command_line_sync(arg1, &arg2, &arg3, &arg4, &errout)
+	C.g_spawn_command_line_sync(arg1, arg2, arg3, arg4, &cerr)
 
 	{
 		var length int
@@ -263,10 +267,10 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			}
 		}
 
-		standardOutput = make([]byte, length)
+		ret2 = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(arg2), i))
-			standardOutput[i] = byte(src)
+			ret2[i] = byte(src)
 		}
 	}
 	{
@@ -278,14 +282,14 @@ func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardEr
 			}
 		}
 
-		standardError = make([]byte, length)
+		ret3 = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
 			src := (C.guint8)(ptr.Add(unsafe.Pointer(arg3), i))
-			standardError[i] = byte(src)
+			ret3[i] = byte(src)
 		}
 	}
-	exitStatus = int(&arg4)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret4 = int(*arg4)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return standardOutput, standardError, exitStatus, err
+	return ret2, ret3, ret4, goerr
 }

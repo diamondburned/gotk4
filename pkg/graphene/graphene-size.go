@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -18,12 +19,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.graphene_size_get_type()), F: marshalSize},
 	})
-}
-
-// SizeZero: a constant pointer to a zero #graphene_size_t, useful for equality
-// checks and interpolations.
-func SizeZero() {
-	C.graphene_size_zero()
 }
 
 // Size: a size.
@@ -47,8 +42,18 @@ func marshalSize(p uintptr) (interface{}, error) {
 }
 
 // NewSizeAlloc constructs a struct Size.
-func NewSizeAlloc() {
-	C.graphene_size_alloc()
+func NewSizeAlloc() *Size {
+	cret := new(C.graphene_size_t)
+	var goret *Size
+
+	cret = C.graphene_size_alloc()
+
+	goret = WrapSize(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Size) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -71,7 +76,7 @@ func (s *Size) Height() float32 {
 }
 
 // Equal checks whether the two give #graphene_size_t are equal.
-func (a *Size) Equal(a *Size, b *Size) bool {
+func (a *Size) Equal(b *Size) bool {
 	var arg0 *C.graphene_size_t
 	var arg1 *C.graphene_size_t
 
@@ -79,19 +84,19 @@ func (a *Size) Equal(a *Size, b *Size) bool {
 	arg1 = (*C.graphene_size_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_size_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees the resources allocated by graphene_size_alloc().
-func (s *Size) Free(s *Size) {
+func (s *Size) Free() {
 	var arg0 *C.graphene_size_t
 
 	arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
@@ -100,7 +105,7 @@ func (s *Size) Free(s *Size) {
 }
 
 // Init initializes a #graphene_size_t using the given @width and @height.
-func (s *Size) Init(s *Size, width float32, height float32) {
+func (s *Size) Init(width float32, height float32) *Size {
 	var arg0 *C.graphene_size_t
 	var arg1 C.float
 	var arg2 C.float
@@ -109,24 +114,38 @@ func (s *Size) Init(s *Size, width float32, height float32) {
 	arg1 = C.float(width)
 	arg2 = C.float(height)
 
-	C.graphene_size_init(arg0, arg1, arg2)
+	var cret *C.graphene_size_t
+	var goret *Size
+
+	cret = C.graphene_size_init(arg0, arg1, arg2)
+
+	goret = WrapSize(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromSize initializes a #graphene_size_t using the width and height of the
 // given @src.
-func (s *Size) InitFromSize(s *Size, src *Size) {
+func (s *Size) InitFromSize(src *Size) *Size {
 	var arg0 *C.graphene_size_t
 	var arg1 *C.graphene_size_t
 
 	arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.graphene_size_t)(unsafe.Pointer(src.Native()))
 
-	C.graphene_size_init_from_size(arg0, arg1)
+	var cret *C.graphene_size_t
+	var goret *Size
+
+	cret = C.graphene_size_init_from_size(arg0, arg1)
+
+	goret = WrapSize(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Interpolate: linearly interpolates the two given #graphene_size_t using the
 // given interpolation @factor.
-func (a *Size) Interpolate(a *Size, b *Size, factor float64) *Size {
+func (a *Size) Interpolate(b *Size, factor float64) *Size {
 	var arg0 *C.graphene_size_t
 	var arg1 *C.graphene_size_t
 	var arg2 C.double
@@ -135,30 +154,30 @@ func (a *Size) Interpolate(a *Size, b *Size, factor float64) *Size {
 	arg1 = (*C.graphene_size_t)(unsafe.Pointer(b.Native()))
 	arg2 = C.double(factor)
 
-	var arg3 C.graphene_size_t
-	var res *Size
+	arg3 := new(C.graphene_size_t)
+	var ret3 *Size
 
-	C.graphene_size_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_size_interpolate(arg0, arg1, arg2, arg3)
 
-	res = WrapSize(unsafe.Pointer(&arg3))
+	ret3 = WrapSize(unsafe.Pointer(arg3))
 
-	return res
+	return ret3
 }
 
 // Scale scales the components of a #graphene_size_t using the given @factor.
-func (s *Size) Scale(s *Size, factor float32) *Size {
+func (s *Size) Scale(factor float32) *Size {
 	var arg0 *C.graphene_size_t
 	var arg1 C.float
 
 	arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
 	arg1 = C.float(factor)
 
-	var arg2 C.graphene_size_t
-	var res *Size
+	arg2 := new(C.graphene_size_t)
+	var ret2 *Size
 
-	C.graphene_size_scale(arg0, arg1, &arg2)
+	C.graphene_size_scale(arg0, arg1, arg2)
 
-	res = WrapSize(unsafe.Pointer(&arg2))
+	ret2 = WrapSize(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }

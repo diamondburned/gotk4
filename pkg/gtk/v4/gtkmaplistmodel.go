@@ -3,7 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -25,7 +28,7 @@ func init() {
 //
 // The returned items must conform to the item type of the model they are used
 // with.
-type MapListModelMapFunc func(item gextras.Objector) gextras.Objector
+type MapListModelMapFunc func() (object gextras.Objector)
 
 //export gotk4_MapListModelMapFunc
 func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
@@ -35,64 +38,57 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	}
 
 	fn := v.(MapListModelMapFunc)
-	ret := fn(item, userData)
+	fn(object)
 
-	cret = (*C.GObject)(unsafe.Pointer(ret.Native()))
-
-	return cret
+	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
 }
 
-// MapListModel is a list model that takes a list model and maps the items in
-// that model to different items according to a MapListModelMapFunc.
+// MapListModel: a `GtkMapListModel` maps the items in a list model to different
+// items.
 //
-// Example: Create a list of EventControllers
+// `GtkMapListModel` uses a [callback@Gtk.MapListModelMapFunc].
 //
-//      static gpointer
-//      map_to_controllers (gpointer widget,
-//                          gpointer data)
-//     {
-//        gpointer result = gtk_widget_observe_controllers (widget);
-//        g_object_unref (widget);
-//        return result;
-//     }
+// Example: Create a list of `GtkEventControllers` “`c static gpointer
+// map_to_controllers (gpointer widget, gpointer data) { gpointer result =
+// gtk_widget_observe_controllers (widget); g_object_unref (widget); return
+// result; }
 //
-//      widgets = gtk_widget_observe_children (widget);
+// widgets = gtk_widget_observe_children (widget);
 //
-//      controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL,
-//                                            widgets,
-//                                            map_to_controllers,
-//                                            NULL, NULL);
+// controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL, widgets,
+// map_to_controllers, NULL, NULL);
 //
-//      model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
-//                                          controllers);
+// model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER, controllers);
+// “`
 //
-// MapListModel will attempt to discard the mapped objects as soon as they are
-// no longer needed and recreate them if necessary.
+// `GtkMapListModel` will attempt to discard the mapped objects as soon as they
+// are no longer needed and recreate them if necessary.
 type MapListModel interface {
 	gextras.Objector
 	gio.ListModel
 
 	// Model gets the model that is currently being mapped or nil if none.
-	Model(s MapListModel)
-	// HasMap checks if a map function is currently set on @self
-	HasMap(s MapListModel) bool
-	// SetMapFunc sets the function used to map items. The function will be
-	// called whenever an item needs to be mapped and must return the item to
-	// use for the given input item.
+	Model() gio.ListModel
+	// HasMap checks if a map function is currently set on @self.
+	HasMap() bool
+	// SetMapFunc sets the function used to map items.
 	//
-	// Note that MapListModel may call this function multiple times on the same
-	// item, because it may delete items it doesn't need anymore.
+	// The function will be called whenever an item needs to be mapped and must
+	// return the item to use for the given input item.
+	//
+	// Note that `GtkMapListModel` may call this function multiple times on the
+	// same item, because it may delete items it doesn't need anymore.
 	//
 	// GTK makes no effort to ensure that @map_func conforms to the item type of
 	// @self. It assumes that the caller knows what they are doing and the map
 	// function returns items of the appropriate type.
-	SetMapFunc(s MapListModel)
+	SetMapFunc()
 	// SetModel sets the model to be mapped.
 	//
 	// GTK makes no effort to ensure that @model conforms to the item type
 	// expected by the map function. It assumes that the caller knows what they
 	// are doing and have set up an appropriate map function.
-	SetModel(s MapListModel, model gio.ListModel)
+	SetModel(model gio.ListModel)
 }
 
 // mapListModel implements the MapListModel interface.
@@ -119,48 +115,63 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 }
 
 // NewMapListModel constructs a class MapListModel.
-func NewMapListModel() {
-	C.gtk_map_list_model_new(arg1, arg2, arg3, arg4)
+func NewMapListModel() MapListModel {
+	cret := new(C.GtkMapListModel)
+	var goret MapListModel
+
+	cret = C.gtk_map_list_model_new(arg1, arg2, arg3, arg4)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MapListModel)
+
+	return goret
 }
 
 // Model gets the model that is currently being mapped or nil if none.
-func (s mapListModel) Model(s MapListModel) {
+func (s mapListModel) Model() gio.ListModel {
 	var arg0 *C.GtkMapListModel
 
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
-	C.gtk_map_list_model_get_model(arg0)
+	var cret *C.GListModel
+	var goret gio.ListModel
+
+	cret = C.gtk_map_list_model_get_model(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return goret
 }
 
-// HasMap checks if a map function is currently set on @self
-func (s mapListModel) HasMap(s MapListModel) bool {
+// HasMap checks if a map function is currently set on @self.
+func (s mapListModel) HasMap() bool {
 	var arg0 *C.GtkMapListModel
 
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_map_list_model_has_map(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// SetMapFunc sets the function used to map items. The function will be
-// called whenever an item needs to be mapped and must return the item to
-// use for the given input item.
+// SetMapFunc sets the function used to map items.
 //
-// Note that MapListModel may call this function multiple times on the same
-// item, because it may delete items it doesn't need anymore.
+// The function will be called whenever an item needs to be mapped and must
+// return the item to use for the given input item.
+//
+// Note that `GtkMapListModel` may call this function multiple times on the
+// same item, because it may delete items it doesn't need anymore.
 //
 // GTK makes no effort to ensure that @map_func conforms to the item type of
 // @self. It assumes that the caller knows what they are doing and the map
 // function returns items of the appropriate type.
-func (s mapListModel) SetMapFunc(s MapListModel) {
+func (s mapListModel) SetMapFunc() {
 	var arg0 *C.GtkMapListModel
 
 	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
@@ -173,7 +184,7 @@ func (s mapListModel) SetMapFunc(s MapListModel) {
 // GTK makes no effort to ensure that @model conforms to the item type
 // expected by the map function. It assumes that the caller knows what they
 // are doing and have set up an appropriate map function.
-func (s mapListModel) SetModel(s MapListModel, model gio.ListModel) {
+func (s mapListModel) SetModel(model gio.ListModel) {
 	var arg0 *C.GtkMapListModel
 	var arg1 *C.GListModel
 

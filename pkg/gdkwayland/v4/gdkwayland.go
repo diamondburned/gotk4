@@ -21,6 +21,7 @@ func init() {
 	})
 }
 
+// WaylandPopup: the Wayland implementation of `GdkPopup`.
 type WaylandPopup interface {
 	WaylandSurface
 }
@@ -46,11 +47,16 @@ func marshalWaylandPopup(p uintptr) (interface{}, error) {
 	return WrapWaylandPopup(obj), nil
 }
 
+// WaylandSurface: the Wayland implementation of `GdkSurface`.
+//
+// Beyond the [class@Gdk.Surface] API, the Wayland implementation offers access
+// to the Wayland `wl_surface` object with
+// [method@GdkWayland.WaylandSurface.get_wl_surface].
 type WaylandSurface interface {
 	gdk.Surface
 
-	// WlSurface returns the Wayland surface of a Surface.
-	WlSurface(s WaylandSurface)
+	// WlSurface returns the Wayland `wl_surface` of a `GdkSurface`.
+	WlSurface() interface{}
 }
 
 // waylandSurface implements the WaylandSurface interface.
@@ -74,46 +80,62 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 	return WrapWaylandSurface(obj), nil
 }
 
-// WlSurface returns the Wayland surface of a Surface.
-func (s waylandSurface) WlSurface(s WaylandSurface) {
+// WlSurface returns the Wayland `wl_surface` of a `GdkSurface`.
+func (s waylandSurface) WlSurface() interface{} {
 	var arg0 *C.GdkSurface
 
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	C.gdk_wayland_surface_get_wl_surface(arg0)
+	var cret *C.wl_surface
+	var goret interface{}
+
+	cret = C.gdk_wayland_surface_get_wl_surface(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
+// WaylandToplevel: the Wayland implementation of `GdkToplevel`.
+//
+// Beyond the [interface@Gdk.Toplevel] API, the Wayland implementation has API
+// to set up cross-process parent-child relationships between surfaces with
+// [method@GdkWayland.WaylandToplevel.export_handle] and
+// [method@GdkWayland.WaylandToplevel.set_transient_for_exported].
 type WaylandToplevel interface {
 	WaylandSurface
 
 	// ExportHandle: asynchronously obtains a handle for a surface that can be
-	// passed to other processes. When the handle has been obtained, @callback
-	// will be called.
+	// passed to other processes.
+	//
+	// When the handle has been obtained, @callback will be called.
 	//
 	// It is an error to call this function on a surface that is already
 	// exported.
 	//
 	// When the handle is no longer needed,
-	// gdk_wayland_toplevel_unexport_handle() should be called to clean up
-	// resources.
+	// [method@GdkWayland.WaylandToplevel.unexport_handle] should be called to
+	// clean up resources.
 	//
 	// The main purpose for obtaining a handle is to mark a surface from another
 	// surface as transient for this one, see
-	// gdk_wayland_toplevel_set_transient_for_exported().
+	// [method@GdkWayland.WaylandToplevel.set_transient_for_exported].
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	ExportHandle(t WaylandToplevel) bool
-	// SetApplicationID sets the application id on a Toplevel.
-	SetApplicationID(t WaylandToplevel, applicationID string)
+	ExportHandle() bool
+	// SetApplicationID sets the application id on a `GdkToplevel`.
+	SetApplicationID(applicationID string)
 	// SetTransientForExported marks @toplevel as transient for the surface to
-	// which the given @parent_handle_str refers. Typically, the handle will
-	// originate from a gdk_wayland_toplevel_export_handle() call in another
+	// which the given @parent_handle_str refers.
+	//
+	// Typically, the handle will originate from a
+	// [method@GdkWayland.WaylandToplevel.export_handle] call in another
 	// process.
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	SetTransientForExported(t WaylandToplevel, parentHandleStr string) bool
+	SetTransientForExported(parentHandleStr string) bool
 	// UnexportHandle destroys the handle that was obtained with
 	// gdk_wayland_toplevel_export_handle().
 	//
@@ -122,7 +144,7 @@ type WaylandToplevel interface {
 	//
 	// Note that this API depends on an unstable Wayland protocol, and thus may
 	// require changes in the future.
-	UnexportHandle(t WaylandToplevel)
+	UnexportHandle()
 }
 
 // waylandToplevel implements the WaylandToplevel interface.
@@ -147,41 +169,42 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 }
 
 // ExportHandle: asynchronously obtains a handle for a surface that can be
-// passed to other processes. When the handle has been obtained, @callback
-// will be called.
+// passed to other processes.
+//
+// When the handle has been obtained, @callback will be called.
 //
 // It is an error to call this function on a surface that is already
 // exported.
 //
 // When the handle is no longer needed,
-// gdk_wayland_toplevel_unexport_handle() should be called to clean up
-// resources.
+// [method@GdkWayland.WaylandToplevel.unexport_handle] should be called to
+// clean up resources.
 //
 // The main purpose for obtaining a handle is to mark a surface from another
 // surface as transient for this one, see
-// gdk_wayland_toplevel_set_transient_for_exported().
+// [method@GdkWayland.WaylandToplevel.set_transient_for_exported].
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
-func (t waylandToplevel) ExportHandle(t WaylandToplevel) bool {
+func (t waylandToplevel) ExportHandle() bool {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_wayland_toplevel_export_handle(arg0, arg1, arg2, arg3)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// SetApplicationID sets the application id on a Toplevel.
-func (t waylandToplevel) SetApplicationID(t WaylandToplevel, applicationID string) {
+// SetApplicationID sets the application id on a `GdkToplevel`.
+func (t waylandToplevel) SetApplicationID(applicationID string) {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.char
 
@@ -193,13 +216,15 @@ func (t waylandToplevel) SetApplicationID(t WaylandToplevel, applicationID strin
 }
 
 // SetTransientForExported marks @toplevel as transient for the surface to
-// which the given @parent_handle_str refers. Typically, the handle will
-// originate from a gdk_wayland_toplevel_export_handle() call in another
+// which the given @parent_handle_str refers.
+//
+// Typically, the handle will originate from a
+// [method@GdkWayland.WaylandToplevel.export_handle] call in another
 // process.
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
-func (t waylandToplevel) SetTransientForExported(t WaylandToplevel, parentHandleStr string) bool {
+func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 	var arg0 *C.GdkToplevel
 	var arg1 *C.char
 
@@ -208,15 +233,15 @@ func (t waylandToplevel) SetTransientForExported(t WaylandToplevel, parentHandle
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_wayland_toplevel_set_transient_for_exported(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // UnexportHandle destroys the handle that was obtained with
@@ -227,7 +252,7 @@ func (t waylandToplevel) SetTransientForExported(t WaylandToplevel, parentHandle
 //
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
-func (t waylandToplevel) UnexportHandle(t WaylandToplevel) {
+func (t waylandToplevel) UnexportHandle() {
 	var arg0 *C.GdkToplevel
 
 	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))

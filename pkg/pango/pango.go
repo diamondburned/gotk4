@@ -889,23 +889,23 @@ type Coverage interface {
 	gextras.Objector
 
 	// Copy: copy an existing `PangoCoverage`.
-	Copy(c Coverage)
+	Copy() Coverage
 	// Get: determine whether a particular index is covered by @coverage.
-	Get(c Coverage, index_ int)
+	Get(index_ int) CoverageLevel
 	// Max: set the coverage for each index in @coverage to be the max (better)
 	// value of the current coverage for the index and the coverage for the
 	// corresponding index in @other.
-	Max(c Coverage, other Coverage)
+	Max(other Coverage)
 	// Ref: increase the reference count on the `PangoCoverage` by one.
-	Ref(c Coverage)
+	Ref() Coverage
 	// Set: modify a particular index within @coverage
-	Set(c Coverage, index_ int, level CoverageLevel)
+	Set(index_ int, level CoverageLevel)
 	// ToBytes: convert a `PangoCoverage` structure into a flat binary format.
-	ToBytes(c Coverage)
+	ToBytes()
 	// Unref: decrease the reference count on the `PangoCoverage` by one.
 	//
 	// If the result is zero, free the coverage and all associated memory.
-	Unref(c Coverage)
+	Unref()
 }
 
 // coverage implements the Coverage interface.
@@ -930,34 +930,55 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 }
 
 // NewCoverage constructs a class Coverage.
-func NewCoverage() {
-	C.pango_coverage_new()
+func NewCoverage() Coverage {
+	cret := new(C.PangoCoverage)
+	var goret Coverage
+
+	cret = C.pango_coverage_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+
+	return goret
 }
 
 // Copy: copy an existing `PangoCoverage`.
-func (c coverage) Copy(c Coverage) {
+func (c coverage) Copy() Coverage {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	C.pango_coverage_copy(arg0)
+	cret := new(C.PangoCoverage)
+	var goret Coverage
+
+	cret = C.pango_coverage_copy(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+
+	return goret
 }
 
 // Get: determine whether a particular index is covered by @coverage.
-func (c coverage) Get(c Coverage, index_ int) {
+func (c coverage) Get(index_ int) CoverageLevel {
 	var arg0 *C.PangoCoverage
 	var arg1 C.int
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(index_)
 
-	C.pango_coverage_get(arg0, arg1)
+	var cret C.PangoCoverageLevel
+	var goret CoverageLevel
+
+	cret = C.pango_coverage_get(arg0, arg1)
+
+	goret = CoverageLevel(cret)
+
+	return goret
 }
 
 // Max: set the coverage for each index in @coverage to be the max (better)
 // value of the current coverage for the index and the coverage for the
 // corresponding index in @other.
-func (c coverage) Max(c Coverage, other Coverage) {
+func (c coverage) Max(other Coverage) {
 	var arg0 *C.PangoCoverage
 	var arg1 *C.PangoCoverage
 
@@ -968,16 +989,23 @@ func (c coverage) Max(c Coverage, other Coverage) {
 }
 
 // Ref: increase the reference count on the `PangoCoverage` by one.
-func (c coverage) Ref(c Coverage) {
+func (c coverage) Ref() Coverage {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	C.pango_coverage_ref(arg0)
+	cret := new(C.PangoCoverage)
+	var goret Coverage
+
+	cret = C.pango_coverage_ref(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+
+	return goret
 }
 
 // Set: modify a particular index within @coverage
-func (c coverage) Set(c Coverage, index_ int, level CoverageLevel) {
+func (c coverage) Set(index_ int, level CoverageLevel) {
 	var arg0 *C.PangoCoverage
 	var arg1 C.int
 	var arg2 C.PangoCoverageLevel
@@ -990,20 +1018,20 @@ func (c coverage) Set(c Coverage, index_ int, level CoverageLevel) {
 }
 
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
-func (c coverage) ToBytes(c Coverage) {
+func (c coverage) ToBytes() {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	C.pango_coverage_to_bytes(arg0, &arg1, &arg2)
+	C.pango_coverage_to_bytes(arg0, arg1, arg2)
 
-	return bytes, nBytes
+	return ret1, ret2
 }
 
 // Unref: decrease the reference count on the `PangoCoverage` by one.
 //
 // If the result is zero, free the coverage and all associated memory.
-func (c coverage) Unref(c Coverage) {
+func (c coverage) Unref() {
 	var arg0 *C.PangoCoverage
 
 	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))

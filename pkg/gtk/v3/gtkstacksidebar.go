@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,12 +43,12 @@ type StackSidebar interface {
 	Buildable
 
 	// Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
-	Stack(s StackSidebar)
+	Stack() Stack
 	// SetStack: set the Stack associated with this StackSidebar.
 	//
 	// The sidebar widget will automatically update according to the order
 	// (packing) and items within the given Stack.
-	SetStack(s StackSidebar, stack Stack)
+	SetStack(stack Stack)
 }
 
 // stackSidebar implements the StackSidebar interface.
@@ -72,24 +75,38 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 }
 
 // NewStackSidebar constructs a class StackSidebar.
-func NewStackSidebar() {
-	C.gtk_stack_sidebar_new()
+func NewStackSidebar() StackSidebar {
+	var cret C.GtkStackSidebar
+	var goret StackSidebar
+
+	cret = C.gtk_stack_sidebar_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSidebar)
+
+	return goret
 }
 
 // Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
-func (s stackSidebar) Stack(s StackSidebar) {
+func (s stackSidebar) Stack() Stack {
 	var arg0 *C.GtkStackSidebar
 
 	arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 
-	C.gtk_stack_sidebar_get_stack(arg0)
+	var cret *C.GtkStack
+	var goret Stack
+
+	cret = C.gtk_stack_sidebar_get_stack(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+
+	return goret
 }
 
 // SetStack: set the Stack associated with this StackSidebar.
 //
 // The sidebar widget will automatically update according to the order
 // (packing) and items within the given Stack.
-func (s stackSidebar) SetStack(s StackSidebar, stack Stack) {
+func (s stackSidebar) SetStack(stack Stack) {
 	var arg0 *C.GtkStackSidebar
 	var arg1 *C.GtkStack
 

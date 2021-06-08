@@ -2,6 +2,13 @@
 
 package gtk
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>

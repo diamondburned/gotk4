@@ -3,8 +3,10 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -117,7 +119,7 @@ const (
 // of &#x1; ... &#x1f; for all control sequences except for tabstop, newline and
 // carriage return. The character references in this range are not valid XML
 // 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup parser.
-func MarkupEscapeText(text string, length int) {
+func MarkupEscapeText(text string, length int) string {
 	var arg1 *C.gchar
 	var arg2 C.gssize
 
@@ -125,7 +127,15 @@ func MarkupEscapeText(text string, length int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(length)
 
-	C.g_markup_escape_text(arg1, arg2)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_markup_escape_text(arg1, arg2)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
@@ -161,26 +171,26 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 //
 // This function reports an error if the document isn't complete, for example if
 // elements are still open.
-func (c *MarkupParseContext) EndParse(c *MarkupParseContext) error {
+func (c *MarkupParseContext) EndParse() error {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_markup_parse_context_end_parse(arg0, &errout)
+	C.g_markup_parse_context_end_parse(arg0, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // Free frees a ParseContext.
 //
 // This function can't be called from inside one of the Parser functions or
 // while a subparser is pushed.
-func (c *MarkupParseContext) Free(c *MarkupParseContext) {
+func (c *MarkupParseContext) Free() {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
@@ -193,12 +203,19 @@ func (c *MarkupParseContext) Free(c *MarkupParseContext) {
 // If called from the start_element or end_element handlers this will give the
 // element_name as passed to those functions. For the parent elements, see
 // g_markup_parse_context_get_element_stack().
-func (c *MarkupParseContext) Element(c *MarkupParseContext) {
+func (c *MarkupParseContext) Element() string {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	C.g_markup_parse_context_get_element(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_markup_parse_context_get_element(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ElementStack retrieves the element stack from the internal state of the
@@ -211,34 +228,41 @@ func (c *MarkupParseContext) Element(c *MarkupParseContext) {
 // This function is intended to be used in the start_element and end_element
 // handlers where g_markup_parse_context_get_element() would merely return the
 // name of the element that is being processed.
-func (c *MarkupParseContext) ElementStack(c *MarkupParseContext) {
+func (c *MarkupParseContext) ElementStack() *SList {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	C.g_markup_parse_context_get_element_stack(arg0)
+	var cret *C.GSList
+	var goret *SList
+
+	cret = C.g_markup_parse_context_get_element_stack(arg0)
+
+	goret = WrapSList(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Position retrieves the current line number and the number of the character on
 // that line. Intended for use in error messages; there are no strict semantics
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages."
-func (c *MarkupParseContext) Position(c *MarkupParseContext) (lineNumber int, charNumber int) {
+func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.gint
-	var lineNumber int
-	var arg2 C.gint
-	var charNumber int
+	arg1 := new(C.gint)
+	var ret1 int
+	arg2 := new(C.gint)
+	var ret2 int
 
-	C.g_markup_parse_context_get_position(arg0, &arg1, &arg2)
+	C.g_markup_parse_context_get_position(arg0, arg1, arg2)
 
-	lineNumber = int(&arg1)
-	charNumber = int(&arg2)
+	ret1 = int(*arg1)
+	ret2 = int(*arg2)
 
-	return lineNumber, charNumber
+	return ret1, ret2
 }
 
 // UserData returns the user_data associated with @context.
@@ -246,12 +270,19 @@ func (c *MarkupParseContext) Position(c *MarkupParseContext) (lineNumber int, ch
 // This will either be the user_data that was provided to
 // g_markup_parse_context_new() or to the most recent call of
 // g_markup_parse_context_push().
-func (c *MarkupParseContext) UserData(c *MarkupParseContext) {
+func (c *MarkupParseContext) UserData() interface{} {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	C.g_markup_parse_context_get_user_data(arg0)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_markup_parse_context_get_user_data(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // Parse: feed some data to the ParseContext.
@@ -263,7 +294,7 @@ func (c *MarkupParseContext) UserData(c *MarkupParseContext) {
 // of data into this function, aborting the process if an error occurs. Once an
 // error is reported, no further data may be fed to the ParseContext; all errors
 // are fatal.
-func (c *MarkupParseContext) Parse(c *MarkupParseContext, text string, textLen int) error {
+func (c *MarkupParseContext) Parse(text string, textLen int) error {
 	var arg0 *C.GMarkupParseContext
 	var arg1 *C.gchar
 	var arg2 C.gssize
@@ -273,14 +304,14 @@ func (c *MarkupParseContext) Parse(c *MarkupParseContext, text string, textLen i
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(textLen)
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_markup_parse_context_parse(arg0, arg1, arg2, &errout)
+	C.g_markup_parse_context_parse(arg0, arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // Pop completes the process of a temporary sub-parser redirection.
@@ -295,26 +326,43 @@ func (c *MarkupParseContext) Parse(c *MarkupParseContext, text string, textLen i
 // This function is not intended to be directly called by users interested in
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
-func (c *MarkupParseContext) Pop(c *MarkupParseContext) {
+func (c *MarkupParseContext) Pop() interface{} {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	C.g_markup_parse_context_pop(arg0)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_markup_parse_context_pop(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // Ref increases the reference count of @context.
-func (c *MarkupParseContext) Ref(c *MarkupParseContext) {
+func (c *MarkupParseContext) Ref() *MarkupParseContext {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	C.g_markup_parse_context_ref(arg0)
+	cret := new(C.GMarkupParseContext)
+	var goret *MarkupParseContext
+
+	cret = C.g_markup_parse_context_ref(arg0)
+
+	goret = WrapMarkupParseContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *MarkupParseContext) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref decreases the reference count of @context. When its reference count
 // drops to 0, it is freed.
-func (c *MarkupParseContext) Unref(c *MarkupParseContext) {
+func (c *MarkupParseContext) Unref() {
 	var arg0 *C.GMarkupParseContext
 
 	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))

@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,16 +40,16 @@ type ActionMapOverrider interface {
 	// @action then the old action is dropped from the action map.
 	//
 	// The action map takes its own reference on @action.
-	AddAction(a ActionMap, action Action)
+	AddAction(action Action)
 	// LookupAction looks up the action with the name @action_name in
 	// @action_map.
 	//
 	// If no such action exists, returns nil.
-	LookupAction(a ActionMap, actionName string)
+	LookupAction(actionName string) Action
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
-	RemoveAction(a ActionMap, actionName string)
+	RemoveAction(actionName string)
 }
 
 // ActionMap: the GActionMap interface is implemented by Group implementations
@@ -88,7 +91,7 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 // @action then the old action is dropped from the action map.
 //
 // The action map takes its own reference on @action.
-func (a actionMap) AddAction(a ActionMap, action Action) {
+func (a actionMap) AddAction(action Action) {
 	var arg0 *C.GActionMap
 	var arg1 *C.GAction
 
@@ -102,7 +105,7 @@ func (a actionMap) AddAction(a ActionMap, action Action) {
 // @action_map.
 //
 // If no such action exists, returns nil.
-func (a actionMap) LookupAction(a ActionMap, actionName string) {
+func (a actionMap) LookupAction(actionName string) Action {
 	var arg0 *C.GActionMap
 	var arg1 *C.gchar
 
@@ -110,13 +113,20 @@ func (a actionMap) LookupAction(a ActionMap, actionName string) {
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_action_map_lookup_action(arg0, arg1)
+	var cret *C.GAction
+	var goret Action
+
+	cret = C.g_action_map_lookup_action(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+
+	return goret
 }
 
 // RemoveAction removes the named action from the action map.
 //
 // If no action of this name is in the map then nothing happens.
-func (a actionMap) RemoveAction(a ActionMap, actionName string) {
+func (a actionMap) RemoveAction(actionName string) {
 	var arg0 *C.GActionMap
 	var arg1 *C.gchar
 

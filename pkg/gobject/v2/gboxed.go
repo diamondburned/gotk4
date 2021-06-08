@@ -5,18 +5,26 @@ package gobject
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
+// #include <glib-object.h>
 import "C"
 
 // BoxedCopy: provide a copy of a boxed structure @src_boxed which is of type
 // @boxed_type.
-func BoxedCopy(boxedType externglib.Type, srcBoxed interface{}) {
+func BoxedCopy(boxedType externglib.Type, srcBoxed interface{}) interface{} {
 	var arg1 C.GType
 	var arg2 C.gpointer
 
-	arg1 := C.GType(boxedType)
+	arg1 = C.GType(boxedType)
 	arg2 = C.gpointer(srcBoxed)
 
-	C.g_boxed_copy(arg1, arg2)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_boxed_copy(arg1, arg2)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // BoxedFree: free the boxed structure @boxed which is of type @boxed_type.
@@ -24,7 +32,7 @@ func BoxedFree(boxedType externglib.Type, boxed interface{}) {
 	var arg1 C.GType
 	var arg2 C.gpointer
 
-	arg1 := C.GType(boxedType)
+	arg1 = C.GType(boxedType)
 	arg2 = C.gpointer(boxed)
 
 	C.g_boxed_free(arg1, arg2)

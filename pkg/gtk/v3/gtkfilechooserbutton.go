@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,23 +62,23 @@ type FileChooserButton interface {
 
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse. See gtk_file_chooser_button_set_focus_on_click().
-	FocusOnClick(b FileChooserButton) bool
+	FocusOnClick() bool
 	// Title retrieves the title of the browse dialog used by @button. The
 	// returned value should not be modified or freed.
-	Title(b FileChooserButton)
+	Title() string
 	// WidthChars retrieves the width in characters of the @button widget’s
 	// entry and/or label.
-	WidthChars(b FileChooserButton)
+	WidthChars() int
 	// SetFocusOnClick sets whether the button will grab focus when it is
 	// clicked with the mouse. Making mouse clicks not grab focus is useful in
 	// places like toolbars where you don’t want the keyboard focus removed from
 	// the main area of the application.
-	SetFocusOnClick(b FileChooserButton, focusOnClick bool)
+	SetFocusOnClick(focusOnClick bool)
 	// SetTitle modifies the @title of the browse dialog used by @button.
-	SetTitle(b FileChooserButton, title string)
+	SetTitle(title string)
 	// SetWidthChars sets the width (in characters) that @button will use to
 	// @n_chars.
-	SetWidthChars(b FileChooserButton, nChars int)
+	SetWidthChars(nChars int)
 }
 
 // fileChooserButton implements the FileChooserButton interface.
@@ -106,7 +109,7 @@ func marshalFileChooserButton(p uintptr) (interface{}, error) {
 }
 
 // NewFileChooserButton constructs a class FileChooserButton.
-func NewFileChooserButton(title string, action FileChooserAction) {
+func NewFileChooserButton(title string, action FileChooserAction) FileChooserButton {
 	var arg1 *C.gchar
 	var arg2 C.GtkFileChooserAction
 
@@ -114,62 +117,90 @@ func NewFileChooserButton(title string, action FileChooserAction) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GtkFileChooserAction)(action)
 
-	C.gtk_file_chooser_button_new(arg1, arg2)
+	var cret C.GtkFileChooserButton
+	var goret FileChooserButton
+
+	cret = C.gtk_file_chooser_button_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserButton)
+
+	return goret
 }
 
 // NewFileChooserButtonWithDialog constructs a class FileChooserButton.
-func NewFileChooserButtonWithDialog(dialog Dialog) {
+func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
 
-	C.gtk_file_chooser_button_new_with_dialog(arg1)
+	var cret C.GtkFileChooserButton
+	var goret FileChooserButton
+
+	cret = C.gtk_file_chooser_button_new_with_dialog(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserButton)
+
+	return goret
 }
 
 // FocusOnClick returns whether the button grabs focus when it is clicked
 // with the mouse. See gtk_file_chooser_button_set_focus_on_click().
-func (b fileChooserButton) FocusOnClick(b FileChooserButton) bool {
+func (b fileChooserButton) FocusOnClick() bool {
 	var arg0 *C.GtkFileChooserButton
 
 	arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_file_chooser_button_get_focus_on_click(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Title retrieves the title of the browse dialog used by @button. The
 // returned value should not be modified or freed.
-func (b fileChooserButton) Title(b FileChooserButton) {
+func (b fileChooserButton) Title() string {
 	var arg0 *C.GtkFileChooserButton
 
 	arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_file_chooser_button_get_title(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_file_chooser_button_get_title(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // WidthChars retrieves the width in characters of the @button widget’s
 // entry and/or label.
-func (b fileChooserButton) WidthChars(b FileChooserButton) {
+func (b fileChooserButton) WidthChars() int {
 	var arg0 *C.GtkFileChooserButton
 
 	arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_file_chooser_button_get_width_chars(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_file_chooser_button_get_width_chars(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // SetFocusOnClick sets whether the button will grab focus when it is
 // clicked with the mouse. Making mouse clicks not grab focus is useful in
 // places like toolbars where you don’t want the keyboard focus removed from
 // the main area of the application.
-func (b fileChooserButton) SetFocusOnClick(b FileChooserButton, focusOnClick bool) {
+func (b fileChooserButton) SetFocusOnClick(focusOnClick bool) {
 	var arg0 *C.GtkFileChooserButton
 	var arg1 C.gboolean
 
@@ -182,7 +213,7 @@ func (b fileChooserButton) SetFocusOnClick(b FileChooserButton, focusOnClick boo
 }
 
 // SetTitle modifies the @title of the browse dialog used by @button.
-func (b fileChooserButton) SetTitle(b FileChooserButton, title string) {
+func (b fileChooserButton) SetTitle(title string) {
 	var arg0 *C.GtkFileChooserButton
 	var arg1 *C.gchar
 
@@ -195,7 +226,7 @@ func (b fileChooserButton) SetTitle(b FileChooserButton, title string) {
 
 // SetWidthChars sets the width (in characters) that @button will use to
 // @n_chars.
-func (b fileChooserButton) SetWidthChars(b FileChooserButton, nChars int) {
+func (b fileChooserButton) SetWidthChars(nChars int) {
 	var arg0 *C.GtkFileChooserButton
 	var arg1 C.gint
 

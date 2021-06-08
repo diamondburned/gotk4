@@ -23,7 +23,7 @@ import "C"
 
 // BusNameAppearedCallback: invoked when the name being watched is known to have
 // to have an owner.
-type BusNameAppearedCallback func(connection DBusConnection, name string, nameOwner string)
+type BusNameAppearedCallback func()
 
 //export gotk4_BusNameAppearedCallback
 func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
@@ -33,7 +33,7 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	}
 
 	fn := v.(BusNameAppearedCallback)
-	fn(connection, name, nameOwner, userData)
+	fn()
 }
 
 // BusNameVanishedCallback: invoked when the name being watched is known not to
@@ -41,7 +41,7 @@ func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 //
 // This is also invoked when the BusConnection on which the watch was
 // established has been closed. In that case, @connection will be nil.
-type BusNameVanishedCallback func(connection DBusConnection, name string)
+type BusNameVanishedCallback func()
 
 //export gotk4_BusNameVanishedCallback
 func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
@@ -51,7 +51,7 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	}
 
 	fn := v.(BusNameVanishedCallback)
-	fn(connection, name, userData)
+	fn()
 }
 
 // BusUnwatchName stops watching a name.

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,19 +21,20 @@ func init() {
 	})
 }
 
-// WindowHandle: gtkWindowHandle is a titlebar area widget. When added into a
-// window, it can be dragged to move the window, and handles right click, double
-// click and middle click as expected of a titlebar.
+// WindowHandle: `GtkWindowHandle` is a titlebar area widget.
+//
+// When added into a window, it can be dragged to move the window, and handles
+// right click, double click and middle click as expected of a titlebar.
 //
 //
 // CSS nodes
 //
-// WindowHandle has a single CSS node with the name `windowhandle`.
+// `GtkWindowHandle` has a single CSS node with the name `windowhandle`.
 //
 //
 // Accessibility
 //
-// GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// `GtkWindowHandle` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowHandle interface {
 	Widget
 	Accessible
@@ -38,9 +42,9 @@ type WindowHandle interface {
 	ConstraintTarget
 
 	// Child gets the child widget of @self.
-	Child(s WindowHandle)
+	Child() Widget
 	// SetChild sets the child widget of @self.
-	SetChild(s WindowHandle, child Widget)
+	SetChild(child Widget)
 }
 
 // windowHandle implements the WindowHandle interface.
@@ -71,21 +75,35 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 }
 
 // NewWindowHandle constructs a class WindowHandle.
-func NewWindowHandle() {
-	C.gtk_window_handle_new()
+func NewWindowHandle() WindowHandle {
+	var cret C.GtkWindowHandle
+	var goret WindowHandle
+
+	cret = C.gtk_window_handle_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowHandle)
+
+	return goret
 }
 
 // Child gets the child widget of @self.
-func (s windowHandle) Child(s WindowHandle) {
+func (s windowHandle) Child() Widget {
 	var arg0 *C.GtkWindowHandle
 
 	arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
 
-	C.gtk_window_handle_get_child(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_window_handle_get_child(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // SetChild sets the child widget of @self.
-func (s windowHandle) SetChild(s WindowHandle, child Widget) {
+func (s windowHandle) SetChild(child Widget) {
 	var arg0 *C.GtkWindowHandle
 	var arg1 *C.GtkWidget
 

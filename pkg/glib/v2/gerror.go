@@ -5,6 +5,7 @@ package glib
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,14 +24,14 @@ func init() {
 // ClearError: if @err or *@err is nil, does nothing. Otherwise, calls
 // g_error_free() on *@err and sets *@err to nil.
 func ClearError() error {
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_clear_error(&errout)
+	C.g_clear_error(&cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // PropagateError: if @dest is nil, free @src; otherwise, moves @src into
@@ -46,14 +47,14 @@ func PropagateError(src error) error {
 
 	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(src)))
 
-	var arg1 *C.GError
-	var dest error
+	arg1 := new(*C.GError)
+	var ret1 error
 
-	C.g_propagate_error(&arg1, arg2)
+	C.g_propagate_error(arg1, arg2)
 
-	dest = gerror.Take(unsafe.Pointer(&arg1))
+	ret1 = gerror.Take(unsafe.Pointer(*arg1))
 
-	return dest
+	return ret1
 }
 
 // Error: the `GError` structure contains information about an error that has
@@ -97,17 +98,24 @@ func (e *Error) Message() string {
 }
 
 // Copy makes a copy of @error.
-func (e *Error) Copy(e error) {
+func (e *Error) Copy() error {
 	var arg0 *C.GError
 
 	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
 	defer C.g_error_free(arg0)
 
-	C.g_error_copy(arg0)
+	cret := new(C.GError)
+	var goret error
+
+	cret = C.g_error_copy(arg0)
+
+	goret = gerror.Take(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Free frees a #GError and associated resources.
-func (e *Error) Free(e error) {
+func (e *Error) Free() {
 	var arg0 *C.GError
 
 	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))

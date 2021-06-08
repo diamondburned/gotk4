@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,11 +44,11 @@ type SeparatorToolItem interface {
 
 	// Draw returns whether @item is drawn as a line, or just blank. See
 	// gtk_separator_tool_item_set_draw().
-	Draw(i SeparatorToolItem) bool
+	Draw() bool
 	// SetDraw: whether @item is drawn as a vertical line, or just blank.
 	// Setting this to false along with gtk_tool_item_set_expand() is useful to
 	// create an item that forces following items to the end of the toolbar.
-	SetDraw(i SeparatorToolItem, draw bool)
+	SetDraw(draw bool)
 }
 
 // separatorToolItem implements the SeparatorToolItem interface.
@@ -74,33 +77,40 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 }
 
 // NewSeparatorToolItem constructs a class SeparatorToolItem.
-func NewSeparatorToolItem() {
-	C.gtk_separator_tool_item_new()
+func NewSeparatorToolItem() SeparatorToolItem {
+	var cret C.GtkSeparatorToolItem
+	var goret SeparatorToolItem
+
+	cret = C.gtk_separator_tool_item_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorToolItem)
+
+	return goret
 }
 
 // Draw returns whether @item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
-func (i separatorToolItem) Draw(i SeparatorToolItem) bool {
+func (i separatorToolItem) Draw() bool {
 	var arg0 *C.GtkSeparatorToolItem
 
 	arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_separator_tool_item_get_draw(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetDraw: whether @item is drawn as a vertical line, or just blank.
 // Setting this to false along with gtk_tool_item_set_expand() is useful to
 // create an item that forces following items to the end of the toolbar.
-func (i separatorToolItem) SetDraw(i SeparatorToolItem, draw bool) {
+func (i separatorToolItem) SetDraw(draw bool) {
 	var arg0 *C.GtkSeparatorToolItem
 	var arg1 C.gboolean
 

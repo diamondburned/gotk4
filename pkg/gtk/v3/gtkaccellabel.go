@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,18 +62,18 @@ type AccelLabel interface {
 
 	// Accel gets the keyval and modifier mask set with
 	// gtk_accel_label_set_accel().
-	Accel(a AccelLabel) (acceleratorKey uint, acceleratorMods *gdk.ModifierType)
+	Accel() (acceleratorKey uint, acceleratorMods *gdk.ModifierType)
 	// AccelWidget fetches the widget monitored by this accelerator label. See
 	// gtk_accel_label_set_accel_widget().
-	AccelWidget(a AccelLabel)
+	AccelWidget() Widget
 	// AccelWidth returns the width needed to display the accelerator key(s).
 	// This is used by menus to align all of the MenuItem widgets, and shouldn't
 	// be needed by applications.
-	AccelWidth(a AccelLabel)
+	AccelWidth() uint
 	// Refetch recreates the string representing the accelerator keys. This
 	// should not be needed since the string is automatically updated whenever
 	// accelerators are added or removed from the associated widget.
-	Refetch(a AccelLabel) bool
+	Refetch() bool
 	// SetAccel: manually sets a keyval and modifier mask as the accelerator
 	// rendered by @accel_label.
 	//
@@ -77,11 +81,11 @@ type AccelLabel interface {
 	// regardless of any associated accel closure or widget.
 	//
 	// Providing an @accelerator_key of 0 removes the manual setting.
-	SetAccel(a AccelLabel, acceleratorKey uint, acceleratorMods gdk.ModifierType)
+	SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType)
 	// SetAccelWidget sets the widget to be monitored by this accelerator label.
 	// Passing nil for @accel_widget will dissociate @accel_label from its
 	// current widget, if any.
-	SetAccelWidget(a AccelLabel, accelWidget Widget)
+	SetAccelWidget(accelWidget Widget)
 }
 
 // accelLabel implements the AccelLabel interface.
@@ -108,74 +112,95 @@ func marshalAccelLabel(p uintptr) (interface{}, error) {
 }
 
 // NewAccelLabel constructs a class AccelLabel.
-func NewAccelLabel(string string) {
+func NewAccelLabel(string string) AccelLabel {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_accel_label_new(arg1)
+	var cret C.GtkAccelLabel
+	var goret AccelLabel
+
+	cret = C.gtk_accel_label_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelLabel)
+
+	return goret
 }
 
 // Accel gets the keyval and modifier mask set with
 // gtk_accel_label_set_accel().
-func (a accelLabel) Accel(a AccelLabel) (acceleratorKey uint, acceleratorMods *gdk.ModifierType) {
+func (a accelLabel) Accel() (acceleratorKey uint, acceleratorMods *gdk.ModifierType) {
 	var arg0 *C.GtkAccelLabel
 
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
-	var arg1 C.guint
-	var acceleratorKey uint
-	var arg2 C.GdkModifierType
-	var acceleratorMods *gdk.ModifierType
+	arg1 := new(C.guint)
+	var ret1 uint
+	arg2 := new(C.GdkModifierType)
+	var ret2 *gdk.ModifierType
 
-	C.gtk_accel_label_get_accel(arg0, &arg1, &arg2)
+	C.gtk_accel_label_get_accel(arg0, arg1, arg2)
 
-	acceleratorKey = uint(&arg1)
-	acceleratorMods = *gdk.ModifierType(&arg2)
+	ret1 = uint(*arg1)
+	ret2 = *gdk.ModifierType(arg2)
 
-	return acceleratorKey, acceleratorMods
+	return ret1, ret2
 }
 
 // AccelWidget fetches the widget monitored by this accelerator label. See
 // gtk_accel_label_set_accel_widget().
-func (a accelLabel) AccelWidget(a AccelLabel) {
+func (a accelLabel) AccelWidget() Widget {
 	var arg0 *C.GtkAccelLabel
 
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
-	C.gtk_accel_label_get_accel_widget(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_accel_label_get_accel_widget(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // AccelWidth returns the width needed to display the accelerator key(s).
 // This is used by menus to align all of the MenuItem widgets, and shouldn't
 // be needed by applications.
-func (a accelLabel) AccelWidth(a AccelLabel) {
+func (a accelLabel) AccelWidth() uint {
 	var arg0 *C.GtkAccelLabel
 
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
-	C.gtk_accel_label_get_accel_width(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_accel_label_get_accel_width(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Refetch recreates the string representing the accelerator keys. This
 // should not be needed since the string is automatically updated whenever
 // accelerators are added or removed from the associated widget.
-func (a accelLabel) Refetch(a AccelLabel) bool {
+func (a accelLabel) Refetch() bool {
 	var arg0 *C.GtkAccelLabel
 
 	arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_accel_label_refetch(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetAccel: manually sets a keyval and modifier mask as the accelerator
@@ -185,7 +210,7 @@ func (a accelLabel) Refetch(a AccelLabel) bool {
 // regardless of any associated accel closure or widget.
 //
 // Providing an @accelerator_key of 0 removes the manual setting.
-func (a accelLabel) SetAccel(a AccelLabel, acceleratorKey uint, acceleratorMods gdk.ModifierType) {
+func (a accelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
 	var arg0 *C.GtkAccelLabel
 	var arg1 C.guint
 	var arg2 C.GdkModifierType
@@ -200,7 +225,7 @@ func (a accelLabel) SetAccel(a AccelLabel, acceleratorKey uint, acceleratorMods 
 // SetAccelWidget sets the widget to be monitored by this accelerator label.
 // Passing nil for @accel_widget will dissociate @accel_label from its
 // current widget, if any.
-func (a accelLabel) SetAccelWidget(a AccelLabel, accelWidget Widget) {
+func (a accelLabel) SetAccelWidget(accelWidget Widget) {
 	var arg0 *C.GtkAccelLabel
 	var arg1 *C.GtkWidget
 

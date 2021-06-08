@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -18,11 +19,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.graphene_point_get_type()), F: marshalPoint},
 	})
-}
-
-// PointZero returns a point fixed at (0, 0).
-func PointZero() {
-	C.graphene_point_zero()
 }
 
 // Point: a point with two coordinates.
@@ -46,8 +42,18 @@ func marshalPoint(p uintptr) (interface{}, error) {
 }
 
 // NewPointAlloc constructs a struct Point.
-func NewPointAlloc() {
-	C.graphene_point_alloc()
+func NewPointAlloc() *Point {
+	cret := new(C.graphene_point_t)
+	var goret *Point
+
+	cret = C.graphene_point_alloc()
+
+	goret = WrapPoint(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Point) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -70,24 +76,27 @@ func (p *Point) Y() float32 {
 }
 
 // Distance computes the distance between @a and @b.
-func (a *Point) Distance(a *Point, b *Point) (dX float32, dY float32) {
+func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 	var arg0 *C.graphene_point_t
 	var arg1 *C.graphene_point_t
 
 	arg0 = (*C.graphene_point_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.float
-	var dX float32
-	var arg3 C.float
-	var dY float32
+	arg2 := new(C.float)
+	var ret2 float32
+	arg3 := new(C.float)
+	var ret3 float32
+	var cret C.float
+	var goret float32
 
-	C.graphene_point_distance(arg0, arg1, &arg2, &arg3)
+	cret = C.graphene_point_distance(arg0, arg1, arg2, arg3)
 
-	dX = float32(&arg2)
-	dY = float32(&arg3)
+	ret2 = float32(*arg2)
+	ret3 = float32(*arg3)
+	goret = float32(cret)
 
-	return dX, dY
+	return ret2, ret3, goret
 }
 
 // Equal checks if the two points @a and @b point to the same coordinates.
@@ -95,7 +104,7 @@ func (a *Point) Distance(a *Point, b *Point) (dX float32, dY float32) {
 // This function accounts for floating point fluctuations; if you want to
 // control the fuzziness of the match, you can use graphene_point_near()
 // instead.
-func (a *Point) Equal(a *Point, b *Point) bool {
+func (a *Point) Equal(b *Point) bool {
 	var arg0 *C.graphene_point_t
 	var arg1 *C.graphene_point_t
 
@@ -103,19 +112,19 @@ func (a *Point) Equal(a *Point, b *Point) bool {
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_point_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees the resources allocated by graphene_point_alloc().
-func (p *Point) Free(p *Point) {
+func (p *Point) Free() {
 	var arg0 *C.graphene_point_t
 
 	arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
@@ -126,7 +135,7 @@ func (p *Point) Free(p *Point) {
 // Init initializes @p to the given @x and @y coordinates.
 //
 // It's safe to call this function multiple times.
-func (p *Point) Init(p *Point, x float32, y float32) {
+func (p *Point) Init(x float32, y float32) *Point {
 	var arg0 *C.graphene_point_t
 	var arg1 C.float
 	var arg2 C.float
@@ -135,35 +144,56 @@ func (p *Point) Init(p *Point, x float32, y float32) {
 	arg1 = C.float(x)
 	arg2 = C.float(y)
 
-	C.graphene_point_init(arg0, arg1, arg2)
+	var cret *C.graphene_point_t
+	var goret *Point
+
+	cret = C.graphene_point_init(arg0, arg1, arg2)
+
+	goret = WrapPoint(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromPoint initializes @p with the same coordinates of @src.
-func (p *Point) InitFromPoint(p *Point, src *Point) {
+func (p *Point) InitFromPoint(src *Point) *Point {
 	var arg0 *C.graphene_point_t
 	var arg1 *C.graphene_point_t
 
 	arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(src.Native()))
 
-	C.graphene_point_init_from_point(arg0, arg1)
+	var cret *C.graphene_point_t
+	var goret *Point
+
+	cret = C.graphene_point_init_from_point(arg0, arg1)
+
+	goret = WrapPoint(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromVec2 initializes @p with the coordinates inside the given
 // #graphene_vec2_t.
-func (p *Point) InitFromVec2(p *Point, src *Vec2) {
+func (p *Point) InitFromVec2(src *Vec2) *Point {
 	var arg0 *C.graphene_point_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src.Native()))
 
-	C.graphene_point_init_from_vec2(arg0, arg1)
+	var cret *C.graphene_point_t
+	var goret *Point
+
+	cret = C.graphene_point_init_from_vec2(arg0, arg1)
+
+	goret = WrapPoint(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Interpolate: linearly interpolates the coordinates of @a and @b using the
 // given @factor.
-func (a *Point) Interpolate(a *Point, b *Point, factor float64) *Point {
+func (a *Point) Interpolate(b *Point, factor float64) *Point {
 	var arg0 *C.graphene_point_t
 	var arg1 *C.graphene_point_t
 	var arg2 C.double
@@ -172,19 +202,19 @@ func (a *Point) Interpolate(a *Point, b *Point, factor float64) *Point {
 	arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
 	arg2 = C.double(factor)
 
-	var arg3 C.graphene_point_t
-	var res *Point
+	arg3 := new(C.graphene_point_t)
+	var ret3 *Point
 
-	C.graphene_point_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_point_interpolate(arg0, arg1, arg2, arg3)
 
-	res = WrapPoint(unsafe.Pointer(&arg3))
+	ret3 = WrapPoint(unsafe.Pointer(arg3))
 
-	return res
+	return ret3
 }
 
 // Near checks whether the two points @a and @b are within the threshold of
 // @epsilon.
-func (a *Point) Near(a *Point, b *Point, epsilon float32) bool {
+func (a *Point) Near(b *Point, epsilon float32) bool {
 	var arg0 *C.graphene_point_t
 	var arg1 *C.graphene_point_t
 	var arg2 C.float
@@ -194,30 +224,30 @@ func (a *Point) Near(a *Point, b *Point, epsilon float32) bool {
 	arg2 = C.float(epsilon)
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_point_near(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ToVec2 stores the coordinates of the given #graphene_point_t into a
 // #graphene_vec2_t.
-func (p *Point) ToVec2(p *Point) *Vec2 {
+func (p *Point) ToVec2() *Vec2 {
 	var arg0 *C.graphene_point_t
 
 	arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	var arg1 C.graphene_vec2_t
-	var v *Vec2
+	arg1 := new(C.graphene_vec2_t)
+	var ret1 *Vec2
 
-	C.graphene_point_to_vec2(arg0, &arg1)
+	C.graphene_point_to_vec2(arg0, arg1)
 
-	v = WrapVec2(unsafe.Pointer(&arg1))
+	ret1 = WrapVec2(unsafe.Pointer(arg1))
 
-	return v
+	return ret1
 }

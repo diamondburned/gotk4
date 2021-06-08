@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -90,12 +93,19 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 }
 
 // NewScrollbar constructs a class Scrollbar.
-func NewScrollbar(orientation Orientation, adjustment Adjustment) {
+func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	var arg1 C.GtkOrientation
 	var arg2 *C.GtkAdjustment
 
 	arg1 = (C.GtkOrientation)(orientation)
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	C.gtk_scrollbar_new(arg1, arg2)
+	var cret C.GtkScrollbar
+	var goret Scrollbar
+
+	cret = C.gtk_scrollbar_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
+
+	return goret
 }

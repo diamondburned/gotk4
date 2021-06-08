@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,31 +58,31 @@ type Toolbar interface {
 	// function returns the position a new item should be inserted.
 	//
 	// @x and @y are in @toolbar coordinates.
-	DropIndex(t Toolbar, x int, y int)
+	DropIndex(x int, y int) int
 	// IconSize retrieves the icon size for the toolbar. See
 	// gtk_toolbar_set_icon_size().
-	IconSize(t Toolbar)
+	IconSize() IconSize
 	// ItemIndex returns the position of @item on the toolbar, starting from 0.
 	// It is an error if @item is not a child of the toolbar.
-	ItemIndex(t Toolbar, item ToolItem)
+	ItemIndex(item ToolItem) int
 	// NItems returns the number of items on the toolbar.
-	NItems(t Toolbar)
+	NItems() int
 	// NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
 	// not contain an @n'th item.
-	NthItem(t Toolbar, n int)
+	NthItem(n int) ToolItem
 	// ReliefStyle returns the relief style of buttons on @toolbar. See
 	// gtk_button_set_relief().
-	ReliefStyle(t Toolbar)
+	ReliefStyle() ReliefStyle
 	// ShowArrow returns whether the toolbar has an overflow menu. See
 	// gtk_toolbar_set_show_arrow().
-	ShowArrow(t Toolbar) bool
+	ShowArrow() bool
 	// Style retrieves whether the toolbar has text, icons, or both . See
 	// gtk_toolbar_set_style().
-	Style(t Toolbar)
+	Style() ToolbarStyle
 	// Insert: insert a ToolItem into the toolbar at position @pos. If @pos is 0
 	// the item is prepended to the start of the toolbar. If @pos is negative,
 	// the item is appended to the end of the toolbar.
-	Insert(t Toolbar, item ToolItem, pos int)
+	Insert(item ToolItem, pos int)
 	// SetDropHighlightItem highlights @toolbar to give an idea of what it would
 	// look like if @item was added to @toolbar at the position indicated by
 	// @index_. If @item is nil, highlighting is turned off. In that case
@@ -88,7 +91,7 @@ type Toolbar interface {
 	// The @tool_item passed to this function must not be part of any widget
 	// hierarchy. When an item is set as drop highlight item it can not added to
 	// any widget hierarchy or used as highlight item for another toolbar.
-	SetDropHighlightItem(t Toolbar, toolItem ToolItem, index_ int)
+	SetDropHighlightItem(toolItem ToolItem, index_ int)
 	// SetIconSize: this function sets the size of stock icons in the toolbar.
 	// You can call it both before you add the icons and after they’ve been
 	// added. The size you set will override user preferences for the default
@@ -96,7 +99,7 @@ type Toolbar interface {
 	//
 	// This should only be used for special-purpose toolbars, normal application
 	// toolbars should respect the user preferences for the size of icons.
-	SetIconSize(t Toolbar, iconSize IconSize)
+	SetIconSize(iconSize IconSize)
 	// SetShowArrow sets whether to show an overflow menu when @toolbar isn’t
 	// allocated enough size to show all of its items. If true, items which
 	// can’t fit in @toolbar, and which have a proxy menu item set by
@@ -104,17 +107,17 @@ type Toolbar interface {
 	// be available in an overflow menu, which can be opened by an added arrow
 	// button. If false, @toolbar will request enough size to fit all of its
 	// child items without any overflow.
-	SetShowArrow(t Toolbar, showArrow bool)
+	SetShowArrow(showArrow bool)
 	// SetStyle alters the view of @toolbar to display either icons only, text
 	// only, or both.
-	SetStyle(t Toolbar, style ToolbarStyle)
+	SetStyle(style ToolbarStyle)
 	// UnsetIconSize unsets toolbar icon size set with
 	// gtk_toolbar_set_icon_size(), so that user preferences will be used to
 	// determine the icon size.
-	UnsetIconSize(t Toolbar)
+	UnsetIconSize()
 	// UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so
 	// that user preferences will be used to determine the toolbar style.
-	UnsetStyle(t Toolbar)
+	UnsetStyle()
 }
 
 // toolbar implements the Toolbar interface.
@@ -145,8 +148,15 @@ func marshalToolbar(p uintptr) (interface{}, error) {
 }
 
 // NewToolbar constructs a class Toolbar.
-func NewToolbar() {
-	C.gtk_toolbar_new()
+func NewToolbar() Toolbar {
+	var cret C.GtkToolbar
+	var goret Toolbar
+
+	cret = C.gtk_toolbar_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Toolbar)
+
+	return goret
 }
 
 // DropIndex returns the position corresponding to the indicated point on
@@ -154,7 +164,7 @@ func NewToolbar() {
 // function returns the position a new item should be inserted.
 //
 // @x and @y are in @toolbar coordinates.
-func (t toolbar) DropIndex(t Toolbar, x int, y int) {
+func (t toolbar) DropIndex(x int, y int) int {
 	var arg0 *C.GtkToolbar
 	var arg1 C.gint
 	var arg2 C.gint
@@ -163,95 +173,144 @@ func (t toolbar) DropIndex(t Toolbar, x int, y int) {
 	arg1 = C.gint(x)
 	arg2 = C.gint(y)
 
-	C.gtk_toolbar_get_drop_index(arg0, arg1, arg2)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_toolbar_get_drop_index(arg0, arg1, arg2)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // IconSize retrieves the icon size for the toolbar. See
 // gtk_toolbar_set_icon_size().
-func (t toolbar) IconSize(t Toolbar) {
+func (t toolbar) IconSize() IconSize {
 	var arg0 *C.GtkToolbar
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
-	C.gtk_toolbar_get_icon_size(arg0)
+	var cret C.GtkIconSize
+	var goret IconSize
+
+	cret = C.gtk_toolbar_get_icon_size(arg0)
+
+	goret = IconSize(cret)
+
+	return goret
 }
 
 // ItemIndex returns the position of @item on the toolbar, starting from 0.
 // It is an error if @item is not a child of the toolbar.
-func (t toolbar) ItemIndex(t Toolbar, item ToolItem) {
+func (t toolbar) ItemIndex(item ToolItem) int {
 	var arg0 *C.GtkToolbar
 	var arg1 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
-	C.gtk_toolbar_get_item_index(arg0, arg1)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_toolbar_get_item_index(arg0, arg1)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // NItems returns the number of items on the toolbar.
-func (t toolbar) NItems(t Toolbar) {
+func (t toolbar) NItems() int {
 	var arg0 *C.GtkToolbar
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
-	C.gtk_toolbar_get_n_items(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_toolbar_get_n_items(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
 // not contain an @n'th item.
-func (t toolbar) NthItem(t Toolbar, n int) {
+func (t toolbar) NthItem(n int) ToolItem {
 	var arg0 *C.GtkToolbar
 	var arg1 C.gint
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	arg1 = C.gint(n)
 
-	C.gtk_toolbar_get_nth_item(arg0, arg1)
+	var cret *C.GtkToolItem
+	var goret ToolItem
+
+	cret = C.gtk_toolbar_get_nth_item(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+
+	return goret
 }
 
 // ReliefStyle returns the relief style of buttons on @toolbar. See
 // gtk_button_set_relief().
-func (t toolbar) ReliefStyle(t Toolbar) {
+func (t toolbar) ReliefStyle() ReliefStyle {
 	var arg0 *C.GtkToolbar
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
-	C.gtk_toolbar_get_relief_style(arg0)
+	var cret C.GtkReliefStyle
+	var goret ReliefStyle
+
+	cret = C.gtk_toolbar_get_relief_style(arg0)
+
+	goret = ReliefStyle(cret)
+
+	return goret
 }
 
 // ShowArrow returns whether the toolbar has an overflow menu. See
 // gtk_toolbar_set_show_arrow().
-func (t toolbar) ShowArrow(t Toolbar) bool {
+func (t toolbar) ShowArrow() bool {
 	var arg0 *C.GtkToolbar
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_toolbar_get_show_arrow(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Style retrieves whether the toolbar has text, icons, or both . See
 // gtk_toolbar_set_style().
-func (t toolbar) Style(t Toolbar) {
+func (t toolbar) Style() ToolbarStyle {
 	var arg0 *C.GtkToolbar
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
-	C.gtk_toolbar_get_style(arg0)
+	var cret C.GtkToolbarStyle
+	var goret ToolbarStyle
+
+	cret = C.gtk_toolbar_get_style(arg0)
+
+	goret = ToolbarStyle(cret)
+
+	return goret
 }
 
 // Insert: insert a ToolItem into the toolbar at position @pos. If @pos is 0
 // the item is prepended to the start of the toolbar. If @pos is negative,
 // the item is appended to the end of the toolbar.
-func (t toolbar) Insert(t Toolbar, item ToolItem, pos int) {
+func (t toolbar) Insert(item ToolItem, pos int) {
 	var arg0 *C.GtkToolbar
 	var arg1 *C.GtkToolItem
 	var arg2 C.gint
@@ -271,7 +330,7 @@ func (t toolbar) Insert(t Toolbar, item ToolItem, pos int) {
 // The @tool_item passed to this function must not be part of any widget
 // hierarchy. When an item is set as drop highlight item it can not added to
 // any widget hierarchy or used as highlight item for another toolbar.
-func (t toolbar) SetDropHighlightItem(t Toolbar, toolItem ToolItem, index_ int) {
+func (t toolbar) SetDropHighlightItem(toolItem ToolItem, index_ int) {
 	var arg0 *C.GtkToolbar
 	var arg1 *C.GtkToolItem
 	var arg2 C.gint
@@ -290,7 +349,7 @@ func (t toolbar) SetDropHighlightItem(t Toolbar, toolItem ToolItem, index_ int) 
 //
 // This should only be used for special-purpose toolbars, normal application
 // toolbars should respect the user preferences for the size of icons.
-func (t toolbar) SetIconSize(t Toolbar, iconSize IconSize) {
+func (t toolbar) SetIconSize(iconSize IconSize) {
 	var arg0 *C.GtkToolbar
 	var arg1 C.GtkIconSize
 
@@ -307,7 +366,7 @@ func (t toolbar) SetIconSize(t Toolbar, iconSize IconSize) {
 // be available in an overflow menu, which can be opened by an added arrow
 // button. If false, @toolbar will request enough size to fit all of its
 // child items without any overflow.
-func (t toolbar) SetShowArrow(t Toolbar, showArrow bool) {
+func (t toolbar) SetShowArrow(showArrow bool) {
 	var arg0 *C.GtkToolbar
 	var arg1 C.gboolean
 
@@ -321,7 +380,7 @@ func (t toolbar) SetShowArrow(t Toolbar, showArrow bool) {
 
 // SetStyle alters the view of @toolbar to display either icons only, text
 // only, or both.
-func (t toolbar) SetStyle(t Toolbar, style ToolbarStyle) {
+func (t toolbar) SetStyle(style ToolbarStyle) {
 	var arg0 *C.GtkToolbar
 	var arg1 C.GtkToolbarStyle
 
@@ -334,7 +393,7 @@ func (t toolbar) SetStyle(t Toolbar, style ToolbarStyle) {
 // UnsetIconSize unsets toolbar icon size set with
 // gtk_toolbar_set_icon_size(), so that user preferences will be used to
 // determine the icon size.
-func (t toolbar) UnsetIconSize(t Toolbar) {
+func (t toolbar) UnsetIconSize() {
 	var arg0 *C.GtkToolbar
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
@@ -344,7 +403,7 @@ func (t toolbar) UnsetIconSize(t Toolbar) {
 
 // UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so
 // that user preferences will be used to determine the toolbar style.
-func (t toolbar) UnsetStyle(t Toolbar) {
+func (t toolbar) UnsetStyle() {
 	var arg0 *C.GtkToolbar
 
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))

@@ -2,16 +2,21 @@
 
 package gtk
 
+import (
+	"github.com/diamondburned/gotk4/pkg/pango"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
 
-// DisableSetlocale prevents gtk_init(), gtk_init_check() and gtk_parse_args()
-// from automatically calling `setlocale (LC_ALL, "")`. You would want to use
-// this function if you wanted to set the locale for your program to something
-// other than the user’s locale, or if you wanted to set different values for
-// different locale categories.
+// DisableSetlocale prevents [id@gtk_init] and [id@gtk_init_check] from
+// automatically calling `setlocale (LC_ALL, "")`.
+//
+// You would want to use this function if you wanted to set the locale for your
+// program to something other than the user’s locale, or if you wanted to set
+// different values for different locale categories.
 //
 // Most programs should not need to call this function.
 func DisableSetlocale() {
@@ -25,8 +30,15 @@ func DisableSetlocale() {
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
-func GetDefaultLanguage() {
-	C.gtk_get_default_language()
+func GetDefaultLanguage() *pango.Language {
+	var cret *C.PangoLanguage
+	var goret *pango.Language
+
+	cret = C.gtk_get_default_language()
+
+	goret = pango.WrapLanguage(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // GetLocaleDirection: get the direction of the current locale. This is the
@@ -47,8 +59,15 @@ func GetDefaultLanguage() {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);
-func GetLocaleDirection() {
-	C.gtk_get_locale_direction()
+func GetLocaleDirection() TextDirection {
+	var cret C.GtkTextDirection
+	var goret TextDirection
+
+	cret = C.gtk_get_locale_direction()
+
+	goret = TextDirection(cret)
+
+	return goret
 }
 
 // Init: call this function before using any other GTK functions in your GUI
@@ -79,28 +98,28 @@ func Init() {
 // with the user - for example a curses or command line interface.
 func InitCheck() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_init_check()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsInitialized: use this function to check if GTK has been initialized with
 // gtk_init() or gtk_init_check().
 func IsInitialized() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_is_initialized()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

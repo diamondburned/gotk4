@@ -9,12 +9,19 @@ import "C"
 
 // AtomicRCBoxAcquire: atomically acquires a reference on the data pointed by
 // @mem_block.
-func AtomicRCBoxAcquire(memBlock interface{}) {
+func AtomicRCBoxAcquire(memBlock interface{}) interface{} {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(memBlock)
 
-	C.g_atomic_rc_box_acquire(arg1)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_atomic_rc_box_acquire(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // AtomicRCBoxAlloc allocates @block_size bytes of memory, and adds atomic
@@ -24,12 +31,19 @@ func AtomicRCBoxAcquire(memBlock interface{}) {
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func AtomicRCBoxAlloc(blockSize uint) {
+func AtomicRCBoxAlloc(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
 
-	C.g_atomic_rc_box_alloc(arg1)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_atomic_rc_box_alloc(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // AtomicRCBoxAlloc0 allocates @block_size bytes of memory, and adds atomic
@@ -41,34 +55,55 @@ func AtomicRCBoxAlloc(blockSize uint) {
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func AtomicRCBoxAlloc0(blockSize uint) {
+func AtomicRCBoxAlloc0(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
 
-	C.g_atomic_rc_box_alloc0(arg1)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_atomic_rc_box_alloc0(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // AtomicRCBoxDup allocates a new block of data with atomic reference counting
 // semantics, and copies @block_size bytes of @mem_block into it.
-func AtomicRCBoxDup(blockSize uint, memBlock interface{}) {
+func AtomicRCBoxDup(blockSize uint, memBlock interface{}) interface{} {
 	var arg1 C.gsize
 	var arg2 C.gpointer
 
 	arg1 = C.gsize(blockSize)
 	arg2 = C.gpointer(memBlock)
 
-	C.g_atomic_rc_box_dup(arg1, arg2)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_atomic_rc_box_dup(arg1, arg2)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // AtomicRCBoxGetSize retrieves the size of the reference counted data pointed
 // by @mem_block.
-func AtomicRCBoxGetSize(memBlock interface{}) {
+func AtomicRCBoxGetSize(memBlock interface{}) uint {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(memBlock)
 
-	C.g_atomic_rc_box_get_size(arg1)
+	var cret C.gsize
+	var goret uint
+
+	cret = C.g_atomic_rc_box_get_size(arg1)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // AtomicRCBoxRelease: atomically releases a reference on the data pointed by
@@ -85,12 +120,19 @@ func AtomicRCBoxRelease(memBlock interface{}) {
 }
 
 // RCBoxAcquire acquires a reference on the data pointed by @mem_block.
-func RCBoxAcquire(memBlock interface{}) {
+func RCBoxAcquire(memBlock interface{}) interface{} {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(memBlock)
 
-	C.g_rc_box_acquire(arg1)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_rc_box_acquire(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // RCBoxAlloc allocates @block_size bytes of memory, and adds reference counting
@@ -100,12 +142,19 @@ func RCBoxAcquire(memBlock interface{}) {
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func RCBoxAlloc(blockSize uint) {
+func RCBoxAlloc(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
 
-	C.g_rc_box_alloc(arg1)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_rc_box_alloc(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // RCBoxAlloc0 allocates @block_size bytes of memory, and adds reference
@@ -117,34 +166,55 @@ func RCBoxAlloc(blockSize uint) {
 //
 // The allocated data is guaranteed to be suitably aligned for any built-in
 // type.
-func RCBoxAlloc0(blockSize uint) {
+func RCBoxAlloc0(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
 
-	C.g_rc_box_alloc0(arg1)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_rc_box_alloc0(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // RCBoxDup allocates a new block of data with reference counting semantics, and
 // copies @block_size bytes of @mem_block into it.
-func RCBoxDup(blockSize uint, memBlock interface{}) {
+func RCBoxDup(blockSize uint, memBlock interface{}) interface{} {
 	var arg1 C.gsize
 	var arg2 C.gpointer
 
 	arg1 = C.gsize(blockSize)
 	arg2 = C.gpointer(memBlock)
 
-	C.g_rc_box_dup(arg1, arg2)
+	cret := new(C.gpointer)
+	var goret interface{}
+
+	cret = C.g_rc_box_dup(arg1, arg2)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // RCBoxGetSize retrieves the size of the reference counted data pointed by
 // @mem_block.
-func RCBoxGetSize(memBlock interface{}) {
+func RCBoxGetSize(memBlock interface{}) uint {
 	var arg1 C.gpointer
 
 	arg1 = C.gpointer(memBlock)
 
-	C.g_rc_box_get_size(arg1)
+	var cret C.gsize
+	var goret uint
+
+	cret = C.g_rc_box_get_size(arg1)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // RCBoxRelease releases a reference on the data pointed by @mem_block.

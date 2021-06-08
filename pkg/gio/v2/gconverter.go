@@ -34,7 +34,7 @@ type ConverterOverrider interface {
 	// Reset resets all internal state in the converter, making it behave as if
 	// it was just created. If the converter has any internal state that would
 	// produce output then that output is lost.
-	Reset(c Converter)
+	Reset()
 }
 
 // Converter is implemented by objects that convert binary data in various ways.
@@ -71,7 +71,7 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // Reset resets all internal state in the converter, making it behave as if
 // it was just created. If the converter has any internal state that would
 // produce output then that output is lost.
-func (c converter) Reset(c Converter) {
+func (c converter) Reset() {
 	var arg0 *C.GConverter
 
 	arg0 = (*C.GConverter)(unsafe.Pointer(c.Native()))

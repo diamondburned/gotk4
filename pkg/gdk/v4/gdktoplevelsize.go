@@ -4,6 +4,8 @@ package gdk
 
 import (
 	"unsafe"
+
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
@@ -12,13 +14,19 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-func ToplevelSizeGetType() {
-	C.gdk_toplevel_size_get_type()
+func ToplevelSizeGetType() externglib.Type {
+	var cret C.GType
+	var goret externglib.Type
+
+	cret = C.gdk_toplevel_size_get_type()
+
+	goret = externglib.Type(cret)
+
+	return goret
 }
 
-// ToplevelSize: the GdkToplevelSIze struct contains information that may be
-// useful for users of GdkToplevel to compute a surface size. It also carries
-// information back with the computational result.
+// ToplevelSize: the `GdkToplevelSize` struct contains information that is
+// useful to compute the size of a toplevel.
 type ToplevelSize struct {
 	native C.GdkToplevelSize
 }
@@ -50,32 +58,34 @@ func (t *ToplevelSize) Native() unsafe.Pointer {
 // be equivalent to the dimensions of the work area or the monitor on which the
 // window is being presented on, or something else that limits the way a
 // toplevel can be presented.
-func (s *ToplevelSize) Bounds(s *ToplevelSize) (boundsWidth int, boundsHeight int) {
+func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
 	var arg0 *C.GdkToplevelSize
 
 	arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
 
-	var arg1 C.int
-	var boundsWidth int
-	var arg2 C.int
-	var boundsHeight int
+	arg1 := new(C.int)
+	var ret1 int
+	arg2 := new(C.int)
+	var ret2 int
 
-	C.gdk_toplevel_size_get_bounds(arg0, &arg1, &arg2)
+	C.gdk_toplevel_size_get_bounds(arg0, arg1, arg2)
 
-	boundsWidth = int(&arg1)
-	boundsHeight = int(&arg2)
+	ret1 = int(*arg1)
+	ret2 = int(*arg2)
 
-	return boundsWidth, boundsHeight
+	return ret1, ret2
 }
 
-// SetMinSize: the minimum size corresponds to the limitations the toplevel can
-// be shrunk to, without resulting in incorrect painting. A user of a Toplevel
-// should calculate these given both the existing size, and the bounds retrieved
-// from the ToplevelSize object.
+// SetMinSize sets the minimum size of the toplevel.
+//
+// The minimum size corresponds to the limitations the toplevel can be shrunk
+// to, without resulting in incorrect painting. A user of a `GdkToplevel` should
+// calculate these given both the existing size, and the bounds retrieved from
+// the `GdkToplevelSize` object.
 //
 // The minimum size should be within the bounds (see
-// gdk_toplevel_size_get_bounds()).
-func (s *ToplevelSize) SetMinSize(s *ToplevelSize, minWidth int, minHeight int) {
+// [method@Gdk.ToplevelSize.get_bounds]).
+func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
 	var arg0 *C.GdkToplevelSize
 	var arg1 C.int
 	var arg2 C.int
@@ -87,10 +97,12 @@ func (s *ToplevelSize) SetMinSize(s *ToplevelSize, minWidth int, minHeight int) 
 	C.gdk_toplevel_size_set_min_size(arg0, arg1, arg2)
 }
 
-// SetShadowWidth: the shadow width corresponds to the part of the computed
-// surface size that would consist of the shadow margin surrounding the window,
-// would there be any.
-func (s *ToplevelSize) SetShadowWidth(s *ToplevelSize, left int, right int, top int, bottom int) {
+// SetShadowWidth sets the shadows size of the toplevel.
+//
+// The shadow width corresponds to the part of the computed surface size that
+// would consist of the shadow margin surrounding the window, would there be
+// any.
+func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) {
 	var arg0 *C.GdkToplevelSize
 	var arg1 C.int
 	var arg2 C.int
@@ -106,11 +118,13 @@ func (s *ToplevelSize) SetShadowWidth(s *ToplevelSize, left int, right int, top 
 	C.gdk_toplevel_size_set_shadow_width(arg0, arg1, arg2, arg3, arg4)
 }
 
-// SetSize sets the size the toplevel prefers to be resized to. The size should
-// be within the bounds (see gdk_toplevel_size_get_bounds()). The set size
-// should be considered as a hint, and should not be assumed to be respected by
-// the windowing system, or backend.
-func (s *ToplevelSize) SetSize(s *ToplevelSize, width int, height int) {
+// SetSize sets the size the toplevel prefers to be resized to.
+//
+// The size should be within the bounds (see
+// [method@Gdk.ToplevelSize.get_bounds]). The set size should be considered as a
+// hint, and should not be assumed to be respected by the windowing system, or
+// backend.
+func (s *ToplevelSize) SetSize(width int, height int) {
 	var arg0 *C.GdkToplevelSize
 	var arg1 C.int
 	var arg2 C.int

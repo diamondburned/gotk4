@@ -3,6 +3,9 @@
 package gdkpixbuf
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,13 +27,13 @@ type PixbufSimpleAnim interface {
 
 	// AddFrame adds a new frame to @animation. The @pixbuf must have the
 	// dimensions specified when the animation was constructed.
-	AddFrame(a PixbufSimpleAnim, pixbuf Pixbuf)
+	AddFrame(pixbuf Pixbuf)
 	// Loop gets whether @animation should loop indefinitely when it reaches the
 	// end.
-	Loop(a PixbufSimpleAnim) bool
+	Loop() bool
 	// SetLoop sets whether @animation should loop indefinitely when it reaches
 	// the end.
-	SetLoop(a PixbufSimpleAnim, loop bool)
+	SetLoop(loop bool)
 }
 
 // pixbufSimpleAnim implements the PixbufSimpleAnim interface.
@@ -55,7 +58,7 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 }
 
 // NewPixbufSimpleAnim constructs a class PixbufSimpleAnim.
-func NewPixbufSimpleAnim(width int, height int, rate float32) {
+func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
 	var arg1 C.gint
 	var arg2 C.gint
 	var arg3 C.gfloat
@@ -64,12 +67,19 @@ func NewPixbufSimpleAnim(width int, height int, rate float32) {
 	arg2 = C.gint(height)
 	arg3 = C.gfloat(rate)
 
-	C.gdk_pixbuf_simple_anim_new(arg1, arg2, arg3)
+	cret := new(C.GdkPixbufSimpleAnim)
+	var goret PixbufSimpleAnim
+
+	cret = C.gdk_pixbuf_simple_anim_new(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufSimpleAnim)
+
+	return goret
 }
 
 // AddFrame adds a new frame to @animation. The @pixbuf must have the
 // dimensions specified when the animation was constructed.
-func (a pixbufSimpleAnim) AddFrame(a PixbufSimpleAnim, pixbuf Pixbuf) {
+func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
 	var arg0 *C.GdkPixbufSimpleAnim
 	var arg1 *C.GdkPixbuf
 
@@ -81,26 +91,26 @@ func (a pixbufSimpleAnim) AddFrame(a PixbufSimpleAnim, pixbuf Pixbuf) {
 
 // Loop gets whether @animation should loop indefinitely when it reaches the
 // end.
-func (a pixbufSimpleAnim) Loop(a PixbufSimpleAnim) bool {
+func (a pixbufSimpleAnim) Loop() bool {
 	var arg0 *C.GdkPixbufSimpleAnim
 
 	arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_pixbuf_simple_anim_get_loop(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetLoop sets whether @animation should loop indefinitely when it reaches
 // the end.
-func (a pixbufSimpleAnim) SetLoop(a PixbufSimpleAnim, loop bool) {
+func (a pixbufSimpleAnim) SetLoop(loop bool) {
 	var arg0 *C.GdkPixbufSimpleAnim
 	var arg1 C.gboolean
 

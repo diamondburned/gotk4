@@ -3,8 +3,14 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config:
@@ -16,7 +22,7 @@ import "C"
 
 // KeySnoopFunc: key snooper functions are called before normal event delivery.
 // They can be used to implement custom key event handling.
-type KeySnoopFunc func(grabWidget Widget, event *gdk.EventKey) int
+type KeySnoopFunc func() (gint int)
 
 //export gotk4_KeySnoopFunc
 func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) C.gint {
@@ -26,11 +32,9 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 	}
 
 	fn := v.(KeySnoopFunc)
-	ret := fn(grabWidget, event, funcData)
+	fn(gint)
 
-	cret = C.gint(ret)
-
-	return cret
+	cret = C.gint(gint)
 }
 
 // CheckVersion checks that the GTK+ library in use is compatible with the given
@@ -51,7 +55,7 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 // linked against an old version of GTK+ and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK+.
-func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) {
+func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
 	var arg1 C.guint
 	var arg2 C.guint
 	var arg3 C.guint
@@ -60,7 +64,14 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) {
 	arg2 = C.guint(requiredMinor)
 	arg3 = C.guint(requiredMicro)
 
-	C.gtk_check_version(arg1, arg2, arg3)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_check_version(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // DeviceGrabAdd adds a GTK+ grab on @device, so all the events on @device and
@@ -120,76 +131,88 @@ func DisableSetlocale() {
 //     // ...computation continued
 func EventsPending() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_events_pending()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // False: analogical to gtk_true(), this function does nothing but always
 // returns false.
 func False() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_false()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // GetBinaryAge returns the binary age as passed to `libtool` when building the
 // GTK+ library the process is running against. If `libtool` means nothing to
 // you, don't worry about it.
-func GetBinaryAge() {
-	C.gtk_get_binary_age()
-}
+func GetBinaryAge() uint {
+	var cret C.guint
+	var goret uint
 
-// GetCurrentEvent obtains a copy of the event currently being processed by
-// GTK+.
-//
-// For example, if you are handling a Button::clicked signal, the current event
-// will be the EventButton that triggered the ::clicked signal.
-func GetCurrentEvent() {
-	C.gtk_get_current_event()
+	cret = C.gtk_get_binary_age()
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // GetCurrentEventDevice: if there is a current event and it has a device,
 // return that device, otherwise return nil.
-func GetCurrentEventDevice() {
-	C.gtk_get_current_event_device()
+func GetCurrentEventDevice() gdk.Device {
+	var cret *C.GdkDevice
+	var goret gdk.Device
+
+	cret = C.gtk_get_current_event_device()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
+
+	return goret
 }
 
 // GetCurrentEventState: if there is a current event and it has a state field,
 // place that state field in @state and return true, otherwise return false.
 func GetCurrentEventState() (state *gdk.ModifierType, ok bool) {
-	var arg1 C.GdkModifierType
-	var state *gdk.ModifierType
+	arg1 := new(C.GdkModifierType)
+	var ret1 *gdk.ModifierType
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_get_current_event_state(&arg1)
+	cret = C.gtk_get_current_event_state(arg1)
 
-	state = *gdk.ModifierType(&arg1)
+	ret1 = *gdk.ModifierType(arg1)
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return state, ok
+	return ret1, goret
 }
 
 // GetCurrentEventTime: if there is a current event and it has a timestamp,
 // return that timestamp, otherwise return GDK_CURRENT_TIME.
-func GetCurrentEventTime() {
-	C.gtk_get_current_event_time()
+func GetCurrentEventTime() uint32 {
+	var cret C.guint32
+	var goret uint32
+
+	cret = C.gtk_get_current_event_time()
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // GetDefaultLanguage returns the Language for the default language currently in
@@ -199,15 +222,29 @@ func GetCurrentEventTime() {
 //
 // This function is equivalent to pango_language_get_default(). See that
 // function for details.
-func GetDefaultLanguage() {
-	C.gtk_get_default_language()
+func GetDefaultLanguage() *pango.Language {
+	var cret *C.PangoLanguage
+	var goret *pango.Language
+
+	cret = C.gtk_get_default_language()
+
+	goret = pango.WrapLanguage(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // GetInterfaceAge returns the interface age as passed to `libtool` when
 // building the GTK+ library the process is running against. If `libtool` means
 // nothing to you, don't worry about it.
-func GetInterfaceAge() {
-	C.gtk_get_interface_age()
+func GetInterfaceAge() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_interface_age()
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // GetLocaleDirection: get the direction of the current locale. This is the
@@ -228,8 +265,15 @@ func GetInterfaceAge() {
 //    setlocale (LC_ALL, new_locale);
 //    direction = gtk_get_locale_direction ();
 //    gtk_widget_set_default_direction (direction);
-func GetLocaleDirection() {
-	C.gtk_get_locale_direction()
+func GetLocaleDirection() TextDirection {
+	var cret C.GtkTextDirection
+	var goret TextDirection
+
+	cret = C.gtk_get_locale_direction()
+
+	goret = TextDirection(cret)
+
+	return goret
 }
 
 // GetMajorVersion returns the major version number of the GTK+ library. (e.g.
@@ -239,8 +283,15 @@ func GetLocaleDirection() {
 // is running against. Contrast with the K_MAJOR_VERSION macro, which represents
 // the major version of the GTK+ headers you have included when compiling your
 // code.
-func GetMajorVersion() {
-	C.gtk_get_major_version()
+func GetMajorVersion() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_major_version()
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // GetMicroVersion returns the micro version number of the GTK+ library. (e.g.
@@ -250,8 +301,15 @@ func GetMajorVersion() {
 // is are running against. Contrast with the K_MICRO_VERSION macro, which
 // represents the micro version of the GTK+ headers you have included when
 // compiling your code.
-func GetMicroVersion() {
-	C.gtk_get_micro_version()
+func GetMicroVersion() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_micro_version()
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // GetMinorVersion returns the minor version number of the GTK+ library. (e.g.
@@ -261,8 +319,15 @@ func GetMicroVersion() {
 // is are running against. Contrast with the K_MINOR_VERSION macro, which
 // represents the minor version of the GTK+ headers you have included when
 // compiling your code.
-func GetMinorVersion() {
-	C.gtk_get_minor_version()
+func GetMinorVersion() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_minor_version()
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // GetOptionGroup returns a Group for the commandline arguments recognized by
@@ -271,25 +336,49 @@ func GetMinorVersion() {
 // You should add this group to your Context with g_option_context_add_group(),
 // if you are using g_option_context_parse() to parse your commandline
 // arguments.
-func GetOptionGroup(openDefaultDisplay bool) {
+func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 	var arg1 C.gboolean
 
 	if openDefaultDisplay {
 		arg1 = C.gboolean(1)
 	}
 
-	C.gtk_get_option_group(arg1)
+	cret := new(C.GOptionGroup)
+	var goret *glib.OptionGroup
+
+	cret = C.gtk_get_option_group(arg1)
+
+	goret = glib.WrapOptionGroup(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.OptionGroup) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // GrabGetCurrent queries the current grab of the default window group.
-func GrabGetCurrent() {
-	C.gtk_grab_get_current()
+func GrabGetCurrent() Widget {
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_grab_get_current()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // KeySnooperInstall installs a key snooper function, which will get called on
 // all key events before delivering them normally.
-func KeySnooperInstall() {
-	C.gtk_key_snooper_install(arg1, arg2)
+func KeySnooperInstall() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_key_snooper_install(arg1, arg2)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // KeySnooperRemove removes the key snooper function with the given id.
@@ -316,15 +405,15 @@ func Main() {
 // check if any events are pending with gtk_events_pending() first.
 func MainIteration() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_main_iteration()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // MainIterationDo runs a single iteration of the mainloop. If no events are
@@ -337,20 +426,27 @@ func MainIterationDo(blocking bool) bool {
 	}
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_main_iteration_do(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // MainLevel asks for the current nesting level of the main loop.
-func MainLevel() {
-	C.gtk_main_level()
+func MainLevel() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_main_level()
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // MainQuit makes the innermost invocation of the main loop return when it
@@ -400,13 +496,13 @@ func MainQuit() {
 //    }
 func True() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_true()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

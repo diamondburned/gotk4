@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -20,30 +24,26 @@ func init() {
 	})
 }
 
-// StringList is a list model that wraps an array of strings.
+// StringList: `GtkStringList` is a list model that wraps an array of strings.
 //
 // The objects in the model have a "string" property.
 //
-// GtkStringList is well-suited for any place where you would typically use a
+// `GtkStringList` is well-suited for any place where you would typically use a
 // `char*[]`, but need a list model.
 //
 //
 // GtkStringList as GtkBuildable
 //
-// The GtkStringList implementation of the GtkBuildable interface supports
+// The `GtkStringList` implementation of the `GtkBuildable` interface supports
 // adding items directly using the <items> element and specifying <item>
 // elements for each item. Each <item> element supports the regular translation
 // attributes “translatable”, “context” and “comments”.
 //
-// Here is a UI definition fragment specifying a GtkStringList
+// Here is a UI definition fragment specifying a `GtkStringList`
 //
-//    <object class="GtkStringList">
-//      <items>
-//        <item translatable="yes">Factory</item>
-//        <item translatable="yes">Home</item>
-//        <item translatable="yes">Subway</item>
-//      </items>
-//    </object>
+// “`xml <object class="GtkStringList"> <items> <item
+// translatable="yes">Factory</item> <item translatable="yes">Home</item> <item
+// translatable="yes">Subway</item> </items> </object> “`
 type StringList interface {
 	gextras.Objector
 	gio.ListModel
@@ -51,38 +51,40 @@ type StringList interface {
 
 	// Append appends @string to @self.
 	//
-	// The @string will be copied. See gtk_string_list_take() for a way to avoid
-	// that.
-	Append(s StringList, string string)
-	// String gets the string that is at @position in @self. If @self does not
-	// contain @position items, nil is returned.
+	// The @string will be copied. See [method@Gtk.StringList.take] for a way to
+	// avoid that.
+	Append(string string)
+	// String gets the string that is at @position in @self.
+	//
+	// If @self does not contain @position items, nil is returned.
 	//
 	// This function returns the const char *. To get the object wrapping it,
 	// use g_list_model_get_item().
-	String(s StringList, position uint)
-	// Remove removes the string at @position from @self. @position must be
-	// smaller than the current length of the list.
-	Remove(s StringList, position uint)
+	String(position uint) string
+	// Remove removes the string at @position from @self.
+	//
+	// @position must be smaller than the current length of the list.
+	Remove(position uint)
 	// Splice changes @self by removing @n_removals strings and adding
 	// @additions to it.
 	//
-	// This function is more efficient than gtk_string_list_append() and
-	// gtk_string_list_remove(), because it only emits Model::items-changed once
-	// for the change.
+	// This function is more efficient than [method@Gtk.StringList.append] and
+	// [method@Gtk.StringList.remove], because it only emits the ::items-changed
+	// signal once for the change.
 	//
 	// This function copies the strings in @additions.
 	//
 	// The parameters @position and @n_removals must be correct (ie: @position +
 	// @n_removals must be less than or equal to the length of the list at the
 	// time this function is called).
-	Splice(s StringList, position uint, nRemovals uint, additions []string)
+	Splice(position uint, nRemovals uint, additions []string)
 	// Take adds @string to self at the end, and takes ownership of it.
 	//
-	// This variant of gtk_string_list_append() is convenient for formatting
-	// strings:
+	// This variant of [method@Gtk.StringList.append] is convenient for
+	// formatting strings:
 	//
-	//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
-	Take(s StringList, string string)
+	// “`c gtk_string_list_take (self, g_strdup_print ("d dollars", lots)); “`
+	Take(string string)
 }
 
 // stringList implements the StringList interface.
@@ -111,10 +113,10 @@ func marshalStringList(p uintptr) (interface{}, error) {
 }
 
 // NewStringList constructs a class StringList.
-func NewStringList(strings []string) {
+func NewStringList(strings []string) StringList {
 	var arg1 **C.char
 
-	arg1 = C.malloc(len(strings) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.char)(C.malloc((len(strings) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -127,14 +129,21 @@ func NewStringList(strings []string) {
 		}
 	}
 
-	C.gtk_string_list_new(arg1)
+	cret := new(C.GtkStringList)
+	var goret StringList
+
+	cret = C.gtk_string_list_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringList)
+
+	return goret
 }
 
 // Append appends @string to @self.
 //
-// The @string will be copied. See gtk_string_list_take() for a way to avoid
-// that.
-func (s stringList) Append(s StringList, string string) {
+// The @string will be copied. See [method@Gtk.StringList.take] for a way to
+// avoid that.
+func (s stringList) Append(string string) {
 	var arg0 *C.GtkStringList
 	var arg1 *C.char
 
@@ -145,24 +154,33 @@ func (s stringList) Append(s StringList, string string) {
 	C.gtk_string_list_append(arg0, arg1)
 }
 
-// String gets the string that is at @position in @self. If @self does not
-// contain @position items, nil is returned.
+// String gets the string that is at @position in @self.
+//
+// If @self does not contain @position items, nil is returned.
 //
 // This function returns the const char *. To get the object wrapping it,
 // use g_list_model_get_item().
-func (s stringList) String(s StringList, position uint) {
+func (s stringList) String(position uint) string {
 	var arg0 *C.GtkStringList
 	var arg1 C.guint
 
 	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	C.gtk_string_list_get_string(arg0, arg1)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_string_list_get_string(arg0, arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
-// Remove removes the string at @position from @self. @position must be
-// smaller than the current length of the list.
-func (s stringList) Remove(s StringList, position uint) {
+// Remove removes the string at @position from @self.
+//
+// @position must be smaller than the current length of the list.
+func (s stringList) Remove(position uint) {
 	var arg0 *C.GtkStringList
 	var arg1 C.guint
 
@@ -175,16 +193,16 @@ func (s stringList) Remove(s StringList, position uint) {
 // Splice changes @self by removing @n_removals strings and adding
 // @additions to it.
 //
-// This function is more efficient than gtk_string_list_append() and
-// gtk_string_list_remove(), because it only emits Model::items-changed once
-// for the change.
+// This function is more efficient than [method@Gtk.StringList.append] and
+// [method@Gtk.StringList.remove], because it only emits the ::items-changed
+// signal once for the change.
 //
 // This function copies the strings in @additions.
 //
 // The parameters @position and @n_removals must be correct (ie: @position +
 // @n_removals must be less than or equal to the length of the list at the
 // time this function is called).
-func (s stringList) Splice(s StringList, position uint, nRemovals uint, additions []string) {
+func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
 	var arg0 *C.GtkStringList
 	var arg1 C.guint
 	var arg2 C.guint
@@ -193,7 +211,7 @@ func (s stringList) Splice(s StringList, position uint, nRemovals uint, addition
 	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 	arg2 = C.guint(nRemovals)
-	arg3 = C.malloc(len(additions) * (unsafe.Sizeof(int(0)) + 1))
+	arg3 = (**C.char)(C.malloc((len(additions) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg3))
 
 	{
@@ -211,11 +229,11 @@ func (s stringList) Splice(s StringList, position uint, nRemovals uint, addition
 
 // Take adds @string to self at the end, and takes ownership of it.
 //
-// This variant of gtk_string_list_append() is convenient for formatting
-// strings:
+// This variant of [method@Gtk.StringList.append] is convenient for
+// formatting strings:
 //
-//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
-func (s stringList) Take(s StringList, string string) {
+// “`c gtk_string_list_take (self, g_strdup_print ("d dollars", lots)); “`
+func (s stringList) Take(string string) {
 	var arg0 *C.GtkStringList
 	var arg1 *C.char
 
@@ -225,11 +243,15 @@ func (s stringList) Take(s StringList, string string) {
 	C.gtk_string_list_take(arg0, arg1)
 }
 
+// StringObject: `GtkStringObject` is the type of items in a `GtkStringList`.
+//
+// A `GtkStringObject` is a wrapper around a `const char*`; it has a
+// [property@Gtk.StringObject:string] property.
 type StringObject interface {
 	gextras.Objector
 
-	// String returns the string contained in a StringObject.
-	String(s StringObject)
+	// String returns the string contained in a `GtkStringObject`.
+	String() string
 }
 
 // stringObject implements the StringObject interface.
@@ -254,20 +276,34 @@ func marshalStringObject(p uintptr) (interface{}, error) {
 }
 
 // NewStringObject constructs a class StringObject.
-func NewStringObject(string string) {
+func NewStringObject(string string) StringObject {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_string_object_new(arg1)
+	cret := new(C.GtkStringObject)
+	var goret StringObject
+
+	cret = C.gtk_string_object_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringObject)
+
+	return goret
 }
 
-// String returns the string contained in a StringObject.
-func (s stringObject) String(s StringObject) {
+// String returns the string contained in a `GtkStringObject`.
+func (s stringObject) String() string {
 	var arg0 *C.GtkStringObject
 
 	arg0 = (*C.GtkStringObject)(unsafe.Pointer(s.Native()))
 
-	C.gtk_string_object_get_string(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_string_object_get_string(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }

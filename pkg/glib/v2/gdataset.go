@@ -17,7 +17,7 @@ import "C"
 // DataForeachFunc specifies the type of function passed to g_dataset_foreach().
 // It is called with each #GQuark id and associated data element, together with
 // the @user_data parameter supplied to g_dataset_foreach().
-type DataForeachFunc func(keyID Quark, data interface{})
+type DataForeachFunc func()
 
 //export gotk4_DataForeachFunc
 func gotk4_DataForeachFunc(arg0 C.GQuark, arg1 C.gpointer, arg2 C.gpointer) {
@@ -27,13 +27,13 @@ func gotk4_DataForeachFunc(arg0 C.GQuark, arg1 C.gpointer, arg2 C.gpointer) {
 	}
 
 	fn := v.(DataForeachFunc)
-	fn(keyID, data, userData)
+	fn()
 }
 
 // DuplicateFunc: the type of functions that are used to 'duplicate' an object.
 // What this means depends on the context, it could just be incrementing the
 // reference count, if @data is a ref-counted object.
-type DuplicateFunc func(data interface{}) interface{}
+type DuplicateFunc func() (gpointer interface{})
 
 //export gotk4_DuplicateFunc
 func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
@@ -43,11 +43,9 @@ func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	}
 
 	fn := v.(DuplicateFunc)
-	ret := fn(data, userData)
+	fn(gpointer)
 
-	cret = C.gpointer(ret)
-
-	return cret
+	cret = C.gpointer(gpointer)
 }
 
 // DatalistClear frees all the data elements of the datalist. The data elements'
@@ -75,7 +73,7 @@ func DatalistForeach() {
 
 // DatalistGetData gets a data element, using its string identifier. This is
 // slower than g_datalist_id_get_data() because it compares strings.
-func DatalistGetData(datalist **Data, key string) {
+func DatalistGetData(datalist **Data, key string) interface{} {
 	var arg1 **C.GData
 	var arg2 *C.gchar
 
@@ -83,17 +81,31 @@ func DatalistGetData(datalist **Data, key string) {
 	arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_datalist_get_data(arg1, arg2)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_datalist_get_data(arg1, arg2)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // DatalistGetFlags gets flags values packed in together with the datalist. See
 // g_datalist_set_flags().
-func DatalistGetFlags(datalist **Data) {
+func DatalistGetFlags(datalist **Data) uint {
 	var arg1 **C.GData
 
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
-	C.g_datalist_get_flags(arg1)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_datalist_get_flags(arg1)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // DatalistIDDupData: this is a variant of g_datalist_id_get_data() which
@@ -109,8 +121,15 @@ func DatalistGetFlags(datalist **Data) {
 //
 // This function can be useful to avoid races when multiple threads are using
 // the same datalist and the same key.
-func DatalistIDDupData() {
-	C.g_datalist_id_dup_data(arg1, arg2, arg3, arg4)
+func DatalistIDDupData() interface{} {
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_datalist_id_dup_data(arg1, arg2, arg3, arg4)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call

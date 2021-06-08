@@ -3,6 +3,11 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,10 +36,10 @@ type TextChildAnchor interface {
 	// removed from the buffer, so you need to hold your own reference (with
 	// g_object_ref()) if you plan to use this function — otherwise all deleted
 	// child anchors will also be finalized.
-	Deleted(a TextChildAnchor) bool
+	Deleted() bool
 	// Widgets gets a list of all widgets anchored at this child anchor. The
 	// returned list should be freed with g_list_free().
-	Widgets(a TextChildAnchor)
+	Widgets() *glib.List
 }
 
 // textChildAnchor implements the TextChildAnchor interface.
@@ -59,8 +64,15 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 }
 
 // NewTextChildAnchor constructs a class TextChildAnchor.
-func NewTextChildAnchor() {
-	C.gtk_text_child_anchor_new()
+func NewTextChildAnchor() TextChildAnchor {
+	cret := new(C.GtkTextChildAnchor)
+	var goret TextChildAnchor
+
+	cret = C.gtk_text_child_anchor_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+
+	return goret
 }
 
 // Deleted determines whether a child anchor has been deleted from the
@@ -68,29 +80,39 @@ func NewTextChildAnchor() {
 // removed from the buffer, so you need to hold your own reference (with
 // g_object_ref()) if you plan to use this function — otherwise all deleted
 // child anchors will also be finalized.
-func (a textChildAnchor) Deleted(a TextChildAnchor) bool {
+func (a textChildAnchor) Deleted() bool {
 	var arg0 *C.GtkTextChildAnchor
 
 	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_text_child_anchor_get_deleted(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Widgets gets a list of all widgets anchored at this child anchor. The
 // returned list should be freed with g_list_free().
-func (a textChildAnchor) Widgets(a TextChildAnchor) {
+func (a textChildAnchor) Widgets() *glib.List {
 	var arg0 *C.GtkTextChildAnchor
 
 	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	C.gtk_text_child_anchor_get_widgets(arg0)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.gtk_text_child_anchor_get_widgets(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }

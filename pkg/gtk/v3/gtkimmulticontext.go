@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,14 +29,14 @@ type IMMulticontext interface {
 	// AppendMenuitems: add menuitems for various available input methods to a
 	// menu; the menuitems, when selected, will switch the input method for the
 	// context and the global default input method.
-	AppendMenuitems(c IMMulticontext, menushell MenuShell)
+	AppendMenuitems(menushell MenuShell)
 	// ContextID gets the id of the currently active slave of the @context.
-	ContextID(c IMMulticontext)
+	ContextID() string
 	// SetContextID sets the context id for @context.
 	//
 	// This causes the currently active slave of @context to be replaced by the
 	// slave corresponding to the new context id.
-	SetContextID(c IMMulticontext, contextID string)
+	SetContextID(contextID string)
 }
 
 // imMulticontext implements the IMMulticontext interface.
@@ -58,14 +61,21 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 }
 
 // NewIMMulticontext constructs a class IMMulticontext.
-func NewIMMulticontext() {
-	C.gtk_im_multicontext_new()
+func NewIMMulticontext() IMMulticontext {
+	cret := new(C.GtkIMMulticontext)
+	var goret IMMulticontext
+
+	cret = C.gtk_im_multicontext_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMMulticontext)
+
+	return goret
 }
 
 // AppendMenuitems: add menuitems for various available input methods to a
 // menu; the menuitems, when selected, will switch the input method for the
 // context and the global default input method.
-func (c imMulticontext) AppendMenuitems(c IMMulticontext, menushell MenuShell) {
+func (c imMulticontext) AppendMenuitems(menushell MenuShell) {
 	var arg0 *C.GtkIMMulticontext
 	var arg1 *C.GtkMenuShell
 
@@ -76,19 +86,26 @@ func (c imMulticontext) AppendMenuitems(c IMMulticontext, menushell MenuShell) {
 }
 
 // ContextID gets the id of the currently active slave of the @context.
-func (c imMulticontext) ContextID(c IMMulticontext) {
+func (c imMulticontext) ContextID() string {
 	var arg0 *C.GtkIMMulticontext
 
 	arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_im_multicontext_get_context_id(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_im_multicontext_get_context_id(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // SetContextID sets the context id for @context.
 //
 // This causes the currently active slave of @context to be replaced by the
 // slave corresponding to the new context id.
-func (c imMulticontext) SetContextID(c IMMulticontext, contextID string) {
+func (c imMulticontext) SetContextID(contextID string) {
 	var arg0 *C.GtkIMMulticontext
 	var arg1 *C.char
 

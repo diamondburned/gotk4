@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,7 +29,7 @@ type ColorSelectionDialog interface {
 
 	// ColorSelection retrieves the ColorSelection widget embedded in the
 	// dialog.
-	ColorSelection(c ColorSelectionDialog)
+	ColorSelection() Widget
 }
 
 // colorSelectionDialog implements the ColorSelectionDialog interface.
@@ -53,21 +56,35 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 }
 
 // NewColorSelectionDialog constructs a class ColorSelectionDialog.
-func NewColorSelectionDialog(title string) {
+func NewColorSelectionDialog(title string) ColorSelectionDialog {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(title))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_color_selection_dialog_new(arg1)
+	var cret C.GtkColorSelectionDialog
+	var goret ColorSelectionDialog
+
+	cret = C.gtk_color_selection_dialog_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorSelectionDialog)
+
+	return goret
 }
 
 // ColorSelection retrieves the ColorSelection widget embedded in the
 // dialog.
-func (c colorSelectionDialog) ColorSelection(c ColorSelectionDialog) {
+func (c colorSelectionDialog) ColorSelection() Widget {
 	var arg0 *C.GtkColorSelectionDialog
 
 	arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
 
-	C.gtk_color_selection_dialog_get_color_selection(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_color_selection_dialog_get_color_selection(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }

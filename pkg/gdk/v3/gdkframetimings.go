@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -58,42 +59,56 @@ func (f *FrameTimings) Native() unsafe.Pointer {
 // gdk_frame_timings_get_complete() returns true for a frame, you can be certain
 // that no further values will become available and be stored in the
 // FrameTimings.
-func (t *FrameTimings) Complete(t *FrameTimings) bool {
+func (t *FrameTimings) Complete() bool {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_frame_timings_get_complete(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // FrameCounter gets the frame counter value of the FrameClock when this this
 // frame was drawn.
-func (t *FrameTimings) FrameCounter(t *FrameTimings) {
+func (t *FrameTimings) FrameCounter() int64 {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	C.gdk_frame_timings_get_frame_counter(arg0)
+	var cret C.gint64
+	var goret int64
+
+	cret = C.gdk_frame_timings_get_frame_counter(arg0)
+
+	goret = int64(cret)
+
+	return goret
 }
 
 // FrameTime returns the frame time for the frame. This is the time value that
 // is typically used to time animations for the frame. See
 // gdk_frame_clock_get_frame_time().
-func (t *FrameTimings) FrameTime(t *FrameTimings) {
+func (t *FrameTimings) FrameTime() int64 {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	C.gdk_frame_timings_get_frame_time(arg0)
+	var cret C.gint64
+	var goret int64
+
+	cret = C.gdk_frame_timings_get_frame_time(arg0)
+
+	goret = int64(cret)
+
+	return goret
 }
 
 // PredictedPresentationTime gets the predicted time at which this frame will be
@@ -105,47 +120,78 @@ func (t *FrameTimings) FrameTime(t *FrameTimings) {
 // function is useful for applications that want exact control over latency. For
 // example, a movie player may want this information for Audio/Video
 // synchronization.
-func (t *FrameTimings) PredictedPresentationTime(t *FrameTimings) {
+func (t *FrameTimings) PredictedPresentationTime() int64 {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	C.gdk_frame_timings_get_predicted_presentation_time(arg0)
+	var cret C.gint64
+	var goret int64
+
+	cret = C.gdk_frame_timings_get_predicted_presentation_time(arg0)
+
+	goret = int64(cret)
+
+	return goret
 }
 
 // PresentationTime reurns the presentation time. This is the time at which the
 // frame became visible to the user.
-func (t *FrameTimings) PresentationTime(t *FrameTimings) {
+func (t *FrameTimings) PresentationTime() int64 {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	C.gdk_frame_timings_get_presentation_time(arg0)
+	var cret C.gint64
+	var goret int64
+
+	cret = C.gdk_frame_timings_get_presentation_time(arg0)
+
+	goret = int64(cret)
+
+	return goret
 }
 
 // RefreshInterval gets the natural interval between presentation times for the
 // display that this frame was displayed on. Frame presentation usually happens
 // during the “vertical blanking interval”.
-func (t *FrameTimings) RefreshInterval(t *FrameTimings) {
+func (t *FrameTimings) RefreshInterval() int64 {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	C.gdk_frame_timings_get_refresh_interval(arg0)
+	var cret C.gint64
+	var goret int64
+
+	cret = C.gdk_frame_timings_get_refresh_interval(arg0)
+
+	goret = int64(cret)
+
+	return goret
 }
 
 // Ref increases the reference count of @timings.
-func (t *FrameTimings) Ref(t *FrameTimings) {
+func (t *FrameTimings) Ref() *FrameTimings {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	C.gdk_frame_timings_ref(arg0)
+	cret := new(C.GdkFrameTimings)
+	var goret *FrameTimings
+
+	cret = C.gdk_frame_timings_ref(arg0)
+
+	goret = WrapFrameTimings(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *FrameTimings) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref decreases the reference count of @timings. If @timings is no longer
 // referenced, it will be freed.
-func (t *FrameTimings) Unref(t *FrameTimings) {
+func (t *FrameTimings) Unref() {
 	var arg0 *C.GdkFrameTimings
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))

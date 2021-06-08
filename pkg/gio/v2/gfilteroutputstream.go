@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,13 +39,13 @@ type FilterOutputStream interface {
 	OutputStream
 
 	// BaseStream gets the base stream for the filter stream.
-	BaseStream(s FilterOutputStream)
+	BaseStream() OutputStream
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
-	CloseBaseStream(s FilterOutputStream) bool
+	CloseBaseStream() bool
 	// SetCloseBaseStream sets whether the base stream will be closed when
 	// @stream is closed.
-	SetCloseBaseStream(s FilterOutputStream, closeBase bool)
+	SetCloseBaseStream(closeBase bool)
 }
 
 // filterOutputStream implements the FilterOutputStream interface.
@@ -67,36 +70,43 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 }
 
 // BaseStream gets the base stream for the filter stream.
-func (s filterOutputStream) BaseStream(s FilterOutputStream) {
+func (s filterOutputStream) BaseStream() OutputStream {
 	var arg0 *C.GFilterOutputStream
 
 	arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_filter_output_stream_get_base_stream(arg0)
+	var cret *C.GOutputStream
+	var goret OutputStream
+
+	cret = C.g_filter_output_stream_get_base_stream(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
+
+	return goret
 }
 
 // CloseBaseStream returns whether the base stream will be closed when
 // @stream is closed.
-func (s filterOutputStream) CloseBaseStream(s FilterOutputStream) bool {
+func (s filterOutputStream) CloseBaseStream() bool {
 	var arg0 *C.GFilterOutputStream
 
 	arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_filter_output_stream_get_close_base_stream(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetCloseBaseStream sets whether the base stream will be closed when
 // @stream is closed.
-func (s filterOutputStream) SetCloseBaseStream(s FilterOutputStream, closeBase bool) {
+func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
 	var arg0 *C.GFilterOutputStream
 	var arg1 C.gboolean
 

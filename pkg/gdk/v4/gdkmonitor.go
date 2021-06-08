@@ -3,6 +3,9 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,54 +21,62 @@ func init() {
 	})
 }
 
-// Monitor: gdkMonitor objects represent the individual outputs that are
-// associated with a Display. GdkDisplay keeps a Model to enumerate and monitor
-// monitors with gdk_display_get_monitors(). You can use
-// gdk_display_get_monitor_at_surface() to find a particular monitor.
+// Monitor: `GdkMonitor` objects represent the individual outputs that are
+// associated with a `GdkDisplay`.
+//
+// `GdkDisplay` keeps a `GListModel` to enumerate and monitor monitors with
+// [method@Gdk.Display.get_monitors]. You can use
+// [method@Gdk.Display.get_monitor_at_surface] to find a particular monitor.
 type Monitor interface {
 	gextras.Objector
 
 	// Connector gets the name of the monitor's connector, if available.
-	Connector(m Monitor)
+	Connector() string
 	// Display gets the display that this monitor belongs to.
-	Display(m Monitor)
-	// Geometry retrieves the size and position of an individual monitor within
-	// the display coordinate space. The returned geometry is in ”application
-	// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-	Geometry(m Monitor) *Rectangle
+	Display() Display
+	// Geometry retrieves the size and position of the monitor within the
+	// display coordinate space.
+	//
+	// The returned geometry is in ”application pixels”, not in ”device pixels”
+	// (see [method@Gdk.Monitor.get_scale_factor]).
+	Geometry() *Rectangle
 	// HeightMm gets the height in millimeters of the monitor.
-	HeightMm(m Monitor)
-	// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
-	// available.
+	HeightMm() int
+	// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
 	//
 	// Note that this value might also vary depending on actual display backend.
 	//
-	// PNP ID registry is located at https://uefi.org/pnp_id_list
-	Manufacturer(m Monitor)
+	// The PNP ID registry is located at https://uefi.org/pnp_id_list
+	// (https://uefi.org/pnp_id_list).
+	Manufacturer() string
 	// Model gets the string identifying the monitor model, if available.
-	Model(m Monitor)
+	Model() string
 	// RefreshRate gets the refresh rate of the monitor, if available.
 	//
 	// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
 	// 60000.
-	RefreshRate(m Monitor)
+	RefreshRate() int
 	// ScaleFactor gets the internal scale factor that maps from monitor
-	// coordinates to the actual device pixels. On traditional systems this is
-	// 1, but on very high density outputs this can be a higher value (often 2).
+	// coordinates to device pixels.
+	//
+	// On traditional systems this is 1, but on very high density outputs it can
+	// be a higher value (often 2).
 	//
 	// This can be used if you want to create pixel based data for a particular
 	// monitor, but most of the time you’re drawing to a surface where it is
-	// better to use gdk_surface_get_scale_factor() instead.
-	ScaleFactor(m Monitor)
+	// better to use [method@Gdk.Surface.get_scale_factor] instead.
+	ScaleFactor() int
 	// SubpixelLayout gets information about the layout of red, green and blue
-	// primaries for each pixel in this monitor, if available.
-	SubpixelLayout(m Monitor)
+	// primaries for pixels.
+	SubpixelLayout() SubpixelLayout
 	// WidthMm gets the width in millimeters of the monitor.
-	WidthMm(m Monitor)
+	WidthMm() int
 	// IsValid returns true if the @monitor object corresponds to a physical
-	// monitor. The @monitor becomes invalid when the physical monitor is
-	// unplugged or removed.
-	IsValid(m Monitor) bool
+	// monitor.
+	//
+	// The @monitor becomes invalid when the physical monitor is unplugged or
+	// removed.
+	IsValid() bool
 }
 
 // monitor implements the Monitor interface.
@@ -90,135 +101,204 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 }
 
 // Connector gets the name of the monitor's connector, if available.
-func (m monitor) Connector(m Monitor) {
+func (m monitor) Connector() string {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_connector(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gdk_monitor_get_connector(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Display gets the display that this monitor belongs to.
-func (m monitor) Display(m Monitor) {
+func (m monitor) Display() Display {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_display(arg0)
+	var cret *C.GdkDisplay
+	var goret Display
+
+	cret = C.gdk_monitor_get_display(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+
+	return goret
 }
 
-// Geometry retrieves the size and position of an individual monitor within
-// the display coordinate space. The returned geometry is in ”application
-// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-func (m monitor) Geometry(m Monitor) *Rectangle {
+// Geometry retrieves the size and position of the monitor within the
+// display coordinate space.
+//
+// The returned geometry is in ”application pixels”, not in ”device pixels”
+// (see [method@Gdk.Monitor.get_scale_factor]).
+func (m monitor) Geometry() *Rectangle {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.GdkRectangle
-	var geometry *Rectangle
+	arg1 := new(C.GdkRectangle)
+	var ret1 *Rectangle
 
-	C.gdk_monitor_get_geometry(arg0, &arg1)
+	C.gdk_monitor_get_geometry(arg0, arg1)
 
-	geometry = WrapRectangle(unsafe.Pointer(&arg1))
+	ret1 = WrapRectangle(unsafe.Pointer(arg1))
 
-	return geometry
+	return ret1
 }
 
 // HeightMm gets the height in millimeters of the monitor.
-func (m monitor) HeightMm(m Monitor) {
+func (m monitor) HeightMm() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_height_mm(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_height_mm(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
-// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
-// available.
+// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
 //
 // Note that this value might also vary depending on actual display backend.
 //
-// PNP ID registry is located at https://uefi.org/pnp_id_list
-func (m monitor) Manufacturer(m Monitor) {
+// The PNP ID registry is located at https://uefi.org/pnp_id_list
+// (https://uefi.org/pnp_id_list).
+func (m monitor) Manufacturer() string {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_manufacturer(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gdk_monitor_get_manufacturer(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Model gets the string identifying the monitor model, if available.
-func (m monitor) Model(m Monitor) {
+func (m monitor) Model() string {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_model(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gdk_monitor_get_model(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // RefreshRate gets the refresh rate of the monitor, if available.
 //
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
 // 60000.
-func (m monitor) RefreshRate(m Monitor) {
+func (m monitor) RefreshRate() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_refresh_rate(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_refresh_rate(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // ScaleFactor gets the internal scale factor that maps from monitor
-// coordinates to the actual device pixels. On traditional systems this is
-// 1, but on very high density outputs this can be a higher value (often 2).
+// coordinates to device pixels.
+//
+// On traditional systems this is 1, but on very high density outputs it can
+// be a higher value (often 2).
 //
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a surface where it is
-// better to use gdk_surface_get_scale_factor() instead.
-func (m monitor) ScaleFactor(m Monitor) {
+// better to use [method@Gdk.Surface.get_scale_factor] instead.
+func (m monitor) ScaleFactor() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_scale_factor(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_scale_factor(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // SubpixelLayout gets information about the layout of red, green and blue
-// primaries for each pixel in this monitor, if available.
-func (m monitor) SubpixelLayout(m Monitor) {
+// primaries for pixels.
+func (m monitor) SubpixelLayout() SubpixelLayout {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_subpixel_layout(arg0)
+	var cret C.GdkSubpixelLayout
+	var goret SubpixelLayout
+
+	cret = C.gdk_monitor_get_subpixel_layout(arg0)
+
+	goret = SubpixelLayout(cret)
+
+	return goret
 }
 
 // WidthMm gets the width in millimeters of the monitor.
-func (m monitor) WidthMm(m Monitor) {
+func (m monitor) WidthMm() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_width_mm(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_width_mm(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // IsValid returns true if the @monitor object corresponds to a physical
-// monitor. The @monitor becomes invalid when the physical monitor is
-// unplugged or removed.
-func (m monitor) IsValid(m Monitor) bool {
+// monitor.
+//
+// The @monitor becomes invalid when the physical monitor is unplugged or
+// removed.
+func (m monitor) IsValid() bool {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_monitor_is_valid(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

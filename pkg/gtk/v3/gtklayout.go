@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,40 +43,40 @@ type Layout interface {
 
 	// BinWindow: retrieve the bin window of the layout used for drawing
 	// operations.
-	BinWindow(l Layout)
+	BinWindow() gdk.Window
 	// HAdjustment: this function should only be called after the layout has
 	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
 	// returns the Adjustment used for communication between the horizontal
 	// scrollbar and @layout.
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
-	HAdjustment(l Layout)
+	HAdjustment() Adjustment
 	// Size gets the size that has been set on the layout, and that determines
 	// the total extents of the layout’s scrollbar area. See gtk_layout_set_size
 	// ().
-	Size(l Layout) (width uint, height uint)
+	Size() (width uint, height uint)
 	// VAdjustment: this function should only be called after the layout has
 	// been placed in a ScrolledWindow or otherwise configured for scrolling. It
 	// returns the Adjustment used for communication between the vertical
 	// scrollbar and @layout.
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
-	VAdjustment(l Layout)
+	VAdjustment() Adjustment
 	// Move moves a current child of @layout to a new position.
-	Move(l Layout, childWidget Widget, x int, y int)
+	Move(childWidget Widget, x int, y int)
 	// Put adds @child_widget to @layout, at position (@x,@y). @layout becomes
 	// the new parent container of @child_widget.
-	Put(l Layout, childWidget Widget, x int, y int)
+	Put(childWidget Widget, x int, y int)
 	// SetHAdjustment sets the horizontal scroll adjustment for the layout.
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
-	SetHAdjustment(l Layout, adjustment Adjustment)
+	SetHAdjustment(adjustment Adjustment)
 	// SetSize sets the size of the scrollable area of the layout.
-	SetSize(l Layout, width uint, height uint)
+	SetSize(width uint, height uint)
 	// SetVAdjustment sets the vertical scroll adjustment for the layout.
 	//
 	// See ScrolledWindow, Scrollbar, Adjustment for details.
-	SetVAdjustment(l Layout, adjustment Adjustment)
+	SetVAdjustment(adjustment Adjustment)
 }
 
 // layout implements the Layout interface.
@@ -101,24 +105,38 @@ func marshalLayout(p uintptr) (interface{}, error) {
 }
 
 // NewLayout constructs a class Layout.
-func NewLayout(hadjustment Adjustment, vadjustment Adjustment) {
+func NewLayout(hAdjustment Adjustment, vAdjustment Adjustment) Layout {
 	var arg1 *C.GtkAdjustment
 	var arg2 *C.GtkAdjustment
 
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
+	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hAdjustment.Native()))
+	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vAdjustment.Native()))
 
-	C.gtk_layout_new(arg1, arg2)
+	var cret C.GtkLayout
+	var goret Layout
+
+	cret = C.gtk_layout_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
+
+	return goret
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing
 // operations.
-func (l layout) BinWindow(l Layout) {
+func (l layout) BinWindow() gdk.Window {
 	var arg0 *C.GtkLayout
 
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
-	C.gtk_layout_get_bin_window(arg0)
+	var cret *C.GdkWindow
+	var goret gdk.Window
+
+	cret = C.gtk_layout_get_bin_window(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return goret
 }
 
 // HAdjustment: this function should only be called after the layout has
@@ -127,33 +145,40 @@ func (l layout) BinWindow(l Layout) {
 // scrollbar and @layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
-func (l layout) HAdjustment(l Layout) {
+func (l layout) HAdjustment() Adjustment {
 	var arg0 *C.GtkLayout
 
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
-	C.gtk_layout_get_hadjustment(arg0)
+	var cret *C.GtkAdjustment
+	var goret Adjustment
+
+	cret = C.gtk_layout_get_hadjustment(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return goret
 }
 
 // Size gets the size that has been set on the layout, and that determines
 // the total extents of the layout’s scrollbar area. See gtk_layout_set_size
 // ().
-func (l layout) Size(l Layout) (width uint, height uint) {
+func (l layout) Size() (width uint, height uint) {
 	var arg0 *C.GtkLayout
 
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
-	var arg1 C.guint
-	var width uint
-	var arg2 C.guint
-	var height uint
+	arg1 := new(C.guint)
+	var ret1 uint
+	arg2 := new(C.guint)
+	var ret2 uint
 
-	C.gtk_layout_get_size(arg0, &arg1, &arg2)
+	C.gtk_layout_get_size(arg0, arg1, arg2)
 
-	width = uint(&arg1)
-	height = uint(&arg2)
+	ret1 = uint(*arg1)
+	ret2 = uint(*arg2)
 
-	return width, height
+	return ret1, ret2
 }
 
 // VAdjustment: this function should only be called after the layout has
@@ -162,16 +187,23 @@ func (l layout) Size(l Layout) (width uint, height uint) {
 // scrollbar and @layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
-func (l layout) VAdjustment(l Layout) {
+func (l layout) VAdjustment() Adjustment {
 	var arg0 *C.GtkLayout
 
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
-	C.gtk_layout_get_vadjustment(arg0)
+	var cret *C.GtkAdjustment
+	var goret Adjustment
+
+	cret = C.gtk_layout_get_vadjustment(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return goret
 }
 
 // Move moves a current child of @layout to a new position.
-func (l layout) Move(l Layout, childWidget Widget, x int, y int) {
+func (l layout) Move(childWidget Widget, x int, y int) {
 	var arg0 *C.GtkLayout
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -187,7 +219,7 @@ func (l layout) Move(l Layout, childWidget Widget, x int, y int) {
 
 // Put adds @child_widget to @layout, at position (@x,@y). @layout becomes
 // the new parent container of @child_widget.
-func (l layout) Put(l Layout, childWidget Widget, x int, y int) {
+func (l layout) Put(childWidget Widget, x int, y int) {
 	var arg0 *C.GtkLayout
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -204,7 +236,7 @@ func (l layout) Put(l Layout, childWidget Widget, x int, y int) {
 // SetHAdjustment sets the horizontal scroll adjustment for the layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
-func (l layout) SetHAdjustment(l Layout, adjustment Adjustment) {
+func (l layout) SetHAdjustment(adjustment Adjustment) {
 	var arg0 *C.GtkLayout
 	var arg1 *C.GtkAdjustment
 
@@ -215,7 +247,7 @@ func (l layout) SetHAdjustment(l Layout, adjustment Adjustment) {
 }
 
 // SetSize sets the size of the scrollable area of the layout.
-func (l layout) SetSize(l Layout, width uint, height uint) {
+func (l layout) SetSize(width uint, height uint) {
 	var arg0 *C.GtkLayout
 	var arg1 C.guint
 	var arg2 C.guint
@@ -230,7 +262,7 @@ func (l layout) SetSize(l Layout, width uint, height uint) {
 // SetVAdjustment sets the vertical scroll adjustment for the layout.
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
-func (l layout) SetVAdjustment(l Layout, adjustment Adjustment) {
+func (l layout) SetVAdjustment(adjustment Adjustment) {
 	var arg0 *C.GtkLayout
 	var arg1 *C.GtkAdjustment
 

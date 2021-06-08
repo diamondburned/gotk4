@@ -3,7 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,7 +31,7 @@ func init() {
 // leaf node and will never have children. If it does not have children but may
 // get children later, it should return an empty model that is filled once
 // children arrive.
-type TreeListModelCreateModelFunc func(item gextras.Objector) gio.ListModel
+type TreeListModelCreateModelFunc func() (listModel gio.ListModel)
 
 //export gotk4_TreeListModelCreateModelFunc
 func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GListModel {
@@ -38,43 +41,48 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GLi
 	}
 
 	fn := v.(TreeListModelCreateModelFunc)
-	ret := fn(item, userData)
+	fn(listModel)
 
-	cret = (*C.GListModel)(unsafe.Pointer(ret.Native()))
-
-	return cret
+	cret = (*C.GListModel)(unsafe.Pointer(listModel.Native()))
 }
 
-// TreeListModel is a Model implementation that can expand rows by creating new
-// child list models on demand.
+// TreeListModel: `GtkTreeListModel` is a list model that can create child
+// models on demand.
 type TreeListModel interface {
 	gextras.Objector
 	gio.ListModel
 
 	// Autoexpand gets whether the model is set to automatically expand new rows
-	// that get added. This can be either rows added by changes to the
-	// underlying models or via gtk_tree_list_row_set_expanded().
-	Autoexpand(s TreeListModel) bool
+	// that get added.
+	//
+	// This can be either rows added by changes to the underlying models or via
+	// [method@Gtk.TreeListRow.set_expanded].
+	Autoexpand() bool
 	// ChildRow gets the row item corresponding to the child at index @position
 	// for @self's root model.
 	//
 	// If @position is greater than the number of children in the root model,
 	// nil is returned.
 	//
-	// Do not confuse this function with gtk_tree_list_model_get_row().
-	ChildRow(s TreeListModel, position uint)
+	// Do not confuse this function with [method@Gtk.TreeListModel.get_row].
+	ChildRow(position uint) TreeListRow
 	// Model gets the root model that @self was created with.
-	Model(s TreeListModel)
-	// Passthrough: if this function returns false, the Model functions for
-	// @self return custom TreeListRow objects. You need to call
-	// gtk_tree_list_row_get_item() on these objects to get the original item.
+	Model() gio.ListModel
+	// Passthrough gets whether the model is passing through original row items.
+	//
+	// If this function returns false, the `GListModel` functions for @self
+	// return custom `GtkTreeListRow` objects. You need to call
+	// [method@Gtk.TreeListRow.get_item] on these objects to get the original
+	// item.
 	//
 	// If true, the values of the child models are passed through in their
-	// original state. You then need to call gtk_tree_list_model_get_row() to
-	// get the custom TreeListRows.
-	Passthrough(s TreeListModel) bool
-	// Row gets the row object for the given row. If @position is greater than
-	// the number of items in @self, nil is returned.
+	// original state. You then need to call [method@Gtk.TreeListModel.get_row]
+	// to get the custom `GtkTreeListRow`s.
+	Passthrough() bool
+	// Row gets the row object for the given row.
+	//
+	// If @position is greater than the number of items in @self, nil is
+	// returned.
 	//
 	// The row object can be used to expand and collapse rows as well as to
 	// inspect its position in the tree. See its documentation for details.
@@ -86,12 +94,15 @@ type TreeListModel interface {
 	// If @self is set to not be passthrough, this function is equivalent to
 	// calling g_list_model_get_item().
 	//
-	// Do not confuse this function with gtk_tree_list_model_get_child_row().
-	Row(s TreeListModel, position uint)
-	// SetAutoexpand: if set to true, the model will recursively expand all rows
-	// that get added to the model. This can be either rows added by changes to
-	// the underlying models or via gtk_tree_list_row_set_expanded().
-	SetAutoexpand(s TreeListModel, autoexpand bool)
+	// Do not confuse this function with
+	// [method@Gtk.TreeListModel.get_child_row].
+	Row(position uint) TreeListRow
+	// SetAutoexpand sets whether the model should autoexpand.
+	//
+	// If set to true, the model will recursively expand all rows that get added
+	// to the model. This can be either rows added by changes to the underlying
+	// models or via [method@Gtk.TreeListRow.set_expanded].
+	SetAutoexpand(autoexpand bool)
 }
 
 // treeListModel implements the TreeListModel interface.
@@ -118,28 +129,37 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 }
 
 // NewTreeListModel constructs a class TreeListModel.
-func NewTreeListModel() {
-	C.gtk_tree_list_model_new(arg1, arg2, arg3, arg4, arg5, arg6)
+func NewTreeListModel() TreeListModel {
+	cret := new(C.GtkTreeListModel)
+	var goret TreeListModel
+
+	cret = C.gtk_tree_list_model_new(arg1, arg2, arg3, arg4, arg5, arg6)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListModel)
+
+	return goret
 }
 
 // Autoexpand gets whether the model is set to automatically expand new rows
-// that get added. This can be either rows added by changes to the
-// underlying models or via gtk_tree_list_row_set_expanded().
-func (s treeListModel) Autoexpand(s TreeListModel) bool {
+// that get added.
+//
+// This can be either rows added by changes to the underlying models or via
+// [method@Gtk.TreeListRow.set_expanded].
+func (s treeListModel) Autoexpand() bool {
 	var arg0 *C.GtkTreeListModel
 
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_list_model_get_autoexpand(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ChildRow gets the row item corresponding to the child at index @position
@@ -148,52 +168,71 @@ func (s treeListModel) Autoexpand(s TreeListModel) bool {
 // If @position is greater than the number of children in the root model,
 // nil is returned.
 //
-// Do not confuse this function with gtk_tree_list_model_get_row().
-func (s treeListModel) ChildRow(s TreeListModel, position uint) {
+// Do not confuse this function with [method@Gtk.TreeListModel.get_row].
+func (s treeListModel) ChildRow(position uint) TreeListRow {
 	var arg0 *C.GtkTreeListModel
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	C.gtk_tree_list_model_get_child_row(arg0, arg1)
+	cret := new(C.GtkTreeListRow)
+	var goret TreeListRow
+
+	cret = C.gtk_tree_list_model_get_child_row(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+
+	return goret
 }
 
 // Model gets the root model that @self was created with.
-func (s treeListModel) Model(s TreeListModel) {
+func (s treeListModel) Model() gio.ListModel {
 	var arg0 *C.GtkTreeListModel
 
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_list_model_get_model(arg0)
+	var cret *C.GListModel
+	var goret gio.ListModel
+
+	cret = C.gtk_tree_list_model_get_model(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return goret
 }
 
-// Passthrough: if this function returns false, the Model functions for
-// @self return custom TreeListRow objects. You need to call
-// gtk_tree_list_row_get_item() on these objects to get the original item.
+// Passthrough gets whether the model is passing through original row items.
+//
+// If this function returns false, the `GListModel` functions for @self
+// return custom `GtkTreeListRow` objects. You need to call
+// [method@Gtk.TreeListRow.get_item] on these objects to get the original
+// item.
 //
 // If true, the values of the child models are passed through in their
-// original state. You then need to call gtk_tree_list_model_get_row() to
-// get the custom TreeListRows.
-func (s treeListModel) Passthrough(s TreeListModel) bool {
+// original state. You then need to call [method@Gtk.TreeListModel.get_row]
+// to get the custom `GtkTreeListRow`s.
+func (s treeListModel) Passthrough() bool {
 	var arg0 *C.GtkTreeListModel
 
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_list_model_get_passthrough(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// Row gets the row object for the given row. If @position is greater than
-// the number of items in @self, nil is returned.
+// Row gets the row object for the given row.
+//
+// If @position is greater than the number of items in @self, nil is
+// returned.
 //
 // The row object can be used to expand and collapse rows as well as to
 // inspect its position in the tree. See its documentation for details.
@@ -205,21 +244,31 @@ func (s treeListModel) Passthrough(s TreeListModel) bool {
 // If @self is set to not be passthrough, this function is equivalent to
 // calling g_list_model_get_item().
 //
-// Do not confuse this function with gtk_tree_list_model_get_child_row().
-func (s treeListModel) Row(s TreeListModel, position uint) {
+// Do not confuse this function with
+// [method@Gtk.TreeListModel.get_child_row].
+func (s treeListModel) Row(position uint) TreeListRow {
 	var arg0 *C.GtkTreeListModel
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	C.gtk_tree_list_model_get_row(arg0, arg1)
+	cret := new(C.GtkTreeListRow)
+	var goret TreeListRow
+
+	cret = C.gtk_tree_list_model_get_row(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+
+	return goret
 }
 
-// SetAutoexpand: if set to true, the model will recursively expand all rows
-// that get added to the model. This can be either rows added by changes to
-// the underlying models or via gtk_tree_list_row_set_expanded().
-func (s treeListModel) SetAutoexpand(s TreeListModel, autoexpand bool) {
+// SetAutoexpand sets whether the model should autoexpand.
+//
+// If set to true, the model will recursively expand all rows that get added
+// to the model. This can be either rows added by changes to the underlying
+// models or via [method@Gtk.TreeListRow.set_expanded].
+func (s treeListModel) SetAutoexpand(autoexpand bool) {
 	var arg0 *C.GtkTreeListModel
 	var arg1 C.gboolean
 
@@ -231,68 +280,76 @@ func (s treeListModel) SetAutoexpand(s TreeListModel, autoexpand bool) {
 	C.gtk_tree_list_model_set_autoexpand(arg0, arg1)
 }
 
-// TreeListRow is the object used by TreeListModel to represent items. It allows
-// navigating the model as a tree and modify the state of rows.
+// TreeListRow: `GtkTreeListRow` is used by `GtkTreeListModel` to represent
+// items.
 //
-// TreeListRow instances are created by a TreeListModel only when the
-// TreeListModel:passthrough property is not set.
+// It allows navigating the model as a tree and modify the state of rows.
 //
-// There are various support objects that can make use of TreeListRow objects,
-// such as the TreeExpander widget that allows displaying an icon to expand or
-// collapse a row or TreeListRowSorter that makes it possible to sort trees
-// properly.
+// `GtkTreeListRow` instances are created by a `GtkTreeListModel` only when the
+// [property@Gtk.TreeListModel:passthrough] property is not set.
+//
+// There are various support objects that can make use of `GtkTreeListRow`
+// objects, such as the [class@Gtk.TreeExpander] widget that allows displaying
+// an icon to expand or collapse a row or [class@Gtk.TreeListRowSorter] that
+// makes it possible to sort trees properly.
 type TreeListRow interface {
 	gextras.Objector
 
 	// ChildRow: if @self is not expanded or @position is greater than the
 	// number of children, nil is returned.
-	ChildRow(s TreeListRow, position uint)
+	ChildRow(position uint) TreeListRow
 	// Children: if the row is expanded, gets the model holding the children of
 	// @self.
 	//
-	// This model is the model created by the TreeListModelCreateModelFunc and
-	// contains the original items, no matter what value
-	// TreeListModel:passthrough is set to.
-	Children(s TreeListRow)
-	// Depth gets the depth of this row. Rows that correspond to items in the
-	// root model have a depth of zero, rows corresponding to items of models of
-	// direct children of the root model have a depth of 1 and so on.
+	// This model is the model created by the
+	// [callback@Gtk.TreeListModelCreateModelFunc] and contains the original
+	// items, no matter what value [property@Gtk.TreeListModel:passthrough] is
+	// set to.
+	Children() gio.ListModel
+	// Depth gets the depth of this row.
+	//
+	// Rows that correspond to items in the root model have a depth of zero,
+	// rows corresponding to items of models of direct children of the root
+	// model have a depth of 1 and so on.
 	//
 	// The depth of a row never changes until the row is destroyed.
-	Depth(s TreeListRow)
+	Depth() uint
 	// Expanded gets if a row is currently expanded.
-	Expanded(s TreeListRow) bool
+	Expanded() bool
 	// Item gets the item corresponding to this row,
 	//
 	// The value returned by this function never changes until the row is
 	// destroyed.
-	Item(s TreeListRow)
-	// Parent gets the row representing the parent for @self. That is the row
-	// that would need to be collapsed to make this row disappear.
+	Item() gextras.Objector
+	// Parent gets the row representing the parent for @self.
+	//
+	// That is the row that would need to be collapsed to make this row
+	// disappear.
 	//
 	// If @self is a row corresponding to the root model, nil is returned.
 	//
 	// The value returned by this function never changes until the row is
 	// destroyed.
-	Parent(s TreeListRow)
-	// Position returns the position in the TreeListModel that @self occupies at
-	// the moment.
-	Position(s TreeListRow)
-	// IsExpandable checks if a row can be expanded. This does not mean that the
-	// row is actually expanded, this can be checked with
-	// gtk_tree_list_row_get_expanded()
+	Parent() TreeListRow
+	// Position returns the position in the `GtkTreeListModel` that @self
+	// occupies at the moment.
+	Position() uint
+	// IsExpandable checks if a row can be expanded.
+	//
+	// This does not mean that the row is actually expanded, this can be checked
+	// with [method@Gtk.TreeListRow.get_expanded].
 	//
 	// If a row is expandable never changes until the row is destroyed.
-	IsExpandable(s TreeListRow) bool
+	IsExpandable() bool
 	// SetExpanded expands or collapses a row.
 	//
 	// If a row is expanded, the model of calling the
-	// TreeListModelCreateModelFunc for the row's item will be inserted after
-	// this row. If a row is collapsed, those items will be removed from the
-	// model.
+	// [callback@Gtk.TreeListModelCreateModelFunc] for the row's item will be
+	// inserted after this row. If a row is collapsed, those items will be
+	// removed from the model.
 	//
 	// If the row is not expandable, this function does nothing.
-	SetExpanded(s TreeListRow, expanded bool)
+	SetExpanded(expanded bool)
 }
 
 // treeListRow implements the TreeListRow interface.
@@ -318,129 +375,177 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 
 // ChildRow: if @self is not expanded or @position is greater than the
 // number of children, nil is returned.
-func (s treeListRow) ChildRow(s TreeListRow, position uint) {
+func (s treeListRow) ChildRow(position uint) TreeListRow {
 	var arg0 *C.GtkTreeListRow
 	var arg1 C.guint
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(position)
 
-	C.gtk_tree_list_row_get_child_row(arg0, arg1)
+	cret := new(C.GtkTreeListRow)
+	var goret TreeListRow
+
+	cret = C.gtk_tree_list_row_get_child_row(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+
+	return goret
 }
 
 // Children: if the row is expanded, gets the model holding the children of
 // @self.
 //
-// This model is the model created by the TreeListModelCreateModelFunc and
-// contains the original items, no matter what value
-// TreeListModel:passthrough is set to.
-func (s treeListRow) Children(s TreeListRow) {
+// This model is the model created by the
+// [callback@Gtk.TreeListModelCreateModelFunc] and contains the original
+// items, no matter what value [property@Gtk.TreeListModel:passthrough] is
+// set to.
+func (s treeListRow) Children() gio.ListModel {
 	var arg0 *C.GtkTreeListRow
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_list_row_get_children(arg0)
+	var cret *C.GListModel
+	var goret gio.ListModel
+
+	cret = C.gtk_tree_list_row_get_children(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return goret
 }
 
-// Depth gets the depth of this row. Rows that correspond to items in the
-// root model have a depth of zero, rows corresponding to items of models of
-// direct children of the root model have a depth of 1 and so on.
+// Depth gets the depth of this row.
+//
+// Rows that correspond to items in the root model have a depth of zero,
+// rows corresponding to items of models of direct children of the root
+// model have a depth of 1 and so on.
 //
 // The depth of a row never changes until the row is destroyed.
-func (s treeListRow) Depth(s TreeListRow) {
+func (s treeListRow) Depth() uint {
 	var arg0 *C.GtkTreeListRow
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_list_row_get_depth(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_tree_list_row_get_depth(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Expanded gets if a row is currently expanded.
-func (s treeListRow) Expanded(s TreeListRow) bool {
+func (s treeListRow) Expanded() bool {
 	var arg0 *C.GtkTreeListRow
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_list_row_get_expanded(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Item gets the item corresponding to this row,
 //
 // The value returned by this function never changes until the row is
 // destroyed.
-func (s treeListRow) Item(s TreeListRow) {
+func (s treeListRow) Item() gextras.Objector {
 	var arg0 *C.GtkTreeListRow
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_list_row_get_item(arg0)
+	cret := new(C.gpointer)
+	var goret gextras.Objector
+
+	cret = C.gtk_tree_list_row_get_item(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return goret
 }
 
-// Parent gets the row representing the parent for @self. That is the row
-// that would need to be collapsed to make this row disappear.
+// Parent gets the row representing the parent for @self.
+//
+// That is the row that would need to be collapsed to make this row
+// disappear.
 //
 // If @self is a row corresponding to the root model, nil is returned.
 //
 // The value returned by this function never changes until the row is
 // destroyed.
-func (s treeListRow) Parent(s TreeListRow) {
+func (s treeListRow) Parent() TreeListRow {
 	var arg0 *C.GtkTreeListRow
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_list_row_get_parent(arg0)
+	cret := new(C.GtkTreeListRow)
+	var goret TreeListRow
+
+	cret = C.gtk_tree_list_row_get_parent(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TreeListRow)
+
+	return goret
 }
 
-// Position returns the position in the TreeListModel that @self occupies at
-// the moment.
-func (s treeListRow) Position(s TreeListRow) {
+// Position returns the position in the `GtkTreeListModel` that @self
+// occupies at the moment.
+func (s treeListRow) Position() uint {
 	var arg0 *C.GtkTreeListRow
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_list_row_get_position(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_tree_list_row_get_position(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
-// IsExpandable checks if a row can be expanded. This does not mean that the
-// row is actually expanded, this can be checked with
-// gtk_tree_list_row_get_expanded()
+// IsExpandable checks if a row can be expanded.
+//
+// This does not mean that the row is actually expanded, this can be checked
+// with [method@Gtk.TreeListRow.get_expanded].
 //
 // If a row is expandable never changes until the row is destroyed.
-func (s treeListRow) IsExpandable(s TreeListRow) bool {
+func (s treeListRow) IsExpandable() bool {
 	var arg0 *C.GtkTreeListRow
 
 	arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_list_row_is_expandable(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetExpanded expands or collapses a row.
 //
 // If a row is expanded, the model of calling the
-// TreeListModelCreateModelFunc for the row's item will be inserted after
-// this row. If a row is collapsed, those items will be removed from the
-// model.
+// [callback@Gtk.TreeListModelCreateModelFunc] for the row's item will be
+// inserted after this row. If a row is collapsed, those items will be
+// removed from the model.
 //
 // If the row is not expandable, this function does nothing.
-func (s treeListRow) SetExpanded(s TreeListRow, expanded bool) {
+func (s treeListRow) SetExpanded(expanded bool) {
 	var arg0 *C.GtkTreeListRow
 	var arg1 C.gboolean
 

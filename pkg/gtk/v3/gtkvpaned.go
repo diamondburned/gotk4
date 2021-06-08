@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,6 +60,13 @@ func marshalVPaned(p uintptr) (interface{}, error) {
 }
 
 // NewVPaned constructs a class VPaned.
-func NewVPaned() {
-	C.gtk_vpaned_new()
+func NewVPaned() VPaned {
+	var cret C.GtkVPaned
+	var goret VPaned
+
+	cret = C.gtk_vpaned_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VPaned)
+
+	return goret
 }

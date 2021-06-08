@@ -38,7 +38,7 @@ func (d *Dir) Native() unsafe.Pointer {
 }
 
 // Close closes the directory and deallocates all related resources.
-func (d *Dir) Close(d *Dir) {
+func (d *Dir) Close() {
 	var arg0 *C.GDir
 
 	arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
@@ -58,17 +58,24 @@ func (d *Dir) Close(d *Dir) {
 //
 // On Windows, as is true of all GLib functions which operate on filenames, the
 // returned name is in UTF-8.
-func (d *Dir) ReadName(d *Dir) {
+func (d *Dir) ReadName() string {
 	var arg0 *C.GDir
 
 	arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
 
-	C.g_dir_read_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dir_read_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Rewind resets the given directory. The next call to g_dir_read_name() will
 // return the first entry again.
-func (d *Dir) Rewind(d *Dir) {
+func (d *Dir) Rewind() {
 	var arg0 *C.GDir
 
 	arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))

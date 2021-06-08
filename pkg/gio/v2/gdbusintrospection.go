@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,30 +38,6 @@ func init() {
 		{T: externglib.Type(C.g_dbus_property_info_get_type()), F: marshalDBusPropertyInfo},
 		{T: externglib.Type(C.g_dbus_signal_info_get_type()), F: marshalDBusSignalInfo},
 	})
-}
-
-// DBusAnnotationInfoLookup looks up the value of an annotation.
-//
-// The cost of this function is O(n) in number of annotations.
-func DBusAnnotationInfoLookup(annotations []*DBusAnnotationInfo, name string) {
-	var arg1 **C.GDBusAnnotationInfo
-	var arg2 *C.gchar
-
-	arg1 = C.malloc(len(annotations) * (unsafe.Sizeof(int(0)) + 1))
-	defer C.free(unsafe.Pointer(arg1))
-
-	{
-		var out []*C.GDBusAnnotationInfo
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(annotations)))
-
-		for i := range annotations {
-			out[i] = (*C.GDBusAnnotationInfo)(unsafe.Pointer(annotations[i].Native()))
-		}
-	}
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-
-	C.g_dbus_annotation_info_lookup(arg1, arg2)
 }
 
 // DBusAnnotationInfo: information about an annotation.
@@ -130,18 +109,28 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusAnnotationInfo) Ref(i *DBusAnnotationInfo) {
+func (i *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 	var arg0 *C.GDBusAnnotationInfo
 
 	arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_annotation_info_ref(arg0)
+	cret := new(C.GDBusAnnotationInfo)
+	var goret *DBusAnnotationInfo
+
+	cret = C.g_dbus_annotation_info_ref(arg0)
+
+	goret = WrapDBusAnnotationInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusAnnotationInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusAnnotationInfo) Unref(i *DBusAnnotationInfo) {
+func (i *DBusAnnotationInfo) Unref() {
 	var arg0 *C.GDBusAnnotationInfo
 
 	arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(i.Native()))
@@ -218,18 +207,28 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusArgInfo) Ref(i *DBusArgInfo) {
+func (i *DBusArgInfo) Ref() *DBusArgInfo {
 	var arg0 *C.GDBusArgInfo
 
 	arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_arg_info_ref(arg0)
+	cret := new(C.GDBusArgInfo)
+	var goret *DBusArgInfo
+
+	cret = C.g_dbus_arg_info_ref(arg0)
+
+	goret = WrapDBusArgInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusArgInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusArgInfo) Unref(i *DBusArgInfo) {
+func (i *DBusArgInfo) Unref() {
 	var arg0 *C.GDBusArgInfo
 
 	arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(i.Native()))
@@ -369,7 +368,7 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 //
 // Note that @info cannot be modified until
 // g_dbus_interface_info_cache_release() is called.
-func (i *DBusInterfaceInfo) CacheBuild(i *DBusInterfaceInfo) {
+func (i *DBusInterfaceInfo) CacheBuild() {
 	var arg0 *C.GDBusInterfaceInfo
 
 	arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
@@ -380,7 +379,7 @@ func (i *DBusInterfaceInfo) CacheBuild(i *DBusInterfaceInfo) {
 // CacheRelease decrements the usage count for the cache for @info built by
 // g_dbus_interface_info_cache_build() (if any) and frees the resources used by
 // the cache if the usage count drops to zero.
-func (i *DBusInterfaceInfo) CacheRelease(i *DBusInterfaceInfo) {
+func (i *DBusInterfaceInfo) CacheRelease() {
 	var arg0 *C.GDBusInterfaceInfo
 
 	arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
@@ -394,7 +393,7 @@ func (i *DBusInterfaceInfo) CacheRelease(i *DBusInterfaceInfo) {
 // This function is typically used for generating introspection XML documents at
 // run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
 // method.
-func (i *DBusInterfaceInfo) GenerateXML(i *DBusInterfaceInfo, indent uint, stringBuilder *glib.String) {
+func (i *DBusInterfaceInfo) GenerateXML(indent uint, stringBuilder *glib.String) {
 	var arg0 *C.GDBusInterfaceInfo
 	var arg1 C.guint
 	var arg2 *C.GString
@@ -410,7 +409,7 @@ func (i *DBusInterfaceInfo) GenerateXML(i *DBusInterfaceInfo, indent uint, strin
 //
 // The cost of this function is O(n) in number of methods unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupMethod(i *DBusInterfaceInfo, name string) {
+func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	var arg0 *C.GDBusInterfaceInfo
 	var arg1 *C.gchar
 
@@ -418,14 +417,21 @@ func (i *DBusInterfaceInfo) LookupMethod(i *DBusInterfaceInfo, name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_dbus_interface_info_lookup_method(arg0, arg1)
+	var cret *C.GDBusMethodInfo
+	var goret *DBusMethodInfo
+
+	cret = C.g_dbus_interface_info_lookup_method(arg0, arg1)
+
+	goret = WrapDBusMethodInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // LookupProperty looks up information about a property.
 //
 // The cost of this function is O(n) in number of properties unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupProperty(i *DBusInterfaceInfo, name string) {
+func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	var arg0 *C.GDBusInterfaceInfo
 	var arg1 *C.gchar
 
@@ -433,14 +439,21 @@ func (i *DBusInterfaceInfo) LookupProperty(i *DBusInterfaceInfo, name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_dbus_interface_info_lookup_property(arg0, arg1)
+	var cret *C.GDBusPropertyInfo
+	var goret *DBusPropertyInfo
+
+	cret = C.g_dbus_interface_info_lookup_property(arg0, arg1)
+
+	goret = WrapDBusPropertyInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // LookupSignal looks up information about a signal.
 //
 // The cost of this function is O(n) in number of signals unless
 // g_dbus_interface_info_cache_build() has been used on @info.
-func (i *DBusInterfaceInfo) LookupSignal(i *DBusInterfaceInfo, name string) {
+func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	var arg0 *C.GDBusInterfaceInfo
 	var arg1 *C.gchar
 
@@ -448,23 +461,40 @@ func (i *DBusInterfaceInfo) LookupSignal(i *DBusInterfaceInfo, name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_dbus_interface_info_lookup_signal(arg0, arg1)
+	var cret *C.GDBusSignalInfo
+	var goret *DBusSignalInfo
+
+	cret = C.g_dbus_interface_info_lookup_signal(arg0, arg1)
+
+	goret = WrapDBusSignalInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusInterfaceInfo) Ref(i *DBusInterfaceInfo) {
+func (i *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 	var arg0 *C.GDBusInterfaceInfo
 
 	arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_interface_info_ref(arg0)
+	cret := new(C.GDBusInterfaceInfo)
+	var goret *DBusInterfaceInfo
+
+	cret = C.g_dbus_interface_info_ref(arg0)
+
+	goret = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusInterfaceInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusInterfaceInfo) Unref(i *DBusInterfaceInfo) {
+func (i *DBusInterfaceInfo) Unref() {
 	var arg0 *C.GDBusInterfaceInfo
 
 	arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
@@ -576,18 +606,28 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusMethodInfo) Ref(i *DBusMethodInfo) {
+func (i *DBusMethodInfo) Ref() *DBusMethodInfo {
 	var arg0 *C.GDBusMethodInfo
 
 	arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_method_info_ref(arg0)
+	cret := new(C.GDBusMethodInfo)
+	var goret *DBusMethodInfo
+
+	cret = C.g_dbus_method_info_ref(arg0)
+
+	goret = WrapDBusMethodInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusMethodInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusMethodInfo) Unref(i *DBusMethodInfo) {
+func (i *DBusMethodInfo) Unref() {
 	var arg0 *C.GDBusMethodInfo
 
 	arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(i.Native()))
@@ -616,20 +656,26 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 }
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
-func NewDBusNodeInfoForXML(xmlData string) error {
+func NewDBusNodeInfoForXML(xmlData string) (dBusNodeInfo *DBusNodeInfo, err error) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(xmlData))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusNodeInfo)
+	var goret *DBusNodeInfo
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_node_info_new_for_xml(arg1, &errout)
+	cret = C.g_dbus_node_info_new_for_xml(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = WrapDBusNodeInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusNodeInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // Native returns the underlying C source pointer.
@@ -720,7 +766,7 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 // This function is typically used for generating introspection XML documents at
 // run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
 // method.
-func (i *DBusNodeInfo) GenerateXML(i *DBusNodeInfo, indent uint, stringBuilder *glib.String) {
+func (i *DBusNodeInfo) GenerateXML(indent uint, stringBuilder *glib.String) {
 	var arg0 *C.GDBusNodeInfo
 	var arg1 C.guint
 	var arg2 *C.GString
@@ -735,7 +781,7 @@ func (i *DBusNodeInfo) GenerateXML(i *DBusNodeInfo, indent uint, stringBuilder *
 // LookupInterface looks up information about an interface.
 //
 // The cost of this function is O(n) in number of interfaces.
-func (i *DBusNodeInfo) LookupInterface(i *DBusNodeInfo, name string) {
+func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	var arg0 *C.GDBusNodeInfo
 	var arg1 *C.gchar
 
@@ -743,23 +789,40 @@ func (i *DBusNodeInfo) LookupInterface(i *DBusNodeInfo, name string) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_dbus_node_info_lookup_interface(arg0, arg1)
+	var cret *C.GDBusInterfaceInfo
+	var goret *DBusInterfaceInfo
+
+	cret = C.g_dbus_node_info_lookup_interface(arg0, arg1)
+
+	goret = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusNodeInfo) Ref(i *DBusNodeInfo) {
+func (i *DBusNodeInfo) Ref() *DBusNodeInfo {
 	var arg0 *C.GDBusNodeInfo
 
 	arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_node_info_ref(arg0)
+	cret := new(C.GDBusNodeInfo)
+	var goret *DBusNodeInfo
+
+	cret = C.g_dbus_node_info_ref(arg0)
+
+	goret = WrapDBusNodeInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusNodeInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusNodeInfo) Unref(i *DBusNodeInfo) {
+func (i *DBusNodeInfo) Unref() {
 	var arg0 *C.GDBusNodeInfo
 
 	arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
@@ -843,18 +906,28 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusPropertyInfo) Ref(i *DBusPropertyInfo) {
+func (i *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 	var arg0 *C.GDBusPropertyInfo
 
 	arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_property_info_ref(arg0)
+	cret := new(C.GDBusPropertyInfo)
+	var goret *DBusPropertyInfo
+
+	cret = C.g_dbus_property_info_ref(arg0)
+
+	goret = WrapDBusPropertyInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusPropertyInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusPropertyInfo) Unref(i *DBusPropertyInfo) {
+func (i *DBusPropertyInfo) Unref() {
 	var arg0 *C.GDBusPropertyInfo
 
 	arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(i.Native()))
@@ -945,18 +1018,28 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
 // reference count.
-func (i *DBusSignalInfo) Ref(i *DBusSignalInfo) {
+func (i *DBusSignalInfo) Ref() *DBusSignalInfo {
 	var arg0 *C.GDBusSignalInfo
 
 	arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_signal_info_ref(arg0)
+	cret := new(C.GDBusSignalInfo)
+	var goret *DBusSignalInfo
+
+	cret = C.g_dbus_signal_info_ref(arg0)
+
+	goret = WrapDBusSignalInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *DBusSignalInfo) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
-func (i *DBusSignalInfo) Unref(i *DBusSignalInfo) {
+func (i *DBusSignalInfo) Unref() {
 	var arg0 *C.GDBusSignalInfo
 
 	arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(i.Native()))

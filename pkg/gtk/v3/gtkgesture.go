@@ -3,6 +3,12 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -119,39 +125,33 @@ type Gesture interface {
 	// Since there is no correlation between physical and pixel distances, these
 	// will look as if constrained in an infinitely small area, @rect width and
 	// height will thus be 0 regardless of the number of touchpoints.
-	BoundingBox(g Gesture) (rect *gdk.Rectangle, ok bool)
+	BoundingBox() (rect *gdk.Rectangle, ok bool)
 	// BoundingBoxCenter: if there are touch sequences being currently handled
 	// by @gesture, this function returns true and fills in @x and @y with the
 	// center of the bounding box containing all active touches. Otherwise,
 	// false will be returned.
-	BoundingBoxCenter(g Gesture) (x float64, y float64, ok bool)
+	BoundingBoxCenter() (x float64, y float64, ok bool)
 	// Device returns the master Device that is currently operating on @gesture,
 	// or nil if the gesture is not being interacted.
-	Device(g Gesture)
+	Device() gdk.Device
 	// GetGroup returns all gestures in the group of @gesture
-	GetGroup(g Gesture)
-	// LastEvent returns the last event that was processed for @sequence.
-	//
-	// Note that the returned pointer is only valid as long as the @sequence is
-	// still interpreted by the @gesture. If in doubt, you should make a copy of
-	// the event.
-	LastEvent(g Gesture, sequence *gdk.EventSequence)
+	GetGroup() *glib.List
 	// LastUpdatedSequence returns the EventSequence that was last updated on
 	// @gesture.
-	LastUpdatedSequence(g Gesture)
+	LastUpdatedSequence() *gdk.EventSequence
 	// Point: if @sequence is currently being interpreted by @gesture, this
 	// function returns true and fills in @x and @y with the last coordinates
 	// stored for that event sequence. The coordinates are always relative to
 	// the widget allocation.
-	Point(g Gesture, sequence *gdk.EventSequence) (x float64, y float64, ok bool)
+	Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool)
 	// SequenceState returns the @sequence state, as seen by @gesture.
-	SequenceState(g Gesture, sequence *gdk.EventSequence)
+	SequenceState(sequence *gdk.EventSequence) EventSequenceState
 	// Sequences returns the list of EventSequences currently being interpreted
 	// by @gesture.
-	Sequences(g Gesture)
+	Sequences() *glib.List
 	// Window returns the user-defined window that receives the events handled
 	// by @gesture. See gtk_gesture_set_window() for more information.
-	Window(g Gesture)
+	Window() gdk.Window
 	// Group adds @gesture to the same group than @group_gesture. Gestures are
 	// by default isolated in their own groups.
 	//
@@ -163,20 +163,20 @@ type Gesture interface {
 	// EventSequence state is set to K_EVENT_SEQUENCE_CLAIMED on one group,
 	// every other gesture group attached to the same Widget will switch the
 	// state for that sequence to K_EVENT_SEQUENCE_DENIED.
-	Group(g Gesture, gesture Gesture)
+	Group(gesture Gesture)
 	// HandlesSequence returns true if @gesture is currently handling events
 	// corresponding to @sequence.
-	HandlesSequence(g Gesture, sequence *gdk.EventSequence) bool
+	HandlesSequence(sequence *gdk.EventSequence) bool
 	// IsActive returns true if the gesture is currently active. A gesture is
 	// active meanwhile there are touch sequences interacting with it.
-	IsActive(g Gesture) bool
+	IsActive() bool
 	// IsGroupedWith returns true if both gestures pertain to the same group.
-	IsGroupedWith(g Gesture, other Gesture) bool
+	IsGroupedWith(other Gesture) bool
 	// IsRecognized returns true if the gesture is currently recognized. A
 	// gesture is recognized if there are as many interacting touch sequences as
 	// required by @gesture, and Gesture::check returned true for the sequences
 	// being currently interpreted.
-	IsRecognized(g Gesture) bool
+	IsRecognized() bool
 	// SetSequenceState sets the state of @sequence in @gesture. Sequences start
 	// in state K_EVENT_SEQUENCE_NONE, and whenever they change state, they can
 	// never go back to that state. Likewise, sequences in state
@@ -212,17 +212,17 @@ type Gesture interface {
 	// If both gestures are in the same group, just set the state on the gesture
 	// emitting the event, the sequence will be already be initialized to the
 	// group's global state when the second gesture processes the event.
-	SetSequenceState(g Gesture, sequence *gdk.EventSequence, state EventSequenceState) bool
+	SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool
 	// SetState sets the state of all sequences that @gesture is currently
 	// interacting with. See gtk_gesture_set_sequence_state() for more details
 	// on sequence states.
-	SetState(g Gesture, state EventSequenceState) bool
+	SetState(state EventSequenceState) bool
 	// SetWindow sets a specific window to receive events about, so @gesture
 	// will effectively handle only events targeting @window, or a child of it.
 	// @window must pertain to gtk_event_controller_get_widget().
-	SetWindow(g Gesture, window gdk.Window)
+	SetWindow(window gdk.Window)
 	// Ungroup separates @gesture into an isolated group.
-	Ungroup(g Gesture)
+	Ungroup()
 }
 
 // gesture implements the Gesture interface.
@@ -254,155 +254,188 @@ func marshalGesture(p uintptr) (interface{}, error) {
 // Since there is no correlation between physical and pixel distances, these
 // will look as if constrained in an infinitely small area, @rect width and
 // height will thus be 0 regardless of the number of touchpoints.
-func (g gesture) BoundingBox(g Gesture) (rect *gdk.Rectangle, ok bool) {
+func (g gesture) BoundingBox() (rect *gdk.Rectangle, ok bool) {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	var arg1 C.GdkRectangle
-	var rect *gdk.Rectangle
+	arg1 := new(C.GdkRectangle)
+	var ret1 *gdk.Rectangle
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_gesture_get_bounding_box(arg0, &arg1)
+	cret = C.gtk_gesture_get_bounding_box(arg0, arg1)
 
-	rect = gdk.WrapRectangle(unsafe.Pointer(&arg1))
+	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return rect, ok
+	return ret1, goret
 }
 
 // BoundingBoxCenter: if there are touch sequences being currently handled
 // by @gesture, this function returns true and fills in @x and @y with the
 // center of the bounding box containing all active touches. Otherwise,
 // false will be returned.
-func (g gesture) BoundingBoxCenter(g Gesture) (x float64, y float64, ok bool) {
+func (g gesture) BoundingBoxCenter() (x float64, y float64, ok bool) {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	var arg1 C.gdouble
-	var x float64
-	var arg2 C.gdouble
-	var y float64
+	arg1 := new(C.gdouble)
+	var ret1 float64
+	arg2 := new(C.gdouble)
+	var ret2 float64
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_gesture_get_bounding_box_center(arg0, &arg1, &arg2)
+	cret = C.gtk_gesture_get_bounding_box_center(arg0, arg1, arg2)
 
-	x = float64(&arg1)
-	y = float64(&arg2)
+	ret1 = float64(*arg1)
+	ret2 = float64(*arg2)
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return x, y, ok
+	return ret1, ret2, goret
 }
 
 // Device returns the master Device that is currently operating on @gesture,
 // or nil if the gesture is not being interacted.
-func (g gesture) Device(g Gesture) {
+func (g gesture) Device() gdk.Device {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_get_device(arg0)
+	var cret *C.GdkDevice
+	var goret gdk.Device
+
+	cret = C.gtk_gesture_get_device(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
+
+	return goret
 }
 
 // GetGroup returns all gestures in the group of @gesture
-func (g gesture) GetGroup(g Gesture) {
+func (g gesture) GetGroup() *glib.List {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_get_group(arg0)
-}
+	cret := new(C.GList)
+	var goret *glib.List
 
-// LastEvent returns the last event that was processed for @sequence.
-//
-// Note that the returned pointer is only valid as long as the @sequence is
-// still interpreted by the @gesture. If in doubt, you should make a copy of
-// the event.
-func (g gesture) LastEvent(g Gesture, sequence *gdk.EventSequence) {
-	var arg0 *C.GtkGesture
-	var arg1 *C.GdkEventSequence
+	cret = C.gtk_gesture_get_group(arg0)
 
-	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
-	arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence.Native()))
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
 
-	C.gtk_gesture_get_last_event(arg0, arg1)
+	return goret
 }
 
 // LastUpdatedSequence returns the EventSequence that was last updated on
 // @gesture.
-func (g gesture) LastUpdatedSequence(g Gesture) {
+func (g gesture) LastUpdatedSequence() *gdk.EventSequence {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_get_last_updated_sequence(arg0)
+	var cret *C.GdkEventSequence
+	var goret *gdk.EventSequence
+
+	cret = C.gtk_gesture_get_last_updated_sequence(arg0)
+
+	goret = gdk.WrapEventSequence(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Point: if @sequence is currently being interpreted by @gesture, this
 // function returns true and fills in @x and @y with the last coordinates
 // stored for that event sequence. The coordinates are always relative to
 // the widget allocation.
-func (g gesture) Point(g Gesture, sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
+func (g gesture) Point(sequence *gdk.EventSequence) (x float64, y float64, ok bool) {
 	var arg0 *C.GtkGesture
 	var arg1 *C.GdkEventSequence
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 	arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence.Native()))
 
-	var arg2 C.gdouble
-	var x float64
-	var arg3 C.gdouble
-	var y float64
+	arg2 := new(C.gdouble)
+	var ret2 float64
+	arg3 := new(C.gdouble)
+	var ret3 float64
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_gesture_get_point(arg0, arg1, &arg2, &arg3)
+	cret = C.gtk_gesture_get_point(arg0, arg1, arg2, arg3)
 
-	x = float64(&arg2)
-	y = float64(&arg3)
+	ret2 = float64(*arg2)
+	ret3 = float64(*arg3)
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return x, y, ok
+	return ret2, ret3, goret
 }
 
 // SequenceState returns the @sequence state, as seen by @gesture.
-func (g gesture) SequenceState(g Gesture, sequence *gdk.EventSequence) {
+func (g gesture) SequenceState(sequence *gdk.EventSequence) EventSequenceState {
 	var arg0 *C.GtkGesture
 	var arg1 *C.GdkEventSequence
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 	arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence.Native()))
 
-	C.gtk_gesture_get_sequence_state(arg0, arg1)
+	var cret C.GtkEventSequenceState
+	var goret EventSequenceState
+
+	cret = C.gtk_gesture_get_sequence_state(arg0, arg1)
+
+	goret = EventSequenceState(cret)
+
+	return goret
 }
 
 // Sequences returns the list of EventSequences currently being interpreted
 // by @gesture.
-func (g gesture) Sequences(g Gesture) {
+func (g gesture) Sequences() *glib.List {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_get_sequences(arg0)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.gtk_gesture_get_sequences(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Window returns the user-defined window that receives the events handled
 // by @gesture. See gtk_gesture_set_window() for more information.
-func (g gesture) Window(g Gesture) {
+func (g gesture) Window() gdk.Window {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_get_window(arg0)
+	var cret *C.GdkWindow
+	var goret gdk.Window
+
+	cret = C.gtk_gesture_get_window(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return goret
 }
 
 // Group adds @gesture to the same group than @group_gesture. Gestures are
@@ -416,7 +449,7 @@ func (g gesture) Window(g Gesture) {
 // EventSequence state is set to K_EVENT_SEQUENCE_CLAIMED on one group,
 // every other gesture group attached to the same Widget will switch the
 // state for that sequence to K_EVENT_SEQUENCE_DENIED.
-func (g gesture) Group(g Gesture, gesture Gesture) {
+func (g gesture) Group(gesture Gesture) {
 	var arg0 *C.GtkGesture
 	var arg1 *C.GtkGesture
 
@@ -428,7 +461,7 @@ func (g gesture) Group(g Gesture, gesture Gesture) {
 
 // HandlesSequence returns true if @gesture is currently handling events
 // corresponding to @sequence.
-func (g gesture) HandlesSequence(g Gesture, sequence *gdk.EventSequence) bool {
+func (g gesture) HandlesSequence(sequence *gdk.EventSequence) bool {
 	var arg0 *C.GtkGesture
 	var arg1 *C.GdkEventSequence
 
@@ -436,38 +469,38 @@ func (g gesture) HandlesSequence(g Gesture, sequence *gdk.EventSequence) bool {
 	arg1 = (*C.GdkEventSequence)(unsafe.Pointer(sequence.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gesture_handles_sequence(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsActive returns true if the gesture is currently active. A gesture is
 // active meanwhile there are touch sequences interacting with it.
-func (g gesture) IsActive(g Gesture) bool {
+func (g gesture) IsActive() bool {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gesture_is_active(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsGroupedWith returns true if both gestures pertain to the same group.
-func (g gesture) IsGroupedWith(g Gesture, other Gesture) bool {
+func (g gesture) IsGroupedWith(other Gesture) bool {
 	var arg0 *C.GtkGesture
 	var arg1 *C.GtkGesture
 
@@ -475,36 +508,36 @@ func (g gesture) IsGroupedWith(g Gesture, other Gesture) bool {
 	arg1 = (*C.GtkGesture)(unsafe.Pointer(other.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gesture_is_grouped_with(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsRecognized returns true if the gesture is currently recognized. A
 // gesture is recognized if there are as many interacting touch sequences as
 // required by @gesture, and Gesture::check returned true for the sequences
 // being currently interpreted.
-func (g gesture) IsRecognized(g Gesture) bool {
+func (g gesture) IsRecognized() bool {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gesture_is_recognized(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetSequenceState sets the state of @sequence in @gesture. Sequences start
@@ -542,7 +575,7 @@ func (g gesture) IsRecognized(g Gesture) bool {
 // If both gestures are in the same group, just set the state on the gesture
 // emitting the event, the sequence will be already be initialized to the
 // group's global state when the second gesture processes the event.
-func (g gesture) SetSequenceState(g Gesture, sequence *gdk.EventSequence, state EventSequenceState) bool {
+func (g gesture) SetSequenceState(sequence *gdk.EventSequence, state EventSequenceState) bool {
 	var arg0 *C.GtkGesture
 	var arg1 *C.GdkEventSequence
 	var arg2 C.GtkEventSequenceState
@@ -552,21 +585,21 @@ func (g gesture) SetSequenceState(g Gesture, sequence *gdk.EventSequence, state 
 	arg2 = (C.GtkEventSequenceState)(state)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gesture_set_sequence_state(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetState sets the state of all sequences that @gesture is currently
 // interacting with. See gtk_gesture_set_sequence_state() for more details
 // on sequence states.
-func (g gesture) SetState(g Gesture, state EventSequenceState) bool {
+func (g gesture) SetState(state EventSequenceState) bool {
 	var arg0 *C.GtkGesture
 	var arg1 C.GtkEventSequenceState
 
@@ -574,21 +607,21 @@ func (g gesture) SetState(g Gesture, state EventSequenceState) bool {
 	arg1 = (C.GtkEventSequenceState)(state)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gesture_set_state(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetWindow sets a specific window to receive events about, so @gesture
 // will effectively handle only events targeting @window, or a child of it.
 // @window must pertain to gtk_event_controller_get_widget().
-func (g gesture) SetWindow(g Gesture, window gdk.Window) {
+func (g gesture) SetWindow(window gdk.Window) {
 	var arg0 *C.GtkGesture
 	var arg1 *C.GdkWindow
 
@@ -599,7 +632,7 @@ func (g gesture) SetWindow(g Gesture, window gdk.Window) {
 }
 
 // Ungroup separates @gesture into an isolated group.
-func (g gesture) Ungroup(g Gesture) {
+func (g gesture) Ungroup() {
 	var arg0 *C.GtkGesture
 
 	arg0 = (*C.GtkGesture)(unsafe.Pointer(g.Native()))

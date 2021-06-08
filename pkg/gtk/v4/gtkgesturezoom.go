@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,16 +21,21 @@ func init() {
 	})
 }
 
-// GestureZoom is a Gesture implementation able to recognize pinch/zoom
-// gestures, whenever the distance between both tracked sequences changes, the
-// GestureZoom::scale-changed signal is emitted to report the scale factor.
+// GestureZoom: `GtkGestureZoom` is a `GtkGesture` for 2-finger pinch/zoom
+// gestures.
+//
+// Whenever the distance between both tracked sequences changes, the
+// [signal@Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
+// factor.
 type GestureZoom interface {
 	Gesture
 
-	// ScaleDelta: if @gesture is active, this function returns the zooming
-	// difference since the gesture was recognized (hence the starting point is
-	// considered 1:1). If @gesture is not active, 1 is returned.
-	ScaleDelta(g GestureZoom)
+	// ScaleDelta gets the scale delta.
+	//
+	// If @gesture is active, this function returns the zooming difference since
+	// the gesture was recognized (hence the starting point is considered 1:1).
+	// If @gesture is not active, 1 is returned.
+	ScaleDelta() float64
 }
 
 // gestureZoom implements the GestureZoom interface.
@@ -52,17 +60,33 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 }
 
 // NewGestureZoom constructs a class GestureZoom.
-func NewGestureZoom() {
-	C.gtk_gesture_zoom_new()
+func NewGestureZoom() GestureZoom {
+	cret := new(C.GtkGestureZoom)
+	var goret GestureZoom
+
+	cret = C.gtk_gesture_zoom_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
+
+	return goret
 }
 
-// ScaleDelta: if @gesture is active, this function returns the zooming
-// difference since the gesture was recognized (hence the starting point is
-// considered 1:1). If @gesture is not active, 1 is returned.
-func (g gestureZoom) ScaleDelta(g GestureZoom) {
+// ScaleDelta gets the scale delta.
+//
+// If @gesture is active, this function returns the zooming difference since
+// the gesture was recognized (hence the starting point is considered 1:1).
+// If @gesture is not active, 1 is returned.
+func (g gestureZoom) ScaleDelta() float64 {
 	var arg0 *C.GtkGestureZoom
 
 	arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_zoom_get_scale_delta(arg0)
+	var cret C.double
+	var goret float64
+
+	cret = C.gtk_gesture_zoom_get_scale_delta(arg0)
+
+	goret = float64(cret)
+
+	return goret
 }

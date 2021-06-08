@@ -2,6 +2,16 @@
 
 package gtk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
@@ -49,12 +59,19 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 }
 
 // DragGetSourceWidget determines the source widget for a drag.
-func DragGetSourceWidget(context gdk.DragContext) {
+func DragGetSourceWidget(context gdk.DragContext) Widget {
 	var arg1 *C.GdkDragContext
 
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_drag_get_source_widget(arg1)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_drag_get_source_widget(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // DragSetIconDefault sets the icon for a particular drag to the default icon.

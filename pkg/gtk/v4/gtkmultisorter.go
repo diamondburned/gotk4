@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -19,7 +22,9 @@ func init() {
 	})
 }
 
-// MultiSorter: gtkMultiSorter combines multiple sorters by trying them in turn.
+// MultiSorter: `GtkMultiSorter` combines multiple sorters by trying them in
+// turn.
+//
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
 type MultiSorter interface {
@@ -27,14 +32,16 @@ type MultiSorter interface {
 	gio.ListModel
 	Buildable
 
-	// Append: add @sorter to @self to use for sorting at the end. @self will
-	// consult all existing sorters before it will sort with the given @sorter.
-	Append(s MultiSorter, sorter Sorter)
+	// Append: add @sorter to @self to use for sorting at the end.
+	//
+	// @self will consult all existing sorters before it will sort with the
+	// given @sorter.
+	Append(sorter Sorter)
 	// Remove removes the sorter at the given @position from the list of sorter
 	// used by @self.
 	//
 	// If @position is larger than the number of sorters, nothing happens.
-	Remove(s MultiSorter, position uint)
+	Remove(position uint)
 }
 
 // multiSorter implements the MultiSorter interface.
@@ -63,13 +70,22 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 }
 
 // NewMultiSorter constructs a class MultiSorter.
-func NewMultiSorter() {
-	C.gtk_multi_sorter_new()
+func NewMultiSorter() MultiSorter {
+	cret := new(C.GtkMultiSorter)
+	var goret MultiSorter
+
+	cret = C.gtk_multi_sorter_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSorter)
+
+	return goret
 }
 
-// Append: add @sorter to @self to use for sorting at the end. @self will
-// consult all existing sorters before it will sort with the given @sorter.
-func (s multiSorter) Append(s MultiSorter, sorter Sorter) {
+// Append: add @sorter to @self to use for sorting at the end.
+//
+// @self will consult all existing sorters before it will sort with the
+// given @sorter.
+func (s multiSorter) Append(sorter Sorter) {
 	var arg0 *C.GtkMultiSorter
 	var arg1 *C.GtkSorter
 
@@ -83,7 +99,7 @@ func (s multiSorter) Append(s MultiSorter, sorter Sorter) {
 // used by @self.
 //
 // If @position is larger than the number of sorters, nothing happens.
-func (s multiSorter) Remove(s MultiSorter, position uint) {
+func (s multiSorter) Remove(position uint) {
 	var arg0 *C.GtkMultiSorter
 	var arg1 C.guint
 

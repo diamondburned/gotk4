@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,81 +22,76 @@ func init() {
 }
 
 // LayoutManager: layout managers are delegate classes that handle the preferred
-// size and the allocation of a container widget.
+// size and the allocation of a widget.
 //
-// You typically subclass LayoutManager if you want to implement a layout policy
-// for the children of a widget, or if you want to determine the size of a
-// widget depending on its contents.
+// You typically subclass `GtkLayoutManager` if you want to implement a layout
+// policy for the children of a widget, or if you want to determine the size of
+// a widget depending on its contents.
 //
-// Each Widget can only have a LayoutManager instance associated to it at any
-// given time; it is possible, though, to replace the layout manager instance
-// using gtk_widget_set_layout_manager().
+// Each `GtkWidget` can only have a `GtkLayoutManager` instance associated to it
+// at any given time; it is possible, though, to replace the layout manager
+// instance using [method@Gtk.Widget.set_layout_manager].
 //
 //
 // Layout properties
 //
 // A layout manager can expose properties for controlling the layout of each
-// child, by creating an object type derived from LayoutChild and installing the
-// properties on it as normal GObject properties.
+// child, by creating an object type derived from [class@Gtk.LayoutChild] and
+// installing the properties on it as normal `GObject` properties.
 //
-// Each LayoutChild instance storing the layout properties for a specific child
-// is created through the gtk_layout_manager_get_layout_child() method; a
-// LayoutManager controls the creation of its LayoutChild instances by
-// overriding the GtkLayoutManagerClass.create_layout_child() virtual function.
-// The typical implementation should look like:
+// Each `GtkLayoutChild` instance storing the layout properties for a specific
+// child is created through the [method@Gtk.LayoutManager.get_layout_child]
+// method; a `GtkLayoutManager` controls the creation of its `GtkLayoutChild`
+// instances by overriding the GtkLayoutManagerClass.create_layout_child()
+// virtual function. The typical implementation should look like:
 //
-//    static GtkLayoutChild *
-//    create_layout_child (GtkLayoutManager *manager,
-//                         GtkWidget        *container,
-//                         GtkWidget        *child)
-//    {
-//      return g_object_new (your_layout_child_get_type (),
-//                           "layout-manager", manager,
-//                           "child-widget", child,
-//                           NULL);
-//    }
+// “`c static GtkLayoutChild * create_layout_child (GtkLayoutManager *manager,
+// GtkWidget *container, GtkWidget *child) { return g_object_new
+// (your_layout_child_get_type (), "layout-manager", manager, "child-widget",
+// child, NULL); } “`
 //
-// The LayoutChild:layout-manager and LayoutChild:child-widget properties on the
-// newly created LayoutChild instance are mandatory. The LayoutManager will
-// cache the newly created LayoutChild instance until the widget is removed from
+// The [property@Gtk.LayoutChild:layout-manager] and
+// [property@Gtk.LayoutChild:child-widget] properties on the newly created
+// `GtkLayoutChild` instance are mandatory. The `GtkLayoutManager` will cache
+// the newly created `GtkLayoutChild` instance until the widget is removed from
 // its parent, or the parent removes the layout manager.
 //
-// Each LayoutManager instance creating a LayoutChild should use
-// gtk_layout_manager_get_layout_child() every time it needs to query the layout
-// properties; each LayoutChild instance should call
-// gtk_layout_manager_layout_changed() every time a property is updated, in
-// order to queue a new size measuring and allocation.
+// Each `GtkLayoutManager` instance creating a `GtkLayoutChild` should use
+// [method@Gtk.LayoutManager.get_layout_child] every time it needs to query the
+// layout properties; each `GtkLayoutChild` instance should call
+// [method@Gtk.LayoutManager.layout_changed] every time a property is updated,
+// in order to queue a new size measuring and allocation.
 type LayoutManager interface {
 	gextras.Objector
 
-	// Allocate: this function assigns the given @width, @height, and @baseline
-	// to a @widget, and computes the position and sizes of the children of the
-	// @widget using the layout management policy of @manager.
-	Allocate(m LayoutManager, widget Widget, width int, height int, baseline int)
-	// LayoutChild retrieves a LayoutChild instance for the LayoutManager,
-	// creating one if necessary.
+	// Allocate assigns the given @width, @height, and @baseline to a @widget,
+	// and computes the position and sizes of the children of the @widget using
+	// the layout management policy of @manager.
+	Allocate(widget Widget, width int, height int, baseline int)
+	// LayoutChild retrieves a `GtkLayoutChild` instance for the
+	// `GtkLayoutManager`, creating one if necessary.
 	//
 	// The @child widget must be a child of the widget using @manager.
 	//
-	// The LayoutChild instance is owned by the LayoutManager, and is guaranteed
-	// to exist as long as @child is a child of the Widget using the given
-	// LayoutManager.
-	LayoutChild(m LayoutManager, child Widget)
+	// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+	// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+	// the given `GtkLayoutManager`.
+	LayoutChild(child Widget) LayoutChild
 	// RequestMode retrieves the request mode of @manager.
-	RequestMode(m LayoutManager)
-	// Widget retrieves the Widget using the given LayoutManager.
-	Widget(m LayoutManager)
-	// LayoutChanged queues a resize on the Widget using @manager, if any.
+	RequestMode() SizeRequestMode
+	// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+	Widget() Widget
+	// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
 	//
-	// This function should be called by subclasses of LayoutManager in response
-	// to changes to their layout management policies.
-	LayoutChanged(m LayoutManager)
+	// This function should be called by subclasses of `GtkLayoutManager` in
+	// response to changes to their layout management policies.
+	LayoutChanged()
 	// Measure measures the size of the @widget using @manager, for the given
 	// @orientation and size.
 	//
-	// See [GtkWidget's geometry management section][geometry-management] for
-	// more details.
-	Measure(m LayoutManager, widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
+	// See the [class@Gtk.Widget] documentation on layout management for more
+	// details.
+	Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int)
 }
 
 // layoutManager implements the LayoutManager interface.
@@ -117,10 +115,10 @@ func marshalLayoutManager(p uintptr) (interface{}, error) {
 	return WrapLayoutManager(obj), nil
 }
 
-// Allocate: this function assigns the given @width, @height, and @baseline
-// to a @widget, and computes the position and sizes of the children of the
-// @widget using the layout management policy of @manager.
-func (m layoutManager) Allocate(m LayoutManager, widget Widget, width int, height int, baseline int) {
+// Allocate assigns the given @width, @height, and @baseline to a @widget,
+// and computes the position and sizes of the children of the @widget using
+// the layout management policy of @manager.
+func (m layoutManager) Allocate(widget Widget, width int, height int, baseline int) {
 	var arg0 *C.GtkLayoutManager
 	var arg1 *C.GtkWidget
 	var arg2 C.int
@@ -136,47 +134,68 @@ func (m layoutManager) Allocate(m LayoutManager, widget Widget, width int, heigh
 	C.gtk_layout_manager_allocate(arg0, arg1, arg2, arg3, arg4)
 }
 
-// LayoutChild retrieves a LayoutChild instance for the LayoutManager,
-// creating one if necessary.
+// LayoutChild retrieves a `GtkLayoutChild` instance for the
+// `GtkLayoutManager`, creating one if necessary.
 //
 // The @child widget must be a child of the widget using @manager.
 //
-// The LayoutChild instance is owned by the LayoutManager, and is guaranteed
-// to exist as long as @child is a child of the Widget using the given
-// LayoutManager.
-func (m layoutManager) LayoutChild(m LayoutManager, child Widget) {
+// The `GtkLayoutChild` instance is owned by the `GtkLayoutManager`, and is
+// guaranteed to exist as long as @child is a child of the `GtkWidget` using
+// the given `GtkLayoutManager`.
+func (m layoutManager) LayoutChild(child Widget) LayoutChild {
 	var arg0 *C.GtkLayoutManager
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_layout_manager_get_layout_child(arg0, arg1)
+	var cret *C.GtkLayoutChild
+	var goret LayoutChild
+
+	cret = C.gtk_layout_manager_get_layout_child(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LayoutChild)
+
+	return goret
 }
 
 // RequestMode retrieves the request mode of @manager.
-func (m layoutManager) RequestMode(m LayoutManager) {
+func (m layoutManager) RequestMode() SizeRequestMode {
 	var arg0 *C.GtkLayoutManager
 
 	arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
-	C.gtk_layout_manager_get_request_mode(arg0)
+	var cret C.GtkSizeRequestMode
+	var goret SizeRequestMode
+
+	cret = C.gtk_layout_manager_get_request_mode(arg0)
+
+	goret = SizeRequestMode(cret)
+
+	return goret
 }
 
-// Widget retrieves the Widget using the given LayoutManager.
-func (m layoutManager) Widget(m LayoutManager) {
+// Widget retrieves the `GtkWidget` using the given `GtkLayoutManager`.
+func (m layoutManager) Widget() Widget {
 	var arg0 *C.GtkLayoutManager
 
 	arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
-	C.gtk_layout_manager_get_widget(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_layout_manager_get_widget(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
-// LayoutChanged queues a resize on the Widget using @manager, if any.
+// LayoutChanged queues a resize on the `GtkWidget` using @manager, if any.
 //
-// This function should be called by subclasses of LayoutManager in response
-// to changes to their layout management policies.
-func (m layoutManager) LayoutChanged(m LayoutManager) {
+// This function should be called by subclasses of `GtkLayoutManager` in
+// response to changes to their layout management policies.
+func (m layoutManager) LayoutChanged() {
 	var arg0 *C.GtkLayoutManager
 
 	arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
@@ -187,9 +206,9 @@ func (m layoutManager) LayoutChanged(m LayoutManager) {
 // Measure measures the size of the @widget using @manager, for the given
 // @orientation and size.
 //
-// See [GtkWidget's geometry management section][geometry-management] for
-// more details.
-func (m layoutManager) Measure(m LayoutManager, widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
+// See the [class@Gtk.Widget] documentation on layout management for more
+// details.
+func (m layoutManager) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
 	var arg0 *C.GtkLayoutManager
 	var arg1 *C.GtkWidget
 	var arg2 C.GtkOrientation
@@ -200,21 +219,21 @@ func (m layoutManager) Measure(m LayoutManager, widget Widget, orientation Orien
 	arg2 = (C.GtkOrientation)(orientation)
 	arg3 = C.int(forSize)
 
-	var arg4 C.int
-	var minimum int
-	var arg5 C.int
-	var natural int
-	var arg6 C.int
-	var minimumBaseline int
-	var arg7 C.int
-	var naturalBaseline int
+	arg4 := new(C.int)
+	var ret4 int
+	arg5 := new(C.int)
+	var ret5 int
+	arg6 := new(C.int)
+	var ret6 int
+	arg7 := new(C.int)
+	var ret7 int
 
-	C.gtk_layout_manager_measure(arg0, arg1, arg2, arg3, &arg4, &arg5, &arg6, &arg7)
+	C.gtk_layout_manager_measure(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
-	minimum = int(&arg4)
-	natural = int(&arg5)
-	minimumBaseline = int(&arg6)
-	naturalBaseline = int(&arg7)
+	ret4 = int(*arg4)
+	ret5 = int(*arg5)
+	ret6 = int(*arg6)
+	ret7 = int(*arg7)
 
-	return minimum, natural, minimumBaseline, naturalBaseline
+	return ret4, ret5, ret6, ret7
 }

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,16 +62,23 @@ func marshalHScale(p uintptr) (interface{}, error) {
 }
 
 // NewHScale constructs a class HScale.
-func NewHScale(adjustment Adjustment) {
+func NewHScale(adjustment Adjustment) HScale {
 	var arg1 *C.GtkAdjustment
 
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	C.gtk_hscale_new(arg1)
+	var cret C.GtkHScale
+	var goret HScale
+
+	cret = C.gtk_hscale_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
+
+	return goret
 }
 
 // NewHScaleWithRange constructs a class HScale.
-func NewHScaleWithRange(min float64, max float64, step float64) {
+func NewHScaleWithRange(min float64, max float64, step float64) HScale {
 	var arg1 C.gdouble
 	var arg2 C.gdouble
 	var arg3 C.gdouble
@@ -77,5 +87,12 @@ func NewHScaleWithRange(min float64, max float64, step float64) {
 	arg2 = C.gdouble(max)
 	arg3 = C.gdouble(step)
 
-	C.gtk_hscale_new_with_range(arg1, arg2, arg3)
+	var cret C.GtkHScale
+	var goret HScale
+
+	cret = C.gtk_hscale_new_with_range(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
+
+	return goret
 }

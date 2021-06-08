@@ -3,6 +3,11 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,16 +23,18 @@ func init() {
 	})
 }
 
-// WindowGroup: a WindowGroup restricts the effect of grabs to windows in the
-// same group, thereby making window groups almost behave like separate
+// WindowGroup: `GtkWindowGroup` makes group of windows behave like separate
 // applications.
+//
+// It achieves this by limiting the effect of GTK grabs and modality to windows
+// in the same group.
 //
 // A window can be a member in at most one window group at a time. Windows that
 // have not been explicitly assigned to a group are implicitly treated like
 // windows of the default window group.
 //
-// GtkWindowGroup objects are referenced by each window in the group, so once
-// you have added all windows to a GtkWindowGroup, you can drop the initial
+// `GtkWindowGroup` objects are referenced by each window in the group, so once
+// you have added all windows to a `GtkWindowGroup`, you can drop the initial
 // reference to the window group with g_object_unref(). If the windows in the
 // window group are subsequently destroyed, then they will be removed from the
 // window group and drop their references on the window group; when all window
@@ -35,12 +42,13 @@ func init() {
 type WindowGroup interface {
 	gextras.Objector
 
-	// AddWindow adds a window to a WindowGroup.
-	AddWindow(w WindowGroup, window Window)
-	// ListWindows returns a list of the Windows that belong to @window_group.
-	ListWindows(w WindowGroup)
-	// RemoveWindow removes a window from a WindowGroup.
-	RemoveWindow(w WindowGroup, window Window)
+	// AddWindow adds a window to a `GtkWindowGroup`.
+	AddWindow(window Window)
+	// ListWindows returns a list of the `GtkWindows` that belong to
+	// @window_group.
+	ListWindows() *glib.List
+	// RemoveWindow removes a window from a `GtkWindowGroup`.
+	RemoveWindow(window Window)
 }
 
 // windowGroup implements the WindowGroup interface.
@@ -65,12 +73,19 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 }
 
 // NewWindowGroup constructs a class WindowGroup.
-func NewWindowGroup() {
-	C.gtk_window_group_new()
+func NewWindowGroup() WindowGroup {
+	cret := new(C.GtkWindowGroup)
+	var goret WindowGroup
+
+	cret = C.gtk_window_group_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
+
+	return goret
 }
 
-// AddWindow adds a window to a WindowGroup.
-func (w windowGroup) AddWindow(w WindowGroup, window Window) {
+// AddWindow adds a window to a `GtkWindowGroup`.
+func (w windowGroup) AddWindow(window Window) {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GtkWindow
 
@@ -80,17 +95,28 @@ func (w windowGroup) AddWindow(w WindowGroup, window Window) {
 	C.gtk_window_group_add_window(arg0, arg1)
 }
 
-// ListWindows returns a list of the Windows that belong to @window_group.
-func (w windowGroup) ListWindows(w WindowGroup) {
+// ListWindows returns a list of the `GtkWindows` that belong to
+// @window_group.
+func (w windowGroup) ListWindows() *glib.List {
 	var arg0 *C.GtkWindowGroup
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	C.gtk_window_group_list_windows(arg0)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.gtk_window_group_list_windows(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
-// RemoveWindow removes a window from a WindowGroup.
-func (w windowGroup) RemoveWindow(w WindowGroup, window Window) {
+// RemoveWindow removes a window from a `GtkWindowGroup`.
+func (w windowGroup) RemoveWindow(window Window) {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GtkWindow
 

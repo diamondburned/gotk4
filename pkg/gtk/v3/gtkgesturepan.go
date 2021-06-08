@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,9 +40,9 @@ type GesturePan interface {
 
 	// Orientation returns the orientation of the pan gestures that this
 	// @gesture expects.
-	Orientation(g GesturePan)
+	Orientation() Orientation
 	// SetOrientation sets the orientation to be expected on pan gestures.
-	SetOrientation(g GesturePan, orientation Orientation)
+	SetOrientation(orientation Orientation)
 }
 
 // gesturePan implements the GesturePan interface.
@@ -64,28 +67,42 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 }
 
 // NewGesturePan constructs a class GesturePan.
-func NewGesturePan(widget Widget, orientation Orientation) {
+func NewGesturePan(widget Widget, orientation Orientation) GesturePan {
 	var arg1 *C.GtkWidget
 	var arg2 C.GtkOrientation
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	arg2 = (C.GtkOrientation)(orientation)
 
-	C.gtk_gesture_pan_new(arg1, arg2)
+	cret := new(C.GtkGesturePan)
+	var goret GesturePan
+
+	cret = C.gtk_gesture_pan_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
+
+	return goret
 }
 
 // Orientation returns the orientation of the pan gestures that this
 // @gesture expects.
-func (g gesturePan) Orientation(g GesturePan) {
+func (g gesturePan) Orientation() Orientation {
 	var arg0 *C.GtkGesturePan
 
 	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_pan_get_orientation(arg0)
+	var cret C.GtkOrientation
+	var goret Orientation
+
+	cret = C.gtk_gesture_pan_get_orientation(arg0)
+
+	goret = Orientation(cret)
+
+	return goret
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.
-func (g gesturePan) SetOrientation(g GesturePan, orientation Orientation) {
+func (g gesturePan) SetOrientation(orientation Orientation) {
 	var arg0 *C.GtkGesturePan
 	var arg1 C.GtkOrientation
 

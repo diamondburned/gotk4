@@ -3,8 +3,10 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,7 +45,7 @@ func marshalMappedFile(p uintptr) (interface{}, error) {
 }
 
 // NewMappedFile constructs a struct MappedFile.
-func NewMappedFile(filename string, writable bool) error {
+func NewMappedFile(filename string, writable bool) (mappedFile *MappedFile, err error) {
 	var arg1 *C.gchar
 	var arg2 C.gboolean
 
@@ -53,18 +55,24 @@ func NewMappedFile(filename string, writable bool) error {
 		arg2 = C.gboolean(1)
 	}
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GMappedFile)
+	var goret *MappedFile
+	var cerr *C.GError
+	var goerr error
 
-	C.g_mapped_file_new(arg1, arg2, &errout)
+	cret = C.g_mapped_file_new(arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *MappedFile) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // NewMappedFileFromFd constructs a struct MappedFile.
-func NewMappedFileFromFd(fd int, writable bool) error {
+func NewMappedFileFromFd(fd int, writable bool) (mappedFile *MappedFile, err error) {
 	var arg1 C.gint
 	var arg2 C.gboolean
 
@@ -73,14 +81,20 @@ func NewMappedFileFromFd(fd int, writable bool) error {
 		arg2 = C.gboolean(1)
 	}
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GMappedFile)
+	var goret *MappedFile
+	var cerr *C.GError
+	var goerr error
 
-	C.g_mapped_file_new_from_fd(arg1, arg2, &errout)
+	cret = C.g_mapped_file_new_from_fd(arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *MappedFile) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // Native returns the underlying C source pointer.
@@ -90,7 +104,7 @@ func (m *MappedFile) Native() unsafe.Pointer {
 
 // Free: this call existed before File had refcounting and is currently exactly
 // the same as g_mapped_file_unref().
-func (f *MappedFile) Free(f *MappedFile) {
+func (f *MappedFile) Free() {
 	var arg0 *C.GMappedFile
 
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
@@ -101,12 +115,22 @@ func (f *MappedFile) Free(f *MappedFile) {
 // Bytes creates a new #GBytes which references the data mapped from @file. The
 // mapped contents of the file must not be modified after creating this bytes
 // object, because a #GBytes should be immutable.
-func (f *MappedFile) Bytes(f *MappedFile) {
+func (f *MappedFile) Bytes() *Bytes {
 	var arg0 *C.GMappedFile
 
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
-	C.g_mapped_file_get_bytes(arg0)
+	cret := new(C.GBytes)
+	var goret *Bytes
+
+	cret = C.g_mapped_file_get_bytes(arg0)
+
+	goret = WrapBytes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Bytes) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Contents returns the contents of a File.
@@ -115,31 +139,56 @@ func (f *MappedFile) Bytes(f *MappedFile) {
 // by a text file.
 //
 // If the file is empty then nil is returned.
-func (f *MappedFile) Contents(f *MappedFile) {
+func (f *MappedFile) Contents() string {
 	var arg0 *C.GMappedFile
 
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
-	C.g_mapped_file_get_contents(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_mapped_file_get_contents(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Length returns the length of the contents of a File.
-func (f *MappedFile) Length(f *MappedFile) {
+func (f *MappedFile) Length() uint {
 	var arg0 *C.GMappedFile
 
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
-	C.g_mapped_file_get_length(arg0)
+	var cret C.gsize
+	var goret uint
+
+	cret = C.g_mapped_file_get_length(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Ref increments the reference count of @file by one. It is safe to call this
 // function from any thread.
-func (f *MappedFile) Ref(f *MappedFile) {
+func (f *MappedFile) Ref() *MappedFile {
 	var arg0 *C.GMappedFile
 
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
-	C.g_mapped_file_ref(arg0)
+	cret := new(C.GMappedFile)
+	var goret *MappedFile
+
+	cret = C.g_mapped_file_ref(arg0)
+
+	goret = WrapMappedFile(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *MappedFile) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref decrements the reference count of @file by one. If the reference count
@@ -148,7 +197,7 @@ func (f *MappedFile) Ref(f *MappedFile) {
 // It is safe to call this function from any thread.
 //
 // Since 2.22
-func (f *MappedFile) Unref(f *MappedFile) {
+func (f *MappedFile) Unref() {
 	var arg0 *C.GMappedFile
 
 	arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))

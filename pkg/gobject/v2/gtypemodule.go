@@ -3,6 +3,8 @@
 package gobject
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,7 +57,7 @@ type TypeModule interface {
 	//
 	// Since 2.56 if @module is nil this will call g_type_add_interface_static()
 	// instead. This can be used when making a static build of the module.
-	AddInterface(m TypeModule, instanceType externglib.Type, interfaceType externglib.Type, interfaceInfo *InterfaceInfo)
+	AddInterface(instanceType externglib.Type, interfaceType externglib.Type, interfaceInfo *InterfaceInfo)
 	// RegisterEnum looks up or registers an enumeration that is implemented
 	// with a particular type plugin. If a type with name @type_name was
 	// previously registered, the #GType identifier for the type is returned,
@@ -67,7 +69,7 @@ type TypeModule interface {
 	//
 	// Since 2.56 if @module is nil this will call g_type_register_static()
 	// instead. This can be used when making a static build of the module.
-	RegisterEnum(m TypeModule, name string, constStaticValues *EnumValue)
+	RegisterEnum(name string, constStaticValues *EnumValue) externglib.Type
 	// RegisterFlags looks up or registers a flags type that is implemented with
 	// a particular type plugin. If a type with name @type_name was previously
 	// registered, the #GType identifier for the type is returned, otherwise the
@@ -78,7 +80,7 @@ type TypeModule interface {
 	//
 	// Since 2.56 if @module is nil this will call g_type_register_static()
 	// instead. This can be used when making a static build of the module.
-	RegisterFlags(m TypeModule, name string, constStaticValues *FlagsValue)
+	RegisterFlags(name string, constStaticValues *FlagsValue) externglib.Type
 	// RegisterType looks up or registers a type that is implemented with a
 	// particular type plugin. If a type with name @type_name was previously
 	// registered, the #GType identifier for the type is returned, otherwise the
@@ -93,18 +95,18 @@ type TypeModule interface {
 	//
 	// Since 2.56 if @module is nil this will call g_type_register_static()
 	// instead. This can be used when making a static build of the module.
-	RegisterType(m TypeModule, parentType externglib.Type, typeName string, typeInfo *TypeInfo, flags TypeFlags)
+	RegisterType(parentType externglib.Type, typeName string, typeInfo *TypeInfo, flags TypeFlags) externglib.Type
 	// SetName sets the name for a Module
-	SetName(m TypeModule, name string)
+	SetName(name string)
 	// Unuse decreases the use count of a Module by one. If the result is zero,
 	// the module will be unloaded. (However, the Module will not be freed, and
 	// types associated with the Module are not unregistered. Once a Module is
 	// initialized, it must exist forever.)
-	Unuse(m TypeModule)
+	Unuse()
 	// Use increases the use count of a Module by one. If the use count was zero
 	// before, the plugin will be loaded. If loading the plugin fails, the use
 	// count is reset to its prior value.
-	Use(m TypeModule) bool
+	Use() bool
 }
 
 // typeModule implements the TypeModule interface.
@@ -139,15 +141,15 @@ func marshalTypeModule(p uintptr) (interface{}, error) {
 //
 // Since 2.56 if @module is nil this will call g_type_add_interface_static()
 // instead. This can be used when making a static build of the module.
-func (m typeModule) AddInterface(m TypeModule, instanceType externglib.Type, interfaceType externglib.Type, interfaceInfo *InterfaceInfo) {
+func (m typeModule) AddInterface(instanceType externglib.Type, interfaceType externglib.Type, interfaceInfo *InterfaceInfo) {
 	var arg0 *C.GTypeModule
 	var arg1 C.GType
 	var arg2 C.GType
 	var arg3 *C.GInterfaceInfo
 
 	arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
-	arg1 := C.GType(instanceType)
-	arg2 := C.GType(interfaceType)
+	arg1 = C.GType(instanceType)
+	arg2 = C.GType(interfaceType)
 	arg3 = (*C.GInterfaceInfo)(unsafe.Pointer(interfaceInfo.Native()))
 
 	C.g_type_module_add_interface(arg0, arg1, arg2, arg3)
@@ -164,7 +166,7 @@ func (m typeModule) AddInterface(m TypeModule, instanceType externglib.Type, int
 //
 // Since 2.56 if @module is nil this will call g_type_register_static()
 // instead. This can be used when making a static build of the module.
-func (m typeModule) RegisterEnum(m TypeModule, name string, constStaticValues *EnumValue) {
+func (m typeModule) RegisterEnum(name string, constStaticValues *EnumValue) externglib.Type {
 	var arg0 *C.GTypeModule
 	var arg1 *C.gchar
 	var arg2 *C.GEnumValue
@@ -174,7 +176,14 @@ func (m typeModule) RegisterEnum(m TypeModule, name string, constStaticValues *E
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
 
-	C.g_type_module_register_enum(arg0, arg1, arg2)
+	var cret C.GType
+	var goret externglib.Type
+
+	cret = C.g_type_module_register_enum(arg0, arg1, arg2)
+
+	goret = externglib.Type(cret)
+
+	return goret
 }
 
 // RegisterFlags looks up or registers a flags type that is implemented with
@@ -187,7 +196,7 @@ func (m typeModule) RegisterEnum(m TypeModule, name string, constStaticValues *E
 //
 // Since 2.56 if @module is nil this will call g_type_register_static()
 // instead. This can be used when making a static build of the module.
-func (m typeModule) RegisterFlags(m TypeModule, name string, constStaticValues *FlagsValue) {
+func (m typeModule) RegisterFlags(name string, constStaticValues *FlagsValue) externglib.Type {
 	var arg0 *C.GTypeModule
 	var arg1 *C.gchar
 	var arg2 *C.GFlagsValue
@@ -197,7 +206,14 @@ func (m typeModule) RegisterFlags(m TypeModule, name string, constStaticValues *
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
 
-	C.g_type_module_register_flags(arg0, arg1, arg2)
+	var cret C.GType
+	var goret externglib.Type
+
+	cret = C.g_type_module_register_flags(arg0, arg1, arg2)
+
+	goret = externglib.Type(cret)
+
+	return goret
 }
 
 // RegisterType looks up or registers a type that is implemented with a
@@ -214,7 +230,7 @@ func (m typeModule) RegisterFlags(m TypeModule, name string, constStaticValues *
 //
 // Since 2.56 if @module is nil this will call g_type_register_static()
 // instead. This can be used when making a static build of the module.
-func (m typeModule) RegisterType(m TypeModule, parentType externglib.Type, typeName string, typeInfo *TypeInfo, flags TypeFlags) {
+func (m typeModule) RegisterType(parentType externglib.Type, typeName string, typeInfo *TypeInfo, flags TypeFlags) externglib.Type {
 	var arg0 *C.GTypeModule
 	var arg1 C.GType
 	var arg2 *C.gchar
@@ -222,17 +238,24 @@ func (m typeModule) RegisterType(m TypeModule, parentType externglib.Type, typeN
 	var arg4 C.GTypeFlags
 
 	arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
-	arg1 := C.GType(parentType)
+	arg1 = C.GType(parentType)
 	arg2 = (*C.gchar)(C.CString(typeName))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.GTypeInfo)(unsafe.Pointer(typeInfo.Native()))
 	arg4 = (C.GTypeFlags)(flags)
 
-	C.g_type_module_register_type(arg0, arg1, arg2, arg3, arg4)
+	var cret C.GType
+	var goret externglib.Type
+
+	cret = C.g_type_module_register_type(arg0, arg1, arg2, arg3, arg4)
+
+	goret = externglib.Type(cret)
+
+	return goret
 }
 
 // SetName sets the name for a Module
-func (m typeModule) SetName(m TypeModule, name string) {
+func (m typeModule) SetName(name string) {
 	var arg0 *C.GTypeModule
 	var arg1 *C.gchar
 
@@ -247,7 +270,7 @@ func (m typeModule) SetName(m TypeModule, name string) {
 // the module will be unloaded. (However, the Module will not be freed, and
 // types associated with the Module are not unregistered. Once a Module is
 // initialized, it must exist forever.)
-func (m typeModule) Unuse(m TypeModule) {
+func (m typeModule) Unuse() {
 	var arg0 *C.GTypeModule
 
 	arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
@@ -258,19 +281,19 @@ func (m typeModule) Unuse(m TypeModule) {
 // Use increases the use count of a Module by one. If the use count was zero
 // before, the plugin will be loaded. If loading the plugin fails, the use
 // count is reset to its prior value.
-func (m typeModule) Use(m TypeModule) bool {
+func (m typeModule) Use() bool {
 	var arg0 *C.GTypeModule
 
 	arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_type_module_use(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

@@ -3,7 +3,11 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #cgo pkg-config:
@@ -12,10 +16,12 @@ import (
 import "C"
 
 // MenuButtonCreatePopupFunc: user-provided callback function to create a popup
-// for @menu_button on demand. This function is called when the popup of
-// @menu_button is shown, but none has been provided via
-// gtk_menu_button_set_popover() or gtk_menu_button_set_menu_model().
-type MenuButtonCreatePopupFunc func(menuButton MenuButton)
+// for a `GtkMenuButton` on demand.
+//
+// This function is called when the popup of @menu_button is shown, but none has
+// been provided via [method@Gtk.MenuButton.set_popover] or
+// [method@Gtk.MenuButton.set_menu_model].
+type MenuButtonCreatePopupFunc func()
 
 //export gotk4_MenuButtonCreatePopupFunc
 func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
@@ -25,5 +31,5 @@ func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
 	}
 
 	fn := v.(MenuButtonCreatePopupFunc)
-	fn(menuButton, userData)
+	fn()
 }

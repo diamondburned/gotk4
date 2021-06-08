@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -44,7 +45,7 @@ func marshalTabArray(p uintptr) (interface{}, error) {
 }
 
 // NewTabArray constructs a struct TabArray.
-func NewTabArray(initialSize int, positionsInPixels bool) {
+func NewTabArray(initialSize int, positionsInPixels bool) *TabArray {
 	var arg1 C.gint
 	var arg2 C.gboolean
 
@@ -53,7 +54,17 @@ func NewTabArray(initialSize int, positionsInPixels bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.pango_tab_array_new(arg1, arg2)
+	cret := new(C.PangoTabArray)
+	var goret *TabArray
+
+	cret = C.pango_tab_array_new(arg1, arg2)
+
+	goret = WrapTabArray(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TabArray) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -62,16 +73,26 @@ func (t *TabArray) Native() unsafe.Pointer {
 }
 
 // Copy copies a `PangoTabArray`.
-func (s *TabArray) Copy(s *TabArray) {
+func (s *TabArray) Copy() *TabArray {
 	var arg0 *C.PangoTabArray
 
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(s.Native()))
 
-	C.pango_tab_array_copy(arg0)
+	cret := new(C.PangoTabArray)
+	var goret *TabArray
+
+	cret = C.pango_tab_array_copy(arg0)
+
+	goret = WrapTabArray(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TabArray) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Free frees a tab array and associated resources.
-func (t *TabArray) Free(t *TabArray) {
+func (t *TabArray) Free() {
 	var arg0 *C.PangoTabArray
 
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
@@ -81,58 +102,65 @@ func (t *TabArray) Free(t *TabArray) {
 
 // PositionsInPixels returns true if the tab positions are in pixels, false if
 // they are in Pango units.
-func (t *TabArray) PositionsInPixels(t *TabArray) bool {
+func (t *TabArray) PositionsInPixels() bool {
 	var arg0 *C.PangoTabArray
 
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.pango_tab_array_get_positions_in_pixels(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Size gets the number of tab stops in @tab_array.
-func (t *TabArray) Size(t *TabArray) {
+func (t *TabArray) Size() int {
 	var arg0 *C.PangoTabArray
 
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 
-	C.pango_tab_array_get_size(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.pango_tab_array_get_size(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Tab gets the alignment and position of a tab stop.
-func (t *TabArray) Tab(t *TabArray, tabIndex int) (alignment *TabAlign, location int) {
+func (t *TabArray) Tab(tabIndex int) (alignment *TabAlign, location int) {
 	var arg0 *C.PangoTabArray
 	var arg1 C.gint
 
 	arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 	arg1 = C.gint(tabIndex)
 
-	var arg2 C.PangoTabAlign
-	var alignment *TabAlign
-	var arg3 C.gint
-	var location int
+	arg2 := new(C.PangoTabAlign)
+	var ret2 *TabAlign
+	arg3 := new(C.gint)
+	var ret3 int
 
-	C.pango_tab_array_get_tab(arg0, arg1, &arg2, &arg3)
+	C.pango_tab_array_get_tab(arg0, arg1, arg2, arg3)
 
-	alignment = *TabAlign(&arg2)
-	location = int(&arg3)
+	ret2 = *TabAlign(arg2)
+	ret3 = int(*arg3)
 
-	return alignment, location
+	return ret2, ret3
 }
 
 // Resize resizes a tab array.
 //
 // You must subsequently initialize any tabs that were added as a result of
 // growing the array.
-func (t *TabArray) Resize(t *TabArray, newSize int) {
+func (t *TabArray) Resize(newSize int) {
 	var arg0 *C.PangoTabArray
 	var arg1 C.gint
 
@@ -145,7 +173,7 @@ func (t *TabArray) Resize(t *TabArray, newSize int) {
 // SetTab sets the alignment and location of a tab stop.
 //
 // @alignment must always be PANGO_TAB_LEFT in the current implementation.
-func (t *TabArray) SetTab(t *TabArray, tabIndex int, alignment TabAlign, location int) {
+func (t *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
 	var arg0 *C.PangoTabArray
 	var arg1 C.gint
 	var arg2 C.PangoTabAlign

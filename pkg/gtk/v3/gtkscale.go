@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -103,20 +107,20 @@ type Scale interface {
 	// If @markup is not nil, text is shown next to the tick mark.
 	//
 	// To remove marks from a scale, use gtk_scale_clear_marks().
-	AddMark(s Scale, value float64, position PositionType, markup string)
+	AddMark(value float64, position PositionType, markup string)
 	// ClearMarks removes any marks that have been added with
 	// gtk_scale_add_mark().
-	ClearMarks(s Scale)
+	ClearMarks()
 	// Digits gets the number of decimal places that are displayed in the value.
-	Digits(s Scale)
+	Digits() int
 	// DrawValue returns whether the current value is displayed as a string next
 	// to the slider.
-	DrawValue(s Scale) bool
+	DrawValue() bool
 	// HasOrigin returns whether the scale has an origin.
-	HasOrigin(s Scale) bool
+	HasOrigin() bool
 	// Layout gets the Layout used to display the scale. The returned object is
 	// owned by the scale so does not need to be freed by the caller.
-	Layout(s Scale)
+	Layout() pango.Layout
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
 	// function you need to convert to and from pixels using PANGO_PIXELS() or
@@ -124,9 +128,9 @@ type Scale interface {
 	//
 	// If the Scale:draw-value property is false, the return values are
 	// undefined.
-	LayoutOffsets(s Scale) (x int, y int)
+	LayoutOffsets() (x int, y int)
 	// ValuePos gets the position in which the current value is displayed.
-	ValuePos(s Scale)
+	ValuePos() PositionType
 	// SetDigits sets the number of decimal places that are displayed in the
 	// value. Also causes the value of the adjustment to be rounded to this
 	// number of digits, so the retrieved value matches the displayed one, if
@@ -138,16 +142,16 @@ type Scale interface {
 	// smooth autoscrolling that is built into Scale. As an alternative, you can
 	// use the Scale::format-value signal to format the displayed value
 	// yourself.
-	SetDigits(s Scale, digits int)
+	SetDigits(digits int)
 	// SetDrawValue specifies whether the current value is displayed as a string
 	// next to the slider.
-	SetDrawValue(s Scale, drawValue bool)
+	SetDrawValue(drawValue bool)
 	// SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
 	// will highlight the part of the trough between the origin (bottom or left
 	// side) and the current value.
-	SetHasOrigin(s Scale, hasOrigin bool)
+	SetHasOrigin(hasOrigin bool)
 	// SetValuePos sets the position in which the current value is displayed.
-	SetValuePos(s Scale, pos PositionType)
+	SetValuePos(pos PositionType)
 }
 
 // scale implements the Scale interface.
@@ -176,18 +180,25 @@ func marshalScale(p uintptr) (interface{}, error) {
 }
 
 // NewScale constructs a class Scale.
-func NewScale(orientation Orientation, adjustment Adjustment) {
+func NewScale(orientation Orientation, adjustment Adjustment) Scale {
 	var arg1 C.GtkOrientation
 	var arg2 *C.GtkAdjustment
 
 	arg1 = (C.GtkOrientation)(orientation)
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	C.gtk_scale_new(arg1, arg2)
+	var cret C.GtkScale
+	var goret Scale
+
+	cret = C.gtk_scale_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scale)
+
+	return goret
 }
 
 // NewScaleWithRange constructs a class Scale.
-func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) {
+func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
 	var arg1 C.GtkOrientation
 	var arg2 C.gdouble
 	var arg3 C.gdouble
@@ -198,7 +209,14 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 	arg3 = C.gdouble(max)
 	arg4 = C.gdouble(step)
 
-	C.gtk_scale_new_with_range(arg1, arg2, arg3, arg4)
+	var cret C.GtkScale
+	var goret Scale
+
+	cret = C.gtk_scale_new_with_range(arg1, arg2, arg3, arg4)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scale)
+
+	return goret
 }
 
 // AddMark adds a mark at @value.
@@ -210,7 +228,7 @@ func NewScaleWithRange(orientation Orientation, min float64, max float64, step f
 // If @markup is not nil, text is shown next to the tick mark.
 //
 // To remove marks from a scale, use gtk_scale_clear_marks().
-func (s scale) AddMark(s Scale, value float64, position PositionType, markup string) {
+func (s scale) AddMark(value float64, position PositionType, markup string) {
 	var arg0 *C.GtkScale
 	var arg1 C.gdouble
 	var arg2 C.GtkPositionType
@@ -227,7 +245,7 @@ func (s scale) AddMark(s Scale, value float64, position PositionType, markup str
 
 // ClearMarks removes any marks that have been added with
 // gtk_scale_add_mark().
-func (s scale) ClearMarks(s Scale) {
+func (s scale) ClearMarks() {
 	var arg0 *C.GtkScale
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
@@ -236,59 +254,73 @@ func (s scale) ClearMarks(s Scale) {
 }
 
 // Digits gets the number of decimal places that are displayed in the value.
-func (s scale) Digits(s Scale) {
+func (s scale) Digits() int {
 	var arg0 *C.GtkScale
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	C.gtk_scale_get_digits(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_scale_get_digits(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // DrawValue returns whether the current value is displayed as a string next
 // to the slider.
-func (s scale) DrawValue(s Scale) bool {
+func (s scale) DrawValue() bool {
 	var arg0 *C.GtkScale
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_scale_get_draw_value(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // HasOrigin returns whether the scale has an origin.
-func (s scale) HasOrigin(s Scale) bool {
+func (s scale) HasOrigin() bool {
 	var arg0 *C.GtkScale
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_scale_get_has_origin(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Layout gets the Layout used to display the scale. The returned object is
 // owned by the scale so does not need to be freed by the caller.
-func (s scale) Layout(s Scale) {
+func (s scale) Layout() pango.Layout {
 	var arg0 *C.GtkScale
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	C.gtk_scale_get_layout(arg0)
+	var cret *C.PangoLayout
+	var goret pango.Layout
+
+	cret = C.gtk_scale_get_layout(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
+
+	return goret
 }
 
 // LayoutOffsets obtains the coordinates where the scale will draw the
@@ -298,31 +330,38 @@ func (s scale) Layout(s Scale) {
 //
 // If the Scale:draw-value property is false, the return values are
 // undefined.
-func (s scale) LayoutOffsets(s Scale) (x int, y int) {
+func (s scale) LayoutOffsets() (x int, y int) {
 	var arg0 *C.GtkScale
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	var arg1 C.gint
-	var x int
-	var arg2 C.gint
-	var y int
+	arg1 := new(C.gint)
+	var ret1 int
+	arg2 := new(C.gint)
+	var ret2 int
 
-	C.gtk_scale_get_layout_offsets(arg0, &arg1, &arg2)
+	C.gtk_scale_get_layout_offsets(arg0, arg1, arg2)
 
-	x = int(&arg1)
-	y = int(&arg2)
+	ret1 = int(*arg1)
+	ret2 = int(*arg2)
 
-	return x, y
+	return ret1, ret2
 }
 
 // ValuePos gets the position in which the current value is displayed.
-func (s scale) ValuePos(s Scale) {
+func (s scale) ValuePos() PositionType {
 	var arg0 *C.GtkScale
 
 	arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	C.gtk_scale_get_value_pos(arg0)
+	var cret C.GtkPositionType
+	var goret PositionType
+
+	cret = C.gtk_scale_get_value_pos(arg0)
+
+	goret = PositionType(cret)
+
+	return goret
 }
 
 // SetDigits sets the number of decimal places that are displayed in the
@@ -336,7 +375,7 @@ func (s scale) ValuePos(s Scale) {
 // smooth autoscrolling that is built into Scale. As an alternative, you can
 // use the Scale::format-value signal to format the displayed value
 // yourself.
-func (s scale) SetDigits(s Scale, digits int) {
+func (s scale) SetDigits(digits int) {
 	var arg0 *C.GtkScale
 	var arg1 C.gint
 
@@ -348,7 +387,7 @@ func (s scale) SetDigits(s Scale, digits int) {
 
 // SetDrawValue specifies whether the current value is displayed as a string
 // next to the slider.
-func (s scale) SetDrawValue(s Scale, drawValue bool) {
+func (s scale) SetDrawValue(drawValue bool) {
 	var arg0 *C.GtkScale
 	var arg1 C.gboolean
 
@@ -363,7 +402,7 @@ func (s scale) SetDrawValue(s Scale, drawValue bool) {
 // SetHasOrigin: if Scale:has-origin is set to true (the default), the scale
 // will highlight the part of the trough between the origin (bottom or left
 // side) and the current value.
-func (s scale) SetHasOrigin(s Scale, hasOrigin bool) {
+func (s scale) SetHasOrigin(hasOrigin bool) {
 	var arg0 *C.GtkScale
 	var arg1 C.gboolean
 
@@ -376,7 +415,7 @@ func (s scale) SetHasOrigin(s Scale, hasOrigin bool) {
 }
 
 // SetValuePos sets the position in which the current value is displayed.
-func (s scale) SetValuePos(s Scale, pos PositionType) {
+func (s scale) SetValuePos(pos PositionType) {
 	var arg0 *C.GtkScale
 	var arg1 C.GtkPositionType
 

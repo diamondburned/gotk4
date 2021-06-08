@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -97,7 +98,7 @@ func (m *Matrix) Y0() float64 {
 // Concat changes the transformation represented by @matrix to be the
 // transformation given by first applying transformation given by @new_matrix
 // then applying the original transformation.
-func (m *Matrix) Concat(m *Matrix, newMatrix *Matrix) {
+func (m *Matrix) Concat(newMatrix *Matrix) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.PangoMatrix
 
@@ -108,16 +109,26 @@ func (m *Matrix) Concat(m *Matrix, newMatrix *Matrix) {
 }
 
 // Copy copies a `PangoMatrix`.
-func (m *Matrix) Copy(m *Matrix) {
+func (m *Matrix) Copy() *Matrix {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	C.pango_matrix_copy(arg0)
+	cret := new(C.PangoMatrix)
+	var goret *Matrix
+
+	cret = C.pango_matrix_copy(arg0)
+
+	goret = WrapMatrix(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Matrix) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Free: free a `PangoMatrix`.
-func (m *Matrix) Free(m *Matrix) {
+func (m *Matrix) Free() {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
@@ -131,12 +142,19 @@ func (m *Matrix) Free(m *Matrix) {
 // That is, the scale factor in the direction perpendicular to the vector that
 // the X coordinate is mapped to. If the scale in the X coordinate is needed as
 // well, use [method@Pango.Matrix.get_font_scale_factors].
-func (m *Matrix) FontScaleFactor(m *Matrix) {
+func (m *Matrix) FontScaleFactor() float64 {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	C.pango_matrix_get_font_scale_factor(arg0)
+	var cret C.double
+	var goret float64
+
+	cret = C.pango_matrix_get_font_scale_factor(arg0)
+
+	goret = float64(cret)
+
+	return goret
 }
 
 // FontScaleFactors calculates the scale factor of a matrix on the width and
@@ -147,28 +165,28 @@ func (m *Matrix) FontScaleFactor(m *Matrix) {
 // that the X coordinate is mapped to.
 //
 // Note that output numbers will always be non-negative.
-func (m *Matrix) FontScaleFactors(m *Matrix) (xscale float64, yscale float64) {
+func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 	var arg0 *C.PangoMatrix
 
 	arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.double
-	var xscale float64
-	var arg2 C.double
-	var yscale float64
+	arg1 := new(C.double)
+	var ret1 float64
+	arg2 := new(C.double)
+	var ret2 float64
 
-	C.pango_matrix_get_font_scale_factors(arg0, &arg1, &arg2)
+	C.pango_matrix_get_font_scale_factors(arg0, arg1, arg2)
 
-	xscale = float64(&arg1)
-	yscale = float64(&arg2)
+	ret1 = float64(*arg1)
+	ret2 = float64(*arg2)
 
-	return xscale, yscale
+	return ret1, ret2
 }
 
 // Rotate changes the transformation represented by @matrix to be the
 // transformation given by first rotating by @degrees degrees counter-clockwise
 // then applying the original transformation.
-func (m *Matrix) Rotate(m *Matrix, degrees float64) {
+func (m *Matrix) Rotate(degrees float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 C.double
 
@@ -181,7 +199,7 @@ func (m *Matrix) Rotate(m *Matrix, degrees float64) {
 // Scale changes the transformation represented by @matrix to be the
 // transformation given by first scaling by @sx in the X direction and @sy in
 // the Y direction then applying the original transformation.
-func (m *Matrix) Scale(m *Matrix, scaleX float64, scaleY float64) {
+func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 C.double
 	var arg2 C.double
@@ -205,7 +223,7 @@ func (m *Matrix) Scale(m *Matrix, scaleX float64, scaleY float64) {
 // transforms to the same vector. If (@x1,@y1) transforms to (@x2,@y2) then
 // (@x1+@dx1,@y1+@dy1) will transform to (@x1+@dx2,@y1+@dy2) for all values of
 // @x1 and @x2.
-func (m *Matrix) TransformDistance(m *Matrix, dx float64, dy float64) {
+func (m *Matrix) TransformDistance(dx float64, dy float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.double
 	var arg2 *C.double
@@ -227,7 +245,7 @@ func (m *Matrix) TransformDistance(m *Matrix, dx float64, dy float64) {
 // For better accuracy, you should use [method@Pango.Matrix.transform_rectangle]
 // on original rectangle in Pango units and convert to pixels afterward using
 // [func@extents_to_pixels]'s first argument.
-func (m *Matrix) TransformPixelRectangle(m *Matrix, rect *Rectangle) {
+func (m *Matrix) TransformPixelRectangle(rect *Rectangle) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.PangoRectangle
 
@@ -238,7 +256,7 @@ func (m *Matrix) TransformPixelRectangle(m *Matrix, rect *Rectangle) {
 }
 
 // TransformPoint transforms the point (@x, @y) by @matrix.
-func (m *Matrix) TransformPoint(m *Matrix, x float64, y float64) {
+func (m *Matrix) TransformPoint(x float64, y float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.double
 	var arg2 *C.double
@@ -267,7 +285,7 @@ func (m *Matrix) TransformPoint(m *Matrix, x float64, y float64) {
 // may want to convert to pixels first and then transform, for example when the
 // transformed coordinates may overflow in Pango units (large matrix translation
 // for example).
-func (m *Matrix) TransformRectangle(m *Matrix, rect *Rectangle) {
+func (m *Matrix) TransformRectangle(rect *Rectangle) {
 	var arg0 *C.PangoMatrix
 	var arg1 *C.PangoRectangle
 
@@ -280,7 +298,7 @@ func (m *Matrix) TransformRectangle(m *Matrix, rect *Rectangle) {
 // Translate changes the transformation represented by @matrix to be the
 // transformation given by first translating by (@tx, @ty) then applying the
 // original transformation.
-func (m *Matrix) Translate(m *Matrix, tx float64, ty float64) {
+func (m *Matrix) Translate(tx float64, ty float64) {
 	var arg0 *C.PangoMatrix
 	var arg1 C.double
 	var arg2 C.double

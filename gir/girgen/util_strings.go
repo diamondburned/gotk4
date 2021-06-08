@@ -170,16 +170,18 @@ func UnexportPascal(pascal string) string {
 	pascal = strings.ToLower(string(runes[:i])) + string(runes[i:])
 	pascal = snakeNoGo(pascal)
 
+	switch pascal {
+	case "error":
+		pascal = "err"
+	}
+
 	return pascal
 }
 
 // SnakeToGo converts snake case to Go's special case. If Pascal is true, then
 // the first letter is capitalized.
 func SnakeToGo(pascal bool, snakeString string) string {
-	if pascal {
-		snakeString = "_" + snakeString
-	}
-
+	snakeString = "_" + snakeString
 	snakeString = snakeRegex.ReplaceAllStringFunc(snakeString,
 		func(orig string) string {
 			orig = strings.ToUpper(orig)
@@ -191,7 +193,7 @@ func SnakeToGo(pascal bool, snakeString string) string {
 	snakeString = PascalToGo(snakeString)
 
 	if !pascal {
-		return snakeNoGo(snakeString)
+		return UnexportPascal(snakeString)
 	}
 
 	return snakeString

@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,7 +42,7 @@ type MemoryInputStream interface {
 	Seekable
 
 	// AddBytes appends @bytes to data that can be read from the input stream.
-	AddBytes(s MemoryInputStream, bytes *glib.Bytes)
+	AddBytes(bytes *glib.Bytes)
 }
 
 // memoryInputStream implements the MemoryInputStream interface.
@@ -67,21 +71,35 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 }
 
 // NewMemoryInputStream constructs a class MemoryInputStream.
-func NewMemoryInputStream() {
-	C.g_memory_input_stream_new()
+func NewMemoryInputStream() MemoryInputStream {
+	cret := new(C.GMemoryInputStream)
+	var goret MemoryInputStream
+
+	cret = C.g_memory_input_stream_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
+
+	return goret
 }
 
 // NewMemoryInputStreamFromBytes constructs a class MemoryInputStream.
-func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) {
+func NewMemoryInputStreamFromBytes(bytes *glib.Bytes) MemoryInputStream {
 	var arg1 *C.GBytes
 
 	arg1 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 
-	C.g_memory_input_stream_new_from_bytes(arg1)
+	cret := new(C.GMemoryInputStream)
+	var goret MemoryInputStream
+
+	cret = C.g_memory_input_stream_new_from_bytes(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
+
+	return goret
 }
 
 // AddBytes appends @bytes to data that can be read from the input stream.
-func (s memoryInputStream) AddBytes(s MemoryInputStream, bytes *glib.Bytes) {
+func (s memoryInputStream) AddBytes(bytes *glib.Bytes) {
 	var arg0 *C.GMemoryInputStream
 	var arg1 *C.GBytes
 

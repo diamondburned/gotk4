@@ -3,8 +3,15 @@
 package gdkpixbuf
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -12,12 +19,16 @@ import (
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 import "C"
 
-// PixbufSaveFunc specifies the type of the function passed to
-// gdk_pixbuf_save_to_callback(). It is called once for each block of bytes that
-// is "written" by gdk_pixbuf_save_to_callback(). If successful it should return
-// true. If an error occurs it should set @error and return false, in which case
-// gdk_pixbuf_save_to_callback() will fail with the same error.
-type PixbufSaveFunc func(buf []byte) (err error, ok bool)
+// PixbufSaveFunc: save functions used by
+// [method@GdkPixbuf.Pixbuf.save_to_callback].
+//
+// This function is called once for each block of bytes that is "written" by
+// `gdk_pixbuf_save_to_callback()`.
+//
+// If successful it should return `TRUE`; if an error occurs it should set
+// `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
+// will fail with the same error.
+type PixbufSaveFunc func() (err error, ok bool)
 
 //export gotk4_PixbufSaveFunc
 func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
@@ -27,12 +38,10 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 	}
 
 	fn := v.(PixbufSaveFunc)
-	error, ret := fn(buf, count, data)
+	fn(err, ok)
 
-	*arg2 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
-	if ret {
+	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(*err)))
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }

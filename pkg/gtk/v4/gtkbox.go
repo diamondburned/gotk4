@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,36 +21,40 @@ func init() {
 	})
 }
 
-// Box: the GtkBox widget arranges child widgets into a single row or column,
-// depending upon the value of its Orientable:orientation property. Within the
-// other dimension, all children are allocated the same size. Of course, the
-// Widget:halign and Widget:valign properties can be used on the children to
-// influence their allocation.
+// Box: the `GtkBox` widget arranges child widgets into a single row or column.
 //
-// Use repeated calls to gtk_box_append() to pack widgets into a GtkBox from
-// start to end. Use gtk_box_remove() to remove widgets from the GtkBox.
-// gtk_box_insert_child_after() can be used to add a child at a particular
-// position.
+// !An example GtkBox (box.png)
 //
-// Use gtk_box_set_homogeneous() to specify whether or not all children of the
-// GtkBox are forced to get the same amount of space.
+// Whether it is a row or column depends on the value of its
+// [property@Gtk.Orientable:orientation] property. Within the other dimension,
+// all children are allocated the same size. Of course, the
+// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties can
+// be used on the children to influence their allocation.
 //
-// Use gtk_box_set_spacing() to determine how much space will be minimally
-// placed between all children in the GtkBox. Note that spacing is added between
-// the children.
+// Use repeated calls to [method@Gtk.Box.append] to pack widgets into a `GtkBox`
+// from start to end. Use [method@Gtk.Box.remove] to remove widgets from the
+// `GtkBox`. [method@Gtk.Box.insert_child_after] can be used to add a child at a
+// particular position.
 //
-// Use gtk_box_reorder_child_after() to move a child to a different place in the
-// box.
+// Use [method@Gtk.Box.set_homogeneous] to specify whether or not all children
+// of the `GtkBox` are forced to get the same amount of space.
+//
+// Use [method@Gtk.Box.set_spacing] to determine how much space will be
+// minimally placed between all children in the `GtkBox`. Note that spacing is
+// added *between* the children.
+//
+// Use [method@Gtk.Box.reorder_child_after] to move a child to a different place
+// in the box.
 //
 //
 // CSS nodes
 //
-// GtkBox uses a single CSS node with name box.
+// `GtkBox` uses a single CSS node with name box.
 //
 //
 // Accessibility
 //
-// GtkBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// `GtkBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Box interface {
 	Widget
 	Accessible
@@ -56,38 +63,43 @@ type Box interface {
 	Orientable
 
 	// Append adds @child as the last child to @box.
-	Append(b Box, child Widget)
+	Append(child Widget)
 	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-	BaselinePosition(b Box)
+	BaselinePosition() BaselinePosition
 	// Homogeneous returns whether the box is homogeneous (all children are the
-	// same size). See gtk_box_set_homogeneous().
-	Homogeneous(b Box) bool
+	// same size).
+	Homogeneous() bool
 	// Spacing gets the value set by gtk_box_set_spacing().
-	Spacing(b Box)
+	Spacing() int
 	// InsertChildAfter inserts @child in the position after @sibling in the
-	// list of @box children. If @sibling is nil, insert @child at the first
-	// position.
-	InsertChildAfter(b Box, child Widget, sibling Widget)
+	// list of @box children.
+	//
+	// If @sibling is nil, insert @child at the first position.
+	InsertChildAfter(child Widget, sibling Widget)
 	// Prepend adds @child as the first child to @box.
-	Prepend(b Box, child Widget)
-	// Remove removes a child widget from @box, after it has been added with
-	// gtk_box_append(), gtk_box_prepend(), or gtk_box_insert_child_after().
-	Remove(b Box, child Widget)
+	Prepend(child Widget)
+	// Remove removes a child widget from @box.
+	//
+	// The child must have been added before with [method@Gtk.Box.append],
+	// [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after].
+	Remove(child Widget)
 	// ReorderChildAfter moves @child to the position after @sibling in the list
-	// of @box children. If @sibling is nil, move @child to the first position.
-	ReorderChildAfter(b Box, child Widget, sibling Widget)
-	// SetBaselinePosition sets the baseline position of a box. This affects
-	// only horizontal boxes with at least one baseline aligned child. If there
-	// is more vertical space available than requested, and the baseline is not
-	// allocated by the parent then @position is used to allocate the baseline
-	// wrt the extra space available.
-	SetBaselinePosition(b Box, position BaselinePosition)
-	// SetHomogeneous sets the Box:homogeneous property of @box, controlling
-	// whether or not all children of @box are given equal space in the box.
-	SetHomogeneous(b Box, homogeneous bool)
-	// SetSpacing sets the Box:spacing property of @box, which is the number of
-	// pixels to place between children of @box.
-	SetSpacing(b Box, spacing int)
+	// of @box children.
+	//
+	// If @sibling is nil, move @child to the first position.
+	ReorderChildAfter(child Widget, sibling Widget)
+	// SetBaselinePosition sets the baseline position of a box.
+	//
+	// This affects only horizontal boxes with at least one baseline aligned
+	// child. If there is more vertical space available than requested, and the
+	// baseline is not allocated by the parent then @position is used to
+	// allocate the baseline with respect to the extra space available.
+	SetBaselinePosition(position BaselinePosition)
+	// SetHomogeneous sets whether or not all children of @box are given equal
+	// space in the box.
+	SetHomogeneous(homogeneous bool)
+	// SetSpacing sets the number of pixels to place between children of @box.
+	SetSpacing(spacing int)
 }
 
 // box implements the Box interface.
@@ -120,18 +132,25 @@ func marshalBox(p uintptr) (interface{}, error) {
 }
 
 // NewBox constructs a class Box.
-func NewBox(orientation Orientation, spacing int) {
+func NewBox(orientation Orientation, spacing int) Box {
 	var arg1 C.GtkOrientation
 	var arg2 C.int
 
 	arg1 = (C.GtkOrientation)(orientation)
 	arg2 = C.int(spacing)
 
-	C.gtk_box_new(arg1, arg2)
+	var cret C.GtkBox
+	var goret Box
+
+	cret = C.gtk_box_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+
+	return goret
 }
 
 // Append adds @child as the last child to @box.
-func (b box) Append(b Box, child Widget) {
+func (b box) Append(child Widget) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 
@@ -142,46 +161,61 @@ func (b box) Append(b Box, child Widget) {
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
-func (b box) BaselinePosition(b Box) {
+func (b box) BaselinePosition() BaselinePosition {
 	var arg0 *C.GtkBox
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_box_get_baseline_position(arg0)
+	var cret C.GtkBaselinePosition
+	var goret BaselinePosition
+
+	cret = C.gtk_box_get_baseline_position(arg0)
+
+	goret = BaselinePosition(cret)
+
+	return goret
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
-// same size). See gtk_box_set_homogeneous().
-func (b box) Homogeneous(b Box) bool {
+// same size).
+func (b box) Homogeneous() bool {
 	var arg0 *C.GtkBox
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_box_get_homogeneous(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
-func (b box) Spacing(b Box) {
+func (b box) Spacing() int {
 	var arg0 *C.GtkBox
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_box_get_spacing(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gtk_box_get_spacing(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // InsertChildAfter inserts @child in the position after @sibling in the
-// list of @box children. If @sibling is nil, insert @child at the first
-// position.
-func (b box) InsertChildAfter(b Box, child Widget, sibling Widget) {
+// list of @box children.
+//
+// If @sibling is nil, insert @child at the first position.
+func (b box) InsertChildAfter(child Widget, sibling Widget) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 	var arg2 *C.GtkWidget
@@ -194,7 +228,7 @@ func (b box) InsertChildAfter(b Box, child Widget, sibling Widget) {
 }
 
 // Prepend adds @child as the first child to @box.
-func (b box) Prepend(b Box, child Widget) {
+func (b box) Prepend(child Widget) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 
@@ -204,9 +238,11 @@ func (b box) Prepend(b Box, child Widget) {
 	C.gtk_box_prepend(arg0, arg1)
 }
 
-// Remove removes a child widget from @box, after it has been added with
-// gtk_box_append(), gtk_box_prepend(), or gtk_box_insert_child_after().
-func (b box) Remove(b Box, child Widget) {
+// Remove removes a child widget from @box.
+//
+// The child must have been added before with [method@Gtk.Box.append],
+// [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after].
+func (b box) Remove(child Widget) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 
@@ -217,8 +253,10 @@ func (b box) Remove(b Box, child Widget) {
 }
 
 // ReorderChildAfter moves @child to the position after @sibling in the list
-// of @box children. If @sibling is nil, move @child to the first position.
-func (b box) ReorderChildAfter(b Box, child Widget, sibling Widget) {
+// of @box children.
+//
+// If @sibling is nil, move @child to the first position.
+func (b box) ReorderChildAfter(child Widget, sibling Widget) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 	var arg2 *C.GtkWidget
@@ -230,12 +268,13 @@ func (b box) ReorderChildAfter(b Box, child Widget, sibling Widget) {
 	C.gtk_box_reorder_child_after(arg0, arg1, arg2)
 }
 
-// SetBaselinePosition sets the baseline position of a box. This affects
-// only horizontal boxes with at least one baseline aligned child. If there
-// is more vertical space available than requested, and the baseline is not
-// allocated by the parent then @position is used to allocate the baseline
-// wrt the extra space available.
-func (b box) SetBaselinePosition(b Box, position BaselinePosition) {
+// SetBaselinePosition sets the baseline position of a box.
+//
+// This affects only horizontal boxes with at least one baseline aligned
+// child. If there is more vertical space available than requested, and the
+// baseline is not allocated by the parent then @position is used to
+// allocate the baseline with respect to the extra space available.
+func (b box) SetBaselinePosition(position BaselinePosition) {
 	var arg0 *C.GtkBox
 	var arg1 C.GtkBaselinePosition
 
@@ -245,9 +284,9 @@ func (b box) SetBaselinePosition(b Box, position BaselinePosition) {
 	C.gtk_box_set_baseline_position(arg0, arg1)
 }
 
-// SetHomogeneous sets the Box:homogeneous property of @box, controlling
-// whether or not all children of @box are given equal space in the box.
-func (b box) SetHomogeneous(b Box, homogeneous bool) {
+// SetHomogeneous sets whether or not all children of @box are given equal
+// space in the box.
+func (b box) SetHomogeneous(homogeneous bool) {
 	var arg0 *C.GtkBox
 	var arg1 C.gboolean
 
@@ -259,9 +298,8 @@ func (b box) SetHomogeneous(b Box, homogeneous bool) {
 	C.gtk_box_set_homogeneous(arg0, arg1)
 }
 
-// SetSpacing sets the Box:spacing property of @box, which is the number of
-// pixels to place between children of @box.
-func (b box) SetSpacing(b Box, spacing int) {
+// SetSpacing sets the number of pixels to place between children of @box.
+func (b box) SetSpacing(spacing int) {
 	var arg0 *C.GtkBox
 	var arg1 C.int
 

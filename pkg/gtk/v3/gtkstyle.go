@@ -5,6 +5,11 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -629,7 +634,7 @@ func PaintVline(style Style, cr *cairo.Context, stateType StateType, widget Widg
 type Style interface {
 	gextras.Objector
 
-	ApplyDefaultBackground(s Style, cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int)
+	ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int)
 	// Attach attaches a style to a window; this process allocates the colors
 	// and creates the GC’s for the style - it specializes it to a particular
 	// visual. The process may involve the creation of a new style if the style
@@ -637,32 +642,32 @@ type Style interface {
 	//
 	// Since this function may return a new object, you have to use it in the
 	// following way: `style = gtk_style_attach (style, window)`
-	Attach(s Style, window gdk.Window)
+	Attach(window gdk.Window) Style
 	// Copy creates a copy of the passed in Style object.
-	Copy(s Style)
+	Copy() Style
 	// Detach detaches a style from a window. If the style is not attached to
 	// any windows anymore, it is unrealized. See gtk_style_attach().
-	Detach(s Style)
+	Detach()
 	// StyleProperty queries the value of a style property corresponding to a
 	// widget class is in the given style.
-	StyleProperty(s Style, widgetType externglib.Type, propertyName string) *externglib.Value
+	StyleProperty(widgetType externglib.Type, propertyName string) *externglib.Value
 	// HasContext returns whether @style has an associated StyleContext.
-	HasContext(s Style) bool
+	HasContext() bool
 	// LookupColor looks up @color_name in the style’s logical color mappings,
 	// filling in @color and returning true if found, otherwise returning false.
 	// Do not cache the found mapping, because it depends on the Style and might
 	// change when a theme switch occurs.
-	LookupColor(s Style, colorName string) (color *gdk.Color, ok bool)
+	LookupColor(colorName string) (color *gdk.Color, ok bool)
 	// LookupIconSet looks up @stock_id in the icon factories associated with
 	// @style and the default icon factory, returning an icon set if found,
 	// otherwise nil.
-	LookupIconSet(s Style, stockID string)
+	LookupIconSet(stockID string) *IconSet
 	// RenderIcon renders the icon specified by @source at the given @size
 	// according to the given parameters and returns the result in a pixbuf.
-	RenderIcon(s Style, source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string)
+	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf
 	// SetBackground sets the background of @window to the background color or
 	// pixmap specified by @style for the given state.
-	SetBackground(s Style, window gdk.Window, stateType StateType)
+	SetBackground(window gdk.Window, stateType StateType)
 }
 
 // style implements the Style interface.
@@ -687,11 +692,18 @@ func marshalStyle(p uintptr) (interface{}, error) {
 }
 
 // NewStyle constructs a class Style.
-func NewStyle() {
-	C.gtk_style_new()
+func NewStyle() Style {
+	cret := new(C.GtkStyle)
+	var goret Style
+
+	cret = C.gtk_style_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
+
+	return goret
 }
 
-func (s style) ApplyDefaultBackground(s Style, cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
+func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.cairo_t
 	var arg2 *C.GdkWindow
@@ -720,28 +732,42 @@ func (s style) ApplyDefaultBackground(s Style, cr *cairo.Context, window gdk.Win
 //
 // Since this function may return a new object, you have to use it in the
 // following way: `style = gtk_style_attach (style, window)`
-func (s style) Attach(s Style, window gdk.Window) {
+func (s style) Attach(window gdk.Window) Style {
 	var arg0 *C.GtkStyle
 	var arg1 *C.GdkWindow
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_style_attach(arg0, arg1)
+	var cret *C.GtkStyle
+	var goret Style
+
+	cret = C.gtk_style_attach(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Style)
+
+	return goret
 }
 
 // Copy creates a copy of the passed in Style object.
-func (s style) Copy(s Style) {
+func (s style) Copy() Style {
 	var arg0 *C.GtkStyle
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
-	C.gtk_style_copy(arg0)
+	cret := new(C.GtkStyle)
+	var goret Style
+
+	cret = C.gtk_style_copy(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
+
+	return goret
 }
 
 // Detach detaches a style from a window. If the style is not attached to
 // any windows anymore, it is unrealized. See gtk_style_attach().
-func (s style) Detach(s Style) {
+func (s style) Detach() {
 	var arg0 *C.GtkStyle
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
@@ -751,49 +777,49 @@ func (s style) Detach(s Style) {
 
 // StyleProperty queries the value of a style property corresponding to a
 // widget class is in the given style.
-func (s style) StyleProperty(s Style, widgetType externglib.Type, propertyName string) *externglib.Value {
+func (s style) StyleProperty(widgetType externglib.Type, propertyName string) *externglib.Value {
 	var arg0 *C.GtkStyle
 	var arg1 C.GType
 	var arg2 *C.gchar
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
-	arg1 := C.GType(widgetType)
+	arg1 = C.GType(widgetType)
 	arg2 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	var arg3 C.GValue
-	var value *externglib.Value
+	arg3 := new(C.GValue)
+	var ret3 *externglib.Value
 
-	C.gtk_style_get_style_property(arg0, arg1, arg2, &arg3)
+	C.gtk_style_get_style_property(arg0, arg1, arg2, arg3)
 
-	value = externglib.ValueFromNative(unsafe.Pointer(&arg3))
+	ret3 = externglib.ValueFromNative(unsafe.Pointer(*arg3))
 
-	return value
+	return ret3
 }
 
 // HasContext returns whether @style has an associated StyleContext.
-func (s style) HasContext(s Style) bool {
+func (s style) HasContext() bool {
 	var arg0 *C.GtkStyle
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_style_has_context(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // LookupColor looks up @color_name in the style’s logical color mappings,
 // filling in @color and returning true if found, otherwise returning false.
 // Do not cache the found mapping, because it depends on the Style and might
 // change when a theme switch occurs.
-func (s style) LookupColor(s Style, colorName string) (color *gdk.Color, ok bool) {
+func (s style) LookupColor(colorName string) (color *gdk.Color, ok bool) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.gchar
 
@@ -801,25 +827,25 @@ func (s style) LookupColor(s Style, colorName string) (color *gdk.Color, ok bool
 	arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 C.GdkColor
-	var color *gdk.Color
+	arg2 := new(C.GdkColor)
+	var ret2 *gdk.Color
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_style_lookup_color(arg0, arg1, &arg2)
+	cret = C.gtk_style_lookup_color(arg0, arg1, arg2)
 
-	color = gdk.WrapColor(unsafe.Pointer(&arg2))
+	ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return color, ok
+	return ret2, goret
 }
 
 // LookupIconSet looks up @stock_id in the icon factories associated with
 // @style and the default icon factory, returning an icon set if found,
 // otherwise nil.
-func (s style) LookupIconSet(s Style, stockID string) {
+func (s style) LookupIconSet(stockID string) *IconSet {
 	var arg0 *C.GtkStyle
 	var arg1 *C.gchar
 
@@ -827,12 +853,19 @@ func (s style) LookupIconSet(s Style, stockID string) {
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_style_lookup_icon_set(arg0, arg1)
+	var cret *C.GtkIconSet
+	var goret *IconSet
+
+	cret = C.gtk_style_lookup_icon_set(arg0, arg1)
+
+	goret = WrapIconSet(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RenderIcon renders the icon specified by @source at the given @size
 // according to the given parameters and returns the result in a pixbuf.
-func (s style) RenderIcon(s Style, source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) {
+func (s style) RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
 	var arg0 *C.GtkStyle
 	var arg1 *C.GtkIconSource
 	var arg2 C.GtkTextDirection
@@ -850,12 +883,19 @@ func (s style) RenderIcon(s Style, source *IconSource, direction TextDirection, 
 	arg6 = (*C.gchar)(C.CString(detail))
 	defer C.free(unsafe.Pointer(arg6))
 
-	C.gtk_style_render_icon(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret := new(C.GdkPixbuf)
+	var goret gdkpixbuf.Pixbuf
+
+	cret = C.gtk_style_render_icon(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return goret
 }
 
 // SetBackground sets the background of @window to the background color or
 // pixmap specified by @style for the given state.
-func (s style) SetBackground(s Style, window gdk.Window, stateType StateType) {
+func (s style) SetBackground(window gdk.Window, stateType StateType) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.GdkWindow
 	var arg2 C.GtkStateType

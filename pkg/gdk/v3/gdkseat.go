@@ -3,7 +3,12 @@
 package gdk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -14,7 +19,7 @@ import "C"
 // SeatGrabPrepareFunc: type of the callback used to set up @window so it can be
 // grabbed. A typical action would be ensuring the window is visible, although
 // there's room for other initialization actions.
-type SeatGrabPrepareFunc func(seat Seat, window Window)
+type SeatGrabPrepareFunc func()
 
 //export gotk4_SeatGrabPrepareFunc
 func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpointer) {
@@ -24,5 +29,5 @@ func gotk4_SeatGrabPrepareFunc(arg0 *C.GdkSeat, arg1 *C.GdkWindow, arg2 C.gpoint
 	}
 
 	fn := v.(SeatGrabPrepareFunc)
-	fn(seat, window, userData)
+	fn()
 }

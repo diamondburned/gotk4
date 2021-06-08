@@ -3,6 +3,12 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,17 +44,17 @@ type WindowGroup interface {
 	gextras.Objector
 
 	// AddWindow adds a window to a WindowGroup.
-	AddWindow(w WindowGroup, window Window)
+	AddWindow(window Window)
 	// CurrentDeviceGrab returns the current grab widget for @device, or nil if
 	// none.
-	CurrentDeviceGrab(w WindowGroup, device gdk.Device)
+	CurrentDeviceGrab(device gdk.Device) Widget
 	// CurrentGrab gets the current grab widget of the given group, see
 	// gtk_grab_add().
-	CurrentGrab(w WindowGroup)
+	CurrentGrab() Widget
 	// ListWindows returns a list of the Windows that belong to @window_group.
-	ListWindows(w WindowGroup)
+	ListWindows() *glib.List
 	// RemoveWindow removes a window from a WindowGroup.
-	RemoveWindow(w WindowGroup, window Window)
+	RemoveWindow(window Window)
 }
 
 // windowGroup implements the WindowGroup interface.
@@ -73,12 +79,19 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 }
 
 // NewWindowGroup constructs a class WindowGroup.
-func NewWindowGroup() {
-	C.gtk_window_group_new()
+func NewWindowGroup() WindowGroup {
+	cret := new(C.GtkWindowGroup)
+	var goret WindowGroup
+
+	cret = C.gtk_window_group_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
+
+	return goret
 }
 
 // AddWindow adds a window to a WindowGroup.
-func (w windowGroup) AddWindow(w WindowGroup, window Window) {
+func (w windowGroup) AddWindow(window Window) {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GtkWindow
 
@@ -90,37 +103,61 @@ func (w windowGroup) AddWindow(w WindowGroup, window Window) {
 
 // CurrentDeviceGrab returns the current grab widget for @device, or nil if
 // none.
-func (w windowGroup) CurrentDeviceGrab(w WindowGroup, device gdk.Device) {
+func (w windowGroup) CurrentDeviceGrab(device gdk.Device) Widget {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GdkDevice
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	C.gtk_window_group_get_current_device_grab(arg0, arg1)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_window_group_get_current_device_grab(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // CurrentGrab gets the current grab widget of the given group, see
 // gtk_grab_add().
-func (w windowGroup) CurrentGrab(w WindowGroup) {
+func (w windowGroup) CurrentGrab() Widget {
 	var arg0 *C.GtkWindowGroup
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	C.gtk_window_group_get_current_grab(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_window_group_get_current_grab(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // ListWindows returns a list of the Windows that belong to @window_group.
-func (w windowGroup) ListWindows(w WindowGroup) {
+func (w windowGroup) ListWindows() *glib.List {
 	var arg0 *C.GtkWindowGroup
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	C.gtk_window_group_list_windows(arg0)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.gtk_window_group_list_windows(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // RemoveWindow removes a window from a WindowGroup.
-func (w windowGroup) RemoveWindow(w WindowGroup, window Window) {
+func (w windowGroup) RemoveWindow(window Window) {
 	var arg0 *C.GtkWindowGroup
 	var arg1 *C.GtkWindow
 

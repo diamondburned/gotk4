@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -44,8 +45,18 @@ func marshalPlane(p uintptr) (interface{}, error) {
 }
 
 // NewPlaneAlloc constructs a struct Plane.
-func NewPlaneAlloc() {
-	C.graphene_plane_alloc()
+func NewPlaneAlloc() *Plane {
+	cret := new(C.graphene_plane_t)
+	var goret *Plane
+
+	cret = C.graphene_plane_alloc()
+
+	goret = WrapPlane(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Plane) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -54,18 +65,25 @@ func (p *Plane) Native() unsafe.Pointer {
 }
 
 // Distance computes the distance of @point from a #graphene_plane_t.
-func (p *Plane) Distance(p *Plane, point *Point3D) {
+func (p *Plane) Distance(point *Point3D) float32 {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	C.graphene_plane_distance(arg0, arg1)
+	var cret C.float
+	var goret float32
+
+	cret = C.graphene_plane_distance(arg0, arg1)
+
+	goret = float32(cret)
+
+	return goret
 }
 
 // Equal checks whether the two given #graphene_plane_t are equal.
-func (a *Plane) Equal(a *Plane, b *Plane) bool {
+func (a *Plane) Equal(b *Plane) bool {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_plane_t
 
@@ -73,19 +91,19 @@ func (a *Plane) Equal(a *Plane, b *Plane) bool {
 	arg1 = (*C.graphene_plane_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_plane_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees the resources allocated by graphene_plane_alloc().
-func (p *Plane) Free(p *Plane) {
+func (p *Plane) Free() {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
@@ -95,34 +113,41 @@ func (p *Plane) Free(p *Plane) {
 
 // Constant retrieves the distance along the normal vector of the given
 // #graphene_plane_t from the origin.
-func (p *Plane) Constant(p *Plane) {
+func (p *Plane) Constant() float32 {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	C.graphene_plane_get_constant(arg0)
+	var cret C.float
+	var goret float32
+
+	cret = C.graphene_plane_get_constant(arg0)
+
+	goret = float32(cret)
+
+	return goret
 }
 
 // Normal retrieves the normal vector pointing towards the origin of the given
 // #graphene_plane_t.
-func (p *Plane) Normal(p *Plane) *Vec3 {
+func (p *Plane) Normal() *Vec3 {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	var arg1 C.graphene_vec3_t
-	var normal *Vec3
+	arg1 := new(C.graphene_vec3_t)
+	var ret1 *Vec3
 
-	C.graphene_plane_get_normal(arg0, &arg1)
+	C.graphene_plane_get_normal(arg0, arg1)
 
-	normal = WrapVec3(unsafe.Pointer(&arg1))
+	ret1 = WrapVec3(unsafe.Pointer(arg1))
 
-	return normal
+	return ret1
 }
 
 // Init initializes the given #graphene_plane_t using the given @normal vector
 // and @constant values.
-func (p *Plane) Init(p *Plane, normal *Vec3, constant float32) {
+func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_vec3_t
 	var arg2 C.float
@@ -131,24 +156,38 @@ func (p *Plane) Init(p *Plane, normal *Vec3, constant float32) {
 	arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(normal.Native()))
 	arg2 = C.float(constant)
 
-	C.graphene_plane_init(arg0, arg1, arg2)
+	var cret *C.graphene_plane_t
+	var goret *Plane
+
+	cret = C.graphene_plane_init(arg0, arg1, arg2)
+
+	goret = WrapPlane(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromPlane initializes the given #graphene_plane_t using the normal vector
 // and constant of another #graphene_plane_t.
-func (p *Plane) InitFromPlane(p *Plane, src *Plane) {
+func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.graphene_plane_t)(unsafe.Pointer(src.Native()))
 
-	C.graphene_plane_init_from_plane(arg0, arg1)
+	var cret *C.graphene_plane_t
+	var goret *Plane
+
+	cret = C.graphene_plane_init_from_plane(arg0, arg1)
+
+	goret = WrapPlane(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromPoint initializes the given #graphene_plane_t using the given normal
 // vector and an arbitrary co-planar point.
-func (p *Plane) InitFromPoint(p *Plane, normal *Vec3, point *Point3D) {
+func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_vec3_t
 	var arg2 *C.graphene_point3d_t
@@ -157,7 +196,14 @@ func (p *Plane) InitFromPoint(p *Plane, normal *Vec3, point *Point3D) {
 	arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(normal.Native()))
 	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	C.graphene_plane_init_from_point(arg0, arg1, arg2)
+	var cret *C.graphene_plane_t
+	var goret *Plane
+
+	cret = C.graphene_plane_init_from_point(arg0, arg1, arg2)
+
+	goret = WrapPlane(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromPoints initializes the given #graphene_plane_t using the 3 provided
@@ -165,7 +211,7 @@ func (p *Plane) InitFromPoint(p *Plane, normal *Vec3, point *Point3D) {
 //
 // The winding order is counter-clockwise, and determines which direction the
 // normal vector will point.
-func (p *Plane) InitFromPoints(p *Plane, a *Point3D, b *Point3D, c *Point3D) {
+func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_point3d_t
 	var arg2 *C.graphene_point3d_t
@@ -176,53 +222,67 @@ func (p *Plane) InitFromPoints(p *Plane, a *Point3D, b *Point3D, c *Point3D) {
 	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(b.Native()))
 	arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(c.Native()))
 
-	C.graphene_plane_init_from_points(arg0, arg1, arg2, arg3)
+	var cret *C.graphene_plane_t
+	var goret *Plane
+
+	cret = C.graphene_plane_init_from_points(arg0, arg1, arg2, arg3)
+
+	goret = WrapPlane(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromVec4 initializes the given #graphene_plane_t using the components of
 // the given #graphene_vec4_t vector.
-func (p *Plane) InitFromVec4(p *Plane, src *Vec4) {
+func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_vec4_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(src.Native()))
 
-	C.graphene_plane_init_from_vec4(arg0, arg1)
+	var cret *C.graphene_plane_t
+	var goret *Plane
+
+	cret = C.graphene_plane_init_from_vec4(arg0, arg1)
+
+	goret = WrapPlane(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Negate negates the normal vector and constant of a #graphene_plane_t,
 // effectively mirroring the plane across the origin.
-func (p *Plane) Negate(p *Plane) *Plane {
+func (p *Plane) Negate() *Plane {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	var arg1 C.graphene_plane_t
-	var res *Plane
+	arg1 := new(C.graphene_plane_t)
+	var ret1 *Plane
 
-	C.graphene_plane_negate(arg0, &arg1)
+	C.graphene_plane_negate(arg0, arg1)
 
-	res = WrapPlane(unsafe.Pointer(&arg1))
+	ret1 = WrapPlane(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Normalize normalizes the vector of the given #graphene_plane_t, and adjusts
 // the constant accordingly.
-func (p *Plane) Normalize(p *Plane) *Plane {
+func (p *Plane) Normalize() *Plane {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	var arg1 C.graphene_plane_t
-	var res *Plane
+	arg1 := new(C.graphene_plane_t)
+	var ret1 *Plane
 
-	C.graphene_plane_normalize(arg0, &arg1)
+	C.graphene_plane_normalize(arg0, arg1)
 
-	res = WrapPlane(unsafe.Pointer(&arg1))
+	ret1 = WrapPlane(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Transform transforms a #graphene_plane_t @p using the given @matrix and
@@ -232,7 +292,7 @@ func (p *Plane) Normalize(p *Plane) *Plane {
 // be computed from @matrix. If you are transforming multiple planes using the
 // same @matrix it's recommended to compute the normal matrix beforehand to
 // avoid incurring in the cost of recomputing it every time.
-func (p *Plane) Transform(p *Plane, matrix *Matrix, normalMatrix *Matrix) *Plane {
+func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) *Plane {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_matrix_t
 	var arg2 *C.graphene_matrix_t
@@ -241,12 +301,12 @@ func (p *Plane) Transform(p *Plane, matrix *Matrix, normalMatrix *Matrix) *Plane
 	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))
 	arg2 = (*C.graphene_matrix_t)(unsafe.Pointer(normalMatrix.Native()))
 
-	var arg3 C.graphene_plane_t
-	var res *Plane
+	arg3 := new(C.graphene_plane_t)
+	var ret3 *Plane
 
-	C.graphene_plane_transform(arg0, arg1, arg2, &arg3)
+	C.graphene_plane_transform(arg0, arg1, arg2, arg3)
 
-	res = WrapPlane(unsafe.Pointer(&arg3))
+	ret3 = WrapPlane(unsafe.Pointer(arg3))
 
-	return res
+	return ret3
 }

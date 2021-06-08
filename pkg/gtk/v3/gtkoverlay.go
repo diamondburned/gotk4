@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,10 +62,10 @@ type Overlay interface {
 	//
 	// The position at which @widget is placed is determined from its
 	// Widget:halign and Widget:valign properties.
-	AddOverlay(o Overlay, widget Widget)
+	AddOverlay(widget Widget)
 	// OverlayPassThrough: convenience function to get the value of the
 	// Overlay:pass-through child property for @widget.
-	OverlayPassThrough(o Overlay, widget Widget) bool
+	OverlayPassThrough(widget Widget) bool
 	// ReorderOverlay moves @child to a new @index in the list of @overlay
 	// children. The list contains overlays in the order that these were added
 	// to @overlay by default. See also Overlay:index.
@@ -70,10 +73,10 @@ type Overlay interface {
 	// A widget’s index in the @overlay children list determines which order the
 	// children are drawn if they overlap. The first child is drawn at the
 	// bottom. It also affects the default focus chain order.
-	ReorderOverlay(o Overlay, child Widget, index_ int)
+	ReorderOverlay(child Widget, index_ int)
 	// SetOverlayPassThrough: convenience function to set the value of the
 	// Overlay:pass-through child property for @widget.
-	SetOverlayPassThrough(o Overlay, widget Widget, passThrough bool)
+	SetOverlayPassThrough(widget Widget, passThrough bool)
 }
 
 // overlay implements the Overlay interface.
@@ -100,8 +103,15 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 }
 
 // NewOverlay constructs a class Overlay.
-func NewOverlay() {
-	C.gtk_overlay_new()
+func NewOverlay() Overlay {
+	var cret C.GtkOverlay
+	var goret Overlay
+
+	cret = C.gtk_overlay_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
+
+	return goret
 }
 
 // AddOverlay adds @widget to @overlay.
@@ -111,7 +121,7 @@ func NewOverlay() {
 //
 // The position at which @widget is placed is determined from its
 // Widget:halign and Widget:valign properties.
-func (o overlay) AddOverlay(o Overlay, widget Widget) {
+func (o overlay) AddOverlay(widget Widget) {
 	var arg0 *C.GtkOverlay
 	var arg1 *C.GtkWidget
 
@@ -123,7 +133,7 @@ func (o overlay) AddOverlay(o Overlay, widget Widget) {
 
 // OverlayPassThrough: convenience function to get the value of the
 // Overlay:pass-through child property for @widget.
-func (o overlay) OverlayPassThrough(o Overlay, widget Widget) bool {
+func (o overlay) OverlayPassThrough(widget Widget) bool {
 	var arg0 *C.GtkOverlay
 	var arg1 *C.GtkWidget
 
@@ -131,15 +141,15 @@ func (o overlay) OverlayPassThrough(o Overlay, widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_overlay_get_overlay_pass_through(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ReorderOverlay moves @child to a new @index in the list of @overlay
@@ -149,7 +159,7 @@ func (o overlay) OverlayPassThrough(o Overlay, widget Widget) bool {
 // A widget’s index in the @overlay children list determines which order the
 // children are drawn if they overlap. The first child is drawn at the
 // bottom. It also affects the default focus chain order.
-func (o overlay) ReorderOverlay(o Overlay, child Widget, index_ int) {
+func (o overlay) ReorderOverlay(child Widget, index_ int) {
 	var arg0 *C.GtkOverlay
 	var arg1 *C.GtkWidget
 	var arg2 C.int
@@ -163,7 +173,7 @@ func (o overlay) ReorderOverlay(o Overlay, child Widget, index_ int) {
 
 // SetOverlayPassThrough: convenience function to set the value of the
 // Overlay:pass-through child property for @widget.
-func (o overlay) SetOverlayPassThrough(o Overlay, widget Widget, passThrough bool) {
+func (o overlay) SetOverlayPassThrough(widget Widget, passThrough bool) {
 	var arg0 *C.GtkOverlay
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean

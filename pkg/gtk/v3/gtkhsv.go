@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,19 +35,19 @@ type HSV interface {
 
 	// Color queries the current color in an HSV color selector. Returned values
 	// will be in the [0.0, 1.0] range.
-	Color(h HSV) (h float64, s float64, v float64)
+	Color() (h float64, s float64, v float64)
 	// Metrics queries the size and ring width of an HSV color selector.
-	Metrics(h HSV) (size int, ringWidth int)
+	Metrics() (size int, ringWidth int)
 	// IsAdjusting: an HSV color selector can be said to be adjusting if
 	// multiple rapid changes are being made to its value, for example, when the
 	// user is adjusting the value with the mouse. This function queries whether
 	// the HSV color selector is being adjusted or not.
-	IsAdjusting(h HSV) bool
+	IsAdjusting() bool
 	// SetColor sets the current color in an HSV color selector. Color component
 	// values must be in the [0.0, 1.0] range.
-	SetColor(h HSV, h float64, s float64, v float64)
+	SetColor(h float64, s float64, v float64)
 	// SetMetrics sets the size and ring width of an HSV color selector.
-	SetMetrics(h HSV, size int, ringWidth int)
+	SetMetrics(size int, ringWidth int)
 }
 
 // hsV implements the HSV interface.
@@ -71,76 +74,83 @@ func marshalHSV(p uintptr) (interface{}, error) {
 }
 
 // NewHSV constructs a class HSV.
-func NewHSV() {
-	C.gtk_hsv_new()
+func NewHSV() HSV {
+	var cret C.GtkHSV
+	var goret HSV
+
+	cret = C.gtk_hsv_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HSV)
+
+	return goret
 }
 
 // Color queries the current color in an HSV color selector. Returned values
 // will be in the [0.0, 1.0] range.
-func (h hsV) Color(h HSV) (h float64, s float64, v float64) {
+func (h hsV) Color() (h float64, s float64, v float64) {
 	var arg0 *C.GtkHSV
 
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
-	var arg1 C.gdouble
-	var h float64
-	var arg2 C.gdouble
-	var s float64
-	var arg3 C.gdouble
-	var v float64
+	arg1 := new(C.gdouble)
+	var ret1 float64
+	arg2 := new(C.gdouble)
+	var ret2 float64
+	arg3 := new(C.gdouble)
+	var ret3 float64
 
-	C.gtk_hsv_get_color(arg0, &arg1, &arg2, &arg3)
+	C.gtk_hsv_get_color(arg0, arg1, arg2, arg3)
 
-	h = float64(&arg1)
-	s = float64(&arg2)
-	v = float64(&arg3)
+	ret1 = float64(*arg1)
+	ret2 = float64(*arg2)
+	ret3 = float64(*arg3)
 
-	return h, s, v
+	return ret1, ret2, ret3
 }
 
 // Metrics queries the size and ring width of an HSV color selector.
-func (h hsV) Metrics(h HSV) (size int, ringWidth int) {
+func (h hsV) Metrics() (size int, ringWidth int) {
 	var arg0 *C.GtkHSV
 
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
-	var arg1 C.gint
-	var size int
-	var arg2 C.gint
-	var ringWidth int
+	arg1 := new(C.gint)
+	var ret1 int
+	arg2 := new(C.gint)
+	var ret2 int
 
-	C.gtk_hsv_get_metrics(arg0, &arg1, &arg2)
+	C.gtk_hsv_get_metrics(arg0, arg1, arg2)
 
-	size = int(&arg1)
-	ringWidth = int(&arg2)
+	ret1 = int(*arg1)
+	ret2 = int(*arg2)
 
-	return size, ringWidth
+	return ret1, ret2
 }
 
 // IsAdjusting: an HSV color selector can be said to be adjusting if
 // multiple rapid changes are being made to its value, for example, when the
 // user is adjusting the value with the mouse. This function queries whether
 // the HSV color selector is being adjusted or not.
-func (h hsV) IsAdjusting(h HSV) bool {
+func (h hsV) IsAdjusting() bool {
 	var arg0 *C.GtkHSV
 
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_hsv_is_adjusting(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetColor sets the current color in an HSV color selector. Color component
 // values must be in the [0.0, 1.0] range.
-func (h hsV) SetColor(h HSV, h float64, s float64, v float64) {
+func (h hsV) SetColor(h float64, s float64, v float64) {
 	var arg0 *C.GtkHSV
 	var arg1 C.double
 	var arg2 C.double
@@ -155,7 +165,7 @@ func (h hsV) SetColor(h HSV, h float64, s float64, v float64) {
 }
 
 // SetMetrics sets the size and ring width of an HSV color selector.
-func (h hsV) SetMetrics(h HSV, size int, ringWidth int) {
+func (h hsV) SetMetrics(size int, ringWidth int) {
 	var arg0 *C.GtkHSV
 	var arg1 C.gint
 	var arg2 C.gint

@@ -8,7 +8,9 @@ package gtk
 import "C"
 
 // CheckVersion checks that the GTK library in use is compatible with the given
-// version. Generally you would pass in the constants GTK_MAJOR_VERSION,
+// version.
+//
+// Generally you would pass in the constants GTK_MAJOR_VERSION,
 // GTK_MINOR_VERSION, GTK_MICRO_VERSION as the three arguments to this function;
 // that produces a check that the library in use is compatible with the version
 // of GTK the application or module was compiled against.
@@ -25,7 +27,7 @@ import "C"
 // against an old version of GTK and calling the old version of
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK.
-func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) {
+func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
 	var arg1 C.guint
 	var arg2 C.guint
 	var arg3 C.guint
@@ -34,52 +36,97 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) {
 	arg2 = C.guint(requiredMinor)
 	arg3 = C.guint(requiredMicro)
 
-	C.gtk_check_version(arg1, arg2, arg3)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_check_version(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
-// GetBinaryAge returns the binary age as passed to `libtool` when building the
-// GTK library the process is running against. If `libtool` means nothing to
-// you, don't worry about it.
-func GetBinaryAge() {
-	C.gtk_get_binary_age()
+// GetBinaryAge returns the binary age as passed to `libtool`.
+//
+// If `libtool` means nothing to you, don't worry about it.
+func GetBinaryAge() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_binary_age()
+
+	goret = uint(cret)
+
+	return goret
 }
 
-// GetInterfaceAge returns the interface age as passed to `libtool` when
-// building the GTK library the process is running against. If `libtool` means
-// nothing to you, don't worry about it.
-func GetInterfaceAge() {
-	C.gtk_get_interface_age()
+// GetInterfaceAge returns the interface age as passed to `libtool`.
+//
+// If `libtool` means nothing to you, don't worry about it.
+func GetInterfaceAge() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_interface_age()
+
+	goret = uint(cret)
+
+	return goret
 }
 
-// GetMajorVersion returns the major version number of the GTK library. (e.g. in
-// GTK version 3.1.5 this is 3.)
+// GetMajorVersion returns the major version number of the GTK library.
+//
+// For example, in GTK version 3.1.5 this is 3.
 //
 // This function is in the library, so it represents the GTK library your code
 // is running against. Contrast with the GTK_MAJOR_VERSION macro, which
 // represents the major version of the GTK headers you have included when
 // compiling your code.
-func GetMajorVersion() {
-	C.gtk_get_major_version()
+func GetMajorVersion() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_major_version()
+
+	goret = uint(cret)
+
+	return goret
 }
 
-// GetMicroVersion returns the micro version number of the GTK library. (e.g. in
-// GTK version 3.1.5 this is 5.)
+// GetMicroVersion returns the micro version number of the GTK library.
+//
+// For example, in GTK version 3.1.5 this is 5.
 //
 // This function is in the library, so it represents the GTK library your code
 // is are running against. Contrast with the GTK_MICRO_VERSION macro, which
 // represents the micro version of the GTK headers you have included when
 // compiling your code.
-func GetMicroVersion() {
-	C.gtk_get_micro_version()
+func GetMicroVersion() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_micro_version()
+
+	goret = uint(cret)
+
+	return goret
 }
 
-// GetMinorVersion returns the minor version number of the GTK library. (e.g. in
-// GTK version 3.1.5 this is 1.)
+// GetMinorVersion returns the minor version number of the GTK library.
+//
+// For example, in GTK version 3.1.5 this is 1.
 //
 // This function is in the library, so it represents the GTK library your code
 // is are running against. Contrast with the GTK_MINOR_VERSION macro, which
 // represents the minor version of the GTK headers you have included when
 // compiling your code.
-func GetMinorVersion() {
-	C.gtk_get_minor_version()
+func GetMinorVersion() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_get_minor_version()
+
+	goret = uint(cret)
+
+	return goret
 }

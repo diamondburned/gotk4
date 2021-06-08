@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,13 +29,13 @@ func init() {
 type StyleProviderOverrider interface {
 	// IconFactory returns the IconFactory defined to be in use for @path, or
 	// nil if none is defined.
-	IconFactory(p StyleProvider, path *WidgetPath)
+	IconFactory(path *WidgetPath) IconFactory
 	// Style returns the style settings affecting a widget defined by @path, or
 	// nil if @provider doesn’t contemplate styling @path.
-	Style(p StyleProvider, path *WidgetPath)
+	Style(path *WidgetPath) StyleProperties
 	// StyleProperty looks up a widget style property as defined by @provider
 	// for the widget represented by @path.
-	StyleProperty(p StyleProvider, path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (value *externglib.Value, ok bool)
+	StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (value *externglib.Value, ok bool)
 }
 
 // StyleProvider: gtkStyleProvider is an interface used to provide style
@@ -65,31 +69,45 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 
 // IconFactory returns the IconFactory defined to be in use for @path, or
 // nil if none is defined.
-func (p styleProvider) IconFactory(p StyleProvider, path *WidgetPath) {
+func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 	var arg0 *C.GtkStyleProvider
 	var arg1 *C.GtkWidgetPath
 
 	arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
-	C.gtk_style_provider_get_icon_factory(arg0, arg1)
+	var cret *C.GtkIconFactory
+	var goret IconFactory
+
+	cret = C.gtk_style_provider_get_icon_factory(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconFactory)
+
+	return goret
 }
 
 // Style returns the style settings affecting a widget defined by @path, or
 // nil if @provider doesn’t contemplate styling @path.
-func (p styleProvider) Style(p StyleProvider, path *WidgetPath) {
+func (p styleProvider) Style(path *WidgetPath) StyleProperties {
 	var arg0 *C.GtkStyleProvider
 	var arg1 *C.GtkWidgetPath
 
 	arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
-	C.gtk_style_provider_get_style(arg0, arg1)
+	cret := new(C.GtkStyleProperties)
+	var goret StyleProperties
+
+	cret = C.gtk_style_provider_get_style(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StyleProperties)
+
+	return goret
 }
 
 // StyleProperty looks up a widget style property as defined by @provider
 // for the widget represented by @path.
-func (p styleProvider) StyleProperty(p StyleProvider, path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (value *externglib.Value, ok bool) {
+func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (value *externglib.Value, ok bool) {
 	var arg0 *C.GtkStyleProvider
 	var arg1 *C.GtkWidgetPath
 	var arg2 C.GtkStateFlags
@@ -100,17 +118,17 @@ func (p styleProvider) StyleProperty(p StyleProvider, path *WidgetPath, state St
 	arg2 = (C.GtkStateFlags)(state)
 	arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
-	var arg4 C.GValue
-	var value *externglib.Value
+	arg4 := new(C.GValue)
+	var ret4 *externglib.Value
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_style_provider_get_style_property(arg0, arg1, arg2, arg3, &arg4)
+	cret = C.gtk_style_provider_get_style_property(arg0, arg1, arg2, arg3, arg4)
 
-	value = externglib.ValueFromNative(unsafe.Pointer(&arg4))
+	ret4 = externglib.ValueFromNative(unsafe.Pointer(*arg4))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return value, ok
+	return ret4, goret
 }

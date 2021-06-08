@@ -2,6 +2,14 @@
 
 package gdk
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+)
+
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -13,8 +21,18 @@ import "C"
 // expect pixels to be in a certain format.
 //
 // Call g_list_free() on the return value when you’re finished with it.
-func ListVisuals() {
-	C.gdk_list_visuals()
+func ListVisuals() *glib.List {
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.gdk_list_visuals()
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // QueryDepths: this function returns the available bit depths for the default
@@ -23,9 +41,9 @@ func ListVisuals() {
 //
 // The array returned by this function should not be freed.
 func QueryDepths() {
-	C.gdk_query_depths(&arg1, &arg2)
+	C.gdk_query_depths(arg1, arg2)
 
-	return depths, count
+	return ret1, ret2
 }
 
 // QueryVisualTypes: this function returns the available visual types for the
@@ -34,7 +52,7 @@ func QueryDepths() {
 //
 // The array returned by this function should not be freed.
 func QueryVisualTypes() {
-	C.gdk_query_visual_types(&arg1, &arg2)
+	C.gdk_query_visual_types(arg1, arg2)
 
-	return visualTypes, count
+	return ret1, ret2
 }

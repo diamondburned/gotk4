@@ -18,7 +18,7 @@ import "C"
 // @required_major.required_minor.@required_micro. Second the running library
 // must be binary compatible with the version
 // @required_major.required_minor.@required_micro (same major version.)
-func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) {
+func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
 	var arg1 C.guint
 	var arg2 C.guint
 	var arg3 C.guint
@@ -27,5 +27,12 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) {
 	arg2 = C.guint(requiredMinor)
 	arg3 = C.guint(requiredMicro)
 
-	C.glib_check_version(arg1, arg2, arg3)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.glib_check_version(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+
+	return goret
 }

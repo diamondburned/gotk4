@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,26 +41,26 @@ type ColorButton interface {
 	ColorChooser
 
 	// Alpha returns the current alpha value.
-	Alpha(b ColorButton)
+	Alpha() uint16
 	// Color sets @color to be the current color in the ColorButton widget.
-	Color(b ColorButton) *gdk.Color
+	Color() *gdk.Color
 	// RGBA sets @rgba to be the current color in the ColorButton widget.
-	RGBA(b ColorButton) *gdk.RGBA
+	RGBA() *gdk.RGBA
 	// Title gets the title of the color selection dialog.
-	Title(b ColorButton)
+	Title() string
 	// UseAlpha does the color selection dialog use the alpha channel ?
-	UseAlpha(b ColorButton) bool
+	UseAlpha() bool
 	// SetAlpha sets the current opacity to be @alpha.
-	SetAlpha(b ColorButton, alpha uint16)
+	SetAlpha(alpha uint16)
 	// SetColor sets the current color to be @color.
-	SetColor(b ColorButton, color *gdk.Color)
+	SetColor(color *gdk.Color)
 	// SetRGBA sets the current color to be @rgba.
-	SetRGBA(b ColorButton, rgba *gdk.RGBA)
+	SetRGBA(rgbA *gdk.RGBA)
 	// SetTitle sets the title for the color selection dialog.
-	SetTitle(b ColorButton, title string)
+	SetTitle(title string)
 	// SetUseAlpha sets whether or not the color button should use the alpha
 	// channel.
-	SetUseAlpha(b ColorButton, useAlpha bool)
+	SetUseAlpha(useAlpha bool)
 }
 
 // colorButton implements the ColorButton interface.
@@ -89,98 +93,133 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 }
 
 // NewColorButton constructs a class ColorButton.
-func NewColorButton() {
-	C.gtk_color_button_new()
+func NewColorButton() ColorButton {
+	var cret C.GtkColorButton
+	var goret ColorButton
+
+	cret = C.gtk_color_button_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+
+	return goret
 }
 
 // NewColorButtonWithColor constructs a class ColorButton.
-func NewColorButtonWithColor(color *gdk.Color) {
+func NewColorButtonWithColor(color *gdk.Color) ColorButton {
 	var arg1 *C.GdkColor
 
 	arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
 
-	C.gtk_color_button_new_with_color(arg1)
+	var cret C.GtkColorButton
+	var goret ColorButton
+
+	cret = C.gtk_color_button_new_with_color(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+
+	return goret
 }
 
 // NewColorButtonWithRGBA constructs a class ColorButton.
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) {
+func NewColorButtonWithRGBA(rgbA *gdk.RGBA) ColorButton {
 	var arg1 *C.GdkRGBA
 
-	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgbA.Native()))
 
-	C.gtk_color_button_new_with_rgba(arg1)
+	var cret C.GtkColorButton
+	var goret ColorButton
+
+	cret = C.gtk_color_button_new_with_rgba(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+
+	return goret
 }
 
 // Alpha returns the current alpha value.
-func (b colorButton) Alpha(b ColorButton) {
+func (b colorButton) Alpha() uint16 {
 	var arg0 *C.GtkColorButton
 
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_color_button_get_alpha(arg0)
+	var cret C.guint16
+	var goret uint16
+
+	cret = C.gtk_color_button_get_alpha(arg0)
+
+	goret = uint16(cret)
+
+	return goret
 }
 
 // Color sets @color to be the current color in the ColorButton widget.
-func (b colorButton) Color(b ColorButton) *gdk.Color {
+func (b colorButton) Color() *gdk.Color {
 	var arg0 *C.GtkColorButton
 
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
-	var arg1 C.GdkColor
-	var color *gdk.Color
+	arg1 := new(C.GdkColor)
+	var ret1 *gdk.Color
 
-	C.gtk_color_button_get_color(arg0, &arg1)
+	C.gtk_color_button_get_color(arg0, arg1)
 
-	color = gdk.WrapColor(unsafe.Pointer(&arg1))
+	ret1 = gdk.WrapColor(unsafe.Pointer(arg1))
 
-	return color
+	return ret1
 }
 
 // RGBA sets @rgba to be the current color in the ColorButton widget.
-func (b colorButton) RGBA(b ColorButton) *gdk.RGBA {
+func (b colorButton) RGBA() *gdk.RGBA {
 	var arg0 *C.GtkColorButton
 
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
-	var arg1 C.GdkRGBA
-	var rgba *gdk.RGBA
+	arg1 := new(C.GdkRGBA)
+	var ret1 *gdk.RGBA
 
-	C.gtk_color_button_get_rgba(arg0, &arg1)
+	C.gtk_color_button_get_rgba(arg0, arg1)
 
-	rgba = gdk.WrapRGBA(unsafe.Pointer(&arg1))
+	ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
 
-	return rgba
+	return ret1
 }
 
 // Title gets the title of the color selection dialog.
-func (b colorButton) Title(b ColorButton) {
+func (b colorButton) Title() string {
 	var arg0 *C.GtkColorButton
 
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_color_button_get_title(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_color_button_get_title(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // UseAlpha does the color selection dialog use the alpha channel ?
-func (b colorButton) UseAlpha(b ColorButton) bool {
+func (b colorButton) UseAlpha() bool {
 	var arg0 *C.GtkColorButton
 
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_color_button_get_use_alpha(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetAlpha sets the current opacity to be @alpha.
-func (b colorButton) SetAlpha(b ColorButton, alpha uint16) {
+func (b colorButton) SetAlpha(alpha uint16) {
 	var arg0 *C.GtkColorButton
 	var arg1 C.guint16
 
@@ -191,7 +230,7 @@ func (b colorButton) SetAlpha(b ColorButton, alpha uint16) {
 }
 
 // SetColor sets the current color to be @color.
-func (b colorButton) SetColor(b ColorButton, color *gdk.Color) {
+func (b colorButton) SetColor(color *gdk.Color) {
 	var arg0 *C.GtkColorButton
 	var arg1 *C.GdkColor
 
@@ -202,18 +241,18 @@ func (b colorButton) SetColor(b ColorButton, color *gdk.Color) {
 }
 
 // SetRGBA sets the current color to be @rgba.
-func (b colorButton) SetRGBA(b ColorButton, rgba *gdk.RGBA) {
+func (b colorButton) SetRGBA(rgbA *gdk.RGBA) {
 	var arg0 *C.GtkColorButton
 	var arg1 *C.GdkRGBA
 
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgbA.Native()))
 
 	C.gtk_color_button_set_rgba(arg0, arg1)
 }
 
 // SetTitle sets the title for the color selection dialog.
-func (b colorButton) SetTitle(b ColorButton, title string) {
+func (b colorButton) SetTitle(title string) {
 	var arg0 *C.GtkColorButton
 	var arg1 *C.gchar
 
@@ -226,7 +265,7 @@ func (b colorButton) SetTitle(b ColorButton, title string) {
 
 // SetUseAlpha sets whether or not the color button should use the alpha
 // channel.
-func (b colorButton) SetUseAlpha(b ColorButton, useAlpha bool) {
+func (b colorButton) SetUseAlpha(useAlpha bool) {
 	var arg0 *C.GtkColorButton
 	var arg1 C.gboolean
 

@@ -28,16 +28,10 @@ func init() {
 	})
 }
 
-// MemoryMonitorDupDefault gets a reference to the default Monitor for the
-// system.
-func MemoryMonitorDupDefault() {
-	C.g_memory_monitor_dup_default()
-}
-
 // MemoryMonitorOverrider contains methods that are overridable. This
 // interface is a subset of the interface MemoryMonitor.
 type MemoryMonitorOverrider interface {
-	LowMemoryWarning(m MemoryMonitor, level MemoryMonitorWarningLevel)
+	LowMemoryWarning(level MemoryMonitorWarningLevel)
 }
 
 // MemoryMonitor: Monitor will monitor system memory and suggest to the

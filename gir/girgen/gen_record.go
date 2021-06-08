@@ -96,7 +96,7 @@ func newRecordGenerator(ng *NamespaceGenerator) *recordGenerator {
 }
 
 // canRecord returns true if this record is allowed.
-func canRecord(logger TypeResolver, rec gir.Record) bool {
+func canRecord(ng *NamespaceGenerator, rec gir.Record, logger TypeResolver) bool {
 	// GLibIsGTypeStructFor seems to be records used in addition to classes due
 	// to C? Not sure, but we likely don't need it.
 	if rec.GLibIsGTypeStructFor != "" || strings.HasPrefix(rec.Name, "_") {
@@ -111,7 +111,9 @@ func canRecord(logger TypeResolver, rec gir.Record) bool {
 
 	// Ignore non-type/array fields.
 	for _, field := range rec.Fields {
-		if field.Type == nil && field.Array == nil {
+		// Check the type against the ignored list, since ignores are usually
+		// important, and CGo might still try to resolve an ignored type.
+		if ng.mustIgnoreAny(field.AnyType) {
 			tryLogln(logger, LogSkip, "record", rec.Name, "skipped, field", field.Name)
 			return false
 		}
@@ -123,7 +125,7 @@ func canRecord(logger TypeResolver, rec gir.Record) bool {
 func (rg *recordGenerator) Use(rec gir.Record) bool {
 	rg.fg = rg.ng.FileFromSource(rec.SourcePosition)
 
-	if !canRecord(rg.fg, rec) {
+	if !canRecord(rg.ng, rec, rg.fg) {
 		return false
 	}
 
@@ -225,18 +227,6 @@ func (rg *recordGenerator) getters() []recordGetter {
 	}
 
 	return getters
-}
-
-// needsNative returns true if the record needs a private C field for
-// referencing.
-func (rg *recordGenerator) needsNative() bool {
-	for _, field := range rg.Fields {
-		if field.Private {
-			return true
-		}
-	}
-
-	return len(rg.Fields) == 0
 }
 
 func (ng *NamespaceGenerator) generateRecords() {

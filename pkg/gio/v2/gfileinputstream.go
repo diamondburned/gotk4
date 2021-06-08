@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,7 +51,7 @@ type FileInputStream interface {
 	// g_file_input_stream_query_info_async(). While the stream is blocked, the
 	// stream will set the pending flag internally, and any other operations on
 	// the stream will fail with G_IO_ERROR_PENDING.
-	QueryInfo(s FileInputStream, attributes string, cancellable Cancellable) error
+	QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error)
 	// QueryInfoAsync queries the stream information asynchronously. When the
 	// operation is finished @callback will be called. You can then call
 	// g_file_input_stream_query_info_finish() to get the result of the
@@ -59,9 +63,9 @@ type FileInputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set
-	QueryInfoAsync(s FileInputStream)
+	QueryInfoAsync()
 	// QueryInfoFinish finishes an asynchronous info query operation.
-	QueryInfoFinish(s FileInputStream, result AsyncResult) error
+	QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error)
 }
 
 // fileInputStream implements the FileInputStream interface.
@@ -93,7 +97,7 @@ func marshalFileInputStream(p uintptr) (interface{}, error) {
 // g_file_input_stream_query_info_async(). While the stream is blocked, the
 // stream will set the pending flag internally, and any other operations on
 // the stream will fail with G_IO_ERROR_PENDING.
-func (s fileInputStream) QueryInfo(s FileInputStream, attributes string, cancellable Cancellable) error {
+func (s fileInputStream) QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileInputStream
 	var arg1 *C.char
 	var arg2 *C.GCancellable
@@ -103,14 +107,17 @@ func (s fileInputStream) QueryInfo(s FileInputStream, attributes string, cancell
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GFileInfo)
+	var goret FileInfo
+	var cerr *C.GError
+	var goerr error
 
-	C.g_file_input_stream_query_info(arg0, arg1, arg2, &errout)
+	cret = C.g_file_input_stream_query_info(arg0, arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // QueryInfoAsync queries the stream information asynchronously. When the
@@ -124,7 +131,7 @@ func (s fileInputStream) QueryInfo(s FileInputStream, attributes string, cancell
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be set
-func (s fileInputStream) QueryInfoAsync(s FileInputStream) {
+func (s fileInputStream) QueryInfoAsync() {
 	var arg0 *C.GFileInputStream
 
 	arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
@@ -133,19 +140,22 @@ func (s fileInputStream) QueryInfoAsync(s FileInputStream) {
 }
 
 // QueryInfoFinish finishes an asynchronous info query operation.
-func (s fileInputStream) QueryInfoFinish(s FileInputStream, result AsyncResult) error {
+func (s fileInputStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, err error) {
 	var arg0 *C.GFileInputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GFileInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GFileInfo)
+	var goret FileInfo
+	var cerr *C.GError
+	var goerr error
 
-	C.g_file_input_stream_query_info_finish(arg0, arg1, &errout)
+	cret = C.g_file_input_stream_query_info_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }

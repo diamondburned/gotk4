@@ -29,21 +29,6 @@ func init() {
 // the #get_charset and #get_glyph callbacks into your object implementation.
 type Decoder interface {
 	gextras.Objector
-
-	// Charset generates an `FcCharSet` of supported characters for the @fcfont
-	// given.
-	//
-	// The returned `FcCharSet` will be a reference to an internal value stored
-	// by the `PangoFcDecoder` and must not be modified or freed.
-	Charset(d Decoder, fcfont Font)
-	// Glyph generates a `PangoGlyph` for the given Unicode point using the
-	// custom decoder.
-	//
-	// For complex scripts where there can be multiple glyphs for a single
-	// character, the decoder will return whatever glyph is most convenient for
-	// it. (Usually whatever glyph is directly in the fonts character map
-	// table.)
-	Glyph(d Decoder, fcfont Font, wc uint32)
 }
 
 // decoder implements the Decoder interface.
@@ -65,38 +50,4 @@ func marshalDecoder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDecoder(obj), nil
-}
-
-// Charset generates an `FcCharSet` of supported characters for the @fcfont
-// given.
-//
-// The returned `FcCharSet` will be a reference to an internal value stored
-// by the `PangoFcDecoder` and must not be modified or freed.
-func (d decoder) Charset(d Decoder, fcfont Font) {
-	var arg0 *C.PangoFcDecoder
-	var arg1 *C.PangoFcFont
-
-	arg0 = (*C.PangoFcDecoder)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.PangoFcFont)(unsafe.Pointer(fcfont.Native()))
-
-	C.pango_fc_decoder_get_charset(arg0, arg1)
-}
-
-// Glyph generates a `PangoGlyph` for the given Unicode point using the
-// custom decoder.
-//
-// For complex scripts where there can be multiple glyphs for a single
-// character, the decoder will return whatever glyph is most convenient for
-// it. (Usually whatever glyph is directly in the fonts character map
-// table.)
-func (d decoder) Glyph(d Decoder, fcfont Font, wc uint32) {
-	var arg0 *C.PangoFcDecoder
-	var arg1 *C.PangoFcFont
-	var arg2 C.guint32
-
-	arg0 = (*C.PangoFcDecoder)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.PangoFcFont)(unsafe.Pointer(fcfont.Native()))
-	arg2 = C.guint32(wc)
-
-	C.pango_fc_decoder_get_glyph(arg0, arg1, arg2)
 }

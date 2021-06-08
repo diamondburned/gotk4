@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,7 +79,7 @@ func marshalVBox(p uintptr) (interface{}, error) {
 }
 
 // NewVBox constructs a class VBox.
-func NewVBox(homogeneous bool, spacing int) {
+func NewVBox(homogeneous bool, spacing int) VBox {
 	var arg1 C.gboolean
 	var arg2 C.gint
 
@@ -85,5 +88,12 @@ func NewVBox(homogeneous bool, spacing int) {
 	}
 	arg2 = C.gint(spacing)
 
-	C.gtk_vbox_new(arg1, arg2)
+	var cret C.GtkVBox
+	var goret VBox
+
+	cret = C.gtk_vbox_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VBox)
+
+	return goret
 }

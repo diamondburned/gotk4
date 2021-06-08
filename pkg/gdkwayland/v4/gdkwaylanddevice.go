@@ -19,23 +19,30 @@ func init() {
 	})
 }
 
+// WaylandDevice: the Wayland implementation of `GdkDevice`.
+//
+// Beyond the regular [class@Gdk.Device] API, the Wayland implementation
+// provides access to Wayland objects such as the `wl_seat` with
+// [method@GdkWayland.WaylandDevice.get_wl_seat], the `wl_keyboard` with
+// [method@GdkWayland.WaylandDevice.get_wl_keyboard] and the `wl_pointer` with
+// [method@GdkWayland.WaylandDevice.get_wl_pointer].
 type WaylandDevice interface {
 	gdk.Device
 
 	// NodePath returns the `/dev/input/event*` path of this device.
 	//
-	// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
-	// keyboard, touch,...), this function will return nil.
+	// For `GdkDevice`s that possibly coalesce multiple hardware devices (eg.
+	// mouse, keyboard, touch,...), this function will return nil.
 	//
 	// This is most notably implemented for devices of type GDK_SOURCE_PEN,
 	// GDK_SOURCE_TABLET_PAD.
-	NodePath(d WaylandDevice)
-	// WlKeyboard returns the Wayland wl_keyboard of a Device.
-	WlKeyboard(d WaylandDevice)
-	// WlPointer returns the Wayland wl_pointer of a Device.
-	WlPointer(d WaylandDevice)
-	// WlSeat returns the Wayland wl_seat of a Device.
-	WlSeat(d WaylandDevice)
+	NodePath() string
+	// WlKeyboard returns the Wayland `wl_keyboard` of a `GdkDevice`.
+	WlKeyboard() interface{}
+	// WlPointer returns the Wayland `wl_pointer` of a `GdkDevice`.
+	WlPointer() interface{}
+	// WlSeat returns the Wayland `wl_seat` of a `GdkDevice`.
+	WlSeat() interface{}
 }
 
 // waylandDevice implements the WaylandDevice interface.
@@ -61,42 +68,70 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 
 // NodePath returns the `/dev/input/event*` path of this device.
 //
-// For Devices that possibly coalesce multiple hardware devices (eg. mouse,
-// keyboard, touch,...), this function will return nil.
+// For `GdkDevice`s that possibly coalesce multiple hardware devices (eg.
+// mouse, keyboard, touch,...), this function will return nil.
 //
 // This is most notably implemented for devices of type GDK_SOURCE_PEN,
 // GDK_SOURCE_TABLET_PAD.
-func (d waylandDevice) NodePath(d WaylandDevice) {
+func (d waylandDevice) NodePath() string {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	C.gdk_wayland_device_get_node_path(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gdk_wayland_device_get_node_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
-// WlKeyboard returns the Wayland wl_keyboard of a Device.
-func (d waylandDevice) WlKeyboard(d WaylandDevice) {
+// WlKeyboard returns the Wayland `wl_keyboard` of a `GdkDevice`.
+func (d waylandDevice) WlKeyboard() interface{} {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	C.gdk_wayland_device_get_wl_keyboard(arg0)
+	var cret *C.wl_keyboard
+	var goret interface{}
+
+	cret = C.gdk_wayland_device_get_wl_keyboard(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
-// WlPointer returns the Wayland wl_pointer of a Device.
-func (d waylandDevice) WlPointer(d WaylandDevice) {
+// WlPointer returns the Wayland `wl_pointer` of a `GdkDevice`.
+func (d waylandDevice) WlPointer() interface{} {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	C.gdk_wayland_device_get_wl_pointer(arg0)
+	var cret *C.wl_pointer
+	var goret interface{}
+
+	cret = C.gdk_wayland_device_get_wl_pointer(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
-// WlSeat returns the Wayland wl_seat of a Device.
-func (d waylandDevice) WlSeat(d WaylandDevice) {
+// WlSeat returns the Wayland `wl_seat` of a `GdkDevice`.
+func (d waylandDevice) WlSeat() interface{} {
 	var arg0 *C.GdkDevice
 
 	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	C.gdk_wayland_device_get_wl_seat(arg0)
+	var cret *C.wl_seat
+	var goret interface{}
+
+	cret = C.gdk_wayland_device_get_wl_seat(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }

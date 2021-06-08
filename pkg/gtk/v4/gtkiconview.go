@@ -3,7 +3,13 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -12,8 +18,10 @@ import (
 import "C"
 
 // IconViewForeachFunc: a function used by gtk_icon_view_selected_foreach() to
-// map all selected rows. It will be called on every selected row in the view.
-type IconViewForeachFunc func(iconView IconView, path *TreePath)
+// map all selected rows.
+//
+// It will be called on every selected row in the view.
+type IconViewForeachFunc func()
 
 //export gotk4_IconViewForeachFunc
 func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.gpointer) {
@@ -23,5 +31,5 @@ func gotk4_IconViewForeachFunc(arg0 *C.GtkIconView, arg1 *C.GtkTreePath, arg2 C.
 	}
 
 	fn := v.(IconViewForeachFunc)
-	fn(iconView, path, data)
+	fn()
 }

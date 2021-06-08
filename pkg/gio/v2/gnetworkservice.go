@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,17 +44,17 @@ type NetworkService interface {
 
 	// Domain gets the domain that @srv serves. This might be either UTF-8 or
 	// ASCII-encoded, depending on what @srv was created with.
-	Domain(s NetworkService)
+	Domain() string
 	// Protocol gets @srv's protocol name (eg, "tcp").
-	Protocol(s NetworkService)
+	Protocol() string
 	// Scheme gets the URI scheme used to resolve proxies. By default, the
 	// service name is used as scheme.
-	Scheme(s NetworkService)
+	Scheme() string
 	// Service gets @srv's service name (eg, "ldap").
-	Service(s NetworkService)
+	Service() string
 	// SetScheme set's the URI scheme used to resolve proxies. By default, the
 	// service name is used as scheme.
-	SetScheme(s NetworkService, scheme string)
+	SetScheme(scheme string)
 }
 
 // networkService implements the NetworkService interface.
@@ -78,7 +81,7 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 }
 
 // NewNetworkService constructs a class NetworkService.
-func NewNetworkService(service string, protocol string, domain string) {
+func NewNetworkService(service string, protocol string, domain string) NetworkService {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -90,50 +93,85 @@ func NewNetworkService(service string, protocol string, domain string) {
 	arg3 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_network_service_new(arg1, arg2, arg3)
+	cret := new(C.GNetworkService)
+	var goret NetworkService
+
+	cret = C.g_network_service_new(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkService)
+
+	return goret
 }
 
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what @srv was created with.
-func (s networkService) Domain(s NetworkService) {
+func (s networkService) Domain() string {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	C.g_network_service_get_domain(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_network_service_get_domain(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Protocol gets @srv's protocol name (eg, "tcp").
-func (s networkService) Protocol(s NetworkService) {
+func (s networkService) Protocol() string {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	C.g_network_service_get_protocol(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_network_service_get_protocol(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Scheme gets the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
-func (s networkService) Scheme(s NetworkService) {
+func (s networkService) Scheme() string {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	C.g_network_service_get_scheme(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_network_service_get_scheme(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Service gets @srv's service name (eg, "ldap").
-func (s networkService) Service(s NetworkService) {
+func (s networkService) Service() string {
 	var arg0 *C.GNetworkService
 
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	C.g_network_service_get_service(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_network_service_get_service(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // SetScheme set's the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
-func (s networkService) SetScheme(s NetworkService, scheme string) {
+func (s networkService) SetScheme(scheme string) {
 	var arg0 *C.GNetworkService
 	var arg1 *C.gchar
 

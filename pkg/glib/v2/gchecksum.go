@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -40,29 +41,27 @@ const (
 	ChecksumTypeSHA384 ChecksumType = 4
 )
 
-// ChecksumTypeGetLength gets the length in bytes of digests of type
-// @checksum_type
-func ChecksumTypeGetLength(checksumType ChecksumType) {
-	var arg1 C.GChecksumType
-
-	arg1 = (C.GChecksumType)(checksumType)
-
-	C.g_checksum_type_get_length(arg1)
-}
-
 // ComputeChecksumForBytes computes the checksum for a binary @data. This is a
 // convenience wrapper for g_checksum_new(), g_checksum_get_string() and
 // g_checksum_free().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) {
+func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) string {
 	var arg1 C.GChecksumType
 	var arg2 *C.GBytes
 
 	arg1 = (C.GChecksumType)(checksumType)
 	arg2 = (*C.GBytes)(unsafe.Pointer(data.Native()))
 
-	C.g_compute_checksum_for_bytes(arg1, arg2)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_compute_checksum_for_bytes(arg1, arg2)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ComputeChecksumForData computes the checksum for a binary @data of @length.
@@ -70,14 +69,22 @@ func ComputeChecksumForBytes(checksumType ChecksumType, data *Bytes) {
 // and g_checksum_free().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeChecksumForData() {
-	C.g_compute_checksum_for_data(arg1, arg2, arg3)
+func ComputeChecksumForData() string {
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_compute_checksum_for_data(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ComputeChecksumForString computes the checksum of a string.
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeChecksumForString(checksumType ChecksumType, str string, length int) {
+func ComputeChecksumForString(checksumType ChecksumType, str string, length int) string {
 	var arg1 C.GChecksumType
 	var arg2 *C.gchar
 	var arg3 C.gssize
@@ -87,7 +94,15 @@ func ComputeChecksumForString(checksumType ChecksumType, str string, length int)
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gssize(length)
 
-	C.g_compute_checksum_for_string(arg1, arg2, arg3)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_compute_checksum_for_string(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Checksum: an opaque structure representing a checksumming operation. To
@@ -113,12 +128,22 @@ func marshalChecksum(p uintptr) (interface{}, error) {
 }
 
 // NewChecksum constructs a struct Checksum.
-func NewChecksum(checksumType ChecksumType) {
+func NewChecksum(checksumType ChecksumType) *Checksum {
 	var arg1 C.GChecksumType
 
 	arg1 = (C.GChecksumType)(checksumType)
 
-	C.g_checksum_new(arg1)
+	cret := new(C.GChecksum)
+	var goret *Checksum
+
+	cret = C.g_checksum_new(arg1)
+
+	goret = WrapChecksum(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Checksum) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -129,16 +154,26 @@ func (c *Checksum) Native() unsafe.Pointer {
 // Copy copies a #GChecksum. If @checksum has been closed, by calling
 // g_checksum_get_string() or g_checksum_get_digest(), the copied checksum will
 // be closed as well.
-func (c *Checksum) Copy(c *Checksum) {
+func (c *Checksum) Copy() *Checksum {
 	var arg0 *C.GChecksum
 
 	arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
 
-	C.g_checksum_copy(arg0)
+	cret := new(C.GChecksum)
+	var goret *Checksum
+
+	cret = C.g_checksum_copy(arg0)
+
+	goret = WrapChecksum(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Checksum) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Free frees the memory allocated for @checksum.
-func (c *Checksum) Free(c *Checksum) {
+func (c *Checksum) Free() {
 	var arg0 *C.GChecksum
 
 	arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
@@ -151,7 +186,7 @@ func (c *Checksum) Free(c *Checksum) {
 //
 // Once this function has been called, the #GChecksum is closed and can no
 // longer be updated with g_checksum_update().
-func (c *Checksum) Digest(c *Checksum) {
+func (c *Checksum) Digest() {
 	var arg0 *C.GChecksum
 
 	arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
@@ -165,16 +200,23 @@ func (c *Checksum) Digest(c *Checksum) {
 // with g_checksum_update().
 //
 // The hexadecimal characters will be lower case.
-func (c *Checksum) String(c *Checksum) {
+func (c *Checksum) String() string {
 	var arg0 *C.GChecksum
 
 	arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
 
-	C.g_checksum_get_string(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_checksum_get_string(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Reset resets the state of the @checksum back to its initial state.
-func (c *Checksum) Reset(c *Checksum) {
+func (c *Checksum) Reset() {
 	var arg0 *C.GChecksum
 
 	arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))
@@ -185,7 +227,7 @@ func (c *Checksum) Reset(c *Checksum) {
 // Update feeds @data into an existing #GChecksum. The checksum must still be
 // open, that is g_checksum_get_string() or g_checksum_get_digest() must not
 // have been called on @checksum.
-func (c *Checksum) Update(c *Checksum) {
+func (c *Checksum) Update() {
 	var arg0 *C.GChecksum
 
 	arg0 = (*C.GChecksum)(unsafe.Pointer(c.Native()))

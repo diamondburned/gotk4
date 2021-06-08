@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,16 +50,16 @@ type BufferedOutputStream interface {
 	Seekable
 
 	// AutoGrow checks if the buffer automatically grows as data is added.
-	AutoGrow(s BufferedOutputStream) bool
+	AutoGrow() bool
 	// BufferSize gets the size of the buffer in the @stream.
-	BufferSize(s BufferedOutputStream)
+	BufferSize() uint
 	// SetAutoGrow sets whether or not the @stream's buffer should automatically
 	// grow. If @auto_grow is true, then each write will just make the buffer
 	// larger, and you must manually flush the buffer to actually write out the
 	// data to the underlying stream.
-	SetAutoGrow(s BufferedOutputStream, autoGrow bool)
+	SetAutoGrow(autoGrow bool)
 	// SetBufferSize sets the size of the internal buffer to @size.
-	SetBufferSize(s BufferedOutputStream, size uint)
+	SetBufferSize(size uint)
 }
 
 // bufferedOutputStream implements the BufferedOutputStream interface.
@@ -83,57 +86,78 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 }
 
 // NewBufferedOutputStream constructs a class BufferedOutputStream.
-func NewBufferedOutputStream(baseStream OutputStream) {
+func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 	var arg1 *C.GOutputStream
 
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
-	C.g_buffered_output_stream_new(arg1)
+	cret := new(C.GBufferedOutputStream)
+	var goret BufferedOutputStream
+
+	cret = C.g_buffered_output_stream_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+
+	return goret
 }
 
 // NewBufferedOutputStreamSized constructs a class BufferedOutputStream.
-func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) {
+func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOutputStream {
 	var arg1 *C.GOutputStream
 	var arg2 C.gsize
 
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 	arg2 = C.gsize(size)
 
-	C.g_buffered_output_stream_new_sized(arg1, arg2)
+	cret := new(C.GBufferedOutputStream)
+	var goret BufferedOutputStream
+
+	cret = C.g_buffered_output_stream_new_sized(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+
+	return goret
 }
 
 // AutoGrow checks if the buffer automatically grows as data is added.
-func (s bufferedOutputStream) AutoGrow(s BufferedOutputStream) bool {
+func (s bufferedOutputStream) AutoGrow() bool {
 	var arg0 *C.GBufferedOutputStream
 
 	arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_buffered_output_stream_get_auto_grow(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // BufferSize gets the size of the buffer in the @stream.
-func (s bufferedOutputStream) BufferSize(s BufferedOutputStream) {
+func (s bufferedOutputStream) BufferSize() uint {
 	var arg0 *C.GBufferedOutputStream
 
 	arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_buffered_output_stream_get_buffer_size(arg0)
+	var cret C.gsize
+	var goret uint
+
+	cret = C.g_buffered_output_stream_get_buffer_size(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // SetAutoGrow sets whether or not the @stream's buffer should automatically
 // grow. If @auto_grow is true, then each write will just make the buffer
 // larger, and you must manually flush the buffer to actually write out the
 // data to the underlying stream.
-func (s bufferedOutputStream) SetAutoGrow(s BufferedOutputStream, autoGrow bool) {
+func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 	var arg0 *C.GBufferedOutputStream
 	var arg1 C.gboolean
 
@@ -146,7 +170,7 @@ func (s bufferedOutputStream) SetAutoGrow(s BufferedOutputStream, autoGrow bool)
 }
 
 // SetBufferSize sets the size of the internal buffer to @size.
-func (s bufferedOutputStream) SetBufferSize(s BufferedOutputStream, size uint) {
+func (s bufferedOutputStream) SetBufferSize(size uint) {
 	var arg0 *C.GBufferedOutputStream
 	var arg1 C.gsize
 

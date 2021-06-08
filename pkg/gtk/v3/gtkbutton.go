@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,85 +53,85 @@ type Button interface {
 	Buildable
 
 	// Clicked emits a Button::clicked signal to the given Button.
-	Clicked(b Button)
+	Clicked()
 	// Enter emits a Button::enter signal to the given Button.
-	Enter(b Button)
+	Enter()
 	// Alignment gets the alignment of the child in the button.
-	Alignment(b Button) (xalign float32, yalign float32)
+	Alignment() (xalign float32, yalign float32)
 	// AlwaysShowImage returns whether the button will ignore the
 	// Settings:gtk-button-images setting and always show the image, if
 	// available.
-	AlwaysShowImage(b Button) bool
+	AlwaysShowImage() bool
 	// EventWindow returns the button’s event window if it is realized, nil
 	// otherwise. This function should be rarely needed.
-	EventWindow(b Button)
+	EventWindow() gdk.Window
 	// FocusOnClick returns whether the button grabs focus when it is clicked
 	// with the mouse. See gtk_button_set_focus_on_click().
-	FocusOnClick(b Button) bool
+	FocusOnClick() bool
 	// Image gets the widget that is currenty set as the image of @button. This
 	// may have been explicitly set by gtk_button_set_image() or constructed by
 	// gtk_button_new_from_stock().
-	Image(b Button)
+	Image() Widget
 	// ImagePosition gets the position of the image relative to the text inside
 	// the button.
-	ImagePosition(b Button)
+	ImagePosition() PositionType
 	// Label fetches the text from the label of the button, as set by
 	// gtk_button_set_label(). If the label text has not been set the return
 	// value will be nil. This will be the case if you create an empty button
 	// with gtk_button_new() to use as a container.
-	Label(b Button)
+	Label() string
 	// Relief returns the current relief style of the given Button.
-	Relief(b Button)
+	Relief() ReliefStyle
 	// UseStock returns whether the button label is a stock item.
-	UseStock(b Button) bool
+	UseStock() bool
 	// UseUnderline returns whether an embedded underline in the button label
 	// indicates a mnemonic. See gtk_button_set_use_underline ().
-	UseUnderline(b Button) bool
+	UseUnderline() bool
 	// Leave emits a Button::leave signal to the given Button.
-	Leave(b Button)
+	Leave()
 	// Pressed emits a Button::pressed signal to the given Button.
-	Pressed(b Button)
+	Pressed()
 	// Released emits a Button::released signal to the given Button.
-	Released(b Button)
+	Released()
 	// SetAlignment sets the alignment of the child. This property has no effect
 	// unless the child is a Misc or a Alignment.
-	SetAlignment(b Button, xalign float32, yalign float32)
+	SetAlignment(xalign float32, yalign float32)
 	// SetAlwaysShowImage: if true, the button will ignore the
 	// Settings:gtk-button-images setting and always show the image, if
 	// available.
 	//
 	// Use this property if the button would be useless or hard to use without
 	// the image.
-	SetAlwaysShowImage(b Button, alwaysShow bool)
+	SetAlwaysShowImage(alwaysShow bool)
 	// SetFocusOnClick sets whether the button will grab focus when it is
 	// clicked with the mouse. Making mouse clicks not grab focus is useful in
 	// places like toolbars where you don’t want the keyboard focus removed from
 	// the main area of the application.
-	SetFocusOnClick(b Button, focusOnClick bool)
+	SetFocusOnClick(focusOnClick bool)
 	// SetImage: set the image of @button to the given widget. The image will be
 	// displayed if the label text is nil or if Button:always-show-image is
 	// true. You don’t have to call gtk_widget_show() on @image yourself.
-	SetImage(b Button, image Widget)
+	SetImage(image Widget)
 	// SetImagePosition sets the position of the image relative to the text
 	// inside the button.
-	SetImagePosition(b Button, position PositionType)
+	SetImagePosition(position PositionType)
 	// SetLabel sets the text of the label of the button to @str. This text is
 	// also used to select the stock item if gtk_button_set_use_stock() is used.
 	//
 	// This will also clear any previously set labels.
-	SetLabel(b Button, label string)
+	SetLabel(label string)
 	// SetRelief sets the relief style of the edges of the given Button widget.
 	// Two styles exist, GTK_RELIEF_NORMAL and GTK_RELIEF_NONE. The default
 	// style is, as one can guess, GTK_RELIEF_NORMAL. The deprecated value
 	// GTK_RELIEF_HALF behaves the same as GTK_RELIEF_NORMAL.
-	SetRelief(b Button, relief ReliefStyle)
+	SetRelief(relief ReliefStyle)
 	// SetUseStock: if true, the label set on the button is used as a stock id
 	// to select the stock item for the button.
-	SetUseStock(b Button, useStock bool)
+	SetUseStock(useStock bool)
 	// SetUseUnderline: if true, an underline in the text of the button label
 	// indicates the next character should be used for the mnemonic accelerator
 	// key.
-	SetUseUnderline(b Button, useUnderline bool)
+	SetUseUnderline(useUnderline bool)
 }
 
 // button implements the Button interface.
@@ -158,12 +162,19 @@ func marshalButton(p uintptr) (interface{}, error) {
 }
 
 // NewButton constructs a class Button.
-func NewButton() {
-	C.gtk_button_new()
+func NewButton() Button {
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // NewButtonFromIconName constructs a class Button.
-func NewButtonFromIconName(iconName string, size int) {
+func NewButtonFromIconName(iconName string, size int) Button {
 	var arg1 *C.gchar
 	var arg2 C.GtkIconSize
 
@@ -171,41 +182,69 @@ func NewButtonFromIconName(iconName string, size int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.GtkIconSize(size)
 
-	C.gtk_button_new_from_icon_name(arg1, arg2)
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new_from_icon_name(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // NewButtonFromStock constructs a class Button.
-func NewButtonFromStock(stockID string) {
+func NewButtonFromStock(stockID string) Button {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_button_new_from_stock(arg1)
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new_from_stock(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // NewButtonWithLabel constructs a class Button.
-func NewButtonWithLabel(label string) {
+func NewButtonWithLabel(label string) Button {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_button_new_with_label(arg1)
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new_with_label(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // NewButtonWithMnemonic constructs a class Button.
-func NewButtonWithMnemonic(label string) {
+func NewButtonWithMnemonic(label string) Button {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_button_new_with_mnemonic(arg1)
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new_with_mnemonic(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // Clicked emits a Button::clicked signal to the given Button.
-func (b button) Clicked(b Button) {
+func (b button) Clicked() {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
@@ -214,7 +253,7 @@ func (b button) Clicked(b Button) {
 }
 
 // Enter emits a Button::enter signal to the given Button.
-func (b button) Enter(b Button) {
+func (b button) Enter() {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
@@ -223,154 +262,189 @@ func (b button) Enter(b Button) {
 }
 
 // Alignment gets the alignment of the child in the button.
-func (b button) Alignment(b Button) (xalign float32, yalign float32) {
+func (b button) Alignment() (xalign float32, yalign float32) {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	var arg1 C.gfloat
-	var xalign float32
-	var arg2 C.gfloat
-	var yalign float32
+	arg1 := new(C.gfloat)
+	var ret1 float32
+	arg2 := new(C.gfloat)
+	var ret2 float32
 
-	C.gtk_button_get_alignment(arg0, &arg1, &arg2)
+	C.gtk_button_get_alignment(arg0, arg1, arg2)
 
-	xalign = float32(&arg1)
-	yalign = float32(&arg2)
+	ret1 = float32(*arg1)
+	ret2 = float32(*arg2)
 
-	return xalign, yalign
+	return ret1, ret2
 }
 
 // AlwaysShowImage returns whether the button will ignore the
 // Settings:gtk-button-images setting and always show the image, if
 // available.
-func (b button) AlwaysShowImage(b Button) bool {
+func (b button) AlwaysShowImage() bool {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_button_get_always_show_image(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // EventWindow returns the button’s event window if it is realized, nil
 // otherwise. This function should be rarely needed.
-func (b button) EventWindow(b Button) {
+func (b button) EventWindow() gdk.Window {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_event_window(arg0)
+	var cret *C.GdkWindow
+	var goret gdk.Window
+
+	cret = C.gtk_button_get_event_window(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return goret
 }
 
 // FocusOnClick returns whether the button grabs focus when it is clicked
 // with the mouse. See gtk_button_set_focus_on_click().
-func (b button) FocusOnClick(b Button) bool {
+func (b button) FocusOnClick() bool {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_button_get_focus_on_click(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Image gets the widget that is currenty set as the image of @button. This
 // may have been explicitly set by gtk_button_set_image() or constructed by
 // gtk_button_new_from_stock().
-func (b button) Image(b Button) {
+func (b button) Image() Widget {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_image(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_button_get_image(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // ImagePosition gets the position of the image relative to the text inside
 // the button.
-func (b button) ImagePosition(b Button) {
+func (b button) ImagePosition() PositionType {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_image_position(arg0)
+	var cret C.GtkPositionType
+	var goret PositionType
+
+	cret = C.gtk_button_get_image_position(arg0)
+
+	goret = PositionType(cret)
+
+	return goret
 }
 
 // Label fetches the text from the label of the button, as set by
 // gtk_button_set_label(). If the label text has not been set the return
 // value will be nil. This will be the case if you create an empty button
 // with gtk_button_new() to use as a container.
-func (b button) Label(b Button) {
+func (b button) Label() string {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_label(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_button_get_label(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Relief returns the current relief style of the given Button.
-func (b button) Relief(b Button) {
+func (b button) Relief() ReliefStyle {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_relief(arg0)
+	var cret C.GtkReliefStyle
+	var goret ReliefStyle
+
+	cret = C.gtk_button_get_relief(arg0)
+
+	goret = ReliefStyle(cret)
+
+	return goret
 }
 
 // UseStock returns whether the button label is a stock item.
-func (b button) UseStock(b Button) bool {
+func (b button) UseStock() bool {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_button_get_use_stock(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // UseUnderline returns whether an embedded underline in the button label
 // indicates a mnemonic. See gtk_button_set_use_underline ().
-func (b button) UseUnderline(b Button) bool {
+func (b button) UseUnderline() bool {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_button_get_use_underline(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Leave emits a Button::leave signal to the given Button.
-func (b button) Leave(b Button) {
+func (b button) Leave() {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
@@ -379,7 +453,7 @@ func (b button) Leave(b Button) {
 }
 
 // Pressed emits a Button::pressed signal to the given Button.
-func (b button) Pressed(b Button) {
+func (b button) Pressed() {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
@@ -388,7 +462,7 @@ func (b button) Pressed(b Button) {
 }
 
 // Released emits a Button::released signal to the given Button.
-func (b button) Released(b Button) {
+func (b button) Released() {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
@@ -398,7 +472,7 @@ func (b button) Released(b Button) {
 
 // SetAlignment sets the alignment of the child. This property has no effect
 // unless the child is a Misc or a Alignment.
-func (b button) SetAlignment(b Button, xalign float32, yalign float32) {
+func (b button) SetAlignment(xalign float32, yalign float32) {
 	var arg0 *C.GtkButton
 	var arg1 C.gfloat
 	var arg2 C.gfloat
@@ -416,7 +490,7 @@ func (b button) SetAlignment(b Button, xalign float32, yalign float32) {
 //
 // Use this property if the button would be useless or hard to use without
 // the image.
-func (b button) SetAlwaysShowImage(b Button, alwaysShow bool) {
+func (b button) SetAlwaysShowImage(alwaysShow bool) {
 	var arg0 *C.GtkButton
 	var arg1 C.gboolean
 
@@ -432,7 +506,7 @@ func (b button) SetAlwaysShowImage(b Button, alwaysShow bool) {
 // clicked with the mouse. Making mouse clicks not grab focus is useful in
 // places like toolbars where you don’t want the keyboard focus removed from
 // the main area of the application.
-func (b button) SetFocusOnClick(b Button, focusOnClick bool) {
+func (b button) SetFocusOnClick(focusOnClick bool) {
 	var arg0 *C.GtkButton
 	var arg1 C.gboolean
 
@@ -447,7 +521,7 @@ func (b button) SetFocusOnClick(b Button, focusOnClick bool) {
 // SetImage: set the image of @button to the given widget. The image will be
 // displayed if the label text is nil or if Button:always-show-image is
 // true. You don’t have to call gtk_widget_show() on @image yourself.
-func (b button) SetImage(b Button, image Widget) {
+func (b button) SetImage(image Widget) {
 	var arg0 *C.GtkButton
 	var arg1 *C.GtkWidget
 
@@ -459,7 +533,7 @@ func (b button) SetImage(b Button, image Widget) {
 
 // SetImagePosition sets the position of the image relative to the text
 // inside the button.
-func (b button) SetImagePosition(b Button, position PositionType) {
+func (b button) SetImagePosition(position PositionType) {
 	var arg0 *C.GtkButton
 	var arg1 C.GtkPositionType
 
@@ -473,7 +547,7 @@ func (b button) SetImagePosition(b Button, position PositionType) {
 // also used to select the stock item if gtk_button_set_use_stock() is used.
 //
 // This will also clear any previously set labels.
-func (b button) SetLabel(b Button, label string) {
+func (b button) SetLabel(label string) {
 	var arg0 *C.GtkButton
 	var arg1 *C.gchar
 
@@ -488,7 +562,7 @@ func (b button) SetLabel(b Button, label string) {
 // Two styles exist, GTK_RELIEF_NORMAL and GTK_RELIEF_NONE. The default
 // style is, as one can guess, GTK_RELIEF_NORMAL. The deprecated value
 // GTK_RELIEF_HALF behaves the same as GTK_RELIEF_NORMAL.
-func (b button) SetRelief(b Button, relief ReliefStyle) {
+func (b button) SetRelief(relief ReliefStyle) {
 	var arg0 *C.GtkButton
 	var arg1 C.GtkReliefStyle
 
@@ -500,7 +574,7 @@ func (b button) SetRelief(b Button, relief ReliefStyle) {
 
 // SetUseStock: if true, the label set on the button is used as a stock id
 // to select the stock item for the button.
-func (b button) SetUseStock(b Button, useStock bool) {
+func (b button) SetUseStock(useStock bool) {
 	var arg0 *C.GtkButton
 	var arg1 C.gboolean
 
@@ -515,7 +589,7 @@ func (b button) SetUseStock(b Button, useStock bool) {
 // SetUseUnderline: if true, an underline in the text of the button label
 // indicates the next character should be used for the mnemonic accelerator
 // key.
-func (b button) SetUseUnderline(b Button, useUnderline bool) {
+func (b button) SetUseUnderline(useUnderline bool) {
 	var arg0 *C.GtkButton
 	var arg1 C.gboolean
 

@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,62 +22,93 @@ func init() {
 	})
 }
 
-// DragSource: gtkDragSource is an auxiliary object that is used to initiate
-// Drag-And-Drop operations. It can be set up with the necessary ingredients for
-// a DND operation ahead of time. This includes the source for the data that is
-// being transferred, in the form of a ContentProvider, the desired action, and
-// the icon to use during the drag operation. After setting it up, the drag
-// source must be added to a widget as an event controller, using
-// gtk_widget_add_controller().
+// DragSource: `GtkDragSource` is an event controller to initiate Drag-And-Drop
+// operations.
 //
-//    static void
-//    on_drag_begin (GtkDragSource *source,
-//                   GtkDrag       *drag,
-//                   MyWidget      *self)
-//    {
-//      // Set the widget as the drag icon
-//      GdkPaintable *paintable = gtk_widget_paintable_new (GTK_WIDGET (self));
-//      gtk_drag_source_set_icon (source, paintable, 0, 0);
-//      g_object_unref (paintable);
-//    }
+// `GtkDragSource` can be set up with the necessary ingredients for a DND
+// operation ahead of time. This includes the source for the data that is being
+// transferred, in the form of a [class@Gdk.ContentProvider], the desired
+// action, and the icon to use during the drag operation. After setting it up,
+// the drag source must be added to a widget as an event controller, using
+// [method@Gtk.Widget.add_controller].
 //
-// During the DND operation, GtkDragSource emits signals that can be used to
+// “`c static void my_widget_init (MyWidget *self) { GtkDragSource *drag_source
+// = gtk_drag_source_new ();
+//
+//    g_signal_connect (drag_source, "prepare", G_CALLBACK (on_drag_prepare), self);
+//    g_signal_connect (drag_source, "drag-begin", G_CALLBACK (on_drag_begin), self);
+//
+//    gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (drag_source));
+//
+// } “`
+//
+// Setting up the content provider and icon ahead of time only makes sense when
+// the data does not change. More commonly, you will want to set them up just in
+// time. To do so, `GtkDragSource` has [signal@Gtk.DragSource::prepare] and
+// [signal@Gtk.DragSource::drag-begin] signals.
+//
+// The ::prepare signal is emitted before a drag is started, and can be used to
+// set the content provider and actions that the drag should be started with.
+//
+// “`c static GdkContentProvider * on_drag_prepare (GtkDragSource *source,
+// double x, double y, MyWidget *self) { // This widget supports two types of
+// content: GFile objects // and GdkPixbuf objects; GTK will handle the
+// serialization // of these types automatically GFile *file =
+// my_widget_get_file (self); GdkPixbuf *pixbuf = my_widget_get_pixbuf (self);
+//
+//    return gdk_content_provider_new_union ((GdkContentProvider *[2]) {
+//        gdk_content_provider_new_typed (G_TYPE_FILE, file),
+//        gdk_content_provider_new_typed (GDK_TYPE_PIXBUF, pixbuf),
+//      }, 2);
+//
+// } “`
+//
+// The ::drag-begin signal is emitted after the `GdkDrag` object has been
+// created, and can be used to set up the drag icon.
+//
+// “`c static void on_drag_begin (GtkDragSource *source, GtkDrag *drag, MyWidget
+// *self) { // Set the widget as the drag icon GdkPaintable *paintable =
+// gtk_widget_paintable_new (GTK_WIDGET (self)); gtk_drag_source_set_icon
+// (source, paintable, 0, 0); g_object_unref (paintable); } “`
+//
+// During the DND operation, `GtkDragSource` emits signals that can be used to
 // obtain updates about the status of the operation, but it is not normally
 // necessary to connect to any signals, except for one case: when the supported
 // actions include GDK_ACTION_MOVE, you need to listen for the
-// DragSource::drag-end signal and delete the data after it has been
-// transferred.
+// [signal@Gtk.DragSource::drag-end] signal and delete the data after it has
+// been transferred.
 type DragSource interface {
 	GestureSingle
 
 	// DragCancel cancels a currently ongoing drag operation.
-	DragCancel(s DragSource)
-	// Actions gets the actions that are currently set on the DragSource.
-	Actions(s DragSource)
-	// Content gets the current content provider of a DragSource.
-	Content(s DragSource)
-	// Drag returns the underlying Drag object for an ongoing drag.
-	Drag(s DragSource)
-	// SetActions sets the actions on the DragSource.
+	DragCancel()
+	// Actions gets the actions that are currently set on the `GtkDragSource`.
+	Actions() gdk.DragAction
+	// Content gets the current content provider of a `GtkDragSource`.
+	Content() gdk.ContentProvider
+	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
+	Drag() gdk.Drag
+	// SetActions sets the actions on the `GtkDragSource`.
 	//
 	// During a DND operation, the actions are offered to potential drop
 	// targets. If @actions include GDK_ACTION_MOVE, you need to listen to the
-	// DragSource::drag-end signal and handle @delete_data being true.
+	// [signal@Gtk.DragSource::drag-end] signal and handle @delete_data being
+	// true.
 	//
 	// This function can be called before a drag is started, or in a handler for
-	// the DragSource::prepare signal.
-	SetActions(s DragSource, actions gdk.DragAction)
-	// SetContent sets a content provider on a DragSource.
+	// the [signal@Gtk.DragSource::prepare] signal.
+	SetActions(actions gdk.DragAction)
+	// SetContent sets a content provider on a `GtkDragSource`.
 	//
 	// When the data is requested in the cause of a DND operation, it will be
 	// obtained from the content provider.
 	//
 	// This function can be called before a drag is started, or in a handler for
-	// the DragSource::prepare signal.
+	// the [signal@Gtk.DragSource::prepare] signal.
 	//
 	// You may consider setting the content provider back to nil in a
-	// DragSource::drag-end signal handler.
-	SetContent(s DragSource, content gdk.ContentProvider)
+	// [signal@Gtk.DragSource::drag-end] signal handler.
+	SetContent(content gdk.ContentProvider)
 	// SetIcon sets a paintable to use as icon during DND operations.
 	//
 	// The hotspot coordinates determine the point on the icon that gets aligned
@@ -82,8 +117,9 @@ type DragSource interface {
 	// If @paintable is nil, a default icon is used.
 	//
 	// This function can be called before a drag is started, or in a
-	// DragSource::prepare or DragSource::drag-begin signal handler.
-	SetIcon(s DragSource, paintable gdk.Paintable, hotX int, hotY int)
+	// [signal@Gtk.DragSource::prepare] or [signal@Gtk.DragSource::drag-begin]
+	// signal handler.
+	SetIcon(paintable gdk.Paintable, hotX int, hotY int)
 }
 
 // dragSource implements the DragSource interface.
@@ -108,12 +144,19 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 }
 
 // NewDragSource constructs a class DragSource.
-func NewDragSource() {
-	C.gtk_drag_source_new()
+func NewDragSource() DragSource {
+	cret := new(C.GtkDragSource)
+	var goret DragSource
+
+	cret = C.gtk_drag_source_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DragSource)
+
+	return goret
 }
 
 // DragCancel cancels a currently ongoing drag operation.
-func (s dragSource) DragCancel(s DragSource) {
+func (s dragSource) DragCancel() {
 	var arg0 *C.GtkDragSource
 
 	arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
@@ -121,42 +164,64 @@ func (s dragSource) DragCancel(s DragSource) {
 	C.gtk_drag_source_drag_cancel(arg0)
 }
 
-// Actions gets the actions that are currently set on the DragSource.
-func (s dragSource) Actions(s DragSource) {
+// Actions gets the actions that are currently set on the `GtkDragSource`.
+func (s dragSource) Actions() gdk.DragAction {
 	var arg0 *C.GtkDragSource
 
 	arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
-	C.gtk_drag_source_get_actions(arg0)
+	var cret C.GdkDragAction
+	var goret gdk.DragAction
+
+	cret = C.gtk_drag_source_get_actions(arg0)
+
+	goret = gdk.DragAction(cret)
+
+	return goret
 }
 
-// Content gets the current content provider of a DragSource.
-func (s dragSource) Content(s DragSource) {
+// Content gets the current content provider of a `GtkDragSource`.
+func (s dragSource) Content() gdk.ContentProvider {
 	var arg0 *C.GtkDragSource
 
 	arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
-	C.gtk_drag_source_get_content(arg0)
+	var cret *C.GdkContentProvider
+	var goret gdk.ContentProvider
+
+	cret = C.gtk_drag_source_get_content(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.ContentProvider)
+
+	return goret
 }
 
-// Drag returns the underlying Drag object for an ongoing drag.
-func (s dragSource) Drag(s DragSource) {
+// Drag returns the underlying `GdkDrag` object for an ongoing drag.
+func (s dragSource) Drag() gdk.Drag {
 	var arg0 *C.GtkDragSource
 
 	arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
-	C.gtk_drag_source_get_drag(arg0)
+	var cret *C.GdkDrag
+	var goret gdk.Drag
+
+	cret = C.gtk_drag_source_get_drag(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drag)
+
+	return goret
 }
 
-// SetActions sets the actions on the DragSource.
+// SetActions sets the actions on the `GtkDragSource`.
 //
 // During a DND operation, the actions are offered to potential drop
 // targets. If @actions include GDK_ACTION_MOVE, you need to listen to the
-// DragSource::drag-end signal and handle @delete_data being true.
+// [signal@Gtk.DragSource::drag-end] signal and handle @delete_data being
+// true.
 //
 // This function can be called before a drag is started, or in a handler for
-// the DragSource::prepare signal.
-func (s dragSource) SetActions(s DragSource, actions gdk.DragAction) {
+// the [signal@Gtk.DragSource::prepare] signal.
+func (s dragSource) SetActions(actions gdk.DragAction) {
 	var arg0 *C.GtkDragSource
 	var arg1 C.GdkDragAction
 
@@ -166,17 +231,17 @@ func (s dragSource) SetActions(s DragSource, actions gdk.DragAction) {
 	C.gtk_drag_source_set_actions(arg0, arg1)
 }
 
-// SetContent sets a content provider on a DragSource.
+// SetContent sets a content provider on a `GtkDragSource`.
 //
 // When the data is requested in the cause of a DND operation, it will be
 // obtained from the content provider.
 //
 // This function can be called before a drag is started, or in a handler for
-// the DragSource::prepare signal.
+// the [signal@Gtk.DragSource::prepare] signal.
 //
 // You may consider setting the content provider back to nil in a
-// DragSource::drag-end signal handler.
-func (s dragSource) SetContent(s DragSource, content gdk.ContentProvider) {
+// [signal@Gtk.DragSource::drag-end] signal handler.
+func (s dragSource) SetContent(content gdk.ContentProvider) {
 	var arg0 *C.GtkDragSource
 	var arg1 *C.GdkContentProvider
 
@@ -194,8 +259,9 @@ func (s dragSource) SetContent(s DragSource, content gdk.ContentProvider) {
 // If @paintable is nil, a default icon is used.
 //
 // This function can be called before a drag is started, or in a
-// DragSource::prepare or DragSource::drag-begin signal handler.
-func (s dragSource) SetIcon(s DragSource, paintable gdk.Paintable, hotX int, hotY int) {
+// [signal@Gtk.DragSource::prepare] or [signal@Gtk.DragSource::drag-begin]
+// signal handler.
+func (s dragSource) SetIcon(paintable gdk.Paintable, hotX int, hotY int) {
 	var arg0 *C.GtkDragSource
 	var arg1 *C.GdkPaintable
 	var arg2 C.int

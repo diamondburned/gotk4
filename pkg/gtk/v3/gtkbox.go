@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,25 +74,25 @@ type Box interface {
 	Orientable
 
 	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-	BaselinePosition(b Box)
+	BaselinePosition() BaselinePosition
 	// CenterWidget retrieves the center widget of the box.
-	CenterWidget(b Box)
+	CenterWidget() Widget
 	// Homogeneous returns whether the box is homogeneous (all children are the
 	// same size). See gtk_box_set_homogeneous().
-	Homogeneous(b Box) bool
+	Homogeneous() bool
 	// Spacing gets the value set by gtk_box_set_spacing().
-	Spacing(b Box)
+	Spacing() int
 	// PackEnd adds @child to @box, packed with reference to the end of @box.
 	// The @child is packed after (away from end of) any other child packed with
 	// reference to the end of @box.
-	PackEnd(b Box, child Widget, expand bool, fill bool, padding uint)
+	PackEnd(child Widget, expand bool, fill bool, padding uint)
 	// PackStart adds @child to @box, packed with reference to the start of
 	// @box. The @child is packed after any other child packed with reference to
 	// the start of @box.
-	PackStart(b Box, child Widget, expand bool, fill bool, padding uint)
+	PackStart(child Widget, expand bool, fill bool, padding uint)
 	// QueryChildPacking obtains information about how @child is packed into
 	// @box.
-	QueryChildPacking(b Box, child Widget) (expand bool, fill bool, padding uint, packType *PackType)
+	QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType *PackType)
 	// ReorderChild moves @child to a new @position in the list of @box
 	// children. The list contains widgets packed K_PACK_START as well as
 	// widgets packed K_PACK_END, in the order that these widgets were added to
@@ -99,25 +102,25 @@ type Box interface {
 	// is packed into @box. A child widget at some position in the list will be
 	// packed just after all other widgets of the same packing type that appear
 	// earlier in the list.
-	ReorderChild(b Box, child Widget, position int)
+	ReorderChild(child Widget, position int)
 	// SetBaselinePosition sets the baseline position of a box. This affects
 	// only horizontal boxes with at least one baseline aligned child. If there
 	// is more vertical space available than requested, and the baseline is not
 	// allocated by the parent then @position is used to allocate the baseline
 	// wrt the extra space available.
-	SetBaselinePosition(b Box, position BaselinePosition)
+	SetBaselinePosition(position BaselinePosition)
 	// SetCenterWidget sets a center widget; that is a child widget that will be
 	// centered with respect to the full width of the box, even if the children
 	// at either side take up different amounts of space.
-	SetCenterWidget(b Box, widget Widget)
+	SetCenterWidget(widget Widget)
 	// SetChildPacking sets the way @child is packed into @box.
-	SetChildPacking(b Box, child Widget, expand bool, fill bool, padding uint, packType PackType)
+	SetChildPacking(child Widget, expand bool, fill bool, padding uint, packType PackType)
 	// SetHomogeneous sets the Box:homogeneous property of @box, controlling
 	// whether or not all children of @box are given equal space in the box.
-	SetHomogeneous(b Box, homogeneous bool)
+	SetHomogeneous(homogeneous bool)
 	// SetSpacing sets the Box:spacing property of @box, which is the number of
 	// pixels to place between children of @box.
-	SetSpacing(b Box, spacing int)
+	SetSpacing(spacing int)
 }
 
 // box implements the Box interface.
@@ -146,66 +149,94 @@ func marshalBox(p uintptr) (interface{}, error) {
 }
 
 // NewBox constructs a class Box.
-func NewBox(orientation Orientation, spacing int) {
+func NewBox(orientation Orientation, spacing int) Box {
 	var arg1 C.GtkOrientation
 	var arg2 C.gint
 
 	arg1 = (C.GtkOrientation)(orientation)
 	arg2 = C.gint(spacing)
 
-	C.gtk_box_new(arg1, arg2)
+	var cret C.GtkBox
+	var goret Box
+
+	cret = C.gtk_box_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+
+	return goret
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
-func (b box) BaselinePosition(b Box) {
+func (b box) BaselinePosition() BaselinePosition {
 	var arg0 *C.GtkBox
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_box_get_baseline_position(arg0)
+	var cret C.GtkBaselinePosition
+	var goret BaselinePosition
+
+	cret = C.gtk_box_get_baseline_position(arg0)
+
+	goret = BaselinePosition(cret)
+
+	return goret
 }
 
 // CenterWidget retrieves the center widget of the box.
-func (b box) CenterWidget(b Box) {
+func (b box) CenterWidget() Widget {
 	var arg0 *C.GtkBox
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_box_get_center_widget(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_box_get_center_widget(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
 // same size). See gtk_box_set_homogeneous().
-func (b box) Homogeneous(b Box) bool {
+func (b box) Homogeneous() bool {
 	var arg0 *C.GtkBox
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_box_get_homogeneous(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
-func (b box) Spacing(b Box) {
+func (b box) Spacing() int {
 	var arg0 *C.GtkBox
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_box_get_spacing(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_box_get_spacing(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // PackEnd adds @child to @box, packed with reference to the end of @box.
 // The @child is packed after (away from end of) any other child packed with
 // reference to the end of @box.
-func (b box) PackEnd(b Box, child Widget, expand bool, fill bool, padding uint) {
+func (b box) PackEnd(child Widget, expand bool, fill bool, padding uint) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean
@@ -228,7 +259,7 @@ func (b box) PackEnd(b Box, child Widget, expand bool, fill bool, padding uint) 
 // PackStart adds @child to @box, packed with reference to the start of
 // @box. The @child is packed after any other child packed with reference to
 // the start of @box.
-func (b box) PackStart(b Box, child Widget, expand bool, fill bool, padding uint) {
+func (b box) PackStart(child Widget, expand bool, fill bool, padding uint) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean
@@ -250,34 +281,34 @@ func (b box) PackStart(b Box, child Widget, expand bool, fill bool, padding uint
 
 // QueryChildPacking obtains information about how @child is packed into
 // @box.
-func (b box) QueryChildPacking(b Box, child Widget) (expand bool, fill bool, padding uint, packType *PackType) {
+func (b box) QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType *PackType) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	var arg2 C.gboolean
-	var expand bool
-	var arg3 C.gboolean
-	var fill bool
-	var arg4 C.guint
-	var padding uint
-	var arg5 C.GtkPackType
-	var packType *PackType
+	arg2 := new(C.gboolean)
+	var ret2 bool
+	arg3 := new(C.gboolean)
+	var ret3 bool
+	arg4 := new(C.guint)
+	var ret4 uint
+	arg5 := new(C.GtkPackType)
+	var ret5 *PackType
 
-	C.gtk_box_query_child_packing(arg0, arg1, &arg2, &arg3, &arg4, &arg5)
+	C.gtk_box_query_child_packing(arg0, arg1, arg2, arg3, arg4, arg5)
 
-	if &arg2 {
-		expand = true
+	if *arg2 {
+		ret2 = true
 	}
-	if &arg3 {
-		fill = true
+	if *arg3 {
+		ret3 = true
 	}
-	padding = uint(&arg4)
-	packType = *PackType(&arg5)
+	ret4 = uint(*arg4)
+	ret5 = *PackType(arg5)
 
-	return expand, fill, padding, packType
+	return ret2, ret3, ret4, ret5
 }
 
 // ReorderChild moves @child to a new @position in the list of @box
@@ -289,7 +320,7 @@ func (b box) QueryChildPacking(b Box, child Widget) (expand bool, fill bool, pad
 // is packed into @box. A child widget at some position in the list will be
 // packed just after all other widgets of the same packing type that appear
 // earlier in the list.
-func (b box) ReorderChild(b Box, child Widget, position int) {
+func (b box) ReorderChild(child Widget, position int) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -306,7 +337,7 @@ func (b box) ReorderChild(b Box, child Widget, position int) {
 // is more vertical space available than requested, and the baseline is not
 // allocated by the parent then @position is used to allocate the baseline
 // wrt the extra space available.
-func (b box) SetBaselinePosition(b Box, position BaselinePosition) {
+func (b box) SetBaselinePosition(position BaselinePosition) {
 	var arg0 *C.GtkBox
 	var arg1 C.GtkBaselinePosition
 
@@ -319,7 +350,7 @@ func (b box) SetBaselinePosition(b Box, position BaselinePosition) {
 // SetCenterWidget sets a center widget; that is a child widget that will be
 // centered with respect to the full width of the box, even if the children
 // at either side take up different amounts of space.
-func (b box) SetCenterWidget(b Box, widget Widget) {
+func (b box) SetCenterWidget(widget Widget) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 
@@ -330,7 +361,7 @@ func (b box) SetCenterWidget(b Box, widget Widget) {
 }
 
 // SetChildPacking sets the way @child is packed into @box.
-func (b box) SetChildPacking(b Box, child Widget, expand bool, fill bool, padding uint, packType PackType) {
+func (b box) SetChildPacking(child Widget, expand bool, fill bool, padding uint, packType PackType) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean
@@ -354,7 +385,7 @@ func (b box) SetChildPacking(b Box, child Widget, expand bool, fill bool, paddin
 
 // SetHomogeneous sets the Box:homogeneous property of @box, controlling
 // whether or not all children of @box are given equal space in the box.
-func (b box) SetHomogeneous(b Box, homogeneous bool) {
+func (b box) SetHomogeneous(homogeneous bool) {
 	var arg0 *C.GtkBox
 	var arg1 C.gboolean
 
@@ -368,7 +399,7 @@ func (b box) SetHomogeneous(b Box, homogeneous bool) {
 
 // SetSpacing sets the Box:spacing property of @box, which is the number of
 // pixels to place between children of @box.
-func (b box) SetSpacing(b Box, spacing int) {
+func (b box) SetSpacing(spacing int) {
 	var arg0 *C.GtkBox
 	var arg1 C.gint
 

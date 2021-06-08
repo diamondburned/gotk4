@@ -33,8 +33,11 @@ func AbsoluteFilter(abs string) FilterMatcher {
 }
 
 func (abs absoluteFilter) Filter(ng *NamespaceGenerator, girType, cType string) (keep bool) {
-	if abs.namespace == "C" {
+	switch abs.namespace {
+	case "C":
 		return cType != abs.matcher
+	case "*":
+		return girType != abs.matcher
 	}
 
 	typ, eq := EqNamespace(abs.namespace, ng.Namespace().Namespace, girType)
@@ -75,8 +78,11 @@ func wholeMatchRegex(regex string) string {
 
 // Filter implements FilterMatcher.
 func (rf *regexFilter) Filter(ng *NamespaceGenerator, girType, cType string) (keep bool) {
-	if rf.namespace == "C" {
+	switch rf.namespace {
+	case "C":
 		return !rf.matcher.MatchString(cType)
+	case "*":
+		return !rf.matcher.MatchString(girType)
 	}
 
 	typ, eq := EqNamespace(rf.namespace, ng.Namespace().Namespace, girType)

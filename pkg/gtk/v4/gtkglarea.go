@@ -3,6 +3,11 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,136 +23,190 @@ func init() {
 	})
 }
 
-// GLArea is a widget that allows drawing with OpenGL.
+// GLArea: `GtkGLArea` is a widget that allows drawing with OpenGL.
 //
-// GLArea sets up its own GLContext for the window it creates, and creates a
-// custom GL framebuffer that the widget will do GL rendering onto. It also
-// ensures that this framebuffer is the default GL rendering target when
-// rendering.
+// !An example GtkGLArea (glarea.png)
 //
-// In order to draw, you have to connect to the GLArea::render signal, or
-// subclass GLArea and override the @GtkGLAreaClass.render() virtual function.
+// `GtkGLArea` sets up its own [class@Gdk.GLContext], and creates a custom GL
+// framebuffer that the widget will do GL rendering onto. It also ensures that
+// this framebuffer is the default GL rendering target when rendering.
 //
-// The GLArea widget ensures that the GLContext is associated with the widget's
-// drawing area, and it is kept updated when the size and position of the
-// drawing area changes.
+// In order to draw, you have to connect to the [signal@Gtk.GLArea::render]
+// signal, or subclass `GtkGLArea` and override the GtkGLAreaClass.render
+// virtual function.
 //
-// Drawing with GtkGLArea ##
+// The `GtkGLArea` widget ensures that the `GdkGLContext` is associated with the
+// widget's drawing area, and it is kept updated when the size and position of
+// the drawing area changes.
 //
-// The simplest way to draw using OpenGL commands in a GLArea is to create a
-// widget instance and connect to the GLArea::render signal:
 //
-//      static void
-//      on_realize (GtkGLarea *area)
+// Drawing with GtkGLArea
+//
+// The simplest way to draw using OpenGL commands in a `GtkGLArea` is to create
+// a widget instance and connect to the [signal@Gtk.GLArea::render] signal:
+//
+// The `render()` function will be called when the `GtkGLArea` is ready for you
+// to draw its content:
+//
+// “`c static gboolean render (GtkGLArea *area, GdkGLContext *context) { //
+// inside this function it's safe to use GL; the given // GLContext has been
+// made current to the drawable // surface used by the `GtkGLArea` and the
+// viewport has // already been set to be the size of the allocation
+//
+//    // we can start by clearing the buffer
+//    glClearColor (0, 0, 0, 0);
+//    glClear (GL_COLOR_BUFFER_BIT);
+//
+//    // draw your object
+//    // draw_an_object ();
+//
+//    // we completed our drawing; the draw commands will be
+//    // flushed at the end of the signal emission chain, and
+//    // the buffers will be drawn on the window
+//    return TRUE;
+//
+// }
+//
+// void setup_glarea (void) { // create a GtkGLArea instance GtkWidget *gl_area
+// = gtk_gl_area_new ();
+//
+//    // connect to the "render" signal
+//    g_signal_connect (gl_area, "render", G_CALLBACK (render), NULL);
+//
+// } “`
+//
+// If you need to initialize OpenGL state, e.g. buffer objects or shaders, you
+// should use the [signal@Gtk.Widget::realize] signal; you can use the
+// [signal@Gtk.Widget::unrealize] signal to clean up. Since the `GdkGLContext`
+// creation and initialization may fail, you will need to check for errors,
+// using [method@Gtk.GLArea.get_error].
+//
+// An example of how to safely initialize the GL state is:
+//
+// “`c static void on_realize (GtkGLarea *area) { // We need to make the context
+// current if we want to // call GL API gtk_gl_area_make_current (area);
+//
+//    // If there were errors during the initialization or
+//    // when trying to make the context current, this
+//    // function will return a #GError for you to catch
+//    if (gtk_gl_area_get_error (area) != NULL)
+//      return;
+//
+//    // You can also use gtk_gl_area_set_error() in order
+//    // to show eventual initialization errors on the
+//    // GtkGLArea widget itself
+//    GError *internal_error = NULL;
+//    init_buffer_objects (&error);
+//    if (error != NULL)
 //      {
-//        // We need to make the context current if we want to
-//        // call GL API
-//        gtk_gl_area_make_current (area);
-//
-//        // If there were errors during the initialization or
-//        // when trying to make the context current, this
-//        // function will return a #GError for you to catch
-//        if (gtk_gl_area_get_error (area) != NULL)
-//          return;
-//
-//        // You can also use gtk_gl_area_set_error() in order
-//        // to show eventual initialization errors on the
-//        // GtkGLArea widget itself
-//        GError *internal_error = NULL;
-//        init_buffer_objects (&error);
-//        if (error != NULL)
-//          {
-//            gtk_gl_area_set_error (area, error);
-//            g_error_free (error);
-//            return;
-//          }
-//
-//        init_shaders (&error);
-//        if (error != NULL)
-//          {
-//            gtk_gl_area_set_error (area, error);
-//            g_error_free (error);
-//            return;
-//          }
+//        gtk_gl_area_set_error (area, error);
+//        g_error_free (error);
+//        return;
 //      }
 //
-// If you need to change the options for creating the GLContext you should use
-// the GLArea::create-context signal.
+//    init_shaders (&error);
+//    if (error != NULL)
+//      {
+//        gtk_gl_area_set_error (area, error);
+//        g_error_free (error);
+//        return;
+//      }
+//
+// } “`
+//
+// If you need to change the options for creating the `GdkGLContext` you should
+// use the [signal@Gtk.GLArea::create-context] signal.
 type GLArea interface {
 	Widget
 	Accessible
 	Buildable
 	ConstraintTarget
 
-	// AttachBuffers ensures that the @area framebuffer object is made the
-	// current draw and read target, and that all the required buffers for the
-	// @area are created and bound to the framebuffer.
+	// AttachBuffers binds buffers to the framebuffer.
 	//
-	// This function is automatically called before emitting the GLArea::render
-	// signal, and doesn't normally need to be called by application code.
-	AttachBuffers(a GLArea)
+	// Ensures that the @area framebuffer object is made the current draw and
+	// read target, and that all the required buffers for the @area are created
+	// and bound to the framebuffer.
+	//
+	// This function is automatically called before emitting the
+	// [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
+	// called by application code.
+	AttachBuffers()
 	// AutoRender returns whether the area is in auto render mode or not.
-	AutoRender(a GLArea) bool
-	// Context retrieves the GLContext used by @area.
-	Context(a GLArea)
+	AutoRender() bool
+	// Context retrieves the `GdkGLContext` used by @area.
+	Context() gdk.GLContext
 	// Error gets the current error set on the @area.
-	Error(a GLArea)
+	Error() error
 	// HasDepthBuffer returns whether the area has a depth buffer.
-	HasDepthBuffer(a GLArea) bool
+	HasDepthBuffer() bool
 	// HasStencilBuffer returns whether the area has a stencil buffer.
-	HasStencilBuffer(a GLArea) bool
-	// RequiredVersion retrieves the required version of OpenGL set using
-	// gtk_gl_area_set_required_version().
-	RequiredVersion(a GLArea) (major int, minor int)
-	// UseES retrieves the value set by gtk_gl_area_set_use_es().
-	UseES(a GLArea) bool
-	// MakeCurrent ensures that the GLContext used by @area is associated with
-	// the GLArea.
+	HasStencilBuffer() bool
+	// RequiredVersion retrieves the required version of OpenGL.
 	//
-	// This function is automatically called before emitting the GLArea::render
-	// signal, and doesn't normally need to be called by application code.
-	MakeCurrent(a GLArea)
+	// See [method@Gtk.GLArea.set_required_version].
+	RequiredVersion() (major int, minor int)
+	// UseES returns whether the `GtkGLArea` should use OpenGL ES.
+	//
+	// See [method@Gtk.GLArea.set_use_es].
+	UseES() bool
+	// MakeCurrent ensures that the `GdkGLContext` used by @area is associated
+	// with the `GtkGLArea`.
+	//
+	// This function is automatically called before emitting the
+	// [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
+	// called by application code.
+	MakeCurrent()
 	// QueueRender marks the currently rendered data (if any) as invalid, and
-	// queues a redraw of the widget, ensuring that the GLArea::render signal is
-	// emitted during the draw.
+	// queues a redraw of the widget.
 	//
-	// This is only needed when the gtk_gl_area_set_auto_render() has been
+	// This ensures that the [signal@Gtk.GLArea::render] signal is emitted
+	// during the draw.
+	//
+	// This is only needed when [method@Gtk.GLArea.set_auto_render] has been
 	// called with a false value. The default behaviour is to emit
-	// GLArea::render on each draw.
-	QueueRender(a GLArea)
-	// SetAutoRender: if @auto_render is true the GLArea::render signal will be
+	// [signal@Gtk.GLArea::render] on each draw.
+	QueueRender()
+	// SetAutoRender sets whether the `GtkGLArea` is in auto render mode.
+	//
+	// If @auto_render is true the [signal@Gtk.GLArea::render] signal will be
 	// emitted every time the widget draws. This is the default and is useful if
 	// drawing the widget is faster.
 	//
 	// If @auto_render is false the data from previous rendering is kept around
 	// and will be used for drawing the widget the next time, unless the window
-	// is resized. In order to force a rendering gtk_gl_area_queue_render() must
-	// be called. This mode is useful when the scene changes seldom, but takes a
-	// long time to redraw.
-	SetAutoRender(a GLArea, autoRender bool)
+	// is resized. In order to force a rendering
+	// [method@Gtk.GLArea.queue_render] must be called. This mode is useful when
+	// the scene changes seldom, but takes a long time to redraw.
+	SetAutoRender(autoRender bool)
 	// SetError sets an error on the area which will be shown instead of the GL
-	// rendering. This is useful in the GLArea::create-context signal if GL
+	// rendering.
+	//
+	// This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
 	// context creation fails.
-	SetError(a GLArea, error error)
-	// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
-	// and enable a depth buffer for the target framebuffer. Otherwise there
-	// will be none.
-	SetHasDepthBuffer(a GLArea, hasDepthBuffer bool)
-	// SetHasStencilBuffer: if @has_stencil_buffer is true the widget will
-	// allocate and enable a stencil buffer for the target framebuffer.
-	// Otherwise there will be none.
-	SetHasStencilBuffer(a GLArea, hasStencilBuffer bool)
+	SetError(err error)
+	// SetHasDepthBuffer sets whether the `GtkGLArea` should use a depth buffer.
+	//
+	// If @has_depth_buffer is true the widget will allocate and enable a depth
+	// buffer for the target framebuffer. Otherwise there will be none.
+	SetHasDepthBuffer(hasDepthBuffer bool)
+	// SetHasStencilBuffer sets whether the `GtkGLArea` should use a stencil
+	// buffer.
+	//
+	// If @has_stencil_buffer is true the widget will allocate and enable a
+	// stencil buffer for the target framebuffer. Otherwise there will be none.
+	SetHasStencilBuffer(hasStencilBuffer bool)
 	// SetRequiredVersion sets the required version of OpenGL to be used when
 	// creating the context for the widget.
 	//
 	// This function must be called before the area has been realized.
-	SetRequiredVersion(a GLArea, major int, minor int)
+	SetRequiredVersion(major int, minor int)
 	// SetUseES sets whether the @area should create an OpenGL or an OpenGL ES
 	// context.
 	//
 	// You should check the capabilities of the GLContext before drawing with
 	// either API.
-	SetUseES(a GLArea, useES bool)
+	SetUseES(useES bool)
 }
 
 // glArea implements the GLArea interface.
@@ -178,17 +237,27 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 }
 
 // NewGLArea constructs a class GLArea.
-func NewGLArea() {
-	C.gtk_gl_area_new()
+func NewGLArea() GLArea {
+	var cret C.GtkGLArea
+	var goret GLArea
+
+	cret = C.gtk_gl_area_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLArea)
+
+	return goret
 }
 
-// AttachBuffers ensures that the @area framebuffer object is made the
-// current draw and read target, and that all the required buffers for the
-// @area are created and bound to the framebuffer.
+// AttachBuffers binds buffers to the framebuffer.
 //
-// This function is automatically called before emitting the GLArea::render
-// signal, and doesn't normally need to be called by application code.
-func (a glArea) AttachBuffers(a GLArea) {
+// Ensures that the @area framebuffer object is made the current draw and
+// read target, and that all the required buffers for the @area are created
+// and bound to the framebuffer.
+//
+// This function is automatically called before emitting the
+// [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
+// called by application code.
+func (a glArea) AttachBuffers() {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
@@ -197,121 +266,139 @@ func (a glArea) AttachBuffers(a GLArea) {
 }
 
 // AutoRender returns whether the area is in auto render mode or not.
-func (a glArea) AutoRender(a GLArea) bool {
+func (a glArea) AutoRender() bool {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gl_area_get_auto_render(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// Context retrieves the GLContext used by @area.
-func (a glArea) Context(a GLArea) {
+// Context retrieves the `GdkGLContext` used by @area.
+func (a glArea) Context() gdk.GLContext {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_gl_area_get_context(arg0)
+	var cret *C.GdkGLContext
+	var goret gdk.GLContext
+
+	cret = C.gtk_gl_area_get_context(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.GLContext)
+
+	return goret
 }
 
 // Error gets the current error set on the @area.
-func (a glArea) Error(a GLArea) {
+func (a glArea) Error() error {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_gl_area_get_error(arg0)
+	var cret *C.GError
+	var goret error
+
+	cret = C.gtk_gl_area_get_error(arg0)
+
+	goret = gerror.Take(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // HasDepthBuffer returns whether the area has a depth buffer.
-func (a glArea) HasDepthBuffer(a GLArea) bool {
+func (a glArea) HasDepthBuffer() bool {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gl_area_get_has_depth_buffer(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // HasStencilBuffer returns whether the area has a stencil buffer.
-func (a glArea) HasStencilBuffer(a GLArea) bool {
+func (a glArea) HasStencilBuffer() bool {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gl_area_get_has_stencil_buffer(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// RequiredVersion retrieves the required version of OpenGL set using
-// gtk_gl_area_set_required_version().
-func (a glArea) RequiredVersion(a GLArea) (major int, minor int) {
+// RequiredVersion retrieves the required version of OpenGL.
+//
+// See [method@Gtk.GLArea.set_required_version].
+func (a glArea) RequiredVersion() (major int, minor int) {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var arg1 C.int
-	var major int
-	var arg2 C.int
-	var minor int
+	arg1 := new(C.int)
+	var ret1 int
+	arg2 := new(C.int)
+	var ret2 int
 
-	C.gtk_gl_area_get_required_version(arg0, &arg1, &arg2)
+	C.gtk_gl_area_get_required_version(arg0, arg1, arg2)
 
-	major = int(&arg1)
-	minor = int(&arg2)
+	ret1 = int(*arg1)
+	ret2 = int(*arg2)
 
-	return major, minor
+	return ret1, ret2
 }
 
-// UseES retrieves the value set by gtk_gl_area_set_use_es().
-func (a glArea) UseES(a GLArea) bool {
+// UseES returns whether the `GtkGLArea` should use OpenGL ES.
+//
+// See [method@Gtk.GLArea.set_use_es].
+func (a glArea) UseES() bool {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_gl_area_get_use_es(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// MakeCurrent ensures that the GLContext used by @area is associated with
-// the GLArea.
+// MakeCurrent ensures that the `GdkGLContext` used by @area is associated
+// with the `GtkGLArea`.
 //
-// This function is automatically called before emitting the GLArea::render
-// signal, and doesn't normally need to be called by application code.
-func (a glArea) MakeCurrent(a GLArea) {
+// This function is automatically called before emitting the
+// [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
+// called by application code.
+func (a glArea) MakeCurrent() {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
@@ -320,13 +407,15 @@ func (a glArea) MakeCurrent(a GLArea) {
 }
 
 // QueueRender marks the currently rendered data (if any) as invalid, and
-// queues a redraw of the widget, ensuring that the GLArea::render signal is
-// emitted during the draw.
+// queues a redraw of the widget.
 //
-// This is only needed when the gtk_gl_area_set_auto_render() has been
+// This ensures that the [signal@Gtk.GLArea::render] signal is emitted
+// during the draw.
+//
+// This is only needed when [method@Gtk.GLArea.set_auto_render] has been
 // called with a false value. The default behaviour is to emit
-// GLArea::render on each draw.
-func (a glArea) QueueRender(a GLArea) {
+// [signal@Gtk.GLArea::render] on each draw.
+func (a glArea) QueueRender() {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
@@ -334,16 +423,18 @@ func (a glArea) QueueRender(a GLArea) {
 	C.gtk_gl_area_queue_render(arg0)
 }
 
-// SetAutoRender: if @auto_render is true the GLArea::render signal will be
+// SetAutoRender sets whether the `GtkGLArea` is in auto render mode.
+//
+// If @auto_render is true the [signal@Gtk.GLArea::render] signal will be
 // emitted every time the widget draws. This is the default and is useful if
 // drawing the widget is faster.
 //
 // If @auto_render is false the data from previous rendering is kept around
 // and will be used for drawing the widget the next time, unless the window
-// is resized. In order to force a rendering gtk_gl_area_queue_render() must
-// be called. This mode is useful when the scene changes seldom, but takes a
-// long time to redraw.
-func (a glArea) SetAutoRender(a GLArea, autoRender bool) {
+// is resized. In order to force a rendering
+// [method@Gtk.GLArea.queue_render] must be called. This mode is useful when
+// the scene changes seldom, but takes a long time to redraw.
+func (a glArea) SetAutoRender(autoRender bool) {
 	var arg0 *C.GtkGLArea
 	var arg1 C.gboolean
 
@@ -356,23 +447,26 @@ func (a glArea) SetAutoRender(a GLArea, autoRender bool) {
 }
 
 // SetError sets an error on the area which will be shown instead of the GL
-// rendering. This is useful in the GLArea::create-context signal if GL
+// rendering.
+//
+// This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
 // context creation fails.
-func (a glArea) SetError(a GLArea, error error) {
+func (a glArea) SetError(err error) {
 	var arg0 *C.GtkGLArea
 	var arg1 *C.GError
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(error)))
+	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
 	defer C.g_error_free(arg1)
 
 	C.gtk_gl_area_set_error(arg0, arg1)
 }
 
-// SetHasDepthBuffer: if @has_depth_buffer is true the widget will allocate
-// and enable a depth buffer for the target framebuffer. Otherwise there
-// will be none.
-func (a glArea) SetHasDepthBuffer(a GLArea, hasDepthBuffer bool) {
+// SetHasDepthBuffer sets whether the `GtkGLArea` should use a depth buffer.
+//
+// If @has_depth_buffer is true the widget will allocate and enable a depth
+// buffer for the target framebuffer. Otherwise there will be none.
+func (a glArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 	var arg0 *C.GtkGLArea
 	var arg1 C.gboolean
 
@@ -384,10 +478,12 @@ func (a glArea) SetHasDepthBuffer(a GLArea, hasDepthBuffer bool) {
 	C.gtk_gl_area_set_has_depth_buffer(arg0, arg1)
 }
 
-// SetHasStencilBuffer: if @has_stencil_buffer is true the widget will
-// allocate and enable a stencil buffer for the target framebuffer.
-// Otherwise there will be none.
-func (a glArea) SetHasStencilBuffer(a GLArea, hasStencilBuffer bool) {
+// SetHasStencilBuffer sets whether the `GtkGLArea` should use a stencil
+// buffer.
+//
+// If @has_stencil_buffer is true the widget will allocate and enable a
+// stencil buffer for the target framebuffer. Otherwise there will be none.
+func (a glArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 	var arg0 *C.GtkGLArea
 	var arg1 C.gboolean
 
@@ -403,7 +499,7 @@ func (a glArea) SetHasStencilBuffer(a GLArea, hasStencilBuffer bool) {
 // creating the context for the widget.
 //
 // This function must be called before the area has been realized.
-func (a glArea) SetRequiredVersion(a GLArea, major int, minor int) {
+func (a glArea) SetRequiredVersion(major int, minor int) {
 	var arg0 *C.GtkGLArea
 	var arg1 C.int
 	var arg2 C.int
@@ -420,7 +516,7 @@ func (a glArea) SetRequiredVersion(a GLArea, major int, minor int) {
 //
 // You should check the capabilities of the GLContext before drawing with
 // either API.
-func (a glArea) SetUseES(a GLArea, useES bool) {
+func (a glArea) SetUseES(useES bool) {
 	var arg0 *C.GtkGLArea
 	var arg1 C.gboolean
 

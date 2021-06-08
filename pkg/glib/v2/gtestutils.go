@@ -120,7 +120,7 @@ func gotk4_TestDataFunc(arg0 C.gpointer) {
 	}
 
 	fn := v.(TestDataFunc)
-	fn(userData)
+	fn()
 }
 
 // TestFixtureFunc: the type used for functions that operate on test fixtures.
@@ -133,7 +133,7 @@ func gotk4_TestDataFunc(arg0 C.gpointer) {
 // @fixture will be a pointer to the area of memory allocated by the test
 // framework, of the size requested. If the requested size was zero then
 // @fixture will be equal to @user_data.
-type TestFixtureFunc func(fixture interface{})
+type TestFixtureFunc func()
 
 //export gotk4_TestFixtureFunc
 func gotk4_TestFixtureFunc(arg0 C.gpointer, arg1 C.gpointer) {
@@ -143,11 +143,11 @@ func gotk4_TestFixtureFunc(arg0 C.gpointer, arg1 C.gpointer) {
 	}
 
 	fn := v.(TestFixtureFunc)
-	fn(fixture, userData)
+	fn()
 }
 
 // TestLogFatalFunc specifies the prototype of fatal log handler functions.
-type TestLogFatalFunc func(logDomain string, logLevel LogLevelFlags, message string) bool
+type TestLogFatalFunc func() (ok bool)
 
 //export gotk4_TestLogFatalFunc
 func gotk4_TestLogFatalFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) C.gboolean {
@@ -157,13 +157,11 @@ func gotk4_TestLogFatalFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar,
 	}
 
 	fn := v.(TestLogFatalFunc)
-	ret := fn(logDomain, logLevel, message, userData)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
 func AssertionMessage(domain string, file string, line int, fn string, message string) {
@@ -215,6 +213,34 @@ func AssertionMessageCmpstr(domain string, file string, line int, fn string, exp
 	C.g_assertion_message_cmpstr(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 }
 
+func AssertionMessageCmpstrv(domain string, file string, line int, fn string, expr string, arg1 string, arg2 string, firstWrongIdx uint) {
+	var arg1 *C.char
+	var arg2 *C.char
+	var arg3 C.int
+	var arg4 *C.char
+	var arg5 *C.char
+	var arg6 **C.char
+	var arg7 **C.char
+	var arg8 C.gsize
+
+	arg1 = (*C.char)(C.CString(domain))
+	defer C.free(unsafe.Pointer(arg1))
+	arg2 = (*C.char)(C.CString(file))
+	defer C.free(unsafe.Pointer(arg2))
+	arg3 = C.int(line)
+	arg4 = (*C.char)(C.CString(fn))
+	defer C.free(unsafe.Pointer(arg4))
+	arg5 = (*C.char)(C.CString(expr))
+	defer C.free(unsafe.Pointer(arg5))
+	arg6 = (**C.char)(C.CString(arg1))
+	defer C.free(unsafe.Pointer(arg6))
+	arg7 = (**C.char)(C.CString(arg2))
+	defer C.free(unsafe.Pointer(arg7))
+	arg8 = C.gsize(firstWrongIdx)
+
+	C.g_assertion_message_cmpstrv(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+}
+
 // AssertionMessageExpr: internal function used to print messages from the
 // public g_assert() and g_assert_not_reached() macros.
 func AssertionMessageExpr(domain string, file string, line int, fn string, expr string) {
@@ -239,7 +265,7 @@ func AssertionMessageExpr(domain string, file string, line int, fn string, expr 
 
 // Strcmp0 compares @str1 and @str2 like strcmp(). Handles nil gracefully by
 // sorting it before non-nil strings. Comparing two nil pointers returns 0.
-func Strcmp0(str1 string, str2 string) {
+func Strcmp0(str1 string, str2 string) int {
 	var arg1 *C.char
 	var arg2 *C.char
 
@@ -248,7 +274,14 @@ func Strcmp0(str1 string, str2 string) {
 	arg2 = (*C.char)(C.CString(str2))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_strcmp0(arg1, arg2)
+	var cret C.int
+	var goret int
+
+	cret = C.g_strcmp0(arg1, arg2)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // TestAddDataFuncFull: create a new test case, as with g_test_add_data_func(),
@@ -309,13 +342,20 @@ func TestBugBase(uriPattern string) {
 }
 
 // TestCreateSuite: create a new test suite with the name @suite_name.
-func TestCreateSuite(suiteName string) {
+func TestCreateSuite(suiteName string) *TestSuite {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(suiteName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_test_create_suite(arg1)
+	var cret *C.GTestSuite
+	var goret *TestSuite
+
+	cret = C.g_test_create_suite(arg1)
+
+	goret = WrapTestSuite(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // TestExpectMessage indicates that a message with the given @log_domain and
@@ -390,15 +430,15 @@ func TestFail() {
 // inside a test function.
 func TestFailed() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_test_failed()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestGetDir gets the pathname of the directory containing test files of the
@@ -406,17 +446,48 @@ func TestFailed() bool {
 //
 // This is approximately the same as calling g_test_build_filename("."), but you
 // don't need to free the return value.
-func TestGetDir(fileType TestFileType) {
+func TestGetDir(fileType TestFileType) string {
 	var arg1 C.GTestFileType
 
 	arg1 = (C.GTestFileType)(fileType)
 
-	C.g_test_get_dir(arg1)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_test_get_dir(arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
+}
+
+// TestGetPath gets the test path for the test currently being run.
+//
+// In essence, it will be the same string passed as the first argument to e.g.
+// g_test_add() when the test was added.
+//
+// This function returns a valid string only within a test function.
+func TestGetPath() string {
+	var cret *C.char
+	var goret string
+
+	cret = C.g_test_get_path()
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // TestGetRoot: get the toplevel test suite for the test path API.
-func TestGetRoot() {
-	C.g_test_get_root()
+func TestGetRoot() *TestSuite {
+	var cret *C.GTestSuite
+	var goret *TestSuite
+
+	cret = C.g_test_get_root()
+
+	goret = WrapTestSuite(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // TestIncomplete indicates that a test failed because of some incomplete
@@ -459,12 +530,19 @@ func TestLogSetFatalHandler() {
 	C.g_test_log_set_fatal_handler(arg1, arg2)
 }
 
-func TestLogTypeName(logType TestLogType) {
+func TestLogTypeName(logType TestLogType) string {
 	var arg1 C.GTestLogType
 
 	arg1 = (C.GTestLogType)(logType)
 
-	C.g_test_log_type_name(arg1)
+	var cret *C.char
+	var goret string
+
+	cret = C.g_test_log_type_name(arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // TestQueueFree: enqueue a pointer to be released with g_free() during the next
@@ -480,21 +558,35 @@ func TestQueueFree(gfreePointer interface{}) {
 
 // TestRandDouble: get a reproducible random floating point number, see
 // g_test_rand_int() for details on test case random numbers.
-func TestRandDouble() {
-	C.g_test_rand_double()
+func TestRandDouble() float64 {
+	var cret C.double
+	var goret float64
+
+	cret = C.g_test_rand_double()
+
+	goret = float64(cret)
+
+	return goret
 }
 
 // TestRandDoubleRange: get a reproducible random floating pointer number out of
 // a specified range, see g_test_rand_int() for details on test case random
 // numbers.
-func TestRandDoubleRange(rangeStart float64, rangeEnd float64) {
+func TestRandDoubleRange(rangeStart float64, rangeEnd float64) float64 {
 	var arg1 C.double
 	var arg2 C.double
 
 	arg1 = C.double(rangeStart)
 	arg2 = C.double(rangeEnd)
 
-	C.g_test_rand_double_range(arg1, arg2)
+	var cret C.double
+	var goret float64
+
+	cret = C.g_test_rand_double_range(arg1, arg2)
+
+	goret = float64(cret)
+
+	return goret
 }
 
 // TestRandInt: get a reproducible random integer number.
@@ -506,20 +598,34 @@ func TestRandDoubleRange(rangeStart float64, rangeEnd float64) {
 // For individual test cases however, the random number generator is reseeded,
 // to avoid dependencies between tests and to make --seed effective for all test
 // cases.
-func TestRandInt() {
-	C.g_test_rand_int()
+func TestRandInt() int32 {
+	var cret C.gint32
+	var goret int32
+
+	cret = C.g_test_rand_int()
+
+	goret = int32(cret)
+
+	return goret
 }
 
 // TestRandIntRange: get a reproducible random integer number out of a specified
 // range, see g_test_rand_int() for details on test case random numbers.
-func TestRandIntRange(begin int32, end int32) {
+func TestRandIntRange(begin int32, end int32) int32 {
 	var arg1 C.gint32
 	var arg2 C.gint32
 
 	arg1 = C.gint32(begin)
 	arg2 = C.gint32(end)
 
-	C.g_test_rand_int_range(arg1, arg2)
+	var cret C.gint32
+	var goret int32
+
+	cret = C.g_test_rand_int_range(arg1, arg2)
+
+	goret = int32(cret)
+
+	return goret
 }
 
 // TestRun runs all tests under the toplevel suite which can be retrieved with
@@ -551,8 +657,15 @@ func TestRandIntRange(begin int32, end int32) {
 // If all tests are skipped or marked as incomplete (expected failures), this
 // function will return 0 if producing TAP output, or 77 (treated as "skip test"
 // by Automake) otherwise.
-func TestRun() {
-	C.g_test_run()
+func TestRun() int {
+	var cret C.int
+	var goret int
+
+	cret = C.g_test_run()
+
+	goret = int(cret)
+
+	return goret
 }
 
 // TestRunSuite: execute the tests within @suite and all nested Suites. The test
@@ -561,12 +674,19 @@ func TestRun() {
 // documentation for more information on the order that tests are run in.
 //
 // g_test_run_suite() or g_test_run() may only be called once in a program.
-func TestRunSuite(suite *TestSuite) {
+func TestRunSuite(suite *TestSuite) int {
 	var arg1 *C.GTestSuite
 
 	arg1 = (*C.GTestSuite)(unsafe.Pointer(suite.Native()))
 
-	C.g_test_run_suite(arg1)
+	var cret C.int
+	var goret int
+
+	cret = C.g_test_run_suite(arg1)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // TestSetNonfatalAssertions changes the behaviour of the various `g_assert_*()`
@@ -604,15 +724,15 @@ func TestSkip(msg string) {
 // program is running under g_test_trap_subprocess().
 func TestSubprocess() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_test_subprocess()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestSummary: set the summary for a test, which describes what the test
@@ -643,13 +763,27 @@ func TestSummary(summary string) {
 
 // TestTimerElapsed: get the time since the last start of the timer with
 // g_test_timer_start().
-func TestTimerElapsed() {
-	C.g_test_timer_elapsed()
+func TestTimerElapsed() float64 {
+	var cret C.double
+	var goret float64
+
+	cret = C.g_test_timer_elapsed()
+
+	goret = float64(cret)
+
+	return goret
 }
 
 // TestTimerLast: report the last result of g_test_timer_elapsed().
-func TestTimerLast() {
-	C.g_test_timer_last()
+func TestTimerLast() float64 {
+	var cret C.double
+	var goret float64
+
+	cret = C.g_test_timer_last()
+
+	goret = float64(cret)
+
+	return goret
 }
 
 // TestTimerStart: start a timing test. Call g_test_timer_elapsed() when the
@@ -714,45 +848,45 @@ func TestTrapFork(usecTimeout uint64, testTrapFlags TestTrapFlags) bool {
 	arg2 = (C.GTestTrapFlags)(testTrapFlags)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_test_trap_fork(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestTrapHasPassed: check the result of the last g_test_trap_subprocess()
 // call.
 func TestTrapHasPassed() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_test_trap_has_passed()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestTrapReachedTimeout: check the result of the last g_test_trap_subprocess()
 // call.
 func TestTrapReachedTimeout() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_test_trap_reached_timeout()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TestTrapSubprocess respawns the test program to run only @test_path in a
@@ -952,7 +1086,7 @@ func (t *TestLogBuffer) Native() unsafe.Pointer {
 
 // Free: internal function for gtester to free test log messages, no ABI
 // guarantees provided.
-func (t *TestLogBuffer) Free(t *TestLogBuffer) {
+func (t *TestLogBuffer) Free() {
 	var arg0 *C.GTestLogBuffer
 
 	arg0 = (*C.GTestLogBuffer)(unsafe.Pointer(t.Native()))
@@ -960,19 +1094,9 @@ func (t *TestLogBuffer) Free(t *TestLogBuffer) {
 	C.g_test_log_buffer_free(arg0)
 }
 
-// Pop: internal function for gtester to retrieve test log messages, no ABI
-// guarantees provided.
-func (t *TestLogBuffer) Pop(t *TestLogBuffer) {
-	var arg0 *C.GTestLogBuffer
-
-	arg0 = (*C.GTestLogBuffer)(unsafe.Pointer(t.Native()))
-
-	C.g_test_log_buffer_pop(arg0)
-}
-
 // Push: internal function for gtester to decode test log messages, no ABI
 // guarantees provided.
-func (t *TestLogBuffer) Push(t *TestLogBuffer, nBytes uint, bytes byte) {
+func (t *TestLogBuffer) Push(nBytes uint, bytes byte) {
 	var arg0 *C.GTestLogBuffer
 	var arg1 C.guint
 	var arg2 *C.guint8
@@ -982,68 +1106,6 @@ func (t *TestLogBuffer) Push(t *TestLogBuffer, nBytes uint, bytes byte) {
 	arg2 = *C.guint8(bytes)
 
 	C.g_test_log_buffer_push(arg0, arg1, arg2)
-}
-
-type TestLogMsg struct {
-	native C.GTestLogMsg
-}
-
-// WrapTestLogMsg wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapTestLogMsg(ptr unsafe.Pointer) *TestLogMsg {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*TestLogMsg)(ptr)
-}
-
-func marshalTestLogMsg(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapTestLogMsg(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (t *TestLogMsg) Native() unsafe.Pointer {
-	return unsafe.Pointer(&t.native)
-}
-
-// LogType gets the field inside the struct.
-func (t *TestLogMsg) LogType() TestLogType {
-	var v TestLogType
-	v = TestLogType(t.native.log_type)
-	return v
-}
-
-// NStrings gets the field inside the struct.
-func (t *TestLogMsg) NStrings() uint {
-	var v uint
-	v = uint(t.native.n_strings)
-	return v
-}
-
-// Strings gets the field inside the struct.
-func (t *TestLogMsg) Strings() string {
-	var v string
-	v = C.GoString(t.native.strings)
-	return v
-}
-
-// NNums gets the field inside the struct.
-func (t *TestLogMsg) NNums() uint {
-	var v uint
-	v = uint(t.native.n_nums)
-	return v
-}
-
-// Free: internal function for gtester to free test log messages, no ABI
-// guarantees provided.
-func (t *TestLogMsg) Free(t *TestLogMsg) {
-	var arg0 *C.GTestLogMsg
-
-	arg0 = (*C.GTestLogMsg)(unsafe.Pointer(t.Native()))
-
-	C.g_test_log_msg_free(arg0)
 }
 
 // TestSuite: an opaque structure representing a test suite.
@@ -1072,7 +1134,7 @@ func (t *TestSuite) Native() unsafe.Pointer {
 }
 
 // Add adds @test_case to @suite.
-func (s *TestSuite) Add(s *TestSuite, testCase *TestCase) {
+func (s *TestSuite) Add(testCase *TestCase) {
 	var arg0 *C.GTestSuite
 	var arg1 *C.GTestCase
 
@@ -1083,7 +1145,7 @@ func (s *TestSuite) Add(s *TestSuite, testCase *TestCase) {
 }
 
 // AddSuite adds @nestedsuite to @suite.
-func (s *TestSuite) AddSuite(s *TestSuite, nestedsuite *TestSuite) {
+func (s *TestSuite) AddSuite(nestedsuite *TestSuite) {
 	var arg0 *C.GTestSuite
 	var arg1 *C.GTestSuite
 

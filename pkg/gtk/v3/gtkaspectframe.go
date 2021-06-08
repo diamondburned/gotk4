@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,7 +38,7 @@ type AspectFrame interface {
 	Buildable
 
 	// Set: set parameters for an existing AspectFrame.
-	Set(a AspectFrame, xalign float32, yalign float32, ratio float32, obeyChild bool)
+	Set(xalign float32, yalign float32, ratio float32, obeyChild bool)
 }
 
 // aspectFrame implements the AspectFrame interface.
@@ -62,7 +65,7 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 }
 
 // NewAspectFrame constructs a class AspectFrame.
-func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) {
+func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
 	var arg1 *C.gchar
 	var arg2 C.gfloat
 	var arg3 C.gfloat
@@ -78,11 +81,18 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 		arg5 = C.gboolean(1)
 	}
 
-	C.gtk_aspect_frame_new(arg1, arg2, arg3, arg4, arg5)
+	var cret C.GtkAspectFrame
+	var goret AspectFrame
+
+	cret = C.gtk_aspect_frame_new(arg1, arg2, arg3, arg4, arg5)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
+
+	return goret
 }
 
 // Set: set parameters for an existing AspectFrame.
-func (a aspectFrame) Set(a AspectFrame, xalign float32, yalign float32, ratio float32, obeyChild bool) {
+func (a aspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChild bool) {
 	var arg0 *C.GtkAspectFrame
 	var arg1 C.gfloat
 	var arg2 C.gfloat

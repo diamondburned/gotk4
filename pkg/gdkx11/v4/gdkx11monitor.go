@@ -22,13 +22,11 @@ func init() {
 type X11Monitor interface {
 	gdk.Monitor
 
-	// Output returns the XID of the Output corresponding to @monitor.
-	Output(m X11Monitor)
 	// Workarea retrieves the size and position of the “work area” on a monitor
 	// within the display coordinate space. The returned geometry is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_monitor_get_scale_factor()).
-	Workarea(m X11Monitor) *gdk.Rectangle
+	Workarea() *gdk.Rectangle
 }
 
 // x11Monitor implements the X11Monitor interface.
@@ -52,30 +50,21 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 	return WrapX11Monitor(obj), nil
 }
 
-// Output returns the XID of the Output corresponding to @monitor.
-func (m x11Monitor) Output(m X11Monitor) {
-	var arg0 *C.GdkMonitor
-
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	C.gdk_x11_monitor_get_output(arg0)
-}
-
 // Workarea retrieves the size and position of the “work area” on a monitor
 // within the display coordinate space. The returned geometry is in
 // ”application pixels”, not in ”device pixels” (see
 // gdk_monitor_get_scale_factor()).
-func (m x11Monitor) Workarea(m X11Monitor) *gdk.Rectangle {
+func (m x11Monitor) Workarea() *gdk.Rectangle {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.GdkRectangle
-	var workarea *gdk.Rectangle
+	arg1 := new(C.GdkRectangle)
+	var ret1 *gdk.Rectangle
 
-	C.gdk_x11_monitor_get_workarea(arg0, &arg1)
+	C.gdk_x11_monitor_get_workarea(arg0, arg1)
 
-	workarea = gdk.WrapRectangle(unsafe.Pointer(&arg1))
+	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
 
-	return workarea
+	return ret1
 }

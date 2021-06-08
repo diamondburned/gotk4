@@ -47,23 +47,37 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 //
 // The conversion is done by multiplying @d by PANGO_SCALE and rounding the
 // result to nearest integer.
-func UnitsFromDouble(d float64) {
+func UnitsFromDouble(d float64) int {
 	var arg1 C.double
 
 	arg1 = C.double(d)
 
-	C.pango_units_from_double(arg1)
+	var cret C.int
+	var goret int
+
+	cret = C.pango_units_from_double(arg1)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // UnitsToDouble converts a number in Pango units to floating-point.
 //
 // The conversion is done by dividing @i by PANGO_SCALE.
-func UnitsToDouble(i int) {
+func UnitsToDouble(i int) float64 {
 	var arg1 C.int
 
 	arg1 = C.int(i)
 
-	C.pango_units_to_double(arg1)
+	var cret C.double
+	var goret float64
+
+	cret = C.pango_units_to_double(arg1)
+
+	goret = float64(cret)
+
+	return goret
 }
 
 // Rectangle: the `PangoRectangle` structure represents a rectangle.

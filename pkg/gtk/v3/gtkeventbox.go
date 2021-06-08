@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,10 +32,10 @@ type EventBox interface {
 
 	// AboveChild returns whether the event box window is above or below the
 	// windows of its child. See gtk_event_box_set_above_child() for details.
-	AboveChild(e EventBox) bool
+	AboveChild() bool
 	// VisibleWindow returns whether the event box has a visible window. See
 	// gtk_event_box_set_visible_window() for details.
-	VisibleWindow(e EventBox) bool
+	VisibleWindow() bool
 	// SetAboveChild: set whether the event box window is positioned above the
 	// windows of its child, as opposed to below it. If the window is above, all
 	// events inside the event box will go to the event box. If the window is
@@ -40,7 +43,7 @@ type EventBox interface {
 	// and then to its parents.
 	//
 	// The default is to keep the window below the child.
-	SetAboveChild(e EventBox, aboveChild bool)
+	SetAboveChild(aboveChild bool)
 	// SetVisibleWindow: set whether the event box uses a visible or invisible
 	// child window. The default is to use visible windows.
 	//
@@ -72,7 +75,7 @@ type EventBox interface {
 	// This problem doesn’t occur for visible event boxes, because in that case,
 	// the event box window is actually the ancestor of the descendant windows,
 	// not just at the same place on the screen.
-	SetVisibleWindow(e EventBox, visibleWindow bool)
+	SetVisibleWindow(visibleWindow bool)
 }
 
 // eventBox implements the EventBox interface.
@@ -99,46 +102,53 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 }
 
 // NewEventBox constructs a class EventBox.
-func NewEventBox() {
-	C.gtk_event_box_new()
+func NewEventBox() EventBox {
+	var cret C.GtkEventBox
+	var goret EventBox
+
+	cret = C.gtk_event_box_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EventBox)
+
+	return goret
 }
 
 // AboveChild returns whether the event box window is above or below the
 // windows of its child. See gtk_event_box_set_above_child() for details.
-func (e eventBox) AboveChild(e EventBox) bool {
+func (e eventBox) AboveChild() bool {
 	var arg0 *C.GtkEventBox
 
 	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_event_box_get_above_child(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // VisibleWindow returns whether the event box has a visible window. See
 // gtk_event_box_set_visible_window() for details.
-func (e eventBox) VisibleWindow(e EventBox) bool {
+func (e eventBox) VisibleWindow() bool {
 	var arg0 *C.GtkEventBox
 
 	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_event_box_get_visible_window(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetAboveChild: set whether the event box window is positioned above the
@@ -148,7 +158,7 @@ func (e eventBox) VisibleWindow(e EventBox) bool {
 // and then to its parents.
 //
 // The default is to keep the window below the child.
-func (e eventBox) SetAboveChild(e EventBox, aboveChild bool) {
+func (e eventBox) SetAboveChild(aboveChild bool) {
 	var arg0 *C.GtkEventBox
 	var arg1 C.gboolean
 
@@ -191,7 +201,7 @@ func (e eventBox) SetAboveChild(e EventBox, aboveChild bool) {
 // This problem doesn’t occur for visible event boxes, because in that case,
 // the event box window is actually the ancestor of the descendant windows,
 // not just at the same place on the screen.
-func (e eventBox) SetVisibleWindow(e EventBox, visibleWindow bool) {
+func (e eventBox) SetVisibleWindow(visibleWindow bool) {
 	var arg0 *C.GtkEventBox
 	var arg1 C.gboolean
 

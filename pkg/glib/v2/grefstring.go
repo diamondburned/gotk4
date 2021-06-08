@@ -2,6 +2,10 @@
 
 package glib
 
+import (
+	"unsafe"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -18,34 +22,57 @@ import "C"
 type RefString byte
 
 // RefStringAcquire acquires a reference on a string.
-func RefStringAcquire(str string) {
+func RefStringAcquire(str string) string {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_ref_string_acquire(arg1)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.g_ref_string_acquire(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RefStringLength retrieves the length of @str.
-func RefStringLength(str string) {
+func RefStringLength(str string) uint {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_ref_string_length(arg1)
+	var cret C.gsize
+	var goret uint
+
+	cret = C.g_ref_string_length(arg1)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // NewRefString creates a new reference counted string and copies the contents
 // of @str into it.
-func NewRefString(str string) {
+func NewRefString(str string) string {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_ref_string_new(arg1)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.g_ref_string_new(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RefStringNewIntern creates a new reference counted string and copies the
@@ -54,13 +81,21 @@ func NewRefString(str string) {
 // If you call this function multiple times with the same @str, or with the same
 // contents of @str, it will return a new reference, instead of creating a new
 // string.
-func RefStringNewIntern(str string) {
+func RefStringNewIntern(str string) string {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_ref_string_new_intern(arg1)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.g_ref_string_new_intern(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RefStringNewLen creates a new reference counted string and copies the
@@ -68,7 +103,7 @@ func RefStringNewIntern(str string) {
 //
 // Since this function does not stop at nul bytes, it is the caller's
 // responsibility to ensure that @str has at least @len addressable bytes.
-func RefStringNewLen(str string, len int) {
+func RefStringNewLen(str string, len int) string {
 	var arg1 *C.char
 	var arg2 C.gssize
 
@@ -76,7 +111,15 @@ func RefStringNewLen(str string, len int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	C.g_ref_string_new_len(arg1, arg2)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.g_ref_string_new_len(arg1, arg2)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RefStringRelease releases a reference on a string; if it was the last

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -61,18 +64,18 @@ type MessageDialog interface {
 	Buildable
 
 	// Image gets the dialog’s image.
-	Image(d MessageDialog)
+	Image() Widget
 	// MessageArea returns the message area of the dialog. This is the box where
 	// the dialog’s primary and secondary labels are packed. You can add your
 	// own extra content to that box and it will appear below those labels. See
 	// gtk_dialog_get_content_area() for the corresponding function in the
 	// parent Dialog.
-	MessageArea(m MessageDialog)
+	MessageArea() Widget
 	// SetImage sets the dialog’s image to @image.
-	SetImage(d MessageDialog, image Widget)
+	SetImage(image Widget)
 	// SetMarkup sets the text of the message dialog to be @str, which is marked
 	// up with the [Pango text markup language][PangoMarkupFormat].
-	SetMarkup(m MessageDialog, str string)
+	SetMarkup(str string)
 }
 
 // messageDialog implements the MessageDialog interface.
@@ -99,12 +102,19 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 }
 
 // Image gets the dialog’s image.
-func (d messageDialog) Image(d MessageDialog) {
+func (d messageDialog) Image() Widget {
 	var arg0 *C.GtkMessageDialog
 
 	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
 
-	C.gtk_message_dialog_get_image(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_message_dialog_get_image(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // MessageArea returns the message area of the dialog. This is the box where
@@ -112,16 +122,23 @@ func (d messageDialog) Image(d MessageDialog) {
 // own extra content to that box and it will appear below those labels. See
 // gtk_dialog_get_content_area() for the corresponding function in the
 // parent Dialog.
-func (m messageDialog) MessageArea(m MessageDialog) {
+func (m messageDialog) MessageArea() Widget {
 	var arg0 *C.GtkMessageDialog
 
 	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 
-	C.gtk_message_dialog_get_message_area(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_message_dialog_get_message_area(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // SetImage sets the dialog’s image to @image.
-func (d messageDialog) SetImage(d MessageDialog, image Widget) {
+func (d messageDialog) SetImage(image Widget) {
 	var arg0 *C.GtkMessageDialog
 	var arg1 *C.GtkWidget
 
@@ -133,7 +150,7 @@ func (d messageDialog) SetImage(d MessageDialog, image Widget) {
 
 // SetMarkup sets the text of the message dialog to be @str, which is marked
 // up with the [Pango text markup language][PangoMarkupFormat].
-func (m messageDialog) SetMarkup(m MessageDialog, str string) {
+func (m messageDialog) SetMarkup(str string) {
 	var arg0 *C.GtkMessageDialog
 	var arg1 *C.gchar
 

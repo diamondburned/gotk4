@@ -5,6 +5,8 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -25,49 +27,50 @@ func init() {
 type BuildableOverrider interface {
 	// AddChild adds a child to @buildable. @type is an optional string
 	// describing how the child should be added.
-	AddChild(b Buildable, builder Builder, child gextras.Objector, typ string)
+	AddChild(builder Builder, child gextras.Objector, typ string)
 
-	ConstructChild(b Buildable, builder Builder, name string)
+	ConstructChild(builder Builder, name string) gextras.Objector
 	// CustomFinished: similar to gtk_buildable_parser_finished() but is called
 	// once for each custom tag handled by the @buildable.
-	CustomFinished(b Buildable, builder Builder, child gextras.Objector, tagname string, data interface{})
+	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
 	// CustomTagEnd: called at the end of each custom element handled by the
 	// buildable.
-	CustomTagEnd(b Buildable, builder Builder, child gextras.Objector, tagname string, data interface{})
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
 
-	ID(b Buildable)
+	ID() string
 	// InternalChild retrieves the internal child called @childname of the
 	// @buildable object.
-	InternalChild(b Buildable, builder Builder, childname string)
+	InternalChild(builder Builder, childname string) gextras.Objector
 
-	ParserFinished(b Buildable, builder Builder)
+	ParserFinished(builder Builder)
 
-	SetBuildableProperty(b Buildable, builder Builder, name string, value *externglib.Value)
+	SetBuildableProperty(builder Builder, name string, value *externglib.Value)
 
-	SetID(b Buildable, id string)
+	SetID(iD string)
 }
 
-// Buildable: gtkBuildable allows objects to extend and customize their
-// deserialization from [GtkBuilder UI descriptions][BUILDER-UI]. The interface
-// includes methods for setting names and properties of objects, parsing custom
-// tags and constructing child objects.
+// Buildable: `GtkBuildable` allows objects to extend and customize their
+// deserialization from ui files.
 //
-// The GtkBuildable interface is implemented by all widgets and many of the
+// The interface includes methods for setting names and properties of objects,
+// parsing custom tags and constructing child objects.
+//
+// The `GtkBuildable` interface is implemented by all widgets and many of the
 // non-widget objects that are provided by GTK. The main user of this interface
-// is Builder. There should be very little need for applications to call any of
-// these functions directly.
+// is [class@Gtk.Builder]. There should be very little need for applications to
+// call any of these functions directly.
 //
 // An object only needs to implement this interface if it needs to extend the
-// Builder format or run any extra routines at deserialization time.
+// `GtkBuilder` XML format or run any extra routines at deserialization time.
 type Buildable interface {
 	gextras.Objector
 	BuildableOverrider
 
 	// BuildableID gets the ID of the @buildable object.
 	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
 	// used to construct the @buildable.
-	BuildableID(b Buildable)
+	BuildableID() string
 }
 
 // buildable implements the Buildable interface.
@@ -93,16 +96,24 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 
 // BuildableID gets the ID of the @buildable object.
 //
-// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
 // used to construct the @buildable.
-func (b buildable) BuildableID(b Buildable) {
+func (b buildable) BuildableID() string {
 	var arg0 *C.GtkBuildable
 
 	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
-	C.gtk_buildable_get_buildable_id(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_buildable_get_buildable_id(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
+// BuildableParseContext: an opaque context struct for `GtkBuildableParser`.
 type BuildableParseContext struct {
 	native C.GtkBuildableParseContext
 }
@@ -132,12 +143,19 @@ func (b *BuildableParseContext) Native() unsafe.Pointer {
 // If called from the start_element or end_element handlers this will give the
 // element_name as passed to those functions. For the parent elements, see
 // gtk_buildable_parse_context_get_element_stack().
-func (c *BuildableParseContext) Element(c *BuildableParseContext) {
+func (c *BuildableParseContext) Element() string {
 	var arg0 *C.GtkBuildableParseContext
 
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_buildable_parse_context_get_element(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_buildable_parse_context_get_element(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ElementStack retrieves the element stack from the internal state of the
@@ -151,34 +169,55 @@ func (c *BuildableParseContext) Element(c *BuildableParseContext) {
 // This function is intended to be used in the start_element and end_element
 // handlers where gtk_buildable_parse_context_get_element() would merely return
 // the name of the element that is being processed.
-func (c *BuildableParseContext) ElementStack(c *BuildableParseContext) {
+func (c *BuildableParseContext) ElementStack() []string {
 	var arg0 *C.GtkBuildableParseContext
 
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_buildable_parse_context_get_element_stack(arg0)
+	var cret *C.GPtrArray
+	var goret []string
+
+	cret = C.gtk_buildable_parse_context_get_element_stack(arg0)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (*C.GPtrArray)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+		}
+	}
+
+	return goret
 }
 
 // Position retrieves the current line number and the number of the character on
 // that line. Intended for use in error messages; there are no strict semantics
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages."
-func (c *BuildableParseContext) Position(c *BuildableParseContext) (lineNumber int, charNumber int) {
+func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 	var arg0 *C.GtkBuildableParseContext
 
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.int
-	var lineNumber int
-	var arg2 C.int
-	var charNumber int
+	arg1 := new(C.int)
+	var ret1 int
+	arg2 := new(C.int)
+	var ret2 int
 
-	C.gtk_buildable_parse_context_get_position(arg0, &arg1, &arg2)
+	C.gtk_buildable_parse_context_get_position(arg0, arg1, arg2)
 
-	lineNumber = int(&arg1)
-	charNumber = int(&arg2)
+	ret1 = int(*arg1)
+	ret2 = int(*arg2)
 
-	return lineNumber, charNumber
+	return ret1, ret2
 }
 
 // Pop completes the process of a temporary sub-parser redirection.
@@ -193,10 +232,17 @@ func (c *BuildableParseContext) Position(c *BuildableParseContext) (lineNumber i
 // This function is not intended to be directly called by users interested in
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
-func (c *BuildableParseContext) Pop(c *BuildableParseContext) {
+func (c *BuildableParseContext) Pop() interface{} {
 	var arg0 *C.GtkBuildableParseContext
 
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	C.gtk_buildable_parse_context_pop(arg0)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.gtk_buildable_parse_context_pop(arg0)
+
+	goret = interface{}(cret)
+
+	return goret
 }

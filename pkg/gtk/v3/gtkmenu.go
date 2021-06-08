@@ -3,7 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,7 +31,7 @@ func init() {
 // sets the @x and @y parameters to the coordinates where the menu is to be
 // drawn. To make the menu appear on a different monitor than the mouse pointer,
 // gtk_menu_set_monitor() must be called.
-type MenuPositionFunc func(menu Menu, x int, y int) bool
+type MenuPositionFunc func() (pushIn bool)
 
 //export gotk4_MenuPositionFunc
 func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C.gboolean, arg4 C.gpointer) {
@@ -36,10 +41,10 @@ func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C
 	}
 
 	fn := v.(MenuPositionFunc)
-	pushIn := fn(menu, x, y, userData)
+	fn(pushIn)
 
-	if pushIn {
-		*arg3 = C.gboolean(1)
+	if *pushIn {
+		arg3 = *C.gboolean(1)
 	}
 }
 
@@ -80,35 +85,35 @@ type Menu interface {
 	// (Columns and rows are indexed from zero).
 	//
 	// Note that this function is not related to gtk_menu_detach().
-	Attach(m Menu, child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
+	Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint)
 	// Detach detaches the menu from the widget to which it had been attached.
 	// This function will call the callback function, @detacher, provided when
 	// the gtk_menu_attach_to_widget() function was called.
-	Detach(m Menu)
+	Detach()
 	// AccelGroup gets the AccelGroup which holds global accelerators for the
 	// menu. See gtk_menu_set_accel_group().
-	AccelGroup(m Menu)
+	AccelGroup() AccelGroup
 	// AccelPath retrieves the accelerator path set on the menu.
-	AccelPath(m Menu)
+	AccelPath() string
 	// Active returns the selected menu item from the menu. This is used by the
 	// ComboBox.
-	Active(m Menu)
+	Active() Widget
 	// AttachWidget returns the Widget that the menu is attached to.
-	AttachWidget(m Menu)
+	AttachWidget() Widget
 	// Monitor retrieves the number of the monitor on which to show the menu.
-	Monitor(m Menu)
+	Monitor() int
 	// ReserveToggleSize returns whether the menu reserves space for toggles and
 	// icons, regardless of their actual presence.
-	ReserveToggleSize(m Menu) bool
+	ReserveToggleSize() bool
 	// TearoffState returns whether the menu is torn off. See
 	// gtk_menu_set_tearoff_state().
-	TearoffState(m Menu) bool
+	TearoffState() bool
 	// Title returns the title of the menu. See gtk_menu_set_title().
-	Title(m Menu)
+	Title() string
 	// PlaceOnMonitor places @menu on the given monitor.
-	PlaceOnMonitor(m Menu, monitor gdk.Monitor)
+	PlaceOnMonitor(monitor gdk.Monitor)
 	// Popdown removes the menu from the screen.
-	Popdown(m Menu)
+	Popdown()
 	// PopupAtPointer displays @menu and makes it available for selection.
 	//
 	// See gtk_menu_popup_at_widget () to pop up a menu at a widget.
@@ -121,7 +126,7 @@ type Menu interface {
 	// Menu:anchor-hints, Menu:rect-anchor-dx, Menu:rect-anchor-dy, and
 	// Menu:menu-type-hint. Connect to the Menu::popped-up signal to find out
 	// how it was actually positioned.
-	PopupAtPointer(m Menu, triggerEvent *gdk.Event)
+	PopupAtPointer(triggerEvent *gdk.Event)
 	// PopupAtRect displays @menu and makes it available for selection.
 	//
 	// See gtk_menu_popup_at_widget () and gtk_menu_popup_at_pointer (), which
@@ -140,7 +145,7 @@ type Menu interface {
 	// Other properties that influence the behaviour of this function are
 	// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
 	// signal to find out how it was actually positioned.
-	PopupAtRect(m Menu, rectWindow gdk.Window, rect *gdk.Rectangle, rectAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event)
+	PopupAtRect(rectWindow gdk.Window, rect *gdk.Rectangle, rectAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event)
 	// PopupAtWidget displays @menu and makes it available for selection.
 	//
 	// See gtk_menu_popup_at_pointer () to pop up a menu at the master pointer.
@@ -161,18 +166,18 @@ type Menu interface {
 	// Other properties that influence the behaviour of this function are
 	// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
 	// signal to find out how it was actually positioned.
-	PopupAtWidget(m Menu, widget Widget, widgetAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event)
+	PopupAtWidget(widget Widget, widgetAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event)
 	// ReorderChild moves @child to a new @position in the list of @menu
 	// children.
-	ReorderChild(m Menu, child Widget, position int)
+	ReorderChild(child Widget, position int)
 	// Reposition repositions the menu according to its position function.
-	Reposition(m Menu)
+	Reposition()
 	// SetAccelGroup: set the AccelGroup which holds global accelerators for the
 	// menu. This accelerator group needs to also be added to all windows that
 	// this menu is being used in with gtk_window_add_accel_group(), in order
 	// for those windows to support all the accelerators contained in this
 	// group.
-	SetAccelGroup(m Menu, accelGroup AccelGroup)
+	SetAccelGroup(accelGroup AccelGroup)
 	// SetAccelPath sets an accelerator path for this menu from which
 	// accelerator paths for its immediate children, its menu items, can be
 	// constructed. The main purpose of this function is to spare the programmer
@@ -194,10 +199,10 @@ type Menu interface {
 	// Note that @accel_path string will be stored in a #GQuark. Therefore, if
 	// you pass a static string, you can save some memory by interning it first
 	// with g_intern_static_string().
-	SetAccelPath(m Menu, accelPath string)
+	SetAccelPath(accelPath string)
 	// SetActive selects the specified menu item within the menu. This is used
 	// by the ComboBox and should not be used by anyone else.
-	SetActive(m Menu, index uint)
+	SetActive(index uint)
 	// SetMonitor informs GTK+ on which monitor a menu should be popped up. See
 	// gdk_monitor_get_geometry().
 	//
@@ -206,23 +211,23 @@ type Menu interface {
 	// reliably inferred from the coordinates returned by a MenuPositionFunc,
 	// since, for very long menus, these coordinates may extend beyond the
 	// monitor boundaries or even the screen boundaries.
-	SetMonitor(m Menu, monitorNum int)
+	SetMonitor(monitorNum int)
 	// SetReserveToggleSize sets whether the menu should reserve space for
 	// drawing toggles or icons, regardless of their actual presence.
-	SetReserveToggleSize(m Menu, reserveToggleSize bool)
+	SetReserveToggleSize(reserveToggleSize bool)
 	// SetScreen sets the Screen on which the menu will be displayed.
-	SetScreen(m Menu, screen gdk.Screen)
+	SetScreen(screen gdk.Screen)
 	// SetTearoffState changes the tearoff state of the menu. A menu is normally
 	// displayed as drop down menu which persists as long as the menu is active.
 	// It can also be displayed as a tearoff menu which persists until it is
 	// closed or reattached.
-	SetTearoffState(m Menu, tornOff bool)
+	SetTearoffState(tornOff bool)
 	// SetTitle sets the title string for the menu.
 	//
 	// The title is displayed when the menu is shown as a tearoff menu. If
 	// @title is nil, the menu will see if it is attached to a parent menu item,
 	// and if so it will try to use the same text as that menu item’s label.
-	SetTitle(m Menu, title string)
+	SetTitle(title string)
 }
 
 // menu implements the Menu interface.
@@ -249,17 +254,31 @@ func marshalMenu(p uintptr) (interface{}, error) {
 }
 
 // NewMenu constructs a class Menu.
-func NewMenu() {
-	C.gtk_menu_new()
+func NewMenu() Menu {
+	var cret C.GtkMenu
+	var goret Menu
+
+	cret = C.gtk_menu_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
+
+	return goret
 }
 
 // NewMenuFromModel constructs a class Menu.
-func NewMenuFromModel(model gio.MenuModel) {
+func NewMenuFromModel(model gio.MenuModel) Menu {
 	var arg1 *C.GMenuModel
 
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_menu_new_from_model(arg1)
+	var cret C.GtkMenu
+	var goret Menu
+
+	cret = C.gtk_menu_new_from_model(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
+
+	return goret
 }
 
 // Attach adds a new MenuItem to a (table) menu. The number of “cells” that
@@ -269,7 +288,7 @@ func NewMenuFromModel(model gio.MenuModel) {
 // (Columns and rows are indexed from zero).
 //
 // Note that this function is not related to gtk_menu_detach().
-func (m menu) Attach(m Menu, child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
+func (m menu) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GtkWidget
 	var arg2 C.guint
@@ -290,7 +309,7 @@ func (m menu) Attach(m Menu, child Widget, leftAttach uint, rightAttach uint, to
 // Detach detaches the menu from the widget to which it had been attached.
 // This function will call the callback function, @detacher, provided when
 // the gtk_menu_attach_to_widget() function was called.
-func (m menu) Detach(m Menu) {
+func (m menu) Detach() {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
@@ -300,100 +319,142 @@ func (m menu) Detach(m Menu) {
 
 // AccelGroup gets the AccelGroup which holds global accelerators for the
 // menu. See gtk_menu_set_accel_group().
-func (m menu) AccelGroup(m Menu) {
+func (m menu) AccelGroup() AccelGroup {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_get_accel_group(arg0)
+	var cret *C.GtkAccelGroup
+	var goret AccelGroup
+
+	cret = C.gtk_menu_get_accel_group(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelGroup)
+
+	return goret
 }
 
 // AccelPath retrieves the accelerator path set on the menu.
-func (m menu) AccelPath(m Menu) {
+func (m menu) AccelPath() string {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_get_accel_path(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_menu_get_accel_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Active returns the selected menu item from the menu. This is used by the
 // ComboBox.
-func (m menu) Active(m Menu) {
+func (m menu) Active() Widget {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_get_active(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_menu_get_active(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // AttachWidget returns the Widget that the menu is attached to.
-func (m menu) AttachWidget(m Menu) {
+func (m menu) AttachWidget() Widget {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_get_attach_widget(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_menu_get_attach_widget(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // Monitor retrieves the number of the monitor on which to show the menu.
-func (m menu) Monitor(m Menu) {
+func (m menu) Monitor() int {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_get_monitor(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_menu_get_monitor(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // ReserveToggleSize returns whether the menu reserves space for toggles and
 // icons, regardless of their actual presence.
-func (m menu) ReserveToggleSize(m Menu) bool {
+func (m menu) ReserveToggleSize() bool {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_menu_get_reserve_toggle_size(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TearoffState returns whether the menu is torn off. See
 // gtk_menu_set_tearoff_state().
-func (m menu) TearoffState(m Menu) bool {
+func (m menu) TearoffState() bool {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_menu_get_tearoff_state(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Title returns the title of the menu. See gtk_menu_set_title().
-func (m menu) Title(m Menu) {
+func (m menu) Title() string {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_get_title(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_menu_get_title(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // PlaceOnMonitor places @menu on the given monitor.
-func (m menu) PlaceOnMonitor(m Menu, monitor gdk.Monitor) {
+func (m menu) PlaceOnMonitor(monitor gdk.Monitor) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GdkMonitor
 
@@ -404,7 +465,7 @@ func (m menu) PlaceOnMonitor(m Menu, monitor gdk.Monitor) {
 }
 
 // Popdown removes the menu from the screen.
-func (m menu) Popdown(m Menu) {
+func (m menu) Popdown() {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
@@ -424,7 +485,7 @@ func (m menu) Popdown(m Menu) {
 // Menu:anchor-hints, Menu:rect-anchor-dx, Menu:rect-anchor-dy, and
 // Menu:menu-type-hint. Connect to the Menu::popped-up signal to find out
 // how it was actually positioned.
-func (m menu) PopupAtPointer(m Menu, triggerEvent *gdk.Event) {
+func (m menu) PopupAtPointer(triggerEvent *gdk.Event) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GdkEvent
 
@@ -452,7 +513,7 @@ func (m menu) PopupAtPointer(m Menu, triggerEvent *gdk.Event) {
 // Other properties that influence the behaviour of this function are
 // Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
 // signal to find out how it was actually positioned.
-func (m menu) PopupAtRect(m Menu, rectWindow gdk.Window, rect *gdk.Rectangle, rectAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
+func (m menu) PopupAtRect(rectWindow gdk.Window, rect *gdk.Rectangle, rectAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GdkWindow
 	var arg2 *C.GdkRectangle
@@ -490,7 +551,7 @@ func (m menu) PopupAtRect(m Menu, rectWindow gdk.Window, rect *gdk.Rectangle, re
 // Other properties that influence the behaviour of this function are
 // Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
 // signal to find out how it was actually positioned.
-func (m menu) PopupAtWidget(m Menu, widget Widget, widgetAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
+func (m menu) PopupAtWidget(widget Widget, widgetAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GtkWidget
 	var arg2 C.GdkGravity
@@ -508,7 +569,7 @@ func (m menu) PopupAtWidget(m Menu, widget Widget, widgetAnchor gdk.Gravity, men
 
 // ReorderChild moves @child to a new @position in the list of @menu
 // children.
-func (m menu) ReorderChild(m Menu, child Widget, position int) {
+func (m menu) ReorderChild(child Widget, position int) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -521,7 +582,7 @@ func (m menu) ReorderChild(m Menu, child Widget, position int) {
 }
 
 // Reposition repositions the menu according to its position function.
-func (m menu) Reposition(m Menu) {
+func (m menu) Reposition() {
 	var arg0 *C.GtkMenu
 
 	arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
@@ -534,7 +595,7 @@ func (m menu) Reposition(m Menu) {
 // this menu is being used in with gtk_window_add_accel_group(), in order
 // for those windows to support all the accelerators contained in this
 // group.
-func (m menu) SetAccelGroup(m Menu, accelGroup AccelGroup) {
+func (m menu) SetAccelGroup(accelGroup AccelGroup) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GtkAccelGroup
 
@@ -565,7 +626,7 @@ func (m menu) SetAccelGroup(m Menu, accelGroup AccelGroup) {
 // Note that @accel_path string will be stored in a #GQuark. Therefore, if
 // you pass a static string, you can save some memory by interning it first
 // with g_intern_static_string().
-func (m menu) SetAccelPath(m Menu, accelPath string) {
+func (m menu) SetAccelPath(accelPath string) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.gchar
 
@@ -578,7 +639,7 @@ func (m menu) SetAccelPath(m Menu, accelPath string) {
 
 // SetActive selects the specified menu item within the menu. This is used
 // by the ComboBox and should not be used by anyone else.
-func (m menu) SetActive(m Menu, index uint) {
+func (m menu) SetActive(index uint) {
 	var arg0 *C.GtkMenu
 	var arg1 C.guint
 
@@ -596,7 +657,7 @@ func (m menu) SetActive(m Menu, index uint) {
 // reliably inferred from the coordinates returned by a MenuPositionFunc,
 // since, for very long menus, these coordinates may extend beyond the
 // monitor boundaries or even the screen boundaries.
-func (m menu) SetMonitor(m Menu, monitorNum int) {
+func (m menu) SetMonitor(monitorNum int) {
 	var arg0 *C.GtkMenu
 	var arg1 C.gint
 
@@ -608,7 +669,7 @@ func (m menu) SetMonitor(m Menu, monitorNum int) {
 
 // SetReserveToggleSize sets whether the menu should reserve space for
 // drawing toggles or icons, regardless of their actual presence.
-func (m menu) SetReserveToggleSize(m Menu, reserveToggleSize bool) {
+func (m menu) SetReserveToggleSize(reserveToggleSize bool) {
 	var arg0 *C.GtkMenu
 	var arg1 C.gboolean
 
@@ -621,7 +682,7 @@ func (m menu) SetReserveToggleSize(m Menu, reserveToggleSize bool) {
 }
 
 // SetScreen sets the Screen on which the menu will be displayed.
-func (m menu) SetScreen(m Menu, screen gdk.Screen) {
+func (m menu) SetScreen(screen gdk.Screen) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.GdkScreen
 
@@ -635,7 +696,7 @@ func (m menu) SetScreen(m Menu, screen gdk.Screen) {
 // displayed as drop down menu which persists as long as the menu is active.
 // It can also be displayed as a tearoff menu which persists until it is
 // closed or reattached.
-func (m menu) SetTearoffState(m Menu, tornOff bool) {
+func (m menu) SetTearoffState(tornOff bool) {
 	var arg0 *C.GtkMenu
 	var arg1 C.gboolean
 
@@ -652,7 +713,7 @@ func (m menu) SetTearoffState(m Menu, tornOff bool) {
 // The title is displayed when the menu is shown as a tearoff menu. If
 // @title is nil, the menu will see if it is attached to a parent menu item,
 // and if so it will try to use the same text as that menu item’s label.
-func (m menu) SetTitle(m Menu, title string) {
+func (m menu) SetTitle(title string) {
 	var arg0 *C.GtkMenu
 	var arg1 *C.gchar
 

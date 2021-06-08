@@ -2,6 +2,12 @@
 
 package gdk
 
+import (
+	"runtime"
+
+	"github.com/diamondburned/gotk4/pkg/cairo"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>

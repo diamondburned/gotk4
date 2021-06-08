@@ -3,6 +3,11 @@
 package gio
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,21 +38,21 @@ func init() {
 type DBusObjectManagerOverrider interface {
 	// Interface gets the interface proxy for @interface_name at @object_path,
 	// if any.
-	Interface(m DBusObjectManager, objectPath string, interfaceName string)
+	Interface(objectPath string, interfaceName string) DBusInterface
 	// Object gets the BusObjectProxy at @object_path, if any.
-	Object(m DBusObjectManager, objectPath string)
+	Object(objectPath string) DBusObject
 	// ObjectPath gets the object path that @manager is for.
-	ObjectPath(m DBusObjectManager)
+	ObjectPath() string
 	// Objects gets all BusObject objects known to @manager.
-	Objects(m DBusObjectManager)
+	Objects() *glib.List
 
-	InterfaceAdded(m DBusObjectManager, object DBusObject, interface_ DBusInterface)
+	InterfaceAdded(object DBusObject, interface_ DBusInterface)
 
-	InterfaceRemoved(m DBusObjectManager, object DBusObject, interface_ DBusInterface)
+	InterfaceRemoved(object DBusObject, interface_ DBusInterface)
 
-	ObjectAdded(m DBusObjectManager, object DBusObject)
+	ObjectAdded(object DBusObject)
 
-	ObjectRemoved(m DBusObjectManager, object DBusObject)
+	ObjectRemoved(object DBusObject)
 }
 
 // DBusObjectManager: the BusObjectManager type is the base type for service-
@@ -86,7 +91,7 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 
 // Interface gets the interface proxy for @interface_name at @object_path,
 // if any.
-func (m dBusObjectManager) Interface(m DBusObjectManager, objectPath string, interfaceName string) {
+func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DBusInterface {
 	var arg0 *C.GDBusObjectManager
 	var arg1 *C.gchar
 	var arg2 *C.gchar
@@ -97,11 +102,18 @@ func (m dBusObjectManager) Interface(m DBusObjectManager, objectPath string, int
 	arg2 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_dbus_object_manager_get_interface(arg0, arg1, arg2)
+	cret := new(C.GDBusInterface)
+	var goret DBusInterface
+
+	cret = C.g_dbus_object_manager_get_interface(arg0, arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
+
+	return goret
 }
 
 // Object gets the BusObjectProxy at @object_path, if any.
-func (m dBusObjectManager) Object(m DBusObjectManager, objectPath string) {
+func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	var arg0 *C.GDBusObjectManager
 	var arg1 *C.gchar
 
@@ -109,23 +121,47 @@ func (m dBusObjectManager) Object(m DBusObjectManager, objectPath string) {
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_dbus_object_manager_get_object(arg0, arg1)
+	cret := new(C.GDBusObject)
+	var goret DBusObject
+
+	cret = C.g_dbus_object_manager_get_object(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
+
+	return goret
 }
 
 // ObjectPath gets the object path that @manager is for.
-func (m dBusObjectManager) ObjectPath(m DBusObjectManager) {
+func (m dBusObjectManager) ObjectPath() string {
 	var arg0 *C.GDBusObjectManager
 
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_object_manager_get_object_path(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_object_manager_get_object_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Objects gets all BusObject objects known to @manager.
-func (m dBusObjectManager) Objects(m DBusObjectManager) {
+func (m dBusObjectManager) Objects() *glib.List {
 	var arg0 *C.GDBusObjectManager
 
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_object_manager_get_objects(arg0)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.g_dbus_object_manager_get_objects(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }

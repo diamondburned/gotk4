@@ -3,7 +3,12 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,9 +24,11 @@ func init() {
 	})
 }
 
-// FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
-// gtk_flow_box_bind_model() for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item gextras.Objector) Widget
+// FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a
+// `GListModel`.
+//
+// This function is called for each item that gets added to the model.
+type FlowBoxCreateWidgetFunc func() (widget Widget)
 
 //export gotk4_FlowBoxCreateWidgetFunc
 func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
@@ -31,16 +38,16 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 	}
 
 	fn := v.(FlowBoxCreateWidgetFunc)
-	ret := fn(item, userData)
+	fn(widget)
 
-	cret = (*C.GtkWidget)(unsafe.Pointer(ret.Native()))
-
-	return cret
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 }
 
 // FlowBoxFilterFunc: a function that will be called whenever a child changes or
-// is added. It lets you control if the child should be visible or not.
-type FlowBoxFilterFunc func(child FlowBoxChild) bool
+// is added.
+//
+// It lets you control if the child should be visible or not.
+type FlowBoxFilterFunc func() (ok bool)
 
 //export gotk4_FlowBoxFilterFunc
 func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
@@ -50,18 +57,17 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolea
 	}
 
 	fn := v.(FlowBoxFilterFunc)
-	ret := fn(child, userData)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
-// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach(). It
-// will be called on every selected child of the @box.
-type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
+// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach().
+//
+// It will be called on every selected child of the @box.
+type FlowBoxForeachFunc func()
 
 //export gotk4_FlowBoxForeachFunc
 func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
@@ -71,12 +77,12 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 	}
 
 	fn := v.(FlowBoxForeachFunc)
-	fn(box, child, userData)
+	fn()
 }
 
 // FlowBoxSortFunc: a function to compare two children to determine which should
 // come first.
-type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) int
+type FlowBoxSortFunc func() (gint int)
 
 //export gotk4_FlowBoxSortFunc
 func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.int {
@@ -86,13 +92,13 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 	}
 
 	fn := v.(FlowBoxSortFunc)
-	ret := fn(child1, child2, userData)
+	fn(gint)
 
-	cret = C.int(ret)
-
-	return cret
+	cret = C.int(gint)
 }
 
+// FlowBoxChild: `GtkFlowBoxChild` is the kind of widget that can be added to a
+// `GtkFlowBox`.
 type FlowBoxChild interface {
 	Widget
 	Accessible
@@ -100,7 +106,9 @@ type FlowBoxChild interface {
 	ConstraintTarget
 
 	// Changed marks @child as changed, causing any state that depends on this
-	// to be updated. This affects sorting and filtering.
+	// to be updated.
+	//
+	// This affects sorting and filtering.
 	//
 	// Note that calls to this method must be in sync with the data used for the
 	// sorting and filtering functions. For instance, if the list is mirroring
@@ -111,19 +119,20 @@ type FlowBoxChild interface {
 	//
 	// This generally means that if you don’t fully control the data model, you
 	// have to duplicate the data that affects the sorting and filtering
-	// functions into the widgets themselves. Another alternative is to call
-	// gtk_flow_box_invalidate_sort() on any model change, but that is more
-	// expensive.
-	Changed(c FlowBoxChild)
+	// functions into the widgets themselves.
+	//
+	// Another alternative is to call [method@Gtk.FlowBox.invalidate_sort] on
+	// any model change, but that is more expensive.
+	Changed()
 	// Child gets the child widget of @self.
-	Child(s FlowBoxChild)
-	// Index gets the current index of the @child in its FlowBox container.
-	Index(c FlowBoxChild)
+	Child() Widget
+	// Index gets the current index of the @child in its `GtkFlowBox` container.
+	Index() int
 	// IsSelected returns whether the @child is currently selected in its
-	// FlowBox container.
-	IsSelected(c FlowBoxChild) bool
+	// `GtkFlowBox` container.
+	IsSelected() bool
 	// SetChild sets the child widget of @self.
-	SetChild(s FlowBoxChild, child Widget)
+	SetChild(child Widget)
 }
 
 // flowBoxChild implements the FlowBoxChild interface.
@@ -154,12 +163,21 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 }
 
 // NewFlowBoxChild constructs a class FlowBoxChild.
-func NewFlowBoxChild() {
-	C.gtk_flow_box_child_new()
+func NewFlowBoxChild() FlowBoxChild {
+	var cret C.GtkFlowBoxChild
+	var goret FlowBoxChild
+
+	cret = C.gtk_flow_box_child_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+
+	return goret
 }
 
 // Changed marks @child as changed, causing any state that depends on this
-// to be updated. This affects sorting and filtering.
+// to be updated.
+//
+// This affects sorting and filtering.
 //
 // Note that calls to this method must be in sync with the data used for the
 // sorting and filtering functions. For instance, if the list is mirroring
@@ -170,10 +188,11 @@ func NewFlowBoxChild() {
 //
 // This generally means that if you don’t fully control the data model, you
 // have to duplicate the data that affects the sorting and filtering
-// functions into the widgets themselves. Another alternative is to call
-// gtk_flow_box_invalidate_sort() on any model change, but that is more
-// expensive.
-func (c flowBoxChild) Changed(c FlowBoxChild) {
+// functions into the widgets themselves.
+//
+// Another alternative is to call [method@Gtk.FlowBox.invalidate_sort] on
+// any model change, but that is more expensive.
+func (c flowBoxChild) Changed() {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
@@ -182,44 +201,58 @@ func (c flowBoxChild) Changed(c FlowBoxChild) {
 }
 
 // Child gets the child widget of @self.
-func (s flowBoxChild) Child(s FlowBoxChild) {
+func (s flowBoxChild) Child() Widget {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
 
-	C.gtk_flow_box_child_get_child(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_flow_box_child_get_child(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
-// Index gets the current index of the @child in its FlowBox container.
-func (c flowBoxChild) Index(c FlowBoxChild) {
+// Index gets the current index of the @child in its `GtkFlowBox` container.
+func (c flowBoxChild) Index() int {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	C.gtk_flow_box_child_get_index(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gtk_flow_box_child_get_index(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // IsSelected returns whether the @child is currently selected in its
-// FlowBox container.
-func (c flowBoxChild) IsSelected(c FlowBoxChild) bool {
+// `GtkFlowBox` container.
+func (c flowBoxChild) IsSelected() bool {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_flow_box_child_is_selected(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetChild sets the child widget of @self.
-func (s flowBoxChild) SetChild(s FlowBoxChild, child Widget) {
+func (s flowBoxChild) SetChild(child Widget) {
 	var arg0 *C.GtkFlowBoxChild
 	var arg1 *C.GtkWidget
 

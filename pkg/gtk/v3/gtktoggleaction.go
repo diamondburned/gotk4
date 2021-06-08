@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,17 +30,17 @@ type ToggleAction interface {
 	Buildable
 
 	// Active returns the checked state of the toggle action.
-	Active(a ToggleAction) bool
+	Active() bool
 	// DrawAsRadio returns whether the action should have proxies like a radio
 	// action.
-	DrawAsRadio(a ToggleAction) bool
+	DrawAsRadio() bool
 	// SetActive sets the checked state on the toggle action.
-	SetActive(a ToggleAction, isActive bool)
+	SetActive(isActive bool)
 	// SetDrawAsRadio sets whether the action should have proxies like a radio
 	// action.
-	SetDrawAsRadio(a ToggleAction, drawAsRadio bool)
+	SetDrawAsRadio(drawAsRadio bool)
 	// Toggled emits the “toggled” signal on the toggle action.
-	Toggled(a ToggleAction)
+	Toggled()
 }
 
 // toggleAction implements the ToggleAction interface.
@@ -64,7 +67,7 @@ func marshalToggleAction(p uintptr) (interface{}, error) {
 }
 
 // NewToggleAction constructs a class ToggleAction.
-func NewToggleAction(name string, label string, tooltip string, stockID string) {
+func NewToggleAction(name string, label string, tooltip string, stockID string) ToggleAction {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -79,48 +82,55 @@ func NewToggleAction(name string, label string, tooltip string, stockID string) 
 	arg4 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg4))
 
-	C.gtk_toggle_action_new(arg1, arg2, arg3, arg4)
+	cret := new(C.GtkToggleAction)
+	var goret ToggleAction
+
+	cret = C.gtk_toggle_action_new(arg1, arg2, arg3, arg4)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ToggleAction)
+
+	return goret
 }
 
 // Active returns the checked state of the toggle action.
-func (a toggleAction) Active(a ToggleAction) bool {
+func (a toggleAction) Active() bool {
 	var arg0 *C.GtkToggleAction
 
 	arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_toggle_action_get_active(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // DrawAsRadio returns whether the action should have proxies like a radio
 // action.
-func (a toggleAction) DrawAsRadio(a ToggleAction) bool {
+func (a toggleAction) DrawAsRadio() bool {
 	var arg0 *C.GtkToggleAction
 
 	arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_toggle_action_get_draw_as_radio(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetActive sets the checked state on the toggle action.
-func (a toggleAction) SetActive(a ToggleAction, isActive bool) {
+func (a toggleAction) SetActive(isActive bool) {
 	var arg0 *C.GtkToggleAction
 	var arg1 C.gboolean
 
@@ -134,7 +144,7 @@ func (a toggleAction) SetActive(a ToggleAction, isActive bool) {
 
 // SetDrawAsRadio sets whether the action should have proxies like a radio
 // action.
-func (a toggleAction) SetDrawAsRadio(a ToggleAction, drawAsRadio bool) {
+func (a toggleAction) SetDrawAsRadio(drawAsRadio bool) {
 	var arg0 *C.GtkToggleAction
 	var arg1 C.gboolean
 
@@ -147,7 +157,7 @@ func (a toggleAction) SetDrawAsRadio(a ToggleAction, drawAsRadio bool) {
 }
 
 // Toggled emits the “toggled” signal on the toggle action.
-func (a toggleAction) Toggled(a ToggleAction) {
+func (a toggleAction) Toggled() {
 	var arg0 *C.GtkToggleAction
 
 	arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))

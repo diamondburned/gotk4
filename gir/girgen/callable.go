@@ -42,7 +42,7 @@ func (cg *callableGenerator) reset() {
 
 func (cg *callableGenerator) Use(cattrs gir.CallableAttrs) bool {
 	// Skip this one. Hope the caller reaches the Shadows method, eventually.
-	if cattrs.ShadowedBy != "" {
+	if cattrs.ShadowedBy != "" || cattrs.MovedTo != "" {
 		cg.reset()
 		return false
 	}
@@ -114,21 +114,25 @@ func (cg *callableGenerator) renderBlock() bool {
 	)
 
 	var (
-		params  pen.Joints
-		returns pen.Joints
+		params     pen.Joints
+		returns    pen.Joints // for internal use
+		returnSigs []string   // for function signature (documentation)
 
-		inputValues  []GoValueProp
-		outputValues []CValueProp
+		instanceParam bool
+		inputValues   []GoValueProp
+		outputValues  []CValueProp
 	)
 
 	if cg.Parameters != nil {
 		params = pen.NewJoints(", ", len(cg.Parameters.Parameters))
 		returns = pen.NewJoints(", ", len(cg.Parameters.Parameters)+2)
+		returnSigs = make([]string, 0, len(cg.Parameters.Parameters)+2)
 
 		inputValues = make([]GoValueProp, 0, len(cg.Parameters.Parameters))
 		outputValues = make([]CValueProp, 0, len(cg.Parameters.Parameters)+2)
 
 		if cg.Parameters.InstanceParameter != nil {
+			instanceParam = true
 			params.Add("arg0")
 
 			inputValues = append(inputValues, GoValueProp{
@@ -152,10 +156,11 @@ func (cg *callableGenerator) renderBlock() bool {
 				})
 			} else {
 				in := fmt.Sprintf("arg%d", i+1)
-				params.Add("&" + in)
+				params.Add(in)
 
-				out := SnakeToGo(false, param.Name)
+				out := fmt.Sprintf("ret%d", i+1)
 				returns.Add(out)
+				returnSigs = append(returnSigs, SnakeToGo(false, param.Name))
 
 				outputValues = append(outputValues, CValueProp{
 					ValueProp: NewValuePropParam(in, out, &i, param.ParameterAttrs),
@@ -164,30 +169,32 @@ func (cg *callableGenerator) renderBlock() bool {
 		}
 	}
 
-	if cg.Throws {
-		params.Add("&errout")
-		returns.Add("err")
-
-		outputValues = append(outputValues, CValueProp{
-			ValueProp: newThrowValue("errout", "err"),
-		})
-	}
-
 	var hasReturn bool
 	// If the last return is a bool and the function can throw an error,
 	// then the boolean is probably to indicate that things are OK. We can
 	// skip generating this boolean.
 	if !returnIsVoid(cg.ReturnValue) {
-		returnName := anyTypeName(cg.ReturnValue.AnyType, "ret")
+		returnName := returnName(cg.CallableAttrs)
 
-		if !cg.Throws && returnName == "ok" {
+		if !cg.Throws || returnName != "ok" {
 			hasReturn = true
+			returnSigs = append(returnSigs, returnName)
 
-			returns.Add(returnName)
+			returns.Add("goret")
 			outputValues = append(outputValues, CValueProp{
-				ValueProp: NewValuePropReturn("cret", returnName, *cg.ReturnValue),
+				ValueProp: NewValuePropReturn("cret", "goret", *cg.ReturnValue),
 			})
 		}
+	}
+
+	if cg.Throws {
+		params.Add("&cerr")
+		returns.Add("goerr")
+		returnSigs = append(returnSigs, "err")
+
+		outputValues = append(outputValues, CValueProp{
+			ValueProp: newThrowValue("cerr", "goerr"),
+		})
 	}
 
 	convertedInputs := cg.fg.GoCConverter(cg.Name, inputValues).ConvertAll()
@@ -203,8 +210,13 @@ func (cg *callableGenerator) renderBlock() bool {
 	}
 
 	goArgs := pen.NewJoints(", ", len(convertedInputs))
-	for _, converted := range convertedInputs {
-		goArgs.Addf("%s %s", converted.In, converted.InType)
+	for i, converted := range convertedInputs {
+		converted.Apply(cg.fg)
+
+		// Skip the instance parameter if any.
+		if i != 0 || !instanceParam {
+			goArgs.Addf("%s %s", converted.In, converted.InType)
+		}
 
 		// Go inputs are declared in the parameters, so no InDeclare.
 		// C outputs have to be declared (input means C function input).
@@ -214,8 +226,12 @@ func (cg *callableGenerator) renderBlock() bool {
 	}
 
 	goRets := pen.NewJoints(", ", len(convertedOutputs))
-	for _, converted := range convertedOutputs {
-		goRets.Addf("%s %s", converted.Out, converted.OutType)
+	for i, converted := range convertedOutputs {
+		converted.Apply(cg.fg)
+
+		// The return variable is not declared in the signature if there's only
+		// 1 output, so we only declare it then.
+		goRets.Addf("%s %s", returnSigs[i], converted.OutType)
 
 		cg.pen.Line(secReturnDecl, converted.InDeclare)
 		// Go outputs should be redeclared.
@@ -251,164 +267,30 @@ func (cg *callableGenerator) renderBlock() bool {
 	return true
 }
 
-// fnCall generates the tail of the function, that is, everything underlined
-// below:
-//
-//    func FunctionName(arguments...) (returns...)
-//                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-// An empty string is returned if the function cannot be generated.
-func (fg *FileGenerator) fnCall(attrs gir.CallableAttrs) string {
-	args, ok := fg.fnArgs(attrs)
-	if !ok {
-		fg.Logln(LogDebug, "fnArgs failed for callable", cFunctionSig(attrs))
+func returnName(attrs gir.CallableAttrs) string {
+	if attrs.ReturnValue == nil {
 		return ""
 	}
 
-	returns, ok := fg.fnReturns(attrs)
-	if !ok {
-		fg.Logln(LogDebug, "fnReturns failed for callable", cFunctionSig(attrs))
-		return ""
+	name := anyTypeName(attrs.ReturnValue.AnyType, "ret")
+
+	if attrs.Parameters == nil {
+		return name
 	}
 
-	return "(" + args + ") " + returns
-}
-
-// fnArgs returns the function arguments as a Go string and true. It returns
-// false if the argument types cannot be fully resolved.
-func (fg *FileGenerator) fnArgs(attrs gir.CallableAttrs) (string, bool) {
-	if attrs.Parameters == nil || len(attrs.Parameters.Parameters) == 0 {
-		return "", true
-	}
-
-	goArgs := make([]string, 0, len(attrs.Parameters.Parameters))
-
-	ok := iterateParams(attrs, func(_ int, param gir.Parameter) bool {
-		goName := SnakeToGo(false, param.Name)
-
-		resolved, ok := GoAnyType(fg, param.AnyType, true)
-		if !ok {
-			if goName == "..." {
-				fg.Logln(LogSkip, "function", attrs.Name, "is variadic")
-			} else {
-				fg.Logln(LogUnknown, "function argument", goName, "for", attrs.Name)
-			}
-
-			return false
-		}
-
-		goArgs = append(goArgs, goName+" "+resolved)
-		return true
-	})
-
-	if !ok {
-		return "", false
-	}
-
-	return strings.Join(goArgs, ", "), true
-}
-
-// fnReturns returns the function return type and true. It returns false if the
-// function's return type cannot be resolved.
-func (fg *FileGenerator) fnReturns(attrs gir.CallableAttrs) (string, bool) {
-	var returns []string
-
-	ok := iterateReturns(attrs, func(goName string, i int, any gir.AnyType) bool {
-		typ, ok := GoAnyType(fg, any, true)
-		if !ok {
-			fg.Logln(LogUnknown, "function output", goName, "for", attrs.Name)
-			return false
-		}
-
-		// if parameter
-		if i != -1 {
-			// Hacky way to "dereference" a pointer once.
-			if strings.HasPrefix(typ, "*") {
-				typ = typ[1:]
-			}
-		}
-
-		// if returning bool and we're throwing, then skip
-		if i == -1 && attrs.Throws && goName == "ok" {
-			return true
-		}
-
-		returns = append(returns, goName+" "+typ)
-		return true
-	})
-
-	if attrs.Throws {
-		returns = append(returns, "err error")
-	}
-
-	if len(returns) == 0 || !ok {
-		return "", ok
-	}
-	if len(returns) == 1 {
-		// Only use the type if we have 1 return.
-		return strings.Split(returns[0], " ")[1], true
-	}
-
-	return "(" + strings.Join(returns, ", ") + ")", true
-}
-
-// iterateParams iterates over parameters.
-func iterateParams(attr gir.CallableAttrs, fn func(int, gir.Parameter) bool) bool {
-	if attr.Parameters == nil {
-		return true
-	}
-
-	var ignores ignoreIxs
-
-	for i, param := range attr.Parameters.Parameters {
-		ignores.paramIgnore(param)
-
-		ignore := ignores.ignore(i) ||
-			// Ignore out params (treat as return).
-			(param.Direction == "out") ||
-			// Ignore exposing destroy notifiers.
-			(param.Name == "destroy_fn") ||
-			(param.Type != nil && strings.HasSuffix(param.Type.Name, "DestroyNotify"))
-
-		if ignore {
-			continue
-		}
-
-		if !fn(i, param) {
-			return false
+	if attrs.Parameters.InstanceParameter != nil {
+		if attrs.Parameters.InstanceParameter.Name == name {
+			return "ret"
 		}
 	}
 
-	return true
-}
-
-// iterateReturns iterates over returns. The given index integer is -1 if the
-// given type is from the return. The given string is the Go name.
-func iterateReturns(attr gir.CallableAttrs, fn func(string, int, gir.AnyType) bool) bool {
-	if attr.Parameters != nil {
-		for i, param := range attr.Parameters.Parameters {
-			if param.Direction != "out" || param.AnyType.VarArgs != nil {
-				continue
-			}
-
-			name := SnakeToGo(false, param.Name)
-			if name == "error" {
-				name = "err"
-			}
-
-			if !fn(name, i, param.AnyType) {
-				return false
-			}
+	for _, param := range attrs.Parameters.Parameters {
+		if param.Name == name {
+			return "ret"
 		}
 	}
 
-	if !returnIsVoid(attr.ReturnValue) {
-		retName := anyTypeName(attr.ReturnValue.AnyType, "ret")
-		if !fn(UnexportPascal(retName), -1, attr.ReturnValue.AnyType) {
-			return false
-		}
-	}
-
-	return true
+	return name
 }
 
 func anyTypeName(typ gir.AnyType, or string) string {
@@ -418,7 +300,7 @@ func anyTypeName(typ gir.AnyType, or string) string {
 			return "ok"
 		}
 		parts := strings.Split(typ.Type.Name, ".")
-		return parts[len(parts)-1]
+		return UnexportPascal(parts[len(parts)-1])
 
 	case typ.Array != nil:
 		name := anyTypeName(typ.Array.AnyType, or)

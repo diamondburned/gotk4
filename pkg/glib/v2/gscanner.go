@@ -202,47 +202,58 @@ func (s *Scanner) NextPosition() uint {
 
 // CurLine returns the current line in the input stream (counting from 1). This
 // is the line of the last token parsed via g_scanner_get_next_token().
-func (s *Scanner) CurLine(s *Scanner) {
+func (s *Scanner) CurLine() uint {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	C.g_scanner_cur_line(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_scanner_cur_line(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // CurPosition returns the current position in the current line (counting from
 // 0). This is the position of the last token parsed via
 // g_scanner_get_next_token().
-func (s *Scanner) CurPosition(s *Scanner) {
+func (s *Scanner) CurPosition() uint {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	C.g_scanner_cur_position(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_scanner_cur_position(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // CurToken gets the current token type. This is simply the @token field in the
 // #GScanner structure.
-func (s *Scanner) CurToken(s *Scanner) {
+func (s *Scanner) CurToken() TokenType {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	C.g_scanner_cur_token(arg0)
-}
+	var cret C.GTokenType
+	var goret TokenType
 
-// CurValue gets the current token value. This is simply the @value field in the
-// #GScanner structure.
-func (s *Scanner) CurValue(s *Scanner) {
-	var arg0 *C.GScanner
+	cret = C.g_scanner_cur_token(arg0)
 
-	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
+	goret = TokenType(cret)
 
-	C.g_scanner_cur_value(arg0)
+	return goret
 }
 
 // Destroy frees all memory used by the #GScanner.
-func (s *Scanner) Destroy(s *Scanner) {
+func (s *Scanner) Destroy() {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
@@ -252,36 +263,43 @@ func (s *Scanner) Destroy(s *Scanner) {
 
 // EOF returns true if the scanner has reached the end of the file or text
 // buffer.
-func (s *Scanner) EOF(s *Scanner) bool {
+func (s *Scanner) EOF() bool {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_scanner_eof(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // NextToken parses the next token just like g_scanner_peek_next_token() and
 // also removes it from the input stream. The token data is placed in the
 // @token, @value, @line, and @position fields of the #GScanner structure.
-func (s *Scanner) NextToken(s *Scanner) {
+func (s *Scanner) NextToken() TokenType {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	C.g_scanner_get_next_token(arg0)
+	var cret C.GTokenType
+	var goret TokenType
+
+	cret = C.g_scanner_get_next_token(arg0)
+
+	goret = TokenType(cret)
+
+	return goret
 }
 
 // InputFile prepares to scan a file.
-func (s *Scanner) InputFile(s *Scanner, inputFd int) {
+func (s *Scanner) InputFile(inputFd int) {
 	var arg0 *C.GScanner
 	var arg1 C.gint
 
@@ -292,7 +310,7 @@ func (s *Scanner) InputFile(s *Scanner, inputFd int) {
 }
 
 // InputText prepares to scan a text buffer.
-func (s *Scanner) InputText(s *Scanner, text string, textLen uint) {
+func (s *Scanner) InputText(text string, textLen uint) {
 	var arg0 *C.GScanner
 	var arg1 *C.gchar
 	var arg2 C.guint
@@ -307,7 +325,7 @@ func (s *Scanner) InputText(s *Scanner, text string, textLen uint) {
 
 // LookupSymbol looks up a symbol in the current scope and return its value. If
 // the symbol is not bound in the current scope, nil is returned.
-func (s *Scanner) LookupSymbol(s *Scanner, symbol string) {
+func (s *Scanner) LookupSymbol(symbol string) interface{} {
 	var arg0 *C.GScanner
 	var arg1 *C.gchar
 
@@ -315,7 +333,14 @@ func (s *Scanner) LookupSymbol(s *Scanner, symbol string) {
 	arg1 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_scanner_lookup_symbol(arg0, arg1)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_scanner_lookup_symbol(arg0, arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // PeekNextToken parses the next token, without removing it from the input
@@ -329,16 +354,23 @@ func (s *Scanner) LookupSymbol(s *Scanner, symbol string) {
 // token after switching the scope or configuration will return whatever was
 // peeked before, regardless of any symbols that may have been added or removed
 // in the new scope.
-func (s *Scanner) PeekNextToken(s *Scanner) {
+func (s *Scanner) PeekNextToken() TokenType {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	C.g_scanner_peek_next_token(arg0)
+	var cret C.GTokenType
+	var goret TokenType
+
+	cret = C.g_scanner_peek_next_token(arg0)
+
+	goret = TokenType(cret)
+
+	return goret
 }
 
 // ScopeAddSymbol adds a symbol to the given scope.
-func (s *Scanner) ScopeAddSymbol(s *Scanner, scopeID uint, symbol string, value interface{}) {
+func (s *Scanner) ScopeAddSymbol(scopeID uint, symbol string, value interface{}) {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 *C.gchar
@@ -356,7 +388,7 @@ func (s *Scanner) ScopeAddSymbol(s *Scanner, scopeID uint, symbol string, value 
 // ScopeForeachSymbol calls the given function for each of the symbol/value
 // pairs in the given scope of the #GScanner. The function is passed the symbol
 // and value of each pair, and the given @user_data parameter.
-func (s *Scanner) ScopeForeachSymbol(s *Scanner) {
+func (s *Scanner) ScopeForeachSymbol() {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
@@ -366,7 +398,7 @@ func (s *Scanner) ScopeForeachSymbol(s *Scanner) {
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
 // symbol is not bound in the scope, nil is returned.
-func (s *Scanner) ScopeLookupSymbol(s *Scanner, scopeID uint, symbol string) {
+func (s *Scanner) ScopeLookupSymbol(scopeID uint, symbol string) interface{} {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 *C.gchar
@@ -376,11 +408,18 @@ func (s *Scanner) ScopeLookupSymbol(s *Scanner, scopeID uint, symbol string) {
 	arg2 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_scanner_scope_lookup_symbol(arg0, arg1, arg2)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_scanner_scope_lookup_symbol(arg0, arg1, arg2)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // ScopeRemoveSymbol removes a symbol from a scope.
-func (s *Scanner) ScopeRemoveSymbol(s *Scanner, scopeID uint, symbol string) {
+func (s *Scanner) ScopeRemoveSymbol(scopeID uint, symbol string) {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 *C.gchar
@@ -394,20 +433,27 @@ func (s *Scanner) ScopeRemoveSymbol(s *Scanner, scopeID uint, symbol string) {
 }
 
 // SetScope sets the current scope.
-func (s *Scanner) SetScope(s *Scanner, scopeID uint) {
+func (s *Scanner) SetScope(scopeID uint) uint {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	arg1 = C.guint(scopeID)
 
-	C.g_scanner_set_scope(arg0, arg1)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_scanner_set_scope(arg0, arg1)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // SyncFileOffset rewinds the filedescriptor to the current buffer position and
 // blows the file read ahead buffer. This is useful for third party uses of the
 // scanners filedescriptor, which hooks onto the current scanning position.
-func (s *Scanner) SyncFileOffset(s *Scanner) {
+func (s *Scanner) SyncFileOffset() {
 	var arg0 *C.GScanner
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
@@ -421,7 +467,7 @@ func (s *Scanner) SyncFileOffset(s *Scanner) {
 // intermediate call to g_scanner_get_next_token(), as g_scanner_unexp_token()
 // evaluates the scanner's current token (not the peeked token) to construct
 // part of the message.
-func (s *Scanner) UnexpToken(s *Scanner, expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
+func (s *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
 	var arg0 *C.GScanner
 	var arg1 C.GTokenType
 	var arg2 *C.gchar

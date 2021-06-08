@@ -3,6 +3,13 @@
 package gsk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,20 +25,30 @@ func init() {
 	})
 }
 
-// Renderer: base type for the object managing the rendering pipeline for a
-// Surface.
+// Renderer: `GskRenderer` is a class that renders a scene graph defined via a
+// tree of [class@Gsk.RenderNode] instances.
+//
+// Typically you will use a `GskRenderer` instance to repeatedly call
+// [method@Gsk.Renderer.render] to update the contents of its associated
+// [class@Gdk.Surface].
+//
+// It is necessary to realize a `GskRenderer` instance using
+// [method@Gsk.Renderer.realize] before calling [method@Gsk.Renderer.render], in
+// order to create the appropriate windowing system resources needed to render
+// the scene.
 type Renderer interface {
 	gextras.Objector
 
-	// Surface retrieves the Surface set using gsk_renderer_realize(). If the
-	// renderer has not been realized yet, nil will be returned.
-	Surface(r Renderer)
+	// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+	//
+	// If the renderer has not been realized yet, nil will be returned.
+	Surface() gdk.Surface
 	// IsRealized checks whether the @renderer is realized or not.
-	IsRealized(r Renderer) bool
+	IsRealized() bool
 	// Realize creates the resources needed by the @renderer to render the scene
 	// graph.
-	Realize(r Renderer, surface gdk.Surface) error
-	// Render renders the scene graph, described by a tree of RenderNode
+	Realize(surface gdk.Surface) error
+	// Render renders the scene graph, described by a tree of `GskRenderNode`
 	// instances, ensuring that the given @region gets redrawn.
 	//
 	// Renderers must ensure that changes of the contents given by the @root
@@ -39,20 +56,20 @@ type Renderer interface {
 	// free to not redraw any pixel outside of @region if they can guarantee
 	// that it didn't change.
 	//
-	// The @renderer will acquire a reference on the RenderNode tree while the
-	// rendering is in progress.
-	Render(r Renderer, root RenderNode, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of RenderNode
-	// instances, to a Texture.
+	// The @renderer will acquire a reference on the `GskRenderNode` tree while
+	// the rendering is in progress.
+	Render(root RenderNode, region *cairo.Region)
+	// RenderTexture renders the scene graph, described by a tree of
+	// `GskRenderNode` instances, to a `GdkTexture`.
 	//
-	// The @renderer will acquire a reference on the RenderNode tree while the
-	// rendering is in progress.
+	// The @renderer will acquire a reference on the `GskRenderNode` tree while
+	// the rendering is in progress.
 	//
 	// If you want to apply any transformations to @root, you should put it into
 	// a transform node and pass that node instead.
-	RenderTexture(r Renderer, root RenderNode, viewport *graphene.Rect)
+	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
 	// Unrealize releases all the resources created by gsk_renderer_realize().
-	Unrealize(r Renderer)
+	Unrealize()
 }
 
 // renderer implements the Renderer interface.
@@ -77,62 +94,77 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 }
 
 // NewRendererForSurface constructs a class Renderer.
-func NewRendererForSurface(surface gdk.Surface) {
+func NewRendererForSurface(surface gdk.Surface) Renderer {
 	var arg1 *C.GdkSurface
 
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	C.gsk_renderer_new_for_surface(arg1)
+	cret := new(C.GskRenderer)
+	var goret Renderer
+
+	cret = C.gsk_renderer_new_for_surface(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Renderer)
+
+	return goret
 }
 
-// Surface retrieves the Surface set using gsk_renderer_realize(). If the
-// renderer has not been realized yet, nil will be returned.
-func (r renderer) Surface(r Renderer) {
+// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+//
+// If the renderer has not been realized yet, nil will be returned.
+func (r renderer) Surface() gdk.Surface {
 	var arg0 *C.GskRenderer
 
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
-	C.gsk_renderer_get_surface(arg0)
+	var cret *C.GdkSurface
+	var goret gdk.Surface
+
+	cret = C.gsk_renderer_get_surface(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+
+	return goret
 }
 
 // IsRealized checks whether the @renderer is realized or not.
-func (r renderer) IsRealized(r Renderer) bool {
+func (r renderer) IsRealized() bool {
 	var arg0 *C.GskRenderer
 
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gsk_renderer_is_realized(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Realize creates the resources needed by the @renderer to render the scene
 // graph.
-func (r renderer) Realize(r Renderer, surface gdk.Surface) error {
+func (r renderer) Realize(surface gdk.Surface) error {
 	var arg0 *C.GskRenderer
 	var arg1 *C.GdkSurface
 
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.gsk_renderer_realize(arg0, arg1, &errout)
+	C.gsk_renderer_realize(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
-// Render renders the scene graph, described by a tree of RenderNode
+// Render renders the scene graph, described by a tree of `GskRenderNode`
 // instances, ensuring that the given @region gets redrawn.
 //
 // Renderers must ensure that changes of the contents given by the @root
@@ -140,9 +172,9 @@ func (r renderer) Realize(r Renderer, surface gdk.Surface) error {
 // free to not redraw any pixel outside of @region if they can guarantee
 // that it didn't change.
 //
-// The @renderer will acquire a reference on the RenderNode tree while the
-// rendering is in progress.
-func (r renderer) Render(r Renderer, root RenderNode, region *cairo.Region) {
+// The @renderer will acquire a reference on the `GskRenderNode` tree while
+// the rendering is in progress.
+func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	var arg0 *C.GskRenderer
 	var arg1 *C.GskRenderNode
 	var arg2 *C.cairo_region_t
@@ -154,15 +186,15 @@ func (r renderer) Render(r Renderer, root RenderNode, region *cairo.Region) {
 	C.gsk_renderer_render(arg0, arg1, arg2)
 }
 
-// RenderTexture renders the scene graph, described by a tree of RenderNode
-// instances, to a Texture.
+// RenderTexture renders the scene graph, described by a tree of
+// `GskRenderNode` instances, to a `GdkTexture`.
 //
-// The @renderer will acquire a reference on the RenderNode tree while the
-// rendering is in progress.
+// The @renderer will acquire a reference on the `GskRenderNode` tree while
+// the rendering is in progress.
 //
 // If you want to apply any transformations to @root, you should put it into
 // a transform node and pass that node instead.
-func (r renderer) RenderTexture(r Renderer, root RenderNode, viewport *graphene.Rect) {
+func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
 	var arg0 *C.GskRenderer
 	var arg1 *C.GskRenderNode
 	var arg2 *C.graphene_rect_t
@@ -171,11 +203,18 @@ func (r renderer) RenderTexture(r Renderer, root RenderNode, viewport *graphene.
 	arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
 	arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
 
-	C.gsk_renderer_render_texture(arg0, arg1, arg2)
+	cret := new(C.GdkTexture)
+	var goret gdk.Texture
+
+	cret = C.gsk_renderer_render_texture(arg0, arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Texture)
+
+	return goret
 }
 
 // Unrealize releases all the resources created by gsk_renderer_realize().
-func (r renderer) Unrealize(r Renderer) {
+func (r renderer) Unrealize() {
 	var arg0 *C.GskRenderer
 
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))

@@ -3,9 +3,12 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -24,59 +27,28 @@ import (
 // #include <gio/gunixsocketaddress.h>
 import "C"
 
-// IOExtensionPointImplement registers @type as extension for the extension
-// point with name @extension_point_name.
-//
-// If @type has already been registered as an extension for this extension
-// point, the existing OExtension object is returned.
-func IOExtensionPointImplement(extensionPointName string, typ externglib.Type, extensionName string, priority int) {
-	var arg1 *C.char
-	var arg2 C.GType
-	var arg3 *C.char
-	var arg4 C.gint
-
-	arg1 = (*C.char)(C.CString(extensionPointName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 := C.GType(typ)
-	arg3 = (*C.char)(C.CString(extensionName))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = C.gint(priority)
-
-	C.g_io_extension_point_implement(arg1, arg2, arg3, arg4)
-}
-
-// IOExtensionPointLookup looks up an existing extension point.
-func IOExtensionPointLookup(name string) {
-	var arg1 *C.char
-
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-
-	C.g_io_extension_point_lookup(arg1)
-}
-
-// IOExtensionPointRegister registers an extension point.
-func IOExtensionPointRegister(name string) {
-	var arg1 *C.char
-
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-
-	C.g_io_extension_point_register(arg1)
-}
-
 // IOModulesLoadAllInDirectory loads all the modules in the specified directory.
 //
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectory(dirname string) {
+func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_io_modules_load_all_in_directory(arg1)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.g_io_modules_load_all_in_directory(arg1)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // IOModulesLoadAllInDirectoryWithScope loads all the modules in the specified
@@ -85,7 +57,7 @@ func IOModulesLoadAllInDirectory(dirname string) {
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) {
+func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) *glib.List {
 	var arg1 *C.gchar
 	var arg2 *C.GIOModuleScope
 
@@ -93,7 +65,17 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
 
-	C.g_io_modules_load_all_in_directory_with_scope(arg1, arg2)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.g_io_modules_load_all_in_directory_with_scope(arg1, arg2)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
@@ -169,7 +151,7 @@ func (i *IOModuleScope) Native() unsafe.Pointer {
 // Block: block modules with the given @basename from being loaded when this
 // scope is used with g_io_modules_scan_all_in_directory_with_scope() or
 // g_io_modules_load_all_in_directory_with_scope().
-func (s *IOModuleScope) Block(s *IOModuleScope, basename string) {
+func (s *IOModuleScope) Block(basename string) {
 	var arg0 *C.GIOModuleScope
 	var arg1 *C.gchar
 
@@ -181,7 +163,7 @@ func (s *IOModuleScope) Block(s *IOModuleScope, basename string) {
 }
 
 // Free: free a module scope.
-func (s *IOModuleScope) Free(s *IOModuleScope) {
+func (s *IOModuleScope) Free() {
 	var arg0 *C.GIOModuleScope
 
 	arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))

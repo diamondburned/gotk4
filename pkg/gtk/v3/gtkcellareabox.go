@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,20 +45,20 @@ type CellAreaBox interface {
 	Orientable
 
 	// Spacing gets the spacing added between cell renderers.
-	Spacing(b CellAreaBox)
+	Spacing() int
 	// PackEnd adds @renderer to @box, packed with reference to the end of @box.
 	//
 	// The @renderer is packed after (away from end of) any other CellRenderer
 	// packed with reference to the end of @box.
-	PackEnd(b CellAreaBox, renderer CellRenderer, expand bool, align bool, fixed bool)
+	PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool)
 	// PackStart adds @renderer to @box, packed with reference to the start of
 	// @box.
 	//
 	// The @renderer is packed after any other CellRenderer packed with
 	// reference to the start of @box.
-	PackStart(b CellAreaBox, renderer CellRenderer, expand bool, align bool, fixed bool)
+	PackStart(renderer CellRenderer, expand bool, align bool, fixed bool)
 	// SetSpacing sets the spacing to add between cell renderers in @box.
-	SetSpacing(b CellAreaBox, spacing int)
+	SetSpacing(spacing int)
 }
 
 // cellAreaBox implements the CellAreaBox interface.
@@ -86,24 +89,38 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 }
 
 // NewCellAreaBox constructs a class CellAreaBox.
-func NewCellAreaBox() {
-	C.gtk_cell_area_box_new()
+func NewCellAreaBox() CellAreaBox {
+	var cret C.GtkCellAreaBox
+	var goret CellAreaBox
+
+	cret = C.gtk_cell_area_box_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
+
+	return goret
 }
 
 // Spacing gets the spacing added between cell renderers.
-func (b cellAreaBox) Spacing(b CellAreaBox) {
+func (b cellAreaBox) Spacing() int {
 	var arg0 *C.GtkCellAreaBox
 
 	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_cell_area_box_get_spacing(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_cell_area_box_get_spacing(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // PackEnd adds @renderer to @box, packed with reference to the end of @box.
 //
 // The @renderer is packed after (away from end of) any other CellRenderer
 // packed with reference to the end of @box.
-func (b cellAreaBox) PackEnd(b CellAreaBox, renderer CellRenderer, expand bool, align bool, fixed bool) {
+func (b cellAreaBox) PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool) {
 	var arg0 *C.GtkCellAreaBox
 	var arg1 *C.GtkCellRenderer
 	var arg2 C.gboolean
@@ -130,7 +147,7 @@ func (b cellAreaBox) PackEnd(b CellAreaBox, renderer CellRenderer, expand bool, 
 //
 // The @renderer is packed after any other CellRenderer packed with
 // reference to the start of @box.
-func (b cellAreaBox) PackStart(b CellAreaBox, renderer CellRenderer, expand bool, align bool, fixed bool) {
+func (b cellAreaBox) PackStart(renderer CellRenderer, expand bool, align bool, fixed bool) {
 	var arg0 *C.GtkCellAreaBox
 	var arg1 *C.GtkCellRenderer
 	var arg2 C.gboolean
@@ -153,7 +170,7 @@ func (b cellAreaBox) PackStart(b CellAreaBox, renderer CellRenderer, expand bool
 }
 
 // SetSpacing sets the spacing to add between cell renderers in @box.
-func (b cellAreaBox) SetSpacing(b CellAreaBox, spacing int) {
+func (b cellAreaBox) SetSpacing(spacing int) {
 	var arg0 *C.GtkCellAreaBox
 	var arg1 C.gint
 

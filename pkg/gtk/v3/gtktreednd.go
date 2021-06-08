@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,25 +38,25 @@ func TreeGetRowDragData(selectionData *SelectionData) (treeModel *TreeModel, pat
 
 	arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
-	var arg2 *C.GtkTreeModel
-	var treeModel *TreeModel
-	var arg3 *C.GtkTreePath
-	var path **TreePath
+	var arg2 **C.GtkTreeModel
+	var ret2 *TreeModel
+	arg3 := new(*C.GtkTreePath)
+	var ret3 **TreePath
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_tree_get_row_drag_data(arg1, &arg2, &arg3)
+	cret = C.gtk_tree_get_row_drag_data(arg1, arg2, arg3)
 
-	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(&arg2.Native()))).(*TreeModel)
-	path = WrapTreePath(unsafe.Pointer(&arg3))
-	runtime.SetFinalizer(path, func(v **TreePath) {
+	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(*TreeModel)
+	ret3 = WrapTreePath(unsafe.Pointer(arg3))
+	runtime.SetFinalizer(ret3, func(v **TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return treeModel, path, ok
+	return ret2, ret3, goret
 }
 
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
@@ -67,15 +71,15 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 	arg3 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_set_row_drag_data(arg1, arg2, arg3)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TreeDragDestOverrider contains methods that are overridable. This
@@ -87,13 +91,13 @@ type TreeDragDestOverrider interface {
 	// returned. Also, false may be returned if the new row is not created for
 	// some model-specific reason. Should robustly handle a @dest no longer
 	// found in the model!
-	DragDataReceived(d TreeDragDest, dest *TreePath, selectionData *SelectionData) bool
+	DragDataReceived(dest *TreePath, selectionData *SelectionData) bool
 	// RowDropPossible determines whether a drop is possible before the given
 	// @dest_path, at the same depth as @dest_path. i.e., can we drop the data
 	// in @selection_data at that location. @dest_path does not have to exist;
 	// the return value will almost certainly be false if the parent of
 	// @dest_path doesn’t exist, though.
-	RowDropPossible(d TreeDragDest, destPath *TreePath, selectionData *SelectionData) bool
+	RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool
 }
 
 type TreeDragDest interface {
@@ -128,7 +132,7 @@ func marshalTreeDragDest(p uintptr) (interface{}, error) {
 // returned. Also, false may be returned if the new row is not created for
 // some model-specific reason. Should robustly handle a @dest no longer
 // found in the model!
-func (d treeDragDest) DragDataReceived(d TreeDragDest, dest *TreePath, selectionData *SelectionData) bool {
+func (d treeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionData) bool {
 	var arg0 *C.GtkTreeDragDest
 	var arg1 *C.GtkTreePath
 	var arg2 *C.GtkSelectionData
@@ -138,15 +142,15 @@ func (d treeDragDest) DragDataReceived(d TreeDragDest, dest *TreePath, selection
 	arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_drag_dest_drag_data_received(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // RowDropPossible determines whether a drop is possible before the given
@@ -154,7 +158,7 @@ func (d treeDragDest) DragDataReceived(d TreeDragDest, dest *TreePath, selection
 // in @selection_data at that location. @dest_path does not have to exist;
 // the return value will almost certainly be false if the parent of
 // @dest_path doesn’t exist, though.
-func (d treeDragDest) RowDropPossible(d TreeDragDest, destPath *TreePath, selectionData *SelectionData) bool {
+func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *SelectionData) bool {
 	var arg0 *C.GtkTreeDragDest
 	var arg1 *C.GtkTreePath
 	var arg2 *C.GtkSelectionData
@@ -164,15 +168,15 @@ func (d treeDragDest) RowDropPossible(d TreeDragDest, destPath *TreePath, select
 	arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_drag_dest_row_drop_possible(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TreeDragSourceOverrider contains methods that are overridable. This
@@ -183,16 +187,16 @@ type TreeDragSourceOverrider interface {
 	// the deletion fails because @path no longer exists, or for some
 	// model-specific reason. Should robustly handle a @path no longer found in
 	// the model!
-	DragDataDelete(d TreeDragSource, path *TreePath) bool
+	DragDataDelete(path *TreePath) bool
 	// DragDataGet asks the TreeDragSource to fill in @selection_data with a
 	// representation of the row at @path. @selection_data->target gives the
 	// required type of the data. Should robustly handle a @path no longer found
 	// in the model!
-	DragDataGet(d TreeDragSource, path *TreePath, selectionData *SelectionData) bool
+	DragDataGet(path *TreePath, selectionData *SelectionData) bool
 	// RowDraggable asks the TreeDragSource whether a particular row can be used
 	// as the source of a DND operation. If the source doesn’t implement this
 	// interface, the row is assumed draggable.
-	RowDraggable(d TreeDragSource, path *TreePath) bool
+	RowDraggable(path *TreePath) bool
 }
 
 type TreeDragSource interface {
@@ -226,7 +230,7 @@ func marshalTreeDragSource(p uintptr) (interface{}, error) {
 // the deletion fails because @path no longer exists, or for some
 // model-specific reason. Should robustly handle a @path no longer found in
 // the model!
-func (d treeDragSource) DragDataDelete(d TreeDragSource, path *TreePath) bool {
+func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 	var arg0 *C.GtkTreeDragSource
 	var arg1 *C.GtkTreePath
 
@@ -234,22 +238,22 @@ func (d treeDragSource) DragDataDelete(d TreeDragSource, path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_drag_source_drag_data_delete(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // DragDataGet asks the TreeDragSource to fill in @selection_data with a
 // representation of the row at @path. @selection_data->target gives the
 // required type of the data. Should robustly handle a @path no longer found
 // in the model!
-func (d treeDragSource) DragDataGet(d TreeDragSource, path *TreePath, selectionData *SelectionData) bool {
+func (d treeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData) bool {
 	var arg0 *C.GtkTreeDragSource
 	var arg1 *C.GtkTreePath
 	var arg2 *C.GtkSelectionData
@@ -259,21 +263,21 @@ func (d treeDragSource) DragDataGet(d TreeDragSource, path *TreePath, selectionD
 	arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_drag_source_drag_data_get(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // RowDraggable asks the TreeDragSource whether a particular row can be used
 // as the source of a DND operation. If the source doesn’t implement this
 // interface, the row is assumed draggable.
-func (d treeDragSource) RowDraggable(d TreeDragSource, path *TreePath) bool {
+func (d treeDragSource) RowDraggable(path *TreePath) bool {
 	var arg0 *C.GtkTreeDragSource
 	var arg1 *C.GtkTreePath
 
@@ -281,13 +285,13 @@ func (d treeDragSource) RowDraggable(d TreeDragSource, path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_tree_drag_source_row_draggable(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

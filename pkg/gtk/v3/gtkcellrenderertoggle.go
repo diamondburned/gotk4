@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,24 +31,24 @@ type CellRendererToggle interface {
 
 	// Activatable returns whether the cell renderer is activatable. See
 	// gtk_cell_renderer_toggle_set_activatable().
-	Activatable(t CellRendererToggle) bool
+	Activatable() bool
 	// Active returns whether the cell renderer is active. See
 	// gtk_cell_renderer_toggle_set_active().
-	Active(t CellRendererToggle) bool
+	Active() bool
 	// Radio returns whether we’re rendering radio toggles rather than
 	// checkboxes.
-	Radio(t CellRendererToggle) bool
+	Radio() bool
 	// SetActivatable makes the cell renderer activatable.
-	SetActivatable(t CellRendererToggle, setting bool)
+	SetActivatable(setting bool)
 	// SetActive activates or deactivates a cell renderer.
-	SetActive(t CellRendererToggle, setting bool)
+	SetActive(setting bool)
 	// SetRadio: if @radio is true, the cell renderer renders a radio toggle
 	// (i.e. a toggle in a group of mutually-exclusive toggles). If false, it
 	// renders a check toggle (a standalone boolean option). This can be set
 	// globally for the cell renderer, or changed just before rendering each
 	// cell in the model (for TreeView, you set up a per-row setting using
 	// TreeViewColumn to associate model columns with cell renderer properties).
-	SetRadio(t CellRendererToggle, radio bool)
+	SetRadio(radio bool)
 }
 
 // cellRendererToggle implements the CellRendererToggle interface.
@@ -70,69 +73,76 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererToggle constructs a class CellRendererToggle.
-func NewCellRendererToggle() {
-	C.gtk_cell_renderer_toggle_new()
+func NewCellRendererToggle() CellRendererToggle {
+	var cret C.GtkCellRendererToggle
+	var goret CellRendererToggle
+
+	cret = C.gtk_cell_renderer_toggle_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererToggle)
+
+	return goret
 }
 
 // Activatable returns whether the cell renderer is activatable. See
 // gtk_cell_renderer_toggle_set_activatable().
-func (t cellRendererToggle) Activatable(t CellRendererToggle) bool {
+func (t cellRendererToggle) Activatable() bool {
 	var arg0 *C.GtkCellRendererToggle
 
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_activatable(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Active returns whether the cell renderer is active. See
 // gtk_cell_renderer_toggle_set_active().
-func (t cellRendererToggle) Active(t CellRendererToggle) bool {
+func (t cellRendererToggle) Active() bool {
 	var arg0 *C.GtkCellRendererToggle
 
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_active(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Radio returns whether we’re rendering radio toggles rather than
 // checkboxes.
-func (t cellRendererToggle) Radio(t CellRendererToggle) bool {
+func (t cellRendererToggle) Radio() bool {
 	var arg0 *C.GtkCellRendererToggle
 
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_radio(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetActivatable makes the cell renderer activatable.
-func (t cellRendererToggle) SetActivatable(t CellRendererToggle, setting bool) {
+func (t cellRendererToggle) SetActivatable(setting bool) {
 	var arg0 *C.GtkCellRendererToggle
 	var arg1 C.gboolean
 
@@ -145,7 +155,7 @@ func (t cellRendererToggle) SetActivatable(t CellRendererToggle, setting bool) {
 }
 
 // SetActive activates or deactivates a cell renderer.
-func (t cellRendererToggle) SetActive(t CellRendererToggle, setting bool) {
+func (t cellRendererToggle) SetActive(setting bool) {
 	var arg0 *C.GtkCellRendererToggle
 	var arg1 C.gboolean
 
@@ -163,7 +173,7 @@ func (t cellRendererToggle) SetActive(t CellRendererToggle, setting bool) {
 // globally for the cell renderer, or changed just before rendering each
 // cell in the model (for TreeView, you set up a per-row setting using
 // TreeViewColumn to associate model columns with cell renderer properties).
-func (t cellRendererToggle) SetRadio(t CellRendererToggle, radio bool) {
+func (t cellRendererToggle) SetRadio(radio bool) {
 	var arg0 *C.GtkCellRendererToggle
 	var arg1 C.gboolean
 

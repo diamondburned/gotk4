@@ -3,6 +3,10 @@
 package pangofc
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -17,6 +21,23 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.pango_fc_font_map_get_type()), F: marshalFontMap},
 	})
+}
+
+// DecoderFindFunc: callback function passed to
+// [method@PangoFc.FontMap.add_decoder_find_func].
+type DecoderFindFunc func() (decoder Decoder)
+
+//export gotk4_DecoderFindFunc
+func gotk4_DecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder {
+	v := box.Get(uintptr(arg1))
+	if v == nil {
+		panic(`callback not found`)
+	}
+
+	fn := v.(DecoderFindFunc)
+	fn(decoder)
+
+	cret = (*C.PangoFcDecoder)(unsafe.Pointer(decoder.Native()))
 }
 
 // FontMap: `PangoFcFontMap` is a base class for font map implementations using
@@ -36,40 +57,34 @@ type FontMap interface {
 	// determine both coverage via a `FcCharSet` and a one-to-one mapping of
 	// characters to glyphs. This will allow applications to have
 	// application-specific encodings for various fonts.
-	AddDecoderFindFunc(f FontMap)
+	AddDecoderFindFunc()
 	// CacheClear: clear all cached information and fontsets for this font map.
 	//
 	// This should be called whenever there is a change in the output of the
 	// default_substitute() virtual function of the font map, or if fontconfig
 	// has been reinitialized to new configuration.
-	CacheClear(f FontMap)
+	CacheClear()
 	// ConfigChanged informs font map that the fontconfig configuration (i.e.,
 	// FcConfig object) used by this font map has changed.
 	//
 	// This currently calls [method@PangoFc.FontMap.cache_clear] which ensures
 	// that list of fonts, etc will be regenerated using the updated
 	// configuration.
-	ConfigChanged(f FontMap)
+	ConfigChanged()
 	// CreateContext creates a new context for this fontmap.
 	//
 	// This function is intended only for backend implementations deriving from
 	// `PangoFcFontMap`; it is possible that a backend will store additional
 	// information needed for correct operation on the `PangoContext` after
 	// calling this function.
-	CreateContext(f FontMap)
-	// Config fetches the `FcConfig` attached to a font map.
-	//
-	// See also: [method@PangoFc.FontMap.set_config].
-	Config(f FontMap)
-	// HbFace retrieves the `hb_face_t` for the given `PangoFcFont`.
-	HbFace(f FontMap, fcfont Font)
+	CreateContext() pango.Context
 	// SetDefaultSubstitute sets a function that will be called to do final
 	// configuration substitution on a `FcPattern` before it is used to load the
 	// font.
 	//
 	// This function can be used to do things like set hinting and antialiasing
 	// options.
-	SetDefaultSubstitute(f FontMap)
+	SetDefaultSubstitute()
 	// Shutdown clears all cached information for the fontmap and marks all
 	// fonts open for the fontmap as dead.
 	//
@@ -78,14 +93,14 @@ type FontMap interface {
 	// This function might be used by a backend when the underlying windowing
 	// system for the font map exits. This function is only intended to be
 	// called only for backend implementations deriving from `PangoFcFontMap`.
-	Shutdown(f FontMap)
+	Shutdown()
 	// SubstituteChanged: call this function any time the results of the default
 	// substitution function set with
 	// [method@PangoFc.FontMap.set_default_substitute] change.
 	//
 	// That is, if your substitution function will return different results for
 	// the same input pattern, you must call this function.
-	SubstituteChanged(f FontMap)
+	SubstituteChanged()
 }
 
 // fontMap implements the FontMap interface.
@@ -116,7 +131,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // determine both coverage via a `FcCharSet` and a one-to-one mapping of
 // characters to glyphs. This will allow applications to have
 // application-specific encodings for various fonts.
-func (f fontMap) AddDecoderFindFunc(f FontMap) {
+func (f fontMap) AddDecoderFindFunc() {
 	var arg0 *C.PangoFcFontMap
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
@@ -129,7 +144,7 @@ func (f fontMap) AddDecoderFindFunc(f FontMap) {
 // This should be called whenever there is a change in the output of the
 // default_substitute() virtual function of the font map, or if fontconfig
 // has been reinitialized to new configuration.
-func (f fontMap) CacheClear(f FontMap) {
+func (f fontMap) CacheClear() {
 	var arg0 *C.PangoFcFontMap
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
@@ -143,7 +158,7 @@ func (f fontMap) CacheClear(f FontMap) {
 // This currently calls [method@PangoFc.FontMap.cache_clear] which ensures
 // that list of fonts, etc will be regenerated using the updated
 // configuration.
-func (f fontMap) ConfigChanged(f FontMap) {
+func (f fontMap) ConfigChanged() {
 	var arg0 *C.PangoFcFontMap
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
@@ -157,34 +172,19 @@ func (f fontMap) ConfigChanged(f FontMap) {
 // `PangoFcFontMap`; it is possible that a backend will store additional
 // information needed for correct operation on the `PangoContext` after
 // calling this function.
-func (f fontMap) CreateContext(f FontMap) {
+func (f fontMap) CreateContext() pango.Context {
 	var arg0 *C.PangoFcFontMap
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_create_context(arg0)
-}
+	cret := new(C.PangoContext)
+	var goret pango.Context
 
-// Config fetches the `FcConfig` attached to a font map.
-//
-// See also: [method@PangoFc.FontMap.set_config].
-func (f fontMap) Config(f FontMap) {
-	var arg0 *C.PangoFcFontMap
+	cret = C.pango_fc_font_map_create_context(arg0)
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	C.pango_fc_font_map_get_config(arg0)
-}
-
-// HbFace retrieves the `hb_face_t` for the given `PangoFcFont`.
-func (f fontMap) HbFace(f FontMap, fcfont Font) {
-	var arg0 *C.PangoFcFontMap
-	var arg1 *C.PangoFcFont
-
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.PangoFcFont)(unsafe.Pointer(fcfont.Native()))
-
-	C.pango_fc_font_map_get_hb_face(arg0, arg1)
+	return goret
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final
@@ -193,7 +193,7 @@ func (f fontMap) HbFace(f FontMap, fcfont Font) {
 //
 // This function can be used to do things like set hinting and antialiasing
 // options.
-func (f fontMap) SetDefaultSubstitute(f FontMap) {
+func (f fontMap) SetDefaultSubstitute() {
 	var arg0 *C.PangoFcFontMap
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
@@ -209,7 +209,7 @@ func (f fontMap) SetDefaultSubstitute(f FontMap) {
 // This function might be used by a backend when the underlying windowing
 // system for the font map exits. This function is only intended to be
 // called only for backend implementations deriving from `PangoFcFontMap`.
-func (f fontMap) Shutdown(f FontMap) {
+func (f fontMap) Shutdown() {
 	var arg0 *C.PangoFcFontMap
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
@@ -223,7 +223,7 @@ func (f fontMap) Shutdown(f FontMap) {
 //
 // That is, if your substitution function will return different results for
 // the same input pattern, you must call this function.
-func (f fontMap) SubstituteChanged(f FontMap) {
+func (f fontMap) SubstituteChanged() {
 	var arg0 *C.PangoFcFontMap
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))

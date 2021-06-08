@@ -2,22 +2,35 @@
 
 package gtk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/ptr"
+	externglib "github.com/gotk3/gotk3/glib"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
+// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
-func TestListAllTypes() uint {
-	var arg1 C.guint
-	var nTypes uint
+func TestListAllTypes() []externglib.Type {
+	var cret *C.GType
+	var arg1 *C.guint
+	var goret []externglib.Type
 
-	C.gtk_test_list_all_types(&arg1)
+	cret = C.gtk_test_list_all_types(arg1)
 
-	nTypes = uint(&arg1)
+	goret = make([]externglib.Type, arg1)
+	for i := 0; i < uintptr(arg1); i++ {
+		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
+		goret[i] = externglib.Type(src)
+	}
 
-	return nTypes
+	return ret1, goret
 }
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
@@ -29,8 +42,10 @@ func TestRegisterAllTypes() {
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for @widget to be
-// “drawn”. In this context that means it waits for the frame clock of @widget
-// to have run a full styling, layout and drawing cycle.
+// “drawn”.
+//
+// In this context that means it waits for the frame clock of @widget to have
+// run a full styling, layout and drawing cycle.
 //
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.

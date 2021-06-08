@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,14 +22,15 @@ func init() {
 	})
 }
 
-// Fixed: the Fixed widget is a container which can place child widgets at fixed
-// positions and with fixed sizes, given in pixels. Fixed performs no automatic
-// layout management.
+// Fixed: `GtkFixed` places its child widgets at fixed positions and with fixed
+// sizes.
+//
+// `GtkFixed` performs no automatic layout management.
 //
 // For most applications, you should not use this container! It keeps you from
-// having to learn about the other GTK+ containers, but it results in broken
-// applications. With Fixed, the following things will result in truncated text,
-// overlapping widgets, and other display bugs:
+// having to learn about the other GTK containers, but it results in broken
+// applications. With `GtkFixed`, the following things will result in truncated
+// text, overlapping widgets, and other display bugs:
 //
 // - Themes, which may change widget sizes.
 //
@@ -37,21 +42,22 @@ func init() {
 // - Translation of text into other languages changes its size. Also, display of
 // non-English text will use a different font in many cases.
 //
-// In addition, Fixed does not pay attention to text direction and thus may
+// In addition, `GtkFixed` does not pay attention to text direction and thus may
 // produce unwanted results if your app is run under right-to-left languages
 // such as Hebrew or Arabic. That is: normally GTK will order containers
 // appropriately for the text direction, e.g. to put labels to the right of the
-// thing they label when using an RTL language, but it can’t do that with Fixed.
-// So if you need to reorder widgets depending on the text direction, you would
-// need to manually detect it and adjust child positions accordingly.
+// thing they label when using an RTL language, but it can’t do that with
+// `GtkFixed`. So if you need to reorder widgets depending on the text
+// direction, you would need to manually detect it and adjust child positions
+// accordingly.
 //
-// Finally, fixed positioning makes it kind of annoying to add/remove GUI
+// Finally, fixed positioning makes it kind of annoying to add/remove UI
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
 //
 // If you know none of these things are an issue for your application, and
-// prefer the simplicity of Fixed, by all means use the widget. But you should
-// be aware of the tradeoffs.
+// prefer the simplicity of `GtkFixed`, by all means use the widget. But you
+// should be aware of the tradeoffs.
 type Fixed interface {
 	Widget
 	Accessible
@@ -59,28 +65,26 @@ type Fixed interface {
 	ConstraintTarget
 
 	// ChildPosition retrieves the translation transformation of the given child
-	// Widget in the given Fixed container.
+	// `GtkWidget` in the `GtkFixed`.
 	//
-	// See also: gtk_fixed_get_child_transform().
-	ChildPosition(f Fixed, widget Widget) (x float64, y float64)
+	// See also: [method@Gtk.Fixed.get_child_transform].
+	ChildPosition(widget Widget) (x float64, y float64)
 	// ChildTransform retrieves the transformation for @widget set using
 	// gtk_fixed_set_child_transform().
-	ChildTransform(f Fixed, widget Widget)
+	ChildTransform(widget Widget) *gsk.Transform
 	// Move sets a translation transformation to the given @x and @y coordinates
-	// to the child @widget of the given Fixed container.
-	Move(f Fixed, widget Widget, x float64, y float64)
-	// Put adds a widget to a Fixed container and assigns a translation
-	// transformation to the given @x and @y coordinates to it.
-	Put(f Fixed, widget Widget, x float64, y float64)
-	// Remove removes a child from @fixed, after it has been added with
-	// gtk_fixed_put().
-	Remove(f Fixed, widget Widget)
+	// to the child @widget of the `GtkFixed`.
+	Move(widget Widget, x float64, y float64)
+	// Put adds a widget to a `GtkFixed` at the given position.
+	Put(widget Widget, x float64, y float64)
+	// Remove removes a child from @fixed.
+	Remove(widget Widget)
 	// SetChildTransform sets the transformation for @widget.
 	//
-	// This is a convenience function that retrieves the FixedLayoutChild
-	// instance associated to @widget and calls
-	// gtk_fixed_layout_child_set_transform().
-	SetChildTransform(f Fixed, widget Widget, transform *gsk.Transform)
+	// This is a convenience function that retrieves the
+	// [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
+	// [method@Gtk.FixedLayoutChild.set_transform].
+	SetChildTransform(widget Widget, transform *gsk.Transform)
 }
 
 // fixed implements the Fixed interface.
@@ -111,49 +115,63 @@ func marshalFixed(p uintptr) (interface{}, error) {
 }
 
 // NewFixed constructs a class Fixed.
-func NewFixed() {
-	C.gtk_fixed_new()
+func NewFixed() Fixed {
+	var cret C.GtkFixed
+	var goret Fixed
+
+	cret = C.gtk_fixed_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
+
+	return goret
 }
 
 // ChildPosition retrieves the translation transformation of the given child
-// Widget in the given Fixed container.
+// `GtkWidget` in the `GtkFixed`.
 //
-// See also: gtk_fixed_get_child_transform().
-func (f fixed) ChildPosition(f Fixed, widget Widget) (x float64, y float64) {
+// See also: [method@Gtk.Fixed.get_child_transform].
+func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var arg2 C.double
-	var x float64
-	var arg3 C.double
-	var y float64
+	arg2 := new(C.double)
+	var ret2 float64
+	arg3 := new(C.double)
+	var ret3 float64
 
-	C.gtk_fixed_get_child_position(arg0, arg1, &arg2, &arg3)
+	C.gtk_fixed_get_child_position(arg0, arg1, arg2, arg3)
 
-	x = float64(&arg2)
-	y = float64(&arg3)
+	ret2 = float64(*arg2)
+	ret3 = float64(*arg3)
 
-	return x, y
+	return ret2, ret3
 }
 
 // ChildTransform retrieves the transformation for @widget set using
 // gtk_fixed_set_child_transform().
-func (f fixed) ChildTransform(f Fixed, widget Widget) {
+func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_fixed_get_child_transform(arg0, arg1)
+	var cret *C.GskTransform
+	var goret *gsk.Transform
+
+	cret = C.gtk_fixed_get_child_transform(arg0, arg1)
+
+	goret = gsk.WrapTransform(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Move sets a translation transformation to the given @x and @y coordinates
-// to the child @widget of the given Fixed container.
-func (f fixed) Move(f Fixed, widget Widget, x float64, y float64) {
+// to the child @widget of the `GtkFixed`.
+func (f fixed) Move(widget Widget, x float64, y float64) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 	var arg2 C.double
@@ -167,9 +185,8 @@ func (f fixed) Move(f Fixed, widget Widget, x float64, y float64) {
 	C.gtk_fixed_move(arg0, arg1, arg2, arg3)
 }
 
-// Put adds a widget to a Fixed container and assigns a translation
-// transformation to the given @x and @y coordinates to it.
-func (f fixed) Put(f Fixed, widget Widget, x float64, y float64) {
+// Put adds a widget to a `GtkFixed` at the given position.
+func (f fixed) Put(widget Widget, x float64, y float64) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 	var arg2 C.double
@@ -183,9 +200,8 @@ func (f fixed) Put(f Fixed, widget Widget, x float64, y float64) {
 	C.gtk_fixed_put(arg0, arg1, arg2, arg3)
 }
 
-// Remove removes a child from @fixed, after it has been added with
-// gtk_fixed_put().
-func (f fixed) Remove(f Fixed, widget Widget) {
+// Remove removes a child from @fixed.
+func (f fixed) Remove(widget Widget) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 
@@ -197,10 +213,10 @@ func (f fixed) Remove(f Fixed, widget Widget) {
 
 // SetChildTransform sets the transformation for @widget.
 //
-// This is a convenience function that retrieves the FixedLayoutChild
-// instance associated to @widget and calls
-// gtk_fixed_layout_child_set_transform().
-func (f fixed) SetChildTransform(f Fixed, widget Widget, transform *gsk.Transform) {
+// This is a convenience function that retrieves the
+// [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
+// [method@Gtk.FixedLayoutChild.set_transform].
+func (f fixed) SetChildTransform(widget Widget, transform *gsk.Transform) {
 	var arg0 *C.GtkFixed
 	var arg1 *C.GtkWidget
 	var arg2 *C.GskTransform

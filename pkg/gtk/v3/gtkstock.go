@@ -3,10 +3,12 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -21,7 +23,7 @@ type Stock string
 
 // TranslateFunc: the function used to translate messages in e.g. IconFactory
 // and ActionGroup.
-type TranslateFunc func(path string) string
+type TranslateFunc func() (utf8 string)
 
 //export gotk4_TranslateFunc
 func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
@@ -31,11 +33,9 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 	}
 
 	fn := v.(TranslateFunc)
-	ret := fn(path, funcData)
+	fn(utf8)
 
-	cret = (*C.gchar)(C.CString(ret))
-
-	return cret
+	cret = (*C.gchar)(C.CString(utf8))
 }
 
 // StockAdd registers each of the stock items in @items. If an item already
@@ -56,8 +56,18 @@ func StockAddStatic() {
 // StockListIds retrieves a list of all known stock IDs added to a IconFactory
 // or registered with gtk_stock_add(). The list must be freed with
 // g_slist_free(), and each string in the list must be freed with g_free().
-func StockListIds() {
-	C.gtk_stock_list_ids()
+func StockListIds() *glib.SList {
+	cret := new(C.GSList)
+	var goret *glib.SList
+
+	cret = C.gtk_stock_list_ids()
+
+	goret = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.SList) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // StockLookup fills @item with the registered values for @stock_id, returning
@@ -68,19 +78,19 @@ func StockLookup(stockID string) (item *StockItem, ok bool) {
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 C.GtkStockItem
-	var item *StockItem
+	arg2 := new(C.GtkStockItem)
+	var ret2 *StockItem
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_stock_lookup(arg1, &arg2)
+	cret = C.gtk_stock_lookup(arg1, arg2)
 
-	item = WrapStockItem(unsafe.Pointer(&arg2))
+	ret2 = WrapStockItem(unsafe.Pointer(arg2))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return item, ok
+	return ret2, goret
 }
 
 // StockSetTranslateFunc sets a function to be used for translating the @label
@@ -178,18 +188,25 @@ func (s *StockItem) TranslationDomain() string {
 
 // Copy copies a stock item, mostly useful for language bindings and not in
 // applications.
-func (i *StockItem) Copy(i *StockItem) {
+func (i *StockItem) Copy() *StockItem {
 	var arg0 *C.GtkStockItem
 
 	arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))
 
-	C.gtk_stock_item_copy(arg0)
+	var cret *C.GtkStockItem
+	var goret *StockItem
+
+	cret = C.gtk_stock_item_copy(arg0)
+
+	goret = WrapStockItem(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Free frees a stock item allocated on the heap, such as one returned by
 // gtk_stock_item_copy(). Also frees the fields inside the stock item, if they
 // are not nil.
-func (i *StockItem) Free(i *StockItem) {
+func (i *StockItem) Free() {
 	var arg0 *C.GtkStockItem
 
 	arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))

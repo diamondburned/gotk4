@@ -3,6 +3,9 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,27 +33,27 @@ type Monitor interface {
 	gextras.Objector
 
 	// Display gets the display that this monitor belongs to.
-	Display(m Monitor)
+	Display() Display
 	// Geometry retrieves the size and position of an individual monitor within
 	// the display coordinate space. The returned geometry is in ”application
 	// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-	Geometry(m Monitor) *Rectangle
+	Geometry() *Rectangle
 	// HeightMm gets the height in millimeters of the monitor.
-	HeightMm(m Monitor)
+	HeightMm() int
 	// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
 	// available.
 	//
 	// Note that this value might also vary depending on actual display backend.
 	//
 	// PNP ID registry is located at https://uefi.org/pnp_id_list
-	Manufacturer(m Monitor)
+	Manufacturer() string
 	// Model gets the a string identifying the monitor model, if available.
-	Model(m Monitor)
+	Model() string
 	// RefreshRate gets the refresh rate of the monitor, if available.
 	//
 	// The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
 	// 60000.
-	RefreshRate(m Monitor)
+	RefreshRate() int
 	// ScaleFactor gets the internal scale factor that maps from monitor
 	// coordinates to the actual device pixels. On traditional systems this is
 	// 1, but on very high density outputs this can be a higher value (often 2).
@@ -58,12 +61,12 @@ type Monitor interface {
 	// This can be used if you want to create pixel based data for a particular
 	// monitor, but most of the time you’re drawing to a window where it is
 	// better to use gdk_window_get_scale_factor() instead.
-	ScaleFactor(m Monitor)
+	ScaleFactor() int
 	// SubpixelLayout gets information about the layout of red, green and blue
 	// primaries for each pixel in this monitor, if available.
-	SubpixelLayout(m Monitor)
+	SubpixelLayout() SubpixelLayout
 	// WidthMm gets the width in millimeters of the monitor.
-	WidthMm(m Monitor)
+	WidthMm() int
 	// Workarea retrieves the size and position of the “work area” on a monitor
 	// within the display coordinate space. The returned geometry is in
 	// ”application pixels”, not in ”device pixels” (see
@@ -76,10 +79,10 @@ type Monitor interface {
 	// Note that not all backends may have a concept of workarea. This function
 	// will return the monitor geometry if a workarea is not available, or does
 	// not apply.
-	Workarea(m Monitor) *Rectangle
+	Workarea() *Rectangle
 	// IsPrimary gets whether this monitor should be considered primary (see
 	// gdk_display_get_primary_monitor()).
-	IsPrimary(m Monitor) bool
+	IsPrimary() bool
 }
 
 // monitor implements the Monitor interface.
@@ -104,39 +107,53 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 }
 
 // Display gets the display that this monitor belongs to.
-func (m monitor) Display(m Monitor) {
+func (m monitor) Display() Display {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_display(arg0)
+	var cret *C.GdkDisplay
+	var goret Display
+
+	cret = C.gdk_monitor_get_display(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+
+	return goret
 }
 
 // Geometry retrieves the size and position of an individual monitor within
 // the display coordinate space. The returned geometry is in ”application
 // pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
-func (m monitor) Geometry(m Monitor) *Rectangle {
+func (m monitor) Geometry() *Rectangle {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.GdkRectangle
-	var geometry *Rectangle
+	arg1 := new(C.GdkRectangle)
+	var ret1 *Rectangle
 
-	C.gdk_monitor_get_geometry(arg0, &arg1)
+	C.gdk_monitor_get_geometry(arg0, arg1)
 
-	geometry = WrapRectangle(unsafe.Pointer(&arg1))
+	ret1 = WrapRectangle(unsafe.Pointer(arg1))
 
-	return geometry
+	return ret1
 }
 
 // HeightMm gets the height in millimeters of the monitor.
-func (m monitor) HeightMm(m Monitor) {
+func (m monitor) HeightMm() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_height_mm(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_height_mm(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
@@ -145,33 +162,54 @@ func (m monitor) HeightMm(m Monitor) {
 // Note that this value might also vary depending on actual display backend.
 //
 // PNP ID registry is located at https://uefi.org/pnp_id_list
-func (m monitor) Manufacturer(m Monitor) {
+func (m monitor) Manufacturer() string {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_manufacturer(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gdk_monitor_get_manufacturer(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Model gets the a string identifying the monitor model, if available.
-func (m monitor) Model(m Monitor) {
+func (m monitor) Model() string {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_model(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gdk_monitor_get_model(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // RefreshRate gets the refresh rate of the monitor, if available.
 //
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
 // 60000.
-func (m monitor) RefreshRate(m Monitor) {
+func (m monitor) RefreshRate() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_refresh_rate(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_refresh_rate(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // ScaleFactor gets the internal scale factor that maps from monitor
@@ -181,31 +219,52 @@ func (m monitor) RefreshRate(m Monitor) {
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a window where it is
 // better to use gdk_window_get_scale_factor() instead.
-func (m monitor) ScaleFactor(m Monitor) {
+func (m monitor) ScaleFactor() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_scale_factor(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_scale_factor(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // SubpixelLayout gets information about the layout of red, green and blue
 // primaries for each pixel in this monitor, if available.
-func (m monitor) SubpixelLayout(m Monitor) {
+func (m monitor) SubpixelLayout() SubpixelLayout {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_subpixel_layout(arg0)
+	var cret C.GdkSubpixelLayout
+	var goret SubpixelLayout
+
+	cret = C.gdk_monitor_get_subpixel_layout(arg0)
+
+	goret = SubpixelLayout(cret)
+
+	return goret
 }
 
 // WidthMm gets the width in millimeters of the monitor.
-func (m monitor) WidthMm(m Monitor) {
+func (m monitor) WidthMm() int {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.gdk_monitor_get_width_mm(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_monitor_get_width_mm(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Workarea retrieves the size and position of the “work area” on a monitor
@@ -220,36 +279,36 @@ func (m monitor) WidthMm(m Monitor) {
 // Note that not all backends may have a concept of workarea. This function
 // will return the monitor geometry if a workarea is not available, or does
 // not apply.
-func (m monitor) Workarea(m Monitor) *Rectangle {
+func (m monitor) Workarea() *Rectangle {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.GdkRectangle
-	var workarea *Rectangle
+	arg1 := new(C.GdkRectangle)
+	var ret1 *Rectangle
 
-	C.gdk_monitor_get_workarea(arg0, &arg1)
+	C.gdk_monitor_get_workarea(arg0, arg1)
 
-	workarea = WrapRectangle(unsafe.Pointer(&arg1))
+	ret1 = WrapRectangle(unsafe.Pointer(arg1))
 
-	return workarea
+	return ret1
 }
 
 // IsPrimary gets whether this monitor should be considered primary (see
 // gdk_display_get_primary_monitor()).
-func (m monitor) IsPrimary(m Monitor) bool {
+func (m monitor) IsPrimary() bool {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_monitor_is_primary(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

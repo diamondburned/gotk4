@@ -2,6 +2,15 @@
 
 package gdk
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+)
+
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -20,12 +29,22 @@ import "C"
 // should use gdk_window_begin_draw_frame() and
 // gdk_drawing_context_get_cairo_context() instead. GTK will automatically do
 // this for you when drawing a widget.
-func CairoCreate(window Window) {
+func CairoCreate(window Window) *cairo.Context {
 	var arg1 *C.GdkWindow
 
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gdk_cairo_create(arg1)
+	cret := new(C.cairo_t)
+	var goret *cairo.Context
+
+	cret = C.gdk_cairo_create(arg1)
+
+	goret = cairo.WrapContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *cairo.Context) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // CairoDrawFromGL: this is the main way to draw GL content in GTK+. It takes a
@@ -76,29 +95,36 @@ func CairoGetClipRectangle(cr *cairo.Context) (rect *Rectangle, ok bool) {
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	var arg2 C.GdkRectangle
-	var rect *Rectangle
+	arg2 := new(C.GdkRectangle)
+	var ret2 *Rectangle
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gdk_cairo_get_clip_rectangle(arg1, &arg2)
+	cret = C.gdk_cairo_get_clip_rectangle(arg1, arg2)
 
-	rect = WrapRectangle(unsafe.Pointer(&arg2))
+	ret2 = WrapRectangle(unsafe.Pointer(arg2))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return rect, ok
+	return ret2, goret
 }
 
 // CairoGetDrawingContext retrieves the DrawingContext that created the Cairo
 // context @cr.
-func CairoGetDrawingContext(cr *cairo.Context) {
+func CairoGetDrawingContext(cr *cairo.Context) DrawingContext {
 	var arg1 *C.cairo_t
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	C.gdk_cairo_get_drawing_context(arg1)
+	var cret *C.GdkDrawingContext
+	var goret DrawingContext
+
+	cret = C.gdk_cairo_get_drawing_context(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingContext)
+
+	return goret
 }
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
@@ -128,12 +154,22 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
-func CairoRegionCreateFromSurface(surface *cairo.Surface) {
+func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 	var arg1 *C.cairo_surface_t
 
 	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
-	C.gdk_cairo_region_create_from_surface(arg1)
+	cret := new(C.cairo_region_t)
+	var goret *cairo.Region
+
+	cret = C.gdk_cairo_region_create_from_surface(arg1)
+
+	goret = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *cairo.Region) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // CairoSetSourceColor sets the specified Color as the source color of @cr.
@@ -166,12 +202,12 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
-func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
+func CairoSetSourceRGBA(cr *cairo.Context, rgbA *RGBA) {
 	var arg1 *C.cairo_t
 	var arg2 *C.GdkRGBA
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgbA.Native()))
 
 	C.gdk_cairo_set_source_rgba(arg1, arg2)
 }
@@ -200,7 +236,7 @@ func CairoSetSourceWindow(cr *cairo.Context, window Window, x float64, y float64
 
 // CairoSurfaceCreateFromPixbuf creates an image surface with the same contents
 // as the pixbuf.
-func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuf, scale int, forWindow Window) {
+func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuf, scale int, forWindow Window) *cairo.Surface {
 	var arg1 *C.GdkPixbuf
 	var arg2 C.int
 	var arg3 *C.GdkWindow
@@ -209,5 +245,15 @@ func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuf, scale int, forWindow 
 	arg2 = C.int(scale)
 	arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
-	C.gdk_cairo_surface_create_from_pixbuf(arg1, arg2, arg3)
+	cret := new(C.cairo_surface_t)
+	var goret *cairo.Surface
+
+	cret = C.gdk_cairo_surface_create_from_pixbuf(arg1, arg2, arg3)
+
+	goret = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *cairo.Surface) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }

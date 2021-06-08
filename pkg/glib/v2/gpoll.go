@@ -34,7 +34,7 @@ func init() {
 // descriptor, but the situation is much more complicated on Windows. If you
 // need to use g_poll() in code that has to run on Windows, the easiest solution
 // is to construct all of your FDs with g_io_channel_win32_make_pollfd().
-func Poll(fds *PollFD, nfds uint, timeout int) {
+func Poll(fds *PollFD, nfds uint, timeout int) int {
 	var arg1 *C.GPollFD
 	var arg2 C.guint
 	var arg3 C.gint
@@ -43,7 +43,14 @@ func Poll(fds *PollFD, nfds uint, timeout int) {
 	arg2 = C.guint(nfds)
 	arg3 = C.gint(timeout)
 
-	C.g_poll(arg1, arg2, arg3)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_poll(arg1, arg2, arg3)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // PollFD represents a file descriptor, which events to poll for, and which

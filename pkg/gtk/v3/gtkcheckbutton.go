@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,26 +74,47 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 }
 
 // NewCheckButton constructs a class CheckButton.
-func NewCheckButton() {
-	C.gtk_check_button_new()
+func NewCheckButton() CheckButton {
+	var cret C.GtkCheckButton
+	var goret CheckButton
+
+	cret = C.gtk_check_button_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+
+	return goret
 }
 
 // NewCheckButtonWithLabel constructs a class CheckButton.
-func NewCheckButtonWithLabel(label string) {
+func NewCheckButtonWithLabel(label string) CheckButton {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_check_button_new_with_label(arg1)
+	var cret C.GtkCheckButton
+	var goret CheckButton
+
+	cret = C.gtk_check_button_new_with_label(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+
+	return goret
 }
 
 // NewCheckButtonWithMnemonic constructs a class CheckButton.
-func NewCheckButtonWithMnemonic(label string) {
+func NewCheckButtonWithMnemonic(label string) CheckButton {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_check_button_new_with_mnemonic(arg1)
+	var cret C.GtkCheckButton
+	var goret CheckButton
+
+	cret = C.gtk_check_button_new_with_mnemonic(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+
+	return goret
 }

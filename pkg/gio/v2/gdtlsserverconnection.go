@@ -28,24 +28,6 @@ func init() {
 	})
 }
 
-// NewDTLSServerConnection creates a new ServerConnection wrapping @base_socket.
-func NewDTLSServerConnection(baseSocket DatagramBased, certificate TLSCertificate) error {
-	var arg1 *C.GDatagramBased
-	var arg2 *C.GTlsCertificate
-
-	arg1 = (*C.GDatagramBased)(unsafe.Pointer(baseSocket.Native()))
-	arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
-
-	var errout *C.GError
-	var err error
-
-	C.g_dtls_server_connection_new(arg1, arg2, &errout)
-
-	err = gerror.Take(unsafe.Pointer(errout))
-
-	return err
-}
-
 // DTLSServerConnection is the server-side subclass of Connection, representing
 // a server-side DTLS connection.
 type DTLSServerConnection interface {

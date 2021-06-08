@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,15 +41,15 @@ type ActionBar interface {
 	Buildable
 
 	// CenterWidget retrieves the center bar widget of the bar.
-	CenterWidget(a ActionBar)
+	CenterWidget() Widget
 	// PackEnd adds @child to @action_bar, packed with reference to the end of
 	// the @action_bar.
-	PackEnd(a ActionBar, child Widget)
+	PackEnd(child Widget)
 	// PackStart adds @child to @action_bar, packed with reference to the start
 	// of the @action_bar.
-	PackStart(a ActionBar, child Widget)
+	PackStart(child Widget)
 	// SetCenterWidget sets the center widget for the ActionBar.
-	SetCenterWidget(a ActionBar, centerWidget Widget)
+	SetCenterWidget(centerWidget Widget)
 }
 
 // actionBar implements the ActionBar interface.
@@ -73,22 +76,36 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 }
 
 // NewActionBar constructs a class ActionBar.
-func NewActionBar() {
-	C.gtk_action_bar_new()
+func NewActionBar() ActionBar {
+	var cret C.GtkActionBar
+	var goret ActionBar
+
+	cret = C.gtk_action_bar_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
+
+	return goret
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
-func (a actionBar) CenterWidget(a ActionBar) {
+func (a actionBar) CenterWidget() Widget {
 	var arg0 *C.GtkActionBar
 
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_bar_get_center_widget(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_action_bar_get_center_widget(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // PackEnd adds @child to @action_bar, packed with reference to the end of
 // the @action_bar.
-func (a actionBar) PackEnd(a ActionBar, child Widget) {
+func (a actionBar) PackEnd(child Widget) {
 	var arg0 *C.GtkActionBar
 	var arg1 *C.GtkWidget
 
@@ -100,7 +117,7 @@ func (a actionBar) PackEnd(a ActionBar, child Widget) {
 
 // PackStart adds @child to @action_bar, packed with reference to the start
 // of the @action_bar.
-func (a actionBar) PackStart(a ActionBar, child Widget) {
+func (a actionBar) PackStart(child Widget) {
 	var arg0 *C.GtkActionBar
 	var arg1 *C.GtkWidget
 
@@ -111,7 +128,7 @@ func (a actionBar) PackStart(a ActionBar, child Widget) {
 }
 
 // SetCenterWidget sets the center widget for the ActionBar.
-func (a actionBar) SetCenterWidget(a ActionBar, centerWidget Widget) {
+func (a actionBar) SetCenterWidget(centerWidget Widget) {
 	var arg0 *C.GtkActionBar
 	var arg1 *C.GtkWidget
 

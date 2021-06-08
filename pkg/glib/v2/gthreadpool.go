@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -11,64 +13,6 @@ import (
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
-
-// ThreadPoolGetMaxIdleTime: this function will return the maximum @interval
-// that a thread will wait in the thread pool for new tasks before being
-// stopped.
-//
-// If this function returns 0, threads waiting in the thread pool for new work
-// are not stopped.
-func ThreadPoolGetMaxIdleTime() {
-	C.g_thread_pool_get_max_idle_time()
-}
-
-// ThreadPoolGetMaxUnusedThreads returns the maximal allowed number of unused
-// threads.
-func ThreadPoolGetMaxUnusedThreads() {
-	C.g_thread_pool_get_max_unused_threads()
-}
-
-// ThreadPoolGetNumUnusedThreads returns the number of currently unused threads.
-func ThreadPoolGetNumUnusedThreads() {
-	C.g_thread_pool_get_num_unused_threads()
-}
-
-// ThreadPoolSetMaxIdleTime: this function will set the maximum @interval that a
-// thread waiting in the pool for new tasks can be idle for before being
-// stopped. This function is similar to calling
-// g_thread_pool_stop_unused_threads() on a regular timeout, except this is done
-// on a per thread basis.
-//
-// By setting @interval to 0, idle threads will not be stopped.
-//
-// The default value is 15000 (15 seconds).
-func ThreadPoolSetMaxIdleTime(interval uint) {
-	var arg1 C.guint
-
-	arg1 = C.guint(interval)
-
-	C.g_thread_pool_set_max_idle_time(arg1)
-}
-
-// ThreadPoolSetMaxUnusedThreads sets the maximal number of unused threads to
-// @max_threads. If @max_threads is -1, no limit is imposed on the number of
-// unused threads.
-//
-// The default value is 2.
-func ThreadPoolSetMaxUnusedThreads(maxThreads int) {
-	var arg1 C.gint
-
-	arg1 = C.gint(maxThreads)
-
-	C.g_thread_pool_set_max_unused_threads(arg1)
-}
-
-// ThreadPoolStopUnusedThreads stops all currently unused threads. This does not
-// change the maximal number of unused threads. This function can be used to
-// regularly stop all unused threads e.g. from g_timeout_add().
-func ThreadPoolStopUnusedThreads() {
-	C.g_thread_pool_stop_unused_threads()
-}
 
 // ThreadPool: the Pool struct represents a thread pool. It has three public
 // read-only members, but the underlying struct is bigger, so you must not copy
@@ -125,7 +69,7 @@ func (t *ThreadPool) Exclusive() bool {
 // running) are ready. Otherwise this function returns immediately.
 //
 // After calling this function @pool must not be used anymore.
-func (p *ThreadPool) Free(p *ThreadPool, immediate bool, wait_ bool) {
+func (p *ThreadPool) Free(immediate bool, wait_ bool) {
 	var arg0 *C.GThreadPool
 	var arg1 C.gboolean
 	var arg2 C.gboolean
@@ -142,26 +86,40 @@ func (p *ThreadPool) Free(p *ThreadPool, immediate bool, wait_ bool) {
 }
 
 // MaxThreads returns the maximal number of threads for @pool.
-func (p *ThreadPool) MaxThreads(p *ThreadPool) {
+func (p *ThreadPool) MaxThreads() int {
 	var arg0 *C.GThreadPool
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
-	C.g_thread_pool_get_max_threads(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_thread_pool_get_max_threads(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // NumThreads returns the number of threads currently running in @pool.
-func (p *ThreadPool) NumThreads(p *ThreadPool) {
+func (p *ThreadPool) NumThreads() uint {
 	var arg0 *C.GThreadPool
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
-	C.g_thread_pool_get_num_threads(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_thread_pool_get_num_threads(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // MoveToFront moves the item to the front of the queue of unprocessed items, so
 // that it will be processed next.
-func (p *ThreadPool) MoveToFront(p *ThreadPool, data interface{}) bool {
+func (p *ThreadPool) MoveToFront(data interface{}) bool {
 	var arg0 *C.GThreadPool
 	var arg1 C.gpointer
 
@@ -169,15 +127,15 @@ func (p *ThreadPool) MoveToFront(p *ThreadPool, data interface{}) bool {
 	arg1 = C.gpointer(data)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_thread_pool_move_to_front(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Push inserts @data into the list of tasks to be executed by @pool.
@@ -192,21 +150,21 @@ func (p *ThreadPool) MoveToFront(p *ThreadPool, data interface{}) bool {
 // simply appended to the queue of work to do.
 //
 // Before version 2.32, this function did not return a success status.
-func (p *ThreadPool) Push(p *ThreadPool, data interface{}) error {
+func (p *ThreadPool) Push(data interface{}) error {
 	var arg0 *C.GThreadPool
 	var arg1 C.gpointer
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	arg1 = C.gpointer(data)
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_thread_pool_push(arg0, arg1, &errout)
+	C.g_thread_pool_push(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // SetMaxThreads sets the maximal allowed number of threads for @pool. A value
@@ -227,21 +185,21 @@ func (p *ThreadPool) Push(p *ThreadPool, data interface{}) error {
 // only occur when a new thread couldn't be created.
 //
 // Before version 2.32, this function did not return a success status.
-func (p *ThreadPool) SetMaxThreads(p *ThreadPool, maxThreads int) error {
+func (p *ThreadPool) SetMaxThreads(maxThreads int) error {
 	var arg0 *C.GThreadPool
 	var arg1 C.gint
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	arg1 = C.gint(maxThreads)
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_thread_pool_set_max_threads(arg0, arg1, &errout)
+	C.g_thread_pool_set_max_threads(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // SetSortFunction sets the function used to sort the list of tasks. This allows
@@ -252,7 +210,7 @@ func (p *ThreadPool) SetMaxThreads(p *ThreadPool, maxThreads int) error {
 // are executed cannot be guaranteed 100%. Threads are scheduled by the
 // operating system and are executed at random. It cannot be assumed that
 // threads are executed in the order they are created.
-func (p *ThreadPool) SetSortFunction(p *ThreadPool) {
+func (p *ThreadPool) SetSortFunction() {
 	var arg0 *C.GThreadPool
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
@@ -261,10 +219,17 @@ func (p *ThreadPool) SetSortFunction(p *ThreadPool) {
 }
 
 // Unprocessed returns the number of tasks still unprocessed in @pool.
-func (p *ThreadPool) Unprocessed(p *ThreadPool) {
+func (p *ThreadPool) Unprocessed() uint {
 	var arg0 *C.GThreadPool
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
-	C.g_thread_pool_unprocessed(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_thread_pool_unprocessed(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }

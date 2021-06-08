@@ -49,12 +49,16 @@ type callbackGenerator struct {
 	Closure *int
 	Destroy *int
 
-	fg *FileGenerator
-	ng *NamespaceGenerator
+	pen *pen.BlockSections
+	fg  *FileGenerator
+	ng  *NamespaceGenerator
 }
 
 func newCallbackGenerator(ng *NamespaceGenerator) callbackGenerator {
-	return callbackGenerator{ng: ng}
+	return callbackGenerator{
+		ng:  ng,
+		pen: pen.NewBlockSections(256, 1024, 4096, 128, 1024, 4096, 128),
+	}
 }
 
 // Use sets the callback generator to the given GIR callback.
@@ -89,13 +93,7 @@ func (cg *callbackGenerator) Use(cb gir.Callback) bool {
 		return false
 	}
 
-	cg.GoTail = cg.fg.fnCall(cb.CallableAttrs)
-	if cg.GoTail == "" {
-		return false
-	}
-
-	cg.Block = cg.block()
-	if cg.Block == "" {
+	if !cg.renderBlock() {
 		return false
 	}
 
@@ -141,7 +139,9 @@ func (cg *callbackGenerator) cgoTail() string {
 	return callTail
 }
 
-func (cg *callbackGenerator) block() string {
+func (cg *callbackGenerator) renderBlock() bool {
+	defer cg.pen.Reset()
+
 	const (
 		secPrefix = iota
 		secInputPre
@@ -152,42 +152,37 @@ func (cg *callbackGenerator) block() string {
 		secReturn
 	)
 
-	// b := pen.NewBlockSections(256, 1024, 4096, 128, 1024, 4096, 128)
-
-	b := pen.NewBlockSections() // TODO
 	cap := len(cg.Parameters.Parameters) + 2
 
-	b.Linef(secPrefix, "v := box.Get(uintptr(arg%d))", *cg.Closure)
-	b.Linef(secPrefix, "if v == nil {")
-	b.Linef(secPrefix, "  panic(`callback not found`)")
-	b.Linef(secPrefix, "}")
-	b.EmptyLine(secPrefix)
+	cg.pen.Linef(secPrefix, "v := box.Get(uintptr(arg%d))", *cg.Closure)
+	cg.pen.Linef(secPrefix, "if v == nil {")
+	cg.pen.Linef(secPrefix, "  panic(`callback not found`)")
+	cg.pen.Linef(secPrefix, "}")
+	cg.pen.EmptyLine(secPrefix)
 
-	b.Linef(secFnCall, "fn := v.(%s)", cg.GoName)
+	cg.pen.Linef(secFnCall, "fn := v.(%s)", cg.GoName)
 
 	inputAt := func(i int) string { return fmt.Sprintf("arg%d", i) }
-	goArgs := pen.NewJoints(", ", cap)
-	goRets := pen.NewJoints(", ", cap)
 
 	inputValues := make([]CValueProp, 0, cap)
 	outputValues := make([]GoValueProp, 0, cap)
 
 	for i, param := range cg.Parameters.Parameters {
 		if param.Direction != "out" {
-			out := SnakeToGo(false, param.Name)
-			goArgs.Add(out)
-
 			inputValues = append(inputValues, CValueProp{
-				ValueProp: NewValuePropParam(inputAt(i), out, &i, param.ParameterAttrs),
+				ValueProp: NewValuePropParam(
+					inputAt(i), SnakeToGo(false, param.Name),
+					&i, param.ParameterAttrs,
+				),
 			})
 		} else {
-			in := SnakeToGo(false, param.Name)
-			goRets.Add(in)
-
 			// No need to have this declare a variable, since we're using the
 			// walrus operator in the function call.
 			outputValues = append(outputValues, GoValueProp{
-				ValueProp: NewValuePropParam(in, inputAt(i), &i, param.ParameterAttrs),
+				ValueProp: NewValuePropParam(
+					SnakeToGo(false, param.Name), inputAt(i),
+					&i, param.ParameterAttrs,
+				),
 			})
 		}
 	}
@@ -197,47 +192,71 @@ func (cg *callbackGenerator) block() string {
 	var fnReturn string
 
 	if !returnIsVoid(cg.ReturnValue) {
-		in := "ret"
-		goRets.Add(in)
-
-		fnReturn = "cret"
-
 		outputValues = append(outputValues, GoValueProp{
-			ValueProp: NewValuePropReturn(in, fnReturn, *cg.ReturnValue),
+			ValueProp: NewValuePropReturn(
+				returnName(cg.CallableAttrs), "cret",
+				*cg.ReturnValue,
+			),
 		})
 	}
 
-	convI := cg.fg.CGoConverter(cg.Name, inputValues).WriteAll(
-		nil, b.Section(secInputPre), b.Section(secInputConv),
-	)
-
-	if !convI {
+	convertedIns := cg.fg.CGoConverter(cg.Name, inputValues).ConvertAll()
+	if convertedIns == nil {
 		cg.fg.Logln(LogSkip, "callback (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
-		return ""
+		return false
 	}
 
-	convO := cg.fg.GoCConverter(cg.Name, outputValues).WriteAll(
-		nil, nil, b.Section(secOutputConv),
-	)
-
-	if !convO {
+	convertedOuts := cg.fg.GoCConverter(cg.Name, outputValues).ConvertAll()
+	if convertedOuts == nil {
 		cg.fg.Logln(LogSkip, "callback (no Go->C conversion)", cFunctionSig(cg.CallableAttrs))
-		return ""
+		return false
+	}
+
+	goArgs := pen.NewJoints(", ", len(convertedIns))
+	callbackArgs := pen.NewJoints(", ", cap)
+
+	for _, converted := range convertedIns {
+		converted.Apply(cg.fg)
+
+		goArgs.Addf("%s %s", converted.Out, converted.OutType)
+		callbackArgs.Add(converted.Out)
+
+		cg.pen.Line(secInputPre, converted.OutDeclare)
+		cg.pen.Line(secInputConv, converted.Conversion)
+	}
+
+	goRets := pen.NewJoints(", ", len(convertedOuts))
+	callbackRets := pen.NewJoints(", ", cap)
+
+	for _, converted := range convertedOuts {
+		converted.Apply(cg.fg)
+
+		goRets.Addf("%s %s", converted.In, converted.InType)
+		callbackArgs.Add(converted.In)
+
+		cg.pen.Line(secOutputConv, converted.Conversion)
 	}
 
 	cg.fg.addImport(importInternal("box"))
 
-	if goRets.Len() == 0 {
-		b.Linef(secFnCall, "fn(%s)", goArgs.Join())
+	if callbackRets.Len() == 0 {
+		cg.pen.Linef(secFnCall, "fn(%s)", callbackArgs.Join())
 	} else {
-		b.Linef(secFnCall, "%s := fn(%s)", goRets.Join(), goArgs.Join())
+		cg.pen.Linef(secFnCall, "%s := fn(%s)", callbackRets.Join(), callbackArgs.Join())
 	}
 
 	if fnReturn != "" {
-		b.Linef(secReturn, "return "+fnReturn)
+		cg.pen.Linef(secReturn, "return "+fnReturn)
 	}
 
-	return b.String()
+	cg.Block = cg.pen.String()
+
+	cg.GoTail = "(" + goArgs.Join() + ")"
+	if goRets.Len() > 0 {
+		cg.GoTail += " (" + goRets.Join() + ")"
+	}
+
+	return true
 }
 
 func (ng *NamespaceGenerator) generateCallbacks() {

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,7 +57,7 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 }
 
 // NewColorChooserDialog constructs a class ColorChooserDialog.
-func NewColorChooserDialog(title string, parent Window) {
+func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	var arg1 *C.gchar
 	var arg2 *C.GtkWindow
 
@@ -62,5 +65,12 @@ func NewColorChooserDialog(title string, parent Window) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	C.gtk_color_chooser_dialog_new(arg1, arg2)
+	var cret C.GtkColorChooserDialog
+	var goret ColorChooserDialog
+
+	cret = C.gtk_color_chooser_dialog_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserDialog)
+
+	return goret
 }

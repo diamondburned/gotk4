@@ -2,6 +2,12 @@
 
 package glib
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/ptr"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -9,11 +15,11 @@ import "C"
 
 // EnvironGetenv returns the value of the environment variable @variable in the
 // provided list @envp.
-func EnvironGetenv(envp []string, variable string) {
+func EnvironGetenv(envp []string, variable string) string {
 	var arg1 **C.gchar
 	var arg2 *C.gchar
 
-	arg1 = C.malloc(len(envp) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -28,18 +34,25 @@ func EnvironGetenv(envp []string, variable string) {
 	arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_environ_getenv(arg1, arg2)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_environ_getenv(arg1, arg2)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // EnvironSetenv sets the environment variable @variable in the provided list
 // @envp to @value.
-func EnvironSetenv(envp []string, variable string, value string, overwrite bool) {
+func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string {
 	var arg1 **C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
 	var arg4 C.gboolean
 
-	arg1 = C.malloc(len(envp) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
 	{
 		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(envp)))
@@ -56,16 +69,38 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 		arg4 = C.gboolean(1)
 	}
 
-	C.g_environ_setenv(arg1, arg2, arg3, arg4)
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_environ_setenv(arg1, arg2, arg3, arg4)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+			defer C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return goret
 }
 
 // EnvironUnsetenv removes the environment variable @variable from the provided
 // environment @envp.
-func EnvironUnsetenv(envp []string, variable string) {
+func EnvironUnsetenv(envp []string, variable string) []string {
 	var arg1 **C.gchar
 	var arg2 *C.gchar
 
-	arg1 = C.malloc(len(envp) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
 	{
 		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(envp)))
@@ -77,7 +112,29 @@ func EnvironUnsetenv(envp []string, variable string) {
 	arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_environ_unsetenv(arg1, arg2)
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_environ_unsetenv(arg1, arg2)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+			defer C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return goret
 }
 
 // GetEnviron gets the list of environment variables for the current process.
@@ -90,8 +147,30 @@ func EnvironUnsetenv(envp []string, variable string) {
 //
 // The return value is freshly allocated and it should be freed with
 // g_strfreev() when it is no longer needed.
-func GetEnviron() {
-	C.g_get_environ()
+func GetEnviron() []string {
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_get_environ()
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+			defer C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return goret
 }
 
 // Getenv returns the value of an environment variable.
@@ -100,13 +179,20 @@ func GetEnviron() {
 // some consistent character set and encoding. On Windows, they are in UTF-8. On
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
-func Getenv(variable string) {
+func Getenv(variable string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_getenv(arg1)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_getenv(arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Listenv gets the names of all variables set in the environment.
@@ -117,8 +203,30 @@ func Getenv(variable string) {
 // encoding, while in most of the typical use cases for environment variables in
 // GLib-using programs you want the UTF-8 encoding that this function and
 // g_getenv() provide.
-func Listenv() {
-	C.g_listenv()
+func Listenv() []string {
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_listenv()
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+			defer C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return goret
 }
 
 // Setenv sets an environment variable. On UNIX, both the variable's name and
@@ -153,15 +261,15 @@ func Setenv(variable string, value string, overwrite bool) bool {
 	}
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_setenv(arg1, arg2, arg3)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Unsetenv removes an environment variable from the environment.

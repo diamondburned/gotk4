@@ -2,6 +2,10 @@
 
 package glib
 
+import (
+	"unsafe"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -22,15 +26,15 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_hostname_is_ascii_encoded(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // HostnameIsIpAddress tests if @hostname is the string form of an IPv4 or IPv6
@@ -44,15 +48,15 @@ func HostnameIsIpAddress(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_hostname_is_ip_address(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // HostnameIsNonASCII tests if @hostname contains Unicode characters. If this
@@ -69,26 +73,34 @@ func HostnameIsNonASCII(hostname string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_hostname_is_non_ascii(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // HostnameToASCII converts @hostname to its canonical ASCII form; an ASCII-only
 // string containing no uppercase letters and not ending with a trailing dot.
-func HostnameToASCII(hostname string) {
+func HostnameToASCII(hostname string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_hostname_to_ascii(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_hostname_to_ascii(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // HostnameToUnicode converts @hostname to its canonical presentation form; a
@@ -98,11 +110,19 @@ func HostnameToASCII(hostname string) {
 //
 // Of course if @hostname is not an internationalized hostname, then the
 // canonical presentation form will be entirely ASCII.
-func HostnameToUnicode(hostname string) {
+func HostnameToUnicode(hostname string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(hostname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_hostname_to_unicode(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_hostname_to_unicode(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

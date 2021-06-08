@@ -3,7 +3,11 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #cgo pkg-config:
@@ -11,11 +15,14 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// AssistantPageFunc: a function used by gtk_assistant_set_forward_page_func()
-// to know which is the next page given a current one. It’s called both for
-// computing the next page when the user presses the “forward” button and for
-// handling the behavior of the “last” button.
-type AssistantPageFunc func(currentPage int) int
+// AssistantPageFunc: type of callback used to calculate the next page in a
+// `GtkAssistant`.
+//
+// It’s called both for computing the next page when the user presses the
+// “forward” button and for handling the behavior of the “last” button.
+//
+// See [method@Gtk.Assistant.set_forward_page_func].
+type AssistantPageFunc func() (gint int)
 
 //export gotk4_AssistantPageFunc
 func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
@@ -25,9 +32,7 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 	}
 
 	fn := v.(AssistantPageFunc)
-	ret := fn(currentPage, data)
+	fn(gint)
 
-	cret = C.int(ret)
-
-	return cret
+	cret = C.int(gint)
 }

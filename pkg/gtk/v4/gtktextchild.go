@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,22 +22,25 @@ func init() {
 	})
 }
 
-// TextChildAnchor: a TextChildAnchor is a spot in the buffer where child
-// widgets can be “anchored” (inserted inline, as if they were characters). The
-// anchor can have multiple widgets anchored, to allow for multiple views.
+// TextChildAnchor: a `GtkTextChildAnchor` is a spot in a `GtkTextBuffer` where
+// child widgets can be “anchored”.
+//
+// The anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor interface {
 	gextras.Objector
 
 	// Deleted determines whether a child anchor has been deleted from the
-	// buffer. Keep in mind that the child anchor will be unreferenced when
-	// removed from the buffer, so you need to hold your own reference (with
-	// g_object_ref()) if you plan to use this function — otherwise all deleted
-	// child anchors will also be finalized.
-	Deleted(a TextChildAnchor) bool
+	// buffer.
+	//
+	// Keep in mind that the child anchor will be unreferenced when removed from
+	// the buffer, so you need to hold your own reference (with g_object_ref())
+	// if you plan to use this function — otherwise all deleted child anchors
+	// will also be finalized.
+	Deleted() bool
 	// Widgets gets a list of all widgets anchored at this child anchor.
 	//
 	// The order in which the widgets are returned is not defined.
-	Widgets(a TextChildAnchor) uint
+	Widgets() []Widget
 }
 
 // textChildAnchor implements the TextChildAnchor interface.
@@ -58,46 +65,60 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 }
 
 // NewTextChildAnchor constructs a class TextChildAnchor.
-func NewTextChildAnchor() {
-	C.gtk_text_child_anchor_new()
+func NewTextChildAnchor() TextChildAnchor {
+	cret := new(C.GtkTextChildAnchor)
+	var goret TextChildAnchor
+
+	cret = C.gtk_text_child_anchor_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+
+	return goret
 }
 
 // Deleted determines whether a child anchor has been deleted from the
-// buffer. Keep in mind that the child anchor will be unreferenced when
-// removed from the buffer, so you need to hold your own reference (with
-// g_object_ref()) if you plan to use this function — otherwise all deleted
-// child anchors will also be finalized.
-func (a textChildAnchor) Deleted(a TextChildAnchor) bool {
+// buffer.
+//
+// Keep in mind that the child anchor will be unreferenced when removed from
+// the buffer, so you need to hold your own reference (with g_object_ref())
+// if you plan to use this function — otherwise all deleted child anchors
+// will also be finalized.
+func (a textChildAnchor) Deleted() bool {
 	var arg0 *C.GtkTextChildAnchor
 
 	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_text_child_anchor_get_deleted(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Widgets gets a list of all widgets anchored at this child anchor.
 //
 // The order in which the widgets are returned is not defined.
-func (a textChildAnchor) Widgets(a TextChildAnchor) uint {
+func (a textChildAnchor) Widgets() []Widget {
 	var arg0 *C.GtkTextChildAnchor
 
 	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	var arg1 C.guint
-	var outLen uint
+	var cret **C.GtkWidget
+	var arg1 *C.guint
+	var goret []Widget
 
-	C.gtk_text_child_anchor_get_widgets(arg0, &arg1)
+	cret = C.gtk_text_child_anchor_get_widgets(arg0, arg1)
 
-	outLen = uint(&arg1)
+	goret = make([]Widget, arg1)
+	for i := 0; i < uintptr(arg1); i++ {
+		src := (*C.GtkWidget)(ptr.Add(unsafe.Pointer(cret), i))
+		goret[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(Widget)
+	}
 
-	return outLen
+	return ret1, goret
 }

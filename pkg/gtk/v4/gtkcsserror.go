@@ -6,7 +6,3 @@ package gtk
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
-
-func CSSParserWarningQuark() {
-	C.gtk_css_parser_warning_quark()
-}

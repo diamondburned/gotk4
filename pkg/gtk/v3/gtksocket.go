@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,16 +74,9 @@ type Socket interface {
 	Container
 	Buildable
 
-	// ID gets the window ID of a Socket widget, which can then be used to
-	// create a client embedded inside the socket, for instance with
-	// gtk_plug_new().
-	//
-	// The Socket must have already be added into a toplevel window before you
-	// can make this call.
-	ID(s Socket)
 	// PlugWindow retrieves the window of the plug. Use this to check if the
 	// plug has been created inside of the socket.
-	PlugWindow(s Socket)
+	PlugWindow() gdk.Window
 }
 
 // socket implements the Socket interface.
@@ -106,30 +103,30 @@ func marshalSocket(p uintptr) (interface{}, error) {
 }
 
 // NewSocket constructs a class Socket.
-func NewSocket() {
-	C.gtk_socket_new()
-}
+func NewSocket() Socket {
+	var cret C.GtkSocket
+	var goret Socket
 
-// ID gets the window ID of a Socket widget, which can then be used to
-// create a client embedded inside the socket, for instance with
-// gtk_plug_new().
-//
-// The Socket must have already be added into a toplevel window before you
-// can make this call.
-func (s socket) ID(s Socket) {
-	var arg0 *C.GtkSocket
+	cret = C.gtk_socket_new()
 
-	arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Socket)
 
-	C.gtk_socket_get_id(arg0)
+	return goret
 }
 
 // PlugWindow retrieves the window of the plug. Use this to check if the
 // plug has been created inside of the socket.
-func (s socket) PlugWindow(s Socket) {
+func (s socket) PlugWindow() gdk.Window {
 	var arg0 *C.GtkSocket
 
 	arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
 
-	C.gtk_socket_get_plug_window(arg0)
+	var cret *C.GdkWindow
+	var goret gdk.Window
+
+	cret = C.gtk_socket_get_plug_window(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return goret
 }

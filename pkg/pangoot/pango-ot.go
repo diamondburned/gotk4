@@ -3,9 +3,12 @@
 package pangoot
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
+	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,33 +41,6 @@ const (
 	TableTypeGpos TableType = 1
 )
 
-// TagFromLanguage finds the OpenType language-system tag best describing
-// @language.
-func TagFromLanguage(language *pango.Language) {
-	var arg1 *C.PangoLanguage
-
-	arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
-
-	C.pango_ot_tag_from_language(arg1)
-}
-
-// TagFromScript finds the OpenType script tag corresponding to @script.
-//
-// The PANGO_SCRIPT_COMMON, PANGO_SCRIPT_INHERITED, and PANGO_SCRIPT_UNKNOWN
-// scripts are mapped to the OpenType 'DFLT' script tag that is also defined as
-// PANGO_OT_TAG_DEFAULT_SCRIPT.
-//
-// Note that multiple Script values may map to the same OpenType script tag. In
-// particular, PANGO_SCRIPT_HIRAGANA and PANGO_SCRIPT_KATAKANA both map to the
-// OT tag 'kana'.
-func TagFromScript(script pango.Script) {
-	var arg1 C.PangoScript
-
-	arg1 = (C.PangoScript)(script)
-
-	C.pango_ot_tag_from_script(arg1)
-}
-
 type Buffer struct {
 	native C.PangoOTBuffer
 }
@@ -85,12 +61,22 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 }
 
 // NewBuffer constructs a struct Buffer.
-func NewBuffer(font pangofc.Font) {
+func NewBuffer(font pangofc.Font) *Buffer {
 	var arg1 *C.PangoFcFont
 
 	arg1 = (*C.PangoFcFont)(unsafe.Pointer(font.Native()))
 
-	C.pango_ot_buffer_new(arg1)
+	cret := new(C.PangoOTBuffer)
+	var goret *Buffer
+
+	cret = C.pango_ot_buffer_new(arg1)
+
+	goret = WrapBuffer(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Buffer) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -100,7 +86,7 @@ func (b *Buffer) Native() unsafe.Pointer {
 
 // AddGlyph appends a glyph to a OTBuffer, with @properties identifying which
 // features should be applied on this glyph. See pango_ot_ruleset_add_feature().
-func (b *Buffer) AddGlyph(b *Buffer, glyph uint, properties uint, cluster uint) {
+func (b *Buffer) AddGlyph(glyph uint, properties uint, cluster uint) {
 	var arg0 *C.PangoOTBuffer
 	var arg1 C.guint
 	var arg2 C.guint
@@ -115,7 +101,7 @@ func (b *Buffer) AddGlyph(b *Buffer, glyph uint, properties uint, cluster uint) 
 }
 
 // Clear empties a OTBuffer, make it ready to add glyphs to.
-func (b *Buffer) Clear(b *Buffer) {
+func (b *Buffer) Clear() {
 	var arg0 *C.PangoOTBuffer
 
 	arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
@@ -124,7 +110,7 @@ func (b *Buffer) Clear(b *Buffer) {
 }
 
 // Destroy destroys a OTBuffer and free all associated memory.
-func (b *Buffer) Destroy(b *Buffer) {
+func (b *Buffer) Destroy() {
 	var arg0 *C.PangoOTBuffer
 
 	arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
@@ -135,20 +121,20 @@ func (b *Buffer) Destroy(b *Buffer) {
 // Glyphs gets the glyph array contained in a OTBuffer. The glyphs are owned by
 // the buffer and should not be freed, and are only valid as long as buffer is
 // not modified.
-func (b *Buffer) Glyphs(b *Buffer) {
+func (b *Buffer) Glyphs() {
 	var arg0 *C.PangoOTBuffer
 
 	arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
 
-	C.pango_ot_buffer_get_glyphs(arg0, &arg1, &arg2)
+	C.pango_ot_buffer_get_glyphs(arg0, arg1, arg2)
 
-	return glyphs, nGlyphs
+	return ret1, ret2
 }
 
 // Output exports the glyphs in a OTBuffer into a GlyphString. This is typically
 // used after the OpenType layout processing is over, to convert the resulting
 // glyphs into a generic Pango glyph string.
-func (b *Buffer) Output(b *Buffer, glyphs *pango.GlyphString) {
+func (b *Buffer) Output(glyphs *pango.GlyphString) {
 	var arg0 *C.PangoOTBuffer
 	var arg1 *C.PangoGlyphString
 
@@ -160,12 +146,12 @@ func (b *Buffer) Output(b *Buffer, glyphs *pango.GlyphString) {
 
 // SetRTL sets whether glyphs will be rendered right-to-left. This setting is
 // needed for proper horizontal positioning of right-to-left scripts.
-func (b *Buffer) SetRTL(b *Buffer, rtl bool) {
+func (b *Buffer) SetRTL(rtL bool) {
 	var arg0 *C.PangoOTBuffer
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
-	if rtl {
+	if rtL {
 		arg1 = C.gboolean(1)
 	}
 
@@ -176,7 +162,7 @@ func (b *Buffer) SetRTL(b *Buffer, rtl bool) {
 // to zero width. This setting is needed for proper positioning of Arabic
 // accents, but will produce incorrect results with standard OpenType Indic
 // fonts.
-func (b *Buffer) SetZeroWidthMarks(b *Buffer, zeroWidthMarks bool) {
+func (b *Buffer) SetZeroWidthMarks(zeroWidthMarks bool) {
 	var arg0 *C.PangoOTBuffer
 	var arg1 C.gboolean
 
@@ -218,7 +204,7 @@ func (f *FeatureMap) Native() unsafe.Pointer {
 // FeatureName gets the field inside the struct.
 func (f *FeatureMap) FeatureName() [5]byte {
 	var v [5]byte
-	v = ([5]byte)(f.native.feature_name)
+	v = *(*[5]byte)(unsafe.Pointer(f.native.feature_name))
 	return v
 }
 
@@ -388,12 +374,22 @@ func (r *RulesetDescription) NOtherFeatures() uint {
 // pango_ot_ruleset_description_free(). Primarily used internally by
 // pango_ot_ruleset_get_for_description() to cache rulesets for ruleset
 // descriptions.
-func (d *RulesetDescription) Copy(d *RulesetDescription) {
+func (d *RulesetDescription) Copy() *RulesetDescription {
 	var arg0 *C.PangoOTRulesetDescription
 
 	arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
 
-	C.pango_ot_ruleset_description_copy(arg0)
+	cret := new(C.PangoOTRulesetDescription)
+	var goret *RulesetDescription
+
+	cret = C.pango_ot_ruleset_description_copy(arg0)
+
+	goret = WrapRulesetDescription(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *RulesetDescription) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Equal compares two ruleset descriptions for equality. Two ruleset
@@ -403,7 +399,7 @@ func (d *RulesetDescription) Copy(d *RulesetDescription) {
 // directly, while for other features, the list of features is compared one by
 // one. (Two ruleset descriptions may result in identical rulesets being
 // created, but still compare false.)
-func (d *RulesetDescription) Equal(d *RulesetDescription, desc2 *RulesetDescription) bool {
+func (d *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 	var arg0 *C.PangoOTRulesetDescription
 	var arg1 *C.PangoOTRulesetDescription
 
@@ -411,20 +407,20 @@ func (d *RulesetDescription) Equal(d *RulesetDescription, desc2 *RulesetDescript
 	arg1 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc2.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.pango_ot_ruleset_description_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees a ruleset description allocated by
 // pango_ot_ruleset_description_copy().
-func (d *RulesetDescription) Free(d *RulesetDescription) {
+func (d *RulesetDescription) Free() {
 	var arg0 *C.PangoOTRulesetDescription
 
 	arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
@@ -434,10 +430,17 @@ func (d *RulesetDescription) Free(d *RulesetDescription) {
 
 // Hash computes a hash of a OTRulesetDescription structure suitable to be used,
 // for example, as an argument to g_hash_table_new().
-func (d *RulesetDescription) Hash(d *RulesetDescription) {
+func (d *RulesetDescription) Hash() uint {
 	var arg0 *C.PangoOTRulesetDescription
 
 	arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
 
-	C.pango_ot_ruleset_description_hash(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.pango_ot_ruleset_description_hash(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }

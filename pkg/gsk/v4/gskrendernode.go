@@ -15,9 +15,9 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
-// ParseErrorFunc: the type of callback that is called when a parse error occurs
-// during deserialization of node data.
-type ParseErrorFunc func(start *ParseLocation, end *ParseLocation, error error)
+// ParseErrorFunc: type of callback that is called when an error occurs during
+// node deserialization.
+type ParseErrorFunc func()
 
 //export gotk4_ParseErrorFunc
 func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
@@ -27,7 +27,7 @@ func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, ar
 	}
 
 	fn := v.(ParseErrorFunc)
-	fn(start, end, error, userData)
+	fn()
 }
 
 // ColorStop: a color stop in a gradient node.
@@ -65,7 +65,7 @@ func (c *ColorStop) Offset() float32 {
 // Color gets the field inside the struct.
 func (c *ColorStop) Color() gdk.RGBA {
 	var v gdk.RGBA
-	v = gdk.WrapRGBA(unsafe.Pointer(c.native.color))
+	v = *gdk.WrapRGBA(unsafe.Pointer(&c.native.color))
 	return v
 }
 
@@ -157,7 +157,7 @@ func (s *Shadow) Native() unsafe.Pointer {
 // Color gets the field inside the struct.
 func (s *Shadow) Color() gdk.RGBA {
 	var v gdk.RGBA
-	v = gdk.WrapRGBA(unsafe.Pointer(s.native.color))
+	v = *gdk.WrapRGBA(unsafe.Pointer(&s.native.color))
 	return v
 }
 

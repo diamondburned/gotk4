@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,16 +62,23 @@ func marshalVScale(p uintptr) (interface{}, error) {
 }
 
 // NewVScale constructs a class VScale.
-func NewVScale(adjustment Adjustment) {
+func NewVScale(adjustment Adjustment) VScale {
 	var arg1 *C.GtkAdjustment
 
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	C.gtk_vscale_new(arg1)
+	var cret C.GtkVScale
+	var goret VScale
+
+	cret = C.gtk_vscale_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScale)
+
+	return goret
 }
 
 // NewVScaleWithRange constructs a class VScale.
-func NewVScaleWithRange(min float64, max float64, step float64) {
+func NewVScaleWithRange(min float64, max float64, step float64) VScale {
 	var arg1 C.gdouble
 	var arg2 C.gdouble
 	var arg3 C.gdouble
@@ -77,5 +87,12 @@ func NewVScaleWithRange(min float64, max float64, step float64) {
 	arg2 = C.gdouble(max)
 	arg3 = C.gdouble(step)
 
-	C.gtk_vscale_new_with_range(arg1, arg2, arg3)
+	var cret C.GtkVScale
+	var goret VScale
+
+	cret = C.gtk_vscale_new_with_range(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScale)
+
+	return goret
 }

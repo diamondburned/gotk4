@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,8 +21,11 @@ func init() {
 	})
 }
 
-// MediaControls gtkMediaControls is a widget to show controls for a MediaStream
-// and giving users a way to use it.
+// MediaControls: `GtkMediaControls` is a widget to show controls for a video.
+//
+// !An example GtkMediaControls (media-controls.png)
+//
+// Usually, `GtkMediaControls` is used as part of [class@Gtk.Video].
 type MediaControls interface {
 	Widget
 	Accessible
@@ -27,9 +33,9 @@ type MediaControls interface {
 	ConstraintTarget
 
 	// MediaStream gets the media stream managed by @controls or nil if none.
-	MediaStream(c MediaControls)
+	MediaStream() MediaStream
 	// SetMediaStream sets the stream that is controlled by @controls.
-	SetMediaStream(c MediaControls, stream MediaStream)
+	SetMediaStream(stream MediaStream)
 }
 
 // mediaControls implements the MediaControls interface.
@@ -60,25 +66,39 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 }
 
 // NewMediaControls constructs a class MediaControls.
-func NewMediaControls(stream MediaStream) {
+func NewMediaControls(stream MediaStream) MediaControls {
 	var arg1 *C.GtkMediaStream
 
 	arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
-	C.gtk_media_controls_new(arg1)
+	var cret C.GtkMediaControls
+	var goret MediaControls
+
+	cret = C.gtk_media_controls_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaControls)
+
+	return goret
 }
 
 // MediaStream gets the media stream managed by @controls or nil if none.
-func (c mediaControls) MediaStream(c MediaControls) {
+func (c mediaControls) MediaStream() MediaStream {
 	var arg0 *C.GtkMediaControls
 
 	arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
 
-	C.gtk_media_controls_get_media_stream(arg0)
+	var cret *C.GtkMediaStream
+	var goret MediaStream
+
+	cret = C.gtk_media_controls_get_media_stream(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
+
+	return goret
 }
 
 // SetMediaStream sets the stream that is controlled by @controls.
-func (c mediaControls) SetMediaStream(c MediaControls, stream MediaStream) {
+func (c mediaControls) SetMediaStream(stream MediaStream) {
 	var arg0 *C.GtkMediaControls
 	var arg1 *C.GtkMediaStream
 

@@ -18,17 +18,17 @@ func init() {
 	})
 }
 
-// Filter: a Filter object describes the filtering to be performed by a
-// FilterListModel.
+// Filter: a `GtkFilter` object describes the filtering to be performed by a
+// `GtkFilterListModel`.
 //
 // The model will use the filter to determine if it should include items or not
-// by calling gtk_filter_match() for each item and only keeping the ones that
-// the function returns true for.
+// by calling [method@Gtk.Filter.match] for each item and only keeping the ones
+// that the function returns true for.
 //
 // Filters may change what items they match through their lifetime. In that
-// case, they will emit the Filter::changed signal to notify that previous
-// filter results are no longer valid and that items should be checked again via
-// gtk_filter_match().
+// case, they will emit the [signal@Gtk.Filter::changed] signal to notify that
+// previous filter results are no longer valid and that items should be checked
+// again via [method@Gtk.Filter.match].
 //
 // GTK provides various pre-made filter implementations for common filtering
 // operations. These filters often include properties that can be linked to
@@ -48,7 +48,7 @@ type Filter interface {
 	//
 	// This function is intended for implementors of Filter subclasses and
 	// should not be called from other functions.
-	Changed(s Filter, change FilterChange)
+	Changed(change FilterChange)
 	// Strictness gets the known strictness of @filters. If the strictness is
 	// not known, GTK_FILTER_MATCH_SOME is returned.
 	//
@@ -56,9 +56,9 @@ type Filter interface {
 	//
 	// This function is meant purely for optimization purposes, filters can
 	// choose to omit implementing it, but FilterListModel uses it.
-	Strictness(s Filter)
+	Strictness() FilterMatch
 	// Match checks if the given @item is matched by the filter or not.
-	Match(s Filter, item gextras.Objector) bool
+	Match(item gextras.Objector) bool
 }
 
 // filter implements the Filter interface.
@@ -91,7 +91,7 @@ func marshalFilter(p uintptr) (interface{}, error) {
 //
 // This function is intended for implementors of Filter subclasses and
 // should not be called from other functions.
-func (s filter) Changed(s Filter, change FilterChange) {
+func (s filter) Changed(change FilterChange) {
 	var arg0 *C.GtkFilter
 	var arg1 C.GtkFilterChange
 
@@ -108,16 +108,23 @@ func (s filter) Changed(s Filter, change FilterChange) {
 //
 // This function is meant purely for optimization purposes, filters can
 // choose to omit implementing it, but FilterListModel uses it.
-func (s filter) Strictness(s Filter) {
+func (s filter) Strictness() FilterMatch {
 	var arg0 *C.GtkFilter
 
 	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_filter_get_strictness(arg0)
+	var cret C.GtkFilterMatch
+	var goret FilterMatch
+
+	cret = C.gtk_filter_get_strictness(arg0)
+
+	goret = FilterMatch(cret)
+
+	return goret
 }
 
 // Match checks if the given @item is matched by the filter or not.
-func (s filter) Match(s Filter, item gextras.Objector) bool {
+func (s filter) Match(item gextras.Objector) bool {
 	var arg0 *C.GtkFilter
 	var arg1 C.gpointer
 
@@ -125,13 +132,13 @@ func (s filter) Match(s Filter, item gextras.Objector) bool {
 	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_filter_match(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

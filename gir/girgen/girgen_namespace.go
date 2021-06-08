@@ -72,6 +72,17 @@ func (ng *NamespaceGenerator) file(goFile string) *FileGenerator {
 	return &ng.files[i]
 }
 
+func (ng *NamespaceGenerator) mustIgnoreAny(any gir.AnyType) bool {
+	switch {
+	case any.Type != nil:
+		return ng.mustIgnore(any.Type.Name, any.Type.CType)
+	case any.Array != nil:
+		return ng.mustIgnoreAny(any.Array.AnyType)
+	default:
+		return true
+	}
+}
+
 // mustIgnore checks the generator's filters to see if the given girType in this
 // namespace should be ignored.
 func (ng *NamespaceGenerator) mustIgnore(girType, cType string) (ignore bool) {

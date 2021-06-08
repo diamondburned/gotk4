@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -135,8 +136,18 @@ func marshalItem(p uintptr) (interface{}, error) {
 }
 
 // NewItem constructs a struct Item.
-func NewItem() {
-	C.pango_item_new()
+func NewItem() *Item {
+	cret := new(C.PangoItem)
+	var goret *Item
+
+	cret = C.pango_item_new()
+
+	goret = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Item) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -168,7 +179,7 @@ func (i *Item) NumChars() int {
 // Analysis gets the field inside the struct.
 func (i *Item) Analysis() Analysis {
 	var v Analysis
-	v = WrapAnalysis(unsafe.Pointer(i.native.analysis))
+	v = *WrapAnalysis(unsafe.Pointer(&i.native.analysis))
 	return v
 }
 
@@ -182,7 +193,7 @@ func (i *Item) Analysis() Analysis {
 // The @iter should be positioned before the range of the item, and will be
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
-func (i *Item) ApplyAttrs(i *Item, iter *AttrIterator) {
+func (i *Item) ApplyAttrs(iter *AttrIterator) {
 	var arg0 *C.PangoItem
 	var arg1 *C.PangoAttrIterator
 
@@ -193,16 +204,26 @@ func (i *Item) ApplyAttrs(i *Item, iter *AttrIterator) {
 }
 
 // Copy: copy an existing `PangoItem` structure.
-func (i *Item) Copy(i *Item) {
+func (i *Item) Copy() *Item {
 	var arg0 *C.PangoItem
 
 	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
-	C.pango_item_copy(arg0)
+	cret := new(C.PangoItem)
+	var goret *Item
+
+	cret = C.pango_item_copy(arg0)
+
+	goret = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Item) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Free: free a `PangoItem` and all associated memory.
-func (i *Item) Free(i *Item) {
+func (i *Item) Free() {
 	var arg0 *C.PangoItem
 
 	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
@@ -220,7 +241,7 @@ func (i *Item) Free(i *Item) {
 // the first item in chars, and must be provided because the text used to
 // generate the item isn't available, so `pango_item_split()` can't count the
 // char length of the split items itself.
-func (o *Item) Split(o *Item, splitIndex int, splitOffset int) {
+func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	var arg0 *C.PangoItem
 	var arg1 C.int
 	var arg2 C.int
@@ -229,5 +250,15 @@ func (o *Item) Split(o *Item, splitIndex int, splitOffset int) {
 	arg1 = C.int(splitIndex)
 	arg2 = C.int(splitOffset)
 
-	C.pango_item_split(arg0, arg1, arg2)
+	cret := new(C.PangoItem)
+	var goret *Item
+
+	cret = C.pango_item_split(arg0, arg1, arg2)
+
+	goret = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Item) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }

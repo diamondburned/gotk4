@@ -12,19 +12,6 @@ import (
 // #include <glib-object.h>
 import "C"
 
-// NewSignalTypeCclosure creates a new closure which invokes the function found
-// at the offset @struct_offset in the class structure of the interface or
-// classed type identified by @itype.
-func NewSignalTypeCclosure(itype externglib.Type, structOffset uint) {
-	var arg1 C.GType
-	var arg2 C.guint
-
-	arg1 := C.GType(itype)
-	arg2 = C.guint(structOffset)
-
-	C.g_signal_type_cclosure_new(arg1, arg2)
-}
-
 // CClosure: a Closure is a specialization of #GClosure for C function
 // callbacks.
 type CClosure struct {

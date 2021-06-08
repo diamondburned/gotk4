@@ -3,6 +3,12 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -148,7 +154,7 @@ type Application interface {
 	// emitted in the primary instance.
 	//
 	// The application must be registered before calling this function.
-	Activate(a Application)
+	Activate()
 	// AddMainOption: add an option to be handled by @application.
 	//
 	// Calling this function is the equivalent of calling
@@ -162,7 +168,7 @@ type Application interface {
 	// more details.
 	//
 	// See Entry for more documentation of the arguments.
-	AddMainOption(a Application, longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
+	AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string)
 	// AddMainOptionEntries adds main option entries to be handled by
 	// @application.
 	//
@@ -214,7 +220,7 @@ type Application interface {
 	// G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
 	// G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
 	// `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
-	AddMainOptionEntries(a Application, entries []glib.OptionEntry)
+	AddMainOptionEntries(entries []glib.OptionEntry)
 	// AddOptionGroup adds a Group to the commandline handling of @application.
 	//
 	// This function is comparable to g_option_context_add_group().
@@ -239,15 +245,15 @@ type Application interface {
 	// to be parsed, but it does not cause you to be "opted in" to the new
 	// functionality whereby unrecognised options are rejected even if
 	// G_APPLICATION_HANDLES_COMMAND_LINE was given.
-	AddOptionGroup(a Application, group *glib.OptionGroup)
+	AddOptionGroup(group *glib.OptionGroup)
 	// BindBusyProperty marks @application as busy (see
 	// g_application_mark_busy()) while @property on @object is true.
 	//
 	// The binding holds a reference to @application while it is active, but not
 	// to @object. Instead, the binding is destroyed when @object is finalized.
-	BindBusyProperty(a Application, object gextras.Objector, property string)
+	BindBusyProperty(object gextras.Objector, property string)
 	// ApplicationID gets the unique identifier for @application.
-	ApplicationID(a Application)
+	ApplicationID() string
 	// DBusConnection gets the BusConnection being used by the application, or
 	// nil.
 	//
@@ -261,7 +267,7 @@ type Application interface {
 	//
 	// This function must not be called before the application has been
 	// registered. See g_application_get_is_registered().
-	DBusConnection(a Application)
+	DBusConnection() DBusConnection
 	// DBusObjectPath gets the D-Bus object path being used by the application,
 	// or nil.
 	//
@@ -277,25 +283,25 @@ type Application interface {
 	//
 	// This function must not be called before the application has been
 	// registered. See g_application_get_is_registered().
-	DBusObjectPath(a Application)
+	DBusObjectPath() string
 	// Flags gets the flags for @application.
 	//
 	// See Flags.
-	Flags(a Application)
+	Flags() ApplicationFlags
 	// InactivityTimeout gets the current inactivity timeout for the
 	// application.
 	//
 	// This is the amount of time (in milliseconds) after the last call to
 	// g_application_release() before the application stops running.
-	InactivityTimeout(a Application)
+	InactivityTimeout() uint
 	// IsBusy gets the application's current busy state, as set through
 	// g_application_mark_busy() or g_application_bind_busy_property().
-	IsBusy(a Application) bool
+	IsBusy() bool
 	// IsRegistered checks if @application is registered.
 	//
 	// An application is registered if g_application_register() has been
 	// successfully called.
-	IsRegistered(a Application) bool
+	IsRegistered() bool
 	// IsRemote checks if @application is remote.
 	//
 	// If @application is remote then it means that another instance of
@@ -306,11 +312,11 @@ type Application interface {
 	// The value of this property cannot be accessed before
 	// g_application_register() has been called. See
 	// g_application_get_is_registered().
-	IsRemote(a Application) bool
+	IsRemote() bool
 	// ResourceBasePath gets the resource base path of @application.
 	//
 	// See g_application_set_resource_base_path() for more information.
-	ResourceBasePath(a Application)
+	ResourceBasePath() string
 	// Hold increases the use count of @application.
 	//
 	// Use this function to indicate that the application has a reason to
@@ -318,7 +324,7 @@ type Application interface {
 	// a toplevel window is on the screen.
 	//
 	// To cancel the hold, call g_application_release().
-	Hold(a Application)
+	Hold()
 	// MarkBusy increases the busy count of @application.
 	//
 	// Use this function to indicate that the application is busy, for instance
@@ -329,7 +335,7 @@ type Application interface {
 	// spinner).
 	//
 	// To cancel the busy indication, use g_application_unmark_busy().
-	MarkBusy(a Application)
+	MarkBusy()
 	// Quit: immediately quits the application.
 	//
 	// Upon return to the mainloop, g_application_run() will return, calling
@@ -342,7 +348,7 @@ type Application interface {
 	//
 	// The result of calling g_application_run() again after it returns is
 	// unspecified.
-	Quit(a Application)
+	Quit()
 	// Register attempts registration of the application.
 	//
 	// This is the point at which the application discovers if it is the primary
@@ -371,14 +377,14 @@ type Application interface {
 	// Note: the return value of this function is not an indicator that this
 	// instance is or is not the primary instance of the application. See
 	// g_application_get_is_remote() for that.
-	Register(a Application, cancellable Cancellable) error
+	Register(cancellable Cancellable) error
 	// Release: decrease the use count of @application.
 	//
 	// When the use count reaches zero, the application will stop running.
 	//
 	// Never call this function except to cancel the effect of a previous call
 	// to g_application_hold().
-	Release(a Application)
+	Release()
 	// SendNotification sends a notification on behalf of @application to the
 	// desktop shell. There is no guarantee that the notification is displayed
 	// immediately, or even at all.
@@ -403,10 +409,10 @@ type Application interface {
 	//
 	// If @notification is no longer relevant, it can be withdrawn with
 	// g_application_withdraw_notification().
-	SendNotification(a Application, id string, notification Notification)
+	SendNotification(iD string, notification Notification)
 	// SetActionGroup: this used to be how actions were associated with a
 	// #GApplication. Now there is Map for that.
-	SetActionGroup(a Application, actionGroup ActionGroup)
+	SetActionGroup(actionGroup ActionGroup)
 	// SetApplicationID sets the unique identifier for @application.
 	//
 	// The application id can only be modified if @application has not yet been
@@ -414,21 +420,21 @@ type Application interface {
 	//
 	// If non-nil, the application id must be valid. See
 	// g_application_id_is_valid().
-	SetApplicationID(a Application, applicationID string)
+	SetApplicationID(applicationID string)
 	// SetDefault sets or unsets the default application for the process, as
 	// returned by g_application_get_default().
 	//
 	// This function does not take its own reference on @application. If
 	// @application is destroyed then the default application will revert back
 	// to nil.
-	SetDefault(a Application)
+	SetDefault()
 	// SetFlags sets the flags for @application.
 	//
 	// The flags can only be modified if @application has not yet been
 	// registered.
 	//
 	// See Flags.
-	SetFlags(a Application, flags ApplicationFlags)
+	SetFlags(flags ApplicationFlags)
 	// SetInactivityTimeout sets the current inactivity timeout for the
 	// application.
 	//
@@ -438,12 +444,12 @@ type Application interface {
 	// This call has no side effects of its own. The value set here is only used
 	// for next time g_application_release() drops the use count to zero. Any
 	// timeouts currently in progress are not impacted.
-	SetInactivityTimeout(a Application, inactivityTimeout uint)
+	SetInactivityTimeout(inactivityTimeout uint)
 	// SetOptionContextDescription adds a description to the @application option
 	// context.
 	//
 	// See g_option_context_set_description() for more information.
-	SetOptionContextDescription(a Application, description string)
+	SetOptionContextDescription(description string)
 	// SetOptionContextParameterString sets the parameter string to be used by
 	// the commandline handling of @application.
 	//
@@ -452,12 +458,12 @@ type Application interface {
 	// created.
 	//
 	// See g_option_context_new() for more information about @parameter_string.
-	SetOptionContextParameterString(a Application, parameterString string)
+	SetOptionContextParameterString(parameterString string)
 	// SetOptionContextSummary adds a summary to the @application option
 	// context.
 	//
 	// See g_option_context_set_summary() for more information.
-	SetOptionContextSummary(a Application, summary string)
+	SetOptionContextSummary(summary string)
 	// SetResourceBasePath sets (or unsets) the base resource path of
 	// @application.
 	//
@@ -492,11 +498,11 @@ type Application interface {
 	// this function during the instance initialization. Alternatively, you can
 	// call this function in the Class.startup virtual function, before chaining
 	// up to the parent implementation.
-	SetResourceBasePath(a Application, resourcePath string)
+	SetResourceBasePath(resourcePath string)
 	// UnbindBusyProperty destroys a binding between @property and the busy
 	// state of @application that was previously created with
 	// g_application_bind_busy_property().
-	UnbindBusyProperty(a Application, object gextras.Objector, property string)
+	UnbindBusyProperty(object gextras.Objector, property string)
 	// UnmarkBusy decreases the busy count of @application.
 	//
 	// When the busy count reaches zero, the new state will be propagated to
@@ -504,7 +510,7 @@ type Application interface {
 	//
 	// This function must only be called to cancel the effect of a previous call
 	// to g_application_mark_busy().
-	UnmarkBusy(a Application)
+	UnmarkBusy()
 	// WithdrawNotification withdraws a notification that was sent with
 	// g_application_send_notification().
 	//
@@ -518,7 +524,7 @@ type Application interface {
 	// Note that notifications are dismissed when the user clicks on one of the
 	// buttons in a notification or triggers its default action, so there is no
 	// need to explicitly withdraw the notification in that case.
-	WithdrawNotification(a Application, id string)
+	WithdrawNotification(iD string)
 }
 
 // application implements the Application interface.
@@ -547,7 +553,7 @@ func marshalApplication(p uintptr) (interface{}, error) {
 }
 
 // NewApplication constructs a class Application.
-func NewApplication(applicationID string, flags ApplicationFlags) {
+func NewApplication(applicationID string, flags ApplicationFlags) Application {
 	var arg1 *C.gchar
 	var arg2 C.GApplicationFlags
 
@@ -555,7 +561,14 @@ func NewApplication(applicationID string, flags ApplicationFlags) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GApplicationFlags)(flags)
 
-	C.g_application_new(arg1, arg2)
+	cret := new(C.GApplication)
+	var goret Application
+
+	cret = C.g_application_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
+
+	return goret
 }
 
 // Activate activates the application.
@@ -564,7 +577,7 @@ func NewApplication(applicationID string, flags ApplicationFlags) {
 // emitted in the primary instance.
 //
 // The application must be registered before calling this function.
-func (a application) Activate(a Application) {
+func (a application) Activate() {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -585,7 +598,7 @@ func (a application) Activate(a Application) {
 // more details.
 //
 // See Entry for more documentation of the arguments.
-func (a application) AddMainOption(a Application, longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
+func (a application) AddMainOption(longName string, shortName byte, flags glib.OptionFlags, arg glib.OptionArg, description string, argDescription string) {
 	var arg0 *C.GApplication
 	var arg1 *C.char
 	var arg2 C.char
@@ -659,12 +672,12 @@ func (a application) AddMainOption(a Application, longName string, shortName byt
 // G_OPTION_ARG_INT64, use `x` - for G_OPTION_ARG_DOUBLE, use `d` - for
 // G_OPTION_ARG_FILENAME, use `^&ay` - for G_OPTION_ARG_STRING_ARRAY, use
 // `^a&s` - for G_OPTION_ARG_FILENAME_ARRAY, use `^a&ay`
-func (a application) AddMainOptionEntries(a Application, entries []glib.OptionEntry) {
+func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var arg0 *C.GApplication
 	var arg1 *C.GOptionEntry
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	arg1 = C.malloc(len(entries) * (C.sizeof_GOptionEntry + 1))
+	arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_GOptionEntry))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -703,7 +716,7 @@ func (a application) AddMainOptionEntries(a Application, entries []glib.OptionEn
 // to be parsed, but it does not cause you to be "opted in" to the new
 // functionality whereby unrecognised options are rejected even if
 // G_APPLICATION_HANDLES_COMMAND_LINE was given.
-func (a application) AddOptionGroup(a Application, group *glib.OptionGroup) {
+func (a application) AddOptionGroup(group *glib.OptionGroup) {
 	var arg0 *C.GApplication
 	var arg1 *C.GOptionGroup
 
@@ -718,7 +731,7 @@ func (a application) AddOptionGroup(a Application, group *glib.OptionGroup) {
 //
 // The binding holds a reference to @application while it is active, but not
 // to @object. Instead, the binding is destroyed when @object is finalized.
-func (a application) BindBusyProperty(a Application, object gextras.Objector, property string) {
+func (a application) BindBusyProperty(object gextras.Objector, property string) {
 	var arg0 *C.GApplication
 	var arg1 C.gpointer
 	var arg2 *C.gchar
@@ -732,12 +745,19 @@ func (a application) BindBusyProperty(a Application, object gextras.Objector, pr
 }
 
 // ApplicationID gets the unique identifier for @application.
-func (a application) ApplicationID(a Application) {
+func (a application) ApplicationID() string {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
-	C.g_application_get_application_id(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_application_get_application_id(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // DBusConnection gets the BusConnection being used by the application, or
@@ -753,12 +773,19 @@ func (a application) ApplicationID(a Application) {
 //
 // This function must not be called before the application has been
 // registered. See g_application_get_is_registered().
-func (a application) DBusConnection(a Application) {
+func (a application) DBusConnection() DBusConnection {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
-	C.g_application_get_dbus_connection(arg0)
+	var cret *C.GDBusConnection
+	var goret DBusConnection
+
+	cret = C.g_application_get_dbus_connection(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return goret
 }
 
 // DBusObjectPath gets the D-Bus object path being used by the application,
@@ -776,23 +803,37 @@ func (a application) DBusConnection(a Application) {
 //
 // This function must not be called before the application has been
 // registered. See g_application_get_is_registered().
-func (a application) DBusObjectPath(a Application) {
+func (a application) DBusObjectPath() string {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
-	C.g_application_get_dbus_object_path(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_application_get_dbus_object_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Flags gets the flags for @application.
 //
 // See Flags.
-func (a application) Flags(a Application) {
+func (a application) Flags() ApplicationFlags {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
-	C.g_application_get_flags(arg0)
+	var cret C.GApplicationFlags
+	var goret ApplicationFlags
+
+	cret = C.g_application_get_flags(arg0)
+
+	goret = ApplicationFlags(cret)
+
+	return goret
 }
 
 // InactivityTimeout gets the current inactivity timeout for the
@@ -800,52 +841,59 @@ func (a application) Flags(a Application) {
 //
 // This is the amount of time (in milliseconds) after the last call to
 // g_application_release() before the application stops running.
-func (a application) InactivityTimeout(a Application) {
+func (a application) InactivityTimeout() uint {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
-	C.g_application_get_inactivity_timeout(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_application_get_inactivity_timeout(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // IsBusy gets the application's current busy state, as set through
 // g_application_mark_busy() or g_application_bind_busy_property().
-func (a application) IsBusy(a Application) bool {
+func (a application) IsBusy() bool {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_application_get_is_busy(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsRegistered checks if @application is registered.
 //
 // An application is registered if g_application_register() has been
 // successfully called.
-func (a application) IsRegistered(a Application) bool {
+func (a application) IsRegistered() bool {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_application_get_is_registered(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsRemote checks if @application is remote.
@@ -858,32 +906,39 @@ func (a application) IsRegistered(a Application) bool {
 // The value of this property cannot be accessed before
 // g_application_register() has been called. See
 // g_application_get_is_registered().
-func (a application) IsRemote(a Application) bool {
+func (a application) IsRemote() bool {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_application_get_is_remote(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ResourceBasePath gets the resource base path of @application.
 //
 // See g_application_set_resource_base_path() for more information.
-func (a application) ResourceBasePath(a Application) {
+func (a application) ResourceBasePath() string {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
-	C.g_application_get_resource_base_path(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_application_get_resource_base_path(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Hold increases the use count of @application.
@@ -893,7 +948,7 @@ func (a application) ResourceBasePath(a Application) {
 // a toplevel window is on the screen.
 //
 // To cancel the hold, call g_application_release().
-func (a application) Hold(a Application) {
+func (a application) Hold() {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -911,7 +966,7 @@ func (a application) Hold(a Application) {
 // spinner).
 //
 // To cancel the busy indication, use g_application_unmark_busy().
-func (a application) MarkBusy(a Application) {
+func (a application) MarkBusy() {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -931,7 +986,7 @@ func (a application) MarkBusy(a Application) {
 //
 // The result of calling g_application_run() again after it returns is
 // unspecified.
-func (a application) Quit(a Application) {
+func (a application) Quit() {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -967,21 +1022,21 @@ func (a application) Quit(a Application) {
 // Note: the return value of this function is not an indicator that this
 // instance is or is not the primary instance of the application. See
 // g_application_get_is_remote() for that.
-func (a application) Register(a Application, cancellable Cancellable) error {
+func (a application) Register(cancellable Cancellable) error {
 	var arg0 *C.GApplication
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_application_register(arg0, arg1, &errout)
+	C.g_application_register(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // Release: decrease the use count of @application.
@@ -990,7 +1045,7 @@ func (a application) Register(a Application, cancellable Cancellable) error {
 //
 // Never call this function except to cancel the effect of a previous call
 // to g_application_hold().
-func (a application) Release(a Application) {
+func (a application) Release() {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -1022,13 +1077,13 @@ func (a application) Release(a Application) {
 //
 // If @notification is no longer relevant, it can be withdrawn with
 // g_application_withdraw_notification().
-func (a application) SendNotification(a Application, id string, notification Notification) {
+func (a application) SendNotification(iD string, notification Notification) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 	var arg2 *C.GNotification
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(id))
+	arg1 = (*C.gchar)(C.CString(iD))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 
@@ -1037,7 +1092,7 @@ func (a application) SendNotification(a Application, id string, notification Not
 
 // SetActionGroup: this used to be how actions were associated with a
 // #GApplication. Now there is Map for that.
-func (a application) SetActionGroup(a Application, actionGroup ActionGroup) {
+func (a application) SetActionGroup(actionGroup ActionGroup) {
 	var arg0 *C.GApplication
 	var arg1 *C.GActionGroup
 
@@ -1054,7 +1109,7 @@ func (a application) SetActionGroup(a Application, actionGroup ActionGroup) {
 //
 // If non-nil, the application id must be valid. See
 // g_application_id_is_valid().
-func (a application) SetApplicationID(a Application, applicationID string) {
+func (a application) SetApplicationID(applicationID string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
@@ -1071,7 +1126,7 @@ func (a application) SetApplicationID(a Application, applicationID string) {
 // This function does not take its own reference on @application. If
 // @application is destroyed then the default application will revert back
 // to nil.
-func (a application) SetDefault(a Application) {
+func (a application) SetDefault() {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -1085,7 +1140,7 @@ func (a application) SetDefault(a Application) {
 // registered.
 //
 // See Flags.
-func (a application) SetFlags(a Application, flags ApplicationFlags) {
+func (a application) SetFlags(flags ApplicationFlags) {
 	var arg0 *C.GApplication
 	var arg1 C.GApplicationFlags
 
@@ -1104,7 +1159,7 @@ func (a application) SetFlags(a Application, flags ApplicationFlags) {
 // This call has no side effects of its own. The value set here is only used
 // for next time g_application_release() drops the use count to zero. Any
 // timeouts currently in progress are not impacted.
-func (a application) SetInactivityTimeout(a Application, inactivityTimeout uint) {
+func (a application) SetInactivityTimeout(inactivityTimeout uint) {
 	var arg0 *C.GApplication
 	var arg1 C.guint
 
@@ -1118,7 +1173,7 @@ func (a application) SetInactivityTimeout(a Application, inactivityTimeout uint)
 // context.
 //
 // See g_option_context_set_description() for more information.
-func (a application) SetOptionContextDescription(a Application, description string) {
+func (a application) SetOptionContextDescription(description string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
@@ -1137,7 +1192,7 @@ func (a application) SetOptionContextDescription(a Application, description stri
 // created.
 //
 // See g_option_context_new() for more information about @parameter_string.
-func (a application) SetOptionContextParameterString(a Application, parameterString string) {
+func (a application) SetOptionContextParameterString(parameterString string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
@@ -1152,7 +1207,7 @@ func (a application) SetOptionContextParameterString(a Application, parameterStr
 // context.
 //
 // See g_option_context_set_summary() for more information.
-func (a application) SetOptionContextSummary(a Application, summary string) {
+func (a application) SetOptionContextSummary(summary string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
@@ -1197,7 +1252,7 @@ func (a application) SetOptionContextSummary(a Application, summary string) {
 // this function during the instance initialization. Alternatively, you can
 // call this function in the Class.startup virtual function, before chaining
 // up to the parent implementation.
-func (a application) SetResourceBasePath(a Application, resourcePath string) {
+func (a application) SetResourceBasePath(resourcePath string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
@@ -1211,7 +1266,7 @@ func (a application) SetResourceBasePath(a Application, resourcePath string) {
 // UnbindBusyProperty destroys a binding between @property and the busy
 // state of @application that was previously created with
 // g_application_bind_busy_property().
-func (a application) UnbindBusyProperty(a Application, object gextras.Objector, property string) {
+func (a application) UnbindBusyProperty(object gextras.Objector, property string) {
 	var arg0 *C.GApplication
 	var arg1 C.gpointer
 	var arg2 *C.gchar
@@ -1231,7 +1286,7 @@ func (a application) UnbindBusyProperty(a Application, object gextras.Objector, 
 //
 // This function must only be called to cancel the effect of a previous call
 // to g_application_mark_busy().
-func (a application) UnmarkBusy(a Application) {
+func (a application) UnmarkBusy() {
 	var arg0 *C.GApplication
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
@@ -1252,12 +1307,12 @@ func (a application) UnmarkBusy(a Application) {
 // Note that notifications are dismissed when the user clicks on one of the
 // buttons in a notification or triggers its default action, so there is no
 // need to explicitly withdraw the notification in that case.
-func (a application) WithdrawNotification(a Application, id string) {
+func (a application) WithdrawNotification(iD string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(id))
+	arg1 = (*C.gchar)(C.CString(iD))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_application_withdraw_notification(arg0, arg1)

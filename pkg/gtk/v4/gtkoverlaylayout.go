@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -19,11 +22,13 @@ func init() {
 	})
 }
 
-// OverlayLayout: gtkOverlayLayout is the layout manager used by Overlay. It
-// places widgets as overlays on top of the main child.
+// OverlayLayout: `GtkOverlayLayout` is the layout manager used by `GtkOverlay`.
+//
+// It places widgets as overlays on top of the main child.
 //
 // This is not a reusable layout manager, since it expects its widget to be a
-// Overlay. It only listed here so that its layout properties get documented.
+// `GtkOverlay`. It only listed here so that its layout properties get
+// documented.
 type OverlayLayout interface {
 	LayoutManager
 }
@@ -50,21 +55,30 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 }
 
 // NewOverlayLayout constructs a class OverlayLayout.
-func NewOverlayLayout() {
-	C.gtk_overlay_layout_new()
+func NewOverlayLayout() OverlayLayout {
+	cret := new(C.GtkOverlayLayout)
+	var goret OverlayLayout
+
+	cret = C.gtk_overlay_layout_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(OverlayLayout)
+
+	return goret
 }
 
+// OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
+// `GtkOverlayLayout`.
 type OverlayLayoutChild interface {
 	LayoutChild
 
 	// ClipOverlay retrieves whether the child is clipped.
-	ClipOverlay(c OverlayLayoutChild) bool
+	ClipOverlay() bool
 	// Measure retrieves whether the child is measured.
-	Measure(c OverlayLayoutChild) bool
+	Measure() bool
 	// SetClipOverlay sets whether to clip this child.
-	SetClipOverlay(c OverlayLayoutChild, clipOverlay bool)
+	SetClipOverlay(clipOverlay bool)
 	// SetMeasure sets whether to measure this child.
-	SetMeasure(c OverlayLayoutChild, measure bool)
+	SetMeasure(measure bool)
 }
 
 // overlayLayoutChild implements the OverlayLayoutChild interface.
@@ -89,43 +103,43 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 }
 
 // ClipOverlay retrieves whether the child is clipped.
-func (c overlayLayoutChild) ClipOverlay(c OverlayLayoutChild) bool {
+func (c overlayLayoutChild) ClipOverlay() bool {
 	var arg0 *C.GtkOverlayLayoutChild
 
 	arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_overlay_layout_child_get_clip_overlay(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Measure retrieves whether the child is measured.
-func (c overlayLayoutChild) Measure(c OverlayLayoutChild) bool {
+func (c overlayLayoutChild) Measure() bool {
 	var arg0 *C.GtkOverlayLayoutChild
 
 	arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_overlay_layout_child_get_measure(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetClipOverlay sets whether to clip this child.
-func (c overlayLayoutChild) SetClipOverlay(c OverlayLayoutChild, clipOverlay bool) {
+func (c overlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 	var arg0 *C.GtkOverlayLayoutChild
 	var arg1 C.gboolean
 
@@ -138,7 +152,7 @@ func (c overlayLayoutChild) SetClipOverlay(c OverlayLayoutChild, clipOverlay boo
 }
 
 // SetMeasure sets whether to measure this child.
-func (c overlayLayoutChild) SetMeasure(c OverlayLayoutChild, measure bool) {
+func (c overlayLayoutChild) SetMeasure(measure bool) {
 	var arg0 *C.GtkOverlayLayoutChild
 	var arg1 C.gboolean
 

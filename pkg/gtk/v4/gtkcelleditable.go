@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,9 +23,9 @@ func init() {
 // interface is a subset of the interface CellEditable.
 type CellEditableOverrider interface {
 	// EditingDone emits the CellEditable::editing-done signal.
-	EditingDone(c CellEditable)
+	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
-	RemoveWidget(c CellEditable)
+	RemoveWidget()
 	// StartEditing begins editing on a @cell_editable.
 	//
 	// The CellRenderer for the cell creates and returns a CellEditable from
@@ -37,13 +38,14 @@ type CellEditableOverrider interface {
 	// Note that the @cell_editable is created on-demand for the current edit;
 	// its lifetime is temporary and does not persist across other edits and/or
 	// cells.
-	StartEditing(c CellEditable, event gdk.Event)
+	StartEditing(event gdk.Event)
 }
 
-// CellEditable: the CellEditable interface must be implemented for widgets to
-// be usable to edit the contents of a TreeView cell. It provides a way to
-// specify how temporary widgets should be configured for editing, get the new
-// value, etc.
+// CellEditable: interface for widgets that can be used for editing cells
+//
+// The CellEditable interface must be implemented for widgets to be usable to
+// edit the contents of a TreeView cell. It provides a way to specify how
+// temporary widgets should be configured for editing, get the new value, etc.
 type CellEditable interface {
 	Widget
 	CellEditableOverrider
@@ -71,7 +73,7 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 }
 
 // EditingDone emits the CellEditable::editing-done signal.
-func (c cellEditable) EditingDone(c CellEditable) {
+func (c cellEditable) EditingDone() {
 	var arg0 *C.GtkCellEditable
 
 	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
@@ -80,7 +82,7 @@ func (c cellEditable) EditingDone(c CellEditable) {
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
-func (c cellEditable) RemoveWidget(c CellEditable) {
+func (c cellEditable) RemoveWidget() {
 	var arg0 *C.GtkCellEditable
 
 	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
@@ -100,7 +102,7 @@ func (c cellEditable) RemoveWidget(c CellEditable) {
 // Note that the @cell_editable is created on-demand for the current edit;
 // its lifetime is temporary and does not persist across other edits and/or
 // cells.
-func (c cellEditable) StartEditing(c CellEditable, event gdk.Event) {
+func (c cellEditable) StartEditing(event gdk.Event) {
 	var arg0 *C.GtkCellEditable
 	var arg1 *C.GdkEvent
 

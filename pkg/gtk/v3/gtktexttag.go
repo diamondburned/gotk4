@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,9 +45,9 @@ type TextTag interface {
 	//
 	// The signal is already emitted when setting a TextTag property. This
 	// function is useful for a TextTag subclass.
-	Changed(t TextTag, sizeChanged bool)
+	Changed(sizeChanged bool)
 	// Priority: get the tag priority.
-	Priority(t TextTag)
+	Priority() int
 	// SetPriority sets the priority of a TextTag. Valid priorities start at 0
 	// and go to one less than gtk_text_tag_table_get_size(). Each tag in a
 	// table has a unique priority; setting the priority of one tag shifts the
@@ -55,7 +58,7 @@ type TextTag interface {
 	// precedence of a set of tags is the order in which they were added to the
 	// table, or created with gtk_text_buffer_create_tag(), which adds the tag
 	// to the buffer’s table automatically.
-	SetPriority(t TextTag, priority int)
+	SetPriority(priority int)
 }
 
 // textTag implements the TextTag interface.
@@ -80,13 +83,20 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 }
 
 // NewTextTag constructs a class TextTag.
-func NewTextTag(name string) {
+func NewTextTag(name string) TextTag {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_text_tag_new(arg1)
+	cret := new(C.GtkTextTag)
+	var goret TextTag
+
+	cret = C.gtk_text_tag_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTag)
+
+	return goret
 }
 
 // Changed emits the TextTagTable::tag-changed signal on the TextTagTable
@@ -94,7 +104,7 @@ func NewTextTag(name string) {
 //
 // The signal is already emitted when setting a TextTag property. This
 // function is useful for a TextTag subclass.
-func (t textTag) Changed(t TextTag, sizeChanged bool) {
+func (t textTag) Changed(sizeChanged bool) {
 	var arg0 *C.GtkTextTag
 	var arg1 C.gboolean
 
@@ -107,12 +117,19 @@ func (t textTag) Changed(t TextTag, sizeChanged bool) {
 }
 
 // Priority: get the tag priority.
-func (t textTag) Priority(t TextTag) {
+func (t textTag) Priority() int {
 	var arg0 *C.GtkTextTag
 
 	arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
 
-	C.gtk_text_tag_get_priority(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_text_tag_get_priority(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // SetPriority sets the priority of a TextTag. Valid priorities start at 0
@@ -125,7 +142,7 @@ func (t textTag) Priority(t TextTag) {
 // precedence of a set of tags is the order in which they were added to the
 // table, or created with gtk_text_buffer_create_tag(), which adds the tag
 // to the buffer’s table automatically.
-func (t textTag) SetPriority(t TextTag, priority int) {
+func (t textTag) SetPriority(priority int) {
 	var arg0 *C.GtkTextTag
 	var arg1 C.gint
 

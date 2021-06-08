@@ -3,6 +3,8 @@
 package gio
 
 import (
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,7 +45,7 @@ type OutputStream interface {
 	gextras.Objector
 
 	// ClearPending clears the pending flag on @stream.
-	ClearPending(s OutputStream)
+	ClearPending()
 	// Close closes the stream, releasing resources related to it.
 	//
 	// Once the stream is closed, all other operations will return
@@ -74,7 +76,7 @@ type OutputStream interface {
 	// streams can use a faster close that doesn't block to e.g. check errors.
 	// On cancellation (as with any error) there is no guarantee that all
 	// written data will reach the target.
-	Close(s OutputStream, cancellable Cancellable) error
+	Close(cancellable Cancellable) error
 	// CloseAsync requests an asynchronous close of the stream, releasing
 	// resources related to it. When the operation is finished @callback will be
 	// called. You can then call g_output_stream_close_finish() to get the
@@ -85,9 +87,9 @@ type OutputStream interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync(s OutputStream)
+	CloseAsync()
 	// CloseFinish closes an output stream.
-	CloseFinish(s OutputStream, result AsyncResult) error
+	CloseFinish(result AsyncResult) error
 	// Flush forces a write of all user-space buffered data for the given
 	// @stream. Will block during the operation. Closing the stream will
 	// implicitly cause a flush.
@@ -97,37 +99,37 @@ type OutputStream interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Flush(s OutputStream, cancellable Cancellable) error
+	Flush(cancellable Cancellable) error
 	// FlushAsync forces an asynchronous write of all user-space buffered data
 	// for the given @stream. For behaviour details see g_output_stream_flush().
 	//
 	// When the operation is finished @callback will be called. You can then
 	// call g_output_stream_flush_finish() to get the result of the operation.
-	FlushAsync(s OutputStream)
+	FlushAsync()
 	// FlushFinish finishes flushing an output stream.
-	FlushFinish(s OutputStream, result AsyncResult) error
+	FlushFinish(result AsyncResult) error
 	// HasPending checks if an output stream has pending actions.
-	HasPending(s OutputStream) bool
+	HasPending() bool
 	// IsClosed checks if an output stream has already been closed.
-	IsClosed(s OutputStream) bool
+	IsClosed() bool
 	// IsClosing checks if an output stream is being closed. This can be used
 	// inside e.g. a flush implementation to see if the flush (or other i/o
 	// operation) is called from within the closing operation.
-	IsClosing(s OutputStream) bool
+	IsClosing() bool
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
-	SetPending(s OutputStream) error
+	SetPending() error
 	// Splice splices an input stream into an output stream.
-	Splice(s OutputStream, source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) error
+	Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (gssize int, err error)
 	// SpliceAsync splices a stream asynchronously. When the operation is
 	// finished @callback will be called. You can then call
 	// g_output_stream_splice_finish() to get the result of the operation.
 	//
 	// For the synchronous, blocking version of this function, see
 	// g_output_stream_splice().
-	SpliceAsync(s OutputStream)
+	SpliceAsync()
 	// SpliceFinish finishes an asynchronous stream splice operation.
-	SpliceFinish(s OutputStream, result AsyncResult) error
+	SpliceFinish(result AsyncResult) (gssize int, err error)
 	// WriteAllAsync: request an asynchronous write of @count bytes from @buffer
 	// into the stream. When the operation is finished @callback will be called.
 	// You can then call g_output_stream_write_all_finish() to get the result of
@@ -143,7 +145,7 @@ type OutputStream interface {
 	//
 	// Note that no copy of @buffer will be made, so it must stay valid until
 	// @callback is called.
-	WriteAllAsync(s OutputStream)
+	WriteAllAsync()
 	// WriteAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_write_all_async().
 	//
@@ -153,7 +155,7 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_write_async().
-	WriteAllFinish(s OutputStream, result AsyncResult) (bytesWritten uint, err error)
+	WriteAllFinish(result AsyncResult) (bytesWritten uint, err error)
 	// WriteAsync: request an asynchronous write of @count bytes from @buffer
 	// into the stream. When the operation is finished @callback will be called.
 	// You can then call g_output_stream_write_finish() to get the result of the
@@ -189,7 +191,7 @@ type OutputStream interface {
 	// @callback is called. See g_output_stream_write_bytes_async() for a
 	// #GBytes version that will automatically hold a reference to the contents
 	// (without copying) for the duration of the call.
-	WriteAsync(s OutputStream)
+	WriteAsync()
 	// WriteBytes: a wrapper function for g_output_stream_write() which takes a
 	// #GBytes as input. This can be more convenient for use by language
 	// bindings or in other cases where the refcounted nature of #GBytes is
@@ -201,7 +203,7 @@ type OutputStream interface {
 	// using g_bytes_new_from_bytes(). Passing the same #GBytes instance
 	// multiple times potentially can result in duplicated data in the output
 	// stream.
-	WriteBytes(s OutputStream, bytes *glib.Bytes, cancellable Cancellable) error
+	WriteBytes(bytes *glib.Bytes, cancellable Cancellable) (gssize int, err error)
 	// WriteBytesAsync: this function is similar to
 	// g_output_stream_write_async(), but takes a #GBytes as input. Due to the
 	// refcounted nature of #GBytes, this allows the stream to avoid taking a
@@ -216,11 +218,11 @@ type OutputStream interface {
 	//
 	// For the synchronous, blocking version of this function, see
 	// g_output_stream_write_bytes().
-	WriteBytesAsync(s OutputStream)
+	WriteBytesAsync()
 	// WriteBytesFinish finishes a stream write-from-#GBytes operation.
-	WriteBytesFinish(s OutputStream, result AsyncResult) error
+	WriteBytesFinish(result AsyncResult) (gssize int, err error)
 	// WriteFinish finishes a stream write operation.
-	WriteFinish(s OutputStream, result AsyncResult) error
+	WriteFinish(result AsyncResult) (gssize int, err error)
 	// WritevAllAsync: request an asynchronous write of the bytes contained in
 	// the @n_vectors @vectors into the stream. When the operation is finished
 	// @callback will be called. You can then call
@@ -237,7 +239,7 @@ type OutputStream interface {
 	// Note that no copy of @vectors will be made, so it must stay valid until
 	// @callback is called. The content of the individual elements of @vectors
 	// might be changed by this function.
-	WritevAllAsync(s OutputStream)
+	WritevAllAsync()
 	// WritevAllFinish finishes an asynchronous stream write operation started
 	// with g_output_stream_writev_all_async().
 	//
@@ -247,7 +249,7 @@ type OutputStream interface {
 	// written before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_output_stream_writev_async().
-	WritevAllFinish(s OutputStream, result AsyncResult) (bytesWritten uint, err error)
+	WritevAllFinish(result AsyncResult) (bytesWritten uint, err error)
 	// WritevAsync: request an asynchronous write of the bytes contained in
 	// @n_vectors @vectors into the stream. When the operation is finished
 	// @callback will be called. You can then call
@@ -278,9 +280,9 @@ type OutputStream interface {
 	//
 	// Note that no copy of @vectors will be made, so it must stay valid until
 	// @callback is called.
-	WritevAsync(s OutputStream)
+	WritevAsync()
 	// WritevFinish finishes a stream writev operation.
-	WritevFinish(s OutputStream, result AsyncResult) (bytesWritten uint, err error)
+	WritevFinish(result AsyncResult) (bytesWritten uint, err error)
 }
 
 // outputStream implements the OutputStream interface.
@@ -305,7 +307,7 @@ func marshalOutputStream(p uintptr) (interface{}, error) {
 }
 
 // ClearPending clears the pending flag on @stream.
-func (s outputStream) ClearPending(s OutputStream) {
+func (s outputStream) ClearPending() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -343,21 +345,21 @@ func (s outputStream) ClearPending(s OutputStream) {
 // streams can use a faster close that doesn't block to e.g. check errors.
 // On cancellation (as with any error) there is no guarantee that all
 // written data will reach the target.
-func (s outputStream) Close(s OutputStream, cancellable Cancellable) error {
+func (s outputStream) Close(cancellable Cancellable) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_close(arg0, arg1, &errout)
+	C.g_output_stream_close(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing
@@ -370,7 +372,7 @@ func (s outputStream) Close(s OutputStream, cancellable Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (s outputStream) CloseAsync(s OutputStream) {
+func (s outputStream) CloseAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -379,21 +381,21 @@ func (s outputStream) CloseAsync(s OutputStream) {
 }
 
 // CloseFinish closes an output stream.
-func (s outputStream) CloseFinish(s OutputStream, result AsyncResult) error {
+func (s outputStream) CloseFinish(result AsyncResult) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_close_finish(arg0, arg1, &errout)
+	C.g_output_stream_close_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // Flush forces a write of all user-space buffered data for the given
@@ -405,21 +407,21 @@ func (s outputStream) CloseFinish(s OutputStream, result AsyncResult) error {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (s outputStream) Flush(s OutputStream, cancellable Cancellable) error {
+func (s outputStream) Flush(cancellable Cancellable) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GCancellable
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_flush(arg0, arg1, &errout)
+	C.g_output_stream_flush(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // FlushAsync forces an asynchronous write of all user-space buffered data
@@ -427,7 +429,7 @@ func (s outputStream) Flush(s OutputStream, cancellable Cancellable) error {
 //
 // When the operation is finished @callback will be called. You can then
 // call g_output_stream_flush_finish() to get the result of the operation.
-func (s outputStream) FlushAsync(s OutputStream) {
+func (s outputStream) FlushAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -436,98 +438,98 @@ func (s outputStream) FlushAsync(s OutputStream) {
 }
 
 // FlushFinish finishes flushing an output stream.
-func (s outputStream) FlushFinish(s OutputStream, result AsyncResult) error {
+func (s outputStream) FlushFinish(result AsyncResult) error {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_flush_finish(arg0, arg1, &errout)
+	C.g_output_stream_flush_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // HasPending checks if an output stream has pending actions.
-func (s outputStream) HasPending(s OutputStream) bool {
+func (s outputStream) HasPending() bool {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_output_stream_has_pending(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsClosed checks if an output stream has already been closed.
-func (s outputStream) IsClosed(s OutputStream) bool {
+func (s outputStream) IsClosed() bool {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_output_stream_is_closed(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsClosing checks if an output stream is being closed. This can be used
 // inside e.g. a flush implementation to see if the flush (or other i/o
 // operation) is called from within the closing operation.
-func (s outputStream) IsClosing(s OutputStream) bool {
+func (s outputStream) IsClosing() bool {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_output_stream_is_closing(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
-func (s outputStream) SetPending(s OutputStream) error {
+func (s outputStream) SetPending() error {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_set_pending(arg0, &errout)
+	C.g_output_stream_set_pending(arg0, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // Splice splices an input stream into an output stream.
-func (s outputStream) Splice(s OutputStream, source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) error {
+func (s outputStream) Splice(source InputStream, flags OutputStreamSpliceFlags, cancellable Cancellable) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GInputStream
 	var arg2 C.GOutputStreamSpliceFlags
@@ -538,14 +540,17 @@ func (s outputStream) Splice(s OutputStream, source InputStream, flags OutputStr
 	arg2 = (C.GOutputStreamSpliceFlags)(flags)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cret C.gssize
+	var goret int
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_splice(arg0, arg1, arg2, arg3, &errout)
+	cret = C.g_output_stream_splice(arg0, arg1, arg2, arg3, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = int(cret)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // SpliceAsync splices a stream asynchronously. When the operation is
@@ -554,7 +559,7 @@ func (s outputStream) Splice(s OutputStream, source InputStream, flags OutputStr
 //
 // For the synchronous, blocking version of this function, see
 // g_output_stream_splice().
-func (s outputStream) SpliceAsync(s OutputStream) {
+func (s outputStream) SpliceAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -563,21 +568,24 @@ func (s outputStream) SpliceAsync(s OutputStream) {
 }
 
 // SpliceFinish finishes an asynchronous stream splice operation.
-func (s outputStream) SpliceFinish(s OutputStream, result AsyncResult) error {
+func (s outputStream) SpliceFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cret C.gssize
+	var goret int
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_splice_finish(arg0, arg1, &errout)
+	cret = C.g_output_stream_splice_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = int(cret)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // WriteAllAsync: request an asynchronous write of @count bytes from @buffer
@@ -595,7 +603,7 @@ func (s outputStream) SpliceFinish(s OutputStream, result AsyncResult) error {
 //
 // Note that no copy of @buffer will be made, so it must stay valid until
 // @callback is called.
-func (s outputStream) WriteAllAsync(s OutputStream) {
+func (s outputStream) WriteAllAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -612,24 +620,24 @@ func (s outputStream) WriteAllAsync(s OutputStream) {
 // written before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_output_stream_write_async().
-func (s outputStream) WriteAllFinish(s OutputStream, result AsyncResult) (bytesWritten uint, err error) {
+func (s outputStream) WriteAllFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 C.gsize
-	var bytesWritten uint
-	var errout *C.GError
-	var err error
+	arg2 := new(C.gsize)
+	var ret2 uint
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_write_all_finish(arg0, arg1, &arg2, &errout)
+	C.g_output_stream_write_all_finish(arg0, arg1, arg2, &cerr)
 
-	bytesWritten = uint(&arg2)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret2 = uint(*arg2)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return bytesWritten, err
+	return ret2, goerr
 }
 
 // WriteAsync: request an asynchronous write of @count bytes from @buffer
@@ -667,7 +675,7 @@ func (s outputStream) WriteAllFinish(s OutputStream, result AsyncResult) (bytesW
 // @callback is called. See g_output_stream_write_bytes_async() for a
 // #GBytes version that will automatically hold a reference to the contents
 // (without copying) for the duration of the call.
-func (s outputStream) WriteAsync(s OutputStream) {
+func (s outputStream) WriteAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -686,7 +694,7 @@ func (s outputStream) WriteAsync(s OutputStream) {
 // using g_bytes_new_from_bytes(). Passing the same #GBytes instance
 // multiple times potentially can result in duplicated data in the output
 // stream.
-func (s outputStream) WriteBytes(s OutputStream, bytes *glib.Bytes, cancellable Cancellable) error {
+func (s outputStream) WriteBytes(bytes *glib.Bytes, cancellable Cancellable) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GBytes
 	var arg2 *C.GCancellable
@@ -695,14 +703,17 @@ func (s outputStream) WriteBytes(s OutputStream, bytes *glib.Bytes, cancellable 
 	arg1 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cret C.gssize
+	var goret int
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_write_bytes(arg0, arg1, arg2, &errout)
+	cret = C.g_output_stream_write_bytes(arg0, arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = int(cret)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // WriteBytesAsync: this function is similar to
@@ -719,7 +730,7 @@ func (s outputStream) WriteBytes(s OutputStream, bytes *glib.Bytes, cancellable 
 //
 // For the synchronous, blocking version of this function, see
 // g_output_stream_write_bytes().
-func (s outputStream) WriteBytesAsync(s OutputStream) {
+func (s outputStream) WriteBytesAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -728,39 +739,45 @@ func (s outputStream) WriteBytesAsync(s OutputStream) {
 }
 
 // WriteBytesFinish finishes a stream write-from-#GBytes operation.
-func (s outputStream) WriteBytesFinish(s OutputStream, result AsyncResult) error {
+func (s outputStream) WriteBytesFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cret C.gssize
+	var goret int
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_write_bytes_finish(arg0, arg1, &errout)
+	cret = C.g_output_stream_write_bytes_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = int(cret)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // WriteFinish finishes a stream write operation.
-func (s outputStream) WriteFinish(s OutputStream, result AsyncResult) error {
+func (s outputStream) WriteFinish(result AsyncResult) (gssize int, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var errout *C.GError
-	var err error
+	var cret C.gssize
+	var goret int
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_write_finish(arg0, arg1, &errout)
+	cret = C.g_output_stream_write_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = int(cret)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // WritevAllAsync: request an asynchronous write of the bytes contained in
@@ -779,7 +796,7 @@ func (s outputStream) WriteFinish(s OutputStream, result AsyncResult) error {
 // Note that no copy of @vectors will be made, so it must stay valid until
 // @callback is called. The content of the individual elements of @vectors
 // might be changed by this function.
-func (s outputStream) WritevAllAsync(s OutputStream) {
+func (s outputStream) WritevAllAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -796,24 +813,24 @@ func (s outputStream) WritevAllAsync(s OutputStream) {
 // written before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_output_stream_writev_async().
-func (s outputStream) WritevAllFinish(s OutputStream, result AsyncResult) (bytesWritten uint, err error) {
+func (s outputStream) WritevAllFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 C.gsize
-	var bytesWritten uint
-	var errout *C.GError
-	var err error
+	arg2 := new(C.gsize)
+	var ret2 uint
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_writev_all_finish(arg0, arg1, &arg2, &errout)
+	C.g_output_stream_writev_all_finish(arg0, arg1, arg2, &cerr)
 
-	bytesWritten = uint(&arg2)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret2 = uint(*arg2)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return bytesWritten, err
+	return ret2, goerr
 }
 
 // WritevAsync: request an asynchronous write of the bytes contained in
@@ -846,7 +863,7 @@ func (s outputStream) WritevAllFinish(s OutputStream, result AsyncResult) (bytes
 //
 // Note that no copy of @vectors will be made, so it must stay valid until
 // @callback is called.
-func (s outputStream) WritevAsync(s OutputStream) {
+func (s outputStream) WritevAsync() {
 	var arg0 *C.GOutputStream
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
@@ -855,22 +872,22 @@ func (s outputStream) WritevAsync(s OutputStream) {
 }
 
 // WritevFinish finishes a stream writev operation.
-func (s outputStream) WritevFinish(s OutputStream, result AsyncResult) (bytesWritten uint, err error) {
+func (s outputStream) WritevFinish(result AsyncResult) (bytesWritten uint, err error) {
 	var arg0 *C.GOutputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 C.gsize
-	var bytesWritten uint
-	var errout *C.GError
-	var err error
+	arg2 := new(C.gsize)
+	var ret2 uint
+	var cerr *C.GError
+	var goerr error
 
-	C.g_output_stream_writev_finish(arg0, arg1, &arg2, &errout)
+	C.g_output_stream_writev_finish(arg0, arg1, arg2, &cerr)
 
-	bytesWritten = uint(&arg2)
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret2 = uint(*arg2)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return bytesWritten, err
+	return ret2, goerr
 }

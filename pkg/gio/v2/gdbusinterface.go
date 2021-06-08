@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,20 +35,20 @@ func init() {
 // interface is a subset of the interface DBusInterface.
 type DBusInterfaceOverrider interface {
 	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	DupObject(i DBusInterface)
+	DupObject() DBusObject
 	// Info gets D-Bus introspection information for the D-Bus interface
 	// implemented by @interface_.
-	Info(i DBusInterface)
+	Info() *DBusInterfaceInfo
 	// Object gets the BusObject that @interface_ belongs to, if any.
 	//
 	// It is not safe to use the returned object if @interface_ or the returned
 	// object is being used from other threads. See
 	// g_dbus_interface_dup_object() for a thread-safe alternative.
-	Object(i DBusInterface)
+	Object() DBusObject
 	// SetObject sets the BusObject for @interface_ to @object.
 	//
 	// Note that @interface_ will hold a weak reference to @object.
-	SetObject(i DBusInterface, object DBusObject)
+	SetObject(object DBusObject)
 }
 
 // DBusInterface: the BusInterface type is the base type for D-Bus interfaces
@@ -78,28 +81,42 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 }
 
 // DupObject gets the BusObject that @interface_ belongs to, if any.
-func (i dBusInterface) DupObject(i DBusInterface) {
+func (i dBusInterface) DupObject() DBusObject {
 	var arg0 *C.GDBusInterface
 
 	arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_interface_dup_object(arg0)
+	cret := new(C.GDBusObject)
+	var goret DBusObject
+
+	cret = C.g_dbus_interface_dup_object(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
+
+	return goret
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface
 // implemented by @interface_.
-func (i dBusInterface) Info(i DBusInterface) {
+func (i dBusInterface) Info() *DBusInterfaceInfo {
 	var arg0 *C.GDBusInterface
 
 	arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
-	C.g_dbus_interface_get_info(arg0)
+	var cret *C.GDBusInterfaceInfo
+	var goret *DBusInterfaceInfo
+
+	cret = C.g_dbus_interface_get_info(arg0)
+
+	goret = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // SetObject sets the BusObject for @interface_ to @object.
 //
 // Note that @interface_ will hold a weak reference to @object.
-func (i dBusInterface) SetObject(i DBusInterface, object DBusObject) {
+func (i dBusInterface) SetObject(object DBusObject) {
 	var arg0 *C.GDBusInterface
 	var arg1 *C.GDBusObject
 

@@ -26,38 +26,59 @@ const (
 // reduced in a libc dependent fashion. Note that the underlying slice
 // allocation mechanism can be changed with the
 // [`G_SLICE=always-malloc`][G_SLICE] environment variable.
-func SliceAlloc(blockSize uint) {
+func SliceAlloc(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
 
-	C.g_slice_alloc(arg1)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_slice_alloc(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // SliceAlloc0 allocates a block of memory via g_slice_alloc() and initializes
 // the returned memory to 0. Note that the underlying slice allocation mechanism
 // can be changed with the [`G_SLICE=always-malloc`][G_SLICE] environment
 // variable.
-func SliceAlloc0(blockSize uint) {
+func SliceAlloc0(blockSize uint) interface{} {
 	var arg1 C.gsize
 
 	arg1 = C.gsize(blockSize)
 
-	C.g_slice_alloc0(arg1)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_slice_alloc0(arg1)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // SliceCopy allocates a block of memory from the slice allocator and copies
 // @block_size bytes into it from @mem_block.
 //
 // @mem_block must be non-nil if @block_size is non-zero.
-func SliceCopy(blockSize uint, memBlock interface{}) {
+func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
 	var arg1 C.gsize
 	var arg2 C.gpointer
 
 	arg1 = C.gsize(blockSize)
 	arg2 = C.gpointer(memBlock)
 
-	C.g_slice_copy(arg1, arg2)
+	var cret C.gpointer
+	var goret interface{}
+
+	cret = C.g_slice_copy(arg1, arg2)
+
+	goret = interface{}(cret)
+
+	return goret
 }
 
 // SliceFree1 frees a block of memory.
@@ -102,15 +123,22 @@ func SliceFreeChainWithOffset(blockSize uint, memChain interface{}, nextOffset u
 	C.g_slice_free_chain_with_offset(arg1, arg2, arg3)
 }
 
-func SliceGetConfig(ckey SliceConfig) {
+func SliceGetConfig(ckey SliceConfig) int64 {
 	var arg1 C.GSliceConfig
 
 	arg1 = (C.GSliceConfig)(ckey)
 
-	C.g_slice_get_config(arg1)
+	var cret C.gint64
+	var goret int64
+
+	cret = C.g_slice_get_config(arg1)
+
+	goret = int64(cret)
+
+	return goret
 }
 
-func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) {
+func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64 {
 	var arg1 C.GSliceConfig
 	var arg2 C.gint64
 	var arg3 *C.guint
@@ -119,7 +147,14 @@ func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) {
 	arg2 = C.gint64(address)
 	arg3 = *C.guint(nValues)
 
-	C.g_slice_get_config_state(arg1, arg2, arg3)
+	var cret *C.gint64
+	var goret int64
+
+	cret = C.g_slice_get_config_state(arg1, arg2, arg3)
+
+	goret = int64(cret)
+
+	return goret
 }
 
 func SliceSetConfig(ckey SliceConfig, value int64) {

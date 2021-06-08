@@ -2,28 +2,13 @@
 
 package gdk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
-
-// DragActionIsUnique checks if @action represents a single action or if it
-// includes multiple flags that can be selected from.
-//
-// When @action is 0 - ie no action was given, true is returned.
-func DragActionIsUnique(action DragAction) bool {
-	var arg1 C.GdkDragAction
-
-	arg1 = (C.GdkDragAction)(action)
-
-	var cret C.gboolean
-	var ok bool
-
-	cret = C.gdk_drag_action_is_unique(arg1)
-
-	if cret {
-		ok = true
-	}
-
-	return ok
-}

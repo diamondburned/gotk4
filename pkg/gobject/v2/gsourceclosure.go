@@ -2,6 +2,10 @@
 
 package gobject
 
+import (
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+)
+
 // #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -21,6 +24,10 @@ func init() {
 	})
 }
 
+// AnyFilter: `GtkAnyFilter` matches an item when at least one of its filters
+// matches.
+//
+// To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
 	MultiFilter
 	gio.ListModel
@@ -53,10 +60,21 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 }
 
 // NewAnyFilter constructs a class AnyFilter.
-func NewAnyFilter() {
-	C.gtk_any_filter_new()
+func NewAnyFilter() AnyFilter {
+	cret := new(C.GtkAnyFilter)
+	var goret AnyFilter
+
+	cret = C.gtk_any_filter_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AnyFilter)
+
+	return goret
 }
 
+// EveryFilter: `GtkEveryFilter` matches an item when each of its filters
+// matches.
+//
+// To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
 	MultiFilter
 	gio.ListModel
@@ -89,29 +107,32 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 }
 
 // NewEveryFilter constructs a class EveryFilter.
-func NewEveryFilter() {
-	C.gtk_every_filter_new()
+func NewEveryFilter() EveryFilter {
+	cret := new(C.GtkEveryFilter)
+	var goret EveryFilter
+
+	cret = C.gtk_every_filter_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EveryFilter)
+
+	return goret
 }
 
-// MultiFilter: gtkMultiFilter is the base type that implements support for
-// handling multiple filters.
-//
-// GtkAnyFilter is a subclass of GtkMultiFilter that matches an item when at
-// least one of its filters matches.
-//
-// GtkEveryFilter is a subclass of GtkMultiFilter that matches an item when each
-// of its filters matches.
+// MultiFilter: `GtkMultiFilter` is the base class for filters that combine
+// multiple filters.
 type MultiFilter interface {
 	Filter
 	gio.ListModel
 	Buildable
 
 	// Append adds a @filter to @self to use for matching.
-	Append(s MultiFilter, filter Filter)
+	Append(filter Filter)
 	// Remove removes the filter at the given @position from the list of filters
-	// used by @self. If @position is larger than the number of filters, nothing
-	// happens and the function returns.
-	Remove(s MultiFilter, position uint)
+	// used by @self.
+	//
+	// If @position is larger than the number of filters, nothing happens and
+	// the function returns.
+	Remove(position uint)
 }
 
 // multiFilter implements the MultiFilter interface.
@@ -140,7 +161,7 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 }
 
 // Append adds a @filter to @self to use for matching.
-func (s multiFilter) Append(s MultiFilter, filter Filter) {
+func (s multiFilter) Append(filter Filter) {
 	var arg0 *C.GtkMultiFilter
 	var arg1 *C.GtkFilter
 
@@ -151,9 +172,11 @@ func (s multiFilter) Append(s MultiFilter, filter Filter) {
 }
 
 // Remove removes the filter at the given @position from the list of filters
-// used by @self. If @position is larger than the number of filters, nothing
-// happens and the function returns.
-func (s multiFilter) Remove(s MultiFilter, position uint) {
+// used by @self.
+//
+// If @position is larger than the number of filters, nothing happens and
+// the function returns.
+func (s multiFilter) Remove(position uint) {
 	var arg0 *C.GtkMultiFilter
 	var arg1 C.guint
 

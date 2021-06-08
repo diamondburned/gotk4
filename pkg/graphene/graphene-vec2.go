@@ -3,6 +3,7 @@
 package graphene
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -18,26 +19,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.graphene_vec2_get_type()), F: marshalVec2},
 	})
-}
-
-// Vec2One retrieves a constant vector with (1, 1) components.
-func Vec2One() {
-	C.graphene_vec2_one()
-}
-
-// Vec2XAxis retrieves a constant vector with (1, 0) components.
-func Vec2XAxis() {
-	C.graphene_vec2_x_axis()
-}
-
-// Vec2YAxis retrieves a constant vector with (0, 1) components.
-func Vec2YAxis() {
-	C.graphene_vec2_y_axis()
-}
-
-// Vec2Zero retrieves a constant vector with (0, 0) components.
-func Vec2Zero() {
-	C.graphene_vec2_zero()
 }
 
 // Vec2: a structure capable of holding a vector with two dimensions, x and y.
@@ -64,8 +45,18 @@ func marshalVec2(p uintptr) (interface{}, error) {
 }
 
 // NewVec2Alloc constructs a struct Vec2.
-func NewVec2Alloc() {
-	C.graphene_vec2_alloc()
+func NewVec2Alloc() *Vec2 {
+	cret := new(C.graphene_vec2_t)
+	var goret *Vec2
+
+	cret = C.graphene_vec2_alloc()
+
+	goret = WrapVec2(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Vec2) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -75,56 +66,63 @@ func (v *Vec2) Native() unsafe.Pointer {
 
 // Add adds each component of the two passed vectors and places each result into
 // the components of @res.
-func (a *Vec2) Add(a *Vec2, b *Vec2) *Vec2 {
+func (a *Vec2) Add(b *Vec2) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 
-	C.graphene_vec2_add(arg0, arg1, &arg2)
+	C.graphene_vec2_add(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }
 
 // Divide divides each component of the first operand @a by the corresponding
 // component of the second operand @b, and places the results into the vector
 // @res.
-func (a *Vec2) Divide(a *Vec2, b *Vec2) *Vec2 {
+func (a *Vec2) Divide(b *Vec2) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 
-	C.graphene_vec2_divide(arg0, arg1, &arg2)
+	C.graphene_vec2_divide(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }
 
 // Dot computes the dot product of the two given vectors.
-func (a *Vec2) Dot(a *Vec2, b *Vec2) {
+func (a *Vec2) Dot(b *Vec2) float32 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	C.graphene_vec2_dot(arg0, arg1)
+	var cret C.float
+	var goret float32
+
+	cret = C.graphene_vec2_dot(arg0, arg1)
+
+	goret = float32(cret)
+
+	return goret
 }
 
 // Equal checks whether the two given #graphene_vec2_t are equal.
-func (v *Vec2) Equal(v *Vec2, v2 *Vec2) bool {
+func (v *Vec2) Equal(v2 *Vec2) bool {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
@@ -132,19 +130,19 @@ func (v *Vec2) Equal(v *Vec2, v2 *Vec2) bool {
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2.Native()))
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_vec2_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees the resources allocated by @v
-func (v *Vec2) Free(v *Vec2) {
+func (v *Vec2) Free() {
 	var arg0 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
@@ -153,27 +151,41 @@ func (v *Vec2) Free(v *Vec2) {
 }
 
 // X retrieves the X component of the #graphene_vec2_t.
-func (v *Vec2) X(v *Vec2) {
+func (v *Vec2) X() float32 {
 	var arg0 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec2_get_x(arg0)
+	var cret C.float
+	var goret float32
+
+	cret = C.graphene_vec2_get_x(arg0)
+
+	goret = float32(cret)
+
+	return goret
 }
 
 // Y retrieves the Y component of the #graphene_vec2_t.
-func (v *Vec2) Y(v *Vec2) {
+func (v *Vec2) Y() float32 {
 	var arg0 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec2_get_y(arg0)
+	var cret C.float
+	var goret float32
+
+	cret = C.graphene_vec2_get_y(arg0)
+
+	goret = float32(cret)
+
+	return goret
 }
 
 // Init initializes a #graphene_vec2_t using the given values.
 //
 // This function can be called multiple times.
-func (v *Vec2) Init(v *Vec2, x float32, y float32) {
+func (v *Vec2) Init(x float32, y float32) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 C.float
 	var arg2 C.float
@@ -182,34 +194,55 @@ func (v *Vec2) Init(v *Vec2, x float32, y float32) {
 	arg1 = C.float(x)
 	arg2 = C.float(y)
 
-	C.graphene_vec2_init(arg0, arg1, arg2)
+	var cret *C.graphene_vec2_t
+	var goret *Vec2
+
+	cret = C.graphene_vec2_init(arg0, arg1, arg2)
+
+	goret = WrapVec2(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromFloat initializes @v with the contents of the given array.
-func (v *Vec2) InitFromFloat(v *Vec2, src [2]float32) {
+func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.float
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.float)(&src)
+	arg1 = (*C.float)(unsafe.Pointer(&src))
 	defer runtime.KeepAlive(&arg1)
 
-	C.graphene_vec2_init_from_float(arg0, arg1)
+	var cret *C.graphene_vec2_t
+	var goret *Vec2
+
+	cret = C.graphene_vec2_init_from_float(arg0, arg1)
+
+	goret = WrapVec2(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InitFromVec2 copies the contents of @src into @v.
-func (v *Vec2) InitFromVec2(v *Vec2, src *Vec2) {
+func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src.Native()))
 
-	C.graphene_vec2_init_from_vec2(arg0, arg1)
+	var cret *C.graphene_vec2_t
+	var goret *Vec2
+
+	cret = C.graphene_vec2_init_from_vec2(arg0, arg1)
+
+	goret = WrapVec2(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
-func (v *Vec2) Interpolate(v *Vec2, v2 *Vec2, factor float64) *Vec2 {
+func (v *Vec2) Interpolate(v2 *Vec2, factor float64) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 	var arg2 C.double
@@ -218,85 +251,92 @@ func (v *Vec2) Interpolate(v *Vec2, v2 *Vec2, factor float64) *Vec2 {
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(v2.Native()))
 	arg2 = C.double(factor)
 
-	var arg3 C.graphene_vec2_t
-	var res *Vec2
+	arg3 := new(C.graphene_vec2_t)
+	var ret3 *Vec2
 
-	C.graphene_vec2_interpolate(arg0, arg1, arg2, &arg3)
+	C.graphene_vec2_interpolate(arg0, arg1, arg2, arg3)
 
-	res = WrapVec2(unsafe.Pointer(&arg3))
+	ret3 = WrapVec2(unsafe.Pointer(arg3))
 
-	return res
+	return ret3
 }
 
 // Length computes the length of the given vector.
-func (v *Vec2) Length(v *Vec2) {
+func (v *Vec2) Length() float32 {
 	var arg0 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	C.graphene_vec2_length(arg0)
+	var cret C.float
+	var goret float32
+
+	cret = C.graphene_vec2_length(arg0)
+
+	goret = float32(cret)
+
+	return goret
 }
 
 // Max compares the two given vectors and places the maximum values of each
 // component into @res.
-func (a *Vec2) Max(a *Vec2, b *Vec2) *Vec2 {
+func (a *Vec2) Max(b *Vec2) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 
-	C.graphene_vec2_max(arg0, arg1, &arg2)
+	C.graphene_vec2_max(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }
 
 // Min compares the two given vectors and places the minimum values of each
 // component into @res.
-func (a *Vec2) Min(a *Vec2, b *Vec2) *Vec2 {
+func (a *Vec2) Min(b *Vec2) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 
-	C.graphene_vec2_min(arg0, arg1, &arg2)
+	C.graphene_vec2_min(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }
 
 // Multiply multiplies each component of the two passed vectors and places each
 // result into the components of @res.
-func (a *Vec2) Multiply(a *Vec2, b *Vec2) *Vec2 {
+func (a *Vec2) Multiply(b *Vec2) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 
-	C.graphene_vec2_multiply(arg0, arg1, &arg2)
+	C.graphene_vec2_multiply(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }
 
 // Near compares the two given #graphene_vec2_t vectors and checks whether their
 // values are within the given @epsilon.
-func (v *Vec2) Near(v *Vec2, v2 *Vec2, epsilon float32) bool {
+func (v *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 	var arg2 C.float
@@ -306,100 +346,105 @@ func (v *Vec2) Near(v *Vec2, v2 *Vec2, epsilon float32) bool {
 	arg2 = C.float(epsilon)
 
 	var cret C._Bool
-	var ok bool
+	var goret bool
 
 	cret = C.graphene_vec2_near(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Negate negates the given #graphene_vec2_t.
-func (v *Vec2) Negate(v *Vec2) *Vec2 {
+func (v *Vec2) Negate() *Vec2 {
 	var arg0 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	var arg1 C.graphene_vec2_t
-	var res *Vec2
+	arg1 := new(C.graphene_vec2_t)
+	var ret1 *Vec2
 
-	C.graphene_vec2_negate(arg0, &arg1)
+	C.graphene_vec2_negate(arg0, arg1)
 
-	res = WrapVec2(unsafe.Pointer(&arg1))
+	ret1 = WrapVec2(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Normalize computes the normalized vector for the given vector @v.
-func (v *Vec2) Normalize(v *Vec2) *Vec2 {
+func (v *Vec2) Normalize() *Vec2 {
 	var arg0 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	var arg1 C.graphene_vec2_t
-	var res *Vec2
+	arg1 := new(C.graphene_vec2_t)
+	var ret1 *Vec2
 
-	C.graphene_vec2_normalize(arg0, &arg1)
+	C.graphene_vec2_normalize(arg0, arg1)
 
-	res = WrapVec2(unsafe.Pointer(&arg1))
+	ret1 = WrapVec2(unsafe.Pointer(arg1))
 
-	return res
+	return ret1
 }
 
 // Scale multiplies all components of the given vector with the given scalar
 // @factor.
-func (v *Vec2) Scale(v *Vec2, factor float32) *Vec2 {
+func (v *Vec2) Scale(factor float32) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 C.float
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 	arg1 = C.float(factor)
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 
-	C.graphene_vec2_scale(arg0, arg1, &arg2)
+	C.graphene_vec2_scale(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }
 
 // Subtract subtracts from each component of the first operand @a the
 // corresponding component of the second operand @b and places each result into
 // the components of @res.
-func (a *Vec2) Subtract(a *Vec2, b *Vec2) *Vec2 {
+func (a *Vec2) Subtract(b *Vec2) *Vec2 {
 	var arg0 *C.graphene_vec2_t
 	var arg1 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.graphene_vec2_t
-	var res *Vec2
+	arg2 := new(C.graphene_vec2_t)
+	var ret2 *Vec2
 
-	C.graphene_vec2_subtract(arg0, arg1, &arg2)
+	C.graphene_vec2_subtract(arg0, arg1, arg2)
 
-	res = WrapVec2(unsafe.Pointer(&arg2))
+	ret2 = WrapVec2(unsafe.Pointer(arg2))
 
-	return res
+	return ret2
 }
 
 // ToFloat stores the components of @v into an array.
-func (v *Vec2) ToFloat(v *Vec2) [2]float32 {
+func (v *Vec2) ToFloat() [2]float32 {
 	var arg0 *C.graphene_vec2_t
 
 	arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
 
-	var arg1 [2]C.float
-	var dest [2]float32
+	var arg1 *C.float
+	{
+		var arg1Array [2]C.float
+		defer runtime.KeepAlive(&arg1Array)
+		arg1 = &arg1Array[0]
+	}
+	var ret1 [2]float32
 
-	C.graphene_vec2_to_float(arg0, &arg1)
+	C.graphene_vec2_to_float(arg0, arg1)
 
-	dest = ([2]float32)(arg1)
+	ret1 = *(*[2]float32)(unsafe.Pointer(arg1))
 
-	return dest
+	return ret1
 }

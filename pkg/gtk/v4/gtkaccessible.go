@@ -18,61 +18,35 @@ func init() {
 	})
 }
 
-func AccessiblePropertyInitValue(property AccessibleProperty, value *externglib.Value) {
-	var arg1 C.GtkAccessibleProperty
-	var arg2 *C.GValue
-
-	arg1 = (C.GtkAccessibleProperty)(property)
-	arg2 = (*C.GValue)(value.GValue)
-
-	C.gtk_accessible_property_init_value(arg1, arg2)
-}
-
-func AccessibleRelationInitValue(relation AccessibleRelation, value *externglib.Value) {
-	var arg1 C.GtkAccessibleRelation
-	var arg2 *C.GValue
-
-	arg1 = (C.GtkAccessibleRelation)(relation)
-	arg2 = (*C.GValue)(value.GValue)
-
-	C.gtk_accessible_relation_init_value(arg1, arg2)
-}
-
-func AccessibleStateInitValue(state AccessibleState, value *externglib.Value) {
-	var arg1 C.GtkAccessibleState
-	var arg2 *C.GValue
-
-	arg1 = (C.GtkAccessibleState)(state)
-	arg2 = (*C.GValue)(value.GValue)
-
-	C.gtk_accessible_state_init_value(arg1, arg2)
-}
-
-// Accessible: gtkAccessible provides an interface for describing a UI element,
-// like a Widget, in a way that can be consumed by Assistive Technologies, or
-// “AT”. Every accessible implementation has:
+// Accessible: `GtkAccessible` is an interface for describing UI elements for
+// Assistive Technologies.
 //
-//    - a “role”, represented by a value of the AccessibleRole enumeration
-//    - an “attribute”, represented by a set of AccessibleState,
-//      AccessibleProperty and AccessibleRelation values
+// Every accessible implementation has:
 //
-// The role cannot be changed after instantiating a Accessible implementation.
+//    - a “role”, represented by a value of the [enum@Gtk.AccessibleRole]
+//      enumeration
+//    - an “attribute”, represented by a set of [enum@Gtk.AccessibleState],
+//      [enum@Gtk.AccessibleProperty] and [enum@Gtk.AccessibleRelation] values
+//
+// The role cannot be changed after instantiating a `GtkAccessible`
+// implementation.
 //
 // The attributes are updated every time a UI element's state changes in a way
-// that should be reflected by assistive technologies. For instance, if a Widget
-// visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will also change to
-// reflect the Widget:visible property.
+// that should be reflected by assistive technologies. For instance, if a
+// `GtkWidget` visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will
+// also change to reflect the [property@Gtk.Widget:visible] property.
 type Accessible interface {
 	gextras.Objector
 
-	// AccessibleRole retrieves the AccessibleRole for the given Accessible.
-	AccessibleRole(s Accessible)
+	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+	// `GtkAccessible`.
+	AccessibleRole() AccessibleRole
 	// ResetProperty resets the accessible @property to its default value.
-	ResetProperty(s Accessible, property AccessibleProperty)
+	ResetProperty(property AccessibleProperty)
 	// ResetRelation resets the accessible @relation to its default value.
-	ResetRelation(s Accessible, relation AccessibleRelation)
+	ResetRelation(relation AccessibleRelation)
 	// ResetState resets the accessible @state to its default value.
-	ResetState(s Accessible, state AccessibleState)
+	ResetState(state AccessibleState)
 }
 
 // accessible implements the Accessible interface.
@@ -96,17 +70,25 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 	return WrapAccessible(obj), nil
 }
 
-// AccessibleRole retrieves the AccessibleRole for the given Accessible.
-func (s accessible) AccessibleRole(s Accessible) {
+// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+// `GtkAccessible`.
+func (s accessible) AccessibleRole() AccessibleRole {
 	var arg0 *C.GtkAccessible
 
 	arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 
-	C.gtk_accessible_get_accessible_role(arg0)
+	var cret C.GtkAccessibleRole
+	var goret AccessibleRole
+
+	cret = C.gtk_accessible_get_accessible_role(arg0)
+
+	goret = AccessibleRole(cret)
+
+	return goret
 }
 
 // ResetProperty resets the accessible @property to its default value.
-func (s accessible) ResetProperty(s Accessible, property AccessibleProperty) {
+func (s accessible) ResetProperty(property AccessibleProperty) {
 	var arg0 *C.GtkAccessible
 	var arg1 C.GtkAccessibleProperty
 
@@ -117,7 +99,7 @@ func (s accessible) ResetProperty(s Accessible, property AccessibleProperty) {
 }
 
 // ResetRelation resets the accessible @relation to its default value.
-func (s accessible) ResetRelation(s Accessible, relation AccessibleRelation) {
+func (s accessible) ResetRelation(relation AccessibleRelation) {
 	var arg0 *C.GtkAccessible
 	var arg1 C.GtkAccessibleRelation
 
@@ -128,7 +110,7 @@ func (s accessible) ResetRelation(s Accessible, relation AccessibleRelation) {
 }
 
 // ResetState resets the accessible @state to its default value.
-func (s accessible) ResetState(s Accessible, state AccessibleState) {
+func (s accessible) ResetState(state AccessibleState) {
 	var arg0 *C.GtkAccessible
 	var arg1 C.GtkAccessibleState
 

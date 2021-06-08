@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,21 +47,21 @@ type DBusObjectSkeleton interface {
 	//
 	// Note that @object takes its own reference on @interface_ and holds it
 	// until removed.
-	AddInterface(o DBusObjectSkeleton, interface_ DBusInterfaceSkeleton)
+	AddInterface(interface_ DBusInterfaceSkeleton)
 	// Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
 	// interfaces belonging to @object. See that method for when flushing is
 	// useful.
-	Flush(o DBusObjectSkeleton)
+	Flush()
 	// RemoveInterface removes @interface_ from @object.
-	RemoveInterface(o DBusObjectSkeleton, interface_ DBusInterfaceSkeleton)
+	RemoveInterface(interface_ DBusInterfaceSkeleton)
 	// RemoveInterfaceByName removes the BusInterface with @interface_name from
 	// @object.
 	//
 	// If no D-Bus interface of the given interface exists, this function does
 	// nothing.
-	RemoveInterfaceByName(o DBusObjectSkeleton, interfaceName string)
+	RemoveInterfaceByName(interfaceName string)
 	// SetObjectPath sets the object path for @object.
-	SetObjectPath(o DBusObjectSkeleton, objectPath string)
+	SetObjectPath(objectPath string)
 }
 
 // dBusObjectSkeleton implements the DBusObjectSkeleton interface.
@@ -85,13 +88,20 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 }
 
 // NewDBusObjectSkeleton constructs a class DBusObjectSkeleton.
-func NewDBusObjectSkeleton(objectPath string) {
+func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_dbus_object_skeleton_new(arg1)
+	cret := new(C.GDBusObjectSkeleton)
+	var goret DBusObjectSkeleton
+
+	cret = C.g_dbus_object_skeleton_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectSkeleton)
+
+	return goret
 }
 
 // AddInterface adds @interface_ to @object.
@@ -101,7 +111,7 @@ func NewDBusObjectSkeleton(objectPath string) {
 //
 // Note that @object takes its own reference on @interface_ and holds it
 // until removed.
-func (o dBusObjectSkeleton) AddInterface(o DBusObjectSkeleton, interface_ DBusInterfaceSkeleton) {
+func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
 	var arg0 *C.GDBusObjectSkeleton
 	var arg1 *C.GDBusInterfaceSkeleton
 
@@ -114,7 +124,7 @@ func (o dBusObjectSkeleton) AddInterface(o DBusObjectSkeleton, interface_ DBusIn
 // Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
 // interfaces belonging to @object. See that method for when flushing is
 // useful.
-func (o dBusObjectSkeleton) Flush(o DBusObjectSkeleton) {
+func (o dBusObjectSkeleton) Flush() {
 	var arg0 *C.GDBusObjectSkeleton
 
 	arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
@@ -123,7 +133,7 @@ func (o dBusObjectSkeleton) Flush(o DBusObjectSkeleton) {
 }
 
 // RemoveInterface removes @interface_ from @object.
-func (o dBusObjectSkeleton) RemoveInterface(o DBusObjectSkeleton, interface_ DBusInterfaceSkeleton) {
+func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
 	var arg0 *C.GDBusObjectSkeleton
 	var arg1 *C.GDBusInterfaceSkeleton
 
@@ -138,7 +148,7 @@ func (o dBusObjectSkeleton) RemoveInterface(o DBusObjectSkeleton, interface_ DBu
 //
 // If no D-Bus interface of the given interface exists, this function does
 // nothing.
-func (o dBusObjectSkeleton) RemoveInterfaceByName(o DBusObjectSkeleton, interfaceName string) {
+func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 	var arg0 *C.GDBusObjectSkeleton
 	var arg1 *C.gchar
 
@@ -150,7 +160,7 @@ func (o dBusObjectSkeleton) RemoveInterfaceByName(o DBusObjectSkeleton, interfac
 }
 
 // SetObjectPath sets the object path for @object.
-func (o dBusObjectSkeleton) SetObjectPath(o DBusObjectSkeleton, objectPath string) {
+func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
 	var arg0 *C.GDBusObjectSkeleton
 	var arg1 *C.gchar
 

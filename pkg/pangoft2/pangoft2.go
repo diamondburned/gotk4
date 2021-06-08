@@ -3,6 +3,9 @@
 package pangoft2
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -22,53 +25,41 @@ func init() {
 
 // FontGetCoverage gets the Coverage for a `PangoFT2Font`. Use
 // pango_font_get_coverage() instead.
-func FontGetCoverage(font pango.Font, language *pango.Language) {
+func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	var arg1 *C.PangoFont
 	var arg2 *C.PangoLanguage
 
 	arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	C.pango_ft2_font_get_coverage(arg1, arg2)
-}
+	cret := new(C.PangoCoverage)
+	var goret pango.Coverage
 
-// FontGetFace returns the native FreeType2 `FT_Face` structure used for this
-// Font. This may be useful if you want to use FreeType2 functions directly.
-//
-// Use pango_fc_font_lock_face() instead; when you are done with a face from
-// pango_fc_font_lock_face() you must call pango_fc_font_unlock_face().
-func FontGetFace(font pango.Font) {
-	var arg1 *C.PangoFont
+	cret = C.pango_ft2_font_get_coverage(arg1, arg2)
 
-	arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Coverage)
 
-	C.pango_ft2_font_get_face(arg1)
+	return goret
 }
 
 // GetContext retrieves a `PangoContext` for the default PangoFT2 fontmap (see
 // pango_ft2_font_map_for_display()) and sets the resolution for the default
 // fontmap to @dpi_x by @dpi_y.
-func GetContext(dpiX float64, dpiY float64) {
+func GetContext(dpiX float64, dpiY float64) pango.Context {
 	var arg1 C.double
 	var arg2 C.double
 
 	arg1 = C.double(dpiX)
 	arg2 = C.double(dpiY)
 
-	C.pango_ft2_get_context(arg1, arg2)
-}
+	cret := new(C.PangoContext)
+	var goret pango.Context
 
-// GetUnknownGlyph: return the index of a glyph suitable for drawing unknown
-// characters with @font, or PANGO_GLYPH_EMPTY if no suitable glyph found.
-//
-// If you want to draw an unknown-box for a character that is not covered by the
-// font, use PANGO_GET_UNKNOWN_GLYPH() instead.
-func GetUnknownGlyph(font pango.Font) {
-	var arg1 *C.PangoFont
+	cret = C.pango_ft2_get_context(arg1, arg2)
 
-	arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
 
-	C.pango_ft2_get_unknown_glyph(arg1)
+	return goret
 }
 
 // ShutdownDisplay: free the global fontmap. (See
@@ -84,24 +75,24 @@ type FontMap interface {
 	pangofc.FontMap
 
 	// CreateContext: create a `PangoContext` for the given fontmap.
-	CreateContext(f FontMap)
+	CreateContext() pango.Context
 	// SetDefaultSubstitute sets a function that will be called to do final
 	// configuration substitution on a `FcPattern` before it is used to load the
 	// font.
 	//
 	// This function can be used to do things like set hinting and antialiasing
 	// options.
-	SetDefaultSubstitute(f FontMap)
+	SetDefaultSubstitute()
 	// SetResolution sets the horizontal and vertical resolutions for the
 	// fontmap.
-	SetResolution(f FontMap, dpiX float64, dpiY float64)
+	SetResolution(dpiX float64, dpiY float64)
 	// SubstituteChanged: call this function any time the results of the default
 	// substitution function set with
 	// pango_ft2_font_map_set_default_substitute() change.
 	//
 	// That is, if your substitution function will return different results for
 	// the same input pattern, you must call this function.
-	SubstituteChanged(f FontMap)
+	SubstituteChanged()
 }
 
 // fontMap implements the FontMap interface.
@@ -126,17 +117,31 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 }
 
 // NewFontMap constructs a class FontMap.
-func NewFontMap() {
-	C.pango_ft2_font_map_new()
+func NewFontMap() FontMap {
+	cret := new(C.PangoFT2FontMap)
+	var goret FontMap
+
+	cret = C.pango_ft2_font_map_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontMap)
+
+	return goret
 }
 
 // CreateContext: create a `PangoContext` for the given fontmap.
-func (f fontMap) CreateContext(f FontMap) {
+func (f fontMap) CreateContext() pango.Context {
 	var arg0 *C.PangoFT2FontMap
 
 	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_ft2_font_map_create_context(arg0)
+	cret := new(C.PangoContext)
+	var goret pango.Context
+
+	cret = C.pango_ft2_font_map_create_context(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+
+	return goret
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final
@@ -145,7 +150,7 @@ func (f fontMap) CreateContext(f FontMap) {
 //
 // This function can be used to do things like set hinting and antialiasing
 // options.
-func (f fontMap) SetDefaultSubstitute(f FontMap) {
+func (f fontMap) SetDefaultSubstitute() {
 	var arg0 *C.PangoFT2FontMap
 
 	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
@@ -155,7 +160,7 @@ func (f fontMap) SetDefaultSubstitute(f FontMap) {
 
 // SetResolution sets the horizontal and vertical resolutions for the
 // fontmap.
-func (f fontMap) SetResolution(f FontMap, dpiX float64, dpiY float64) {
+func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
 	var arg0 *C.PangoFT2FontMap
 	var arg1 C.double
 	var arg2 C.double
@@ -173,7 +178,7 @@ func (f fontMap) SetResolution(f FontMap, dpiX float64, dpiY float64) {
 //
 // That is, if your substitution function will return different results for
 // the same input pattern, you must call this function.
-func (f fontMap) SubstituteChanged(f FontMap) {
+func (f fontMap) SubstituteChanged() {
 	var arg0 *C.PangoFT2FontMap
 
 	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))

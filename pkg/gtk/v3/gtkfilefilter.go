@@ -6,6 +6,8 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -18,7 +20,7 @@ import "C"
 
 // FileFilterFunc: the type of function that is used with custom filters, see
 // gtk_file_filter_add_custom().
-type FileFilterFunc func(filterInfo *FileFilterInfo) bool
+type FileFilterFunc func() (ok bool)
 
 //export gotk4_FileFilterFunc
 func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
@@ -28,13 +30,11 @@ func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean
 	}
 
 	fn := v.(FileFilterFunc)
-	ret := fn(filterInfo, data)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
 // FileFilterInfo: a FileFilterInfo-struct is used to pass information about the

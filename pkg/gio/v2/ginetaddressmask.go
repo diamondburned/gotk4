@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,17 +41,17 @@ type InetAddressMask interface {
 	Initable
 
 	// Equal tests if @mask and @mask2 are the same mask.
-	Equal(m InetAddressMask, mask2 InetAddressMask) bool
+	Equal(mask2 InetAddressMask) bool
 	// Address gets @mask's base address
-	Address(m InetAddressMask)
+	Address() InetAddress
 	// Family gets the Family of @mask's address
-	Family(m InetAddressMask)
+	Family() SocketFamily
 	// Length gets @mask's length
-	Length(m InetAddressMask)
+	Length() uint
 	// Matches tests if @address falls within the range described by @mask.
-	Matches(m InetAddressMask, address InetAddress) bool
+	Matches(address InetAddress) bool
 	// String converts @mask back to its corresponding string form.
-	String(m InetAddressMask)
+	String() string
 }
 
 // inetAddressMask implements the InetAddressMask interface.
@@ -74,42 +78,48 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 }
 
 // NewInetAddressMask constructs a class InetAddressMask.
-func NewInetAddressMask(addr InetAddress, length uint) error {
+func NewInetAddressMask(addr InetAddress, length uint) (inetAddressMask InetAddressMask, err error) {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint
 
 	arg1 = (*C.GInetAddress)(unsafe.Pointer(addr.Native()))
 	arg2 = C.guint(length)
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GInetAddressMask)
+	var goret InetAddressMask
+	var cerr *C.GError
+	var goerr error
 
-	C.g_inet_address_mask_new(arg1, arg2, &errout)
+	cret = C.g_inet_address_mask_new(arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddressMask)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // NewInetAddressMaskFromString constructs a class InetAddressMask.
-func NewInetAddressMaskFromString(maskString string) error {
+func NewInetAddressMaskFromString(maskString string) (inetAddressMask InetAddressMask, err error) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(maskString))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GInetAddressMask)
+	var goret InetAddressMask
+	var cerr *C.GError
+	var goerr error
 
-	C.g_inet_address_mask_new_from_string(arg1, &errout)
+	cret = C.g_inet_address_mask_new_from_string(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddressMask)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // Equal tests if @mask and @mask2 are the same mask.
-func (m inetAddressMask) Equal(m InetAddressMask, mask2 InetAddressMask) bool {
+func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 	var arg0 *C.GInetAddressMask
 	var arg1 *C.GInetAddressMask
 
@@ -117,46 +127,67 @@ func (m inetAddressMask) Equal(m InetAddressMask, mask2 InetAddressMask) bool {
 	arg1 = (*C.GInetAddressMask)(unsafe.Pointer(mask2.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_mask_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Address gets @mask's base address
-func (m inetAddressMask) Address(m InetAddressMask) {
+func (m inetAddressMask) Address() InetAddress {
 	var arg0 *C.GInetAddressMask
 
 	arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 
-	C.g_inet_address_mask_get_address(arg0)
+	var cret *C.GInetAddress
+	var goret InetAddress
+
+	cret = C.g_inet_address_mask_get_address(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InetAddress)
+
+	return goret
 }
 
 // Family gets the Family of @mask's address
-func (m inetAddressMask) Family(m InetAddressMask) {
+func (m inetAddressMask) Family() SocketFamily {
 	var arg0 *C.GInetAddressMask
 
 	arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 
-	C.g_inet_address_mask_get_family(arg0)
+	var cret C.GSocketFamily
+	var goret SocketFamily
+
+	cret = C.g_inet_address_mask_get_family(arg0)
+
+	goret = SocketFamily(cret)
+
+	return goret
 }
 
 // Length gets @mask's length
-func (m inetAddressMask) Length(m InetAddressMask) {
+func (m inetAddressMask) Length() uint {
 	var arg0 *C.GInetAddressMask
 
 	arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 
-	C.g_inet_address_mask_get_length(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_inet_address_mask_get_length(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Matches tests if @address falls within the range described by @mask.
-func (m inetAddressMask) Matches(m InetAddressMask, address InetAddress) bool {
+func (m inetAddressMask) Matches(address InetAddress) bool {
 	var arg0 *C.GInetAddressMask
 	var arg1 *C.GInetAddress
 
@@ -164,22 +195,30 @@ func (m inetAddressMask) Matches(m InetAddressMask, address InetAddress) bool {
 	arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_inet_address_mask_matches(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // String converts @mask back to its corresponding string form.
-func (m inetAddressMask) String(m InetAddressMask) {
+func (m inetAddressMask) String() string {
 	var arg0 *C.GInetAddressMask
 
 	arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 
-	C.g_inet_address_mask_to_string(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_inet_address_mask_to_string(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

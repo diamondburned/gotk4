@@ -3,6 +3,10 @@
 package gdk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,7 +22,7 @@ func init() {
 	})
 }
 
-// MemoryTexture: a Texture representing image data in memory.
+// MemoryTexture: a `GdkTexture` representing image data in memory.
 type MemoryTexture interface {
 	Texture
 	Paintable
@@ -48,7 +52,7 @@ func marshalMemoryTexture(p uintptr) (interface{}, error) {
 }
 
 // NewMemoryTexture constructs a class MemoryTexture.
-func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) {
+func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.Bytes, stride uint) MemoryTexture {
 	var arg1 C.int
 	var arg2 C.int
 	var arg3 C.GdkMemoryFormat
@@ -61,5 +65,12 @@ func NewMemoryTexture(width int, height int, format MemoryFormat, bytes *glib.By
 	arg4 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
 	arg5 = C.gsize(stride)
 
-	C.gdk_memory_texture_new(arg1, arg2, arg3, arg4, arg5)
+	cret := new(C.GdkMemoryTexture)
+	var goret MemoryTexture
+
+	cret = C.gdk_memory_texture_new(arg1, arg2, arg3, arg4, arg5)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryTexture)
+
+	return goret
 }

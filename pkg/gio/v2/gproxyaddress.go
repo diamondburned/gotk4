@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,22 +39,22 @@ type ProxyAddress interface {
 	// DestinationHostname gets @proxy's destination hostname; that is, the name
 	// of the host that will be connected to via the proxy, not the name of the
 	// proxy itself.
-	DestinationHostname(p ProxyAddress)
+	DestinationHostname() string
 	// DestinationPort gets @proxy's destination port; that is, the port on the
 	// destination host that will be connected to via the proxy, not the port
 	// number of the proxy itself.
-	DestinationPort(p ProxyAddress)
+	DestinationPort() uint16
 	// DestinationProtocol gets the protocol that is being spoken to the
 	// destination server; eg, "http" or "ftp".
-	DestinationProtocol(p ProxyAddress)
+	DestinationProtocol() string
 	// Password gets @proxy's password.
-	Password(p ProxyAddress)
+	Password() string
 	// Protocol gets @proxy's protocol. eg, "socks" or "http"
-	Protocol(p ProxyAddress)
+	Protocol() string
 	// URI gets the proxy URI that @proxy was constructed from.
-	URI(p ProxyAddress)
+	URI() string
 	// Username gets @proxy's username.
-	Username(p ProxyAddress)
+	Username() string
 }
 
 // proxyAddress implements the ProxyAddress interface.
@@ -78,7 +81,7 @@ func marshalProxyAddress(p uintptr) (interface{}, error) {
 }
 
 // NewProxyAddress constructs a class ProxyAddress.
-func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) {
+func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProxyAddress {
 	var arg1 *C.GInetAddress
 	var arg2 C.guint16
 	var arg3 *C.gchar
@@ -99,73 +102,129 @@ func NewProxyAddress(inetaddr InetAddress, port uint16, protocol string, destHos
 	arg7 = (*C.gchar)(C.CString(password))
 	defer C.free(unsafe.Pointer(arg7))
 
-	C.g_proxy_address_new(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	cret := new(C.GProxyAddress)
+	var goret ProxyAddress
+
+	cret = C.g_proxy_address_new(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ProxyAddress)
+
+	return goret
 }
 
 // DestinationHostname gets @proxy's destination hostname; that is, the name
 // of the host that will be connected to via the proxy, not the name of the
 // proxy itself.
-func (p proxyAddress) DestinationHostname(p ProxyAddress) {
+func (p proxyAddress) DestinationHostname() string {
 	var arg0 *C.GProxyAddress
 
 	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_address_get_destination_hostname(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_proxy_address_get_destination_hostname(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // DestinationPort gets @proxy's destination port; that is, the port on the
 // destination host that will be connected to via the proxy, not the port
 // number of the proxy itself.
-func (p proxyAddress) DestinationPort(p ProxyAddress) {
+func (p proxyAddress) DestinationPort() uint16 {
 	var arg0 *C.GProxyAddress
 
 	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_address_get_destination_port(arg0)
+	var cret C.guint16
+	var goret uint16
+
+	cret = C.g_proxy_address_get_destination_port(arg0)
+
+	goret = uint16(cret)
+
+	return goret
 }
 
 // DestinationProtocol gets the protocol that is being spoken to the
 // destination server; eg, "http" or "ftp".
-func (p proxyAddress) DestinationProtocol(p ProxyAddress) {
+func (p proxyAddress) DestinationProtocol() string {
 	var arg0 *C.GProxyAddress
 
 	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_address_get_destination_protocol(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_proxy_address_get_destination_protocol(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Password gets @proxy's password.
-func (p proxyAddress) Password(p ProxyAddress) {
+func (p proxyAddress) Password() string {
 	var arg0 *C.GProxyAddress
 
 	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_address_get_password(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_proxy_address_get_password(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Protocol gets @proxy's protocol. eg, "socks" or "http"
-func (p proxyAddress) Protocol(p ProxyAddress) {
+func (p proxyAddress) Protocol() string {
 	var arg0 *C.GProxyAddress
 
 	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_address_get_protocol(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_proxy_address_get_protocol(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // URI gets the proxy URI that @proxy was constructed from.
-func (p proxyAddress) URI(p ProxyAddress) {
+func (p proxyAddress) URI() string {
 	var arg0 *C.GProxyAddress
 
 	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_address_get_uri(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_proxy_address_get_uri(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Username gets @proxy's username.
-func (p proxyAddress) Username(p ProxyAddress) {
+func (p proxyAddress) Username() string {
 	var arg0 *C.GProxyAddress
 
 	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_address_get_username(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_proxy_address_get_username(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }

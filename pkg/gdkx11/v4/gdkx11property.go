@@ -6,18 +6,3 @@ package gdkx11
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/x11/gdkx.h>
 import "C"
-
-// X11GetXatomByNameForDisplay returns the X atom for a Display corresponding to
-// @atom_name. This function caches the result, so if called repeatedly it is
-// much faster than XInternAtom(), which is a round trip to the server each
-// time.
-func X11GetXatomByNameForDisplay(display X11Display, atomName string) {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.char
-
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (*C.char)(C.CString(atomName))
-	defer C.free(unsafe.Pointer(arg2))
-
-	C.gdk_x11_get_xatom_by_name_for_display(arg1, arg2)
-}

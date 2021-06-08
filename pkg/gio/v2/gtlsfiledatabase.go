@@ -28,26 +28,6 @@ func init() {
 	})
 }
 
-// NewTLSFileDatabase creates a new FileDatabase which uses anchor certificate
-// authorities in @anchors to verify certificate chains.
-//
-// The certificates in @anchors must be PEM encoded.
-func NewTLSFileDatabase(anchors string) error {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(anchors))
-	defer C.free(unsafe.Pointer(arg1))
-
-	var errout *C.GError
-	var err error
-
-	C.g_tls_file_database_new(arg1, &errout)
-
-	err = gerror.Take(unsafe.Pointer(errout))
-
-	return err
-}
-
 // TLSFileDatabase is implemented by Database objects which load their
 // certificate information from a file. It is an interface which TLS library
 // specific subtypes implement.

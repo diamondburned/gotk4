@@ -3,6 +3,8 @@
 package gio
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,12 +47,12 @@ type SimpleProxyResolver interface {
 	//
 	// If @default_proxy starts with "socks://", ProxyResolver will treat it as
 	// referring to all three of the socks5, socks4a, and socks4 proxy types.
-	SetDefaultProxy(r SimpleProxyResolver, defaultProxy string)
+	SetDefaultProxy(defaultProxy string)
 	// SetIgnoreHosts sets the list of ignored hosts.
 	//
 	// See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
 	// argument is interpreted.
-	SetIgnoreHosts(r SimpleProxyResolver, ignoreHosts string)
+	SetIgnoreHosts(ignoreHosts string)
 	// SetURIProxy adds a URI-scheme-specific proxy to @resolver; URIs whose
 	// scheme matches @uri_scheme (and which don't match
 	// ProxyResolver:ignore-hosts) will be proxied via @proxy.
@@ -58,7 +60,7 @@ type SimpleProxyResolver interface {
 	// As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
 	// ProxyResolver will treat it as referring to all three of the socks5,
 	// socks4a, and socks4 proxy types.
-	SetURIProxy(r SimpleProxyResolver, uriScheme string, proxy string)
+	SetURIProxy(uriScheme string, proxy string)
 }
 
 // simpleProxyResolver implements the SimpleProxyResolver interface.
@@ -90,7 +92,7 @@ func marshalSimpleProxyResolver(p uintptr) (interface{}, error) {
 //
 // If @default_proxy starts with "socks://", ProxyResolver will treat it as
 // referring to all three of the socks5, socks4a, and socks4 proxy types.
-func (r simpleProxyResolver) SetDefaultProxy(r SimpleProxyResolver, defaultProxy string) {
+func (r simpleProxyResolver) SetDefaultProxy(defaultProxy string) {
 	var arg0 *C.GSimpleProxyResolver
 	var arg1 *C.gchar
 
@@ -105,7 +107,7 @@ func (r simpleProxyResolver) SetDefaultProxy(r SimpleProxyResolver, defaultProxy
 //
 // See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
 // argument is interpreted.
-func (r simpleProxyResolver) SetIgnoreHosts(r SimpleProxyResolver, ignoreHosts string) {
+func (r simpleProxyResolver) SetIgnoreHosts(ignoreHosts string) {
 	var arg0 *C.GSimpleProxyResolver
 	var arg1 **C.gchar
 
@@ -123,7 +125,7 @@ func (r simpleProxyResolver) SetIgnoreHosts(r SimpleProxyResolver, ignoreHosts s
 // As with ProxyResolver:default-proxy, if @proxy starts with "socks://",
 // ProxyResolver will treat it as referring to all three of the socks5,
 // socks4a, and socks4 proxy types.
-func (r simpleProxyResolver) SetURIProxy(r SimpleProxyResolver, uriScheme string, proxy string) {
+func (r simpleProxyResolver) SetURIProxy(uriScheme string, proxy string) {
 	var arg0 *C.GSimpleProxyResolver
 	var arg1 *C.gchar
 	var arg2 *C.gchar

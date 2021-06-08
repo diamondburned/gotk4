@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -59,32 +60,92 @@ func marshalTimeZone(p uintptr) (interface{}, error) {
 }
 
 // NewTimeZone constructs a struct TimeZone.
-func NewTimeZone(identifier string) {
+func NewTimeZone(identifier string) *TimeZone {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(identifier))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_time_zone_new(arg1)
+	cret := new(C.GTimeZone)
+	var goret *TimeZone
+
+	cret = C.g_time_zone_new(arg1)
+
+	goret = WrapTimeZone(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
+}
+
+// NewTimeZoneIdentifier constructs a struct TimeZone.
+func NewTimeZoneIdentifier(identifier string) *TimeZone {
+	var arg1 *C.gchar
+
+	arg1 = (*C.gchar)(C.CString(identifier))
+	defer C.free(unsafe.Pointer(arg1))
+
+	cret := new(C.GTimeZone)
+	var goret *TimeZone
+
+	cret = C.g_time_zone_new_identifier(arg1)
+
+	goret = WrapTimeZone(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // NewTimeZoneLocal constructs a struct TimeZone.
-func NewTimeZoneLocal() {
-	C.g_time_zone_new_local()
+func NewTimeZoneLocal() *TimeZone {
+	cret := new(C.GTimeZone)
+	var goret *TimeZone
+
+	cret = C.g_time_zone_new_local()
+
+	goret = WrapTimeZone(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // NewTimeZoneOffset constructs a struct TimeZone.
-func NewTimeZoneOffset(seconds int32) {
+func NewTimeZoneOffset(seconds int32) *TimeZone {
 	var arg1 C.gint32
 
 	arg1 = C.gint32(seconds)
 
-	C.g_time_zone_new_offset(arg1)
+	cret := new(C.GTimeZone)
+	var goret *TimeZone
+
+	cret = C.g_time_zone_new_offset(arg1)
+
+	goret = WrapTimeZone(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // NewTimeZoneUtc constructs a struct TimeZone.
-func NewTimeZoneUtc() {
-	C.g_time_zone_new_utc()
+func NewTimeZoneUtc() *TimeZone {
+	cret := new(C.GTimeZone)
+	var goret *TimeZone
+
+	cret = C.g_time_zone_new_utc()
+
+	goret = WrapTimeZone(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -106,7 +167,7 @@ func (t *TimeZone) Native() unsafe.Pointer {
 // times. If the non-existent local @time_ of 02:30 were requested on March 14th
 // 2010 in Toronto then this function would adjust @time_ to be 03:00 and return
 // the interval containing the adjusted time.
-func (t *TimeZone) AdjustTime(t *TimeZone, typ TimeType, time_ int64) {
+func (t *TimeZone) AdjustTime(typ TimeType, time_ int64) int {
 	var arg0 *C.GTimeZone
 	var arg1 C.GTimeType
 	var arg2 *C.gint64
@@ -115,7 +176,14 @@ func (t *TimeZone) AdjustTime(t *TimeZone, typ TimeType, time_ int64) {
 	arg1 = (C.GTimeType)(typ)
 	arg2 = *C.gint64(time_)
 
-	C.g_time_zone_adjust_time(arg0, arg1, arg2)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_time_zone_adjust_time(arg0, arg1, arg2)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // FindInterval finds an interval within @tz that corresponds to the given
@@ -134,7 +202,7 @@ func (t *TimeZone) AdjustTime(t *TimeZone, typ TimeType, time_ int64) {
 // It is still possible for this function to fail. In Toronto, for example,
 // 02:00 on March 14th 2010 does not exist (due to the leap forward to begin
 // daylight savings time). -1 is returned in that case.
-func (t *TimeZone) FindInterval(t *TimeZone, typ TimeType, time_ int64) {
+func (t *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 	var arg0 *C.GTimeZone
 	var arg1 C.GTimeType
 	var arg2 C.gint64
@@ -143,7 +211,14 @@ func (t *TimeZone) FindInterval(t *TimeZone, typ TimeType, time_ int64) {
 	arg1 = (C.GTimeType)(typ)
 	arg2 = C.gint64(time_)
 
-	C.g_time_zone_find_interval(arg0, arg1, arg2)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_time_zone_find_interval(arg0, arg1, arg2)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Abbreviation determines the time zone abbreviation to be used during a
@@ -151,14 +226,21 @@ func (t *TimeZone) FindInterval(t *TimeZone, typ TimeType, time_ int64) {
 //
 // For example, in Toronto this is currently "EST" during the winter months and
 // "EDT" during the summer months when daylight savings time is in effect.
-func (t *TimeZone) Abbreviation(t *TimeZone, interval int) {
+func (t *TimeZone) Abbreviation(interval int) string {
 	var arg0 *C.GTimeZone
 	var arg1 C.gint
 
 	arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	arg1 = C.gint(interval)
 
-	C.g_time_zone_get_abbreviation(arg0, arg1)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_time_zone_get_abbreviation(arg0, arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Identifier: get the identifier of this Zone, as passed to g_time_zone_new().
@@ -169,12 +251,19 @@ func (t *TimeZone) Abbreviation(t *TimeZone, interval int) {
 // The identifier will be returned in the same format as provided at
 // construction time: if provided as a time offset, that will be returned by
 // this function.
-func (t *TimeZone) Identifier(t *TimeZone) {
+func (t *TimeZone) Identifier() string {
 	var arg0 *C.GTimeZone
 
 	arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 
-	C.g_time_zone_get_identifier(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_time_zone_get_identifier(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Offset determines the offset to UTC in effect during a particular @interval
@@ -183,19 +272,26 @@ func (t *TimeZone) Identifier(t *TimeZone) {
 // The offset is the number of seconds that you add to UTC time to arrive at
 // local time for @tz (ie: negative numbers for time zones west of GMT, positive
 // numbers for east).
-func (t *TimeZone) Offset(t *TimeZone, interval int) {
+func (t *TimeZone) Offset(interval int) int32 {
 	var arg0 *C.GTimeZone
 	var arg1 C.gint
 
 	arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	arg1 = C.gint(interval)
 
-	C.g_time_zone_get_offset(arg0, arg1)
+	var cret C.gint32
+	var goret int32
+
+	cret = C.g_time_zone_get_offset(arg0, arg1)
+
+	goret = int32(cret)
+
+	return goret
 }
 
 // IsDst determines if daylight savings time is in effect during a particular
 // @interval of time in the time zone @tz.
-func (t *TimeZone) IsDst(t *TimeZone, interval int) bool {
+func (t *TimeZone) IsDst(interval int) bool {
 	var arg0 *C.GTimeZone
 	var arg1 C.gint
 
@@ -203,28 +299,38 @@ func (t *TimeZone) IsDst(t *TimeZone, interval int) bool {
 	arg1 = C.gint(interval)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_time_zone_is_dst(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Ref increases the reference count on @tz.
-func (t *TimeZone) Ref(t *TimeZone) {
+func (t *TimeZone) Ref() *TimeZone {
 	var arg0 *C.GTimeZone
 
 	arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 
-	C.g_time_zone_ref(arg0)
+	cret := new(C.GTimeZone)
+	var goret *TimeZone
+
+	cret = C.g_time_zone_ref(arg0)
+
+	goret = WrapTimeZone(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref decreases the reference count on @tz.
-func (t *TimeZone) Unref(t *TimeZone) {
+func (t *TimeZone) Unref() {
 	var arg0 *C.GTimeZone
 
 	arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))

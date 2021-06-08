@@ -2,37 +2,15 @@
 
 package gsk
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/pkg/graphene"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gsk/gsk.h>
 import "C"
-
-// TransformParse parses the given @string into a transform and puts it in
-// @out_transform. Strings printed via gsk_transform_to_string() can be read in
-// again successfully using this function.
-//
-// If @string does not describe a valid transform, false is returned and nil is
-// put in @out_transform.
-func TransformParse(string string) (outTransform **Transform, ok bool) {
-	var arg1 *C.char
-
-	arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
-
-	var arg2 *C.GskTransform
-	var outTransform **Transform
-	var cret C.gboolean
-	var ok bool
-
-	cret = C.gsk_transform_parse(arg1, &arg2)
-
-	outTransform = WrapTransform(unsafe.Pointer(&arg2))
-	runtime.SetFinalizer(outTransform, func(v **Transform) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	if cret {
-		ok = true
-	}
-
-	return outTransform, ok
-}

@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -98,17 +102,17 @@ type DBusObjectManagerClient interface {
 	Initable
 
 	// Connection gets the BusConnection used by @manager.
-	Connection(m DBusObjectManagerClient)
+	Connection() DBusConnection
 	// Flags gets the flags that @manager was constructed with.
-	Flags(m DBusObjectManagerClient)
+	Flags() DBusObjectManagerClientFlags
 	// Name gets the name that @manager is for, or nil if not a message bus
 	// connection.
-	Name(m DBusObjectManagerClient)
+	Name() string
 	// NameOwner: the unique name that owns the name that @manager is for or nil
 	// if no-one currently owns that name. You can connect to the
 	// #GObject::notify signal to track changes to the
 	// BusObjectManagerClient:name-owner property.
-	NameOwner(m DBusObjectManagerClient)
+	NameOwner() string
 }
 
 // dBusObjectManagerClient implements the DBusObjectManagerClient interface.
@@ -139,73 +143,108 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 }
 
 // NewDBusObjectManagerClientFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientFinish(res AsyncResult) error {
+func NewDBusObjectManagerClientFinish(res AsyncResult) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 *C.GAsyncResult
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusObjectManagerClient)
+	var goret DBusObjectManagerClient
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_object_manager_client_new_finish(arg1, &errout)
+	cret = C.g_dbus_object_manager_client_new_finish(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerClient)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // NewDBusObjectManagerClientForBusFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientForBusFinish(res AsyncResult) error {
+func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (dBusObjectManagerClient DBusObjectManagerClient, err error) {
 	var arg1 *C.GAsyncResult
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GDBusObjectManagerClient)
+	var goret DBusObjectManagerClient
+	var cerr *C.GError
+	var goerr error
 
-	C.g_dbus_object_manager_client_new_for_bus_finish(arg1, &errout)
+	cret = C.g_dbus_object_manager_client_new_for_bus_finish(arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerClient)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }
 
 // Connection gets the BusConnection used by @manager.
-func (m dBusObjectManagerClient) Connection(m DBusObjectManagerClient) {
+func (m dBusObjectManagerClient) Connection() DBusConnection {
 	var arg0 *C.GDBusObjectManagerClient
 
 	arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_object_manager_client_get_connection(arg0)
+	var cret *C.GDBusConnection
+	var goret DBusConnection
+
+	cret = C.g_dbus_object_manager_client_get_connection(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return goret
 }
 
 // Flags gets the flags that @manager was constructed with.
-func (m dBusObjectManagerClient) Flags(m DBusObjectManagerClient) {
+func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
 	var arg0 *C.GDBusObjectManagerClient
 
 	arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_object_manager_client_get_flags(arg0)
+	var cret C.GDBusObjectManagerClientFlags
+	var goret DBusObjectManagerClientFlags
+
+	cret = C.g_dbus_object_manager_client_get_flags(arg0)
+
+	goret = DBusObjectManagerClientFlags(cret)
+
+	return goret
 }
 
 // Name gets the name that @manager is for, or nil if not a message bus
 // connection.
-func (m dBusObjectManagerClient) Name(m DBusObjectManagerClient) {
+func (m dBusObjectManagerClient) Name() string {
 	var arg0 *C.GDBusObjectManagerClient
 
 	arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_object_manager_client_get_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dbus_object_manager_client_get_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // NameOwner: the unique name that owns the name that @manager is for or nil
 // if no-one currently owns that name. You can connect to the
 // #GObject::notify signal to track changes to the
 // BusObjectManagerClient:name-owner property.
-func (m dBusObjectManagerClient) NameOwner(m DBusObjectManagerClient) {
+func (m dBusObjectManagerClient) NameOwner() string {
 	var arg0 *C.GDBusObjectManagerClient
 
 	arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_object_manager_client_get_name_owner(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_dbus_object_manager_client_get_name_owner(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

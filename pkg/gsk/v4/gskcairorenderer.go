@@ -3,6 +3,9 @@
 package gsk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,6 +21,9 @@ func init() {
 	})
 }
 
+// CairoRenderer: a GSK renderer that is using cairo.
+//
+// Since it is using cairo, this renderer cannot support 3D transformations.
 type CairoRenderer interface {
 	Renderer
 }
@@ -44,6 +50,13 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 }
 
 // NewCairoRenderer constructs a class CairoRenderer.
-func NewCairoRenderer() {
-	C.gsk_cairo_renderer_new()
+func NewCairoRenderer() CairoRenderer {
+	cret := new(C.GskCairoRenderer)
+	var goret CairoRenderer
+
+	cret = C.gsk_cairo_renderer_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoRenderer)
+
+	return goret
 }

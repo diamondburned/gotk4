@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,14 +21,17 @@ func init() {
 	})
 }
 
-// TextMark: you may wish to begin by reading the [text widget conceptual
-// overview][TextWidget] which gives an overview of all the objects and data
-// types related to the text widget and how they work together.
+// TextMark: a `GtkTextMark` is a position in a `GtkTextbuffer` that is
+// preserved across modifications.
 //
-// A TextMark is like a bookmark in a text buffer; it preserves a position in
-// the text. You can convert the mark to an iterator using
-// gtk_text_buffer_get_iter_at_mark(). Unlike iterators, marks remain valid
-// across buffer mutations, because their behavior is defined when text is
+// You may wish to begin by reading the text widget conceptual overview
+// (section-text-widget.html), which gives an overview of all the objects and
+// data types related to the text widget and how they work together.
+//
+// A `GtkTextMark` is like a bookmark in a text buffer; it preserves a position
+// in the text. You can convert the mark to an iterator using
+// [method@Gtk.TextBuffer.get_iter_at_mark]. Unlike iterators, marks remain
+// valid across buffer mutations, because their behavior is defined when text is
 // inserted or deleted. When text containing a mark is deleted, the mark remains
 // in the position originally occupied by the deleted text. When text is
 // inserted at a mark, a mark with “left gravity” will be moved to the beginning
@@ -38,32 +44,38 @@ func init() {
 //
 // Marks are reference counted, but the reference count only controls the
 // validity of the memory; marks can be deleted from the buffer at any time with
-// gtk_text_buffer_delete_mark(). Once deleted from the buffer, a mark is
+// [method@Gtk.TextBuffer.delete_mark]. Once deleted from the buffer, a mark is
 // essentially useless.
 //
 // Marks optionally have names; these can be convenient to avoid passing the
-// TextMark object around.
+// `GtkTextMark` object around.
 //
-// Marks are typically created using the gtk_text_buffer_create_mark() function.
+// Marks are typically created using the [method@Gtk.TextBuffer.create_mark]
+// function.
 type TextMark interface {
 	gextras.Objector
 
-	// Buffer gets the buffer this mark is located inside, or nil if the mark is
-	// deleted.
-	Buffer(m TextMark)
-	// Deleted returns true if the mark has been removed from its buffer with
-	// gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
-	// to add it to a buffer again.
-	Deleted(m TextMark) bool
+	// Buffer gets the buffer this mark is located inside.
+	//
+	// Returns nil if the mark is deleted.
+	Buffer() TextBuffer
+	// Deleted returns true if the mark has been removed from its buffer.
+	//
+	// See [method@Gtk.TextBuffer.add_mark] for a way to add it to a buffer
+	// again.
+	Deleted() bool
 	// LeftGravity determines whether the mark has left gravity.
-	LeftGravity(m TextMark) bool
-	// Name returns the mark name; returns NULL for anonymous marks.
-	Name(m TextMark)
-	// Visible returns true if the mark is visible (i.e. a cursor is displayed
-	// for it).
-	Visible(m TextMark) bool
+	LeftGravity() bool
+	// Name returns the mark name.
+	//
+	// Returns nil for anonymous marks.
+	Name() string
+	// Visible returns true if the mark is visible.
+	//
+	// A cursor is displayed for visible marks.
+	Visible() bool
 
-	SetVisible(m TextMark, setting bool)
+	SetVisible(setting bool)
 }
 
 // textMark implements the TextMark interface.
@@ -88,7 +100,7 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 }
 
 // NewTextMark constructs a class TextMark.
-func NewTextMark(name string, leftGravity bool) {
+func NewTextMark(name string, leftGravity bool) TextMark {
 	var arg1 *C.char
 	var arg2 C.gboolean
 
@@ -98,86 +110,112 @@ func NewTextMark(name string, leftGravity bool) {
 		arg2 = C.gboolean(1)
 	}
 
-	C.gtk_text_mark_new(arg1, arg2)
+	cret := new(C.GtkTextMark)
+	var goret TextMark
+
+	cret = C.gtk_text_mark_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextMark)
+
+	return goret
 }
 
-// Buffer gets the buffer this mark is located inside, or nil if the mark is
-// deleted.
-func (m textMark) Buffer(m TextMark) {
+// Buffer gets the buffer this mark is located inside.
+//
+// Returns nil if the mark is deleted.
+func (m textMark) Buffer() TextBuffer {
 	var arg0 *C.GtkTextMark
 
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
-	C.gtk_text_mark_get_buffer(arg0)
+	var cret *C.GtkTextBuffer
+	var goret TextBuffer
+
+	cret = C.gtk_text_mark_get_buffer(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextBuffer)
+
+	return goret
 }
 
-// Deleted returns true if the mark has been removed from its buffer with
-// gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
-// to add it to a buffer again.
-func (m textMark) Deleted(m TextMark) bool {
+// Deleted returns true if the mark has been removed from its buffer.
+//
+// See [method@Gtk.TextBuffer.add_mark] for a way to add it to a buffer
+// again.
+func (m textMark) Deleted() bool {
 	var arg0 *C.GtkTextMark
 
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_text_mark_get_deleted(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // LeftGravity determines whether the mark has left gravity.
-func (m textMark) LeftGravity(m TextMark) bool {
+func (m textMark) LeftGravity() bool {
 	var arg0 *C.GtkTextMark
 
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_text_mark_get_left_gravity(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// Name returns the mark name; returns NULL for anonymous marks.
-func (m textMark) Name(m TextMark) {
+// Name returns the mark name.
+//
+// Returns nil for anonymous marks.
+func (m textMark) Name() string {
 	var arg0 *C.GtkTextMark
 
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
-	C.gtk_text_mark_get_name(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_text_mark_get_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
-// Visible returns true if the mark is visible (i.e. a cursor is displayed
-// for it).
-func (m textMark) Visible(m TextMark) bool {
+// Visible returns true if the mark is visible.
+//
+// A cursor is displayed for visible marks.
+func (m textMark) Visible() bool {
 	var arg0 *C.GtkTextMark
 
 	arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_text_mark_get_visible(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-func (m textMark) SetVisible(m TextMark, setting bool) {
+func (m textMark) SetVisible(setting bool) {
 	var arg0 *C.GtkTextMark
 	var arg1 C.gboolean
 

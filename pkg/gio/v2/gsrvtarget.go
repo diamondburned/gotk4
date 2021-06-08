@@ -2,6 +2,11 @@
 
 package gio
 
+import (
+	"runtime"
+	"unsafe"
+)
+
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -16,13 +21,3 @@ package gio
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// SrvTargetListSort sorts @targets in place according to the algorithm in RFC
-// 2782.
-func SrvTargetListSort(targets *glib.List) {
-	var arg1 *C.GList
-
-	arg1 = (*C.GList)(unsafe.Pointer(targets.Native()))
-
-	C.g_srv_target_list_sort(arg1)
-}

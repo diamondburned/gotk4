@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,17 +30,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_async_initable_get_type()), F: marshalAsyncInitable},
 	})
-}
-
-// AsyncInitableNewvAsync: helper function for constructing Initable object.
-// This is similar to g_object_newv() but also initializes the object
-// asynchronously.
-//
-// When the initialization is finished, @callback will be called. You can then
-// call g_async_initable_new_finish() to get the new object and check for any
-// errors.
-func AsyncInitableNewvAsync() {
-	C.g_async_initable_newv_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 }
 
 // AsyncInitableOverrider contains methods that are overridable. This
@@ -78,10 +71,10 @@ type AsyncInitableOverrider interface {
 	// a thread, so if you want to support asynchronous initialization via
 	// threads, just implement the Initable interface without overriding any
 	// interface methods.
-	InitAsync(i AsyncInitable)
+	InitAsync()
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
-	InitFinish(i AsyncInitable, res AsyncResult) error
+	InitFinish(res AsyncResult) error
 }
 
 // AsyncInitable: this is the asynchronous version of #GInitable; it behaves the
@@ -187,7 +180,7 @@ type AsyncInitable interface {
 
 	// NewFinish finishes the async construction for the various
 	// g_async_initable_new calls, returning the created object or nil on error.
-	NewFinish(i AsyncInitable, res AsyncResult) error
+	NewFinish(res AsyncResult) (object gextras.Objector, err error)
 }
 
 // asyncInitable implements the AsyncInitable interface.
@@ -247,7 +240,7 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 // a thread, so if you want to support asynchronous initialization via
 // threads, just implement the Initable interface without overriding any
 // interface methods.
-func (i asyncInitable) InitAsync(i AsyncInitable) {
+func (i asyncInitable) InitAsync() {
 	var arg0 *C.GAsyncInitable
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
@@ -257,38 +250,41 @@ func (i asyncInitable) InitAsync(i AsyncInitable) {
 
 // InitFinish finishes asynchronous initialization and returns the result.
 // See g_async_initable_init_async().
-func (i asyncInitable) InitFinish(i AsyncInitable, res AsyncResult) error {
+func (i asyncInitable) InitFinish(res AsyncResult) error {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_async_initable_init_finish(arg0, arg1, &errout)
+	C.g_async_initable_init_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // NewFinish finishes the async construction for the various
 // g_async_initable_new calls, returning the created object or nil on error.
-func (i asyncInitable) NewFinish(i AsyncInitable, res AsyncResult) error {
+func (i asyncInitable) NewFinish(res AsyncResult) (object gextras.Objector, err error) {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var errout *C.GError
-	var err error
+	cret := new(C.GObject)
+	var goret gextras.Objector
+	var cerr *C.GError
+	var goerr error
 
-	C.g_async_initable_new_finish(arg0, arg1, &errout)
+	cret = C.g_async_initable_new_finish(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goret, goerr
 }

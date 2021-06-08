@@ -2,6 +2,15 @@
 
 package gio
 
+import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
+)
+
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -27,15 +36,15 @@ func ContentTypeCanBeExecutable(typ string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_content_type_can_be_executable(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ContentTypeEquals compares two content types for equality.
@@ -49,37 +58,53 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_content_type_equals(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ContentTypeFromMIMEType tries to find a content type based on the mime type
 // name.
-func ContentTypeFromMIMEType(mimeType string) {
+func ContentTypeFromMIMEType(mimeType string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_content_type_from_mime_type(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_content_type_from_mime_type(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ContentTypeGetDescription gets the human readable description of the content
 // type.
-func ContentTypeGetDescription(typ string) {
+func ContentTypeGetDescription(typ string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_content_type_get_description(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_content_type_get_description(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ContentTypeGetGenericIconName gets the generic icon name for a content type.
@@ -87,50 +112,101 @@ func ContentTypeGetDescription(typ string) {
 // See the shared-mime-info
 // (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on the generic icon name.
-func ContentTypeGetGenericIconName(typ string) {
+func ContentTypeGetGenericIconName(typ string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_content_type_get_generic_icon_name(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_content_type_get_generic_icon_name(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ContentTypeGetIcon gets the icon for a content type.
-func ContentTypeGetIcon(typ string) {
+func ContentTypeGetIcon(typ string) Icon {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_content_type_get_icon(arg1)
+	cret := new(C.GIcon)
+	var goret Icon
+
+	cret = C.g_content_type_get_icon(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+
+	return goret
 }
 
 // ContentTypeGetMIMEDirs: get the list of directories which MIME data is loaded
 // from. See g_content_type_set_mime_dirs() for details.
-func ContentTypeGetMIMEDirs() {
-	C.g_content_type_get_mime_dirs()
+func ContentTypeGetMIMEDirs() []string {
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_content_type_get_mime_dirs()
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+		}
+	}
+
+	return goret
 }
 
 // ContentTypeGetMIMEType gets the mime type for the content type, if one is
 // registered.
-func ContentTypeGetMIMEType(typ string) {
+func ContentTypeGetMIMEType(typ string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_content_type_get_mime_type(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_content_type_get_mime_type(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ContentTypeGetSymbolicIcon gets the symbolic icon for a content type.
-func ContentTypeGetSymbolicIcon(typ string) {
+func ContentTypeGetSymbolicIcon(typ string) Icon {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_content_type_get_symbolic_icon(arg1)
+	cret := new(C.GIcon)
+	var goret Icon
+
+	cret = C.g_content_type_get_symbolic_icon(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Icon)
+
+	return goret
 }
 
 // ContentTypeGuessForTree tries to guess the type of the tree with root @root,
@@ -145,12 +221,34 @@ func ContentTypeGetSymbolicIcon(typ string) {
 //
 // This function is useful in the implementation of
 // g_mount_guess_content_type().
-func ContentTypeGuessForTree(root File) {
+func ContentTypeGuessForTree(root File) []string {
 	var arg1 *C.GFile
 
 	arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
 
-	C.g_content_type_guess_for_tree(arg1)
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_content_type_guess_for_tree(arg1)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+			defer C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return goret
 }
 
 // ContentTypeIsA determines if @type is a subset of @supertype.
@@ -164,15 +262,15 @@ func ContentTypeIsA(typ string, supertype string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_content_type_is_a(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ContentTypeIsMIMEType determines if @type is a subset of @mime_type.
@@ -187,15 +285,15 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_content_type_is_mime_type(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ContentTypeIsUnknown checks if the content type is the generic "unknown"
@@ -208,15 +306,15 @@ func ContentTypeIsUnknown(typ string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_content_type_is_unknown(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ContentTypeSetMIMEDirs: set the list of directories used by GIO to load the
@@ -243,7 +341,7 @@ func ContentTypeIsUnknown(typ string) bool {
 func ContentTypeSetMIMEDirs(dirs []string) {
 	var arg1 **C.gchar
 
-	arg1 = C.malloc(len(dirs) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(dirs) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -262,6 +360,16 @@ func ContentTypeSetMIMEDirs(dirs []string) {
 // ContentTypesGetRegistered gets a list of strings containing all the
 // registered content types known to the system. The list and its data should be
 // freed using `g_list_free_full (list, g_free)`.
-func ContentTypesGetRegistered() {
-	C.g_content_types_get_registered()
+func ContentTypesGetRegistered() *glib.List {
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.g_content_types_get_registered()
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }

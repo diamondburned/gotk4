@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,26 +21,27 @@ func init() {
 	})
 }
 
-// GesturePan is a Gesture implementation able to recognize pan gestures, those
-// are drags that are locked to happen along one axis. The axis that a
-// GesturePan handles is defined at construct time, and can be changed through
-// gtk_gesture_pan_set_orientation().
+// GesturePan: `GtkGesturePan` is a `GtkGesture` for pan gestures.
 //
-// When the gesture starts to be recognized, GesturePan will attempt to
+// These are drags that are locked to happen along one axis. The axis that a
+// `GtkGesturePan` handles is defined at construct time, and can be changed
+// through [method@Gtk.GesturePan.set_orientation].
+//
+// When the gesture starts to be recognized, `GtkGesturePan` will attempt to
 // determine as early as possible whether the sequence is moving in the expected
 // direction, and denying the sequence if this does not happen.
 //
 // Once a panning gesture along the expected axis is recognized, the
-// GesturePan::pan signal will be emitted as input events are received,
-// containing the offset in the given axis.
+// [signal@Gtk.GesturePan::pan] signal will be emitted as input events are
+// received, containing the offset in the given axis.
 type GesturePan interface {
 	GestureDrag
 
 	// Orientation returns the orientation of the pan gestures that this
 	// @gesture expects.
-	Orientation(g GesturePan)
+	Orientation() Orientation
 	// SetOrientation sets the orientation to be expected on pan gestures.
-	SetOrientation(g GesturePan, orientation Orientation)
+	SetOrientation(orientation Orientation)
 }
 
 // gesturePan implements the GesturePan interface.
@@ -62,26 +66,40 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 }
 
 // NewGesturePan constructs a class GesturePan.
-func NewGesturePan(orientation Orientation) {
+func NewGesturePan(orientation Orientation) GesturePan {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
-	C.gtk_gesture_pan_new(arg1)
+	cret := new(C.GtkGesturePan)
+	var goret GesturePan
+
+	cret = C.gtk_gesture_pan_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
+
+	return goret
 }
 
 // Orientation returns the orientation of the pan gestures that this
 // @gesture expects.
-func (g gesturePan) Orientation(g GesturePan) {
+func (g gesturePan) Orientation() Orientation {
 	var arg0 *C.GtkGesturePan
 
 	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_pan_get_orientation(arg0)
+	var cret C.GtkOrientation
+	var goret Orientation
+
+	cret = C.gtk_gesture_pan_get_orientation(arg0)
+
+	goret = Orientation(cret)
+
+	return goret
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.
-func (g gesturePan) SetOrientation(g GesturePan, orientation Orientation) {
+func (g gesturePan) SetOrientation(orientation Orientation) {
 	var arg0 *C.GtkGesturePan
 	var arg1 C.GtkOrientation
 

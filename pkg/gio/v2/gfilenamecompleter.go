@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,12 +39,12 @@ type FilenameCompleter interface {
 	gextras.Objector
 
 	// CompletionSuffix obtains a completion for @initial_text from @completer.
-	CompletionSuffix(c FilenameCompleter, initialText string)
+	CompletionSuffix(initialText string) string
 	// Completions gets an array of completion strings for a given initial text.
-	Completions(c FilenameCompleter, initialText string)
+	Completions(initialText string) []string
 	// SetDirsOnly: if @dirs_only is true, @completer will only complete
 	// directory names, and not file names.
-	SetDirsOnly(c FilenameCompleter, dirsOnly bool)
+	SetDirsOnly(dirsOnly bool)
 }
 
 // filenameCompleter implements the FilenameCompleter interface.
@@ -65,12 +69,19 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 }
 
 // NewFilenameCompleter constructs a class FilenameCompleter.
-func NewFilenameCompleter() {
-	C.g_filename_completer_new()
+func NewFilenameCompleter() FilenameCompleter {
+	cret := new(C.GFilenameCompleter)
+	var goret FilenameCompleter
+
+	cret = C.g_filename_completer_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilenameCompleter)
+
+	return goret
 }
 
 // CompletionSuffix obtains a completion for @initial_text from @completer.
-func (c filenameCompleter) CompletionSuffix(c FilenameCompleter, initialText string) {
+func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	var arg0 *C.GFilenameCompleter
 	var arg1 *C.char
 
@@ -78,11 +89,19 @@ func (c filenameCompleter) CompletionSuffix(c FilenameCompleter, initialText str
 	arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_filename_completer_get_completion_suffix(arg0, arg1)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.g_filename_completer_get_completion_suffix(arg0, arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Completions gets an array of completion strings for a given initial text.
-func (c filenameCompleter) Completions(c FilenameCompleter, initialText string) {
+func (c filenameCompleter) Completions(initialText string) []string {
 	var arg0 *C.GFilenameCompleter
 	var arg1 *C.char
 
@@ -90,12 +109,34 @@ func (c filenameCompleter) Completions(c FilenameCompleter, initialText string) 
 	arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_filename_completer_get_completions(arg0, arg1)
+	var cret **C.char
+	var goret []string
+
+	cret = C.g_filename_completer_get_completions(arg0, arg1)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+			defer C.free(unsafe.Pointer(src))
+		}
+	}
+
+	return goret
 }
 
 // SetDirsOnly: if @dirs_only is true, @completer will only complete
 // directory names, and not file names.
-func (c filenameCompleter) SetDirsOnly(c FilenameCompleter, dirsOnly bool) {
+func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
 	var arg0 *C.GFilenameCompleter
 	var arg1 C.gboolean
 

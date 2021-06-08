@@ -28,29 +28,6 @@ func init() {
 	})
 }
 
-// NewTLSServerConnection creates a new ServerConnection wrapping
-// @base_io_stream (which must have pollable input and output streams).
-//
-// See the documentation for Connection:base-io-stream for restrictions on when
-// application code can run operations on the @base_io_stream after this
-// function has returned.
-func NewTLSServerConnection(baseIOStream IOStream, certificate TLSCertificate) error {
-	var arg1 *C.GIOStream
-	var arg2 *C.GTlsCertificate
-
-	arg1 = (*C.GIOStream)(unsafe.Pointer(baseIOStream.Native()))
-	arg2 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
-
-	var errout *C.GError
-	var err error
-
-	C.g_tls_server_connection_new(arg1, arg2, &errout)
-
-	err = gerror.Take(unsafe.Pointer(errout))
-
-	return err
-}
-
 // TLSServerConnection is the server-side subclass of Connection, representing a
 // server-side TLS connection.
 type TLSServerConnection interface {

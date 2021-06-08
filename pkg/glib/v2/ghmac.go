@@ -16,7 +16,7 @@ import "C"
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) {
+func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) string {
 	var arg1 C.GChecksumType
 	var arg2 *C.GBytes
 	var arg3 *C.GBytes
@@ -25,15 +25,31 @@ func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) {
 	arg2 = (*C.GBytes)(unsafe.Pointer(key.Native()))
 	arg3 = (*C.GBytes)(unsafe.Pointer(data.Native()))
 
-	C.g_compute_hmac_for_bytes(arg1, arg2, arg3)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_compute_hmac_for_bytes(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // ComputeHMACForData computes the HMAC for a binary @data of @length. This is a
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForData() {
-	C.g_compute_hmac_for_data(arg1, arg2, arg3, arg4, arg5)
+func ComputeHMACForData() string {
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_compute_hmac_for_data(arg1, arg2, arg3, arg4, arg5)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // HMAC: an opaque structure representing a HMAC operation. To create a new
@@ -65,12 +81,19 @@ func (h *HMAC) Native() unsafe.Pointer {
 // Copy copies a #GHmac. If @hmac has been closed, by calling
 // g_hmac_get_string() or g_hmac_get_digest(), the copied HMAC will be closed as
 // well.
-func (h *HMAC) Copy(h *HMAC) {
+func (h *HMAC) Copy() *HMAC {
 	var arg0 *C.GHmac
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
-	C.g_hmac_copy(arg0)
+	var cret *C.GHmac
+	var goret *HMAC
+
+	cret = C.g_hmac_copy(arg0)
+
+	goret = WrapHMAC(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Digest gets the digest from @checksum as a raw binary array and places it
@@ -78,7 +101,7 @@ func (h *HMAC) Copy(h *HMAC) {
 //
 // Once this function has been called, the #GHmac is closed and can no longer be
 // updated with g_checksum_update().
-func (h *HMAC) Digest(h *HMAC) {
+func (h *HMAC) Digest() {
 	var arg0 *C.GHmac
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
@@ -92,23 +115,37 @@ func (h *HMAC) Digest(h *HMAC) {
 // g_hmac_update().
 //
 // The hexadecimal characters will be lower case.
-func (h *HMAC) String(h *HMAC) {
+func (h *HMAC) String() string {
 	var arg0 *C.GHmac
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
-	C.g_hmac_get_string(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_hmac_get_string(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Ref: atomically increments the reference count of @hmac by one.
 //
 // This function is MT-safe and may be called from any thread.
-func (h *HMAC) Ref(h *HMAC) {
+func (h *HMAC) Ref() *HMAC {
 	var arg0 *C.GHmac
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
-	C.g_hmac_ref(arg0)
+	var cret *C.GHmac
+	var goret *HMAC
+
+	cret = C.g_hmac_ref(arg0)
+
+	goret = WrapHMAC(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Unref: atomically decrements the reference count of @hmac by one.
@@ -116,7 +153,7 @@ func (h *HMAC) Ref(h *HMAC) {
 // If the reference count drops to 0, all keys and values will be destroyed, and
 // all memory allocated by the hash table is released. This function is MT-safe
 // and may be called from any thread. Frees the memory allocated for @hmac.
-func (h *HMAC) Unref(h *HMAC) {
+func (h *HMAC) Unref() {
 	var arg0 *C.GHmac
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
@@ -128,7 +165,7 @@ func (h *HMAC) Unref(h *HMAC) {
 //
 // The HMAC must still be open, that is g_hmac_get_string() or
 // g_hmac_get_digest() must not have been called on @hmac.
-func (h *HMAC) Update(h *HMAC) {
+func (h *HMAC) Update() {
 	var arg0 *C.GHmac
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))

@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,25 +24,21 @@ func init() {
 // CellAccessibleParentOverrider contains methods that are overridable. This
 // interface is a subset of the interface CellAccessibleParent.
 type CellAccessibleParentOverrider interface {
-	Activate(p CellAccessibleParent, cell CellAccessible)
+	Activate(cell CellAccessible)
 
-	Edit(p CellAccessibleParent, cell CellAccessible)
+	Edit(cell CellAccessible)
 
-	ExpandCollapse(p CellAccessibleParent, cell CellAccessible)
+	ExpandCollapse(cell CellAccessible)
 
-	CellArea(p CellAccessibleParent, cell CellAccessible) *gdk.Rectangle
+	CellArea(cell CellAccessible) *gdk.Rectangle
 
-	CellPosition(p CellAccessibleParent, cell CellAccessible) (row int, column int)
+	CellPosition(cell CellAccessible) (row int, column int)
 
-	ChildIndex(p CellAccessibleParent, cell CellAccessible)
+	ChildIndex(cell CellAccessible) int
 
-	ColumnHeaderCells(p CellAccessibleParent, cell CellAccessible)
+	RendererState(cell CellAccessible) CellRendererState
 
-	RendererState(p CellAccessibleParent, cell CellAccessible)
-
-	RowHeaderCells(p CellAccessibleParent, cell CellAccessible)
-
-	GrabFocus(p CellAccessibleParent, cell CellAccessible) bool
+	GrabFocus(cell CellAccessible) bool
 }
 
 type CellAccessibleParent interface {
@@ -70,7 +67,7 @@ func marshalCellAccessibleParent(p uintptr) (interface{}, error) {
 	return WrapCellAccessibleParent(obj), nil
 }
 
-func (p cellAccessibleParent) Activate(p CellAccessibleParent, cell CellAccessible) {
+func (p cellAccessibleParent) Activate(cell CellAccessible) {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
@@ -80,7 +77,7 @@ func (p cellAccessibleParent) Activate(p CellAccessibleParent, cell CellAccessib
 	C.gtk_cell_accessible_parent_activate(arg0, arg1)
 }
 
-func (p cellAccessibleParent) Edit(p CellAccessibleParent, cell CellAccessible) {
+func (p cellAccessibleParent) Edit(cell CellAccessible) {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
@@ -90,7 +87,7 @@ func (p cellAccessibleParent) Edit(p CellAccessibleParent, cell CellAccessible) 
 	C.gtk_cell_accessible_parent_edit(arg0, arg1)
 }
 
-func (p cellAccessibleParent) ExpandCollapse(p CellAccessibleParent, cell CellAccessible) {
+func (p cellAccessibleParent) ExpandCollapse(cell CellAccessible) {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
@@ -100,84 +97,78 @@ func (p cellAccessibleParent) ExpandCollapse(p CellAccessibleParent, cell CellAc
 	C.gtk_cell_accessible_parent_expand_collapse(arg0, arg1)
 }
 
-func (p cellAccessibleParent) CellArea(p CellAccessibleParent, cell CellAccessible) *gdk.Rectangle {
+func (p cellAccessibleParent) CellArea(cell CellAccessible) *gdk.Rectangle {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
 	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	var arg2 C.GdkRectangle
-	var cellRect *gdk.Rectangle
+	arg2 := new(C.GdkRectangle)
+	var ret2 *gdk.Rectangle
 
-	C.gtk_cell_accessible_parent_get_cell_area(arg0, arg1, &arg2)
+	C.gtk_cell_accessible_parent_get_cell_area(arg0, arg1, arg2)
 
-	cellRect = gdk.WrapRectangle(unsafe.Pointer(&arg2))
+	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
 
-	return cellRect
+	return ret2
 }
 
-func (p cellAccessibleParent) CellPosition(p CellAccessibleParent, cell CellAccessible) (row int, column int) {
+func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column int) {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
 	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	var arg2 C.gint
-	var row int
-	var arg3 C.gint
-	var column int
+	arg2 := new(C.gint)
+	var ret2 int
+	arg3 := new(C.gint)
+	var ret3 int
 
-	C.gtk_cell_accessible_parent_get_cell_position(arg0, arg1, &arg2, &arg3)
+	C.gtk_cell_accessible_parent_get_cell_position(arg0, arg1, arg2, arg3)
 
-	row = int(&arg2)
-	column = int(&arg3)
+	ret2 = int(*arg2)
+	ret3 = int(*arg3)
 
-	return row, column
+	return ret2, ret3
 }
 
-func (p cellAccessibleParent) ChildIndex(p CellAccessibleParent, cell CellAccessible) {
+func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
 	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	C.gtk_cell_accessible_parent_get_child_index(arg0, arg1)
+	var cret C.int
+	var goret int
+
+	cret = C.gtk_cell_accessible_parent_get_child_index(arg0, arg1)
+
+	goret = int(cret)
+
+	return goret
 }
 
-func (p cellAccessibleParent) ColumnHeaderCells(p CellAccessibleParent, cell CellAccessible) {
+func (p cellAccessibleParent) RendererState(cell CellAccessible) CellRendererState {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
 	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	C.gtk_cell_accessible_parent_get_column_header_cells(arg0, arg1)
+	var cret C.GtkCellRendererState
+	var goret CellRendererState
+
+	cret = C.gtk_cell_accessible_parent_get_renderer_state(arg0, arg1)
+
+	goret = CellRendererState(cret)
+
+	return goret
 }
 
-func (p cellAccessibleParent) RendererState(p CellAccessibleParent, cell CellAccessible) {
-	var arg0 *C.GtkCellAccessibleParent
-	var arg1 *C.GtkCellAccessible
-
-	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	C.gtk_cell_accessible_parent_get_renderer_state(arg0, arg1)
-}
-
-func (p cellAccessibleParent) RowHeaderCells(p CellAccessibleParent, cell CellAccessible) {
-	var arg0 *C.GtkCellAccessibleParent
-	var arg1 *C.GtkCellAccessible
-
-	arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	C.gtk_cell_accessible_parent_get_row_header_cells(arg0, arg1)
-}
-
-func (p cellAccessibleParent) GrabFocus(p CellAccessibleParent, cell CellAccessible) bool {
+func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
 	var arg0 *C.GtkCellAccessibleParent
 	var arg1 *C.GtkCellAccessible
 
@@ -185,13 +176,13 @@ func (p cellAccessibleParent) GrabFocus(p CellAccessibleParent, cell CellAccessi
 	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_accessible_parent_grab_focus(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

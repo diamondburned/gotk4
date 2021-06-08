@@ -2,6 +2,13 @@
 
 package gtk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -12,29 +19,48 @@ import "C"
 // The modifier mask determines which modifiers are considered significant for
 // keyboard accelerators. This includes all keyboard modifiers except for
 // GDK_LOCK_MASK.
-func AcceleratorGetDefaultModMask() {
-	C.gtk_accelerator_get_default_mod_mask()
+func AcceleratorGetDefaultModMask() gdk.ModifierType {
+	var cret C.GdkModifierType
+	var goret gdk.ModifierType
+
+	cret = C.gtk_accelerator_get_default_mod_mask()
+
+	goret = gdk.ModifierType(cret)
+
+	return goret
 }
 
 // AcceleratorGetLabel converts an accelerator keyval and modifier mask into a
 // string which can be used to represent the accelerator to the user.
-func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
+func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var arg1 C.guint
 	var arg2 C.GdkModifierType
 
 	arg1 = C.guint(acceleratorKey)
 	arg2 = (C.GdkModifierType)(acceleratorMods)
 
-	C.gtk_accelerator_get_label(arg1, arg2)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.gtk_accelerator_get_label(arg1, arg2)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // AcceleratorGetLabelWithKeycode converts an accelerator keyval and modifier
-// mask into a (possibly translated) string that can be displayed to a user,
-// similarly to gtk_accelerator_get_label(), but handling keycodes.
+// mask into a string that can be displayed to the user.
+//
+// The string may be translated.
+//
+// This function is similar to [func@Gtk.accelerator_get_label], but handling
+// keycodes.
 //
 // This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
-func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) {
+func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var arg1 *C.GdkDisplay
 	var arg2 C.guint
 	var arg3 C.guint
@@ -45,31 +71,50 @@ func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, ke
 	arg3 = C.guint(keycode)
 	arg4 = (C.GdkModifierType)(acceleratorMods)
 
-	C.gtk_accelerator_get_label_with_keycode(arg1, arg2, arg3, arg4)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.gtk_accelerator_get_label_with_keycode(arg1, arg2, arg3, arg4)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // AcceleratorName converts an accelerator keyval and modifier mask into a
-// string parseable by gtk_accelerator_parse(). For example, if you pass in
-// K_KEY_q and K_CONTROL_MASK, this function returns “<Control>q”.
+// string parseable by gtk_accelerator_parse().
+//
+// For example, if you pass in GDK_KEY_q and GDK_CONTROL_MASK, this function
+// returns `<Control>q`.
 //
 // If you need to display accelerators in the user interface, see
-// gtk_accelerator_get_label().
-func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
+// [func@Gtk.accelerator_get_label].
+func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
 	var arg1 C.guint
 	var arg2 C.GdkModifierType
 
 	arg1 = C.guint(acceleratorKey)
 	arg2 = (C.GdkModifierType)(acceleratorMods)
 
-	C.gtk_accelerator_name(arg1, arg2)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.gtk_accelerator_name(arg1, arg2)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // AcceleratorNameWithKeycode converts an accelerator keyval and modifier mask
-// into a string parseable by gtk_accelerator_parse_with_keycode(), similarly to
-// gtk_accelerator_name() but handling keycodes. This is only useful for
-// system-level components, applications should use gtk_accelerator_parse()
-// instead.
-func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) {
+// into a string parseable by gtk_accelerator_parse_with_keycode().
+//
+// This is similar to [func@Gtk.accelerator_name] but handling keycodes. This is
+// only useful for system-level components, applications should use
+// gtk_accelerator_parse() instead.
+func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
 	var arg1 *C.GdkDisplay
 	var arg2 C.guint
 	var arg3 C.guint
@@ -80,16 +125,26 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 	arg3 = C.guint(keycode)
 	arg4 = (C.GdkModifierType)(acceleratorMods)
 
-	C.gtk_accelerator_name_with_keycode(arg1, arg2, arg3, arg4)
+	cret := new(C.char)
+	var goret string
+
+	cret = C.gtk_accelerator_name_with_keycode(arg1, arg2, arg3, arg4)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
-// AcceleratorParse parses a string representing an accelerator. The format
-// looks like “<Control>a” or “<Shift><Alt>F1”.
+// AcceleratorParse parses a string representing an accelerator.
+//
+// The format looks like “<Control>a” or “<Shift><Alt>F1”.
 //
 // The parser is fairly liberal and allows lower or upper case, and also
 // abbreviations such as “<Ctl>” and “<Ctrl>”. Key names are parsed using
-// gdk_keyval_from_name(). For character keys the name is not the symbol, but
-// the lowercase name, e.g. one would use “<Ctrl>minus” instead of “<Ctrl>-”.
+// [func@Gdk.keyval_from_name]. For character keys the name is not the symbol,
+// but the lowercase name, e.g. one would use “<Ctrl>minus” instead of
+// “<Ctrl>-”.
 //
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
@@ -99,27 +154,28 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 	arg1 = (*C.char)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 C.guint
-	var acceleratorKey uint
-	var arg3 C.GdkModifierType
-	var acceleratorMods *gdk.ModifierType
+	arg2 := new(C.guint)
+	var ret2 uint
+	arg3 := new(C.GdkModifierType)
+	var ret3 *gdk.ModifierType
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_accelerator_parse(arg1, &arg2, &arg3)
+	cret = C.gtk_accelerator_parse(arg1, arg2, arg3)
 
-	acceleratorKey = uint(&arg2)
-	acceleratorMods = *gdk.ModifierType(&arg3)
+	ret2 = uint(*arg2)
+	ret3 = *gdk.ModifierType(arg3)
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return acceleratorKey, acceleratorMods, ok
+	return ret2, ret3, goret
 }
 
-// AcceleratorParseWithKeycode parses a string representing an accelerator,
-// similarly to gtk_accelerator_parse() but handles keycodes as well. This is
-// only useful for system-level components, applications should use
+// AcceleratorParseWithKeycode parses a string representing an accelerator.
+//
+// This is similar to [func@Gtk.accelerator_parse] but handles keycodes as well.
+// This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
 //
 // If @accelerator_codes is given and the result stored in it is non-nil, the
@@ -138,18 +194,18 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	var arg3 C.guint
-	var acceleratorKey uint
+	arg3 := new(C.guint)
+	var ret3 uint
 	var arg4 **C.guint
-	var acceleratorCodes []uint
-	var arg5 C.GdkModifierType
-	var acceleratorMods *gdk.ModifierType
+	var ret4 []uint
+	arg5 := new(C.GdkModifierType)
+	var ret5 *gdk.ModifierType
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gtk_accelerator_parse_with_keycode(arg1, arg2, &arg3, &arg4, &arg5)
+	cret = C.gtk_accelerator_parse_with_keycode(arg1, arg2, arg3, arg4, arg5)
 
-	acceleratorKey = uint(&arg3)
+	ret3 = uint(*arg3)
 	{
 		var length int
 		for p := arg4; *p != 0; p = (**C.guint)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
@@ -159,24 +215,26 @@ func AcceleratorParseWithKeycode(accelerator string, display gdk.Display) (accel
 			}
 		}
 
-		acceleratorCodes = make([]uint, length)
+		ret4 = make([]uint, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
 			src := (*C.guint)(ptr.Add(unsafe.Pointer(arg4), i))
-			acceleratorCodes[i] = uint(src)
+			ret4[i] = uint(src)
 		}
 	}
-	acceleratorMods = *gdk.ModifierType(&arg5)
+	ret5 = *gdk.ModifierType(arg5)
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return acceleratorKey, acceleratorCodes, acceleratorMods, ok
+	return ret3, ret4, ret5, goret
 }
 
 // AcceleratorValid determines whether a given keyval and modifier mask
-// constitute a valid keyboard accelerator. For example, the K_KEY_a keyval plus
-// K_CONTROL_MASK is valid - this is a “Ctrl+a” accelerator. But, you can't, for
-// instance, use the K_KEY_Control_L keyval as an accelerator.
+// constitute a valid keyboard accelerator.
+//
+// For example, the GDK_KEY_a keyval plus GDK_CONTROL_MASK mark is valid, and
+// matches the “Ctrl+a” accelerator. But, you can't, for instance, use the
+// GDK_KEY_Control_L keyval as an accelerator.
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	var arg1 C.guint
 	var arg2 C.GdkModifierType
@@ -185,13 +243,13 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	arg2 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_accelerator_valid(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

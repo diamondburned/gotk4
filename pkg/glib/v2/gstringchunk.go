@@ -41,7 +41,7 @@ func (s *StringChunk) Native() unsafe.Pointer {
 // Clear frees all strings contained within the Chunk. After calling
 // g_string_chunk_clear() it is not safe to access any of the strings which were
 // contained within it.
-func (c *StringChunk) Clear(c *StringChunk) {
+func (c *StringChunk) Clear() {
 	var arg0 *C.GStringChunk
 
 	arg0 = (*C.GStringChunk)(unsafe.Pointer(c.Native()))
@@ -52,7 +52,7 @@ func (c *StringChunk) Clear(c *StringChunk) {
 // Free frees all memory allocated by the Chunk. After calling
 // g_string_chunk_free() it is not safe to access any of the strings which were
 // contained within it.
-func (c *StringChunk) Free(c *StringChunk) {
+func (c *StringChunk) Free() {
 	var arg0 *C.GStringChunk
 
 	arg0 = (*C.GStringChunk)(unsafe.Pointer(c.Native()))
@@ -68,7 +68,7 @@ func (c *StringChunk) Free(c *StringChunk) {
 // Unlike g_string_chunk_insert_const(), this function does not check for
 // duplicates. Also strings added with g_string_chunk_insert() will not be
 // searched by g_string_chunk_insert_const() when looking for duplicates.
-func (c *StringChunk) Insert(c *StringChunk, string string) {
+func (c *StringChunk) Insert(string string) string {
 	var arg0 *C.GStringChunk
 	var arg1 *C.gchar
 
@@ -76,7 +76,15 @@ func (c *StringChunk) Insert(c *StringChunk, string string) {
 	arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_string_chunk_insert(arg0, arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_string_chunk_insert(arg0, arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InsertConst adds a copy of @string to the Chunk, unless the same string has
@@ -89,7 +97,7 @@ func (c *StringChunk) Insert(c *StringChunk, string string) {
 //
 // Note that g_string_chunk_insert_const() will not return a pointer to a string
 // added with g_string_chunk_insert(), even if they do match.
-func (c *StringChunk) InsertConst(c *StringChunk, string string) {
+func (c *StringChunk) InsertConst(string string) string {
 	var arg0 *C.GStringChunk
 	var arg1 *C.gchar
 
@@ -97,7 +105,15 @@ func (c *StringChunk) InsertConst(c *StringChunk, string string) {
 	arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_string_chunk_insert_const(arg0, arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_string_chunk_insert_const(arg0, arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // InsertLen adds a copy of the first @len bytes of @string to the Chunk. The
@@ -108,7 +124,7 @@ func (c *StringChunk) InsertConst(c *StringChunk, string string) {
 //
 // The characters in the returned string can be changed, if necessary, though
 // you should not change anything after the end of the string.
-func (c *StringChunk) InsertLen(c *StringChunk, string string, len int) {
+func (c *StringChunk) InsertLen(string string, len int) string {
 	var arg0 *C.GStringChunk
 	var arg1 *C.gchar
 	var arg2 C.gssize
@@ -118,5 +134,13 @@ func (c *StringChunk) InsertLen(c *StringChunk, string string, len int) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	C.g_string_chunk_insert_len(arg0, arg1, arg2)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_string_chunk_insert_len(arg0, arg1, arg2)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

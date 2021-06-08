@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -98,8 +99,18 @@ func marshalFileAttributeInfoList(p uintptr) (interface{}, error) {
 }
 
 // NewFileAttributeInfoList constructs a struct FileAttributeInfoList.
-func NewFileAttributeInfoList() {
-	C.g_file_attribute_info_list_new()
+func NewFileAttributeInfoList() *FileAttributeInfoList {
+	cret := new(C.GFileAttributeInfoList)
+	var goret *FileAttributeInfoList
+
+	cret = C.g_file_attribute_info_list_new()
+
+	goret = WrapFileAttributeInfoList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -123,7 +134,7 @@ func (f *FileAttributeInfoList) NInfos() int {
 
 // Add adds a new attribute with @name to the @list, setting its @type and
 // @flags.
-func (l *FileAttributeInfoList) Add(l *FileAttributeInfoList, name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
+func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
 	var arg0 *C.GFileAttributeInfoList
 	var arg1 *C.char
 	var arg2 C.GFileAttributeType
@@ -139,16 +150,26 @@ func (l *FileAttributeInfoList) Add(l *FileAttributeInfoList, name string, typ F
 }
 
 // Dup makes a duplicate of a file attribute info list.
-func (l *FileAttributeInfoList) Dup(l *FileAttributeInfoList) {
+func (l *FileAttributeInfoList) Dup() *FileAttributeInfoList {
 	var arg0 *C.GFileAttributeInfoList
 
 	arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 
-	C.g_file_attribute_info_list_dup(arg0)
+	cret := new(C.GFileAttributeInfoList)
+	var goret *FileAttributeInfoList
+
+	cret = C.g_file_attribute_info_list_dup(arg0)
+
+	goret = WrapFileAttributeInfoList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Lookup gets the file attribute with the name @name from @list.
-func (l *FileAttributeInfoList) Lookup(l *FileAttributeInfoList, name string) {
+func (l *FileAttributeInfoList) Lookup(name string) *FileAttributeInfo {
 	var arg0 *C.GFileAttributeInfoList
 	var arg1 *C.char
 
@@ -156,21 +177,38 @@ func (l *FileAttributeInfoList) Lookup(l *FileAttributeInfoList, name string) {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_file_attribute_info_list_lookup(arg0, arg1)
+	var cret *C.GFileAttributeInfo
+	var goret *FileAttributeInfo
+
+	cret = C.g_file_attribute_info_list_lookup(arg0, arg1)
+
+	goret = WrapFileAttributeInfo(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Ref references a file attribute info list.
-func (l *FileAttributeInfoList) Ref(l *FileAttributeInfoList) {
+func (l *FileAttributeInfoList) Ref() *FileAttributeInfoList {
 	var arg0 *C.GFileAttributeInfoList
 
 	arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 
-	C.g_file_attribute_info_list_ref(arg0)
+	cret := new(C.GFileAttributeInfoList)
+	var goret *FileAttributeInfoList
+
+	cret = C.g_file_attribute_info_list_ref(arg0)
+
+	goret = WrapFileAttributeInfoList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *FileAttributeInfoList) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Unref removes a reference from the given @list. If the reference count falls
 // to zero, the @list is deleted.
-func (l *FileAttributeInfoList) Unref(l *FileAttributeInfoList) {
+func (l *FileAttributeInfoList) Unref() {
 	var arg0 *C.GFileAttributeInfoList
 
 	arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))

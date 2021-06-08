@@ -2,43 +2,14 @@
 
 package gdk
 
+import (
+	"unsafe"
+)
+
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
-
-// AtomIntern finds or creates an atom corresponding to a given string.
-func AtomIntern(atomName string, onlyIfExists bool) {
-	var arg1 *C.gchar
-	var arg2 C.gboolean
-
-	arg1 = (*C.gchar)(C.CString(atomName))
-	defer C.free(unsafe.Pointer(arg1))
-	if onlyIfExists {
-		arg2 = C.gboolean(1)
-	}
-
-	C.gdk_atom_intern(arg1, arg2)
-}
-
-// AtomInternStaticString finds or creates an atom corresponding to a given
-// string.
-//
-// Note that this function is identical to gdk_atom_intern() except that if a
-// new Atom is created the string itself is used rather than a copy. This saves
-// memory, but can only be used if the string will always exist. It can be used
-// with statically allocated strings in the main program, but not with
-// statically allocated memory in dynamically loaded modules, if you expect to
-// ever unload the module again (e.g. do not use this function in GTK+ theme
-// engines).
-func AtomInternStaticString(atomName string) {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(atomName))
-	defer C.free(unsafe.Pointer(arg1))
-
-	C.gdk_atom_intern_static_string(arg1)
-}
 
 // PropertyChange changes the contents of a property on a window.
 func PropertyChange(window Window, property Atom, typ Atom, format int, mode PropMode, data byte, nelements int) {
@@ -76,11 +47,19 @@ func PropertyDelete(window Window, property Atom) {
 // representation as a STRING. The representation of characters not in STRING is
 // not specified; it may be as pseudo-escape sequences \x{ABCD}, or it may be in
 // some other form of approximation.
-func UTF8ToStringTarget(str string) {
+func UTF8ToStringTarget(str string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_utf8_to_string_target(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gdk_utf8_to_string_target(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

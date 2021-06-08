@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -27,9 +30,9 @@ type ActivatableOverrider interface {
 	// completely, this is called internally when the Activatable:related-action
 	// property is set or unset and by the implementing class when
 	// Activatable:use-action-appearance changes.
-	SyncActionProperties(a Activatable, action Action)
+	SyncActionProperties(action Action)
 
-	Update(a Activatable, action Action, propertyName string)
+	Update(action Action, propertyName string)
 }
 
 // Activatable: activatable widgets can be connected to a Action and reflects
@@ -282,19 +285,19 @@ type Activatable interface {
 	// > Be careful to call this before setting the local > copy of the Action
 	// property, since this function uses > gtk_activatable_get_related_action()
 	// to retrieve the > previous action.
-	DoSetRelatedAction(a Activatable, action Action)
+	DoSetRelatedAction(action Action)
 	// RelatedAction gets the related Action for @activatable.
-	RelatedAction(a Activatable)
+	RelatedAction() Action
 	// UseActionAppearance gets whether this activatable should reset its layout
 	// and appearance when setting the related action or when the action changes
 	// appearance.
-	UseActionAppearance(a Activatable) bool
+	UseActionAppearance() bool
 	// SetRelatedAction sets the related action on the @activatable object.
 	//
 	// > Activatable implementors need to handle the Activatable:related-action
 	// > property and call gtk_activatable_do_set_related_action() when it
 	// changes.
-	SetRelatedAction(a Activatable, action Action)
+	SetRelatedAction(action Action)
 	// SetUseActionAppearance sets whether this activatable should reset its
 	// layout and appearance when setting the related action or when the action
 	// changes appearance
@@ -303,7 +306,7 @@ type Activatable interface {
 	// Activatable:use-action-appearance property and call >
 	// gtk_activatable_sync_action_properties() to update @activatable > if
 	// needed.
-	SetUseActionAppearance(a Activatable, useAppearance bool)
+	SetUseActionAppearance(useAppearance bool)
 }
 
 // activatable implements the Activatable interface.
@@ -342,7 +345,7 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 // > Be careful to call this before setting the local > copy of the Action
 // property, since this function uses > gtk_activatable_get_related_action()
 // to retrieve the > previous action.
-func (a activatable) DoSetRelatedAction(a Activatable, action Action) {
+func (a activatable) DoSetRelatedAction(action Action) {
 	var arg0 *C.GtkActivatable
 	var arg1 *C.GtkAction
 
@@ -353,32 +356,39 @@ func (a activatable) DoSetRelatedAction(a Activatable, action Action) {
 }
 
 // RelatedAction gets the related Action for @activatable.
-func (a activatable) RelatedAction(a Activatable) {
+func (a activatable) RelatedAction() Action {
 	var arg0 *C.GtkActivatable
 
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 
-	C.gtk_activatable_get_related_action(arg0)
+	var cret *C.GtkAction
+	var goret Action
+
+	cret = C.gtk_activatable_get_related_action(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+
+	return goret
 }
 
 // UseActionAppearance gets whether this activatable should reset its layout
 // and appearance when setting the related action or when the action changes
 // appearance.
-func (a activatable) UseActionAppearance(a Activatable) bool {
+func (a activatable) UseActionAppearance() bool {
 	var arg0 *C.GtkActivatable
 
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_activatable_get_use_action_appearance(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetRelatedAction sets the related action on the @activatable object.
@@ -386,7 +396,7 @@ func (a activatable) UseActionAppearance(a Activatable) bool {
 // > Activatable implementors need to handle the Activatable:related-action
 // > property and call gtk_activatable_do_set_related_action() when it
 // changes.
-func (a activatable) SetRelatedAction(a Activatable, action Action) {
+func (a activatable) SetRelatedAction(action Action) {
 	var arg0 *C.GtkActivatable
 	var arg1 *C.GtkAction
 
@@ -404,7 +414,7 @@ func (a activatable) SetRelatedAction(a Activatable, action Action) {
 // Activatable:use-action-appearance property and call >
 // gtk_activatable_sync_action_properties() to update @activatable > if
 // needed.
-func (a activatable) SetUseActionAppearance(a Activatable, useAppearance bool) {
+func (a activatable) SetUseActionAppearance(useAppearance bool) {
 	var arg0 *C.GtkActivatable
 	var arg1 C.gboolean
 
@@ -420,7 +430,7 @@ func (a activatable) SetUseActionAppearance(a Activatable, useAppearance bool) {
 // completely, this is called internally when the Activatable:related-action
 // property is set or unset and by the implementing class when
 // Activatable:use-action-appearance changes.
-func (a activatable) SyncActionProperties(a Activatable, action Action) {
+func (a activatable) SyncActionProperties(action Action) {
 	var arg0 *C.GtkActivatable
 	var arg1 *C.GtkAction
 

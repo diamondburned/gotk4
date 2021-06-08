@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,13 +43,13 @@ type EmblemedIcon interface {
 	Icon
 
 	// AddEmblem adds @emblem to the #GList of #GEmblems.
-	AddEmblem(e EmblemedIcon, emblem Emblem)
+	AddEmblem(emblem Emblem)
 	// ClearEmblems removes all the emblems from @icon.
-	ClearEmblems(e EmblemedIcon)
+	ClearEmblems()
 	// Emblems gets the list of emblems for the @icon.
-	Emblems(e EmblemedIcon)
+	Emblems() *glib.List
 	// Icon gets the main icon for @emblemed.
-	Icon(e EmblemedIcon)
+	Icon() Icon
 }
 
 // emblemedIcon implements the EmblemedIcon interface.
@@ -72,18 +76,25 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 }
 
 // NewEmblemedIcon constructs a class EmblemedIcon.
-func NewEmblemedIcon(icon Icon, emblem Emblem) {
+func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	var arg1 *C.GIcon
 	var arg2 *C.GEmblem
 
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
-	C.g_emblemed_icon_new(arg1, arg2)
+	cret := new(C.GEmblemedIcon)
+	var goret EmblemedIcon
+
+	cret = C.g_emblemed_icon_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EmblemedIcon)
+
+	return goret
 }
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
-func (e emblemedIcon) AddEmblem(e EmblemedIcon, emblem Emblem) {
+func (e emblemedIcon) AddEmblem(emblem Emblem) {
 	var arg0 *C.GEmblemedIcon
 	var arg1 *C.GEmblem
 
@@ -94,7 +105,7 @@ func (e emblemedIcon) AddEmblem(e EmblemedIcon, emblem Emblem) {
 }
 
 // ClearEmblems removes all the emblems from @icon.
-func (e emblemedIcon) ClearEmblems(e EmblemedIcon) {
+func (e emblemedIcon) ClearEmblems() {
 	var arg0 *C.GEmblemedIcon
 
 	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
@@ -103,19 +114,33 @@ func (e emblemedIcon) ClearEmblems(e EmblemedIcon) {
 }
 
 // Emblems gets the list of emblems for the @icon.
-func (e emblemedIcon) Emblems(e EmblemedIcon) {
+func (e emblemedIcon) Emblems() *glib.List {
 	var arg0 *C.GEmblemedIcon
 
 	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
-	C.g_emblemed_icon_get_emblems(arg0)
+	var cret *C.GList
+	var goret *glib.List
+
+	cret = C.g_emblemed_icon_get_emblems(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Icon gets the main icon for @emblemed.
-func (e emblemedIcon) Icon(e EmblemedIcon) {
+func (e emblemedIcon) Icon() Icon {
 	var arg0 *C.GEmblemedIcon
 
 	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
-	C.g_emblemed_icon_get_icon(arg0)
+	var cret *C.GIcon
+	var goret Icon
+
+	cret = C.g_emblemed_icon_get_icon(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+
+	return goret
 }

@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,7 +40,7 @@ type ConverterOutputStream interface {
 	PollableOutputStream
 
 	// Converter gets the #GConverter that is used by @converter_stream.
-	Converter(c ConverterOutputStream)
+	Converter() Converter
 }
 
 // converterOutputStream implements the ConverterOutputStream interface.
@@ -64,21 +67,35 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 }
 
 // NewConverterOutputStream constructs a class ConverterOutputStream.
-func NewConverterOutputStream(baseStream OutputStream, converter Converter) {
+func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream {
 	var arg1 *C.GOutputStream
 	var arg2 *C.GConverter
 
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 	arg2 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
 
-	C.g_converter_output_stream_new(arg1, arg2)
+	cret := new(C.GConverterOutputStream)
+	var goret ConverterOutputStream
+
+	cret = C.g_converter_output_stream_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConverterOutputStream)
+
+	return goret
 }
 
 // Converter gets the #GConverter that is used by @converter_stream.
-func (c converterOutputStream) Converter(c ConverterOutputStream) {
+func (c converterOutputStream) Converter() Converter {
 	var arg0 *C.GConverterOutputStream
 
 	arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(c.Native()))
 
-	C.g_converter_output_stream_get_converter(arg0)
+	var cret *C.GConverter
+	var goret Converter
+
+	cret = C.g_converter_output_stream_get_converter(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Converter)
+
+	return goret
 }

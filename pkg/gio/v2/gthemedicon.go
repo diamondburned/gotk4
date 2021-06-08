@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,14 +46,14 @@ type ThemedIcon interface {
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	AppendName(i ThemedIcon, iconname string)
+	AppendName(iconname string)
 	// Names gets the names of icons from within @icon.
-	Names(i ThemedIcon)
+	Names() []string
 	// PrependName: prepend a name to the list of icons from within @icon.
 	//
 	// Note that doing so invalidates the hash computed by prior calls to
 	// g_icon_hash().
-	PrependName(i ThemedIcon, iconname string)
+	PrependName(iconname string)
 }
 
 // themedIcon implements the ThemedIcon interface.
@@ -76,35 +80,56 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 }
 
 // NewThemedIcon constructs a class ThemedIcon.
-func NewThemedIcon(iconname string) {
+func NewThemedIcon(iconname string) ThemedIcon {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_themed_icon_new(arg1)
+	cret := new(C.GThemedIcon)
+	var goret ThemedIcon
+
+	cret = C.g_themed_icon_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+
+	return goret
 }
 
 // NewThemedIconFromNames constructs a class ThemedIcon.
-func NewThemedIconFromNames() {
-	C.g_themed_icon_new_from_names(arg1, arg2)
+func NewThemedIconFromNames() ThemedIcon {
+	cret := new(C.GThemedIcon)
+	var goret ThemedIcon
+
+	cret = C.g_themed_icon_new_from_names(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+
+	return goret
 }
 
 // NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
-func NewThemedIconWithDefaultFallbacks(iconname string) {
+func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_themed_icon_new_with_default_fallbacks(arg1)
+	cret := new(C.GThemedIcon)
+	var goret ThemedIcon
+
+	cret = C.g_themed_icon_new_with_default_fallbacks(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+
+	return goret
 }
 
 // AppendName: append a name to the list of icons from within @icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (i themedIcon) AppendName(i ThemedIcon, iconname string) {
+func (i themedIcon) AppendName(iconname string) {
 	var arg0 *C.GThemedIcon
 	var arg1 *C.char
 
@@ -116,19 +141,40 @@ func (i themedIcon) AppendName(i ThemedIcon, iconname string) {
 }
 
 // Names gets the names of icons from within @icon.
-func (i themedIcon) Names(i ThemedIcon) {
+func (i themedIcon) Names() []string {
 	var arg0 *C.GThemedIcon
 
 	arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 
-	C.g_themed_icon_get_names(arg0)
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.g_themed_icon_get_names(arg0)
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+		}
+	}
+
+	return goret
 }
 
 // PrependName: prepend a name to the list of icons from within @icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
-func (i themedIcon) PrependName(i ThemedIcon, iconname string) {
+func (i themedIcon) PrependName(iconname string) {
 	var arg0 *C.GThemedIcon
 	var arg1 *C.char
 

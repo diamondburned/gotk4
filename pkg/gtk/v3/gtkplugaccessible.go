@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +25,7 @@ func init() {
 type PlugAccessible interface {
 	WindowAccessible
 
-	ID(p PlugAccessible)
+	ID() string
 }
 
 // plugAccessible implements the PlugAccessible interface.
@@ -47,10 +49,18 @@ func marshalPlugAccessible(p uintptr) (interface{}, error) {
 	return WrapPlugAccessible(obj), nil
 }
 
-func (p plugAccessible) ID(p PlugAccessible) {
+func (p plugAccessible) ID() string {
 	var arg0 *C.GtkPlugAccessible
 
 	arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
 
-	C.gtk_plug_accessible_get_id(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_plug_accessible_get_id(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,11 +40,11 @@ type ToggleToolButton interface {
 
 	// Active queries a ToggleToolButton and returns its current state. Returns
 	// true if the toggle button is pressed in and false if it is raised.
-	Active(b ToggleToolButton) bool
+	Active() bool
 	// SetActive sets the status of the toggle tool button. Set to true if you
 	// want the GtkToggleButton to be “pressed in”, and false to raise it. This
 	// action causes the toggled signal to be emitted.
-	SetActive(b ToggleToolButton, isActive bool)
+	SetActive(isActive bool)
 }
 
 // toggleToolButton implements the ToggleToolButton interface.
@@ -72,43 +75,57 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 }
 
 // NewToggleToolButton constructs a class ToggleToolButton.
-func NewToggleToolButton() {
-	C.gtk_toggle_tool_button_new()
+func NewToggleToolButton() ToggleToolButton {
+	var cret C.GtkToggleToolButton
+	var goret ToggleToolButton
+
+	cret = C.gtk_toggle_tool_button_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+
+	return goret
 }
 
 // NewToggleToolButtonFromStock constructs a class ToggleToolButton.
-func NewToggleToolButtonFromStock(stockID string) {
+func NewToggleToolButtonFromStock(stockID string) ToggleToolButton {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(stockID))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_toggle_tool_button_new_from_stock(arg1)
+	var cret C.GtkToggleToolButton
+	var goret ToggleToolButton
+
+	cret = C.gtk_toggle_tool_button_new_from_stock(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+
+	return goret
 }
 
 // Active queries a ToggleToolButton and returns its current state. Returns
 // true if the toggle button is pressed in and false if it is raised.
-func (b toggleToolButton) Active(b ToggleToolButton) bool {
+func (b toggleToolButton) Active() bool {
 	var arg0 *C.GtkToggleToolButton
 
 	arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_toggle_tool_button_get_active(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetActive sets the status of the toggle tool button. Set to true if you
 // want the GtkToggleButton to be “pressed in”, and false to raise it. This
 // action causes the toggled signal to be emitted.
-func (b toggleToolButton) SetActive(b ToggleToolButton, isActive bool) {
+func (b toggleToolButton) SetActive(isActive bool) {
 	var arg0 *C.GtkToggleToolButton
 	var arg1 C.gboolean
 

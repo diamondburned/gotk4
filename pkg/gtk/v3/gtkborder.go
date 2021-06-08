@@ -3,6 +3,7 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -44,8 +45,18 @@ func marshalBorder(p uintptr) (interface{}, error) {
 }
 
 // NewBorder constructs a struct Border.
-func NewBorder() {
-	C.gtk_border_new()
+func NewBorder() *Border {
+	cret := new(C.GtkBorder)
+	var goret *Border
+
+	cret = C.gtk_border_new()
+
+	goret = WrapBorder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Border) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Native returns the underlying C source pointer.
@@ -82,16 +93,26 @@ func (b *Border) Bottom() int16 {
 }
 
 // Copy copies a Border-struct.
-func (b *Border) Copy(b *Border) {
+func (b *Border) Copy() *Border {
 	var arg0 *C.GtkBorder
 
 	arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
 
-	C.gtk_border_copy(arg0)
+	cret := new(C.GtkBorder)
+	var goret *Border
+
+	cret = C.gtk_border_copy(arg0)
+
+	goret = WrapBorder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Border) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Free frees a Border-struct.
-func (b *Border) Free(b *Border) {
+func (b *Border) Free() {
 	var arg0 *C.GtkBorder
 
 	arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))

@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,9 +41,9 @@ type Emblem interface {
 	Icon
 
 	// Icon gives back the icon from @emblem.
-	Icon(e Emblem)
+	Icon() Icon
 	// Origin gets the origin of the emblem.
-	Origin(e Emblem)
+	Origin() EmblemOrigin
 }
 
 // emblem implements the Emblem interface.
@@ -67,39 +70,67 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 }
 
 // NewEmblem constructs a class Emblem.
-func NewEmblem(icon Icon) {
+func NewEmblem(icon Icon) Emblem {
 	var arg1 *C.GIcon
 
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
-	C.g_emblem_new(arg1)
+	cret := new(C.GEmblem)
+	var goret Emblem
+
+	cret = C.g_emblem_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+
+	return goret
 }
 
 // NewEmblemWithOrigin constructs a class Emblem.
-func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) {
+func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	var arg1 *C.GIcon
 	var arg2 C.GEmblemOrigin
 
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	arg2 = (C.GEmblemOrigin)(origin)
 
-	C.g_emblem_new_with_origin(arg1, arg2)
+	cret := new(C.GEmblem)
+	var goret Emblem
+
+	cret = C.g_emblem_new_with_origin(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+
+	return goret
 }
 
 // Icon gives back the icon from @emblem.
-func (e emblem) Icon(e Emblem) {
+func (e emblem) Icon() Icon {
 	var arg0 *C.GEmblem
 
 	arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
-	C.g_emblem_get_icon(arg0)
+	var cret *C.GIcon
+	var goret Icon
+
+	cret = C.g_emblem_get_icon(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+
+	return goret
 }
 
 // Origin gets the origin of the emblem.
-func (e emblem) Origin(e Emblem) {
+func (e emblem) Origin() EmblemOrigin {
 	var arg0 *C.GEmblem
 
 	arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
-	C.g_emblem_get_origin(arg0)
+	var cret C.GEmblemOrigin
+	var goret EmblemOrigin
+
+	cret = C.g_emblem_get_origin(arg0)
+
+	goret = EmblemOrigin(cret)
+
+	return goret
 }

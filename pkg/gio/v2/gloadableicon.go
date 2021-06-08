@@ -3,6 +3,10 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,14 +37,14 @@ func init() {
 type LoadableIconOverrider interface {
 	// Load loads a loadable icon. For the asynchronous version of this
 	// function, see g_loadable_icon_load_async().
-	Load(i LoadableIcon, size int, cancellable Cancellable) (typ string, err error)
+	Load(size int, cancellable Cancellable) (typ string, inputStream InputStream, err error)
 	// LoadAsync loads an icon asynchronously. To finish this function, see
 	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
 	// this function, see g_loadable_icon_load().
-	LoadAsync(i LoadableIcon)
+	LoadAsync()
 	// LoadFinish finishes an asynchronous icon load started in
 	// g_loadable_icon_load_async().
-	LoadFinish(i LoadableIcon, res AsyncResult) (typ string, err error)
+	LoadFinish(res AsyncResult) (typ string, inputStream InputStream, err error)
 }
 
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
@@ -73,7 +77,7 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 
 // Load loads a loadable icon. For the asynchronous version of this
 // function, see g_loadable_icon_load_async().
-func (i loadableIcon) Load(i LoadableIcon, size int, cancellable Cancellable) (typ string, err error) {
+func (i loadableIcon) Load(size int, cancellable Cancellable) (typ string, inputStream InputStream, err error) {
 	var arg0 *C.GLoadableIcon
 	var arg1 C.int
 	var arg3 *C.GCancellable
@@ -82,24 +86,27 @@ func (i loadableIcon) Load(i LoadableIcon, size int, cancellable Cancellable) (t
 	arg1 = C.int(size)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg2 *C.char
-	var typ string
-	var errout *C.GError
-	var err error
+	arg2 := new(*C.char)
+	var ret2 string
+	cret := new(C.GInputStream)
+	var goret InputStream
+	var cerr *C.GError
+	var goerr error
 
-	C.g_loadable_icon_load(arg0, arg1, &arg2, arg3, &errout)
+	cret = C.g_loadable_icon_load(arg0, arg1, arg2, arg3, &cerr)
 
-	typ = C.GoString(&arg2)
-	defer C.free(unsafe.Pointer(&arg2))
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(*arg2)
+	defer C.free(unsafe.Pointer(*arg2))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return typ, err
+	return ret2, goret, goerr
 }
 
 // LoadAsync loads an icon asynchronously. To finish this function, see
 // g_loadable_icon_load_finish(). For the synchronous, blocking version of
 // this function, see g_loadable_icon_load().
-func (i loadableIcon) LoadAsync(i LoadableIcon) {
+func (i loadableIcon) LoadAsync() {
 	var arg0 *C.GLoadableIcon
 
 	arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
@@ -109,23 +116,26 @@ func (i loadableIcon) LoadAsync(i LoadableIcon) {
 
 // LoadFinish finishes an asynchronous icon load started in
 // g_loadable_icon_load_async().
-func (i loadableIcon) LoadFinish(i LoadableIcon, res AsyncResult) (typ string, err error) {
+func (i loadableIcon) LoadFinish(res AsyncResult) (typ string, inputStream InputStream, err error) {
 	var arg0 *C.GLoadableIcon
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var arg2 *C.char
-	var typ string
-	var errout *C.GError
-	var err error
+	arg2 := new(*C.char)
+	var ret2 string
+	cret := new(C.GInputStream)
+	var goret InputStream
+	var cerr *C.GError
+	var goerr error
 
-	C.g_loadable_icon_load_finish(arg0, arg1, &arg2, &errout)
+	cret = C.g_loadable_icon_load_finish(arg0, arg1, arg2, &cerr)
 
-	typ = C.GoString(&arg2)
-	defer C.free(unsafe.Pointer(&arg2))
-	err = gerror.Take(unsafe.Pointer(errout))
+	ret2 = C.GoString(*arg2)
+	defer C.free(unsafe.Pointer(*arg2))
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return typ, err
+	return ret2, goret, goerr
 }

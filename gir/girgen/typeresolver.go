@@ -108,13 +108,24 @@ func (typ *ResolvedType) IsExternGLib(glibType string) bool {
 	return thisType == glibType
 }
 
+// IsRecord returns true if the current ResolvedType is a record.
+func (typ *ResolvedType) IsRecord() bool {
+	return typ.Extern != nil && typ.Extern.Result.Record != nil
+}
+
 // IsPrimitive returns true if the resolved type is a builtin type that can be
-// directly casted to an equivalent C type.
+// directly casted to an equivalent C type OR a record..
 func (typ *ResolvedType) IsPrimitive() bool {
 	return typ.Builtin != nil &&
 		typ.Package == "" &&
 		typ.Import == "" &&
 		*typ.Builtin != "string"
+}
+
+// CanCast returns true if the resolved type is a builtin type that can be
+// directly casted to an equivalent C type OR a record..
+func (typ *ResolvedType) CanCast() bool {
+	return typ.IsPrimitive() || typ.IsRecord()
 }
 
 // IsBuiltin is a convenient function to compare the builtin type.
@@ -342,7 +353,7 @@ func (ng *NamespaceGenerator) ResolveType(typ gir.Type) *ResolvedType {
 	// Check for edge cases.
 	switch {
 	case result.Record != nil:
-		if !canRecord(nil, *result.Record) {
+		if !canRecord(ng, *result.Record, nil) {
 			return nil
 		}
 	}

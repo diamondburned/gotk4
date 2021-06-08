@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,31 +43,31 @@ type Revealer interface {
 
 	// ChildRevealed returns whether the child is fully revealed, in other words
 	// whether the transition to the revealed state is completed.
-	ChildRevealed(r Revealer) bool
+	ChildRevealed() bool
 	// RevealChild returns whether the child is currently revealed. See
 	// gtk_revealer_set_reveal_child().
 	//
 	// This function returns true as soon as the transition is to the revealed
 	// state is started. To learn whether the child is fully revealed (ie the
 	// transition is completed), use gtk_revealer_get_child_revealed().
-	RevealChild(r Revealer) bool
+	RevealChild() bool
 	// TransitionDuration returns the amount of time (in milliseconds) that
 	// transitions will take.
-	TransitionDuration(r Revealer)
+	TransitionDuration() uint
 	// TransitionType gets the type of animation that will be used for
 	// transitions in @revealer.
-	TransitionType(r Revealer)
+	TransitionType() RevealerTransitionType
 	// SetRevealChild tells the Revealer to reveal or conceal its child.
 	//
 	// The transition will be animated with the current transition type of
 	// @revealer.
-	SetRevealChild(r Revealer, revealChild bool)
+	SetRevealChild(revealChild bool)
 	// SetTransitionDuration sets the duration that transitions will take.
-	SetTransitionDuration(r Revealer, duration uint)
+	SetTransitionDuration(duration uint)
 	// SetTransitionType sets the type of animation that will be used for
 	// transitions in @revealer. Available types include various kinds of fades
 	// and slides.
-	SetTransitionType(r Revealer, transition RevealerTransitionType)
+	SetTransitionType(transition RevealerTransitionType)
 }
 
 // revealer implements the Revealer interface.
@@ -91,27 +94,34 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 }
 
 // NewRevealer constructs a class Revealer.
-func NewRevealer() {
-	C.gtk_revealer_new()
+func NewRevealer() Revealer {
+	var cret C.GtkRevealer
+	var goret Revealer
+
+	cret = C.gtk_revealer_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Revealer)
+
+	return goret
 }
 
 // ChildRevealed returns whether the child is fully revealed, in other words
 // whether the transition to the revealed state is completed.
-func (r revealer) ChildRevealed(r Revealer) bool {
+func (r revealer) ChildRevealed() bool {
 	var arg0 *C.GtkRevealer
 
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_revealer_get_child_revealed(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // RevealChild returns whether the child is currently revealed. See
@@ -120,48 +130,62 @@ func (r revealer) ChildRevealed(r Revealer) bool {
 // This function returns true as soon as the transition is to the revealed
 // state is started. To learn whether the child is fully revealed (ie the
 // transition is completed), use gtk_revealer_get_child_revealed().
-func (r revealer) RevealChild(r Revealer) bool {
+func (r revealer) RevealChild() bool {
 	var arg0 *C.GtkRevealer
 
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_revealer_get_reveal_child(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
 // transitions will take.
-func (r revealer) TransitionDuration(r Revealer) {
+func (r revealer) TransitionDuration() uint {
 	var arg0 *C.GtkRevealer
 
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
-	C.gtk_revealer_get_transition_duration(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_revealer_get_transition_duration(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // TransitionType gets the type of animation that will be used for
 // transitions in @revealer.
-func (r revealer) TransitionType(r Revealer) {
+func (r revealer) TransitionType() RevealerTransitionType {
 	var arg0 *C.GtkRevealer
 
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
-	C.gtk_revealer_get_transition_type(arg0)
+	var cret C.GtkRevealerTransitionType
+	var goret RevealerTransitionType
+
+	cret = C.gtk_revealer_get_transition_type(arg0)
+
+	goret = RevealerTransitionType(cret)
+
+	return goret
 }
 
 // SetRevealChild tells the Revealer to reveal or conceal its child.
 //
 // The transition will be animated with the current transition type of
 // @revealer.
-func (r revealer) SetRevealChild(r Revealer, revealChild bool) {
+func (r revealer) SetRevealChild(revealChild bool) {
 	var arg0 *C.GtkRevealer
 	var arg1 C.gboolean
 
@@ -174,7 +198,7 @@ func (r revealer) SetRevealChild(r Revealer, revealChild bool) {
 }
 
 // SetTransitionDuration sets the duration that transitions will take.
-func (r revealer) SetTransitionDuration(r Revealer, duration uint) {
+func (r revealer) SetTransitionDuration(duration uint) {
 	var arg0 *C.GtkRevealer
 	var arg1 C.guint
 
@@ -187,7 +211,7 @@ func (r revealer) SetTransitionDuration(r Revealer, duration uint) {
 // SetTransitionType sets the type of animation that will be used for
 // transitions in @revealer. Available types include various kinds of fades
 // and slides.
-func (r revealer) SetTransitionType(r Revealer, transition RevealerTransitionType) {
+func (r revealer) SetTransitionType(transition RevealerTransitionType) {
 	var arg0 *C.GtkRevealer
 	var arg1 C.GtkRevealerTransitionType
 

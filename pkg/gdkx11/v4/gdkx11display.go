@@ -3,6 +3,9 @@
 package gdkx11
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -44,24 +47,24 @@ type X11Display interface {
 	//
 	// If you don’t need to use the return value,
 	// gdk_x11_display_error_trap_pop_ignored() would be more efficient.
-	ErrorTrapPop(d X11Display)
+	ErrorTrapPop() int
 	// ErrorTrapPopIgnored pops the error trap pushed by
 	// gdk_x11_display_error_trap_push(). Does not block to see if an error
 	// occurred; merely records the range of requests to ignore errors for, and
 	// ignores those errors if they arrive asynchronously.
-	ErrorTrapPopIgnored(d X11Display)
+	ErrorTrapPopIgnored()
 	// ErrorTrapPush begins a range of X requests on @display for which X error
 	// events will be ignored. Unignored errors (when no trap is pushed) will
 	// abort the application. Use gdk_x11_display_error_trap_pop() or
 	// gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
 	// function.
-	ErrorTrapPush(d X11Display)
+	ErrorTrapPush()
 	// DefaultGroup returns the default group leader surface for all toplevel
 	// surfaces on @display. This surface is implicitly created by GDK. See
 	// gdk_x11_surface_set_group().
-	DefaultGroup(d X11Display)
+	DefaultGroup() gdk.Surface
 	// GlxVersion retrieves the version of the GLX implementation.
-	GlxVersion(d X11Display) (major int, minor int, ok bool)
+	GlxVersion() (major int, minor int, ok bool)
 	// PrimaryMonitor gets the primary monitor for the display.
 	//
 	// The primary monitor is considered the monitor where the “main desktop”
@@ -71,34 +74,20 @@ type X11Display interface {
 	//
 	// If no monitor is the designated primary monitor, any monitor (usually the
 	// first) may be returned.
-	PrimaryMonitor(d X11Display)
+	PrimaryMonitor() gdk.Monitor
 	// Screen retrieves the X11Screen of the @display.
-	Screen(d X11Display)
+	Screen() X11Screen
 	// StartupNotificationID gets the startup notification ID for a display.
-	StartupNotificationID(d X11Display)
+	StartupNotificationID() string
 	// UserTime returns the timestamp of the last user interaction on @display.
 	// The timestamp is taken from events caused by user interaction such as key
 	// presses or pointer movements. See gdk_x11_surface_set_user_time().
-	UserTime(d X11Display)
-	// Xcursor returns the X cursor belonging to a Cursor, potentially creating
-	// the cursor.
-	//
-	// Be aware that the returned cursor may not be unique to @cursor. It may
-	// for example be shared with its fallback cursor. On old X servers that
-	// don't support the XCursor extension, all cursors may even fall back to a
-	// few default cursors.
-	Xcursor(d X11Display, cursor gdk.Cursor)
-	// Xdisplay returns the X display of a Display.
-	Xdisplay(d X11Display)
-	// Xrootwindow returns the root X window used by Display.
-	Xrootwindow(d X11Display)
-	// Xscreen returns the X Screen used by Display.
-	Xscreen(d X11Display)
+	UserTime() uint32
 	// Grab: call XGrabServer() on @display. To ungrab the display again, use
 	// gdk_x11_display_ungrab().
 	//
 	// gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
-	Grab(d X11Display)
+	Grab()
 	// SetCursorTheme sets the cursor theme from which the images for cursor
 	// should be taken.
 	//
@@ -108,7 +97,7 @@ type X11Display interface {
 	// to be handled by the application (GTK applications can learn about cursor
 	// theme changes by listening for change notification for the corresponding
 	// Setting).
-	SetCursorTheme(d X11Display, theme string, size int)
+	SetCursorTheme(theme string, size int)
 	// SetStartupNotificationID sets the startup notification ID for a display.
 	//
 	// This is usually taken from the value of the DESKTOP_STARTUP_ID
@@ -123,7 +112,7 @@ type X11Display interface {
 	// The startup ID is also what is used to signal that the startup is
 	// complete (for example, when opening a window or when calling
 	// gdk_display_notify_startup_complete()).
-	SetStartupNotificationID(d X11Display, startupID string)
+	SetStartupNotificationID(startupID string)
 	// SetSurfaceScale forces a specific window scale for all windows on this
 	// display, instead of using the default or user configured scale. This is
 	// can be used to disable scaling support by setting @scale to 1, or to
@@ -131,20 +120,20 @@ type X11Display interface {
 	//
 	// Once the scale is set by this call it will not change in response to
 	// later user configuration changes.
-	SetSurfaceScale(d X11Display, scale int)
+	SetSurfaceScale(scale int)
 	// StringToCompoundText: convert a string from the encoding of the current
 	// locale into a form suitable for storing in a window property.
-	StringToCompoundText(d X11Display, str string)
+	StringToCompoundText(str string) int
 	// TextPropertyToTextList: convert a text string from the encoding as it is
 	// stored in a property into an array of strings in the encoding of the
 	// current locale. (The elements of the array represent the nul-separated
 	// elements of the original text string.)
-	TextPropertyToTextList(d X11Display, encoding string, format int, text byte, length int, list string)
+	TextPropertyToTextList(encoding string, format int, text byte, length int, list string) int
 	// Ungrab: ungrab @display after it has been grabbed with
 	// gdk_x11_display_grab().
-	Ungrab(d X11Display)
+	Ungrab()
 	// UTF8ToCompoundText converts from UTF-8 to compound text.
-	UTF8ToCompoundText(d X11Display, str string) bool
+	UTF8ToCompoundText(str string) bool
 }
 
 // x11Display implements the X11Display interface.
@@ -175,19 +164,26 @@ func marshalX11Display(p uintptr) (interface{}, error) {
 //
 // If you don’t need to use the return value,
 // gdk_x11_display_error_trap_pop_ignored() would be more efficient.
-func (d x11Display) ErrorTrapPop(d X11Display) {
+func (d x11Display) ErrorTrapPop() int {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_x11_display_error_trap_pop(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_x11_display_error_trap_pop(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // ErrorTrapPopIgnored pops the error trap pushed by
 // gdk_x11_display_error_trap_push(). Does not block to see if an error
 // occurred; merely records the range of requests to ignore errors for, and
 // ignores those errors if they arrive asynchronously.
-func (d x11Display) ErrorTrapPopIgnored(d X11Display) {
+func (d x11Display) ErrorTrapPopIgnored() {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -200,7 +196,7 @@ func (d x11Display) ErrorTrapPopIgnored(d X11Display) {
 // abort the application. Use gdk_x11_display_error_trap_pop() or
 // gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
 // function.
-func (d x11Display) ErrorTrapPush(d X11Display) {
+func (d x11Display) ErrorTrapPush() {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -211,36 +207,43 @@ func (d x11Display) ErrorTrapPush(d X11Display) {
 // DefaultGroup returns the default group leader surface for all toplevel
 // surfaces on @display. This surface is implicitly created by GDK. See
 // gdk_x11_surface_set_group().
-func (d x11Display) DefaultGroup(d X11Display) {
+func (d x11Display) DefaultGroup() gdk.Surface {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_x11_display_get_default_group(arg0)
+	var cret *C.GdkSurface
+	var goret gdk.Surface
+
+	cret = C.gdk_x11_display_get_default_group(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+
+	return goret
 }
 
 // GlxVersion retrieves the version of the GLX implementation.
-func (d x11Display) GlxVersion(d X11Display) (major int, minor int, ok bool) {
+func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var arg1 C.int
-	var major int
-	var arg2 C.int
-	var minor int
+	arg1 := new(C.int)
+	var ret1 int
+	arg2 := new(C.int)
+	var ret2 int
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gdk_x11_display_get_glx_version(arg0, &arg1, &arg2)
+	cret = C.gdk_x11_display_get_glx_version(arg0, arg1, arg2)
 
-	major = int(&arg1)
-	minor = int(&arg2)
+	ret1 = int(*arg1)
+	ret2 = int(*arg2)
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return major, minor, ok
+	return ret1, ret2, goret
 }
 
 // PrimaryMonitor gets the primary monitor for the display.
@@ -252,92 +255,76 @@ func (d x11Display) GlxVersion(d X11Display) (major int, minor int, ok bool) {
 //
 // If no monitor is the designated primary monitor, any monitor (usually the
 // first) may be returned.
-func (d x11Display) PrimaryMonitor(d X11Display) {
+func (d x11Display) PrimaryMonitor() gdk.Monitor {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_x11_display_get_primary_monitor(arg0)
+	var cret *C.GdkMonitor
+	var goret gdk.Monitor
+
+	cret = C.gdk_x11_display_get_primary_monitor(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Monitor)
+
+	return goret
 }
 
 // Screen retrieves the X11Screen of the @display.
-func (d x11Display) Screen(d X11Display) {
+func (d x11Display) Screen() X11Screen {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_x11_display_get_screen(arg0)
+	var cret *C.GdkX11Screen
+	var goret X11Screen
+
+	cret = C.gdk_x11_display_get_screen(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(X11Screen)
+
+	return goret
 }
 
 // StartupNotificationID gets the startup notification ID for a display.
-func (d x11Display) StartupNotificationID(d X11Display) {
+func (d x11Display) StartupNotificationID() string {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_x11_display_get_startup_notification_id(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gdk_x11_display_get_startup_notification_id(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // UserTime returns the timestamp of the last user interaction on @display.
 // The timestamp is taken from events caused by user interaction such as key
 // presses or pointer movements. See gdk_x11_surface_set_user_time().
-func (d x11Display) UserTime(d X11Display) {
+func (d x11Display) UserTime() uint32 {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_x11_display_get_user_time(arg0)
-}
+	var cret C.guint32
+	var goret uint32
 
-// Xcursor returns the X cursor belonging to a Cursor, potentially creating
-// the cursor.
-//
-// Be aware that the returned cursor may not be unique to @cursor. It may
-// for example be shared with its fallback cursor. On old X servers that
-// don't support the XCursor extension, all cursors may even fall back to a
-// few default cursors.
-func (d x11Display) Xcursor(d X11Display, cursor gdk.Cursor) {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.GdkCursor
+	cret = C.gdk_x11_display_get_user_time(arg0)
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	goret = uint32(cret)
 
-	C.gdk_x11_display_get_xcursor(arg0, arg1)
-}
-
-// Xdisplay returns the X display of a Display.
-func (d x11Display) Xdisplay(d X11Display) {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	C.gdk_x11_display_get_xdisplay(arg0)
-}
-
-// Xrootwindow returns the root X window used by Display.
-func (d x11Display) Xrootwindow(d X11Display) {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	C.gdk_x11_display_get_xrootwindow(arg0)
-}
-
-// Xscreen returns the X Screen used by Display.
-func (d x11Display) Xscreen(d X11Display) {
-	var arg0 *C.GdkDisplay
-
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	C.gdk_x11_display_get_xscreen(arg0)
+	return goret
 }
 
 // Grab: call XGrabServer() on @display. To ungrab the display again, use
 // gdk_x11_display_ungrab().
 //
 // gdk_x11_display_grab()/gdk_x11_display_ungrab() calls can be nested.
-func (d x11Display) Grab(d X11Display) {
+func (d x11Display) Grab() {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -354,7 +341,7 @@ func (d x11Display) Grab(d X11Display) {
 // to be handled by the application (GTK applications can learn about cursor
 // theme changes by listening for change notification for the corresponding
 // Setting).
-func (d x11Display) SetCursorTheme(d X11Display, theme string, size int) {
+func (d x11Display) SetCursorTheme(theme string, size int) {
 	var arg0 *C.GdkDisplay
 	var arg1 *C.char
 	var arg2 C.int
@@ -381,7 +368,7 @@ func (d x11Display) SetCursorTheme(d X11Display, theme string, size int) {
 // The startup ID is also what is used to signal that the startup is
 // complete (for example, when opening a window or when calling
 // gdk_display_notify_startup_complete()).
-func (d x11Display) SetStartupNotificationID(d X11Display, startupID string) {
+func (d x11Display) SetStartupNotificationID(startupID string) {
 	var arg0 *C.GdkDisplay
 	var arg1 *C.char
 
@@ -399,7 +386,7 @@ func (d x11Display) SetStartupNotificationID(d X11Display, startupID string) {
 //
 // Once the scale is set by this call it will not change in response to
 // later user configuration changes.
-func (d x11Display) SetSurfaceScale(d X11Display, scale int) {
+func (d x11Display) SetSurfaceScale(scale int) {
 	var arg0 *C.GdkDisplay
 	var arg1 C.int
 
@@ -411,7 +398,7 @@ func (d x11Display) SetSurfaceScale(d X11Display, scale int) {
 
 // StringToCompoundText: convert a string from the encoding of the current
 // locale into a form suitable for storing in a window property.
-func (d x11Display) StringToCompoundText(d X11Display, str string) {
+func (d x11Display) StringToCompoundText(str string) int {
 	var arg0 *C.GdkDisplay
 	var arg1 *C.char
 
@@ -419,16 +406,21 @@ func (d x11Display) StringToCompoundText(d X11Display, str string) {
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gdk_x11_display_string_to_compound_text(arg0, arg1, &arg2, &arg3, &arg4, &arg5)
+	var cret C.int
+	var goret int
 
-	return encoding, format, ctext, length
+	cret = C.gdk_x11_display_string_to_compound_text(arg0, arg1, arg2, arg3, arg4, arg5)
+
+	goret = int(cret)
+
+	return ret2, ret3, ret4, ret5, goret
 }
 
 // TextPropertyToTextList: convert a text string from the encoding as it is
 // stored in a property into an array of strings in the encoding of the
 // current locale. (The elements of the array represent the nul-separated
 // elements of the original text string.)
-func (d x11Display) TextPropertyToTextList(d X11Display, encoding string, format int, text byte, length int, list string) {
+func (d x11Display) TextPropertyToTextList(encoding string, format int, text byte, length int, list string) int {
 	var arg0 *C.GdkDisplay
 	var arg1 *C.char
 	var arg2 C.int
@@ -445,12 +437,19 @@ func (d x11Display) TextPropertyToTextList(d X11Display, encoding string, format
 	arg5 = (***C.char)(C.CString(list))
 	defer C.free(unsafe.Pointer(arg5))
 
-	C.gdk_x11_display_text_property_to_text_list(arg0, arg1, arg2, arg3, arg4, arg5)
+	var cret C.int
+	var goret int
+
+	cret = C.gdk_x11_display_text_property_to_text_list(arg0, arg1, arg2, arg3, arg4, arg5)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Ungrab: ungrab @display after it has been grabbed with
 // gdk_x11_display_grab().
-func (d x11Display) Ungrab(d X11Display) {
+func (d x11Display) Ungrab() {
 	var arg0 *C.GdkDisplay
 
 	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
@@ -459,7 +458,7 @@ func (d x11Display) Ungrab(d X11Display) {
 }
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
-func (d x11Display) UTF8ToCompoundText(d X11Display, str string) bool {
+func (d x11Display) UTF8ToCompoundText(str string) bool {
 	var arg0 *C.GdkDisplay
 	var arg1 *C.char
 
@@ -468,13 +467,13 @@ func (d x11Display) UTF8ToCompoundText(d X11Display, str string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gdk_x11_display_utf8_to_compound_text(arg0, arg1, &arg2, &arg3, &arg4, &arg5)
+	cret = C.gdk_x11_display_utf8_to_compound_text(arg0, arg1, arg2, arg3, arg4, arg5)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return encoding, format, ctext, length, ok
+	return ret2, ret3, ret4, ret5, goret
 }

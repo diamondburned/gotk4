@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,27 +21,29 @@ func init() {
 	})
 }
 
-// StringSorter: gtkStringSorter is a Sorter that compares strings. It does the
-// comparison in a linguistically correct way using the current locale by
-// normalizing Unicode strings and possibly case-folding them before performing
-// the comparison.
+// StringSorter: `GtkStringSorter` is a `GtkSorter` that compares strings.
 //
-// To obtain the strings to compare, this sorter evaluates a Expression.
+// It does the comparison in a linguistically correct way using the current
+// locale by normalizing Unicode strings and possibly case-folding them before
+// performing the comparison.
+//
+// To obtain the strings to compare, this sorter evaluates a
+// [class@Gtk.Expression].
 type StringSorter interface {
 	Sorter
 
 	// Expression gets the expression that is evaluated to obtain strings from
 	// items.
-	Expression(s StringSorter)
+	Expression() Expression
 	// IgnoreCase gets whether the sorter ignores case differences.
-	IgnoreCase(s StringSorter) bool
+	IgnoreCase() bool
 	// SetExpression sets the expression that is evaluated to obtain strings
 	// from items.
 	//
 	// The expression must have the type G_TYPE_STRING.
-	SetExpression(s StringSorter, expression Expression)
+	SetExpression(expression Expression)
 	// SetIgnoreCase sets whether the sorter will ignore case differences.
-	SetIgnoreCase(s StringSorter, ignoreCase bool)
+	SetIgnoreCase(ignoreCase bool)
 }
 
 // stringSorter implements the StringSorter interface.
@@ -63,47 +68,61 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 }
 
 // NewStringSorter constructs a class StringSorter.
-func NewStringSorter(expression Expression) {
+func NewStringSorter(expression Expression) StringSorter {
 	var arg1 *C.GtkExpression
 
 	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	C.gtk_string_sorter_new(arg1)
+	cret := new(C.GtkStringSorter)
+	var goret StringSorter
+
+	cret = C.gtk_string_sorter_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringSorter)
+
+	return goret
 }
 
 // Expression gets the expression that is evaluated to obtain strings from
 // items.
-func (s stringSorter) Expression(s StringSorter) {
+func (s stringSorter) Expression() Expression {
 	var arg0 *C.GtkStringSorter
 
 	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_string_sorter_get_expression(arg0)
+	var cret *C.GtkExpression
+	var goret Expression
+
+	cret = C.gtk_string_sorter_get_expression(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+
+	return goret
 }
 
 // IgnoreCase gets whether the sorter ignores case differences.
-func (s stringSorter) IgnoreCase(s StringSorter) bool {
+func (s stringSorter) IgnoreCase() bool {
 	var arg0 *C.GtkStringSorter
 
 	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_string_sorter_get_ignore_case(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetExpression sets the expression that is evaluated to obtain strings
 // from items.
 //
 // The expression must have the type G_TYPE_STRING.
-func (s stringSorter) SetExpression(s StringSorter, expression Expression) {
+func (s stringSorter) SetExpression(expression Expression) {
 	var arg0 *C.GtkStringSorter
 	var arg1 *C.GtkExpression
 
@@ -114,7 +133,7 @@ func (s stringSorter) SetExpression(s StringSorter, expression Expression) {
 }
 
 // SetIgnoreCase sets whether the sorter will ignore case differences.
-func (s stringSorter) SetIgnoreCase(s StringSorter, ignoreCase bool) {
+func (s stringSorter) SetIgnoreCase(ignoreCase bool) {
 	var arg0 *C.GtkStringSorter
 	var arg1 C.gboolean
 

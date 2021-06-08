@@ -3,8 +3,12 @@
 package gobject
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -58,22 +62,6 @@ const (
 	ParamFlagsDeprecated ParamFlags = 2147483648
 )
 
-// NewParamSpecPool creates a new SpecPool.
-//
-// If @type_prefixing is true, lookups in the newly created pool will allow to
-// specify the owner as a colon-separated prefix of the property name, like
-// "GtkContainer:border-width". This feature is deprecated, so you should always
-// set @type_prefixing to false.
-func NewParamSpecPool(typePrefixing bool) {
-	var arg1 C.gboolean
-
-	if typePrefixing {
-		arg1 = C.gboolean(1)
-	}
-
-	C.g_param_spec_pool_new(arg1)
-}
-
 // ParamValueConvert transforms @src_value into @dest_value if possible, and
 // then validates @dest_value, in order for it to conform to @pspec. If
 // @strict_validation is true this function will only succeed if the transformed
@@ -95,15 +83,15 @@ func ParamValueConvert(pspec ParamSpec, srcValue *externglib.Value, destValue *e
 	}
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_param_value_convert(arg1, arg2, arg3, arg4)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ParamValueDefaults checks whether @value contains the default value as
@@ -116,15 +104,15 @@ func ParamValueDefaults(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_param_value_defaults(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ParamValueSetDefault sets @value to its default value as specified in @pspec.
@@ -151,21 +139,21 @@ func ParamValueValidate(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_param_value_validate(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ParamValuesCmp compares @value1 with @value2 according to @pspec, and return
 // -1, 0 or +1, if @value1 is found to be less than, equal to or greater than
 // @value2, respectively.
-func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externglib.Value) {
+func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externglib.Value) int {
 	var arg1 *C.GParamSpec
 	var arg2 *C.GValue
 	var arg3 *C.GValue
@@ -174,7 +162,14 @@ func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externgli
 	arg2 = (*C.GValue)(value1.GValue)
 	arg3 = (*C.GValue)(value2.GValue)
 
-	C.g_param_values_cmp(arg1, arg2, arg3)
+	var cret C.gint
+	var goret int
+
+	cret = C.g_param_values_cmp(arg1, arg2, arg3)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // ParamSpecPool: a SpecPool maintains a collection of Specs which can be
@@ -206,49 +201,64 @@ func (p *ParamSpecPool) Native() unsafe.Pointer {
 }
 
 // Insert inserts a Spec in the pool.
-func (p *ParamSpecPool) Insert(p *ParamSpecPool, pspec ParamSpec, ownerType externglib.Type) {
+func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
 	var arg0 *C.GParamSpecPool
 	var arg1 *C.GParamSpec
 	var arg2 C.GType
 
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 := C.GType(ownerType)
+	arg2 = C.GType(ownerType)
 
 	C.g_param_spec_pool_insert(arg0, arg1, arg2)
 }
 
 // List gets an array of all Specs owned by @owner_type in the pool.
-func (p *ParamSpecPool) List(p *ParamSpecPool, ownerType externglib.Type) uint {
+func (p *ParamSpecPool) List(ownerType externglib.Type) []ParamSpec {
 	var arg0 *C.GParamSpecPool
 	var arg1 C.GType
 
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	arg1 := C.GType(ownerType)
+	arg1 = C.GType(ownerType)
 
-	var arg2 C.guint
-	var nPspecsP uint
+	var cret **C.GParamSpec
+	var arg2 *C.guint
+	var goret []ParamSpec
 
-	C.g_param_spec_pool_list(arg0, arg1, &arg2)
+	cret = C.g_param_spec_pool_list(arg0, arg1, arg2)
 
-	nPspecsP = uint(&arg2)
+	goret = make([]ParamSpec, arg2)
+	for i := 0; i < uintptr(arg2); i++ {
+		src := (*C.GParamSpec)(ptr.Add(unsafe.Pointer(cret), i))
+		goret[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(ParamSpec)
+	}
 
-	return nPspecsP
+	return ret2, goret
 }
 
 // ListOwned gets an #GList of all Specs owned by @owner_type in the pool.
-func (p *ParamSpecPool) ListOwned(p *ParamSpecPool, ownerType externglib.Type) {
+func (p *ParamSpecPool) ListOwned(ownerType externglib.Type) *glib.List {
 	var arg0 *C.GParamSpecPool
 	var arg1 C.GType
 
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	arg1 := C.GType(ownerType)
+	arg1 = C.GType(ownerType)
 
-	C.g_param_spec_pool_list_owned(arg0, arg1)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.g_param_spec_pool_list_owned(arg0, arg1)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Lookup looks up a Spec in the pool.
-func (p *ParamSpecPool) Lookup(p *ParamSpecPool, paramName string, ownerType externglib.Type, walkAncestors bool) {
+func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walkAncestors bool) ParamSpec {
 	var arg0 *C.GParamSpecPool
 	var arg1 *C.gchar
 	var arg2 C.GType
@@ -257,16 +267,23 @@ func (p *ParamSpecPool) Lookup(p *ParamSpecPool, paramName string, ownerType ext
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.gchar)(C.CString(paramName))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 := C.GType(ownerType)
+	arg2 = C.GType(ownerType)
 	if walkAncestors {
 		arg3 = C.gboolean(1)
 	}
 
-	C.g_param_spec_pool_lookup(arg0, arg1, arg2, arg3)
+	var cret *C.GParamSpec
+	var goret ParamSpec
+
+	cret = C.g_param_spec_pool_lookup(arg0, arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+
+	return goret
 }
 
 // Remove removes a Spec from the pool.
-func (p *ParamSpecPool) Remove(p *ParamSpecPool, pspec ParamSpec) {
+func (p *ParamSpecPool) Remove(pspec ParamSpec) {
 	var arg0 *C.GParamSpecPool
 	var arg1 *C.GParamSpec
 

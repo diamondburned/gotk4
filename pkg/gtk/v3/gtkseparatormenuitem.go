@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,6 +66,13 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 }
 
 // NewSeparatorMenuItem constructs a class SeparatorMenuItem.
-func NewSeparatorMenuItem() {
-	C.gtk_separator_menu_item_new()
+func NewSeparatorMenuItem() SeparatorMenuItem {
+	var cret C.GtkSeparatorMenuItem
+	var goret SeparatorMenuItem
+
+	cret = C.gtk_separator_menu_item_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorMenuItem)
+
+	return goret
 }

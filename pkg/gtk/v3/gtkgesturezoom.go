@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -29,7 +32,7 @@ type GestureZoom interface {
 	// ScaleDelta: if @gesture is active, this function returns the zooming
 	// difference since the gesture was recognized (hence the starting point is
 	// considered 1:1). If @gesture is not active, 1 is returned.
-	ScaleDelta(g GestureZoom)
+	ScaleDelta() float64
 }
 
 // gestureZoom implements the GestureZoom interface.
@@ -54,21 +57,35 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 }
 
 // NewGestureZoom constructs a class GestureZoom.
-func NewGestureZoom(widget Widget) {
+func NewGestureZoom(widget Widget) GestureZoom {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_gesture_zoom_new(arg1)
+	cret := new(C.GtkGestureZoom)
+	var goret GestureZoom
+
+	cret = C.gtk_gesture_zoom_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
+
+	return goret
 }
 
 // ScaleDelta: if @gesture is active, this function returns the zooming
 // difference since the gesture was recognized (hence the starting point is
 // considered 1:1). If @gesture is not active, 1 is returned.
-func (g gestureZoom) ScaleDelta(g GestureZoom) {
+func (g gestureZoom) ScaleDelta() float64 {
 	var arg0 *C.GtkGestureZoom
 
 	arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
 
-	C.gtk_gesture_zoom_get_scale_delta(arg0)
+	var cret C.gdouble
+	var goret float64
+
+	cret = C.gtk_gesture_zoom_get_scale_delta(arg0)
+
+	goret = float64(cret)
+
+	return goret
 }

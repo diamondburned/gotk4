@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,49 +56,49 @@ type MountOperation interface {
 
 	// Anonymous: check to see whether the mount operation is being used for an
 	// anonymous user.
-	Anonymous(o MountOperation) bool
+	Anonymous() bool
 	// Choice gets a choice from the mount operation.
-	Choice(o MountOperation)
+	Choice() int
 	// Domain gets the domain of the mount operation.
-	Domain(o MountOperation)
+	Domain() string
 	// IsTcryptHiddenVolume: check to see whether the mount operation is being
 	// used for a TCRYPT hidden volume.
-	IsTcryptHiddenVolume(o MountOperation) bool
+	IsTcryptHiddenVolume() bool
 	// IsTcryptSystemVolume: check to see whether the mount operation is being
 	// used for a TCRYPT system volume.
-	IsTcryptSystemVolume(o MountOperation) bool
+	IsTcryptSystemVolume() bool
 	// Password gets a password from the mount operation.
-	Password(o MountOperation)
+	Password() string
 	// PasswordSave gets the state of saving passwords for the mount operation.
-	PasswordSave(o MountOperation)
+	PasswordSave() PasswordSave
 	// Pim gets a PIM from the mount operation.
-	Pim(o MountOperation)
+	Pim() uint
 	// Username: get the user name from the mount operation.
-	Username(o MountOperation)
+	Username() string
 	// Reply emits the Operation::reply signal.
-	Reply(o MountOperation, result MountOperationResult)
+	Reply(result MountOperationResult)
 	// SetAnonymous sets the mount operation to use an anonymous user if
 	// @anonymous is true.
-	SetAnonymous(o MountOperation, anonymous bool)
+	SetAnonymous(anonymous bool)
 	// SetChoice sets a default choice for the mount operation.
-	SetChoice(o MountOperation, choice int)
+	SetChoice(choice int)
 	// SetDomain sets the mount operation's domain.
-	SetDomain(o MountOperation, domain string)
+	SetDomain(domain string)
 	// SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
 	// if @hidden_volume is true.
-	SetIsTcryptHiddenVolume(o MountOperation, hiddenVolume bool)
+	SetIsTcryptHiddenVolume(hiddenVolume bool)
 	// SetIsTcryptSystemVolume sets the mount operation to use a system volume
 	// if @system_volume is true.
-	SetIsTcryptSystemVolume(o MountOperation, systemVolume bool)
+	SetIsTcryptSystemVolume(systemVolume bool)
 	// SetPassword sets the mount operation's password to @password.
-	SetPassword(o MountOperation, password string)
+	SetPassword(password string)
 	// SetPasswordSave sets the state of saving passwords for the mount
 	// operation.
-	SetPasswordSave(o MountOperation, save PasswordSave)
+	SetPasswordSave(save PasswordSave)
 	// SetPim sets the mount operation's PIM to @pim.
-	SetPim(o MountOperation, pim uint)
+	SetPim(pim uint)
 	// SetUsername sets the user name within @op to @username.
-	SetUsername(o MountOperation, username string)
+	SetUsername(username string)
 }
 
 // mountOperation implements the MountOperation interface.
@@ -120,123 +123,172 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 }
 
 // NewMountOperation constructs a class MountOperation.
-func NewMountOperation() {
-	C.g_mount_operation_new()
+func NewMountOperation() MountOperation {
+	cret := new(C.GMountOperation)
+	var goret MountOperation
+
+	cret = C.g_mount_operation_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+
+	return goret
 }
 
 // Anonymous: check to see whether the mount operation is being used for an
 // anonymous user.
-func (o mountOperation) Anonymous(o MountOperation) bool {
+func (o mountOperation) Anonymous() bool {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_mount_operation_get_anonymous(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Choice gets a choice from the mount operation.
-func (o mountOperation) Choice(o MountOperation) {
+func (o mountOperation) Choice() int {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	C.g_mount_operation_get_choice(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.g_mount_operation_get_choice(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Domain gets the domain of the mount operation.
-func (o mountOperation) Domain(o MountOperation) {
+func (o mountOperation) Domain() string {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	C.g_mount_operation_get_domain(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.g_mount_operation_get_domain(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // IsTcryptHiddenVolume: check to see whether the mount operation is being
 // used for a TCRYPT hidden volume.
-func (o mountOperation) IsTcryptHiddenVolume(o MountOperation) bool {
+func (o mountOperation) IsTcryptHiddenVolume() bool {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsTcryptSystemVolume: check to see whether the mount operation is being
 // used for a TCRYPT system volume.
-func (o mountOperation) IsTcryptSystemVolume(o MountOperation) bool {
+func (o mountOperation) IsTcryptSystemVolume() bool {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_mount_operation_get_is_tcrypt_system_volume(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Password gets a password from the mount operation.
-func (o mountOperation) Password(o MountOperation) {
+func (o mountOperation) Password() string {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	C.g_mount_operation_get_password(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.g_mount_operation_get_password(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // PasswordSave gets the state of saving passwords for the mount operation.
-func (o mountOperation) PasswordSave(o MountOperation) {
+func (o mountOperation) PasswordSave() PasswordSave {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	C.g_mount_operation_get_password_save(arg0)
+	var cret C.GPasswordSave
+	var goret PasswordSave
+
+	cret = C.g_mount_operation_get_password_save(arg0)
+
+	goret = PasswordSave(cret)
+
+	return goret
 }
 
 // Pim gets a PIM from the mount operation.
-func (o mountOperation) Pim(o MountOperation) {
+func (o mountOperation) Pim() uint {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	C.g_mount_operation_get_pim(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_mount_operation_get_pim(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Username: get the user name from the mount operation.
-func (o mountOperation) Username(o MountOperation) {
+func (o mountOperation) Username() string {
 	var arg0 *C.GMountOperation
 
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	C.g_mount_operation_get_username(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.g_mount_operation_get_username(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Reply emits the Operation::reply signal.
-func (o mountOperation) Reply(o MountOperation, result MountOperationResult) {
+func (o mountOperation) Reply(result MountOperationResult) {
 	var arg0 *C.GMountOperation
 	var arg1 C.GMountOperationResult
 
@@ -248,7 +300,7 @@ func (o mountOperation) Reply(o MountOperation, result MountOperationResult) {
 
 // SetAnonymous sets the mount operation to use an anonymous user if
 // @anonymous is true.
-func (o mountOperation) SetAnonymous(o MountOperation, anonymous bool) {
+func (o mountOperation) SetAnonymous(anonymous bool) {
 	var arg0 *C.GMountOperation
 	var arg1 C.gboolean
 
@@ -261,7 +313,7 @@ func (o mountOperation) SetAnonymous(o MountOperation, anonymous bool) {
 }
 
 // SetChoice sets a default choice for the mount operation.
-func (o mountOperation) SetChoice(o MountOperation, choice int) {
+func (o mountOperation) SetChoice(choice int) {
 	var arg0 *C.GMountOperation
 	var arg1 C.int
 
@@ -272,7 +324,7 @@ func (o mountOperation) SetChoice(o MountOperation, choice int) {
 }
 
 // SetDomain sets the mount operation's domain.
-func (o mountOperation) SetDomain(o MountOperation, domain string) {
+func (o mountOperation) SetDomain(domain string) {
 	var arg0 *C.GMountOperation
 	var arg1 *C.char
 
@@ -285,7 +337,7 @@ func (o mountOperation) SetDomain(o MountOperation, domain string) {
 
 // SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
 // if @hidden_volume is true.
-func (o mountOperation) SetIsTcryptHiddenVolume(o MountOperation, hiddenVolume bool) {
+func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
 	var arg0 *C.GMountOperation
 	var arg1 C.gboolean
 
@@ -299,7 +351,7 @@ func (o mountOperation) SetIsTcryptHiddenVolume(o MountOperation, hiddenVolume b
 
 // SetIsTcryptSystemVolume sets the mount operation to use a system volume
 // if @system_volume is true.
-func (o mountOperation) SetIsTcryptSystemVolume(o MountOperation, systemVolume bool) {
+func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
 	var arg0 *C.GMountOperation
 	var arg1 C.gboolean
 
@@ -312,7 +364,7 @@ func (o mountOperation) SetIsTcryptSystemVolume(o MountOperation, systemVolume b
 }
 
 // SetPassword sets the mount operation's password to @password.
-func (o mountOperation) SetPassword(o MountOperation, password string) {
+func (o mountOperation) SetPassword(password string) {
 	var arg0 *C.GMountOperation
 	var arg1 *C.char
 
@@ -325,7 +377,7 @@ func (o mountOperation) SetPassword(o MountOperation, password string) {
 
 // SetPasswordSave sets the state of saving passwords for the mount
 // operation.
-func (o mountOperation) SetPasswordSave(o MountOperation, save PasswordSave) {
+func (o mountOperation) SetPasswordSave(save PasswordSave) {
 	var arg0 *C.GMountOperation
 	var arg1 C.GPasswordSave
 
@@ -336,7 +388,7 @@ func (o mountOperation) SetPasswordSave(o MountOperation, save PasswordSave) {
 }
 
 // SetPim sets the mount operation's PIM to @pim.
-func (o mountOperation) SetPim(o MountOperation, pim uint) {
+func (o mountOperation) SetPim(pim uint) {
 	var arg0 *C.GMountOperation
 	var arg1 C.guint
 
@@ -347,7 +399,7 @@ func (o mountOperation) SetPim(o MountOperation, pim uint) {
 }
 
 // SetUsername sets the user name within @op to @username.
-func (o mountOperation) SetUsername(o MountOperation, username string) {
+func (o mountOperation) SetUsername(username string) {
 	var arg0 *C.GMountOperation
 	var arg1 *C.char
 

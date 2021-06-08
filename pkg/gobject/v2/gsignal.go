@@ -3,6 +3,7 @@
 package gobject
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -76,6 +77,10 @@ const (
 	// future version. A warning will be generated if it is connected while
 	// running with G_ENABLE_DIAGNOSTIC=1. Since 2.32.
 	SignalFlagsDeprecated SignalFlags = 256
+	// SignalFlagsAccumulatorFirstRun: only used in Accumulator accumulator
+	// functions for the InvocationHint::run_type field to mark the first call
+	// to the accumulator function for a signal emission. Since 2.68.
+	SignalFlagsAccumulatorFirstRun SignalFlags = 131072
 )
 
 // SignalMatchType: the match types specify what
@@ -105,8 +110,8 @@ const (
 //
 // If the handler ID is 0 then this function does nothing.
 //
-// A macro is also included that allows this function to be used without pointer
-// casts.
+// There is also a macro version of this function so that the code will be
+// inlined.
 func ClearSignalHandler(handlerIDPtr uint32, instance gextras.Objector) {
 	var arg1 *C.gulong
 	var arg2 C.gpointer
@@ -139,15 +144,15 @@ func SignalAccumulatorFirstWins(ihint *SignalInvocationHint, returnAccu *externg
 	arg4 = C.gpointer(dummy)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_signal_accumulator_first_wins(arg1, arg2, arg3, arg4)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SignalAccumulatorTrueHandled: a predefined Accumulator for signals that
@@ -168,32 +173,46 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu *exter
 	arg4 = C.gpointer(dummy)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_signal_accumulator_true_handled(arg1, arg2, arg3, arg4)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SignalAddEmissionHook adds an emission hook for a signal, which will get
 // called for any emission of that signal, independent of the instance. This is
 // possible only for signals which don't have SIGNAL_NO_HOOKS flag set.
-func SignalAddEmissionHook() {
-	C.g_signal_add_emission_hook(arg1, arg2, arg3, arg4, arg5)
+func SignalAddEmissionHook() uint32 {
+	var cret C.gulong
+	var goret uint32
+
+	cret = C.g_signal_add_emission_hook(arg1, arg2, arg3, arg4, arg5)
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // SignalGetInvocationHint returns the invocation hint of the innermost signal
 // emission of instance.
-func SignalGetInvocationHint(instance gextras.Objector) {
+func SignalGetInvocationHint(instance gextras.Objector) *SignalInvocationHint {
 	var arg1 C.gpointer
 
 	arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
 
-	C.g_signal_get_invocation_hint(arg1)
+	var cret *C.GSignalInvocationHint
+	var goret *SignalInvocationHint
+
+	cret = C.g_signal_get_invocation_hint(arg1)
+
+	goret = WrapSignalInvocationHint(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // SignalHandlerBlock blocks a handler of an instance so it will not be called
@@ -240,15 +259,15 @@ func SignalHandlerIsConnected(instance gextras.Objector, handlerID uint32) bool 
 	arg2 = C.gulong(handlerID)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_signal_handler_is_connected(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SignalHandlerUnblock undoes the effect of a previous g_signal_handler_block()
@@ -298,33 +317,37 @@ func SignalIsValidName(name string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_signal_is_valid_name(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SignalListIds lists the signals by id that a certain instance or interface
 // type created. Further information about the signals can be acquired through
 // g_signal_query().
-func SignalListIds(itype externglib.Type) uint {
+func SignalListIds(itype externglib.Type) []uint {
 	var arg1 C.GType
 
-	arg1 := C.GType(itype)
+	arg1 = C.GType(itype)
 
-	var arg2 C.guint
-	var nIds uint
+	var cret *C.guint
+	var arg2 *C.guint
+	var goret []uint
 
-	C.g_signal_list_ids(arg1, &arg2)
+	cret = C.g_signal_list_ids(arg1, arg2)
 
-	nIds = uint(&arg2)
+	ptr.SetSlice(unsafe.Pointer(&goret), unsafe.Pointer(cret), int(arg2))
+	runtime.SetFinalizer(&goret, func(v *[]uint) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 
-	return nIds
+	return ret2, goret
 }
 
 // SignalLookup: given the name of the signal and the type of object it connects
@@ -338,26 +361,40 @@ func SignalListIds(itype externglib.Type) uint {
 // always installed during class initialization.
 //
 // See g_signal_new() for details on allowed signal names.
-func SignalLookup(name string, itype externglib.Type) {
+func SignalLookup(name string, itype externglib.Type) uint {
 	var arg1 *C.gchar
 	var arg2 C.GType
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 := C.GType(itype)
+	arg2 = C.GType(itype)
 
-	C.g_signal_lookup(arg1, arg2)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_signal_lookup(arg1, arg2)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // SignalName: given the signal's identifier, finds its name.
 //
 // Two different signals may have the same name, if they have differing types.
-func SignalName(signalID uint) {
+func SignalName(signalID uint) string {
 	var arg1 C.guint
 
 	arg1 = C.guint(signalID)
 
-	C.g_signal_name(arg1)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_signal_name(arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // SignalQuery queries the signal system for in-depth information about a
@@ -370,14 +407,14 @@ func SignalQuery(signalID uint) *SignalQuery {
 
 	arg1 = C.guint(signalID)
 
-	var arg2 C.GSignalQuery
-	var query *SignalQuery
+	arg2 := new(C.GSignalQuery)
+	var ret2 *SignalQuery
 
-	C.g_signal_query(arg1, &arg2)
+	C.g_signal_query(arg1, arg2)
 
-	query = WrapSignalQuery(unsafe.Pointer(&arg2))
+	ret2 = WrapSignalQuery(unsafe.Pointer(arg2))
 
-	return query
+	return ret2
 }
 
 // SignalRemoveEmissionHook deletes an emission hook.

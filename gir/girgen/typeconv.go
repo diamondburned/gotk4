@@ -52,6 +52,10 @@ type ValueProp struct {
 type valuePropState struct {
 	ConversionExtras
 
+	// use these names for setting.
+	setIn  string
+	setOut string
+
 	resolved       *ResolvedType // only for type conversions
 	needsNamespace bool
 
@@ -134,6 +138,8 @@ func newThrowValue(in, out string) ValueProp {
 
 func (value *ValueProp) init() {
 	value.valuePropState = &valuePropState{
+		setIn:   value.In,
+		setOut:  value.Out,
 		p:       pen.NewPaperStringSize(2048), // 2KB
 		inDecl:  pen.NewPaperStringSize(128),  // 0.1KB
 		outDecl: pen.NewPaperStringSize(128),  // 0.1KB
@@ -163,13 +169,6 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 	}
 
 	cgoType := value.resolved.CGoType()
-
-	if value.OutputIsParameter {
-		// Output is dereferenced; trim a pointer from the CGo type. The Go type
-		// will remain a pointer that points to the C value.
-		cgoType = strings.TrimPrefix(cgoType, "*")
-	}
-
 	goType := value.resolved.PublicType(value.needsNamespace)
 
 	if inputC {
@@ -180,20 +179,41 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 		value.InType = goType
 	}
 
-	value.inDecl.Linef("var %s %s", value.In, value.InType)
 	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
 
-	if value.OutputIsParameter {
-		if inputC {
-			// Reference the input if this value is a Go output parameter.
-			value.In = "&" + value.In
-		} else {
-			// Dereference the output if this value is a C output parameter.
-			value.Out = "*" + value.Out
-		}
+	if inputC && value.outputAllocs() {
+		deref := strings.TrimPrefix(value.InType, "*")
+		value.inDecl.Linef("%s := new(%s)", value.In, deref)
+	} else {
+		value.inDecl.Linef("var %s %s", value.In, value.InType)
 	}
 
+	// Primitive output parameters are returned as values, so we dereference
+	// them on conversion.
+	if value.OutputIsParameter && value.resolved.Builtin != nil {
+		value.setIn = "*" + value.In
+	}
+
+	// if value.outputIsParameter {
+	// 	if inputC {
+	// 		if !value.CallerAllocates {
+	// 			// Reference the input if this value is a Go output parameter.
+	// 			value.in = "&" + value.In
+	// 		}
+	// 	} else {
+	// 		// Dereference the output if this value is a C output parameter.
+	// 		value.out = "*" + value.Out
+	// 	}
+	// }
+
 	return true
+}
+
+// outputAllocs returns true if the parameter is a value we need to allocate
+// ourselves.
+func (value *ValueProp) outputAllocs() bool {
+	return value.isTransferring() ||
+		(value.OutputIsParameter && value.CallerAllocates)
 }
 
 // IsZero returns true if ValueProp is empty.
@@ -212,6 +232,49 @@ func (value *ValueProp) loadIgnore(ignores map[int]struct{}) {
 	if value.AnyType.Array != nil && value.AnyType.Array.Length != nil {
 		ignores[*value.AnyType.Array.Length] = struct{}{}
 	}
+}
+
+// isTransferring is true when the ownership is either full or container. If the
+// converter code isn't generating for an array, then distinguishing this
+// doesn't matter. If the caller hasn't set the ownership yet, then it is
+// assumed that we're not getting the ownership, therefore false is returned.
+//
+// If the generating code is an array, and the conversion is being passed into
+// the same generation routine for the inner type, then the ownership should be
+// turned into "none" just for that inner type. See TypeConversion.inner().
+func (prop *ValueProp) isTransferring() bool {
+	return false ||
+		prop.Ownership.TransferOwnership == "full" ||
+		prop.Ownership.TransferOwnership == "container"
+}
+
+// cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
+// function.
+func (prop *ValueProp) cgoSetObject(ifaceType string) string {
+	var gobjectFunction string
+	if prop.isTransferring() {
+		// Full or container means we implicitly own the object, so we must
+		// not take another reference.
+		gobjectFunction = "AssumeOwnership"
+	} else {
+		// Else the object is either unowned by us or it's a floating
+		// reference. Take our own or sink the object.
+		gobjectFunction = "Take"
+	}
+
+	return fmt.Sprintf(
+		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s.Native()))).(%s)",
+		prop.Out, gobjectFunction, prop.In, ifaceType,
+	)
+}
+
+func (prop *ValueProp) malloc(lenOf string, add1 bool) string {
+	lenOf = "len(" + lenOf + ")"
+	if add1 {
+		lenOf = "(" + lenOf + "+1)"
+	}
+
+	return fmt.Sprintf("C.malloc(%s * %s)", lenOf, csizeof(prop.resolved))
 }
 
 // inner is used only for arrays.
@@ -235,40 +298,6 @@ func (value ValueProp) inner(in, out string) ValueProp {
 	prop.init()
 
 	return prop
-}
-
-// isTransferring is true when the ownership is either full or container. If the
-// converter code isn't generating for an array, then distinguishing this
-// doesn't matter. If the caller hasn't set the ownership yet, then it is
-// assumed that we're not getting the ownership, therefore false is returned.
-//
-// If the generating code is an array, and the conversion is being passed into
-// the same generation routine for the inner type, then the ownership should be
-// turned into "none" just for that inner type. See TypeConversion.inner().
-func (prop ValueProp) isTransferring() bool {
-	return false ||
-		prop.Ownership.TransferOwnership == "full" ||
-		prop.Ownership.TransferOwnership == "container"
-}
-
-// cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
-// function.
-func (prop ValueProp) cgoSetObject(ifaceType string) string {
-	var gobjectFunction string
-	if prop.isTransferring() {
-		// Full or container means we implicitly own the object, so we must
-		// not take another reference.
-		gobjectFunction = "AssumeOwnership"
-	} else {
-		// Else the object is either unowned by us or it's a floating
-		// reference. Take our own or sink the object.
-		gobjectFunction = "Take"
-	}
-
-	return fmt.Sprintf(
-		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s.Native()))).(%s)",
-		prop.Out, gobjectFunction, prop.In, ifaceType,
-	)
 }
 
 // TypeConverted is the result of conversion for a single value.

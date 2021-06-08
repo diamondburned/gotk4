@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,25 +65,25 @@ type DBusObjectManagerServer interface {
 	//
 	// Note that @manager will take a reference on @object for as long as it is
 	// exported.
-	Export(m DBusObjectManagerServer, object DBusObjectSkeleton)
+	Export(object DBusObjectSkeleton)
 	// ExportUniquely: like g_dbus_object_manager_server_export() but appends a
 	// string of the form _N (with N being a natural number) to @object's object
 	// path if an object with the given path already exists. As such, the
 	// BusObjectProxy:g-object-path property of @object may be modified.
-	ExportUniquely(m DBusObjectManagerServer, object DBusObjectSkeleton)
+	ExportUniquely(object DBusObjectSkeleton)
 	// Connection gets the BusConnection used by @manager.
-	Connection(m DBusObjectManagerServer)
+	Connection() DBusConnection
 	// IsExported returns whether @object is currently exported on @manager.
-	IsExported(m DBusObjectManagerServer, object DBusObjectSkeleton) bool
+	IsExported(object DBusObjectSkeleton) bool
 	// SetConnection exports all objects managed by @manager on @connection. If
 	// @connection is nil, stops exporting objects.
-	SetConnection(m DBusObjectManagerServer, connection DBusConnection)
+	SetConnection(connection DBusConnection)
 	// Unexport: if @manager has an object at @path, removes the object.
 	// Otherwise does nothing.
 	//
 	// Note that @object_path must be in the hierarchy rooted by the object path
 	// for @manager.
-	Unexport(m DBusObjectManagerServer, objectPath string) bool
+	Unexport(objectPath string) bool
 }
 
 // dBusObjectManagerServer implements the DBusObjectManagerServer interface.
@@ -107,13 +110,20 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 }
 
 // NewDBusObjectManagerServer constructs a class DBusObjectManagerServer.
-func NewDBusObjectManagerServer(objectPath string) {
+func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.g_dbus_object_manager_server_new(arg1)
+	cret := new(C.GDBusObjectManagerServer)
+	var goret DBusObjectManagerServer
+
+	cret = C.g_dbus_object_manager_server_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerServer)
+
+	return goret
 }
 
 // Export exports @object on @manager.
@@ -126,7 +136,7 @@ func NewDBusObjectManagerServer(objectPath string) {
 //
 // Note that @manager will take a reference on @object for as long as it is
 // exported.
-func (m dBusObjectManagerServer) Export(m DBusObjectManagerServer, object DBusObjectSkeleton) {
+func (m dBusObjectManagerServer) Export(object DBusObjectSkeleton) {
 	var arg0 *C.GDBusObjectManagerServer
 	var arg1 *C.GDBusObjectSkeleton
 
@@ -140,7 +150,7 @@ func (m dBusObjectManagerServer) Export(m DBusObjectManagerServer, object DBusOb
 // string of the form _N (with N being a natural number) to @object's object
 // path if an object with the given path already exists. As such, the
 // BusObjectProxy:g-object-path property of @object may be modified.
-func (m dBusObjectManagerServer) ExportUniquely(m DBusObjectManagerServer, object DBusObjectSkeleton) {
+func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 	var arg0 *C.GDBusObjectManagerServer
 	var arg1 *C.GDBusObjectSkeleton
 
@@ -151,16 +161,23 @@ func (m dBusObjectManagerServer) ExportUniquely(m DBusObjectManagerServer, objec
 }
 
 // Connection gets the BusConnection used by @manager.
-func (m dBusObjectManagerServer) Connection(m DBusObjectManagerServer) {
+func (m dBusObjectManagerServer) Connection() DBusConnection {
 	var arg0 *C.GDBusObjectManagerServer
 
 	arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
 
-	C.g_dbus_object_manager_server_get_connection(arg0)
+	cret := new(C.GDBusConnection)
+	var goret DBusConnection
+
+	cret = C.g_dbus_object_manager_server_get_connection(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return goret
 }
 
 // IsExported returns whether @object is currently exported on @manager.
-func (m dBusObjectManagerServer) IsExported(m DBusObjectManagerServer, object DBusObjectSkeleton) bool {
+func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	var arg0 *C.GDBusObjectManagerServer
 	var arg1 *C.GDBusObjectSkeleton
 
@@ -168,20 +185,20 @@ func (m dBusObjectManagerServer) IsExported(m DBusObjectManagerServer, object DB
 	arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_object_manager_server_is_exported(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetConnection exports all objects managed by @manager on @connection. If
 // @connection is nil, stops exporting objects.
-func (m dBusObjectManagerServer) SetConnection(m DBusObjectManagerServer, connection DBusConnection) {
+func (m dBusObjectManagerServer) SetConnection(connection DBusConnection) {
 	var arg0 *C.GDBusObjectManagerServer
 	var arg1 *C.GDBusConnection
 
@@ -196,7 +213,7 @@ func (m dBusObjectManagerServer) SetConnection(m DBusObjectManagerServer, connec
 //
 // Note that @object_path must be in the hierarchy rooted by the object path
 // for @manager.
-func (m dBusObjectManagerServer) Unexport(m DBusObjectManagerServer, objectPath string) bool {
+func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 	var arg0 *C.GDBusObjectManagerServer
 	var arg1 *C.gchar
 
@@ -205,13 +222,13 @@ func (m dBusObjectManagerServer) Unexport(m DBusObjectManagerServer, objectPath 
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_dbus_object_manager_server_unexport(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

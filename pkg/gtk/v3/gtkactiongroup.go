@@ -3,8 +3,11 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -81,7 +84,7 @@ type ActionGroup interface {
 	// associated with the action. Therefore you must either set the accel path
 	// yourself with gtk_action_set_accel_path(), or use
 	// `gtk_action_group_add_action_with_accel (..., NULL)`.
-	AddAction(a ActionGroup, action Action)
+	AddAction(action Action)
 	// AddActionWithAccel adds an action object to the action group and sets up
 	// the accelerator.
 	//
@@ -89,60 +92,60 @@ type ActionGroup interface {
 	// the stock_id of the action.
 	//
 	// Accel paths are set to `<Actions>/group-name/action-name`.
-	AddActionWithAccel(a ActionGroup, action Action, accelerator string)
+	AddActionWithAccel(action Action, accelerator string)
 	// AddRadioActions: this is a convenience routine to create a group of radio
 	// actions and add them to the action group.
 	//
 	// The “changed” signal of the first radio action is connected to the
 	// @on_change callback and the accel paths of the actions are set to
 	// `<Actions>/group-name/action-name`.
-	AddRadioActions(a ActionGroup)
+	AddRadioActions()
 	// AddRadioActionsFull: this variant of gtk_action_group_add_radio_actions()
 	// adds a Notify callback for @user_data.
-	AddRadioActionsFull(a ActionGroup)
+	AddRadioActionsFull()
 	// AccelGroup gets the accelerator group.
-	AccelGroup(a ActionGroup)
+	AccelGroup() AccelGroup
 	// Action looks up an action in the action group by name.
-	Action(a ActionGroup, actionName string)
+	Action(actionName string) Action
 	// Name gets the name of the action group.
-	Name(a ActionGroup)
+	Name() string
 	// Sensitive returns true if the group is sensitive. The constituent actions
 	// can only be logically sensitive (see gtk_action_is_sensitive()) if they
 	// are sensitive (see gtk_action_get_sensitive()) and their group is
 	// sensitive.
-	Sensitive(a ActionGroup) bool
+	Sensitive() bool
 	// Visible returns true if the group is visible. The constituent actions can
 	// only be logically visible (see gtk_action_is_visible()) if they are
 	// visible (see gtk_action_get_visible()) and their group is visible.
-	Visible(a ActionGroup) bool
+	Visible() bool
 	// ListActions lists the actions in the action group.
-	ListActions(a ActionGroup)
+	ListActions() *glib.List
 	// RemoveAction removes an action object from the action group.
-	RemoveAction(a ActionGroup, action Action)
+	RemoveAction(action Action)
 	// SetAccelGroup sets the accelerator group to be used by every action in
 	// this group.
-	SetAccelGroup(a ActionGroup, accelGroup AccelGroup)
+	SetAccelGroup(accelGroup AccelGroup)
 	// SetSensitive changes the sensitivity of @action_group
-	SetSensitive(a ActionGroup, sensitive bool)
+	SetSensitive(sensitive bool)
 	// SetTranslateFunc sets a function to be used for translating the @label
 	// and @tooltip of ActionEntrys added by gtk_action_group_add_actions().
 	//
 	// If you’re using gettext(), it is enough to set the translation domain
 	// with gtk_action_group_set_translation_domain().
-	SetTranslateFunc(a ActionGroup)
+	SetTranslateFunc()
 	// SetTranslationDomain sets the translation domain and uses g_dgettext()
 	// for translating the @label and @tooltip of ActionEntrys added by
 	// gtk_action_group_add_actions().
 	//
 	// If you’re not using gettext() for localization, see
 	// gtk_action_group_set_translate_func().
-	SetTranslationDomain(a ActionGroup, domain string)
+	SetTranslationDomain(domain string)
 	// SetVisible changes the visible of @action_group.
-	SetVisible(a ActionGroup, visible bool)
+	SetVisible(visible bool)
 	// TranslateString translates a string using the function set with
 	// gtk_action_group_set_translate_func(). This is mainly intended for
 	// language bindings.
-	TranslateString(a ActionGroup, string string)
+	TranslateString(string string) string
 }
 
 // actionGroup implements the ActionGroup interface.
@@ -169,13 +172,20 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 }
 
 // NewActionGroup constructs a class ActionGroup.
-func NewActionGroup(name string) {
+func NewActionGroup(name string) ActionGroup {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_action_group_new(arg1)
+	cret := new(C.GtkActionGroup)
+	var goret ActionGroup
+
+	cret = C.gtk_action_group_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ActionGroup)
+
+	return goret
 }
 
 // AddAction adds an action object to the action group. Note that this
@@ -184,7 +194,7 @@ func NewActionGroup(name string) {
 // associated with the action. Therefore you must either set the accel path
 // yourself with gtk_action_set_accel_path(), or use
 // `gtk_action_group_add_action_with_accel (..., NULL)`.
-func (a actionGroup) AddAction(a ActionGroup, action Action) {
+func (a actionGroup) AddAction(action Action) {
 	var arg0 *C.GtkActionGroup
 	var arg1 *C.GtkAction
 
@@ -201,7 +211,7 @@ func (a actionGroup) AddAction(a ActionGroup, action Action) {
 // the stock_id of the action.
 //
 // Accel paths are set to `<Actions>/group-name/action-name`.
-func (a actionGroup) AddActionWithAccel(a ActionGroup, action Action, accelerator string) {
+func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 	var arg0 *C.GtkActionGroup
 	var arg1 *C.GtkAction
 	var arg2 *C.gchar
@@ -220,7 +230,7 @@ func (a actionGroup) AddActionWithAccel(a ActionGroup, action Action, accelerato
 // The “changed” signal of the first radio action is connected to the
 // @on_change callback and the accel paths of the actions are set to
 // `<Actions>/group-name/action-name`.
-func (a actionGroup) AddRadioActions(a ActionGroup) {
+func (a actionGroup) AddRadioActions() {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
@@ -230,7 +240,7 @@ func (a actionGroup) AddRadioActions(a ActionGroup) {
 
 // AddRadioActionsFull: this variant of gtk_action_group_add_radio_actions()
 // adds a Notify callback for @user_data.
-func (a actionGroup) AddRadioActionsFull(a ActionGroup) {
+func (a actionGroup) AddRadioActionsFull() {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
@@ -239,16 +249,23 @@ func (a actionGroup) AddRadioActionsFull(a ActionGroup) {
 }
 
 // AccelGroup gets the accelerator group.
-func (a actionGroup) AccelGroup(a ActionGroup) {
+func (a actionGroup) AccelGroup() AccelGroup {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_group_get_accel_group(arg0)
+	var cret *C.GtkAccelGroup
+	var goret AccelGroup
+
+	cret = C.gtk_action_group_get_accel_group(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelGroup)
+
+	return goret
 }
 
 // Action looks up an action in the action group by name.
-func (a actionGroup) Action(a ActionGroup, actionName string) {
+func (a actionGroup) Action(actionName string) Action {
 	var arg0 *C.GtkActionGroup
 	var arg1 *C.gchar
 
@@ -256,70 +273,94 @@ func (a actionGroup) Action(a ActionGroup, actionName string) {
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_action_group_get_action(arg0, arg1)
+	var cret *C.GtkAction
+	var goret Action
+
+	cret = C.gtk_action_group_get_action(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+
+	return goret
 }
 
 // Name gets the name of the action group.
-func (a actionGroup) Name(a ActionGroup) {
+func (a actionGroup) Name() string {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_group_get_name(arg0)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_group_get_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Sensitive returns true if the group is sensitive. The constituent actions
 // can only be logically sensitive (see gtk_action_is_sensitive()) if they
 // are sensitive (see gtk_action_get_sensitive()) and their group is
 // sensitive.
-func (a actionGroup) Sensitive(a ActionGroup) bool {
+func (a actionGroup) Sensitive() bool {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_group_get_sensitive(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Visible returns true if the group is visible. The constituent actions can
 // only be logically visible (see gtk_action_is_visible()) if they are
 // visible (see gtk_action_get_visible()) and their group is visible.
-func (a actionGroup) Visible(a ActionGroup) bool {
+func (a actionGroup) Visible() bool {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_action_group_get_visible(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ListActions lists the actions in the action group.
-func (a actionGroup) ListActions(a ActionGroup) {
+func (a actionGroup) ListActions() *glib.List {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_group_list_actions(arg0)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.gtk_action_group_list_actions(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // RemoveAction removes an action object from the action group.
-func (a actionGroup) RemoveAction(a ActionGroup, action Action) {
+func (a actionGroup) RemoveAction(action Action) {
 	var arg0 *C.GtkActionGroup
 	var arg1 *C.GtkAction
 
@@ -331,7 +372,7 @@ func (a actionGroup) RemoveAction(a ActionGroup, action Action) {
 
 // SetAccelGroup sets the accelerator group to be used by every action in
 // this group.
-func (a actionGroup) SetAccelGroup(a ActionGroup, accelGroup AccelGroup) {
+func (a actionGroup) SetAccelGroup(accelGroup AccelGroup) {
 	var arg0 *C.GtkActionGroup
 	var arg1 *C.GtkAccelGroup
 
@@ -342,7 +383,7 @@ func (a actionGroup) SetAccelGroup(a ActionGroup, accelGroup AccelGroup) {
 }
 
 // SetSensitive changes the sensitivity of @action_group
-func (a actionGroup) SetSensitive(a ActionGroup, sensitive bool) {
+func (a actionGroup) SetSensitive(sensitive bool) {
 	var arg0 *C.GtkActionGroup
 	var arg1 C.gboolean
 
@@ -359,7 +400,7 @@ func (a actionGroup) SetSensitive(a ActionGroup, sensitive bool) {
 //
 // If you’re using gettext(), it is enough to set the translation domain
 // with gtk_action_group_set_translation_domain().
-func (a actionGroup) SetTranslateFunc(a ActionGroup) {
+func (a actionGroup) SetTranslateFunc() {
 	var arg0 *C.GtkActionGroup
 
 	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
@@ -373,7 +414,7 @@ func (a actionGroup) SetTranslateFunc(a ActionGroup) {
 //
 // If you’re not using gettext() for localization, see
 // gtk_action_group_set_translate_func().
-func (a actionGroup) SetTranslationDomain(a ActionGroup, domain string) {
+func (a actionGroup) SetTranslationDomain(domain string) {
 	var arg0 *C.GtkActionGroup
 	var arg1 *C.gchar
 
@@ -385,7 +426,7 @@ func (a actionGroup) SetTranslationDomain(a ActionGroup, domain string) {
 }
 
 // SetVisible changes the visible of @action_group.
-func (a actionGroup) SetVisible(a ActionGroup, visible bool) {
+func (a actionGroup) SetVisible(visible bool) {
 	var arg0 *C.GtkActionGroup
 	var arg1 C.gboolean
 
@@ -400,7 +441,7 @@ func (a actionGroup) SetVisible(a ActionGroup, visible bool) {
 // TranslateString translates a string using the function set with
 // gtk_action_group_set_translate_func(). This is mainly intended for
 // language bindings.
-func (a actionGroup) TranslateString(a ActionGroup, string string) {
+func (a actionGroup) TranslateString(string string) string {
 	var arg0 *C.GtkActionGroup
 	var arg1 *C.gchar
 
@@ -408,7 +449,14 @@ func (a actionGroup) TranslateString(a ActionGroup, string string) {
 	arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_action_group_translate_string(arg0, arg1)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.gtk_action_group_translate_string(arg0, arg1)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // ActionEntry structs are used with gtk_action_group_add_actions() to construct

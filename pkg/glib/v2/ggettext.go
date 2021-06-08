@@ -2,6 +2,10 @@
 
 package glib
 
+import (
+	"unsafe"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -11,7 +15,7 @@ import "C"
 // category instead of always using `LC_MESSAGES`. See g_dgettext() for more
 // information about how this functions differs from calling dcgettext()
 // directly.
-func Dcgettext(domain string, msgid string, category int) {
+func Dcgettext(domain string, msgid string, category int) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 C.gint
@@ -22,7 +26,14 @@ func Dcgettext(domain string, msgid string, category int) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gint(category)
 
-	C.g_dcgettext(arg1, arg2, arg3)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dcgettext(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Dgettext: this function is a wrapper of dgettext() which does not translate
@@ -56,7 +67,7 @@ func Dcgettext(domain string, msgid string, category int) {
 //
 // Applications should normally not use this function directly, but use the _()
 // macro for translations.
-func Dgettext(domain string, msgid string) {
+func Dgettext(domain string, msgid string) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -65,7 +76,14 @@ func Dgettext(domain string, msgid string) {
 	arg2 = (*C.gchar)(C.CString(msgid))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_dgettext(arg1, arg2)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dgettext(arg1, arg2)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Dngettext: this function is a wrapper of dngettext() which does not translate
@@ -73,7 +91,7 @@ func Dgettext(domain string, msgid string) {
 // translations for the current locale.
 //
 // See g_dgettext() for details of how this differs from dngettext() proper.
-func Dngettext(domain string, msgid string, msgidPlural string, n uint32) {
+func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -87,7 +105,14 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) {
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = C.gulong(n)
 
-	C.g_dngettext(arg1, arg2, arg3, arg4)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dngettext(arg1, arg2, arg3, arg4)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Dpgettext: this function is a variant of g_dgettext() which supports a
@@ -101,7 +126,7 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) {
 //
 // Applications should normally not use this function directly, but use the C_()
 // macro for translations with context.
-func Dpgettext(domain string, msgctxtid string, msgidoffset uint) {
+func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 C.gsize
@@ -112,7 +137,14 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) {
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gsize(msgidoffset)
 
-	C.g_dpgettext(arg1, arg2, arg3)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dpgettext(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Dpgettext2: this function is a variant of g_dgettext() which supports a
@@ -124,7 +156,7 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) {
 //
 // This function differs from C_() in that it is not a macro and thus you may
 // use non-string-literals as context and msgid arguments.
-func Dpgettext2(domain string, context string, msgid string) {
+func Dpgettext2(domain string, context string, msgid string) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -136,11 +168,18 @@ func Dpgettext2(domain string, context string, msgid string) {
 	arg3 = (*C.gchar)(C.CString(msgid))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.g_dpgettext2(arg1, arg2, arg3)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_dpgettext2(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // StripContext: an auxiliary function for gettext() support (see Q_()).
-func StripContext(msgid string, msgval string) {
+func StripContext(msgid string, msgval string) string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -149,5 +188,12 @@ func StripContext(msgid string, msgval string) {
 	arg2 = (*C.gchar)(C.CString(msgval))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.g_strip_context(arg1, arg2)
+	var cret *C.gchar
+	var goret string
+
+	cret = C.g_strip_context(arg1, arg2)
+
+	goret = C.GoString(cret)
+
+	return goret
 }

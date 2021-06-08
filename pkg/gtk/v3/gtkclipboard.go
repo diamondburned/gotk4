@@ -3,9 +3,15 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
@@ -17,7 +23,7 @@ import "C"
 
 // ClipboardImageReceivedFunc: a function to be called when the results of
 // gtk_clipboard_request_image() are received, or when the request fails.
-type ClipboardImageReceivedFunc func(clipboard Clipboard, pixbuf gdkpixbuf.Pixbuf)
+type ClipboardImageReceivedFunc func()
 
 //export gotk4_ClipboardImageReceivedFunc
 func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, arg2 C.gpointer) {
@@ -27,12 +33,12 @@ func gotk4_ClipboardImageReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkPixbuf, a
 	}
 
 	fn := v.(ClipboardImageReceivedFunc)
-	fn(clipboard, pixbuf, data)
+	fn()
 }
 
 // ClipboardReceivedFunc: a function to be called when the results of
 // gtk_clipboard_request_contents() are received, or when the request fails.
-type ClipboardReceivedFunc func(clipboard Clipboard, selectionData *SelectionData)
+type ClipboardReceivedFunc func()
 
 //export gotk4_ClipboardReceivedFunc
 func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData, arg2 C.gpointer) {
@@ -42,12 +48,12 @@ func gotk4_ClipboardReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GtkSelectionData,
 	}
 
 	fn := v.(ClipboardReceivedFunc)
-	fn(clipboard, selectionData, data)
+	fn()
 }
 
 // ClipboardRichTextReceivedFunc: a function to be called when the results of
 // gtk_clipboard_request_rich_text() are received, or when the request fails.
-type ClipboardRichTextReceivedFunc func(clipboard Clipboard, format gdk.Atom, text string, length uint)
+type ClipboardRichTextReceivedFunc func()
 
 //export gotk4_ClipboardRichTextReceivedFunc
 func gotk4_ClipboardRichTextReceivedFunc(arg0 *C.GtkClipboard, arg1 C.GdkAtom, arg2 *C.guint8, arg3 C.gsize, arg4 C.gpointer) {
@@ -57,12 +63,12 @@ func gotk4_ClipboardRichTextReceivedFunc(arg0 *C.GtkClipboard, arg1 C.GdkAtom, a
 	}
 
 	fn := v.(ClipboardRichTextReceivedFunc)
-	fn(clipboard, format, text, length, data)
+	fn()
 }
 
 // ClipboardTargetsReceivedFunc: a function to be called when the results of
 // gtk_clipboard_request_targets() are received, or when the request fails.
-type ClipboardTargetsReceivedFunc func(clipboard Clipboard, atoms []gdk.Atom)
+type ClipboardTargetsReceivedFunc func()
 
 //export gotk4_ClipboardTargetsReceivedFunc
 func gotk4_ClipboardTargetsReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkAtom, arg2 C.gint, arg3 C.gpointer) {
@@ -72,12 +78,12 @@ func gotk4_ClipboardTargetsReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.GdkAtom, a
 	}
 
 	fn := v.(ClipboardTargetsReceivedFunc)
-	fn(clipboard, atoms, nAtoms, data)
+	fn()
 }
 
 // ClipboardTextReceivedFunc: a function to be called when the results of
 // gtk_clipboard_request_text() are received, or when the request fails.
-type ClipboardTextReceivedFunc func(clipboard Clipboard, text string)
+type ClipboardTextReceivedFunc func()
 
 //export gotk4_ClipboardTextReceivedFunc
 func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C.gpointer) {
@@ -87,12 +93,12 @@ func gotk4_ClipboardTextReceivedFunc(arg0 *C.GtkClipboard, arg1 *C.gchar, arg2 C
 	}
 
 	fn := v.(ClipboardTextReceivedFunc)
-	fn(clipboard, text, data)
+	fn()
 }
 
 // ClipboardURIReceivedFunc: a function to be called when the results of
 // gtk_clipboard_request_uris() are received, or when the request fails.
-type ClipboardURIReceivedFunc func(clipboard Clipboard, uris []string)
+type ClipboardURIReceivedFunc func()
 
 //export gotk4_ClipboardURIReceivedFunc
 func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C.gpointer) {
@@ -102,5 +108,5 @@ func gotk4_ClipboardURIReceivedFunc(arg0 *C.GtkClipboard, arg1 **C.gchar, arg2 C
 	}
 
 	fn := v.(ClipboardURIReceivedFunc)
-	fn(clipboard, uris, data)
+	fn()
 }

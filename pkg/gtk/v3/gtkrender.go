@@ -2,6 +2,16 @@
 
 package gtk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+	"github.com/diamondburned/gotk4/pkg/pango"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
@@ -92,14 +102,14 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 	arg4 = C.gdouble(width)
 	arg5 = C.gdouble(height)
 
-	var arg6 C.GdkRectangle
-	var outClip *gdk.Rectangle
+	arg6 := new(C.GdkRectangle)
+	var ret6 *gdk.Rectangle
 
-	C.gtk_render_background_get_clip(arg1, arg2, arg3, arg4, arg5, &arg6)
+	C.gtk_render_background_get_clip(arg1, arg2, arg3, arg4, arg5, arg6)
 
-	outClip = gdk.WrapRectangle(unsafe.Pointer(&arg6))
+	ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
 
-	return outClip
+	return ret6
 }
 
 // RenderCheck renders a checkmark (as in a CheckButton).
@@ -238,7 +248,7 @@ func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, 
 // Typical rendering of a frame with a gap:
 //
 // ! (frame-gap.png)
-func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64) {
+func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xY0Gap float64, xY1Gap float64) {
 	var arg1 *C.GtkStyleContext
 	var arg2 *C.cairo_t
 	var arg3 C.gdouble
@@ -256,8 +266,8 @@ func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float6
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 	arg7 = (C.GtkPositionType)(gapSide)
-	arg8 = C.gdouble(xy0Gap)
-	arg9 = C.gdouble(xy1Gap)
+	arg8 = C.gdouble(xY0Gap)
+	arg9 = C.gdouble(xY1Gap)
 
 	C.gtk_render_frame_gap(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
@@ -313,7 +323,7 @@ func RenderIcon(context StyleContext, cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf
 
 // RenderIconPixbuf renders the icon specified by @source at the given @size,
 // returning the result in a pixbuf.
-func RenderIconPixbuf(context StyleContext, source *IconSource, size int) {
+func RenderIconPixbuf(context StyleContext, source *IconSource, size int) gdkpixbuf.Pixbuf {
 	var arg1 *C.GtkStyleContext
 	var arg2 *C.GtkIconSource
 	var arg3 C.GtkIconSize
@@ -322,7 +332,14 @@ func RenderIconPixbuf(context StyleContext, source *IconSource, size int) {
 	arg2 = (*C.GtkIconSource)(unsafe.Pointer(source.Native()))
 	arg3 = C.GtkIconSize(size)
 
-	C.gtk_render_icon_pixbuf(arg1, arg2, arg3)
+	cret := new(C.GdkPixbuf)
+	var goret gdkpixbuf.Pixbuf
+
+	cret = C.gtk_render_icon_pixbuf(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return goret
 }
 
 // RenderIconSurface renders the icon in @surface at the specified @x and @y

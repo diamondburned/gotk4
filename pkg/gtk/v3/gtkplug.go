@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,12 +45,9 @@ type Plug interface {
 	Buildable
 
 	// Embedded determines whether the plug is embedded in a socket.
-	Embedded(p Plug) bool
-	// ID gets the window ID of a Plug widget, which can then be used to embed
-	// this window inside another window, for instance with gtk_socket_add_id().
-	ID(p Plug)
+	Embedded() bool
 	// SocketWindow retrieves the socket the plug is embedded in.
-	SocketWindow(p Plug)
+	SocketWindow() gdk.Window
 }
 
 // plug implements the Plug interface.
@@ -73,38 +74,35 @@ func marshalPlug(p uintptr) (interface{}, error) {
 }
 
 // Embedded determines whether the plug is embedded in a socket.
-func (p plug) Embedded(p Plug) bool {
+func (p plug) Embedded() bool {
 	var arg0 *C.GtkPlug
 
 	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_plug_get_embedded(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
-}
-
-// ID gets the window ID of a Plug widget, which can then be used to embed
-// this window inside another window, for instance with gtk_socket_add_id().
-func (p plug) ID(p Plug) {
-	var arg0 *C.GtkPlug
-
-	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
-
-	C.gtk_plug_get_id(arg0)
+	return goret
 }
 
 // SocketWindow retrieves the socket the plug is embedded in.
-func (p plug) SocketWindow(p Plug) {
+func (p plug) SocketWindow() gdk.Window {
 	var arg0 *C.GtkPlug
 
 	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
-	C.gtk_plug_get_socket_window(arg0)
+	var cret *C.GdkWindow
+	var goret gdk.Window
+
+	cret = C.gtk_plug_get_socket_window(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return goret
 }

@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -66,30 +70,30 @@ type Paned interface {
 
 	// Add1 adds a child to the top or left pane with default parameters. This
 	// is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
-	Add1(p Paned, child Widget)
+	Add1(child Widget)
 	// Add2 adds a child to the bottom or right pane with default parameters.
 	// This is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
-	Add2(p Paned, child Widget)
+	Add2(child Widget)
 	// Child1 obtains the first child of the paned widget.
-	Child1(p Paned)
+	Child1() Widget
 	// Child2 obtains the second child of the paned widget.
-	Child2(p Paned)
+	Child2() Widget
 	// HandleWindow returns the Window of the handle. This function is useful
 	// when handling button or motion events because it enables the callback to
 	// distinguish between the window of the paned, a child and the handle.
-	HandleWindow(p Paned)
+	HandleWindow() gdk.Window
 	// Position obtains the position of the divider between the two panes.
-	Position(p Paned)
+	Position() int
 	// WideHandle gets the Paned:wide-handle property.
-	WideHandle(p Paned) bool
+	WideHandle() bool
 	// Pack1 adds a child to the top or left pane.
-	Pack1(p Paned, child Widget, resize bool, shrink bool)
+	Pack1(child Widget, resize bool, shrink bool)
 	// Pack2 adds a child to the bottom or right pane.
-	Pack2(p Paned, child Widget, resize bool, shrink bool)
+	Pack2(child Widget, resize bool, shrink bool)
 	// SetPosition sets the position of the divider between the two panes.
-	SetPosition(p Paned, position int)
+	SetPosition(position int)
 	// SetWideHandle sets the Paned:wide-handle property.
-	SetWideHandle(p Paned, wide bool)
+	SetWideHandle(wide bool)
 }
 
 // paned implements the Paned interface.
@@ -118,17 +122,24 @@ func marshalPaned(p uintptr) (interface{}, error) {
 }
 
 // NewPaned constructs a class Paned.
-func NewPaned(orientation Orientation) {
+func NewPaned(orientation Orientation) Paned {
 	var arg1 C.GtkOrientation
 
 	arg1 = (C.GtkOrientation)(orientation)
 
-	C.gtk_paned_new(arg1)
+	var cret C.GtkPaned
+	var goret Paned
+
+	cret = C.gtk_paned_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Paned)
+
+	return goret
 }
 
 // Add1 adds a child to the top or left pane with default parameters. This
 // is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
-func (p paned) Add1(p Paned, child Widget) {
+func (p paned) Add1(child Widget) {
 	var arg0 *C.GtkPaned
 	var arg1 *C.GtkWidget
 
@@ -140,7 +151,7 @@ func (p paned) Add1(p Paned, child Widget) {
 
 // Add2 adds a child to the bottom or right pane with default parameters.
 // This is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
-func (p paned) Add2(p Paned, child Widget) {
+func (p paned) Add2(child Widget) {
 	var arg0 *C.GtkPaned
 	var arg1 *C.GtkWidget
 
@@ -151,63 +162,91 @@ func (p paned) Add2(p Paned, child Widget) {
 }
 
 // Child1 obtains the first child of the paned widget.
-func (p paned) Child1(p Paned) {
+func (p paned) Child1() Widget {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
-	C.gtk_paned_get_child1(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_paned_get_child1(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // Child2 obtains the second child of the paned widget.
-func (p paned) Child2(p Paned) {
+func (p paned) Child2() Widget {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
-	C.gtk_paned_get_child2(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_paned_get_child2(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // HandleWindow returns the Window of the handle. This function is useful
 // when handling button or motion events because it enables the callback to
 // distinguish between the window of the paned, a child and the handle.
-func (p paned) HandleWindow(p Paned) {
+func (p paned) HandleWindow() gdk.Window {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
-	C.gtk_paned_get_handle_window(arg0)
+	var cret *C.GdkWindow
+	var goret gdk.Window
+
+	cret = C.gtk_paned_get_handle_window(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return goret
 }
 
 // Position obtains the position of the divider between the two panes.
-func (p paned) Position(p Paned) {
+func (p paned) Position() int {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
-	C.gtk_paned_get_position(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_paned_get_position(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // WideHandle gets the Paned:wide-handle property.
-func (p paned) WideHandle(p Paned) bool {
+func (p paned) WideHandle() bool {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_paned_get_wide_handle(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Pack1 adds a child to the top or left pane.
-func (p paned) Pack1(p Paned, child Widget, resize bool, shrink bool) {
+func (p paned) Pack1(child Widget, resize bool, shrink bool) {
 	var arg0 *C.GtkPaned
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean
@@ -226,7 +265,7 @@ func (p paned) Pack1(p Paned, child Widget, resize bool, shrink bool) {
 }
 
 // Pack2 adds a child to the bottom or right pane.
-func (p paned) Pack2(p Paned, child Widget, resize bool, shrink bool) {
+func (p paned) Pack2(child Widget, resize bool, shrink bool) {
 	var arg0 *C.GtkPaned
 	var arg1 *C.GtkWidget
 	var arg2 C.gboolean
@@ -245,7 +284,7 @@ func (p paned) Pack2(p Paned, child Widget, resize bool, shrink bool) {
 }
 
 // SetPosition sets the position of the divider between the two panes.
-func (p paned) SetPosition(p Paned, position int) {
+func (p paned) SetPosition(position int) {
 	var arg0 *C.GtkPaned
 	var arg1 C.gint
 
@@ -256,7 +295,7 @@ func (p paned) SetPosition(p Paned, position int) {
 }
 
 // SetWideHandle sets the Paned:wide-handle property.
-func (p paned) SetWideHandle(p Paned, wide bool) {
+func (p paned) SetWideHandle(wide bool) {
 	var arg0 *C.GtkPaned
 	var arg1 C.gboolean
 

@@ -3,6 +3,11 @@
 package gio
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,11 +56,11 @@ type UnixFDMessage interface {
 	//
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
-	AppendFd(m UnixFDMessage, fd int) error
+	AppendFd(fd int) error
 	// FdList gets the FDList contained in @message. This function does not
 	// return a reference to the caller, but the returned list is valid for the
 	// lifetime of @message.
-	FdList(m UnixFDMessage)
+	FdList() UnixFDList
 	// StealFds returns the array of file descriptors that is contained in this
 	// object.
 	//
@@ -71,7 +76,7 @@ type UnixFDMessage interface {
 	//
 	// This function never returns nil. In case there are no file descriptors
 	// contained in @message, an empty array is returned.
-	StealFds(m UnixFDMessage) int
+	StealFds() []int
 }
 
 // unixFDMessage implements the UnixFDMessage interface.
@@ -96,17 +101,31 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 }
 
 // NewUnixFDMessage constructs a class UnixFDMessage.
-func NewUnixFDMessage() {
-	C.g_unix_fd_message_new()
+func NewUnixFDMessage() UnixFDMessage {
+	cret := new(C.GUnixFDMessage)
+	var goret UnixFDMessage
+
+	cret = C.g_unix_fd_message_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+
+	return goret
 }
 
 // NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
-func NewUnixFDMessageWithFdList(fdList UnixFDList) {
+func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 	var arg1 *C.GUnixFDList
 
 	arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
-	C.g_unix_fd_message_new_with_fd_list(arg1)
+	cret := new(C.GUnixFDMessage)
+	var goret UnixFDMessage
+
+	cret = C.g_unix_fd_message_new_with_fd_list(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+
+	return goret
 }
 
 // AppendFd adds a file descriptor to @message.
@@ -117,32 +136,39 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) {
 //
 // A possible cause of failure is exceeding the per-process or system-wide
 // file descriptor limit.
-func (m unixFDMessage) AppendFd(m UnixFDMessage, fd int) error {
+func (m unixFDMessage) AppendFd(fd int) error {
 	var arg0 *C.GUnixFDMessage
 	var arg1 C.gint
 
 	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 	arg1 = C.gint(fd)
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_unix_fd_message_append_fd(arg0, arg1, &errout)
+	C.g_unix_fd_message_append_fd(arg0, arg1, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // FdList gets the FDList contained in @message. This function does not
 // return a reference to the caller, but the returned list is valid for the
 // lifetime of @message.
-func (m unixFDMessage) FdList(m UnixFDMessage) {
+func (m unixFDMessage) FdList() UnixFDList {
 	var arg0 *C.GUnixFDMessage
 
 	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
-	C.g_unix_fd_message_get_fd_list(arg0)
+	var cret *C.GUnixFDList
+	var goret UnixFDList
+
+	cret = C.g_unix_fd_message_get_fd_list(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(UnixFDList)
+
+	return goret
 }
 
 // StealFds returns the array of file descriptors that is contained in this
@@ -160,17 +186,21 @@ func (m unixFDMessage) FdList(m UnixFDMessage) {
 //
 // This function never returns nil. In case there are no file descriptors
 // contained in @message, an empty array is returned.
-func (m unixFDMessage) StealFds(m UnixFDMessage) int {
+func (m unixFDMessage) StealFds() []int {
 	var arg0 *C.GUnixFDMessage
 
 	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.gint
-	var length int
+	var cret *C.gint
+	var arg1 *C.gint
+	var goret []int
 
-	C.g_unix_fd_message_steal_fds(arg0, &arg1)
+	cret = C.g_unix_fd_message_steal_fds(arg0, arg1)
 
-	length = int(&arg1)
+	ptr.SetSlice(unsafe.Pointer(&goret), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&goret, func(v *[]int) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 
-	return length
+	return ret1, goret
 }

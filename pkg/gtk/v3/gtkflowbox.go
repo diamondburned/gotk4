@@ -3,7 +3,12 @@
 package gtk
 
 import (
+	"runtime"
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,7 +29,7 @@ func init() {
 
 // FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
 // gtk_flow_box_bind_model() for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func(item gextras.Objector) Widget
+type FlowBoxCreateWidgetFunc func() (widget Widget)
 
 //export gotk4_FlowBoxCreateWidgetFunc
 func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
@@ -34,16 +39,14 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 	}
 
 	fn := v.(FlowBoxCreateWidgetFunc)
-	ret := fn(item, userData)
+	fn(widget)
 
-	cret = (*C.GtkWidget)(unsafe.Pointer(ret.Native()))
-
-	return cret
+	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 }
 
 // FlowBoxFilterFunc: a function that will be called whenrever a child changes
 // or is added. It lets you control if the child should be visible or not.
-type FlowBoxFilterFunc func(child FlowBoxChild) bool
+type FlowBoxFilterFunc func() (ok bool)
 
 //export gotk4_FlowBoxFilterFunc
 func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
@@ -53,18 +56,16 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolea
 	}
 
 	fn := v.(FlowBoxFilterFunc)
-	ret := fn(child, userData)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
 // FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach(). It
 // will be called on every selected child of the @box.
-type FlowBoxForeachFunc func(box FlowBox, child FlowBoxChild)
+type FlowBoxForeachFunc func()
 
 //export gotk4_FlowBoxForeachFunc
 func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
@@ -74,12 +75,12 @@ func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 
 	}
 
 	fn := v.(FlowBoxForeachFunc)
-	fn(box, child, userData)
+	fn()
 }
 
 // FlowBoxSortFunc: a function to compare two children to determine which should
 // come first.
-type FlowBoxSortFunc func(child1 FlowBoxChild, child2 FlowBoxChild) int
+type FlowBoxSortFunc func() (gint int)
 
 //export gotk4_FlowBoxSortFunc
 func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.gint {
@@ -89,11 +90,9 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 	}
 
 	fn := v.(FlowBoxSortFunc)
-	ret := fn(child1, child2, userData)
+	fn(gint)
 
-	cret = C.gint(ret)
-
-	return cret
+	cret = C.gint(gint)
 }
 
 // FlowBox: a GtkFlowBox positions child widgets in sequence according to its
@@ -155,28 +154,28 @@ type FlowBox interface {
 	// Note that using a model is incompatible with the filtering and sorting
 	// functionality in GtkFlowBox. When using a model, filtering and sorting
 	// should be implemented by the model.
-	BindModel(b FlowBox)
+	BindModel()
 	// ActivateOnSingleClick returns whether children activate on single clicks.
-	ActivateOnSingleClick(b FlowBox) bool
+	ActivateOnSingleClick() bool
 	// ChildAtIndex gets the nth child in the @box.
-	ChildAtIndex(b FlowBox, idx int)
+	ChildAtIndex(idx int) FlowBoxChild
 	// ChildAtPos gets the child in the (@x, @y) position.
-	ChildAtPos(b FlowBox, x int, y int)
+	ChildAtPos(x int, y int) FlowBoxChild
 	// ColumnSpacing gets the horizontal spacing.
-	ColumnSpacing(b FlowBox)
+	ColumnSpacing() uint
 	// Homogeneous returns whether the box is homogeneous (all children are the
 	// same size). See gtk_box_set_homogeneous().
-	Homogeneous(b FlowBox) bool
+	Homogeneous() bool
 	// MaxChildrenPerLine gets the maximum number of children per line.
-	MaxChildrenPerLine(b FlowBox)
+	MaxChildrenPerLine() uint
 	// MinChildrenPerLine gets the minimum number of children per line.
-	MinChildrenPerLine(b FlowBox)
+	MinChildrenPerLine() uint
 	// RowSpacing gets the vertical spacing.
-	RowSpacing(b FlowBox)
+	RowSpacing() uint
 	// SelectedChildren creates a list of all selected children.
-	SelectedChildren(b FlowBox)
+	SelectedChildren() *glib.List
 	// SelectionMode gets the selection mode of @box.
-	SelectionMode(b FlowBox)
+	SelectionMode() SelectionMode
 	// Insert inserts the @widget into @box at @position.
 	//
 	// If a sort function is set, the widget will actually be inserted at the
@@ -185,34 +184,34 @@ type FlowBox interface {
 	//
 	// If @position is -1, or larger than the total number of children in the
 	// @box, then the @widget will be appended to the end.
-	Insert(b FlowBox, widget Widget, position int)
+	Insert(widget Widget, position int)
 	// InvalidateFilter updates the filtering for all children.
 	//
 	// Call this function when the result of the filter function on the @box is
 	// changed due ot an external factor. For instance, this would be used if
 	// the filter function just looked for a specific search term, and the entry
 	// with the string has changed.
-	InvalidateFilter(b FlowBox)
+	InvalidateFilter()
 	// InvalidateSort updates the sorting for all children.
 	//
 	// Call this when the result of the sort function on @box is changed due to
 	// an external factor.
-	InvalidateSort(b FlowBox)
+	InvalidateSort()
 	// SelectAll: select all children of @box, if the selection mode allows it.
-	SelectAll(b FlowBox)
+	SelectAll()
 	// SelectChild selects a single child of @box, if the selection mode allows
 	// it.
-	SelectChild(b FlowBox, child FlowBoxChild)
+	SelectChild(child FlowBoxChild)
 	// SelectedForeach calls a function for each selected child.
 	//
 	// Note that the selection cannot be modified from within this function.
-	SelectedForeach(b FlowBox)
+	SelectedForeach()
 	// SetActivateOnSingleClick: if @single is true, children will be activated
 	// when you click on them, otherwise you need to double-click.
-	SetActivateOnSingleClick(b FlowBox, single bool)
+	SetActivateOnSingleClick(single bool)
 	// SetColumnSpacing sets the horizontal space to add between children. See
 	// the FlowBox:column-spacing property.
-	SetColumnSpacing(b FlowBox, spacing uint)
+	SetColumnSpacing(spacing uint)
 	// SetFilterFunc: by setting a filter function on the @box one can decide
 	// dynamically which of the children to show. For instance, to implement a
 	// search function that only shows the children matching the search terms.
@@ -224,7 +223,7 @@ type FlowBox interface {
 	//
 	// Note that using a filter function is incompatible with using a model (see
 	// gtk_flow_box_bind_model()).
-	SetFilterFunc(b FlowBox)
+	SetFilterFunc()
 	// SetHAdjustment hooks up an adjustment to focus handling in @box. The
 	// adjustment is also used for autoscrolling during rubberband selection.
 	// See gtk_scrolled_window_get_hadjustment() for a typical way of obtaining
@@ -233,26 +232,26 @@ type FlowBox interface {
 	//
 	// The adjustments have to be in pixel units and in the same coordinate
 	// system as the allocation for immediate children of the box.
-	SetHAdjustment(b FlowBox, adjustment Adjustment)
+	SetHAdjustment(adjustment Adjustment)
 	// SetHomogeneous sets the FlowBox:homogeneous property of @box, controlling
 	// whether or not all children of @box are given equal space in the box.
-	SetHomogeneous(b FlowBox, homogeneous bool)
+	SetHomogeneous(homogeneous bool)
 	// SetMaxChildrenPerLine sets the maximum number of children to request and
 	// allocate space for in @box’s orientation.
 	//
 	// Setting the maximum number of children per line limits the overall
 	// natural size request to be no more than @n_children children long in the
 	// given orientation.
-	SetMaxChildrenPerLine(b FlowBox, nChildren uint)
+	SetMaxChildrenPerLine(nChildren uint)
 	// SetMinChildrenPerLine sets the minimum number of children to line up in
 	// @box’s orientation before flowing.
-	SetMinChildrenPerLine(b FlowBox, nChildren uint)
+	SetMinChildrenPerLine(nChildren uint)
 	// SetRowSpacing sets the vertical space to add between children. See the
 	// FlowBox:row-spacing property.
-	SetRowSpacing(b FlowBox, spacing uint)
+	SetRowSpacing(spacing uint)
 	// SetSelectionMode sets how selection works in @box. See SelectionMode for
 	// details.
-	SetSelectionMode(b FlowBox, mode SelectionMode)
+	SetSelectionMode(mode SelectionMode)
 	// SetSortFunc: by setting a sort function on the @box, one can dynamically
 	// reorder the children of the box, based on the contents of the children.
 	//
@@ -263,7 +262,7 @@ type FlowBox interface {
 	//
 	// Note that using a sort function is incompatible with using a model (see
 	// gtk_flow_box_bind_model()).
-	SetSortFunc(b FlowBox)
+	SetSortFunc()
 	// SetVAdjustment hooks up an adjustment to focus handling in @box. The
 	// adjustment is also used for autoscrolling during rubberband selection.
 	// See gtk_scrolled_window_get_vadjustment() for a typical way of obtaining
@@ -272,13 +271,13 @@ type FlowBox interface {
 	//
 	// The adjustments have to be in pixel units and in the same coordinate
 	// system as the allocation for immediate children of the box.
-	SetVAdjustment(b FlowBox, adjustment Adjustment)
+	SetVAdjustment(adjustment Adjustment)
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
-	UnselectAll(b FlowBox)
+	UnselectAll()
 	// UnselectChild unselects a single child of @box, if the selection mode
 	// allows it.
-	UnselectChild(b FlowBox, child FlowBoxChild)
+	UnselectChild(child FlowBoxChild)
 }
 
 // flowBox implements the FlowBox interface.
@@ -307,8 +306,15 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 }
 
 // NewFlowBox constructs a class FlowBox.
-func NewFlowBox() {
-	C.gtk_flow_box_new()
+func NewFlowBox() FlowBox {
+	var cret C.GtkFlowBox
+	var goret FlowBox
+
+	cret = C.gtk_flow_box_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBox)
+
+	return goret
 }
 
 // BindModel binds @model to @box.
@@ -326,7 +332,7 @@ func NewFlowBox() {
 // Note that using a model is incompatible with the filtering and sorting
 // functionality in GtkFlowBox. When using a model, filtering and sorting
 // should be implemented by the model.
-func (b flowBox) BindModel(b FlowBox) {
+func (b flowBox) BindModel() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -335,36 +341,43 @@ func (b flowBox) BindModel(b FlowBox) {
 }
 
 // ActivateOnSingleClick returns whether children activate on single clicks.
-func (b flowBox) ActivateOnSingleClick(b FlowBox) bool {
+func (b flowBox) ActivateOnSingleClick() bool {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_flow_box_get_activate_on_single_click(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ChildAtIndex gets the nth child in the @box.
-func (b flowBox) ChildAtIndex(b FlowBox, idx int) {
+func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.gint
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 	arg1 = C.gint(idx)
 
-	C.gtk_flow_box_get_child_at_index(arg0, arg1)
+	var cret *C.GtkFlowBoxChild
+	var goret FlowBoxChild
+
+	cret = C.gtk_flow_box_get_child_at_index(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+
+	return goret
 }
 
 // ChildAtPos gets the child in the (@x, @y) position.
-func (b flowBox) ChildAtPos(b FlowBox, x int, y int) {
+func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.gint
 	var arg2 C.gint
@@ -373,80 +386,132 @@ func (b flowBox) ChildAtPos(b FlowBox, x int, y int) {
 	arg1 = C.gint(x)
 	arg2 = C.gint(y)
 
-	C.gtk_flow_box_get_child_at_pos(arg0, arg1, arg2)
+	var cret *C.GtkFlowBoxChild
+	var goret FlowBoxChild
+
+	cret = C.gtk_flow_box_get_child_at_pos(arg0, arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+
+	return goret
 }
 
 // ColumnSpacing gets the horizontal spacing.
-func (b flowBox) ColumnSpacing(b FlowBox) {
+func (b flowBox) ColumnSpacing() uint {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_get_column_spacing(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_flow_box_get_column_spacing(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
 // same size). See gtk_box_set_homogeneous().
-func (b flowBox) Homogeneous(b FlowBox) bool {
+func (b flowBox) Homogeneous() bool {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_flow_box_get_homogeneous(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // MaxChildrenPerLine gets the maximum number of children per line.
-func (b flowBox) MaxChildrenPerLine(b FlowBox) {
+func (b flowBox) MaxChildrenPerLine() uint {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_get_max_children_per_line(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_flow_box_get_max_children_per_line(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // MinChildrenPerLine gets the minimum number of children per line.
-func (b flowBox) MinChildrenPerLine(b FlowBox) {
+func (b flowBox) MinChildrenPerLine() uint {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_get_min_children_per_line(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_flow_box_get_min_children_per_line(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // RowSpacing gets the vertical spacing.
-func (b flowBox) RowSpacing(b FlowBox) {
+func (b flowBox) RowSpacing() uint {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_get_row_spacing(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_flow_box_get_row_spacing(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // SelectedChildren creates a list of all selected children.
-func (b flowBox) SelectedChildren(b FlowBox) {
+func (b flowBox) SelectedChildren() *glib.List {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_get_selected_children(arg0)
+	cret := new(C.GList)
+	var goret *glib.List
+
+	cret = C.gtk_flow_box_get_selected_children(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.List) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // SelectionMode gets the selection mode of @box.
-func (b flowBox) SelectionMode(b FlowBox) {
+func (b flowBox) SelectionMode() SelectionMode {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_get_selection_mode(arg0)
+	var cret C.GtkSelectionMode
+	var goret SelectionMode
+
+	cret = C.gtk_flow_box_get_selection_mode(arg0)
+
+	goret = SelectionMode(cret)
+
+	return goret
 }
 
 // Insert inserts the @widget into @box at @position.
@@ -457,7 +522,7 @@ func (b flowBox) SelectionMode(b FlowBox) {
 //
 // If @position is -1, or larger than the total number of children in the
 // @box, then the @widget will be appended to the end.
-func (b flowBox) Insert(b FlowBox, widget Widget, position int) {
+func (b flowBox) Insert(widget Widget, position int) {
 	var arg0 *C.GtkFlowBox
 	var arg1 *C.GtkWidget
 	var arg2 C.gint
@@ -475,7 +540,7 @@ func (b flowBox) Insert(b FlowBox, widget Widget, position int) {
 // changed due ot an external factor. For instance, this would be used if
 // the filter function just looked for a specific search term, and the entry
 // with the string has changed.
-func (b flowBox) InvalidateFilter(b FlowBox) {
+func (b flowBox) InvalidateFilter() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -487,7 +552,7 @@ func (b flowBox) InvalidateFilter(b FlowBox) {
 //
 // Call this when the result of the sort function on @box is changed due to
 // an external factor.
-func (b flowBox) InvalidateSort(b FlowBox) {
+func (b flowBox) InvalidateSort() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -496,7 +561,7 @@ func (b flowBox) InvalidateSort(b FlowBox) {
 }
 
 // SelectAll: select all children of @box, if the selection mode allows it.
-func (b flowBox) SelectAll(b FlowBox) {
+func (b flowBox) SelectAll() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -506,7 +571,7 @@ func (b flowBox) SelectAll(b FlowBox) {
 
 // SelectChild selects a single child of @box, if the selection mode allows
 // it.
-func (b flowBox) SelectChild(b FlowBox, child FlowBoxChild) {
+func (b flowBox) SelectChild(child FlowBoxChild) {
 	var arg0 *C.GtkFlowBox
 	var arg1 *C.GtkFlowBoxChild
 
@@ -519,7 +584,7 @@ func (b flowBox) SelectChild(b FlowBox, child FlowBoxChild) {
 // SelectedForeach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
-func (b flowBox) SelectedForeach(b FlowBox) {
+func (b flowBox) SelectedForeach() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -529,7 +594,7 @@ func (b flowBox) SelectedForeach(b FlowBox) {
 
 // SetActivateOnSingleClick: if @single is true, children will be activated
 // when you click on them, otherwise you need to double-click.
-func (b flowBox) SetActivateOnSingleClick(b FlowBox, single bool) {
+func (b flowBox) SetActivateOnSingleClick(single bool) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.gboolean
 
@@ -543,7 +608,7 @@ func (b flowBox) SetActivateOnSingleClick(b FlowBox, single bool) {
 
 // SetColumnSpacing sets the horizontal space to add between children. See
 // the FlowBox:column-spacing property.
-func (b flowBox) SetColumnSpacing(b FlowBox, spacing uint) {
+func (b flowBox) SetColumnSpacing(spacing uint) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.guint
 
@@ -564,7 +629,7 @@ func (b flowBox) SetColumnSpacing(b FlowBox, spacing uint) {
 //
 // Note that using a filter function is incompatible with using a model (see
 // gtk_flow_box_bind_model()).
-func (b flowBox) SetFilterFunc(b FlowBox) {
+func (b flowBox) SetFilterFunc() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -580,7 +645,7 @@ func (b flowBox) SetFilterFunc(b FlowBox) {
 //
 // The adjustments have to be in pixel units and in the same coordinate
 // system as the allocation for immediate children of the box.
-func (b flowBox) SetHAdjustment(b FlowBox, adjustment Adjustment) {
+func (b flowBox) SetHAdjustment(adjustment Adjustment) {
 	var arg0 *C.GtkFlowBox
 	var arg1 *C.GtkAdjustment
 
@@ -592,7 +657,7 @@ func (b flowBox) SetHAdjustment(b FlowBox, adjustment Adjustment) {
 
 // SetHomogeneous sets the FlowBox:homogeneous property of @box, controlling
 // whether or not all children of @box are given equal space in the box.
-func (b flowBox) SetHomogeneous(b FlowBox, homogeneous bool) {
+func (b flowBox) SetHomogeneous(homogeneous bool) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.gboolean
 
@@ -610,7 +675,7 @@ func (b flowBox) SetHomogeneous(b FlowBox, homogeneous bool) {
 // Setting the maximum number of children per line limits the overall
 // natural size request to be no more than @n_children children long in the
 // given orientation.
-func (b flowBox) SetMaxChildrenPerLine(b FlowBox, nChildren uint) {
+func (b flowBox) SetMaxChildrenPerLine(nChildren uint) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.guint
 
@@ -622,7 +687,7 @@ func (b flowBox) SetMaxChildrenPerLine(b FlowBox, nChildren uint) {
 
 // SetMinChildrenPerLine sets the minimum number of children to line up in
 // @box’s orientation before flowing.
-func (b flowBox) SetMinChildrenPerLine(b FlowBox, nChildren uint) {
+func (b flowBox) SetMinChildrenPerLine(nChildren uint) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.guint
 
@@ -634,7 +699,7 @@ func (b flowBox) SetMinChildrenPerLine(b FlowBox, nChildren uint) {
 
 // SetRowSpacing sets the vertical space to add between children. See the
 // FlowBox:row-spacing property.
-func (b flowBox) SetRowSpacing(b FlowBox, spacing uint) {
+func (b flowBox) SetRowSpacing(spacing uint) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.guint
 
@@ -646,7 +711,7 @@ func (b flowBox) SetRowSpacing(b FlowBox, spacing uint) {
 
 // SetSelectionMode sets how selection works in @box. See SelectionMode for
 // details.
-func (b flowBox) SetSelectionMode(b FlowBox, mode SelectionMode) {
+func (b flowBox) SetSelectionMode(mode SelectionMode) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.GtkSelectionMode
 
@@ -666,7 +731,7 @@ func (b flowBox) SetSelectionMode(b FlowBox, mode SelectionMode) {
 //
 // Note that using a sort function is incompatible with using a model (see
 // gtk_flow_box_bind_model()).
-func (b flowBox) SetSortFunc(b FlowBox) {
+func (b flowBox) SetSortFunc() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -682,7 +747,7 @@ func (b flowBox) SetSortFunc(b FlowBox) {
 //
 // The adjustments have to be in pixel units and in the same coordinate
 // system as the allocation for immediate children of the box.
-func (b flowBox) SetVAdjustment(b FlowBox, adjustment Adjustment) {
+func (b flowBox) SetVAdjustment(adjustment Adjustment) {
 	var arg0 *C.GtkFlowBox
 	var arg1 *C.GtkAdjustment
 
@@ -694,7 +759,7 @@ func (b flowBox) SetVAdjustment(b FlowBox, adjustment Adjustment) {
 
 // UnselectAll: unselect all children of @box, if the selection mode allows
 // it.
-func (b flowBox) UnselectAll(b FlowBox) {
+func (b flowBox) UnselectAll() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
@@ -704,7 +769,7 @@ func (b flowBox) UnselectAll(b FlowBox) {
 
 // UnselectChild unselects a single child of @box, if the selection mode
 // allows it.
-func (b flowBox) UnselectChild(b FlowBox, child FlowBoxChild) {
+func (b flowBox) UnselectChild(child FlowBoxChild) {
 	var arg0 *C.GtkFlowBox
 	var arg1 *C.GtkFlowBoxChild
 
@@ -733,12 +798,12 @@ type FlowBoxChild interface {
 	// functions into the widgets themselves. Another alternative is to call
 	// gtk_flow_box_invalidate_sort() on any model change, but that is more
 	// expensive.
-	Changed(c FlowBoxChild)
+	Changed()
 	// Index gets the current index of the @child in its FlowBox container.
-	Index(c FlowBoxChild)
+	Index() int
 	// IsSelected returns whether the @child is currently selected in its
 	// FlowBox container.
-	IsSelected(c FlowBoxChild) bool
+	IsSelected() bool
 }
 
 // flowBoxChild implements the FlowBoxChild interface.
@@ -765,8 +830,15 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 }
 
 // NewFlowBoxChild constructs a class FlowBoxChild.
-func NewFlowBoxChild() {
-	C.gtk_flow_box_child_new()
+func NewFlowBoxChild() FlowBoxChild {
+	var cret C.GtkFlowBoxChild
+	var goret FlowBoxChild
+
+	cret = C.gtk_flow_box_child_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+
+	return goret
 }
 
 // Changed marks @child as changed, causing any state that depends on this
@@ -784,7 +856,7 @@ func NewFlowBoxChild() {
 // functions into the widgets themselves. Another alternative is to call
 // gtk_flow_box_invalidate_sort() on any model change, but that is more
 // expensive.
-func (c flowBoxChild) Changed(c FlowBoxChild) {
+func (c flowBoxChild) Changed() {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
@@ -793,29 +865,36 @@ func (c flowBoxChild) Changed(c FlowBoxChild) {
 }
 
 // Index gets the current index of the @child in its FlowBox container.
-func (c flowBoxChild) Index(c FlowBoxChild) {
+func (c flowBoxChild) Index() int {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	C.gtk_flow_box_child_get_index(arg0)
+	var cret C.gint
+	var goret int
+
+	cret = C.gtk_flow_box_child_get_index(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // IsSelected returns whether the @child is currently selected in its
 // FlowBox container.
-func (c flowBoxChild) IsSelected(c FlowBoxChild) bool {
+func (c flowBoxChild) IsSelected() bool {
 	var arg0 *C.GtkFlowBoxChild
 
 	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_flow_box_child_is_selected(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

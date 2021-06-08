@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,10 +21,11 @@ func init() {
 	})
 }
 
-// CellRendererText: a CellRendererText renders a given text in its cell, using
-// the font, color and style information provided by its properties. The text
-// will be ellipsized if it is too long and the CellRendererText:ellipsize
-// property allows it.
+// CellRendererText renders text in a cell
+//
+// A CellRendererText renders a given text in its cell, using the font, color
+// and style information provided by its properties. The text will be ellipsized
+// if it is too long and the CellRendererText:ellipsize property allows it.
 //
 // If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
 // CellRendererText allows to edit its text using an entry.
@@ -36,7 +40,7 @@ type CellRendererText interface {
 	// slow (ie, a massive number of cells displayed). If @number_of_rows is -1,
 	// then the fixed height is unset, and the height is determined by the
 	// properties again.
-	SetFixedHeightFromFont(r CellRendererText, numberOfRows int)
+	SetFixedHeightFromFont(numberOfRows int)
 }
 
 // cellRendererText implements the CellRendererText interface.
@@ -61,8 +65,15 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 }
 
 // NewCellRendererText constructs a class CellRendererText.
-func NewCellRendererText() {
-	C.gtk_cell_renderer_text_new()
+func NewCellRendererText() CellRendererText {
+	var cret C.GtkCellRendererText
+	var goret CellRendererText
+
+	cret = C.gtk_cell_renderer_text_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererText)
+
+	return goret
 }
 
 // SetFixedHeightFromFont sets the height of a renderer to explicitly be
@@ -73,7 +84,7 @@ func NewCellRendererText() {
 // slow (ie, a massive number of cells displayed). If @number_of_rows is -1,
 // then the fixed height is unset, and the height is determined by the
 // properties again.
-func (r cellRendererText) SetFixedHeightFromFont(r CellRendererText, numberOfRows int) {
+func (r cellRendererText) SetFixedHeightFromFont(numberOfRows int) {
 	var arg0 *C.GtkCellRendererText
 	var arg1 C.int
 

@@ -4,50 +4,9 @@ package gtk
 
 import (
 	"unsafe"
-
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
-
-type SettingsValue struct {
-	native C.GtkSettingsValue
-}
-
-// WrapSettingsValue wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapSettingsValue(ptr unsafe.Pointer) *SettingsValue {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*SettingsValue)(ptr)
-}
-
-func marshalSettingsValue(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapSettingsValue(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (s *SettingsValue) Native() unsafe.Pointer {
-	return unsafe.Pointer(&s.native)
-}
-
-// Origin gets the field inside the struct.
-func (s *SettingsValue) Origin() string {
-	var v string
-	v = C.GoString(s.native.origin)
-	return v
-}
-
-// Value gets the field inside the struct.
-func (s *SettingsValue) Value() *externglib.Value {
-	var v *externglib.Value
-	v = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
-	return v
-}

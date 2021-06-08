@@ -3,8 +3,12 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,7 +27,7 @@ func init() {
 // CellAllocCallback: the type of the callback functions used for iterating over
 // the cell renderers and their allocated areas inside a CellArea, see
 // gtk_cell_area_foreach_alloc().
-type CellAllocCallback func(renderer CellRenderer, cellArea *gdk.Rectangle, cellBackground *gdk.Rectangle) bool
+type CellAllocCallback func() (ok bool)
 
 //export gotk4_CellAllocCallback
 func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2 *C.GdkRectangle, arg3 C.gpointer) C.gboolean {
@@ -33,18 +37,16 @@ func gotk4_CellAllocCallback(arg0 *C.GtkCellRenderer, arg1 *C.GdkRectangle, arg2
 	}
 
 	fn := v.(CellAllocCallback)
-	ret := fn(renderer, cellArea, cellBackground, data)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
 // CellCallback: the type of the callback functions used for iterating over the
 // cell renderers of a CellArea, see gtk_cell_area_foreach().
-type CellCallback func(renderer CellRenderer) bool
+type CellCallback func() (ok bool)
 
 //export gotk4_CellCallback
 func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
@@ -54,18 +56,18 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 	}
 
 	fn := v.(CellCallback)
-	ret := fn(renderer, data)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
-// CellArea: the CellArea is an abstract class for CellLayout widgets (also
-// referred to as "layouting widgets") to interface with an arbitrary number of
-// CellRenderers and interact with the user for a given TreeModel row.
+// CellArea: an abstract class for laying out GtkCellRenderers
+//
+// The CellArea is an abstract class for CellLayout widgets (also referred to as
+// "layouting widgets") to interface with an arbitrary number of CellRenderers
+// and interact with the user for a given TreeModel row.
 //
 // The cell area handles events, focus navigation, drawing and size requests and
 // allocations for a given row of data.
@@ -193,36 +195,36 @@ type CellArea interface {
 	// Activate activates @area, usually by activating the currently focused
 	// cell, however some subclasses which embed widgets in the area can also
 	// activate a widget if it currently has the focus.
-	Activate(a CellArea, context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
+	Activate(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool
 	// ActivateCell: this is used by CellArea subclasses when handling events to
 	// activate cells, the base CellArea class activates cells for keyboard
 	// events for free in its own GtkCellArea->activate() implementation.
-	ActivateCell(a CellArea, widget Widget, renderer CellRenderer, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) bool
+	ActivateCell(widget Widget, renderer CellRenderer, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) bool
 	// Add adds @renderer to @area with the default child cell properties.
-	Add(a CellArea, renderer CellRenderer)
+	Add(renderer CellRenderer)
 	// AddFocusSibling adds @sibling to @renderer’s focusable area, focus will
 	// be drawn around @renderer and all of its siblings if @renderer can focus
 	// for a given row.
 	//
 	// Events handled by focus siblings can also activate the given focusable
 	// @renderer.
-	AddFocusSibling(a CellArea, renderer CellRenderer, sibling CellRenderer)
+	AddFocusSibling(renderer CellRenderer, sibling CellRenderer)
 	// ApplyAttributes applies any connected attributes to the renderers in
 	// @area by pulling the values from @tree_model.
-	ApplyAttributes(a CellArea, treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
+	ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool)
 	// AttributeConnect connects an @attribute to apply values from @column for
 	// the TreeModel in use.
-	AttributeConnect(a CellArea, renderer CellRenderer, attribute string, column int)
+	AttributeConnect(renderer CellRenderer, attribute string, column int)
 	// AttributeDisconnect disconnects @attribute for the @renderer in @area so
 	// that attribute will no longer be updated with values from the model.
-	AttributeDisconnect(a CellArea, renderer CellRenderer, attribute string)
+	AttributeDisconnect(renderer CellRenderer, attribute string)
 	// AttributeGetColumn returns the model column that an attribute has been
 	// mapped to, or -1 if the attribute is not mapped.
-	AttributeGetColumn(a CellArea, renderer CellRenderer, attribute string)
+	AttributeGetColumn(renderer CellRenderer, attribute string) int
 	// CellGetProperty gets the value of a cell property for @renderer in @area.
-	CellGetProperty(a CellArea, renderer CellRenderer, propertyName string, value *externglib.Value)
+	CellGetProperty(renderer CellRenderer, propertyName string, value *externglib.Value)
 	// CellSetProperty sets a cell property for @renderer in @area.
-	CellSetProperty(a CellArea, renderer CellRenderer, propertyName string, value *externglib.Value)
+	CellSetProperty(renderer CellRenderer, propertyName string, value *externglib.Value)
 	// CopyContext: this is sometimes needed for cases where rows need to share
 	// alignments in one orientation but may be separately grouped in the
 	// opposing orientation.
@@ -232,56 +234,56 @@ type CellArea interface {
 	// each row of icons may have a separate collective height. IconView uses
 	// this to request the heights of each row based on a context which was
 	// already used to request all the row widths that are to be displayed.
-	CopyContext(a CellArea, context CellAreaContext)
+	CopyContext(context CellAreaContext) CellAreaContext
 	// CreateContext creates a CellAreaContext to be used with @area for all
 	// purposes. CellAreaContext stores geometry information for rows for which
 	// it was operated on, it is important to use the same context for the same
 	// row of data at all times (i.e. one should render and handle events with
 	// the same CellAreaContext which was used to request the size of those rows
 	// of data).
-	CreateContext(a CellArea)
+	CreateContext() CellAreaContext
 	// Event delegates event handling to a CellArea.
-	Event(a CellArea, context CellAreaContext, widget Widget, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState)
+	Event(context CellAreaContext, widget Widget, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int
 	// Focus: this should be called by the @area’s owning layout widget when
 	// focus is to be passed to @area, or moved within @area for a given
 	// @direction and row data.
 	//
 	// Implementing CellArea classes should implement this method to receive and
 	// navigate focus in its own way particular to how it lays out cells.
-	Focus(a CellArea, direction DirectionType) bool
+	Focus(direction DirectionType) bool
 	// Foreach calls @callback for every CellRenderer in @area.
-	Foreach(a CellArea)
+	Foreach()
 	// ForeachAlloc calls @callback for every CellRenderer in @area with the
 	// allocated rectangle inside @cell_area.
-	ForeachAlloc(a CellArea)
+	ForeachAlloc()
 	// CellAllocation derives the allocation of @renderer inside @area if @area
 	// were to be renderered in @cell_area.
-	CellAllocation(a CellArea, context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) *gdk.Rectangle
+	CellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) *gdk.Rectangle
 	// CellAtPosition gets the CellRenderer at @x and @y coordinates inside
 	// @area and optionally returns the full cell allocation for it inside
 	// @cell_area.
-	CellAtPosition(a CellArea, context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) *gdk.Rectangle
+	CellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (allocArea *gdk.Rectangle, cellRenderer CellRenderer)
 	// CurrentPathString gets the current TreePath string for the currently
 	// applied TreeIter, this is implicitly updated when
 	// gtk_cell_area_apply_attributes() is called and can be used to interact
 	// with renderers from CellArea subclasses.
-	CurrentPathString(a CellArea)
+	CurrentPathString() string
 	// EditWidget gets the CellEditable widget currently used to edit the
 	// currently edited cell.
-	EditWidget(a CellArea)
+	EditWidget() CellEditable
 	// EditedCell gets the CellRenderer in @area that is currently being edited.
-	EditedCell(a CellArea)
+	EditedCell() CellRenderer
 	// FocusCell retrieves the currently focused cell for @area
-	FocusCell(a CellArea)
+	FocusCell() CellRenderer
 	// FocusFromSibling gets the CellRenderer which is expected to be focusable
 	// for which @renderer is, or may be a sibling.
 	//
 	// This is handy for CellArea subclasses when handling events, after
 	// determining the renderer at the event location it can then chose to
 	// activate the focus cell for which the event cell may have been a sibling.
-	FocusFromSibling(a CellArea, renderer CellRenderer)
+	FocusFromSibling(renderer CellRenderer) CellRenderer
 	// FocusSiblings gets the focus sibling cell renderers for @renderer.
-	FocusSiblings(a CellArea, renderer CellRenderer)
+	FocusSiblings(renderer CellRenderer) *glib.List
 	// PreferredHeight retrieves a cell area’s initial minimum and natural
 	// height.
 	//
@@ -290,7 +292,7 @@ type CellArea interface {
 	// important to check the @minimum_height and @natural_height of this call
 	// but rather to consult gtk_cell_area_context_get_preferred_height() after
 	// a series of requests.
-	PreferredHeight(a CellArea, context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int)
+	PreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int)
 	// PreferredHeightForWidth retrieves a cell area’s minimum and natural
 	// height if it would be given the specified @width.
 	//
@@ -305,7 +307,7 @@ type CellArea interface {
 	// requested with gtk_cell_area_get_preferred_width() again and then the
 	// full width of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_width().
-	PreferredHeightForWidth(a CellArea, context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int)
+	PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int)
 	// PreferredWidth retrieves a cell area’s initial minimum and natural width.
 	//
 	// @area will store some geometrical information in @context along the way;
@@ -313,7 +315,7 @@ type CellArea interface {
 	// important to check the @minimum_width and @natural_width of this call but
 	// rather to consult gtk_cell_area_context_get_preferred_width() after a
 	// series of requests.
-	PreferredWidth(a CellArea, context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int)
+	PreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int)
 	// PreferredWidthForHeight retrieves a cell area’s minimum and natural width
 	// if it would be given the specified @height.
 	//
@@ -328,43 +330,43 @@ type CellArea interface {
 	// requested with gtk_cell_area_get_preferred_height() again and then the
 	// full height of the requested rows checked again with
 	// gtk_cell_area_context_get_preferred_height().
-	PreferredWidthForHeight(a CellArea, context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int)
+	PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int)
 	// RequestMode gets whether the area prefers a height-for-width layout or a
 	// width-for-height layout.
-	RequestMode(a CellArea)
+	RequestMode() SizeRequestMode
 	// HasRenderer checks if @area contains @renderer.
-	HasRenderer(a CellArea, renderer CellRenderer) bool
+	HasRenderer(renderer CellRenderer) bool
 	// InnerCellArea: this is a convenience function for CellArea
 	// implementations to get the inner area where a given CellRenderer will be
 	// rendered. It removes any padding previously added by
 	// gtk_cell_area_request_renderer().
-	InnerCellArea(a CellArea, widget Widget, cellArea *gdk.Rectangle) *gdk.Rectangle
+	InnerCellArea(widget Widget, cellArea *gdk.Rectangle) *gdk.Rectangle
 	// IsActivatable returns whether the area can do anything when activated,
 	// after applying new attributes to @area.
-	IsActivatable(a CellArea) bool
+	IsActivatable() bool
 	// IsFocusSibling returns whether @sibling is one of @renderer’s focus
 	// siblings (see gtk_cell_area_add_focus_sibling()).
-	IsFocusSibling(a CellArea, renderer CellRenderer, sibling CellRenderer) bool
+	IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bool
 	// Remove removes @renderer from @area.
-	Remove(a CellArea, renderer CellRenderer)
+	Remove(renderer CellRenderer)
 	// RemoveFocusSibling removes @sibling from @renderer’s focus sibling list
 	// (see gtk_cell_area_add_focus_sibling()).
-	RemoveFocusSibling(a CellArea, renderer CellRenderer, sibling CellRenderer)
+	RemoveFocusSibling(renderer CellRenderer, sibling CellRenderer)
 	// RequestRenderer: this is a convenience function for CellArea
 	// implementations to request size for cell renderers. It’s important to use
 	// this function to request size and then use
 	// gtk_cell_area_inner_cell_area() at render and event time since this
 	// function will add padding around the cell for focus painting.
-	RequestRenderer(a CellArea, renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int)
+	RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int)
 	// SetFocusCell: explicitly sets the currently focused cell to @renderer.
 	//
 	// This is generally called by implementations of CellAreaClass.focus() or
 	// CellAreaClass.event(), however it can also be used to implement functions
 	// such as gtk_tree_view_set_cursor_on_cell().
-	SetFocusCell(a CellArea, renderer CellRenderer)
+	SetFocusCell(renderer CellRenderer)
 	// Snapshot snapshots @area’s cells according to @area’s layout onto at the
 	// given coordinates.
-	Snapshot(a CellArea, context CellAreaContext, widget Widget, snapshot Snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
+	Snapshot(context CellAreaContext, widget Widget, snapshot Snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool)
 	// StopEditing: explicitly stops the editing of the currently edited cell.
 	//
 	// If @canceled is true, the currently edited cell renderer will emit the
@@ -372,7 +374,7 @@ type CellArea interface {
 	// be emitted on the current edit widget.
 	//
 	// See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
-	StopEditing(a CellArea, canceled bool)
+	StopEditing(canceled bool)
 }
 
 // cellArea implements the CellArea interface.
@@ -403,7 +405,7 @@ func marshalCellArea(p uintptr) (interface{}, error) {
 // Activate activates @area, usually by activating the currently focused
 // cell, however some subclasses which embed widgets in the area can also
 // activate a widget if it currently has the focus.
-func (a cellArea) Activate(a CellArea, context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool {
+func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -421,21 +423,21 @@ func (a cellArea) Activate(a CellArea, context CellAreaContext, widget Widget, c
 	}
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_area_activate(arg0, arg1, arg2, arg3, arg4, arg5)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ActivateCell: this is used by CellArea subclasses when handling events to
 // activate cells, the base CellArea class activates cells for keyboard
 // events for free in its own GtkCellArea->activate() implementation.
-func (a cellArea) ActivateCell(a CellArea, widget Widget, renderer CellRenderer, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) bool {
+func (a cellArea) ActivateCell(widget Widget, renderer CellRenderer, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) bool {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkWidget
 	var arg2 *C.GtkCellRenderer
@@ -451,19 +453,19 @@ func (a cellArea) ActivateCell(a CellArea, widget Widget, renderer CellRenderer,
 	arg5 = (C.GtkCellRendererState)(flags)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_area_activate_cell(arg0, arg1, arg2, arg3, arg4, arg5)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Add adds @renderer to @area with the default child cell properties.
-func (a cellArea) Add(a CellArea, renderer CellRenderer) {
+func (a cellArea) Add(renderer CellRenderer) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 
@@ -479,7 +481,7 @@ func (a cellArea) Add(a CellArea, renderer CellRenderer) {
 //
 // Events handled by focus siblings can also activate the given focusable
 // @renderer.
-func (a cellArea) AddFocusSibling(a CellArea, renderer CellRenderer, sibling CellRenderer) {
+func (a cellArea) AddFocusSibling(renderer CellRenderer, sibling CellRenderer) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.GtkCellRenderer
@@ -493,7 +495,7 @@ func (a cellArea) AddFocusSibling(a CellArea, renderer CellRenderer, sibling Cel
 
 // ApplyAttributes applies any connected attributes to the renderers in
 // @area by pulling the values from @tree_model.
-func (a cellArea) ApplyAttributes(a CellArea, treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool) {
+func (a cellArea) ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkTreeModel
 	var arg2 *C.GtkTreeIter
@@ -515,7 +517,7 @@ func (a cellArea) ApplyAttributes(a CellArea, treeModel TreeModel, iter *TreeIte
 
 // AttributeConnect connects an @attribute to apply values from @column for
 // the TreeModel in use.
-func (a cellArea) AttributeConnect(a CellArea, renderer CellRenderer, attribute string, column int) {
+func (a cellArea) AttributeConnect(renderer CellRenderer, attribute string, column int) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.char
@@ -532,7 +534,7 @@ func (a cellArea) AttributeConnect(a CellArea, renderer CellRenderer, attribute 
 
 // AttributeDisconnect disconnects @attribute for the @renderer in @area so
 // that attribute will no longer be updated with values from the model.
-func (a cellArea) AttributeDisconnect(a CellArea, renderer CellRenderer, attribute string) {
+func (a cellArea) AttributeDisconnect(renderer CellRenderer, attribute string) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.char
@@ -547,7 +549,7 @@ func (a cellArea) AttributeDisconnect(a CellArea, renderer CellRenderer, attribu
 
 // AttributeGetColumn returns the model column that an attribute has been
 // mapped to, or -1 if the attribute is not mapped.
-func (a cellArea) AttributeGetColumn(a CellArea, renderer CellRenderer, attribute string) {
+func (a cellArea) AttributeGetColumn(renderer CellRenderer, attribute string) int {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.char
@@ -557,11 +559,18 @@ func (a cellArea) AttributeGetColumn(a CellArea, renderer CellRenderer, attribut
 	arg2 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(arg2))
 
-	C.gtk_cell_area_attribute_get_column(arg0, arg1, arg2)
+	var cret C.int
+	var goret int
+
+	cret = C.gtk_cell_area_attribute_get_column(arg0, arg1, arg2)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // CellGetProperty gets the value of a cell property for @renderer in @area.
-func (a cellArea) CellGetProperty(a CellArea, renderer CellRenderer, propertyName string, value *externglib.Value) {
+func (a cellArea) CellGetProperty(renderer CellRenderer, propertyName string, value *externglib.Value) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.char
@@ -577,7 +586,7 @@ func (a cellArea) CellGetProperty(a CellArea, renderer CellRenderer, propertyNam
 }
 
 // CellSetProperty sets a cell property for @renderer in @area.
-func (a cellArea) CellSetProperty(a CellArea, renderer CellRenderer, propertyName string, value *externglib.Value) {
+func (a cellArea) CellSetProperty(renderer CellRenderer, propertyName string, value *externglib.Value) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.char
@@ -601,14 +610,21 @@ func (a cellArea) CellSetProperty(a CellArea, renderer CellRenderer, propertyNam
 // each row of icons may have a separate collective height. IconView uses
 // this to request the heights of each row based on a context which was
 // already used to request all the row widths that are to be displayed.
-func (a cellArea) CopyContext(a CellArea, context CellAreaContext) {
+func (a cellArea) CopyContext(context CellAreaContext) CellAreaContext {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
-	C.gtk_cell_area_copy_context(arg0, arg1)
+	cret := new(C.GtkCellAreaContext)
+	var goret CellAreaContext
+
+	cret = C.gtk_cell_area_copy_context(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CellAreaContext)
+
+	return goret
 }
 
 // CreateContext creates a CellAreaContext to be used with @area for all
@@ -617,16 +633,23 @@ func (a cellArea) CopyContext(a CellArea, context CellAreaContext) {
 // row of data at all times (i.e. one should render and handle events with
 // the same CellAreaContext which was used to request the size of those rows
 // of data).
-func (a cellArea) CreateContext(a CellArea) {
+func (a cellArea) CreateContext() CellAreaContext {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_cell_area_create_context(arg0)
+	cret := new(C.GtkCellAreaContext)
+	var goret CellAreaContext
+
+	cret = C.gtk_cell_area_create_context(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CellAreaContext)
+
+	return goret
 }
 
 // Event delegates event handling to a CellArea.
-func (a cellArea) Event(a CellArea, context CellAreaContext, widget Widget, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) {
+func (a cellArea) Event(context CellAreaContext, widget Widget, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -641,7 +664,14 @@ func (a cellArea) Event(a CellArea, context CellAreaContext, widget Widget, even
 	arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 	arg5 = (C.GtkCellRendererState)(flags)
 
-	C.gtk_cell_area_event(arg0, arg1, arg2, arg3, arg4, arg5)
+	var cret C.int
+	var goret int
+
+	cret = C.gtk_cell_area_event(arg0, arg1, arg2, arg3, arg4, arg5)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // Focus: this should be called by the @area’s owning layout widget when
@@ -650,7 +680,7 @@ func (a cellArea) Event(a CellArea, context CellAreaContext, widget Widget, even
 //
 // Implementing CellArea classes should implement this method to receive and
 // navigate focus in its own way particular to how it lays out cells.
-func (a cellArea) Focus(a CellArea, direction DirectionType) bool {
+func (a cellArea) Focus(direction DirectionType) bool {
 	var arg0 *C.GtkCellArea
 	var arg1 C.GtkDirectionType
 
@@ -658,19 +688,19 @@ func (a cellArea) Focus(a CellArea, direction DirectionType) bool {
 	arg1 = (C.GtkDirectionType)(direction)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_area_focus(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Foreach calls @callback for every CellRenderer in @area.
-func (a cellArea) Foreach(a CellArea) {
+func (a cellArea) Foreach() {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
@@ -680,7 +710,7 @@ func (a cellArea) Foreach(a CellArea) {
 
 // ForeachAlloc calls @callback for every CellRenderer in @area with the
 // allocated rectangle inside @cell_area.
-func (a cellArea) ForeachAlloc(a CellArea) {
+func (a cellArea) ForeachAlloc() {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
@@ -690,7 +720,7 @@ func (a cellArea) ForeachAlloc(a CellArea) {
 
 // CellAllocation derives the allocation of @renderer inside @area if @area
 // were to be renderered in @cell_area.
-func (a cellArea) CellAllocation(a CellArea, context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) *gdk.Rectangle {
+func (a cellArea) CellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) *gdk.Rectangle {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -703,20 +733,20 @@ func (a cellArea) CellAllocation(a CellArea, context CellAreaContext, widget Wid
 	arg3 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 
-	var arg5 C.GdkRectangle
-	var allocation *gdk.Rectangle
+	arg5 := new(C.GdkRectangle)
+	var ret5 *gdk.Rectangle
 
-	C.gtk_cell_area_get_cell_allocation(arg0, arg1, arg2, arg3, arg4, &arg5)
+	C.gtk_cell_area_get_cell_allocation(arg0, arg1, arg2, arg3, arg4, arg5)
 
-	allocation = gdk.WrapRectangle(unsafe.Pointer(&arg5))
+	ret5 = gdk.WrapRectangle(unsafe.Pointer(arg5))
 
-	return allocation
+	return ret5
 }
 
 // CellAtPosition gets the CellRenderer at @x and @y coordinates inside
 // @area and optionally returns the full cell allocation for it inside
 // @cell_area.
-func (a cellArea) CellAtPosition(a CellArea, context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) *gdk.Rectangle {
+func (a cellArea) CellAtPosition(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, x int, y int) (allocArea *gdk.Rectangle, cellRenderer CellRenderer) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -731,54 +761,85 @@ func (a cellArea) CellAtPosition(a CellArea, context CellAreaContext, widget Wid
 	arg4 = C.int(x)
 	arg5 = C.int(y)
 
-	var arg6 C.GdkRectangle
-	var allocArea *gdk.Rectangle
+	arg6 := new(C.GdkRectangle)
+	var ret6 *gdk.Rectangle
+	var cret *C.GtkCellRenderer
+	var goret CellRenderer
 
-	C.gtk_cell_area_get_cell_at_position(arg0, arg1, arg2, arg3, arg4, arg5, &arg6)
+	cret = C.gtk_cell_area_get_cell_at_position(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 
-	allocArea = gdk.WrapRectangle(unsafe.Pointer(&arg6))
+	ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRenderer)
 
-	return allocArea
+	return ret6, goret
 }
 
 // CurrentPathString gets the current TreePath string for the currently
 // applied TreeIter, this is implicitly updated when
 // gtk_cell_area_apply_attributes() is called and can be used to interact
 // with renderers from CellArea subclasses.
-func (a cellArea) CurrentPathString(a CellArea) {
+func (a cellArea) CurrentPathString() string {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_cell_area_get_current_path_string(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_cell_area_get_current_path_string(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // EditWidget gets the CellEditable widget currently used to edit the
 // currently edited cell.
-func (a cellArea) EditWidget(a CellArea) {
+func (a cellArea) EditWidget() CellEditable {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_cell_area_get_edit_widget(arg0)
+	var cret *C.GtkCellEditable
+	var goret CellEditable
+
+	cret = C.gtk_cell_area_get_edit_widget(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellEditable)
+
+	return goret
 }
 
 // EditedCell gets the CellRenderer in @area that is currently being edited.
-func (a cellArea) EditedCell(a CellArea) {
+func (a cellArea) EditedCell() CellRenderer {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_cell_area_get_edited_cell(arg0)
+	var cret *C.GtkCellRenderer
+	var goret CellRenderer
+
+	cret = C.gtk_cell_area_get_edited_cell(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRenderer)
+
+	return goret
 }
 
 // FocusCell retrieves the currently focused cell for @area
-func (a cellArea) FocusCell(a CellArea) {
+func (a cellArea) FocusCell() CellRenderer {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_cell_area_get_focus_cell(arg0)
+	var cret *C.GtkCellRenderer
+	var goret CellRenderer
+
+	cret = C.gtk_cell_area_get_focus_cell(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRenderer)
+
+	return goret
 }
 
 // FocusFromSibling gets the CellRenderer which is expected to be focusable
@@ -787,25 +848,39 @@ func (a cellArea) FocusCell(a CellArea) {
 // This is handy for CellArea subclasses when handling events, after
 // determining the renderer at the event location it can then chose to
 // activate the focus cell for which the event cell may have been a sibling.
-func (a cellArea) FocusFromSibling(a CellArea, renderer CellRenderer) {
+func (a cellArea) FocusFromSibling(renderer CellRenderer) CellRenderer {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
-	C.gtk_cell_area_get_focus_from_sibling(arg0, arg1)
+	var cret *C.GtkCellRenderer
+	var goret CellRenderer
+
+	cret = C.gtk_cell_area_get_focus_from_sibling(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRenderer)
+
+	return goret
 }
 
 // FocusSiblings gets the focus sibling cell renderers for @renderer.
-func (a cellArea) FocusSiblings(a CellArea, renderer CellRenderer) {
+func (a cellArea) FocusSiblings(renderer CellRenderer) *glib.List {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
-	C.gtk_cell_area_get_focus_siblings(arg0, arg1)
+	var cret *C.GList
+	var goret *glib.List
+
+	cret = C.gtk_cell_area_get_focus_siblings(arg0, arg1)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // PreferredHeight retrieves a cell area’s initial minimum and natural
@@ -816,7 +891,7 @@ func (a cellArea) FocusSiblings(a CellArea, renderer CellRenderer) {
 // important to check the @minimum_height and @natural_height of this call
 // but rather to consult gtk_cell_area_context_get_preferred_height() after
 // a series of requests.
-func (a cellArea) PreferredHeight(a CellArea, context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int) {
+func (a cellArea) PreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -825,17 +900,17 @@ func (a cellArea) PreferredHeight(a CellArea, context CellAreaContext, widget Wi
 	arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var arg3 C.int
-	var minimumHeight int
-	var arg4 C.int
-	var naturalHeight int
+	arg3 := new(C.int)
+	var ret3 int
+	arg4 := new(C.int)
+	var ret4 int
 
-	C.gtk_cell_area_get_preferred_height(arg0, arg1, arg2, &arg3, &arg4)
+	C.gtk_cell_area_get_preferred_height(arg0, arg1, arg2, arg3, arg4)
 
-	minimumHeight = int(&arg3)
-	naturalHeight = int(&arg4)
+	ret3 = int(*arg3)
+	ret4 = int(*arg4)
 
-	return minimumHeight, naturalHeight
+	return ret3, ret4
 }
 
 // PreferredHeightForWidth retrieves a cell area’s minimum and natural
@@ -852,7 +927,7 @@ func (a cellArea) PreferredHeight(a CellArea, context CellAreaContext, widget Wi
 // requested with gtk_cell_area_get_preferred_width() again and then the
 // full width of the requested rows checked again with
 // gtk_cell_area_context_get_preferred_width().
-func (a cellArea) PreferredHeightForWidth(a CellArea, context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int) {
+func (a cellArea) PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -863,17 +938,17 @@ func (a cellArea) PreferredHeightForWidth(a CellArea, context CellAreaContext, w
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	arg3 = C.int(width)
 
-	var arg4 C.int
-	var minimumHeight int
-	var arg5 C.int
-	var naturalHeight int
+	arg4 := new(C.int)
+	var ret4 int
+	arg5 := new(C.int)
+	var ret5 int
 
-	C.gtk_cell_area_get_preferred_height_for_width(arg0, arg1, arg2, arg3, &arg4, &arg5)
+	C.gtk_cell_area_get_preferred_height_for_width(arg0, arg1, arg2, arg3, arg4, arg5)
 
-	minimumHeight = int(&arg4)
-	naturalHeight = int(&arg5)
+	ret4 = int(*arg4)
+	ret5 = int(*arg5)
 
-	return minimumHeight, naturalHeight
+	return ret4, ret5
 }
 
 // PreferredWidth retrieves a cell area’s initial minimum and natural width.
@@ -883,7 +958,7 @@ func (a cellArea) PreferredHeightForWidth(a CellArea, context CellAreaContext, w
 // important to check the @minimum_width and @natural_width of this call but
 // rather to consult gtk_cell_area_context_get_preferred_width() after a
 // series of requests.
-func (a cellArea) PreferredWidth(a CellArea, context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int) {
+func (a cellArea) PreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -892,17 +967,17 @@ func (a cellArea) PreferredWidth(a CellArea, context CellAreaContext, widget Wid
 	arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var arg3 C.int
-	var minimumWidth int
-	var arg4 C.int
-	var naturalWidth int
+	arg3 := new(C.int)
+	var ret3 int
+	arg4 := new(C.int)
+	var ret4 int
 
-	C.gtk_cell_area_get_preferred_width(arg0, arg1, arg2, &arg3, &arg4)
+	C.gtk_cell_area_get_preferred_width(arg0, arg1, arg2, arg3, arg4)
 
-	minimumWidth = int(&arg3)
-	naturalWidth = int(&arg4)
+	ret3 = int(*arg3)
+	ret4 = int(*arg4)
 
-	return minimumWidth, naturalWidth
+	return ret3, ret4
 }
 
 // PreferredWidthForHeight retrieves a cell area’s minimum and natural width
@@ -919,7 +994,7 @@ func (a cellArea) PreferredWidth(a CellArea, context CellAreaContext, widget Wid
 // requested with gtk_cell_area_get_preferred_height() again and then the
 // full height of the requested rows checked again with
 // gtk_cell_area_context_get_preferred_height().
-func (a cellArea) PreferredWidthForHeight(a CellArea, context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int) {
+func (a cellArea) PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -930,31 +1005,38 @@ func (a cellArea) PreferredWidthForHeight(a CellArea, context CellAreaContext, w
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	arg3 = C.int(height)
 
-	var arg4 C.int
-	var minimumWidth int
-	var arg5 C.int
-	var naturalWidth int
+	arg4 := new(C.int)
+	var ret4 int
+	arg5 := new(C.int)
+	var ret5 int
 
-	C.gtk_cell_area_get_preferred_width_for_height(arg0, arg1, arg2, arg3, &arg4, &arg5)
+	C.gtk_cell_area_get_preferred_width_for_height(arg0, arg1, arg2, arg3, arg4, arg5)
 
-	minimumWidth = int(&arg4)
-	naturalWidth = int(&arg5)
+	ret4 = int(*arg4)
+	ret5 = int(*arg5)
 
-	return minimumWidth, naturalWidth
+	return ret4, ret5
 }
 
 // RequestMode gets whether the area prefers a height-for-width layout or a
 // width-for-height layout.
-func (a cellArea) RequestMode(a CellArea) {
+func (a cellArea) RequestMode() SizeRequestMode {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	C.gtk_cell_area_get_request_mode(arg0)
+	var cret C.GtkSizeRequestMode
+	var goret SizeRequestMode
+
+	cret = C.gtk_cell_area_get_request_mode(arg0)
+
+	goret = SizeRequestMode(cret)
+
+	return goret
 }
 
 // HasRenderer checks if @area contains @renderer.
-func (a cellArea) HasRenderer(a CellArea, renderer CellRenderer) bool {
+func (a cellArea) HasRenderer(renderer CellRenderer) bool {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 
@@ -962,22 +1044,22 @@ func (a cellArea) HasRenderer(a CellArea, renderer CellRenderer) bool {
 	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_area_has_renderer(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // InnerCellArea: this is a convenience function for CellArea
 // implementations to get the inner area where a given CellRenderer will be
 // rendered. It removes any padding previously added by
 // gtk_cell_area_request_renderer().
-func (a cellArea) InnerCellArea(a CellArea, widget Widget, cellArea *gdk.Rectangle) *gdk.Rectangle {
+func (a cellArea) InnerCellArea(widget Widget, cellArea *gdk.Rectangle) *gdk.Rectangle {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkWidget
 	var arg2 *C.GdkRectangle
@@ -986,38 +1068,38 @@ func (a cellArea) InnerCellArea(a CellArea, widget Widget, cellArea *gdk.Rectang
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	arg2 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 
-	var arg3 C.GdkRectangle
-	var innerArea *gdk.Rectangle
+	arg3 := new(C.GdkRectangle)
+	var ret3 *gdk.Rectangle
 
-	C.gtk_cell_area_inner_cell_area(arg0, arg1, arg2, &arg3)
+	C.gtk_cell_area_inner_cell_area(arg0, arg1, arg2, arg3)
 
-	innerArea = gdk.WrapRectangle(unsafe.Pointer(&arg3))
+	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
 
-	return innerArea
+	return ret3
 }
 
 // IsActivatable returns whether the area can do anything when activated,
 // after applying new attributes to @area.
-func (a cellArea) IsActivatable(a CellArea) bool {
+func (a cellArea) IsActivatable() bool {
 	var arg0 *C.GtkCellArea
 
 	arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_area_is_activatable(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // IsFocusSibling returns whether @sibling is one of @renderer’s focus
 // siblings (see gtk_cell_area_add_focus_sibling()).
-func (a cellArea) IsFocusSibling(a CellArea, renderer CellRenderer, sibling CellRenderer) bool {
+func (a cellArea) IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bool {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.GtkCellRenderer
@@ -1027,19 +1109,19 @@ func (a cellArea) IsFocusSibling(a CellArea, renderer CellRenderer, sibling Cell
 	arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(sibling.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_cell_area_is_focus_sibling(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Remove removes @renderer from @area.
-func (a cellArea) Remove(a CellArea, renderer CellRenderer) {
+func (a cellArea) Remove(renderer CellRenderer) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 
@@ -1051,7 +1133,7 @@ func (a cellArea) Remove(a CellArea, renderer CellRenderer) {
 
 // RemoveFocusSibling removes @sibling from @renderer’s focus sibling list
 // (see gtk_cell_area_add_focus_sibling()).
-func (a cellArea) RemoveFocusSibling(a CellArea, renderer CellRenderer, sibling CellRenderer) {
+func (a cellArea) RemoveFocusSibling(renderer CellRenderer, sibling CellRenderer) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 *C.GtkCellRenderer
@@ -1068,7 +1150,7 @@ func (a cellArea) RemoveFocusSibling(a CellArea, renderer CellRenderer, sibling 
 // this function to request size and then use
 // gtk_cell_area_inner_cell_area() at render and event time since this
 // function will add padding around the cell for focus painting.
-func (a cellArea) RequestRenderer(a CellArea, renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int) {
+func (a cellArea) RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 	var arg2 C.GtkOrientation
@@ -1081,17 +1163,17 @@ func (a cellArea) RequestRenderer(a CellArea, renderer CellRenderer, orientation
 	arg3 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	arg4 = C.int(forSize)
 
-	var arg5 C.int
-	var minimumSize int
-	var arg6 C.int
-	var naturalSize int
+	arg5 := new(C.int)
+	var ret5 int
+	arg6 := new(C.int)
+	var ret6 int
 
-	C.gtk_cell_area_request_renderer(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
+	C.gtk_cell_area_request_renderer(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 
-	minimumSize = int(&arg5)
-	naturalSize = int(&arg6)
+	ret5 = int(*arg5)
+	ret6 = int(*arg6)
 
-	return minimumSize, naturalSize
+	return ret5, ret6
 }
 
 // SetFocusCell: explicitly sets the currently focused cell to @renderer.
@@ -1099,7 +1181,7 @@ func (a cellArea) RequestRenderer(a CellArea, renderer CellRenderer, orientation
 // This is generally called by implementations of CellAreaClass.focus() or
 // CellAreaClass.event(), however it can also be used to implement functions
 // such as gtk_tree_view_set_cursor_on_cell().
-func (a cellArea) SetFocusCell(a CellArea, renderer CellRenderer) {
+func (a cellArea) SetFocusCell(renderer CellRenderer) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellRenderer
 
@@ -1111,7 +1193,7 @@ func (a cellArea) SetFocusCell(a CellArea, renderer CellRenderer) {
 
 // Snapshot snapshots @area’s cells according to @area’s layout onto at the
 // given coordinates.
-func (a cellArea) Snapshot(a CellArea, context CellAreaContext, widget Widget, snapshot Snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
+func (a cellArea) Snapshot(context CellAreaContext, widget Widget, snapshot Snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
 	var arg0 *C.GtkCellArea
 	var arg1 *C.GtkCellAreaContext
 	var arg2 *C.GtkWidget
@@ -1142,7 +1224,7 @@ func (a cellArea) Snapshot(a CellArea, context CellAreaContext, widget Widget, s
 // be emitted on the current edit widget.
 //
 // See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
-func (a cellArea) StopEditing(a CellArea, canceled bool) {
+func (a cellArea) StopEditing(canceled bool) {
 	var arg0 *C.GtkCellArea
 	var arg1 C.gboolean
 

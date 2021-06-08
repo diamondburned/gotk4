@@ -2,6 +2,14 @@
 
 package gdk
 
+import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/cairo"
+	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
+)
+
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -14,7 +22,7 @@ import "C"
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
-func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) {
+func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
 	var arg1 *C.cairo_surface_t
 	var arg2 C.gint
 	var arg3 C.gint
@@ -27,7 +35,14 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	arg4 = C.gint(width)
 	arg5 = C.gint(height)
 
-	C.gdk_pixbuf_get_from_surface(arg1, arg2, arg3, arg4, arg5)
+	cret := new(C.GdkPixbuf)
+	var goret gdkpixbuf.Pixbuf
+
+	cret = C.gdk_pixbuf_get_from_surface(arg1, arg2, arg3, arg4, arg5)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return goret
 }
 
 // PixbufGetFromWindow transfers image data from a Window and converts it to an
@@ -56,7 +71,7 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 //
 // (In short, there are several ways this function can fail, and if it fails it
 // returns nil; so check the return value.)
-func PixbufGetFromWindow(window Window, srcX int, srcY int, width int, height int) {
+func PixbufGetFromWindow(window Window, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
 	var arg1 *C.GdkWindow
 	var arg2 C.gint
 	var arg3 C.gint
@@ -69,5 +84,12 @@ func PixbufGetFromWindow(window Window, srcX int, srcY int, width int, height in
 	arg4 = C.gint(width)
 	arg5 = C.gint(height)
 
-	C.gdk_pixbuf_get_from_window(arg1, arg2, arg3, arg4, arg5)
+	cret := new(C.GdkPixbuf)
+	var goret gdkpixbuf.Pixbuf
+
+	cret = C.gdk_pixbuf_get_from_window(arg1, arg2, arg3, arg4, arg5)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return goret
 }

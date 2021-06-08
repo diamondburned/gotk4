@@ -3,6 +3,12 @@
 package gio
 
 import (
+	"runtime"
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,7 +57,7 @@ type Cancellable interface {
 	// operation from the same thread in which it is running, then the
 	// operation's ReadyCallback will not be invoked until the application
 	// returns to the main loop.
-	Cancel(c Cancellable)
+	Cancel()
 	// Connect: convenience function to connect to the #GCancellable::cancelled
 	// signal. Also handles the race condition that may happen if the
 	// cancellable is cancelled right before connecting.
@@ -69,7 +75,7 @@ type Cancellable interface {
 	// @callback is invoked. This lifts a restriction in place for earlier GLib
 	// versions which now makes it easier to write cleanup code that
 	// unconditionally invokes e.g. g_cancellable_cancel().
-	Connect(c Cancellable)
+	Connect() uint32
 	// Disconnect disconnects a handler from a cancellable instance similar to
 	// g_signal_handler_disconnect(). Additionally, in the event that a signal
 	// handler is currently running, this call will block until the handler has
@@ -81,7 +87,7 @@ type Cancellable interface {
 	// See #GCancellable::cancelled for details on how to use this.
 	//
 	// If @cancellable is nil or @handler_id is `0` this function does nothing.
-	Disconnect(c Cancellable, handlerID uint32)
+	Disconnect(handlerID uint32)
 	// Fd gets the file descriptor for a cancellable job. This can be used to
 	// implement cancellable operations on Unix systems. The returned fd will
 	// turn readable when @cancellable is cancelled.
@@ -95,9 +101,9 @@ type Cancellable interface {
 	// returned file descriptor.
 	//
 	// See also g_cancellable_make_pollfd().
-	Fd(c Cancellable)
+	Fd() int
 	// IsCancelled checks if a cancellable job has been cancelled.
-	IsCancelled(c Cancellable) bool
+	IsCancelled() bool
 	// MakePollfd creates a FD corresponding to @cancellable; this can be passed
 	// to g_poll() and used to poll for cancellation. This is useful both for
 	// unix systems without a native poll and for portability to windows.
@@ -115,10 +121,10 @@ type Cancellable interface {
 	// You are not supposed to read from the fd yourself, just check for
 	// readable status. Reading to unset the readable status is done with
 	// g_cancellable_reset().
-	MakePollfd(c Cancellable, pollfd *glib.PollFD) bool
+	MakePollfd(pollfd *glib.PollFD) bool
 	// PopCurrent pops @cancellable off the cancellable stack (verifying that
 	// @cancellable is on the top of the stack).
-	PopCurrent(c Cancellable)
+	PopCurrent()
 	// PushCurrent pushes @cancellable onto the cancellable stack. The current
 	// cancellable can then be received using g_cancellable_get_current().
 	//
@@ -127,7 +133,7 @@ type Cancellable interface {
 	//
 	// This is typically called automatically by e.g. #GFile operations, so you
 	// rarely have to call this yourself.
-	PushCurrent(c Cancellable)
+	PushCurrent()
 	// ReleaseFd releases a resources previously allocated by
 	// g_cancellable_get_fd() or g_cancellable_make_pollfd().
 	//
@@ -137,7 +143,7 @@ type Cancellable interface {
 	// file descriptors until it is finalized if this function is not called.
 	// This can cause the application to run out of file descriptors when many
 	// #GCancellables are used at the same time.
-	ReleaseFd(c Cancellable)
+	ReleaseFd()
 	// Reset resets @cancellable to its uncancelled state.
 	//
 	// If cancellable is currently in use by any cancellable operation then the
@@ -149,10 +155,10 @@ type Cancellable interface {
 	// reference to a cancellable after cancelling it, and let it die with the
 	// outstanding async operations. You should create a fresh cancellable for
 	// further async operations.
-	Reset(c Cancellable)
+	Reset()
 	// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 	// notify that the operation was cancelled.
-	SetErrorIfCancelled(c Cancellable) error
+	SetErrorIfCancelled() error
 	// NewSource creates a source that triggers if @cancellable is cancelled and
 	// calls its callback of type SourceFunc. This is primarily useful for
 	// attaching to another (non-cancellable) source with
@@ -162,7 +168,7 @@ type Cancellable interface {
 	// case the source will never trigger.
 	//
 	// The new #GSource will hold a reference to the #GCancellable.
-	NewSource(c Cancellable)
+	NewSource() *glib.Source
 }
 
 // cancellable implements the Cancellable interface.
@@ -187,8 +193,15 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 }
 
 // NewCancellable constructs a class Cancellable.
-func NewCancellable() {
-	C.g_cancellable_new()
+func NewCancellable() Cancellable {
+	cret := new(C.GCancellable)
+	var goret Cancellable
+
+	cret = C.g_cancellable_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cancellable)
+
+	return goret
 }
 
 // Cancel: will set @cancellable to cancelled, and will emit the
@@ -208,7 +221,7 @@ func NewCancellable() {
 // operation from the same thread in which it is running, then the
 // operation's ReadyCallback will not be invoked until the application
 // returns to the main loop.
-func (c cancellable) Cancel(c Cancellable) {
+func (c cancellable) Cancel() {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -233,12 +246,19 @@ func (c cancellable) Cancel(c Cancellable) {
 // @callback is invoked. This lifts a restriction in place for earlier GLib
 // versions which now makes it easier to write cleanup code that
 // unconditionally invokes e.g. g_cancellable_cancel().
-func (c cancellable) Connect(c Cancellable) {
+func (c cancellable) Connect() uint32 {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_connect(arg0, arg1, arg2, arg3)
+	var cret C.gulong
+	var goret uint32
+
+	cret = C.g_cancellable_connect(arg0, arg1, arg2, arg3)
+
+	goret = uint32(cret)
+
+	return goret
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -252,7 +272,7 @@ func (c cancellable) Connect(c Cancellable) {
 // See #GCancellable::cancelled for details on how to use this.
 //
 // If @cancellable is nil or @handler_id is `0` this function does nothing.
-func (c cancellable) Disconnect(c Cancellable, handlerID uint32) {
+func (c cancellable) Disconnect(handlerID uint32) {
 	var arg0 *C.GCancellable
 	var arg1 C.gulong
 
@@ -275,30 +295,37 @@ func (c cancellable) Disconnect(c Cancellable, handlerID uint32) {
 // returned file descriptor.
 //
 // See also g_cancellable_make_pollfd().
-func (c cancellable) Fd(c Cancellable) {
+func (c cancellable) Fd() int {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_get_fd(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.g_cancellable_get_fd(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // IsCancelled checks if a cancellable job has been cancelled.
-func (c cancellable) IsCancelled(c Cancellable) bool {
+func (c cancellable) IsCancelled() bool {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_cancellable_is_cancelled(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // MakePollfd creates a FD corresponding to @cancellable; this can be passed
@@ -318,7 +345,7 @@ func (c cancellable) IsCancelled(c Cancellable) bool {
 // You are not supposed to read from the fd yourself, just check for
 // readable status. Reading to unset the readable status is done with
 // g_cancellable_reset().
-func (c cancellable) MakePollfd(c Cancellable, pollfd *glib.PollFD) bool {
+func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	var arg0 *C.GCancellable
 	var arg1 *C.GPollFD
 
@@ -326,20 +353,20 @@ func (c cancellable) MakePollfd(c Cancellable, pollfd *glib.PollFD) bool {
 	arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_cancellable_make_pollfd(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // PopCurrent pops @cancellable off the cancellable stack (verifying that
 // @cancellable is on the top of the stack).
-func (c cancellable) PopCurrent(c Cancellable) {
+func (c cancellable) PopCurrent() {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -355,7 +382,7 @@ func (c cancellable) PopCurrent(c Cancellable) {
 //
 // This is typically called automatically by e.g. #GFile operations, so you
 // rarely have to call this yourself.
-func (c cancellable) PushCurrent(c Cancellable) {
+func (c cancellable) PushCurrent() {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -372,7 +399,7 @@ func (c cancellable) PushCurrent(c Cancellable) {
 // file descriptors until it is finalized if this function is not called.
 // This can cause the application to run out of file descriptors when many
 // #GCancellables are used at the same time.
-func (c cancellable) ReleaseFd(c Cancellable) {
+func (c cancellable) ReleaseFd() {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -391,7 +418,7 @@ func (c cancellable) ReleaseFd(c Cancellable) {
 // reference to a cancellable after cancelling it, and let it die with the
 // outstanding async operations. You should create a fresh cancellable for
 // further async operations.
-func (c cancellable) Reset(c Cancellable) {
+func (c cancellable) Reset() {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
@@ -401,19 +428,19 @@ func (c cancellable) Reset(c Cancellable) {
 
 // SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
-func (c cancellable) SetErrorIfCancelled(c Cancellable) error {
+func (c cancellable) SetErrorIfCancelled() error {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_cancellable_set_error_if_cancelled(arg0, &errout)
+	C.g_cancellable_set_error_if_cancelled(arg0, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // NewSource creates a source that triggers if @cancellable is cancelled and
@@ -425,10 +452,20 @@ func (c cancellable) SetErrorIfCancelled(c Cancellable) error {
 // case the source will never trigger.
 //
 // The new #GSource will hold a reference to the #GCancellable.
-func (c cancellable) NewSource(c Cancellable) {
+func (c cancellable) NewSource() *glib.Source {
 	var arg0 *C.GCancellable
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_source_new(arg0)
+	cret := new(C.GSource)
+	var goret *glib.Source
+
+	cret = C.g_cancellable_source_new(arg0)
+
+	goret = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *glib.Source) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }

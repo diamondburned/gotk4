@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,19 +39,19 @@ type ListModelOverrider interface {
 	//
 	// nil is never returned for an index that is smaller than the length of the
 	// list. See g_list_model_get_n_items().
-	Item(l ListModel, position uint)
+	Item(position uint) gextras.Objector
 	// ItemType gets the type of the items in @list. All items returned from
 	// g_list_model_get_type() are of that type or a subtype, or are an
 	// implementation of that interface.
 	//
 	// The item type of a Model can not change during the life of the model.
-	ItemType(l ListModel)
+	ItemType() externglib.Type
 	// NItems gets the number of items in @list.
 	//
 	// Depending on the model implementation, calling this function may be less
 	// efficient than iterating the list with increasing values for @position
 	// until g_list_model_get_item() returns nil.
-	NItems(l ListModel)
+	NItems() uint
 }
 
 // ListModel is an interface that represents a mutable list of #GObjects. Its
@@ -102,7 +105,7 @@ type ListModel interface {
 	//
 	// nil is never returned for an index that is smaller than the length of the
 	// list. See g_list_model_get_n_items().
-	Object(l ListModel, position uint)
+	Object(position uint) gextras.Objector
 	// ItemsChanged emits the Model::items-changed signal on @list.
 	//
 	// This function should only be called by classes implementing Model. It has
@@ -122,7 +125,7 @@ type ListModel interface {
 	// of accesses to the model via the API, without returning to the mainloop,
 	// and without calling other code, will continue to view the same contents
 	// of the model.
-	ItemsChanged(l ListModel, position uint, removed uint, added uint)
+	ItemsChanged(position uint, removed uint, added uint)
 }
 
 // listModel implements the ListModel interface.
@@ -151,12 +154,19 @@ func marshalListModel(p uintptr) (interface{}, error) {
 // implementation of that interface.
 //
 // The item type of a Model can not change during the life of the model.
-func (l listModel) ItemType(l ListModel) {
+func (l listModel) ItemType() externglib.Type {
 	var arg0 *C.GListModel
 
 	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
-	C.g_list_model_get_item_type(arg0)
+	var cret C.GType
+	var goret externglib.Type
+
+	cret = C.g_list_model_get_item_type(arg0)
+
+	goret = externglib.Type(cret)
+
+	return goret
 }
 
 // NItems gets the number of items in @list.
@@ -164,12 +174,19 @@ func (l listModel) ItemType(l ListModel) {
 // Depending on the model implementation, calling this function may be less
 // efficient than iterating the list with increasing values for @position
 // until g_list_model_get_item() returns nil.
-func (l listModel) NItems(l ListModel) {
+func (l listModel) NItems() uint {
 	var arg0 *C.GListModel
 
 	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
-	C.g_list_model_get_n_items(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_list_model_get_n_items(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // Object: get the item at @position. If @position is greater than the
@@ -177,14 +194,21 @@ func (l listModel) NItems(l ListModel) {
 //
 // nil is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
-func (l listModel) Object(l ListModel, position uint) {
+func (l listModel) Object(position uint) gextras.Objector {
 	var arg0 *C.GListModel
 	var arg1 C.guint
 
 	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 	arg1 = C.guint(position)
 
-	C.g_list_model_get_object(arg0, arg1)
+	cret := new(C.GObject)
+	var goret gextras.Objector
+
+	cret = C.g_list_model_get_object(arg0, arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return goret
 }
 
 // ItemsChanged emits the Model::items-changed signal on @list.
@@ -206,7 +230,7 @@ func (l listModel) Object(l ListModel, position uint) {
 // of accesses to the model via the API, without returning to the mainloop,
 // and without calling other code, will continue to view the same contents
 // of the model.
-func (l listModel) ItemsChanged(l ListModel, position uint, removed uint, added uint) {
+func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
 	var arg0 *C.GListModel
 	var arg1 C.guint
 	var arg2 C.guint

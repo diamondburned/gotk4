@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"runtime"
+
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -22,84 +24,86 @@ func init() {
 // SelectionModelOverrider contains methods that are overridable. This
 // interface is a subset of the interface SelectionModel.
 type SelectionModelOverrider interface {
-	// SelectionInRange gets a set containing a set where the values in the
-	// range `[position, position + n_items)` match the selected state of the
-	// items in that range. All values outside that range are undefined.
+	// SelectionInRange gets the set of selected items in a range.
 	//
-	// This function is an optimization for gtk_selection_model_get_selection()
-	// when you are only interested in part of the model's selected state. A
-	// common use case is in response to the SelectionModel::selection-changed
-	// signal.
-	SelectionInRange(m SelectionModel, position uint, nItems uint)
+	// This function is an optimization for
+	// [method@Gtk.SelectionModel.get_selection] when you are only interested in
+	// part of the model's selected state. A common use case is in response to
+	// the [signal@Gtk.SelectionModel::selection-changed] signal.
+	SelectionInRange(position uint, nItems uint) *Bitset
 	// IsSelected checks if the given item is selected.
-	IsSelected(m SelectionModel, position uint) bool
+	IsSelected(position uint) bool
 	// SelectAll requests to select all items in the model.
-	SelectAll(m SelectionModel) bool
+	SelectAll() bool
 	// SelectItem requests to select an item in the model.
-	SelectItem(m SelectionModel, position uint, unselectRest bool) bool
+	SelectItem(position uint, unselectRest bool) bool
 	// SelectRange requests to select a range of items in the model.
-	SelectRange(m SelectionModel, position uint, nItems uint, unselectRest bool) bool
-	// SetSelection: this is the most advanced selection updating method that
-	// allows the most fine-grained control over selection changes. If you can,
-	// you should try the simpler versions, as implementations are more likely
-	// to implement support for those.
+	SelectRange(position uint, nItems uint, unselectRest bool) bool
+	// SetSelection: make selection changes.
+	//
+	// This is the most advanced selection updating method that allows the most
+	// fine-grained control over selection changes. If you can, you should try
+	// the simpler versions, as implementations are more likely to implement
+	// support for those.
 	//
 	// Requests that the selection state of all positions set in @mask be
 	// updated to the respective value in the @selected bitmask.
 	//
 	// In pseudocode, it would look something like this:
 	//
-	//    for (i = 0; i < n_items; i++)
-	//      {
-	//        // don't change values not in the mask
-	//        if (!gtk_bitset_contains (mask, i))
-	//          continue;
+	// “`c for (i = 0; i < n_items; i++) { // don't change values not in the
+	// mask if (!gtk_bitset_contains (mask, i)) continue;
 	//
-	//        if (gtk_bitset_contains (selected, i))
-	//          select_item (i);
-	//        else
-	//          unselect_item (i);
-	//      }
+	//      if (gtk_bitset_contains (selected, i))
+	//        select_item (i);
+	//      else
+	//        unselect_item (i);
+	//    }
 	//
-	//    gtk_selection_model_selection_changed (model, first_changed_item, n_changed_items);
+	// gtk_selection_model_selection_changed (model, first_changed_item,
+	// n_changed_items); “`
 	//
 	// @mask and @selected must not be modified. They may refer to the same
 	// bitset, which would mean that every item in the set should be selected.
-	SetSelection(m SelectionModel, selected *Bitset, mask *Bitset) bool
+	SetSelection(selected *Bitset, mask *Bitset) bool
 	// UnselectAll requests to unselect all items in the model.
-	UnselectAll(m SelectionModel) bool
+	UnselectAll() bool
 	// UnselectItem requests to unselect an item in the model.
-	UnselectItem(m SelectionModel, position uint) bool
+	UnselectItem(position uint) bool
 	// UnselectRange requests to unselect a range of items in the model.
-	UnselectRange(m SelectionModel, position uint, nItems uint) bool
+	UnselectRange(position uint, nItems uint) bool
 }
 
-// SelectionModel is an interface that extends the Model interface by adding
-// support for selections. This support is then used by widgets using list
-// models to add the ability to select and unselect various items.
+// SelectionModel: `GtkSelectionModel` is an interface that add support for
+// selection to list models.
+//
+// This support is then used by widgets using list models to add the ability to
+// select and unselect various items.
 //
 // GTK provides default implementations of the most common selection modes such
-// as SingleSelection, so you will only need to implement this interface if you
-// want detailed control about how selections should be handled.
+// as [class@Gtk.SingleSelection], so you will only need to implement this
+// interface if you want detailed control about how selections should be
+// handled.
 //
-// A SelectionModel supports a single boolean per item indicating if an item is
-// selected or not. This can be queried via gtk_selection_model_is_selected().
-// When the selected state of one or more items changes, the model will emit the
-// SelectionModel::selection-changed signal by calling the
-// gtk_selection_model_selection_changed() function. The positions given in that
-// signal may have their selection state changed, though that is not a
-// requirement. If new items added to the model via the Model::items-changed
-// signal are selected or not is up to the implementation.
+// A `GtkSelectionModel` supports a single boolean per item indicating if an
+// item is selected or not. This can be queried via
+// [method@Gtk.SelectionModel.is_selected]. When the selected state of one or
+// more items changes, the model will emit the
+// [signal@Gtk.SelectionModel::selection-changed] signal by calling the
+// [method@Gtk.SelectionModel.selection_changed] function. The positions given
+// in that signal may have their selection state changed, though that is not a
+// requirement. If new items added to the model via the ::items-changed signal
+// are selected or not is up to the implementation.
 //
-// Note that items added via Model::items-changed may already be selected and no
-// SelectionModel::selection-changed will be emitted for them. So to track which
-// items are selected, it is necessary to listen to both signals.
+// Note that items added via ::items-changed may already be selected and no
+// [Gtk.SelectionModel::selection-changed] will be emitted for them. So to track
+// which items are selected, it is necessary to listen to both signals.
 //
 // Additionally, the interface can expose functionality to select and unselect
 // items. If these functions are implemented, GTK's list widgets will allow
-// users to select and unselect items. However, SelectionModels are free to only
-// implement them partially or not at all. In that case the widgets will not
-// support the unimplemented operations.
+// users to select and unselect items. However, `GtkSelectionModel`s are free to
+// only implement them partially or not at all. In that case the widgets will
+// not support the unimplemented operations.
 //
 // When selecting or unselecting is supported by a model, the return values of
 // the selection functions do *not* indicate if selection or unselection
@@ -117,14 +121,16 @@ type SelectionModel interface {
 	// model.
 	//
 	// This function may be slow, so if you are only interested in single item,
-	// consider using gtk_selection_model_is_selected() or if you are only
-	// interested in a few consider
-	// gtk_selection_model_get_selection_in_range().
-	Selection(m SelectionModel)
-	// SelectionChanged: helper function for implementations of SelectionModel.
+	// consider using [method@Gtk.SelectionModel.is_selected] or if you are only
+	// interested in a few, consider
+	// [method@Gtk.SelectionModel.get_selection_in_range].
+	Selection() *Bitset
+	// SelectionChanged: helper function for implementations of
+	// `GtkSelectionModel`.
+	//
 	// Call this when a the selection changes to emit the
-	// SelectionModel::selection-changed signal.
-	SelectionChanged(m SelectionModel, position uint, nItems uint)
+	// [signal@Gtk.SelectionModel::selection-changed] signal.
+	SelectionChanged(position uint, nItems uint)
 }
 
 // selectionModel implements the SelectionModel interface.
@@ -152,26 +158,34 @@ func marshalSelectionModel(p uintptr) (interface{}, error) {
 // model.
 //
 // This function may be slow, so if you are only interested in single item,
-// consider using gtk_selection_model_is_selected() or if you are only
-// interested in a few consider
-// gtk_selection_model_get_selection_in_range().
-func (m selectionModel) Selection(m SelectionModel) {
+// consider using [method@Gtk.SelectionModel.is_selected] or if you are only
+// interested in a few, consider
+// [method@Gtk.SelectionModel.get_selection_in_range].
+func (m selectionModel) Selection() *Bitset {
 	var arg0 *C.GtkSelectionModel
 
 	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
-	C.gtk_selection_model_get_selection(arg0)
+	cret := new(C.GtkBitset)
+	var goret *Bitset
+
+	cret = C.gtk_selection_model_get_selection(arg0)
+
+	goret = WrapBitset(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Bitset) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
-// SelectionInRange gets a set containing a set where the values in the
-// range `[position, position + n_items)` match the selected state of the
-// items in that range. All values outside that range are undefined.
+// SelectionInRange gets the set of selected items in a range.
 //
-// This function is an optimization for gtk_selection_model_get_selection()
-// when you are only interested in part of the model's selected state. A
-// common use case is in response to the SelectionModel::selection-changed
-// signal.
-func (m selectionModel) SelectionInRange(m SelectionModel, position uint, nItems uint) {
+// This function is an optimization for
+// [method@Gtk.SelectionModel.get_selection] when you are only interested in
+// part of the model's selected state. A common use case is in response to
+// the [signal@Gtk.SelectionModel::selection-changed] signal.
+func (m selectionModel) SelectionInRange(position uint, nItems uint) *Bitset {
 	var arg0 *C.GtkSelectionModel
 	var arg1 C.guint
 	var arg2 C.guint
@@ -180,11 +194,21 @@ func (m selectionModel) SelectionInRange(m SelectionModel, position uint, nItems
 	arg1 = C.guint(position)
 	arg2 = C.guint(nItems)
 
-	C.gtk_selection_model_get_selection_in_range(arg0, arg1, arg2)
+	cret := new(C.GtkBitset)
+	var goret *Bitset
+
+	cret = C.gtk_selection_model_get_selection_in_range(arg0, arg1, arg2)
+
+	goret = WrapBitset(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Bitset) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // IsSelected checks if the given item is selected.
-func (m selectionModel) IsSelected(m SelectionModel, position uint) bool {
+func (m selectionModel) IsSelected(position uint) bool {
 	var arg0 *C.GtkSelectionModel
 	var arg1 C.guint
 
@@ -192,37 +216,37 @@ func (m selectionModel) IsSelected(m SelectionModel, position uint) bool {
 	arg1 = C.guint(position)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_is_selected(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SelectAll requests to select all items in the model.
-func (m selectionModel) SelectAll(m SelectionModel) bool {
+func (m selectionModel) SelectAll() bool {
 	var arg0 *C.GtkSelectionModel
 
 	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_select_all(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SelectItem requests to select an item in the model.
-func (m selectionModel) SelectItem(m SelectionModel, position uint, unselectRest bool) bool {
+func (m selectionModel) SelectItem(position uint, unselectRest bool) bool {
 	var arg0 *C.GtkSelectionModel
 	var arg1 C.guint
 	var arg2 C.gboolean
@@ -234,19 +258,19 @@ func (m selectionModel) SelectItem(m SelectionModel, position uint, unselectRest
 	}
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_select_item(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SelectRange requests to select a range of items in the model.
-func (m selectionModel) SelectRange(m SelectionModel, position uint, nItems uint, unselectRest bool) bool {
+func (m selectionModel) SelectRange(position uint, nItems uint, unselectRest bool) bool {
 	var arg0 *C.GtkSelectionModel
 	var arg1 C.guint
 	var arg2 C.guint
@@ -260,21 +284,23 @@ func (m selectionModel) SelectRange(m SelectionModel, position uint, nItems uint
 	}
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_select_range(arg0, arg1, arg2, arg3)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// SelectionChanged: helper function for implementations of SelectionModel.
+// SelectionChanged: helper function for implementations of
+// `GtkSelectionModel`.
+//
 // Call this when a the selection changes to emit the
-// SelectionModel::selection-changed signal.
-func (m selectionModel) SelectionChanged(m SelectionModel, position uint, nItems uint) {
+// [signal@Gtk.SelectionModel::selection-changed] signal.
+func (m selectionModel) SelectionChanged(position uint, nItems uint) {
 	var arg0 *C.GtkSelectionModel
 	var arg1 C.guint
 	var arg2 C.guint
@@ -286,33 +312,33 @@ func (m selectionModel) SelectionChanged(m SelectionModel, position uint, nItems
 	C.gtk_selection_model_selection_changed(arg0, arg1, arg2)
 }
 
-// SetSelection: this is the most advanced selection updating method that
-// allows the most fine-grained control over selection changes. If you can,
-// you should try the simpler versions, as implementations are more likely
-// to implement support for those.
+// SetSelection: make selection changes.
+//
+// This is the most advanced selection updating method that allows the most
+// fine-grained control over selection changes. If you can, you should try
+// the simpler versions, as implementations are more likely to implement
+// support for those.
 //
 // Requests that the selection state of all positions set in @mask be
 // updated to the respective value in the @selected bitmask.
 //
 // In pseudocode, it would look something like this:
 //
-//    for (i = 0; i < n_items; i++)
-//      {
-//        // don't change values not in the mask
-//        if (!gtk_bitset_contains (mask, i))
-//          continue;
+// “`c for (i = 0; i < n_items; i++) { // don't change values not in the
+// mask if (!gtk_bitset_contains (mask, i)) continue;
 //
-//        if (gtk_bitset_contains (selected, i))
-//          select_item (i);
-//        else
-//          unselect_item (i);
-//      }
+//      if (gtk_bitset_contains (selected, i))
+//        select_item (i);
+//      else
+//        unselect_item (i);
+//    }
 //
-//    gtk_selection_model_selection_changed (model, first_changed_item, n_changed_items);
+// gtk_selection_model_selection_changed (model, first_changed_item,
+// n_changed_items); “`
 //
 // @mask and @selected must not be modified. They may refer to the same
 // bitset, which would mean that every item in the set should be selected.
-func (m selectionModel) SetSelection(m SelectionModel, selected *Bitset, mask *Bitset) bool {
+func (m selectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
 	var arg0 *C.GtkSelectionModel
 	var arg1 *C.GtkBitset
 	var arg2 *C.GtkBitset
@@ -322,37 +348,37 @@ func (m selectionModel) SetSelection(m SelectionModel, selected *Bitset, mask *B
 	arg2 = (*C.GtkBitset)(unsafe.Pointer(mask.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_set_selection(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // UnselectAll requests to unselect all items in the model.
-func (m selectionModel) UnselectAll(m SelectionModel) bool {
+func (m selectionModel) UnselectAll() bool {
 	var arg0 *C.GtkSelectionModel
 
 	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_unselect_all(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // UnselectItem requests to unselect an item in the model.
-func (m selectionModel) UnselectItem(m SelectionModel, position uint) bool {
+func (m selectionModel) UnselectItem(position uint) bool {
 	var arg0 *C.GtkSelectionModel
 	var arg1 C.guint
 
@@ -360,19 +386,19 @@ func (m selectionModel) UnselectItem(m SelectionModel, position uint) bool {
 	arg1 = C.guint(position)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_unselect_item(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // UnselectRange requests to unselect a range of items in the model.
-func (m selectionModel) UnselectRange(m SelectionModel, position uint, nItems uint) bool {
+func (m selectionModel) UnselectRange(position uint, nItems uint) bool {
 	var arg0 *C.GtkSelectionModel
 	var arg1 C.guint
 	var arg2 C.guint
@@ -382,13 +408,13 @@ func (m selectionModel) UnselectRange(m SelectionModel, position uint, nItems ui
 	arg2 = C.guint(nItems)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_selection_model_unselect_range(arg0, arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }

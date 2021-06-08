@@ -57,6 +57,15 @@ func NewGenerator(repos gir.Repositories, modPath ModulePathFunc) *Generator {
 			AbsoluteFilter("GObject.Value"),
 			AbsoluteFilter("GObject.Object"),
 			AbsoluteFilter("GObject.InitiallyUnowned"),
+
+			// This is not supported by Go. We might be able to support it in
+			// the future using a 16-byte data structure, but the actual size
+			// isn't well defined as far as I know.
+			AbsoluteFilter("*.long double"),
+
+			// Special marking for internal types from GLib (apparently for
+			// glib:get-type).
+			AbsoluteFilter("C.intern"),
 		},
 	}
 }

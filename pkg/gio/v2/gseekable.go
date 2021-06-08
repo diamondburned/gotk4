@@ -3,6 +3,8 @@
 package gio
 
 import (
+	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,10 +34,10 @@ func init() {
 // interface is a subset of the interface Seekable.
 type SeekableOverrider interface {
 	// CanSeek tests if the stream supports the Iface.
-	CanSeek(s Seekable) bool
+	CanSeek() bool
 	// CanTruncate tests if the length of the stream can be adjusted with
 	// g_seekable_truncate().
-	CanTruncate(s Seekable) bool
+	CanTruncate() bool
 	// Seek seeks in the stream by the given @offset, modified by @type.
 	//
 	// Attempting to seek past the end of the stream will have different results
@@ -50,9 +52,9 @@ type SeekableOverrider interface {
 	// If @cancellable is not nil, then the operation can be cancelled by
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-	Seek(s Seekable, offset int64, typ glib.SeekType, cancellable Cancellable) error
+	Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error
 	// Tell tells the current position within the stream.
-	Tell(s Seekable)
+	Tell() int64
 	// TruncateFn sets the length of the stream to @offset. If the stream was
 	// previously larger than @offset, the extra data is discarded. If the
 	// stream was previously shorter than @offset, it is extended with NUL
@@ -63,7 +65,7 @@ type SeekableOverrider interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	TruncateFn(s Seekable, offset int64, cancellable Cancellable) error
+	TruncateFn(offset int64, cancellable Cancellable) error
 }
 
 // Seekable is implemented by streams (implementations of Stream or Stream) that
@@ -92,7 +94,7 @@ type Seekable interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	Truncate(s Seekable, offset int64, cancellable Cancellable) error
+	Truncate(offset int64, cancellable Cancellable) error
 }
 
 // seekable implements the Seekable interface.
@@ -117,40 +119,40 @@ func marshalSeekable(p uintptr) (interface{}, error) {
 }
 
 // CanSeek tests if the stream supports the Iface.
-func (s seekable) CanSeek(s Seekable) bool {
+func (s seekable) CanSeek() bool {
 	var arg0 *C.GSeekable
 
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_seekable_can_seek(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // CanTruncate tests if the length of the stream can be adjusted with
 // g_seekable_truncate().
-func (s seekable) CanTruncate(s Seekable) bool {
+func (s seekable) CanTruncate() bool {
 	var arg0 *C.GSeekable
 
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_seekable_can_truncate(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Seek seeks in the stream by the given @offset, modified by @type.
@@ -167,7 +169,7 @@ func (s seekable) CanTruncate(s Seekable) bool {
 // If @cancellable is not nil, then the operation can be cancelled by
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned.
-func (s seekable) Seek(s Seekable, offset int64, typ glib.SeekType, cancellable Cancellable) error {
+func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable) error {
 	var arg0 *C.GSeekable
 	var arg1 C.goffset
 	var arg2 C.GSeekType
@@ -178,23 +180,30 @@ func (s seekable) Seek(s Seekable, offset int64, typ glib.SeekType, cancellable 
 	arg2 = (C.GSeekType)(typ)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_seekable_seek(arg0, arg1, arg2, arg3, &errout)
+	C.g_seekable_seek(arg0, arg1, arg2, arg3, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }
 
 // Tell tells the current position within the stream.
-func (s seekable) Tell(s Seekable) {
+func (s seekable) Tell() int64 {
 	var arg0 *C.GSeekable
 
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
-	C.g_seekable_tell(arg0)
+	var cret C.goffset
+	var goret int64
+
+	cret = C.g_seekable_tell(arg0)
+
+	goret = int64(cret)
+
+	return goret
 }
 
 // Truncate sets the length of the stream to @offset. If the stream was
@@ -207,7 +216,7 @@ func (s seekable) Tell(s Seekable) {
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 // operation was partially finished when the operation was cancelled the
 // partial result will be returned, without an error.
-func (s seekable) Truncate(s Seekable, offset int64, cancellable Cancellable) error {
+func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	var arg0 *C.GSeekable
 	var arg1 C.goffset
 	var arg2 *C.GCancellable
@@ -216,12 +225,12 @@ func (s seekable) Truncate(s Seekable, offset int64, cancellable Cancellable) er
 	arg1 = C.goffset(offset)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var errout *C.GError
-	var err error
+	var cerr *C.GError
+	var goerr error
 
-	C.g_seekable_truncate(arg0, arg1, arg2, &errout)
+	C.g_seekable_truncate(arg0, arg1, arg2, &cerr)
 
-	err = gerror.Take(unsafe.Pointer(errout))
+	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return err
+	return goerr
 }

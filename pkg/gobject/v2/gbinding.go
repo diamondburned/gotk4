@@ -3,7 +3,10 @@
 package gobject
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -17,7 +20,7 @@ import "C"
 // @from_value is the @source_property on the @source object, and @to_value is
 // the @target_property on the @target object. If this is the @transform_from
 // function of a G_BINDING_BIDIRECTIONAL binding, then those roles are reversed.
-type BindingTransformFunc func(binding Binding, fromValue *externglib.Value, toValue *externglib.Value) bool
+type BindingTransformFunc func() (ok bool)
 
 //export gotk4_BindingTransformFunc
 func gotk4_BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue, arg3 C.gpointer) C.gboolean {
@@ -27,11 +30,9 @@ func gotk4_BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue
 	}
 
 	fn := v.(BindingTransformFunc)
-	ret := fn(binding, fromValue, toValue, userData)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }

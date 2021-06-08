@@ -69,7 +69,7 @@ const (
 //
 // This is not used if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
-type LogFunc func(logDomain string, logLevel LogLevelFlags, message string)
+type LogFunc func()
 
 //export gotk4_LogFunc
 func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
@@ -79,7 +79,7 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 	}
 
 	fn := v.(LogFunc)
-	fn(logDomain, logLevel, message, userData)
+	fn()
 }
 
 // LogWriterFunc: writer function for log entries. A log entry is a collection
@@ -100,7 +100,7 @@ func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.g
 // send messages to a remote logging server and there is a network error), it
 // should return G_LOG_WRITER_UNHANDLED. This allows writer functions to be
 // chained and fall back to simpler handlers in case of failure.
-type LogWriterFunc func(logLevel LogLevelFlags, fields []LogField) LogWriterOutput
+type LogWriterFunc func() (logWriterOutput LogWriterOutput)
 
 //export gotk4_LogWriterFunc
 func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) C.GLogWriterOutput {
@@ -110,11 +110,9 @@ func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize,
 	}
 
 	fn := v.(LogWriterFunc)
-	ret := fn(logLevel, fields, nFields, userData)
+	fn(logWriterOutput)
 
-	cret = (C.GLogWriterOutput)(ret)
-
-	return cret
+	cret = (C.GLogWriterOutput)(logWriterOutput)
 }
 
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
@@ -156,7 +154,8 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 // printed.
 //
 // stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
-// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest.
+// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest,
+// unless stderr was requested by g_log_writer_default_set_use_stderr().
 //
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
@@ -207,22 +206,19 @@ func LogRemoveHandler(logDomain string, handlerID uint) {
 // g_log_structured_array()) are fatal only if the default log writer is used;
 // otherwise it is up to the writer function to determine which log messages are
 // fatal. See [Using Structured Logging][using-structured-logging].
-func LogSetAlwaysFatal(fatalMask LogLevelFlags) {
+func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	var arg1 C.GLogLevelFlags
 
 	arg1 = (C.GLogLevelFlags)(fatalMask)
 
-	C.g_log_set_always_fatal(arg1)
-}
+	var cret C.GLogLevelFlags
+	var goret LogLevelFlags
 
-// LogSetDefaultHandler installs a default log handler which is used if no log
-// handler has been set for the particular log domain and log level combination.
-// By default, GLib uses g_log_default_handler() as default log handler.
-//
-// This has no effect if structured logging is enabled; see [Using Structured
-// Logging][using-structured-logging].
-func LogSetDefaultHandler() {
-	C.g_log_set_default_handler(arg1, arg2)
+	cret = C.g_log_set_always_fatal(arg1)
+
+	goret = LogLevelFlags(cret)
+
+	return goret
 }
 
 // LogSetFatalMask sets the log levels which are fatal in the given domain.
@@ -238,7 +234,7 @@ func LogSetDefaultHandler() {
 // should typically not set G_LOG_LEVEL_WARNING, G_LOG_LEVEL_MESSAGE,
 // G_LOG_LEVEL_INFO or G_LOG_LEVEL_DEBUG as fatal except inside of test
 // programs.
-func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) {
+func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	var arg1 *C.gchar
 	var arg2 C.GLogLevelFlags
 
@@ -246,7 +242,14 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GLogLevelFlags)(fatalMask)
 
-	C.g_log_set_fatal_mask(arg1, arg2)
+	var cret C.GLogLevelFlags
+	var goret LogLevelFlags
+
+	cret = C.g_log_set_fatal_mask(arg1, arg2)
+
+	goret = LogLevelFlags(cret)
+
+	return goret
 }
 
 // LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
@@ -254,8 +257,15 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) {
 //
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
-func LogSetHandlerFull() {
-	C.g_log_set_handler_full(arg1, arg2, arg3, arg4, arg5)
+func LogSetHandlerFull() uint {
+	var cret C.guint
+	var goret uint
+
+	cret = C.g_log_set_handler_full(arg1, arg2, arg3, arg4, arg5)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // LogSetWriterFunc: set a writer function which will be called to format and
@@ -314,6 +324,67 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	C.g_log_variant(arg1, arg2, arg3)
 }
 
+// LogWriterDefaultSetUseStderr: configure whether the built-in log functions
+// (g_log_default_handler() for the old-style API, and both
+// g_log_writer_default() and g_log_writer_standard_streams() for the structured
+// API) will output all log messages to `stderr`.
+//
+// By default, log messages of levels G_LOG_LEVEL_INFO and G_LOG_LEVEL_DEBUG are
+// sent to `stdout`, and other log messages are sent to `stderr`. This is
+// problematic for applications that intend to reserve `stdout` for structured
+// output such as JSON or XML.
+//
+// This function sets global state. It is not thread-aware, and should be called
+// at the very start of a program, before creating any other threads or creating
+// objects that could create worker threads of their own.
+func LogWriterDefaultSetUseStderr(useStderr bool) {
+	var arg1 C.gboolean
+
+	if useStderr {
+		arg1 = C.gboolean(1)
+	}
+
+	C.g_log_writer_default_set_use_stderr(arg1)
+}
+
+// LogWriterDefaultWouldDrop: check whether g_log_writer_default() and
+// g_log_default_handler() would ignore a message with the given domain and
+// level.
+//
+// As with g_log_default_handler(), this function drops debug and informational
+// messages unless their log domain (or `all`) is listed in the space-separated
+// `G_MESSAGES_DEBUG` environment variable.
+//
+// This can be used when implementing log writers with the same filtering
+// behaviour as the default, but a different destination or output format:
+//
+//      if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
+//        {
+//          gchar *result = expensive_computation (my_object);
+//
+//          g_debug ("my_object result: s", result);
+//          g_free (result);
+//        }
+func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
+	var arg1 C.GLogLevelFlags
+	var arg2 *C.char
+
+	arg1 = (C.GLogLevelFlags)(logLevel)
+	arg2 = (*C.char)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(arg2))
+
+	var cret C.gboolean
+	var goret bool
+
+	cret = C.g_log_writer_default_would_drop(arg1, arg2)
+
+	if cret {
+		goret = true
+	}
+
+	return goret
+}
+
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a
 // connection to the systemd journal, or something else (like a log file or
 // `stdout` or `stderr`).
@@ -328,15 +399,15 @@ func LogWriterIsJournald(outputFd int) bool {
 	arg1 = C.gint(outputFd)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_log_writer_is_journald(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // LogWriterSupportsColor: check whether the given @output_fd file descriptor
@@ -348,15 +419,15 @@ func LogWriterSupportsColor(outputFd int) bool {
 	arg1 = C.gint(outputFd)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.g_log_writer_supports_color(arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // ReturnIfFailWarning: internal function used to print messages from the public

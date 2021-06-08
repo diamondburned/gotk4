@@ -18,7 +18,7 @@ import "C"
 // two values. The function should return a negative integer if the first value
 // comes before the second, 0 if they are equal, or a positive integer if the
 // first value comes after the second.
-type CompareDataFunc func(a interface{}, b interface{}) int
+type CompareDataFunc func() (gint int)
 
 //export gotk4_CompareDataFunc
 func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gint {
@@ -28,16 +28,14 @@ func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.
 	}
 
 	fn := v.(CompareDataFunc)
-	ret := fn(a, b, userData)
+	fn(gint)
 
-	cret = C.gint(ret)
-
-	return cret
+	cret = C.gint(gint)
 }
 
 // Func specifies the type of functions passed to g_list_foreach() and
 // g_slist_foreach().
-type Func func(data interface{})
+type Func func()
 
 //export gotk4_Func
 func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
@@ -47,13 +45,13 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 	}
 
 	fn := v.(Func)
-	fn(data, userData)
+	fn()
 }
 
 // HFunc specifies the type of the function passed to g_hash_table_foreach(). It
 // is called with each key/value pair, together with the @user_data parameter
 // which is passed to g_hash_table_foreach().
-type HFunc func(key interface{}, value interface{})
+type HFunc func()
 
 //export gotk4_HFunc
 func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
@@ -63,7 +61,7 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 	}
 
 	fn := v.(HFunc)
-	fn(key, value, userData)
+	fn()
 }
 
 // TimeVal represents a precise time, with seconds and microseconds. Similar to
@@ -113,7 +111,7 @@ func (t *TimeVal) TvUsec() int32 {
 
 // Add adds the given number of microseconds to @time_. @microseconds can also
 // be negative to decrease the value of @time_.
-func (t *TimeVal) Add(t *TimeVal, microseconds int32) {
+func (t *TimeVal) Add(microseconds int32) {
 	var arg0 *C.GTimeVal
 	var arg1 C.glong
 
@@ -154,10 +152,18 @@ func (t *TimeVal) Add(t *TimeVal, microseconds int32) {
 //
 // The return value of g_time_val_to_iso8601() has been nullable since GLib
 // 2.54; before then, GLib would crash under the same conditions.
-func (t *TimeVal) ToISO8601(t *TimeVal) {
+func (t *TimeVal) ToISO8601() string {
 	var arg0 *C.GTimeVal
 
 	arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 
-	C.g_time_val_to_iso8601(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.g_time_val_to_iso8601(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

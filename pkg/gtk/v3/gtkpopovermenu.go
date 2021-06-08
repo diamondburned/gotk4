@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -99,7 +102,7 @@ type PopoverMenu interface {
 	// ModelButton will open submenus automatically when the
 	// ModelButton:menu-name property is set, so this function is only needed
 	// when you are using other kinds of widgets to initiate menu changes.
-	OpenSubmenu(p PopoverMenu, name string)
+	OpenSubmenu(name string)
 }
 
 // popoverMenu implements the PopoverMenu interface.
@@ -126,8 +129,15 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 }
 
 // NewPopoverMenu constructs a class PopoverMenu.
-func NewPopoverMenu() {
-	C.gtk_popover_menu_new()
+func NewPopoverMenu() PopoverMenu {
+	var cret C.GtkPopoverMenu
+	var goret PopoverMenu
+
+	cret = C.gtk_popover_menu_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+
+	return goret
 }
 
 // OpenSubmenu opens a submenu of the @popover. The @name must be one of the
@@ -137,7 +147,7 @@ func NewPopoverMenu() {
 // ModelButton will open submenus automatically when the
 // ModelButton:menu-name property is set, so this function is only needed
 // when you are using other kinds of widgets to initiate menu changes.
-func (p popoverMenu) OpenSubmenu(p PopoverMenu, name string) {
+func (p popoverMenu) OpenSubmenu(name string) {
 	var arg0 *C.GtkPopoverMenu
 	var arg1 *C.gchar
 

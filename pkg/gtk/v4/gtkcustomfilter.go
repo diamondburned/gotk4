@@ -3,7 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,9 +23,11 @@ func init() {
 }
 
 // CustomFilterFunc: user function that is called to determine if the @item
-// should be matched. If the filter matches the item, this function must return
-// true. If the item should be filtered out, false must be returned.
-type CustomFilterFunc func(item gextras.Objector) bool
+// should be matched.
+//
+// If the filter matches the item, this function must return true. If the item
+// should be filtered out, false must be returned.
+type CustomFilterFunc func() (ok bool)
 
 //export gotk4_CustomFilterFunc
 func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
@@ -32,21 +37,19 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 	}
 
 	fn := v.(CustomFilterFunc)
-	ret := fn(item, userData)
+	fn(ok)
 
-	if ret {
+	if ok {
 		cret = C.gboolean(1)
 	}
-
-	return cret
 }
 
-// CustomFilter is a Filter that uses a callback to determine whether to include
-// an item or not.
+// CustomFilter: `GtkCustomFilter` determines whether to include items with a
+// callback.
 type CustomFilter interface {
 	Filter
 
-	// SetFilterFunc sets (or unsets) the function used for filtering items.
+	// SetFilterFunc sets the function used for filtering items.
 	//
 	// If @match_func is nil, the filter matches all items.
 	//
@@ -54,7 +57,7 @@ type CustomFilter interface {
 	// needs to be called.
 	//
 	// If a previous function was set, its @user_destroy will be called now.
-	SetFilterFunc(s CustomFilter)
+	SetFilterFunc()
 }
 
 // customFilter implements the CustomFilter interface.
@@ -79,11 +82,18 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 }
 
 // NewCustomFilter constructs a class CustomFilter.
-func NewCustomFilter() {
-	C.gtk_custom_filter_new(arg1, arg2, arg3)
+func NewCustomFilter() CustomFilter {
+	cret := new(C.GtkCustomFilter)
+	var goret CustomFilter
+
+	cret = C.gtk_custom_filter_new(arg1, arg2, arg3)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomFilter)
+
+	return goret
 }
 
-// SetFilterFunc sets (or unsets) the function used for filtering items.
+// SetFilterFunc sets the function used for filtering items.
 //
 // If @match_func is nil, the filter matches all items.
 //
@@ -91,7 +101,7 @@ func NewCustomFilter() {
 // needs to be called.
 //
 // If a previous function was set, its @user_destroy will be called now.
-func (s customFilter) SetFilterFunc(s CustomFilter) {
+func (s customFilter) SetFilterFunc() {
 	var arg0 *C.GtkCustomFilter
 
 	arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(s.Native()))

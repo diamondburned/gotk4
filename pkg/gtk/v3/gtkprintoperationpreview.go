@@ -26,14 +26,14 @@ type PrintOperationPreviewOverrider interface {
 	// EndPreview ends a preview.
 	//
 	// This function must be called to finish a custom print preview.
-	EndPreview(p PrintOperationPreview)
+	EndPreview()
 
-	GotPageSize(p PrintOperationPreview, context PrintContext, pageSetup PageSetup)
+	GotPageSize(context PrintContext, pageSetup PageSetup)
 	// IsSelected returns whether the given page is included in the set of pages
 	// that have been selected for printing.
-	IsSelected(p PrintOperationPreview, pageNr int) bool
+	IsSelected(pageNr int) bool
 
-	Ready(p PrintOperationPreview, context PrintContext)
+	Ready(context PrintContext)
 	// RenderPage renders a page to the preview, using the print context that
 	// was passed to the PrintOperation::preview handler together with @preview.
 	//
@@ -42,7 +42,7 @@ type PrintOperationPreviewOverrider interface {
 	//
 	// Note that this function requires a suitable cairo context to be
 	// associated with the print context.
-	RenderPage(p PrintOperationPreview, pageNr int)
+	RenderPage(pageNr int)
 }
 
 type PrintOperationPreview interface {
@@ -74,7 +74,7 @@ func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 // EndPreview ends a preview.
 //
 // This function must be called to finish a custom print preview.
-func (p printOperationPreview) EndPreview(p PrintOperationPreview) {
+func (p printOperationPreview) EndPreview() {
 	var arg0 *C.GtkPrintOperationPreview
 
 	arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
@@ -84,7 +84,7 @@ func (p printOperationPreview) EndPreview(p PrintOperationPreview) {
 
 // IsSelected returns whether the given page is included in the set of pages
 // that have been selected for printing.
-func (p printOperationPreview) IsSelected(p PrintOperationPreview, pageNr int) bool {
+func (p printOperationPreview) IsSelected(pageNr int) bool {
 	var arg0 *C.GtkPrintOperationPreview
 	var arg1 C.gint
 
@@ -92,15 +92,15 @@ func (p printOperationPreview) IsSelected(p PrintOperationPreview, pageNr int) b
 	arg1 = C.gint(pageNr)
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_print_operation_preview_is_selected(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // RenderPage renders a page to the preview, using the print context that
@@ -111,7 +111,7 @@ func (p printOperationPreview) IsSelected(p PrintOperationPreview, pageNr int) b
 //
 // Note that this function requires a suitable cairo context to be
 // associated with the print context.
-func (p printOperationPreview) RenderPage(p PrintOperationPreview, pageNr int) {
+func (p printOperationPreview) RenderPage(pageNr int) {
 	var arg0 *C.GtkPrintOperationPreview
 	var arg1 C.gint
 

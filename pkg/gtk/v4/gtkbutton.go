@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,33 +21,38 @@ func init() {
 	})
 }
 
-// Button: the Button widget is generally used to trigger a callback function
-// that is called when the button is pressed. The various signals and how to use
-// them are outlined below.
+// Button: the `GtkButton` widget is generally used to trigger a callback
+// function that is called when the button is pressed.
 //
-// The Button widget can hold any valid child widget. That is, it can hold
-// almost any other standard Widget. The most commonly used child is the Label.
+// !An example GtkButton (button.png)
+//
+// The `GtkButton` widget can hold any valid child widget. That is, it can hold
+// almost any other standard `GtkWidget`. The most commonly used child is the
+// `GtkLabel`.
 //
 //
 // CSS nodes
 //
-// GtkButton has a single CSS node with name button. The node will get the style
-// classes .image-button or .text-button, if the content is just an image or
-// label, respectively. It may also receive the .flat style class.
+// `GtkButton` has a single CSS node with name button. The node will get the
+// style classes .image-button or .text-button, if the content is just an image
+// or label, respectively. It may also receive the .flat style class. When
+// activating a button via the keyboard, the button will temporarily gain the
+// .keyboard-activating style class.
 //
-// Other style classes that are commonly used with GtkButton include
+// Other style classes that are commonly used with `GtkButton` include
 // .suggested-action and .destructive-action. In special cases, buttons can be
 // made round by adding the .circular style class.
 //
-// Button-like widgets like ToggleButton, MenuButton, VolumeButton, LockButton,
-// ColorButton or FontButton use style classes such as .toggle, .popup, .scale,
+// Button-like widgets like [class@Gtk.ToggleButton], [class@Gtk.MenuButton],
+// [class@Gtk.VolumeButton], [class@Gtk.LockButton], [class@Gtk.ColorButton] or
+// [class@Gtk.FontButton] use style classes such as .toggle, .popup, .scale,
 // .lock, .color on the button node to differentiate themselves from a plain
-// GtkButton.
+// `GtkButton`.
 //
 //
 // Accessibility
 //
-// GtkButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
+// `GtkButton` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
 type Button interface {
 	Widget
 	Accessible
@@ -53,36 +61,45 @@ type Button interface {
 	ConstraintTarget
 
 	// Child gets the child widget of @button.
-	Child(b Button)
+	Child() Widget
 	// HasFrame returns whether the button has a frame.
-	HasFrame(b Button) bool
-	// IconName returns the icon name set via gtk_button_set_icon_name().
-	IconName(b Button)
-	// Label fetches the text from the label of the button, as set by
-	// gtk_button_set_label(). If the label text has not been set the return
-	// value will be nil. This will be the case if you create an empty button
-	// with gtk_button_new() to use as a container.
-	Label(b Button)
-	// UseUnderline returns whether an embedded underline in the button label
-	// indicates a mnemonic. See gtk_button_set_use_underline().
-	UseUnderline(b Button) bool
+	HasFrame() bool
+	// IconName returns the icon name of the button.
+	//
+	// If the icon name has not been set with [method@Gtk.Button.set_icon_name]
+	// the return value will be nil. This will be the case if you create an
+	// empty button with [ctor@Gtk.Button.new] to use as a container.
+	IconName() string
+	// Label fetches the text from the label of the button.
+	//
+	// If the label text has not been set with [method@Gtk.Button.set_label] the
+	// return value will be nil. This will be the case if you create an empty
+	// button with [ctor@Gtk.Button.new] to use as a container.
+	Label() string
+	// UseUnderline gets whether underlines are interpreted as mnemonics.
+	//
+	// See [method@Gtk.Button.set_use_underline].
+	UseUnderline() bool
 	// SetChild sets the child widget of @button.
-	SetChild(b Button, child Widget)
-	// SetHasFrame sets the style of the button. Buttons can has a flat
-	// appearance or have a frame drawn around them.
-	SetHasFrame(b Button, hasFrame bool)
-	// SetIconName adds a Image with the given icon name as a child. If @button
-	// already contains a child widget, that child widget will be removed and
-	// replaced with the image.
-	SetIconName(b Button, iconName string)
+	SetChild(child Widget)
+	// SetHasFrame sets the style of the button.
+	//
+	// Buttons can has a flat appearance or have a frame drawn around them.
+	SetHasFrame(hasFrame bool)
+	// SetIconName adds a `GtkImage` with the given icon name as a child.
+	//
+	// If @button already contains a child widget, that child widget will be
+	// removed and replaced with the image.
+	SetIconName(iconName string)
 	// SetLabel sets the text of the label of the button to @label.
 	//
 	// This will also clear any previously set labels.
-	SetLabel(b Button, label string)
-	// SetUseUnderline: if true, an underline in the text of the button label
-	// indicates the next character should be used for the mnemonic accelerator
-	// key.
-	SetUseUnderline(b Button, useUnderline bool)
+	SetLabel(label string)
+	// SetUseUnderline sets whether to use underlines as mnemonics.
+	//
+	// If true, an underline in the text of the button label indicates the next
+	// character should be used for the mnemonic accelerator key.
+	SetUseUnderline(useUnderline bool)
 }
 
 // button implements the Button interface.
@@ -115,109 +132,164 @@ func marshalButton(p uintptr) (interface{}, error) {
 }
 
 // NewButton constructs a class Button.
-func NewButton() {
-	C.gtk_button_new()
+func NewButton() Button {
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // NewButtonFromIconName constructs a class Button.
-func NewButtonFromIconName(iconName string) {
+func NewButtonFromIconName(iconName string) Button {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_button_new_from_icon_name(arg1)
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new_from_icon_name(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // NewButtonWithLabel constructs a class Button.
-func NewButtonWithLabel(label string) {
+func NewButtonWithLabel(label string) Button {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_button_new_with_label(arg1)
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new_with_label(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // NewButtonWithMnemonic constructs a class Button.
-func NewButtonWithMnemonic(label string) {
+func NewButtonWithMnemonic(label string) Button {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_button_new_with_mnemonic(arg1)
+	var cret C.GtkButton
+	var goret Button
+
+	cret = C.gtk_button_new_with_mnemonic(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return goret
 }
 
 // Child gets the child widget of @button.
-func (b button) Child(b Button) {
+func (b button) Child() Widget {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_child(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_button_get_child(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }
 
 // HasFrame returns whether the button has a frame.
-func (b button) HasFrame(b Button) bool {
+func (b button) HasFrame() bool {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_button_get_has_frame(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
-// IconName returns the icon name set via gtk_button_set_icon_name().
-func (b button) IconName(b Button) {
+// IconName returns the icon name of the button.
+//
+// If the icon name has not been set with [method@Gtk.Button.set_icon_name]
+// the return value will be nil. This will be the case if you create an
+// empty button with [ctor@Gtk.Button.new] to use as a container.
+func (b button) IconName() string {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_icon_name(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_button_get_icon_name(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
-// Label fetches the text from the label of the button, as set by
-// gtk_button_set_label(). If the label text has not been set the return
-// value will be nil. This will be the case if you create an empty button
-// with gtk_button_new() to use as a container.
-func (b button) Label(b Button) {
+// Label fetches the text from the label of the button.
+//
+// If the label text has not been set with [method@Gtk.Button.set_label] the
+// return value will be nil. This will be the case if you create an empty
+// button with [ctor@Gtk.Button.new] to use as a container.
+func (b button) Label() string {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	C.gtk_button_get_label(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_button_get_label(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
-// UseUnderline returns whether an embedded underline in the button label
-// indicates a mnemonic. See gtk_button_set_use_underline().
-func (b button) UseUnderline(b Button) bool {
+// UseUnderline gets whether underlines are interpreted as mnemonics.
+//
+// See [method@Gtk.Button.set_use_underline].
+func (b button) UseUnderline() bool {
 	var arg0 *C.GtkButton
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_button_get_use_underline(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetChild sets the child widget of @button.
-func (b button) SetChild(b Button, child Widget) {
+func (b button) SetChild(child Widget) {
 	var arg0 *C.GtkButton
 	var arg1 *C.GtkWidget
 
@@ -227,9 +299,10 @@ func (b button) SetChild(b Button, child Widget) {
 	C.gtk_button_set_child(arg0, arg1)
 }
 
-// SetHasFrame sets the style of the button. Buttons can has a flat
-// appearance or have a frame drawn around them.
-func (b button) SetHasFrame(b Button, hasFrame bool) {
+// SetHasFrame sets the style of the button.
+//
+// Buttons can has a flat appearance or have a frame drawn around them.
+func (b button) SetHasFrame(hasFrame bool) {
 	var arg0 *C.GtkButton
 	var arg1 C.gboolean
 
@@ -241,10 +314,11 @@ func (b button) SetHasFrame(b Button, hasFrame bool) {
 	C.gtk_button_set_has_frame(arg0, arg1)
 }
 
-// SetIconName adds a Image with the given icon name as a child. If @button
-// already contains a child widget, that child widget will be removed and
-// replaced with the image.
-func (b button) SetIconName(b Button, iconName string) {
+// SetIconName adds a `GtkImage` with the given icon name as a child.
+//
+// If @button already contains a child widget, that child widget will be
+// removed and replaced with the image.
+func (b button) SetIconName(iconName string) {
 	var arg0 *C.GtkButton
 	var arg1 *C.char
 
@@ -258,7 +332,7 @@ func (b button) SetIconName(b Button, iconName string) {
 // SetLabel sets the text of the label of the button to @label.
 //
 // This will also clear any previously set labels.
-func (b button) SetLabel(b Button, label string) {
+func (b button) SetLabel(label string) {
 	var arg0 *C.GtkButton
 	var arg1 *C.char
 
@@ -269,10 +343,11 @@ func (b button) SetLabel(b Button, label string) {
 	C.gtk_button_set_label(arg0, arg1)
 }
 
-// SetUseUnderline: if true, an underline in the text of the button label
-// indicates the next character should be used for the mnemonic accelerator
-// key.
-func (b button) SetUseUnderline(b Button, useUnderline bool) {
+// SetUseUnderline sets whether to use underlines as mnemonics.
+//
+// If true, an underline in the text of the button label indicates the next
+// character should be used for the mnemonic accelerator key.
+func (b button) SetUseUnderline(useUnderline bool) {
 	var arg0 *C.GtkButton
 	var arg1 C.gboolean
 

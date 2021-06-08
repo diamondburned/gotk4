@@ -3,6 +3,7 @@
 package gdk
 
 import (
+	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -18,36 +19,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gdk_color_get_type()), F: marshalColor},
 	})
-}
-
-// ColorParse parses a textual specification of a color and fill in the @red,
-// @green, and @blue fields of a Color.
-//
-// The string can either one of a large set of standard names (taken from the
-// X11 `rgb.txt` file), or it can be a hexadecimal value in the form “\#rgb”
-// “\#rrggbb”, “\#rrrgggbbb” or “\#rrrrggggbbbb” where “r”, “g” and “b” are hex
-// digits of the red, green, and blue components of the color, respectively.
-// (White in the four forms is “\#fff”, “\#ffffff”, “\#fffffffff” and
-// “\#ffffffffffff”).
-func ColorParse(spec string) (color *Color, ok bool) {
-	var arg1 *C.gchar
-
-	arg1 = (*C.gchar)(C.CString(spec))
-	defer C.free(unsafe.Pointer(arg1))
-
-	var arg2 C.GdkColor
-	var color *Color
-	var cret C.gboolean
-	var ok bool
-
-	cret = C.gdk_color_parse(arg1, &arg2)
-
-	color = WrapColor(unsafe.Pointer(&arg2))
-	if cret {
-		ok = true
-	}
-
-	return color, ok
 }
 
 // Color: a Color is used to describe a color, similar to the XColor struct used
@@ -107,16 +78,26 @@ func (c *Color) Blue() uint16 {
 // Copy makes a copy of a Color.
 //
 // The result must be freed using gdk_color_free().
-func (c *Color) Copy(c *Color) {
+func (c *Color) Copy() *Color {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	C.gdk_color_copy(arg0)
+	cret := new(C.GdkColor)
+	var goret *Color
+
+	cret = C.gdk_color_copy(arg0)
+
+	goret = WrapColor(unsafe.Pointer(cret))
+	runtime.SetFinalizer(goret, func(v *Color) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return goret
 }
 
 // Equal compares two colors.
-func (c *Color) Equal(c *Color, colorb *Color) bool {
+func (c *Color) Equal(colorb *Color) bool {
 	var arg0 *C.GdkColor
 	var arg1 *C.GdkColor
 
@@ -124,19 +105,19 @@ func (c *Color) Equal(c *Color, colorb *Color) bool {
 	arg1 = (*C.GdkColor)(unsafe.Pointer(colorb.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_color_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Free frees a Color created with gdk_color_copy().
-func (c *Color) Free(c *Color) {
+func (c *Color) Free() {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
@@ -145,12 +126,19 @@ func (c *Color) Free(c *Color) {
 }
 
 // Hash: a hash function suitable for using for a hash table that stores Colors.
-func (c *Color) Hash(c *Color) {
+func (c *Color) Hash() uint {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	C.gdk_color_hash(arg0)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gdk_color_hash(arg0)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // String returns a textual specification of @color in the hexadecimal form
@@ -158,10 +146,18 @@ func (c *Color) Hash(c *Color) {
 // green and blue components respectively.
 //
 // The returned string can be parsed by gdk_color_parse().
-func (c *Color) String(c *Color) {
+func (c *Color) String() string {
 	var arg0 *C.GdkColor
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	C.gdk_color_to_string(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gdk_color_to_string(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }

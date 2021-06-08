@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,11 +43,11 @@ type Switch interface {
 	Buildable
 
 	// Active gets whether the Switch is in its “on” or “off” state.
-	Active(s Switch) bool
+	Active() bool
 	// State gets the underlying state of the Switch.
-	State(s Switch) bool
+	State() bool
 	// SetActive changes the state of @sw to the desired one.
-	SetActive(s Switch, isActive bool)
+	SetActive(isActive bool)
 	// SetState sets the underlying state of the Switch.
 	//
 	// Normally, this is the same as Switch:active, unless the switch is set up
@@ -52,7 +55,7 @@ type Switch interface {
 	// Switch::state-set signal handler.
 	//
 	// See Switch::state-set for details.
-	SetState(s Switch, state bool)
+	SetState(state bool)
 }
 
 // _switch implements the Switch interface.
@@ -83,48 +86,55 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 }
 
 // NewSwitch constructs a class Switch.
-func NewSwitch() {
-	C.gtk_switch_new()
+func NewSwitch() Switch {
+	var cret C.GtkSwitch
+	var goret Switch
+
+	cret = C.gtk_switch_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
+
+	return goret
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.
-func (s _switch) Active(s Switch) bool {
+func (s _switch) Active() bool {
 	var arg0 *C.GtkSwitch
 
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_switch_get_active(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // State gets the underlying state of the Switch.
-func (s _switch) State(s Switch) bool {
+func (s _switch) State() bool {
 	var arg0 *C.GtkSwitch
 
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_switch_get_state(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetActive changes the state of @sw to the desired one.
-func (s _switch) SetActive(s Switch, isActive bool) {
+func (s _switch) SetActive(isActive bool) {
 	var arg0 *C.GtkSwitch
 	var arg1 C.gboolean
 
@@ -143,7 +153,7 @@ func (s _switch) SetActive(s Switch, isActive bool) {
 // Switch::state-set signal handler.
 //
 // See Switch::state-set for details.
-func (s _switch) SetState(s Switch, state bool) {
+func (s _switch) SetState(state bool) {
 	var arg0 *C.GtkSwitch
 	var arg1 C.gboolean
 

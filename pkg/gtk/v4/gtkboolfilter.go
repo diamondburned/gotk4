@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,22 +21,23 @@ func init() {
 	})
 }
 
-// BoolFilter: gtkBoolFilter is a simple filter that takes a boolean Expression
-// to determine whether to include items.
+// BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
+// whether to include items.
 type BoolFilter interface {
 	Filter
 
 	// Expression gets the expression that the filter uses to evaluate if an
 	// item should be filtered.
-	Expression(s BoolFilter)
+	Expression() Expression
 	// Invert returns whether the filter inverts the expression.
-	Invert(s BoolFilter) bool
+	Invert() bool
 	// SetExpression sets the expression that the filter uses to check if items
-	// should be filtered. The expression must have a value type of
-	// TYPE_BOOLEAN.
-	SetExpression(s BoolFilter, expression Expression)
+	// should be filtered.
+	//
+	// The expression must have a value type of G_TYPE_BOOLEAN.
+	SetExpression(expression Expression)
 	// SetInvert sets whether the filter should invert the expression.
-	SetInvert(s BoolFilter, invert bool)
+	SetInvert(invert bool)
 }
 
 // boolFilter implements the BoolFilter interface.
@@ -58,46 +62,61 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 }
 
 // NewBoolFilter constructs a class BoolFilter.
-func NewBoolFilter(expression Expression) {
+func NewBoolFilter(expression Expression) BoolFilter {
 	var arg1 *C.GtkExpression
 
 	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	C.gtk_bool_filter_new(arg1)
+	cret := new(C.GtkBoolFilter)
+	var goret BoolFilter
+
+	cret = C.gtk_bool_filter_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoolFilter)
+
+	return goret
 }
 
 // Expression gets the expression that the filter uses to evaluate if an
 // item should be filtered.
-func (s boolFilter) Expression(s BoolFilter) {
+func (s boolFilter) Expression() Expression {
 	var arg0 *C.GtkBoolFilter
 
 	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_bool_filter_get_expression(arg0)
+	var cret *C.GtkExpression
+	var goret Expression
+
+	cret = C.gtk_bool_filter_get_expression(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+
+	return goret
 }
 
 // Invert returns whether the filter inverts the expression.
-func (s boolFilter) Invert(s BoolFilter) bool {
+func (s boolFilter) Invert() bool {
 	var arg0 *C.GtkBoolFilter
 
 	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_bool_filter_get_invert(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetExpression sets the expression that the filter uses to check if items
-// should be filtered. The expression must have a value type of
-// TYPE_BOOLEAN.
-func (s boolFilter) SetExpression(s BoolFilter, expression Expression) {
+// should be filtered.
+//
+// The expression must have a value type of G_TYPE_BOOLEAN.
+func (s boolFilter) SetExpression(expression Expression) {
 	var arg0 *C.GtkBoolFilter
 	var arg1 *C.GtkExpression
 
@@ -108,7 +127,7 @@ func (s boolFilter) SetExpression(s BoolFilter, expression Expression) {
 }
 
 // SetInvert sets whether the filter should invert the expression.
-func (s boolFilter) SetInvert(s BoolFilter, invert bool) {
+func (s boolFilter) SetInvert(invert bool) {
 	var arg0 *C.GtkBoolFilter
 	var arg1 C.gboolean
 

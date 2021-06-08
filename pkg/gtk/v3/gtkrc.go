@@ -5,6 +5,10 @@ package gtk
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
+	"github.com/diamondburned/gotk4/pkg/gdk/v3"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,19 +39,27 @@ func RCAddDefaultFile(filename string) {
 
 // RCFindModuleInPath searches for a theme engine in the GTK+ search path. This
 // function is not useful for applications and should not be used.
-func RCFindModuleInPath(moduleFile string) {
+func RCFindModuleInPath(moduleFile string) string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(moduleFile))
 	defer C.free(unsafe.Pointer(arg1))
 
-	C.gtk_rc_find_module_in_path(arg1)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_rc_find_module_in_path(arg1)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RCFindPixmapInPath looks up a file in pixmap path for the specified Settings.
 // If the file is not found, it outputs a warning message using g_warning() and
 // returns nil.
-func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) {
+func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) string {
 	var arg1 *C.GtkSettings
 	var arg2 *C.GScanner
 	var arg3 *C.gchar
@@ -57,47 +69,107 @@ func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile str
 	arg3 = (*C.gchar)(C.CString(pixmapFile))
 	defer C.free(unsafe.Pointer(arg3))
 
-	C.gtk_rc_find_pixmap_in_path(arg1, arg2, arg3)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_rc_find_pixmap_in_path(arg1, arg2, arg3)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RCGetDefaultFiles retrieves the current list of RC files that will be parsed
 // at the end of gtk_init().
-func RCGetDefaultFiles() {
-	C.gtk_rc_get_default_files()
+func RCGetDefaultFiles() []string {
+	var cret **C.gchar
+	var goret []string
+
+	cret = C.gtk_rc_get_default_files()
+
+	{
+		var length int
+		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		goret = make([]string, length)
+		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
+			goret[i] = C.GoString(src)
+		}
+	}
+
+	return goret
 }
 
 // RCGetImModuleFile obtains the path to the IM modules file. See the
 // documentation of the `GTK_IM_MODULE_FILE` environment variable for more
 // details.
-func RCGetImModuleFile() {
-	C.gtk_rc_get_im_module_file()
+func RCGetImModuleFile() string {
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_rc_get_im_module_file()
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RCGetImModulePath obtains the path in which to look for IM modules. See the
 // documentation of the `GTK_PATH` environment variable for more details about
 // looking up modules. This function is useful solely for utilities supplied
 // with GTK+ and should not be used by applications under normal circumstances.
-func RCGetImModulePath() {
-	C.gtk_rc_get_im_module_path()
+func RCGetImModulePath() string {
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_rc_get_im_module_path()
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RCGetModuleDir returns a directory in which GTK+ looks for theme engines. For
 // full information about the search for theme engines, see the docs for
 // `GTK_PATH` in [Running GTK+ Applications][gtk-running].
-func RCGetModuleDir() {
-	C.gtk_rc_get_module_dir()
+func RCGetModuleDir() string {
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_rc_get_module_dir()
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RCGetStyle finds all matching RC styles for a given widget, composites them
 // together, and then creates a Style representing the composite appearance.
 // (GTK+ actually keeps a cache of previously created styles, so a new style may
 // not be created.)
-func RCGetStyle(widget Widget) {
+func RCGetStyle(widget Widget) Style {
 	var arg1 *C.GtkWidget
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_rc_get_style(arg1)
+	var cret *C.GtkStyle
+	var goret Style
+
+	cret = C.gtk_rc_get_style(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Style)
+
+	return goret
 }
 
 // RCGetStyleByPaths creates up a Style from styles defined in a RC file by
@@ -113,7 +185,7 @@ func RCGetStyle(widget Widget) {
 //    gtk_rc_get_style_by_paths (gtk_widget_get_settings (widget),
 //                               path, class_path,
 //                               G_OBJECT_TYPE (widget));
-func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, typ externglib.Type) {
+func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, typ externglib.Type) Style {
 	var arg1 *C.GtkSettings
 	var arg2 *C.char
 	var arg3 *C.char
@@ -124,15 +196,30 @@ func RCGetStyleByPaths(settings Settings, widgetPath string, classPath string, t
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.char)(C.CString(classPath))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 := C.GType(typ)
+	arg4 = C.GType(typ)
 
-	C.gtk_rc_get_style_by_paths(arg1, arg2, arg3, arg4)
+	var cret *C.GtkStyle
+	var goret Style
+
+	cret = C.gtk_rc_get_style_by_paths(arg1, arg2, arg3, arg4)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Style)
+
+	return goret
 }
 
 // RCGetThemeDir returns the standard directory in which themes should be
 // installed. (GTK+ does not actually use this directory itself.)
-func RCGetThemeDir() {
-	C.gtk_rc_get_theme_dir()
+func RCGetThemeDir() string {
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gtk_rc_get_theme_dir()
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RCParse parses a given resource file.
@@ -149,68 +236,84 @@ func RCParse(filename string) {
 //
 // Note that theme engines should use gtk_rc_parse_color_full() in order to
 // support symbolic colors.
-func RCParseColor(scanner *glib.Scanner) *gdk.Color {
+func RCParseColor(scanner *glib.Scanner) (color *gdk.Color, guint uint) {
 	var arg1 *C.GScanner
 
 	arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 
-	var arg2 C.GdkColor
-	var color *gdk.Color
+	arg2 := new(C.GdkColor)
+	var ret2 *gdk.Color
+	var cret C.guint
+	var goret uint
 
-	C.gtk_rc_parse_color(arg1, &arg2)
+	cret = C.gtk_rc_parse_color(arg1, arg2)
 
-	color = gdk.WrapColor(unsafe.Pointer(&arg2))
+	ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
+	goret = uint(cret)
 
-	return color
+	return ret2, goret
 }
 
 // RCParseColorFull parses a color in the format expected in a RC file. If
 // @style is not nil, it will be consulted to resolve references to symbolic
 // colors.
-func RCParseColorFull(scanner *glib.Scanner, style RCStyle) *gdk.Color {
+func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (color *gdk.Color, guint uint) {
 	var arg1 *C.GScanner
 	var arg2 *C.GtkRcStyle
 
 	arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
 
-	var arg3 C.GdkColor
-	var color *gdk.Color
+	arg3 := new(C.GdkColor)
+	var ret3 *gdk.Color
+	var cret C.guint
+	var goret uint
 
-	C.gtk_rc_parse_color_full(arg1, arg2, &arg3)
+	cret = C.gtk_rc_parse_color_full(arg1, arg2, arg3)
 
-	color = gdk.WrapColor(unsafe.Pointer(&arg3))
+	ret3 = gdk.WrapColor(unsafe.Pointer(arg3))
+	goret = uint(cret)
 
-	return color
+	return ret3, goret
 }
 
 // RCParsePriority parses a PathPriorityType variable from the format expected
 // in a RC file.
-func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) {
+func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 	var arg1 *C.GScanner
 	var arg2 *C.GtkPathPriorityType
 
 	arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	arg2 = (*C.GtkPathPriorityType)(priority)
 
-	C.gtk_rc_parse_priority(arg1, arg2)
+	var cret C.guint
+	var goret uint
+
+	cret = C.gtk_rc_parse_priority(arg1, arg2)
+
+	goret = uint(cret)
+
+	return goret
 }
 
 // RCParseState parses a StateType variable from the format expected in a RC
 // file.
-func RCParseState(scanner *glib.Scanner) *StateType {
+func RCParseState(scanner *glib.Scanner) (state *StateType, guint uint) {
 	var arg1 *C.GScanner
 
 	arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 
-	var arg2 C.GtkStateType
-	var state *StateType
+	arg2 := new(C.GtkStateType)
+	var ret2 *StateType
+	var cret C.guint
+	var goret uint
 
-	C.gtk_rc_parse_state(arg1, &arg2)
+	cret = C.gtk_rc_parse_state(arg1, arg2)
 
-	state = *StateType(&arg2)
+	ret2 = *StateType(arg2)
+	goret = uint(cret)
 
-	return state
+	return ret2, goret
 }
 
 // RCParseString parses resource information directly from a string.
@@ -228,15 +331,15 @@ func RCParseString(rcString string) {
 // all previously read RC files.
 func RCReparseAll() bool {
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_rc_reparse_all()
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // RCReparseAllForSettings: if the modification time on any previously read file
@@ -252,15 +355,15 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 	}
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_rc_reparse_all_for_settings(arg1, arg2)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // RCResetStyles: this function recomputes the styles for all widgets that use a
@@ -279,8 +382,15 @@ func RCResetStyles(settings Settings) {
 	C.gtk_rc_reset_styles(arg1)
 }
 
-func NewRCScanner() {
-	C.gtk_rc_scanner_new()
+func NewRCScanner() *glib.Scanner {
+	var cret *C.GScanner
+	var goret *glib.Scanner
+
+	cret = C.gtk_rc_scanner_new()
+
+	goret = glib.WrapScanner(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // RCSetDefaultFiles sets the list of files that GTK+ will read at the end of
@@ -288,7 +398,7 @@ func NewRCScanner() {
 func RCSetDefaultFiles(filenames []string) {
 	var arg1 **C.gchar
 
-	arg1 = C.malloc(len(filenames) * (unsafe.Sizeof(int(0)) + 1))
+	arg1 = (**C.gchar)(C.malloc((len(filenames) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(arg1))
 
 	{
@@ -312,7 +422,7 @@ type RCStyle interface {
 
 	// Copy makes a copy of the specified RcStyle. This function will correctly
 	// copy an RC style that is a member of a class derived from RcStyle.
-	Copy(o RCStyle)
+	Copy() RCStyle
 }
 
 // rcStyle implements the RCStyle interface.
@@ -337,18 +447,32 @@ func marshalRCStyle(p uintptr) (interface{}, error) {
 }
 
 // NewRCStyle constructs a class RCStyle.
-func NewRCStyle() {
-	C.gtk_rc_style_new()
+func NewRCStyle() RCStyle {
+	cret := new(C.GtkRcStyle)
+	var goret RCStyle
+
+	cret = C.gtk_rc_style_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RCStyle)
+
+	return goret
 }
 
 // Copy makes a copy of the specified RcStyle. This function will correctly
 // copy an RC style that is a member of a class derived from RcStyle.
-func (o rcStyle) Copy(o RCStyle) {
+func (o rcStyle) Copy() RCStyle {
 	var arg0 *C.GtkRcStyle
 
 	arg0 = (*C.GtkRcStyle)(unsafe.Pointer(o.Native()))
 
-	C.gtk_rc_style_copy(arg0)
+	cret := new(C.GtkRcStyle)
+	var goret RCStyle
+
+	cret = C.gtk_rc_style_copy(arg0)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RCStyle)
+
+	return goret
 }
 
 type RCContext struct {

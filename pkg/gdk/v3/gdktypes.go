@@ -47,12 +47,20 @@ func (a *Atom) Native() unsafe.Pointer {
 }
 
 // Name determines the string corresponding to an atom.
-func (a *Atom) Name(a Atom) {
+func (a *Atom) Name() string {
 	var arg0 C.GdkAtom
 
 	arg0 = (C.GdkAtom)(unsafe.Pointer(a.Native()))
 
-	C.gdk_atom_name(arg0)
+	cret := new(C.gchar)
+	var goret string
+
+	cret = C.gdk_atom_name(arg0)
+
+	goret = C.GoString(cret)
+	defer C.free(unsafe.Pointer(cret))
+
+	return goret
 }
 
 // Point defines the x and y coordinates of a point.
@@ -149,7 +157,7 @@ func (r *Rectangle) Height() int {
 }
 
 // Equal checks if the two given rectangles are equal.
-func (r *Rectangle) Equal(r *Rectangle, rect2 *Rectangle) bool {
+func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	var arg0 *C.GdkRectangle
 	var arg1 *C.GdkRectangle
 
@@ -157,15 +165,15 @@ func (r *Rectangle) Equal(r *Rectangle, rect2 *Rectangle) bool {
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gdk_rectangle_equal(arg0, arg1)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Intersect calculates the intersection of two rectangles. It is allowed for
@@ -173,26 +181,26 @@ func (r *Rectangle) Equal(r *Rectangle, rect2 *Rectangle) bool {
 // intersect, @dest’s width and height is set to 0 and its x and y values are
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass nil for @dest.
-func (s *Rectangle) Intersect(s *Rectangle, src2 *Rectangle) (dest *Rectangle, ok bool) {
+func (s *Rectangle) Intersect(src2 *Rectangle) (dest *Rectangle, ok bool) {
 	var arg0 *C.GdkRectangle
 	var arg1 *C.GdkRectangle
 
 	arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	var arg2 C.GdkRectangle
-	var dest *Rectangle
+	arg2 := new(C.GdkRectangle)
+	var ret2 *Rectangle
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
-	cret = C.gdk_rectangle_intersect(arg0, arg1, &arg2)
+	cret = C.gdk_rectangle_intersect(arg0, arg1, arg2)
 
-	dest = WrapRectangle(unsafe.Pointer(&arg2))
+	ret2 = WrapRectangle(unsafe.Pointer(arg2))
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return dest, ok
+	return ret2, goret
 }
 
 // Union calculates the union of two rectangles. The union of rectangles @src1
@@ -201,19 +209,19 @@ func (s *Rectangle) Intersect(s *Rectangle, src2 *Rectangle) (dest *Rectangle, o
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
-func (s *Rectangle) Union(s *Rectangle, src2 *Rectangle) *Rectangle {
+func (s *Rectangle) Union(src2 *Rectangle) *Rectangle {
 	var arg0 *C.GdkRectangle
 	var arg1 *C.GdkRectangle
 
 	arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
-	var arg2 C.GdkRectangle
-	var dest *Rectangle
+	arg2 := new(C.GdkRectangle)
+	var ret2 *Rectangle
 
-	C.gdk_rectangle_union(arg0, arg1, &arg2)
+	C.gdk_rectangle_union(arg0, arg1, arg2)
 
-	dest = WrapRectangle(unsafe.Pointer(&arg2))
+	ret2 = WrapRectangle(unsafe.Pointer(arg2))
 
-	return dest
+	return ret2
 }

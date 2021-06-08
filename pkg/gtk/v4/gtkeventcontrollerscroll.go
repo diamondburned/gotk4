@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,45 +21,48 @@ func init() {
 	})
 }
 
-// EventControllerScroll is an event controller meant to handle scroll events
-// from mice and touchpads. It is capable of handling both discrete and
-// continuous scroll events, abstracting them both on the
-// EventControllerScroll::scroll signal (deltas in the discrete case are
-// multiples of 1).
+// EventControllerScroll: `GtkEventControllerScroll` is an event controller that
+// handles scroll events.
 //
-// In the case of continuous scroll events, EventControllerScroll encloses all
-// EventControllerScroll::scroll events between two
-// EventControllerScroll::scroll-begin and EventControllerScroll::scroll-end
-// signals.
+// It is capable of handling both discrete and continuous scroll events from
+// mice or touchpads, abstracting them both with the
+// [signal@Gtk.EventControllerScroll::scroll] signal. Deltas in the discrete
+// case are multiples of 1.
+//
+// In the case of continuous scroll events, `GtkEventControllerScroll` encloses
+// all [signal@Gtk.EventControllerScroll::scroll] emissions between two
+// [signal@Gtk.EventControllerScroll::scroll-begin] and
+// [signal@Gtk.EventControllerScroll::scroll-end] signals.
 //
 // The behavior of the event controller can be modified by the flags given at
 // creation time, or modified at a later point through
-// gtk_event_controller_scroll_set_flags() (e.g. because the scrolling
+// [method@Gtk.EventControllerScroll.set_flags] (e.g. because the scrolling
 // conditions of the widget changed).
 //
 // The controller can be set up to emit motion for either/both vertical and
-// horizontal scroll events through K_EVENT_CONTROLLER_SCROLL_VERTICAL,
-// K_EVENT_CONTROLLER_SCROLL_HORIZONTAL and K_EVENT_CONTROLLER_SCROLL_BOTH_AXES.
-// If any axis is disabled, the respective EventControllerScroll::scroll delta
-// will be 0. Vertical scroll events will be translated to horizontal motion for
-// the devices incapable of horizontal scrolling.
+// horizontal scroll events through GTK_EVENT_CONTROLLER_SCROLL_VERTICAL,
+// GTK_EVENT_CONTROLLER_SCROLL_HORIZONTAL and
+// GTK_EVENT_CONTROLLER_SCROLL_BOTH_AXES. If any axis is disabled, the
+// respective [signal@Gtk.EventControllerScroll::scroll] delta will be 0.
+// Vertical scroll events will be translated to horizontal motion for the
+// devices incapable of horizontal scrolling.
 //
 // The event controller can also be forced to emit discrete events on all
-// devices through K_EVENT_CONTROLLER_SCROLL_DISCRETE. This can be used to
+// devices through GTK_EVENT_CONTROLLER_SCROLL_DISCRETE. This can be used to
 // implement discrete actions triggered through scroll events (e.g. switching
 // across combobox options).
 //
-// The K_EVENT_CONTROLLER_SCROLL_KINETIC flag toggles the emission of the
-// EventControllerScroll::decelerate signal, emitted at the end of scrolling
-// with two X/Y velocity arguments that are consistent with the motion that was
-// received.
+// The GTK_EVENT_CONTROLLER_SCROLL_KINETIC flag toggles the emission of the
+// [signal@Gtk.EventControllerScroll::decelerate] signal, emitted at the end of
+// scrolling with two X/Y velocity arguments that are consistent with the motion
+// that was received.
 type EventControllerScroll interface {
 	EventController
 
 	// Flags gets the flags conditioning the scroll controller behavior.
-	Flags(s EventControllerScroll)
+	Flags() EventControllerScrollFlags
 	// SetFlags sets the flags conditioning scroll controller behavior.
-	SetFlags(s EventControllerScroll, flags EventControllerScrollFlags)
+	SetFlags(flags EventControllerScrollFlags)
 }
 
 // eventControllerScroll implements the EventControllerScroll interface.
@@ -81,25 +87,39 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerScroll constructs a class EventControllerScroll.
-func NewEventControllerScroll(flags EventControllerScrollFlags) {
+func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll {
 	var arg1 C.GtkEventControllerScrollFlags
 
 	arg1 = (C.GtkEventControllerScrollFlags)(flags)
 
-	C.gtk_event_controller_scroll_new(arg1)
+	cret := new(C.GtkEventControllerScroll)
+	var goret EventControllerScroll
+
+	cret = C.gtk_event_controller_scroll_new(arg1)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerScroll)
+
+	return goret
 }
 
 // Flags gets the flags conditioning the scroll controller behavior.
-func (s eventControllerScroll) Flags(s EventControllerScroll) {
+func (s eventControllerScroll) Flags() EventControllerScrollFlags {
 	var arg0 *C.GtkEventControllerScroll
 
 	arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(s.Native()))
 
-	C.gtk_event_controller_scroll_get_flags(arg0)
+	var cret C.GtkEventControllerScrollFlags
+	var goret EventControllerScrollFlags
+
+	cret = C.gtk_event_controller_scroll_get_flags(arg0)
+
+	goret = EventControllerScrollFlags(cret)
+
+	return goret
 }
 
 // SetFlags sets the flags conditioning scroll controller behavior.
-func (s eventControllerScroll) SetFlags(s EventControllerScroll, flags EventControllerScrollFlags) {
+func (s eventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
 	var arg0 *C.GtkEventControllerScroll
 	var arg1 C.GtkEventControllerScrollFlags
 

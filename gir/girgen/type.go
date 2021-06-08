@@ -147,8 +147,6 @@ var girToBuiltin = map[string]string{
 	"guint64":  "uint64",
 	"utf8":     "string",
 	"filename": "string",
-
-	// "long double": "float64",
 }
 
 // girPrimitiveGo returns Go primitive types that can be copied by-value without

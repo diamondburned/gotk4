@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,7 +63,7 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 }
 
 // NewFontChooserDialog constructs a class FontChooserDialog.
-func NewFontChooserDialog(title string, parent Window) {
+func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	var arg1 *C.gchar
 	var arg2 *C.GtkWindow
 
@@ -68,5 +71,12 @@ func NewFontChooserDialog(title string, parent Window) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	C.gtk_font_chooser_dialog_new(arg1, arg2)
+	var cret C.GtkFontChooserDialog
+	var goret FontChooserDialog
+
+	cret = C.gtk_font_chooser_dialog_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
+
+	return goret
 }

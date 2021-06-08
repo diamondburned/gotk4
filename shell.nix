@@ -18,4 +18,13 @@ pkgs.mkShell {
 		pkgconfig
 		go
 	];
+
+	shellHook = ''
+		trash() {
+			command rm /tmp/gotk4-pkg && \
+				mv pkg /tmp/gotk4-pkg && \
+				mkdir pkg && \
+				echo "Moved pkg/ to /tmp/gotk4-pkg/"
+		}
+	'';
 }

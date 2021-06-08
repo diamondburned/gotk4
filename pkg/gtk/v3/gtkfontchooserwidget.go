@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,6 +75,13 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 }
 
 // NewFontChooserWidget constructs a class FontChooserWidget.
-func NewFontChooserWidget() {
-	C.gtk_font_chooser_widget_new()
+func NewFontChooserWidget() FontChooserWidget {
+	var cret C.GtkFontChooserWidget
+	var goret FontChooserWidget
+
+	cret = C.gtk_font_chooser_widget_new()
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserWidget)
+
+	return goret
 }

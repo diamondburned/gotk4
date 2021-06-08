@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,11 +27,11 @@ func init() {
 type ContainerCellAccessible interface {
 	CellAccessible
 
-	AddChild(c ContainerCellAccessible, child CellAccessible)
+	AddChild(child CellAccessible)
 	// Children: get a list of children.
-	Children(c ContainerCellAccessible)
+	Children() *glib.List
 
-	RemoveChild(c ContainerCellAccessible, child CellAccessible)
+	RemoveChild(child CellAccessible)
 }
 
 // containerCellAccessible implements the ContainerCellAccessible interface.
@@ -52,11 +56,18 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 }
 
 // NewContainerCellAccessible constructs a class ContainerCellAccessible.
-func NewContainerCellAccessible() {
-	C.gtk_container_cell_accessible_new()
+func NewContainerCellAccessible() ContainerCellAccessible {
+	cret := new(C.GtkContainerCellAccessible)
+	var goret ContainerCellAccessible
+
+	cret = C.gtk_container_cell_accessible_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContainerCellAccessible)
+
+	return goret
 }
 
-func (c containerCellAccessible) AddChild(c ContainerCellAccessible, child CellAccessible) {
+func (c containerCellAccessible) AddChild(child CellAccessible) {
 	var arg0 *C.GtkContainerCellAccessible
 	var arg1 *C.GtkCellAccessible
 
@@ -67,15 +78,22 @@ func (c containerCellAccessible) AddChild(c ContainerCellAccessible, child CellA
 }
 
 // Children: get a list of children.
-func (c containerCellAccessible) Children(c ContainerCellAccessible) {
+func (c containerCellAccessible) Children() *glib.List {
 	var arg0 *C.GtkContainerCellAccessible
 
 	arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
 
-	C.gtk_container_cell_accessible_get_children(arg0)
+	var cret *C.GList
+	var goret *glib.List
+
+	cret = C.gtk_container_cell_accessible_get_children(arg0)
+
+	goret = glib.WrapList(unsafe.Pointer(cret))
+
+	return goret
 }
 
-func (c containerCellAccessible) RemoveChild(c ContainerCellAccessible, child CellAccessible) {
+func (c containerCellAccessible) RemoveChild(child CellAccessible) {
 	var arg0 *C.GtkContainerCellAccessible
 	var arg1 *C.GtkCellAccessible
 

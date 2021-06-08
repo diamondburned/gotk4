@@ -3,6 +3,10 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,14 +22,18 @@ func init() {
 	})
 }
 
-// ColumnViewColumn: gtkColumnViewColumn represents the columns being added to
-// ColumnView.
+// ColumnViewColumn: `GtkColumnViewColumn` represents the columns being added to
+// `GtkColumnView`.
+//
+// The main ingredient for a `GtkColumnViewColumn` is the `GtkListItemFactory`
+// that tells the columnview how to create cells for this column from items in
+// the model.
 //
 // Columns have a title, and can optionally have a header menu set with
-// gtk_column_view_column_set_header_menu().
+// [method@Gtk.ColumnViewColumn.set_header_menu].
 //
 // A sorter can be associated with a column using
-// gtk_column_view_column_set_sorter(), to let users influence sorting by
+// [method@Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
 // clicking on the column header.
 type ColumnViewColumn interface {
 	gextras.Objector
@@ -33,61 +41,62 @@ type ColumnViewColumn interface {
 	// ColumnView gets the column view that's currently displaying this column.
 	//
 	// If @self has not been added to a column view yet, nil is returned.
-	ColumnView(s ColumnViewColumn)
+	ColumnView() ColumnView
 	// Expand returns whether this column should expand.
-	Expand(s ColumnViewColumn) bool
+	Expand() bool
 	// Factory gets the factory that's currently used to populate list items for
 	// this column.
-	Factory(s ColumnViewColumn)
+	Factory() ListItemFactory
 	// FixedWidth gets the fixed width of the column.
-	FixedWidth(s ColumnViewColumn)
+	FixedWidth() int
 	// HeaderMenu gets the menu model that is used to create the context menu
 	// for the column header.
-	HeaderMenu(s ColumnViewColumn)
+	HeaderMenu() gio.MenuModel
 	// Resizable returns whether this column is resizable.
-	Resizable(s ColumnViewColumn) bool
+	Resizable() bool
 	// Sorter returns the sorter that is associated with the column.
-	Sorter(s ColumnViewColumn)
+	Sorter() Sorter
 	// Title returns the title set with gtk_column_view_column_set_title().
-	Title(s ColumnViewColumn)
+	Title() string
 	// Visible returns whether this column is visible.
-	Visible(s ColumnViewColumn) bool
+	Visible() bool
 	// SetExpand sets the column to take available extra space.
 	//
 	// The extra space is shared equally amongst all columns that have the
 	// expand set to true.
-	SetExpand(s ColumnViewColumn, expand bool)
-	// SetFactory sets the ListItemFactory to use for populating list items for
-	// this column.
-	SetFactory(s ColumnViewColumn, factory ListItemFactory)
+	SetExpand(expand bool)
+	// SetFactory sets the `GtkListItemFactory` to use for populating list items
+	// for this column.
+	SetFactory(factory ListItemFactory)
 	// SetFixedWidth: if @fixed_width is not -1, sets the fixed width of
 	// @column; otherwise unsets it.
 	//
 	// Setting a fixed width overrides the automatically calculated width.
 	// Interactive resizing also sets the “fixed-width” property.
-	SetFixedWidth(s ColumnViewColumn, fixedWidth int)
+	SetFixedWidth(fixedWidth int)
 	// SetHeaderMenu sets the menu model that is used to create the context menu
 	// for the column header.
-	SetHeaderMenu(s ColumnViewColumn, menu gio.MenuModel)
+	SetHeaderMenu(menu gio.MenuModel)
 	// SetResizable sets whether this column should be resizable by dragging.
-	SetResizable(s ColumnViewColumn, resizable bool)
+	SetResizable(resizable bool)
 	// SetSorter associates a sorter with the column.
 	//
 	// If @sorter is nil, the column will not let users change the sorting by
 	// clicking on its header.
 	//
 	// This sorter can be made active by clicking on the column header, or by
-	// calling gtk_column_view_sort_by_column().
+	// calling [method@Gtk.ColumnView.sort_by_column].
 	//
-	// See gtk_column_view_get_sorter() for the necessary steps for setting up
-	// customizable sorting for ColumnView.
-	SetSorter(s ColumnViewColumn, sorter Sorter)
-	// SetTitle sets the title of this column. The title is displayed in the
-	// header of a ColumnView for this column and is therefore user-facing text
-	// that should be translated.
-	SetTitle(s ColumnViewColumn, title string)
+	// See [method@Gtk.ColumnView.get_sorter] for the necessary steps for
+	// setting up customizable sorting for [class@Gtk.ColumnView].
+	SetSorter(sorter Sorter)
+	// SetTitle sets the title of this column.
+	//
+	// The title is displayed in the header of a `GtkColumnView` for this column
+	// and is therefore user-facing text that should be translated.
+	SetTitle(title string)
 	// SetVisible sets whether this column should be visible in views.
-	SetVisible(s ColumnViewColumn, visible bool)
+	SetVisible(visible bool)
 }
 
 // columnViewColumn implements the ColumnViewColumn interface.
@@ -112,7 +121,7 @@ func marshalColumnViewColumn(p uintptr) (interface{}, error) {
 }
 
 // NewColumnViewColumn constructs a class ColumnViewColumn.
-func NewColumnViewColumn(title string, factory ListItemFactory) {
+func NewColumnViewColumn(title string, factory ListItemFactory) ColumnViewColumn {
 	var arg1 *C.char
 	var arg2 *C.GtkListItemFactory
 
@@ -120,126 +129,175 @@ func NewColumnViewColumn(title string, factory ListItemFactory) {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
-	C.gtk_column_view_column_new(arg1, arg2)
+	cret := new(C.GtkColumnViewColumn)
+	var goret ColumnViewColumn
+
+	cret = C.gtk_column_view_column_new(arg1, arg2)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ColumnViewColumn)
+
+	return goret
 }
 
 // ColumnView gets the column view that's currently displaying this column.
 //
 // If @self has not been added to a column view yet, nil is returned.
-func (s columnViewColumn) ColumnView(s ColumnViewColumn) {
+func (s columnViewColumn) ColumnView() ColumnView {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
-	C.gtk_column_view_column_get_column_view(arg0)
+	var cret *C.GtkColumnView
+	var goret ColumnView
+
+	cret = C.gtk_column_view_column_get_column_view(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColumnView)
+
+	return goret
 }
 
 // Expand returns whether this column should expand.
-func (s columnViewColumn) Expand(s ColumnViewColumn) bool {
+func (s columnViewColumn) Expand() bool {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_column_view_column_get_expand(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Factory gets the factory that's currently used to populate list items for
 // this column.
-func (s columnViewColumn) Factory(s ColumnViewColumn) {
+func (s columnViewColumn) Factory() ListItemFactory {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
-	C.gtk_column_view_column_get_factory(arg0)
+	var cret *C.GtkListItemFactory
+	var goret ListItemFactory
+
+	cret = C.gtk_column_view_column_get_factory(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
+
+	return goret
 }
 
 // FixedWidth gets the fixed width of the column.
-func (s columnViewColumn) FixedWidth(s ColumnViewColumn) {
+func (s columnViewColumn) FixedWidth() int {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
-	C.gtk_column_view_column_get_fixed_width(arg0)
+	var cret C.int
+	var goret int
+
+	cret = C.gtk_column_view_column_get_fixed_width(arg0)
+
+	goret = int(cret)
+
+	return goret
 }
 
 // HeaderMenu gets the menu model that is used to create the context menu
 // for the column header.
-func (s columnViewColumn) HeaderMenu(s ColumnViewColumn) {
+func (s columnViewColumn) HeaderMenu() gio.MenuModel {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
-	C.gtk_column_view_column_get_header_menu(arg0)
+	var cret *C.GMenuModel
+	var goret gio.MenuModel
+
+	cret = C.gtk_column_view_column_get_header_menu(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+
+	return goret
 }
 
 // Resizable returns whether this column is resizable.
-func (s columnViewColumn) Resizable(s ColumnViewColumn) bool {
+func (s columnViewColumn) Resizable() bool {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_column_view_column_get_resizable(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // Sorter returns the sorter that is associated with the column.
-func (s columnViewColumn) Sorter(s ColumnViewColumn) {
+func (s columnViewColumn) Sorter() Sorter {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
-	C.gtk_column_view_column_get_sorter(arg0)
+	var cret *C.GtkSorter
+	var goret Sorter
+
+	cret = C.gtk_column_view_column_get_sorter(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Sorter)
+
+	return goret
 }
 
 // Title returns the title set with gtk_column_view_column_set_title().
-func (s columnViewColumn) Title(s ColumnViewColumn) {
+func (s columnViewColumn) Title() string {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
-	C.gtk_column_view_column_get_title(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_column_view_column_get_title(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // Visible returns whether this column is visible.
-func (s columnViewColumn) Visible(s ColumnViewColumn) bool {
+func (s columnViewColumn) Visible() bool {
 	var arg0 *C.GtkColumnViewColumn
 
 	arg0 = (*C.GtkColumnViewColumn)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var ok bool
+	var goret bool
 
 	cret = C.gtk_column_view_column_get_visible(arg0)
 
 	if cret {
-		ok = true
+		goret = true
 	}
 
-	return ok
+	return goret
 }
 
 // SetExpand sets the column to take available extra space.
 //
 // The extra space is shared equally amongst all columns that have the
 // expand set to true.
-func (s columnViewColumn) SetExpand(s ColumnViewColumn, expand bool) {
+func (s columnViewColumn) SetExpand(expand bool) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 C.gboolean
 
@@ -251,9 +309,9 @@ func (s columnViewColumn) SetExpand(s ColumnViewColumn, expand bool) {
 	C.gtk_column_view_column_set_expand(arg0, arg1)
 }
 
-// SetFactory sets the ListItemFactory to use for populating list items for
-// this column.
-func (s columnViewColumn) SetFactory(s ColumnViewColumn, factory ListItemFactory) {
+// SetFactory sets the `GtkListItemFactory` to use for populating list items
+// for this column.
+func (s columnViewColumn) SetFactory(factory ListItemFactory) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 *C.GtkListItemFactory
 
@@ -268,7 +326,7 @@ func (s columnViewColumn) SetFactory(s ColumnViewColumn, factory ListItemFactory
 //
 // Setting a fixed width overrides the automatically calculated width.
 // Interactive resizing also sets the “fixed-width” property.
-func (s columnViewColumn) SetFixedWidth(s ColumnViewColumn, fixedWidth int) {
+func (s columnViewColumn) SetFixedWidth(fixedWidth int) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 C.int
 
@@ -280,7 +338,7 @@ func (s columnViewColumn) SetFixedWidth(s ColumnViewColumn, fixedWidth int) {
 
 // SetHeaderMenu sets the menu model that is used to create the context menu
 // for the column header.
-func (s columnViewColumn) SetHeaderMenu(s ColumnViewColumn, menu gio.MenuModel) {
+func (s columnViewColumn) SetHeaderMenu(menu gio.MenuModel) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 *C.GMenuModel
 
@@ -291,7 +349,7 @@ func (s columnViewColumn) SetHeaderMenu(s ColumnViewColumn, menu gio.MenuModel) 
 }
 
 // SetResizable sets whether this column should be resizable by dragging.
-func (s columnViewColumn) SetResizable(s ColumnViewColumn, resizable bool) {
+func (s columnViewColumn) SetResizable(resizable bool) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 C.gboolean
 
@@ -309,11 +367,11 @@ func (s columnViewColumn) SetResizable(s ColumnViewColumn, resizable bool) {
 // clicking on its header.
 //
 // This sorter can be made active by clicking on the column header, or by
-// calling gtk_column_view_sort_by_column().
+// calling [method@Gtk.ColumnView.sort_by_column].
 //
-// See gtk_column_view_get_sorter() for the necessary steps for setting up
-// customizable sorting for ColumnView.
-func (s columnViewColumn) SetSorter(s ColumnViewColumn, sorter Sorter) {
+// See [method@Gtk.ColumnView.get_sorter] for the necessary steps for
+// setting up customizable sorting for [class@Gtk.ColumnView].
+func (s columnViewColumn) SetSorter(sorter Sorter) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 *C.GtkSorter
 
@@ -323,10 +381,11 @@ func (s columnViewColumn) SetSorter(s ColumnViewColumn, sorter Sorter) {
 	C.gtk_column_view_column_set_sorter(arg0, arg1)
 }
 
-// SetTitle sets the title of this column. The title is displayed in the
-// header of a ColumnView for this column and is therefore user-facing text
-// that should be translated.
-func (s columnViewColumn) SetTitle(s ColumnViewColumn, title string) {
+// SetTitle sets the title of this column.
+//
+// The title is displayed in the header of a `GtkColumnView` for this column
+// and is therefore user-facing text that should be translated.
+func (s columnViewColumn) SetTitle(title string) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 *C.char
 
@@ -338,7 +397,7 @@ func (s columnViewColumn) SetTitle(s ColumnViewColumn, title string) {
 }
 
 // SetVisible sets whether this column should be visible in views.
-func (s columnViewColumn) SetVisible(s ColumnViewColumn, visible bool) {
+func (s columnViewColumn) SetVisible(visible bool) {
 	var arg0 *C.GtkColumnViewColumn
 	var arg1 C.gboolean
 

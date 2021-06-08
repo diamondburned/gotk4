@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -18,9 +21,11 @@ func init() {
 	})
 }
 
-// EventControllerLegacy is an event controller that gives you direct access to
-// the event stream. It should only be used as a last resort if none of the
-// other event controllers or gestures do the job.
+// EventControllerLegacy: `GtkEventControllerLegacy` is an event controller that
+// provides raw access to the event stream.
+//
+// It should only be used as a last resort if none of the other event
+// controllers or gestures do the job.
 type EventControllerLegacy interface {
 	EventController
 }
@@ -47,6 +52,13 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 }
 
 // NewEventControllerLegacy constructs a class EventControllerLegacy.
-func NewEventControllerLegacy() {
-	C.gtk_event_controller_legacy_new()
+func NewEventControllerLegacy() EventControllerLegacy {
+	cret := new(C.GtkEventControllerLegacy)
+	var goret EventControllerLegacy
+
+	cret = C.gtk_event_controller_legacy_new()
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerLegacy)
+
+	return goret
 }

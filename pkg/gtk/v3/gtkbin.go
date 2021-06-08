@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,7 +36,7 @@ type Bin interface {
 	// Child gets the child of the Bin, or nil if the bin contains no child
 	// widget. The returned widget does not have a reference added, so you do
 	// not need to unref it.
-	Child(b Bin)
+	Child() Widget
 }
 
 // bin implements the Bin interface.
@@ -62,10 +65,17 @@ func marshalBin(p uintptr) (interface{}, error) {
 // Child gets the child of the Bin, or nil if the bin contains no child
 // widget. The returned widget does not have a reference added, so you do
 // not need to unref it.
-func (b bin) Child(b Bin) {
+func (b bin) Child() Widget {
 	var arg0 *C.GtkBin
 
 	arg0 = (*C.GtkBin)(unsafe.Pointer(b.Native()))
 
-	C.gtk_bin_get_child(arg0)
+	var cret *C.GtkWidget
+	var goret Widget
+
+	cret = C.gtk_bin_get_child(arg0)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return goret
 }

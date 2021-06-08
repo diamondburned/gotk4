@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,10 +66,17 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 }
 
 // NewFileChooserWidget constructs a class FileChooserWidget.
-func NewFileChooserWidget(action FileChooserAction) {
+func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	var arg1 C.GtkFileChooserAction
 
 	arg1 = (C.GtkFileChooserAction)(action)
 
-	C.gtk_file_chooser_widget_new(arg1)
+	var cret C.GtkFileChooserWidget
+	var goret FileChooserWidget
+
+	cret = C.gtk_file_chooser_widget_new(arg1)
+
+	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserWidget)
+
+	return goret
 }

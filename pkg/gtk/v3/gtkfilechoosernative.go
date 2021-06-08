@@ -3,6 +3,9 @@
 package gtk
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -181,9 +184,9 @@ type FileChooserNative interface {
 	FileChooser
 
 	// AcceptLabel retrieves the custom label text for the accept button.
-	AcceptLabel(s FileChooserNative)
+	AcceptLabel() string
 	// CancelLabel retrieves the custom label text for the cancel button.
-	CancelLabel(s FileChooserNative)
+	CancelLabel() string
 	// SetAcceptLabel sets the custom label text for the accept button.
 	//
 	// If characters in @label are preceded by an underscore, they are
@@ -191,7 +194,7 @@ type FileChooserNative interface {
 	// “__” (two underscores). The first underlined character represents a
 	// keyboard accelerator called a mnemonic. Pressing Alt and that key
 	// activates the button.
-	SetAcceptLabel(s FileChooserNative, acceptLabel string)
+	SetAcceptLabel(acceptLabel string)
 	// SetCancelLabel sets the custom label text for the cancel button.
 	//
 	// If characters in @label are preceded by an underscore, they are
@@ -199,7 +202,7 @@ type FileChooserNative interface {
 	// “__” (two underscores). The first underlined character represents a
 	// keyboard accelerator called a mnemonic. Pressing Alt and that key
 	// activates the button.
-	SetCancelLabel(s FileChooserNative, cancelLabel string)
+	SetCancelLabel(cancelLabel string)
 }
 
 // fileChooserNative implements the FileChooserNative interface.
@@ -226,7 +229,7 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 }
 
 // NewFileChooserNative constructs a class FileChooserNative.
-func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) {
+func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative {
 	var arg1 *C.gchar
 	var arg2 *C.GtkWindow
 	var arg3 C.GtkFileChooserAction
@@ -242,25 +245,46 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 	arg5 = (*C.gchar)(C.CString(cancelLabel))
 	defer C.free(unsafe.Pointer(arg5))
 
-	C.gtk_file_chooser_native_new(arg1, arg2, arg3, arg4, arg5)
+	cret := new(C.GtkFileChooserNative)
+	var goret FileChooserNative
+
+	cret = C.gtk_file_chooser_native_new(arg1, arg2, arg3, arg4, arg5)
+
+	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileChooserNative)
+
+	return goret
 }
 
 // AcceptLabel retrieves the custom label text for the accept button.
-func (s fileChooserNative) AcceptLabel(s FileChooserNative) {
+func (s fileChooserNative) AcceptLabel() string {
 	var arg0 *C.GtkFileChooserNative
 
 	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
-	C.gtk_file_chooser_native_get_accept_label(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_file_chooser_native_get_accept_label(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // CancelLabel retrieves the custom label text for the cancel button.
-func (s fileChooserNative) CancelLabel(s FileChooserNative) {
+func (s fileChooserNative) CancelLabel() string {
 	var arg0 *C.GtkFileChooserNative
 
 	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
-	C.gtk_file_chooser_native_get_cancel_label(arg0)
+	var cret *C.char
+	var goret string
+
+	cret = C.gtk_file_chooser_native_get_cancel_label(arg0)
+
+	goret = C.GoString(cret)
+
+	return goret
 }
 
 // SetAcceptLabel sets the custom label text for the accept button.
@@ -270,7 +294,7 @@ func (s fileChooserNative) CancelLabel(s FileChooserNative) {
 // “__” (two underscores). The first underlined character represents a
 // keyboard accelerator called a mnemonic. Pressing Alt and that key
 // activates the button.
-func (s fileChooserNative) SetAcceptLabel(s FileChooserNative, acceptLabel string) {
+func (s fileChooserNative) SetAcceptLabel(acceptLabel string) {
 	var arg0 *C.GtkFileChooserNative
 	var arg1 *C.char
 
@@ -288,7 +312,7 @@ func (s fileChooserNative) SetAcceptLabel(s FileChooserNative, acceptLabel strin
 // “__” (two underscores). The first underlined character represents a
 // keyboard accelerator called a mnemonic. Pressing Alt and that key
 // activates the button.
-func (s fileChooserNative) SetCancelLabel(s FileChooserNative, cancelLabel string) {
+func (s fileChooserNative) SetCancelLabel(cancelLabel string) {
 	var arg0 *C.GtkFileChooserNative
 	var arg1 *C.char
 

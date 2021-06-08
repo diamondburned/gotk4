@@ -21,19 +21,23 @@ func init() {
 // ShortcutManagerOverrider contains methods that are overridable. This
 // interface is a subset of the interface ShortcutManager.
 type ShortcutManagerOverrider interface {
-	AddController(s ShortcutManager, controller ShortcutController)
+	AddController(controller ShortcutController)
 
-	RemoveController(s ShortcutManager, controller ShortcutController)
+	RemoveController(controller ShortcutController)
 }
 
-// ShortcutManager: the GtkShortcutManager interface is used to implement
+// ShortcutManager: the `GtkShortcutManager` interface is used to implement
 // shortcut scopes.
 //
-// This is important for Native widgets that have their own surface, since the
-// event controllers that are used to implement managed and global scopes are
-// limited to the same native.
+// This is important for [iface@Gtk.Native] widgets that have their own surface,
+// since the event controllers that are used to implement managed and global
+// scopes are limited to the same native.
 //
-// Examples for widgets implementing ShortcutManager are Window and Popover.
+// Examples for widgets implementing `GtkShortcutManager` are [class@Gtk.Window]
+// and [class@Gtk.Popover].
+//
+// Every widget that implements `GtkShortcutManager` will be used as a
+// GTK_SHORTCUT_SCOPE_MANAGED.
 type ShortcutManager interface {
 	gextras.Objector
 	ShortcutManagerOverrider

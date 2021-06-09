@@ -1,0 +1,16 @@
+image: "nixos/stable"
+packages:
+    - nixos.git
+sources:
+    - https://github.com/diamondburned/gotk4
+tasks:
+    - generate: |
+        # Regenerate the whole repository.
+        nix-shell ./shell.nix --command 'go generate'
+        # Ensure that the generated output matches.
+        [[ ! $(git status -s) ]] && return 0
+        # There are changes; report and exit.
+        git status
+        return 1
+    - build: |
+        nix-shell ./shell.nix --command 'go build ./...'

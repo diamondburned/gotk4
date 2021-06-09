@@ -12,7 +12,7 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 	sha256 = "0pgyx1l1gj33g5i9kwjar7dc3sal2g14mhfljcajj8bqzzrbc3za";
 }) {};
 
-in systemPkgs.mkShell {
+in unstable.mkShell {
 	# The build inputs, which contains dependencies needed during generation
 	# time, build time and runtime.
 	buildInputs = with unstable; [

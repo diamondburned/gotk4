@@ -21,19 +21,23 @@ func init() {
 	})
 }
 
-// LayoutChild is the base class for objects that are meant to hold layout
-// properties. If a LayoutManager has per-child properties, like their packing
-// type, or the horizontal and vertical span, or the icon name, then the layout
-// manager should use a LayoutChild implementation to store those properties.
+// LayoutChild: `GtkLayoutChild` is the base class for objects that are meant to
+// hold layout properties.
 //
-// A LayoutChild instance is only ever valid while a widget is part of a layout.
+// If a `GtkLayoutManager` has per-child properties, like their packing type, or
+// the horizontal and vertical span, or the icon name, then the layout manager
+// should use a `GtkLayoutChild` implementation to store those properties.
+//
+// A `GtkLayoutChild` instance is only ever valid while a widget is part of a
+// layout.
 type LayoutChild interface {
 	gextras.Objector
 
-	// ChildWidget retrieves the Widget associated to the given @layout_child.
-	ChildWidget() Widget
-	// LayoutManager retrieves the LayoutManager instance that created the given
+	// ChildWidget retrieves the `GtkWidget` associated to the given
 	// @layout_child.
+	ChildWidget() Widget
+	// LayoutManager retrieves the `GtkLayoutManager` instance that created the
+	// given @layout_child.
 	LayoutManager() LayoutManager
 }
 
@@ -58,7 +62,8 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 	return WrapLayoutChild(obj), nil
 }
 
-// ChildWidget retrieves the Widget associated to the given @layout_child.
+// ChildWidget retrieves the `GtkWidget` associated to the given
+// @layout_child.
 func (l layoutChild) ChildWidget() Widget {
 	var _arg0 *C.GtkLayoutChild
 
@@ -75,8 +80,8 @@ func (l layoutChild) ChildWidget() Widget {
 	return _widget
 }
 
-// LayoutManager retrieves the LayoutManager instance that created the given
-// @layout_child.
+// LayoutManager retrieves the `GtkLayoutManager` instance that created the
+// given @layout_child.
 func (l layoutChild) LayoutManager() LayoutManager {
 	var _arg0 *C.GtkLayoutChild
 

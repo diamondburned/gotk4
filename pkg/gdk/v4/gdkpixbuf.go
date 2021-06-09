@@ -15,9 +15,10 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// PixbufGetFromSurface transfers image data from a #cairo_surface_t and
-// converts it to an RGB(A) representation inside a Pixbuf. This allows you to
-// efficiently read individual pixels from cairo surfaces.
+// PixbufGetFromSurface transfers image data from a `cairo_surface_t` and
+// converts it to a `GdkPixbuf`.
+//
+// This allows you to efficiently read individual pixels from cairo surfaces.
 //
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
@@ -45,9 +46,10 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 	return _pixbuf
 }
 
-// PixbufGetFromTexture creates a new pixbuf from @texture. This should
-// generally not be used in newly written code as later stages will almost
-// certainly convert the pixbuf back into a texture to draw it on screen.
+// PixbufGetFromTexture creates a new pixbuf from @texture.
+//
+// This should generally not be used in newly written code as later stages will
+// almost certainly convert the pixbuf back into a texture to draw it on screen.
 func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
 	var _arg1 *C.GdkTexture
 

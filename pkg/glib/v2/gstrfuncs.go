@@ -532,6 +532,29 @@ func Memdup(mem interface{}, byteSize uint) interface{} {
 	return _gpointer
 }
 
+// Memdup2 allocates @byte_size bytes of memory, and copies @byte_size bytes
+// into it from @mem. If @mem is nil it returns nil.
+//
+// This replaces g_memdup(), which was prone to integer overflows when
+// converting the argument from a #gsize to a #guint.
+func Memdup2(mem interface{}, byteSize uint) interface{} {
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
+
+	_arg1 = C.gpointer(mem)
+	_arg2 = C.gsize(byteSize)
+
+	var _cret C.gpointer
+
+	cret = C.g_memdup2(_arg1, _arg2)
+
+	var _gpointer interface{}
+
+	_gpointer = (interface{})(_cret)
+
+	return _gpointer
+}
+
 // Stpcpy copies a nul-terminated string into the dest buffer, include the
 // trailing nul, and return a pointer to the trailing nul byte. This is useful
 // for concatenating multiple strings together without having to repeatedly scan

@@ -59,7 +59,7 @@ type TypeFundamentalFlags int
 const (
 	// TypeFundamentalFlagsClassed indicates a classed type
 	TypeFundamentalFlagsClassed TypeFundamentalFlags = 1
-	// TypeFundamentalFlagsInstantiatable indicates an instantiable type
+	// TypeFundamentalFlagsInstantiatable indicates an instantiatable type
 	// (implies classed)
 	TypeFundamentalFlagsInstantiatable TypeFundamentalFlags = 2
 	// TypeFundamentalFlagsDerivable indicates a flat derivable type
@@ -105,9 +105,9 @@ func TypeAddInstancePrivate(classType externglib.Type, privateSize uint) int {
 	return _gint
 }
 
-// TypeAddInterfaceDynamic adds @interface_type to the dynamic
-// @instantiable_type. The information contained in the Plugin structure pointed
-// to by @plugin is used to manage the relationship.
+// TypeAddInterfaceDynamic adds @interface_type to the dynamic @instance_type.
+// The information contained in the Plugin structure pointed to by @plugin is
+// used to manage the relationship.
 func TypeAddInterfaceDynamic(instanceType externglib.Type, interfaceType externglib.Type, plugin TypePlugin) {
 	var _arg1 C.GType
 	var _arg2 C.GType
@@ -120,9 +120,9 @@ func TypeAddInterfaceDynamic(instanceType externglib.Type, interfaceType externg
 	C.g_type_add_interface_dynamic(_arg1, _arg2, _arg3)
 }
 
-// TypeAddInterfaceStatic adds @interface_type to the static @instantiable_type.
-// The information contained in the Info structure pointed to by @info is used
-// to manage the relationship.
+// TypeAddInterfaceStatic adds @interface_type to the static @instance_type. The
+// information contained in the Info structure pointed to by @info is used to
+// manage the relationship.
 func TypeAddInterfaceStatic(instanceType externglib.Type, interfaceType externglib.Type, info *InterfaceInfo) {
 	var _arg1 C.GType
 	var _arg2 C.GType
@@ -593,7 +593,7 @@ func TypeNameFromInstance(instance *TypeInstance) string {
 }
 
 // TypeNextBase: given a @leaf_type and a @root_type which is contained in its
-// anchestry, return the type that @root_type is the immediate parent of. In
+// ancestry, return the type that @root_type is the immediate parent of. In
 // other words, this function determines the type that is derived directly from
 // @root_type which is also a base class of @leaf_type. Given a root type and a
 // leaf type, this function can be used to determine the types and order in

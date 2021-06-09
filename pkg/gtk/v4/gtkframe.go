@@ -21,40 +21,37 @@ func init() {
 	})
 }
 
-// Frame: the frame widget is a widget that surrounds its child with a
-// decorative frame and an optional label. If present, the label is drawn inside
-// the top edge of the frame. The horizontal position of the label can be
-// controlled with gtk_frame_set_label_align().
+// Frame: `GtkFrame` is a widget that surrounds its child with a decorative
+// frame and an optional label.
 //
-// GtkFrame clips its child. You can use this to add rounded corners to widgets,
-// but be aware that it also cuts off shadows.
+// !An example GtkFrame (frame.png)
+//
+// If present, the label is drawn inside the top edge of the frame. The
+// horizontal position of the label can be controlled with
+// [method@Gtk.Frame.set_label_align].
+//
+// `GtkFrame` clips its child. You can use this to add rounded corners to
+// widgets, but be aware that it also cuts off shadows.
 //
 //
 // GtkFrame as GtkBuildable
 //
-// The GtkFrame implementation of the GtkBuildable interface supports placing a
-// child in the label position by specifying “label” as the “type” attribute of
-// a <child> element. A normal content child can be specified without specifying
-// a <child> type attribute.
+// The `GtkFrame` implementation of the `GtkBuildable` interface supports
+// placing a child in the label position by specifying “label” as the “type”
+// attribute of a <child> element. A normal content child can be specified
+// without specifying a <child> type attribute.
 //
-// An example of a UI definition fragment with GtkFrame:
+// An example of a UI definition fragment with GtkFrame: “`xml <object
+// class="GtkFrame"> <child type="label"> <object class="GtkLabel"
+// id="frame_label"/> </child> <child> <object class="GtkEntry"
+// id="frame_content"/> </child> </object> “`
 //
-//    <object class="GtkFrame">
-//      <child type="label">
-//        <object class="GtkLabel" id="frame_label"/>
-//      </child>
-//      <child>
-//        <object class="GtkEntry" id="frame_content"/>
-//      </child>
-//    </object>
 //
 // CSS nodes
 //
-//    frame
-//    ├── <label widget>
-//    ╰── <child>
+// “` frame ├── <label widget> ╰── <child> “`
 //
-// GtkFrame has a main CSS node with name “frame”, which is used to draw the
+// `GtkFrame` has a main CSS node with name “frame”, which is used to draw the
 // visible border. You can set the appearance of the border using CSS properties
 // like “border-style” on this node.
 type Frame interface {
@@ -65,26 +62,27 @@ type Frame interface {
 
 	// Child gets the child widget of @frame.
 	Child() Widget
-	// Label: if the frame’s label widget is a Label, returns the text in the
-	// label widget. (The frame will have a Label for the label widget if a
-	// non-nil argument was passed to gtk_frame_new().)
+	// Label returns the frame labels text.
+	//
+	// If the frame's label widget is not a `GtkLabel`, nil is returned.
 	Label() string
-	// LabelAlign retrieves the X alignment of the frame’s label. See
-	// gtk_frame_set_label_align().
+	// LabelAlign retrieves the X alignment of the frame’s label.
 	LabelAlign() float32
-	// LabelWidget retrieves the label widget for the frame. See
-	// gtk_frame_set_label_widget().
+	// LabelWidget retrieves the label widget for the frame.
 	LabelWidget() Widget
 	// SetChild sets the child widget of @frame.
 	SetChild(child Widget)
-	// SetLabel removes the current Frame:label-widget. If @label is not nil,
-	// creates a new Label with that text and adds it as the Frame:label-widget.
+	// SetLabel creates a new `GtkLabel` with the @label and sets it as the
+	// frame's label widget.
 	SetLabel(label string)
-	// SetLabelAlign sets the X alignment of the frame widget’s label. The
-	// default value for a newly created frame is 0.0.
+	// SetLabelAlign sets the X alignment of the frame widget’s label.
+	//
+	// The default value for a newly created frame is 0.0.
 	SetLabelAlign(xalign float32)
-	// SetLabelWidget sets the Frame:label-widget for the frame. This is the
-	// widget that will appear embedded in the top edge of the frame as a title.
+	// SetLabelWidget sets the label widget for the frame.
+	//
+	// This is the widget that will appear embedded in the top edge of the frame
+	// as a title.
 	SetLabelWidget(labelWidget Widget)
 }
 
@@ -150,9 +148,9 @@ func (f frame) Child() Widget {
 	return _widget
 }
 
-// Label: if the frame’s label widget is a Label, returns the text in the
-// label widget. (The frame will have a Label for the label widget if a
-// non-nil argument was passed to gtk_frame_new().)
+// Label returns the frame labels text.
+//
+// If the frame's label widget is not a `GtkLabel`, nil is returned.
 func (f frame) Label() string {
 	var _arg0 *C.GtkFrame
 
@@ -169,8 +167,7 @@ func (f frame) Label() string {
 	return _utf8
 }
 
-// LabelAlign retrieves the X alignment of the frame’s label. See
-// gtk_frame_set_label_align().
+// LabelAlign retrieves the X alignment of the frame’s label.
 func (f frame) LabelAlign() float32 {
 	var _arg0 *C.GtkFrame
 
@@ -187,8 +184,7 @@ func (f frame) LabelAlign() float32 {
 	return _gfloat
 }
 
-// LabelWidget retrieves the label widget for the frame. See
-// gtk_frame_set_label_widget().
+// LabelWidget retrieves the label widget for the frame.
 func (f frame) LabelWidget() Widget {
 	var _arg0 *C.GtkFrame
 
@@ -216,8 +212,8 @@ func (f frame) SetChild(child Widget) {
 	C.gtk_frame_set_child(_arg0, _arg1)
 }
 
-// SetLabel removes the current Frame:label-widget. If @label is not nil,
-// creates a new Label with that text and adds it as the Frame:label-widget.
+// SetLabel creates a new `GtkLabel` with the @label and sets it as the
+// frame's label widget.
 func (f frame) SetLabel(label string) {
 	var _arg0 *C.GtkFrame
 	var _arg1 *C.char
@@ -229,8 +225,9 @@ func (f frame) SetLabel(label string) {
 	C.gtk_frame_set_label(_arg0, _arg1)
 }
 
-// SetLabelAlign sets the X alignment of the frame widget’s label. The
-// default value for a newly created frame is 0.0.
+// SetLabelAlign sets the X alignment of the frame widget’s label.
+//
+// The default value for a newly created frame is 0.0.
 func (f frame) SetLabelAlign(xalign float32) {
 	var _arg0 *C.GtkFrame
 	var _arg1 C.float
@@ -241,8 +238,10 @@ func (f frame) SetLabelAlign(xalign float32) {
 	C.gtk_frame_set_label_align(_arg0, _arg1)
 }
 
-// SetLabelWidget sets the Frame:label-widget for the frame. This is the
-// widget that will appear embedded in the top edge of the frame as a title.
+// SetLabelWidget sets the label widget for the frame.
+//
+// This is the widget that will appear embedded in the top edge of the frame
+// as a title.
 func (f frame) SetLabelWidget(labelWidget Widget) {
 	var _arg0 *C.GtkFrame
 	var _arg1 *C.GtkWidget

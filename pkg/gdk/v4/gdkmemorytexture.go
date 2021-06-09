@@ -18,7 +18,7 @@ func init() {
 	})
 }
 
-// MemoryTexture: a Texture representing image data in memory.
+// MemoryTexture: a `GdkTexture` representing image data in memory.
 type MemoryTexture interface {
 	Texture
 	Paintable

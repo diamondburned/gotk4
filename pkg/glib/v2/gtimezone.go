@@ -80,6 +80,27 @@ func NewTimeZone(identifier string) *TimeZone {
 	return _timeZone
 }
 
+// NewTimeZoneIdentifier constructs a struct TimeZone.
+func NewTimeZoneIdentifier(identifier string) *TimeZone {
+	var _arg1 *C.gchar
+
+	_arg1 = (*C.gchar)(C.CString(identifier))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.GTimeZone
+
+	cret = C.g_time_zone_new_identifier(_arg1)
+
+	var _timeZone *TimeZone
+
+	_timeZone = WrapTimeZone(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_timeZone, func(v *TimeZone) {
+		C.free(unsafe.Pointer(v.Native()))
+	})
+
+	return _timeZone
+}
+
 // NewTimeZoneLocal constructs a struct TimeZone.
 func NewTimeZoneLocal() *TimeZone {
 	var _cret *C.GTimeZone

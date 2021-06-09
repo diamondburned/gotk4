@@ -85,9 +85,10 @@ const (
 	PixdataTypeEncodingMask PixdataType = 251658240
 )
 
-// PixbufFromPixdata converts a Pixdata to a Pixbuf. If @copy_pixels is true or
-// if the pixel data is run-length-encoded, the pixel data is copied into
-// newly-allocated memory; otherwise it is reused.
+// PixbufFromPixdata converts a `GdkPixdata` to a `GdkPixbuf`.
+//
+// If `copy_pixels` is `TRUE` or if the pixel data is run-length-encoded, the
+// pixel data is copied into newly-allocated memory; otherwise it is reused.
 func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
 	var _arg1 *C.GdkPixdata
 	var _arg2 C.gboolean
@@ -111,8 +112,15 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, err
 	return _pixbuf, _goerr
 }
 
-// Pixdata: a Pixdata contains pixbuf information in a form suitable for
-// serialization and streaming.
+// Pixdata: a pixel buffer suitable for serialization and streaming.
+//
+// Using `GdkPixdata`, images can be compiled into an application, making it
+// unnecessary to refer to external image files at runtime.
+//
+// `GdkPixbuf` includes a utility named `gdk-pixbuf-csource`, which can be used
+// to convert image files into `GdkPixdata` structures suitable for inclusion in
+// C sources. To convert the `GdkPixdata` structures back into a `GdkPixbuf`,
+// use `gdk_pixbuf_from_pixdata()`.
 type Pixdata struct {
 	native C.GdkPixdata
 }
@@ -179,31 +187,6 @@ func (p *Pixdata) Height() uint32 {
 	return v
 }
 
-// FromPixbuf converts a Pixbuf to a Pixdata. If @use_rle is true, the pixel
-// data is run-length encoded into newly-allocated memory and a pointer to that
-// memory is returned.
-func (p *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interface{} {
-	var _arg0 *C.GdkPixdata
-	var _arg1 *C.GdkPixbuf
-	var _arg2 C.gboolean
-
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	if useRle {
-		_arg2 = C.gboolean(1)
-	}
-
-	var _cret C.gpointer
-
-	cret = C.gdk_pixdata_from_pixbuf(_arg0, _arg1, _arg2)
-
-	var _gpointer interface{}
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
-}
-
 // Serialize serializes a Pixdata structure into a byte stream. The byte stream
 // consists of a straightforward writeout of the Pixdata fields in network byte
 // order, plus the @pixel_data bytes the structure points to.
@@ -230,9 +213,8 @@ func (p *Pixdata) Serialize() []byte {
 // ToCsource generates C source code suitable for compiling images directly into
 // programs.
 //
-// gdk-pixbuf ships with a program called
-// [gdk-pixbuf-csource][gdk-pixbuf-csource], which offers a command line
-// interface to this function.
+// GdkPixbuf ships with a program called `gdk-pixbuf-csource`, which offers a
+// command line interface to this function.
 func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String {
 	var _arg0 *C.GdkPixdata
 	var _arg1 *C.gchar

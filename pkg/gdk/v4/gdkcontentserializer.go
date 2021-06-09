@@ -18,16 +18,20 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// ContentRegisterSerializer registers a function to convert objects of the
-// given @type to a serialized representation with the given mime type.
+// ContentRegisterSerializer registers a function to serialize objects of a
+// given type.
 func ContentRegisterSerializer() {
 	C.gdk_content_register_serializer()
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
-// stream, asynchronously. When the operation is finished, @callback will be
-// called. You can then call gdk_content_serialize_finish() to get the result of
-// the operation.
+// stream, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, @callback will be called. You must then call
+// [func@content_serialize_finish] to get the result of the operation.
 func ContentSerializeAsync() {
 	C.gdk_content_serialize_async()
 }

@@ -21,19 +21,21 @@ func init() {
 	})
 }
 
-// EventControllerKey is an event controller meant for situations where you need
-// access to key events.
+// EventControllerKey: `GtkEventControllerKey` is an event controller that
+// provides access to key events.
 type EventControllerKey interface {
 	EventController
 
 	// Forward forwards the current event of this @controller to a @widget.
 	//
 	// This function can only be used in handlers for the
-	// EventControllerKey::key-pressed, EventControllerKey::key-released or
-	// EventControllerKey::modifiers signals.
+	// [signal@Gtk.EventControllerKey::key-pressed],
+	// [signal@Gtk.EventControllerKey::key-released] or
+	// [signal@Gtk.EventControllerKey::modifiers] signals.
 	Forward(widget Widget) bool
-	// Group gets the key group of the current event of this @controller. See
-	// gdk_key_event_get_group().
+	// Group gets the key group of the current event of this @controller.
+	//
+	// See [method@Gdk.KeyEvent.get_layout].
 	Group() uint
 	// ImContext gets the input method context of the key @controller.
 	ImContext() IMContext
@@ -78,8 +80,9 @@ func NewEventControllerKey() EventControllerKey {
 // Forward forwards the current event of this @controller to a @widget.
 //
 // This function can only be used in handlers for the
-// EventControllerKey::key-pressed, EventControllerKey::key-released or
-// EventControllerKey::modifiers signals.
+// [signal@Gtk.EventControllerKey::key-pressed],
+// [signal@Gtk.EventControllerKey::key-released] or
+// [signal@Gtk.EventControllerKey::modifiers] signals.
 func (c eventControllerKey) Forward(widget Widget) bool {
 	var _arg0 *C.GtkEventControllerKey
 	var _arg1 *C.GtkWidget
@@ -100,8 +103,9 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 	return _ok
 }
 
-// Group gets the key group of the current event of this @controller. See
-// gdk_key_event_get_group().
+// Group gets the key group of the current event of this @controller.
+//
+// See [method@Gdk.KeyEvent.get_layout].
 func (c eventControllerKey) Group() uint {
 	var _arg0 *C.GtkEventControllerKey
 

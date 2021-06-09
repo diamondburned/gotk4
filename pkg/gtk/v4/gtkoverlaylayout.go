@@ -22,11 +22,13 @@ func init() {
 	})
 }
 
-// OverlayLayout: gtkOverlayLayout is the layout manager used by Overlay. It
-// places widgets as overlays on top of the main child.
+// OverlayLayout: `GtkOverlayLayout` is the layout manager used by `GtkOverlay`.
+//
+// It places widgets as overlays on top of the main child.
 //
 // This is not a reusable layout manager, since it expects its widget to be a
-// Overlay. It only listed here so that its layout properties get documented.
+// `GtkOverlay`. It only listed here so that its layout properties get
+// documented.
 type OverlayLayout interface {
 	LayoutManager
 }
@@ -65,6 +67,8 @@ func NewOverlayLayout() OverlayLayout {
 	return _overlayLayout
 }
 
+// OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
+// `GtkOverlayLayout`.
 type OverlayLayoutChild interface {
 	LayoutChild
 

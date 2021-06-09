@@ -15,8 +15,8 @@ import (
 // #include <gsk/gsk.h>
 import "C"
 
-// ParseErrorFunc: the type of callback that is called when a parse error occurs
-// during deserialization of node data.
+// ParseErrorFunc: type of callback that is called when an error occurs during
+// node deserialization.
 type ParseErrorFunc func()
 
 //export gotk4_ParseErrorFunc

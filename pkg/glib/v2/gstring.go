@@ -648,6 +648,34 @@ func (s *String) PrependUnichar(wc uint32) *String {
 	return _ret
 }
 
+// Replace replaces the string @find with the string @replace in a #GString up
+// to @limit times. If the number of instances of @find in the #GString is less
+// than @limit, all instances are replaced. If the number of instances is `0`,
+// all instances of @find are replaced.
+func (s *String) Replace(find string, replace string, limit uint) uint {
+	var _arg0 *C.GString
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 C.guint
+
+	_arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(find))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(replace))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint(limit)
+
+	var _cret C.guint
+
+	cret = C.g_string_replace(_arg0, _arg1, _arg2, _arg3)
+
+	var _guint uint
+
+	_guint = (uint)(_cret)
+
+	return _guint
+}
+
 // SetSize sets the length of a #GString. If the length is less than the current
 // length, the string will be truncated. If the length is greater than the
 // current length, the contents of the newly added area are undefined. (However,

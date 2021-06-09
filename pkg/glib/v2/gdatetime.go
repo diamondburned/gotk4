@@ -499,6 +499,50 @@ func (d *DateTime) AddYears(years int) *DateTime {
 	return _dateTime
 }
 
+// Compare: a comparison function for Times that is suitable as a Func. Both
+// Times must be non-nil.
+func (d *DateTime) Compare(dt2 DateTime) int {
+	var _arg0 C.gpointer
+	var _arg1 C.gpointer
+
+	_arg0 = (C.gpointer)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(dt2.Native()))
+
+	var _cret C.gint
+
+	cret = C.g_date_time_compare(_arg0, _arg1)
+
+	var _gint int
+
+	_gint = (int)(_cret)
+
+	return _gint
+}
+
+// Equal checks to see if @dt1 and @dt2 are equal.
+//
+// Equal here means that they represent the same moment after converting them to
+// the same time zone.
+func (d *DateTime) Equal(dt2 DateTime) bool {
+	var _arg0 C.gpointer
+	var _arg1 C.gpointer
+
+	_arg0 = (C.gpointer)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(dt2.Native()))
+
+	var _cret C.gboolean
+
+	cret = C.g_date_time_equal(_arg0, _arg1)
+
+	var _ok bool
+
+	if _cret {
+		_ok = true
+	}
+
+	return _ok
+}
+
 // Format creates a newly allocated string representing the requested @format.
 //
 // The format strings understood by this function are a subset of the strftime()
@@ -932,6 +976,23 @@ func (d *DateTime) Ymd() (year int, month int, day int) {
 	_day = (int)(_arg3)
 
 	return _year, _month, _day
+}
+
+// Hash hashes @datetime into a #guint, suitable for use within Table.
+func (d *DateTime) Hash() uint {
+	var _arg0 C.gpointer
+
+	_arg0 = (C.gpointer)(unsafe.Pointer(d.Native()))
+
+	var _cret C.guint
+
+	cret = C.g_date_time_hash(_arg0)
+
+	var _guint uint
+
+	_guint = (uint)(_cret)
+
+	return _guint
 }
 
 // IsDaylightSavings determines if daylight savings time is in effect at the

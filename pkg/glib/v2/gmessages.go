@@ -154,7 +154,8 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 // printed.
 //
 // stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
-// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest.
+// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest,
+// unless stderr was requested by g_log_writer_default_set_use_stderr().
 //
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
@@ -324,6 +325,68 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	_arg3 = (*C.GVariant)(unsafe.Pointer(fields.Native()))
 
 	C.g_log_variant(_arg1, _arg2, _arg3)
+}
+
+// LogWriterDefaultSetUseStderr: configure whether the built-in log functions
+// (g_log_default_handler() for the old-style API, and both
+// g_log_writer_default() and g_log_writer_standard_streams() for the structured
+// API) will output all log messages to `stderr`.
+//
+// By default, log messages of levels G_LOG_LEVEL_INFO and G_LOG_LEVEL_DEBUG are
+// sent to `stdout`, and other log messages are sent to `stderr`. This is
+// problematic for applications that intend to reserve `stdout` for structured
+// output such as JSON or XML.
+//
+// This function sets global state. It is not thread-aware, and should be called
+// at the very start of a program, before creating any other threads or creating
+// objects that could create worker threads of their own.
+func LogWriterDefaultSetUseStderr(useStderr bool) {
+	var _arg1 C.gboolean
+
+	if useStderr {
+		_arg1 = C.gboolean(1)
+	}
+
+	C.g_log_writer_default_set_use_stderr(_arg1)
+}
+
+// LogWriterDefaultWouldDrop: check whether g_log_writer_default() and
+// g_log_default_handler() would ignore a message with the given domain and
+// level.
+//
+// As with g_log_default_handler(), this function drops debug and informational
+// messages unless their log domain (or `all`) is listed in the space-separated
+// `G_MESSAGES_DEBUG` environment variable.
+//
+// This can be used when implementing log writers with the same filtering
+// behaviour as the default, but a different destination or output format:
+//
+//      if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
+//        {
+//          gchar *result = expensive_computation (my_object);
+//
+//          g_debug ("my_object result: s", result);
+//          g_free (result);
+//        }
+func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
+	var _arg1 C.GLogLevelFlags
+	var _arg2 *C.char
+
+	_arg1 = (C.GLogLevelFlags)(logLevel)
+	_arg2 = (*C.char)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.gboolean
+
+	cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
+
+	var _ok bool
+
+	if _cret {
+		_ok = true
+	}
+
+	return _ok
 }
 
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a

@@ -21,12 +21,19 @@ func init() {
 	})
 }
 
-// StringFilter: gtkStringFilter determines whether to include items by looking
-// at strings and comparing them to a fixed search term. The strings are
-// obtained from the items by evaluating a Expression.
+// StringFilter: `GtkStringFilter` determines whether to include items by
+// comparing strings to a fixed search term.
 //
-// GtkStringFilter has several different modes of comparison - it can match the
-// whole string, just a prefix, or any substring.
+// The strings are obtained from the items by evaluating a `GtkExpression` set
+// with [method@Gtk.StringFilter.set_expression], and they are compared against
+// a search term set with [method@Gtk.StringFilter.set_search].
+//
+// `GtkStringFilter` has several different modes of comparison - it can match
+// the whole string, just a prefix, or any substring. Use
+// [method@Gtk.StringFilter.set_match_mode] choose a mode.
+//
+// It is also possible to make case-insensitive comparisons, with
+// [method@Gtk.StringFilter.set_ignore_case].
 type StringFilter interface {
 	Filter
 
@@ -37,10 +44,12 @@ type StringFilter interface {
 	IgnoreCase() bool
 	// MatchMode returns the match mode that the filter is using.
 	MatchMode() StringFilterMatchMode
-	// Search gets the search string set via gtk_string_filter_set_search().
+	// Search gets the search term.
 	Search() string
 	// SetExpression sets the expression that the string filter uses to obtain
-	// strings from items. The expression must have a value type of TYPE_STRING.
+	// strings from items.
+	//
+	// The expression must have a value type of G_TYPE_STRING.
 	SetExpression(expression Expression)
 	// SetIgnoreCase sets whether the filter ignores case differences.
 	SetIgnoreCase(ignoreCase bool)
@@ -142,7 +151,7 @@ func (s stringFilter) MatchMode() StringFilterMatchMode {
 	return _stringFilterMatchMode
 }
 
-// Search gets the search string set via gtk_string_filter_set_search().
+// Search gets the search term.
 func (s stringFilter) Search() string {
 	var _arg0 *C.GtkStringFilter
 
@@ -160,7 +169,9 @@ func (s stringFilter) Search() string {
 }
 
 // SetExpression sets the expression that the string filter uses to obtain
-// strings from items. The expression must have a value type of TYPE_STRING.
+// strings from items.
+//
+// The expression must have a value type of G_TYPE_STRING.
 func (s stringFilter) SetExpression(expression Expression) {
 	var _arg0 *C.GtkStringFilter
 	var _arg1 *C.GtkExpression

@@ -23,15 +23,16 @@ func init() {
 	})
 }
 
-// PaperSize: gtkPaperSize handles paper sizes. It uses the standard called PWG
-// 5101.1-2002 PWG: Standard for Media Standardized Names
-// (http://www.pwg.org/standards.html) to name the paper sizes (and to get the
-// data for the page sizes). In addition to standard paper sizes, GtkPaperSize
-// allows to construct custom paper sizes with arbitrary dimensions.
+// PaperSize: `GtkPaperSize` handles paper sizes.
 //
-// The PaperSize object stores not only the dimensions (width and height) of a
-// paper size and its name, it also provides default [print
-// margins][print-margins].
+// It uses the standard called PWG 5101.1-2002 PWG: Standard for Media
+// Standardized Names (http://www.pwg.org/standards.html) to name the paper
+// sizes (and to get the data for the page sizes). In addition to standard paper
+// sizes, `GtkPaperSize` allows to construct custom paper sizes with arbitrary
+// dimensions.
+//
+// The `GtkPaperSize` object stores not only the dimensions (width and height)
+// of a paper size and its name, it also provides default print margins.
 type PaperSize struct {
 	native C.GtkPaperSize
 }
@@ -206,7 +207,7 @@ func (p *PaperSize) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Copy copies an existing PaperSize.
+// Copy copies an existing `GtkPaperSize`.
 func (o *PaperSize) Copy() *PaperSize {
 	var _arg0 *C.GtkPaperSize
 
@@ -226,7 +227,7 @@ func (o *PaperSize) Copy() *PaperSize {
 	return _paperSize
 }
 
-// Free: free the given PaperSize object.
+// Free: free the given `GtkPaperSize` object.
 func (s *PaperSize) Free() {
 	var _arg0 *C.GtkPaperSize
 
@@ -235,7 +236,7 @@ func (s *PaperSize) Free() {
 	C.gtk_paper_size_free(_arg0)
 }
 
-// DefaultBottomMargin gets the default bottom margin for the PaperSize.
+// DefaultBottomMargin gets the default bottom margin for the `GtkPaperSize`.
 func (s *PaperSize) DefaultBottomMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize
 	var _arg1 C.GtkUnit
@@ -254,7 +255,7 @@ func (s *PaperSize) DefaultBottomMargin(unit Unit) float64 {
 	return _gdouble
 }
 
-// DefaultLeftMargin gets the default left margin for the PaperSize.
+// DefaultLeftMargin gets the default left margin for the `GtkPaperSize`.
 func (s *PaperSize) DefaultLeftMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize
 	var _arg1 C.GtkUnit
@@ -273,7 +274,7 @@ func (s *PaperSize) DefaultLeftMargin(unit Unit) float64 {
 	return _gdouble
 }
 
-// DefaultRightMargin gets the default right margin for the PaperSize.
+// DefaultRightMargin gets the default right margin for the `GtkPaperSize`.
 func (s *PaperSize) DefaultRightMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize
 	var _arg1 C.GtkUnit
@@ -292,7 +293,7 @@ func (s *PaperSize) DefaultRightMargin(unit Unit) float64 {
 	return _gdouble
 }
 
-// DefaultTopMargin gets the default top margin for the PaperSize.
+// DefaultTopMargin gets the default top margin for the `GtkPaperSize`.
 func (s *PaperSize) DefaultTopMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize
 	var _arg1 C.GtkUnit
@@ -311,7 +312,7 @@ func (s *PaperSize) DefaultTopMargin(unit Unit) float64 {
 	return _gdouble
 }
 
-// DisplayName gets the human-readable name of the PaperSize.
+// DisplayName gets the human-readable name of the `GtkPaperSize`.
 func (s *PaperSize) DisplayName() string {
 	var _arg0 *C.GtkPaperSize
 
@@ -328,7 +329,7 @@ func (s *PaperSize) DisplayName() string {
 	return _utf8
 }
 
-// Height gets the paper height of the PaperSize, in units of @unit.
+// Height gets the paper height of the `GtkPaperSize`, in units of @unit.
 func (s *PaperSize) Height(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize
 	var _arg1 C.GtkUnit
@@ -347,7 +348,7 @@ func (s *PaperSize) Height(unit Unit) float64 {
 	return _gdouble
 }
 
-// Name gets the name of the PaperSize.
+// Name gets the name of the `GtkPaperSize`.
 func (s *PaperSize) Name() string {
 	var _arg0 *C.GtkPaperSize
 
@@ -364,7 +365,7 @@ func (s *PaperSize) Name() string {
 	return _utf8
 }
 
-// PpdName gets the PPD name of the PaperSize, which may be nil.
+// PpdName gets the PPD name of the `GtkPaperSize`, which may be nil.
 func (s *PaperSize) PpdName() string {
 	var _arg0 *C.GtkPaperSize
 
@@ -381,7 +382,7 @@ func (s *PaperSize) PpdName() string {
 	return _utf8
 }
 
-// Width gets the paper width of the PaperSize, in units of @unit.
+// Width gets the paper width of the `GtkPaperSize`, in units of @unit.
 func (s *PaperSize) Width(unit Unit) float64 {
 	var _arg0 *C.GtkPaperSize
 	var _arg1 C.GtkUnit
@@ -419,7 +420,7 @@ func (s *PaperSize) IsCustom() bool {
 	return _ok
 }
 
-// IsEqual compares two PaperSize objects.
+// IsEqual compares two `GtkPaperSize` objects.
 func (s *PaperSize) IsEqual(size2 *PaperSize) bool {
 	var _arg0 *C.GtkPaperSize
 	var _arg1 *C.GtkPaperSize
@@ -474,7 +475,7 @@ func (s *PaperSize) SetSize(width float64, height float64, unit Unit) {
 	C.gtk_paper_size_set_size(_arg0, _arg1, _arg2, _arg3)
 }
 
-// ToGVariant: serialize a paper size to an a{sv} variant.
+// ToGVariant: serialize a paper size to an `a{sv}` variant.
 func (p *PaperSize) ToGVariant() *glib.Variant {
 	var _arg0 *C.GtkPaperSize
 

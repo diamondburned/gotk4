@@ -20,10 +20,14 @@ func init() {
 	})
 }
 
-// EventsGetAngle: if both events contain X/Y information, this function will
-// return true and return in @angle the relative angle from @event1 to @event2.
-// The rotation direction for positive angles is from the positive X axis
-// towards the positive Y axis.
+// EventsGetAngle returns the relative angle from @event1 to @event2.
+//
+// The relative angle is the angle between the X axis and the line through both
+// events' positions. The rotation direction for positive angles is from the
+// positive X axis towards the positive Y axis.
+//
+// This assumes that both events have X/Y information. If not, this function
+// returns false.
 func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent
 	var _arg2 *C.GdkEvent
@@ -47,8 +51,10 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	return _angle, _ok
 }
 
-// EventsGetCenter: if both events contain X/Y information, the center of both
-// coordinates will be returned in @x and @y.
+// EventsGetCenter returns the point halfway between the events' positions.
+//
+// This assumes that both events have X/Y information. If not, this function
+// returns false.
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
 	var _arg1 *C.GdkEvent
 	var _arg2 *C.GdkEvent
@@ -75,9 +81,10 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 	return _x, _y, _ok
 }
 
-// EventsGetDistance: if both events have X/Y information, the distance between
-// both coordinates (as in a straight line going from @event1 to @event2) will
-// be returned.
+// EventsGetDistance returns the distance between the event locations.
+//
+// This assumes that both events have X/Y information. If not, this function
+// returns false.
 func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	var _arg1 *C.GdkEvent
 	var _arg2 *C.GdkEvent
@@ -101,8 +108,8 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	return _distance, _ok
 }
 
-// EventSequence: gdkEventSequence is an opaque type representing a sequence of
-// related touch events.
+// EventSequence: `GdkEventSequence` is an opaque type representing a sequence
+// of related touch events.
 type EventSequence struct {
 	native C.GdkEventSequence
 }

@@ -21,8 +21,11 @@ func init() {
 	})
 }
 
-// ShortcutLabel is a widget that represents a single keyboard shortcut or
-// gesture in the user interface.
+// ShortcutLabel: `GtkShortcutLabel` displays a single keyboard shortcut or
+// gesture.
+//
+// The main use case for `GtkShortcutLabel` is inside a
+// [class@Gtk.ShortcutsWindow].
 type ShortcutLabel interface {
 	Widget
 	Accessible
@@ -81,7 +84,7 @@ func NewShortcutLabel(accelerator string) ShortcutLabel {
 
 	var _shortcutLabel ShortcutLabel
 
-	_shortcutLabel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutLabel)
+	_shortcutLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutLabel)
 
 	return _shortcutLabel
 }

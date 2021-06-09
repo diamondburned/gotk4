@@ -18,7 +18,9 @@ import (
 import "C"
 
 // IconViewForeachFunc: a function used by gtk_icon_view_selected_foreach() to
-// map all selected rows. It will be called on every selected row in the view.
+// map all selected rows.
+//
+// It will be called on every selected row in the view.
 type IconViewForeachFunc func()
 
 //export gotk4_IconViewForeachFunc

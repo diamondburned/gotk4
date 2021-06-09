@@ -21,21 +21,26 @@ func init() {
 	})
 }
 
-// GestureDrag is a Gesture implementation that recognizes drag operations. The
-// drag operation itself can be tracked throughout the GestureDrag::drag-begin,
-// GestureDrag::drag-update and GestureDrag::drag-end signals, or the relevant
-// coordinates be extracted through gtk_gesture_drag_get_offset() and
-// gtk_gesture_drag_get_start_point().
+// GestureDrag: `GtkGestureDrag` is a `GtkGesture` implementation for drags.
+//
+// The drag operation itself can be tracked throughout the
+// [signal@Gtk.GestureDrag::drag-begin], [signal@Gtk.GestureDrag::drag-update]
+// and [signal@Gtk.GestureDrag::drag-end] signals, and the relevant coordinates
+// can be extracted through [method@Gtk.GestureDrag.get_offset] and
+// [method@Gtk.GestureDrag.get_start_point].
 type GestureDrag interface {
 	GestureSingle
 
-	// Offset: if the @gesture is active, this function returns true and fills
-	// in @x and @y with the coordinates of the current point, as an offset to
-	// the starting drag point.
+	// Offset gets the offset from the start point.
+	//
+	// If the @gesture is active, this function returns true and fills in @x and
+	// @y with the coordinates of the current point, as an offset to the
+	// starting drag point.
 	Offset() (x float64, y float64, ok bool)
-	// StartPoint: if the @gesture is active, this function returns true and
-	// fills in @x and @y with the drag start coordinates, in window-relative
-	// coordinates.
+	// StartPoint gets the point where the drag started.
+	//
+	// If the @gesture is active, this function returns true and fills in @x and
+	// @y with the drag start coordinates, in surface-relative coordinates.
 	StartPoint() (x float64, y float64, ok bool)
 }
 
@@ -73,9 +78,11 @@ func NewGestureDrag() GestureDrag {
 	return _gestureDrag
 }
 
-// Offset: if the @gesture is active, this function returns true and fills
-// in @x and @y with the coordinates of the current point, as an offset to
-// the starting drag point.
+// Offset gets the offset from the start point.
+//
+// If the @gesture is active, this function returns true and fills in @x and
+// @y with the coordinates of the current point, as an offset to the
+// starting drag point.
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag
 
@@ -100,9 +107,10 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	return _x, _y, _ok
 }
 
-// StartPoint: if the @gesture is active, this function returns true and
-// fills in @x and @y with the drag start coordinates, in window-relative
-// coordinates.
+// StartPoint gets the point where the drag started.
+//
+// If the @gesture is active, this function returns true and fills in @x and
+// @y with the drag start coordinates, in surface-relative coordinates.
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg0 *C.GtkGestureDrag
 

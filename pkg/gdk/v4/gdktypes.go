@@ -21,32 +21,38 @@ func init() {
 	})
 }
 
-// ContentFormats: this section describes the ContentFormats structure that is
-// used to advertise and negotiate the format of content passed between
-// different widgets, windows or applications using for example the clipboard or
-// drag'n'drop.
+// ContentFormats: the `GdkContentFormats` structure is used to advertise and
+// negotiate the format of content.
 //
-// GDK supports content in 2 forms: #GType and mime type. Using #GTypes is meant
-// only for in-process content transfers. Mime types are meant to be used for
-// data passing both in-process and out-of-process. The details of how data is
-// passed is described in the documentation of the actual implementations.
+// You will encounter `GdkContentFormats` when interacting with objects
+// controlling operations that pass data between different widgets, window or
+// application, like [class@Gdk.Drag], [class@Gdk.Drop], [class@Gdk.Clipboard]
+// or [class@Gdk.ContentProvider].
 //
-// A ContentFormats describes a set of possible formats content can be exchanged
-// in. It is assumed that this set is ordered. #GTypes are more important than
-// mime types. Order between different #GTypes or mime types is the order they
-// were added in, most important first. Functions that care about order, such as
-// gdk_content_formats_union() will describe in their documentation how they
-// interpret that order, though in general the order of the first argument is
-// considered the primary order of the result, followed by the order of further
-// arguments.
+// GDK supports content in 2 forms: `GType` and mime type. Using `GTypes` is
+// meant only for in-process content transfers. Mime types are meant to be used
+// for data passing both in-process and out-of-process. The details of how data
+// is passed is described in the documentation of the actual implementations. To
+// transform between the two forms, [class@Gdk.ContentSerializer] and
+// [class@Gdk.ContentDeserializer] are used.
 //
-// For debugging purposes, the function gdk_content_formats_to_string() exists.
-// It will print a comma-seperated formats of formats from most important to
-// least important.
+// A `GdkContentFormats` describes a set of possible formats content can be
+// exchanged in. It is assumed that this set is ordered. `GTypes` are more
+// important than mime types. Order between different `GTypes` or mime types is
+// the order they were added in, most important first. Functions that care about
+// order, such as [method@Gdk.ContentFormats.union], will describe in their
+// documentation how they interpret that order, though in general the order of
+// the first argument is considered the primary order of the result, followed by
+// the order of further arguments.
 //
-// ContentFormats is an immutable struct. After creation, you cannot change the
-// types it represents. Instead, new ContentFormats have to be created. The
-// ContentFormatsBuilder structure is meant to help in this endeavor.
+// For debugging purposes, the function [method@Gdk.ContentFormats.to_string]
+// exists. It will print a comma-separated list of formats from most important
+// to least important.
+//
+// `GdkContentFormats` is an immutable struct. After creation, you cannot change
+// the types it represents. Instead, new `GdkContentFormats` have to be created.
+// The [struct@Gdk.ContentFormatsBuilder]` structure is meant to help in this
+// endeavor.
 type ContentFormats struct {
 	native C.GdkContentFormats
 }
@@ -107,7 +113,7 @@ func (c *ContentFormats) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
 }
 
-// ContainGType checks if a given #GType is part of the given @formats.
+// ContainGType checks if a given `GType` is part of the given @formats.
 func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
 	var _arg0 *C.GdkContentFormats
 	var _arg1 C.GType
@@ -150,9 +156,10 @@ func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 	return _ok
 }
 
-// GTypes gets the #GTypes included in @formats. Note that @formats may not
-// contain any #GTypes, in particular when they are empty. In that case nil will
-// be returned.
+// GTypes gets the `GTypes` included in @formats.
+//
+// Note that @formats may not contain any #GTypes, in particular when they are
+// empty. In that case nil will be returned.
 func (f *ContentFormats) GTypes() []externglib.Type {
 	var _arg0 *C.GdkContentFormats
 
@@ -178,42 +185,33 @@ func (f *ContentFormats) GTypes() []externglib.Type {
 	return _gTypes
 }
 
-// MIMETypes gets the mime types included in @formats. Note that @formats may
-// not contain any mime types, in particular when they are empty. In that case
-// nil will be returned.
-func (f *ContentFormats) MIMETypes() (uint, []string) {
+// MIMETypes gets the mime types included in @formats.
+//
+// Note that @formats may not contain any mime types, in particular when they
+// are empty. In that case nil will be returned.
+func (f *ContentFormats) MIMETypes() []string {
 	var _arg0 *C.GdkContentFormats
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
-	var _arg1 C.gsize
 	var _cret **C.char
+	var _arg1 *C.gsize
 
-	cret = C.gdk_content_formats_get_mime_types(_arg0, &_arg1)
+	cret = C.gdk_content_formats_get_mime_types(_arg0)
 
-	var _nMimeTypes uint
 	var _utf8s []string
 
-	_nMimeTypes = (uint)(_arg1)
 	{
-		var length int
-		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
-			length++
-			if length < 0 {
-				panic(`length overflow`)
-			}
-		}
-
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
 
-		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		_utf8s = make([]string, _arg1)
+		for i := 0; i < uintptr(_arg1); i++ {
 			_utf8s = C.GoString(_cret)
 		}
 	}
 
-	return _nMimeTypes, _utf8s
+	return _utf8s
 }
 
 // Match checks if @first and @second have any matching formats.
@@ -237,8 +235,10 @@ func (f *ContentFormats) Match(second *ContentFormats) bool {
 	return _ok
 }
 
-// MatchGType finds the first #GType from @first that is also contained in
-// @second. If no matching #GType is found, G_TYPE_INVALID is returned.
+// MatchGType finds the first `GType` from @first that is also contained in
+// @second.
+//
+// If no matching `GType` is found, G_TYPE_INVALID is returned.
 func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 	var _arg0 *C.GdkContentFormats
 	var _arg1 *C.GdkContentFormats
@@ -258,7 +258,9 @@ func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 }
 
 // MatchMIMEType finds the first mime type from @first that is also contained in
-// @second. If no matching mime type is found, nil is returned.
+// @second.
+//
+// If no matching mime type is found, nil is returned.
 func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	var _arg0 *C.GdkContentFormats
 	var _arg1 *C.GdkContentFormats
@@ -277,8 +279,9 @@ func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 	return _utf8
 }
 
-// Print prints the given @formats into a string for human consumption. This is
-// meant for debugging and logging.
+// Print prints the given @formats into a string for human consumption.
+//
+// This is meant for debugging and logging.
 //
 // The form of the representation may change at any time and is not guaranteed
 // to stay identical.
@@ -292,7 +295,7 @@ func (f *ContentFormats) Print(string *glib.String) {
 	C.gdk_content_formats_print(_arg0, _arg1)
 }
 
-// Ref increases the reference count of a ContentFormats by one.
+// Ref increases the reference count of a `GdkContentFormats` by one.
 func (f *ContentFormats) Ref() *ContentFormats {
 	var _arg0 *C.GdkContentFormats
 
@@ -312,8 +315,10 @@ func (f *ContentFormats) Ref() *ContentFormats {
 	return _contentFormats
 }
 
-// String prints the given @formats into a human-readable string. This is a
-// small wrapper around gdk_content_formats_print() to help when debugging.
+// String prints the given @formats into a human-readable string.
+//
+// This is a small wrapper around [method@Gdk.ContentFormats.print] to help when
+// debugging.
 func (f *ContentFormats) String() string {
 	var _arg0 *C.GdkContentFormats
 
@@ -438,8 +443,9 @@ func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
 	return _contentFormats
 }
 
-// Unref decreases the reference count of a ContentFormats by one. If the
-// resulting reference count is zero, frees the formats.
+// Unref decreases the reference count of a `GdkContentFormats` by one.
+//
+// If the resulting reference count is zero, frees the formats.
 func (f *ContentFormats) Unref() {
 	var _arg0 *C.GdkContentFormats
 
@@ -448,31 +454,7 @@ func (f *ContentFormats) Unref() {
 	C.gdk_content_formats_unref(_arg0)
 }
 
-type DrawingContext struct {
-	native C.GdkDrawingContext
-}
-
-// WrapDrawingContext wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapDrawingContext(ptr unsafe.Pointer) *DrawingContext {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*DrawingContext)(ptr)
-}
-
-func marshalDrawingContext(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapDrawingContext(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (d *DrawingContext) Native() unsafe.Pointer {
-	return unsafe.Pointer(&d.native)
-}
-
-// KeymapKey: a KeymapKey is a hardware key that can be mapped to a keyval.
+// KeymapKey: a `GdkKeymapKey` is a hardware key that can be mapped to a keyval.
 type KeymapKey struct {
 	native C.GdkKeymapKey
 }
@@ -518,8 +500,21 @@ func (k *KeymapKey) Level() int {
 	return v
 }
 
-// Rectangle defines the position and size of a rectangle. It is identical to
-// #cairo_rectangle_int_t.
+// Rectangle: a `GdkRectangle` data type for representing rectangles.
+//
+// `GdkRectangle` is identical to `cairo_rectangle_t`. Together with Cairo’s
+// `cairo_region_t` data type, these are the central types for representing sets
+// of pixels.
+//
+// The intersection of two rectangles can be computed with
+// [method@Gdk.Rectangle.intersect]; to find the union of two rectangles use
+// [method@Gdk.Rectangle.union].
+//
+// The `cairo_region_t` type provided by Cairo is usually used for managing
+// non-rectangular clipping of graphical operations.
+//
+// The Graphene library has a number of other data types for regions and volumes
+// in 2D and 3D.
 type Rectangle struct {
 	native C.GdkRectangle
 }
@@ -616,11 +611,13 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 	return _ok
 }
 
-// Intersect calculates the intersection of two rectangles. It is allowed for
-// @dest to be the same as either @src1 or @src2. If the rectangles do not
-// intersect, @dest’s width and height is set to 0 and its x and y values are
-// undefined. If you are only interested in whether the rectangles intersect,
-// but not in the intersecting area itself, pass nil for @dest.
+// Intersect calculates the intersection of two rectangles.
+//
+// It is allowed for @dest to be the same as either @src1 or @src2. If the
+// rectangles do not intersect, @dest’s width and height is set to 0 and its x
+// and y values are undefined. If you are only interested in whether the
+// rectangles intersect, but not in the intersecting area itself, pass nil for
+// @dest.
 func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _arg0 *C.GdkRectangle
 	var _arg1 *C.GdkRectangle
@@ -642,9 +639,11 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	return _dest, _ok
 }
 
-// Union calculates the union of two rectangles. The union of rectangles @src1
-// and @src2 is the smallest rectangle which includes both @src1 and @src2
-// within it. It is allowed for @dest to be the same as either @src1 or @src2.
+// Union calculates the union of two rectangles.
+//
+// The union of rectangles @src1 and @src2 is the smallest rectangle which
+// includes both @src1 and @src2 within it. It is allowed for @dest to be the
+// same as either @src1 or @src2.
 //
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).

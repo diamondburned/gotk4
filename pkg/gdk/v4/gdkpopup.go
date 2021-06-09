@@ -21,11 +21,13 @@ func init() {
 	})
 }
 
-// Popup: a Popup is a surface that is attached to another surface, called its
-// Popup:parent, and is positioned relative to it.
+// Popup: a `GdkPopup` is a surface that is attached to another surface.
 //
-// Popups are typically used to implement menus and similar popups. They can be
-// modal, which is indicated by the Popup:autohide property.
+// The `GdkPopup` is positioned relative to its parent surface.
+//
+// `GdkPopup`s are typically used to implement menus and similar popups. They
+// can be modal, which is indicated by the [property@GdkPopup:autohide]
+// property.
 type Popup interface {
 	Surface
 
@@ -39,28 +41,29 @@ type Popup interface {
 	PositionY() int
 	// RectAnchor gets the current popup rectangle anchor.
 	//
-	// The value returned may change after calling gdk_popup_present(), or after
-	// the Surface::layout signal is emitted.
+	// The value returned may change after calling [method@Gdk.Popup.present],
+	// or after the [signal@Gdk.Surface::layout] signal is emitted.
 	RectAnchor() Gravity
 	// SurfaceAnchor gets the current popup surface anchor.
 	//
-	// The value returned may change after calling gdk_popup_present(), or after
-	// the Surface::layout signal is emitted.
+	// The value returned may change after calling [method@Gdk.Popup.present],
+	// or after the [signal@Gdk.Surface::layout] signal is emitted.
 	SurfaceAnchor() Gravity
-	// Present: present @popup after having processed the PopupLayout rules. If
-	// the popup was previously now showing, it will be showed, otherwise it
+	// Present: present @popup after having processed the PopupLayout rules.
+	//
+	// If the popup was previously now showing, it will be showed, otherwise it
 	// will change position according to @layout.
 	//
 	// After calling this function, the result should be handled in response to
-	// the Surface::layout signal being emitted. The resulting popup position
-	// can be queried using gdk_popup_get_position_x(),
-	// gdk_popup_get_position_y(), and the resulting size will be sent as
-	// parameters in the layout signal. Use gdk_popup_get_rect_anchor() and
-	// gdk_popup_get_surface_anchor() to get the resulting anchors.
+	// the [signal@GdkSurface::layout] signal being emitted. The resulting popup
+	// position can be queried using [method@Gdk.Popup.get_position_x],
+	// [method@Gdk.Popup.get_position_y], and the resulting size will be sent as
+	// parameters in the layout signal. Use [method@Gdk.Popup.get_rect_anchor]
+	// and [method@Gdk.Popup.get_surface_anchor] to get the resulting anchors.
 	//
 	// Presenting may fail, for example if the @popup is set to autohide and is
 	// immediately hidden upon being presented. If presenting failed, the
-	// Surface::layout signal will not me emitted.
+	// [signal@Gdk.Surface::layout] signal will not me emitted.
 	Present(width int, height int, layout *PopupLayout) bool
 }
 
@@ -157,8 +160,8 @@ func (p popup) PositionY() int {
 
 // RectAnchor gets the current popup rectangle anchor.
 //
-// The value returned may change after calling gdk_popup_present(), or after
-// the Surface::layout signal is emitted.
+// The value returned may change after calling [method@Gdk.Popup.present],
+// or after the [signal@Gdk.Surface::layout] signal is emitted.
 func (p popup) RectAnchor() Gravity {
 	var _arg0 *C.GdkPopup
 
@@ -177,8 +180,8 @@ func (p popup) RectAnchor() Gravity {
 
 // SurfaceAnchor gets the current popup surface anchor.
 //
-// The value returned may change after calling gdk_popup_present(), or after
-// the Surface::layout signal is emitted.
+// The value returned may change after calling [method@Gdk.Popup.present],
+// or after the [signal@Gdk.Surface::layout] signal is emitted.
 func (p popup) SurfaceAnchor() Gravity {
 	var _arg0 *C.GdkPopup
 
@@ -195,20 +198,21 @@ func (p popup) SurfaceAnchor() Gravity {
 	return _gravity
 }
 
-// Present: present @popup after having processed the PopupLayout rules. If
-// the popup was previously now showing, it will be showed, otherwise it
+// Present: present @popup after having processed the PopupLayout rules.
+//
+// If the popup was previously now showing, it will be showed, otherwise it
 // will change position according to @layout.
 //
 // After calling this function, the result should be handled in response to
-// the Surface::layout signal being emitted. The resulting popup position
-// can be queried using gdk_popup_get_position_x(),
-// gdk_popup_get_position_y(), and the resulting size will be sent as
-// parameters in the layout signal. Use gdk_popup_get_rect_anchor() and
-// gdk_popup_get_surface_anchor() to get the resulting anchors.
+// the [signal@GdkSurface::layout] signal being emitted. The resulting popup
+// position can be queried using [method@Gdk.Popup.get_position_x],
+// [method@Gdk.Popup.get_position_y], and the resulting size will be sent as
+// parameters in the layout signal. Use [method@Gdk.Popup.get_rect_anchor]
+// and [method@Gdk.Popup.get_surface_anchor] to get the resulting anchors.
 //
 // Presenting may fail, for example if the @popup is set to autohide and is
 // immediately hidden upon being presented. If presenting failed, the
-// Surface::layout signal will not me emitted.
+// [signal@Gdk.Surface::layout] signal will not me emitted.
 func (p popup) Present(width int, height int, layout *PopupLayout) bool {
 	var _arg0 *C.GdkPopup
 	var _arg1 C.int

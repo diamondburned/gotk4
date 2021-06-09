@@ -21,17 +21,20 @@ func init() {
 	})
 }
 
-// BoxLayout: a GtkBoxLayout is a layout manager that arranges the children of
-// any widget using it into a single row or column, depending on the value of
-// its Orientable:orientation property. Within the other dimension all children
-// all allocated the same size. The GtkBoxLayout will respect the Widget:halign
-// and Widget:valign properties of each child widget.
+// BoxLayout: `GtkBoxLayout` is a layout manager that arranges children in a
+// single row or column.
+//
+// Whether it is a row or column depends on the value of its
+// [property@Gtk.Orientable:orientation] property. Within the other dimension
+// all children all allocated the same size. The `GtkBoxLayout` will respect the
+// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties of
+// each child widget.
 //
 // If you want all children to be assigned the same size, you can use the
-// BoxLayout:homogeneous property.
+// [property@Gtk.BoxLayout:homogeneous] property.
 //
 // If you want to specify the amount of space placed between each child, you can
-// use the BoxLayout:spacing property.
+// use the [property@Gtk.BoxLayout:spacing] property.
 type BoxLayout interface {
 	LayoutManager
 	Orientable

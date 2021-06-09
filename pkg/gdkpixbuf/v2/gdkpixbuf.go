@@ -20,14 +20,16 @@ func init() {
 		{T: externglib.Type(C.gdk_pixbuf_alpha_mode_get_type()), F: marshalPixbufAlphaMode},
 		{T: externglib.Type(C.gdk_pixbuf_error_get_type()), F: marshalPixbufError},
 		{T: externglib.Type(C.gdk_pixbuf_rotation_get_type()), F: marshalPixbufRotation},
-		{T: externglib.Type(C.gdk_pixbuf_animation_get_type()), F: marshalPixbufAnimation},
-		{T: externglib.Type(C.gdk_pixbuf_animation_iter_get_type()), F: marshalPixbufAnimationIter},
+		{T: externglib.Type(C.gdk_pixbuf_get_type()), F: marshalPixbuf},
+		{T: externglib.Type(C.gdk_pixbuf_non_anim_get_type()), F: marshalPixbufNonAnim},
 		{T: externglib.Type(C.gdk_pixbuf_simple_anim_iter_get_type()), F: marshalPixbufSimpleAnimIter},
 	})
 }
 
 // Colorspace: this enumeration defines the color spaces that are supported by
-// the gdk-pixbuf library. Currently only RGB is supported.
+// the gdk-pixbuf library.
+//
+// Currently only RGB is supported.
 type Colorspace int
 
 const (
@@ -39,11 +41,11 @@ func marshalColorspace(p uintptr) (interface{}, error) {
 	return Colorspace(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// InterpType: this enumeration describes the different interpolation modes that
-// can be used with the scaling functions. @GDK_INTERP_NEAREST is the fastest
-// scaling method, but has horrible quality when scaling down.
-// @GDK_INTERP_BILINEAR is the best choice if you aren't sure what to choose, it
-// has a good speed/quality balance.
+// InterpType: interpolation modes for scaling functions.
+//
+// The `GDK_INTERP_NEAREST` mode is the fastest scaling method, but has horrible
+// quality when scaling down; `GDK_INTERP_BILINEAR` is the best choice if you
+// aren't sure what to choose, it has a good speed/quality balance.
 //
 // **Note**: Cubic filtering is missing from the list; hyperbolic interpolation
 // is just as fast and results in higher quality.
@@ -80,13 +82,18 @@ func marshalInterpType(p uintptr) (interface{}, error) {
 	return InterpType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PixbufAlphaMode: these values can be passed to
-// gdk_pixbuf_xlib_render_to_drawable_alpha() to control how the alpha channel
-// of an image should be handled. This function can create a bilevel clipping
-// mask (black and white) and use it while painting the image. In the future,
-// when the X Window System gets an alpha channel extension, it will be possible
-// to do full alpha compositing onto arbitrary drawables. For now both cases
-// fall back to a bilevel clipping mask.
+// PixbufAlphaMode: control the alpha channel for drawables.
+//
+// These values can be passed to gdk_pixbuf_xlib_render_to_drawable_alpha() in
+// gdk-pixbuf-xlib to control how the alpha channel of an image should be
+// handled.
+//
+// This function can create a bilevel clipping mask (black and white) and use it
+// while painting the image.
+//
+// In the future, when the X Window System gets an alpha channel extension, it
+// will be possible to do full alpha compositing onto arbitrary drawables. For
+// now both cases fall back to a bilevel clipping mask.
 type PixbufAlphaMode int
 
 const (
@@ -104,8 +111,10 @@ func marshalPixbufAlphaMode(p uintptr) (interface{}, error) {
 	return PixbufAlphaMode(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PixbufError: an error code in the K_PIXBUF_ERROR domain. Many gdk-pixbuf
-// operations can cause errors in this domain, or in the FILE_ERROR domain.
+// PixbufError: an error code in the `GDK_PIXBUF_ERROR` domain.
+//
+// Many gdk-pixbuf operations can cause errors in this domain, or in the
+// `G_FILE_ERROR` domain.
 type PixbufError int
 
 const (
@@ -131,8 +140,9 @@ func marshalPixbufError(p uintptr) (interface{}, error) {
 }
 
 // PixbufRotation: the possible rotations which can be passed to
-// gdk_pixbuf_rotate_simple(). To make them easier to use, their numerical
-// values are the actual degrees.
+// gdk_pixbuf_rotate_simple().
+//
+// To make them easier to use, their numerical values are the actual degrees.
 type PixbufRotation int
 
 const (
@@ -150,34 +160,163 @@ func marshalPixbufRotation(p uintptr) (interface{}, error) {
 	return PixbufRotation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Pixbuf: this is the main structure in the gdk-pixbuf library. It is used to
-// represent images. It contains information about the image's pixel data, its
-// color space, bits per sample, width and height, and the rowstride (the number
-// of bytes between the start of one row and the start of the next).
+// Pixbuf: a pixel buffer.
+//
+// `GdkPixbuf` contains information about an image's pixel data, its color
+// space, bits per sample, width and height, and the rowstride (the number of
+// bytes between the start of one row and the start of the next).
+//
+// Creating new `GdkPixbuf`
+//
+// The most basic way to create a pixbuf is to wrap an existing pixel buffer
+// with a [class@GdkPixbuf.Pixbuf] instance. You can use the
+// [`ctor@GdkPixbuf.Pixbuf.new_from_data`] function to do this.
+//
+// Every time you create a new `GdkPixbuf` instance for some data, you will need
+// to specify the destroy notification function that will be called when the
+// data buffer needs to be freed; this will happen when a `GdkPixbuf` is
+// finalized by the reference counting functions. If you have a chunk of static
+// data compiled into your application, you can pass in `NULL` as the destroy
+// notification function so that the data will not be freed.
+//
+// The [`ctor@GdkPixbuf.Pixbuf.new`] constructor function can be used as a
+// convenience to create a pixbuf with an empty buffer; this is equivalent to
+// allocating a data buffer using `malloc()` and then wrapping it with
+// `gdk_pixbuf_new_from_data()`. The `gdk_pixbuf_new()` function will compute an
+// optimal rowstride so that rendering can be performed with an efficient
+// algorithm.
+//
+// As a special case, you can use the
+// [`ctor@GdkPixbuf.Pixbuf.new_from_xpm_data`] function to create a pixbuf from
+// inline XPM image data.
+//
+// You can also copy an existing pixbuf with the [method@Pixbuf.copy] function.
+// This is not the same as just acquiring a reference to the old pixbuf
+// instance: the copy function will actually duplicate the pixel data in memory
+// and create a new [class@Pixbuf] instance for it.
+//
+//
+// Reference counting
+//
+// `GdkPixbuf` structures are reference counted. This means that an application
+// can share a single pixbuf among many parts of the code. When a piece of the
+// program needs to use a pixbuf, it should acquire a reference to it by calling
+// `g_object_ref()`; when it no longer needs the pixbuf, it should release the
+// reference it acquired by calling `g_object_unref()`. The resources associated
+// with a `GdkPixbuf` will be freed when its reference count drops to zero.
+// Newly-created `GdkPixbuf` instances start with a reference count of one.
+//
+//
+// Image Data
+//
+// Image data in a pixbuf is stored in memory in an uncompressed, packed format.
+// Rows in the image are stored top to bottom, and in each row pixels are stored
+// from left to right.
+//
+// There may be padding at the end of a row.
+//
+// The "rowstride" value of a pixbuf, as returned by
+// [`method@GdkPixbuf.Pixbuf.get_rowstride`], indicates the number of bytes
+// between rows.
+//
+// **NOTE**: If you are copying raw pixbuf data with `memcpy()` note that the
+// last row in the pixbuf may not be as wide as the full rowstride, but rather
+// just as wide as the pixel data needs to be; that is: it is unsafe to do
+// `memcpy (dest, pixels, rowstride * height)` to copy a whole pixbuf. Use
+// [method@GdkPixbuf.Pixbuf.copy] instead, or compute the width in bytes of the
+// last row as:
+//
+// “`c last_row = width * ((n_channels * bits_per_sample + 7) / 8); “`
+//
+// The same rule applies when iterating over each row of a `GdkPixbuf` pixels
+// array.
+//
+// The following code illustrates a simple `put_pixel()` function for RGB
+// pixbufs with 8 bits per channel with an alpha channel.
+//
+// “`c static void put_pixel (GdkPixbuf *pixbuf, int x, int y, guchar red,
+// guchar green, guchar blue, guchar alpha) { int n_channels =
+// gdk_pixbuf_get_n_channels (pixbuf);
+//
+//    // Ensure that the pixbuf is valid
+//    g_assert (gdk_pixbuf_get_colorspace (pixbuf) == GDK_COLORSPACE_RGB);
+//    g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
+//    g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
+//    g_assert (n_channels == 4);
+//
+//    int width = gdk_pixbuf_get_width (pixbuf);
+//    int height = gdk_pixbuf_get_height (pixbuf);
+//
+//    // Ensure that the coordinates are in a valid range
+//    g_assert (x >= 0 && x < width);
+//    g_assert (y >= 0 && y < height);
+//
+//    int rowstride = gdk_pixbuf_get_rowstride (pixbuf);
+//
+//    // The pixel buffer in the GdkPixbuf instance
+//    guchar *pixels = gdk_pixbuf_get_pixels (pixbuf);
+//
+//    // The pixel we wish to modify
+//    guchar *p = pixels + y * rowstride + x * n_channels;
+//    p[0] = red;
+//    p[1] = green;
+//    p[2] = blue;
+//    p[3] = alpha;
+//
+// } “`
+//
+//
+// Loading images
+//
+// The `GdkPixBuf` class provides a simple mechanism for loading an image from a
+// file in synchronous and asynchronous fashion.
+//
+// For GUI applications, it is recommended to use the asynchronous stream API to
+// avoid blocking the control flow of the application.
+//
+// Additionally, `GdkPixbuf` provides the [class@GdkPixbuf.PixbufLoader`] API
+// for progressive image loading.
+//
+//
+// Saving images
+//
+// The `GdkPixbuf` class provides methods for saving image data in a number of
+// file formats. The formatted data can be written to a file or to a memory
+// buffer. `GdkPixbuf` can also call a user-defined callback on the data, which
+// allows to e.g. write the image to a socket or store it in a database.
 type Pixbuf interface {
 	gextras.Objector
 	gio.Icon
 
-	// AddAlpha takes an existing pixbuf and adds an alpha channel to it. If the
-	// existing pixbuf already had an alpha channel, the channel values are
-	// copied from the original; otherwise, the alpha channel is initialized to
-	// 255 (full opacity).
+	// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
 	//
-	// If @substitute_color is true, then the color specified by (@r, @g, @b)
-	// will be assigned zero opacity. That is, if you pass (255, 255, 255) for
-	// the substitute color, all white pixels will become fully transparent.
+	// If the existing pixbuf already had an alpha channel, the channel values
+	// are copied from the original; otherwise, the alpha channel is initialized
+	// to 255 (full opacity).
+	//
+	// If `substitute_color` is `TRUE`, then the color specified by the (`r`,
+	// `g`, `b`) arguments will be assigned zero opacity. That is, if you pass
+	// `(255, 255, 255)` for the substitute color, all white pixels will become
+	// fully transparent.
+	//
+	// If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will
+	// be ignored.
 	AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf
 	// ApplyEmbeddedOrientation takes an existing pixbuf and checks for the
-	// presence of an associated "orientation" option, which may be provided by
-	// the jpeg loader (which reads the exif orientation tag) or the tiff loader
-	// (which reads the tiff orientation tag, and compensates it for the partial
-	// transforms performed by libtiff). If an orientation option/tag is
-	// present, the appropriate transform will be performed so that the pixbuf
-	// is oriented correctly.
+	// presence of an associated "orientation" option.
+	//
+	// The orientation option may be provided by the JPEG loader (which reads
+	// the exif orientation tag) or the TIFF loader (which reads the TIFF
+	// orientation tag, and compensates it for the partial transforms performed
+	// by libtiff).
+	//
+	// If an orientation option/tag is present, the appropriate transform will
+	// be performed so that the pixbuf is oriented correctly.
 	ApplyEmbeddedOrientation() Pixbuf
 	// Composite creates a transformation of the source image @src by scaling by
-	// @scale_x and @scale_y then translating by @offset_x and @offset_y. This
-	// gives an image in the coordinates of the destination pixbuf. The
+	// @scale_x and @scale_y then translating by @offset_x and @offset_y.
+	//
+	// This gives an image in the coordinates of the destination pixbuf. The
 	// rectangle (@dest_x, @dest_y, @dest_width, @dest_height) is then alpha
 	// blended onto the corresponding rectangle of the original destination
 	// image.
@@ -200,30 +339,36 @@ type Pixbuf interface {
 	// See gdk_pixbuf_composite_color_simple() for a simpler variant of this
 	// function suitable for many tasks.
 	CompositeColor(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType, overallAlpha int, checkX int, checkY int, checkSize int, color1 uint32, color2 uint32)
-	// CompositeColorSimple creates a new Pixbuf by scaling @src to @dest_width
-	// x @dest_height and alpha blending the result with a checkboard of colors
-	// @color1 and @color2.
+	// CompositeColorSimple creates a new pixbuf by scaling `src` to
+	// `dest_width` x `dest_height` and alpha blending the result with a
+	// checkboard of colors `color1` and `color2`.
 	CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf
-	// Copy creates a new Pixbuf with a copy of the information in the specified
-	// @pixbuf. Note that this does not copy the options set on the original
-	// Pixbuf, use gdk_pixbuf_copy_options() for this.
+	// Copy creates a new `GdkPixbuf` with a copy of the information in the
+	// specified `pixbuf`.
+	//
+	// Note that this does not copy the options set on the original `GdkPixbuf`,
+	// use gdk_pixbuf_copy_options() for this.
 	Copy() Pixbuf
-	// CopyArea copies a rectangular area from @src_pixbuf to @dest_pixbuf.
+	// CopyArea copies a rectangular area from `src_pixbuf` to `dest_pixbuf`.
+	//
 	// Conversion of pixbuf formats is done automatically.
 	//
 	// If the source rectangle overlaps the destination rectangle on the same
 	// pixbuf, it will be overwritten during the copy operation. Therefore, you
 	// can not use this function to scroll a pixbuf.
 	CopyArea(srcX int, srcY int, width int, height int, destPixbuf Pixbuf, destX int, destY int)
-	// CopyOptions: copy the key/value pair options attached to a Pixbuf to
-	// another. This is useful to keep original metadata after having
-	// manipulated a file. However be careful to remove metadata which you've
-	// already applied, such as the "orientation" option after rotating the
-	// image.
+	// CopyOptions copies the key/value pair options attached to a `GdkPixbuf`
+	// to another `GdkPixbuf`.
+	//
+	// This is useful to keep original metadata after having manipulated a file.
+	// However be careful to remove metadata which you've already applied, such
+	// as the "orientation" option after rotating the image.
 	CopyOptions(destPixbuf Pixbuf) bool
 	// Fill clears a pixbuf to the given RGBA value, converting the RGBA value
-	// into the pixbuf's pixel format. The alpha will be ignored if the pixbuf
-	// doesn't have an alpha channel.
+	// into the pixbuf's pixel format.
+	//
+	// The alpha component will be ignored if the pixbuf doesn't have an alpha
+	// channel.
 	Fill(pixel uint32)
 	// Flip flips a pixbuf horizontally or vertically and returns the result in
 	// a new pixbuf.
@@ -256,13 +401,18 @@ type Pixbuf interface {
 	// contains image density information in dots per inch. Since 2.36.6, the
 	// JPEG loader sets the "comment" option with the comment EXIF tag.
 	Option(key string) string
-	// Options returns a Table with a list of all the options that may have been
-	// attached to the @pixbuf when it was loaded, or that may have been
-	// attached by another function using gdk_pixbuf_set_option().
-	//
-	// See gdk_pixbuf_get_option() for more details.
+	// Options returns a `GHashTable` with a list of all the options that may
+	// have been attached to the `pixbuf` when it was loaded, or that may have
+	// been attached by another function using
+	// [method@GdkPixbuf.Pixbuf.set_option].
 	Options() *glib.HashTable
 	// PixelsWithLength queries a pointer to the pixel data of a pixbuf.
+	//
+	// This function will cause an implicit copy of the pixbuf data if the
+	// pixbuf was created from read-only data.
+	//
+	// Please see the section on image data (#image-data) for information about
+	// how the pixel data is stored in memory.
 	PixelsWithLength() []byte
 	// Rowstride queries the rowstride of a pixbuf, which is the number of bytes
 	// between the start of a row and the start of the next row.
@@ -270,53 +420,71 @@ type Pixbuf interface {
 	// Width queries the width of a pixbuf.
 	Width() int
 	// NewSubpixbuf creates a new pixbuf which represents a sub-region of
-	// @src_pixbuf. The new pixbuf shares its pixels with the original pixbuf,
-	// so writing to one affects both. The new pixbuf holds a reference to
-	// @src_pixbuf, so @src_pixbuf will not be finalized until the new pixbuf is
-	// finalized.
+	// `src_pixbuf`.
 	//
-	// Note that if @src_pixbuf is read-only, this function will force it to be
+	// The new pixbuf shares its pixels with the original pixbuf, so writing to
+	// one affects both. The new pixbuf holds a reference to `src_pixbuf`, so
+	// `src_pixbuf` will not be finalized until the new pixbuf is finalized.
+	//
+	// Note that if `src_pixbuf` is read-only, this function will force it to be
 	// mutable.
 	NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf
-	// ReadPixels provides a read-only pointer to the raw pixel data; must not
-	// be modified. This function allows skipping the implicit copy that must be
-	// made if gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
+	// ReadPixels provides a read-only pointer to the raw pixel data.
+	//
+	// This function allows skipping the implicit copy that must be made if
+	// gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
 	ReadPixels() *byte
 	// Ref adds a reference to a pixbuf.
 	Ref() Pixbuf
-	// RemoveOption: remove the key/value pair option attached to a Pixbuf.
+	// RemoveOption removes the key/value pair option attached to a `GdkPixbuf`.
 	RemoveOption(key string) bool
 	// RotateSimple rotates a pixbuf by a multiple of 90 degrees, and returns
 	// the result in a new pixbuf.
 	//
-	// If @angle is 0, a copy of @src is returned, avoiding any rotation.
+	// If `angle` is 0, this function will return a copy of `src`.
 	RotateSimple(angle PixbufRotation) Pixbuf
-	// SaturateAndPixelate modifies saturation and optionally pixelates @src,
-	// placing the result in @dest. @src and @dest may be the same pixbuf with
-	// no ill effects. If @saturation is 1.0 then saturation is not changed. If
-	// it's less than 1.0, saturation is reduced (the image turns toward
-	// grayscale); if greater than 1.0, saturation is increased (the image gets
-	// more vivid colors). If @pixelate is true, then pixels are faded in a
-	// checkerboard pattern to create a pixelated image. @src and @dest must
-	// have the same image format, size, and rowstride.
+	// SaturateAndPixelate modifies saturation and optionally pixelates `src`,
+	// placing the result in `dest`.
+	//
+	// The `src` and `dest` pixbufs must have the same image format, size, and
+	// rowstride.
+	//
+	// The `src` and `dest` arguments may be the same pixbuf with no ill
+	// effects.
+	//
+	// If `saturation` is 1.0 then saturation is not changed. If it's less than
+	// 1.0, saturation is reduced (the image turns toward grayscale); if greater
+	// than 1.0, saturation is increased (the image gets more vivid colors).
+	//
+	// If `pixelate` is `TRUE`, then pixels are faded in a checkerboard pattern
+	// to create a pixelated image.
 	SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool)
-	// SaveToStreamv saves @pixbuf to an output stream.
+	// SaveToStreamv saves `pixbuf` to an output stream.
 	//
 	// Supported file formats are currently "jpeg", "tiff", "png", "ico" or
-	// "bmp". See gdk_pixbuf_save_to_stream() for more details.
+	// "bmp".
+	//
+	// See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
 	SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error
-	// SaveToStreamvAsync saves @pixbuf to an output stream asynchronously.
+	// SaveToStreamvAsync saves `pixbuf` to an output stream asynchronously.
 	//
 	// For more details see gdk_pixbuf_save_to_streamv(), which is the
 	// synchronous version of this function.
 	//
-	// When the operation is finished, @callback will be called in the main
-	// thread. You can then call gdk_pixbuf_save_to_stream_finish() to get the
-	// result of the operation.
+	// When the operation is finished, `callback` will be called in the main
+	// thread.
+	//
+	// You can then call gdk_pixbuf_save_to_stream_finish() to get the result of
+	// the operation.
 	SaveToStreamvAsync()
-	// Savev saves pixbuf to a file in @type, which is currently "jpeg", "png",
-	// "tiff", "ico" or "bmp". If @error is set, false will be returned. See
-	// gdk_pixbuf_save () for more details.
+	// Savev: vector version of `gdk_pixbuf_save()`.
+	//
+	// Saves pixbuf to a file in `type`, which is currently "jpeg", "png",
+	// "tiff", "ico" or "bmp".
+	//
+	// If @error is set, `FALSE` will be returned.
+	//
+	// See [method@GdkPixbuf.Pixbuf.save] for more details.
 	Savev(filename *string, typ string, optionKeys []string, optionValues []string) error
 	// Scale creates a transformation of the source image @src by scaling by
 	// @scale_x and @scale_y then translating by @offset_x and @offset_y, then
@@ -324,32 +492,37 @@ type Pixbuf interface {
 	// the resulting image onto the destination image replacing the previous
 	// contents.
 	//
-	// Try to use gdk_pixbuf_scale_simple() first, this function is the
-	// industrial-strength power tool you can fall back to if
+	// Try to use gdk_pixbuf_scale_simple() first; this function is the
+	// industrial-strength power tool you can fall back to, if
 	// gdk_pixbuf_scale_simple() isn't powerful enough.
 	//
 	// If the source rectangle overlaps the destination rectangle on the same
 	// pixbuf, it will be overwritten during the scaling which results in
 	// rendering artifacts.
 	Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeight int, offsetX float64, offsetY float64, scaleX float64, scaleY float64, interpType InterpType)
-	// ScaleSimple: create a new Pixbuf containing a copy of @src scaled to
-	// @dest_width x @dest_height. Leaves @src unaffected. @interp_type should
-	// be K_INTERP_NEAREST if you want maximum speed (but when scaling down
-	// K_INTERP_NEAREST is usually unusably ugly). The default @interp_type
-	// should be K_INTERP_BILINEAR which offers reasonable quality and speed.
+	// ScaleSimple: create a new pixbuf containing a copy of `src` scaled to
+	// `dest_width` x `dest_height`.
 	//
-	// You can scale a sub-portion of @src by creating a sub-pixbuf pointing
-	// into @src; see gdk_pixbuf_new_subpixbuf().
+	// This function leaves `src` unaffected.
 	//
-	// If @dest_width and @dest_height are equal to the @src width and height, a
-	// copy of @src is returned, avoiding any scaling.
+	// The `interp_type` should be `GDK_INTERP_NEAREST` if you want maximum
+	// speed (but when scaling down `GDK_INTERP_NEAREST` is usually unusably
+	// ugly). The default `interp_type` should be `GDK_INTERP_BILINEAR` which
+	// offers reasonable quality and speed.
 	//
-	// For more complicated scaling/alpha blending see gdk_pixbuf_scale() and
-	// gdk_pixbuf_composite().
+	// You can scale a sub-portion of `src` by creating a sub-pixbuf pointing
+	// into `src`; see [method@GdkPixbuf.Pixbuf.new_subpixbuf].
+	//
+	// If `dest_width` and `dest_height` are equal to the width and height of
+	// `src`, this function will return an unscaled copy of `src`.
+	//
+	// For more complicated scaling/alpha blending see
+	// [method@GdkPixbuf.Pixbuf.scale] and [method@GdkPixbuf.Pixbuf.composite].
 	ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf
-	// SetOption attaches a key/value pair as an option to a Pixbuf. If @key
-	// already exists in the list of options attached to @pixbuf, the new value
-	// is ignored and false is returned.
+	// SetOption attaches a key/value pair as an option to a `GdkPixbuf`.
+	//
+	// If `key` already exists in the list of options attached to the `pixbuf`,
+	// the new value is ignored and `FALSE` is returned.
 	SetOption(key string, value string) bool
 	// Unref removes a reference from a pixbuf.
 	Unref()
@@ -643,14 +816,19 @@ func NewPixbufFromXpmData(data []string) Pixbuf {
 	return _pixbuf
 }
 
-// AddAlpha takes an existing pixbuf and adds an alpha channel to it. If the
-// existing pixbuf already had an alpha channel, the channel values are
-// copied from the original; otherwise, the alpha channel is initialized to
-// 255 (full opacity).
+// AddAlpha takes an existing pixbuf and adds an alpha channel to it.
 //
-// If @substitute_color is true, then the color specified by (@r, @g, @b)
-// will be assigned zero opacity. That is, if you pass (255, 255, 255) for
-// the substitute color, all white pixels will become fully transparent.
+// If the existing pixbuf already had an alpha channel, the channel values
+// are copied from the original; otherwise, the alpha channel is initialized
+// to 255 (full opacity).
+//
+// If `substitute_color` is `TRUE`, then the color specified by the (`r`,
+// `g`, `b`) arguments will be assigned zero opacity. That is, if you pass
+// `(255, 255, 255)` for the substitute color, all white pixels will become
+// fully transparent.
+//
+// If `substitute_color` is `FALSE`, then the (`r`, `g`, `b`) arguments will
+// be ignored.
 func (p pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 C.gboolean
@@ -678,12 +856,15 @@ func (p pixbuf) AddAlpha(substituteColor bool, r byte, g byte, b byte) Pixbuf {
 }
 
 // ApplyEmbeddedOrientation takes an existing pixbuf and checks for the
-// presence of an associated "orientation" option, which may be provided by
-// the jpeg loader (which reads the exif orientation tag) or the tiff loader
-// (which reads the tiff orientation tag, and compensates it for the partial
-// transforms performed by libtiff). If an orientation option/tag is
-// present, the appropriate transform will be performed so that the pixbuf
-// is oriented correctly.
+// presence of an associated "orientation" option.
+//
+// The orientation option may be provided by the JPEG loader (which reads
+// the exif orientation tag) or the TIFF loader (which reads the TIFF
+// orientation tag, and compensates it for the partial transforms performed
+// by libtiff).
+//
+// If an orientation option/tag is present, the appropriate transform will
+// be performed so that the pixbuf is oriented correctly.
 func (s pixbuf) ApplyEmbeddedOrientation() Pixbuf {
 	var _arg0 *C.GdkPixbuf
 
@@ -701,8 +882,9 @@ func (s pixbuf) ApplyEmbeddedOrientation() Pixbuf {
 }
 
 // Composite creates a transformation of the source image @src by scaling by
-// @scale_x and @scale_y then translating by @offset_x and @offset_y. This
-// gives an image in the coordinates of the destination pixbuf. The
+// @scale_x and @scale_y then translating by @offset_x and @offset_y.
+//
+// This gives an image in the coordinates of the destination pixbuf. The
 // rectangle (@dest_x, @dest_y, @dest_width, @dest_height) is then alpha
 // blended onto the corresponding rectangle of the original destination
 // image.
@@ -793,9 +975,9 @@ func (s pixbuf) CompositeColor(dest Pixbuf, destX int, destY int, destWidth int,
 	C.gdk_pixbuf_composite_color(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _arg11, _arg12, _arg13, _arg14, _arg15, _arg16)
 }
 
-// CompositeColorSimple creates a new Pixbuf by scaling @src to @dest_width
-// x @dest_height and alpha blending the result with a checkboard of colors
-// @color1 and @color2.
+// CompositeColorSimple creates a new pixbuf by scaling `src` to
+// `dest_width` x `dest_height` and alpha blending the result with a
+// checkboard of colors `color1` and `color2`.
 func (s pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpType InterpType, overallAlpha int, checkSize int, color1 uint32, color2 uint32) Pixbuf {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 C.int
@@ -826,9 +1008,11 @@ func (s pixbuf) CompositeColorSimple(destWidth int, destHeight int, interpType I
 	return _pixbuf
 }
 
-// Copy creates a new Pixbuf with a copy of the information in the specified
-// @pixbuf. Note that this does not copy the options set on the original
-// Pixbuf, use gdk_pixbuf_copy_options() for this.
+// Copy creates a new `GdkPixbuf` with a copy of the information in the
+// specified `pixbuf`.
+//
+// Note that this does not copy the options set on the original `GdkPixbuf`,
+// use gdk_pixbuf_copy_options() for this.
 func (p pixbuf) Copy() Pixbuf {
 	var _arg0 *C.GdkPixbuf
 
@@ -845,7 +1029,8 @@ func (p pixbuf) Copy() Pixbuf {
 	return _ret
 }
 
-// CopyArea copies a rectangular area from @src_pixbuf to @dest_pixbuf.
+// CopyArea copies a rectangular area from `src_pixbuf` to `dest_pixbuf`.
+//
 // Conversion of pixbuf formats is done automatically.
 //
 // If the source rectangle overlaps the destination rectangle on the same
@@ -873,11 +1058,12 @@ func (s pixbuf) CopyArea(srcX int, srcY int, width int, height int, destPixbuf P
 	C.gdk_pixbuf_copy_area(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
-// CopyOptions: copy the key/value pair options attached to a Pixbuf to
-// another. This is useful to keep original metadata after having
-// manipulated a file. However be careful to remove metadata which you've
-// already applied, such as the "orientation" option after rotating the
-// image.
+// CopyOptions copies the key/value pair options attached to a `GdkPixbuf`
+// to another `GdkPixbuf`.
+//
+// This is useful to keep original metadata after having manipulated a file.
+// However be careful to remove metadata which you've already applied, such
+// as the "orientation" option after rotating the image.
 func (s pixbuf) CopyOptions(destPixbuf Pixbuf) bool {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 *C.GdkPixbuf
@@ -899,8 +1085,10 @@ func (s pixbuf) CopyOptions(destPixbuf Pixbuf) bool {
 }
 
 // Fill clears a pixbuf to the given RGBA value, converting the RGBA value
-// into the pixbuf's pixel format. The alpha will be ignored if the pixbuf
-// doesn't have an alpha channel.
+// into the pixbuf's pixel format.
+//
+// The alpha component will be ignored if the pixbuf doesn't have an alpha
+// channel.
 func (p pixbuf) Fill(pixel uint32) {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 C.guint32
@@ -1071,11 +1259,10 @@ func (p pixbuf) Option(key string) string {
 	return _utf8
 }
 
-// Options returns a Table with a list of all the options that may have been
-// attached to the @pixbuf when it was loaded, or that may have been
-// attached by another function using gdk_pixbuf_set_option().
-//
-// See gdk_pixbuf_get_option() for more details.
+// Options returns a `GHashTable` with a list of all the options that may
+// have been attached to the `pixbuf` when it was loaded, or that may have
+// been attached by another function using
+// [method@GdkPixbuf.Pixbuf.set_option].
 func (p pixbuf) Options() *glib.HashTable {
 	var _arg0 *C.GdkPixbuf
 
@@ -1096,6 +1283,12 @@ func (p pixbuf) Options() *glib.HashTable {
 }
 
 // PixelsWithLength queries a pointer to the pixel data of a pixbuf.
+//
+// This function will cause an implicit copy of the pixbuf data if the
+// pixbuf was created from read-only data.
+//
+// Please see the section on image data (#image-data) for information about
+// how the pixel data is stored in memory.
 func (p pixbuf) PixelsWithLength() []byte {
 	var _arg0 *C.GdkPixbuf
 
@@ -1157,12 +1350,13 @@ func (p pixbuf) Width() int {
 }
 
 // NewSubpixbuf creates a new pixbuf which represents a sub-region of
-// @src_pixbuf. The new pixbuf shares its pixels with the original pixbuf,
-// so writing to one affects both. The new pixbuf holds a reference to
-// @src_pixbuf, so @src_pixbuf will not be finalized until the new pixbuf is
-// finalized.
+// `src_pixbuf`.
 //
-// Note that if @src_pixbuf is read-only, this function will force it to be
+// The new pixbuf shares its pixels with the original pixbuf, so writing to
+// one affects both. The new pixbuf holds a reference to `src_pixbuf`, so
+// `src_pixbuf` will not be finalized until the new pixbuf is finalized.
+//
+// Note that if `src_pixbuf` is read-only, this function will force it to be
 // mutable.
 func (s pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf {
 	var _arg0 *C.GdkPixbuf
@@ -1188,9 +1382,10 @@ func (s pixbuf) NewSubpixbuf(srcX int, srcY int, width int, height int) Pixbuf {
 	return _pixbuf
 }
 
-// ReadPixels provides a read-only pointer to the raw pixel data; must not
-// be modified. This function allows skipping the implicit copy that must be
-// made if gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
+// ReadPixels provides a read-only pointer to the raw pixel data.
+//
+// This function allows skipping the implicit copy that must be made if
+// gdk_pixbuf_get_pixels() is called on a read-only pixbuf.
 func (p pixbuf) ReadPixels() *byte {
 	var _arg0 *C.GdkPixbuf
 
@@ -1224,7 +1419,7 @@ func (p pixbuf) Ref() Pixbuf {
 	return _ret
 }
 
-// RemoveOption: remove the key/value pair option attached to a Pixbuf.
+// RemoveOption removes the key/value pair option attached to a `GdkPixbuf`.
 func (p pixbuf) RemoveOption(key string) bool {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 *C.gchar
@@ -1249,7 +1444,7 @@ func (p pixbuf) RemoveOption(key string) bool {
 // RotateSimple rotates a pixbuf by a multiple of 90 degrees, and returns
 // the result in a new pixbuf.
 //
-// If @angle is 0, a copy of @src is returned, avoiding any rotation.
+// If `angle` is 0, this function will return a copy of `src`.
 func (s pixbuf) RotateSimple(angle PixbufRotation) Pixbuf {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 C.GdkPixbufRotation
@@ -1268,14 +1463,21 @@ func (s pixbuf) RotateSimple(angle PixbufRotation) Pixbuf {
 	return _pixbuf
 }
 
-// SaturateAndPixelate modifies saturation and optionally pixelates @src,
-// placing the result in @dest. @src and @dest may be the same pixbuf with
-// no ill effects. If @saturation is 1.0 then saturation is not changed. If
-// it's less than 1.0, saturation is reduced (the image turns toward
-// grayscale); if greater than 1.0, saturation is increased (the image gets
-// more vivid colors). If @pixelate is true, then pixels are faded in a
-// checkerboard pattern to create a pixelated image. @src and @dest must
-// have the same image format, size, and rowstride.
+// SaturateAndPixelate modifies saturation and optionally pixelates `src`,
+// placing the result in `dest`.
+//
+// The `src` and `dest` pixbufs must have the same image format, size, and
+// rowstride.
+//
+// The `src` and `dest` arguments may be the same pixbuf with no ill
+// effects.
+//
+// If `saturation` is 1.0 then saturation is not changed. If it's less than
+// 1.0, saturation is reduced (the image turns toward grayscale); if greater
+// than 1.0, saturation is increased (the image gets more vivid colors).
+//
+// If `pixelate` is `TRUE`, then pixels are faded in a checkerboard pattern
+// to create a pixelated image.
 func (s pixbuf) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bool) {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 *C.GdkPixbuf
@@ -1292,10 +1494,12 @@ func (s pixbuf) SaturateAndPixelate(dest Pixbuf, saturation float32, pixelate bo
 	C.gdk_pixbuf_saturate_and_pixelate(_arg0, _arg1, _arg2, _arg3)
 }
 
-// SaveToStreamv saves @pixbuf to an output stream.
+// SaveToStreamv saves `pixbuf` to an output stream.
 //
 // Supported file formats are currently "jpeg", "tiff", "png", "ico" or
-// "bmp". See gdk_pixbuf_save_to_stream() for more details.
+// "bmp".
+//
+// See [method@GdkPixbuf.Pixbuf.save_to_stream] for more details.
 func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []string, optionValues []string, cancellable gio.Cancellable) error {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 *C.GOutputStream
@@ -1312,11 +1516,11 @@ func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []*C.char
+		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg3), int(len(optionKeys)))
 
 		for i := range optionKeys {
-			_arg3 = (*C.char)(C.CString(optionKeys))
+			_arg3 = (*C.gchar)(C.CString(optionKeys))
 			defer C.free(unsafe.Pointer(_arg3))
 		}
 	}
@@ -1324,11 +1528,11 @@ func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []
 	defer C.free(unsafe.Pointer(_arg4))
 
 	{
-		var out []*C.char
+		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg4), int(len(optionValues)))
 
 		for i := range optionValues {
-			_arg4 = (*C.char)(C.CString(optionValues))
+			_arg4 = (*C.gchar)(C.CString(optionValues))
 			defer C.free(unsafe.Pointer(_arg4))
 		}
 	}
@@ -1345,14 +1549,16 @@ func (p pixbuf) SaveToStreamv(stream gio.OutputStream, typ string, optionKeys []
 	return _goerr
 }
 
-// SaveToStreamvAsync saves @pixbuf to an output stream asynchronously.
+// SaveToStreamvAsync saves `pixbuf` to an output stream asynchronously.
 //
 // For more details see gdk_pixbuf_save_to_streamv(), which is the
 // synchronous version of this function.
 //
-// When the operation is finished, @callback will be called in the main
-// thread. You can then call gdk_pixbuf_save_to_stream_finish() to get the
-// result of the operation.
+// When the operation is finished, `callback` will be called in the main
+// thread.
+//
+// You can then call gdk_pixbuf_save_to_stream_finish() to get the result of
+// the operation.
 func (p pixbuf) SaveToStreamvAsync() {
 	var _arg0 *C.GdkPixbuf
 
@@ -1361,9 +1567,14 @@ func (p pixbuf) SaveToStreamvAsync() {
 	C.gdk_pixbuf_save_to_streamv_async(_arg0)
 }
 
-// Savev saves pixbuf to a file in @type, which is currently "jpeg", "png",
-// "tiff", "ico" or "bmp". If @error is set, false will be returned. See
-// gdk_pixbuf_save () for more details.
+// Savev: vector version of `gdk_pixbuf_save()`.
+//
+// Saves pixbuf to a file in `type`, which is currently "jpeg", "png",
+// "tiff", "ico" or "bmp".
+//
+// If @error is set, `FALSE` will be returned.
+//
+// See [method@GdkPixbuf.Pixbuf.save] for more details.
 func (p pixbuf) Savev(filename *string, typ string, optionKeys []string, optionValues []string) error {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 *C.char
@@ -1380,11 +1591,11 @@ func (p pixbuf) Savev(filename *string, typ string, optionKeys []string, optionV
 	defer C.free(unsafe.Pointer(_arg3))
 
 	{
-		var out []*C.char
+		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg3), int(len(optionKeys)))
 
 		for i := range optionKeys {
-			_arg3 = (*C.char)(C.CString(optionKeys))
+			_arg3 = (*C.gchar)(C.CString(optionKeys))
 			defer C.free(unsafe.Pointer(_arg3))
 		}
 	}
@@ -1392,11 +1603,11 @@ func (p pixbuf) Savev(filename *string, typ string, optionKeys []string, optionV
 	defer C.free(unsafe.Pointer(_arg4))
 
 	{
-		var out []*C.char
+		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg4), int(len(optionValues)))
 
 		for i := range optionValues {
-			_arg4 = (*C.char)(C.CString(optionValues))
+			_arg4 = (*C.gchar)(C.CString(optionValues))
 			defer C.free(unsafe.Pointer(_arg4))
 		}
 	}
@@ -1418,8 +1629,8 @@ func (p pixbuf) Savev(filename *string, typ string, optionKeys []string, optionV
 // the resulting image onto the destination image replacing the previous
 // contents.
 //
-// Try to use gdk_pixbuf_scale_simple() first, this function is the
-// industrial-strength power tool you can fall back to if
+// Try to use gdk_pixbuf_scale_simple() first; this function is the
+// industrial-strength power tool you can fall back to, if
 // gdk_pixbuf_scale_simple() isn't powerful enough.
 //
 // If the source rectangle overlaps the destination rectangle on the same
@@ -1453,20 +1664,24 @@ func (s pixbuf) Scale(dest Pixbuf, destX int, destY int, destWidth int, destHeig
 	C.gdk_pixbuf_scale(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10)
 }
 
-// ScaleSimple: create a new Pixbuf containing a copy of @src scaled to
-// @dest_width x @dest_height. Leaves @src unaffected. @interp_type should
-// be K_INTERP_NEAREST if you want maximum speed (but when scaling down
-// K_INTERP_NEAREST is usually unusably ugly). The default @interp_type
-// should be K_INTERP_BILINEAR which offers reasonable quality and speed.
+// ScaleSimple: create a new pixbuf containing a copy of `src` scaled to
+// `dest_width` x `dest_height`.
 //
-// You can scale a sub-portion of @src by creating a sub-pixbuf pointing
-// into @src; see gdk_pixbuf_new_subpixbuf().
+// This function leaves `src` unaffected.
 //
-// If @dest_width and @dest_height are equal to the @src width and height, a
-// copy of @src is returned, avoiding any scaling.
+// The `interp_type` should be `GDK_INTERP_NEAREST` if you want maximum
+// speed (but when scaling down `GDK_INTERP_NEAREST` is usually unusably
+// ugly). The default `interp_type` should be `GDK_INTERP_BILINEAR` which
+// offers reasonable quality and speed.
 //
-// For more complicated scaling/alpha blending see gdk_pixbuf_scale() and
-// gdk_pixbuf_composite().
+// You can scale a sub-portion of `src` by creating a sub-pixbuf pointing
+// into `src`; see [method@GdkPixbuf.Pixbuf.new_subpixbuf].
+//
+// If `dest_width` and `dest_height` are equal to the width and height of
+// `src`, this function will return an unscaled copy of `src`.
+//
+// For more complicated scaling/alpha blending see
+// [method@GdkPixbuf.Pixbuf.scale] and [method@GdkPixbuf.Pixbuf.composite].
 func (s pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpType) Pixbuf {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 C.int
@@ -1489,9 +1704,10 @@ func (s pixbuf) ScaleSimple(destWidth int, destHeight int, interpType InterpType
 	return _pixbuf
 }
 
-// SetOption attaches a key/value pair as an option to a Pixbuf. If @key
-// already exists in the list of options attached to @pixbuf, the new value
-// is ignored and false is returned.
+// SetOption attaches a key/value pair as an option to a `GdkPixbuf`.
+//
+// If `key` already exists in the list of options attached to the `pixbuf`,
+// the new value is ignored and `FALSE` is returned.
 func (p pixbuf) SetOption(key string, value string) bool {
 	var _arg0 *C.GdkPixbuf
 	var _arg1 *C.gchar
@@ -1525,506 +1741,46 @@ func (p pixbuf) Unref() {
 	C.gdk_pixbuf_unref(_arg0)
 }
 
-// PixbufAnimation: an opaque struct representing an animation.
-type PixbufAnimation interface {
-	gextras.Objector
-
-	// Height queries the height of the bounding box of a pixbuf animation.
-	Height() int
-	// Iter: get an iterator for displaying an animation. The iterator provides
-	// the frames that should be displayed at a given time. It should be freed
-	// after use with g_object_unref().
-	//
-	// @start_time would normally come from g_get_current_time(), and marks the
-	// beginning of animation playback. After creating an iterator, you should
-	// immediately display the pixbuf returned by
-	// gdk_pixbuf_animation_iter_get_pixbuf(). Then, you should install a
-	// timeout (with g_timeout_add()) or by some other mechanism ensure that
-	// you'll update the image after gdk_pixbuf_animation_iter_get_delay_time()
-	// milliseconds. Each time the image is updated, you should reinstall the
-	// timeout with the new, possibly-changed delay time.
-	//
-	// As a shortcut, if @start_time is nil, the result of g_get_current_time()
-	// will be used automatically.
-	//
-	// To update the image (i.e. possibly change the result of
-	// gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation),
-	// call gdk_pixbuf_animation_iter_advance().
-	//
-	// If you're using PixbufLoader, in addition to updating the image after the
-	// delay time, you should also update it whenever you receive the
-	// area_updated signal and
-	// gdk_pixbuf_animation_iter_on_currently_loading_frame() returns true. In
-	// this case, the frame currently being fed into the loader has received new
-	// data, so needs to be refreshed. The delay time for a frame may also be
-	// modified after an area_updated signal, for example if the delay time for
-	// a frame is encoded in the data after the frame itself. So your timeout
-	// should be reinstalled after any area_updated signal.
-	//
-	// A delay time of -1 is possible, indicating "infinite."
-	Iter(startTime *glib.TimeVal) PixbufAnimationIter
-	// StaticImage: if an animation is really just a plain image (has only one
-	// frame), this function returns that image. If the animation is an
-	// animation, this function returns a reasonable thing to display as a
-	// static unanimated image, which might be the first frame, or something
-	// more sophisticated. If an animation hasn't loaded any frames yet, this
-	// function will return nil.
-	StaticImage() Pixbuf
-	// Width queries the width of the bounding box of a pixbuf animation.
-	Width() int
-	// IsStaticImage: if you load a file with
-	// gdk_pixbuf_animation_new_from_file() and it turns out to be a plain,
-	// unanimated image, then this function will return true. Use
-	// gdk_pixbuf_animation_get_static_image() to retrieve the image.
-	IsStaticImage() bool
-	// Ref adds a reference to an animation.
-	Ref() PixbufAnimation
-	// Unref removes a reference from an animation.
-	Unref()
+type PixbufNonAnim interface {
+	PixbufAnimation
 }
 
-// pixbufAnimation implements the PixbufAnimation interface.
-type pixbufAnimation struct {
-	gextras.Objector
+// pixbufNonAnim implements the PixbufNonAnim interface.
+type pixbufNonAnim struct {
+	PixbufAnimation
 }
 
-var _ PixbufAnimation = (*pixbufAnimation)(nil)
+var _ PixbufNonAnim = (*pixbufNonAnim)(nil)
 
-// WrapPixbufAnimation wraps a GObject to the right type. It is
+// WrapPixbufNonAnim wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapPixbufAnimation(obj *externglib.Object) PixbufAnimation {
-	return PixbufAnimation{
-		Objector: obj,
+func WrapPixbufNonAnim(obj *externglib.Object) PixbufNonAnim {
+	return PixbufNonAnim{
+		PixbufAnimation: WrapPixbufAnimation(obj),
 	}
 }
 
-func marshalPixbufAnimation(p uintptr) (interface{}, error) {
+func marshalPixbufNonAnim(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPixbufAnimation(obj), nil
+	return WrapPixbufNonAnim(obj), nil
 }
 
-// NewPixbufAnimationFromFile constructs a class PixbufAnimation.
-func NewPixbufAnimationFromFile(filename *string) (PixbufAnimation, error) {
-	var _arg1 *C.char
+// NewPixbufNonAnim constructs a class PixbufNonAnim.
+func NewPixbufNonAnim(pixbuf Pixbuf) PixbufNonAnim {
+	var _arg1 *C.GdkPixbuf
 
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
+	var _cret C.GdkPixbufNonAnim
 
-	cret = C.gdk_pixbuf_animation_new_from_file(_arg1, _cerr)
+	cret = C.gdk_pixbuf_non_anim_new(_arg1)
 
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
+	var _pixbufNonAnim PixbufNonAnim
 
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+	_pixbufNonAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufNonAnim)
 
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromResource constructs a class PixbufAnimation.
-func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error) {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_animation_new_from_resource(_arg1, _cerr)
-
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromStream constructs a class PixbufAnimation.
-func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) (PixbufAnimation, error) {
-	var _arg1 *C.GInputStream
-	var _arg2 *C.GCancellable
-
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, _cerr)
-
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromStreamFinish constructs a class PixbufAnimation.
-func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (PixbufAnimation, error) {
-	var _arg1 *C.GAsyncResult
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
-
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, _cerr)
-
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
-// Height queries the height of the bounding box of a pixbuf animation.
-func (a pixbufAnimation) Height() int {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret C.int
-
-	cret = C.gdk_pixbuf_animation_get_height(_arg0)
-
-	var _gint int
-
-	_gint = (int)(_cret)
-
-	return _gint
-}
-
-// Iter: get an iterator for displaying an animation. The iterator provides
-// the frames that should be displayed at a given time. It should be freed
-// after use with g_object_unref().
-//
-// @start_time would normally come from g_get_current_time(), and marks the
-// beginning of animation playback. After creating an iterator, you should
-// immediately display the pixbuf returned by
-// gdk_pixbuf_animation_iter_get_pixbuf(). Then, you should install a
-// timeout (with g_timeout_add()) or by some other mechanism ensure that
-// you'll update the image after gdk_pixbuf_animation_iter_get_delay_time()
-// milliseconds. Each time the image is updated, you should reinstall the
-// timeout with the new, possibly-changed delay time.
-//
-// As a shortcut, if @start_time is nil, the result of g_get_current_time()
-// will be used automatically.
-//
-// To update the image (i.e. possibly change the result of
-// gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation),
-// call gdk_pixbuf_animation_iter_advance().
-//
-// If you're using PixbufLoader, in addition to updating the image after the
-// delay time, you should also update it whenever you receive the
-// area_updated signal and
-// gdk_pixbuf_animation_iter_on_currently_loading_frame() returns true. In
-// this case, the frame currently being fed into the loader has received new
-// data, so needs to be refreshed. The delay time for a frame may also be
-// modified after an area_updated signal, for example if the delay time for
-// a frame is encoded in the data after the frame itself. So your timeout
-// should be reinstalled after any area_updated signal.
-//
-// A delay time of -1 is possible, indicating "infinite."
-func (a pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIter {
-	var _arg0 *C.GdkPixbufAnimation
-	var _arg1 *C.GTimeVal
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(startTime.Native()))
-
-	var _cret *C.GdkPixbufAnimationIter
-
-	cret = C.gdk_pixbuf_animation_get_iter(_arg0, _arg1)
-
-	var _pixbufAnimationIter PixbufAnimationIter
-
-	_pixbufAnimationIter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimationIter)
-
-	return _pixbufAnimationIter
-}
-
-// StaticImage: if an animation is really just a plain image (has only one
-// frame), this function returns that image. If the animation is an
-// animation, this function returns a reasonable thing to display as a
-// static unanimated image, which might be the first frame, or something
-// more sophisticated. If an animation hasn't loaded any frames yet, this
-// function will return nil.
-func (a pixbufAnimation) StaticImage() Pixbuf {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gdk_pixbuf_animation_get_static_image(_arg0)
-
-	var _pixbuf Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
-
-	return _pixbuf
-}
-
-// Width queries the width of the bounding box of a pixbuf animation.
-func (a pixbufAnimation) Width() int {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret C.int
-
-	cret = C.gdk_pixbuf_animation_get_width(_arg0)
-
-	var _gint int
-
-	_gint = (int)(_cret)
-
-	return _gint
-}
-
-// IsStaticImage: if you load a file with
-// gdk_pixbuf_animation_new_from_file() and it turns out to be a plain,
-// unanimated image, then this function will return true. Use
-// gdk_pixbuf_animation_get_static_image() to retrieve the image.
-func (a pixbufAnimation) IsStaticImage() bool {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret C.gboolean
-
-	cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
-
-	var _ok bool
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// Ref adds a reference to an animation.
-func (a pixbufAnimation) Ref() PixbufAnimation {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPixbufAnimation
-
-	cret = C.gdk_pixbuf_animation_ref(_arg0)
-
-	var _pixbufAnimation PixbufAnimation
-
-	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-
-	return _pixbufAnimation
-}
-
-// Unref removes a reference from an animation.
-func (a pixbufAnimation) Unref() {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	C.gdk_pixbuf_animation_unref(_arg0)
-}
-
-// PixbufAnimationIter: an opaque struct representing an iterator which points
-// to a certain position in an animation.
-type PixbufAnimationIter interface {
-	gextras.Objector
-
-	// Advance: possibly advances an animation to a new frame. Chooses the frame
-	// based on the start time passed to gdk_pixbuf_animation_get_iter().
-	//
-	// @current_time would normally come from g_get_current_time(), and must be
-	// greater than or equal to the time passed to
-	// gdk_pixbuf_animation_get_iter(), and must increase or remain unchanged
-	// each time gdk_pixbuf_animation_iter_get_pixbuf() is called. That is, you
-	// can't go backward in time; animations only play forward.
-	//
-	// As a shortcut, pass nil for the current time and g_get_current_time()
-	// will be invoked on your behalf. So you only need to explicitly pass
-	// @current_time if you're doing something odd like playing the animation at
-	// double speed.
-	//
-	// If this function returns false, there's no need to update the animation
-	// display, assuming the display had been rendered prior to advancing; if
-	// true, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and update
-	// the display with the new pixbuf.
-	Advance(currentTime *glib.TimeVal) bool
-	// DelayTime gets the number of milliseconds the current pixbuf should be
-	// displayed, or -1 if the current pixbuf should be displayed forever.
-	// g_timeout_add() conveniently takes a timeout in milliseconds, so you can
-	// use a timeout to schedule the next update.
-	//
-	// Note that some formats, like GIF, might clamp the timeout values in the
-	// image file to avoid updates that are just too quick. The minimum timeout
-	// for GIF images is currently 20 milliseconds.
-	DelayTime() int
-	// Pixbuf gets the current pixbuf which should be displayed; the pixbuf
-	// might not be the same size as the animation itself
-	// (gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).
-	// This pixbuf should be displayed for
-	// gdk_pixbuf_animation_iter_get_delay_time() milliseconds. The caller of
-	// this function does not own a reference to the returned pixbuf; the
-	// returned pixbuf will become invalid when the iterator advances to the
-	// next frame, which may happen anytime you call
-	// gdk_pixbuf_animation_iter_advance(). Copy the pixbuf to keep it (don't
-	// just add a reference), as it may get recycled as you advance the
-	// iterator.
-	Pixbuf() Pixbuf
-	// OnCurrentlyLoadingFrame: used to determine how to respond to the
-	// area_updated signal on PixbufLoader when loading an animation.
-	// area_updated is emitted for an area of the frame currently streaming in
-	// to the loader. So if you're on the currently loading frame, you need to
-	// redraw the screen for the updated area.
-	OnCurrentlyLoadingFrame() bool
-}
-
-// pixbufAnimationIter implements the PixbufAnimationIter interface.
-type pixbufAnimationIter struct {
-	gextras.Objector
-}
-
-var _ PixbufAnimationIter = (*pixbufAnimationIter)(nil)
-
-// WrapPixbufAnimationIter wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPixbufAnimationIter(obj *externglib.Object) PixbufAnimationIter {
-	return PixbufAnimationIter{
-		Objector: obj,
-	}
-}
-
-func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPixbufAnimationIter(obj), nil
-}
-
-// Advance: possibly advances an animation to a new frame. Chooses the frame
-// based on the start time passed to gdk_pixbuf_animation_get_iter().
-//
-// @current_time would normally come from g_get_current_time(), and must be
-// greater than or equal to the time passed to
-// gdk_pixbuf_animation_get_iter(), and must increase or remain unchanged
-// each time gdk_pixbuf_animation_iter_get_pixbuf() is called. That is, you
-// can't go backward in time; animations only play forward.
-//
-// As a shortcut, pass nil for the current time and g_get_current_time()
-// will be invoked on your behalf. So you only need to explicitly pass
-// @current_time if you're doing something odd like playing the animation at
-// double speed.
-//
-// If this function returns false, there's no need to update the animation
-// display, assuming the display had been rendered prior to advancing; if
-// true, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and update
-// the display with the new pixbuf.
-func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
-	var _arg0 *C.GdkPixbufAnimationIter
-	var _arg1 *C.GTimeVal
-
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(currentTime.Native()))
-
-	var _cret C.gboolean
-
-	cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
-
-	var _ok bool
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// DelayTime gets the number of milliseconds the current pixbuf should be
-// displayed, or -1 if the current pixbuf should be displayed forever.
-// g_timeout_add() conveniently takes a timeout in milliseconds, so you can
-// use a timeout to schedule the next update.
-//
-// Note that some formats, like GIF, might clamp the timeout values in the
-// image file to avoid updates that are just too quick. The minimum timeout
-// for GIF images is currently 20 milliseconds.
-func (i pixbufAnimationIter) DelayTime() int {
-	var _arg0 *C.GdkPixbufAnimationIter
-
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.int
-
-	cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
-
-	var _gint int
-
-	_gint = (int)(_cret)
-
-	return _gint
-}
-
-// Pixbuf gets the current pixbuf which should be displayed; the pixbuf
-// might not be the same size as the animation itself
-// (gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).
-// This pixbuf should be displayed for
-// gdk_pixbuf_animation_iter_get_delay_time() milliseconds. The caller of
-// this function does not own a reference to the returned pixbuf; the
-// returned pixbuf will become invalid when the iterator advances to the
-// next frame, which may happen anytime you call
-// gdk_pixbuf_animation_iter_advance(). Copy the pixbuf to keep it (don't
-// just add a reference), as it may get recycled as you advance the
-// iterator.
-func (i pixbufAnimationIter) Pixbuf() Pixbuf {
-	var _arg0 *C.GdkPixbufAnimationIter
-
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gdk_pixbuf_animation_iter_get_pixbuf(_arg0)
-
-	var _pixbuf Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
-
-	return _pixbuf
-}
-
-// OnCurrentlyLoadingFrame: used to determine how to respond to the
-// area_updated signal on PixbufLoader when loading an animation.
-// area_updated is emitted for an area of the frame currently streaming in
-// to the loader. So if you're on the currently loading frame, you need to
-// redraw the screen for the updated area.
-func (i pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
-	var _arg0 *C.GdkPixbufAnimationIter
-
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean
-
-	cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
-
-	var _ok bool
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
+	return _pixbufNonAnim
 }
 
 type PixbufSimpleAnimIter interface {

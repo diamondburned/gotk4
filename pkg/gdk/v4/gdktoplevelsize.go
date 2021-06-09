@@ -26,9 +26,8 @@ func ToplevelSizeGetType() externglib.Type {
 	return _gType
 }
 
-// ToplevelSize: the GdkToplevelSIze struct contains information that may be
-// useful for users of GdkToplevel to compute a surface size. It also carries
-// information back with the computational result.
+// ToplevelSize: the `GdkToplevelSize` struct contains information that is
+// useful to compute the size of a toplevel.
 type ToplevelSize struct {
 	native C.GdkToplevelSize
 }
@@ -79,13 +78,15 @@ func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
 	return _boundsWidth, _boundsHeight
 }
 
-// SetMinSize: the minimum size corresponds to the limitations the toplevel can
-// be shrunk to, without resulting in incorrect painting. A user of a Toplevel
-// should calculate these given both the existing size, and the bounds retrieved
-// from the ToplevelSize object.
+// SetMinSize sets the minimum size of the toplevel.
+//
+// The minimum size corresponds to the limitations the toplevel can be shrunk
+// to, without resulting in incorrect painting. A user of a `GdkToplevel` should
+// calculate these given both the existing size, and the bounds retrieved from
+// the `GdkToplevelSize` object.
 //
 // The minimum size should be within the bounds (see
-// gdk_toplevel_size_get_bounds()).
+// [method@Gdk.ToplevelSize.get_bounds]).
 func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
 	var _arg0 *C.GdkToplevelSize
 	var _arg1 C.int
@@ -98,9 +99,11 @@ func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
 	C.gdk_toplevel_size_set_min_size(_arg0, _arg1, _arg2)
 }
 
-// SetShadowWidth: the shadow width corresponds to the part of the computed
-// surface size that would consist of the shadow margin surrounding the window,
-// would there be any.
+// SetShadowWidth sets the shadows size of the toplevel.
+//
+// The shadow width corresponds to the part of the computed surface size that
+// would consist of the shadow margin surrounding the window, would there be
+// any.
 func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) {
 	var _arg0 *C.GdkToplevelSize
 	var _arg1 C.int
@@ -117,10 +120,12 @@ func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) 
 	C.gdk_toplevel_size_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
-// SetSize sets the size the toplevel prefers to be resized to. The size should
-// be within the bounds (see gdk_toplevel_size_get_bounds()). The set size
-// should be considered as a hint, and should not be assumed to be respected by
-// the windowing system, or backend.
+// SetSize sets the size the toplevel prefers to be resized to.
+//
+// The size should be within the bounds (see
+// [method@Gdk.ToplevelSize.get_bounds]). The set size should be considered as a
+// hint, and should not be assumed to be respected by the windowing system, or
+// backend.
 func (s *ToplevelSize) SetSize(width int, height int) {
 	var _arg0 *C.GdkToplevelSize
 	var _arg1 C.int

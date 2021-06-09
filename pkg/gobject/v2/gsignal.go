@@ -78,6 +78,10 @@ const (
 	// future version. A warning will be generated if it is connected while
 	// running with G_ENABLE_DIAGNOSTIC=1. Since 2.32.
 	SignalFlagsDeprecated SignalFlags = 256
+	// SignalFlagsAccumulatorFirstRun: only used in Accumulator accumulator
+	// functions for the InvocationHint::run_type field to mark the first call
+	// to the accumulator function for a signal emission. Since 2.68.
+	SignalFlagsAccumulatorFirstRun SignalFlags = 131072
 )
 
 // SignalMatchType: the match types specify what
@@ -107,8 +111,8 @@ const (
 //
 // If the handler ID is 0 then this function does nothing.
 //
-// A macro is also included that allows this function to be used without pointer
-// casts.
+// There is also a macro version of this function so that the code will be
+// inlined.
 func ClearSignalHandler(handlerIdPtr *uint32, instance gextras.Objector) {
 	var _arg1 *C.gulong
 	var _arg2 C.gpointer

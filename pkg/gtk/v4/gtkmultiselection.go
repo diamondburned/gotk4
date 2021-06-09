@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// MultiSelection: gtkMultiSelection is an implementation of the SelectionModel
-// interface that allows selecting multiple elements.
+// MultiSelection: `GtkMultiSelection` is a `GtkSelectionModel` that allows
+// selecting multiple elements.
 type MultiSelection interface {
 	gextras.Objector
 	gio.ListModel
@@ -31,8 +31,9 @@ type MultiSelection interface {
 
 	// Model returns the underlying model of @self.
 	Model() gio.ListModel
-	// SetModel sets the model that @self should wrap. If @model is nil, @self
-	// will be empty.
+	// SetModel sets the model that @self should wrap.
+	//
+	// If @model is nil, @self will be empty.
 	SetModel(model gio.ListModel)
 }
 
@@ -95,8 +96,9 @@ func (s multiSelection) Model() gio.ListModel {
 	return _listModel
 }
 
-// SetModel sets the model that @self should wrap. If @model is nil, @self
-// will be empty.
+// SetModel sets the model that @self should wrap.
+//
+// If @model is nil, @self will be empty.
 func (s multiSelection) SetModel(model gio.ListModel) {
 	var _arg0 *C.GtkMultiSelection
 	var _arg1 *C.GListModel

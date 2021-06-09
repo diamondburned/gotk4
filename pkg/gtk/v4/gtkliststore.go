@@ -21,11 +21,13 @@ func init() {
 	})
 }
 
-// ListStore: the ListStore object is a list model for use with a TreeView
-// widget. It implements the TreeModel interface, and consequentialy, can use
-// all of the methods available there. It also implements the TreeSortable
-// interface so it can be sorted by the view. Finally, it also implements the
-// tree [drag and drop][gtk4-GtkTreeView-drag-and-drop] interfaces.
+// ListStore: a list-like data structure that can be used with the GtkTreeView
+//
+// The ListStore object is a list model for use with a TreeView widget. It
+// implements the TreeModel interface, and consequentialy, can use all of the
+// methods available there. It also implements the TreeSortable interface so it
+// can be sorted by the view. Finally, it also implements the tree [drag and
+// drop][gtk4-GtkTreeView-drag-and-drop] interfaces.
 //
 // The ListStore can accept most GObject types as a column type, though it can’t
 // accept all custom types. Internally, it will keep a copy of data passed in
@@ -91,8 +93,9 @@ type ListStore interface {
 	// gtk_list_store_set_value().
 	InsertBefore(sibling *TreeIter) TreeIter
 	// InsertWithValuesv: a variant of gtk_list_store_insert_with_values() which
-	// takes the columns and values as two arrays, instead of varargs. This
-	// function is mainly intended for language-bindings.
+	// takes the columns and values as two arrays, instead of varargs.
+	//
+	// This function is mainly intended for language-bindings.
 	InsertWithValuesv() TreeIter
 	// IterIsValid: > This function is slow. Only use it for debugging and/or
 	// testing > purposes.
@@ -246,8 +249,9 @@ func (l listStore) InsertBefore(sibling *TreeIter) TreeIter {
 }
 
 // InsertWithValuesv: a variant of gtk_list_store_insert_with_values() which
-// takes the columns and values as two arrays, instead of varargs. This
-// function is mainly intended for language-bindings.
+// takes the columns and values as two arrays, instead of varargs.
+//
+// This function is mainly intended for language-bindings.
 func (l listStore) InsertWithValuesv() TreeIter {
 	var _arg0 *C.GtkListStore
 

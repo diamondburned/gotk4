@@ -44,9 +44,8 @@ func InternMIMEType(string string) string {
 	return _utf8
 }
 
-// ContentFormatsBuilder: a ContentFormatsBuilder struct is an opaque struct. It
-// is meant to not be kept around and only be used to create new ContentFormats
-// objects.
+// ContentFormatsBuilder: a `GdkContentFormatsBuilder` is an auxiliary struct
+// used to create new `GdkContentFormats`, and should not be kept around.
 type ContentFormatsBuilder struct {
 	native C.GdkContentFormatsBuilder
 }
@@ -99,7 +98,7 @@ func (b *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	C.gdk_content_formats_builder_add_formats(_arg0, _arg1)
 }
 
-// AddGType appends @gtype to @builder if it has not already been added.
+// AddGType appends @type to @builder if it has not already been added.
 func (b *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var _arg0 *C.GdkContentFormatsBuilder
 	var _arg1 C.GType
@@ -122,7 +121,7 @@ func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	C.gdk_content_formats_builder_add_mime_type(_arg0, _arg1)
 }
 
-// FreeToFormats creates a new ContentFormats from the current state of the
+// FreeToFormats creates a new `GdkContentFormats` from the current state of the
 // given @builder, and frees the @builder instance.
 func (b *ContentFormatsBuilder) FreeToFormats() *ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder
@@ -145,7 +144,7 @@ func (b *ContentFormatsBuilder) FreeToFormats() *ContentFormats {
 
 // Ref acquires a reference on the given @builder.
 //
-// This function is intended primarily for bindings. ContentFormatsBuilder
+// This function is intended primarily for bindings. `GdkContentFormatsBuilder`
 // objects should not be kept around.
 func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 	var _arg0 *C.GdkContentFormatsBuilder
@@ -163,13 +162,13 @@ func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 	return _contentFormatsBuilder
 }
 
-// ToFormats creates a new ContentFormats from the given @builder.
+// ToFormats creates a new `GdkContentFormats` from the given @builder.
 //
-// The given ContentFormatsBuilder is reset once this function returns; you
+// The given `GdkContentFormatsBuilder` is reset once this function returns; you
 // cannot call this function multiple times on the same @builder instance.
 //
 // This function is intended primarily for bindings. C code should use
-// gdk_content_formats_builder_free_to_formats().
+// [method@Gdk.ContentFormatsBuilder.free_to_formats].
 func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var _arg0 *C.GdkContentFormatsBuilder
 

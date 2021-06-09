@@ -63,9 +63,11 @@ func gotk4_CellCallback(arg0 *C.GtkCellRenderer, arg1 C.gpointer) C.gboolean {
 	}
 }
 
-// CellArea: the CellArea is an abstract class for CellLayout widgets (also
-// referred to as "layouting widgets") to interface with an arbitrary number of
-// CellRenderers and interact with the user for a given TreeModel row.
+// CellArea: an abstract class for laying out GtkCellRenderers
+//
+// The CellArea is an abstract class for CellLayout widgets (also referred to as
+// "layouting widgets") to interface with an arbitrary number of CellRenderers
+// and interact with the user for a given TreeModel row.
 //
 // The cell area handles events, focus navigation, drawing and size requests and
 // allocations for a given row of data.

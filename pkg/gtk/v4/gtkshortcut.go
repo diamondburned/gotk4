@@ -22,21 +22,20 @@ func init() {
 	})
 }
 
-// Shortcut: gtkShortcut is the low level object used for managing keyboard
-// shortcuts.
+// Shortcut: a `GtkShortcut` describes a keyboard shortcut.
 //
 // It contains a description of how to trigger the shortcut via a
-// ShortcutTrigger and a way to activate the shortcut on a widget via
-// ShortcutAction.
+// [class@Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget
+// via a [class@Gtk.ShortcutAction].
 //
-// The actual work is usually done via ShortcutController, which decides if and
-// when to activate a shortcut. Using that controller directly however is rarely
-// necessary as various higher level convenience APIs exist on Widgets that make
-// it easier to use shortcuts in GTK.
+// The actual work is usually done via [class@Gtk.ShortcutController], which
+// decides if and when to activate a shortcut. Using that controller directly
+// however is rarely necessary as various higher level convenience APIs exist on
+// Widgets that make it easier to use shortcuts in GTK.
 //
-// Shortcut does provide functionality to make it easy for users to work with
-// shortcuts, either by providing informational strings for display purposes or
-// by allowing shortcuts to be configured.
+// `GtkShortcut` does provide functionality to make it easy for users to work
+// with shortcuts, either by providing informational strings for display
+// purposes or by allowing shortcuts to be configured.
 type Shortcut interface {
 	gextras.Objector
 

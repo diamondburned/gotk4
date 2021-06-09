@@ -15,9 +15,10 @@ import (
 import "C"
 
 // PangoLayoutGetClipRegion obtains a clip region which contains the areas where
-// the given ranges of text would be drawn. @x_origin and @y_origin are the top
-// left point to center the layout. @index_ranges should contain ranges of bytes
-// in the layout’s text.
+// the given ranges of text would be drawn.
+//
+// @x_origin and @y_origin are the top left point to center the layout.
+// @index_ranges should contain ranges of bytes in the layout’s text.
 //
 // Note that the regions returned correspond to logical extents of the text
 // ranges, not ink extents. So the drawn layout may in fact touch areas out of

@@ -24,6 +24,10 @@ func init() {
 	})
 }
 
+// AnyFilter: `GtkAnyFilter` matches an item when at least one of its filters
+// matches.
+//
+// To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
 	MultiFilter
 	gio.ListModel
@@ -68,6 +72,10 @@ func NewAnyFilter() AnyFilter {
 	return _anyFilter
 }
 
+// EveryFilter: `GtkEveryFilter` matches an item when each of its filters
+// matches.
+//
+// To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
 	MultiFilter
 	gio.ListModel
@@ -112,14 +120,8 @@ func NewEveryFilter() EveryFilter {
 	return _everyFilter
 }
 
-// MultiFilter: gtkMultiFilter is the base type that implements support for
-// handling multiple filters.
-//
-// GtkAnyFilter is a subclass of GtkMultiFilter that matches an item when at
-// least one of its filters matches.
-//
-// GtkEveryFilter is a subclass of GtkMultiFilter that matches an item when each
-// of its filters matches.
+// MultiFilter: `GtkMultiFilter` is the base class for filters that combine
+// multiple filters.
 type MultiFilter interface {
 	Filter
 	gio.ListModel
@@ -128,8 +130,10 @@ type MultiFilter interface {
 	// Append adds a @filter to @self to use for matching.
 	Append(filter Filter)
 	// Remove removes the filter at the given @position from the list of filters
-	// used by @self. If @position is larger than the number of filters, nothing
-	// happens and the function returns.
+	// used by @self.
+	//
+	// If @position is larger than the number of filters, nothing happens and
+	// the function returns.
 	Remove(position uint)
 }
 
@@ -170,8 +174,10 @@ func (s multiFilter) Append(filter Filter) {
 }
 
 // Remove removes the filter at the given @position from the list of filters
-// used by @self. If @position is larger than the number of filters, nothing
-// happens and the function returns.
+// used by @self.
+//
+// If @position is larger than the number of filters, nothing happens and
+// the function returns.
 func (s multiFilter) Remove(position uint) {
 	var _arg0 *C.GtkMultiFilter
 	var _arg1 C.guint

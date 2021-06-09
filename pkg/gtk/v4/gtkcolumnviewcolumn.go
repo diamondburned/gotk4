@@ -22,14 +22,18 @@ func init() {
 	})
 }
 
-// ColumnViewColumn: gtkColumnViewColumn represents the columns being added to
-// ColumnView.
+// ColumnViewColumn: `GtkColumnViewColumn` represents the columns being added to
+// `GtkColumnView`.
+//
+// The main ingredient for a `GtkColumnViewColumn` is the `GtkListItemFactory`
+// that tells the columnview how to create cells for this column from items in
+// the model.
 //
 // Columns have a title, and can optionally have a header menu set with
-// gtk_column_view_column_set_header_menu().
+// [method@Gtk.ColumnViewColumn.set_header_menu].
 //
 // A sorter can be associated with a column using
-// gtk_column_view_column_set_sorter(), to let users influence sorting by
+// [method@Gtk.ColumnViewColumn.set_sorter], to let users influence sorting by
 // clicking on the column header.
 type ColumnViewColumn interface {
 	gextras.Objector
@@ -61,8 +65,8 @@ type ColumnViewColumn interface {
 	// The extra space is shared equally amongst all columns that have the
 	// expand set to true.
 	SetExpand(expand bool)
-	// SetFactory sets the ListItemFactory to use for populating list items for
-	// this column.
+	// SetFactory sets the `GtkListItemFactory` to use for populating list items
+	// for this column.
 	SetFactory(factory ListItemFactory)
 	// SetFixedWidth: if @fixed_width is not -1, sets the fixed width of
 	// @column; otherwise unsets it.
@@ -81,14 +85,15 @@ type ColumnViewColumn interface {
 	// clicking on its header.
 	//
 	// This sorter can be made active by clicking on the column header, or by
-	// calling gtk_column_view_sort_by_column().
+	// calling [method@Gtk.ColumnView.sort_by_column].
 	//
-	// See gtk_column_view_get_sorter() for the necessary steps for setting up
-	// customizable sorting for ColumnView.
+	// See [method@Gtk.ColumnView.get_sorter] for the necessary steps for
+	// setting up customizable sorting for [class@Gtk.ColumnView].
 	SetSorter(sorter Sorter)
-	// SetTitle sets the title of this column. The title is displayed in the
-	// header of a ColumnView for this column and is therefore user-facing text
-	// that should be translated.
+	// SetTitle sets the title of this column.
+	//
+	// The title is displayed in the header of a `GtkColumnView` for this column
+	// and is therefore user-facing text that should be translated.
 	SetTitle(title string)
 	// SetVisible sets whether this column should be visible in views.
 	SetVisible(visible bool)
@@ -314,8 +319,8 @@ func (s columnViewColumn) SetExpand(expand bool) {
 	C.gtk_column_view_column_set_expand(_arg0, _arg1)
 }
 
-// SetFactory sets the ListItemFactory to use for populating list items for
-// this column.
+// SetFactory sets the `GtkListItemFactory` to use for populating list items
+// for this column.
 func (s columnViewColumn) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkColumnViewColumn
 	var _arg1 *C.GtkListItemFactory
@@ -372,10 +377,10 @@ func (s columnViewColumn) SetResizable(resizable bool) {
 // clicking on its header.
 //
 // This sorter can be made active by clicking on the column header, or by
-// calling gtk_column_view_sort_by_column().
+// calling [method@Gtk.ColumnView.sort_by_column].
 //
-// See gtk_column_view_get_sorter() for the necessary steps for setting up
-// customizable sorting for ColumnView.
+// See [method@Gtk.ColumnView.get_sorter] for the necessary steps for
+// setting up customizable sorting for [class@Gtk.ColumnView].
 func (s columnViewColumn) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkColumnViewColumn
 	var _arg1 *C.GtkSorter
@@ -386,9 +391,10 @@ func (s columnViewColumn) SetSorter(sorter Sorter) {
 	C.gtk_column_view_column_set_sorter(_arg0, _arg1)
 }
 
-// SetTitle sets the title of this column. The title is displayed in the
-// header of a ColumnView for this column and is therefore user-facing text
-// that should be translated.
+// SetTitle sets the title of this column.
+//
+// The title is displayed in the header of a `GtkColumnView` for this column
+// and is therefore user-facing text that should be translated.
 func (s columnViewColumn) SetTitle(title string) {
 	var _arg0 *C.GtkColumnViewColumn
 	var _arg1 *C.char

@@ -24,9 +24,10 @@ func init() {
 	})
 }
 
-// CSSSection defines a part of a CSS document. Because sections are nested into
-// one another, you can use gtk_css_section_get_parent() to get the containing
-// region.
+// CSSSection defines a part of a CSS document.
+//
+// Because sections are nested into one another, you can use
+// gtk_css_section_get_parent() to get the containing region.
 type CSSSection struct {
 	native C.GtkCssSection
 }
@@ -92,9 +93,10 @@ func (s *CSSSection) EndLocation() *CSSLocation {
 	return _cssLocation
 }
 
-// File gets the file that @section was parsed from. If no such file exists, for
-// example because the CSS was loaded via @gtk_css_provider_load_from_data(),
-// then nil is returned.
+// File gets the file that @section was parsed from.
+//
+// If no such file exists, for example because the CSS was loaded via
+// [method@Gtk.CssProvider.load_from_data], then `NULL` is returned.
 func (s *CSSSection) File() gio.File {
 	var _arg0 *C.GtkCssSection
 
@@ -111,12 +113,14 @@ func (s *CSSSection) File() gio.File {
 	return _file
 }
 
-// Parent gets the parent section for the given @section. The parent section is
-// the section that contains this @section. A special case are sections of type
-// K_CSS_SECTION_DOCUMENT. Their parent will either be nil if they are the
-// original CSS document that was loaded by gtk_css_provider_load_from_file() or
-// a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
-// from a different file.
+// Parent gets the parent section for the given `section`.
+//
+// The parent section is the section that contains this `section`. A special
+// case are sections of type `GTK_CSS_SECTION_DOCUMEN`T. Their parent will
+// either be `NULL` if they are the original CSS document that was loaded by
+// [method@Gtk.CssProvider.load_from_file] or a section of type
+// `GTK_CSS_SECTION_IMPORT` if it was loaded with an `@import` rule from a
+// different file.
 func (s *CSSSection) Parent() *CSSSection {
 	var _arg0 *C.GtkCssSection
 
@@ -151,9 +155,10 @@ func (s *CSSSection) StartLocation() *CSSLocation {
 	return _cssLocation
 }
 
-// Print prints the @section into @string in a human-readable form. This is a
-// form like `gtk.css:32:1-23` to denote line 32, characters 1 to 23 in the file
-// gtk.css.
+// Print prints the `section` into `string` in a human-readable form.
+//
+// This is a form like `gtk.css:32:1-23` to denote line 32, characters 1 to 23
+// in the file `gtk.css`.
 func (s *CSSSection) Print(string *glib.String) {
 	var _arg0 *C.GtkCssSection
 	var _arg1 *C.GString
@@ -164,7 +169,7 @@ func (s *CSSSection) Print(string *glib.String) {
 	C.gtk_css_section_print(_arg0, _arg1)
 }
 
-// Ref increments the reference count on @section.
+// Ref increments the reference count on `section`.
 func (s *CSSSection) Ref() *CSSSection {
 	var _arg0 *C.GtkCssSection
 
@@ -185,7 +190,7 @@ func (s *CSSSection) Ref() *CSSSection {
 }
 
 // String prints the section into a human-readable text form using
-// gtk_css_section_print().
+// [method@Gtk.CssSection.print].
 func (s *CSSSection) String() string {
 	var _arg0 *C.GtkCssSection
 
@@ -203,7 +208,7 @@ func (s *CSSSection) String() string {
 	return _utf8
 }
 
-// Unref decrements the reference count on @section, freeing the structure if
+// Unref decrements the reference count on `section`, freeing the structure if
 // the reference count reaches 0.
 func (s *CSSSection) Unref() {
 	var _arg0 *C.GtkCssSection

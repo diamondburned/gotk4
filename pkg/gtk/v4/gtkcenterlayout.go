@@ -21,9 +21,12 @@ func init() {
 	})
 }
 
-// CenterLayout: a CenterLayout is a layout manager that manages up to three
-// children. The start widget is allocated at the start of the layout (left in
-// LRT layouts and right in RTL ones), and the end widget at the end.
+// CenterLayout: `GtkCenterLayout` is a layout manager that manages up to three
+// children.
+//
+// The start widget is allocated at the start of the layout (left in
+// left-to-right locales and right in right-to-left ones), and the end widget at
+// the end.
 //
 // The center widget is centered regarding the full width of the layout's.
 type CenterLayout interface {

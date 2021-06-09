@@ -22,9 +22,19 @@ func init() {
 	})
 }
 
-// EventController is a base, low-level implementation for event controllers.
-// Those react to a series of Events, and possibly trigger actions as a
-// consequence of those.
+// EventController: `GtkEventController` is the base class for event
+// controllers.
+//
+// These are ancillary objects associated to widgets, which react to
+// `GdkEvents`, and possibly trigger actions as a consequence.
+//
+// Event controllers are added to a widget with
+// [method@Gtk.Widget.add_controller]. It is rarely necessary to explicitly
+// remove a controller with [method@Gtk.Widget.remove_controller].
+//
+// See the chapter of input handling (input-handling.html) for an overview of
+// the basic concepts, such as the capture and bubble phases of even
+// propagation.
 type EventController interface {
 	gextras.Objector
 
@@ -49,9 +59,7 @@ type EventController interface {
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
 	Widget() Widget
-	// Reset resets the @controller to a clean state. Every interaction the
-	// controller did through gtk_event_controller_handle_event() will be
-	// dropped at this point.
+	// Reset resets the @controller to a clean state.
 	Reset()
 	// SetName sets a name on the controller that can be used for debugging.
 	SetName(name string)
@@ -66,8 +74,7 @@ type EventController interface {
 	// handles events.
 	//
 	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will. In that phase,
-	// the events can be managed by calling gtk_event_controller_handle_event().
+	// performed, but other additional gesture maintenance will.
 	SetPropagationPhase(phase PropagationPhase)
 }
 
@@ -233,9 +240,7 @@ func (c eventController) Widget() Widget {
 	return _widget
 }
 
-// Reset resets the @controller to a clean state. Every interaction the
-// controller did through gtk_event_controller_handle_event() will be
-// dropped at this point.
+// Reset resets the @controller to a clean state.
 func (c eventController) Reset() {
 	var _arg0 *C.GtkEventController
 
@@ -276,8 +281,7 @@ func (c eventController) SetPropagationLimit(limit PropagationLimit) {
 // handles events.
 //
 // If @phase is GTK_PHASE_NONE, no automatic event handling will be
-// performed, but other additional gesture maintenance will. In that phase,
-// the events can be managed by calling gtk_event_controller_handle_event().
+// performed, but other additional gesture maintenance will.
 func (c eventController) SetPropagationPhase(phase PropagationPhase) {
 	var _arg0 *C.GtkEventController
 	var _arg1 C.GtkPropagationPhase

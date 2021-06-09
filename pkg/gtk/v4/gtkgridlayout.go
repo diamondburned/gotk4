@@ -22,20 +22,20 @@ func init() {
 	})
 }
 
-// GridLayout: gtkGridLayout is a layout manager which arranges child widgets in
-// rows and columns, with arbitrary positions and horizontal/vertical spans.
+// GridLayout: `GtkGridLayout` is a layout manager which arranges child widgets
+// in rows and columns.
 //
 // Children have an "attach point" defined by the horizontal and vertical index
 // of the cell they occupy; children can span multiple rows or columns. The
 // layout properties for setting the attach points and spans are set using the
-// GridLayoutChild associated to each child widget.
+// [class@Gtk.GridLayoutChild] associated to each child widget.
 //
-// The behaviour of GtkGrid when several children occupy the same grid cell is
-// undefined.
+// The behaviour of `GtkGridLayout` when several children occupy the same grid
+// cell is undefined.
 //
-// GtkGridLayout can be used like a BoxLayout if all children are attached to
-// the same row or column; however, if you only ever need a single row or
-// column, you should consider using BoxLayout.
+// `GtkGridLayout` can be used like a `GtkBoxLayout` if all children are
+// attached to the same row or column; however, if you only ever need a single
+// row or column, you should consider using `GtkBoxLayout`.
 type GridLayout interface {
 	LayoutManager
 
@@ -48,9 +48,11 @@ type GridLayout interface {
 	// ColumnSpacing retrieves the spacing set with
 	// gtk_grid_layout_set_column_spacing().
 	ColumnSpacing() uint
-	// RowBaselinePosition returns the baseline position of @row as set by
-	// gtk_grid_layout_set_row_baseline_position(), or the default value of
-	// GTK_BASELINE_POSITION_CENTER.
+	// RowBaselinePosition returns the baseline position of @row.
+	//
+	// If no value has been set with
+	// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
+	// GTK_BASELINE_POSITION_CENTER is returned.
 	RowBaselinePosition(row int) BaselinePosition
 	// RowHomogeneous checks whether all rows of @grid should have the same
 	// height.
@@ -172,9 +174,11 @@ func (g gridLayout) ColumnSpacing() uint {
 	return _guint
 }
 
-// RowBaselinePosition returns the baseline position of @row as set by
-// gtk_grid_layout_set_row_baseline_position(), or the default value of
-// GTK_BASELINE_POSITION_CENTER.
+// RowBaselinePosition returns the baseline position of @row.
+//
+// If no value has been set with
+// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
+// GTK_BASELINE_POSITION_CENTER is returned.
 func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
 	var _arg0 *C.GtkGridLayout
 	var _arg1 C.int
@@ -313,7 +317,7 @@ func (g gridLayout) SetRowSpacing(spacing uint) {
 	C.gtk_grid_layout_set_row_spacing(_arg0, _arg1)
 }
 
-// GridLayoutChild: layout properties for children of GridLayout.
+// GridLayoutChild: `GtkLayoutChild` subclass for children in a `GtkGridLayout`.
 type GridLayoutChild interface {
 	LayoutChild
 

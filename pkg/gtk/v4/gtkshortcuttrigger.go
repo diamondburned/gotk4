@@ -27,16 +27,23 @@ func init() {
 	})
 }
 
-// AlternativeTrigger: a ShortcutTrigger that triggers when either of two
-// ShortcutTriggers trigger.
+// AlternativeTrigger: a `GtkShortcutTrigger` that combines two triggers.
+//
+// The `GtkAlternativeTrigger` triggers when either of two trigger.
+//
+// This can be cascaded to combine more than two triggers.
 type AlternativeTrigger interface {
 	ShortcutTrigger
 
 	// First gets the first of the two alternative triggers that may trigger
-	// @self. gtk_alternative_trigger_get_second() will return the other one.
+	// @self.
+	//
+	// [method@Gtk.AlternativeTrigger.get_second] will return the other one.
 	First() ShortcutTrigger
 	// Second gets the second of the two alternative triggers that may trigger
-	// @self. gtk_alternative_trigger_get_first() will return the other one.
+	// @self.
+	//
+	// [method@Gtk.AlternativeTrigger.get_first] will return the other one.
 	Second() ShortcutTrigger
 }
 
@@ -81,7 +88,9 @@ func NewAlternativeTrigger(first ShortcutTrigger, second ShortcutTrigger) Altern
 }
 
 // First gets the first of the two alternative triggers that may trigger
-// @self. gtk_alternative_trigger_get_second() will return the other one.
+// @self.
+//
+// [method@Gtk.AlternativeTrigger.get_second] will return the other one.
 func (s alternativeTrigger) First() ShortcutTrigger {
 	var _arg0 *C.GtkAlternativeTrigger
 
@@ -99,7 +108,9 @@ func (s alternativeTrigger) First() ShortcutTrigger {
 }
 
 // Second gets the second of the two alternative triggers that may trigger
-// @self. gtk_alternative_trigger_get_first() will return the other one.
+// @self.
+//
+// [method@Gtk.AlternativeTrigger.get_first] will return the other one.
 func (s alternativeTrigger) Second() ShortcutTrigger {
 	var _arg0 *C.GtkAlternativeTrigger
 
@@ -116,8 +127,8 @@ func (s alternativeTrigger) Second() ShortcutTrigger {
 	return _shortcutTrigger
 }
 
-// KeyvalTrigger: a ShortcutTrigger that triggers when a specific keyval and
-// (optionally) modifiers are pressed.
+// KeyvalTrigger: a `GtkShortcutTrigger` that triggers when a specific keyval
+// and modifiers are pressed.
 type KeyvalTrigger interface {
 	ShortcutTrigger
 
@@ -203,8 +214,11 @@ func (s keyvalTrigger) Modifiers() gdk.ModifierType {
 	return _modifierType
 }
 
-// MnemonicTrigger: a ShortcutTrigger that triggers when a specific mnemonic is
-// pressed.
+// MnemonicTrigger: a `GtkShortcutTrigger` that triggers when a specific
+// mnemonic is pressed.
+//
+// Mnemonics require a *mnemonic modifier* (typically <kbd>Alt</kbd>) to be
+// pressed together with the mnemonic key.
 type MnemonicTrigger interface {
 	ShortcutTrigger
 
@@ -267,7 +281,7 @@ func (s mnemonicTrigger) Keyval() uint {
 	return _guint
 }
 
-// NeverTrigger: a ShortcutTrigger that never triggers.
+// NeverTrigger: a `GtkShortcutTrigger` that never triggers.
 type NeverTrigger interface {
 	ShortcutTrigger
 }
@@ -293,30 +307,33 @@ func marshalNeverTrigger(p uintptr) (interface{}, error) {
 	return WrapNeverTrigger(obj), nil
 }
 
-// ShortcutTrigger is the object used to track if a Shortcut should be
-// activated. For this purpose, gtk_shortcut_trigger_trigger() can be called on
-// a Event.
+// ShortcutTrigger: `GtkShortcutTrigger` tracks how a `GtkShortcut` should be
+// activated.
 //
-// ShortcutTriggers contain functions that allow easy presentation to end users
-// as well as being printed for debugging.
+// To find out if a `GtkShortcutTrigger` triggers, you can call
+// [method@Gtk.ShortcutTrigger.trigger] on a `GdkEvent`.
 //
-// All ShortcutTriggers are immutable, you can only specify their properties
-// during construction. If you want to change a trigger, you have to replace it
-// with a new one.
+// `GtkShortcutTriggers` contain functions that allow easy presentation to end
+// users as well as being printed for debugging.
+//
+// All `GtkShortcutTriggers` are immutable, you can only specify their
+// properties during construction. If you want to change a trigger, you have to
+// replace it with a new one.
 type ShortcutTrigger interface {
 	gextras.Objector
 
 	// Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
-	// allow use of this function as a Func. They must each be a
-	// ShortcutTrigger.
+	// allow use of this function as a Func.
+	//
+	// They must each be a `GtkShortcutTrigger`.
 	Compare(trigger2 ShortcutTrigger) int
 	// Equal checks if @trigger1 and @trigger2 trigger under the same
 	// conditions.
 	//
 	// The types of @one and @two are #gconstpointer only to allow use of this
-	// function with Table. They must each be a ShortcutTrigger.
+	// function with Table. They must each be a `GtkShortcutTrigger`.
 	Equal(trigger2 ShortcutTrigger) bool
-	// Hash generates a hash value for a ShortcutTrigger.
+	// Hash generates a hash value for a `GtkShortcutTrigger`.
 	//
 	// The output of this function is guaranteed to be the same for a given
 	// value only per-process. It may change between different processor
@@ -324,7 +341,7 @@ type ShortcutTrigger interface {
 	// as a basis for building protocols or file formats.
 	//
 	// The types of @trigger is #gconstpointer only to allow use of this
-	// function with Table. They must each be a ShortcutTrigger.
+	// function with Table. They must each be a `GtkShortcutTrigger`.
 	Hash() uint
 	// Print prints the given trigger into a string for the developer. This is
 	// meant for debugging and logging.
@@ -332,9 +349,10 @@ type ShortcutTrigger interface {
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
 	Print(string *glib.String)
-	// PrintLabel prints the given trigger into a string. This function is
-	// returning a translated string for presentation to end users for example
-	// in menu items or in help texts.
+	// PrintLabel prints the given trigger into a string.
+	//
+	// This function is returning a translated string for presentation to end
+	// users for example in menu items or in help texts.
 	//
 	// The @display in use may influence the resulting string in various forms,
 	// such as resolving hardware keycodes or by causing display-specific
@@ -343,9 +361,10 @@ type ShortcutTrigger interface {
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
 	PrintLabel(display gdk.Display, string *glib.String) bool
-	// ToLabel gets textual representation for the given trigger. This function
-	// is returning a translated string for presentation to end users for
-	// example in menu items or in help texts.
+	// ToLabel gets textual representation for the given trigger.
+	//
+	// This function is returning a translated string for presentation to end
+	// users for example in menu items or in help texts.
 	//
 	// The @display in use may influence the resulting string in various forms,
 	// such as resolving hardware keycodes or by causing display-specific
@@ -354,8 +373,10 @@ type ShortcutTrigger interface {
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
 	ToLabel(display gdk.Display) string
-	// String prints the given trigger into a human-readable string. This is a
-	// small wrapper around gtk_shortcut_trigger_print() to help when debugging.
+	// String prints the given trigger into a human-readable string.
+	//
+	// This is a small wrapper around [method@Gtk.ShortcutTrigger.print] to help
+	// when debugging.
 	String() string
 	// Trigger checks if the given @event triggers @self.
 	Trigger(event gdk.Event, enableMnemonics bool) gdk.KeyMatch
@@ -401,8 +422,9 @@ func NewShortcutTriggerParseString(string string) ShortcutTrigger {
 }
 
 // Compare: the types of @trigger1 and @trigger2 are #gconstpointer only to
-// allow use of this function as a Func. They must each be a
-// ShortcutTrigger.
+// allow use of this function as a Func.
+//
+// They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
 	var _arg0 C.gpointer
 	var _arg1 C.gpointer
@@ -425,7 +447,7 @@ func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
 // conditions.
 //
 // The types of @one and @two are #gconstpointer only to allow use of this
-// function with Table. They must each be a ShortcutTrigger.
+// function with Table. They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 	var _arg0 C.gpointer
 	var _arg1 C.gpointer
@@ -446,7 +468,7 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 	return _ok
 }
 
-// Hash generates a hash value for a ShortcutTrigger.
+// Hash generates a hash value for a `GtkShortcutTrigger`.
 //
 // The output of this function is guaranteed to be the same for a given
 // value only per-process. It may change between different processor
@@ -454,7 +476,7 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 // as a basis for building protocols or file formats.
 //
 // The types of @trigger is #gconstpointer only to allow use of this
-// function with Table. They must each be a ShortcutTrigger.
+// function with Table. They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Hash() uint {
 	var _arg0 C.gpointer
 
@@ -486,9 +508,10 @@ func (s shortcutTrigger) Print(string *glib.String) {
 	C.gtk_shortcut_trigger_print(_arg0, _arg1)
 }
 
-// PrintLabel prints the given trigger into a string. This function is
-// returning a translated string for presentation to end users for example
-// in menu items or in help texts.
+// PrintLabel prints the given trigger into a string.
+//
+// This function is returning a translated string for presentation to end
+// users for example in menu items or in help texts.
 //
 // The @display in use may influence the resulting string in various forms,
 // such as resolving hardware keycodes or by causing display-specific
@@ -518,9 +541,10 @@ func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bo
 	return _ok
 }
 
-// ToLabel gets textual representation for the given trigger. This function
-// is returning a translated string for presentation to end users for
-// example in menu items or in help texts.
+// ToLabel gets textual representation for the given trigger.
+//
+// This function is returning a translated string for presentation to end
+// users for example in menu items or in help texts.
 //
 // The @display in use may influence the resulting string in various forms,
 // such as resolving hardware keycodes or by causing display-specific
@@ -547,8 +571,10 @@ func (s shortcutTrigger) ToLabel(display gdk.Display) string {
 	return _utf8
 }
 
-// String prints the given trigger into a human-readable string. This is a
-// small wrapper around gtk_shortcut_trigger_print() to help when debugging.
+// String prints the given trigger into a human-readable string.
+//
+// This is a small wrapper around [method@Gtk.ShortcutTrigger.print] to help
+// when debugging.
 func (s shortcutTrigger) String() string {
 	var _arg0 *C.GtkShortcutTrigger
 

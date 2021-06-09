@@ -21,10 +21,12 @@ func init() {
 
 // TreeIterCompareFunc: a GtkTreeIterCompareFunc should return a negative
 // integer, zero, or a positive integer if @a sorts before @b, @a sorts with @b,
-// or @a sorts after @b respectively. If two iters compare as equal, their order
-// in the sorted model is undefined. In order to ensure that the TreeSortable
-// behaves as expected, the GtkTreeIterCompareFunc must define a partial order
-// on the model, i.e. it must be reflexive, antisymmetric and transitive.
+// or @a sorts after @b respectively.
+//
+// If two iters compare as equal, their order in the sorted model is undefined.
+// In order to ensure that the TreeSortable behaves as expected, the
+// GtkTreeIterCompareFunc must define a partial order on the model, i.e. it must
+// be reflexive, antisymmetric and transitive.
 //
 // For example, if @model is a product catalogue, then a compare function for
 // the “price” column could be one which returns `price_of(@a) - price_of(@b)`.
@@ -84,6 +86,8 @@ type TreeSortableOverrider interface {
 	SortColumnChanged()
 }
 
+// TreeSortable: the interface for sortable models used by GtkTreeView
+//
 // TreeSortable is an interface to be implemented by tree models which support
 // sorting. The TreeView uses the methods provided by this interface to sort the
 // model.

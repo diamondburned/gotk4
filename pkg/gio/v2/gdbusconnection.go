@@ -198,7 +198,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // (ie: to verify that the object path is valid).
 //
 // Hierarchies are not supported; the items that you return should not contain
-// the '/' character.
+// the `/` character.
 //
 // The return value will be freed with g_strfreev().
 type DBusSubtreeEnumerateFunc func() (utf8s []string)
@@ -214,15 +214,12 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	utf8s := fn()
 
 	cret = (**C.gchar)(C.malloc((len(utf8s) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(cret))
-
 	{
 		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(cret), int(len(utf8s)))
 
 		for i := range utf8s {
 			cret = (*C.gchar)(C.CString(utf8s))
-			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 }
@@ -245,7 +242,7 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 // The difference between returning nil and an array containing zero items is
 // that the standard DBus interfaces will returned to the remote introspector in
 // the empty array case, but not in the nil case.
-type DBusSubtreeIntrospectFunc func() (dBusInterfaceInfo **DBusInterfaceInfo)
+type DBusSubtreeIntrospectFunc func() (dBusInterfaceInfos []*DBusInterfaceInfo)
 
 //export gotk4_DBusSubtreeIntrospectFunc
 func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
@@ -255,9 +252,17 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	}
 
 	fn := v.(DBusSubtreeIntrospectFunc)
-	dBusInterfaceInfo := fn()
+	dBusInterfaceInfos := fn()
 
-	cret = (**C.GDBusInterfaceInfo)(unsafe.Pointer(dBusInterfaceInfo.Native()))
+	cret = (**C.GDBusInterfaceInfo)(C.malloc((len(dBusInterfaceInfos) + 1) * unsafe.Sizeof(int(0))))
+	{
+		var out []*C.GDBusInterfaceInfo
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(cret), int(len(dBusInterfaceInfos)))
+
+		for i := range dBusInterfaceInfos {
+			cret = (*C.GDBusInterfaceInfo)(unsafe.Pointer(dBusInterfaceInfos.Native()))
+		}
+	}
 }
 
 // BusGet: asynchronously connects to the message bus specified by @bus_type.

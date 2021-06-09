@@ -22,16 +22,16 @@ func init() {
 	})
 }
 
-// ATContext: gtkATContext is an abstract class provided by GTK to communicate
+// ATContext: `GtkATContext` is an abstract class provided by GTK to communicate
 // to platform-specific assistive technologies API.
 //
-// Each platform supported by GTK implements a ATContext subclass, and is
+// Each platform supported by GTK implements a `GtkATContext` subclass, and is
 // responsible for updating the accessible state in response to state changes in
-// Accessible.
+// `GtkAccessible`.
 type ATContext interface {
 	gextras.Objector
 
-	// Accessible retrieves the Accessible using this context.
+	// Accessible retrieves the `GtkAccessible` using this context.
 	Accessible() Accessible
 	// AccessibleRole retrieves the accessible role of this context.
 	AccessibleRole() AccessibleRole
@@ -79,7 +79,7 @@ func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, di
 	return _atContext
 }
 
-// Accessible retrieves the Accessible using this context.
+// Accessible retrieves the `GtkAccessible` using this context.
 func (s atContext) Accessible() Accessible {
 	var _arg0 *C.GtkATContext
 

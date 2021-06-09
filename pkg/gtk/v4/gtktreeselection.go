@@ -34,8 +34,10 @@ func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, a
 
 // TreeSelectionFunc: a function used by
 // gtk_tree_selection_set_select_function() to filter whether or not a row may
-// be selected. It is called whenever a row's state might change. A return value
-// of true indicates to @selection that it is okay to change the selection.
+// be selected. It is called whenever a row's state might change.
+//
+// A return value of true indicates to @selection that it is okay to change the
+// selection.
 type TreeSelectionFunc func() (ok bool)
 
 //export gotk4_TreeSelectionFunc

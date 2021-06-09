@@ -18,17 +18,17 @@ func init() {
 	})
 }
 
-// Filter: a Filter object describes the filtering to be performed by a
-// FilterListModel.
+// Filter: a `GtkFilter` object describes the filtering to be performed by a
+// `GtkFilterListModel`.
 //
 // The model will use the filter to determine if it should include items or not
-// by calling gtk_filter_match() for each item and only keeping the ones that
-// the function returns true for.
+// by calling [method@Gtk.Filter.match] for each item and only keeping the ones
+// that the function returns true for.
 //
 // Filters may change what items they match through their lifetime. In that
-// case, they will emit the Filter::changed signal to notify that previous
-// filter results are no longer valid and that items should be checked again via
-// gtk_filter_match().
+// case, they will emit the [signal@Gtk.Filter::changed] signal to notify that
+// previous filter results are no longer valid and that items should be checked
+// again via [method@Gtk.Filter.match].
 //
 // GTK provides various pre-made filter implementations for common filtering
 // operations. These filters often include properties that can be linked to

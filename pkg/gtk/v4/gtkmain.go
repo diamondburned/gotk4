@@ -11,11 +11,12 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// DisableSetlocale prevents gtk_init(), gtk_init_check() and gtk_parse_args()
-// from automatically calling `setlocale (LC_ALL, "")`. You would want to use
-// this function if you wanted to set the locale for your program to something
-// other than the user’s locale, or if you wanted to set different values for
-// different locale categories.
+// DisableSetlocale prevents [id@gtk_init] and [id@gtk_init_check] from
+// automatically calling `setlocale (LC_ALL, "")`.
+//
+// You would want to use this function if you wanted to set the locale for your
+// program to something other than the user’s locale, or if you wanted to set
+// different values for different locale categories.
 //
 // Most programs should not need to call this function.
 func DisableSetlocale() {

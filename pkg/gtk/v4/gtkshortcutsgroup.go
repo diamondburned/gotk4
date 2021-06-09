@@ -18,12 +18,14 @@ func init() {
 	})
 }
 
-// ShortcutsGroup: a GtkShortcutsGroup represents a group of related keyboard
-// shortcuts or gestures. The group has a title. It may optionally be associated
-// with a view of the application, which can be used to show only relevant
-// shortcuts depending on the application context.
+// ShortcutsGroup: a `GtkShortcutsGroup` represents a group of related keyboard
+// shortcuts or gestures.
 //
-// This widget is only meant to be used with ShortcutsWindow.
+// The group has a title. It may optionally be associated with a view of the
+// application, which can be used to show only relevant shortcuts depending on
+// the application context.
+//
+// This widget is only meant to be used with [class@Gtk.ShortcutsWindow].
 type ShortcutsGroup interface {
 	Box
 	Accessible

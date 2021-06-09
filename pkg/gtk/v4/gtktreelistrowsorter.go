@@ -21,17 +21,17 @@ func init() {
 	})
 }
 
-// TreeListRowSorter is a special-purpose sorter that will apply a given sorter
-// to the levels in a tree, while respecting the tree structure.
+// TreeListRowSorter: `GtkTreeListRowSorter` is a special-purpose sorter that
+// will apply a given sorter to the levels in a tree.
 //
 // Here is an example for setting up a column view with a tree model and a
-// GtkTreeListSorter:
+// `GtkTreeListSorter`:
 //
-//    column_sorter = gtk_column_view_get_sorter (view);
-//    sorter = gtk_tree_list_row_sorter_new (g_object_ref (column_sorter));
-//    sort_model = gtk_sort_list_model_new (tree_model, sorter);
-//    selection = gtk_single_selection_new (sort_model);
-//    gtk_column_view_set_model (view, G_LIST_MODEL (selection));
+// “`c column_sorter = gtk_column_view_get_sorter (view); sorter =
+// gtk_tree_list_row_sorter_new (g_object_ref (column_sorter)); sort_model =
+// gtk_sort_list_model_new (tree_model, sorter); selection =
+// gtk_single_selection_new (sort_model); gtk_column_view_set_model (view,
+// G_LIST_MODEL (selection)); “`
 type TreeListRowSorter interface {
 	Sorter
 
@@ -39,8 +39,8 @@ type TreeListRowSorter interface {
 	Sorter() Sorter
 	// SetSorter sets the sorter to use for items with the same parent.
 	//
-	// This sorter will be passed the TreeListRow:item of the tree list rows
-	// passed to @self.
+	// This sorter will be passed the [property@Gtk.TreeListRow:item] of the
+	// tree list rows passed to @self.
 	SetSorter(sorter Sorter)
 }
 
@@ -101,8 +101,8 @@ func (s treeListRowSorter) Sorter() Sorter {
 
 // SetSorter sets the sorter to use for items with the same parent.
 //
-// This sorter will be passed the TreeListRow:item of the tree list rows
-// passed to @self.
+// This sorter will be passed the [property@Gtk.TreeListRow:item] of the
+// tree list rows passed to @self.
 func (s treeListRowSorter) SetSorter(sorter Sorter) {
 	var _arg0 *C.GtkTreeListRowSorter
 	var _arg1 *C.GtkSorter

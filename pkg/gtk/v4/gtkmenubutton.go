@@ -16,9 +16,11 @@ import (
 import "C"
 
 // MenuButtonCreatePopupFunc: user-provided callback function to create a popup
-// for @menu_button on demand. This function is called when the popup of
-// @menu_button is shown, but none has been provided via
-// gtk_menu_button_set_popover() or gtk_menu_button_set_menu_model().
+// for a `GtkMenuButton` on demand.
+//
+// This function is called when the popup of @menu_button is shown, but none has
+// been provided via [method@Gtk.MenuButton.set_popover] or
+// [method@Gtk.MenuButton.set_menu_model].
 type MenuButtonCreatePopupFunc func()
 
 //export gotk4_MenuButtonCreatePopupFunc

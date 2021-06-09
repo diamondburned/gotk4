@@ -22,17 +22,20 @@ func init() {
 	})
 }
 
-// TextChildAnchor: a TextChildAnchor is a spot in the buffer where child
-// widgets can be “anchored” (inserted inline, as if they were characters). The
-// anchor can have multiple widgets anchored, to allow for multiple views.
+// TextChildAnchor: a `GtkTextChildAnchor` is a spot in a `GtkTextBuffer` where
+// child widgets can be “anchored”.
+//
+// The anchor can have multiple widgets anchored, to allow for multiple views.
 type TextChildAnchor interface {
 	gextras.Objector
 
 	// Deleted determines whether a child anchor has been deleted from the
-	// buffer. Keep in mind that the child anchor will be unreferenced when
-	// removed from the buffer, so you need to hold your own reference (with
-	// g_object_ref()) if you plan to use this function — otherwise all deleted
-	// child anchors will also be finalized.
+	// buffer.
+	//
+	// Keep in mind that the child anchor will be unreferenced when removed from
+	// the buffer, so you need to hold your own reference (with g_object_ref())
+	// if you plan to use this function — otherwise all deleted child anchors
+	// will also be finalized.
 	Deleted() bool
 	// Widgets gets a list of all widgets anchored at this child anchor.
 	//
@@ -75,10 +78,12 @@ func NewTextChildAnchor() TextChildAnchor {
 }
 
 // Deleted determines whether a child anchor has been deleted from the
-// buffer. Keep in mind that the child anchor will be unreferenced when
-// removed from the buffer, so you need to hold your own reference (with
-// g_object_ref()) if you plan to use this function — otherwise all deleted
-// child anchors will also be finalized.
+// buffer.
+//
+// Keep in mind that the child anchor will be unreferenced when removed from
+// the buffer, so you need to hold your own reference (with g_object_ref())
+// if you plan to use this function — otherwise all deleted child anchors
+// will also be finalized.
 func (a textChildAnchor) Deleted() bool {
 	var _arg0 *C.GtkTextChildAnchor
 

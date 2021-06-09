@@ -22,13 +22,14 @@ func init() {
 	})
 }
 
-// TreeModelSort: the TreeModelSort is a model which implements the TreeSortable
-// interface. It does not hold any data itself, but rather is created with a
-// child model and proxies its data. It has identical column types to this child
-// model, and the changes in the child are propagated. The primary purpose of
-// this model is to provide a way to sort a different model without modifying
-// it. Note that the sort function used by TreeModelSort is not guaranteed to be
-// stable.
+// TreeModelSort: a GtkTreeModel which makes an underlying tree model sortable
+//
+// The TreeModelSort is a model which implements the TreeSortable interface. It
+// does not hold any data itself, but rather is created with a child model and
+// proxies its data. It has identical column types to this child model, and the
+// changes in the child are propagated. The primary purpose of this model is to
+// provide a way to sort a different model without modifying it. Note that the
+// sort function used by TreeModelSort is not guaranteed to be stable.
 //
 // The use of this is best demonstrated through an example. In the following
 // sample code we create two TreeView widgets each with a view of the same data.

@@ -14,9 +14,11 @@ import (
 import "C"
 
 // BitsetIter: an opaque, stack-allocated struct for iterating over the elements
-// of a Bitset. Before a GtkBitsetIter can be used, it needs to be initialized
-// with gtk_bitset_iter_init_first(), gtk_bitset_iter_init_last() or
-// gtk_bitset_iter_init_at().
+// of a `GtkBitset`.
+//
+// Before a `GtkBitsetIter` can be used, it needs to be initialized with
+// [func@Gtk.BitsetIter.init_first], [func@Gtk.BitsetIter.init_last] or
+// [func@Gtk.BitsetIter.init_at].
 type BitsetIter struct {
 	native C.GtkBitsetIter
 }
@@ -43,8 +45,8 @@ func (b *BitsetIter) Native() unsafe.Pointer {
 
 // Value gets the current value that @iter points to.
 //
-// If @iter is not valid and gtk_bitset_iter_is_valid() returns false, this
-// function returns 0.
+// If @iter is not valid and [method@Gtk.BitsetIter.is_valid] returns false,
+// this function returns 0.
 func (i *BitsetIter) Value() uint {
 	var _arg0 *C.GtkBitsetIter
 
@@ -80,8 +82,10 @@ func (i *BitsetIter) IsValid() bool {
 	return _ok
 }
 
-// Next moves @iter to the next value in the set. If it was already pointing to
-// the last value in the set, false is returned and @iter is invalidated.
+// Next moves @iter to the next value in the set.
+//
+// If it was already pointing to the last value in the set, false is returned
+// and @iter is invalidated.
 func (i *BitsetIter) Next() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter
 
@@ -103,9 +107,10 @@ func (i *BitsetIter) Next() (uint, bool) {
 	return _value, _ok
 }
 
-// Previous moves @iter to the previous value in the set. If it was already
-// pointing to the first value in the set, false is returned and @iter is
-// invalidated.
+// Previous moves @iter to the previous value in the set.
+//
+// If it was already pointing to the first value in the set, false is returned
+// and @iter is invalidated.
 func (i *BitsetIter) Previous() (uint, bool) {
 	var _arg0 *C.GtkBitsetIter
 

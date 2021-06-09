@@ -21,27 +21,28 @@ func init() {
 	})
 }
 
-// EditableLabel: a GtkEditableLabel is a Label that allows users to edit the
-// text by switching the widget to an “edit mode”.
+// EditableLabel: a `GtkEditableLabel` is a label that allows users to edit the
+// text by switching to an “edit mode”.
 //
-// GtkEditableLabel does not have API of its own, but it implements the Editable
-// interface.
+// !An example GtkEditableLabel (editable-label.png)
+//
+// `GtkEditableLabel` does not have API of its own, but it implements the
+// [iface@Gtk.Editable] interface.
 //
 // The default bindings for activating the edit mode is to click or press the
 // Enter key. The default bindings for leaving the edit mode are the Enter key
 // (to save the results) or the Escape key (to cancel the editing).
 //
+//
 // CSS nodes
 //
-//    editablelabel[.editing]
-//    ╰── stack
-//        ├── label
-//        ╰── text
+// “` editablelabel[.editing] ╰── stack ├── label ╰── text “`
 //
-// GtkEditableLabel has a main node with the name editablelabel. When the entry
-// is in editing mode, it gets the .editing style class.
+// `GtkEditableLabel` has a main node with the name editablelabel. When the
+// entry is in editing mode, it gets the .editing style class.
 //
-// For all the subnodes added to the text node in various situations, see Text.
+// For all the subnodes added to the text node in various situations, see
+// [class@Gtk.Text].
 type EditableLabel interface {
 	Widget
 	Accessible
@@ -53,10 +54,12 @@ type EditableLabel interface {
 	Editing() bool
 	// StartEditing switches the label into “editing mode”.
 	StartEditing()
-	// StopEditing switches the label out of “editing mode”. If @commit is true,
-	// the resulting text is kept as the Editable:text property value, otherwise
-	// the resulting text is discarded and the label will keep its previous
-	// Editable:text property value.
+	// StopEditing switches the label out of “editing mode”.
+	//
+	// If @commit is true, the resulting text is kept as the
+	// [property@Gtk.Editable:text] property value, otherwise the resulting text
+	// is discarded and the label will keep its previous
+	// [property@Gtk.Editable:text] property value.
 	StopEditing(commit bool)
 }
 
@@ -135,10 +138,12 @@ func (s editableLabel) StartEditing() {
 	C.gtk_editable_label_start_editing(_arg0)
 }
 
-// StopEditing switches the label out of “editing mode”. If @commit is true,
-// the resulting text is kept as the Editable:text property value, otherwise
-// the resulting text is discarded and the label will keep its previous
-// Editable:text property value.
+// StopEditing switches the label out of “editing mode”.
+//
+// If @commit is true, the resulting text is kept as the
+// [property@Gtk.Editable:text] property value, otherwise the resulting text
+// is discarded and the label will keep its previous
+// [property@Gtk.Editable:text] property value.
 func (s editableLabel) StopEditing(commit bool) {
 	var _arg0 *C.GtkEditableLabel
 	var _arg1 C.gboolean

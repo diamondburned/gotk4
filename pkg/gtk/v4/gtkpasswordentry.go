@@ -22,26 +22,28 @@ func init() {
 	})
 }
 
-// PasswordEntry is entry that has been tailored for entering secrets. It does
-// not show its contents in clear text, does not allow to copy it to the
+// PasswordEntry: `GtkPasswordEntry` is an entry that has been tailored for
+// entering secrets.
+//
+// !An example GtkPasswordEntry (password-entry.png)
+//
+// It does not show its contents in clear text, does not allow to copy it to the
 // clipboard, and it shows a warning when Caps Lock is engaged. If the
-// underlying platform allows it, GtkPasswordEntry will also place the text in a
-// non-pageable memory area, to avoid it being written out to disk by the
+// underlying platform allows it, `GtkPasswordEntry` will also place the text in
+// a non-pageable memory area, to avoid it being written out to disk by the
 // operating system.
 //
 // Optionally, it can offer a way to reveal the contents in clear text.
 //
-// GtkPasswordEntry provides only minimal API and should be used with the
-// Editable API.
+// `GtkPasswordEntry` provides only minimal API and should be used with the
+// [iface@Gtk.Editable] API.
+//
 //
 // CSS Nodes
 //
-//    entry.password
-//    ╰── text
-//        ├── image.caps-lock-indicator
-//        ┊
+// “` entry.password ╰── text ├── image.caps-lock-indicator ┊ “`
 //
-// GtkPasswordEntry has a single CSS node with name entry that carries a
+// `GtkPasswordEntry` has a single CSS node with name entry that carries a
 // .passwordstyle class. The text Css node below it has a child with name image
 // and style class .caps-lock-indicator for the Caps Lock icon, and possibly
 // other children.
@@ -49,7 +51,7 @@ func init() {
 //
 // Accessibility
 //
-// GtkPasswordEntry uses the K_ACCESSIBLE_ROLE_TEXT_BOX role.
+// `GtkPasswordEntry` uses the GTK_ACCESSIBLE_ROLE_TEXT_BOX role.
 type PasswordEntry interface {
 	Widget
 	Accessible
@@ -60,14 +62,14 @@ type PasswordEntry interface {
 	// ExtraMenu gets the menu model set with
 	// gtk_password_entry_set_extra_menu().
 	ExtraMenu() gio.MenuModel
-	// ShowPeekIcon returns whether the entry is showing a clickable icon to
-	// reveal the contents of the entry in clear text.
+	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
+	// contents.
 	ShowPeekIcon() bool
 	// SetExtraMenu sets a menu model to add when constructing the context menu
 	// for @entry.
 	SetExtraMenu(model gio.MenuModel)
 	// SetShowPeekIcon sets whether the entry should have a clickable icon to
-	// show the contents of the entry in clear text.
+	// reveal the contents.
 	//
 	// Setting this to false also hides the text again.
 	SetShowPeekIcon(showPeekIcon bool)
@@ -133,8 +135,8 @@ func (e passwordEntry) ExtraMenu() gio.MenuModel {
 	return _menuModel
 }
 
-// ShowPeekIcon returns whether the entry is showing a clickable icon to
-// reveal the contents of the entry in clear text.
+// ShowPeekIcon returns whether the entry is showing an icon to reveal the
+// contents.
 func (e passwordEntry) ShowPeekIcon() bool {
 	var _arg0 *C.GtkPasswordEntry
 
@@ -166,7 +168,7 @@ func (e passwordEntry) SetExtraMenu(model gio.MenuModel) {
 }
 
 // SetShowPeekIcon sets whether the entry should have a clickable icon to
-// show the contents of the entry in clear text.
+// reveal the contents.
 //
 // Setting this to false also hides the text again.
 func (e passwordEntry) SetShowPeekIcon(showPeekIcon bool) {

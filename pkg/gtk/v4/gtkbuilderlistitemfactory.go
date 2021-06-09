@@ -21,26 +21,17 @@ func init() {
 	})
 }
 
-// BuilderListItemFactory is a ListItemFactory that creates widgets by
-// instantiating Builder UI templates. The templates must be extending ListItem,
-// and typically use Expressions to obtain data from the items in the model.
+// BuilderListItemFactory: `GtkBuilderListItemFactory` is a `GtkListItemFactory`
+// that creates widgets by instantiating `GtkBuilder` UI templates.
 //
-// Example:
+// The templates must be extending `GtkListItem`, and typically use
+// `GtkExpression`s to obtain data from the items in the model.
 //
-//    <interface>
-//      <template class="GtkListItem">
-//        <property name="child">
-//          <object class="GtkLabel">
-//            <property name="xalign">0</property>
-//            <binding name="label">
-//              <lookup name="name" type="SettingsKey">
-//                <lookup name="item">GtkListItem</lookup>
-//              </lookup>
-//            </binding>
-//          </object>
-//        </property>
-//      </template>
-//    </interface>
+// Example: “`xml <interface> <template class="GtkListItem"> <property
+// name="child"> <object class="GtkLabel"> <property name="xalign">0</property>
+// <binding name="label"> <lookup name="name" type="SettingsKey"> <lookup
+// name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
+// </template> </interface> “`
 type BuilderListItemFactory interface {
 	ListItemFactory
 

@@ -63,8 +63,10 @@ func gotk4_TreeModelFilterVisibleFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreeIter,
 	}
 }
 
-// TreeModelFilter: a TreeModelFilter is a tree model which wraps another tree
-// model, and can do the following things:
+// TreeModelFilter: a GtkTreeModel which hides parts of an underlying tree model
+//
+// A TreeModelFilter is a tree model which wraps another tree model, and can do
+// the following things:
 //
 // - Filter specific rows, based on data from a “visible column”, a column
 // storing booleans indicating whether the row should be filtered or not, or

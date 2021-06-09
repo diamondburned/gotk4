@@ -19,6 +19,8 @@ func init() {
 }
 
 // Snapshot: base type for snapshot operations.
+//
+// The subclass of `GdkSnapshot` used by GTK is [class@Gtk.Snapshot].
 type Snapshot interface {
 	gextras.Objector
 }

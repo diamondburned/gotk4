@@ -387,6 +387,9 @@ func GetRealName() *string {
 // can store a spell-check dictionary, a database of clip art, or a log file in
 // the CSIDL_COMMON_APPDATA folder. This information will not roam and is
 // available to anyone using the computer.
+//
+// The return value is cached and modifying it at runtime is not supported, as
+// it’s not thread-safe to modify environment variables at runtime.
 func GetSystemConfigDirs() []*string {
 	var _cret **C.gchar
 
@@ -443,6 +446,9 @@ func GetSystemConfigDirs() []*string {
 //
 // Note that on Windows the returned list can vary depending on where this
 // function is called.
+//
+// The return value is cached and modifying it at runtime is not supported, as
+// it’s not thread-safe to modify environment variables at runtime.
 func GetSystemDataDirs() []*string {
 	var _cret **C.gchar
 
@@ -508,6 +514,9 @@ func GetTmpDir() *string {
 // path is `C:\Documents and Settings\username\Local Settings\Temporary Internet
 // Files`. See the documentation for `CSIDL_INTERNET_CACHE`
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_internet_cache).
+//
+// The return value is cached and modifying it at runtime is not supported, as
+// it’s not thread-safe to modify environment variables at runtime.
 func GetUserCacheDir() *string {
 	var _cret *C.gchar
 
@@ -535,6 +544,9 @@ func GetUserCacheDir() *string {
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
 // Note that in this case on Windows it will be the same as what
 // g_get_user_data_dir() returns.
+//
+// The return value is cached and modifying it at runtime is not supported, as
+// it’s not thread-safe to modify environment variables at runtime.
 func GetUserConfigDir() *string {
 	var _cret *C.gchar
 
@@ -562,6 +574,9 @@ func GetUserConfigDir() *string {
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_local_appdata).
 // Note that in this case on Windows it will be the same as what
 // g_get_user_config_dir() returns.
+//
+// The return value is cached and modifying it at runtime is not supported, as
+// it’s not thread-safe to modify environment variables at runtime.
 func GetUserDataDir() *string {
 	var _cret *C.gchar
 
@@ -598,6 +613,9 @@ func GetUserName() *string {
 // the directory specified in the `XDG_RUNTIME_DIR` environment variable. In the
 // case that this variable is not set, we return the value of
 // g_get_user_cache_dir(), after verifying that it exists.
+//
+// The return value is cached and modifying it at runtime is not supported, as
+// it’s not thread-safe to modify environment variables at runtime.
 func GetUserRuntimeDir() *string {
 	var _cret *C.gchar
 

@@ -18,24 +18,28 @@ func init() {
 	})
 }
 
-// Accessible: gtkAccessible provides an interface for describing a UI element,
-// like a Widget, in a way that can be consumed by Assistive Technologies, or
-// “AT”. Every accessible implementation has:
+// Accessible: `GtkAccessible` is an interface for describing UI elements for
+// Assistive Technologies.
 //
-//    - a “role”, represented by a value of the AccessibleRole enumeration
-//    - an “attribute”, represented by a set of AccessibleState,
-//      AccessibleProperty and AccessibleRelation values
+// Every accessible implementation has:
 //
-// The role cannot be changed after instantiating a Accessible implementation.
+//    - a “role”, represented by a value of the [enum@Gtk.AccessibleRole]
+//      enumeration
+//    - an “attribute”, represented by a set of [enum@Gtk.AccessibleState],
+//      [enum@Gtk.AccessibleProperty] and [enum@Gtk.AccessibleRelation] values
+//
+// The role cannot be changed after instantiating a `GtkAccessible`
+// implementation.
 //
 // The attributes are updated every time a UI element's state changes in a way
-// that should be reflected by assistive technologies. For instance, if a Widget
-// visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will also change to
-// reflect the Widget:visible property.
+// that should be reflected by assistive technologies. For instance, if a
+// `GtkWidget` visibility changes, the GTK_ACCESSIBLE_STATE_HIDDEN state will
+// also change to reflect the [property@Gtk.Widget:visible] property.
 type Accessible interface {
 	gextras.Objector
 
-	// AccessibleRole retrieves the AccessibleRole for the given Accessible.
+	// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+	// `GtkAccessible`.
 	AccessibleRole() AccessibleRole
 	// ResetProperty resets the accessible @property to its default value.
 	ResetProperty(property AccessibleProperty)
@@ -66,7 +70,8 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 	return WrapAccessible(obj), nil
 }
 
-// AccessibleRole retrieves the AccessibleRole for the given Accessible.
+// AccessibleRole retrieves the `GtkAccessibleRole` for the given
+// `GtkAccessible`.
 func (s accessible) AccessibleRole() AccessibleRole {
 	var _arg0 *C.GtkAccessible
 

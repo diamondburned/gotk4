@@ -24,30 +24,26 @@ func init() {
 	})
 }
 
-// StringList is a list model that wraps an array of strings.
+// StringList: `GtkStringList` is a list model that wraps an array of strings.
 //
 // The objects in the model have a "string" property.
 //
-// GtkStringList is well-suited for any place where you would typically use a
+// `GtkStringList` is well-suited for any place where you would typically use a
 // `char*[]`, but need a list model.
 //
 //
 // GtkStringList as GtkBuildable
 //
-// The GtkStringList implementation of the GtkBuildable interface supports
+// The `GtkStringList` implementation of the `GtkBuildable` interface supports
 // adding items directly using the <items> element and specifying <item>
 // elements for each item. Each <item> element supports the regular translation
 // attributes “translatable”, “context” and “comments”.
 //
-// Here is a UI definition fragment specifying a GtkStringList
+// Here is a UI definition fragment specifying a `GtkStringList`
 //
-//    <object class="GtkStringList">
-//      <items>
-//        <item translatable="yes">Factory</item>
-//        <item translatable="yes">Home</item>
-//        <item translatable="yes">Subway</item>
-//      </items>
-//    </object>
+// “`xml <object class="GtkStringList"> <items> <item
+// translatable="yes">Factory</item> <item translatable="yes">Home</item> <item
+// translatable="yes">Subway</item> </items> </object> “`
 type StringList interface {
 	gextras.Objector
 	gio.ListModel
@@ -55,24 +51,26 @@ type StringList interface {
 
 	// Append appends @string to @self.
 	//
-	// The @string will be copied. See gtk_string_list_take() for a way to avoid
-	// that.
+	// The @string will be copied. See [method@Gtk.StringList.take] for a way to
+	// avoid that.
 	Append(string string)
-	// String gets the string that is at @position in @self. If @self does not
-	// contain @position items, nil is returned.
+	// String gets the string that is at @position in @self.
+	//
+	// If @self does not contain @position items, nil is returned.
 	//
 	// This function returns the const char *. To get the object wrapping it,
 	// use g_list_model_get_item().
 	String(position uint) string
-	// Remove removes the string at @position from @self. @position must be
-	// smaller than the current length of the list.
+	// Remove removes the string at @position from @self.
+	//
+	// @position must be smaller than the current length of the list.
 	Remove(position uint)
 	// Splice changes @self by removing @n_removals strings and adding
 	// @additions to it.
 	//
-	// This function is more efficient than gtk_string_list_append() and
-	// gtk_string_list_remove(), because it only emits Model::items-changed once
-	// for the change.
+	// This function is more efficient than [method@Gtk.StringList.append] and
+	// [method@Gtk.StringList.remove], because it only emits the ::items-changed
+	// signal once for the change.
 	//
 	// This function copies the strings in @additions.
 	//
@@ -82,10 +80,10 @@ type StringList interface {
 	Splice(position uint, nRemovals uint, additions []string)
 	// Take adds @string to self at the end, and takes ownership of it.
 	//
-	// This variant of gtk_string_list_append() is convenient for formatting
-	// strings:
+	// This variant of [method@Gtk.StringList.append] is convenient for
+	// formatting strings:
 	//
-	//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
+	// “`c gtk_string_list_take (self, g_strdup_print ("d dollars", lots)); “`
 	Take(string string)
 }
 
@@ -144,8 +142,8 @@ func NewStringList(strings []string) StringList {
 
 // Append appends @string to @self.
 //
-// The @string will be copied. See gtk_string_list_take() for a way to avoid
-// that.
+// The @string will be copied. See [method@Gtk.StringList.take] for a way to
+// avoid that.
 func (s stringList) Append(string string) {
 	var _arg0 *C.GtkStringList
 	var _arg1 *C.char
@@ -157,8 +155,9 @@ func (s stringList) Append(string string) {
 	C.gtk_string_list_append(_arg0, _arg1)
 }
 
-// String gets the string that is at @position in @self. If @self does not
-// contain @position items, nil is returned.
+// String gets the string that is at @position in @self.
+//
+// If @self does not contain @position items, nil is returned.
 //
 // This function returns the const char *. To get the object wrapping it,
 // use g_list_model_get_item().
@@ -180,8 +179,9 @@ func (s stringList) String(position uint) string {
 	return _utf8
 }
 
-// Remove removes the string at @position from @self. @position must be
-// smaller than the current length of the list.
+// Remove removes the string at @position from @self.
+//
+// @position must be smaller than the current length of the list.
 func (s stringList) Remove(position uint) {
 	var _arg0 *C.GtkStringList
 	var _arg1 C.guint
@@ -195,9 +195,9 @@ func (s stringList) Remove(position uint) {
 // Splice changes @self by removing @n_removals strings and adding
 // @additions to it.
 //
-// This function is more efficient than gtk_string_list_append() and
-// gtk_string_list_remove(), because it only emits Model::items-changed once
-// for the change.
+// This function is more efficient than [method@Gtk.StringList.append] and
+// [method@Gtk.StringList.remove], because it only emits the ::items-changed
+// signal once for the change.
 //
 // This function copies the strings in @additions.
 //
@@ -231,10 +231,10 @@ func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
 
 // Take adds @string to self at the end, and takes ownership of it.
 //
-// This variant of gtk_string_list_append() is convenient for formatting
-// strings:
+// This variant of [method@Gtk.StringList.append] is convenient for
+// formatting strings:
 //
-//    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
+// “`c gtk_string_list_take (self, g_strdup_print ("d dollars", lots)); “`
 func (s stringList) Take(string string) {
 	var _arg0 *C.GtkStringList
 	var _arg1 *C.char
@@ -245,10 +245,14 @@ func (s stringList) Take(string string) {
 	C.gtk_string_list_take(_arg0, _arg1)
 }
 
+// StringObject: `GtkStringObject` is the type of items in a `GtkStringList`.
+//
+// A `GtkStringObject` is a wrapper around a `const char*`; it has a
+// [property@Gtk.StringObject:string] property.
 type StringObject interface {
 	gextras.Objector
 
-	// String returns the string contained in a StringObject.
+	// String returns the string contained in a `GtkStringObject`.
 	String() string
 }
 
@@ -291,7 +295,7 @@ func NewStringObject(string string) StringObject {
 	return _stringObject
 }
 
-// String returns the string contained in a StringObject.
+// String returns the string contained in a `GtkStringObject`.
 func (s stringObject) String() string {
 	var _arg0 *C.GtkStringObject
 

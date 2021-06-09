@@ -21,10 +21,13 @@ func init() {
 	})
 }
 
-// GestureClick is a Gesture implementation able to recognize multiple clicks on
-// a nearby zone, which can be listened for through the GestureClick::pressed
-// signal. Whenever time or distance between clicks exceed the GTK defaults,
-// GestureClick::stopped is emitted, and the click counter is reset.
+// GestureClick: `GtkGestureClick` is a `GtkGesture` implementation for clicks.
+//
+// It is able to recognize multiple clicks on a nearby zone, which can be
+// listened for through the [signal@Gtk.GestureClick::pressed] signal. Whenever
+// time or distance between clicks exceed the GTK defaults,
+// [signal@Gtk.GestureClick::stopped] is emitted, and the click counter is
+// reset.
 type GestureClick interface {
 	GestureSingle
 }

@@ -23,31 +23,35 @@ func init() {
 	})
 }
 
-// DropDown: gtkDropDown is a widget that allows the user to choose an item from
-// a list of options. The GtkDropDown displays the selected choice.
+// DropDown: `GtkDropDown` is a widget that allows the user to choose an item
+// from a list of options.
 //
-// The options are given to GtkDropDown in the form of Model, and how the
-// individual options are represented is determined by a ListItemFactory. The
-// default factory displays simple strings.
+// !An example GtkDropDown (drop-down.png)
 //
-// GtkDropDown knows how to obtain strings from the items in a StringList; for
-// other models, you have to provide an expression to find the strings via
-// gtk_drop_down_set_expression().
+// The `GtkDropDown` displays the selected choice.
 //
-// GtkDropDown can optionally allow search in the popup, which is useful if the
-// list of options is long. To enable the search entry, use
-// gtk_drop_down_set_enable_search().
+// The options are given to `GtkDropDown` in the form of `GListModel` and how
+// the individual options are represented is determined by a
+// [class@Gtk.ListItemFactory]. The default factory displays simple strings.
+//
+// `GtkDropDown` knows how to obtain strings from the items in a
+// [class@Gtk.StringList]; for other models, you have to provide an expression
+// to find the strings via [method@Gtk.DropDown.set_expression].
+//
+// `GtkDropDown` can optionally allow search in the popup, which is useful if
+// the list of options is long. To enable the search entry, use
+// [method@Gtk.DropDown.set_enable_search].
 //
 //
 // CSS nodes
 //
-// GtkDropDown has a single CSS node with name dropdown, with the button and
+// `GtkDropDown` has a single CSS node with name dropdown, with the button and
 // popover nodes as children.
 //
 //
 // Accessibility
 //
-// GtkDropDown uses the K_ACCESSIBLE_ROLE_COMBO_BOX role.
+// `GtkDropDown` uses the GTK_ACCESSIBLE_ROLE_COMBO_BOX role.
 type DropDown interface {
 	Widget
 	Accessible
@@ -56,13 +60,16 @@ type DropDown interface {
 
 	// EnableSearch returns whether search is enabled.
 	EnableSearch() bool
-	// Expression gets the expression set with gtk_drop_down_set_expression().
+	// Expression gets the expression set that is used to obtain strings from
+	// items.
+	//
+	// See [method@Gtk.DropDown.set_expression].
 	Expression() Expression
 	// Factory gets the factory that's currently used to populate list items.
 	//
 	// The factory returned by this function is always used for the item in the
-	// button. It is also used for items in the popup if DropDown:list-factory
-	// is not set.
+	// button. It is also used for items in the popup if
+	// [property@Gtk.DropDown:list-factory] is not set.
 	Factory() ListItemFactory
 	// ListFactory gets the factory that's currently used to populate list items
 	// in the popup.
@@ -77,18 +84,22 @@ type DropDown interface {
 	// SetEnableSearch sets whether a search entry will be shown in the popup
 	// that allows to search for items in the list.
 	//
-	// Note that DropDown:expression must be set for search to work.
+	// Note that [property@Gtk.DropDown:expression] must be set for search to
+	// work.
 	SetEnableSearch(enableSearch bool)
 	// SetExpression sets the expression that gets evaluated to obtain strings
-	// from items when searching in the popup. The expression must have a value
-	// type of TYPE_STRING.
+	// from items.
+	//
+	// This is used for search in the popup. The expression must have a value
+	// type of G_TYPE_STRING.
 	SetExpression(expression Expression)
-	// SetFactory sets the ListItemFactory to use for populating list items.
+	// SetFactory sets the `GtkListItemFactory` to use for populating list
+	// items.
 	SetFactory(factory ListItemFactory)
-	// SetListFactory sets the ListItemFactory to use for populating list items
-	// in the popup.
+	// SetListFactory sets the `GtkListItemFactory` to use for populating list
+	// items in the popup.
 	SetListFactory(factory ListItemFactory)
-	// SetModel sets the Model to use.
+	// SetModel sets the `GListModel` to use.
 	SetModel(model gio.ListModel)
 	// SetSelected selects the item at the given position.
 	SetSelected(position uint)
@@ -187,7 +198,10 @@ func (s dropDown) EnableSearch() bool {
 	return _ok
 }
 
-// Expression gets the expression set with gtk_drop_down_set_expression().
+// Expression gets the expression set that is used to obtain strings from
+// items.
+//
+// See [method@Gtk.DropDown.set_expression].
 func (s dropDown) Expression() Expression {
 	var _arg0 *C.GtkDropDown
 
@@ -207,8 +221,8 @@ func (s dropDown) Expression() Expression {
 // Factory gets the factory that's currently used to populate list items.
 //
 // The factory returned by this function is always used for the item in the
-// button. It is also used for items in the popup if DropDown:list-factory
-// is not set.
+// button. It is also used for items in the popup if
+// [property@Gtk.DropDown:list-factory] is not set.
 func (s dropDown) Factory() ListItemFactory {
 	var _arg0 *C.GtkDropDown
 
@@ -298,7 +312,8 @@ func (s dropDown) SelectedItem() gextras.Objector {
 // SetEnableSearch sets whether a search entry will be shown in the popup
 // that allows to search for items in the list.
 //
-// Note that DropDown:expression must be set for search to work.
+// Note that [property@Gtk.DropDown:expression] must be set for search to
+// work.
 func (s dropDown) SetEnableSearch(enableSearch bool) {
 	var _arg0 *C.GtkDropDown
 	var _arg1 C.gboolean
@@ -312,8 +327,10 @@ func (s dropDown) SetEnableSearch(enableSearch bool) {
 }
 
 // SetExpression sets the expression that gets evaluated to obtain strings
-// from items when searching in the popup. The expression must have a value
-// type of TYPE_STRING.
+// from items.
+//
+// This is used for search in the popup. The expression must have a value
+// type of G_TYPE_STRING.
 func (s dropDown) SetExpression(expression Expression) {
 	var _arg0 *C.GtkDropDown
 	var _arg1 *C.GtkExpression
@@ -324,7 +341,8 @@ func (s dropDown) SetExpression(expression Expression) {
 	C.gtk_drop_down_set_expression(_arg0, _arg1)
 }
 
-// SetFactory sets the ListItemFactory to use for populating list items.
+// SetFactory sets the `GtkListItemFactory` to use for populating list
+// items.
 func (s dropDown) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown
 	var _arg1 *C.GtkListItemFactory
@@ -335,8 +353,8 @@ func (s dropDown) SetFactory(factory ListItemFactory) {
 	C.gtk_drop_down_set_factory(_arg0, _arg1)
 }
 
-// SetListFactory sets the ListItemFactory to use for populating list items
-// in the popup.
+// SetListFactory sets the `GtkListItemFactory` to use for populating list
+// items in the popup.
 func (s dropDown) SetListFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkDropDown
 	var _arg1 *C.GtkListItemFactory
@@ -347,7 +365,7 @@ func (s dropDown) SetListFactory(factory ListItemFactory) {
 	C.gtk_drop_down_set_list_factory(_arg0, _arg1)
 }
 
-// SetModel sets the Model to use.
+// SetModel sets the `GListModel` to use.
 func (s dropDown) SetModel(model gio.ListModel) {
 	var _arg0 *C.GtkDropDown
 	var _arg1 *C.GListModel

@@ -21,24 +21,23 @@ func init() {
 	})
 }
 
-// EmojiChooser: the EmojiChooser popover is used by text widgets such as Entry
-// or TextView to offer users a convenient way to insert Emoji characters.
+// EmojiChooser: the `GtkEmojiChooser` is used by text widgets such as
+// `GtkEntry` or `GtkTextView` to let users insert Emoji characters.
 //
-// GtkEmojiChooser emits the EmojiChooser::emoji-picked signal when an Emoji is
-// selected.
+// !An example GtkEmojiChooser (emojichooser.png)
+//
+// `GtkEmojiChooser` emits the [signal@Gtk.EmojiChooser::emoji-picked] signal
+// when an Emoji is selected.
+//
 //
 // CSS nodes
 //
-//    popover
-//    ├── box.emoji-searchbar
-//    │   ╰── entry.search
-//    ╰── box.emoji-toolbar
-//        ├── button.image-button.emoji-section
-//        ├── ...
-//        ╰── button.image-button.emoji-section
+// “` popover ├── box.emoji-searchbar │ ╰── entry.search ╰── box.emoji-toolbar
+// ├── button.image-button.emoji-section ├── ... ╰──
+// button.image-button.emoji-section “`
 //
-// Every EmojiChooser consists of a main node called popover. The contents of
-// the popover are largely implementation defined and supposed to inherit
+// Every `GtkEmojiChooser` consists of a main node called popover. The contents
+// of the popover are largely implementation defined and supposed to inherit
 // general styles. The top searchbar used to search emoji and gets the
 // .emoji-searchbar style class itself. The bottom toolbar used to switch
 // between different emoji categories consists of buttons with the

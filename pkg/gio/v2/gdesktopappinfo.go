@@ -146,7 +146,7 @@ type DesktopAppInfo interface {
 	// some situations such as the AppInfo returned from
 	// g_desktop_app_info_new_from_keyfile(), this function will return nil.
 	Filename() *string
-	// GenericName gets the generic name from the destkop file.
+	// GenericName gets the generic name from the desktop file.
 	GenericName() string
 	// IsHidden: a desktop file is hidden if the Hidden key in it is set to
 	// True.
@@ -391,7 +391,7 @@ func (i desktopAppInfo) Filename() *string {
 	return _filename
 }
 
-// GenericName gets the generic name from the destkop file.
+// GenericName gets the generic name from the desktop file.
 func (i desktopAppInfo) GenericName() string {
 	var _arg0 *C.GDesktopAppInfo
 

@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// NoSelection: gtkNoSelection is an implementation of the SelectionModel
-// interface that does not allow selecting anything.
+// NoSelection: `GtkNoSelection` is a `GtkSelectionModel` that does not allow
+// selecting anything.
 //
-// This model is meant to be used as a simple wrapper to Models when a
-// SelectionModel is required.
+// This model is meant to be used as a simple wrapper around a `GListModel` when
+// a `GtkSelectionModel` is required.
 type NoSelection interface {
 	gextras.Objector
 	gio.ListModel
@@ -34,8 +34,9 @@ type NoSelection interface {
 
 	// Model gets the model that @self is wrapping.
 	Model() gio.ListModel
-	// SetModel sets the model that @self should wrap. If @model is nil, this
-	// model will be empty.
+	// SetModel sets the model that @self should wrap.
+	//
+	// If @model is nil, this model will be empty.
 	SetModel(model gio.ListModel)
 }
 
@@ -98,8 +99,9 @@ func (s noSelection) Model() gio.ListModel {
 	return _listModel
 }
 
-// SetModel sets the model that @self should wrap. If @model is nil, this
-// model will be empty.
+// SetModel sets the model that @self should wrap.
+//
+// If @model is nil, this model will be empty.
 func (s noSelection) SetModel(model gio.ListModel) {
 	var _arg0 *C.GtkNoSelection
 	var _arg1 *C.GListModel

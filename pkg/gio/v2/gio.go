@@ -1559,6 +1559,10 @@ const (
 	// messages is delayed until g_dbus_connection_start_message_processing() is
 	// called.
 	DBusConnectionFlagsDelayMessageProcessing DBusConnectionFlags = 16
+	// DBusConnectionFlagsAuthenticationRequireSameUser: when authenticating as
+	// a server, require the UID of the peer to be the same as the UID of the
+	// server. (Since: 2.68)
+	DBusConnectionFlagsAuthenticationRequireSameUser DBusConnectionFlags = 32
 )
 
 func marshalDBusConnectionFlags(p uintptr) (interface{}, error) {
@@ -1705,6 +1709,10 @@ const (
 	// DBusServerFlagsAuthenticationAllowAnonymous: allow the anonymous
 	// authentication method.
 	DBusServerFlagsAuthenticationAllowAnonymous DBusServerFlags = 2
+	// DBusServerFlagsAuthenticationRequireSameUser: require the UID of the peer
+	// to be the same as the UID of the server when authenticating. (Since:
+	// 2.68)
+	DBusServerFlagsAuthenticationRequireSameUser DBusServerFlags = 4
 )
 
 func marshalDBusServerFlags(p uintptr) (interface{}, error) {
@@ -2592,13 +2600,37 @@ type DBusConnection interface {
 	// CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
 	// object.
 	//
+	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+	// in the body of the message. For example, if a message contains two file
+	// descriptors, @fd_list would have length 2, and `g_variant_new_handle (0)`
+	// and `g_variant_new_handle (1)` would appear somewhere in the body of the
+	// message (not necessarily in that order!) to represent the file
+	// descriptors at indexes 0 and 1 respectively.
+	//
+	// When designing D-Bus APIs that are intended to be interoperable, please
+	// note that non-GDBus implementations of D-Bus can usually only access file
+	// descriptors if they are referenced in this way by a value of type
+	// G_VARIANT_TYPE_HANDLE in the body of the message.
+	//
 	// This method is only available on UNIX.
 	CallWithUnixFdList()
 	// CallWithUnixFdListFinish finishes an operation started with
 	// g_dbus_connection_call_with_unix_fd_list().
+	//
+	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+	// in the body of the message. For example, if g_variant_get_handle()
+	// returns 5, that is intended to be a reference to the file descriptor that
+	// can be accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+	//
+	// When designing D-Bus APIs that are intended to be interoperable, please
+	// note that non-GDBus implementations of D-Bus can usually only access file
+	// descriptors if they are referenced in this way by a value of type
+	// G_VARIANT_TYPE_HANDLE in the body of the message.
 	CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error)
 	// CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
-	// and returns FDList objects.
+	// and returns FDList objects. See
+	// g_dbus_connection_call_with_unix_fd_list() and
+	// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 	//
 	// This method is only available on UNIX.
 	CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error)
@@ -2747,7 +2779,9 @@ type DBusConnection interface {
 	// the serial number will be assigned by @connection and set on @message via
 	// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 	// number used will be written to this location prior to submitting the
-	// message to the underlying transport.
+	// message to the underlying transport. While it has a `volatile` qualifier,
+	// this is a historical artifact and the argument passed to it should not be
+	// `volatile`.
 	//
 	// If @connection is closed then the operation will fail with
 	// G_IO_ERROR_CLOSED. If @message is not well-formed, the operation fails
@@ -2767,7 +2801,9 @@ type DBusConnection interface {
 	// the serial number will be assigned by @connection and set on @message via
 	// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 	// number used will be written to this location prior to submitting the
-	// message to the underlying transport.
+	// message to the underlying transport. While it has a `volatile` qualifier,
+	// this is a historical artifact and the argument passed to it should not be
+	// `volatile`.
 	//
 	// If @connection is closed then the operation will fail with
 	// G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -2811,7 +2847,9 @@ type DBusConnection interface {
 	// the serial number will be assigned by @connection and set on @message via
 	// g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 	// number used will be written to this location prior to submitting the
-	// message to the underlying transport.
+	// message to the underlying transport. While it has a `volatile` qualifier,
+	// this is a historical artifact and the argument passed to it should not be
+	// `volatile`.
 	//
 	// If @connection is closed then the operation will fail with
 	// G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -3243,6 +3281,18 @@ func (c dBusConnection) CallSync(busName string, objectPath string, interfaceNam
 // CallWithUnixFdList: like g_dbus_connection_call() but also takes a FDList
 // object.
 //
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+// in the body of the message. For example, if a message contains two file
+// descriptors, @fd_list would have length 2, and `g_variant_new_handle (0)`
+// and `g_variant_new_handle (1)` would appear somewhere in the body of the
+// message (not necessarily in that order!) to represent the file
+// descriptors at indexes 0 and 1 respectively.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please
+// note that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced in this way by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
+//
 // This method is only available on UNIX.
 func (c dBusConnection) CallWithUnixFdList() {
 	var _arg0 *C.GDBusConnection
@@ -3254,6 +3304,16 @@ func (c dBusConnection) CallWithUnixFdList() {
 
 // CallWithUnixFdListFinish finishes an operation started with
 // g_dbus_connection_call_with_unix_fd_list().
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+// in the body of the message. For example, if g_variant_get_handle()
+// returns 5, that is intended to be a reference to the file descriptor that
+// can be accessed by `g_unix_fd_list_get (*out_fd_list, 5, ...)`.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please
+// note that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced in this way by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
 func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *glib.Variant, error) {
 	var _arg0 *C.GDBusConnection
 	var _arg2 *C.GAsyncResult
@@ -3282,7 +3342,9 @@ func (c dBusConnection) CallWithUnixFdListFinish(res AsyncResult) (UnixFDList, *
 }
 
 // CallWithUnixFdListSync: like g_dbus_connection_call_sync() but also takes
-// and returns FDList objects.
+// and returns FDList objects. See
+// g_dbus_connection_call_with_unix_fd_list() and
+// g_dbus_connection_call_with_unix_fd_list_finish() for more details.
 //
 // This method is only available on UNIX.
 func (c dBusConnection) CallWithUnixFdListSync(busName string, objectPath string, interfaceName string, methodName string, parameters *glib.Variant, replyType *glib.VariantType, flags DBusCallFlags, timeoutMsec int, fdList UnixFDList, cancellable Cancellable) (UnixFDList, *glib.Variant, error) {
@@ -3784,7 +3846,9 @@ func (c dBusConnection) RemoveFilter(filterId uint) {
 // the serial number will be assigned by @connection and set on @message via
 // g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 // number used will be written to this location prior to submitting the
-// message to the underlying transport.
+// message to the underlying transport. While it has a `volatile` qualifier,
+// this is a historical artifact and the argument passed to it should not be
+// `volatile`.
 //
 // If @connection is closed then the operation will fail with
 // G_IO_ERROR_CLOSED. If @message is not well-formed, the operation fails
@@ -3826,7 +3890,9 @@ func (c dBusConnection) SendMessage(message DBusMessage, flags DBusSendMessageFl
 // the serial number will be assigned by @connection and set on @message via
 // g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 // number used will be written to this location prior to submitting the
-// message to the underlying transport.
+// message to the underlying transport. While it has a `volatile` qualifier,
+// this is a historical artifact and the argument passed to it should not be
+// `volatile`.
 //
 // If @connection is closed then the operation will fail with
 // G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -3905,7 +3971,9 @@ func (c dBusConnection) SendMessageWithReplyFinish(res AsyncResult) (DBusMessage
 // the serial number will be assigned by @connection and set on @message via
 // g_dbus_message_set_serial(). If @out_serial is not nil, then the serial
 // number used will be written to this location prior to submitting the
-// message to the underlying transport.
+// message to the underlying transport. While it has a `volatile` qualifier,
+// this is a historical artifact and the argument passed to it should not be
+// `volatile`.
 //
 // If @connection is closed then the operation will fail with
 // G_IO_ERROR_CLOSED. If @cancellable is canceled, the operation will fail
@@ -4235,6 +4303,11 @@ type DBusMessage interface {
 	// any.
 	//
 	// This method is only available on UNIX.
+	//
+	// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+	// in the body of the message. For example, if g_variant_get_handle()
+	// returns 5, that is intended to be a reference to the file descriptor that
+	// can be accessed by `g_unix_fd_list_get (list, 5, ...)`.
 	UnixFdList() UnixFDList
 	// Lock: if @message is locked, does nothing. Otherwise locks the message.
 	Lock()
@@ -4326,6 +4399,11 @@ type DBusMessage interface {
 	// is set to the number of fds in @fd_list (or cleared if @fd_list is nil).
 	//
 	// This method is only available on UNIX.
+	//
+	// When designing D-Bus APIs that are intended to be interoperable, please
+	// note that non-GDBus implementations of D-Bus can usually only access file
+	// descriptors if they are referenced by a value of type
+	// G_VARIANT_TYPE_HANDLE in the body of the message.
 	SetUnixFdList(fdList UnixFDList)
 	// ToGerror: if @message is not of type G_DBUS_MESSAGE_TYPE_ERROR does
 	// nothing and returns false.
@@ -4790,6 +4868,11 @@ func (m dBusMessage) Signature() string {
 // any.
 //
 // This method is only available on UNIX.
+//
+// The file descriptors normally correspond to G_VARIANT_TYPE_HANDLE values
+// in the body of the message. For example, if g_variant_get_handle()
+// returns 5, that is intended to be a reference to the file descriptor that
+// can be accessed by `g_unix_fd_list_get (list, 5, ...)`.
 func (m dBusMessage) UnixFdList() UnixFDList {
 	var _arg0 *C.GDBusMessage
 
@@ -5101,6 +5184,11 @@ func (m dBusMessage) SetSignature(value string) {
 // is set to the number of fds in @fd_list (or cleared if @fd_list is nil).
 //
 // This method is only available on UNIX.
+//
+// When designing D-Bus APIs that are intended to be interoperable, please
+// note that non-GDBus implementations of D-Bus can usually only access file
+// descriptors if they are referenced by a value of type
+// G_VARIANT_TYPE_HANDLE in the body of the message.
 func (m dBusMessage) SetUnixFdList(fdList UnixFDList) {
 	var _arg0 *C.GDBusMessage
 	var _arg1 *C.GUnixFDList
@@ -5590,14 +5678,16 @@ func (i dBusMethodInvocation) TakeError(err *error) {
 // To just export an object on a well-known name on a message bus, such as the
 // session or system bus, you should instead use g_bus_own_name().
 //
-// An example of peer-to-peer communication with G-DBus can be found in
+// An example of peer-to-peer communication with GDBus can be found in
 // gdbus-example-peer.c
 // (https://git.gnome.org/browse/glib/tree/gio/tests/gdbus-example-peer.c).
 //
 // Note that a minimal BusServer will accept connections from any peer. In many
 // use-cases it will be necessary to add a BusAuthObserver that only accepts
 // connections that have successfully authenticated as the same user that is
-// running the BusServer.
+// running the BusServer. Since GLib 2.68 this can be achieved more simply by
+// passing the G_DBUS_SERVER_FLAGS_AUTHENTICATION_REQUIRE_SAME_USER flag to the
+// server.
 type DBusServer interface {
 	gextras.Objector
 	Initable
@@ -7347,17 +7437,20 @@ type Subprocess interface {
 	// StderrPipe gets the Stream from which to read the stderr output of
 	// @subprocess.
 	//
-	// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE.
+	// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE,
+	// otherwise nil will be returned.
 	StderrPipe() InputStream
 	// StdinPipe gets the Stream that you can write to in order to give data to
 	// the stdin of @subprocess.
 	//
-	// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE.
+	// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE and
+	// not G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise nil will be returned.
 	StdinPipe() OutputStream
 	// StdoutPipe gets the Stream from which to read the stdout output of
 	// @subprocess.
 	//
-	// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE.
+	// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+	// otherwise nil will be returned.
 	StdoutPipe() InputStream
 	// Successful checks if the process was "successful". A process is
 	// considered successful if it exited cleanly with an exit status of 0,
@@ -7690,7 +7783,8 @@ func (s subprocess) Status() int {
 // StderrPipe gets the Stream from which to read the stderr output of
 // @subprocess.
 //
-// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE.
+// The process must have been created with G_SUBPROCESS_FLAGS_STDERR_PIPE,
+// otherwise nil will be returned.
 func (s subprocess) StderrPipe() InputStream {
 	var _arg0 *C.GSubprocess
 
@@ -7710,7 +7804,8 @@ func (s subprocess) StderrPipe() InputStream {
 // StdinPipe gets the Stream that you can write to in order to give data to
 // the stdin of @subprocess.
 //
-// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE.
+// The process must have been created with G_SUBPROCESS_FLAGS_STDIN_PIPE and
+// not G_SUBPROCESS_FLAGS_STDIN_INHERIT, otherwise nil will be returned.
 func (s subprocess) StdinPipe() OutputStream {
 	var _arg0 *C.GSubprocess
 
@@ -7730,7 +7825,8 @@ func (s subprocess) StdinPipe() OutputStream {
 // StdoutPipe gets the Stream from which to read the stdout output of
 // @subprocess.
 //
-// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE.
+// The process must have been created with G_SUBPROCESS_FLAGS_STDOUT_PIPE,
+// otherwise nil will be returned.
 func (s subprocess) StdoutPipe() InputStream {
 	var _arg0 *C.GSubprocess
 
@@ -7931,6 +8027,19 @@ func (s subprocess) WaitFinish(result AsyncResult) error {
 type SubprocessLauncher interface {
 	gextras.Objector
 
+	// Close closes all the file descriptors previously passed to the object
+	// with g_subprocess_launcher_take_fd(),
+	// g_subprocess_launcher_take_stderr_fd(), etc.
+	//
+	// After calling this method, any subsequent calls to
+	// g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will
+	// return G_IO_ERROR_CLOSED. This method is idempotent if called more than
+	// once.
+	//
+	// This function is called automatically when the Launcher is disposed, but
+	// is provided separately so that garbage collected language bindings can
+	// call it earlier to guarantee when FDs are closed.
+	Close()
 	// env returns the value of the environment variable @variable in the
 	// environment of processes launched from this launcher.
 	//
@@ -8039,16 +8148,16 @@ type SubprocessLauncher interface {
 	// Spawnv creates a #GSubprocess given a provided array of arguments.
 	Spawnv(argv []*string) (Subprocess, error)
 	// TakeFd: transfer an arbitrary file descriptor from parent process to the
-	// child. This function takes "ownership" of the fd; it will be closed in
-	// the parent when @self is freed.
+	// child. This function takes ownership of the @source_fd; it will be closed
+	// in the parent when @self is freed.
 	//
 	// By default, all file descriptors from the parent will be closed. This
-	// function allows you to create (for example) a custom pipe() or
-	// socketpair() before launching the process, and choose the target
+	// function allows you to create (for example) a custom `pipe()` or
+	// `socketpair()` before launching the process, and choose the target
 	// descriptor in the child.
 	//
 	// An example use case is GNUPG, which has a command line argument
-	// --passphrase-fd providing a file descriptor number where it expects the
+	// `--passphrase-fd` providing a file descriptor number where it expects the
 	// passphrase to be written.
 	TakeFd(sourceFd int, targetFd int)
 	// TakeStderrFd sets the file descriptor to use as the stderr for spawned
@@ -8151,6 +8260,26 @@ func NewSubprocessLauncher(flags SubprocessFlags) SubprocessLauncher {
 	_subprocessLauncher = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SubprocessLauncher)
 
 	return _subprocessLauncher
+}
+
+// Close closes all the file descriptors previously passed to the object
+// with g_subprocess_launcher_take_fd(),
+// g_subprocess_launcher_take_stderr_fd(), etc.
+//
+// After calling this method, any subsequent calls to
+// g_subprocess_launcher_spawn() or g_subprocess_launcher_spawnv() will
+// return G_IO_ERROR_CLOSED. This method is idempotent if called more than
+// once.
+//
+// This function is called automatically when the Launcher is disposed, but
+// is provided separately so that garbage collected language bindings can
+// call it earlier to guarantee when FDs are closed.
+func (s subprocessLauncher) Close() {
+	var _arg0 *C.GSubprocessLauncher
+
+	_arg0 = (*C.GSubprocessLauncher)(unsafe.Pointer(s.Native()))
+
+	C.g_subprocess_launcher_close(_arg0)
 }
 
 // env returns the value of the environment variable @variable in the
@@ -8403,16 +8532,16 @@ func (s subprocessLauncher) Spawnv(argv []*string) (Subprocess, error) {
 }
 
 // TakeFd: transfer an arbitrary file descriptor from parent process to the
-// child. This function takes "ownership" of the fd; it will be closed in
-// the parent when @self is freed.
+// child. This function takes ownership of the @source_fd; it will be closed
+// in the parent when @self is freed.
 //
 // By default, all file descriptors from the parent will be closed. This
-// function allows you to create (for example) a custom pipe() or
-// socketpair() before launching the process, and choose the target
+// function allows you to create (for example) a custom `pipe()` or
+// `socketpair()` before launching the process, and choose the target
 // descriptor in the child.
 //
 // An example use case is GNUPG, which has a command line argument
-// --passphrase-fd providing a file descriptor number where it expects the
+// `--passphrase-fd` providing a file descriptor number where it expects the
 // passphrase to be written.
 func (s subprocessLauncher) TakeFd(sourceFd int, targetFd int) {
 	var _arg0 *C.GSubprocessLauncher

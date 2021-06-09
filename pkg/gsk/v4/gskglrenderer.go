@@ -21,6 +21,7 @@ func init() {
 	})
 }
 
+// GLRenderer: a GSK renderer that is using OpenGL.
 type GLRenderer interface {
 	Renderer
 }

@@ -156,6 +156,30 @@ func NewTLSCertificateFromPem(data string, length int) (TLSCertificate, error) {
 	return _tlsCertificate, _goerr
 }
 
+// NewTLSCertificateFromPkcs11Uris constructs a class TLSCertificate.
+func NewTLSCertificateFromPkcs11Uris(pkcs11Uri string, privateKeyPkcs11Uri string) (TLSCertificate, error) {
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+
+	_arg1 = (*C.gchar)(C.CString(pkcs11Uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(privateKeyPkcs11Uri))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	var _cret C.GTlsCertificate
+	var _cerr *C.GError
+
+	cret = C.g_tls_certificate_new_from_pkcs11_uris(_arg1, _arg2, _cerr)
+
+	var _tlsCertificate TLSCertificate
+	var _goerr error
+
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _tlsCertificate, _goerr
+}
+
 // Issuer gets the Certificate representing @cert's issuer, if known
 func (c tlsCertificate) Issuer() TLSCertificate {
 	var _arg0 *C.GTlsCertificate

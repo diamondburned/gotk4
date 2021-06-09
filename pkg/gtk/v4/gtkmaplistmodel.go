@@ -43,46 +43,41 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	cret = (*C.GObject)(unsafe.Pointer(object.Native()))
 }
 
-// MapListModel is a list model that takes a list model and maps the items in
-// that model to different items according to a MapListModelMapFunc.
+// MapListModel: a `GtkMapListModel` maps the items in a list model to different
+// items.
 //
-// Example: Create a list of EventControllers
+// `GtkMapListModel` uses a [callback@Gtk.MapListModelMapFunc].
 //
-//      static gpointer
-//      map_to_controllers (gpointer widget,
-//                          gpointer data)
-//     {
-//        gpointer result = gtk_widget_observe_controllers (widget);
-//        g_object_unref (widget);
-//        return result;
-//     }
+// Example: Create a list of `GtkEventControllers` “`c static gpointer
+// map_to_controllers (gpointer widget, gpointer data) { gpointer result =
+// gtk_widget_observe_controllers (widget); g_object_unref (widget); return
+// result; }
 //
-//      widgets = gtk_widget_observe_children (widget);
+// widgets = gtk_widget_observe_children (widget);
 //
-//      controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL,
-//                                            widgets,
-//                                            map_to_controllers,
-//                                            NULL, NULL);
+// controllers = gtk_map_list_model_new (G_TYPE_LIST_MODEL, widgets,
+// map_to_controllers, NULL, NULL);
 //
-//      model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER,
-//                                          controllers);
+// model = gtk_flatten_list_model_new (GTK_TYPE_EVENT_CONTROLLER, controllers);
+// “`
 //
-// MapListModel will attempt to discard the mapped objects as soon as they are
-// no longer needed and recreate them if necessary.
+// `GtkMapListModel` will attempt to discard the mapped objects as soon as they
+// are no longer needed and recreate them if necessary.
 type MapListModel interface {
 	gextras.Objector
 	gio.ListModel
 
 	// Model gets the model that is currently being mapped or nil if none.
 	Model() gio.ListModel
-	// HasMap checks if a map function is currently set on @self
+	// HasMap checks if a map function is currently set on @self.
 	HasMap() bool
-	// SetMapFunc sets the function used to map items. The function will be
-	// called whenever an item needs to be mapped and must return the item to
-	// use for the given input item.
+	// SetMapFunc sets the function used to map items.
 	//
-	// Note that MapListModel may call this function multiple times on the same
-	// item, because it may delete items it doesn't need anymore.
+	// The function will be called whenever an item needs to be mapped and must
+	// return the item to use for the given input item.
+	//
+	// Note that `GtkMapListModel` may call this function multiple times on the
+	// same item, because it may delete items it doesn't need anymore.
 	//
 	// GTK makes no effort to ensure that @map_func conforms to the item type of
 	// @self. It assumes that the caller knows what they are doing and the map
@@ -149,7 +144,7 @@ func (s mapListModel) Model() gio.ListModel {
 	return _listModel
 }
 
-// HasMap checks if a map function is currently set on @self
+// HasMap checks if a map function is currently set on @self.
 func (s mapListModel) HasMap() bool {
 	var _arg0 *C.GtkMapListModel
 
@@ -168,12 +163,13 @@ func (s mapListModel) HasMap() bool {
 	return _ok
 }
 
-// SetMapFunc sets the function used to map items. The function will be
-// called whenever an item needs to be mapped and must return the item to
-// use for the given input item.
+// SetMapFunc sets the function used to map items.
 //
-// Note that MapListModel may call this function multiple times on the same
-// item, because it may delete items it doesn't need anymore.
+// The function will be called whenever an item needs to be mapped and must
+// return the item to use for the given input item.
+//
+// Note that `GtkMapListModel` may call this function multiple times on the
+// same item, because it may delete items it doesn't need anymore.
 //
 // GTK makes no effort to ensure that @map_func conforms to the item type of
 // @self. It assumes that the caller knows what they are doing and the map

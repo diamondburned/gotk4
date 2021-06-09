@@ -21,10 +21,13 @@ func init() {
 	})
 }
 
-// CellAreaContext: the CellAreaContext object is created by a given CellArea
-// implementation via its CellAreaClass.create_context() virtual method and is
-// used to store cell sizes and alignments for a series of TreeModel rows that
-// are requested and rendered in the same context.
+// CellAreaContext stores geometrical information for a series of rows in a
+// GtkCellArea
+//
+// The CellAreaContext object is created by a given CellArea implementation via
+// its CellAreaClass.create_context() virtual method and is used to store cell
+// sizes and alignments for a series of TreeModel rows that are requested and
+// rendered in the same context.
 //
 // CellLayout widgets can create any number of contexts in which to request and
 // render groups of data rows. However, it’s important that the same context

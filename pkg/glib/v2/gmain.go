@@ -520,7 +520,10 @@ func (c *MainContext) AddPoll(fd *PollFD, priority int) {
 	C.g_main_context_add_poll(_arg0, _arg1, _arg2)
 }
 
-// Check passes the results of polling back to the main loop.
+// Check passes the results of polling back to the main loop. You should be
+// careful to pass @fds and its length @n_fds as received from
+// g_main_context_query(), as this functions relies on assumptions on how @fds
+// is filled.
 //
 // You must have successfully acquired the context with g_main_context_acquire()
 // before you may call this function.
@@ -797,7 +800,10 @@ func (c *MainContext) PushThreadDefault() {
 	C.g_main_context_push_thread_default(_arg0)
 }
 
-// Query determines information necessary to poll this main loop.
+// Query determines information necessary to poll this main loop. You should be
+// careful to pass the resulting @fds array and its length @n_fds as is when
+// calling g_main_context_check(), as this function relies on assumptions made
+// when the array is filled.
 //
 // You must have successfully acquired the context with g_main_context_acquire()
 // before you may call this function.
@@ -1355,12 +1361,12 @@ func (s *Source) Time() int64 {
 //    {
 //      SomeWidget *self = data;
 //
-//      GDK_THREADS_ENTER ();
+//      g_mutex_lock (&self->idle_id_mutex);
 //      if (!g_source_is_destroyed (g_main_current_source ()))
 //        {
 //          // do stuff with self
 //        }
-//      GDK_THREADS_LEAVE ();
+//      g_mutex_unlock (&self->idle_id_mutex);
 //
 //      return FALSE;
 //    }

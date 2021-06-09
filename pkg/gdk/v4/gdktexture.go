@@ -24,7 +24,19 @@ func init() {
 	})
 }
 
-// Texture: the `GdkTexture` structure contains only private data.
+// Texture: `GdkTexture` is the basic element used to refer to pixel data.
+//
+// It is primarily meant for pixel data that will not change over multiple
+// frames, and will be used for a long time.
+//
+// There are various ways to create `GdkTexture` objects from a `GdkPixbuf`, or
+// a Cairo surface, or other pixel data.
+//
+// The ownership of the pixel data is transferred to the `GdkTexture` instance;
+// you can only make a copy of it, via [method@Gdk.Texture.download].
+//
+// `GdkTexture` is an immutable object: That means you cannot change anything
+// about it other than increasing the reference count via g_object_ref().
 type Texture interface {
 	gextras.Objector
 	Paintable
@@ -37,7 +49,7 @@ type Texture interface {
 	//
 	// This is a utility function intended for debugging and testing. If you
 	// want more control over formats, proper error handling or want to store to
-	// a #GFile or other location, you might want to look into using the
+	// a `GFile` or other location, you might want to look into using the
 	// gdk-pixbuf library.
 	SaveToPng(filename string) bool
 }
@@ -158,7 +170,7 @@ func (t texture) Width() int {
 //
 // This is a utility function intended for debugging and testing. If you
 // want more control over formats, proper error handling or want to store to
-// a #GFile or other location, you might want to look into using the
+// a `GFile` or other location, you might want to look into using the
 // gdk-pixbuf library.
 func (t texture) SaveToPng(filename string) bool {
 	var _arg0 *C.GdkTexture

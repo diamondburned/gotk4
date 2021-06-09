@@ -21,8 +21,11 @@ func init() {
 	})
 }
 
-// MediaControls gtkMediaControls is a widget to show controls for a MediaStream
-// and giving users a way to use it.
+// MediaControls: `GtkMediaControls` is a widget to show controls for a video.
+//
+// !An example GtkMediaControls (media-controls.png)
+//
+// Usually, `GtkMediaControls` is used as part of [class@Gtk.Video].
 type MediaControls interface {
 	Widget
 	Accessible

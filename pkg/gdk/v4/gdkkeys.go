@@ -12,7 +12,9 @@ import (
 import "C"
 
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
-// @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
+// @symbol.
+//
+// Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 	var _arg1 C.guint
 
@@ -128,8 +130,8 @@ func KeyvalToLower(keyval uint) uint {
 	return _guint
 }
 
-// KeyvalToUnicode: convert from a GDK key symbol to the corresponding ISO10646
-// (Unicode) character.
+// KeyvalToUnicode: convert from a GDK key symbol to the corresponding Unicode
+// character.
 //
 // Note that the conversion does not take the current locale into consideration,
 // which might be expected for particular keyvals, such as GDK_KEY_KP_Decimal.
@@ -166,7 +168,7 @@ func KeyvalToUpper(keyval uint) uint {
 	return _guint
 }
 
-// UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
+// UnicodeToKeyval: convert from a Unicode character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint {
 	var _arg1 C.guint32
 

@@ -20,7 +20,15 @@ func init() {
 	})
 }
 
-// Transform: the `GskTransform` structure contains only private data.
+// Transform: `GskTransform` is an object to describe transform matrices.
+//
+// Unlike `graphene_matrix_t`, `GskTransform` retains the steps in how a
+// transform was constructed, and allows inspecting them. It is modeled after
+// the way CSS describes transforms.
+//
+// `GskTransform` objects are immutable and cannot be changed after creation.
+// This means code can safely expose them as properties of objects without
+// having to worry about others changing them.
 type Transform struct {
 	native C.GskTransform
 }
@@ -146,10 +154,11 @@ func (n *Transform) Matrix(matrix *graphene.Matrix) *Transform {
 	return _transform
 }
 
-// Perspective applies a perspective projection transform. This transform scales
-// points in X and Y based on their Z value, scaling points with positive Z
-// values away from the origin, and those with negative Z values towards the
-// origin. Points on the z=0 plane are unchanged.
+// Perspective applies a perspective projection transform.
+//
+// This transform scales points in X and Y based on their Z value, scaling
+// points with positive Z values away from the origin, and those with negative Z
+// values towards the origin. Points on the z=0 plane are unchanged.
 func (n *Transform) Perspective(depth float32) *Transform {
 	var _arg0 *C.GskTransform
 	var _arg1 C.float
@@ -172,7 +181,10 @@ func (n *Transform) Perspective(depth float32) *Transform {
 }
 
 // Print converts @self into a human-readable string representation suitable for
-// printing that can later be parsed with gsk_transform_parse().
+// printing.
+//
+// The result of this function can later be parsed with
+// [func@Gsk.Transform.parse].
 func (s *Transform) Print(string *glib.String) {
 	var _arg0 *C.GskTransform
 	var _arg1 *C.GString
@@ -183,7 +195,7 @@ func (s *Transform) Print(string *glib.String) {
 	C.gsk_transform_print(_arg0, _arg1)
 }
 
-// Ref acquires a reference on the given Transform.
+// Ref acquires a reference on the given `GskTransform`.
 func (s *Transform) Ref() *Transform {
 	var _arg0 *C.GskTransform
 
@@ -200,7 +212,8 @@ func (s *Transform) Ref() *Transform {
 	return _transform
 }
 
-// Rotate rotates @next @angle degrees in 2D - or in 3Dspeak, around the z axis.
+// Rotate rotates @next @angle degrees in 2D - or in 3D-speak, around the z
+// axis.
 func (n *Transform) Rotate(angle float32) *Transform {
 	var _arg0 *C.GskTransform
 	var _arg1 C.float
@@ -224,7 +237,7 @@ func (n *Transform) Rotate(angle float32) *Transform {
 
 // Rotate3D rotates @next @angle degrees around @axis.
 //
-// For a rotation in 2D space, use gsk_transform_rotate().
+// For a rotation in 2D space, use [method@Gsk.Transform.rotate]
 func (n *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	var _arg0 *C.GskTransform
 	var _arg1 C.float
@@ -248,8 +261,9 @@ func (n *Transform) Rotate3D(angle float32, axis *graphene.Vec3) *Transform {
 	return _transform
 }
 
-// Scale scales @next in 2-dimensional space by the given factors. Use
-// gsk_transform_scale_3d() to scale in all 3 dimensions.
+// Scale scales @next in 2-dimensional space by the given factors.
+//
+// Use [method@Gsk.Transform.scale_3d] to scale in all 3 dimensions.
 func (n *Transform) Scale(factorX float32, factorY float32) *Transform {
 	var _arg0 *C.GskTransform
 	var _arg1 C.float
@@ -299,18 +313,17 @@ func (n *Transform) Scale3D(factorX float32, factorY float32, factorZ float32) *
 	return _transform
 }
 
-// To2D converts a Transform to a 2D transformation matrix. @self must be a 2D
-// transformation. If you are not sure, use gsk_transform_get_category() >=
-// GSK_TRANSFORM_CATEGORY_2D to check.
+// To2D converts a `GskTransform` to a 2D transformation matrix.
+//
+// @self must be a 2D transformation. If you are not sure, use
+// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D to check.
 //
 // The returned values have the following layout:
 //
-//    | xx yx |   |  a  b  0 |
-//    | xy yy | = |  c  d  0 |
-//    | dx dy |   | tx ty  1 |
+// “` | xx yx | | a b 0 | | xy yy | = | c d 0 | | dx dy | | tx ty 1 | “`
 //
-// This function can be used to convert between a Transform and a matrix type
-// from other 2D drawing libraries, in particular Cairo.
+// This function can be used to convert between a `GskTransform` and a matrix
+// type from other 2D drawing libraries, in particular Cairo.
 func (s *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform
 
@@ -342,9 +355,10 @@ func (s *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy f
 	return _outXx, _outYx, _outXy, _outYy, _outDx, _outDy
 }
 
-// ToAffine converts a Transform to 2D affine transformation factors. @self must
-// be a 2D transformation. If you are not sure, use gsk_transform_get_category()
-// >= GSK_TRANSFORM_CATEGORY_2D_AFFINE to check.
+// ToAffine converts a `GskTransform` to 2D affine transformation factors.
+//
+// @self must be a 2D transformation. If you are not sure, use
+// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE to check.
 func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform
 
@@ -370,8 +384,9 @@ func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx floa
 	return _outScaleX, _outScaleY, _outDx, _outDy
 }
 
-// ToMatrix computes the actual value of @self and stores it in @out_matrix. The
-// previous value of @out_matrix will be ignored.
+// ToMatrix computes the actual value of @self and stores it in @out_matrix.
+//
+// The previous value of @out_matrix will be ignored.
 func (s *Transform) ToMatrix() graphene.Matrix {
 	var _arg0 *C.GskTransform
 
@@ -384,11 +399,11 @@ func (s *Transform) ToMatrix() graphene.Matrix {
 	return _outMatrix
 }
 
-// String converts a matrix into a string that is suitable for printing and can
-// later be parsed with gsk_transform_parse().
+// String converts a matrix into a string that is suitable for printing.
 //
-// This is a wrapper around gsk_transform_print(), see that function for
-// details.
+// The resulting string can be parsed with [func@Gsk.Transform.parse].
+//
+// This is a wrapper around [method@Gsk.Transform.print].
 func (s *Transform) String() string {
 	var _arg0 *C.GskTransform
 
@@ -406,9 +421,10 @@ func (s *Transform) String() string {
 	return _utf8
 }
 
-// ToTranslate converts a Transform to a translation operation. @self must be a
-// 2D transformation. If you are not sure, use gsk_transform_get_category() >=
-// GSK_TRANSFORM_CATEGORY_2D_TRANSLATE to check.
+// ToTranslate converts a `GskTransform` to a translation operation.
+//
+// @self must be a 2D transformation. If you are not sure, use
+// gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE to check.
 func (s *Transform) ToTranslate() (outDx float32, outDy float32) {
 	var _arg0 *C.GskTransform
 
@@ -450,8 +466,10 @@ func (n *Transform) Transform(other *Transform) *Transform {
 	return _transform
 }
 
-// TransformBounds transforms a #graphene_rect_t using the given transform
-// @self. The result is the bounding box containing the coplanar quad.
+// TransformBounds transforms a `graphene_rect_t` using the given transform
+// @self.
+//
+// The result is the bounding box containing the coplanar quad.
 func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	var _arg0 *C.GskTransform
 	var _arg1 *C.graphene_rect_t
@@ -466,7 +484,7 @@ func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 	return _outRect
 }
 
-// TransformPoint transforms a #graphene_point_t using the given transform
+// TransformPoint transforms a `graphene_point_t` using the given transform
 // @self.
 func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	var _arg0 *C.GskTransform
@@ -482,7 +500,7 @@ func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 	return _outPoint
 }
 
-// Translate translates @next in 2dimensional space by @point.
+// Translate translates @next in 2-dimensional space by @point.
 func (n *Transform) Translate(point *graphene.Point) *Transform {
 	var _arg0 *C.GskTransform
 	var _arg1 *C.graphene_point_t
@@ -526,7 +544,7 @@ func (n *Transform) Translate3D(point *graphene.Point3D) *Transform {
 	return _transform
 }
 
-// Unref releases a reference on the given Transform.
+// Unref releases a reference on the given `GskTransform`.
 //
 // If the reference was the last, the resources associated to the @self are
 // freed.

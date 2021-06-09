@@ -22,21 +22,24 @@ func init() {
 	})
 }
 
-// FilterListModel is a list model that filters a given other listmodel. It
-// hides some elements from the other model according to criteria given by a
-// Filter.
+// FilterListModel: `GtkFilterListModel` is a list model that filters the
+// elements of the underlying model according to a `GtkFilter`.
+//
+// It hides some elements from the other model according to criteria given by a
+// `GtkFilter`.
 //
 // The model can be set up to do incremental searching, so that filtering long
-// lists doesn't block the UI. See gtk_filter_list_model_set_incremental() for
-// details.
+// lists doesn't block the UI. See [method@Gtk.FilterListModel.set_incremental]
+// for details.
 type FilterListModel interface {
 	gextras.Objector
 	gio.ListModel
 
-	// Filter gets the Filter currently set on @self.
+	// Filter gets the `GtkFilter` currently set on @self.
 	Filter() Filter
-	// Incremental returns whether incremental filtering was enabled via
-	// gtk_filter_list_model_set_incremental().
+	// Incremental returns whether incremental filtering is enabled.
+	//
+	// See [method@Gtk.FilterListModel.set_incremental].
 	Incremental() bool
 	// Model gets the model currently filtered or nil if none.
 	Model() gio.ListModel
@@ -47,20 +50,23 @@ type FilterListModel interface {
 	// remaining by dividing the return value by the total number of items in
 	// the underlying model:
 	//
-	//    pending = gtk_filter_list_model_get_pending (self);
-	//    model = gtk_filter_list_model_get_model (self);
-	//    percentage = pending / (double) g_list_model_get_n_items (model);
+	// “`c pending = gtk_filter_list_model_get_pending (self); model =
+	// gtk_filter_list_model_get_model (self); percentage = pending / (double)
+	// g_list_model_get_n_items (model); “`
 	//
 	// If no filter operation is ongoing - in particular when
-	// FilterListModel:incremental is false - this function returns 0.
+	// [property@Gtk.FilterListModel:incremental] is false - this function
+	// returns 0.
 	Pending() uint
 	// SetFilter sets the filter used to filter items.
 	SetFilter(filter Filter)
-	// SetIncremental: when incremental filtering is enabled, the
-	// GtkFilterListModel will not run filters immediately, but will instead
-	// queue an idle handler that incrementally filters the items and adds them
-	// to the list. This of course means that items are not instantly added to
-	// the list, but only appear incrementally.
+	// SetIncremental sets the filter model to do an incremental sort.
+	//
+	// When incremental filtering is enabled, the `GtkFilterListModel` will not
+	// run filters immediately, but will instead queue an idle handler that
+	// incrementally filters the items and adds them to the list. This of course
+	// means that items are not instantly added to the list, but only appear
+	// incrementally.
 	//
 	// When your filter blocks the UI while filtering, you might consider
 	// turning this on. Depending on your model and filters, this may become
@@ -68,8 +74,8 @@ type FilterListModel interface {
 	//
 	// By default, incremental filtering is disabled.
 	//
-	// See gtk_filter_list_model_get_pending() for progress information about an
-	// ongoing incremental filtering operation.
+	// See [method@Gtk.FilterListModel.get_pending] for progress information
+	// about an ongoing incremental filtering operation.
 	SetIncremental(incremental bool)
 	// SetModel sets the model to be filtered.
 	//
@@ -121,7 +127,7 @@ func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
 	return _filterListModel
 }
 
-// Filter gets the Filter currently set on @self.
+// Filter gets the `GtkFilter` currently set on @self.
 func (s filterListModel) Filter() Filter {
 	var _arg0 *C.GtkFilterListModel
 
@@ -138,8 +144,9 @@ func (s filterListModel) Filter() Filter {
 	return _filter
 }
 
-// Incremental returns whether incremental filtering was enabled via
-// gtk_filter_list_model_set_incremental().
+// Incremental returns whether incremental filtering is enabled.
+//
+// See [method@Gtk.FilterListModel.set_incremental].
 func (s filterListModel) Incremental() bool {
 	var _arg0 *C.GtkFilterListModel
 
@@ -182,12 +189,13 @@ func (s filterListModel) Model() gio.ListModel {
 // remaining by dividing the return value by the total number of items in
 // the underlying model:
 //
-//    pending = gtk_filter_list_model_get_pending (self);
-//    model = gtk_filter_list_model_get_model (self);
-//    percentage = pending / (double) g_list_model_get_n_items (model);
+// “`c pending = gtk_filter_list_model_get_pending (self); model =
+// gtk_filter_list_model_get_model (self); percentage = pending / (double)
+// g_list_model_get_n_items (model); “`
 //
 // If no filter operation is ongoing - in particular when
-// FilterListModel:incremental is false - this function returns 0.
+// [property@Gtk.FilterListModel:incremental] is false - this function
+// returns 0.
 func (s filterListModel) Pending() uint {
 	var _arg0 *C.GtkFilterListModel
 
@@ -215,11 +223,13 @@ func (s filterListModel) SetFilter(filter Filter) {
 	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
 }
 
-// SetIncremental: when incremental filtering is enabled, the
-// GtkFilterListModel will not run filters immediately, but will instead
-// queue an idle handler that incrementally filters the items and adds them
-// to the list. This of course means that items are not instantly added to
-// the list, but only appear incrementally.
+// SetIncremental sets the filter model to do an incremental sort.
+//
+// When incremental filtering is enabled, the `GtkFilterListModel` will not
+// run filters immediately, but will instead queue an idle handler that
+// incrementally filters the items and adds them to the list. This of course
+// means that items are not instantly added to the list, but only appear
+// incrementally.
 //
 // When your filter blocks the UI while filtering, you might consider
 // turning this on. Depending on your model and filters, this may become
@@ -227,8 +237,8 @@ func (s filterListModel) SetFilter(filter Filter) {
 //
 // By default, incremental filtering is disabled.
 //
-// See gtk_filter_list_model_get_pending() for progress information about an
-// ongoing incremental filtering operation.
+// See [method@Gtk.FilterListModel.get_pending] for progress information
+// about an ongoing incremental filtering operation.
 func (s filterListModel) SetIncremental(incremental bool) {
 	var _arg0 *C.GtkFilterListModel
 	var _arg1 C.gboolean

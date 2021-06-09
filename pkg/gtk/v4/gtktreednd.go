@@ -89,6 +89,7 @@ type TreeDragDestOverrider interface {
 	RowDropPossible(destPath *TreePath, value **externglib.Value) bool
 }
 
+// TreeDragDest: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragDest interface {
 	gextras.Objector
 	TreeDragDestOverrider
@@ -189,6 +190,7 @@ type TreeDragSourceOverrider interface {
 	RowDraggable(path *TreePath) bool
 }
 
+// TreeDragSource: interface for Drag-and-Drop destinations in `GtkTreeView`.
 type TreeDragSource interface {
 	gextras.Objector
 	TreeDragSourceOverrider

@@ -91,6 +91,12 @@ const (
 	// URIFlagsEncodedFragment: same as G_URI_FLAGS_ENCODED, for the fragment
 	// only.
 	URIFlagsEncodedFragment URIFlags = 128
+	// URIFlagsSchemeNormalize: a scheme-based normalization will be applied.
+	// For example, when parsing an HTTP URI changing omitted path to `/` and
+	// omitted port to `80`; and when building a URI, changing empty path to `/`
+	// and default port `80`). This only supports a subset of known schemes.
+	// (Since: 2.68)
+	URIFlagsSchemeNormalize URIFlags = 256
 )
 
 // URIHideFlags flags describing what parts of the URI to hide in
@@ -231,11 +237,11 @@ const (
 // URI Equality
 //
 // Note that there is no `g_uri_equal ()` function, because comparing URIs
-// usefully requires scheme-specific knowledge that #GUri does not have. For
-// example, `http://example.com/` and `http://EXAMPLE.COM:80` have exactly the
-// same meaning according to the HTTP specification, and `data:,foo` and
-// `data:;base64,Zm9v` resolve to the same thing according to the `data:` URI
-// specification.
+// usefully requires scheme-specific knowledge that #GUri does not have. #GUri
+// can help with normalization if you use the various encoded Flags as well as
+// G_URI_FLAGS_SCHEME_NORMALIZE however it is not comprehensive. For example,
+// `data:,foo` and `data:;base64,Zm9v` resolve to the same thing according to
+// the `data:` URI specification which GLib does not handle.
 type URI struct {
 	native C.GUri
 }

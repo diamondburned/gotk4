@@ -31,12 +31,15 @@ type ColorChooserOverrider interface {
 	SetRGBA(color *gdk.RGBA)
 }
 
-// ColorChooser is an interface that is implemented by widgets for choosing
-// colors. Depending on the situation, colors may be allowed to have alpha
+// ColorChooser: `GtkColorChooser` is an interface that is implemented by
+// widgets for choosing colors.
+//
+// Depending on the situation, colors may be allowed to have alpha
 // (translucency).
 //
 // In GTK, the main widgets that implement this interface are
-// ColorChooserWidget, ColorChooserDialog and ColorButton.
+// [class@Gtk.ColorChooserWidget], [class@Gtk.ColorChooserDialog] and
+// [class@Gtk.ColorButton].
 type ColorChooser interface {
 	gextras.Objector
 	ColorChooserOverrider

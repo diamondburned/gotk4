@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -25,6 +26,67 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
+
+// DBusEscapeObjectPath: this is a language binding friendly version of
+// g_dbus_escape_object_path_bytestring().
+func DBusEscapeObjectPath(s string) string {
+	var _arg1 *C.gchar
+
+	_arg1 = (*C.gchar)(C.CString(s))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.gchar
+
+	cret = C.g_dbus_escape_object_path(_arg1)
+
+	var _utf8 string
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// DBusEscapeObjectPathBytestring escapes @bytes for use in a D-Bus object path
+// component. @bytes is an array of zero or more nonzero bytes in an unspecified
+// encoding, followed by a single zero byte.
+//
+// The escaping method consists of replacing all non-alphanumeric characters
+// (see g_ascii_isalnum()) with their hexadecimal value preceded by an
+// underscore (`_`). For example: `foo.bar.baz` will become `foo_2ebar_2ebaz`.
+//
+// This method is appropriate to use when the input is nearly a valid object
+// path component but is not when your input is far from being a valid object
+// path component. Other escaping algorithms are also valid to use with D-Bus
+// object paths.
+//
+// This can be reversed with g_dbus_unescape_object_path().
+func DBusEscapeObjectPathBytestring(bytes []byte) string {
+	var _arg1 *C.guint8
+
+	_arg1 = (*C.guint8)(C.malloc((len(bytes) + 1) * C.sizeof_guint8))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	{
+		var out []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(bytes)))
+
+		for i := range bytes {
+			_arg1 = C.guint8(bytes)
+		}
+	}
+
+	var _cret *C.gchar
+
+	cret = C.g_dbus_escape_object_path_bytestring(_arg1)
+
+	var _utf8 string
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
 
 // DBusGenerateGuid: generate a D-Bus GUID that can be used with e.g.
 // g_dbus_connection_new().
@@ -216,4 +278,43 @@ func DBusIsUniqueName(string string) bool {
 	}
 
 	return _ok
+}
+
+// DBusUnescapeObjectPath unescapes an string that was previously escaped with
+// g_dbus_escape_object_path(). If the string is in a format that could not have
+// been returned by g_dbus_escape_object_path(), this function returns nil.
+//
+// Encoding alphanumeric characters which do not need to be encoded is not
+// allowed (e.g `_63` is not valid, the string should contain `c` instead).
+func DBusUnescapeObjectPath(s string) []byte {
+	var _arg1 *C.gchar
+
+	_arg1 = (*C.gchar)(C.CString(s))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _cret *C.guint8
+
+	cret = C.g_dbus_unescape_object_path(_arg1)
+
+	var _guint8s []byte
+
+	{
+		var length int
+		for p := _cret; *p != 0; p = (*C.guint8)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
+
+		_guint8s = make([]byte, length)
+		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
+			_guint8s = (byte)(_cret)
+		}
+	}
+
+	return _guint8s
 }

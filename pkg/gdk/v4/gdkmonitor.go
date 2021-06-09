@@ -21,10 +21,12 @@ func init() {
 	})
 }
 
-// Monitor: gdkMonitor objects represent the individual outputs that are
-// associated with a Display. GdkDisplay keeps a Model to enumerate and monitor
-// monitors with gdk_display_get_monitors(). You can use
-// gdk_display_get_monitor_at_surface() to find a particular monitor.
+// Monitor: `GdkMonitor` objects represent the individual outputs that are
+// associated with a `GdkDisplay`.
+//
+// `GdkDisplay` keeps a `GListModel` to enumerate and monitor monitors with
+// [method@Gdk.Display.get_monitors]. You can use
+// [method@Gdk.Display.get_monitor_at_surface] to find a particular monitor.
 type Monitor interface {
 	gextras.Objector
 
@@ -32,18 +34,20 @@ type Monitor interface {
 	Connector() string
 	// Display gets the display that this monitor belongs to.
 	Display() Display
-	// Geometry retrieves the size and position of an individual monitor within
-	// the display coordinate space. The returned geometry is in ”application
-	// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
+	// Geometry retrieves the size and position of the monitor within the
+	// display coordinate space.
+	//
+	// The returned geometry is in ”application pixels”, not in ”device pixels”
+	// (see [method@Gdk.Monitor.get_scale_factor]).
 	Geometry() Rectangle
 	// HeightMm gets the height in millimeters of the monitor.
 	HeightMm() int
-	// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
-	// available.
+	// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
 	//
 	// Note that this value might also vary depending on actual display backend.
 	//
-	// PNP ID registry is located at https://uefi.org/pnp_id_list
+	// The PNP ID registry is located at https://uefi.org/pnp_id_list
+	// (https://uefi.org/pnp_id_list).
 	Manufacturer() string
 	// Model gets the string identifying the monitor model, if available.
 	Model() string
@@ -53,21 +57,25 @@ type Monitor interface {
 	// 60000.
 	RefreshRate() int
 	// ScaleFactor gets the internal scale factor that maps from monitor
-	// coordinates to the actual device pixels. On traditional systems this is
-	// 1, but on very high density outputs this can be a higher value (often 2).
+	// coordinates to device pixels.
+	//
+	// On traditional systems this is 1, but on very high density outputs it can
+	// be a higher value (often 2).
 	//
 	// This can be used if you want to create pixel based data for a particular
 	// monitor, but most of the time you’re drawing to a surface where it is
-	// better to use gdk_surface_get_scale_factor() instead.
+	// better to use [method@Gdk.Surface.get_scale_factor] instead.
 	ScaleFactor() int
 	// SubpixelLayout gets information about the layout of red, green and blue
-	// primaries for each pixel in this monitor, if available.
+	// primaries for pixels.
 	SubpixelLayout() SubpixelLayout
 	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
 	// IsValid returns true if the @monitor object corresponds to a physical
-	// monitor. The @monitor becomes invalid when the physical monitor is
-	// unplugged or removed.
+	// monitor.
+	//
+	// The @monitor becomes invalid when the physical monitor is unplugged or
+	// removed.
 	IsValid() bool
 }
 
@@ -126,9 +134,11 @@ func (m monitor) Display() Display {
 	return _display
 }
 
-// Geometry retrieves the size and position of an individual monitor within
-// the display coordinate space. The returned geometry is in ”application
-// pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
+// Geometry retrieves the size and position of the monitor within the
+// display coordinate space.
+//
+// The returned geometry is in ”application pixels”, not in ”device pixels”
+// (see [method@Gdk.Monitor.get_scale_factor]).
 func (m monitor) Geometry() Rectangle {
 	var _arg0 *C.GdkMonitor
 
@@ -158,12 +168,12 @@ func (m monitor) HeightMm() int {
 	return _gint
 }
 
-// Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
-// available.
+// Manufacturer gets the name or PNP ID of the monitor's manufacturer.
 //
 // Note that this value might also vary depending on actual display backend.
 //
-// PNP ID registry is located at https://uefi.org/pnp_id_list
+// The PNP ID registry is located at https://uefi.org/pnp_id_list
+// (https://uefi.org/pnp_id_list).
 func (m monitor) Manufacturer() string {
 	var _arg0 *C.GdkMonitor
 
@@ -218,12 +228,14 @@ func (m monitor) RefreshRate() int {
 }
 
 // ScaleFactor gets the internal scale factor that maps from monitor
-// coordinates to the actual device pixels. On traditional systems this is
-// 1, but on very high density outputs this can be a higher value (often 2).
+// coordinates to device pixels.
+//
+// On traditional systems this is 1, but on very high density outputs it can
+// be a higher value (often 2).
 //
 // This can be used if you want to create pixel based data for a particular
 // monitor, but most of the time you’re drawing to a surface where it is
-// better to use gdk_surface_get_scale_factor() instead.
+// better to use [method@Gdk.Surface.get_scale_factor] instead.
 func (m monitor) ScaleFactor() int {
 	var _arg0 *C.GdkMonitor
 
@@ -241,7 +253,7 @@ func (m monitor) ScaleFactor() int {
 }
 
 // SubpixelLayout gets information about the layout of red, green and blue
-// primaries for each pixel in this monitor, if available.
+// primaries for pixels.
 func (m monitor) SubpixelLayout() SubpixelLayout {
 	var _arg0 *C.GdkMonitor
 
@@ -276,8 +288,10 @@ func (m monitor) WidthMm() int {
 }
 
 // IsValid returns true if the @monitor object corresponds to a physical
-// monitor. The @monitor becomes invalid when the physical monitor is
-// unplugged or removed.
+// monitor.
+//
+// The @monitor becomes invalid when the physical monitor is unplugged or
+// removed.
 func (m monitor) IsValid() bool {
 	var _arg0 *C.GdkMonitor
 

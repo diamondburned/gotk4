@@ -147,7 +147,9 @@ type FileInfo interface {
 	ModificationTime() glib.TimeVal
 	// Name gets the name for a file. This is guaranteed to always be set.
 	Name() *string
-	// Size gets the file's size.
+	// Size gets the file's size (in bytes). The size is retrieved through the
+	// value of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
+	// from #guint64 to #goffset before returning the result.
 	Size() int64
 	// SortOrder gets the value of the sort_order attribute from the Info. See
 	// G_FILE_ATTRIBUTE_STANDARD_SORT_ORDER.
@@ -875,7 +877,9 @@ func (i fileInfo) Name() *string {
 	return _filename
 }
 
-// Size gets the file's size.
+// Size gets the file's size (in bytes). The size is retrieved through the
+// value of the G_FILE_ATTRIBUTE_STANDARD_SIZE attribute and is converted
+// from #guint64 to #goffset before returning the result.
 func (i fileInfo) Size() int64 {
 	var _arg0 *C.GFileInfo
 

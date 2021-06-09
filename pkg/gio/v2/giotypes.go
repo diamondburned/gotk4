@@ -981,12 +981,16 @@ func (o *OutputVector) Size() uint {
 // variable must be set to the full path to the xmllint executable, or xmllint
 // must be in the `PATH`; otherwise the preprocessing step is skipped.
 //
-// `to-pixdata` which will use the gdk-pixbuf-pixdata command to convert images
-// to the GdkPixdata format, which allows you to create pixbufs directly using
-// the data inside the resource file, rather than an (uncompressed) copy of it.
-// For this, the gdk-pixbuf-pixdata program must be in the PATH, or the
+// `to-pixdata` (deprecated since gdk-pixbuf 2.32) which will use the
+// `gdk-pixbuf-pixdata` command to convert images to the Pixdata format, which
+// allows you to create pixbufs directly using the data inside the resource
+// file, rather than an (uncompressed) copy of it. For this, the
+// `gdk-pixbuf-pixdata` program must be in the `PATH`, or the
 // `GDK_PIXBUF_PIXDATA` environment variable must be set to the full path to the
-// gdk-pixbuf-pixdata executable; otherwise the resource compiler will abort.
+// `gdk-pixbuf-pixdata` executable; otherwise the resource compiler will abort.
+// `to-pixdata` has been deprecated since gdk-pixbuf 2.32, as #GResource
+// supports embedding modern image formats just as well. Instead of using it,
+// embed a PNG or SVG file in your #GResource.
 //
 // `json-stripblanks` which will use the `json-glib-format` command to strip
 // ignorable whitespace from the JSON file. For this to work, the
@@ -1073,7 +1077,8 @@ func (o *OutputVector) Size() uint {
 // Since GLib 2.50, it is possible to use the `G_RESOURCE_OVERLAYS` environment
 // variable to selectively overlay resources with replacements from the
 // filesystem. It is a G_SEARCHPATH_SEPARATOR-separated list of substitutions to
-// perform during resource lookups.
+// perform during resource lookups. It is ignored when running in a setuid
+// process.
 //
 // A substitution has the form
 //

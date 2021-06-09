@@ -21,30 +21,36 @@ func init() {
 	})
 }
 
-// Adjustment: the Adjustment object represents a value which has an associated
-// lower and upper bound, together with step and page increments, and a page
-// size. It is used within several GTK+ widgets, including SpinButton, Viewport,
-// and Range (which is a base class for Scrollbar and Scale).
+// Adjustment: `GtkAdjustment` is a model for a numeric value.
 //
-// The Adjustment object does not update the value itself. Instead it is left up
-// to the owner of the Adjustment to control the value.
+// The `GtkAdjustment has an associated lower and upper bound. It also contains
+// step and page increments, and a page size.
+//
+// Adjustments are used within several GTK widgets, including
+// [class@Gtk.SpinButton], [class@Gtk.Viewport], [class@Gtk.Scrollbar] and
+// [class@Gtk.Scale].
+//
+// The `GtkAdjustment` object does not update the value itself. Instead it is
+// left up to the owner of the `GtkAdjustment` to control the value.
 type Adjustment interface {
 	gextras.Objector
 
-	// ClampPage updates the Adjustment:value property to ensure that the range
-	// between @lower and @upper is in the current page (i.e. between
-	// Adjustment:value and Adjustment:value + Adjustment:page-size). If the
-	// range is larger than the page size, then only the start of it will be in
-	// the current page.
+	// ClampPage updates the value property to ensure that the range between
+	// @lower and @upper is in the current page.
 	//
-	// A Adjustment::value-changed signal will be emitted if the value is
-	// changed.
+	// The current page goes from `value` to `value` + `page-size`. If the range
+	// is larger than the page size, then only the start of it will be in the
+	// current page.
+	//
+	// A [signal@Gtk.Adjustment::value-changed] signal will be emitted if the
+	// value is changed.
 	ClampPage(lower float64, upper float64)
 	// Configure sets all properties of the adjustment at once.
 	//
-	// Use this function to avoid multiple emissions of the Adjustment::changed
-	// signal. See gtk_adjustment_set_lower() for an alternative way of
-	// compressing multiple emissions of Adjustment::changed into one.
+	// Use this function to avoid multiple emissions of the
+	// [signal@Gtk.Adjustment::changed] signal. See
+	// [method@Gtk.Adjustment.set_lower] for an alternative way of compressing
+	// multiple emissions of [signal@Gtk.Adjustment::changed] into one.
 	Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64)
 	// Lower retrieves the minimum value of the adjustment.
 	Lower() float64
@@ -58,56 +64,58 @@ type Adjustment interface {
 	StepIncrement() float64
 	// Upper retrieves the maximum value of the adjustment.
 	Upper() float64
-	// Value gets the current value of the adjustment. See
-	// gtk_adjustment_set_value().
+	// Value gets the current value of the adjustment.
 	Value() float64
 	// SetLower sets the minimum value of the adjustment.
 	//
 	// When setting multiple adjustment properties via their individual setters,
-	// multiple Adjustment::changed signals will be emitted. However, since the
-	// emission of the Adjustment::changed signal is tied to the emission of the
-	// #GObject::notify signals of the changed properties, it’s possible to
-	// compress the Adjustment::changed signals into one by calling
+	// multiple [signal@Gtk.Adjustment::changed] signals will be emitted.
+	// However, since the emission of the [signal@Gtk.Adjustment::changed]
+	// signal is tied to the emission of the ::notify signals of the changed
+	// properties, it’s possible to compress the
+	// [signal@Gtk.Adjustment::changed] signals into one by calling
 	// g_object_freeze_notify() and g_object_thaw_notify() around the calls to
 	// the individual setters.
 	//
 	// Alternatively, using a single g_object_set() for all the properties to
-	// change, or using gtk_adjustment_configure() has the same effect of
-	// compressing Adjustment::changed emissions.
+	// change, or using [method@Gtk.Adjustment.configure] has the same effect.
 	SetLower(lower float64)
 	// SetPageIncrement sets the page increment of the adjustment.
 	//
-	// See gtk_adjustment_set_lower() about how to compress multiple emissions
-	// of the Adjustment::changed signal when setting multiple adjustment
-	// properties.
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetPageIncrement(pageIncrement float64)
 	// SetPageSize sets the page size of the adjustment.
 	//
-	// See gtk_adjustment_set_lower() about how to compress multiple emissions
-	// of the GtkAdjustment::changed signal when setting multiple adjustment
-	// properties.
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetPageSize(pageSize float64)
 	// SetStepIncrement sets the step increment of the adjustment.
 	//
-	// See gtk_adjustment_set_lower() about how to compress multiple emissions
-	// of the Adjustment::changed signal when setting multiple adjustment
-	// properties.
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetStepIncrement(stepIncrement float64)
 	// SetUpper sets the maximum value of the adjustment.
 	//
 	// Note that values will be restricted by `upper - page-size` if the
 	// page-size property is nonzero.
 	//
-	// See gtk_adjustment_set_lower() about how to compress multiple emissions
-	// of the Adjustment::changed signal when setting multiple adjustment
-	// properties.
+	// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+	// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+	// multiple adjustment properties.
 	SetUpper(upper float64)
-	// SetValue sets the Adjustment value. The value is clamped to lie between
-	// Adjustment:lower and Adjustment:upper.
+	// SetValue sets the `GtkAdjustment` value.
 	//
-	// Note that for adjustments which are used in a Scrollbar, the effective
-	// range of allowed values goes from Adjustment:lower to Adjustment:upper -
-	// Adjustment:page-size.
+	// The value is clamped to lie between [property@Gtk.Adjustment:lower] and
+	// [property@Gtk.Adjustment:upper].
+	//
+	// Note that for adjustments which are used in a `GtkScrollbar`, the
+	// effective range of allowed values goes from
+	// [property@Gtk.Adjustment:lower] to [property@Gtk.Adjustment:upper] -
+	// [property@Gtk.Adjustment:page-size].
 	SetValue(value float64)
 }
 
@@ -159,14 +167,15 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 	return _adjustment
 }
 
-// ClampPage updates the Adjustment:value property to ensure that the range
-// between @lower and @upper is in the current page (i.e. between
-// Adjustment:value and Adjustment:value + Adjustment:page-size). If the
-// range is larger than the page size, then only the start of it will be in
-// the current page.
+// ClampPage updates the value property to ensure that the range between
+// @lower and @upper is in the current page.
 //
-// A Adjustment::value-changed signal will be emitted if the value is
-// changed.
+// The current page goes from `value` to `value` + `page-size`. If the range
+// is larger than the page size, then only the start of it will be in the
+// current page.
+//
+// A [signal@Gtk.Adjustment::value-changed] signal will be emitted if the
+// value is changed.
 func (a adjustment) ClampPage(lower float64, upper float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double
@@ -181,9 +190,10 @@ func (a adjustment) ClampPage(lower float64, upper float64) {
 
 // Configure sets all properties of the adjustment at once.
 //
-// Use this function to avoid multiple emissions of the Adjustment::changed
-// signal. See gtk_adjustment_set_lower() for an alternative way of
-// compressing multiple emissions of Adjustment::changed into one.
+// Use this function to avoid multiple emissions of the
+// [signal@Gtk.Adjustment::changed] signal. See
+// [method@Gtk.Adjustment.set_lower] for an alternative way of compressing
+// multiple emissions of [signal@Gtk.Adjustment::changed] into one.
 func (a adjustment) Configure(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double
@@ -306,8 +316,7 @@ func (a adjustment) Upper() float64 {
 	return _gdouble
 }
 
-// Value gets the current value of the adjustment. See
-// gtk_adjustment_set_value().
+// Value gets the current value of the adjustment.
 func (a adjustment) Value() float64 {
 	var _arg0 *C.GtkAdjustment
 
@@ -327,16 +336,16 @@ func (a adjustment) Value() float64 {
 // SetLower sets the minimum value of the adjustment.
 //
 // When setting multiple adjustment properties via their individual setters,
-// multiple Adjustment::changed signals will be emitted. However, since the
-// emission of the Adjustment::changed signal is tied to the emission of the
-// #GObject::notify signals of the changed properties, it’s possible to
-// compress the Adjustment::changed signals into one by calling
+// multiple [signal@Gtk.Adjustment::changed] signals will be emitted.
+// However, since the emission of the [signal@Gtk.Adjustment::changed]
+// signal is tied to the emission of the ::notify signals of the changed
+// properties, it’s possible to compress the
+// [signal@Gtk.Adjustment::changed] signals into one by calling
 // g_object_freeze_notify() and g_object_thaw_notify() around the calls to
 // the individual setters.
 //
 // Alternatively, using a single g_object_set() for all the properties to
-// change, or using gtk_adjustment_configure() has the same effect of
-// compressing Adjustment::changed emissions.
+// change, or using [method@Gtk.Adjustment.configure] has the same effect.
 func (a adjustment) SetLower(lower float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double
@@ -349,9 +358,9 @@ func (a adjustment) SetLower(lower float64) {
 
 // SetPageIncrement sets the page increment of the adjustment.
 //
-// See gtk_adjustment_set_lower() about how to compress multiple emissions
-// of the Adjustment::changed signal when setting multiple adjustment
-// properties.
+// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+// multiple adjustment properties.
 func (a adjustment) SetPageIncrement(pageIncrement float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double
@@ -364,9 +373,9 @@ func (a adjustment) SetPageIncrement(pageIncrement float64) {
 
 // SetPageSize sets the page size of the adjustment.
 //
-// See gtk_adjustment_set_lower() about how to compress multiple emissions
-// of the GtkAdjustment::changed signal when setting multiple adjustment
-// properties.
+// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+// multiple adjustment properties.
 func (a adjustment) SetPageSize(pageSize float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double
@@ -379,9 +388,9 @@ func (a adjustment) SetPageSize(pageSize float64) {
 
 // SetStepIncrement sets the step increment of the adjustment.
 //
-// See gtk_adjustment_set_lower() about how to compress multiple emissions
-// of the Adjustment::changed signal when setting multiple adjustment
-// properties.
+// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+// multiple adjustment properties.
 func (a adjustment) SetStepIncrement(stepIncrement float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double
@@ -397,9 +406,9 @@ func (a adjustment) SetStepIncrement(stepIncrement float64) {
 // Note that values will be restricted by `upper - page-size` if the
 // page-size property is nonzero.
 //
-// See gtk_adjustment_set_lower() about how to compress multiple emissions
-// of the Adjustment::changed signal when setting multiple adjustment
-// properties.
+// See [method@Gtk.Adjustment.set_lower] about how to compress multiple
+// emissions of the [signal@Gtk.Adjustment::changed] signal when setting
+// multiple adjustment properties.
 func (a adjustment) SetUpper(upper float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double
@@ -410,12 +419,15 @@ func (a adjustment) SetUpper(upper float64) {
 	C.gtk_adjustment_set_upper(_arg0, _arg1)
 }
 
-// SetValue sets the Adjustment value. The value is clamped to lie between
-// Adjustment:lower and Adjustment:upper.
+// SetValue sets the `GtkAdjustment` value.
 //
-// Note that for adjustments which are used in a Scrollbar, the effective
-// range of allowed values goes from Adjustment:lower to Adjustment:upper -
-// Adjustment:page-size.
+// The value is clamped to lie between [property@Gtk.Adjustment:lower] and
+// [property@Gtk.Adjustment:upper].
+//
+// Note that for adjustments which are used in a `GtkScrollbar`, the
+// effective range of allowed values goes from
+// [property@Gtk.Adjustment:lower] to [property@Gtk.Adjustment:upper] -
+// [property@Gtk.Adjustment:page-size].
 func (a adjustment) SetValue(value float64) {
 	var _arg0 *C.GtkAdjustment
 	var _arg1 C.double

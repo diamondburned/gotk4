@@ -12,8 +12,8 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// CSSLocation is used to present a location in a file - or other source of data
-// parsed by the CSS engine.
+// CSSLocation represents a location in a file or other source of data parsed by
+// the CSS engine.
 //
 // The @bytes and @line_bytes offsets are meant to be used to programmatically
 // match data. The @lines and @line_chars offsets can be used for printing the

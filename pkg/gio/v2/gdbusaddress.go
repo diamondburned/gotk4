@@ -93,6 +93,9 @@ func DBusAddressGetStream() {
 
 // DBusAddressGetStreamFinish finishes an operation started with
 // g_dbus_address_get_stream().
+//
+// A server is not required to set a GUID, so @out_guid may be set to nil even
+// on success.
 func DBusAddressGetStreamFinish(res AsyncResult) (string, IOStream, error) {
 	var _arg1 *C.GAsyncResult
 
@@ -121,6 +124,9 @@ func DBusAddressGetStreamFinish(res AsyncResult) (string, IOStream, error) {
 // client-side of the D-Bus authentication conversation. @address must be in the
 // D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
+//
+// A server is not required to set a GUID, so @out_guid may be set to nil even
+// on success.
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.

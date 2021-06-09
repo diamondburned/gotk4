@@ -22,33 +22,40 @@ func init() {
 	})
 }
 
-// GestureStylus is a Gesture implementation specific to stylus input. The
-// provided signals just relay the basic information of the stylus events.
+// GestureStylus: `GtkGestureStylus` is a `GtkGesture` specific to stylus input.
+//
+// The provided signals just relay the basic information of the stylus events.
 type GestureStylus interface {
 	GestureSingle
 
 	// Axis returns the current value for the requested @axis.
 	//
 	// This function must be called from the handler of one of the
-	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
-	// GestureStylus::proximity signals.
+	// [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
+	// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
+	// signals.
 	Axis(axis gdk.AxisUse) (float64, bool)
-	// Backlog: by default, GTK will limit rate of input events. On stylus input
-	// where accuracy of strokes is paramount, this function returns the
-	// accumulated coordinate/timing state before the emission of the current
-	// GestureStylus::motion signal.
+	// Backlog returns the accumulated backlog of tracking information.
 	//
-	// This function may only be called within a GestureStylus::motion signal
-	// handler, the state given in this signal and obtainable through
-	// gtk_gesture_stylus_get_axis() call express the latest (most up-to-date)
-	// state in motion history.
+	// By default, GTK will limit rate of input events. On stylus input where
+	// accuracy of strokes is paramount, this function returns the accumulated
+	// coordinate/timing state before the emission of the current
+	// [Gtk.GestureStylus::motion] signal.
+	//
+	// This function may only be called within a
+	// [signal@Gtk.GestureStylus::motion] signal handler, the state given in
+	// this signal and obtainable through [method@Gtk.GestureStylus.get_axis]
+	// express the latest (most up-to-date) state in motion history.
 	//
 	// The @backlog is provided in chronological order.
 	Backlog() bool
-	// DeviceTool returns the DeviceTool currently driving input through this
-	// gesture. This function must be called from either the
-	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
-	// GestureStylus::proximity signal handlers.
+	// DeviceTool returns the `GdkDeviceTool` currently driving input through
+	// this gesture.
+	//
+	// This function must be called from the handler of one of the
+	// [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
+	// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
+	// signals.
 	DeviceTool() gdk.DeviceTool
 }
 
@@ -89,8 +96,9 @@ func NewGestureStylus() GestureStylus {
 // Axis returns the current value for the requested @axis.
 //
 // This function must be called from the handler of one of the
-// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
-// GestureStylus::proximity signals.
+// [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
+// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
+// signals.
 func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg0 *C.GtkGestureStylus
 	var _arg1 C.GdkAxisUse
@@ -114,15 +122,17 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	return _value, _ok
 }
 
-// Backlog: by default, GTK will limit rate of input events. On stylus input
-// where accuracy of strokes is paramount, this function returns the
-// accumulated coordinate/timing state before the emission of the current
-// GestureStylus::motion signal.
+// Backlog returns the accumulated backlog of tracking information.
 //
-// This function may only be called within a GestureStylus::motion signal
-// handler, the state given in this signal and obtainable through
-// gtk_gesture_stylus_get_axis() call express the latest (most up-to-date)
-// state in motion history.
+// By default, GTK will limit rate of input events. On stylus input where
+// accuracy of strokes is paramount, this function returns the accumulated
+// coordinate/timing state before the emission of the current
+// [Gtk.GestureStylus::motion] signal.
+//
+// This function may only be called within a
+// [signal@Gtk.GestureStylus::motion] signal handler, the state given in
+// this signal and obtainable through [method@Gtk.GestureStylus.get_axis]
+// express the latest (most up-to-date) state in motion history.
 //
 // The @backlog is provided in chronological order.
 func (g gestureStylus) Backlog() bool {
@@ -143,10 +153,13 @@ func (g gestureStylus) Backlog() bool {
 	return _ok
 }
 
-// DeviceTool returns the DeviceTool currently driving input through this
-// gesture. This function must be called from either the
-// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
-// GestureStylus::proximity signal handlers.
+// DeviceTool returns the `GdkDeviceTool` currently driving input through
+// this gesture.
+//
+// This function must be called from the handler of one of the
+// [signal@Gtk.GestureStylus::down], [signal@Gtk.GestureStylus::motion],
+// [signal@Gtk.GestureStylus::up] or [signal@Gtk.GestureStylus::proximity]
+// signals.
 func (g gestureStylus) DeviceTool() gdk.DeviceTool {
 	var _arg0 *C.GtkGestureStylus
 

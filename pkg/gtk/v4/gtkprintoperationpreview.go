@@ -32,17 +32,24 @@ type PrintOperationPreviewOverrider interface {
 	IsSelected(pageNr int) bool
 
 	Ready(context PrintContext)
-	// RenderPage renders a page to the preview, using the print context that
-	// was passed to the PrintOperation::preview handler together with @preview.
+	// RenderPage renders a page to the preview.
 	//
-	// A custom iprint preview should use this function in its ::expose handler
-	// to render the currently selected page.
+	// This is using the print context that was passed to the
+	// [signal@Gtk.PrintOperation::preview] handler together with @preview.
+	//
+	// A custom print preview should use this function to render the currently
+	// selected page.
 	//
 	// Note that this function requires a suitable cairo context to be
 	// associated with the print context.
 	RenderPage(pageNr int)
 }
 
+// PrintOperationPreview: `GtkPrintOperationPreview` is the interface that is
+// used to implement print preview.
+//
+// A `GtkPrintOperationPreview` object is passed to the
+// [signal@Gtk.PrintOperation::preview] signal by [class@Gtk.PrintOperation].
 type PrintOperationPreview interface {
 	gextras.Objector
 	PrintOperationPreviewOverrider
@@ -102,11 +109,13 @@ func (p printOperationPreview) IsSelected(pageNr int) bool {
 	return _ok
 }
 
-// RenderPage renders a page to the preview, using the print context that
-// was passed to the PrintOperation::preview handler together with @preview.
+// RenderPage renders a page to the preview.
 //
-// A custom iprint preview should use this function in its ::expose handler
-// to render the currently selected page.
+// This is using the print context that was passed to the
+// [signal@Gtk.PrintOperation::preview] handler together with @preview.
+//
+// A custom print preview should use this function to render the currently
+// selected page.
 //
 // Note that this function requires a suitable cairo context to be
 // associated with the print context.

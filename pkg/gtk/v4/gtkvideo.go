@@ -22,29 +22,31 @@ func init() {
 	})
 }
 
-// Video: gtkVideo is a widget to show a MediaStream with media controls as
-// provided by MediaControls. If you just want to display a video without
-// controls, you can treat it like any other paintable and for example put it
-// into a Picture.
+// Video: `GtkVideo` is a widget to show a `GtkMediaStream` with media controls.
 //
-// GtkVideo aims to cover use cases such as previews, embedded animations, etc.
-// It supports autoplay, looping, and simple media controls. It does not have
-// support for video overlays, multichannel audio, device selection, or input.
-// If you are writing a full-fledged video player, you may want to use the
-// Paintable API and a media framework such as Gstreamer directly.
+// !An example GtkVideo (video.png)
+//
+// The controls are available separately as [class@Gtk.MediaControls]. If you
+// just want to display a video without controls, you can treat it like any
+// other paintable and for example put it into a [class@Gtk.Picture].
+//
+// `GtkVideo` aims to cover use cases such as previews, embedded animations,
+// etc. It supports autoplay, looping, and simple media controls. It does not
+// have support for video overlays, multichannel audio, device selection, or
+// input. If you are writing a full-fledged video player, you may want to use
+// the [class@Gdk.Paintable] API and a media framework such as Gstreamer
+// directly.
 type Video interface {
 	Widget
 	Accessible
 	Buildable
 	ConstraintTarget
 
-	// Autoplay returns true if videos have been set to loop via
-	// gtk_video_set_loop().
+	// Autoplay returns true if videos have been set to loop.
 	Autoplay() bool
 	// File gets the file played by @self or nil if not playing back a file.
 	File() gio.File
-	// Loop returns true if videos have been set to loop via
-	// gtk_video_set_loop().
+	// Loop returns true if videos have been set to loop.
 	Loop() bool
 	// MediaStream gets the media stream managed by @self or nil if none.
 	MediaStream() MediaStream
@@ -59,16 +61,18 @@ type Video interface {
 	SetFilename(filename string)
 	// SetLoop sets whether new files loaded by @self should be set to loop.
 	SetLoop(loop bool)
-	// SetMediaStream sets the media stream to be played back. @self will take
-	// full control of managing the media stream. If you want to manage a media
-	// stream yourself, consider using a Image for display.
+	// SetMediaStream sets the media stream to be played back.
 	//
-	// If you want to display a file, consider using gtk_video_set_file()
+	// @self will take full control of managing the media stream. If you want to
+	// manage a media stream yourself, consider using a [class@Gtk.Picture] for
+	// display.
+	//
+	// If you want to display a file, consider using [method@Gtk.Video.set_file]
 	// instead.
 	SetMediaStream(stream MediaStream)
 	// SetResource makes @self play the resource at the given @resource_path.
 	//
-	// This is a utility function that calls gtk_video_set_file(),
+	// This is a utility function that calls [method@Gtk.Video.set_file].
 	SetResource(resourcePath string)
 }
 
@@ -182,8 +186,7 @@ func NewVideoForResource(resourcePath string) Video {
 	return _video
 }
 
-// Autoplay returns true if videos have been set to loop via
-// gtk_video_set_loop().
+// Autoplay returns true if videos have been set to loop.
 func (s video) Autoplay() bool {
 	var _arg0 *C.GtkVideo
 
@@ -219,8 +222,7 @@ func (s video) File() gio.File {
 	return _file
 }
 
-// Loop returns true if videos have been set to loop via
-// gtk_video_set_loop().
+// Loop returns true if videos have been set to loop.
 func (s video) Loop() bool {
 	var _arg0 *C.GtkVideo
 
@@ -308,11 +310,13 @@ func (s video) SetLoop(loop bool) {
 	C.gtk_video_set_loop(_arg0, _arg1)
 }
 
-// SetMediaStream sets the media stream to be played back. @self will take
-// full control of managing the media stream. If you want to manage a media
-// stream yourself, consider using a Image for display.
+// SetMediaStream sets the media stream to be played back.
 //
-// If you want to display a file, consider using gtk_video_set_file()
+// @self will take full control of managing the media stream. If you want to
+// manage a media stream yourself, consider using a [class@Gtk.Picture] for
+// display.
+//
+// If you want to display a file, consider using [method@Gtk.Video.set_file]
 // instead.
 func (s video) SetMediaStream(stream MediaStream) {
 	var _arg0 *C.GtkVideo
@@ -326,7 +330,7 @@ func (s video) SetMediaStream(stream MediaStream) {
 
 // SetResource makes @self play the resource at the given @resource_path.
 //
-// This is a utility function that calls gtk_video_set_file(),
+// This is a utility function that calls [method@Gtk.Video.set_file].
 func (s video) SetResource(resourcePath string) {
 	var _arg0 *C.GtkVideo
 	var _arg1 *C.char

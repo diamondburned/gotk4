@@ -18,16 +18,16 @@ func init() {
 	})
 }
 
-// GLTexture: a Texture representing a GL texture object.
+// GLTexture: a GdkTexture representing a GL texture object.
 type GLTexture interface {
 	Texture
 	Paintable
 
-	// Release releases the GL resources held by a GLTexture that was created
-	// with gdk_gl_texture_new().
+	// Release releases the GL resources held by a `GdkGLTexture`.
 	//
-	// The texture contents are still available via the gdk_texture_download()
-	// function, after this function has been called.
+	// The texture contents are still available via the
+	// [method@Gdk.Texture.download] function, after this function has been
+	// called.
 	Release()
 }
 
@@ -54,11 +54,11 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 	return WrapGLTexture(obj), nil
 }
 
-// Release releases the GL resources held by a GLTexture that was created
-// with gdk_gl_texture_new().
+// Release releases the GL resources held by a `GdkGLTexture`.
 //
-// The texture contents are still available via the gdk_texture_download()
-// function, after this function has been called.
+// The texture contents are still available via the
+// [method@Gdk.Texture.download] function, after this function has been
+// called.
 func (s glTexture) Release() {
 	var _arg0 *C.GdkGLTexture
 

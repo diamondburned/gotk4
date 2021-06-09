@@ -19,9 +19,13 @@ import (
 import "C"
 
 // ContentDeserializeAsync: read content from the given input stream and
-// deserialize it, asynchronously. When the operation is finished, @callback
-// will be called. You can then call gdk_content_deserialize_finish() to get the
-// result of the operation.
+// deserialize it, asynchronously.
+//
+// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
+// indicate a higher priority.
+//
+// When the operation is finished, @callback will be called. You must then call
+// [func@content_deserialize_finish] to get the result of the operation.
 func ContentDeserializeAsync() {
 	C.gdk_content_deserialize_async()
 }
@@ -45,8 +49,8 @@ func ContentDeserializeFinish(result gio.AsyncResult, value **externglib.Value) 
 	return _goerr
 }
 
-// ContentRegisterDeserializer registers a function to create objects of a given
-// @type from a serialized representation with the given mime type.
+// ContentRegisterDeserializer registers a function to deserialize object of a
+// given type.
 func ContentRegisterDeserializer() {
 	C.gdk_content_register_deserializer()
 }

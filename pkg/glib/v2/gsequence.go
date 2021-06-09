@@ -131,8 +131,8 @@ func (s *Sequence) IterAtPos(pos int) *SequenceIter {
 	return _sequenceIter
 }
 
-// Length returns the length of @seq. Note that this method is O(h) where `h' is
-// the height of the tree. It is thus more efficient to use
+// Length returns the positive length (>= 0) of @seq. Note that this method is
+// O(h) where `h' is the height of the tree. It is thus more efficient to use
 // g_sequence_is_empty() when comparing the length to zero.
 func (s *Sequence) Length() int {
 	var _arg0 *C.GSequence

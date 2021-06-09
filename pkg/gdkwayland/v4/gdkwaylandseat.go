@@ -19,10 +19,15 @@ func init() {
 	})
 }
 
+// WaylandSeat: the Wayland implementation of `GdkSeat`.
+//
+// Beyond the regular [class@Gdk.Seat] API, the Wayland implementation provides
+// access to the Wayland `wl_seat` object with
+// [method@GdkWayland.WaylandSeat.get_wl_seat].
 type WaylandSeat interface {
 	gdk.Seat
 
-	// WlSeat returns the Wayland `wl_seat` of a Seat.
+	// WlSeat returns the Wayland `wl_seat` of a `GdkSeat`.
 	WlSeat() *interface{}
 }
 
@@ -47,7 +52,7 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 	return WrapWaylandSeat(obj), nil
 }
 
-// WlSeat returns the Wayland `wl_seat` of a Seat.
+// WlSeat returns the Wayland `wl_seat` of a `GdkSeat`.
 func (s waylandSeat) WlSeat() *interface{} {
 	var _arg0 *C.GdkSeat
 

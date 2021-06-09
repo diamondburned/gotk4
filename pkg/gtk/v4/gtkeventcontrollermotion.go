@@ -21,16 +21,23 @@ func init() {
 	})
 }
 
-// EventControllerMotion is an event controller meant for situations where you
-// need to track the position of the pointer.
+// EventControllerMotion: `GtkEventControllerMotion` is an event controller
+// tracking the pointer position.
+//
+// The event controller offers [signal@Gtk.EventControllerMotion::enter] and
+// [signal@Gtk.EventControllerMotion::leave] signals, as well as
+// [property@Gtk.EventControllerMotion:is-pointer] and
+// [property@Gtk.EventControllerMotion:contains-pointer] properties which are
+// updated to reflect changes in the pointer position as it moves over the
+// widget.
 type EventControllerMotion interface {
 	EventController
 
-	// ContainsPointer returns the value of the
-	// GtkEventControllerMotion:contains-pointer property.
+	// ContainsPointer returns if a pointer is within @self or one of its
+	// children.
 	ContainsPointer() bool
-	// IsPointer returns the value of the GtkEventControllerMotion:is-pointer
-	// property.
+	// IsPointer returns if a pointer is within @self, but not one of its
+	// children.
 	IsPointer() bool
 }
 
@@ -68,8 +75,8 @@ func NewEventControllerMotion() EventControllerMotion {
 	return _eventControllerMotion
 }
 
-// ContainsPointer returns the value of the
-// GtkEventControllerMotion:contains-pointer property.
+// ContainsPointer returns if a pointer is within @self or one of its
+// children.
 func (s eventControllerMotion) ContainsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion
 
@@ -88,8 +95,8 @@ func (s eventControllerMotion) ContainsPointer() bool {
 	return _ok
 }
 
-// IsPointer returns the value of the GtkEventControllerMotion:is-pointer
-// property.
+// IsPointer returns if a pointer is within @self, but not one of its
+// children.
 func (s eventControllerMotion) IsPointer() bool {
 	var _arg0 *C.GtkEventControllerMotion
 

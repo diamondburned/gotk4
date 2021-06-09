@@ -23,25 +23,29 @@ func init() {
 	})
 }
 
-// DirectoryList is a list model that wraps g_file_enumerate_children_async().
-// It presents a Model and fills it asynchronously with the Infos returned from
-// that function.
+// DirectoryList: `GtkDirectoryList` is a list model that wraps
+// g_file_enumerate_children_async().
 //
-// Enumeration will start automatically when a the DirectoryList:file property
-// is set.
+// It presents a `GListModel` and fills it asynchronously with the `GFileInfo`s
+// returned from that function.
 //
-// While the DirectoryList is being filled, the DirectoryList:loading property
-// will be set to true. You can listen to that property if you want to show
-// information like a Spinner or a "Loading..." text.
+// Enumeration will start automatically when a the
+// [property@Gtk.DirectoryList:file] property is set.
 //
-// If loading fails at any point, the DirectoryList:error property will be set
-// to give more indication about the failure.
+// While the `GtkDirectoryList` is being filled, the
+// [property@Gtk.DirectoryList:loading] property will be set to true. You can
+// listen to that property if you want to show information like a `GtkSpinner`
+// or a "Loading..." text.
 //
-// The Infos returned from a DirectoryList have the "standard::file" attribute
-// set to the #GFile they refer to. This way you can get at the file that is
-// referred to in the same way you would via g_file_enumerator_get_child(). This
-// means you do not need access to the DirectoryList but can access the #GFile
-// directly from the Info when operating with a ListView or similar.
+// If loading fails at any point, the [property@Gtk.DirectoryList:error]
+// property will be set to give more indication about the failure.
+//
+// The `GFileInfo`s returned from a `GtkDirectoryList` have the "standard::file"
+// attribute set to the `GFile` they refer to. This way you can get at the file
+// that is referred to in the same way you would via
+// g_file_enumerator_get_child(). This means you do not need access to the
+// `GtkDirectoryList`, but can access the `GFile` directly from the `GFileInfo`
+// when operating with a `GtkListView` or similar.
 type DirectoryList interface {
 	gextras.Objector
 	gio.ListModel
@@ -74,8 +78,8 @@ type DirectoryList interface {
 	// SetAttributes sets the @attributes to be enumerated and starts the
 	// enumeration.
 	//
-	// If @attributes is nil, no attributes will be queried, but a list of Infos
-	// will still be created.
+	// If @attributes is nil, no attributes will be queried, but a list of
+	// `GFileInfo`s will still be created.
 	SetAttributes(attributes string)
 	// SetFile sets the @file to be enumerated and starts the enumeration.
 	//
@@ -92,8 +96,8 @@ type DirectoryList interface {
 	// responsiveness.
 	SetIOPriority(ioPriority int)
 	// SetMonitored sets whether the directory list will monitor the directory
-	// for changes. If monitoring is enabled, the Model::items-changed signal
-	// will be emitted when the directory contents change.
+	// for changes. If monitoring is enabled, the ::items-changed signal will be
+	// emitted when the directory contents change.
 	//
 	// When monitoring is turned on after the initial creation of the directory
 	// list, the directory is reloaded to avoid missing files that appeared
@@ -266,8 +270,8 @@ func (s directoryList) IsLoading() bool {
 // SetAttributes sets the @attributes to be enumerated and starts the
 // enumeration.
 //
-// If @attributes is nil, no attributes will be queried, but a list of Infos
-// will still be created.
+// If @attributes is nil, no attributes will be queried, but a list of
+// `GFileInfo`s will still be created.
 func (s directoryList) SetAttributes(attributes string) {
 	var _arg0 *C.GtkDirectoryList
 	var _arg1 *C.char
@@ -312,8 +316,8 @@ func (s directoryList) SetIOPriority(ioPriority int) {
 }
 
 // SetMonitored sets whether the directory list will monitor the directory
-// for changes. If monitoring is enabled, the Model::items-changed signal
-// will be emitted when the directory contents change.
+// for changes. If monitoring is enabled, the ::items-changed signal will be
+// emitted when the directory contents change.
 //
 // When monitoring is turned on after the initial creation of the directory
 // list, the directory is reloaded to avoid missing files that appeared

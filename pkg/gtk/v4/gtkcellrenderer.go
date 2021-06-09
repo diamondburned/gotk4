@@ -22,10 +22,12 @@ func init() {
 	})
 }
 
-// CellRenderer: the CellRenderer is a base class of a set of objects used for
-// rendering a cell to a #cairo_t. These objects are used primarily by the
-// TreeView widget, though they aren’t tied to them in any specific way. It is
-// worth noting that CellRenderer is not a Widget and cannot be treated as such.
+// CellRenderer: an object for rendering a single cell
+//
+// The CellRenderer is a base class of a set of objects used for rendering a
+// cell to a #cairo_t. These objects are used primarily by the TreeView widget,
+// though they aren’t tied to them in any specific way. It is worth noting that
+// CellRenderer is not a Widget and cannot be treated as such.
 //
 // The primary use of a CellRenderer is for drawing a certain graphical elements
 // on a #cairo_t. Typically, one cell renderer is used to draw many cells on the

@@ -21,6 +21,7 @@ func init() {
 	})
 }
 
+// VulkanRenderer: a GSK renderer that is using Vulkan.
 type VulkanRenderer interface {
 	Renderer
 }

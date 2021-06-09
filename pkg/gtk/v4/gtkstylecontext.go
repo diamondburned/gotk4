@@ -22,19 +22,20 @@ func init() {
 	})
 }
 
-// StyleContext is an object that stores styling information affecting a widget.
-//
-// In order to construct the final style information, StyleContext queries
-// information from all attached StyleProviders. Style providers can be either
-// attached explicitly to the context through gtk_style_context_add_provider(),
-// or to the display through gtk_style_context_add_provider_for_display(). The
-// resulting style is a combination of all providers’ information in priority
-// order.
-//
-// For GTK widgets, any StyleContext returned by gtk_widget_get_style_context()
-// will already have a Display and RTL/LTR information set. The style context
-// will also be updated automatically if any of these settings change on the
+// StyleContext: `GtkStyleContext` stores styling information affecting a
 // widget.
+//
+// In order to construct the final style information, `GtkStyleContext` queries
+// information from all attached `GtkStyleProviders`. Style providers can be
+// either attached explicitly to the context through
+// [method@Gtk.StyleContext.add_provider], or to the display through
+// [func@Gtk.StyleContext.add_provider_for_display]. The resulting style is a
+// combination of all providers’ information in priority order.
+//
+// For GTK widgets, any `GtkStyleContext` returned by
+// [method@Gtk.Widget.get_style_context] will already have a `GdkDisplay` and
+// RTL/LTR information set. The style context will also be updated automatically
+// if any of these settings change on the widget.
 //
 //
 // Style Classes
@@ -44,21 +45,20 @@ func init() {
 // lists which style classes it uses itself, and which style classes may be
 // added by applications to affect their appearance.
 //
-// GTK defines macros for a number of style classes.
-//
 //
 // Custom styling in UI libraries and applications
 //
-// If you are developing a library with custom Widgets that render differently
-// than standard components, you may need to add a StyleProvider yourself with
-// the GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority, either a CssProvider or a
-// custom object implementing the StyleProvider interface. This way themes may
-// still attempt to style your UI elements in a different way if needed so.
+// If you are developing a library with custom widgets that render differently
+// than standard components, you may need to add a `GtkStyleProvider` yourself
+// with the GTK_STYLE_PROVIDER_PRIORITY_FALLBACK priority, either a
+// `GtkCssProvider` or a custom object implementing the `GtkStyleProvider`
+// interface. This way themes may still attempt to style your UI elements in a
+// different way if needed so.
 //
 // If you are using custom styling on an applications, you probably want then to
 // make your style information prevail to the theme’s, so you must use a
-// StyleProvider with the GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority, keep
-// in mind that the user settings in `XDG_CONFIG_HOME/gtk-4.0/gtk.css` will
+// `GtkStyleProvider` with the GTK_STYLE_PROVIDER_PRIORITY_APPLICATION priority,
+// keep in mind that the user settings in `XDG_CONFIG_HOME/gtk-4.0/gtk.css` will
 // still take precedence over your changes, as it uses the
 // GTK_STYLE_PROVIDER_PRIORITY_USER priority.
 type StyleContext interface {
@@ -67,42 +67,43 @@ type StyleContext interface {
 	// AddClass adds a style class to @context, so later uses of the style
 	// context will make use of this new class for styling.
 	//
-	// In the CSS file format, a Entry defining a “search” class, would be
+	// In the CSS file format, a `GtkEntry` defining a “search” class, would be
 	// matched by:
 	//
-	// |[ <!-- language="CSS" --> entry.search { ... } ]|
+	// “`css entry.search { ... } “`
 	//
-	// While any widget defining a “search” class would be matched by: |[ <!--
-	// language="CSS" --> .search { ... } ]|
+	// While any widget defining a “search” class would be matched by: “`css
+	// .search { ... } “`
 	AddClass(className string)
 	// AddProvider adds a style provider to @context, to be used in style
-	// construction. Note that a style provider added by this function only
-	// affects the style of the widget to which @context belongs. If you want to
-	// affect the style of all widgets, use
-	// gtk_style_context_add_provider_for_display().
+	// construction.
 	//
-	// Note: If both priorities are the same, a StyleProvider added through this
-	// function takes precedence over another added through
-	// gtk_style_context_add_provider_for_display().
+	// Note that a style provider added by this function only affects the style
+	// of the widget to which @context belongs. If you want to affect the style
+	// of all widgets, use [func@Gtk.StyleContext.add_provider_for_display].
+	//
+	// Note: If both priorities are the same, a `GtkStyleProvider` added through
+	// this function takes precedence over another added through
+	// [func@Gtk.StyleContext.add_provider_for_display].
 	AddProvider(provider StyleProvider, priority uint)
-	// Border gets the border for a given state as a Border.
+	// Border gets the border for a given state as a `GtkBorder`.
 	Border() Border
 	// Color gets the foreground color for a given state.
 	Color() gdk.RGBA
-	// Display returns the Display to which @context is attached.
+	// Display returns the `GdkDisplay` to which @context is attached.
 	Display() gdk.Display
-	// Margin gets the margin for a given state as a Border.
+	// Margin gets the margin for a given state as a `GtkBorder`.
 	Margin() Border
-	// Padding gets the padding for a given state as a Border.
+	// Padding gets the padding for a given state as a `GtkBorder`.
 	Padding() Border
 	// Scale returns the scale used for assets.
 	Scale() int
 	// State returns the state used for style matching.
 	//
-	// This method should only be used to retrieve the StateFlags to pass to
-	// StyleContext methods, like gtk_style_context_get_padding(). If you need
-	// to retrieve the current state of a Widget, use
-	// gtk_widget_get_state_flags().
+	// This method should only be used to retrieve the `GtkStateFlags` to pass
+	// to `GtkStyleContext` methods, like [method@Gtk.StyleContext.get_padding].
+	// If you need to retrieve the current state of a `GtkWidget`, use
+	// [method@Gtk.Widget.get_state_flags].
 	State() StateFlags
 	// HasClass returns true if @context currently has defined the given class
 	// name.
@@ -114,24 +115,29 @@ type StyleContext interface {
 	// RemoveProvider removes @provider from the style providers list in
 	// @context.
 	RemoveProvider(provider StyleProvider)
-	// Restore restores @context state to a previous stage. See
-	// gtk_style_context_save().
-	Restore()
-	// Save saves the @context state, so temporary modifications done through
-	// gtk_style_context_add_class(), gtk_style_context_remove_class(),
-	// gtk_style_context_set_state(), etc. can quickly be reverted in one go
-	// through gtk_style_context_restore().
+	// Restore restores @context state to a previous stage.
 	//
-	// The matching call to gtk_style_context_restore() must be done before GTK
-	// returns to the main loop.
+	// See [method@Gtk.StyleContext.save].
+	Restore()
+	// Save saves the @context state.
+	//
+	// This allows temporary modifications done through
+	// [method@Gtk.StyleContext.add_class],
+	// [method@Gtk.StyleContext.remove_class],
+	// [method@Gtk.StyleContext.set_state] to be quickly reverted in one go
+	// through [method@Gtk.StyleContext.restore].
+	//
+	// The matching call to [method@Gtk.StyleContext.restore] must be done
+	// before GTK returns to the main loop.
 	Save()
 	// SetDisplay attaches @context to the given display.
 	//
 	// The display is used to add style information from “global” style
-	// providers, such as the display's Settings instance.
+	// providers, such as the display's `GtkSettings` instance.
 	//
-	// If you are using a StyleContext returned from
-	// gtk_widget_get_style_context(), you do not need to call this yourself.
+	// If you are using a `GtkStyleContext` returned from
+	// [method@Gtk.Widget.get_style_context], you do not need to call this
+	// yourself.
 	SetDisplay(display gdk.Display)
 	// SetScale sets the scale to use when getting image assets for the style.
 	SetScale(scale int)
@@ -173,13 +179,13 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 // AddClass adds a style class to @context, so later uses of the style
 // context will make use of this new class for styling.
 //
-// In the CSS file format, a Entry defining a “search” class, would be
+// In the CSS file format, a `GtkEntry` defining a “search” class, would be
 // matched by:
 //
-// |[ <!-- language="CSS" --> entry.search { ... } ]|
+// “`css entry.search { ... } “`
 //
-// While any widget defining a “search” class would be matched by: |[ <!--
-// language="CSS" --> .search { ... } ]|
+// While any widget defining a “search” class would be matched by: “`css
+// .search { ... } “`
 func (c styleContext) AddClass(className string) {
 	var _arg0 *C.GtkStyleContext
 	var _arg1 *C.char
@@ -192,14 +198,15 @@ func (c styleContext) AddClass(className string) {
 }
 
 // AddProvider adds a style provider to @context, to be used in style
-// construction. Note that a style provider added by this function only
-// affects the style of the widget to which @context belongs. If you want to
-// affect the style of all widgets, use
-// gtk_style_context_add_provider_for_display().
+// construction.
 //
-// Note: If both priorities are the same, a StyleProvider added through this
-// function takes precedence over another added through
-// gtk_style_context_add_provider_for_display().
+// Note that a style provider added by this function only affects the style
+// of the widget to which @context belongs. If you want to affect the style
+// of all widgets, use [func@Gtk.StyleContext.add_provider_for_display].
+//
+// Note: If both priorities are the same, a `GtkStyleProvider` added through
+// this function takes precedence over another added through
+// [func@Gtk.StyleContext.add_provider_for_display].
 func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 	var _arg0 *C.GtkStyleContext
 	var _arg1 *C.GtkStyleProvider
@@ -212,7 +219,7 @@ func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 	C.gtk_style_context_add_provider(_arg0, _arg1, _arg2)
 }
 
-// Border gets the border for a given state as a Border.
+// Border gets the border for a given state as a `GtkBorder`.
 func (c styleContext) Border() Border {
 	var _arg0 *C.GtkStyleContext
 
@@ -238,7 +245,7 @@ func (c styleContext) Color() gdk.RGBA {
 	return _color
 }
 
-// Display returns the Display to which @context is attached.
+// Display returns the `GdkDisplay` to which @context is attached.
 func (c styleContext) Display() gdk.Display {
 	var _arg0 *C.GtkStyleContext
 
@@ -255,7 +262,7 @@ func (c styleContext) Display() gdk.Display {
 	return _display
 }
 
-// Margin gets the margin for a given state as a Border.
+// Margin gets the margin for a given state as a `GtkBorder`.
 func (c styleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext
 
@@ -268,7 +275,7 @@ func (c styleContext) Margin() Border {
 	return _margin
 }
 
-// Padding gets the padding for a given state as a Border.
+// Padding gets the padding for a given state as a `GtkBorder`.
 func (c styleContext) Padding() Border {
 	var _arg0 *C.GtkStyleContext
 
@@ -300,10 +307,10 @@ func (c styleContext) Scale() int {
 
 // State returns the state used for style matching.
 //
-// This method should only be used to retrieve the StateFlags to pass to
-// StyleContext methods, like gtk_style_context_get_padding(). If you need
-// to retrieve the current state of a Widget, use
-// gtk_widget_get_state_flags().
+// This method should only be used to retrieve the `GtkStateFlags` to pass
+// to `GtkStyleContext` methods, like [method@Gtk.StyleContext.get_padding].
+// If you need to retrieve the current state of a `GtkWidget`, use
+// [method@Gtk.Widget.get_state_flags].
 func (c styleContext) State() StateFlags {
 	var _arg0 *C.GtkStyleContext
 
@@ -390,8 +397,9 @@ func (c styleContext) RemoveProvider(provider StyleProvider) {
 	C.gtk_style_context_remove_provider(_arg0, _arg1)
 }
 
-// Restore restores @context state to a previous stage. See
-// gtk_style_context_save().
+// Restore restores @context state to a previous stage.
+//
+// See [method@Gtk.StyleContext.save].
 func (c styleContext) Restore() {
 	var _arg0 *C.GtkStyleContext
 
@@ -400,13 +408,16 @@ func (c styleContext) Restore() {
 	C.gtk_style_context_restore(_arg0)
 }
 
-// Save saves the @context state, so temporary modifications done through
-// gtk_style_context_add_class(), gtk_style_context_remove_class(),
-// gtk_style_context_set_state(), etc. can quickly be reverted in one go
-// through gtk_style_context_restore().
+// Save saves the @context state.
 //
-// The matching call to gtk_style_context_restore() must be done before GTK
-// returns to the main loop.
+// This allows temporary modifications done through
+// [method@Gtk.StyleContext.add_class],
+// [method@Gtk.StyleContext.remove_class],
+// [method@Gtk.StyleContext.set_state] to be quickly reverted in one go
+// through [method@Gtk.StyleContext.restore].
+//
+// The matching call to [method@Gtk.StyleContext.restore] must be done
+// before GTK returns to the main loop.
 func (c styleContext) Save() {
 	var _arg0 *C.GtkStyleContext
 
@@ -418,10 +429,11 @@ func (c styleContext) Save() {
 // SetDisplay attaches @context to the given display.
 //
 // The display is used to add style information from “global” style
-// providers, such as the display's Settings instance.
+// providers, such as the display's `GtkSettings` instance.
 //
-// If you are using a StyleContext returned from
-// gtk_widget_get_style_context(), you do not need to call this yourself.
+// If you are using a `GtkStyleContext` returned from
+// [method@Gtk.Widget.get_style_context], you do not need to call this
+// yourself.
 func (c styleContext) SetDisplay(display gdk.Display) {
 	var _arg0 *C.GtkStyleContext
 	var _arg1 *C.GdkDisplay

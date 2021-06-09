@@ -21,11 +21,17 @@ func init() {
 	})
 }
 
-// ConstraintGuide: a ConstraintGuide is an invisible layout element that can be
-// used by widgets inside a ConstraintLayout as a source or a target of a
-// Constraint. Guides can be used like guidelines or as flexible space.
+// ConstraintGuide: a `GtkConstraintGuide` is an invisible layout element in a
+// `GtkConstraintLayout`.
 //
-// Unlike a Widget, a ConstraintGuide will not be drawn.
+// The `GtkConstraintLayout` treats guides like widgets. They can be used as the
+// source or target of a `GtkConstraint`.
+//
+// Guides have a minimum, maximum and natural size. Depending on the constraints
+// that are applied, they can act like a guideline that widgets can be aligned
+// to, or like *flexible space*.
+//
+// Unlike a `GtkWidget`, a `GtkConstraintGuide` will not be drawn.
 type ConstraintGuide interface {
 	gextras.Objector
 	ConstraintTarget
@@ -43,25 +49,25 @@ type ConstraintGuide interface {
 	Strength() ConstraintStrength
 	// SetMaxSize sets the maximum size of @guide.
 	//
-	// If @guide is attached to a ConstraintLayout, the constraints will be
+	// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 	// updated to reflect the new size.
 	SetMaxSize(width int, height int)
 	// SetMinSize sets the minimum size of @guide.
 	//
-	// If @guide is attached to a ConstraintLayout, the constraints will be
+	// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 	// updated to reflect the new size.
 	SetMinSize(width int, height int)
-	// SetName sets a name for the given ConstraintGuide.
+	// SetName sets a name for the given `GtkConstraintGuide`.
 	//
 	// The name is useful for debugging purposes.
 	SetName(name string)
 	// SetNatSize sets the natural size of @guide.
 	//
-	// If @guide is attached to a ConstraintLayout, the constraints will be
+	// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 	// updated to reflect the new size.
 	SetNatSize(width int, height int)
 	// SetStrength sets the strength of the constraint on the natural size of
-	// the given ConstraintGuide.
+	// the given `GtkConstraintGuide`.
 	SetStrength(strength ConstraintStrength)
 }
 
@@ -177,7 +183,7 @@ func (g constraintGuide) Strength() ConstraintStrength {
 
 // SetMaxSize sets the maximum size of @guide.
 //
-// If @guide is attached to a ConstraintLayout, the constraints will be
+// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 // updated to reflect the new size.
 func (g constraintGuide) SetMaxSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide
@@ -193,7 +199,7 @@ func (g constraintGuide) SetMaxSize(width int, height int) {
 
 // SetMinSize sets the minimum size of @guide.
 //
-// If @guide is attached to a ConstraintLayout, the constraints will be
+// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 // updated to reflect the new size.
 func (g constraintGuide) SetMinSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide
@@ -207,7 +213,7 @@ func (g constraintGuide) SetMinSize(width int, height int) {
 	C.gtk_constraint_guide_set_min_size(_arg0, _arg1, _arg2)
 }
 
-// SetName sets a name for the given ConstraintGuide.
+// SetName sets a name for the given `GtkConstraintGuide`.
 //
 // The name is useful for debugging purposes.
 func (g constraintGuide) SetName(name string) {
@@ -223,7 +229,7 @@ func (g constraintGuide) SetName(name string) {
 
 // SetNatSize sets the natural size of @guide.
 //
-// If @guide is attached to a ConstraintLayout, the constraints will be
+// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
 // updated to reflect the new size.
 func (g constraintGuide) SetNatSize(width int, height int) {
 	var _arg0 *C.GtkConstraintGuide
@@ -238,7 +244,7 @@ func (g constraintGuide) SetNatSize(width int, height int) {
 }
 
 // SetStrength sets the strength of the constraint on the natural size of
-// the given ConstraintGuide.
+// the given `GtkConstraintGuide`.
 func (g constraintGuide) SetStrength(strength ConstraintStrength) {
 	var _arg0 *C.GtkConstraintGuide
 	var _arg1 C.GtkConstraintStrength

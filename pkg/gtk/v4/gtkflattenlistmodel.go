@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// FlattenListModel is a list model that takes a list model containing list
-// models and flattens it into a single model.
+// FlattenListModel: `GtkFlattenListModel` is a list model that concatenates
+// other list models.
 //
-// Another term for this is concatenation: FlattenListModel takes a list of
-// lists and concatenates them into a single list.
+// `GtkFlattenListModel` takes a list model containing list models, and flattens
+// it into a single model.
 type FlattenListModel interface {
 	gextras.Objector
 	gio.ListModel

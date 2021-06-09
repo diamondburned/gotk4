@@ -20,11 +20,13 @@ func init() {
 	})
 }
 
-// TreeStore: the TreeStore object is a list model for use with a TreeView
-// widget. It implements the TreeModel interface, and consequently, can use all
-// of the methods available there. It also implements the TreeSortable interface
-// so it can be sorted by the view. Finally, it also implements the tree [drag
-// and drop][gtk3-GtkTreeView-drag-and-drop] interfaces.
+// TreeStore: a tree-like data structure that can be used with the GtkTreeView
+//
+// The TreeStore object is a list model for use with a TreeView widget. It
+// implements the TreeModel interface, and consequently, can use all of the
+// methods available there. It also implements the TreeSortable interface so it
+// can be sorted by the view. Finally, it also implements the tree [drag and
+// drop][gtk3-GtkTreeView-drag-and-drop] interfaces.
 //
 //
 // GtkTreeStore as GtkBuildable

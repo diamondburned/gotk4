@@ -22,7 +22,9 @@ func init() {
 	})
 }
 
-// MultiSorter: gtkMultiSorter combines multiple sorters by trying them in turn.
+// MultiSorter: `GtkMultiSorter` combines multiple sorters by trying them in
+// turn.
+//
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
 type MultiSorter interface {
@@ -30,8 +32,10 @@ type MultiSorter interface {
 	gio.ListModel
 	Buildable
 
-	// Append: add @sorter to @self to use for sorting at the end. @self will
-	// consult all existing sorters before it will sort with the given @sorter.
+	// Append: add @sorter to @self to use for sorting at the end.
+	//
+	// @self will consult all existing sorters before it will sort with the
+	// given @sorter.
 	Append(sorter Sorter)
 	// Remove removes the sorter at the given @position from the list of sorter
 	// used by @self.
@@ -78,8 +82,10 @@ func NewMultiSorter() MultiSorter {
 	return _multiSorter
 }
 
-// Append: add @sorter to @self to use for sorting at the end. @self will
-// consult all existing sorters before it will sort with the given @sorter.
+// Append: add @sorter to @self to use for sorting at the end.
+//
+// @self will consult all existing sorters before it will sort with the
+// given @sorter.
 func (s multiSorter) Append(sorter Sorter) {
 	var _arg0 *C.GtkMultiSorter
 	var _arg1 *C.GtkSorter

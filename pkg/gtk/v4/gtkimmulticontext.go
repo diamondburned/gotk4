@@ -21,6 +21,12 @@ func init() {
 	})
 }
 
+// IMMulticontext: `GtkIMMulticontext` is input method supporting multiple,
+// switchable input methods.
+//
+// Text widgets such as `GtkText` or `GtkTextView` use a `GtkIMMultiContext` to
+// implement their `im-module` property for switching between different input
+// methods.
 type IMMulticontext interface {
 	IMContext
 

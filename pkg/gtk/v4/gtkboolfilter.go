@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-// BoolFilter: gtkBoolFilter is a simple filter that takes a boolean Expression
-// to determine whether to include items.
+// BoolFilter: `GtkBoolFilter` evaluates a boolean `GtkExpression` to determine
+// whether to include items.
 type BoolFilter interface {
 	Filter
 
@@ -32,8 +32,9 @@ type BoolFilter interface {
 	// Invert returns whether the filter inverts the expression.
 	Invert() bool
 	// SetExpression sets the expression that the filter uses to check if items
-	// should be filtered. The expression must have a value type of
-	// TYPE_BOOLEAN.
+	// should be filtered.
+	//
+	// The expression must have a value type of G_TYPE_BOOLEAN.
 	SetExpression(expression Expression)
 	// SetInvert sets whether the filter should invert the expression.
 	SetInvert(invert bool)
@@ -115,8 +116,9 @@ func (s boolFilter) Invert() bool {
 }
 
 // SetExpression sets the expression that the filter uses to check if items
-// should be filtered. The expression must have a value type of
-// TYPE_BOOLEAN.
+// should be filtered.
+//
+// The expression must have a value type of G_TYPE_BOOLEAN.
 func (s boolFilter) SetExpression(expression Expression) {
 	var _arg0 *C.GtkBoolFilter
 	var _arg1 *C.GtkExpression

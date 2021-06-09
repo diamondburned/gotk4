@@ -22,11 +22,13 @@ func init() {
 	})
 }
 
-// BookmarkList is a list model that wraps GBookmarkFile. It presents a Model
-// and fills it asynchronously with the Infos returned from that function.
+// BookmarkList: `GtkBookmarkList` is a list model that wraps `GBookmarkFile`.
 //
-// The Infos in the list have some attributes in the recent namespace added:
-// recent::private (boolean) and recent:applications (stringv).
+// It presents a `GListModel` and fills it asynchronously with the `GFileInfo`s
+// returned from that function.
+//
+// The `GFileInfo`s in the list have some attributes in the recent namespace
+// added: `recent::private` (boolean) and `recent:applications` (stringv).
 type BookmarkList interface {
 	gextras.Objector
 	gio.ListModel
@@ -36,8 +38,7 @@ type BookmarkList interface {
 	// Filename returns the filename of the bookmark file that this list is
 	// loading.
 	Filename() string
-	// IOPriority gets the IO priority set via
-	// gtk_bookmark_list_set_io_priority().
+	// IOPriority gets the IO priority to use while loading file.
 	IOPriority() int
 	// IsLoading returns true if the files are currently being loaded.
 	//
@@ -135,8 +136,7 @@ func (s bookmarkList) Filename() string {
 	return _utf8
 }
 
-// IOPriority gets the IO priority set via
-// gtk_bookmark_list_set_io_priority().
+// IOPriority gets the IO priority to use while loading file.
 func (s bookmarkList) IOPriority() int {
 	var _arg0 *C.GtkBookmarkList
 

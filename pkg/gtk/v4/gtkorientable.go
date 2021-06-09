@@ -18,10 +18,11 @@ func init() {
 	})
 }
 
-// Orientable: the Orientable interface is implemented by all widgets that can
-// be oriented horizontally or vertically. Orientable is more flexible in that
-// it allows the orientation to be changed at runtime, allowing the widgets to
-// “flip”.
+// Orientable: the `GtkOrientable` interface is implemented by all widgets that
+// can be oriented horizontally or vertically.
+//
+// `GtkOrientable` is more flexible in that it allows the orientation to be
+// changed at runtime, allowing the widgets to “flip”.
 type Orientable interface {
 	gextras.Objector
 

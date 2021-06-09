@@ -21,9 +21,10 @@ func init() {
 	})
 }
 
-// NumericSorter: gtkNumericSorter is a Sorter that compares numbers.
+// NumericSorter: `GtkNumericSorter` is a `GtkSorter` that compares numbers.
 //
-// To obtain the numbers to compare, this sorter evaluates a Expression.
+// To obtain the numbers to compare, this sorter evaluates a
+// [class@Gtk.Expression].
 type NumericSorter interface {
 	Sorter
 
@@ -39,7 +40,7 @@ type NumericSorter interface {
 	// items as invalid.
 	//
 	// The expression must have a return type that can be compared numerically,
-	// such as TYPE_INT or TYPE_DOUBLE.
+	// such as G_TYPE_INT or G_TYPE_DOUBLE.
 	SetExpression(expression Expression)
 	// SetSortOrder sets whether to sort smaller numbers before larger ones.
 	SetSortOrder(sortOrder SortType)
@@ -125,7 +126,7 @@ func (s numericSorter) SortOrder() SortType {
 // items as invalid.
 //
 // The expression must have a return type that can be compared numerically,
-// such as TYPE_INT or TYPE_DOUBLE.
+// such as G_TYPE_INT or G_TYPE_DOUBLE.
 func (s numericSorter) SetExpression(expression Expression) {
 	var _arg0 *C.GtkNumericSorter
 	var _arg1 *C.GtkExpression

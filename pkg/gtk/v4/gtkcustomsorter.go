@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-// CustomSorter: gtkCustomSorter is a Sorter implementation that sorts via a
-// traditional DataFunc callback.
+// CustomSorter: `GtkCustomSorter` is a `GtkSorter` implementation that sorts
+// via a callback function.
 type CustomSorter interface {
 	Sorter
 

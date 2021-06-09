@@ -25,20 +25,30 @@ func init() {
 	})
 }
 
-// Renderer: base type for the object managing the rendering pipeline for a
-// Surface.
+// Renderer: `GskRenderer` is a class that renders a scene graph defined via a
+// tree of [class@Gsk.RenderNode] instances.
+//
+// Typically you will use a `GskRenderer` instance to repeatedly call
+// [method@Gsk.Renderer.render] to update the contents of its associated
+// [class@Gdk.Surface].
+//
+// It is necessary to realize a `GskRenderer` instance using
+// [method@Gsk.Renderer.realize] before calling [method@Gsk.Renderer.render], in
+// order to create the appropriate windowing system resources needed to render
+// the scene.
 type Renderer interface {
 	gextras.Objector
 
-	// Surface retrieves the Surface set using gsk_renderer_realize(). If the
-	// renderer has not been realized yet, nil will be returned.
+	// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+	//
+	// If the renderer has not been realized yet, nil will be returned.
 	Surface() gdk.Surface
 	// IsRealized checks whether the @renderer is realized or not.
 	IsRealized() bool
 	// Realize creates the resources needed by the @renderer to render the scene
 	// graph.
 	Realize(surface gdk.Surface) error
-	// Render renders the scene graph, described by a tree of RenderNode
+	// Render renders the scene graph, described by a tree of `GskRenderNode`
 	// instances, ensuring that the given @region gets redrawn.
 	//
 	// Renderers must ensure that changes of the contents given by the @root
@@ -46,14 +56,14 @@ type Renderer interface {
 	// free to not redraw any pixel outside of @region if they can guarantee
 	// that it didn't change.
 	//
-	// The @renderer will acquire a reference on the RenderNode tree while the
-	// rendering is in progress.
+	// The @renderer will acquire a reference on the `GskRenderNode` tree while
+	// the rendering is in progress.
 	Render(root RenderNode, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of RenderNode
-	// instances, to a Texture.
+	// RenderTexture renders the scene graph, described by a tree of
+	// `GskRenderNode` instances, to a `GdkTexture`.
 	//
-	// The @renderer will acquire a reference on the RenderNode tree while the
-	// rendering is in progress.
+	// The @renderer will acquire a reference on the `GskRenderNode` tree while
+	// the rendering is in progress.
 	//
 	// If you want to apply any transformations to @root, you should put it into
 	// a transform node and pass that node instead.
@@ -100,8 +110,9 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 	return _renderer
 }
 
-// Surface retrieves the Surface set using gsk_renderer_realize(). If the
-// renderer has not been realized yet, nil will be returned.
+// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
+//
+// If the renderer has not been realized yet, nil will be returned.
 func (r renderer) Surface() gdk.Surface {
 	var _arg0 *C.GskRenderer
 
@@ -157,7 +168,7 @@ func (r renderer) Realize(surface gdk.Surface) error {
 	return _goerr
 }
 
-// Render renders the scene graph, described by a tree of RenderNode
+// Render renders the scene graph, described by a tree of `GskRenderNode`
 // instances, ensuring that the given @region gets redrawn.
 //
 // Renderers must ensure that changes of the contents given by the @root
@@ -165,8 +176,8 @@ func (r renderer) Realize(surface gdk.Surface) error {
 // free to not redraw any pixel outside of @region if they can guarantee
 // that it didn't change.
 //
-// The @renderer will acquire a reference on the RenderNode tree while the
-// rendering is in progress.
+// The @renderer will acquire a reference on the `GskRenderNode` tree while
+// the rendering is in progress.
 func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	var _arg0 *C.GskRenderer
 	var _arg1 *C.GskRenderNode
@@ -179,11 +190,11 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
-// RenderTexture renders the scene graph, described by a tree of RenderNode
-// instances, to a Texture.
+// RenderTexture renders the scene graph, described by a tree of
+// `GskRenderNode` instances, to a `GdkTexture`.
 //
-// The @renderer will acquire a reference on the RenderNode tree while the
-// rendering is in progress.
+// The @renderer will acquire a reference on the `GskRenderNode` tree while
+// the rendering is in progress.
 //
 // If you want to apply any transformations to @root, you should put it into
 // a transform node and pass that node instead.

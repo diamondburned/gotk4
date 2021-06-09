@@ -47,8 +47,10 @@ func TestRegisterAllTypes() {
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for @widget to be
-// “drawn”. In this context that means it waits for the frame clock of @widget
-// to have run a full styling, layout and drawing cycle.
+// “drawn”.
+//
+// In this context that means it waits for the frame clock of @widget to have
+// run a full styling, layout and drawing cycle.
 //
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.

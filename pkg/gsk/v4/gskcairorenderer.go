@@ -21,6 +21,9 @@ func init() {
 	})
 }
 
+// CairoRenderer: a GSK renderer that is using cairo.
+//
+// Since it is using cairo, this renderer cannot support 3D transformations.
 type CairoRenderer interface {
 	Renderer
 }

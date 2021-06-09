@@ -14,14 +14,15 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// CairoDrawFromGL: this is the main way to draw GL content in GTK. It takes a
-// render buffer ID (@source_type == RENDERBUFFER) or a texture id (@source_type
-// == TEXTURE) and draws it onto @cr with an OVER operation, respecting the
-// current clip. The top left corner of the rectangle specified by @x, @y,
-// @width and @height will be drawn at the current (0,0) position of the
-// cairo_t.
+// CairoDrawFromGL: the main way to draw GL content in GTK.
 //
-// This will work for *all* cairo_t, as long as @surface is realized, but the
+// It takes a render buffer ID (@source_type == RENDERBUFFER) or a texture id
+// (@source_type == TEXTURE) and draws it onto @cr with an OVER operation,
+// respecting the current clip. The top left corner of the rectangle specified
+// by @x, @y, @width and @height will be drawn at the current (0,0) position of
+// the `cairo_t`.
+//
+// This will work for *all* `cairo_t`, as long as @surface is realized, but the
 // fallback implementation that reads back the pixels from the buffer may be
 // used in the general case. In the case of direct drawing to a surface with no
 // special effects applied to @cr it will however use a more efficient approach.
@@ -76,8 +77,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	C.gdk_cairo_region(_arg1, _arg2)
 }
 
-// CairoRegionCreateFromSurface creates region that describes covers the area
-// where the given @surface is more than 50% opaque.
+// CairoRegionCreateFromSurface creates region that covers the area where the
+// given @surface is more than 50% opaque.
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().

@@ -14,9 +14,12 @@ import (
 import "C"
 
 // WaylandToplevelExported: callback that gets called when the handle for a
-// surface has been obtained from the Wayland compositor. The @handle can be
-// passed to other processes, for the purpose of marking surfaces as transient
-// for out-of-process surfaces.
+// surface has been obtained from the Wayland compositor.
+//
+// This callback is used in [method@GdkWayland.WaylandToplevel.export_handle].
+//
+// The @handle can be passed to other processes, for the purpose of marking
+// surfaces as transient for out-of-process surfaces.
 type WaylandToplevelExported func()
 
 //export gotk4_WaylandToplevelExported

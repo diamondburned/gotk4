@@ -30,31 +30,20 @@ type BuilderScopeOverrider interface {
 	TypeFromName(builder Builder, typeName string) externglib.Type
 }
 
-// BuilderScope is an interface to provide support to Builder, primarily for
-// looking up programming-language-specific values for strings that are given in
-// a Builder UI file.
+// BuilderScope: `GtkBuilderScope` is an interface to provide language binding
+// support to `GtkBuilder`.
+//
+// The goal of `GtkBuilderScope` is to look up programming-language-specific
+// values for strings that are given in a `GtkBuilder` UI file.
 //
 // The primary intended audience is bindings that want to provide deeper
-// integration of Builder into the language.
+// integration of `GtkBuilder` into the language.
 //
-// A BuilderScope instance may be used with multiple Builder objects, even at
-// once.
+// A `GtkBuilderScope` instance may be used with multiple `GtkBuilder` objects,
+// even at once.
 //
-// By default, GTK will use its own implementation of BuilderScope for the C
-// language which can be created via gtk_builder_cscope_new().
-//
-// BuilderCScope instances use symbols explicitly added to @builder with prior
-// calls to gtk_builder_cscope_add_callback_symbol(). If developers want to do
-// that, they are encouraged to create their own scopes for that purpose.
-//
-// In the case that symbols are not explicitly added; GTK will uses #GModule’s
-// introspective features (by opening the module nil) to look at the
-// application’s symbol table. From here it tries to match the signal function
-// names given in the interface description with symbols in the application.
-//
-// Note that unless gtk_builder_cscope_add_callback_symbol() is called for all
-// signal callbacks which are referenced by the loaded XML, this functionality
-// will require that #GModule be supported on the platform.
+// By default, GTK will use its own implementation of `GtkBuilderScope` for the
+// C language which can be created via [ctor@Gtk.BuilderCScope.new].
 type BuilderScope interface {
 	gextras.Objector
 	BuilderScopeOverrider
@@ -81,6 +70,21 @@ func marshalBuilderScope(p uintptr) (interface{}, error) {
 	return WrapBuilderScope(obj), nil
 }
 
+// BuilderCScope: a `GtkBuilderScope` implementation for the C language.
+//
+// `GtkBuilderCScope` instances use symbols explicitly added to @builder with
+// prior calls to [method@Gtk.BuilderCScope.add_callback_symbol]. If developers
+// want to do that, they are encouraged to create their own scopes for that
+// purpose.
+//
+// In the case that symbols are not explicitly added; GTK will uses `GModule`’s
+// introspective features (by opening the module nil) to look at the
+// application’s symbol table. From here it tries to match the signal function
+// names given in the interface description with symbols in the application.
+//
+// Note that unless [method@Gtk.BuilderCScope.add_callback_symbol] is called for
+// all signal callbacks which are referenced by the loaded XML, this
+// functionality will require that `GModule` be supported on the platform.
 type BuilderCScope interface {
 	gextras.Objector
 	BuilderScope

@@ -47,7 +47,7 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 	}
 }
 
-// ActivateAction: a ShortcutAction that calls gtk_widget_activate().
+// ActivateAction: a `GtkShortcutAction` that calls gtk_widget_activate().
 type ActivateAction interface {
 	ShortcutAction
 }
@@ -73,7 +73,7 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 	return WrapActivateAction(obj), nil
 }
 
-// CallbackAction: a ShortcutAction that invokes a callback.
+// CallbackAction: a `GtkShortcutAction` that invokes a callback.
 type CallbackAction interface {
 	ShortcutAction
 }
@@ -112,7 +112,8 @@ func NewCallbackAction() CallbackAction {
 	return _callbackAction
 }
 
-// MnemonicAction: a ShortcutAction that calls gtk_widget_mnemonic_activate().
+// MnemonicAction: a `GtkShortcutAction` that calls
+// gtk_widget_mnemonic_activate().
 type MnemonicAction interface {
 	ShortcutAction
 }
@@ -138,7 +139,7 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 	return WrapMnemonicAction(obj), nil
 }
 
-// NamedAction: a ShortcutAction that activates an action by name.
+// NamedAction: a `GtkShortcutAction` that activates an action by name.
 type NamedAction interface {
 	ShortcutAction
 
@@ -202,7 +203,7 @@ func (s namedAction) ActionName() string {
 	return _utf8
 }
 
-// NothingAction: a ShortcutAction that does nothing.
+// NothingAction: a `GtkShortcutAction` that does nothing.
 type NothingAction interface {
 	ShortcutAction
 }
@@ -228,31 +229,33 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 	return WrapNothingAction(obj), nil
 }
 
-// ShortcutAction is the object used to describe what a Shortcut should do when
-// triggered. To activate a ShortcutAction manually,
-// gtk_shortcut_action_activate() can be called.
+// ShortcutAction: `GtkShortcutAction` encodes an action that can be triggered
+// by a keyboard shortcut.
 //
-// ShortcutActions contain functions that allow easy presentation to end users
-// as well as being printed for debugging.
+// `GtkShortcutActions` contain functions that allow easy presentation to end
+// users as well as being printed for debugging.
 //
-// All ShortcutActions are immutable, you can only specify their properties
+// All `GtkShortcutActions` are immutable, you can only specify their properties
 // during construction. If you want to change a action, you have to replace it
 // with a new one. If you need to pass arguments to an action, these are
-// specified by the higher-level Shortcut object.
+// specified by the higher-level `GtkShortcut` object.
+//
+// To activate a `GtkShortcutAction` manually,
+// [method@Gtk.ShortcutAction.activate] can be called.
 //
 // GTK provides various actions:
 //
-//    - MnemonicAction: a shortcut action that calls gtk_widget_mnemonic_activate()
-//    - CallbackAction: a shortcut action that invokes a given callback
-//    - SignalAction: a shortcut action that emits a given signal
-//    - ActivateAction: a shortcut action that calls gtk_widget_activate()
-//    - NamedAction: a shortcut action that calls gtk_widget_activate_action()
-//    - NothingAction: a shortcut action that does nothing
-//
-//
-// GtkShortcutAction as GtkBuildable
-//
-// GtkShortcut
+//    - [class@Gtk.MnemonicAction]: a shortcut action that calls
+//      gtk_widget_mnemonic_activate()
+//    - [class@Gtk.CallbackAction]: a shortcut action that invokes
+//      a given callback
+//    - [class@Gtk.SignalAction]: a shortcut action that emits a
+//      given signal
+//    - [class@Gtk.ActivateAction]: a shortcut action that calls
+//      gtk_widget_activate()
+//    - [class@Gtk.NamedAction]: a shortcut action that calls
+//      gtk_widget_activate_action()
+//    - [class@Gtk.NothingAction]: a shortcut action that does nothing
 type ShortcutAction interface {
 	gextras.Objector
 
@@ -264,14 +267,17 @@ type ShortcutAction interface {
 	// not supported by the @widget, if the @args don't match the action or if
 	// the activation otherwise had no effect, false will be returned.
 	Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
-	// Print prints the given action into a string for the developer. This is
-	// meant for debugging and logging.
+	// Print prints the given action into a string for the developer.
+	//
+	// This is meant for debugging and logging.
 	//
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
 	Print(string *glib.String)
-	// String prints the given action into a human-readable string. This is a
-	// small wrapper around gtk_shortcut_action_print() to help when debugging.
+	// String prints the given action into a human-readable string.
+	//
+	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
+	// when debugging.
 	String() string
 }
 
@@ -345,8 +351,9 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 	return _ok
 }
 
-// Print prints the given action into a string for the developer. This is
-// meant for debugging and logging.
+// Print prints the given action into a string for the developer.
+//
+// This is meant for debugging and logging.
 //
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
@@ -360,8 +367,10 @@ func (s shortcutAction) Print(string *glib.String) {
 	C.gtk_shortcut_action_print(_arg0, _arg1)
 }
 
-// String prints the given action into a human-readable string. This is a
-// small wrapper around gtk_shortcut_action_print() to help when debugging.
+// String prints the given action into a human-readable string.
+//
+// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
+// when debugging.
 func (s shortcutAction) String() string {
 	var _arg0 *C.GtkShortcutAction
 
@@ -379,7 +388,7 @@ func (s shortcutAction) String() string {
 	return _utf8
 }
 
-// SignalAction: a ShortcutAction that emits a signal.
+// SignalAction: a `GtkShortcut`Action that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.

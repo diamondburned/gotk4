@@ -49,25 +49,26 @@ type BuildableOverrider interface {
 	SetID(id string)
 }
 
-// Buildable: gtkBuildable allows objects to extend and customize their
-// deserialization from [GtkBuilder UI descriptions][BUILDER-UI]. The interface
-// includes methods for setting names and properties of objects, parsing custom
-// tags and constructing child objects.
+// Buildable: `GtkBuildable` allows objects to extend and customize their
+// deserialization from ui files.
 //
-// The GtkBuildable interface is implemented by all widgets and many of the
+// The interface includes methods for setting names and properties of objects,
+// parsing custom tags and constructing child objects.
+//
+// The `GtkBuildable` interface is implemented by all widgets and many of the
 // non-widget objects that are provided by GTK. The main user of this interface
-// is Builder. There should be very little need for applications to call any of
-// these functions directly.
+// is [class@Gtk.Builder]. There should be very little need for applications to
+// call any of these functions directly.
 //
 // An object only needs to implement this interface if it needs to extend the
-// Builder format or run any extra routines at deserialization time.
+// `GtkBuilder` XML format or run any extra routines at deserialization time.
 type Buildable interface {
 	gextras.Objector
 	BuildableOverrider
 
 	// BuildableID gets the ID of the @buildable object.
 	//
-	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
 	// used to construct the @buildable.
 	BuildableID() string
 }
@@ -95,7 +96,7 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 
 // BuildableID gets the ID of the @buildable object.
 //
-// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
+// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
 // used to construct the @buildable.
 func (b buildable) BuildableID() string {
 	var _arg0 *C.GtkBuildable
@@ -113,6 +114,7 @@ func (b buildable) BuildableID() string {
 	return _utf8
 }
 
+// BuildableParseContext: an opaque context struct for `GtkBuildableParser`.
 type BuildableParseContext struct {
 	native C.GtkBuildableParseContext
 }

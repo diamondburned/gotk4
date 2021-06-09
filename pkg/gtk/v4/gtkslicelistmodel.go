@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// SliceListModel is a list model that takes a list model and presents a slice
-// of that model.
+// SliceListModel: `GtkSliceListModel` is a list model that presents a slice of
+// another model.
 //
 // This is useful when implementing paging by setting the size to the number of
 // elements per page and updating the offset whenever a different page is
@@ -34,12 +34,13 @@ type SliceListModel interface {
 
 	// Model gets the model that is currently being used or nil if none.
 	Model() gio.ListModel
-	// Offset gets the offset set via gtk_slice_list_model_set_offset()
+	// Offset gets the offset set via gtk_slice_list_model_set_offset().
 	Offset() uint
 	// Size gets the size set via gtk_slice_list_model_set_size().
 	Size() uint
-	// SetModel sets the model to show a slice of. The model's item type must
-	// conform to @self's item type.
+	// SetModel sets the model to show a slice of.
+	//
+	// The model's item type must conform to @self's item type.
 	SetModel(model gio.ListModel)
 	// SetOffset sets the offset into the original model for this slice.
 	//
@@ -114,7 +115,7 @@ func (s sliceListModel) Model() gio.ListModel {
 	return _listModel
 }
 
-// Offset gets the offset set via gtk_slice_list_model_set_offset()
+// Offset gets the offset set via gtk_slice_list_model_set_offset().
 func (s sliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel
 
@@ -148,8 +149,9 @@ func (s sliceListModel) Size() uint {
 	return _guint
 }
 
-// SetModel sets the model to show a slice of. The model's item type must
-// conform to @self's item type.
+// SetModel sets the model to show a slice of.
+//
+// The model's item type must conform to @self's item type.
 func (s sliceListModel) SetModel(model gio.ListModel) {
 	var _arg0 *C.GtkSliceListModel
 	var _arg1 *C.GListModel

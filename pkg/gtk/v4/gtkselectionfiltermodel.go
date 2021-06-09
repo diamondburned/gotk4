@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// SelectionFilterModel is a list model that presents the selected items in a
-// SelectionModel as its own list model.
+// SelectionFilterModel: `GtkSelectionFilterModel` is a list model that presents
+// the selection from a `GtkSelectionModel`.
 type SelectionFilterModel interface {
 	gextras.Objector
 	gio.ListModel

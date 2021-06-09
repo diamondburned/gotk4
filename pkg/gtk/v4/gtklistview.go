@@ -21,89 +21,77 @@ func init() {
 	})
 }
 
-// ListView: gtkListView is a widget to present a view into a large dynamic list
-// of items.
+// ListView: `GtkListView` presents a large dynamic list of items.
 //
-// GtkListView uses its factory to generate one row widget for each visible item
-// and shows them in a linear display, either vertically or horizontally. The
-// ListView:show-separators property offers a simple way to display separators
-// between the rows.
+// `GtkListView` uses its factory to generate one row widget for each visible
+// item and shows them in a linear display, either vertically or horizontally.
 //
-// GtkListView allows the user to select items according to the selection
+// The [property@Gtk.ListView:show-separators] property offers a simple way to
+// display separators between the rows.
+//
+// `GtkListView` allows the user to select items according to the selection
 // characteristics of the model. For models that allow multiple selected items,
 // it is possible to turn on _rubberband selection_, using
-// ListView:enable-rubberband.
+// [property@Gtk.ListView:enable-rubberband].
 //
-// If you need multiple columns with headers, see ColumnView.
+// If you need multiple columns with headers, see [class@Gtk.ColumnView].
 //
-// To learn more about the list widget framework, see the overview (Widget).
+// To learn more about the list widget framework, see the overview
+// (section-list-widget.html).
 //
-// An example of using GtkListView:
+// An example of using `GtkListView`: “`c static void setup_listitem_cb
+// (GtkListItemFactory *factory, GtkListItem *list_item) { GtkWidget *image;
 //
-//    static void
-//    setup_listitem_cb (GtkListItemFactory *factory,
-//                       GtkListItem        *list_item)
-//    {
-//      GtkWidget *image;
+//    image = gtk_image_new ();
+//    gtk_image_set_icon_size (GTK_IMAGE (image), GTK_ICON_SIZE_LARGE);
+//    gtk_list_item_set_child (list_item, image);
 //
-//      image = gtk_image_new ();
-//      gtk_image_set_icon_size (GTK_IMAGE (image), GTK_ICON_SIZE_LARGE);
-//      gtk_list_item_set_child (list_item, image);
-//    }
+// }
 //
-//    static void
-//    bind_listitem_cb (GtkListItemFactory *factory,
-//                      GtkListItem        *list_item)
-//    {
-//      GtkWidget *image;
-//      GAppInfo *app_info;
+// static void bind_listitem_cb (GtkListItemFactory *factory, GtkListItem
+// *list_item) { GtkWidget *image; GAppInfo *app_info;
 //
-//      image = gtk_list_item_get_child (list_item);
-//      app_info = gtk_list_item_get_item (list_item);
-//      gtk_image_set_from_gicon (GTK_IMAGE (image), g_app_info_get_icon (app_info));
-//    }
+//    image = gtk_list_item_get_child (list_item);
+//    app_info = gtk_list_item_get_item (list_item);
+//    gtk_image_set_from_gicon (GTK_IMAGE (image), g_app_info_get_icon (app_info));
 //
-//    static void
-//    activate_cb (GtkListView  *list,
-//                 guint         position,
-//                 gpointer      unused)
-//    {
-//      GAppInfo *app_info;
+// }
 //
-//      app_info = g_list_model_get_item (G_LIST_MODEL (gtk_list_view_get_model (list)), position);
-//      g_app_info_launch (app_info, NULL, NULL, NULL);
-//      g_object_unref (app_info);
-//    }
+// static void activate_cb (GtkListView *list, guint position, gpointer unused)
+// { GAppInfo *app_info;
 //
-//    ...
+//    app_info = g_list_model_get_item (G_LIST_MODEL (gtk_list_view_get_model (list)), position);
+//    g_app_info_launch (app_info, NULL, NULL, NULL);
+//    g_object_unref (app_info);
 //
-//      model = create_application_list ();
+// }
 //
-//      factory = gtk_signal_list_item_factory_new ();
-//      g_signal_connect (factory, "setup", G_CALLBACK (setup_listitem_cb), NULL);
-//      g_signal_connect (factory, "bind", G_CALLBACK (bind_listitem_cb), NULL);
+// ...
 //
-//      list = gtk_list_view_new (GTK_SELECTION_MODEL (gtk_single_selection_new (model)), factory);
+//    model = create_application_list ();
 //
-//      g_signal_connect (list, "activate", G_CALLBACK (activate_cb), NULL);
+//    factory = gtk_signal_list_item_factory_new ();
+//    g_signal_connect (factory, "setup", G_CALLBACK (setup_listitem_cb), NULL);
+//    g_signal_connect (factory, "bind", G_CALLBACK (bind_listitem_cb), NULL);
 //
-//      gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sw), list);
+//    list = gtk_list_view_new (GTK_SELECTION_MODEL (gtk_single_selection_new (model)), factory);
+//
+//    g_signal_connect (list, "activate", G_CALLBACK (activate_cb), NULL);
+//
+//    gtk_scrolled_window_set_child (GTK_SCROLLED_WINDOW (sw), list);
+//
+// “`
+//
 //
 // CSS nodes
 //
-//    listview[.separators][.rich-list][.navigation-sidebar][.data-table]
-//    ├── row
-//    │
-//    ├── row
-//    │
-//    ┊
-//    ╰── [rubberband]
+// “` listview[.separators][.rich-list][.navigation-sidebar][.data-table] ├──
+// row │ ├── row │ ┊ ╰── [rubberband] “`
 //
-//
-// GtkListView uses a single CSS node named listview. It may carry the
-// .separators style class, when ListView:show-separators property is set. Each
-// child widget uses a single CSS node named row. For rubberband selection, a
-// node with name rubberband is used.
+// `GtkListView` uses a single CSS node named listview. It may carry the
+// .separators style class, when `GtkListView`:show-separators property is set.
+// Each child widget uses a single CSS node named row. For rubberband selection,
+// a node with name rubberband is used.
 //
 // The main listview node may also carry style classes to select the style of
 // list presentation (ListContainers.html#list-styles): .rich-list,
@@ -112,8 +100,8 @@ func init() {
 //
 // Accessibility
 //
-// GtkListView uses the K_ACCESSIBLE_ROLE_LIST role, and the list items use the
-// K_ACCESSIBLE_ROLE_LIST_ITEM role.
+// `GtkListView` uses the GTK_ACCESSIBLE_ROLE_LIST role, and the list items use
+// the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListView interface {
 	ListBase
 	Accessible
@@ -138,9 +126,12 @@ type ListView interface {
 	// SetEnableRubberband sets whether selections can be changed by dragging
 	// with the mouse.
 	SetEnableRubberband(enableRubberband bool)
-	// SetFactory sets the ListItemFactory to use for populating list items.
+	// SetFactory sets the `GtkListItemFactory` to use for populating list
+	// items.
 	SetFactory(factory ListItemFactory)
-	// SetModel sets the SelectionModel to use.
+	// SetModel sets the model to use.
+	//
+	// This must be a [iface@Gtk.SelectionModel] to use.
 	SetModel(model SelectionModel)
 	// SetShowSeparators sets whether the list box should show separators
 	// between rows.
@@ -308,7 +299,8 @@ func (s listView) SetEnableRubberband(enableRubberband bool) {
 	C.gtk_list_view_set_enable_rubberband(_arg0, _arg1)
 }
 
-// SetFactory sets the ListItemFactory to use for populating list items.
+// SetFactory sets the `GtkListItemFactory` to use for populating list
+// items.
 func (s listView) SetFactory(factory ListItemFactory) {
 	var _arg0 *C.GtkListView
 	var _arg1 *C.GtkListItemFactory
@@ -319,7 +311,9 @@ func (s listView) SetFactory(factory ListItemFactory) {
 	C.gtk_list_view_set_factory(_arg0, _arg1)
 }
 
-// SetModel sets the SelectionModel to use.
+// SetModel sets the model to use.
+//
+// This must be a [iface@Gtk.SelectionModel] to use.
 func (s listView) SetModel(model SelectionModel) {
 	var _arg0 *C.GtkListView
 	var _arg1 *C.GtkSelectionModel

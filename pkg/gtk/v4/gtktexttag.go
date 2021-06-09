@@ -21,41 +21,47 @@ func init() {
 	})
 }
 
-// TextTag: you may wish to begin by reading the [text widget conceptual
-// overview][TextWidget] which gives an overview of all the objects and data
-// types related to the text widget and how they work together.
+// TextTag: a tag that can be applied to text contained in a `GtkTextBuffer`.
 //
-// Tags should be in the TextTagTable for a given TextBuffer before using them
-// with that buffer.
+// You may wish to begin by reading the text widget conceptual overview
+// (section-text-widget.html), which gives an overview of all the objects and
+// data types related to the text widget and how they work together.
 //
-// gtk_text_buffer_create_tag() is the best way to create tags. See “gtk4-demo”
-// for numerous examples.
+// Tags should be in the [class@Gtk.TextTagTable] for a given `GtkTextBuffer`
+// before using them with that buffer.
 //
-// For each property of TextTag, there is a “set” property, e.g. “font-set”
+// [method@Gtk.TextBuffer.create_tag] is the best way to create tags. See
+// “gtk4-demo” for numerous examples.
+//
+// For each property of `GtkTextTag`, there is a “set” property, e.g. “font-set”
 // corresponds to “font”. These “set” properties reflect whether a property has
-// been set or not. They are maintained by GTK+ and you should not set them
-// independently.
+// been set or not.
+//
+// They are maintained by GTK and you should not set them independently.
 type TextTag interface {
 	gextras.Objector
 
-	// Changed emits the TextTagTable::tag-changed signal on the TextTagTable
-	// where the tag is included.
+	// Changed emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
+	// `GtkTextTagTable` where the tag is included.
 	//
-	// The signal is already emitted when setting a TextTag property. This
-	// function is useful for a TextTag subclass.
+	// The signal is already emitted when setting a `GtkTextTag` property. This
+	// function is useful for a `GtkTextTag` subclass.
 	Changed(sizeChanged bool)
 	// Priority: get the tag priority.
 	Priority() int
-	// SetPriority sets the priority of a TextTag. Valid priorities start at 0
-	// and go to one less than gtk_text_tag_table_get_size(). Each tag in a
-	// table has a unique priority; setting the priority of one tag shifts the
-	// priorities of all the other tags in the table to maintain a unique
-	// priority for each tag. Higher priority tags “win” if two tags both set
-	// the same text attribute. When adding a tag to a tag table, it will be
-	// assigned the highest priority in the table by default; so normally the
-	// precedence of a set of tags is the order in which they were added to the
-	// table, or created with gtk_text_buffer_create_tag(), which adds the tag
-	// to the buffer’s table automatically.
+	// SetPriority sets the priority of a `GtkTextTag`.
+	//
+	// Valid priorities start at 0 and go to one less than
+	// [method@Gtk.TextTagTable.get_size]. Each tag in a table has a unique
+	// priority; setting the priority of one tag shifts the priorities of all
+	// the other tags in the table to maintain a unique priority for each tag.
+	//
+	// Higher priority tags “win” if two tags both set the same text attribute.
+	// When adding a tag to a tag table, it will be assigned the highest
+	// priority in the table by default; so normally the precedence of a set of
+	// tags is the order in which they were added to the table, or created with
+	// [method@Gtk.TextBuffer.create_tag], which adds the tag to the buffer’s
+	// table automatically.
 	SetPriority(priority int)
 }
 
@@ -98,11 +104,11 @@ func NewTextTag(name string) TextTag {
 	return _textTag
 }
 
-// Changed emits the TextTagTable::tag-changed signal on the TextTagTable
-// where the tag is included.
+// Changed emits the [signal@Gtk.TextTagTable::tag-changed] signal on the
+// `GtkTextTagTable` where the tag is included.
 //
-// The signal is already emitted when setting a TextTag property. This
-// function is useful for a TextTag subclass.
+// The signal is already emitted when setting a `GtkTextTag` property. This
+// function is useful for a `GtkTextTag` subclass.
 func (t textTag) Changed(sizeChanged bool) {
 	var _arg0 *C.GtkTextTag
 	var _arg1 C.gboolean
@@ -132,16 +138,19 @@ func (t textTag) Priority() int {
 	return _gint
 }
 
-// SetPriority sets the priority of a TextTag. Valid priorities start at 0
-// and go to one less than gtk_text_tag_table_get_size(). Each tag in a
-// table has a unique priority; setting the priority of one tag shifts the
-// priorities of all the other tags in the table to maintain a unique
-// priority for each tag. Higher priority tags “win” if two tags both set
-// the same text attribute. When adding a tag to a tag table, it will be
-// assigned the highest priority in the table by default; so normally the
-// precedence of a set of tags is the order in which they were added to the
-// table, or created with gtk_text_buffer_create_tag(), which adds the tag
-// to the buffer’s table automatically.
+// SetPriority sets the priority of a `GtkTextTag`.
+//
+// Valid priorities start at 0 and go to one less than
+// [method@Gtk.TextTagTable.get_size]. Each tag in a table has a unique
+// priority; setting the priority of one tag shifts the priorities of all
+// the other tags in the table to maintain a unique priority for each tag.
+//
+// Higher priority tags “win” if two tags both set the same text attribute.
+// When adding a tag to a tag table, it will be assigned the highest
+// priority in the table by default; so normally the precedence of a set of
+// tags is the order in which they were added to the table, or created with
+// [method@Gtk.TextBuffer.create_tag], which adds the tag to the buffer’s
+// table automatically.
 func (t textTag) SetPriority(priority int) {
 	var _arg0 *C.GtkTextTag
 	var _arg1 C.int

@@ -164,11 +164,13 @@ type TreeModelOverrider interface {
 	UnrefNode(iter *TreeIter)
 }
 
-// TreeModel: the TreeModel interface defines a generic tree interface for use
-// by the TreeView widget. It is an abstract interface, and is designed to be
-// usable with any appropriate data structure. The programmer just has to
-// implement this interface on their own data type for it to be viewable by a
-// TreeView widget.
+// TreeModel: the tree interface used by GtkTreeView
+//
+// The TreeModel interface defines a generic tree interface for use by the
+// TreeView widget. It is an abstract interface, and is designed to be usable
+// with any appropriate data structure. The programmer just has to implement
+// this interface on their own data type for it to be viewable by a TreeView
+// widget.
 //
 // The model is represented as a hierarchical tree of strongly-typed, columned
 // data. In other words, the model can be seen as a tree where every node has
@@ -190,17 +192,19 @@ type TreeModelOverrider interface {
 // Models are accessed on a node/column level of granularity. One can query for
 // the value of a model at a certain node and a certain column on that node.
 // There are two structures used to reference a particular node in a model. They
-// are the TreePath-struct and the TreeIter-struct (“iter” is short for
-// iterator). Most of the interface consists of operations on a TreeIter-struct.
+// are the [struct@Gtk.TreePath] and the [struct@Gtk.TreeIter] (“iter” is short
+// for iterator). Most of the interface consists of operations on a
+// [struct@Gtk.TreeIter].
 //
 // A path is essentially a potential node. It is a location on a model that may
-// or may not actually correspond to a node on a specific model. The
-// TreePath-struct can be converted into either an array of unsigned integers or
-// a string. The string form is a list of numbers separated by a colon. Each
-// number refers to the offset at that level. Thus, the path `0` refers to the
-// root node and the path `2:4` refers to the fifth child of the third node.
+// or may not actually correspond to a node on a specific model. A
+// [struct@Gtk.TreePath] can be converted into either an array of unsigned
+// integers or a string. The string form is a list of numbers separated by a
+// colon. Each number refers to the offset at that level. Thus, the path `0`
+// refers to the root node and the path `2:4` refers to the fifth child of the
+// third node.
 //
-// By contrast, a TreeIter-struct is a reference to a specific node on a
+// By contrast, a [struct@Gtk.TreeIter] is a reference to a specific node on a
 // specific model. It is a generic struct with an integer and three generic
 // pointers. These are filled in by the model in a model-specific way. One can
 // convert a path to an iterator by calling gtk_tree_model_get_iter(). These
@@ -233,55 +237,65 @@ type TreeModelOverrider interface {
 // `3:2:5`. While the first method shown is easier, the second is much more
 // common, as you often get paths from callbacks.
 //
-// Acquiring a TreeIter-struct
+// Acquiring a `GtkTreeIter`
 //
-//    enum
-//    {
-//      STRING_COLUMN,
-//      INT_COLUMN,
-//      N_COLUMNS
-//    };
+// “`c // Three ways of getting the iter pointing to the location GtkTreePath
+// *path; GtkTreeIter iter; GtkTreeIter parent_iter;
 //
-//    ...
+// // get the iterator from a string gtk_tree_model_get_iter_from_string (model,
+// // &iter, "3:2:5");
 //
-//    GtkTreeModel *list_store;
-//    GtkTreeIter iter;
-//    gboolean valid;
-//    int row_count = 0;
+// // get the iterator from a path path = gtk_tree_path_new_from_string
+// // ("3:2:5"); gtk_tree_model_get_iter (model, &iter, path); gtk_tree_path_free
+// // (path);
 //
-//    // make a new list_store
-//    list_store = gtk_list_store_new (N_COLUMNS,
-//                                     G_TYPE_STRING,
-//                                     G_TYPE_INT);
+// // walk the tree to find the iterator gtk_tree_model_iter_nth_child (model,
+// // &iter, NULL, 3); parent_iter = iter; gtk_tree_model_iter_nth_child (model,
+// // &iter, &parent_iter, 2); parent_iter = iter; gtk_tree_model_iter_nth_child
+// // (model, &iter, &parent_iter, 5); “`
 //
-//    // Fill the list store with data
-//    populate_model (list_store);
+// This second example shows a quick way of iterating through a list and getting
+// a string and an integer from each row. The populate_model() function used
+// below is not shown, as it is specific to the ListStore. For information on
+// how to write such a function, see the ListStore documentation.
 //
-//    // Get the first iter in the list, check it is valid and walk
-//    // through the list, reading each row.
+// Reading data from a `GtkTreeModel`
 //
-//    valid = gtk_tree_model_get_iter_first (list_store,
-//                                           &iter);
-//    while (valid)
-//     {
-//       char *str_data;
-//       int    int_data;
+// “`c enum { STRING_COLUMN, INT_COLUMN, N_COLUMNS };
 //
-//       // Make sure you terminate calls to gtk_tree_model_get() with a “-1” value
-//       gtk_tree_model_get (list_store, &iter,
-//                           STRING_COLUMN, &str_data,
-//                           INT_COLUMN, &int_data,
-//                           -1);
+// ...
 //
-//       // Do something with the data
-//       g_print ("Row d: (s,d)\n",
-//                row_count, str_data, int_data);
-//       g_free (str_data);
+// GtkTreeModel *list_store; GtkTreeIter iter; gboolean valid; int row_count =
+// 0;
 //
-//       valid = gtk_tree_model_iter_next (list_store,
-//                                         &iter);
-//       row_count++;
-//     }
+// // make a new list_store list_store = gtk_list_store_new (N_COLUMNS,
+// // G_TYPE_STRING, G_TYPE_INT);
+//
+// // Fill the list store with data populate_model (list_store);
+//
+// // Get the first iter in the list, check it is valid and walk // through the
+// // list, reading each row.
+//
+// valid = gtk_tree_model_get_iter_first (list_store, &iter); while (valid) {
+// char *str_data; int int_data;
+//
+//      // Make sure you terminate calls to gtk_tree_model_get() with a “-1” value
+//      gtk_tree_model_get (list_store, &iter,
+//                          STRING_COLUMN, &str_data,
+//                          INT_COLUMN, &int_data,
+//                          -1);
+//
+//      // Do something with the data
+//      g_print ("Row d: (s,d)\n",
+//               row_count, str_data, int_data);
+//      g_free (str_data);
+//
+//      valid = gtk_tree_model_iter_next (list_store,
+//                                        &iter);
+//      row_count++;
+//    }
+//
+// “`
 //
 // The TreeModel interface contains two methods for reference counting:
 // gtk_tree_model_ref_node() and gtk_tree_model_unref_node(). These two methods
@@ -975,6 +989,7 @@ func (i *TreeIter) Free() {
 	C.gtk_tree_iter_free(_arg0)
 }
 
+// TreePath: an opaque structure representing a path to a row in a model.
 type TreePath struct {
 	native C.GtkTreePath
 }

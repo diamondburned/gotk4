@@ -58,21 +58,21 @@ type AppInfoOverrider interface {
 	Dup() AppInfo
 	// Equal checks if two Infos are equal.
 	//
-	// Note that the check <emphasis>may not</emphasis> compare each individual
-	// field, and only does an identity check. In case detecting changes in the
-	// contents is needed, program code must additionally compare relevant
-	// fields.
+	// Note that the check *may not* compare each individual field, and only
+	// does an identity check. In case detecting changes in the contents is
+	// needed, program code must additionally compare relevant fields.
 	Equal(appinfo2 AppInfo) bool
-
-	Commandline() string
+	// Commandline gets the commandline with which the application will be
+	// started.
+	Commandline() *string
 	// Description gets a human-readable description of an installed
 	// application.
 	Description() string
 	// DisplayName gets the display name of the application. The display name is
 	// often more descriptive to the user than the name itself.
 	DisplayName() string
-
-	Executable() string
+	// Executable gets the executable's name for the installed application.
+	Executable() *string
 	// Icon gets the icon for the application.
 	Icon() Icon
 	// ID gets the ID of an application. An id is a string that identifies the
@@ -342,10 +342,9 @@ func (a appInfo) Dup() AppInfo {
 
 // Equal checks if two Infos are equal.
 //
-// Note that the check <emphasis>may not</emphasis> compare each individual
-// field, and only does an identity check. In case detecting changes in the
-// contents is needed, program code must additionally compare relevant
-// fields.
+// Note that the check *may not* compare each individual field, and only
+// does an identity check. In case detecting changes in the contents is
+// needed, program code must additionally compare relevant fields.
 func (a appInfo) Equal(appinfo2 AppInfo) bool {
 	var _arg0 *C.GAppInfo
 	var _arg1 *C.GAppInfo

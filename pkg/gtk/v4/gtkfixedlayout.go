@@ -23,8 +23,8 @@ func init() {
 	})
 }
 
-// FixedLayout is a layout manager which can place child widgets at fixed
-// positions, and with fixed sizes.
+// FixedLayout: `GtkFixedLayout` is a layout manager which can place child
+// widgets at fixed positions.
 //
 // Most applications should never use this layout manager; fixed positioning and
 // sizing requires constant recalculations on where children need to be
@@ -42,14 +42,14 @@ func init() {
 // - Translation of text into other languages changes its size. Also, display of
 // non-English text will use a different font in many cases.
 //
-// In addition, FixedLayout does not pay attention to text direction and thus
-// may produce unwanted results if your app is run under right-to-left languages
-// such as Hebrew or Arabic. That is: normally GTK will order containers
-// appropriately depending on the text direction, e.g. to put labels to the
-// right of the thing they label when using an RTL language; FixedLayout won't
-// be able to do that for you.
+// In addition, `GtkFixedLayout` does not pay attention to text direction and
+// thus may produce unwanted results if your app is run under right-to-left
+// languages such as Hebrew or Arabic. That is: normally GTK will order
+// containers appropriately depending on the text direction, e.g. to put labels
+// to the right of the thing they label when using an RTL language;
+// `GtkFixedLayout` won't be able to do that for you.
 //
-// Finally, fixed positioning makes it kind of annoying to add/remove GUI
+// Finally, fixed positioning makes it kind of annoying to add/remove UI
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
 type FixedLayout interface {
@@ -90,12 +90,14 @@ func NewFixedLayout() FixedLayout {
 	return _fixedLayout
 }
 
+// FixedLayoutChild: `GtkLayoutChild` subclass for children in a
+// `GtkFixedLayout`.
 type FixedLayoutChild interface {
 	LayoutChild
 
-	// Transform retrieves the transformation of the child of a FixedLayout.
+	// Transform retrieves the transformation of the child.
 	Transform() *gsk.Transform
-	// SetTransform sets the transformation of the child of a FixedLayout.
+	// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
 	SetTransform(transform *gsk.Transform)
 }
 
@@ -120,7 +122,7 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	return WrapFixedLayoutChild(obj), nil
 }
 
-// Transform retrieves the transformation of the child of a FixedLayout.
+// Transform retrieves the transformation of the child.
 func (c fixedLayoutChild) Transform() *gsk.Transform {
 	var _arg0 *C.GtkFixedLayoutChild
 
@@ -137,7 +139,7 @@ func (c fixedLayoutChild) Transform() *gsk.Transform {
 	return _transform
 }
 
-// SetTransform sets the transformation of the child of a FixedLayout.
+// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
 func (c fixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var _arg0 *C.GtkFixedLayoutChild
 	var _arg1 *C.GskTransform

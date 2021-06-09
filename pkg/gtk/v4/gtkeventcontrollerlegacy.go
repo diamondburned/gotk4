@@ -21,9 +21,11 @@ func init() {
 	})
 }
 
-// EventControllerLegacy is an event controller that gives you direct access to
-// the event stream. It should only be used as a last resort if none of the
-// other event controllers or gestures do the job.
+// EventControllerLegacy: `GtkEventControllerLegacy` is an event controller that
+// provides raw access to the event stream.
+//
+// It should only be used as a last resort if none of the other event
+// controllers or gestures do the job.
 type EventControllerLegacy interface {
 	EventController
 }

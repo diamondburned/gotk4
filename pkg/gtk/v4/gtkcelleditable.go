@@ -41,10 +41,11 @@ type CellEditableOverrider interface {
 	StartEditing(event gdk.Event)
 }
 
-// CellEditable: the CellEditable interface must be implemented for widgets to
-// be usable to edit the contents of a TreeView cell. It provides a way to
-// specify how temporary widgets should be configured for editing, get the new
-// value, etc.
+// CellEditable: interface for widgets that can be used for editing cells
+//
+// The CellEditable interface must be implemented for widgets to be usable to
+// edit the contents of a TreeView cell. It provides a way to specify how
+// temporary widgets should be configured for editing, get the new value, etc.
 type CellEditable interface {
 	Widget
 	CellEditableOverrider

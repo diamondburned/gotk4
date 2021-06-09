@@ -21,15 +21,18 @@ func init() {
 	})
 }
 
-// GestureRotate is a Gesture implementation able to recognize 2-finger
-// rotations, whenever the angle between both handled sequences changes, the
-// GestureRotate::angle-changed signal is emitted.
+// GestureRotate: `GtkGestureRotate` is a `GtkGesture` for 2-finger rotations.
+//
+// Whenever the angle between both handled sequences changes, the
+// [signal@Gtk.GestureRotate::angle-changed] signal is emitted.
 type GestureRotate interface {
 	Gesture
 
-	// AngleDelta: if @gesture is active, this function returns the angle
-	// difference in radians since the gesture was first recognized. If @gesture
-	// is not active, 0 is returned.
+	// AngleDelta gets the angle delta in radians.
+	//
+	// If @gesture is active, this function returns the angle difference in
+	// radians since the gesture was first recognized. If @gesture is not
+	// active, 0 is returned.
 	AngleDelta() float64
 }
 
@@ -67,9 +70,11 @@ func NewGestureRotate() GestureRotate {
 	return _gestureRotate
 }
 
-// AngleDelta: if @gesture is active, this function returns the angle
-// difference in radians since the gesture was first recognized. If @gesture
-// is not active, 0 is returned.
+// AngleDelta gets the angle delta in radians.
+//
+// If @gesture is active, this function returns the angle difference in
+// radians since the gesture was first recognized. If @gesture is not
+// active, 0 is returned.
 func (g gestureRotate) AngleDelta() float64 {
 	var _arg0 *C.GtkGestureRotate
 

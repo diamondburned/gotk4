@@ -12,32 +12,6 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// DistributeNaturalAllocation distributes @extra_space to child @sizes by
-// bringing smaller children up to natural size first.
-//
-// The remaining space will be added to the @minimum_size member of the
-// GtkRequestedSize struct. If all sizes reach their natural size then the
-// remaining space is returned.
-func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
-	var _arg1 C.int
-	var _arg2 C.guint
-	var _arg3 *C.GtkRequestedSize
-
-	_arg1 = C.int(extraSpace)
-	_arg2 = C.guint(nRequestedSizes)
-	_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes.Native()))
-
-	var _cret C.int
-
-	cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
-
-	var _gint int
-
-	_gint = (int)(_cret)
-
-	return _gint
-}
-
 // RequestedSize represents a request of a screen object in a given orientation.
 // These are primarily used in container implementations when allocating a
 // natural size for children calling. See gtk_distribute_natural_allocation().

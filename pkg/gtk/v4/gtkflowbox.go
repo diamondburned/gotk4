@@ -24,8 +24,10 @@ func init() {
 	})
 }
 
-// FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a Model with
-// gtk_flow_box_bind_model() for each item that gets added to the model.
+// FlowBoxCreateWidgetFunc: called for flow boxes that are bound to a
+// `GListModel`.
+//
+// This function is called for each item that gets added to the model.
 type FlowBoxCreateWidgetFunc func() (widget Widget)
 
 //export gotk4_FlowBoxCreateWidgetFunc
@@ -42,7 +44,9 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 }
 
 // FlowBoxFilterFunc: a function that will be called whenever a child changes or
-// is added. It lets you control if the child should be visible or not.
+// is added.
+//
+// It lets you control if the child should be visible or not.
 type FlowBoxFilterFunc func() (ok bool)
 
 //export gotk4_FlowBoxFilterFunc
@@ -60,8 +64,9 @@ func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolea
 	}
 }
 
-// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach(). It
-// will be called on every selected child of the @box.
+// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach().
+//
+// It will be called on every selected child of the @box.
 type FlowBoxForeachFunc func()
 
 //export gotk4_FlowBoxForeachFunc
@@ -92,6 +97,8 @@ func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg
 	cret = C.int(gint)
 }
 
+// FlowBoxChild: `GtkFlowBoxChild` is the kind of widget that can be added to a
+// `GtkFlowBox`.
 type FlowBoxChild interface {
 	Widget
 	Accessible
@@ -99,7 +106,9 @@ type FlowBoxChild interface {
 	ConstraintTarget
 
 	// Changed marks @child as changed, causing any state that depends on this
-	// to be updated. This affects sorting and filtering.
+	// to be updated.
+	//
+	// This affects sorting and filtering.
 	//
 	// Note that calls to this method must be in sync with the data used for the
 	// sorting and filtering functions. For instance, if the list is mirroring
@@ -110,16 +119,17 @@ type FlowBoxChild interface {
 	//
 	// This generally means that if you don’t fully control the data model, you
 	// have to duplicate the data that affects the sorting and filtering
-	// functions into the widgets themselves. Another alternative is to call
-	// gtk_flow_box_invalidate_sort() on any model change, but that is more
-	// expensive.
+	// functions into the widgets themselves.
+	//
+	// Another alternative is to call [method@Gtk.FlowBox.invalidate_sort] on
+	// any model change, but that is more expensive.
 	Changed()
 	// Child gets the child widget of @self.
 	Child() Widget
-	// Index gets the current index of the @child in its FlowBox container.
+	// Index gets the current index of the @child in its `GtkFlowBox` container.
 	Index() int
 	// IsSelected returns whether the @child is currently selected in its
-	// FlowBox container.
+	// `GtkFlowBox` container.
 	IsSelected() bool
 	// SetChild sets the child widget of @self.
 	SetChild(child Widget)
@@ -166,7 +176,9 @@ func NewFlowBoxChild() FlowBoxChild {
 }
 
 // Changed marks @child as changed, causing any state that depends on this
-// to be updated. This affects sorting and filtering.
+// to be updated.
+//
+// This affects sorting and filtering.
 //
 // Note that calls to this method must be in sync with the data used for the
 // sorting and filtering functions. For instance, if the list is mirroring
@@ -177,9 +189,10 @@ func NewFlowBoxChild() FlowBoxChild {
 //
 // This generally means that if you don’t fully control the data model, you
 // have to duplicate the data that affects the sorting and filtering
-// functions into the widgets themselves. Another alternative is to call
-// gtk_flow_box_invalidate_sort() on any model change, but that is more
-// expensive.
+// functions into the widgets themselves.
+//
+// Another alternative is to call [method@Gtk.FlowBox.invalidate_sort] on
+// any model change, but that is more expensive.
 func (c flowBoxChild) Changed() {
 	var _arg0 *C.GtkFlowBoxChild
 
@@ -205,7 +218,7 @@ func (s flowBoxChild) Child() Widget {
 	return _widget
 }
 
-// Index gets the current index of the @child in its FlowBox container.
+// Index gets the current index of the @child in its `GtkFlowBox` container.
 func (c flowBoxChild) Index() int {
 	var _arg0 *C.GtkFlowBoxChild
 
@@ -223,7 +236,7 @@ func (c flowBoxChild) Index() int {
 }
 
 // IsSelected returns whether the @child is currently selected in its
-// FlowBox container.
+// `GtkFlowBox` container.
 func (c flowBoxChild) IsSelected() bool {
 	var _arg0 *C.GtkFlowBoxChild
 

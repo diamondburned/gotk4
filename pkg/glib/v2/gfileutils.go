@@ -399,9 +399,9 @@ func FileReadLink(filename *string) (*string, error) {
 }
 
 // FileSetContents writes all of @contents to a file named @filename. This is a
-// convenience wrapper around calling g_file_set_contents() with `flags` set to
-// `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
-// `mode` set to `0666`.
+// convenience wrapper around calling g_file_set_contents_full() with `flags`
+// set to `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING`
+// and `mode` set to `0666`.
 func FileSetContents() error {
 	var _cerr *C.GError
 

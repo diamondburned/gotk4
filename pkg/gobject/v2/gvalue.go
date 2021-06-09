@@ -114,7 +114,7 @@ func (v *Value) DupParam() ParamSpec {
 
 	var _paramSpec ParamSpec
 
-	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
+	_paramSpec = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ParamSpec)
 
 	return _paramSpec
 }

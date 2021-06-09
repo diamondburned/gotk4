@@ -312,8 +312,21 @@ type FileOverrider interface {
 	// FindEnclosingMountFinish finishes an asynchronous find mount request. See
 	// g_file_find_enclosing_mount_async().
 	FindEnclosingMountFinish(res AsyncResult) (Mount, error)
-
-	Basename() string
+	// Basename gets the base name (the last component of the path) for a given
+	// #GFile.
+	//
+	// If called for the top level of a system (such as the filesystem root or a
+	// uri like sftp://host/) it will return a single directory separator (and
+	// on Windows, possibly a drive letter).
+	//
+	// The base name is a byte string (not UTF-8). It has no defined encoding or
+	// rules other than it may not contain zero bytes. If you want to use
+	// filenames in a user interface you should use the display name that you
+	// can get by requesting the G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME
+	// attribute with g_file_query_info().
+	//
+	// This call does no blocking I/O.
+	Basename() *string
 	// ChildForDisplayName gets the child of @file for a given @display_name
 	// (i.e. a UTF-8 version of the name). If this function fails, it returns
 	// nil and @error will be set. This is very useful when constructing a
@@ -341,10 +354,16 @@ type FileOverrider interface {
 	//
 	// This call does no blocking I/O.
 	ParseName() string
-
-	Path() string
-
-	RelativePath(descendant File) string
+	// Path gets the local pathname for #GFile, if one exists. If non-nil, this
+	// is guaranteed to be an absolute, canonical path. It might contain
+	// symlinks.
+	//
+	// This call does no blocking I/O.
+	Path() *string
+	// RelativePath gets the path for @descendant relative to @parent.
+	//
+	// This call does no blocking I/O.
+	RelativePath(descendant File) *string
 	// URI gets the URI for the @file.
 	//
 	// This call does no blocking I/O.
@@ -355,6 +374,10 @@ type FileOverrider interface {
 	//    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 	//
 	// Common schemes include "file", "http", "ftp", etc.
+	//
+	// The scheme can be different from the one used to construct the #GFile, in
+	// that it might be replaced with one that is logically equivalent to the
+	// #GFile.
 	//
 	// This call does no blocking I/O.
 	URIScheme() string
@@ -995,6 +1018,16 @@ type File interface {
 	gextras.Objector
 	FileOverrider
 
+	// BuildAttributeListForCopy prepares the file attribute query string for
+	// copying to @file.
+	//
+	// This function prepares an attribute query string to be passed to
+	// g_file_query_info() to get a list of attributes normally copied with the
+	// file (see g_file_copy_attributes() for the detailed description). This
+	// function is used by the implementation of g_file_copy_attributes() and is
+	// useful when one needs to query and set the attributes in two stages
+	// (e.g., for recursive move of a directory).
+	BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancellable) (string, error)
 	// CopyAttributes copies the file attributes from @source to @destination.
 	//
 	// Normally only a subset of the file attributes are copied, those that are
@@ -1374,6 +1407,39 @@ func (f file) AppendToFinish(res AsyncResult) (FileOutputStream, error) {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _fileOutputStream, _goerr
+}
+
+// BuildAttributeListForCopy prepares the file attribute query string for
+// copying to @file.
+//
+// This function prepares an attribute query string to be passed to
+// g_file_query_info() to get a list of attributes normally copied with the
+// file (see g_file_copy_attributes() for the detailed description). This
+// function is used by the implementation of g_file_copy_attributes() and is
+// useful when one needs to query and set the attributes in two stages
+// (e.g., for recursive move of a directory).
+func (f file) BuildAttributeListForCopy(flags FileCopyFlags, cancellable Cancellable) (string, error) {
+	var _arg0 *C.GFile
+	var _arg1 C.GFileCopyFlags
+	var _arg2 *C.GCancellable
+
+	_arg0 = (*C.GFile)(unsafe.Pointer(f.Native()))
+	_arg1 = (C.GFileCopyFlags)(flags)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret *C.char
+	var _cerr *C.GError
+
+	cret = C.g_file_build_attribute_list_for_copy(_arg0, _arg1, _arg2, _cerr)
+
+	var _utf8 string
+	var _goerr error
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _utf8, _goerr
 }
 
 // Copy copies the file @source to the location specified by @destination.
@@ -2217,6 +2283,10 @@ func (f file) URI() string {
 //    URI = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
 //
 // Common schemes include "file", "http", "ftp", etc.
+//
+// The scheme can be different from the one used to construct the #GFile, in
+// that it might be replaced with one that is logically equivalent to the
+// #GFile.
 //
 // This call does no blocking I/O.
 func (f file) URIScheme() string {

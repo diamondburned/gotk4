@@ -60,6 +60,30 @@ type ActionGroupOverrider interface {
 	// parameter must be given as @parameter. If the action is expecting no
 	// parameters then @parameter must be nil. See
 	// g_action_group_get_action_parameter_type().
+	//
+	// If the Group implementation supports asynchronous remote activation over
+	// D-Bus, this call may return before the relevant D-Bus traffic has been
+	// sent, or any replies have been received. In order to block on such
+	// asynchronous activation calls, g_dbus_connection_flush() should be called
+	// prior to the code, which depends on the result of the action activation.
+	// Without flushing the D-Bus connection, there is no guarantee that the
+	// action would have been activated.
+	//
+	// The following code which runs in a remote app instance, shows an example
+	// of a "quit" action being activated on the primary app instance over
+	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
+	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
+	// the primary instance.
+	//
+	//    // call "quit" action on primary instance
+	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
+	//
+	//    // make sure the action is activated now
+	//    g_dbus_connection_flush (...);
+	//
+	//    g_debug ("application has been terminated. exiting.");
+	//
+	//    exit (0);
 	ActivateAction(actionName string, parameter *glib.Variant)
 	// ChangeActionState: request for the state of the named action within
 	// @action_group to be changed to @value.
@@ -312,6 +336,30 @@ func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) 
 // parameter must be given as @parameter. If the action is expecting no
 // parameters then @parameter must be nil. See
 // g_action_group_get_action_parameter_type().
+//
+// If the Group implementation supports asynchronous remote activation over
+// D-Bus, this call may return before the relevant D-Bus traffic has been
+// sent, or any replies have been received. In order to block on such
+// asynchronous activation calls, g_dbus_connection_flush() should be called
+// prior to the code, which depends on the result of the action activation.
+// Without flushing the D-Bus connection, there is no guarantee that the
+// action would have been activated.
+//
+// The following code which runs in a remote app instance, shows an example
+// of a "quit" action being activated on the primary app instance over
+// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
+// g_dbus_connection_flush(), the "quit" action may fail to be activated on
+// the primary instance.
+//
+//    // call "quit" action on primary instance
+//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
+//
+//    // make sure the action is activated now
+//    g_dbus_connection_flush (...);
+//
+//    g_debug ("application has been terminated. exiting.");
+//
+//    exit (0);
 func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
 	var _arg0 *C.GActionGroup
 	var _arg1 *C.gchar

@@ -21,11 +21,14 @@ func init() {
 	})
 }
 
-// FrameTimings: a FrameTimings object holds timing information for a single
-// frame of the application’s displays. To retrieve FrameTimings objects, use
-// gdk_frame_clock_get_timings() or gdk_frame_clock_get_current_timings(). The
-// information in FrameTimings is useful for precise synchronization of video
-// with the event or audio streams, and for measuring quality metrics for the
+// FrameTimings: a `GdkFrameTimings` object holds timing information for a
+// single frame of the application’s displays.
+//
+// To retrieve `GdkFrameTimings` objects, use
+// [method@Gdk.FrameClock.get_timings] or
+// [method@Gdk.FrameClock.get_current_timings]. The information in
+// `GdkFrameTimings` is useful for precise synchronization of video with the
+// event or audio streams, and for measuring quality metrics for the
 // application’s display, such as latency and jitter.
 type FrameTimings struct {
 	native C.GdkFrameTimings
@@ -51,14 +54,16 @@ func (f *FrameTimings) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
 }
 
-// Complete: the timing information in a FrameTimings is filled in incrementally
-// as the frame as drawn and passed off to the window system for processing and
-// display to the user. The accessor functions for FrameTimings can return 0 to
-// indicate an unavailable value for two reasons: either because the information
-// is not yet available, or because it isn't available at all. Once
-// gdk_frame_timings_get_complete() returns true for a frame, you can be certain
-// that no further values will become available and be stored in the
-// FrameTimings.
+// Complete returns whether @timings are complete.
+//
+// The timing information in a `GdkFrameTimings` is filled in incrementally as
+// the frame as drawn and passed off to the window system for processing and
+// display to the user. The accessor functions for `GdkFrameTimings` can return
+// 0 to indicate an unavailable value for two reasons: either because the
+// information is not yet available, or because it isn't available at all.
+//
+// Once this function returns true for a frame, you can be certain that no
+// further values will become available and be stored in the `GdkFrameTimings`.
 func (t *FrameTimings) Complete() bool {
 	var _arg0 *C.GdkFrameTimings
 
@@ -77,7 +82,7 @@ func (t *FrameTimings) Complete() bool {
 	return _ok
 }
 
-// FrameCounter gets the frame counter value of the FrameClock when this this
+// FrameCounter gets the frame counter value of the `GdkFrameClock` when this
 // frame was drawn.
 func (t *FrameTimings) FrameCounter() int64 {
 	var _arg0 *C.GdkFrameTimings
@@ -95,9 +100,10 @@ func (t *FrameTimings) FrameCounter() int64 {
 	return _gint64
 }
 
-// FrameTime returns the frame time for the frame. This is the time value that
-// is typically used to time animations for the frame. See
-// gdk_frame_clock_get_frame_time().
+// FrameTime returns the frame time for the frame.
+//
+// This is the time value that is typically used to time animations for the
+// frame. See [method@Gdk.FrameClock.get_frame_time].
 func (t *FrameTimings) FrameTime() int64 {
 	var _arg0 *C.GdkFrameTimings
 
@@ -115,11 +121,15 @@ func (t *FrameTimings) FrameTime() int64 {
 }
 
 // PredictedPresentationTime gets the predicted time at which this frame will be
-// displayed. Although no predicted time may be available, if one is available,
-// it will be available while the frame is being generated, in contrast to
-// gdk_frame_timings_get_presentation_time(), which is only available after the
-// frame has been presented. In general, if you are simply animating, you should
-// use gdk_frame_clock_get_frame_time() rather than this function, but this
+// displayed.
+//
+// Although no predicted time may be available, if one is available, it will be
+// available while the frame is being generated, in contrast to
+// [method@Gdk.FrameTimings.get_presentation_time], which is only available
+// after the frame has been presented.
+//
+// In general, if you are simply animating, you should use
+// [method@Gdk.FrameClock.get_frame_time] rather than this function, but this
 // function is useful for applications that want exact control over latency. For
 // example, a movie player may want this information for Audio/Video
 // synchronization.
@@ -139,8 +149,9 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 	return _gint64
 }
 
-// PresentationTime reurns the presentation time. This is the time at which the
-// frame became visible to the user.
+// PresentationTime reurns the presentation time.
+//
+// This is the time at which the frame became visible to the user.
 func (t *FrameTimings) PresentationTime() int64 {
 	var _arg0 *C.GdkFrameTimings
 
@@ -158,8 +169,9 @@ func (t *FrameTimings) PresentationTime() int64 {
 }
 
 // RefreshInterval gets the natural interval between presentation times for the
-// display that this frame was displayed on. Frame presentation usually happens
-// during the “vertical blanking interval”.
+// display that this frame was displayed on.
+//
+// Frame presentation usually happens during the “vertical blanking interval”.
 func (t *FrameTimings) RefreshInterval() int64 {
 	var _arg0 *C.GdkFrameTimings
 
@@ -196,8 +208,9 @@ func (t *FrameTimings) Ref() *FrameTimings {
 	return _frameTimings
 }
 
-// Unref decreases the reference count of @timings. If @timings is no longer
-// referenced, it will be freed.
+// Unref decreases the reference count of @timings.
+//
+// If @timings is no longer referenced, it will be freed.
 func (t *FrameTimings) Unref() {
 	var _arg0 *C.GdkFrameTimings
 

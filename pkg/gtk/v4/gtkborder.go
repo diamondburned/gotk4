@@ -21,8 +21,9 @@ func init() {
 	})
 }
 
-// Border: a struct that specifies a border around a rectangular area that can
-// be of different width on each side.
+// Border: a struct that specifies a border around a rectangular area.
+//
+// Each side can have different width.
 type Border struct {
 	native C.GtkBorder
 }

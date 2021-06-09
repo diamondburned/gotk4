@@ -1,6 +1,10 @@
+# The header, where the system's Nixpkgs is imported into. This imported Nixpkgs
+# is not guaranteed to be constant on other people's machines, so they should
+# only be used to fetch another Nixpkgs.
 { systemPkgs ? import <nixpkgs> {} }:
 
-# Pin Nixpkgs for a constant output.
+# The declarations, where a pinned Nixpkgs Unstable is fetched. When updating,
+# only rev and sha256 should be changed.
 let unstable = import (systemPkgs.fetchFromGitHub {
 	owner  = "NixOS";
 	repo   = "nixpkgs";
@@ -9,30 +13,22 @@ let unstable = import (systemPkgs.fetchFromGitHub {
 }) {};
 
 in systemPkgs.mkShell {
+	# The build inputs, which contains dependencies needed during generation
+	# time, build time and runtime.
 	buildInputs = with unstable; [
-		# General GTK dependencies.
 		glib
 		graphene
-		# GTK3.
 		gnome3.gtk
-		# GTK4 dependencies.
 		gtk4
 		vulkan-headers
 	];
 
+	# The native build inputs, which contains dependencies only needed during
+	# generation time and build time.
 	nativeBuildInputs = with unstable; [
-		# Build dependencies.
 		gobjectIntrospection
 		pkgconfig
 		go
+		goimports
 	];
-
-	shellHook = ''
-		trash() {
-			command rm /tmp/gotk4-pkg && \
-				mv pkg /tmp/gotk4-pkg && \
-				mkdir pkg && \
-				echo "Moved pkg/ to /tmp/gotk4-pkg/"
-		}
-	'';
 }

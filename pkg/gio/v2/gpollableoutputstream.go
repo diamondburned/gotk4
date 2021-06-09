@@ -75,7 +75,7 @@ type PollableOutputStreamOverrider interface {
 	// Also note that if G_IO_ERROR_WOULD_BLOCK is returned some underlying
 	// transports like D/TLS require that you re-send the same @buffer and
 	// @count in the next write call.
-	WriteNonblocking() (gssize int, err error)
+	WriteNonblocking() (gssize int, goerr error)
 }
 
 // PollableOutputStream is implemented by Streams that can be polled for
@@ -120,15 +120,16 @@ func (s pollableOutputStream) CanPoll() bool {
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_pollable_output_stream_can_poll(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CreateSource creates a #GSource that triggers when @stream can be
@@ -146,17 +147,18 @@ func (s pollableOutputStream) CreateSource(cancellable Cancellable) *glib.Source
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	cret := new(C.GSource)
-	var goret *glib.Source
+	var cret *C.GSource
 
 	cret = C.g_pollable_output_stream_create_source(arg0, arg1)
 
-	goret = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Source) {
+	var source *glib.Source
+
+	source = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return source
 }
 
 // IsWritable checks if @stream can be written.
@@ -172,13 +174,14 @@ func (s pollableOutputStream) IsWritable() bool {
 	arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_pollable_output_stream_is_writable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

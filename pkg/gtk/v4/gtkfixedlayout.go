@@ -23,8 +23,8 @@ func init() {
 	})
 }
 
-// FixedLayout: `GtkFixedLayout` is a layout manager which can place child
-// widgets at fixed positions.
+// FixedLayout is a layout manager which can place child widgets at fixed
+// positions, and with fixed sizes.
 //
 // Most applications should never use this layout manager; fixed positioning and
 // sizing requires constant recalculations on where children need to be
@@ -42,14 +42,14 @@ func init() {
 // - Translation of text into other languages changes its size. Also, display of
 // non-English text will use a different font in many cases.
 //
-// In addition, `GtkFixedLayout` does not pay attention to text direction and
-// thus may produce unwanted results if your app is run under right-to-left
-// languages such as Hebrew or Arabic. That is: normally GTK will order
-// containers appropriately depending on the text direction, e.g. to put labels
-// to the right of the thing they label when using an RTL language;
-// `GtkFixedLayout` won't be able to do that for you.
+// In addition, FixedLayout does not pay attention to text direction and thus
+// may produce unwanted results if your app is run under right-to-left languages
+// such as Hebrew or Arabic. That is: normally GTK will order containers
+// appropriately depending on the text direction, e.g. to put labels to the
+// right of the thing they label when using an RTL language; FixedLayout won't
+// be able to do that for you.
 //
-// Finally, fixed positioning makes it kind of annoying to add/remove UI
+// Finally, fixed positioning makes it kind of annoying to add/remove GUI
 // elements, since you have to reposition all the other elements. This is a
 // long-term maintenance problem for your application.
 type FixedLayout interface {
@@ -79,24 +79,23 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 
 // NewFixedLayout constructs a class FixedLayout.
 func NewFixedLayout() FixedLayout {
-	cret := new(C.GtkFixedLayout)
-	var goret FixedLayout
+	var cret C.GtkFixedLayout
 
 	cret = C.gtk_fixed_layout_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FixedLayout)
+	var fixedLayout FixedLayout
 
-	return goret
+	fixedLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FixedLayout)
+
+	return fixedLayout
 }
 
-// FixedLayoutChild: `GtkLayoutChild` subclass for children in a
-// `GtkFixedLayout`.
 type FixedLayoutChild interface {
 	LayoutChild
 
-	// Transform retrieves the transformation of the child.
+	// Transform retrieves the transformation of the child of a FixedLayout.
 	Transform() *gsk.Transform
-	// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
+	// SetTransform sets the transformation of the child of a FixedLayout.
 	SetTransform(transform *gsk.Transform)
 }
 
@@ -121,23 +120,24 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	return WrapFixedLayoutChild(obj), nil
 }
 
-// Transform retrieves the transformation of the child.
+// Transform retrieves the transformation of the child of a FixedLayout.
 func (c fixedLayoutChild) Transform() *gsk.Transform {
 	var arg0 *C.GtkFixedLayoutChild
 
 	arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GskTransform
-	var goret *gsk.Transform
 
 	cret = C.gtk_fixed_layout_child_get_transform(arg0)
 
-	goret = gsk.WrapTransform(unsafe.Pointer(cret))
+	var transform *gsk.Transform
 
-	return goret
+	transform = gsk.WrapTransform(unsafe.Pointer(cret))
+
+	return transform
 }
 
-// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
+// SetTransform sets the transformation of the child of a FixedLayout.
 func (c fixedLayoutChild) SetTransform(transform *gsk.Transform) {
 	var arg0 *C.GtkFixedLayoutChild
 	var arg1 *C.GskTransform

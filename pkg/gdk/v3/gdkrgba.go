@@ -50,28 +50,28 @@ func (r *RGBA) Native() unsafe.Pointer {
 // Red gets the field inside the struct.
 func (r *RGBA) Red() float64 {
 	var v float64
-	v = float64(r.native.red)
+	v = (float64)(r.native.red)
 	return v
 }
 
 // Green gets the field inside the struct.
 func (r *RGBA) Green() float64 {
 	var v float64
-	v = float64(r.native.green)
+	v = (float64)(r.native.green)
 	return v
 }
 
 // Blue gets the field inside the struct.
 func (r *RGBA) Blue() float64 {
 	var v float64
-	v = float64(r.native.blue)
+	v = (float64)(r.native.blue)
 	return v
 }
 
 // Alpha gets the field inside the struct.
 func (r *RGBA) Alpha() float64 {
 	var v float64
-	v = float64(r.native.alpha)
+	v = (float64)(r.native.alpha)
 	return v
 }
 
@@ -83,17 +83,18 @@ func (r *RGBA) Copy() *RGBA {
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	cret := new(C.GdkRGBA)
-	var goret *RGBA
+	var cret *C.GdkRGBA
 
 	cret = C.gdk_rgba_copy(arg0)
 
-	goret = WrapRGBA(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *RGBA) {
+	var rgbA *RGBA
+
+	rgbA = WrapRGBA(unsafe.Pointer(cret))
+	runtime.SetFinalizer(rgbA, func(v *RGBA) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return rgbA
 }
 
 // Equal compares two RGBA colors.
@@ -105,15 +106,16 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(p2.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_rgba_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Free frees a RGBA created with gdk_rgba_copy()
@@ -132,13 +134,14 @@ func (p *RGBA) Hash() uint {
 	arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gdk_rgba_hash(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Parse parses a textual representation of a color, filling in the @red,
@@ -163,15 +166,16 @@ func (r *RGBA) Parse(spec string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_rgba_parse(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // String returns a textual specification of @rgba in the form `rgb(r,g,b)` or
@@ -191,13 +195,14 @@ func (r *RGBA) String() string {
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gdk_rgba_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

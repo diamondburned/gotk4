@@ -21,29 +21,21 @@ func init() {
 	})
 }
 
-// GestureLongPress: `GtkGestureLongPress` is a `GtkGesture` for long presses.
-//
-// This gesture is also known as “Press and Hold”.
-//
-// When the timeout is exceeded, the gesture is triggering the
-// [signal@Gtk.GestureLongPress::pressed] signal.
+// GestureLongPress is a Gesture implementation able to recognize long presses,
+// triggering the GestureLongPress::pressed after the timeout is exceeded.
 //
 // If the touchpoint is lifted before the timeout passes, or if it drifts too
-// far of the initial press point, the [signal@Gtk.GestureLongPress::cancelled]
-// signal will be emitted.
-//
-// How long the timeout is before the ::pressed signal gets emitted is
-// determined by the [property@Gtk.Settings:gtk-long-press-time] setting. It can
-// be modified by the [property@Gtk.GestureLongPress:delay-factor] property.
+// far of the initial press point, the GestureLongPress::cancelled signal will
+// be emitted.
 type GestureLongPress interface {
 	GestureSingle
 
-	// DelayFactor returns the delay factor.
+	// DelayFactor returns the delay factor as set by
+	// gtk_gesture_long_press_set_delay_factor().
 	DelayFactor() float64
-	// SetDelayFactor applies the given delay factor.
-	//
-	// The default long press time will be multiplied by this value. Valid
-	// values are in the range [0.5..2.0].
+	// SetDelayFactor applies the given delay factor. The default long press
+	// time will be multiplied by this value. Valid values are in the range
+	// [0.5..2.0].
 	SetDelayFactor(delayFactor float64)
 }
 
@@ -70,36 +62,38 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 
 // NewGestureLongPress constructs a class GestureLongPress.
 func NewGestureLongPress() GestureLongPress {
-	cret := new(C.GtkGestureLongPress)
-	var goret GestureLongPress
+	var cret C.GtkGestureLongPress
 
 	cret = C.gtk_gesture_long_press_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureLongPress)
+	var gestureLongPress GestureLongPress
 
-	return goret
+	gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureLongPress)
+
+	return gestureLongPress
 }
 
-// DelayFactor returns the delay factor.
+// DelayFactor returns the delay factor as set by
+// gtk_gesture_long_press_set_delay_factor().
 func (g gestureLongPress) DelayFactor() float64 {
 	var arg0 *C.GtkGestureLongPress
 
 	arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_gesture_long_press_get_delay_factor(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// SetDelayFactor applies the given delay factor.
-//
-// The default long press time will be multiplied by this value. Valid
-// values are in the range [0.5..2.0].
+// SetDelayFactor applies the given delay factor. The default long press
+// time will be multiplied by this value. Valid values are in the range
+// [0.5..2.0].
 func (g gestureLongPress) SetDelayFactor(delayFactor float64) {
 	var arg0 *C.GtkGestureLongPress
 	var arg1 C.double

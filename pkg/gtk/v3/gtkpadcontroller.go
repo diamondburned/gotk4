@@ -114,14 +114,15 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadC
 	arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
 	arg3 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
-	cret := new(C.GtkPadController)
-	var goret PadController
+	var cret C.GtkPadController
 
 	cret = C.gtk_pad_controller_new(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
+	var padController PadController
 
-	return goret
+	padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
+
+	return padController
 }
 
 // SetAction adds an individual action to @controller. This action will only
@@ -160,7 +161,7 @@ func (c padController) SetActionEntries() {
 
 	arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
 
-	C.gtk_pad_controller_set_action_entries(arg0, arg1, arg2)
+	C.gtk_pad_controller_set_action_entries(arg0)
 }
 
 // PadActionEntry: struct defining a pad action entry.
@@ -198,14 +199,14 @@ func (p *PadActionEntry) Type() PadActionType {
 // Index gets the field inside the struct.
 func (p *PadActionEntry) Index() int {
 	var v int
-	v = int(p.native.index)
+	v = (int)(p.native.index)
 	return v
 }
 
 // Mode gets the field inside the struct.
 func (p *PadActionEntry) Mode() int {
 	var v int
-	v = int(p.native.mode)
+	v = (int)(p.native.mode)
 	return v
 }
 

@@ -21,30 +21,31 @@ func init() {
 	})
 }
 
-// TreeExpander: `GtkTreeExpander` is a widget that provides an expander for a
+// TreeExpander: gtkTreeExpander is a widget that provides an expander for a
 // list.
 //
-// It is typically placed as a bottommost child into a `GtkListView` to allow
-// users to expand and collapse children in a list with a
-// [class@Gtk.TreeListModel]. `GtkTreeExpander` provides the common UI elements,
-// gestures and keybindings for this purpose.
+// It is typically placed as a bottommost child into a ListView to allow users
+// to expand and collapse children in a list with a TreeListModel. It will
+// provide the common UI elements, gestures and keybindings for this purpose.
 //
 // On top of this, the "listitem.expand", "listitem.collapse" and
 // "listitem.toggle-expand" actions are provided to allow adding custom UI for
 // managing expanded state.
 //
-// The `GtkTreeListModel` must be set to not be passthrough. Then it will
-// provide [class@Gtk.TreeListRow] items which can be set via
-// [method@Gtk.TreeExpander.set_list_row] on the expander. The expander will
-// then watch that row item automatically. [method@Gtk.TreeExpander.set_child]
-// sets the widget that displays the actual row contents.
-//
+// The TreeListModel must be set to not be passthrough. Then it will provide
+// TreeListRow items which can be set via gtk_tree_expander_set_list_row() on
+// the expander. The expander will then watch that row item automatically.
+// gtk_tree_expander_set_child() sets the widget that displays the actual row
+// contents.
 //
 // CSS nodes
 //
-// “` treeexpander ├── [indent]* ├── [expander] ╰── <child> “`
+//    treeexpander
+//    ├── [indent]*
+//    ├── [expander]
+//    ╰── <child>
 //
-// `GtkTreeExpander` has zero or one CSS nodes with the name "expander" that
+// GtkTreeExpander has zero or one CSS nodes with the name "expander" that
 // should display the expander icon. The node will be `:checked` when it is
 // expanded. If the node is not expandable, an "indent" node will be displayed
 // instead.
@@ -54,8 +55,8 @@ func init() {
 //
 // Accessibility
 //
-// `GtkTreeExpander` uses the GTK_ACCESSIBLE_ROLE_GROUP role. The expander icon
-// is represented as a GTK_ACCESSIBLE_ROLE_BUTTON, labelled by the expander's
+// GtkTreeExpander uses the GTK_ACCESSIBLE_ROLE_GROUP role. The expander icon is
+// represented as a GTK_ACCESSIBLE_ROLE_BUTTON, labelled by the expander's
 // child, and toggling it will change the GTK_ACCESSIBLE_STATE_EXPANDED state.
 type TreeExpander interface {
 	Widget
@@ -65,13 +66,11 @@ type TreeExpander interface {
 
 	// Child gets the child widget displayed by @self.
 	Child() Widget
-	// Item forwards the item set on the `GtkTreeListRow` that @self is
-	// managing.
+	// Item forwards the item set on the TreeListRow that @self is managing.
 	//
 	// This call is essentially equivalent to calling:
 	//
-	// “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
-	// “`
+	//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
 	Item() gextras.Objector
 	// ListRow gets the list row managed by @self.
 	ListRow() TreeListRow
@@ -111,13 +110,14 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 // NewTreeExpander constructs a class TreeExpander.
 func NewTreeExpander() TreeExpander {
 	var cret C.GtkTreeExpander
-	var goret TreeExpander
 
 	cret = C.gtk_tree_expander_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeExpander)
+	var treeExpander TreeExpander
 
-	return goret
+	treeExpander = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeExpander)
+
+	return treeExpander
 }
 
 // Child gets the child widget displayed by @self.
@@ -127,35 +127,35 @@ func (s treeExpander) Child() Widget {
 	arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tree_expander_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Item forwards the item set on the `GtkTreeListRow` that @self is
-// managing.
+// Item forwards the item set on the TreeListRow that @self is managing.
 //
 // This call is essentially equivalent to calling:
 //
-// “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
-// “`
+//    gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
 func (s treeExpander) Item() gextras.Objector {
 	var arg0 *C.GtkTreeExpander
 
 	arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.gpointer)
-	var goret gextras.Objector
+	var cret C.gpointer
 
 	cret = C.gtk_tree_expander_get_item(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // ListRow gets the list row managed by @self.
@@ -165,13 +165,14 @@ func (s treeExpander) ListRow() TreeListRow {
 	arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTreeListRow
-	var goret TreeListRow
 
 	cret = C.gtk_tree_expander_get_list_row(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeListRow)
+	var treeListRow TreeListRow
 
-	return goret
+	treeListRow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeListRow)
+
+	return treeListRow
 }
 
 // SetChild sets the content widget to display.

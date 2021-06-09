@@ -99,7 +99,7 @@ type ToolButton interface {
 	// gtk_tool_button_new_from_stock(). The stock_id property only has an
 	// effect if not overridden by non-nil ToolButton:label-widget and
 	// ToolButton:icon-widget properties.
-	SetStockID(stockID string)
+	SetStockID(stockId string)
 	// SetUseUnderline: if set, an underline in the label property indicates
 	// that the next character should be used for the mnemonic accelerator key
 	// in the overflow menu. For example, if the label property is “_Open” and
@@ -148,30 +148,32 @@ func NewToolButton(iconWidget Widget, label string) ToolButton {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkToolButton
-	var goret ToolButton
 
 	cret = C.gtk_tool_button_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolButton)
+	var toolButton ToolButton
 
-	return goret
+	toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolButton)
+
+	return toolButton
 }
 
 // NewToolButtonFromStock constructs a class ToolButton.
-func NewToolButtonFromStock(stockID string) ToolButton {
+func NewToolButtonFromStock(stockId string) ToolButton {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToolButton
-	var goret ToolButton
 
 	cret = C.gtk_tool_button_new_from_stock(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolButton)
+	var toolButton ToolButton
 
-	return goret
+	toolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolButton)
+
+	return toolButton
 }
 
 // IconName returns the name of the themed icon for the tool button, see
@@ -182,13 +184,14 @@ func (b toolButton) IconName() string {
 	arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_tool_button_get_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // IconWidget: return the widget used as icon widget on @button. See
@@ -199,13 +202,14 @@ func (b toolButton) IconWidget() Widget {
 	arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tool_button_get_icon_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Label returns the label used by the tool button, or nil if the tool
@@ -217,13 +221,14 @@ func (b toolButton) Label() string {
 	arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_tool_button_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // LabelWidget returns the widget used as label on @button. See
@@ -234,13 +239,14 @@ func (b toolButton) LabelWidget() Widget {
 	arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tool_button_get_label_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // StockID returns the name of the stock item. See
@@ -252,13 +258,14 @@ func (b toolButton) StockID() string {
 	arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_tool_button_get_stock_id(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UseUnderline returns whether underscores in the label property are used
@@ -270,15 +277,16 @@ func (b toolButton) UseUnderline() bool {
 	arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_button_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetIconName sets the icon for the tool button from a named themed icon.
@@ -347,12 +355,12 @@ func (b toolButton) SetLabelWidget(labelWidget Widget) {
 // gtk_tool_button_new_from_stock(). The stock_id property only has an
 // effect if not overridden by non-nil ToolButton:label-widget and
 // ToolButton:icon-widget properties.
-func (b toolButton) SetStockID(stockID string) {
+func (b toolButton) SetStockID(stockId string) {
 	var arg0 *C.GtkToolButton
 	var arg1 *C.gchar
 
 	arg0 = (*C.GtkToolButton)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_tool_button_set_stock_id(arg0, arg1)

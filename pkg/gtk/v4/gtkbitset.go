@@ -14,11 +14,9 @@ import (
 import "C"
 
 // BitsetIter: an opaque, stack-allocated struct for iterating over the elements
-// of a `GtkBitset`.
-//
-// Before a `GtkBitsetIter` can be used, it needs to be initialized with
-// [func@Gtk.BitsetIter.init_first], [func@Gtk.BitsetIter.init_last] or
-// [func@Gtk.BitsetIter.init_at].
+// of a Bitset. Before a GtkBitsetIter can be used, it needs to be initialized
+// with gtk_bitset_iter_init_first(), gtk_bitset_iter_init_last() or
+// gtk_bitset_iter_init_at().
 type BitsetIter struct {
 	native C.GtkBitsetIter
 }
@@ -45,21 +43,22 @@ func (b *BitsetIter) Native() unsafe.Pointer {
 
 // Value gets the current value that @iter points to.
 //
-// If @iter is not valid and [method@Gtk.BitsetIter.is_valid] returns false,
-// this function returns 0.
+// If @iter is not valid and gtk_bitset_iter_is_valid() returns false, this
+// function returns 0.
 func (i *BitsetIter) Value() uint {
 	var arg0 *C.GtkBitsetIter
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_bitset_iter_get_value(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // IsValid checks if @iter points to a valid value.
@@ -69,61 +68,61 @@ func (i *BitsetIter) IsValid() bool {
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_bitset_iter_is_valid(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Next moves @iter to the next value in the set.
-//
-// If it was already pointing to the last value in the set, false is returned
-// and @iter is invalidated.
+// Next moves @iter to the next value in the set. If it was already pointing to
+// the last value in the set, false is returned and @iter is invalidated.
 func (i *BitsetIter) Next() (value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(C.guint)
-	var ret1 uint
+	var arg1 C.guint
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_bitset_iter_next(arg0, arg1)
+	cret = C.gtk_bitset_iter_next(arg0, &arg1)
 
-	ret1 = uint(*arg1)
+	var value uint
+	var ok bool
+
+	value = (uint)(arg1)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, goret
+	return value, ok
 }
 
-// Previous moves @iter to the previous value in the set.
-//
-// If it was already pointing to the first value in the set, false is returned
-// and @iter is invalidated.
+// Previous moves @iter to the previous value in the set. If it was already
+// pointing to the first value in the set, false is returned and @iter is
+// invalidated.
 func (i *BitsetIter) Previous() (value uint, ok bool) {
 	var arg0 *C.GtkBitsetIter
 
 	arg0 = (*C.GtkBitsetIter)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(C.guint)
-	var ret1 uint
+	var arg1 C.guint
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_bitset_iter_previous(arg0, arg1)
+	cret = C.gtk_bitset_iter_previous(arg0, &arg1)
 
-	ret1 = uint(*arg1)
+	var value uint
+	var ok bool
+
+	value = (uint)(arg1)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, goret
+	return value, ok
 }

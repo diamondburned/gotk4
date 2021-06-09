@@ -9,7 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	"github.com/diamondburned/gotk4/pkg/pango"
@@ -28,27 +27,25 @@ func init() {
 	})
 }
 
-// Snapshot: `GtkSnapshot` assists in creating `GskRenderNodes` for widgets.
-//
-// It functions in a similar way to a cairo context, and maintains a stack of
-// render nodes and their associated transformations.
+// Snapshot: gtkSnapshot is an auxiliary object that assists in creating
+// RenderNodes in the PaintableInterface.snapshot() vfunc. It functions in a
+// similar way to a cairo context, and maintains a stack of render nodes and
+// their associated transformations.
 //
 // The node at the top of the stack is the the one that gtk_snapshot_append_…
 // functions operate on. Use the gtk_snapshot_push_… functions and
 // gtk_snapshot_pop() to change the current node.
 //
-// The typical way to obtain a `GtkSnapshot` object is as an argument to the
-// GtkWidgetClass.snapshot() vfunc. If you need to create your own
-// `GtkSnapshot`, use [ctor@Gtk.Snapshot.new].
+// The typical way to obtain a GtkSnapshot object is as an argument to the
+// WidgetClass.snapshot() vfunc. If you need to create your own GtkSnapshot, use
+// gtk_snapshot_new().
 type Snapshot interface {
 	gdk.Snapshot
 
 	// AppendBorder appends a stroked border rectangle inside the given
-	// @outline.
-	//
-	// The four sides of the border can have different widths and colors.
+	// @outline. The 4 sides of the border can have different widths and colors.
 	AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA)
-	// AppendCairo creates a new `GskCairoNode` and appends it to the current
+	// AppendCairo creates a new render node and appends it to the current
 	// render node of @snapshot, without changing the current node.
 	AppendCairo(bounds *graphene.Rect) *cairo.Context
 	// AppendColor creates a new render node drawing the @color into the given
@@ -67,10 +64,8 @@ type Snapshot interface {
 	// to @snapshot.
 	AppendLinearGradient()
 	// AppendNode appends @node to the current render node of @snapshot, without
-	// changing the current node.
-	//
-	// If @snapshot does not have a current node yet, @node will become the
-	// initial node.
+	// changing the current node. If @snapshot does not have a current node yet,
+	// @node will become the initial node.
 	AppendNode(node gsk.RenderNode)
 	// AppendOutsetShadow appends an outset shadow node around the box given by
 	// @outline.
@@ -94,102 +89,62 @@ type Snapshot interface {
 	// @snapshot and frees @snapshot.
 	FreeToPaintable(size *graphene.Size) gdk.Paintable
 	// GLShaderPopTexture removes the top element from the stack of render nodes
-	// and adds it to the nearest `GskGLShaderNode` below it.
-	//
-	// This must be called the same number of times as the number of textures is
-	// needed for the shader in [method@Gtk.Snapshot.push_gl_shader].
+	// and adds it to the nearest GskGLShaderNode below it. This must be called
+	// the same number of times as the number of textures is needed for the
+	// shader in gtk_snapshot_push_gl_shader().
 	GLShaderPopTexture()
 	// Perspective applies a perspective projection transform.
 	//
-	// See [method@Gsk.Transform.perspective] for a discussion on the details.
+	// See gsk_transform_perspective() for a discussion on the details.
 	Perspective(depth float32)
 	// Pop removes the top element from the stack of render nodes, and appends
 	// it to the node underneath it.
 	Pop()
-	// PushBlend blends together two images with the given blend mode.
+	// PushBlend blends together 2 images with the given blend mode.
 	//
-	// Until the first call to [method@Gtk.Snapshot.pop], the bottom image for
-	// the blend operation will be recorded. After that call, the top image to
-	// be blended will be recorded until the second call to
-	// [method@Gtk.Snapshot.pop].
+	// Until the first call to gtk_snapshot_pop(), the bottom image for the
+	// blend operation will be recorded. After that call, the top image to be
+	// blended will be recorded until the second call to gtk_snapshot_pop().
 	//
-	// Calling this function requires two subsequent calls to
-	// [method@Gtk.Snapshot.pop].
+	// Calling this function requires 2 subsequent calls to gtk_snapshot_pop().
 	PushBlend(blendMode gsk.BlendMode)
 	// PushBlur blurs an image.
 	//
-	// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+	// The image is recorded until the next call to gtk_snapshot_pop().
 	PushBlur(radius float64)
 	// PushClip clips an image to a rectangle.
 	//
-	// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+	// The image is recorded until the next call to gtk_snapshot_pop().
 	PushClip(bounds *graphene.Rect)
 	// PushColorMatrix modifies the colors of an image by applying an affine
 	// transformation in RGB space.
 	//
-	// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+	// The image is recorded until the next call to gtk_snapshot_pop().
 	PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4)
 	// PushCrossFade snapshots a cross-fade operation between two images with
 	// the given @progress.
 	//
-	// Until the first call to [method@Gtk.Snapshot.pop], the start image will
-	// be snapshot. After that call, the end image will be recorded until the
-	// second call to [method@Gtk.Snapshot.pop].
+	// Until the first call to gtk_snapshot_pop(), the start image will be
+	// snapshot. After that call, the end image will be recorded until the
+	// second call to gtk_snapshot_pop().
 	//
-	// Calling this function requires two subsequent calls to
-	// [method@Gtk.Snapshot.pop].
+	// Calling this function requires 2 calls to gtk_snapshot_pop().
 	PushCrossFade(progress float64)
-	// PushGLShader: push a `GskGLShaderNode`.
-	//
-	// The node uses the given [class@Gsk.GLShader] and uniform values
-	// Additionally this takes a list of @n_children other nodes which will be
-	// passed to the `GskGLShaderNode`.
-	//
-	// The @take_args argument is a block of data to use for uniform arguments,
-	// as per types and offsets defined by the @shader. Normally this is
-	// generated by [method@Gsk.GLShader.format_args] or
-	// [struct@Gsk.ShaderArgsBuilder].
-	//
-	// The snapshotter takes ownership of @take_args, so the caller should not
-	// free it after this.
-	//
-	// If the renderer doesn't support GL shaders, or if there is any problem
-	// when compiling the shader, then the node will draw pink. You should use
-	// [method@Gsk.GLShader.compile] to ensure the @shader will work for the
-	// renderer before using it.
-	//
-	// If the shader requires textures (see
-	// [method@Gsk.GLShader.get_n_textures]), then it is expected that you call
-	// [method@Gtk.Snapshot.gl_shader_pop_texture] the number of times that are
-	// required. Each of these calls will generate a node that is added as a
-	// child to the `GskGLShaderNode`, which in turn will render these offscreen
-	// and pass as a texture to the shader.
-	//
-	// Once all textures (if any) are pop:ed, you must call the regular
-	// [method@Gtk.Snapshot.pop].
-	//
-	// If you want to use pre-existing textures as input to the shader rather
-	// than rendering new ones, use [method@Gtk.Snapshot.append_texture] to push
-	// a texture node. These will be used directly rather than being
-	// re-rendered.
-	//
-	// For details on how to write shaders, see [class@Gsk.GLShader].
-	PushGLShader(shader gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes)
 	// PushOpacity modifies the opacity of an image.
 	//
-	// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+	// The image is recorded until the next call to gtk_snapshot_pop().
 	PushOpacity(opacity float64)
 	// PushRepeat creates a node that repeats the child node.
 	//
-	// The child is recorded until the next call to [method@Gtk.Snapshot.pop].
+	// The child is recorded until the next call to gtk_snapshot_pop().
 	PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect)
 	// PushRoundedClip clips an image to a rounded rectangle.
 	//
-	// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+	// The image is recorded until the next call to gtk_snapshot_pop().
 	PushRoundedClip(bounds *gsk.RoundedRect)
 	// PushShadow applies a shadow to an image.
 	//
-	// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+	// The image is recorded until the next call to gtk_snapshot_pop().
 	PushShadow(shadow *gsk.Shadow, nShadows uint)
 	// RenderBackground creates a render node for the CSS background according
 	// to @context, and appends it to the current node of @snapshot, without
@@ -215,22 +170,19 @@ type Snapshot interface {
 	// states.
 	Restore()
 	// Rotate rotates @@snapshot's coordinate system by @angle degrees in 2D
-	// space - or in 3D speak, rotates around the Z axis.
-	//
-	// To rotate around other axes, use [method@Gsk.Transform.rotate_3d].
+	// space - or in 3D speak, rotates around the z axis.
 	Rotate(angle float32)
 	// Rotate3D rotates @snapshot's coordinate system by @angle degrees around
 	// @axis.
 	//
-	// For a rotation in 2D space, use [method@Gsk.Transform.rotate].
+	// For a rotation in 2D space, use gsk_transform_rotate().
 	Rotate3D(angle float32, axis *graphene.Vec3)
 	// Save makes a copy of the current state of @snapshot and saves it on an
-	// internal stack.
-	//
-	// When [method@Gtk.Snapshot.restore] is called, @snapshot will be restored
-	// to the saved state. Multiple calls to gtk_snapshot_save() and
-	// gtk_snapshot_restore() can be nested; each call to gtk_snapshot_restore()
-	// restores the state from the matching paired gtk_snapshot_save().
+	// internal stack of saved states for @snapshot. When gtk_snapshot_restore()
+	// is called, @snapshot will be restored to the saved state. Multiple calls
+	// to gtk_snapshot_save() and gtk_snapshot_restore() can be nested; each
+	// call to gtk_snapshot_restore() restores the state from the matching
+	// paired gtk_snapshot_save().
 	//
 	// It is necessary to clear all saved states with corresponding calls to
 	// gtk_snapshot_restore().
@@ -238,22 +190,19 @@ type Snapshot interface {
 	// Scale scales @snapshot's coordinate system in 2-dimensional space by the
 	// given factors.
 	//
-	// Use [method@Gtk.Snapshot.scale_3d] to scale in all 3 dimensions.
+	// Use gtk_snapshot_scale_3d() to scale in all 3 dimensions.
 	Scale(factorX float32, factorY float32)
 	// Scale3D scales @snapshot's coordinate system by the given factors.
 	Scale3D(factorX float32, factorY float32, factorZ float32)
-	// ToNode returns the render node that was constructed by @snapshot.
-	//
-	// After calling this function, it is no longer possible to add more nodes
-	// to @snapshot. The only function that should be called after this is
+	// ToNode returns the render node that was constructed by @snapshot. After
+	// calling this function, it is no longer possible to add more nodes to
+	// @snapshot. The only function that should be called after this is
 	// g_object_unref().
 	ToNode() gsk.RenderNode
 	// ToPaintable returns a paintable encapsulating the render node that was
-	// constructed by @snapshot.
-	//
-	// After calling this function, it is no longer possible to add more nodes
-	// to @snapshot. The only function that should be called after this is
-	// g_object_unref().
+	// constructed by @snapshot. After calling this function, it is no longer
+	// possible to add more nodes to @snapshot. The only function that should be
+	// called after this is g_object_unref().
 	ToPaintable(size *graphene.Size) gdk.Paintable
 	// Transform transforms @snapshot's coordinate system with the given
 	// @transform.
@@ -291,20 +240,19 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 
 // NewSnapshot constructs a class Snapshot.
 func NewSnapshot() Snapshot {
-	cret := new(C.GtkSnapshot)
-	var goret Snapshot
+	var cret C.GtkSnapshot
 
 	cret = C.gtk_snapshot_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Snapshot)
+	var snapshot Snapshot
 
-	return goret
+	snapshot = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Snapshot)
+
+	return snapshot
 }
 
 // AppendBorder appends a stroked border rectangle inside the given
-// @outline.
-//
-// The four sides of the border can have different widths and colors.
+// @outline. The 4 sides of the border can have different widths and colors.
 func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.GskRoundedRect
@@ -321,7 +269,7 @@ func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32,
 	C.gtk_snapshot_append_border(arg0, arg1, arg2, arg3)
 }
 
-// AppendCairo creates a new `GskCairoNode` and appends it to the current
+// AppendCairo creates a new render node and appends it to the current
 // render node of @snapshot, without changing the current node.
 func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	var arg0 *C.GtkSnapshot
@@ -330,17 +278,18 @@ func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 
-	cret := new(C.cairo_t)
-	var goret *cairo.Context
+	var cret *C.cairo_t
 
 	cret = C.gtk_snapshot_append_cairo(arg0, arg1)
 
-	goret = cairo.WrapContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *cairo.Context) {
+	var context *cairo.Context
+
+	context = cairo.WrapContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(context, func(v *cairo.Context) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return context
 }
 
 // AppendColor creates a new render node drawing the @color into the given
@@ -366,7 +315,7 @@ func (s snapshot) AppendConicGradient() {
 
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
-	C.gtk_snapshot_append_conic_gradient(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_snapshot_append_conic_gradient(arg0)
 }
 
 // AppendInsetShadow appends an inset shadow into the box given by @outline.
@@ -409,14 +358,12 @@ func (s snapshot) AppendLinearGradient() {
 
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
-	C.gtk_snapshot_append_linear_gradient(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_snapshot_append_linear_gradient(arg0)
 }
 
 // AppendNode appends @node to the current render node of @snapshot, without
-// changing the current node.
-//
-// If @snapshot does not have a current node yet, @node will become the
-// initial node.
+// changing the current node. If @snapshot does not have a current node yet,
+// @node will become the initial node.
 func (s snapshot) AppendNode(node gsk.RenderNode) {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.GskRenderNode
@@ -456,7 +403,7 @@ func (s snapshot) AppendRadialGradient() {
 
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
-	C.gtk_snapshot_append_radial_gradient(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+	C.gtk_snapshot_append_radial_gradient(arg0)
 }
 
 // AppendRepeatingLinearGradient appends a repeating linear gradient node
@@ -466,7 +413,7 @@ func (s snapshot) AppendRepeatingLinearGradient() {
 
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
-	C.gtk_snapshot_append_repeating_linear_gradient(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_snapshot_append_repeating_linear_gradient(arg0)
 }
 
 // AppendRepeatingRadialGradient appends a repeating radial gradient node
@@ -476,7 +423,7 @@ func (s snapshot) AppendRepeatingRadialGradient() {
 
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
-	C.gtk_snapshot_append_repeating_radial_gradient(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
+	C.gtk_snapshot_append_repeating_radial_gradient(arg0)
 }
 
 // AppendTexture creates a new render node drawing the @texture into the
@@ -500,14 +447,15 @@ func (s snapshot) FreeToNode() gsk.RenderNode {
 
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GskRenderNode)
-	var goret gsk.RenderNode
+	var cret *C.GskRenderNode
 
 	cret = C.gtk_snapshot_free_to_node(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
+	var renderNode gsk.RenderNode
 
-	return goret
+	renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
+
+	return renderNode
 }
 
 // FreeToPaintable returns a paintable for the node that was constructed by
@@ -519,21 +467,21 @@ func (s snapshot) FreeToPaintable(size *graphene.Size) gdk.Paintable {
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.graphene_size_t)(unsafe.Pointer(size.Native()))
 
-	cret := new(C.GdkPaintable)
-	var goret gdk.Paintable
+	var cret *C.GdkPaintable
 
 	cret = C.gtk_snapshot_free_to_paintable(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	var paintable gdk.Paintable
 
-	return goret
+	paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+
+	return paintable
 }
 
 // GLShaderPopTexture removes the top element from the stack of render nodes
-// and adds it to the nearest `GskGLShaderNode` below it.
-//
-// This must be called the same number of times as the number of textures is
-// needed for the shader in [method@Gtk.Snapshot.push_gl_shader].
+// and adds it to the nearest GskGLShaderNode below it. This must be called
+// the same number of times as the number of textures is needed for the
+// shader in gtk_snapshot_push_gl_shader().
 func (s snapshot) GLShaderPopTexture() {
 	var arg0 *C.GtkSnapshot
 
@@ -544,7 +492,7 @@ func (s snapshot) GLShaderPopTexture() {
 
 // Perspective applies a perspective projection transform.
 //
-// See [method@Gsk.Transform.perspective] for a discussion on the details.
+// See gsk_transform_perspective() for a discussion on the details.
 func (s snapshot) Perspective(depth float32) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.float
@@ -565,15 +513,13 @@ func (s snapshot) Pop() {
 	C.gtk_snapshot_pop(arg0)
 }
 
-// PushBlend blends together two images with the given blend mode.
+// PushBlend blends together 2 images with the given blend mode.
 //
-// Until the first call to [method@Gtk.Snapshot.pop], the bottom image for
-// the blend operation will be recorded. After that call, the top image to
-// be blended will be recorded until the second call to
-// [method@Gtk.Snapshot.pop].
+// Until the first call to gtk_snapshot_pop(), the bottom image for the
+// blend operation will be recorded. After that call, the top image to be
+// blended will be recorded until the second call to gtk_snapshot_pop().
 //
-// Calling this function requires two subsequent calls to
-// [method@Gtk.Snapshot.pop].
+// Calling this function requires 2 subsequent calls to gtk_snapshot_pop().
 func (s snapshot) PushBlend(blendMode gsk.BlendMode) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.GskBlendMode
@@ -586,7 +532,7 @@ func (s snapshot) PushBlend(blendMode gsk.BlendMode) {
 
 // PushBlur blurs an image.
 //
-// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+// The image is recorded until the next call to gtk_snapshot_pop().
 func (s snapshot) PushBlur(radius float64) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.double
@@ -599,7 +545,7 @@ func (s snapshot) PushBlur(radius float64) {
 
 // PushClip clips an image to a rectangle.
 //
-// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+// The image is recorded until the next call to gtk_snapshot_pop().
 func (s snapshot) PushClip(bounds *graphene.Rect) {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.graphene_rect_t
@@ -613,7 +559,7 @@ func (s snapshot) PushClip(bounds *graphene.Rect) {
 // PushColorMatrix modifies the colors of an image by applying an affine
 // transformation in RGB space.
 //
-// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+// The image is recorded until the next call to gtk_snapshot_pop().
 func (s snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.graphene_matrix_t
@@ -629,12 +575,11 @@ func (s snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *gra
 // PushCrossFade snapshots a cross-fade operation between two images with
 // the given @progress.
 //
-// Until the first call to [method@Gtk.Snapshot.pop], the start image will
-// be snapshot. After that call, the end image will be recorded until the
-// second call to [method@Gtk.Snapshot.pop].
+// Until the first call to gtk_snapshot_pop(), the start image will be
+// snapshot. After that call, the end image will be recorded until the
+// second call to gtk_snapshot_pop().
 //
-// Calling this function requires two subsequent calls to
-// [method@Gtk.Snapshot.pop].
+// Calling this function requires 2 calls to gtk_snapshot_pop().
 func (s snapshot) PushCrossFade(progress float64) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.double
@@ -645,58 +590,9 @@ func (s snapshot) PushCrossFade(progress float64) {
 	C.gtk_snapshot_push_cross_fade(arg0, arg1)
 }
 
-// PushGLShader: push a `GskGLShaderNode`.
-//
-// The node uses the given [class@Gsk.GLShader] and uniform values
-// Additionally this takes a list of @n_children other nodes which will be
-// passed to the `GskGLShaderNode`.
-//
-// The @take_args argument is a block of data to use for uniform arguments,
-// as per types and offsets defined by the @shader. Normally this is
-// generated by [method@Gsk.GLShader.format_args] or
-// [struct@Gsk.ShaderArgsBuilder].
-//
-// The snapshotter takes ownership of @take_args, so the caller should not
-// free it after this.
-//
-// If the renderer doesn't support GL shaders, or if there is any problem
-// when compiling the shader, then the node will draw pink. You should use
-// [method@Gsk.GLShader.compile] to ensure the @shader will work for the
-// renderer before using it.
-//
-// If the shader requires textures (see
-// [method@Gsk.GLShader.get_n_textures]), then it is expected that you call
-// [method@Gtk.Snapshot.gl_shader_pop_texture] the number of times that are
-// required. Each of these calls will generate a node that is added as a
-// child to the `GskGLShaderNode`, which in turn will render these offscreen
-// and pass as a texture to the shader.
-//
-// Once all textures (if any) are pop:ed, you must call the regular
-// [method@Gtk.Snapshot.pop].
-//
-// If you want to use pre-existing textures as input to the shader rather
-// than rendering new ones, use [method@Gtk.Snapshot.append_texture] to push
-// a texture node. These will be used directly rather than being
-// re-rendered.
-//
-// For details on how to write shaders, see [class@Gsk.GLShader].
-func (s snapshot) PushGLShader(shader gsk.GLShader, bounds *graphene.Rect, takeArgs *glib.Bytes) {
-	var arg0 *C.GtkSnapshot
-	var arg1 *C.GskGLShader
-	var arg2 *C.graphene_rect_t
-	var arg3 *C.GBytes
-
-	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GskGLShader)(unsafe.Pointer(shader.Native()))
-	arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
-	arg3 = (*C.GBytes)(unsafe.Pointer(takeArgs.Native()))
-
-	C.gtk_snapshot_push_gl_shader(arg0, arg1, arg2, arg3)
-}
-
 // PushOpacity modifies the opacity of an image.
 //
-// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+// The image is recorded until the next call to gtk_snapshot_pop().
 func (s snapshot) PushOpacity(opacity float64) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.double
@@ -709,7 +605,7 @@ func (s snapshot) PushOpacity(opacity float64) {
 
 // PushRepeat creates a node that repeats the child node.
 //
-// The child is recorded until the next call to [method@Gtk.Snapshot.pop].
+// The child is recorded until the next call to gtk_snapshot_pop().
 func (s snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect) {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.graphene_rect_t
@@ -724,7 +620,7 @@ func (s snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect) 
 
 // PushRoundedClip clips an image to a rounded rectangle.
 //
-// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+// The image is recorded until the next call to gtk_snapshot_pop().
 func (s snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.GskRoundedRect
@@ -737,7 +633,7 @@ func (s snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
 
 // PushShadow applies a shadow to an image.
 //
-// The image is recorded until the next call to [method@Gtk.Snapshot.pop].
+// The image is recorded until the next call to gtk_snapshot_pop().
 func (s snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.GskShadow
@@ -866,9 +762,7 @@ func (s snapshot) Restore() {
 }
 
 // Rotate rotates @@snapshot's coordinate system by @angle degrees in 2D
-// space - or in 3D speak, rotates around the Z axis.
-//
-// To rotate around other axes, use [method@Gsk.Transform.rotate_3d].
+// space - or in 3D speak, rotates around the z axis.
 func (s snapshot) Rotate(angle float32) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.float
@@ -882,7 +776,7 @@ func (s snapshot) Rotate(angle float32) {
 // Rotate3D rotates @snapshot's coordinate system by @angle degrees around
 // @axis.
 //
-// For a rotation in 2D space, use [method@Gsk.Transform.rotate].
+// For a rotation in 2D space, use gsk_transform_rotate().
 func (s snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.float
@@ -896,12 +790,11 @@ func (s snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 }
 
 // Save makes a copy of the current state of @snapshot and saves it on an
-// internal stack.
-//
-// When [method@Gtk.Snapshot.restore] is called, @snapshot will be restored
-// to the saved state. Multiple calls to gtk_snapshot_save() and
-// gtk_snapshot_restore() can be nested; each call to gtk_snapshot_restore()
-// restores the state from the matching paired gtk_snapshot_save().
+// internal stack of saved states for @snapshot. When gtk_snapshot_restore()
+// is called, @snapshot will be restored to the saved state. Multiple calls
+// to gtk_snapshot_save() and gtk_snapshot_restore() can be nested; each
+// call to gtk_snapshot_restore() restores the state from the matching
+// paired gtk_snapshot_save().
 //
 // It is necessary to clear all saved states with corresponding calls to
 // gtk_snapshot_restore().
@@ -916,7 +809,7 @@ func (s snapshot) Save() {
 // Scale scales @snapshot's coordinate system in 2-dimensional space by the
 // given factors.
 //
-// Use [method@Gtk.Snapshot.scale_3d] to scale in all 3 dimensions.
+// Use gtk_snapshot_scale_3d() to scale in all 3 dimensions.
 func (s snapshot) Scale(factorX float32, factorY float32) {
 	var arg0 *C.GtkSnapshot
 	var arg1 C.float
@@ -944,32 +837,30 @@ func (s snapshot) Scale3D(factorX float32, factorY float32, factorZ float32) {
 	C.gtk_snapshot_scale_3d(arg0, arg1, arg2, arg3)
 }
 
-// ToNode returns the render node that was constructed by @snapshot.
-//
-// After calling this function, it is no longer possible to add more nodes
-// to @snapshot. The only function that should be called after this is
+// ToNode returns the render node that was constructed by @snapshot. After
+// calling this function, it is no longer possible to add more nodes to
+// @snapshot. The only function that should be called after this is
 // g_object_unref().
 func (s snapshot) ToNode() gsk.RenderNode {
 	var arg0 *C.GtkSnapshot
 
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GskRenderNode)
-	var goret gsk.RenderNode
+	var cret *C.GskRenderNode
 
 	cret = C.gtk_snapshot_to_node(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
+	var renderNode gsk.RenderNode
 
-	return goret
+	renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gsk.RenderNode)
+
+	return renderNode
 }
 
 // ToPaintable returns a paintable encapsulating the render node that was
-// constructed by @snapshot.
-//
-// After calling this function, it is no longer possible to add more nodes
-// to @snapshot. The only function that should be called after this is
-// g_object_unref().
+// constructed by @snapshot. After calling this function, it is no longer
+// possible to add more nodes to @snapshot. The only function that should be
+// called after this is g_object_unref().
 func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable {
 	var arg0 *C.GtkSnapshot
 	var arg1 *C.graphene_size_t
@@ -977,14 +868,15 @@ func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable {
 	arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.graphene_size_t)(unsafe.Pointer(size.Native()))
 
-	cret := new(C.GdkPaintable)
-	var goret gdk.Paintable
+	var cret *C.GdkPaintable
 
 	cret = C.gtk_snapshot_to_paintable(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	var paintable gdk.Paintable
 
-	return goret
+	paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+
+	return paintable
 }
 
 // Transform transforms @snapshot's coordinate system with the given

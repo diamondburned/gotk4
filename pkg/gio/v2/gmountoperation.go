@@ -124,14 +124,15 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 
 // NewMountOperation constructs a class MountOperation.
 func NewMountOperation() MountOperation {
-	cret := new(C.GMountOperation)
-	var goret MountOperation
+	var cret C.GMountOperation
 
 	cret = C.g_mount_operation_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+	var mountOperation MountOperation
 
-	return goret
+	mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+
+	return mountOperation
 }
 
 // Anonymous: check to see whether the mount operation is being used for an
@@ -142,15 +143,16 @@ func (o mountOperation) Anonymous() bool {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_mount_operation_get_anonymous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Choice gets a choice from the mount operation.
@@ -160,13 +162,14 @@ func (o mountOperation) Choice() int {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.g_mount_operation_get_choice(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Domain gets the domain of the mount operation.
@@ -176,13 +179,14 @@ func (o mountOperation) Domain() string {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_mount_operation_get_domain(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // IsTcryptHiddenVolume: check to see whether the mount operation is being
@@ -193,15 +197,16 @@ func (o mountOperation) IsTcryptHiddenVolume() bool {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsTcryptSystemVolume: check to see whether the mount operation is being
@@ -212,15 +217,16 @@ func (o mountOperation) IsTcryptSystemVolume() bool {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_mount_operation_get_is_tcrypt_system_volume(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Password gets a password from the mount operation.
@@ -230,13 +236,14 @@ func (o mountOperation) Password() string {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_mount_operation_get_password(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // PasswordSave gets the state of saving passwords for the mount operation.
@@ -246,13 +253,14 @@ func (o mountOperation) PasswordSave() PasswordSave {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.GPasswordSave
-	var goret PasswordSave
 
 	cret = C.g_mount_operation_get_password_save(arg0)
 
-	goret = PasswordSave(cret)
+	var passwordSave PasswordSave
 
-	return goret
+	passwordSave = PasswordSave(cret)
+
+	return passwordSave
 }
 
 // Pim gets a PIM from the mount operation.
@@ -262,13 +270,14 @@ func (o mountOperation) Pim() uint {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_mount_operation_get_pim(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Username: get the user name from the mount operation.
@@ -278,13 +287,14 @@ func (o mountOperation) Username() string {
 	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_mount_operation_get_username(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Reply emits the Operation::reply signal.

@@ -76,13 +76,14 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 // NewCheckButton constructs a class CheckButton.
 func NewCheckButton() CheckButton {
 	var cret C.GtkCheckButton
-	var goret CheckButton
 
 	cret = C.gtk_check_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	var checkButton CheckButton
 
-	return goret
+	checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+
+	return checkButton
 }
 
 // NewCheckButtonWithLabel constructs a class CheckButton.
@@ -93,13 +94,14 @@ func NewCheckButtonWithLabel(label string) CheckButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCheckButton
-	var goret CheckButton
 
 	cret = C.gtk_check_button_new_with_label(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	var checkButton CheckButton
 
-	return goret
+	checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+
+	return checkButton
 }
 
 // NewCheckButtonWithMnemonic constructs a class CheckButton.
@@ -110,11 +112,12 @@ func NewCheckButtonWithMnemonic(label string) CheckButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCheckButton
-	var goret CheckButton
 
 	cret = C.gtk_check_button_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	var checkButton CheckButton
 
-	return goret
+	checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+
+	return checkButton
 }

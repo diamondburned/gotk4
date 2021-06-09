@@ -21,19 +21,12 @@ func init() {
 	})
 }
 
-// StringFilter: `GtkStringFilter` determines whether to include items by
-// comparing strings to a fixed search term.
+// StringFilter: gtkStringFilter determines whether to include items by looking
+// at strings and comparing them to a fixed search term. The strings are
+// obtained from the items by evaluating a Expression.
 //
-// The strings are obtained from the items by evaluating a `GtkExpression` set
-// with [method@Gtk.StringFilter.set_expression], and they are compared against
-// a search term set with [method@Gtk.StringFilter.set_search].
-//
-// `GtkStringFilter` has several different modes of comparison - it can match
-// the whole string, just a prefix, or any substring. Use
-// [method@Gtk.StringFilter.set_match_mode] choose a mode.
-//
-// It is also possible to make case-insensitive comparisons, with
-// [method@Gtk.StringFilter.set_ignore_case].
+// GtkStringFilter has several different modes of comparison - it can match the
+// whole string, just a prefix, or any substring.
 type StringFilter interface {
 	Filter
 
@@ -44,12 +37,10 @@ type StringFilter interface {
 	IgnoreCase() bool
 	// MatchMode returns the match mode that the filter is using.
 	MatchMode() StringFilterMatchMode
-	// Search gets the search term.
+	// Search gets the search string set via gtk_string_filter_set_search().
 	Search() string
 	// SetExpression sets the expression that the string filter uses to obtain
-	// strings from items.
-	//
-	// The expression must have a value type of G_TYPE_STRING.
+	// strings from items. The expression must have a value type of TYPE_STRING.
 	SetExpression(expression Expression)
 	// SetIgnoreCase sets whether the filter ignores case differences.
 	SetIgnoreCase(ignoreCase bool)
@@ -86,14 +77,15 @@ func NewStringFilter(expression Expression) StringFilter {
 
 	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	cret := new(C.GtkStringFilter)
-	var goret StringFilter
+	var cret C.GtkStringFilter
 
 	cret = C.gtk_string_filter_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringFilter)
+	var stringFilter StringFilter
 
-	return goret
+	stringFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringFilter)
+
+	return stringFilter
 }
 
 // Expression gets the expression that the string filter uses to obtain
@@ -104,13 +96,14 @@ func (s stringFilter) Expression() Expression {
 	arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkExpression
-	var goret Expression
 
 	cret = C.gtk_string_filter_get_expression(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	var expression Expression
 
-	return goret
+	expression = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+
+	return expression
 }
 
 // IgnoreCase returns whether the filter ignores case differences.
@@ -120,15 +113,16 @@ func (s stringFilter) IgnoreCase() bool {
 	arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_string_filter_get_ignore_case(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MatchMode returns the match mode that the filter is using.
@@ -138,35 +132,35 @@ func (s stringFilter) MatchMode() StringFilterMatchMode {
 	arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkStringFilterMatchMode
-	var goret StringFilterMatchMode
 
 	cret = C.gtk_string_filter_get_match_mode(arg0)
 
-	goret = StringFilterMatchMode(cret)
+	var stringFilterMatchMode StringFilterMatchMode
 
-	return goret
+	stringFilterMatchMode = StringFilterMatchMode(cret)
+
+	return stringFilterMatchMode
 }
 
-// Search gets the search term.
+// Search gets the search string set via gtk_string_filter_set_search().
 func (s stringFilter) Search() string {
 	var arg0 *C.GtkStringFilter
 
 	arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_string_filter_get_search(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SetExpression sets the expression that the string filter uses to obtain
-// strings from items.
-//
-// The expression must have a value type of G_TYPE_STRING.
+// strings from items. The expression must have a value type of TYPE_STRING.
 func (s stringFilter) SetExpression(expression Expression) {
 	var arg0 *C.GtkStringFilter
 	var arg1 *C.GtkExpression

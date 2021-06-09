@@ -157,13 +157,14 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 // NewToggleButton constructs a class ToggleButton.
 func NewToggleButton() ToggleButton {
 	var cret C.GtkToggleButton
-	var goret ToggleButton
 
 	cret = C.gtk_toggle_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	var toggleButton ToggleButton
 
-	return goret
+	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+
+	return toggleButton
 }
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
@@ -174,13 +175,14 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToggleButton
-	var goret ToggleButton
 
 	cret = C.gtk_toggle_button_new_with_label(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	var toggleButton ToggleButton
 
-	return goret
+	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+
+	return toggleButton
 }
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
@@ -191,13 +193,14 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToggleButton
-	var goret ToggleButton
 
 	cret = C.gtk_toggle_button_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	var toggleButton ToggleButton
 
-	return goret
+	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+
+	return toggleButton
 }
 
 // Active queries a ToggleButton and returns its current state. Returns true
@@ -208,15 +211,16 @@ func (t toggleButton) Active() bool {
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toggle_button_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
@@ -226,15 +230,16 @@ func (t toggleButton) Inconsistent() bool {
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toggle_button_get_inconsistent(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Mode retrieves whether the button is displayed as a separate indicator
@@ -245,15 +250,16 @@ func (t toggleButton) Mode() bool {
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toggle_button_get_mode(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActive sets the status of the toggle button. Set to true if you want

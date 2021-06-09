@@ -34,17 +34,18 @@ func CairoCreate(window Window) *cairo.Context {
 
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	cret := new(C.cairo_t)
-	var goret *cairo.Context
+	var cret *C.cairo_t
 
 	cret = C.gdk_cairo_create(arg1)
 
-	goret = cairo.WrapContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *cairo.Context) {
+	var context *cairo.Context
+
+	context = cairo.WrapContext(unsafe.Pointer(cret))
+	runtime.SetFinalizer(context, func(v *cairo.Context) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return context
 }
 
 // CairoDrawFromGL: this is the main way to draw GL content in GTK+. It takes a
@@ -90,24 +91,23 @@ func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType in
 // CairoGetClipRectangle: this is a convenience function around
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
-func CairoGetClipRectangle(cr *cairo.Context) (rect *Rectangle, ok bool) {
+func CairoGetClipRectangle(cr *cairo.Context) (rect Rectangle, ok bool) {
 	var arg1 *C.cairo_t
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	arg2 := new(C.GdkRectangle)
-	var ret2 *Rectangle
+	var rect Rectangle
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gdk_cairo_get_clip_rectangle(arg1, arg2)
+	cret = C.gdk_cairo_get_clip_rectangle(arg1, (*C.GdkRectangle)(unsafe.Pointer(&rect)))
 
-	ret2 = WrapRectangle(unsafe.Pointer(arg2))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return rect, ok
 }
 
 // CairoGetDrawingContext retrieves the DrawingContext that created the Cairo
@@ -118,13 +118,14 @@ func CairoGetDrawingContext(cr *cairo.Context) DrawingContext {
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	var cret *C.GdkDrawingContext
-	var goret DrawingContext
 
 	cret = C.gdk_cairo_get_drawing_context(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingContext)
+	var drawingContext DrawingContext
 
-	return goret
+	drawingContext = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingContext)
+
+	return drawingContext
 }
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
@@ -159,17 +160,18 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 
 	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
-	cret := new(C.cairo_region_t)
-	var goret *cairo.Region
+	var cret *C.cairo_region_t
 
 	cret = C.gdk_cairo_region_create_from_surface(arg1)
 
-	goret = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *cairo.Region) {
+	var region *cairo.Region
+
+	region = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return region
 }
 
 // CairoSetSourceColor sets the specified Color as the source color of @cr.
@@ -202,12 +204,12 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
-func CairoSetSourceRGBA(cr *cairo.Context, rgbA *RGBA) {
+func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var arg1 *C.cairo_t
 	var arg2 *C.GdkRGBA
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgbA.Native()))
+	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
 
 	C.gdk_cairo_set_source_rgba(arg1, arg2)
 }
@@ -245,15 +247,16 @@ func CairoSurfaceCreateFromPixbuf(pixbuf gdkpixbuf.Pixbuf, scale int, forWindow 
 	arg2 = C.int(scale)
 	arg3 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
-	cret := new(C.cairo_surface_t)
-	var goret *cairo.Surface
+	var cret *C.cairo_surface_t
 
 	cret = C.gdk_cairo_surface_create_from_pixbuf(arg1, arg2, arg3)
 
-	goret = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *cairo.Surface) {
+	var surface *cairo.Surface
+
+	surface = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return surface
 }

@@ -21,23 +21,16 @@ func init() {
 	})
 }
 
-// EventControllerFocus: `GtkEventControllerFocus` is an event controller to
-// keep track of keyboard focus.
-//
-// The event controller offers [signal@Gtk.EventControllerFocus::enter] and
-// [signal@Gtk.EventControllerFocus::leave] signals, as well as
-// [property@Gtk.EventControllerFocus:is-focus] and
-// [property@Gtk.EventControllerFocus:contains-focus] properties which are
-// updated to reflect focus changes inside the widget hierarchy that is rooted
-// at the controllers widget.
+// EventControllerFocus is an event controller meant for situations where you
+// need to know where the focus is.
 type EventControllerFocus interface {
 	EventController
 
-	// ContainsFocus returns true if focus is within @self or one of its
-	// children.
+	// ContainsFocus returns the value of the
+	// GtkEventControllerFocus:contains-focus property.
 	ContainsFocus() bool
-	// IsFocus returns true if focus is within @self, but not one of its
-	// children.
+	// IsFocus returns the value of the GtkEventControllerFocus:is-focus
+	// property.
 	IsFocus() bool
 }
 
@@ -64,50 +57,53 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 
 // NewEventControllerFocus constructs a class EventControllerFocus.
 func NewEventControllerFocus() EventControllerFocus {
-	cret := new(C.GtkEventControllerFocus)
-	var goret EventControllerFocus
+	var cret C.GtkEventControllerFocus
 
 	cret = C.gtk_event_controller_focus_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerFocus)
+	var eventControllerFocus EventControllerFocus
 
-	return goret
+	eventControllerFocus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerFocus)
+
+	return eventControllerFocus
 }
 
-// ContainsFocus returns true if focus is within @self or one of its
-// children.
+// ContainsFocus returns the value of the
+// GtkEventControllerFocus:contains-focus property.
 func (s eventControllerFocus) ContainsFocus() bool {
 	var arg0 *C.GtkEventControllerFocus
 
 	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_event_controller_focus_contains_focus(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IsFocus returns true if focus is within @self, but not one of its
-// children.
+// IsFocus returns the value of the GtkEventControllerFocus:is-focus
+// property.
 func (s eventControllerFocus) IsFocus() bool {
 	var arg0 *C.GtkEventControllerFocus
 
 	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_event_controller_focus_is_focus(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

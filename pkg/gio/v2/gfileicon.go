@@ -72,14 +72,15 @@ func NewFileIcon(file File) FileIcon {
 
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	cret := new(C.GFileIcon)
-	var goret FileIcon
+	var cret C.GFileIcon
 
 	cret = C.g_file_icon_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIcon)
+	var fileIcon FileIcon
 
-	return goret
+	fileIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIcon)
+
+	return fileIcon
 }
 
 // File gets the #GFile associated with the given @icon.
@@ -89,11 +90,12 @@ func (i fileIcon) File() File {
 	arg0 = (*C.GFileIcon)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GFile
-	var goret File
 
 	cret = C.g_file_icon_get_file(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(File)
+	var file File
 
-	return goret
+	file = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(File)
+
+	return file
 }

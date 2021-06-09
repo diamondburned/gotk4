@@ -75,7 +75,7 @@ type StatusIcon interface {
 	// and even on platforms that do allow it, the information is not reliable
 	// unless the status icon is embedded in a notification area, see
 	// gtk_status_icon_is_embedded().
-	Geometry() (screen gdk.Screen, area *gdk.Rectangle, orientation *Orientation, ok bool)
+	Geometry() (screen gdk.Screen, area gdk.Rectangle, orientation Orientation, ok bool)
 	// GIcon retrieves the #GIcon being displayed by the StatusIcon. The storage
 	// type of the status icon must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
 	// gtk_status_icon_get_storage_type()). The caller of this function does not
@@ -143,7 +143,7 @@ type StatusIcon interface {
 	IsEmbedded() bool
 	// SetFromFile makes @status_icon display the file @filename. See
 	// gtk_status_icon_new_from_file() for details.
-	SetFromFile(filename string)
+	SetFromFile(filename *string)
 	// SetFromGIcon makes @status_icon display the #GIcon. See
 	// gtk_status_icon_new_from_gicon() for details.
 	SetFromGIcon(icon gio.Icon)
@@ -156,7 +156,7 @@ type StatusIcon interface {
 	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
 	// SetFromStock makes @status_icon display the stock icon with the id
 	// @stock_id. See gtk_status_icon_new_from_stock() for details.
-	SetFromStock(stockID string)
+	SetFromStock(stockId string)
 	// SetHasTooltip sets the has-tooltip property on @status_icon to
 	// @has_tooltip. See StatusIcon:has-tooltip for more information.
 	SetHasTooltip(hasTooltip bool)
@@ -214,31 +214,33 @@ func marshalStatusIcon(p uintptr) (interface{}, error) {
 
 // NewStatusIcon constructs a class StatusIcon.
 func NewStatusIcon() StatusIcon {
-	cret := new(C.GtkStatusIcon)
-	var goret StatusIcon
+	var cret C.GtkStatusIcon
 
 	cret = C.gtk_status_icon_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+	var statusIcon StatusIcon
 
-	return goret
+	statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+
+	return statusIcon
 }
 
 // NewStatusIconFromFile constructs a class StatusIcon.
-func NewStatusIconFromFile(filename string) StatusIcon {
+func NewStatusIconFromFile(filename *string) StatusIcon {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkStatusIcon)
-	var goret StatusIcon
+	var cret C.GtkStatusIcon
 
 	cret = C.gtk_status_icon_new_from_file(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+	var statusIcon StatusIcon
 
-	return goret
+	statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+
+	return statusIcon
 }
 
 // NewStatusIconFromGIcon constructs a class StatusIcon.
@@ -247,14 +249,15 @@ func NewStatusIconFromGIcon(icon gio.Icon) StatusIcon {
 
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
-	cret := new(C.GtkStatusIcon)
-	var goret StatusIcon
+	var cret C.GtkStatusIcon
 
 	cret = C.gtk_status_icon_new_from_gicon(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+	var statusIcon StatusIcon
 
-	return goret
+	statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+
+	return statusIcon
 }
 
 // NewStatusIconFromIconName constructs a class StatusIcon.
@@ -264,14 +267,15 @@ func NewStatusIconFromIconName(iconName string) StatusIcon {
 	arg1 = (*C.gchar)(C.CString(iconName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkStatusIcon)
-	var goret StatusIcon
+	var cret C.GtkStatusIcon
 
 	cret = C.gtk_status_icon_new_from_icon_name(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+	var statusIcon StatusIcon
 
-	return goret
+	statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+
+	return statusIcon
 }
 
 // NewStatusIconFromPixbuf constructs a class StatusIcon.
@@ -280,31 +284,33 @@ func NewStatusIconFromPixbuf(pixbuf gdkpixbuf.Pixbuf) StatusIcon {
 
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	cret := new(C.GtkStatusIcon)
-	var goret StatusIcon
+	var cret C.GtkStatusIcon
 
 	cret = C.gtk_status_icon_new_from_pixbuf(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+	var statusIcon StatusIcon
 
-	return goret
+	statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+
+	return statusIcon
 }
 
 // NewStatusIconFromStock constructs a class StatusIcon.
-func NewStatusIconFromStock(stockID string) StatusIcon {
+func NewStatusIconFromStock(stockId string) StatusIcon {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkStatusIcon)
-	var goret StatusIcon
+	var cret C.GtkStatusIcon
 
 	cret = C.gtk_status_icon_new_from_stock(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+	var statusIcon StatusIcon
 
-	return goret
+	statusIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StatusIcon)
+
+	return statusIcon
 }
 
 // Geometry obtains information about the location of the status icon on
@@ -318,30 +324,31 @@ func NewStatusIconFromStock(stockID string) StatusIcon {
 // and even on platforms that do allow it, the information is not reliable
 // unless the status icon is embedded in a notification area, see
 // gtk_status_icon_is_embedded().
-func (s statusIcon) Geometry() (screen gdk.Screen, area *gdk.Rectangle, orientation *Orientation, ok bool) {
+func (s statusIcon) Geometry() (screen gdk.Screen, area gdk.Rectangle, orientation Orientation, ok bool) {
 	var arg0 *C.GtkStatusIcon
 
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var arg1 **C.GdkScreen
-	var ret1 gdk.Screen
-	arg2 := new(C.GdkRectangle)
-	var ret2 *gdk.Rectangle
-	arg3 := new(C.GtkOrientation)
-	var ret3 *Orientation
+	var area gdk.Rectangle
+	var arg3 C.GtkOrientation
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_status_icon_get_geometry(arg0, arg1, arg2, arg3)
+	cret = C.gtk_status_icon_get_geometry(arg0, arg1, (*C.GdkRectangle)(unsafe.Pointer(&area)), &arg3)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(gdk.Screen)
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
-	ret3 = *Orientation(arg3)
+	var screen gdk.Screen
+
+	var orientation Orientation
+	var ok bool
+
+	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(gdk.Screen)
+
+	orientation = Orientation(arg3)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, ret3, goret
+	return screen, area, orientation, ok
 }
 
 // GIcon retrieves the #GIcon being displayed by the StatusIcon. The storage
@@ -356,13 +363,14 @@ func (s statusIcon) GIcon() gio.Icon {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GIcon
-	var goret gio.Icon
 
 	cret = C.gtk_status_icon_get_gicon(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+	var icon gio.Icon
 
-	return goret
+	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+
+	return icon
 }
 
 // HasTooltip returns the current value of the has-tooltip property. See
@@ -373,15 +381,16 @@ func (s statusIcon) HasTooltip() bool {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_status_icon_get_has_tooltip(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IconName gets the name of the icon being displayed by the StatusIcon. The
@@ -395,13 +404,14 @@ func (s statusIcon) IconName() string {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_status_icon_get_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Pixbuf gets the Pixbuf being displayed by the StatusIcon. The storage
@@ -414,13 +424,14 @@ func (s statusIcon) Pixbuf() gdkpixbuf.Pixbuf {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkPixbuf
-	var goret gdkpixbuf.Pixbuf
 
 	cret = C.gtk_status_icon_get_pixbuf(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	var pixbuf gdkpixbuf.Pixbuf
 
-	return goret
+	pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return pixbuf
 }
 
 // Screen returns the Screen associated with @status_icon.
@@ -430,13 +441,14 @@ func (s statusIcon) Screen() gdk.Screen {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkScreen
-	var goret gdk.Screen
 
 	cret = C.gtk_status_icon_get_screen(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Screen)
+	var screen gdk.Screen
 
-	return goret
+	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Screen)
+
+	return screen
 }
 
 // Size gets the size in pixels that is available for the image. Stock icons
@@ -452,13 +464,14 @@ func (s statusIcon) Size() int {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_status_icon_get_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Stock gets the id of the stock icon being displayed by the StatusIcon.
@@ -471,13 +484,14 @@ func (s statusIcon) Stock() string {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_status_icon_get_stock(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // StorageType gets the type of representation being used by the StatusIcon
@@ -489,13 +503,14 @@ func (s statusIcon) StorageType() ImageType {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkImageType
-	var goret ImageType
 
 	cret = C.gtk_status_icon_get_storage_type(arg0)
 
-	goret = ImageType(cret)
+	var imageType ImageType
 
-	return goret
+	imageType = ImageType(cret)
+
+	return imageType
 }
 
 // Title gets the title of this tray icon. See gtk_status_icon_set_title().
@@ -505,13 +520,14 @@ func (s statusIcon) Title() string {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_status_icon_get_title(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // TooltipMarkup gets the contents of the tooltip for @status_icon.
@@ -520,15 +536,16 @@ func (s statusIcon) TooltipMarkup() string {
 
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_status_icon_get_tooltip_markup(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // TooltipText gets the contents of the tooltip for @status_icon.
@@ -537,15 +554,16 @@ func (s statusIcon) TooltipText() string {
 
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_status_icon_get_tooltip_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Visible returns whether the status icon is visible or not. Note that
@@ -557,15 +575,16 @@ func (s statusIcon) Visible() bool {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_status_icon_get_visible(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // X11WindowID: this function is only useful on the X11/freedesktop.org
@@ -585,13 +604,14 @@ func (s statusIcon) X11WindowID() uint32 {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gtk_status_icon_get_x11_window_id(arg0)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // IsEmbedded returns whether the status icon is embedded in a notification
@@ -602,20 +622,21 @@ func (s statusIcon) IsEmbedded() bool {
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_status_icon_is_embedded(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetFromFile makes @status_icon display the file @filename. See
 // gtk_status_icon_new_from_file() for details.
-func (s statusIcon) SetFromFile(filename string) {
+func (s statusIcon) SetFromFile(filename *string) {
 	var arg0 *C.GtkStatusIcon
 	var arg1 *C.gchar
 
@@ -666,12 +687,12 @@ func (s statusIcon) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 
 // SetFromStock makes @status_icon display the stock icon with the id
 // @stock_id. See gtk_status_icon_new_from_stock() for details.
-func (s statusIcon) SetFromStock(stockID string) {
+func (s statusIcon) SetFromStock(stockId string) {
 	var arg0 *C.GtkStatusIcon
 	var arg1 *C.gchar
 
 	arg0 = (*C.GtkStatusIcon)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_status_icon_set_from_stock(arg0, arg1)

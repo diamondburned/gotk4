@@ -40,7 +40,7 @@ type GestureMultiPress interface {
 	// function will return true and fill in @rect with the press area. See
 	// gtk_gesture_multi_press_set_area() for more details on what the press
 	// area represents.
-	Area() (rect *gdk.Rectangle, ok bool)
+	Area() (rect gdk.Rectangle, ok bool)
 	// SetArea: if @rect is non-nil, the press area will be checked to be
 	// confined within the rectangle, otherwise the button count will be reset
 	// so the press is seen as being the first one. If @rect is nil, the area
@@ -78,38 +78,38 @@ func NewGestureMultiPress(widget Widget) GestureMultiPress {
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	cret := new(C.GtkGestureMultiPress)
-	var goret GestureMultiPress
+	var cret C.GtkGestureMultiPress
 
 	cret = C.gtk_gesture_multi_press_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureMultiPress)
+	var gestureMultiPress GestureMultiPress
 
-	return goret
+	gestureMultiPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureMultiPress)
+
+	return gestureMultiPress
 }
 
 // Area: if an area was set through gtk_gesture_multi_press_set_area(), this
 // function will return true and fill in @rect with the press area. See
 // gtk_gesture_multi_press_set_area() for more details on what the press
 // area represents.
-func (g gestureMultiPress) Area() (rect *gdk.Rectangle, ok bool) {
+func (g gestureMultiPress) Area() (rect gdk.Rectangle, ok bool) {
 	var arg0 *C.GtkGestureMultiPress
 
 	arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
 
-	arg1 := new(C.GdkRectangle)
-	var ret1 *gdk.Rectangle
+	var rect gdk.Rectangle
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_gesture_multi_press_get_area(arg0, arg1)
+	cret = C.gtk_gesture_multi_press_get_area(arg0, (*C.GdkRectangle)(unsafe.Pointer(&rect)))
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, goret
+	return rect, ok
 }
 
 // SetArea: if @rect is non-nil, the press area will be checked to be

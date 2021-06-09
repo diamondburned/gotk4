@@ -22,14 +22,11 @@ func init() {
 	})
 }
 
-// ToplevelLayout: the `GdkToplevelLayout` struct contains information that is
-// necessary to present a sovereign window on screen.
+// ToplevelLayout: toplevel surfaces are sovereign windows that can be presented
+// to the user in various states (maximized, on all workspaces, etc).
 //
-// The `GdkToplevelLayout` struct is necessary for using
-// [method@Gdk.Toplevel.present].
-//
-// Toplevel surfaces are sovereign windows that can be presented to the user in
-// various states (maximized, on all workspaces, etc).
+// The GdkToplevelLayout struct contains information that is necessary to do so,
+// and is passed to gdk_toplevel_present().
 type ToplevelLayout struct {
 	native C.GdkToplevelLayout
 }
@@ -51,17 +48,18 @@ func marshalToplevelLayout(p uintptr) (interface{}, error) {
 
 // NewToplevelLayout constructs a struct ToplevelLayout.
 func NewToplevelLayout() *ToplevelLayout {
-	cret := new(C.GdkToplevelLayout)
-	var goret *ToplevelLayout
+	var cret *C.GdkToplevelLayout
 
 	cret = C.gdk_toplevel_layout_new()
 
-	goret = WrapToplevelLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ToplevelLayout) {
+	var toplevelLayout *ToplevelLayout
+
+	toplevelLayout = WrapToplevelLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(toplevelLayout, func(v *ToplevelLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return toplevelLayout
 }
 
 // Native returns the underlying C source pointer.
@@ -75,17 +73,18 @@ func (l *ToplevelLayout) Copy() *ToplevelLayout {
 
 	arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 
-	cret := new(C.GdkToplevelLayout)
-	var goret *ToplevelLayout
+	var cret *C.GdkToplevelLayout
 
 	cret = C.gdk_toplevel_layout_copy(arg0)
 
-	goret = WrapToplevelLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ToplevelLayout) {
+	var toplevelLayout *ToplevelLayout
+
+	toplevelLayout = WrapToplevelLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(toplevelLayout, func(v *ToplevelLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return toplevelLayout
 }
 
 // Equal: check whether @layout and @other has identical layout properties.
@@ -97,15 +96,16 @@ func (l *ToplevelLayout) Equal(other *ToplevelLayout) bool {
 	arg1 = (*C.GdkToplevelLayout)(unsafe.Pointer(other.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_toplevel_layout_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Fullscreen: if the layout specifies whether to the toplevel should go
@@ -116,21 +116,22 @@ func (l *ToplevelLayout) Fullscreen() (fullscreen bool, ok bool) {
 
 	arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 
-	arg1 := new(C.gboolean)
-	var ret1 bool
+	var arg1 C.gboolean
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gdk_toplevel_layout_get_fullscreen(arg0, arg1)
+	cret = C.gdk_toplevel_layout_get_fullscreen(arg0, &arg1)
 
-	if *arg1 {
-		ret1 = true
+	var fullscreen bool
+	var ok bool
+
+	if arg1 {
+		fullscreen = true
 	}
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, goret
+	return fullscreen, ok
 }
 
 // FullscreenMonitor returns the monitor that the layout is fullscreening the
@@ -141,13 +142,14 @@ func (l *ToplevelLayout) FullscreenMonitor() Monitor {
 	arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GdkMonitor
-	var goret Monitor
 
 	cret = C.gdk_toplevel_layout_get_fullscreen_monitor(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
+	var monitor Monitor
 
-	return goret
+	monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
+
+	return monitor
 }
 
 // Maximized: if the layout specifies whether to the toplevel should go
@@ -158,21 +160,22 @@ func (l *ToplevelLayout) Maximized() (maximized bool, ok bool) {
 
 	arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 
-	arg1 := new(C.gboolean)
-	var ret1 bool
+	var arg1 C.gboolean
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gdk_toplevel_layout_get_maximized(arg0, arg1)
+	cret = C.gdk_toplevel_layout_get_maximized(arg0, &arg1)
 
-	if *arg1 {
-		ret1 = true
+	var maximized bool
+	var ok bool
+
+	if arg1 {
+		maximized = true
 	}
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, goret
+	return maximized, ok
 }
 
 // Resizable returns whether the layout should allow the user to resize the
@@ -183,15 +186,16 @@ func (l *ToplevelLayout) Resizable() bool {
 	arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_toplevel_layout_get_resizable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Ref increases the reference count of @layout.
@@ -200,17 +204,18 @@ func (l *ToplevelLayout) Ref() *ToplevelLayout {
 
 	arg0 = (*C.GdkToplevelLayout)(unsafe.Pointer(l.Native()))
 
-	cret := new(C.GdkToplevelLayout)
-	var goret *ToplevelLayout
+	var cret *C.GdkToplevelLayout
 
 	cret = C.gdk_toplevel_layout_ref(arg0)
 
-	goret = WrapToplevelLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ToplevelLayout) {
+	var toplevelLayout *ToplevelLayout
+
+	toplevelLayout = WrapToplevelLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(toplevelLayout, func(v *ToplevelLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return toplevelLayout
 }
 
 // SetFullscreen sets whether the layout should cause the surface to be

@@ -13,13 +13,14 @@ import "C"
 // output based on GTK debug flags.
 func GetDebugFlags() DebugFlags {
 	var cret C.GtkDebugFlags
-	var goret DebugFlags
 
 	cret = C.gtk_get_debug_flags()
 
-	goret = DebugFlags(cret)
+	var debugFlags DebugFlags
 
-	return goret
+	debugFlags = DebugFlags(cret)
+
+	return debugFlags
 }
 
 // SetDebugFlags sets the GTK debug flags.

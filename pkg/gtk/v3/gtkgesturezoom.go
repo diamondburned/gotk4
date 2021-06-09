@@ -62,14 +62,15 @@ func NewGestureZoom(widget Widget) GestureZoom {
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	cret := new(C.GtkGestureZoom)
-	var goret GestureZoom
+	var cret C.GtkGestureZoom
 
 	cret = C.gtk_gesture_zoom_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
+	var gestureZoom GestureZoom
 
-	return goret
+	gestureZoom = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
+
+	return gestureZoom
 }
 
 // ScaleDelta: if @gesture is active, this function returns the zooming
@@ -81,11 +82,12 @@ func (g gestureZoom) ScaleDelta() float64 {
 	arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_gesture_zoom_get_scale_delta(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }

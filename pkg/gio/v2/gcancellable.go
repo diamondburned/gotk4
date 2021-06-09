@@ -87,7 +87,7 @@ type Cancellable interface {
 	// See #GCancellable::cancelled for details on how to use this.
 	//
 	// If @cancellable is nil or @handler_id is `0` this function does nothing.
-	Disconnect(handlerID uint32)
+	Disconnect(handlerId uint32)
 	// Fd gets the file descriptor for a cancellable job. This can be used to
 	// implement cancellable operations on Unix systems. The returned fd will
 	// turn readable when @cancellable is cancelled.
@@ -194,14 +194,15 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 
 // NewCancellable constructs a class Cancellable.
 func NewCancellable() Cancellable {
-	cret := new(C.GCancellable)
-	var goret Cancellable
+	var cret C.GCancellable
 
 	cret = C.g_cancellable_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cancellable)
+	var cancellable Cancellable
 
-	return goret
+	cancellable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cancellable)
+
+	return cancellable
 }
 
 // Cancel: will set @cancellable to cancelled, and will emit the
@@ -252,13 +253,14 @@ func (c cancellable) Connect() uint32 {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret C.gulong
-	var goret uint32
 
-	cret = C.g_cancellable_connect(arg0, arg1, arg2, arg3)
+	cret = C.g_cancellable_connect(arg0)
 
-	goret = uint32(cret)
+	var gulong uint32
 
-	return goret
+	gulong = (uint32)(cret)
+
+	return gulong
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -272,12 +274,12 @@ func (c cancellable) Connect() uint32 {
 // See #GCancellable::cancelled for details on how to use this.
 //
 // If @cancellable is nil or @handler_id is `0` this function does nothing.
-func (c cancellable) Disconnect(handlerID uint32) {
+func (c cancellable) Disconnect(handlerId uint32) {
 	var arg0 *C.GCancellable
 	var arg1 C.gulong
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-	arg1 = C.gulong(handlerID)
+	arg1 = C.gulong(handlerId)
 
 	C.g_cancellable_disconnect(arg0, arg1)
 }
@@ -301,13 +303,14 @@ func (c cancellable) Fd() int {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.g_cancellable_get_fd(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // IsCancelled checks if a cancellable job has been cancelled.
@@ -317,15 +320,16 @@ func (c cancellable) IsCancelled() bool {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_cancellable_is_cancelled(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MakePollfd creates a FD corresponding to @cancellable; this can be passed
@@ -353,15 +357,16 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 	arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_cancellable_make_pollfd(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PopCurrent pops @cancellable off the cancellable stack (verifying that
@@ -434,9 +439,10 @@ func (c cancellable) SetErrorIfCancelled() error {
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_cancellable_set_error_if_cancelled(arg0, &cerr)
+	C.g_cancellable_set_error_if_cancelled(arg0, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -457,15 +463,16 @@ func (c cancellable) NewSource() *glib.Source {
 
 	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GSource)
-	var goret *glib.Source
+	var cret *C.GSource
 
 	cret = C.g_cancellable_source_new(arg0)
 
-	goret = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Source) {
+	var source *glib.Source
+
+	source = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return source
 }

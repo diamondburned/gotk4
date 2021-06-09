@@ -2,6 +2,10 @@
 
 package gdk
 
+import (
+	"unsafe"
+)
+
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>

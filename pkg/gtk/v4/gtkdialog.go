@@ -22,108 +22,112 @@ func init() {
 }
 
 // Dialog dialogs are a convenient way to prompt the user for a small amount of
-// input.
+// input, e.g. to display a message, ask a question, or anything else that does
+// not require extensive effort on the user’s part.
 //
-// !An example GtkDialog (dialog.png)
-//
-// Typical uses are to display a message, ask a question, or anything else that
-// does not require extensive effort on the user’s part.
-//
-// The main area of a `GtkDialog` is called the "content area", and is yours to
-// populate with widgets such a `GtkLabel` or `GtkEntry`, to present your
-// information, questions, or tasks to the user.
-//
-// In addition, dialogs allow you to add "action widgets". Most commonly, action
-// widgets are buttons. Depending on the platform, action widgets may be
-// presented in the header bar at the top of the window, or at the bottom of the
-// window. To add action widgets, create your `GtkDialog` using
-// [ctor@Gtk.Dialog.new_with_buttons], or use [method@Gtk.Dialog.add_button],
-// [method@Gtk.Dialog.add_buttons], or [method@Gtk.Dialog.add_action_widget].
-//
-// `GtkDialogs` uses some heuristics to decide whether to add a close button to
-// the window decorations. If any of the action buttons use the response ID
-// GTK_RESPONSE_CLOSE or GTK_RESPONSE_CANCEL, the close button is omitted.
+// The main area of a GtkDialog is called the "content area", and is yours to
+// populate with widgets such a Label or Entry, to present your information,
+// questions, or tasks to the user. In addition, dialogs allow you to add
+// "action widgets". Most commonly, action widgets are buttons. Depending on the
+// platform, action widgets may be presented in the header bar at the top of the
+// window, or at the bottom of the window. To add action widgets, use GtkDialog
+// using gtk_dialog_new_with_buttons(), gtk_dialog_add_button(),
+// gtk_dialog_add_buttons(), or gtk_dialog_add_action_widget().
 //
 // Clicking a button that was added as an action widget will emit the
-// [signal@Gtk.Dialog::response] signal with a response ID that you specified.
-// GTK will never assign a meaning to positive response IDs; these are entirely
-// user-defined. But for convenience, you can use the response IDs in the
-// [enum@Gtk.ResponseType] enumeration (these all have values less than zero).
-// If a dialog receives a delete event, the [signal@Gtk.Dialog::response] signal
-// will be emitted with the GTK_RESPONSE_DELETE_EVENT response ID.
+// Dialog::response signal with a response ID that you specified. GTK will never
+// assign a meaning to positive response IDs; these are entirely user-defined.
+// But for convenience, you can use the response IDs in the ResponseType
+// enumeration (these all have values less than zero). If a dialog receives a
+// delete event, the Dialog::response signal will be emitted with the
+// K_RESPONSE_DELETE_EVENT response ID.
 //
-// Dialogs are created with a call to [ctor@Gtk.Dialog.new] or
-// [ctor@Gtk.Dialog.new_with_buttons]. The latter is recommended; it allows you
-// to set the dialog title, some convenient flags, and add buttons.
+// Dialogs are created with a call to gtk_dialog_new() or
+// gtk_dialog_new_with_buttons(). gtk_dialog_new_with_buttons() is recommended;
+// it allows you to set the dialog title, some convenient flags, and add simple
+// buttons.
 //
 // A “modal” dialog (that is, one which freezes the rest of the application from
-// user input), can be created by calling [method@Gtk.Window.set_modal] on the
-// dialog. When using [ctor@Gtk.Dialog.new_with_buttons], you can also pass the
-// GTK_DIALOG_MODAL flag to make a dialog modal.
+// user input), can be created by calling gtk_window_set_modal() on the dialog.
+// Use the GTK_WINDOW() macro to cast the widget returned from gtk_dialog_new()
+// into a Window. When using gtk_dialog_new_with_buttons() you can also pass the
+// K_DIALOG_MODAL flag to make a dialog modal.
 //
-// For the simple dialog in the following example, a [class@Gtk.MessageDialog]
-// would save some effort. But you’d need to create the dialog contents manually
-// if you had more than a simple message in the dialog.
+// For the simple dialog in the following example, a MessageDialog would save
+// some effort. But you’d need to create the dialog contents manually if you had
+// more than a simple message in the dialog.
 //
-// An example for simple `GtkDialog` usage: “`c // Function to open a dialog box
-// with a message void quick_message (GtkWindow *parent, char *message) {
-// GtkWidget *dialog, *label, *content_area; GtkDialogFlags flags;
+// An example for simple GtkDialog usage:
 //
-//    // Create the widgets
-//    flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-//    dialog = gtk_dialog_new_with_buttons ("Message",
-//                                          parent,
-//                                          flags,
-//                                          _("_OK"),
-//                                          GTK_RESPONSE_NONE,
-//                                          NULL);
-//    content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
-//    label = gtk_label_new (message);
+//    // Function to open a dialog box with a message
+//    void
+//    quick_message (GtkWindow *parent, char *message)
+//    {
+//     GtkWidget *dialog, *label, *content_area;
+//     GtkDialogFlags flags;
 //
-//    // Ensure that the dialog box is destroyed when the user responds
+//     // Create the widgets
+//     flags = GTK_DIALOG_DESTROY_WITH_PARENT;
+//     dialog = gtk_dialog_new_with_buttons ("Message",
+//                                           parent,
+//                                           flags,
+//                                           _("_OK"),
+//                                           GTK_RESPONSE_NONE,
+//                                           NULL);
+//     content_area = gtk_dialog_get_content_area (GTK_DIALOG (dialog));
+//     label = gtk_label_new (message);
 //
-//    g_signal_connect_swapped (dialog,
-//                              "response",
-//                              G_CALLBACK (gtk_window_destroy),
-//                              dialog);
+//     // Ensure that the dialog box is destroyed when the user responds
 //
-//    // Add the label, and show everything we’ve added
+//     g_signal_connect_swapped (dialog,
+//                               "response",
+//                               G_CALLBACK (gtk_window_destroy),
+//                               dialog);
 //
-//    gtk_box_append (GTK_BOX (content_area), label);
-//    gtk_widget_show (dialog);
+//     // Add the label, and show everything we’ve added
 //
-// } “`
+//     gtk_box_append (GTK_BOX (content_area), label);
+//     gtk_widget_show (dialog);
+//    }
 //
 //
 // GtkDialog as GtkBuildable
 //
-// The `GtkDialog` implementation of the `GtkBuildable` interface exposes the
+// The GtkDialog implementation of the Buildable interface exposes the
 // @content_area as an internal child with the name “content_area”.
 //
-// `GtkDialog` supports a custom <action-widgets> element, which can contain
+// GtkDialog supports a custom <action-widgets> element, which can contain
 // multiple <action-widget> elements. The “response” attribute specifies a
 // numeric response, and the content of the element is the id of widget (which
 // should be a child of the dialogs @action_area). To mark a response as
 // default, set the “default“ attribute of the <action-widget> element to true.
 //
-// `GtkDialog` supports adding action widgets by specifying “action“ as the
-// “type“ attribute of a <child> element. The widget will be added either to the
-// action area or the headerbar of the dialog, depending on the “use-header-bar“
+// GtkDialog supports adding action widgets by specifying “action“ as the “type“
+// attribute of a <child> element. The widget will be added either to the action
+// area or the headerbar of the dialog, depending on the “use-header-bar“
 // property. The response id has to be associated with the action widget using
 // the <action-widgets> element.
 //
-// An example of a Dialog UI definition fragment: “`xml <object
-// class="GtkDialog" id="dialog1"> <child type="action"> <object
-// class="GtkButton" id="button_cancel"/> </child> <child type="action"> <object
-// class="GtkButton" id="button_ok"> </object> </child> <action-widgets>
-// <action-widget response="cancel">button_cancel</action-widget> <action-widget
-// response="ok" default="true">button_ok</action-widget> </action-widgets>
-// </object> “`
+// An example of a Dialog UI definition fragment:
+//
+//    <object class="GtkDialog" id="dialog1">
+//      <child type="action">
+//        <object class="GtkButton" id="button_cancel"/>
+//      </child>
+//      <child type="action">
+//        <object class="GtkButton" id="button_ok">
+//        </object>
+//      </child>
+//      <action-widgets>
+//        <action-widget response="cancel">button_cancel</action-widget>
+//        <action-widget response="ok" default="true">button_ok</action-widget>
+//      </action-widgets>
+//    </object>
 //
 //
 // Accessibility
 //
-// `GtkDialog` uses the GTK_ACCESSIBLE_ROLE_DIALOG role.
+// GtkDialog uses the K_ACCESSIBLE_ROLE_DIALOG role.
 type Dialog interface {
 	Window
 	Accessible
@@ -134,50 +138,40 @@ type Dialog interface {
 	ShortcutManager
 
 	// AddActionWidget adds an activatable widget to the action area of a
-	// `GtkDialog`.
-	//
-	// GTK connects a signal handler that will emit the
-	// [signal@Gtk.Dialog::response] signal on the dialog when the widget is
-	// activated. The widget is appended to the end of the dialog’s action area.
-	//
-	// If you want to add a non-activatable widget, simply pack it into the
-	// @action_area field of the `GtkDialog` struct.
-	AddActionWidget(child Widget, responseID int)
-	// AddButton adds a button with the given text.
-	//
-	// GTK arranges things so that clicking the button will emit the
-	// [signal@Gtk.Dialog::response] signal with the given @response_id. The
-	// button is appended to the end of the dialog’s action area. The button
-	// widget is returned, but usually you don’t need it.
-	AddButton(buttonText string, responseID int) Widget
+	// Dialog, connecting a signal handler that will emit the Dialog::response
+	// signal on the dialog when the widget is activated. The widget is appended
+	// to the end of the dialog’s action area. If you want to add a
+	// non-activatable widget, simply pack it into the @action_area field of the
+	// Dialog struct.
+	AddActionWidget(child Widget, responseId int)
+	// AddButton adds a button with the given text and sets things up so that
+	// clicking the button will emit the Dialog::response signal with the given
+	// @response_id. The button is appended to the end of the dialog’s action
+	// area. The button widget is returned, but usually you don’t need it.
+	AddButton(buttonText string, responseId int) Widget
 	// ContentArea returns the content area of @dialog.
 	ContentArea() Box
-	// HeaderBar returns the header bar of @dialog.
-	//
-	// Note that the headerbar is only used by the dialog if the
-	// [property@Gtk.Dialog:use-header-bar] property is true.
+	// HeaderBar returns the header bar of @dialog. Note that the headerbar is
+	// only used by the dialog if the Dialog:use-header-bar property is true.
 	HeaderBar() HeaderBar
 	// ResponseForWidget gets the response id of a widget in the action area of
 	// a dialog.
 	ResponseForWidget(widget Widget) int
 	// WidgetForResponse gets the widget button that uses the given response ID
 	// in the action area of a dialog.
-	WidgetForResponse(responseID int) Widget
-	// Response emits the ::response signal with the given response ID.
+	WidgetForResponse(responseId int) Widget
+	// Response emits the Dialog::response signal with the given response ID.
 	//
 	// Used to indicate that the user has responded to the dialog in some way.
-	Response(responseID int)
-	// SetDefaultResponse sets the default widget for the dialog based on the
-	// response ID.
-	//
-	// Pressing “Enter” normally activates the default widget.
-	SetDefaultResponse(responseID int)
-	// SetResponseSensitive: a convenient way to sensitize/desensitize dialog
-	// buttons.
-	//
-	// Calls `gtk_widget_set_sensitive (widget, @setting)` for each widget in
-	// the dialog’s action area with the given @response_id.
-	SetResponseSensitive(responseID int, setting bool)
+	Response(responseId int)
+	// SetDefaultResponse sets the last widget in the dialog’s action area with
+	// the given @response_id as the default widget for the dialog. Pressing
+	// “Enter” normally activates the default widget.
+	SetDefaultResponse(responseId int)
+	// SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
+	// for each widget in the dialog’s action area with the given @response_id.
+	// A convenient way to sensitize/desensitize dialog buttons.
+	SetResponseSensitive(responseId int, setting bool)
 }
 
 // dialog implements the Dialog interface.
@@ -216,43 +210,39 @@ func marshalDialog(p uintptr) (interface{}, error) {
 // NewDialog constructs a class Dialog.
 func NewDialog() Dialog {
 	var cret C.GtkDialog
-	var goret Dialog
 
 	cret = C.gtk_dialog_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Dialog)
+	var dialog Dialog
 
-	return goret
+	dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Dialog)
+
+	return dialog
 }
 
 // AddActionWidget adds an activatable widget to the action area of a
-// `GtkDialog`.
-//
-// GTK connects a signal handler that will emit the
-// [signal@Gtk.Dialog::response] signal on the dialog when the widget is
-// activated. The widget is appended to the end of the dialog’s action area.
-//
-// If you want to add a non-activatable widget, simply pack it into the
-// @action_area field of the `GtkDialog` struct.
-func (d dialog) AddActionWidget(child Widget, responseID int) {
+// Dialog, connecting a signal handler that will emit the Dialog::response
+// signal on the dialog when the widget is activated. The widget is appended
+// to the end of the dialog’s action area. If you want to add a
+// non-activatable widget, simply pack it into the @action_area field of the
+// Dialog struct.
+func (d dialog) AddActionWidget(child Widget, responseId int) {
 	var arg0 *C.GtkDialog
 	var arg1 *C.GtkWidget
 	var arg2 C.int
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = C.int(responseID)
+	arg2 = C.int(responseId)
 
 	C.gtk_dialog_add_action_widget(arg0, arg1, arg2)
 }
 
-// AddButton adds a button with the given text.
-//
-// GTK arranges things so that clicking the button will emit the
-// [signal@Gtk.Dialog::response] signal with the given @response_id. The
-// button is appended to the end of the dialog’s action area. The button
-// widget is returned, but usually you don’t need it.
-func (d dialog) AddButton(buttonText string, responseID int) Widget {
+// AddButton adds a button with the given text and sets things up so that
+// clicking the button will emit the Dialog::response signal with the given
+// @response_id. The button is appended to the end of the dialog’s action
+// area. The button widget is returned, but usually you don’t need it.
+func (d dialog) AddButton(buttonText string, responseId int) Widget {
 	var arg0 *C.GtkDialog
 	var arg1 *C.char
 	var arg2 C.int
@@ -260,16 +250,17 @@ func (d dialog) AddButton(buttonText string, responseID int) Widget {
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(responseID)
+	arg2 = C.int(responseId)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_dialog_add_button(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ContentArea returns the content area of @dialog.
@@ -279,32 +270,32 @@ func (d dialog) ContentArea() Box {
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GtkWidget
-	var goret Box
 
 	cret = C.gtk_dialog_get_content_area(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	var box Box
 
-	return goret
+	box = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+
+	return box
 }
 
-// HeaderBar returns the header bar of @dialog.
-//
-// Note that the headerbar is only used by the dialog if the
-// [property@Gtk.Dialog:use-header-bar] property is true.
+// HeaderBar returns the header bar of @dialog. Note that the headerbar is
+// only used by the dialog if the Dialog:use-header-bar property is true.
 func (d dialog) HeaderBar() HeaderBar {
 	var arg0 *C.GtkDialog
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GtkWidget
-	var goret HeaderBar
 
 	cret = C.gtk_dialog_get_header_bar(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+	var headerBar HeaderBar
 
-	return goret
+	headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+
+	return headerBar
 }
 
 // ResponseForWidget gets the response id of a widget in the action area of
@@ -317,73 +308,72 @@ func (d dialog) ResponseForWidget(widget Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_dialog_get_response_for_widget(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // WidgetForResponse gets the widget button that uses the given response ID
 // in the action area of a dialog.
-func (d dialog) WidgetForResponse(responseID int) Widget {
+func (d dialog) WidgetForResponse(responseId int) Widget {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseID)
+	arg1 = C.int(responseId)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_dialog_get_widget_for_response(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Response emits the ::response signal with the given response ID.
+// Response emits the Dialog::response signal with the given response ID.
 //
 // Used to indicate that the user has responded to the dialog in some way.
-func (d dialog) Response(responseID int) {
+func (d dialog) Response(responseId int) {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseID)
+	arg1 = C.int(responseId)
 
 	C.gtk_dialog_response(arg0, arg1)
 }
 
-// SetDefaultResponse sets the default widget for the dialog based on the
-// response ID.
-//
-// Pressing “Enter” normally activates the default widget.
-func (d dialog) SetDefaultResponse(responseID int) {
+// SetDefaultResponse sets the last widget in the dialog’s action area with
+// the given @response_id as the default widget for the dialog. Pressing
+// “Enter” normally activates the default widget.
+func (d dialog) SetDefaultResponse(responseId int) {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseID)
+	arg1 = C.int(responseId)
 
 	C.gtk_dialog_set_default_response(arg0, arg1)
 }
 
-// SetResponseSensitive: a convenient way to sensitize/desensitize dialog
-// buttons.
-//
-// Calls `gtk_widget_set_sensitive (widget, @setting)` for each widget in
-// the dialog’s action area with the given @response_id.
-func (d dialog) SetResponseSensitive(responseID int, setting bool) {
+// SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
+// for each widget in the dialog’s action area with the given @response_id.
+// A convenient way to sensitize/desensitize dialog buttons.
+func (d dialog) SetResponseSensitive(responseId int, setting bool) {
 	var arg0 *C.GtkDialog
 	var arg1 C.int
 	var arg2 C.gboolean
 
 	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseID)
+	arg1 = C.int(responseId)
 	if setting {
 		arg2 = C.gboolean(1)
 	}

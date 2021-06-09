@@ -362,13 +362,14 @@ func (a activatable) RelatedAction() Action {
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkAction
-	var goret Action
 
 	cret = C.gtk_activatable_get_related_action(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+	var action Action
 
-	return goret
+	action = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+
+	return action
 }
 
 // UseActionAppearance gets whether this activatable should reset its layout
@@ -380,15 +381,16 @@ func (a activatable) UseActionAppearance() bool {
 	arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_activatable_get_use_action_appearance(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetRelatedAction sets the related action on the @activatable object.

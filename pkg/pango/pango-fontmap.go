@@ -120,14 +120,15 @@ func (f fontMap) CreateContext() Context {
 
 	arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
-	cret := new(C.PangoContext)
-	var goret Context
+	var cret *C.PangoContext
 
 	cret = C.pango_font_map_create_context(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Context)
+	var context Context
 
-	return goret
+	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Context)
+
+	return context
 }
 
 // Family gets a font family by name.
@@ -140,13 +141,14 @@ func (f fontMap) Family(name string) FontFamily {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.PangoFontFamily
-	var goret FontFamily
 
 	cret = C.pango_font_map_get_family(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontFamily)
+	var fontFamily FontFamily
 
-	return goret
+	fontFamily = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontFamily)
+
+	return fontFamily
 }
 
 // Serial returns the current serial number of @fontmap.
@@ -167,13 +169,14 @@ func (f fontMap) Serial() uint {
 	arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.pango_font_map_get_serial(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // ListFamilies: list all families for a fontmap.
@@ -182,9 +185,9 @@ func (f fontMap) ListFamilies() {
 
 	arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_font_map_list_families(arg0, arg1, arg2)
+	C.pango_font_map_list_families(arg0)
 
-	return ret1, ret2
+	return
 }
 
 // LoadFont: load the font in the fontmap that is the closest match for
@@ -198,14 +201,15 @@ func (f fontMap) LoadFont(context Context, desc *FontDescription) Font {
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 	arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 
-	cret := new(C.PangoFont)
-	var goret Font
+	var cret *C.PangoFont
 
 	cret = C.pango_font_map_load_font(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
+	var font Font
 
-	return goret
+	font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
+
+	return font
 }
 
 // LoadFontset: load a set of fonts in the fontmap that can be used to
@@ -221,12 +225,13 @@ func (f fontMap) LoadFontset(context Context, desc *FontDescription, language *L
 	arg2 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 	arg3 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	cret := new(C.PangoFontset)
-	var goret Fontset
+	var cret *C.PangoFontset
 
 	cret = C.pango_font_map_load_fontset(arg0, arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Fontset)
+	var fontset Fontset
 
-	return goret
+	fontset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Fontset)
+
+	return fontset
 }

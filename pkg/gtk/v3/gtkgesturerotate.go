@@ -62,14 +62,15 @@ func NewGestureRotate(widget Widget) GestureRotate {
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	cret := new(C.GtkGestureRotate)
-	var goret GestureRotate
+	var cret C.GtkGestureRotate
 
 	cret = C.gtk_gesture_rotate_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureRotate)
+	var gestureRotate GestureRotate
 
-	return goret
+	gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureRotate)
+
+	return gestureRotate
 }
 
 // AngleDelta: if @gesture is active, this function returns the angle
@@ -81,11 +82,12 @@ func (g gestureRotate) AngleDelta() float64 {
 	arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_gesture_rotate_get_angle_delta(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }

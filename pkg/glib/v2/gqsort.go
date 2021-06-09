@@ -12,5 +12,5 @@ import "C"
 //
 // This is guaranteed to be a stable sort since version 2.32.
 func QsortWithData() {
-	C.g_qsort_with_data(arg1, arg2, arg3, arg4, arg5)
+	C.g_qsort_with_data()
 }

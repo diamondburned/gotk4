@@ -202,8 +202,8 @@ func (s *SettingsValue) Origin() string {
 }
 
 // Value gets the field inside the struct.
-func (s *SettingsValue) Value() *externglib.Value {
-	var v *externglib.Value
+func (s *SettingsValue) Value() **externglib.Value {
+	var v **externglib.Value
 	v = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
 	return v
 }

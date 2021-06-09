@@ -71,7 +71,7 @@ type PollableInputStreamOverrider interface {
 	// @cancellable has already been cancelled when you call, which may happen
 	// if you call this method after a source triggers due to having been
 	// cancelled.
-	ReadNonblocking() (gssize int, err error)
+	ReadNonblocking() (gssize int, goerr error)
 }
 
 // PollableInputStream is implemented by Streams that can be polled for
@@ -116,15 +116,16 @@ func (s pollableInputStream) CanPoll() bool {
 	arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_pollable_input_stream_can_poll(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CreateSource creates a #GSource that triggers when @stream can be read,
@@ -142,17 +143,18 @@ func (s pollableInputStream) CreateSource(cancellable Cancellable) *glib.Source 
 	arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	cret := new(C.GSource)
-	var goret *glib.Source
+	var cret *C.GSource
 
 	cret = C.g_pollable_input_stream_create_source(arg0, arg1)
 
-	goret = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Source) {
+	var source *glib.Source
+
+	source = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return source
 }
 
 // IsReadable checks if @stream can be read.
@@ -168,13 +170,14 @@ func (s pollableInputStream) IsReadable() bool {
 	arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_pollable_input_stream_is_readable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

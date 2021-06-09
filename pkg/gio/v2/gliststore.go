@@ -127,14 +127,15 @@ func NewListStore(itemType externglib.Type) ListStore {
 
 	arg1 = C.GType(itemType)
 
-	cret := new(C.GListStore)
-	var goret ListStore
+	var cret C.GListStore
 
 	cret = C.g_list_store_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ListStore)
+	var listStore ListStore
 
-	return goret
+	listStore = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ListStore)
+
+	return listStore
 }
 
 // Append appends @item to @store. @item must be of type Store:item-type.
@@ -166,19 +167,20 @@ func (s listStore) Find(item gextras.Objector) (position uint, ok bool) {
 	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	arg2 := new(C.guint)
-	var ret2 uint
+	var arg2 C.guint
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.g_list_store_find(arg0, arg1, arg2)
+	cret = C.g_list_store_find(arg0, arg1, &arg2)
 
-	ret2 = uint(*arg2)
+	var position uint
+	var ok bool
+
+	position = (uint)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return position, ok
 }
 
 // Insert inserts @item into @store at @position. @item must be of type
@@ -215,13 +217,14 @@ func (s listStore) InsertSorted() uint {
 	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
-	cret = C.g_list_store_insert_sorted(arg0, arg1, arg2, arg3)
+	cret = C.g_list_store_insert_sorted(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Remove removes the item from @store that is at @position. @position must
@@ -254,7 +257,7 @@ func (s listStore) Sort() {
 
 	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
-	C.g_list_store_sort(arg0, arg1, arg2)
+	C.g_list_store_sort(arg0)
 }
 
 // Splice changes @store by removing @n_removals items and adding
@@ -275,5 +278,5 @@ func (s listStore) Splice() {
 
 	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
-	C.g_list_store_splice(arg0, arg1, arg2, arg3, arg4)
+	C.g_list_store_splice(arg0)
 }

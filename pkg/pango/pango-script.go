@@ -51,17 +51,18 @@ func NewScriptIter(text string, length int) *ScriptIter {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(length)
 
-	cret := new(C.PangoScriptIter)
-	var goret *ScriptIter
+	var cret *C.PangoScriptIter
 
 	cret = C.pango_script_iter_new(arg1, arg2)
 
-	goret = WrapScriptIter(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ScriptIter) {
+	var scriptIter *ScriptIter
+
+	scriptIter = WrapScriptIter(unsafe.Pointer(cret))
+	runtime.SetFinalizer(scriptIter, func(v *ScriptIter) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return scriptIter
 }
 
 // Native returns the underlying C source pointer.
@@ -85,27 +86,28 @@ func (i *ScriptIter) Free() {
 // Note that while the type of the @script argument is declared as PangoScript,
 // as of Pango 1.18, this function simply returns GUnicodeScript values. Callers
 // must be prepared to handle unknown values.
-func (i *ScriptIter) Range() (start string, end string, script *Script) {
+func (i *ScriptIter) Range() (start string, end string, script Script) {
 	var arg0 *C.PangoScriptIter
 
 	arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.char)
-	var ret1 string
-	arg2 := new(*C.char)
-	var ret2 string
-	arg3 := new(C.PangoScript)
-	var ret3 *Script
+	var arg1 *C.char
+	var arg2 *C.char
+	var arg3 C.PangoScript
 
-	C.pango_script_iter_get_range(arg0, arg1, arg2, arg3)
+	C.pango_script_iter_get_range(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = C.GoString(*arg1)
-	defer C.free(unsafe.Pointer(*arg1))
-	ret2 = C.GoString(*arg2)
-	defer C.free(unsafe.Pointer(*arg2))
-	ret3 = *Script(arg3)
+	var start string
+	var end string
+	var script Script
 
-	return ret1, ret2, ret3
+	start = C.GoString(arg1)
+	defer C.free(unsafe.Pointer(arg1))
+	end = C.GoString(arg2)
+	defer C.free(unsafe.Pointer(arg2))
+	script = Script(arg3)
+
+	return start, end, script
 }
 
 // Next advances a ScriptIter to the next range. If @iter is already at the end,
@@ -116,13 +118,14 @@ func (i *ScriptIter) Next() bool {
 	arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_script_iter_next(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

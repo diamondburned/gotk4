@@ -153,6 +153,14 @@ func (typ *ResolvedType) NeedsNamespace(current *gir.NamespaceFindResult) bool {
 	return !typ.Extern.Result.Eq(current)
 }
 
+func (typ *ResolvedType) ptr(sub1 bool) string {
+	ptr := typ.Ptr
+	if sub1 && ptr > 0 {
+		ptr--
+	}
+	return strings.Repeat("*", int(ptr))
+}
+
 // ImplType returns the implementation type. This is only different to
 // PublicType as far as classes go: the returned type is the unexported
 // implementation type.
@@ -168,13 +176,11 @@ func (typ *ResolvedType) ImplType(needsNamespace bool) string {
 		name = UnexportPascal(name)
 	}
 
-	ptr := strings.Repeat("*", int(typ.Ptr))
-
 	if !needsNamespace {
-		return ptr + name
+		return typ.ptr(false) + name
 	}
 
-	return ptr + typ.Package + "." + name
+	return typ.ptr(false) + typ.Package + "." + name
 }
 
 // PublicType returns the public type. If the resolved type is a class, then the
@@ -186,24 +192,17 @@ func (typ *ResolvedType) PublicType(needsNamespace bool) string {
 		typ.IsExternGLib("Object"):
 
 		// TODO: there should be a better way to do this; one that adds imports.
-		return "gextras.Objector"
+		return typ.ptr(true) + "gextras.Objector"
 	}
 
 	if typ.Builtin != nil {
-		return *typ.Builtin
+		return typ.ptr(false) + *typ.Builtin
 	}
 
 	name, _ := typ.Extern.Result.Info()
 	name = PascalToGo(name)
 
-	ptr := typ.Ptr
-	// Since classes are implemented as interfaces, we have to dereference a
-	// pointer if we have any.
-	if typ.Extern.Result.Class != nil && ptr > 0 {
-		ptr--
-	}
-
-	ptrStr := strings.Repeat("*", int(ptr))
+	ptrStr := typ.ptr(typ.Extern.Result.Class != nil)
 
 	if !needsNamespace {
 		return ptrStr + name
@@ -230,7 +229,7 @@ func (typ *ResolvedType) WrapName(needsNamespace bool) string {
 	return wrapName
 }
 
-// CGoType returns the CGo type.
+// CGoType returns the CGo type. Its pointer count does not follow Ptr.
 func (typ *ResolvedType) CGoType() string {
 	return cgoTypeFromC(typ.CType)
 }

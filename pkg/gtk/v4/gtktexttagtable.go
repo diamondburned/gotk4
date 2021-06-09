@@ -15,7 +15,7 @@ import (
 import "C"
 
 // TextTagTableForeach: a function used with gtk_text_tag_table_foreach(), to
-// iterate over every `GtkTextTag` inside a `GtkTextTagTable`.
+// iterate over every TextTag inside a TextTagTable.
 type TextTagTableForeach func()
 
 //export gotk4_TextTagTableForeach

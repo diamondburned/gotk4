@@ -22,20 +22,20 @@ func init() {
 	})
 }
 
-// GridLayout: `GtkGridLayout` is a layout manager which arranges child widgets
-// in rows and columns.
+// GridLayout: gtkGridLayout is a layout manager which arranges child widgets in
+// rows and columns, with arbitrary positions and horizontal/vertical spans.
 //
 // Children have an "attach point" defined by the horizontal and vertical index
 // of the cell they occupy; children can span multiple rows or columns. The
 // layout properties for setting the attach points and spans are set using the
-// [class@Gtk.GridLayoutChild] associated to each child widget.
+// GridLayoutChild associated to each child widget.
 //
-// The behaviour of `GtkGridLayout` when several children occupy the same grid
-// cell is undefined.
+// The behaviour of GtkGrid when several children occupy the same grid cell is
+// undefined.
 //
-// `GtkGridLayout` can be used like a `GtkBoxLayout` if all children are
-// attached to the same row or column; however, if you only ever need a single
-// row or column, you should consider using `GtkBoxLayout`.
+// GtkGridLayout can be used like a BoxLayout if all children are attached to
+// the same row or column; however, if you only ever need a single row or
+// column, you should consider using BoxLayout.
 type GridLayout interface {
 	LayoutManager
 
@@ -48,11 +48,9 @@ type GridLayout interface {
 	// ColumnSpacing retrieves the spacing set with
 	// gtk_grid_layout_set_column_spacing().
 	ColumnSpacing() uint
-	// RowBaselinePosition returns the baseline position of @row.
-	//
-	// If no value has been set with
-	// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
-	// GTK_BASELINE_POSITION_CENTER is returned.
+	// RowBaselinePosition returns the baseline position of @row as set by
+	// gtk_grid_layout_set_row_baseline_position(), or the default value of
+	// GTK_BASELINE_POSITION_CENTER.
 	RowBaselinePosition(row int) BaselinePosition
 	// RowHomogeneous checks whether all rows of @grid should have the same
 	// height.
@@ -107,14 +105,15 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 
 // NewGridLayout constructs a class GridLayout.
 func NewGridLayout() GridLayout {
-	cret := new(C.GtkGridLayout)
-	var goret GridLayout
+	var cret C.GtkGridLayout
 
 	cret = C.gtk_grid_layout_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GridLayout)
+	var gridLayout GridLayout
 
-	return goret
+	gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GridLayout)
+
+	return gridLayout
 }
 
 // BaselineRow retrieves the row set with
@@ -125,13 +124,14 @@ func (g gridLayout) BaselineRow() int {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_grid_layout_get_baseline_row(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ColumnHomogeneous checks whether all columns of @grid should have the
@@ -142,15 +142,16 @@ func (g gridLayout) ColumnHomogeneous() bool {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_grid_layout_get_column_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ColumnSpacing retrieves the spacing set with
@@ -161,20 +162,19 @@ func (g gridLayout) ColumnSpacing() uint {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_grid_layout_get_column_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
-// RowBaselinePosition returns the baseline position of @row.
-//
-// If no value has been set with
-// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
-// GTK_BASELINE_POSITION_CENTER is returned.
+// RowBaselinePosition returns the baseline position of @row as set by
+// gtk_grid_layout_set_row_baseline_position(), or the default value of
+// GTK_BASELINE_POSITION_CENTER.
 func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
 	var arg0 *C.GtkGridLayout
 	var arg1 C.int
@@ -183,13 +183,14 @@ func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
 	arg1 = C.int(row)
 
 	var cret C.GtkBaselinePosition
-	var goret BaselinePosition
 
 	cret = C.gtk_grid_layout_get_row_baseline_position(arg0, arg1)
 
-	goret = BaselinePosition(cret)
+	var baselinePosition BaselinePosition
 
-	return goret
+	baselinePosition = BaselinePosition(cret)
+
+	return baselinePosition
 }
 
 // RowHomogeneous checks whether all rows of @grid should have the same
@@ -200,15 +201,16 @@ func (g gridLayout) RowHomogeneous() bool {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_grid_layout_get_row_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RowSpacing retrieves the spacing set with
@@ -219,13 +221,14 @@ func (g gridLayout) RowSpacing() uint {
 	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_grid_layout_get_row_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // SetBaselineRow sets which row defines the global baseline for the entire
@@ -310,7 +313,7 @@ func (g gridLayout) SetRowSpacing(spacing uint) {
 	C.gtk_grid_layout_set_row_spacing(arg0, arg1)
 }
 
-// GridLayoutChild: `GtkLayoutChild` subclass for children in a `GtkGridLayout`.
+// GridLayoutChild: layout properties for children of GridLayout.
 type GridLayoutChild interface {
 	LayoutChild
 
@@ -362,13 +365,14 @@ func (c gridLayoutChild) Column() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_grid_layout_child_get_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ColumnSpan retrieves the number of columns that @child spans to.
@@ -378,13 +382,14 @@ func (c gridLayoutChild) ColumnSpan() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_grid_layout_child_get_column_span(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Row retrieves the row number to which @child attaches its top side.
@@ -394,13 +399,14 @@ func (c gridLayoutChild) Row() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_grid_layout_child_get_row(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // RowSpan retrieves the number of rows that @child spans to.
@@ -410,13 +416,14 @@ func (c gridLayoutChild) RowSpan() int {
 	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_grid_layout_child_get_row_span(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SetColumn sets the column number to attach the left side of @child.

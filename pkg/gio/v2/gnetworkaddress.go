@@ -84,14 +84,15 @@ func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.guint16(port)
 
-	cret := new(C.GNetworkAddress)
-	var goret NetworkAddress
+	var cret C.GNetworkAddress
 
 	cret = C.g_network_address_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+	var networkAddress NetworkAddress
 
-	return goret
+	networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+
+	return networkAddress
 }
 
 // NewNetworkAddressLoopback constructs a class NetworkAddress.
@@ -100,14 +101,15 @@ func NewNetworkAddressLoopback(port uint16) NetworkAddress {
 
 	arg1 = C.guint16(port)
 
-	cret := new(C.GNetworkAddress)
-	var goret NetworkAddress
+	var cret C.GNetworkAddress
 
 	cret = C.g_network_address_new_loopback(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+	var networkAddress NetworkAddress
 
-	return goret
+	networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+
+	return networkAddress
 }
 
 // Hostname gets @addr's hostname. This might be either UTF-8 or
@@ -118,13 +120,14 @@ func (a networkAddress) Hostname() string {
 	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_network_address_get_hostname(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Port gets @addr's port number
@@ -134,13 +137,14 @@ func (a networkAddress) Port() uint16 {
 	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint16
-	var goret uint16
 
 	cret = C.g_network_address_get_port(arg0)
 
-	goret = uint16(cret)
+	var guint16 uint16
 
-	return goret
+	guint16 = (uint16)(cret)
+
+	return guint16
 }
 
 // Scheme gets @addr's scheme
@@ -150,11 +154,12 @@ func (a networkAddress) Scheme() string {
 	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_network_address_get_scheme(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }

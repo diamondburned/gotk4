@@ -44,17 +44,18 @@ func marshalBox(p uintptr) (interface{}, error) {
 
 // NewBoxAlloc constructs a struct Box.
 func NewBoxAlloc() *Box {
-	cret := new(C.graphene_box_t)
-	var goret *Box
+	var cret *C.graphene_box_t
 
 	cret = C.graphene_box_alloc()
 
-	goret = WrapBox(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Box) {
+	var box *Box
+
+	box = WrapBox(unsafe.Pointer(cret))
+	runtime.SetFinalizer(box, func(v *Box) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return box
 }
 
 // Native returns the underlying C source pointer.
@@ -72,15 +73,16 @@ func (a *Box) ContainsBox(b *Box) bool {
 	arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var goret bool
 
 	cret = C.graphene_box_contains_box(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ContainsPoint checks whether @box contains the given @point.
@@ -92,15 +94,16 @@ func (b *Box) ContainsPoint(point *Point3D) bool {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
 	var cret C._Bool
-	var goret bool
 
 	cret = C.graphene_box_contains_point(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Equal checks whether the two given boxes are equal.
@@ -112,73 +115,65 @@ func (a *Box) Equal(b *Box) bool {
 	arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var goret bool
 
 	cret = C.graphene_box_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Expand expands the dimensions of @box to include the coordinates at @point.
-func (b *Box) Expand(point *Point3D) *Box {
+func (b *Box) Expand(point *Point3D) Box {
 	var arg0 *C.graphene_box_t
 	var arg1 *C.graphene_point3d_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	arg2 := new(C.graphene_box_t)
-	var ret2 *Box
+	var res Box
 
-	C.graphene_box_expand(arg0, arg1, arg2)
+	C.graphene_box_expand(arg0, arg1, (*C.graphene_box_t)(unsafe.Pointer(&res)))
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
-
-	return ret2
+	return res
 }
 
 // ExpandScalar expands the dimensions of @box by the given @scalar value.
 //
 // If @scalar is positive, the #graphene_box_t will grow; if @scalar is
 // negative, the #graphene_box_t will shrink.
-func (b *Box) ExpandScalar(scalar float32) *Box {
+func (b *Box) ExpandScalar(scalar float32) Box {
 	var arg0 *C.graphene_box_t
 	var arg1 C.float
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 	arg1 = C.float(scalar)
 
-	arg2 := new(C.graphene_box_t)
-	var ret2 *Box
+	var res Box
 
-	C.graphene_box_expand_scalar(arg0, arg1, arg2)
+	C.graphene_box_expand_scalar(arg0, arg1, (*C.graphene_box_t)(unsafe.Pointer(&res)))
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
-
-	return ret2
+	return res
 }
 
 // ExpandVec3 expands the dimensions of @box to include the coordinates of the
 // given vector.
-func (b *Box) ExpandVec3(vec *Vec3) *Box {
+func (b *Box) ExpandVec3(vec *Vec3) Box {
 	var arg0 *C.graphene_box_t
 	var arg1 *C.graphene_vec3_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(vec.Native()))
 
-	arg2 := new(C.graphene_box_t)
-	var ret2 *Box
+	var res Box
 
-	C.graphene_box_expand_vec3(arg0, arg1, arg2)
+	C.graphene_box_expand_vec3(arg0, arg1, (*C.graphene_box_t)(unsafe.Pointer(&res)))
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
-
-	return ret2
+	return res
 }
 
 // Free frees the resources allocated by graphene_box_alloc().
@@ -192,35 +187,29 @@ func (b *Box) Free() {
 
 // BoundingSphere computes the bounding #graphene_sphere_t capable of containing
 // the given #graphene_box_t.
-func (b *Box) BoundingSphere() *Sphere {
+func (b *Box) BoundingSphere() Sphere {
 	var arg0 *C.graphene_box_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	arg1 := new(C.graphene_sphere_t)
-	var ret1 *Sphere
+	var sphere Sphere
 
-	C.graphene_box_get_bounding_sphere(arg0, arg1)
+	C.graphene_box_get_bounding_sphere(arg0, (*C.graphene_sphere_t)(unsafe.Pointer(&sphere)))
 
-	ret1 = WrapSphere(unsafe.Pointer(arg1))
-
-	return ret1
+	return sphere
 }
 
 // Center retrieves the coordinates of the center of a #graphene_box_t.
-func (b *Box) Center() *Point3D {
+func (b *Box) Center() Point3D {
 	var arg0 *C.graphene_box_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	arg1 := new(C.graphene_point3d_t)
-	var ret1 *Point3D
+	var center Point3D
 
-	C.graphene_box_get_center(arg0, arg1)
+	C.graphene_box_get_center(arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&center)))
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
-
-	return ret1
+	return center
 }
 
 // Depth retrieves the size of the @box on the Z axis.
@@ -230,13 +219,14 @@ func (b *Box) Depth() float32 {
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.graphene_box_get_depth(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Height retrieves the size of the @box on the Y axis.
@@ -246,64 +236,56 @@ func (b *Box) Height() float32 {
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.graphene_box_get_height(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Max retrieves the coordinates of the maximum point of the given
 // #graphene_box_t.
-func (b *Box) Max() *Point3D {
+func (b *Box) Max() Point3D {
 	var arg0 *C.graphene_box_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	arg1 := new(C.graphene_point3d_t)
-	var ret1 *Point3D
+	var max Point3D
 
-	C.graphene_box_get_max(arg0, arg1)
+	C.graphene_box_get_max(arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&max)))
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
-
-	return ret1
+	return max
 }
 
 // Min retrieves the coordinates of the minimum point of the given
 // #graphene_box_t.
-func (b *Box) Min() *Point3D {
+func (b *Box) Min() Point3D {
 	var arg0 *C.graphene_box_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	arg1 := new(C.graphene_point3d_t)
-	var ret1 *Point3D
+	var min Point3D
 
-	C.graphene_box_get_min(arg0, arg1)
+	C.graphene_box_get_min(arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&min)))
 
-	ret1 = WrapPoint3D(unsafe.Pointer(arg1))
-
-	return ret1
+	return min
 }
 
 // Size retrieves the size of the box on all three axes, and stores it into the
 // given @size vector.
-func (b *Box) Size() *Vec3 {
+func (b *Box) Size() Vec3 {
 	var arg0 *C.graphene_box_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	arg1 := new(C.graphene_vec3_t)
-	var ret1 *Vec3
+	var size Vec3
 
-	C.graphene_box_get_size(arg0, arg1)
+	C.graphene_box_get_size(arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&size)))
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
-
-	return ret1
+	return size
 }
 
 // Vertices computes the vertices of the given #graphene_box_t.
@@ -312,19 +294,15 @@ func (b *Box) Vertices() [8]Vec3 {
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	var arg1 *C.graphene_vec3_t
-	{
-		var arg1Array [8]C.graphene_vec3_t
-		defer runtime.KeepAlive(&arg1Array)
-		arg1 = &arg1Array[0]
-	}
-	var ret1 [8]Vec3
+	var arg1 [8]C.graphene_vec3_t
 
-	C.graphene_box_get_vertices(arg0, arg1)
+	C.graphene_box_get_vertices(arg0, &arg1[0])
 
-	ret1 = *(*[8]Vec3)(unsafe.Pointer(arg1))
+	var vertices [8]Vec3
 
-	return ret1
+	vertices = *(*[8]Vec3)(unsafe.Pointer(arg1))
+
+	return vertices
 }
 
 // Width retrieves the size of the @box on the X axis.
@@ -334,13 +312,14 @@ func (b *Box) Width() float32 {
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.graphene_box_get_width(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Init initializes the given #graphene_box_t with two vertices.
@@ -354,13 +333,14 @@ func (b *Box) Init(min *Point3D, max *Point3D) *Box {
 	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(max.Native()))
 
 	var cret *C.graphene_box_t
-	var goret *Box
 
 	cret = C.graphene_box_init(arg0, arg1, arg2)
 
-	goret = WrapBox(unsafe.Pointer(cret))
+	var ret *Box
 
-	return goret
+	ret = WrapBox(unsafe.Pointer(cret))
+
+	return ret
 }
 
 // InitFromBox initializes the given #graphene_box_t with the vertices of
@@ -373,13 +353,14 @@ func (b *Box) InitFromBox(src *Box) *Box {
 	arg1 = (*C.graphene_box_t)(unsafe.Pointer(src.Native()))
 
 	var cret *C.graphene_box_t
-	var goret *Box
 
 	cret = C.graphene_box_init_from_box(arg0, arg1)
 
-	goret = WrapBox(unsafe.Pointer(cret))
+	var ret *Box
 
-	return goret
+	ret = WrapBox(unsafe.Pointer(cret))
+
+	return ret
 }
 
 // InitFromVec3 initializes the given #graphene_box_t with two vertices stored
@@ -394,55 +375,52 @@ func (b *Box) InitFromVec3(min *Vec3, max *Vec3) *Box {
 	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(max.Native()))
 
 	var cret *C.graphene_box_t
-	var goret *Box
 
 	cret = C.graphene_box_init_from_vec3(arg0, arg1, arg2)
 
-	goret = WrapBox(unsafe.Pointer(cret))
+	var ret *Box
 
-	return goret
+	ret = WrapBox(unsafe.Pointer(cret))
+
+	return ret
 }
 
 // Intersection intersects the two given #graphene_box_t.
 //
 // If the two boxes do not intersect, @res will contain a degenerate box
 // initialized with graphene_box_empty().
-func (a *Box) Intersection(b *Box) (res *Box, ok bool) {
+func (a *Box) Intersection(b *Box) (res Box, ok bool) {
 	var arg0 *C.graphene_box_t
 	var arg1 *C.graphene_box_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	arg2 := new(C.graphene_box_t)
-	var ret2 *Box
+	var res Box
 	var cret C._Bool
-	var goret bool
 
-	cret = C.graphene_box_intersection(arg0, arg1, arg2)
+	cret = C.graphene_box_intersection(arg0, arg1, (*C.graphene_box_t)(unsafe.Pointer(&res)))
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return res, ok
 }
 
 // Union unions the two given #graphene_box_t.
-func (a *Box) Union(b *Box) *Box {
+func (a *Box) Union(b *Box) Box {
 	var arg0 *C.graphene_box_t
 	var arg1 *C.graphene_box_t
 
 	arg0 = (*C.graphene_box_t)(unsafe.Pointer(a.Native()))
 	arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	arg2 := new(C.graphene_box_t)
-	var ret2 *Box
+	var res Box
 
-	C.graphene_box_union(arg0, arg1, arg2)
+	C.graphene_box_union(arg0, arg1, (*C.graphene_box_t)(unsafe.Pointer(&res)))
 
-	ret2 = WrapBox(unsafe.Pointer(arg2))
-
-	return ret2
+	return res
 }

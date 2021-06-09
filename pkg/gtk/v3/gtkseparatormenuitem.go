@@ -68,11 +68,12 @@ func marshalSeparatorMenuItem(p uintptr) (interface{}, error) {
 // NewSeparatorMenuItem constructs a class SeparatorMenuItem.
 func NewSeparatorMenuItem() SeparatorMenuItem {
 	var cret C.GtkSeparatorMenuItem
-	var goret SeparatorMenuItem
 
 	cret = C.gtk_separator_menu_item_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorMenuItem)
+	var separatorMenuItem SeparatorMenuItem
 
-	return goret
+	separatorMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorMenuItem)
+
+	return separatorMenuItem
 }

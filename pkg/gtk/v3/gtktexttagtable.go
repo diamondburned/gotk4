@@ -104,14 +104,15 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 
 // NewTextTagTable constructs a class TextTagTable.
 func NewTextTagTable() TextTagTable {
-	cret := new(C.GtkTextTagTable)
-	var goret TextTagTable
+	var cret C.GtkTextTagTable
 
 	cret = C.gtk_text_tag_table_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
+	var textTagTable TextTagTable
 
-	return goret
+	textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
+
+	return textTagTable
 }
 
 // Add: add a tag to the table. The tag is assigned the highest priority in
@@ -127,15 +128,16 @@ func (t textTagTable) Add(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_tag_table_add(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Foreach calls @func on each tag in @table, with user data @data. Note
@@ -146,7 +148,7 @@ func (t textTagTable) Foreach() {
 
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
-	C.gtk_text_tag_table_foreach(arg0, arg1, arg2)
+	C.gtk_text_tag_table_foreach(arg0)
 }
 
 // Size returns the size of the table (number of tags)
@@ -156,13 +158,14 @@ func (t textTagTable) Size() int {
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_text_tag_table_get_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Lookup: look up a named tag.
@@ -175,13 +178,14 @@ func (t textTagTable) Lookup(name string) TextTag {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkTextTag
-	var goret TextTag
 
 	cret = C.gtk_text_tag_table_lookup(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
+	var textTag TextTag
 
-	return goret
+	textTag = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
+
+	return textTag
 }
 
 // Remove: remove a tag from the table. If a TextBuffer has @table as its

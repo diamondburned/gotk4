@@ -241,7 +241,7 @@ type SimpleAsyncResult interface {
 	// unrelated g_simple_async_result_set_handle_cancellation() function.
 	SetCheckCancellable(checkCancellable Cancellable)
 	// SetFromError sets the result from a #GError.
-	SetFromError(err error)
+	SetFromError(err *error)
 	// SetHandleCancellation sets whether to handle cancellation within the
 	// asynchronous operation.
 	//
@@ -257,7 +257,7 @@ type SimpleAsyncResult interface {
 	SetOpResGssize(opRes int)
 	// TakeError sets the result from @error, and takes over the caller's
 	// ownership of @error, so the caller does not need to free it any more.
-	TakeError(err error)
+	TakeError(err *error)
 }
 
 // simpleAsyncResult implements the SimpleAsyncResult interface.
@@ -321,15 +321,16 @@ func (s simpleAsyncResult) OpResGboolean() bool {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_simple_async_result_get_op_res_gboolean(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // OpResGpointer gets a pointer result as returned by the asynchronous
@@ -340,13 +341,14 @@ func (s simpleAsyncResult) OpResGpointer() interface{} {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_simple_async_result_get_op_res_gpointer(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // OpResGssize gets a gssize from the asynchronous result.
@@ -356,13 +358,14 @@ func (s simpleAsyncResult) OpResGssize() int {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gssize
-	var goret int
 
 	cret = C.g_simple_async_result_get_op_res_gssize(arg0)
 
-	goret = int(cret)
+	var gssize int
 
-	return goret
+	gssize = (int)(cret)
+
+	return gssize
 }
 
 // SourceTag gets the source tag for the AsyncResult.
@@ -372,13 +375,14 @@ func (s simpleAsyncResult) SourceTag() interface{} {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_simple_async_result_get_source_tag(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PropagateError propagates an error from within the simple asynchronous
@@ -393,9 +397,10 @@ func (s simpleAsyncResult) PropagateError() error {
 	arg0 = (*C.GSimpleAsyncResult)(unsafe.Pointer(s.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_simple_async_result_propagate_error(arg0, &cerr)
+	C.g_simple_async_result_propagate_error(arg0, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -429,7 +434,7 @@ func (s simpleAsyncResult) SetCheckCancellable(checkCancellable Cancellable) {
 }
 
 // SetFromError sets the result from a #GError.
-func (s simpleAsyncResult) SetFromError(err error) {
+func (s simpleAsyncResult) SetFromError(err *error) {
 	var arg0 *C.GSimpleAsyncResult
 	var arg1 *C.GError
 
@@ -486,7 +491,7 @@ func (s simpleAsyncResult) SetOpResGssize(opRes int) {
 
 // TakeError sets the result from @error, and takes over the caller's
 // ownership of @error, so the caller does not need to free it any more.
-func (s simpleAsyncResult) TakeError(err error) {
+func (s simpleAsyncResult) TakeError(err *error) {
 	var arg0 *C.GSimpleAsyncResult
 	var arg1 *C.GError
 

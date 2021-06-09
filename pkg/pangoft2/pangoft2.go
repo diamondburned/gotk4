@@ -32,14 +32,15 @@ func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
 	arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
 	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	cret := new(C.PangoCoverage)
-	var goret pango.Coverage
+	var cret *C.PangoCoverage
 
 	cret = C.pango_ft2_font_get_coverage(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Coverage)
+	var coverage pango.Coverage
 
-	return goret
+	coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Coverage)
+
+	return coverage
 }
 
 // GetContext retrieves a `PangoContext` for the default PangoFT2 fontmap (see
@@ -52,14 +53,15 @@ func GetContext(dpiX float64, dpiY float64) pango.Context {
 	arg1 = C.double(dpiX)
 	arg2 = C.double(dpiY)
 
-	cret := new(C.PangoContext)
-	var goret pango.Context
+	var cret *C.PangoContext
 
 	cret = C.pango_ft2_get_context(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	var context pango.Context
 
-	return goret
+	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+
+	return context
 }
 
 // ShutdownDisplay: free the global fontmap. (See
@@ -118,14 +120,15 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 
 // NewFontMap constructs a class FontMap.
 func NewFontMap() FontMap {
-	cret := new(C.PangoFT2FontMap)
-	var goret FontMap
+	var cret C.PangoFT2FontMap
 
 	cret = C.pango_ft2_font_map_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontMap)
+	var fontMap FontMap
 
-	return goret
+	fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontMap)
+
+	return fontMap
 }
 
 // CreateContext: create a `PangoContext` for the given fontmap.
@@ -134,14 +137,15 @@ func (f fontMap) CreateContext() pango.Context {
 
 	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 
-	cret := new(C.PangoContext)
-	var goret pango.Context
+	var cret *C.PangoContext
 
 	cret = C.pango_ft2_font_map_create_context(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	var context pango.Context
 
-	return goret
+	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+
+	return context
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final
@@ -155,7 +159,7 @@ func (f fontMap) SetDefaultSubstitute() {
 
 	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_ft2_font_map_set_default_substitute(arg0, arg1, arg2, arg3)
+	C.pango_ft2_font_map_set_default_substitute(arg0)
 }
 
 // SetResolution sets the horizontal and vertical resolutions for the

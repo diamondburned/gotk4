@@ -75,12 +75,13 @@ func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
 
 	arg1 = C.int(maxThreads)
 
-	cret := new(C.GThreadedSocketService)
-	var goret ThreadedSocketService
+	var cret C.GThreadedSocketService
 
 	cret = C.g_threaded_socket_service_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThreadedSocketService)
+	var threadedSocketService ThreadedSocketService
 
-	return goret
+	threadedSocketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThreadedSocketService)
+
+	return threadedSocketService
 }

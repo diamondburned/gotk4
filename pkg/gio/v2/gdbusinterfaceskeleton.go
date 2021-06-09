@@ -134,9 +134,10 @@ func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath stri
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_dbus_interface_skeleton_export(arg0, arg1, arg2, &cerr)
+	C.g_dbus_interface_skeleton_export(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -166,13 +167,14 @@ func (i dBusInterfaceSkeleton) Connection() DBusConnection {
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GDBusConnection
-	var goret DBusConnection
 
 	cret = C.g_dbus_interface_skeleton_get_connection(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	var dBusConnection DBusConnection
 
-	return goret
+	dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return dBusConnection
 }
 
 // Connections gets a list of the connections that @interface_ is exported
@@ -182,17 +184,18 @@ func (i dBusInterfaceSkeleton) Connections() *glib.List {
 
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_dbus_interface_skeleton_get_connections(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // Flags gets the BusInterfaceSkeletonFlags that describes what the behavior
@@ -203,13 +206,14 @@ func (i dBusInterfaceSkeleton) Flags() DBusInterfaceSkeletonFlags {
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
 	var cret C.GDBusInterfaceSkeletonFlags
-	var goret DBusInterfaceSkeletonFlags
 
 	cret = C.g_dbus_interface_skeleton_get_flags(arg0)
 
-	goret = DBusInterfaceSkeletonFlags(cret)
+	var dBusInterfaceSkeletonFlags DBusInterfaceSkeletonFlags
 
-	return goret
+	dBusInterfaceSkeletonFlags = DBusInterfaceSkeletonFlags(cret)
+
+	return dBusInterfaceSkeletonFlags
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface
@@ -220,13 +224,14 @@ func (i dBusInterfaceSkeleton) Info() *DBusInterfaceInfo {
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GDBusInterfaceInfo
-	var goret *DBusInterfaceInfo
 
 	cret = C.g_dbus_interface_skeleton_get_info(arg0)
 
-	goret = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+	var dBusInterfaceInfo *DBusInterfaceInfo
 
-	return goret
+	dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+
+	return dBusInterfaceInfo
 }
 
 // ObjectPath gets the object path that @interface_ is exported on, if any.
@@ -236,13 +241,14 @@ func (i dBusInterfaceSkeleton) ObjectPath() string {
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dbus_interface_skeleton_get_object_path(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Properties gets all D-Bus properties for @interface_.
@@ -251,17 +257,18 @@ func (i dBusInterfaceSkeleton) Properties() *glib.Variant {
 
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GVariant)
-	var goret *glib.Variant
+	var cret *C.GVariant
 
 	cret = C.g_dbus_interface_skeleton_get_properties(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+	var variant *glib.Variant
+
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return variant
 }
 
 // Vtable gets the interface vtable for the D-Bus interface implemented by
@@ -273,13 +280,14 @@ func (i dBusInterfaceSkeleton) Vtable() *DBusInterfaceVTable {
 	arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GDBusInterfaceVTable
-	var goret *DBusInterfaceVTable
 
 	cret = C.g_dbus_interface_skeleton_get_vtable(arg0)
 
-	goret = WrapDBusInterfaceVTable(unsafe.Pointer(cret))
+	var dBusInterfaceVTable *DBusInterfaceVTable
 
-	return goret
+	dBusInterfaceVTable = WrapDBusInterfaceVTable(unsafe.Pointer(cret))
+
+	return dBusInterfaceVTable
 }
 
 // HasConnection checks if @interface_ is exported on @connection.
@@ -291,15 +299,16 @@ func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
 	arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_dbus_interface_skeleton_has_connection(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetFlags sets flags describing what the behavior of @skeleton should be.

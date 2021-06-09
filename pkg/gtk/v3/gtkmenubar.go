@@ -74,13 +74,14 @@ func marshalMenuBar(p uintptr) (interface{}, error) {
 // NewMenuBar constructs a class MenuBar.
 func NewMenuBar() MenuBar {
 	var cret C.GtkMenuBar
-	var goret MenuBar
 
 	cret = C.gtk_menu_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuBar)
+	var menuBar MenuBar
 
-	return goret
+	menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuBar)
+
+	return menuBar
 }
 
 // NewMenuBarFromModel constructs a class MenuBar.
@@ -90,13 +91,14 @@ func NewMenuBarFromModel(model gio.MenuModel) MenuBar {
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkMenuBar
-	var goret MenuBar
 
 	cret = C.gtk_menu_bar_new_from_model(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuBar)
+	var menuBar MenuBar
 
-	return goret
+	menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuBar)
+
+	return menuBar
 }
 
 // ChildPackDirection retrieves the current child pack direction of the
@@ -107,13 +109,14 @@ func (m menuBar) ChildPackDirection() PackDirection {
 	arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 
 	var cret C.GtkPackDirection
-	var goret PackDirection
 
 	cret = C.gtk_menu_bar_get_child_pack_direction(arg0)
 
-	goret = PackDirection(cret)
+	var packDirection PackDirection
 
-	return goret
+	packDirection = PackDirection(cret)
+
+	return packDirection
 }
 
 // PackDirection retrieves the current pack direction of the menubar. See
@@ -124,13 +127,14 @@ func (m menuBar) PackDirection() PackDirection {
 	arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 
 	var cret C.GtkPackDirection
-	var goret PackDirection
 
 	cret = C.gtk_menu_bar_get_pack_direction(arg0)
 
-	goret = PackDirection(cret)
+	var packDirection PackDirection
 
-	return goret
+	packDirection = PackDirection(cret)
+
+	return packDirection
 }
 
 // SetChildPackDirection sets how widgets should be packed inside the

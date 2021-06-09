@@ -28,7 +28,7 @@ func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.
 	}
 
 	fn := v.(CompareDataFunc)
-	fn(gint)
+	gint := fn()
 
 	cret = C.gint(gint)
 }
@@ -98,14 +98,14 @@ func (t *TimeVal) Native() unsafe.Pointer {
 // TvSec gets the field inside the struct.
 func (t *TimeVal) TvSec() int32 {
 	var v int32
-	v = int32(t.native.tv_sec)
+	v = (int32)(t.native.tv_sec)
 	return v
 }
 
 // TvUsec gets the field inside the struct.
 func (t *TimeVal) TvUsec() int32 {
 	var v int32
-	v = int32(t.native.tv_usec)
+	v = (int32)(t.native.tv_usec)
 	return v
 }
 
@@ -157,13 +157,14 @@ func (t *TimeVal) ToISO8601() string {
 
 	arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_time_val_to_iso8601(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

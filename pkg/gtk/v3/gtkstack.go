@@ -164,13 +164,14 @@ func marshalStack(p uintptr) (interface{}, error) {
 // NewStack constructs a class Stack.
 func NewStack() Stack {
 	var cret C.GtkStack
-	var goret Stack
 
 	cret = C.gtk_stack_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	var stack Stack
 
-	return goret
+	stack = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+
+	return stack
 }
 
 // AddNamed adds a child to @stack. The child is identified by the @name.
@@ -217,13 +218,14 @@ func (s stack) ChildByName(name string) Widget {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_stack_get_child_by_name(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Hhomogeneous gets whether @stack is horizontally homogeneous. See
@@ -234,15 +236,16 @@ func (s stack) Hhomogeneous() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_hhomogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Homogeneous gets whether @stack is homogeneous. See
@@ -253,15 +256,16 @@ func (s stack) Homogeneous() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // InterpolateSize returns wether the Stack is set up to interpolate between
@@ -272,15 +276,16 @@ func (s stack) InterpolateSize() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_interpolate_size(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -291,13 +296,14 @@ func (s stack) TransitionDuration() uint {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_stack_get_transition_duration(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // TransitionRunning returns whether the @stack is currently in a transition
@@ -308,15 +314,16 @@ func (s stack) TransitionRunning() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_transition_running(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TransitionType gets the type of animation that will be used for
@@ -327,13 +334,14 @@ func (s stack) TransitionType() StackTransitionType {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkStackTransitionType
-	var goret StackTransitionType
 
 	cret = C.gtk_stack_get_transition_type(arg0)
 
-	goret = StackTransitionType(cret)
+	var stackTransitionType StackTransitionType
 
-	return goret
+	stackTransitionType = StackTransitionType(cret)
+
+	return stackTransitionType
 }
 
 // Vhomogeneous gets whether @stack is vertically homogeneous. See
@@ -344,15 +352,16 @@ func (s stack) Vhomogeneous() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_vhomogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // VisibleChild gets the currently visible child of @stack, or nil if there
@@ -363,13 +372,14 @@ func (s stack) VisibleChild() Widget {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_stack_get_visible_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // VisibleChildName returns the name of the currently visible child of
@@ -380,13 +390,14 @@ func (s stack) VisibleChildName() string {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_stack_get_visible_child_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SetHhomogeneous sets the Stack to be horizontally homogeneous or not. If

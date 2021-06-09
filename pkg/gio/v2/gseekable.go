@@ -125,15 +125,16 @@ func (s seekable) CanSeek() bool {
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_seekable_can_seek(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CanTruncate tests if the length of the stream can be adjusted with
@@ -144,15 +145,16 @@ func (s seekable) CanTruncate() bool {
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_seekable_can_truncate(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Seek seeks in the stream by the given @offset, modified by @type.
@@ -181,9 +183,10 @@ func (s seekable) Seek(offset int64, typ glib.SeekType, cancellable Cancellable)
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_seekable_seek(arg0, arg1, arg2, arg3, &cerr)
+	C.g_seekable_seek(arg0, arg1, arg2, arg3, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -197,13 +200,14 @@ func (s seekable) Tell() int64 {
 	arg0 = (*C.GSeekable)(unsafe.Pointer(s.Native()))
 
 	var cret C.goffset
-	var goret int64
 
 	cret = C.g_seekable_tell(arg0)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
 // Truncate sets the length of the stream to @offset. If the stream was
@@ -226,9 +230,10 @@ func (s seekable) Truncate(offset int64, cancellable Cancellable) error {
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_seekable_truncate(arg0, arg1, arg2, &cerr)
+	C.g_seekable_truncate(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 

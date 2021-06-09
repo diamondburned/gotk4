@@ -23,7 +23,7 @@ type callableGenerator struct {
 
 func newCallableGenerator(ng *NamespaceGenerator) callableGenerator {
 	// Arbitrary sizes, whatever.
-	pen := pen.NewBlockSections(1024, 4096, 1024, 256, 4096, 128)
+	pen := pen.NewBlockSections(1024, 4096, 1024, 1024, 256, 4096, 128)
 
 	return callableGenerator{
 		ng:  ng,
@@ -109,31 +109,24 @@ func (cg *callableGenerator) renderBlock() bool {
 		secInputConv
 		secReturnDecl
 		secFnCall
+		secOutputDecl
 		secOutputConv
 		secReturn
 	)
 
 	var (
-		params     pen.Joints
-		returns    pen.Joints // for internal use
-		returnSigs []string   // for function signature (documentation)
-
 		instanceParam bool
 		inputValues   []GoValueProp
 		outputValues  []CValueProp
 	)
 
 	if cg.Parameters != nil {
-		params = pen.NewJoints(", ", len(cg.Parameters.Parameters))
-		returns = pen.NewJoints(", ", len(cg.Parameters.Parameters)+2)
-		returnSigs = make([]string, 0, len(cg.Parameters.Parameters)+2)
-
 		inputValues = make([]GoValueProp, 0, len(cg.Parameters.Parameters))
 		outputValues = make([]CValueProp, 0, len(cg.Parameters.Parameters)+2)
 
 		if cg.Parameters.InstanceParameter != nil {
 			instanceParam = true
-			params.Add("arg0")
+			// params.Add("arg0")
 
 			inputValues = append(inputValues, GoValueProp{
 				ValueProp: NewValuePropParam(
@@ -146,7 +139,7 @@ func (cg *callableGenerator) renderBlock() bool {
 		for i, param := range cg.Parameters.Parameters {
 			if param.Direction != "out" {
 				out := fmt.Sprintf("arg%d", i+1)
-				params.Add(out)
+				// params.Add(out)
 
 				inputValues = append(inputValues, GoValueProp{
 					ValueProp: NewValuePropParam(
@@ -156,11 +149,11 @@ func (cg *callableGenerator) renderBlock() bool {
 				})
 			} else {
 				in := fmt.Sprintf("arg%d", i+1)
-				params.Add(in)
+				// params.Add(in)
 
-				out := fmt.Sprintf("ret%d", i+1)
-				returns.Add(out)
-				returnSigs = append(returnSigs, SnakeToGo(false, param.Name))
+				out := SnakeToGo(false, param.Name)
+				// returns.Add(out)
+				// returnSigs = append(returnSigs, SnakeToGo(false, param.Name))
 
 				outputValues = append(outputValues, CValueProp{
 					ValueProp: NewValuePropParam(in, out, &i, param.ParameterAttrs),
@@ -170,30 +163,24 @@ func (cg *callableGenerator) renderBlock() bool {
 	}
 
 	var hasReturn bool
-	// If the last return is a bool and the function can throw an error,
-	// then the boolean is probably to indicate that things are OK. We can
-	// skip generating this boolean.
 	if !returnIsVoid(cg.ReturnValue) {
 		returnName := returnName(cg.CallableAttrs)
 
+		// If the last return is a bool and the function can throw an error,
+		// then the boolean is probably to indicate that things are OK. We can
+		// skip generating this boolean.
 		if !cg.Throws || returnName != "ok" {
 			hasReturn = true
-			returnSigs = append(returnSigs, returnName)
 
-			returns.Add("goret")
 			outputValues = append(outputValues, CValueProp{
-				ValueProp: NewValuePropReturn("cret", "goret", *cg.ReturnValue),
+				ValueProp: NewValuePropReturn("cret", returnName, *cg.ReturnValue),
 			})
 		}
 	}
 
 	if cg.Throws {
-		params.Add("&cerr")
-		returns.Add("goerr")
-		returnSigs = append(returnSigs, "err")
-
 		outputValues = append(outputValues, CValueProp{
-			ValueProp: newThrowValue("cerr", "goerr"),
+			ValueProp: NewThrowValue("cerr", "goerr"),
 		})
 	}
 
@@ -209,13 +196,21 @@ func (cg *callableGenerator) renderBlock() bool {
 		return false
 	}
 
-	goArgs := pen.NewJoints(", ", len(convertedInputs))
+	// For C function calling.
+	callParams := pen.NewJoints(", ", len(convertedInputs)+len(convertedOutputs))
+	// For Go variables after the return statement.
+	goReturns := pen.NewJoints(", ", 2)
+
+	goFnArgs := pen.NewJoints(", ", len(convertedInputs))
+	goFnRets := pen.NewJoints(", ", len(convertedOutputs))
+
 	for i, converted := range convertedInputs {
 		converted.Apply(cg.fg)
+		callParams.Add(converted.OutCall)
 
 		// Skip the instance parameter if any.
 		if i != 0 || !instanceParam {
-			goArgs.Addf("%s %s", converted.In, converted.InType)
+			goFnArgs.Addf("%s %s", converted.InName, converted.InType)
 		}
 
 		// Go inputs are declared in the parameters, so no InDeclare.
@@ -225,43 +220,48 @@ func (cg *callableGenerator) renderBlock() bool {
 		cg.pen.Line(secInputConv, converted.Conversion)
 	}
 
-	goRets := pen.NewJoints(", ", len(convertedOutputs))
-	for i, converted := range convertedOutputs {
+	for _, converted := range convertedOutputs {
 		converted.Apply(cg.fg)
+		goReturns.Add(converted.OutName)
+
+		if converted.ParameterIsOutput {
+			callParams.Add(converted.InCall)
+		}
 
 		// The return variable is not declared in the signature if there's only
 		// 1 output, so we only declare it then.
-		goRets.Addf("%s %s", returnSigs[i], converted.OutType)
+		goFnRets.Addf("%s %s", converted.OutName, converted.OutType)
 
 		cg.pen.Line(secReturnDecl, converted.InDeclare)
 		// Go outputs should be redeclared.
-		cg.pen.Line(secReturnDecl, converted.OutDeclare)
+		cg.pen.Line(secOutputDecl, converted.OutDeclare)
 		// Conversions follow right after declaring all outputs.
 		cg.pen.Line(secOutputConv, converted.Conversion)
 	}
 
 	if !hasReturn {
-		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, params.Join())
+		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, callParams.Join())
 	} else {
-		cg.pen.Linef(secFnCall, "cret = C.%s(%s)", cg.CIdentifier, params.Join())
+		cg.pen.Linef(secFnCall, "cret = C.%s(%s)", cg.CIdentifier, callParams.Join())
 		cg.pen.EmptyLine(secFnCall)
 	}
 
 	if len(outputValues) > 0 {
-		cg.pen.Line(secReturn, "return "+returns.Join())
+		cg.pen.Line(secReturn, "return "+goReturns.Join())
 	}
 
 	cg.Block = cg.pen.String()
 	cg.pen.Reset()
 
-	cg.Tail = "(" + goArgs.Join() + ")"
-	switch goRets.Len() {
+	cg.Tail = "(" + goFnArgs.Join() + ")"
+
+	switch goFnRets.Len() {
 	case 0:
 	// ok
 	case 1:
-		cg.Tail += " " + strings.SplitN(goRets.Join(), " ", 2)[1] // type only
+		cg.Tail += " " + strings.SplitN(goFnRets.Join(), " ", 2)[1] // type only
 	default:
-		cg.Tail += " (" + goRets.Join() + ")"
+		cg.Tail += " (" + goFnRets.Join() + ")"
 	}
 
 	return true

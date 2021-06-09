@@ -21,11 +21,10 @@ func init() {
 	})
 }
 
-// CellRendererText renders text in a cell
-//
-// A CellRendererText renders a given text in its cell, using the font, color
-// and style information provided by its properties. The text will be ellipsized
-// if it is too long and the CellRendererText:ellipsize property allows it.
+// CellRendererText: a CellRendererText renders a given text in its cell, using
+// the font, color and style information provided by its properties. The text
+// will be ellipsized if it is too long and the CellRendererText:ellipsize
+// property allows it.
 //
 // If the CellRenderer:mode is GTK_CELL_RENDERER_MODE_EDITABLE, the
 // CellRendererText allows to edit its text using an entry.
@@ -67,13 +66,14 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 // NewCellRendererText constructs a class CellRendererText.
 func NewCellRendererText() CellRendererText {
 	var cret C.GtkCellRendererText
-	var goret CellRendererText
 
 	cret = C.gtk_cell_renderer_text_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererText)
+	var cellRendererText CellRendererText
 
-	return goret
+	cellRendererText = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererText)
+
+	return cellRendererText
 }
 
 // SetFixedHeightFromFont sets the height of a renderer to explicitly be

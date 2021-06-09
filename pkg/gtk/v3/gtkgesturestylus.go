@@ -67,14 +67,15 @@ func NewGestureStylus(widget Widget) GestureStylus {
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	cret := new(C.GtkGestureStylus)
-	var goret GestureStylus
+	var cret C.GtkGestureStylus
 
 	cret = C.gtk_gesture_stylus_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureStylus)
+	var gestureStylus GestureStylus
 
-	return goret
+	gestureStylus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureStylus)
+
+	return gestureStylus
 }
 
 // Axis returns the current value for the requested @axis. This function
@@ -87,19 +88,20 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (value float64, ok bool) {
 	arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 	arg1 = (C.GdkAxisUse)(axis)
 
-	arg2 := new(C.gdouble)
-	var ret2 float64
+	var arg2 C.gdouble
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_gesture_stylus_get_axis(arg0, arg1, arg2)
+	cret = C.gtk_gesture_stylus_get_axis(arg0, arg1, &arg2)
 
-	ret2 = float64(*arg2)
+	var value float64
+	var ok bool
+
+	value = (float64)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return value, ok
 }
 
 // DeviceTool returns the DeviceTool currently driving input through this
@@ -112,11 +114,12 @@ func (g gestureStylus) DeviceTool() gdk.DeviceTool {
 	arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 
 	var cret *C.GdkDeviceTool
-	var goret gdk.DeviceTool
 
 	cret = C.gtk_gesture_stylus_get_device_tool(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.DeviceTool)
+	var deviceTool gdk.DeviceTool
 
-	return goret
+	deviceTool = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.DeviceTool)
+
+	return deviceTool
 }

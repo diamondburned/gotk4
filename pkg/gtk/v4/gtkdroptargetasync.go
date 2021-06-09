@@ -23,35 +23,32 @@ func init() {
 	})
 }
 
-// DropTargetAsync: `GtkDropTargetAsync` is an event controller to receive
-// Drag-and-Drop operations, asynchronously.
+// DropTargetAsync: gtkDropTargetAsync is an auxiliary object that can be used
+// to receive Drag-and-Drop operations. It is the more complete but also more
+// complex method of handling drop operations compared to DropTarget and you
+// should only use it if DropTarget doesn't provide all the features you need.
 //
-// It is the more complete but also more complex method of handling drop
-// operations compared to [class@Gtk.DropTarget], and you should only use it if
-// `GtkDropTarget` doesn't provide all the features you need.
+// To use a DropTargetAsync to receive drops on a widget, you create a
+// DropTargetAsync object, configure which data formats and actions you support,
+// connect to its signals, and then attach it to the widget with
+// gtk_widget_add_controller().
 //
-// To use a `GtkDropTargetAsync` to receive drops on a widget, you create a
-// `GtkDropTargetAsync` object, configure which data formats and actions you
-// support, connect to its signals, and then attach it to the widget with
-// [method@Gtk.Widget.add_controller].
-//
-// During a drag operation, the first signal that a `GtkDropTargetAsync` emits
-// is [signal@Gtk.DropTargetAsync::accept], which is meant to determine whether
-// the target is a possible drop site for the ongoing drop. The default handler
-// for the ::accept signal accepts the drop if it finds a compatible data format
-// and an action that is supported on both sides.
+// During a drag operation, the first signal that a GtkDropTargetAsync emits is
+// DropTargetAsync::accept, which is meant to determine whether the target is a
+// possible drop site for the ongoing drop. The default handler for the ::accept
+// signal accepts the drop if it finds a compatible data format and an action
+// that is supported on both sides.
 //
 // If it is, and the widget becomes a target, you will receive a
-// [signal@Gtk.DropTargetAsync::drag-enter] signal, followed by
-// [signal@Gtk.DropTargetAsync::drag-motion] signals as the pointer moves,
-// optionally a [signal@Gtk.DropTargetAsync::drop] signal when a drop happens,
-// and finally a [signal@Gtk.DropTargetAsync::drag-leave] signal when the
+// DropTargetAsync::drag-enter signal, followed by DropTargetAsync::drag-motion
+// signals as the pointer moves, optionally a DropTargetAsync::drop signal when
+// a drop happens, and finally a DropTargetAsync::drag-leave signal when the
 // pointer moves off the widget.
 //
-// The ::drag-enter and ::drag-motion handler return a `GdkDragAction` to update
-// the status of the ongoing operation. The ::drop handler should decide if it
+// The ::drag-enter and ::drag-motion handler return a DragAction to update the
+// status of the ongoing operation. The ::drop handler should decide if it
 // ultimately accepts the drop and if it does, it should initiate the data
-// transfer and finish the operation by calling [method@Gdk.Drop.finish].
+// transfer and finish the operation by calling gdk_drop_finish().
 //
 // Between the ::drag-enter and ::drag-leave signals the widget is a current
 // drop target, and will receive the GTK_STATE_FLAG_DROP_ACTIVE state, which can
@@ -105,14 +102,15 @@ func NewDropTargetAsync(formats *gdk.ContentFormats, actions gdk.DragAction) Dro
 	arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
 	arg2 = (C.GdkDragAction)(actions)
 
-	cret := new(C.GtkDropTargetAsync)
-	var goret DropTargetAsync
+	var cret C.GtkDropTargetAsync
 
 	cret = C.gtk_drop_target_async_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DropTargetAsync)
+	var dropTargetAsync DropTargetAsync
 
-	return goret
+	dropTargetAsync = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DropTargetAsync)
+
+	return dropTargetAsync
 }
 
 // Actions gets the actions that this drop target supports.
@@ -122,13 +120,14 @@ func (s dropTargetAsync) Actions() gdk.DragAction {
 	arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkDragAction
-	var goret gdk.DragAction
 
 	cret = C.gtk_drop_target_async_get_actions(arg0)
 
-	goret = gdk.DragAction(cret)
+	var dragAction gdk.DragAction
 
-	return goret
+	dragAction = gdk.DragAction(cret)
+
+	return dragAction
 }
 
 // Formats gets the data formats that this drop target accepts.
@@ -139,17 +138,18 @@ func (s dropTargetAsync) Formats() *gdk.ContentFormats {
 
 	arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GdkContentFormats)
-	var goret *gdk.ContentFormats
+	var cret *C.GdkContentFormats
 
 	cret = C.gtk_drop_target_async_get_formats(arg0)
 
-	goret = gdk.WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *gdk.ContentFormats) {
+	var contentFormats *gdk.ContentFormats
+
+	contentFormats = gdk.WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(contentFormats, func(v *gdk.ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return contentFormats
 }
 
 // RejectDrop sets the @drop as not accepted on this drag site.

@@ -22,24 +22,16 @@ func init() {
 	})
 }
 
-// Root: `GtkRoot` is the interface implemented by all widgets that can act as a
-// toplevel widget.
+// Root is the interface implemented by all widgets that can act as a toplevel
+// widget to a hierarchy of widgets. The root widget takes care of providing the
+// connection to the windowing system and manages layout, drawing and event
+// delivery for its widget hierarchy.
 //
-// The root widget takes care of providing the connection to the windowing
-// system and manages layout, drawing and event delivery for its widget
-// hierarchy.
-//
-// The obvious example of a `GtkRoot` is `GtkWindow`.
-//
-// To get the display to which a `GtkRoot` belongs, use
-// [method@Gtk.Root.get_display].
-//
-// `GtkRoot` also maintains the location of keyboard focus inside its widget
-// hierarchy, with [method@Gtk.Root.set_focus] and [method@Gtk.Root.get_focus].
+// The obvious example of a Root is Window.
 type Root interface {
 	NativeWidget
 
-	// Display returns the display that this `GtkRoot` is on.
+	// Display returns the display that this GtkRoot is on.
 	Display() gdk.Display
 	// Focus retrieves the current focused widget within the root.
 	//
@@ -48,13 +40,11 @@ type Root interface {
 	// will be false for the widget.
 	Focus() Widget
 	// SetFocus: if @focus is not the current focus widget, and is focusable,
-	// sets it as the focus widget for the root.
-	//
-	// If @focus is nil, unsets the focus widget for the root.
+	// sets it as the focus widget for the root. If @focus is nil, unsets the
+	// focus widget for the root.
 	//
 	// To set the focus to a particular widget in the root, it is usually more
-	// convenient to use [method@Gtk.Widget.grab_focus] instead of this
-	// function.
+	// convenient to use gtk_widget_grab_focus() instead of this function.
 	SetFocus(focus Widget)
 }
 
@@ -81,20 +71,21 @@ func marshalRoot(p uintptr) (interface{}, error) {
 	return WrapRoot(obj), nil
 }
 
-// Display returns the display that this `GtkRoot` is on.
+// Display returns the display that this GtkRoot is on.
 func (s root) Display() gdk.Display {
 	var arg0 *C.GtkRoot
 
 	arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDisplay
-	var goret gdk.Display
 
 	cret = C.gtk_root_get_display(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+	var display gdk.Display
 
-	return goret
+	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+
+	return display
 }
 
 // Focus retrieves the current focused widget within the root.
@@ -108,23 +99,22 @@ func (s root) Focus() Widget {
 	arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_root_get_focus(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetFocus: if @focus is not the current focus widget, and is focusable,
-// sets it as the focus widget for the root.
-//
-// If @focus is nil, unsets the focus widget for the root.
+// sets it as the focus widget for the root. If @focus is nil, unsets the
+// focus widget for the root.
 //
 // To set the focus to a particular widget in the root, it is usually more
-// convenient to use [method@Gtk.Widget.grab_focus] instead of this
-// function.
+// convenient to use gtk_widget_grab_focus() instead of this function.
 func (s root) SetFocus(focus Widget) {
 	var arg0 *C.GtkRoot
 	var arg1 *C.GtkWidget

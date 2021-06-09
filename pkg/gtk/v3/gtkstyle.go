@@ -657,11 +657,11 @@ type Style interface {
 	// filling in @color and returning true if found, otherwise returning false.
 	// Do not cache the found mapping, because it depends on the Style and might
 	// change when a theme switch occurs.
-	LookupColor(colorName string) (color *gdk.Color, ok bool)
+	LookupColor(colorName string) (color gdk.Color, ok bool)
 	// LookupIconSet looks up @stock_id in the icon factories associated with
 	// @style and the default icon factory, returning an icon set if found,
 	// otherwise nil.
-	LookupIconSet(stockID string) *IconSet
+	LookupIconSet(stockId string) *IconSet
 	// RenderIcon renders the icon specified by @source at the given @size
 	// according to the given parameters and returns the result in a pixbuf.
 	RenderIcon(source *IconSource, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf
@@ -693,14 +693,15 @@ func marshalStyle(p uintptr) (interface{}, error) {
 
 // NewStyle constructs a class Style.
 func NewStyle() Style {
-	cret := new(C.GtkStyle)
-	var goret Style
+	var cret C.GtkStyle
 
 	cret = C.gtk_style_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
+	var style Style
 
-	return goret
+	style = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
+
+	return style
 }
 
 func (s style) ApplyDefaultBackground(cr *cairo.Context, window gdk.Window, stateType StateType, x int, y int, width int, height int) {
@@ -740,13 +741,14 @@ func (s style) Attach(window gdk.Window) Style {
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	var cret *C.GtkStyle
-	var goret Style
 
 	cret = C.gtk_style_attach(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Style)
+	var ret Style
 
-	return goret
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Style)
+
+	return ret
 }
 
 // Copy creates a copy of the passed in Style object.
@@ -755,14 +757,15 @@ func (s style) Copy() Style {
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GtkStyle)
-	var goret Style
+	var cret *C.GtkStyle
 
 	cret = C.gtk_style_copy(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
+	var ret Style
 
-	return goret
+	ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Style)
+
+	return ret
 }
 
 // Detach detaches a style from a window. If the style is not attached to
@@ -787,14 +790,15 @@ func (s style) StyleProperty(widgetType externglib.Type, propertyName string) *e
 	arg2 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	arg3 := new(C.GValue)
-	var ret3 *externglib.Value
+	var arg3 C.GValue
 
-	C.gtk_style_get_style_property(arg0, arg1, arg2, arg3)
+	C.gtk_style_get_style_property(arg0, arg1, arg2, &arg3)
 
-	ret3 = externglib.ValueFromNative(unsafe.Pointer(*arg3))
+	var value *externglib.Value
 
-	return ret3
+	value = externglib.ValueFromNative(unsafe.Pointer(arg3))
+
+	return value
 }
 
 // HasContext returns whether @style has an associated StyleContext.
@@ -804,22 +808,23 @@ func (s style) HasContext() bool {
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_style_has_context(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // LookupColor looks up @color_name in the style’s logical color mappings,
 // filling in @color and returning true if found, otherwise returning false.
 // Do not cache the found mapping, because it depends on the Style and might
 // change when a theme switch occurs.
-func (s style) LookupColor(colorName string) (color *gdk.Color, ok bool) {
+func (s style) LookupColor(colorName string) (color gdk.Color, ok bool) {
 	var arg0 *C.GtkStyle
 	var arg1 *C.gchar
 
@@ -827,40 +832,40 @@ func (s style) LookupColor(colorName string) (color *gdk.Color, ok bool) {
 	arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(C.GdkColor)
-	var ret2 *gdk.Color
+	var color gdk.Color
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_style_lookup_color(arg0, arg1, arg2)
+	cret = C.gtk_style_lookup_color(arg0, arg1, (*C.GdkColor)(unsafe.Pointer(&color)))
 
-	ret2 = gdk.WrapColor(unsafe.Pointer(arg2))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return color, ok
 }
 
 // LookupIconSet looks up @stock_id in the icon factories associated with
 // @style and the default icon factory, returning an icon set if found,
 // otherwise nil.
-func (s style) LookupIconSet(stockID string) *IconSet {
+func (s style) LookupIconSet(stockId string) *IconSet {
 	var arg0 *C.GtkStyle
 	var arg1 *C.gchar
 
 	arg0 = (*C.GtkStyle)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkIconSet
-	var goret *IconSet
 
 	cret = C.gtk_style_lookup_icon_set(arg0, arg1)
 
-	goret = WrapIconSet(unsafe.Pointer(cret))
+	var iconSet *IconSet
 
-	return goret
+	iconSet = WrapIconSet(unsafe.Pointer(cret))
+
+	return iconSet
 }
 
 // RenderIcon renders the icon specified by @source at the given @size
@@ -883,14 +888,15 @@ func (s style) RenderIcon(source *IconSource, direction TextDirection, state Sta
 	arg6 = (*C.gchar)(C.CString(detail))
 	defer C.free(unsafe.Pointer(arg6))
 
-	cret := new(C.GdkPixbuf)
-	var goret gdkpixbuf.Pixbuf
+	var cret *C.GdkPixbuf
 
 	cret = C.gtk_style_render_icon(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	var pixbuf gdkpixbuf.Pixbuf
 
-	return goret
+	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return pixbuf
 }
 
 // SetBackground sets the background of @window to the background color or

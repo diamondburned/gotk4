@@ -30,15 +30,16 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 	arg3 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_bindings_activate(arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // BindingsActivateEvent looks up key bindings for @object to find one matching
@@ -51,15 +52,16 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 	arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_bindings_activate_event(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // BindingArg: a BindingArg holds the data associated with an argument for a key
@@ -124,7 +126,7 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 // Keyval gets the field inside the struct.
 func (b *BindingEntry) Keyval() uint {
 	var v uint
-	v = uint(b.native.keyval)
+	v = (uint)(b.native.keyval)
 	return v
 }
 
@@ -202,7 +204,7 @@ func (b *BindingSet) SetName() string {
 // Priority gets the field inside the struct.
 func (b *BindingSet) Priority() int {
 	var v int
-	v = int(b.native.priority)
+	v = (int)(b.native.priority)
 	return v
 }
 
@@ -255,15 +257,16 @@ func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object ge
 	arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_binding_set_activate(arg0, arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // AddPath: this function was used internally by the GtkRC parsing mechanism to
@@ -328,6 +331,6 @@ func (b *BindingSignal) SignalName() string {
 // NArgs gets the field inside the struct.
 func (b *BindingSignal) NArgs() uint {
 	var v uint
-	v = uint(b.native.n_args)
+	v = (uint)(b.native.n_args)
 	return v
 }

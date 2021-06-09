@@ -75,14 +75,15 @@ func NewEmblem(icon Icon) Emblem {
 
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
-	cret := new(C.GEmblem)
-	var goret Emblem
+	var cret C.GEmblem
 
 	cret = C.g_emblem_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+	var emblem Emblem
 
-	return goret
+	emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+
+	return emblem
 }
 
 // NewEmblemWithOrigin constructs a class Emblem.
@@ -93,14 +94,15 @@ func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	arg2 = (C.GEmblemOrigin)(origin)
 
-	cret := new(C.GEmblem)
-	var goret Emblem
+	var cret C.GEmblem
 
 	cret = C.g_emblem_new_with_origin(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+	var emblem Emblem
 
-	return goret
+	emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+
+	return emblem
 }
 
 // Icon gives back the icon from @emblem.
@@ -110,13 +112,14 @@ func (e emblem) Icon() Icon {
 	arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GIcon
-	var goret Icon
 
 	cret = C.g_emblem_get_icon(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+	var icon Icon
 
-	return goret
+	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+
+	return icon
 }
 
 // Origin gets the origin of the emblem.
@@ -126,11 +129,12 @@ func (e emblem) Origin() EmblemOrigin {
 	arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
 	var cret C.GEmblemOrigin
-	var goret EmblemOrigin
 
 	cret = C.g_emblem_get_origin(arg0)
 
-	goret = EmblemOrigin(cret)
+	var emblemOrigin EmblemOrigin
 
-	return goret
+	emblemOrigin = EmblemOrigin(cret)
+
+	return emblemOrigin
 }

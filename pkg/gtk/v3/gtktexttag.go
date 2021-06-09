@@ -89,14 +89,15 @@ func NewTextTag(name string) TextTag {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkTextTag)
-	var goret TextTag
+	var cret C.GtkTextTag
 
 	cret = C.gtk_text_tag_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTag)
+	var textTag TextTag
 
-	return goret
+	textTag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTag)
+
+	return textTag
 }
 
 // Changed emits the TextTagTable::tag-changed signal on the TextTagTable
@@ -123,13 +124,14 @@ func (t textTag) Priority() int {
 	arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_text_tag_get_priority(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SetPriority sets the priority of a TextTag. Valid priorities start at 0

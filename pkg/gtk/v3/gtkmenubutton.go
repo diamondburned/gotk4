@@ -207,13 +207,14 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 // NewMenuButton constructs a class MenuButton.
 func NewMenuButton() MenuButton {
 	var cret C.GtkMenuButton
-	var goret MenuButton
 
 	cret = C.gtk_menu_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuButton)
+	var menuButton MenuButton
 
-	return goret
+	menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuButton)
+
+	return menuButton
 }
 
 // AlignWidget returns the parent Widget to use to line up with menu.
@@ -223,13 +224,14 @@ func (m menuButton) AlignWidget() Widget {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_menu_button_get_align_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Direction returns the direction the popup will be pointing at when popped
@@ -240,13 +242,14 @@ func (m menuButton) Direction() ArrowType {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.GtkArrowType
-	var goret ArrowType
 
 	cret = C.gtk_menu_button_get_direction(arg0)
 
-	goret = ArrowType(cret)
+	var arrowType ArrowType
 
-	return goret
+	arrowType = ArrowType(cret)
+
+	return arrowType
 }
 
 // MenuModel returns the Model used to generate the popup.
@@ -256,13 +259,14 @@ func (m menuButton) MenuModel() gio.MenuModel {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GMenuModel
-	var goret gio.MenuModel
 
 	cret = C.gtk_menu_button_get_menu_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	var menuModel gio.MenuModel
 
-	return goret
+	menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+
+	return menuModel
 }
 
 // Popover returns the Popover that pops out of the button. If the button is
@@ -273,13 +277,14 @@ func (m menuButton) Popover() Popover {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkPopover
-	var goret Popover
 
 	cret = C.gtk_menu_button_get_popover(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
+	var popover Popover
 
-	return goret
+	popover = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
+
+	return popover
 }
 
 // Popup returns the Menu that pops out of the button. If the button does
@@ -290,13 +295,14 @@ func (m menuButton) Popup() Menu {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkMenu
-	var goret Menu
 
 	cret = C.gtk_menu_button_get_popup(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
+	var menu Menu
 
-	return goret
+	menu = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Menu)
+
+	return menu
 }
 
 // UsePopover returns whether a Popover or a Menu will be constructed from
@@ -307,15 +313,16 @@ func (m menuButton) UsePopover() bool {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_menu_button_get_use_popover(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetAlignWidget sets the Widget to use to line the menu with when popped

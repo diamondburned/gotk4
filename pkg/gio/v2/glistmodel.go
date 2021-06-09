@@ -160,13 +160,14 @@ func (l listModel) ItemType() externglib.Type {
 	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_list_model_get_item_type(arg0)
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 // NItems gets the number of items in @list.
@@ -180,13 +181,14 @@ func (l listModel) NItems() uint {
 	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_list_model_get_n_items(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Object: get the item at @position. If @position is greater than the
@@ -201,14 +203,15 @@ func (l listModel) Object(position uint) gextras.Objector {
 	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 	arg1 = C.guint(position)
 
-	cret := new(C.GObject)
-	var goret gextras.Objector
+	var cret *C.GObject
 
 	cret = C.g_list_model_get_object(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // ItemsChanged emits the Model::items-changed signal on @list.

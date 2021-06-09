@@ -118,13 +118,14 @@ func NewFileChooserButton(title string, action FileChooserAction) FileChooserBut
 	arg2 = (C.GtkFileChooserAction)(action)
 
 	var cret C.GtkFileChooserButton
-	var goret FileChooserButton
 
 	cret = C.gtk_file_chooser_button_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserButton)
+	var fileChooserButton FileChooserButton
 
-	return goret
+	fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserButton)
+
+	return fileChooserButton
 }
 
 // NewFileChooserButtonWithDialog constructs a class FileChooserButton.
@@ -134,13 +135,14 @@ func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
 
 	var cret C.GtkFileChooserButton
-	var goret FileChooserButton
 
 	cret = C.gtk_file_chooser_button_new_with_dialog(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserButton)
+	var fileChooserButton FileChooserButton
 
-	return goret
+	fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserButton)
+
+	return fileChooserButton
 }
 
 // FocusOnClick returns whether the button grabs focus when it is clicked
@@ -151,15 +153,16 @@ func (b fileChooserButton) FocusOnClick() bool {
 	arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_file_chooser_button_get_focus_on_click(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Title retrieves the title of the browse dialog used by @button. The
@@ -170,13 +173,14 @@ func (b fileChooserButton) Title() string {
 	arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_file_chooser_button_get_title(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // WidthChars retrieves the width in characters of the @button widget’s
@@ -187,13 +191,14 @@ func (b fileChooserButton) WidthChars() int {
 	arg0 = (*C.GtkFileChooserButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_file_chooser_button_get_width_chars(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SetFocusOnClick sets whether the button will grab focus when it is

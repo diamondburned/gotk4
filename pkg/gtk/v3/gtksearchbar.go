@@ -94,13 +94,14 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 // NewSearchBar constructs a class SearchBar.
 func NewSearchBar() SearchBar {
 	var cret C.GtkSearchBar
-	var goret SearchBar
 
 	cret = C.gtk_search_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchBar)
+	var searchBar SearchBar
 
-	return goret
+	searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchBar)
+
+	return searchBar
 }
 
 // ConnectEntry connects the Entry widget passed as the one to be used in
@@ -124,15 +125,16 @@ func (b searchBar) SearchMode() bool {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_search_bar_get_search_mode(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowCloseButton returns whether the close button is shown.
@@ -142,15 +144,16 @@ func (b searchBar) ShowCloseButton() bool {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_search_bar_get_show_close_button(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetSearchMode switches the search mode on or off.

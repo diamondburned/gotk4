@@ -46,17 +46,18 @@ func marshalPlane(p uintptr) (interface{}, error) {
 
 // NewPlaneAlloc constructs a struct Plane.
 func NewPlaneAlloc() *Plane {
-	cret := new(C.graphene_plane_t)
-	var goret *Plane
+	var cret *C.graphene_plane_t
 
 	cret = C.graphene_plane_alloc()
 
-	goret = WrapPlane(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Plane) {
+	var plane *Plane
+
+	plane = WrapPlane(unsafe.Pointer(cret))
+	runtime.SetFinalizer(plane, func(v *Plane) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return plane
 }
 
 // Native returns the underlying C source pointer.
@@ -73,13 +74,14 @@ func (p *Plane) Distance(point *Point3D) float32 {
 	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.graphene_plane_distance(arg0, arg1)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Equal checks whether the two given #graphene_plane_t are equal.
@@ -91,15 +93,16 @@ func (a *Plane) Equal(b *Plane) bool {
 	arg1 = (*C.graphene_plane_t)(unsafe.Pointer(b.Native()))
 
 	var cret C._Bool
-	var goret bool
 
 	cret = C.graphene_plane_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Free frees the resources allocated by graphene_plane_alloc().
@@ -119,30 +122,28 @@ func (p *Plane) Constant() float32 {
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.graphene_plane_get_constant(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Normal retrieves the normal vector pointing towards the origin of the given
 // #graphene_plane_t.
-func (p *Plane) Normal() *Vec3 {
+func (p *Plane) Normal() Vec3 {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	arg1 := new(C.graphene_vec3_t)
-	var ret1 *Vec3
+	var normal Vec3
 
-	C.graphene_plane_get_normal(arg0, arg1)
+	C.graphene_plane_get_normal(arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&normal)))
 
-	ret1 = WrapVec3(unsafe.Pointer(arg1))
-
-	return ret1
+	return normal
 }
 
 // Init initializes the given #graphene_plane_t using the given @normal vector
@@ -157,13 +158,14 @@ func (p *Plane) Init(normal *Vec3, constant float32) *Plane {
 	arg2 = C.float(constant)
 
 	var cret *C.graphene_plane_t
-	var goret *Plane
 
 	cret = C.graphene_plane_init(arg0, arg1, arg2)
 
-	goret = WrapPlane(unsafe.Pointer(cret))
+	var plane *Plane
 
-	return goret
+	plane = WrapPlane(unsafe.Pointer(cret))
+
+	return plane
 }
 
 // InitFromPlane initializes the given #graphene_plane_t using the normal vector
@@ -176,13 +178,14 @@ func (p *Plane) InitFromPlane(src *Plane) *Plane {
 	arg1 = (*C.graphene_plane_t)(unsafe.Pointer(src.Native()))
 
 	var cret *C.graphene_plane_t
-	var goret *Plane
 
 	cret = C.graphene_plane_init_from_plane(arg0, arg1)
 
-	goret = WrapPlane(unsafe.Pointer(cret))
+	var plane *Plane
 
-	return goret
+	plane = WrapPlane(unsafe.Pointer(cret))
+
+	return plane
 }
 
 // InitFromPoint initializes the given #graphene_plane_t using the given normal
@@ -197,13 +200,14 @@ func (p *Plane) InitFromPoint(normal *Vec3, point *Point3D) *Plane {
 	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
 	var cret *C.graphene_plane_t
-	var goret *Plane
 
 	cret = C.graphene_plane_init_from_point(arg0, arg1, arg2)
 
-	goret = WrapPlane(unsafe.Pointer(cret))
+	var plane *Plane
 
-	return goret
+	plane = WrapPlane(unsafe.Pointer(cret))
+
+	return plane
 }
 
 // InitFromPoints initializes the given #graphene_plane_t using the 3 provided
@@ -223,13 +227,14 @@ func (p *Plane) InitFromPoints(a *Point3D, b *Point3D, c *Point3D) *Plane {
 	arg3 = (*C.graphene_point3d_t)(unsafe.Pointer(c.Native()))
 
 	var cret *C.graphene_plane_t
-	var goret *Plane
 
 	cret = C.graphene_plane_init_from_points(arg0, arg1, arg2, arg3)
 
-	goret = WrapPlane(unsafe.Pointer(cret))
+	var plane *Plane
 
-	return goret
+	plane = WrapPlane(unsafe.Pointer(cret))
+
+	return plane
 }
 
 // InitFromVec4 initializes the given #graphene_plane_t using the components of
@@ -242,47 +247,42 @@ func (p *Plane) InitFromVec4(src *Vec4) *Plane {
 	arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(src.Native()))
 
 	var cret *C.graphene_plane_t
-	var goret *Plane
 
 	cret = C.graphene_plane_init_from_vec4(arg0, arg1)
 
-	goret = WrapPlane(unsafe.Pointer(cret))
+	var plane *Plane
 
-	return goret
+	plane = WrapPlane(unsafe.Pointer(cret))
+
+	return plane
 }
 
 // Negate negates the normal vector and constant of a #graphene_plane_t,
 // effectively mirroring the plane across the origin.
-func (p *Plane) Negate() *Plane {
+func (p *Plane) Negate() Plane {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	arg1 := new(C.graphene_plane_t)
-	var ret1 *Plane
+	var res Plane
 
-	C.graphene_plane_negate(arg0, arg1)
+	C.graphene_plane_negate(arg0, (*C.graphene_plane_t)(unsafe.Pointer(&res)))
 
-	ret1 = WrapPlane(unsafe.Pointer(arg1))
-
-	return ret1
+	return res
 }
 
 // Normalize normalizes the vector of the given #graphene_plane_t, and adjusts
 // the constant accordingly.
-func (p *Plane) Normalize() *Plane {
+func (p *Plane) Normalize() Plane {
 	var arg0 *C.graphene_plane_t
 
 	arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	arg1 := new(C.graphene_plane_t)
-	var ret1 *Plane
+	var res Plane
 
-	C.graphene_plane_normalize(arg0, arg1)
+	C.graphene_plane_normalize(arg0, (*C.graphene_plane_t)(unsafe.Pointer(&res)))
 
-	ret1 = WrapPlane(unsafe.Pointer(arg1))
-
-	return ret1
+	return res
 }
 
 // Transform transforms a #graphene_plane_t @p using the given @matrix and
@@ -292,7 +292,7 @@ func (p *Plane) Normalize() *Plane {
 // be computed from @matrix. If you are transforming multiple planes using the
 // same @matrix it's recommended to compute the normal matrix beforehand to
 // avoid incurring in the cost of recomputing it every time.
-func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) *Plane {
+func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
 	var arg0 *C.graphene_plane_t
 	var arg1 *C.graphene_matrix_t
 	var arg2 *C.graphene_matrix_t
@@ -301,12 +301,9 @@ func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) *Plane {
 	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))
 	arg2 = (*C.graphene_matrix_t)(unsafe.Pointer(normalMatrix.Native()))
 
-	arg3 := new(C.graphene_plane_t)
-	var ret3 *Plane
+	var res Plane
 
-	C.graphene_plane_transform(arg0, arg1, arg2, arg3)
+	C.graphene_plane_transform(arg0, arg1, arg2, (*C.graphene_plane_t)(unsafe.Pointer(&res)))
 
-	ret3 = WrapPlane(unsafe.Pointer(arg3))
-
-	return ret3
+	return res
 }

@@ -29,13 +29,14 @@ func X11GetServerTime(surface X11Surface) uint32 {
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gdk_x11_get_server_time(arg1)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 type X11Surface interface {
@@ -133,13 +134,14 @@ func (s x11Surface) Desktop() uint32 {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gdk_x11_surface_get_desktop(arg0)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // Group returns the group this surface belongs to.
@@ -149,13 +151,14 @@ func (s x11Surface) Group() gdk.Surface {
 	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkSurface
-	var goret gdk.Surface
 
 	cret = C.gdk_x11_surface_get_group(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+	var ret gdk.Surface
 
-	return goret
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+
+	return ret
 }
 
 // MoveToCurrentDesktop moves the surface to the correct workspace when

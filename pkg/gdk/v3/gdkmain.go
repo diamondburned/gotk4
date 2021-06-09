@@ -50,13 +50,14 @@ func DisableMultidevice() {
 // had to gdk_flush() if your last call to Xlib was not a blocking round trip.
 func ErrorTrapPop() int {
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_error_trap_pop()
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ErrorTrapPopIgnored removes an error trap pushed with gdk_error_trap_push(),
@@ -105,28 +106,30 @@ func Flush() {
 // GetDisplay gets the name of the display, which usually comes from the
 // `DISPLAY` environment variable or the `--display` command line option.
 func GetDisplay() string {
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gdk_get_display()
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // GetDisplayArgName gets the display name specified in the command line
 // arguments passed to gdk_init() or gdk_parse_args(), if any.
 func GetDisplayArgName() string {
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gdk_get_display_arg_name()
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // GetProgramClass gets the program class. Unless the program class has
@@ -135,13 +138,14 @@ func GetDisplayArgName() string {
 // g_get_prgname()) with the first character converted to uppercase.
 func GetProgramClass() string {
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gdk_get_program_class()
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // KeyboardGrab grabs the keyboard so that all events are passed to this
@@ -163,13 +167,14 @@ func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
 	arg3 = C.guint32(time_)
 
 	var cret C.GdkGrabStatus
-	var goret GrabStatus
 
 	cret = C.gdk_keyboard_grab(arg1, arg2, arg3)
 
-	goret = GrabStatus(cret)
+	var grabStatus GrabStatus
 
-	return goret
+	grabStatus = GrabStatus(cret)
+
+	return grabStatus
 }
 
 // KeyboardUngrab ungrabs the keyboard on the default display, if it is grabbed
@@ -199,10 +204,10 @@ func NotifyStartupComplete() {
 // GTK+ will call this function automatically for Window with custom
 // startup-notification identifier unless
 // gtk_window_set_auto_startup_notification() is called to disable that feature.
-func NotifyStartupCompleteWithID(startupID string) {
+func NotifyStartupCompleteWithID(startupId string) {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(startupID))
+	arg1 = (*C.gchar)(C.CString(startupId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gdk_notify_startup_complete_with_id(arg1)
@@ -246,13 +251,14 @@ func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo
 	arg6 = C.guint32(time_)
 
 	var cret C.GdkGrabStatus
-	var goret GrabStatus
 
 	cret = C.gdk_pointer_grab(arg1, arg2, arg3, arg4, arg5, arg6)
 
-	goret = GrabStatus(cret)
+	var grabStatus GrabStatus
 
-	return goret
+	grabStatus = GrabStatus(cret)
+
+	return grabStatus
 }
 
 // PointerIsGrabbed returns true if the pointer on the default display is
@@ -262,15 +268,16 @@ func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo
 // into account.
 func PointerIsGrabbed() bool {
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_pointer_is_grabbed()
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PointerUngrab ungrabs the pointer on the default display, if it is grabbed by

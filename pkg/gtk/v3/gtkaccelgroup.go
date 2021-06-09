@@ -37,7 +37,7 @@ func gotk4_AccelGroupFindFunc(arg0 *C.GtkAccelKey, arg1 *C.GClosure, arg2 C.gpoi
 	}
 
 	fn := v.(AccelGroupFindFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
@@ -57,15 +57,16 @@ func AccelGroupsActivate(object gextras.Objector, accelKey uint, accelMods gdk.M
 	arg3 = (C.GdkModifierType)(accelMods)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_accel_groups_activate(arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // AccelGroupsFromObject gets a list of all accel groups which are attached to
@@ -76,13 +77,14 @@ func AccelGroupsFromObject(object gextras.Objector) *glib.SList {
 	arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
 	var cret *C.GSList
-	var goret *glib.SList
 
 	cret = C.gtk_accel_groups_from_object(arg1)
 
-	goret = glib.WrapSList(unsafe.Pointer(cret))
+	var sList *glib.SList
 
-	return goret
+	sList = glib.WrapSList(unsafe.Pointer(cret))
+
+	return sList
 }
 
 // AcceleratorGetDefaultModMask gets the modifier mask.
@@ -91,13 +93,14 @@ func AccelGroupsFromObject(object gextras.Objector) *glib.SList {
 // keyboard accelerators. See gtk_accelerator_set_default_mod_mask().
 func AcceleratorGetDefaultModMask() gdk.ModifierType {
 	var cret C.GdkModifierType
-	var goret gdk.ModifierType
 
 	cret = C.gtk_accelerator_get_default_mod_mask()
 
-	goret = gdk.ModifierType(cret)
+	var modifierType gdk.ModifierType
 
-	return goret
+	modifierType = gdk.ModifierType(cret)
+
+	return modifierType
 }
 
 // AcceleratorGetLabel converts an accelerator keyval and modifier mask into a
@@ -109,15 +112,16 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 	arg1 = C.guint(acceleratorKey)
 	arg2 = (C.GdkModifierType)(acceleratorMods)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_accelerator_get_label(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // AcceleratorGetLabelWithKeycode converts an accelerator keyval and modifier
@@ -137,15 +141,16 @@ func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, ke
 	arg3 = C.guint(keycode)
 	arg4 = (C.GdkModifierType)(acceleratorMods)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_accelerator_get_label_with_keycode(arg1, arg2, arg3, arg4)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // AcceleratorName converts an accelerator keyval and modifier mask into a
@@ -161,15 +166,16 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 	arg1 = C.guint(acceleratorKey)
 	arg2 = (C.GdkModifierType)(acceleratorMods)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_accelerator_name(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // AcceleratorNameWithKeycode converts an accelerator keyval and modifier mask
@@ -188,15 +194,16 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 	arg3 = C.guint(keycode)
 	arg4 = (C.GdkModifierType)(acceleratorMods)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_accelerator_name_with_keycode(arg1, arg2, arg3, arg4)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // AcceleratorParse parses a string representing an accelerator. The format
@@ -210,23 +217,24 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 //
 // If the parse fails, @accelerator_key and @accelerator_mods will be set to 0
 // (zero).
-func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods *gdk.ModifierType) {
+func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods gdk.ModifierType) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(C.guint)
-	var ret2 uint
-	arg3 := new(C.GdkModifierType)
-	var ret3 *gdk.ModifierType
+	var arg2 C.guint
+	var arg3 C.GdkModifierType
 
-	C.gtk_accelerator_parse(arg1, arg2, arg3)
+	C.gtk_accelerator_parse(arg1, &arg2, &arg3)
 
-	ret2 = uint(*arg2)
-	ret3 = *gdk.ModifierType(arg3)
+	var acceleratorKey uint
+	var acceleratorMods gdk.ModifierType
 
-	return ret2, ret3
+	acceleratorKey = (uint)(arg2)
+	acceleratorMods = gdk.ModifierType(arg3)
+
+	return acceleratorKey, acceleratorMods
 }
 
 // AcceleratorParseWithKeycode parses a string representing an accelerator,
@@ -242,40 +250,43 @@ func AcceleratorParse(accelerator string) (acceleratorKey uint, acceleratorMods 
 //
 // If the parse fails, @accelerator_key, @accelerator_mods and
 // @accelerator_codes will be set to 0 (zero).
-func AcceleratorParseWithKeycode(accelerator string) (acceleratorKey uint, acceleratorCodes []uint, acceleratorMods *gdk.ModifierType) {
+func AcceleratorParseWithKeycode(accelerator string) (acceleratorKey uint, acceleratorCodes []*uint, acceleratorMods gdk.ModifierType) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(accelerator))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(C.guint)
-	var ret2 uint
-	var arg3 **C.guint
-	var ret3 []uint
-	arg4 := new(C.GdkModifierType)
-	var ret4 *gdk.ModifierType
+	var arg2 C.guint
+	var arg3 *C.guint
+	var arg4 C.GdkModifierType
 
-	C.gtk_accelerator_parse_with_keycode(arg1, arg2, arg3, arg4)
+	C.gtk_accelerator_parse_with_keycode(arg1, &arg2, &arg3, &arg4)
 
-	ret2 = uint(*arg2)
+	var acceleratorKey uint
+	var acceleratorCodes []*uint
+	var acceleratorMods gdk.ModifierType
+
+	acceleratorKey = (uint)(arg2)
 	{
 		var length int
-		for p := arg3; *p != 0; p = (**C.guint)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := arg3; *p != 0; p = (*C.guint)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		ret3 = make([]uint, length)
+		var src []*C.guint
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(arg3), int(length))
+
+		acceleratorCodes = make([]*uint, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.guint)(ptr.Add(unsafe.Pointer(arg3), i))
-			ret3[i] = uint(src)
+			acceleratorCodes = (*uint)(arg3)
 		}
 	}
-	ret4 = *gdk.ModifierType(arg4)
+	acceleratorMods = gdk.ModifierType(arg4)
 
-	return ret2, ret3, ret4
+	return acceleratorKey, acceleratorCodes, acceleratorMods
 }
 
 // AcceleratorSetDefaultModMask sets the modifiers that will be considered
@@ -310,15 +321,16 @@ func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
 	arg2 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_accelerator_valid(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // AccelGroup: a AccelGroup represents a group of keyboard accelerators,
@@ -389,14 +401,15 @@ func marshalAccelGroup(p uintptr) (interface{}, error) {
 
 // NewAccelGroup constructs a class AccelGroup.
 func NewAccelGroup() AccelGroup {
-	cret := new(C.GtkAccelGroup)
-	var goret AccelGroup
+	var cret C.GtkAccelGroup
 
 	cret = C.gtk_accel_group_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AccelGroup)
+	var accelGroup AccelGroup
 
-	return goret
+	accelGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AccelGroup)
+
+	return accelGroup
 }
 
 // DisconnectKey removes an accelerator previously installed through
@@ -411,15 +424,16 @@ func (a accelGroup) DisconnectKey(accelKey uint, accelMods gdk.ModifierType) boo
 	arg2 = (C.GdkModifierType)(accelMods)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_accel_group_disconnect_key(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Find finds the first entry in an accelerator group for which @find_func
@@ -430,13 +444,14 @@ func (a accelGroup) Find() *AccelKey {
 	arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkAccelKey
-	var goret *AccelKey
 
-	cret = C.gtk_accel_group_find(arg0, arg1, arg2)
+	cret = C.gtk_accel_group_find(arg0)
 
-	goret = WrapAccelKey(unsafe.Pointer(cret))
+	var accelKey *AccelKey
 
-	return goret
+	accelKey = WrapAccelKey(unsafe.Pointer(cret))
+
+	return accelKey
 }
 
 // IsLocked locks are added and removed using gtk_accel_group_lock() and
@@ -447,15 +462,16 @@ func (a accelGroup) IsLocked() bool {
 	arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_accel_group_get_is_locked(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ModifierMask gets a ModifierType representing the mask for this
@@ -466,13 +482,14 @@ func (a accelGroup) ModifierMask() gdk.ModifierType {
 	arg0 = (*C.GtkAccelGroup)(unsafe.Pointer(a.Native()))
 
 	var cret C.GdkModifierType
-	var goret gdk.ModifierType
 
 	cret = C.gtk_accel_group_get_modifier_mask(arg0)
 
-	goret = gdk.ModifierType(cret)
+	var modifierType gdk.ModifierType
 
-	return goret
+	modifierType = gdk.ModifierType(cret)
+
+	return modifierType
 }
 
 // Lock locks the given accelerator group.
@@ -504,17 +521,22 @@ func (a accelGroup) Query(accelKey uint, accelMods gdk.ModifierType) []AccelGrou
 
 	var cret *C.GtkAccelGroupEntry
 	var arg3 *C.guint
-	var goret []AccelGroupEntry
 
-	cret = C.gtk_accel_group_query(arg0, arg1, arg2, arg3)
+	cret = C.gtk_accel_group_query(arg0, arg1, arg2)
 
-	goret = make([]AccelGroupEntry, arg3)
-	for i := 0; i < uintptr(arg3); i++ {
-		src := (C.GtkAccelGroupEntry)(ptr.Add(unsafe.Pointer(cret), i))
-		goret[i] = *WrapAccelGroupEntry(unsafe.Pointer(&src))
+	var accelGroupEntrys []AccelGroupEntry
+
+	{
+		var src []C.GtkAccelGroupEntry
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg3))
+
+		accelGroupEntrys = make([]AccelGroupEntry, arg3)
+		for i := 0; i < uintptr(arg3); i++ {
+			accelGroupEntrys = *WrapAccelGroupEntry(unsafe.Pointer(&cret))
+		}
 	}
 
-	return ret3, goret
+	return accelGroupEntrys
 }
 
 // Unlock undoes the last call to gtk_accel_group_lock() on this
@@ -585,7 +607,7 @@ func (a *AccelKey) Native() unsafe.Pointer {
 // AccelKey gets the field inside the struct.
 func (a *AccelKey) AccelKey() uint {
 	var v uint
-	v = uint(a.native.accel_key)
+	v = (uint)(a.native.accel_key)
 	return v
 }
 

@@ -18,13 +18,14 @@ import "C"
 
 func GTypeGetType() externglib.Type {
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_gtype_get_type()
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 // PointerTypeRegisterStatic creates a new G_TYPE_POINTER derived type id for a
@@ -36,31 +37,33 @@ func PointerTypeRegisterStatic(name string) externglib.Type {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_pointer_type_register_static(arg1)
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 // StrdupValueContents: return a newly allocated string, which describes the
 // contents of a #GValue. The main purpose of this function is to describe
 // #GValue contents for debugging output, the way in which the contents are
 // described may change between different GLib versions.
-func StrdupValueContents(value *externglib.Value) string {
+func StrdupValueContents(value **externglib.Value) string {
 	var arg1 *C.GValue
 
 	arg1 = (*C.GValue)(value.GValue)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_strdup_value_contents(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

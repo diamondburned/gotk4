@@ -12,44 +12,21 @@ import (
 // #include <glib.h>
 import "C"
 
-// ComputeHMACForBytes computes the HMAC for a binary @data. This is a
-// convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
-//
-// The hexadecimal string returned will be in lower case.
-func ComputeHMACForBytes(digestType ChecksumType, key *Bytes, data *Bytes) string {
-	var arg1 C.GChecksumType
-	var arg2 *C.GBytes
-	var arg3 *C.GBytes
-
-	arg1 = (C.GChecksumType)(digestType)
-	arg2 = (*C.GBytes)(unsafe.Pointer(key.Native()))
-	arg3 = (*C.GBytes)(unsafe.Pointer(data.Native()))
-
-	cret := new(C.gchar)
-	var goret string
-
-	cret = C.g_compute_hmac_for_bytes(arg1, arg2, arg3)
-
-	goret = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-
-	return goret
-}
-
 // ComputeHMACForData computes the HMAC for a binary @data of @length. This is a
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
 func ComputeHMACForData() string {
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
-	cret = C.g_compute_hmac_for_data(arg1, arg2, arg3, arg4, arg5)
+	cret = C.g_compute_hmac_for_data()
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // HMAC: an opaque structure representing a HMAC operation. To create a new
@@ -87,13 +64,14 @@ func (h *HMAC) Copy() *HMAC {
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
 	var cret *C.GHmac
-	var goret *HMAC
 
 	cret = C.g_hmac_copy(arg0)
 
-	goret = WrapHMAC(unsafe.Pointer(cret))
+	var ret *HMAC
 
-	return goret
+	ret = WrapHMAC(unsafe.Pointer(cret))
+
+	return ret
 }
 
 // Digest gets the digest from @checksum as a raw binary array and places it
@@ -106,7 +84,7 @@ func (h *HMAC) Digest() {
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
-	C.g_hmac_get_digest(arg0, arg1, arg2)
+	C.g_hmac_get_digest(arg0)
 }
 
 // String gets the HMAC as a hexadecimal string.
@@ -121,13 +99,14 @@ func (h *HMAC) String() string {
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_hmac_get_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Ref: atomically increments the reference count of @hmac by one.
@@ -139,13 +118,14 @@ func (h *HMAC) Ref() *HMAC {
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
 	var cret *C.GHmac
-	var goret *HMAC
 
 	cret = C.g_hmac_ref(arg0)
 
-	goret = WrapHMAC(unsafe.Pointer(cret))
+	var ret *HMAC
 
-	return goret
+	ret = WrapHMAC(unsafe.Pointer(cret))
+
+	return ret
 }
 
 // Unref: atomically decrements the reference count of @hmac by one.
@@ -170,5 +150,5 @@ func (h *HMAC) Update() {
 
 	arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
-	C.g_hmac_update(arg0, arg1, arg2)
+	C.g_hmac_update(arg0)
 }

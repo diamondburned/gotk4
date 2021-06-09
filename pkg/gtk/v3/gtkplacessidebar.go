@@ -228,13 +228,14 @@ func marshalPlacesSidebar(p uintptr) (interface{}, error) {
 // NewPlacesSidebar constructs a class PlacesSidebar.
 func NewPlacesSidebar() PlacesSidebar {
 	var cret C.GtkPlacesSidebar
-	var goret PlacesSidebar
 
 	cret = C.gtk_places_sidebar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PlacesSidebar)
+	var placesSidebar PlacesSidebar
 
-	return goret
+	placesSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PlacesSidebar)
+
+	return placesSidebar
 }
 
 // AddShortcut applications may want to present some folders in the places
@@ -265,15 +266,16 @@ func (s placesSidebar) LocalOnly() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_local_only(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Location gets the currently selected location in the @sidebar. This can
@@ -290,14 +292,15 @@ func (s placesSidebar) Location() gio.File {
 
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GFile)
-	var goret gio.File
+	var cret *C.GFile
 
 	cret = C.gtk_places_sidebar_get_location(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	var file gio.File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+
+	return file
 }
 
 // NthBookmark: this function queries the bookmarks added by the user to the
@@ -311,14 +314,15 @@ func (s placesSidebar) NthBookmark(n int) gio.File {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 	arg1 = C.gint(n)
 
-	cret := new(C.GFile)
-	var goret gio.File
+	var cret *C.GFile
 
 	cret = C.gtk_places_sidebar_get_nth_bookmark(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	var file gio.File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+
+	return file
 }
 
 // OpenFlags gets the open flags.
@@ -328,13 +332,14 @@ func (s placesSidebar) OpenFlags() PlacesOpenFlags {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPlacesOpenFlags
-	var goret PlacesOpenFlags
 
 	cret = C.gtk_places_sidebar_get_open_flags(arg0)
 
-	goret = PlacesOpenFlags(cret)
+	var placesOpenFlags PlacesOpenFlags
 
-	return goret
+	placesOpenFlags = PlacesOpenFlags(cret)
+
+	return placesOpenFlags
 }
 
 // ShowConnectToServer returns the value previously set with
@@ -345,15 +350,16 @@ func (s placesSidebar) ShowConnectToServer() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_show_connect_to_server(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowDesktop returns the value previously set with
@@ -364,15 +370,16 @@ func (s placesSidebar) ShowDesktop() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_show_desktop(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowEnterLocation returns the value previously set with
@@ -383,15 +390,16 @@ func (s placesSidebar) ShowEnterLocation() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_show_enter_location(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowOtherLocations returns the value previously set with
@@ -402,15 +410,16 @@ func (s placesSidebar) ShowOtherLocations() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_show_other_locations(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowRecent returns the value previously set with
@@ -421,15 +430,16 @@ func (s placesSidebar) ShowRecent() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_show_recent(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowStarredLocation returns the value previously set with
@@ -440,15 +450,16 @@ func (s placesSidebar) ShowStarredLocation() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_show_starred_location(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowTrash returns the value previously set with
@@ -459,15 +470,16 @@ func (s placesSidebar) ShowTrash() bool {
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_places_sidebar_get_show_trash(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ListShortcuts gets the list of shortcuts.
@@ -476,17 +488,18 @@ func (s placesSidebar) ListShortcuts() *glib.SList {
 
 	arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GSList)
-	var goret *glib.SList
+	var cret *C.GSList
 
 	cret = C.gtk_places_sidebar_list_shortcuts(arg0)
 
-	goret = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.SList) {
+	var sList *glib.SList
+
+	sList = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(sList, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return sList
 }
 
 // RemoveShortcut removes an application-specific shortcut that has been

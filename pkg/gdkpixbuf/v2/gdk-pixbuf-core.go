@@ -19,16 +19,12 @@ import (
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 import "C"
 
-// PixbufSaveFunc: save functions used by
-// [method@GdkPixbuf.Pixbuf.save_to_callback].
-//
-// This function is called once for each block of bytes that is "written" by
-// `gdk_pixbuf_save_to_callback()`.
-//
-// If successful it should return `TRUE`; if an error occurs it should set
-// `error` and return `FALSE`, in which case `gdk_pixbuf_save_to_callback()`
-// will fail with the same error.
-type PixbufSaveFunc func() (err error, ok bool)
+// PixbufSaveFunc specifies the type of the function passed to
+// gdk_pixbuf_save_to_callback(). It is called once for each block of bytes that
+// is "written" by gdk_pixbuf_save_to_callback(). If successful it should return
+// true. If an error occurs it should set @error and return false, in which case
+// gdk_pixbuf_save_to_callback() will fail with the same error.
+type PixbufSaveFunc func() (err *error, ok bool)
 
 //export gotk4_PixbufSaveFunc
 func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.gpointer) C.gboolean {
@@ -38,9 +34,9 @@ func gotk4_PixbufSaveFunc(arg0 *C.gchar, arg1 C.gsize, arg2 **C.GError, arg3 C.g
 	}
 
 	fn := v.(PixbufSaveFunc)
-	fn(err, ok)
+	err, ok := fn()
 
-	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(*err)))
+	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
 	if ok {
 		cret = C.gboolean(1)
 	}

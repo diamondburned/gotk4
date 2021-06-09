@@ -21,13 +21,11 @@ func init() {
 	})
 }
 
-// BinLayout: `GtkBinLayout` is a `GtkLayoutManager` subclass useful for create
-// "bins" of widgets.
-//
-// `GtkBinLayout` will stack each child of a widget on top of each other, using
-// the [property@Gtk.Widget:hexpand], [property@Gtk.Widget:vexpand],
-// [property@Gtk.Widget:halign], and [property@Gtk.Widget:valign] properties of
-// each child to determine where they should be positioned.
+// BinLayout: gtkBinLayout is a LayoutManager subclass useful for create "bins"
+// of widgets. GtkBinLayout will stack each child of a widget on top of each
+// other, using the Widget:hexpand, Widget:vexpand, Widget:halign, and
+// Widget:valign properties of each child to determine where they should be
+// positioned.
 type BinLayout interface {
 	LayoutManager
 }
@@ -55,12 +53,13 @@ func marshalBinLayout(p uintptr) (interface{}, error) {
 
 // NewBinLayout constructs a class BinLayout.
 func NewBinLayout() BinLayout {
-	cret := new(C.GtkBinLayout)
-	var goret BinLayout
+	var cret C.GtkBinLayout
 
 	cret = C.gtk_bin_layout_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BinLayout)
+	var binLayout BinLayout
 
-	return goret
+	binLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BinLayout)
+
+	return binLayout
 }

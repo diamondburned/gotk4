@@ -21,11 +21,9 @@ func init() {
 	})
 }
 
-// EventControllerLegacy: `GtkEventControllerLegacy` is an event controller that
-// provides raw access to the event stream.
-//
-// It should only be used as a last resort if none of the other event
-// controllers or gestures do the job.
+// EventControllerLegacy is an event controller that gives you direct access to
+// the event stream. It should only be used as a last resort if none of the
+// other event controllers or gestures do the job.
 type EventControllerLegacy interface {
 	EventController
 }
@@ -53,12 +51,13 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 
 // NewEventControllerLegacy constructs a class EventControllerLegacy.
 func NewEventControllerLegacy() EventControllerLegacy {
-	cret := new(C.GtkEventControllerLegacy)
-	var goret EventControllerLegacy
+	var cret C.GtkEventControllerLegacy
 
 	cret = C.gtk_event_controller_legacy_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerLegacy)
+	var eventControllerLegacy EventControllerLegacy
 
-	return goret
+	eventControllerLegacy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerLegacy)
+
+	return eventControllerLegacy
 }

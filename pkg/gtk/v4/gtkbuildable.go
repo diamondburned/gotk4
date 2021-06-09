@@ -44,31 +44,30 @@ type BuildableOverrider interface {
 
 	ParserFinished(builder Builder)
 
-	SetBuildableProperty(builder Builder, name string, value *externglib.Value)
+	SetBuildableProperty(builder Builder, name string, value **externglib.Value)
 
-	SetID(iD string)
+	SetID(id string)
 }
 
-// Buildable: `GtkBuildable` allows objects to extend and customize their
-// deserialization from ui files.
+// Buildable: gtkBuildable allows objects to extend and customize their
+// deserialization from [GtkBuilder UI descriptions][BUILDER-UI]. The interface
+// includes methods for setting names and properties of objects, parsing custom
+// tags and constructing child objects.
 //
-// The interface includes methods for setting names and properties of objects,
-// parsing custom tags and constructing child objects.
-//
-// The `GtkBuildable` interface is implemented by all widgets and many of the
+// The GtkBuildable interface is implemented by all widgets and many of the
 // non-widget objects that are provided by GTK. The main user of this interface
-// is [class@Gtk.Builder]. There should be very little need for applications to
-// call any of these functions directly.
+// is Builder. There should be very little need for applications to call any of
+// these functions directly.
 //
 // An object only needs to implement this interface if it needs to extend the
-// `GtkBuilder` XML format or run any extra routines at deserialization time.
+// Builder format or run any extra routines at deserialization time.
 type Buildable interface {
 	gextras.Objector
 	BuildableOverrider
 
 	// BuildableID gets the ID of the @buildable object.
 	//
-	// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+	// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
 	// used to construct the @buildable.
 	BuildableID() string
 }
@@ -96,7 +95,7 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 
 // BuildableID gets the ID of the @buildable object.
 //
-// `GtkBuilder` sets the name based on the ID attribute of the <object> tag
+// Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
 // used to construct the @buildable.
 func (b buildable) BuildableID() string {
 	var arg0 *C.GtkBuildable
@@ -104,16 +103,16 @@ func (b buildable) BuildableID() string {
 	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_buildable_get_buildable_id(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// BuildableParseContext: an opaque context struct for `GtkBuildableParser`.
 type BuildableParseContext struct {
 	native C.GtkBuildableParseContext
 }
@@ -149,13 +148,14 @@ func (c *BuildableParseContext) Element() string {
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_buildable_parse_context_get_element(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ElementStack retrieves the element stack from the internal state of the
@@ -175,9 +175,10 @@ func (c *BuildableParseContext) ElementStack() []string {
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GPtrArray
-	var goret []string
 
 	cret = C.gtk_buildable_parse_context_get_element_stack(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -188,14 +189,16 @@ func (c *BuildableParseContext) ElementStack() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // Position retrieves the current line number and the number of the character on
@@ -207,17 +210,18 @@ func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(C.int)
-	var ret1 int
-	arg2 := new(C.int)
-	var ret2 int
+	var arg1 C.int
+	var arg2 C.int
 
-	C.gtk_buildable_parse_context_get_position(arg0, arg1, arg2)
+	C.gtk_buildable_parse_context_get_position(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var lineNumber int
+	var charNumber int
 
-	return ret1, ret2
+	lineNumber = (int)(arg1)
+	charNumber = (int)(arg2)
+
+	return lineNumber, charNumber
 }
 
 // Pop completes the process of a temporary sub-parser redirection.
@@ -238,11 +242,12 @@ func (c *BuildableParseContext) Pop() interface{} {
 	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.gtk_buildable_parse_context_pop(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }

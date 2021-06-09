@@ -21,20 +21,15 @@ func init() {
 	})
 }
 
-// GestureZoom: `GtkGestureZoom` is a `GtkGesture` for 2-finger pinch/zoom
-// gestures.
-//
-// Whenever the distance between both tracked sequences changes, the
-// [signal@Gtk.GestureZoom::scale-changed] signal is emitted to report the scale
-// factor.
+// GestureZoom is a Gesture implementation able to recognize pinch/zoom
+// gestures, whenever the distance between both tracked sequences changes, the
+// GestureZoom::scale-changed signal is emitted to report the scale factor.
 type GestureZoom interface {
 	Gesture
 
-	// ScaleDelta gets the scale delta.
-	//
-	// If @gesture is active, this function returns the zooming difference since
-	// the gesture was recognized (hence the starting point is considered 1:1).
-	// If @gesture is not active, 1 is returned.
+	// ScaleDelta: if @gesture is active, this function returns the zooming
+	// difference since the gesture was recognized (hence the starting point is
+	// considered 1:1). If @gesture is not active, 1 is returned.
 	ScaleDelta() float64
 }
 
@@ -61,32 +56,32 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 
 // NewGestureZoom constructs a class GestureZoom.
 func NewGestureZoom() GestureZoom {
-	cret := new(C.GtkGestureZoom)
-	var goret GestureZoom
+	var cret C.GtkGestureZoom
 
 	cret = C.gtk_gesture_zoom_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
+	var gestureZoom GestureZoom
 
-	return goret
+	gestureZoom = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureZoom)
+
+	return gestureZoom
 }
 
-// ScaleDelta gets the scale delta.
-//
-// If @gesture is active, this function returns the zooming difference since
-// the gesture was recognized (hence the starting point is considered 1:1).
-// If @gesture is not active, 1 is returned.
+// ScaleDelta: if @gesture is active, this function returns the zooming
+// difference since the gesture was recognized (hence the starting point is
+// considered 1:1). If @gesture is not active, 1 is returned.
 func (g gestureZoom) ScaleDelta() float64 {
 	var arg0 *C.GtkGestureZoom
 
 	arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_gesture_zoom_get_scale_delta(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }

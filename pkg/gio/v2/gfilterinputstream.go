@@ -76,13 +76,14 @@ func (s filterInputStream) BaseStream() InputStream {
 	arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GInputStream
-	var goret InputStream
 
 	cret = C.g_filter_input_stream_get_base_stream(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
+	var inputStream InputStream
 
-	return goret
+	inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
+
+	return inputStream
 }
 
 // CloseBaseStream returns whether the base stream will be closed when
@@ -93,15 +94,16 @@ func (s filterInputStream) CloseBaseStream() bool {
 	arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_filter_input_stream_get_close_base_stream(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetCloseBaseStream sets whether the base stream will be closed when

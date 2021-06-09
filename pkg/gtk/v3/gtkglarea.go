@@ -96,7 +96,7 @@ type GLArea interface {
 	// Context retrieves the GLContext used by @area.
 	Context() gdk.GLContext
 	// Error gets the current error set on the @area.
-	Error() error
+	Error() *error
 	// HasAlpha returns whether the area has an alpha component.
 	HasAlpha() bool
 	// HasDepthBuffer returns whether the area has a depth buffer.
@@ -135,7 +135,7 @@ type GLArea interface {
 	// SetError sets an error on the area which will be shown instead of the GL
 	// rendering. This is useful in the GLArea::create-context signal if GL
 	// context creation fails.
-	SetError(err error)
+	SetError(err *error)
 	// SetHasAlpha: if @has_alpha is true the buffer allocated by the widget
 	// will have an alpha channel component, and when rendering to the window
 	// the result will be composited over whatever is below the widget.
@@ -161,7 +161,7 @@ type GLArea interface {
 	//
 	// You should check the capabilities of the GLContext before drawing with
 	// either API.
-	SetUseES(useES bool)
+	SetUseES(useEs bool)
 }
 
 // glArea implements the GLArea interface.
@@ -190,13 +190,14 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 // NewGLArea constructs a class GLArea.
 func NewGLArea() GLArea {
 	var cret C.GtkGLArea
-	var goret GLArea
 
 	cret = C.gtk_gl_area_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLArea)
+	var glArea GLArea
 
-	return goret
+	glArea = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLArea)
+
+	return glArea
 }
 
 // AttachBuffers ensures that the @area framebuffer object is made the
@@ -220,15 +221,16 @@ func (a glArea) AutoRender() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gl_area_get_auto_render(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Context retrieves the GLContext used by @area.
@@ -238,29 +240,31 @@ func (a glArea) Context() gdk.GLContext {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GdkGLContext
-	var goret gdk.GLContext
 
 	cret = C.gtk_gl_area_get_context(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.GLContext)
+	var glContext gdk.GLContext
 
-	return goret
+	glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.GLContext)
+
+	return glContext
 }
 
 // Error gets the current error set on the @area.
-func (a glArea) Error() error {
+func (a glArea) Error() *error {
 	var arg0 *C.GtkGLArea
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GError
-	var goret error
 
 	cret = C.gtk_gl_area_get_error(arg0)
 
-	goret = gerror.Take(unsafe.Pointer(cret))
+	var err *error
 
-	return goret
+	err = gerror.Take(unsafe.Pointer(cret))
+
+	return err
 }
 
 // HasAlpha returns whether the area has an alpha component.
@@ -270,15 +274,16 @@ func (a glArea) HasAlpha() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gl_area_get_has_alpha(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // HasDepthBuffer returns whether the area has a depth buffer.
@@ -288,15 +293,16 @@ func (a glArea) HasDepthBuffer() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gl_area_get_has_depth_buffer(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // HasStencilBuffer returns whether the area has a stencil buffer.
@@ -306,15 +312,16 @@ func (a glArea) HasStencilBuffer() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gl_area_get_has_stencil_buffer(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RequiredVersion retrieves the required version of OpenGL set using
@@ -324,17 +331,18 @@ func (a glArea) RequiredVersion() (major int, minor int) {
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_gl_area_get_required_version(arg0, arg1, arg2)
+	C.gtk_gl_area_get_required_version(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var major int
+	var minor int
 
-	return ret1, ret2
+	major = (int)(arg1)
+	minor = (int)(arg2)
+
+	return major, minor
 }
 
 // UseES retrieves the value set by gtk_gl_area_set_use_es().
@@ -344,15 +352,16 @@ func (a glArea) UseES() bool {
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gl_area_get_use_es(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MakeCurrent ensures that the GLContext used by @area is associated with
@@ -407,7 +416,7 @@ func (a glArea) SetAutoRender(autoRender bool) {
 // SetError sets an error on the area which will be shown instead of the GL
 // rendering. This is useful in the GLArea::create-context signal if GL
 // context creation fails.
-func (a glArea) SetError(err error) {
+func (a glArea) SetError(err *error) {
 	var arg0 *C.GtkGLArea
 	var arg1 *C.GError
 
@@ -487,12 +496,12 @@ func (a glArea) SetRequiredVersion(major int, minor int) {
 //
 // You should check the capabilities of the GLContext before drawing with
 // either API.
-func (a glArea) SetUseES(useES bool) {
+func (a glArea) SetUseES(useEs bool) {
 	var arg0 *C.GtkGLArea
 	var arg1 C.gboolean
 
 	arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
-	if useES {
+	if useEs {
 		arg1 = C.gboolean(1)
 	}
 

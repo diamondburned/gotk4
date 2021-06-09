@@ -106,7 +106,7 @@ type IconFactory interface {
 	// same name (such as "myapp-whatever-icon") to override your application’s
 	// default icons. If an icon already existed in @factory for @stock_id, it
 	// is unreferenced and replaced with the new @icon_set.
-	Add(stockID string, iconSet *IconSet)
+	Add(stockId string, iconSet *IconSet)
 	// AddDefault adds an icon factory to the list of icon factories searched by
 	// gtk_style_lookup_icon_set(). This means that, for example,
 	// gtk_image_new_from_stock() will be able to find icons in @factory. There
@@ -119,7 +119,7 @@ type IconFactory interface {
 	// gtk_style_lookup_icon_set() on the Style for the widget that will display
 	// the icon, instead of using this function directly, so that themes are
 	// taken into account.
-	Lookup(stockID string) *IconSet
+	Lookup(stockId string) *IconSet
 	// RemoveDefault removes an icon factory from the list of default icon
 	// factories. Not normally used; you might use it for a library that can be
 	// unloaded or shut down.
@@ -151,14 +151,15 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 
 // NewIconFactory constructs a class IconFactory.
 func NewIconFactory() IconFactory {
-	cret := new(C.GtkIconFactory)
-	var goret IconFactory
+	var cret C.GtkIconFactory
 
 	cret = C.gtk_icon_factory_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconFactory)
+	var iconFactory IconFactory
 
-	return goret
+	iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconFactory)
+
+	return iconFactory
 }
 
 // Add adds the given @icon_set to the icon factory, under the name
@@ -170,13 +171,13 @@ func NewIconFactory() IconFactory {
 // same name (such as "myapp-whatever-icon") to override your application’s
 // default icons. If an icon already existed in @factory for @stock_id, it
 // is unreferenced and replaced with the new @icon_set.
-func (f iconFactory) Add(stockID string, iconSet *IconSet) {
+func (f iconFactory) Add(stockId string, iconSet *IconSet) {
 	var arg0 *C.GtkIconFactory
 	var arg1 *C.gchar
 	var arg2 *C.GtkIconSet
 
 	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet.Native()))
 
@@ -202,22 +203,23 @@ func (f iconFactory) AddDefault() {
 // gtk_style_lookup_icon_set() on the Style for the widget that will display
 // the icon, instead of using this function directly, so that themes are
 // taken into account.
-func (f iconFactory) Lookup(stockID string) *IconSet {
+func (f iconFactory) Lookup(stockId string) *IconSet {
 	var arg0 *C.GtkIconFactory
 	var arg1 *C.gchar
 
 	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkIconSet
-	var goret *IconSet
 
 	cret = C.gtk_icon_factory_lookup(arg0, arg1)
 
-	goret = WrapIconSet(unsafe.Pointer(cret))
+	var iconSet *IconSet
 
-	return goret
+	iconSet = WrapIconSet(unsafe.Pointer(cret))
+
+	return iconSet
 }
 
 // RemoveDefault removes an icon factory from the list of default icon

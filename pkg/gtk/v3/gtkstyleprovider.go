@@ -77,13 +77,14 @@ func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
 	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
 	var cret *C.GtkIconFactory
-	var goret IconFactory
 
 	cret = C.gtk_style_provider_get_icon_factory(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconFactory)
+	var iconFactory IconFactory
 
-	return goret
+	iconFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconFactory)
+
+	return iconFactory
 }
 
 // Style returns the style settings affecting a widget defined by @path, or
@@ -95,14 +96,15 @@ func (p styleProvider) Style(path *WidgetPath) StyleProperties {
 	arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
-	cret := new(C.GtkStyleProperties)
-	var goret StyleProperties
+	var cret *C.GtkStyleProperties
 
 	cret = C.gtk_style_provider_get_style(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StyleProperties)
+	var styleProperties StyleProperties
 
-	return goret
+	styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StyleProperties)
+
+	return styleProperties
 }
 
 // StyleProperty looks up a widget style property as defined by @provider
@@ -118,17 +120,18 @@ func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec g
 	arg2 = (C.GtkStateFlags)(state)
 	arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
-	arg4 := new(C.GValue)
-	var ret4 *externglib.Value
+	var arg4 C.GValue
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_style_provider_get_style_property(arg0, arg1, arg2, arg3, arg4)
+	cret = C.gtk_style_provider_get_style_property(arg0, arg1, arg2, arg3, &arg4)
 
-	ret4 = externglib.ValueFromNative(unsafe.Pointer(*arg4))
+	var value *externglib.Value
+	var ok bool
+
+	value = externglib.ValueFromNative(unsafe.Pointer(arg4))
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret4, goret
+	return value, ok
 }

@@ -88,13 +88,14 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 // NewSwitch constructs a class Switch.
 func NewSwitch() Switch {
 	var cret C.GtkSwitch
-	var goret Switch
 
 	cret = C.gtk_switch_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
+	var _switch Switch
 
-	return goret
+	_switch = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
+
+	return _switch
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.
@@ -104,15 +105,16 @@ func (s _switch) Active() bool {
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_switch_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // State gets the underlying state of the Switch.
@@ -122,15 +124,16 @@ func (s _switch) State() bool {
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_switch_get_state(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActive changes the state of @sw to the desired one.

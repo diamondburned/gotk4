@@ -102,14 +102,15 @@ func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DB
 	arg2 = (*C.gchar)(C.CString(interfaceName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.GDBusInterface)
-	var goret DBusInterface
+	var cret *C.GDBusInterface
 
 	cret = C.g_dbus_object_manager_get_interface(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
+	var dBusInterface DBusInterface
 
-	return goret
+	dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusInterface)
+
+	return dBusInterface
 }
 
 // Object gets the BusObjectProxy at @object_path, if any.
@@ -121,14 +122,15 @@ func (m dBusObjectManager) Object(objectPath string) DBusObject {
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GDBusObject)
-	var goret DBusObject
+	var cret *C.GDBusObject
 
 	cret = C.g_dbus_object_manager_get_object(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
+	var dBusObject DBusObject
 
-	return goret
+	dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
+
+	return dBusObject
 }
 
 // ObjectPath gets the object path that @manager is for.
@@ -138,13 +140,14 @@ func (m dBusObjectManager) ObjectPath() string {
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dbus_object_manager_get_object_path(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Objects gets all BusObject objects known to @manager.
@@ -153,15 +156,16 @@ func (m dBusObjectManager) Objects() *glib.List {
 
 	arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_dbus_object_manager_get_objects(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }

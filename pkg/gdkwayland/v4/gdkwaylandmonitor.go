@@ -19,16 +19,11 @@ func init() {
 	})
 }
 
-// WaylandMonitor: the Wayland implementation of `GdkMonitor`.
-//
-// Beyond the [class@Gdk.Monitor] API, the Wayland implementation offers access
-// to the Wayland `wl_output` object with
-// [method@GdkWayland.WaylandMonitor.get_wl_output].
 type WaylandMonitor interface {
 	gdk.Monitor
 
-	// WlOutput returns the Wayland `wl_output` of a `GdkMonitor`.
-	WlOutput() interface{}
+	// WlOutput returns the Wayland wl_output of a Monitor.
+	WlOutput() *interface{}
 }
 
 // waylandMonitor implements the WaylandMonitor interface.
@@ -52,18 +47,19 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 	return WrapWaylandMonitor(obj), nil
 }
 
-// WlOutput returns the Wayland `wl_output` of a `GdkMonitor`.
-func (m waylandMonitor) WlOutput() interface{} {
+// WlOutput returns the Wayland wl_output of a Monitor.
+func (m waylandMonitor) WlOutput() *interface{} {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret *C.wl_output
-	var goret interface{}
 
 	cret = C.gdk_wayland_monitor_get_wl_output(arg0)
 
-	goret = interface{}(cret)
+	var gpointer *interface{}
 
-	return goret
+	gpointer = (*interface{})(cret)
+
+	return gpointer
 }

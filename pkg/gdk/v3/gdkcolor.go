@@ -50,28 +50,28 @@ func (c *Color) Native() unsafe.Pointer {
 // Pixel gets the field inside the struct.
 func (c *Color) Pixel() uint32 {
 	var v uint32
-	v = uint32(c.native.pixel)
+	v = (uint32)(c.native.pixel)
 	return v
 }
 
 // Red gets the field inside the struct.
 func (c *Color) Red() uint16 {
 	var v uint16
-	v = uint16(c.native.red)
+	v = (uint16)(c.native.red)
 	return v
 }
 
 // Green gets the field inside the struct.
 func (c *Color) Green() uint16 {
 	var v uint16
-	v = uint16(c.native.green)
+	v = (uint16)(c.native.green)
 	return v
 }
 
 // Blue gets the field inside the struct.
 func (c *Color) Blue() uint16 {
 	var v uint16
-	v = uint16(c.native.blue)
+	v = (uint16)(c.native.blue)
 	return v
 }
 
@@ -83,17 +83,18 @@ func (c *Color) Copy() *Color {
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GdkColor)
-	var goret *Color
+	var cret *C.GdkColor
 
 	cret = C.gdk_color_copy(arg0)
 
-	goret = WrapColor(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Color) {
+	var ret *Color
+
+	ret = WrapColor(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret, func(v *Color) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return ret
 }
 
 // Equal compares two colors.
@@ -105,15 +106,16 @@ func (c *Color) Equal(colorb *Color) bool {
 	arg1 = (*C.GdkColor)(unsafe.Pointer(colorb.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_color_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Free frees a Color created with gdk_color_copy().
@@ -132,13 +134,14 @@ func (c *Color) Hash() uint {
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gdk_color_hash(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // String returns a textual specification of @color in the hexadecimal form
@@ -151,13 +154,14 @@ func (c *Color) String() string {
 
 	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gdk_color_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

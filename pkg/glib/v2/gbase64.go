@@ -5,6 +5,8 @@ package glib
 import (
 	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -23,41 +25,44 @@ func Base64Decode(text string) []byte {
 
 	var cret *C.guchar
 	var arg2 *C.gsize
-	var goret []byte
 
-	cret = C.g_base64_decode(arg1, arg2)
+	cret = C.g_base64_decode(arg1)
 
-	ptr.SetSlice(unsafe.Pointer(&goret), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&goret, func(v *[]byte) {
+	var guint8s []byte
+
+	ptr.SetSlice(unsafe.Pointer(&guint8s), unsafe.Pointer(cret), int(arg2))
+	runtime.SetFinalizer(&guint8s, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret2, goret
+	return guint8s
 }
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
 // data by overwriting the input data.
-func Base64DecodeInplace() byte {
+func Base64DecodeInplace() *byte {
 	var cret *C.guchar
-	var goret byte
 
-	cret = C.g_base64_decode_inplace(arg1, arg2)
+	cret = C.g_base64_decode_inplace()
 
-	goret = byte(cret)
+	var guint8 *byte
 
-	return goret
+	guint8 = (*byte)(cret)
+
+	return guint8
 }
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
 func Base64Encode() string {
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
-	cret = C.g_base64_encode(arg1, arg2)
+	cret = C.g_base64_encode()
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

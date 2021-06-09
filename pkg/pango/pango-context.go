@@ -50,17 +50,18 @@ func Itemize(context Context, text string, startIndex int, length int, attrs *At
 	arg5 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
 	arg6 = (*C.PangoAttrIterator)(unsafe.Pointer(cachedIter.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.pango_itemize(arg1, arg2, arg3, arg4, arg5, arg6)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // ItemizeWithBaseDir: like `pango_itemize()`, but with an explicitly specified
@@ -87,17 +88,18 @@ func ItemizeWithBaseDir(context Context, baseDir Direction, text string, startIn
 	arg6 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
 	arg7 = (*C.PangoAttrIterator)(unsafe.Pointer(cachedIter.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.pango_itemize_with_base_dir(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // Context: a `PangoContext` stores global information used to control the
@@ -263,14 +265,15 @@ func marshalContext(p uintptr) (interface{}, error) {
 
 // NewContext constructs a class Context.
 func NewContext() Context {
-	cret := new(C.PangoContext)
-	var goret Context
+	var cret C.PangoContext
 
 	cret = C.pango_context_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Context)
+	var context Context
 
-	return goret
+	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Context)
+
+	return context
 }
 
 // Changed forces a change in the context, which will cause any
@@ -296,13 +299,14 @@ func (c context) BaseDir() Direction {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.PangoDirection
-	var goret Direction
 
 	cret = C.pango_context_get_base_dir(arg0)
 
-	goret = Direction(cret)
+	var direction Direction
 
-	return goret
+	direction = Direction(cret)
+
+	return direction
 }
 
 // BaseGravity retrieves the base gravity for the context.
@@ -314,13 +318,14 @@ func (c context) BaseGravity() Gravity {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.PangoGravity
-	var goret Gravity
 
 	cret = C.pango_context_get_base_gravity(arg0)
 
-	goret = Gravity(cret)
+	var gravity Gravity
 
-	return goret
+	gravity = Gravity(cret)
+
+	return gravity
 }
 
 // FontDescription: retrieve the default font description for the context.
@@ -330,13 +335,14 @@ func (c context) FontDescription() *FontDescription {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoFontDescription
-	var goret *FontDescription
 
 	cret = C.pango_context_get_font_description(arg0)
 
-	goret = WrapFontDescription(unsafe.Pointer(cret))
+	var fontDescription *FontDescription
 
-	return goret
+	fontDescription = WrapFontDescription(unsafe.Pointer(cret))
+
+	return fontDescription
 }
 
 // FontMap gets the `PangoFontMap` used to look up fonts for this context.
@@ -346,13 +352,14 @@ func (c context) FontMap() FontMap {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoFontMap
-	var goret FontMap
 
 	cret = C.pango_context_get_font_map(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontMap)
+	var fontMap FontMap
 
-	return goret
+	fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontMap)
+
+	return fontMap
 }
 
 // Gravity retrieves the gravity for the context.
@@ -367,13 +374,14 @@ func (c context) Gravity() Gravity {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.PangoGravity
-	var goret Gravity
 
 	cret = C.pango_context_get_gravity(arg0)
 
-	goret = Gravity(cret)
+	var gravity Gravity
 
-	return goret
+	gravity = Gravity(cret)
+
+	return gravity
 }
 
 // GravityHint retrieves the gravity hint for the context.
@@ -385,13 +393,14 @@ func (c context) GravityHint() GravityHint {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.PangoGravityHint
-	var goret GravityHint
 
 	cret = C.pango_context_get_gravity_hint(arg0)
 
-	goret = GravityHint(cret)
+	var gravityHint GravityHint
 
-	return goret
+	gravityHint = GravityHint(cret)
+
+	return gravityHint
 }
 
 // Language retrieves the global language tag for the context.
@@ -400,17 +409,18 @@ func (c context) Language() *Language {
 
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.PangoLanguage)
-	var goret *Language
+	var cret *C.PangoLanguage
 
 	cret = C.pango_context_get_language(arg0)
 
-	goret = WrapLanguage(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Language) {
+	var language *Language
+
+	language = WrapLanguage(unsafe.Pointer(cret))
+	runtime.SetFinalizer(language, func(v *Language) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return language
 }
 
 // Matrix gets the transformation matrix that will be applied when rendering
@@ -423,13 +433,14 @@ func (c context) Matrix() *Matrix {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoMatrix
-	var goret *Matrix
 
 	cret = C.pango_context_get_matrix(arg0)
 
-	goret = WrapMatrix(unsafe.Pointer(cret))
+	var matrix *Matrix
 
-	return goret
+	matrix = WrapMatrix(unsafe.Pointer(cret))
+
+	return matrix
 }
 
 // Metrics: get overall metric information for a particular font
@@ -453,17 +464,18 @@ func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics
 	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	cret := new(C.PangoFontMetrics)
-	var goret *FontMetrics
+	var cret *C.PangoFontMetrics
 
 	cret = C.pango_context_get_metrics(arg0, arg1, arg2)
 
-	goret = WrapFontMetrics(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *FontMetrics) {
+	var fontMetrics *FontMetrics
+
+	fontMetrics = WrapFontMetrics(unsafe.Pointer(cret))
+	runtime.SetFinalizer(fontMetrics, func(v *FontMetrics) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return fontMetrics
 }
 
 // RoundGlyphPositions returns whether font rendering with this context
@@ -474,15 +486,16 @@ func (c context) RoundGlyphPositions() bool {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_context_get_round_glyph_positions(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Serial returns the current serial number of @context.
@@ -503,13 +516,14 @@ func (c context) Serial() uint {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.pango_context_get_serial(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // ListFamilies: list all families for a context.
@@ -518,9 +532,9 @@ func (c context) ListFamilies() {
 
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	C.pango_context_list_families(arg0, arg1, arg2)
+	C.pango_context_list_families(arg0)
 
-	return ret1, ret2
+	return
 }
 
 // LoadFont loads the font in one of the fontmaps in the context that is the
@@ -532,14 +546,15 @@ func (c context) LoadFont(desc *FontDescription) Font {
 	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 
-	cret := new(C.PangoFont)
-	var goret Font
+	var cret *C.PangoFont
 
 	cret = C.pango_context_load_font(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
+	var font Font
 
-	return goret
+	font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
+
+	return font
 }
 
 // LoadFontset: load a set of fonts in the context that can be used to
@@ -553,14 +568,15 @@ func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset 
 	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	cret := new(C.PangoFontset)
-	var goret Fontset
+	var cret *C.PangoFontset
 
 	cret = C.pango_context_load_fontset(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Fontset)
+	var fontset Fontset
 
-	return goret
+	fontset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Fontset)
+
+	return fontset
 }
 
 // SetBaseDir sets the base direction for the context.

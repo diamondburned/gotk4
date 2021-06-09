@@ -66,7 +66,7 @@ func (t *TextAppearance) FgColor() gdk.Color {
 // Rise gets the field inside the struct.
 func (t *TextAppearance) Rise() int {
 	var v int
-	v = int(t.native.rise)
+	v = (int)(t.native.rise)
 	return v
 }
 
@@ -95,17 +95,18 @@ func marshalTextAttributes(p uintptr) (interface{}, error) {
 
 // NewTextAttributes constructs a struct TextAttributes.
 func NewTextAttributes() *TextAttributes {
-	cret := new(C.GtkTextAttributes)
-	var goret *TextAttributes
+	var cret *C.GtkTextAttributes
 
 	cret = C.gtk_text_attributes_new()
 
-	goret = WrapTextAttributes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *TextAttributes) {
+	var textAttributes *TextAttributes
+
+	textAttributes = WrapTextAttributes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(textAttributes, func(v *TextAttributes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return textAttributes
 }
 
 // Native returns the underlying C source pointer.
@@ -144,49 +145,49 @@ func (t *TextAttributes) Font() *pango.FontDescription {
 // FontScale gets the field inside the struct.
 func (t *TextAttributes) FontScale() float64 {
 	var v float64
-	v = float64(t.native.font_scale)
+	v = (float64)(t.native.font_scale)
 	return v
 }
 
 // LeftMargin gets the field inside the struct.
 func (t *TextAttributes) LeftMargin() int {
 	var v int
-	v = int(t.native.left_margin)
+	v = (int)(t.native.left_margin)
 	return v
 }
 
 // RightMargin gets the field inside the struct.
 func (t *TextAttributes) RightMargin() int {
 	var v int
-	v = int(t.native.right_margin)
+	v = (int)(t.native.right_margin)
 	return v
 }
 
 // Indent gets the field inside the struct.
 func (t *TextAttributes) Indent() int {
 	var v int
-	v = int(t.native.indent)
+	v = (int)(t.native.indent)
 	return v
 }
 
 // PixelsAboveLines gets the field inside the struct.
 func (t *TextAttributes) PixelsAboveLines() int {
 	var v int
-	v = int(t.native.pixels_above_lines)
+	v = (int)(t.native.pixels_above_lines)
 	return v
 }
 
 // PixelsBelowLines gets the field inside the struct.
 func (t *TextAttributes) PixelsBelowLines() int {
 	var v int
-	v = int(t.native.pixels_below_lines)
+	v = (int)(t.native.pixels_below_lines)
 	return v
 }
 
 // PixelsInsideWrap gets the field inside the struct.
 func (t *TextAttributes) PixelsInsideWrap() int {
 	var v int
-	v = int(t.native.pixels_inside_wrap)
+	v = (int)(t.native.pixels_inside_wrap)
 	return v
 }
 
@@ -214,7 +215,7 @@ func (t *TextAttributes) Language() *pango.Language {
 // LetterSpacing gets the field inside the struct.
 func (t *TextAttributes) LetterSpacing() int {
 	var v int
-	v = int(t.native.letter_spacing)
+	v = (int)(t.native.letter_spacing)
 	return v
 }
 
@@ -224,17 +225,18 @@ func (s *TextAttributes) Copy() *TextAttributes {
 
 	arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GtkTextAttributes)
-	var goret *TextAttributes
+	var cret *C.GtkTextAttributes
 
 	cret = C.gtk_text_attributes_copy(arg0)
 
-	goret = WrapTextAttributes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *TextAttributes) {
+	var textAttributes *TextAttributes
+
+	textAttributes = WrapTextAttributes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(textAttributes, func(v *TextAttributes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return textAttributes
 }
 
 // CopyValues copies the values from @src to @dest so that @dest has the same
@@ -255,17 +257,18 @@ func (v *TextAttributes) Ref() *TextAttributes {
 
 	arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v.Native()))
 
-	cret := new(C.GtkTextAttributes)
-	var goret *TextAttributes
+	var cret *C.GtkTextAttributes
 
 	cret = C.gtk_text_attributes_ref(arg0)
 
-	goret = WrapTextAttributes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *TextAttributes) {
+	var textAttributes *TextAttributes
+
+	textAttributes = WrapTextAttributes(unsafe.Pointer(cret))
+	runtime.SetFinalizer(textAttributes, func(v *TextAttributes) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return textAttributes
 }
 
 // Unref decrements the reference count on @values, freeing the structure if the

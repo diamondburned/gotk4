@@ -218,7 +218,7 @@ type Container interface {
 	CheckResize()
 	// ChildGetProperty gets the value of a child property for @child and
 	// @container.
-	ChildGetProperty(child Widget, propertyName string, value *externglib.Value)
+	ChildGetProperty(child Widget, propertyName string, value **externglib.Value)
 	// ChildNotify emits a Widget::child-notify signal for the [child
 	// property][child-properties] @child_property on the child.
 	//
@@ -232,7 +232,7 @@ type Container interface {
 	// This is an analogue of g_object_notify_by_pspec() for child properties.
 	ChildNotifyByPspec(child Widget, pspec gobject.ParamSpec)
 	// ChildSetProperty sets a child property for @child and @container.
-	ChildSetProperty(child Widget, propertyName string, value *externglib.Value)
+	ChildSetProperty(child Widget, propertyName string, value **externglib.Value)
 	// ChildType returns the type of the children supported by the container.
 	//
 	// Note that this may return G_TYPE_NONE to indicate that no more children
@@ -268,7 +268,7 @@ type Container interface {
 	// set explicitly. If no focus chain has been explicitly set, GTK+ computes
 	// the focus chain based on the positions of the children. In that case,
 	// GTK+ stores nil in @focusable_widgets and returns false.
-	FocusChain() (focusableWidgets **glib.List, ok bool)
+	FocusChain() (focusableWidgets *glib.List, ok bool)
 	// FocusChild returns the current focus child widget inside @container. This
 	// is not the currently focused widget. That can be obtained by calling
 	// gtk_window_get_focus().
@@ -432,7 +432,7 @@ func (c container) CheckResize() {
 
 // ChildGetProperty gets the value of a child property for @child and
 // @container.
-func (c container) ChildGetProperty(child Widget, propertyName string, value *externglib.Value) {
+func (c container) ChildGetProperty(child Widget, propertyName string, value **externglib.Value) {
 	var arg0 *C.GtkContainer
 	var arg1 *C.GtkWidget
 	var arg2 *C.gchar
@@ -483,7 +483,7 @@ func (c container) ChildNotifyByPspec(child Widget, pspec gobject.ParamSpec) {
 }
 
 // ChildSetProperty sets a child property for @child and @container.
-func (c container) ChildSetProperty(child Widget, propertyName string, value *externglib.Value) {
+func (c container) ChildSetProperty(child Widget, propertyName string, value **externglib.Value) {
 	var arg0 *C.GtkContainer
 	var arg1 *C.GtkWidget
 	var arg2 *C.gchar
@@ -508,13 +508,14 @@ func (c container) ChildType() externglib.Type {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.gtk_container_child_type(arg0)
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 // Forall invokes @callback on each direct child of @container, including
@@ -529,7 +530,7 @@ func (c container) Forall() {
 
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
-	C.gtk_container_forall(arg0, arg1, arg2)
+	C.gtk_container_forall(arg0)
 }
 
 // Foreach invokes @callback on each non-internal child of @container. See
@@ -547,7 +548,7 @@ func (c container) Foreach() {
 
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
-	C.gtk_container_foreach(arg0, arg1, arg2)
+	C.gtk_container_foreach(arg0)
 }
 
 // BorderWidth retrieves the border width of the container. See
@@ -558,13 +559,14 @@ func (c container) BorderWidth() uint {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_container_get_border_width(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Children returns the container’s non-internal children. See
@@ -575,44 +577,41 @@ func (c container) Children() *glib.List {
 
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_container_get_children(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // FocusChain retrieves the focus chain of the container, if one has been
 // set explicitly. If no focus chain has been explicitly set, GTK+ computes
 // the focus chain based on the positions of the children. In that case,
 // GTK+ stores nil in @focusable_widgets and returns false.
-func (c container) FocusChain() (focusableWidgets **glib.List, ok bool) {
+func (c container) FocusChain() (focusableWidgets *glib.List, ok bool) {
 	var arg0 *C.GtkContainer
 
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(*C.GList)
-	var ret1 **glib.List
+	var focusableWidgets *glib.List
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_container_get_focus_chain(arg0, arg1)
+	cret = C.gtk_container_get_focus_chain(arg0, (**C.GList)(unsafe.Pointer(&focusableWidgets)))
 
-	ret1 = glib.WrapList(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, goret
+	return focusableWidgets, ok
 }
 
 // FocusChild returns the current focus child widget inside @container. This
@@ -624,13 +623,14 @@ func (c container) FocusChild() Widget {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_container_get_focus_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // FocusHAdjustment retrieves the horizontal focus adjustment for the
@@ -641,13 +641,14 @@ func (c container) FocusHAdjustment() Adjustment {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_container_get_focus_hadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // FocusVAdjustment retrieves the vertical focus adjustment for the
@@ -658,13 +659,14 @@ func (c container) FocusVAdjustment() Adjustment {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_container_get_focus_vadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // PathForChild returns a newly created widget path representing all the
@@ -676,17 +678,18 @@ func (c container) PathForChild(child Widget) *WidgetPath {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	cret := new(C.GtkWidgetPath)
-	var goret *WidgetPath
+	var cret *C.GtkWidgetPath
 
 	cret = C.gtk_container_get_path_for_child(arg0, arg1)
 
-	goret = WrapWidgetPath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *WidgetPath) {
+	var widgetPath *WidgetPath
+
+	widgetPath = WrapWidgetPath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(widgetPath, func(v *WidgetPath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return widgetPath
 }
 
 // ResizeMode returns the resize mode for the container. See
@@ -697,13 +700,14 @@ func (c container) ResizeMode() ResizeMode {
 	arg0 = (*C.GtkContainer)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkResizeMode
-	var goret ResizeMode
 
 	cret = C.gtk_container_get_resize_mode(arg0)
 
-	goret = ResizeMode(cret)
+	var resizeMode ResizeMode
 
-	return goret
+	resizeMode = ResizeMode(cret)
+
+	return resizeMode
 }
 
 // PropagateDraw: when a container receives a call to the draw function, it

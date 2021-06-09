@@ -18,11 +18,12 @@ func init() {
 	})
 }
 
-// CustomLayout: `GtkCustomLayout` uses closures for size negotiation.
+// CustomLayout is a convenience type meant to be used as a transition mechanism
+// between Widgets implementing a layout policy, and LayoutManager classes.
 //
-// A `GtkCustomLayout `uses closures matching to the old `GtkWidget` virtual
-// functions for size negotiation, as a convenience API to ease the porting
-// towards the corresponding `GtkLayoutManager virtual functions.
+// A CustomLayout uses closures matching to the old Widget virtual functions for
+// size negotiation, as a convenience API to ease the porting towards the
+// corresponding LayoutManager virtual functions.
 type CustomLayout interface {
 	LayoutManager
 }

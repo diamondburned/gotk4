@@ -134,7 +134,7 @@ type Entry interface {
 	// with the icon’s allocation, relative to @entry’s allocation.
 	//
 	// See also gtk_entry_get_text_area()
-	IconArea(iconPos EntryIconPosition) *gdk.Rectangle
+	IconArea(iconPos EntryIconPosition) gdk.Rectangle
 	// IconAtPos finds the icon at the given position and return its index. The
 	// position’s coordinates are relative to the @entry’s top left corner. If
 	// @x, @y doesn’t lie inside an icon, -1 is returned. This function is
@@ -244,7 +244,7 @@ type Entry interface {
 	// If the entry is not realized, @text_area is filled with zeros.
 	//
 	// See also gtk_entry_get_icon_area().
-	TextArea() *gdk.Rectangle
+	TextArea() gdk.Rectangle
 	// TextLength retrieves the current length of the text in @entry.
 	//
 	// This is equivalent to getting @entry's EntryBuffer and calling
@@ -361,7 +361,7 @@ type Entry interface {
 	// position from a stock image.
 	//
 	// If @stock_id is nil, no icon will be shown in the specified position.
-	SetIconFromStock(iconPos EntryIconPosition, stockID string)
+	SetIconFromStock(iconPos EntryIconPosition, stockId string)
 	// SetIconSensitive sets the sensitivity for the specified icon.
 	SetIconSensitive(iconPos EntryIconPosition, sensitive bool)
 	// SetIconTooltipMarkup sets @tooltip as the contents of the tooltip for the
@@ -506,13 +506,14 @@ func marshalEntry(p uintptr) (interface{}, error) {
 // NewEntry constructs a class Entry.
 func NewEntry() Entry {
 	var cret C.GtkEntry
-	var goret Entry
 
 	cret = C.gtk_entry_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Entry)
+	var entry Entry
 
-	return goret
+	entry = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Entry)
+
+	return entry
 }
 
 // NewEntryWithBuffer constructs a class Entry.
@@ -522,13 +523,14 @@ func NewEntryWithBuffer(buffer EntryBuffer) Entry {
 	arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	var cret C.GtkEntry
-	var goret Entry
 
 	cret = C.gtk_entry_new_with_buffer(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Entry)
+	var entry Entry
 
-	return goret
+	entry = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Entry)
+
+	return entry
 }
 
 // ActivatesDefault retrieves the value set by
@@ -539,15 +541,16 @@ func (e entry) ActivatesDefault() bool {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_get_activates_default(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Alignment gets the value set by gtk_entry_set_alignment().
@@ -557,13 +560,14 @@ func (e entry) Alignment() float32 {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gfloat
-	var goret float32
 
 	cret = C.gtk_entry_get_alignment(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Attributes gets the attribute list that was set on the entry using
@@ -574,13 +578,14 @@ func (e entry) Attributes() *pango.AttrList {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.PangoAttrList
-	var goret *pango.AttrList
 
 	cret = C.gtk_entry_get_attributes(arg0)
 
-	goret = pango.WrapAttrList(unsafe.Pointer(cret))
+	var attrList *pango.AttrList
 
-	return goret
+	attrList = pango.WrapAttrList(unsafe.Pointer(cret))
+
+	return attrList
 }
 
 // Buffer: get the EntryBuffer object which holds the text for this widget.
@@ -590,13 +595,14 @@ func (e entry) Buffer() EntryBuffer {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkEntryBuffer
-	var goret EntryBuffer
 
 	cret = C.gtk_entry_get_buffer(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+	var entryBuffer EntryBuffer
 
-	return goret
+	entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+
+	return entryBuffer
 }
 
 // Completion returns the auxiliary completion object currently in use by
@@ -607,13 +613,14 @@ func (e entry) Completion() EntryCompletion {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkEntryCompletion
-	var goret EntryCompletion
 
 	cret = C.gtk_entry_get_completion(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+	var entryCompletion EntryCompletion
 
-	return goret
+	entryCompletion = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+
+	return entryCompletion
 }
 
 // CurrentIconDragSource returns the index of the icon which is the source
@@ -626,13 +633,14 @@ func (e entry) CurrentIconDragSource() int {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_get_current_icon_drag_source(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // CursorHAdjustment retrieves the horizontal cursor adjustment for the
@@ -643,13 +651,14 @@ func (e entry) CursorHAdjustment() Adjustment {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_entry_get_cursor_hadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // HasFrame gets the value set by gtk_entry_set_has_frame().
@@ -659,15 +668,16 @@ func (e entry) HasFrame() bool {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_get_has_frame(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IconActivatable returns whether the icon is activatable.
@@ -679,15 +689,16 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_get_icon_activatable(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IconArea gets the area where entry’s icon at @icon_pos is drawn. This
@@ -699,21 +710,18 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 // with the icon’s allocation, relative to @entry’s allocation.
 //
 // See also gtk_entry_get_text_area()
-func (e entry) IconArea(iconPos EntryIconPosition) *gdk.Rectangle {
+func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 	var arg0 *C.GtkEntry
 	var arg1 C.GtkEntryIconPosition
 
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	arg2 := new(C.GdkRectangle)
-	var ret2 *gdk.Rectangle
+	var iconArea gdk.Rectangle
 
-	C.gtk_entry_get_icon_area(arg0, arg1, arg2)
+	C.gtk_entry_get_icon_area(arg0, arg1, (*C.GdkRectangle)(unsafe.Pointer(&iconArea)))
 
-	ret2 = gdk.WrapRectangle(unsafe.Pointer(arg2))
-
-	return ret2
+	return iconArea
 }
 
 // IconAtPos finds the icon at the given position and return its index. The
@@ -730,13 +738,14 @@ func (e entry) IconAtPos(x int, y int) int {
 	arg2 = C.gint(y)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_get_icon_at_pos(arg0, arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // IconGIcon retrieves the #GIcon used for the icon, or nil if there is no
@@ -750,13 +759,14 @@ func (e entry) IconGIcon(iconPos EntryIconPosition) gio.Icon {
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
 	var cret *C.GIcon
-	var goret gio.Icon
 
 	cret = C.gtk_entry_get_icon_gicon(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+	var icon gio.Icon
 
-	return goret
+	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+
+	return icon
 }
 
 // IconName retrieves the icon name used for the icon, or nil if there is no
@@ -770,13 +780,14 @@ func (e entry) IconName(iconPos EntryIconPosition) string {
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_entry_get_icon_name(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // IconPixbuf retrieves the image used for the icon.
@@ -792,13 +803,14 @@ func (e entry) IconPixbuf(iconPos EntryIconPosition) gdkpixbuf.Pixbuf {
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
 	var cret *C.GdkPixbuf
-	var goret gdkpixbuf.Pixbuf
 
 	cret = C.gtk_entry_get_icon_pixbuf(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	var pixbuf gdkpixbuf.Pixbuf
 
-	return goret
+	pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return pixbuf
 }
 
 // IconSensitive returns whether the icon appears sensitive or insensitive.
@@ -810,15 +822,16 @@ func (e entry) IconSensitive(iconPos EntryIconPosition) bool {
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_get_icon_sensitive(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IconStock retrieves the stock id used for the icon, or nil if there is no
@@ -832,13 +845,14 @@ func (e entry) IconStock(iconPos EntryIconPosition) string {
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_entry_get_icon_stock(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // IconStorageType gets the type of representation being used by the icon to
@@ -852,13 +866,14 @@ func (e entry) IconStorageType(iconPos EntryIconPosition) ImageType {
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
 	var cret C.GtkImageType
-	var goret ImageType
 
 	cret = C.gtk_entry_get_icon_storage_type(arg0, arg1)
 
-	goret = ImageType(cret)
+	var imageType ImageType
 
-	return goret
+	imageType = ImageType(cret)
+
+	return imageType
 }
 
 // IconTooltipMarkup gets the contents of the tooltip on the icon at the
@@ -870,15 +885,16 @@ func (e entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_entry_get_icon_tooltip_markup(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // IconTooltipText gets the contents of the tooltip on the icon at the
@@ -890,15 +906,16 @@ func (e entry) IconTooltipText(iconPos EntryIconPosition) string {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_entry_get_icon_tooltip_text(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // InnerBorder: this function returns the entry’s Entry:inner-border
@@ -909,13 +926,14 @@ func (e entry) InnerBorder() *Border {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkBorder
-	var goret *Border
 
 	cret = C.gtk_entry_get_inner_border(arg0)
 
-	goret = WrapBorder(unsafe.Pointer(cret))
+	var border *Border
 
-	return goret
+	border = WrapBorder(unsafe.Pointer(cret))
+
+	return border
 }
 
 // InputHints gets the value of the Entry:input-hints property.
@@ -925,13 +943,14 @@ func (e entry) InputHints() InputHints {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.GtkInputHints
-	var goret InputHints
 
 	cret = C.gtk_entry_get_input_hints(arg0)
 
-	goret = InputHints(cret)
+	var inputHints InputHints
 
-	return goret
+	inputHints = InputHints(cret)
+
+	return inputHints
 }
 
 // InputPurpose gets the value of the Entry:input-purpose property.
@@ -941,13 +960,14 @@ func (e entry) InputPurpose() InputPurpose {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.GtkInputPurpose
-	var goret InputPurpose
 
 	cret = C.gtk_entry_get_input_purpose(arg0)
 
-	goret = InputPurpose(cret)
+	var inputPurpose InputPurpose
 
-	return goret
+	inputPurpose = InputPurpose(cret)
+
+	return inputPurpose
 }
 
 // InvisibleChar retrieves the character displayed in place of the real
@@ -959,13 +979,14 @@ func (e entry) InvisibleChar() uint32 {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gunichar
-	var goret uint32
 
 	cret = C.gtk_entry_get_invisible_char(arg0)
 
-	goret = uint32(cret)
+	var gunichar uint32
 
-	return goret
+	gunichar = (uint32)(cret)
+
+	return gunichar
 }
 
 // Layout gets the Layout used to display the entry. The layout is useful to
@@ -983,13 +1004,14 @@ func (e entry) Layout() pango.Layout {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.PangoLayout
-	var goret pango.Layout
 
 	cret = C.gtk_entry_get_layout(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	var layout pango.Layout
 
-	return goret
+	layout = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
+
+	return layout
 }
 
 // LayoutOffsets obtains the position of the Layout used to render text in
@@ -1014,17 +1036,18 @@ func (e entry) LayoutOffsets() (x int, y int) {
 
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_entry_get_layout_offsets(arg0, arg1, arg2)
+	C.gtk_entry_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var x int
+	var y int
 
-	return ret1, ret2
+	x = (int)(arg1)
+	y = (int)(arg2)
+
+	return x, y
 }
 
 // MaxLength retrieves the maximum allowed length of the text in @entry. See
@@ -1038,13 +1061,14 @@ func (e entry) MaxLength() int {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_get_max_length(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MaxWidthChars retrieves the desired maximum width of @entry, in
@@ -1055,13 +1079,14 @@ func (e entry) MaxWidthChars() int {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_get_max_width_chars(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // OverwriteMode gets the value set by gtk_entry_set_overwrite_mode().
@@ -1071,15 +1096,16 @@ func (e entry) OverwriteMode() bool {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_get_overwrite_mode(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PlaceholderText retrieves the text that will be displayed when @entry is
@@ -1090,13 +1116,14 @@ func (e entry) PlaceholderText() string {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_entry_get_placeholder_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ProgressFraction returns the current fraction of the task that’s been
@@ -1107,13 +1134,14 @@ func (e entry) ProgressFraction() float64 {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_entry_get_progress_fraction(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // ProgressPulseStep retrieves the pulse step set with
@@ -1124,13 +1152,14 @@ func (e entry) ProgressPulseStep() float64 {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_entry_get_progress_pulse_step(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Tabs gets the tabstops that were set on the entry using
@@ -1141,13 +1170,14 @@ func (e entry) Tabs() *pango.TabArray {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.PangoTabArray
-	var goret *pango.TabArray
 
 	cret = C.gtk_entry_get_tabs(arg0)
 
-	goret = pango.WrapTabArray(unsafe.Pointer(cret))
+	var tabArray *pango.TabArray
 
-	return goret
+	tabArray = pango.WrapTabArray(unsafe.Pointer(cret))
+
+	return tabArray
 }
 
 // Text retrieves the contents of the entry widget. See also
@@ -1161,13 +1191,14 @@ func (e entry) Text() string {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_entry_get_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // TextArea gets the area where the entry’s text is drawn. This function is
@@ -1176,19 +1207,16 @@ func (e entry) Text() string {
 // If the entry is not realized, @text_area is filled with zeros.
 //
 // See also gtk_entry_get_icon_area().
-func (e entry) TextArea() *gdk.Rectangle {
+func (e entry) TextArea() gdk.Rectangle {
 	var arg0 *C.GtkEntry
 
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	arg1 := new(C.GdkRectangle)
-	var ret1 *gdk.Rectangle
+	var textArea gdk.Rectangle
 
-	C.gtk_entry_get_text_area(arg0, arg1)
+	C.gtk_entry_get_text_area(arg0, (*C.GdkRectangle)(unsafe.Pointer(&textArea)))
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
-
-	return ret1
+	return textArea
 }
 
 // TextLength retrieves the current length of the text in @entry.
@@ -1201,13 +1229,14 @@ func (e entry) TextLength() uint16 {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.guint16
-	var goret uint16
 
 	cret = C.gtk_entry_get_text_length(arg0)
 
-	goret = uint16(cret)
+	var guint16 uint16
 
-	return goret
+	guint16 = (uint16)(cret)
+
+	return guint16
 }
 
 // Visibility retrieves whether the text in @entry is visible. See
@@ -1218,15 +1247,16 @@ func (e entry) Visibility() bool {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_get_visibility(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // WidthChars gets the value set by gtk_entry_set_width_chars().
@@ -1236,13 +1266,14 @@ func (e entry) WidthChars() int {
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_get_width_chars(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // GrabFocusWithoutSelecting causes @entry to have keyboard focus.
@@ -1277,15 +1308,16 @@ func (e entry) ImContextFilterKeypress(event *gdk.EventKey) bool {
 	arg1 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_im_context_filter_keypress(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // LayoutIndexToTextIndex converts from a position in the entry’s Layout
@@ -1299,13 +1331,14 @@ func (e entry) LayoutIndexToTextIndex(layoutIndex int) int {
 	arg1 = C.gint(layoutIndex)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_layout_index_to_text_index(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ProgressPulse indicates that some progress is made, but you don’t know
@@ -1533,14 +1566,14 @@ func (e entry) SetIconFromPixbuf(iconPos EntryIconPosition, pixbuf gdkpixbuf.Pix
 // position from a stock image.
 //
 // If @stock_id is nil, no icon will be shown in the specified position.
-func (e entry) SetIconFromStock(iconPos EntryIconPosition, stockID string) {
+func (e entry) SetIconFromStock(iconPos EntryIconPosition, stockId string) {
 	var arg0 *C.GtkEntry
 	var arg1 C.GtkEntryIconPosition
 	var arg2 *C.gchar
 
 	arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	arg1 = (C.GtkEntryIconPosition)(iconPos)
-	arg2 = (*C.gchar)(C.CString(stockID))
+	arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg2))
 
 	C.gtk_entry_set_icon_from_stock(arg0, arg1, arg2)
@@ -1830,13 +1863,14 @@ func (e entry) TextIndexToLayoutIndex(textIndex int) int {
 	arg1 = C.gint(textIndex)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_text_index_to_layout_index(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // UnsetInvisibleChar unsets the invisible char previously set with

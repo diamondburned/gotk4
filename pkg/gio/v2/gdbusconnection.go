@@ -41,7 +41,7 @@ func gotk4_DBusInterfaceGetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	}
 
 	fn := v.(DBusInterfaceGetPropertyFunc)
-	fn(variant)
+	variant := fn()
 
 	cret = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 }
@@ -73,7 +73,7 @@ func gotk4_DBusInterfaceSetPropertyFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, 
 	}
 
 	fn := v.(DBusInterfaceSetPropertyFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
@@ -149,7 +149,7 @@ func gotk4_DBusMessageFilterFunction(arg0 *C.GDBusConnection, arg1 *C.GDBusMessa
 	}
 
 	fn := v.(DBusMessageFilterFunction)
-	fn(dBusMessage)
+	dBusMessage := fn()
 
 	cret = (*C.GDBusMessage)(unsafe.Pointer(dBusMessage.Native()))
 }
@@ -184,7 +184,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 	}
 
 	fn := v.(DBusSubtreeDispatchFunc)
-	fn(dBusInterfaceVTable)
+	dBusInterfaceVTable := fn()
 
 	cret = (*C.GDBusInterfaceVTable)(unsafe.Pointer(dBusInterfaceVTable.Native()))
 }
@@ -198,7 +198,7 @@ func gotk4_DBusSubtreeDispatchFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // (ie: to verify that the object path is valid).
 //
 // Hierarchies are not supported; the items that you return should not contain
-// the `/` character.
+// the '/' character.
 //
 // The return value will be freed with g_strfreev().
 type DBusSubtreeEnumerateFunc func() (utf8s []string)
@@ -211,15 +211,18 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 	}
 
 	fn := v.(DBusSubtreeEnumerateFunc)
-	fn(utf8s)
+	utf8s := fn()
 
 	cret = (**C.gchar)(C.malloc((len(utf8s) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(cret))
+
 	{
 		var out []*C.gchar
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(cret), int(len(utf8s)))
 
 		for i := range utf8s {
-			out[i] = (*C.gchar)(C.CString(utf8s[i]))
+			cret = (*C.gchar)(C.CString(utf8s))
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 }
@@ -242,7 +245,7 @@ func gotk4_DBusSubtreeEnumerateFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2
 // The difference between returning nil and an array containing zero items is
 // that the standard DBus interfaces will returned to the remote introspector in
 // the empty array case, but not in the nil case.
-type DBusSubtreeIntrospectFunc func() (dBusInterfaceInfos []*DBusInterfaceInfo)
+type DBusSubtreeIntrospectFunc func() (dBusInterfaceInfo **DBusInterfaceInfo)
 
 //export gotk4_DBusSubtreeIntrospectFunc
 func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 *C.gchar, arg4 C.gpointer) **C.GDBusInterfaceInfo {
@@ -252,17 +255,9 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 	}
 
 	fn := v.(DBusSubtreeIntrospectFunc)
-	fn(dBusInterfaceInfos)
+	dBusInterfaceInfo := fn()
 
-	cret = (**C.GDBusInterfaceInfo)(C.malloc((len(dBusInterfaceInfos) + 1) * unsafe.Sizeof(int(0))))
-	{
-		var out []*C.GDBusInterfaceInfo
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(cret), int(len(dBusInterfaceInfos)))
-
-		for i := range dBusInterfaceInfos {
-			out[i] = (*C.GDBusInterfaceInfo)(unsafe.Pointer(dBusInterfaceInfos[i].Native()))
-		}
-	}
+	cret = (**C.GDBusInterfaceInfo)(unsafe.Pointer(dBusInterfaceInfo.Native()))
 }
 
 // BusGet: asynchronously connects to the message bus specified by @bus_type.
@@ -273,7 +268,7 @@ func gotk4_DBusSubtreeIntrospectFunc(arg0 *C.GDBusConnection, arg1 *C.gchar, arg
 // This is an asynchronous failable function. See g_bus_get_sync() for the
 // synchronous version.
 func BusGet() {
-	C.g_bus_get(arg1, arg2, arg3, arg4)
+	C.g_bus_get()
 }
 
 // BusGetFinish finishes an operation started with g_bus_get().
@@ -285,22 +280,23 @@ func BusGet() {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
+func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, goerr error) {
 	var arg1 *C.GAsyncResult
 
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	cret := new(C.GDBusConnection)
-	var goret DBusConnection
+	var cret *C.GDBusConnection
 	var cerr *C.GError
+
+	cret = C.g_bus_get_finish(arg1, cerr)
+
+	var dBusConnection DBusConnection
 	var goerr error
 
-	cret = C.g_bus_get_finish(arg1, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return dBusConnection, goerr
 }
 
 // BusGetSync: synchronously connects to the message bus specified by @bus_type.
@@ -318,24 +314,25 @@ func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, err error) {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusConnection, err error) {
+func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusConnection, goerr error) {
 	var arg1 C.GBusType
 	var arg2 *C.GCancellable
 
 	arg1 = (C.GBusType)(busType)
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	cret := new(C.GDBusConnection)
-	var goret DBusConnection
+	var cret *C.GDBusConnection
 	var cerr *C.GError
+
+	cret = C.g_bus_get_sync(arg1, arg2, cerr)
+
+	var dBusConnection DBusConnection
 	var goerr error
 
-	cret = C.g_bus_get_sync(arg1, arg2, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return dBusConnection, goerr
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls

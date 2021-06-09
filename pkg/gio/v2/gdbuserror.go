@@ -50,7 +50,7 @@ func (d *DBusErrorEntry) Native() unsafe.Pointer {
 // ErrorCode gets the field inside the struct.
 func (d *DBusErrorEntry) ErrorCode() int {
 	var v int
-	v = int(d.native.error_code)
+	v = (int)(d.native.error_code)
 	return v
 }
 

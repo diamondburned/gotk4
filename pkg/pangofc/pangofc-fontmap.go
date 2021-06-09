@@ -35,7 +35,7 @@ func gotk4_DecoderFindFunc(arg0 *C.FcPattern, arg1 C.gpointer) *C.PangoFcDecoder
 	}
 
 	fn := v.(DecoderFindFunc)
-	fn(decoder)
+	decoder := fn()
 
 	cret = (*C.PangoFcDecoder)(unsafe.Pointer(decoder.Native()))
 }
@@ -136,7 +136,7 @@ func (f fontMap) AddDecoderFindFunc() {
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_add_decoder_find_func(arg0, arg1, arg2, arg3)
+	C.pango_fc_font_map_add_decoder_find_func(arg0)
 }
 
 // CacheClear: clear all cached information and fontsets for this font map.
@@ -177,14 +177,15 @@ func (f fontMap) CreateContext() pango.Context {
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	cret := new(C.PangoContext)
-	var goret pango.Context
+	var cret *C.PangoContext
 
 	cret = C.pango_fc_font_map_create_context(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	var context pango.Context
 
-	return goret
+	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+
+	return context
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final
@@ -198,7 +199,7 @@ func (f fontMap) SetDefaultSubstitute() {
 
 	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_set_default_substitute(arg0, arg1, arg2, arg3)
+	C.pango_fc_font_map_set_default_substitute(arg0)
 }
 
 // Shutdown clears all cached information for the fontmap and marks all

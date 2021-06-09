@@ -167,9 +167,10 @@ func (i initable) Init(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_initable_init(arg0, arg1, &cerr)
+	C.g_initable_init(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 

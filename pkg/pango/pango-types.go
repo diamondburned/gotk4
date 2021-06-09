@@ -53,13 +53,14 @@ func UnitsFromDouble(d float64) int {
 	arg1 = C.double(d)
 
 	var cret C.int
-	var goret int
 
 	cret = C.pango_units_from_double(arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // UnitsToDouble converts a number in Pango units to floating-point.
@@ -71,13 +72,14 @@ func UnitsToDouble(i int) float64 {
 	arg1 = C.int(i)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.pango_units_to_double(arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Rectangle: the `PangoRectangle` structure represents a rectangle.
@@ -112,27 +114,27 @@ func (r *Rectangle) Native() unsafe.Pointer {
 // X gets the field inside the struct.
 func (r *Rectangle) X() int {
 	var v int
-	v = int(r.native.x)
+	v = (int)(r.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (r *Rectangle) Y() int {
 	var v int
-	v = int(r.native.y)
+	v = (int)(r.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (r *Rectangle) Width() int {
 	var v int
-	v = int(r.native.width)
+	v = (int)(r.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (r *Rectangle) Height() int {
 	var v int
-	v = int(r.native.height)
+	v = (int)(r.native.height)
 	return v
 }

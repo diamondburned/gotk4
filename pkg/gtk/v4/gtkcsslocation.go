@@ -12,8 +12,8 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// CSSLocation represents a location in a file or other source of data parsed by
-// the CSS engine.
+// CSSLocation is used to present a location in a file - or other source of data
+// parsed by the CSS engine.
 //
 // The @bytes and @line_bytes offsets are meant to be used to programmatically
 // match data. The @lines and @line_chars offsets can be used for printing the
@@ -50,34 +50,34 @@ func (c *CSSLocation) Native() unsafe.Pointer {
 // Bytes gets the field inside the struct.
 func (c *CSSLocation) Bytes() uint {
 	var v uint
-	v = uint(c.native.bytes)
+	v = (uint)(c.native.bytes)
 	return v
 }
 
 // Chars gets the field inside the struct.
 func (c *CSSLocation) Chars() uint {
 	var v uint
-	v = uint(c.native.chars)
+	v = (uint)(c.native.chars)
 	return v
 }
 
 // Lines gets the field inside the struct.
 func (c *CSSLocation) Lines() uint {
 	var v uint
-	v = uint(c.native.lines)
+	v = (uint)(c.native.lines)
 	return v
 }
 
 // LineBytes gets the field inside the struct.
 func (c *CSSLocation) LineBytes() uint {
 	var v uint
-	v = uint(c.native.line_bytes)
+	v = (uint)(c.native.line_bytes)
 	return v
 }
 
 // LineChars gets the field inside the struct.
 func (c *CSSLocation) LineChars() uint {
 	var v uint
-	v = uint(c.native.line_chars)
+	v = (uint)(c.native.line_chars)
 	return v
 }

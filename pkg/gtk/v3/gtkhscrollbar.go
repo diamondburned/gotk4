@@ -68,11 +68,12 @@ func NewHScrollbar(adjustment Adjustment) HScrollbar {
 	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkHScrollbar
-	var goret HScrollbar
 
 	cret = C.gtk_hscrollbar_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScrollbar)
+	var hScrollbar HScrollbar
 
-	return goret
+	hScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScrollbar)
+
+	return hScrollbar
 }

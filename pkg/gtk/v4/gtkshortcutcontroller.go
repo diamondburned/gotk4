@@ -23,39 +23,45 @@ func init() {
 	})
 }
 
-// ShortcutController: `GtkShortcutController` is an event controller that
-// manages shortcuts.
+// ShortcutController is an event controller that manages shortcuts.
 //
 // Most common shortcuts are using this controller implicitly, e.g. by adding a
-// mnemonic underline to a `GtkLabel`, or by installing a key binding using
+// mnemonic underline to a Label, or by installing a key binding using
 // gtk_widget_class_add_binding(), or by adding accelerators to global actions
 // using gtk_application_set_accels_for_action().
 //
 // But it is possible to create your own shortcut controller, and add shortcuts
 // to it.
 //
-// `GtkShortcutController` implements `GListModel` for querying the shortcuts
-// that have been added to it.
+// ShortcutController implements Model for querying the shortcuts that have been
+// added to it.
 //
 //
 // GtkShortcutController as a GtkBuildable
 //
-// `GtkShortcutControllers` can be creates in ui files to set up shortcuts in
-// the same place as the widgets.
+// GtkShortcutControllers can be creates in ui files to set up shortcuts in the
+// same place as the widgets.
 //
-// An example of a UI definition fragment with `GtkShortcutController`: “`xml
-// <object class='GtkButton'> <child> <object class='GtkShortcutController'>
-// <property name='scope'>managed</property> <child> <object
-// class='GtkShortcut'> <property
-// name='trigger'>&amp;lt;Control&amp;gt;k</property> <property
-// name='action'>activate</property> </object> </child> </object> </child>
-// </object> “`
+// An example of a UI definition fragment with GtkShortcutController:
 //
-// This example creates a [class@Gtk.ActivateAction] for triggering the
-// `activate` signal of the `GtkButton`. See
-// [ctor@Gtk.ShortcutAction.parse_string] for the syntax for other kinds of
-// `GtkShortcutAction`. See [ctor@Gtk.ShortcutTrigger.parse_string] to learn
-// more about the syntax for triggers.
+//    <object class='GtkButton'>
+//      <child>
+//        <object class='GtkShortcutController'>
+//          <property name='scope'>managed</property>
+//          <child>
+//            <object class='GtkShortcut'>
+//              <property name='trigger'>&amp;lt;Control&amp;gt;k</property>
+//              <property name='action'>activate</property>
+//            </object>
+//          </child>
+//        </object>
+//      </child>
+//    </object>
+//
+// This example creates a ActivateAction for triggering the `activate` signal of
+// the GtkButton. See gtk_shortcut_action_parse_string() for the syntax for
+// other kinds of ShortcutAction. See gtk_shortcut_trigger_parse_string() to
+// learn more about the syntax for triggers.
 type ShortcutController interface {
 	EventController
 	gio.ListModel
@@ -67,7 +73,8 @@ type ShortcutController interface {
 	// nothing.
 	AddShortcut(shortcut Shortcut)
 	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
-	// activates its shortcuts.
+	// activates its shortcuts. See
+	// gtk_shortcut_controller_set_mnemonics_modifiers() for details.
 	MnemonicsModifiers() gdk.ModifierType
 	// Scope gets the scope for when this controller activates its shortcuts.
 	// See gtk_shortcut_controller_set_scope() for details.
@@ -131,14 +138,15 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 
 // NewShortcutController constructs a class ShortcutController.
 func NewShortcutController() ShortcutController {
-	cret := new(C.GtkShortcutController)
-	var goret ShortcutController
+	var cret C.GtkShortcutController
 
 	cret = C.gtk_shortcut_controller_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
+	var shortcutController ShortcutController
 
-	return goret
+	shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
+
+	return shortcutController
 }
 
 // NewShortcutControllerForModel constructs a class ShortcutController.
@@ -147,14 +155,15 @@ func NewShortcutControllerForModel(model gio.ListModel) ShortcutController {
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	cret := new(C.GtkShortcutController)
-	var goret ShortcutController
+	var cret C.GtkShortcutController
 
 	cret = C.gtk_shortcut_controller_new_for_model(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
+	var shortcutController ShortcutController
 
-	return goret
+	shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutController)
+
+	return shortcutController
 }
 
 // AddShortcut adds @shortcut to the list of shortcuts handled by @self.
@@ -172,20 +181,22 @@ func (s shortcutController) AddShortcut(shortcut Shortcut) {
 }
 
 // MnemonicsModifiers gets the mnemonics modifiers for when this controller
-// activates its shortcuts.
+// activates its shortcuts. See
+// gtk_shortcut_controller_set_mnemonics_modifiers() for details.
 func (s shortcutController) MnemonicsModifiers() gdk.ModifierType {
 	var arg0 *C.GtkShortcutController
 
 	arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkModifierType
-	var goret gdk.ModifierType
 
 	cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(arg0)
 
-	goret = gdk.ModifierType(cret)
+	var modifierType gdk.ModifierType
 
-	return goret
+	modifierType = gdk.ModifierType(cret)
+
+	return modifierType
 }
 
 // Scope gets the scope for when this controller activates its shortcuts.
@@ -196,13 +207,14 @@ func (s shortcutController) Scope() ShortcutScope {
 	arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkShortcutScope
-	var goret ShortcutScope
 
 	cret = C.gtk_shortcut_controller_get_scope(arg0)
 
-	goret = ShortcutScope(cret)
+	var shortcutScope ShortcutScope
 
-	return goret
+	shortcutScope = ShortcutScope(cret)
+
+	return shortcutScope
 }
 
 // RemoveShortcut removes @shortcut from the list of shortcuts handled by

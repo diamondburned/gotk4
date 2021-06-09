@@ -176,13 +176,14 @@ func NewApplicationWindow(application Application) ApplicationWindow {
 	arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
 
 	var cret C.GtkApplicationWindow
-	var goret ApplicationWindow
 
 	cret = C.gtk_application_window_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ApplicationWindow)
+	var applicationWindow ApplicationWindow
 
-	return goret
+	applicationWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ApplicationWindow)
+
+	return applicationWindow
 }
 
 // HelpOverlay gets the ShortcutsWindow that has been set up with a prior
@@ -193,13 +194,14 @@ func (w applicationWindow) HelpOverlay() ShortcutsWindow {
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GtkShortcutsWindow
-	var goret ShortcutsWindow
 
 	cret = C.gtk_application_window_get_help_overlay(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutsWindow)
+	var shortcutsWindow ShortcutsWindow
 
-	return goret
+	shortcutsWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutsWindow)
+
+	return shortcutsWindow
 }
 
 // ID returns the unique ID of the window. If the window has not yet been
@@ -210,13 +212,14 @@ func (w applicationWindow) ID() uint {
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_application_window_get_id(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // ShowMenubar returns whether the window will display a menubar for the app
@@ -227,15 +230,16 @@ func (w applicationWindow) ShowMenubar() bool {
 	arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_application_window_get_show_menubar(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetHelpOverlay associates a shortcuts window with the application window,

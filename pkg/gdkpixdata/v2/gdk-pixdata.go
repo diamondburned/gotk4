@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
@@ -84,11 +85,10 @@ const (
 	PixdataTypeEncodingMask PixdataType = 251658240
 )
 
-// PixbufFromPixdata converts a `GdkPixdata` to a `GdkPixbuf`.
-//
-// If `copy_pixels` is `TRUE` or if the pixel data is run-length-encoded, the
-// pixel data is copied into newly-allocated memory; otherwise it is reused.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixbuf, err error) {
+// PixbufFromPixdata converts a Pixdata to a Pixbuf. If @copy_pixels is true or
+// if the pixel data is run-length-encoded, the pixel data is copied into
+// newly-allocated memory; otherwise it is reused.
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixbuf, goerr error) {
 	var arg1 *C.GdkPixdata
 	var arg2 C.gboolean
 
@@ -97,28 +97,22 @@ func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixb
 		arg2 = C.gboolean(1)
 	}
 
-	cret := new(C.GdkPixbuf)
-	var goret gdkpixbuf.Pixbuf
+	var cret *C.GdkPixbuf
 	var cerr *C.GError
+
+	cret = C.gdk_pixbuf_from_pixdata(arg1, arg2, cerr)
+
+	var pixbuf gdkpixbuf.Pixbuf
 	var goerr error
 
-	cret = C.gdk_pixbuf_from_pixdata(arg1, arg2, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return pixbuf, goerr
 }
 
-// Pixdata: a pixel buffer suitable for serialization and streaming.
-//
-// Using `GdkPixdata`, images can be compiled into an application, making it
-// unnecessary to refer to external image files at runtime.
-//
-// `GdkPixbuf` includes a utility named `gdk-pixbuf-csource`, which can be used
-// to convert image files into `GdkPixdata` structures suitable for inclusion in
-// C sources. To convert the `GdkPixdata` structures back into a `GdkPixbuf`,
-// use `gdk_pixbuf_from_pixdata()`.
+// Pixdata: a Pixdata contains pixbuf information in a form suitable for
+// serialization and streaming.
 type Pixdata struct {
 	native C.GdkPixdata
 }
@@ -146,43 +140,68 @@ func (p *Pixdata) Native() unsafe.Pointer {
 // Magic gets the field inside the struct.
 func (p *Pixdata) Magic() uint32 {
 	var v uint32
-	v = uint32(p.native.magic)
+	v = (uint32)(p.native.magic)
 	return v
 }
 
 // Length gets the field inside the struct.
 func (p *Pixdata) Length() int32 {
 	var v int32
-	v = int32(p.native.length)
+	v = (int32)(p.native.length)
 	return v
 }
 
 // PixdataType gets the field inside the struct.
 func (p *Pixdata) PixdataType() uint32 {
 	var v uint32
-	v = uint32(p.native.pixdata_type)
+	v = (uint32)(p.native.pixdata_type)
 	return v
 }
 
 // Rowstride gets the field inside the struct.
 func (p *Pixdata) Rowstride() uint32 {
 	var v uint32
-	v = uint32(p.native.rowstride)
+	v = (uint32)(p.native.rowstride)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (p *Pixdata) Width() uint32 {
 	var v uint32
-	v = uint32(p.native.width)
+	v = (uint32)(p.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (p *Pixdata) Height() uint32 {
 	var v uint32
-	v = uint32(p.native.height)
+	v = (uint32)(p.native.height)
 	return v
+}
+
+// FromPixbuf converts a Pixbuf to a Pixdata. If @use_rle is true, the pixel
+// data is run-length encoded into newly-allocated memory and a pointer to that
+// memory is returned.
+func (p *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interface{} {
+	var arg0 *C.GdkPixdata
+	var arg1 *C.GdkPixbuf
+	var arg2 C.gboolean
+
+	arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
+	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	if useRle {
+		arg2 = C.gboolean(1)
+	}
+
+	var cret C.gpointer
+
+	cret = C.gdk_pixdata_from_pixbuf(arg0, arg1, arg2)
+
+	var gpointer interface{}
+
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // Serialize serializes a Pixdata structure into a byte stream. The byte stream
@@ -195,23 +214,25 @@ func (p *Pixdata) Serialize() []byte {
 
 	var cret *C.guint8
 	var arg1 *C.guint
-	var goret []byte
 
-	cret = C.gdk_pixdata_serialize(arg0, arg1)
+	cret = C.gdk_pixdata_serialize(arg0)
 
-	ptr.SetSlice(unsafe.Pointer(&goret), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret, func(v *[]byte) {
+	var guint8s []byte
+
+	ptr.SetSlice(unsafe.Pointer(&guint8s), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&guint8s, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret
+	return guint8s
 }
 
 // ToCsource generates C source code suitable for compiling images directly into
 // programs.
 //
-// GdkPixbuf ships with a program called `gdk-pixbuf-csource`, which offers a
-// command line interface to this function.
+// gdk-pixbuf ships with a program called
+// [gdk-pixbuf-csource][gdk-pixbuf-csource], which offers a command line
+// interface to this function.
 func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String {
 	var arg0 *C.GdkPixdata
 	var arg1 *C.gchar
@@ -222,15 +243,16 @@ func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GdkPixdataDumpType)(dumpType)
 
-	cret := new(C.GString)
-	var goret *glib.String
+	var cret *C.GString
 
 	cret = C.gdk_pixdata_to_csource(arg0, arg1, arg2)
 
-	goret = glib.WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.String) {
+	var string *glib.String
+
+	string = glib.WrapString(unsafe.Pointer(cret))
+	runtime.SetFinalizer(string, func(v *glib.String) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return string
 }

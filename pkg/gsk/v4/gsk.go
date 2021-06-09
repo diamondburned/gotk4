@@ -102,9 +102,7 @@ func marshalCorner(p uintptr) (interface{}, error) {
 	return Corner(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// GLUniformType: this defines the types of the uniforms that `GskGLShaders`
-// declare.
-//
+// GLUniformType: this defines the types of the uniforms that GLShaders declare.
 // It defines both what the type is called in the GLSL shader code, and what the
 // corresponding C type is on the Gtk side.
 type GLUniformType int
@@ -240,14 +238,13 @@ func marshalSerializationError(p uintptr) (interface{}, error) {
 	return SerializationError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// TransformCategory: the categories of matrices relevant for GSK and GTK.
-//
-// Note that any category includes matrices of all later categories. So if you
-// want to for example check if a matrix is a 2D matrix, `category >=
+// TransformCategory: the categories of matrices relevant for GSK and GTK. Note
+// that any category includes matrices of all later categories. So if you want
+// to for example check if a matrix is a 2D matrix, `category >=
 // GSK_TRANSFORM_CATEGORY_2D` is the way to do this.
 //
 // Also keep in mind that rounding errors may cause matrices to not conform to
-// their categories. Otherwise, matrix operations done via multiplication will
+// their categories. Otherwise, matrix operations done via mutliplication will
 // not worsen categories. So for the matrix multiplication `C = A * B`,
 // `category(C) = MIN (category(A), category(B))`.
 type TransformCategory int

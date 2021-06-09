@@ -21,7 +21,6 @@ func init() {
 	})
 }
 
-// GLRenderer: a GSK renderer that is using OpenGL.
 type GLRenderer interface {
 	Renderer
 }
@@ -49,12 +48,13 @@ func marshalGLRenderer(p uintptr) (interface{}, error) {
 
 // NewGLRenderer constructs a class GLRenderer.
 func NewGLRenderer() GLRenderer {
-	cret := new(C.GskGLRenderer)
-	var goret GLRenderer
+	var cret C.GskGLRenderer
 
 	cret = C.gsk_gl_renderer_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLRenderer)
+	var glRenderer GLRenderer
 
-	return goret
+	glRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GLRenderer)
+
+	return glRenderer
 }

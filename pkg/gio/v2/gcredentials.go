@@ -79,14 +79,14 @@ type Credentials interface {
 	// the native credentials type does not contain information about the UNIX
 	// process ID (for example this is the case for
 	// G_CREDENTIALS_TYPE_APPLE_XUCRED).
-	UnixPid() (gint int, err error)
+	UnixPid() (gint int, goerr error)
 	// UnixUser tries to get the UNIX user identifier from @credentials. This
 	// method is only available on UNIX platforms.
 	//
 	// This operation can fail if #GCredentials is not supported on the OS or if
 	// the native credentials type does not contain information about the UNIX
 	// user.
-	UnixUser() (guint uint, err error)
+	UnixUser() (guint uint, goerr error)
 	// IsSameUser checks if @credentials and @other_credentials is the same
 	// user.
 	//
@@ -136,14 +136,15 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 
 // NewCredentials constructs a class Credentials.
 func NewCredentials() Credentials {
-	cret := new(C.GCredentials)
-	var goret Credentials
+	var cret C.GCredentials
 
 	cret = C.g_credentials_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
+	var credentials Credentials
 
-	return goret
+	credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Credentials)
+
+	return credentials
 }
 
 // Native gets a pointer to native credentials of type @native_type from
@@ -160,13 +161,14 @@ func (c credentials) Native(nativeType CredentialsType) interface{} {
 	arg1 = (C.GCredentialsType)(nativeType)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_credentials_get_native(arg0, arg1)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // UnixPid tries to get the UNIX process identifier from @credentials. This
@@ -176,22 +178,23 @@ func (c credentials) Native(nativeType CredentialsType) interface{} {
 // the native credentials type does not contain information about the UNIX
 // process ID (for example this is the case for
 // G_CREDENTIALS_TYPE_APPLE_XUCRED).
-func (c credentials) UnixPid() (gint int, err error) {
+func (c credentials) UnixPid() (gint int, goerr error) {
 	var arg0 *C.GCredentials
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
 	var cret C.pid_t
-	var goret int
 	var cerr *C.GError
+
+	cret = C.g_credentials_get_unix_pid(arg0, cerr)
+
+	var gint int
 	var goerr error
 
-	cret = C.g_credentials_get_unix_pid(arg0, &cerr)
-
-	goret = int(cret)
+	gint = (int)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return gint, goerr
 }
 
 // UnixUser tries to get the UNIX user identifier from @credentials. This
@@ -200,22 +203,23 @@ func (c credentials) UnixPid() (gint int, err error) {
 // This operation can fail if #GCredentials is not supported on the OS or if
 // the native credentials type does not contain information about the UNIX
 // user.
-func (c credentials) UnixUser() (guint uint, err error) {
+func (c credentials) UnixUser() (guint uint, goerr error) {
 	var arg0 *C.GCredentials
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
 	var cret C.uid_t
-	var goret uint
 	var cerr *C.GError
+
+	cret = C.g_credentials_get_unix_user(arg0, cerr)
+
+	var guint uint
 	var goerr error
 
-	cret = C.g_credentials_get_unix_user(arg0, &cerr)
-
-	goret = uint(cret)
+	guint = (uint)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return guint, goerr
 }
 
 // IsSameUser checks if @credentials and @other_credentials is the same
@@ -230,9 +234,10 @@ func (c credentials) IsSameUser(otherCredentials Credentials) error {
 	arg1 = (*C.GCredentials)(unsafe.Pointer(otherCredentials.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_credentials_is_same_user(arg0, arg1, &cerr)
+	C.g_credentials_is_same_user(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -272,9 +277,10 @@ func (c credentials) SetUnixUser(uid uint) error {
 	arg1 = C.uid_t(uid)
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_credentials_set_unix_user(arg0, arg1, &cerr)
+	C.g_credentials_set_unix_user(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -289,13 +295,14 @@ func (c credentials) String() string {
 
 	arg0 = (*C.GCredentials)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_credentials_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

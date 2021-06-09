@@ -60,30 +60,6 @@ type ActionGroupOverrider interface {
 	// parameter must be given as @parameter. If the action is expecting no
 	// parameters then @parameter must be nil. See
 	// g_action_group_get_action_parameter_type().
-	//
-	// If the Group implementation supports asynchronous remote activation over
-	// D-Bus, this call may return before the relevant D-Bus traffic has been
-	// sent, or any replies have been received. In order to block on such
-	// asynchronous activation calls, g_dbus_connection_flush() should be called
-	// prior to the code, which depends on the result of the action activation.
-	// Without flushing the D-Bus connection, there is no guarantee that the
-	// action would have been activated.
-	//
-	// The following code which runs in a remote app instance, shows an example
-	// of a "quit" action being activated on the primary app instance over
-	// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
-	// g_dbus_connection_flush(), the "quit" action may fail to be activated on
-	// the primary instance.
-	//
-	//    // call "quit" action on primary instance
-	//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-	//
-	//    // make sure the action is activated now
-	//    g_dbus_connection_flush (...);
-	//
-	//    g_debug ("application has been terminated. exiting.");
-	//
-	//    exit (0);
 	ActivateAction(actionName string, parameter *glib.Variant)
 	// ChangeActionState: request for the state of the named action within
 	// @action_group to be changed to @value.
@@ -196,7 +172,7 @@ type ActionGroupOverrider interface {
 	// (as indicated by having a non-nil reference passed in) are filled. If the
 	// action doesn't exist, false is returned and the fields may or may not
 	// have been modified.
-	QueryAction(actionName string) (enabled bool, parameterType **glib.VariantType, stateType **glib.VariantType, stateHint **glib.Variant, state **glib.Variant, ok bool)
+	QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool)
 }
 
 // ActionGroup represents a group of actions. Actions can be used to expose
@@ -336,30 +312,6 @@ func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) 
 // parameter must be given as @parameter. If the action is expecting no
 // parameters then @parameter must be nil. See
 // g_action_group_get_action_parameter_type().
-//
-// If the Group implementation supports asynchronous remote activation over
-// D-Bus, this call may return before the relevant D-Bus traffic has been
-// sent, or any replies have been received. In order to block on such
-// asynchronous activation calls, g_dbus_connection_flush() should be called
-// prior to the code, which depends on the result of the action activation.
-// Without flushing the D-Bus connection, there is no guarantee that the
-// action would have been activated.
-//
-// The following code which runs in a remote app instance, shows an example
-// of a "quit" action being activated on the primary app instance over
-// D-Bus. Here g_dbus_connection_flush() is called before `exit()`. Without
-// g_dbus_connection_flush(), the "quit" action may fail to be activated on
-// the primary instance.
-//
-//    // call "quit" action on primary instance
-//    g_action_group_activate_action (G_ACTION_GROUP (app), "quit", NULL);
-//
-//    // make sure the action is activated now
-//    g_dbus_connection_flush (...);
-//
-//    g_debug ("application has been terminated. exiting.");
-//
-//    exit (0);
 func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
 	var arg0 *C.GActionGroup
 	var arg1 *C.gchar
@@ -411,15 +363,16 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_action_group_get_action_enabled(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ActionParameterType queries the type of the parameter that must be given
@@ -444,13 +397,14 @@ func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariantType
-	var goret *glib.VariantType
 
 	cret = C.g_action_group_get_action_parameter_type(arg0, arg1)
 
-	goret = glib.WrapVariantType(unsafe.Pointer(cret))
+	var variantType *glib.VariantType
 
-	return goret
+	variantType = glib.WrapVariantType(unsafe.Pointer(cret))
+
+	return variantType
 }
 
 // ActionState queries the current state of the named action within
@@ -470,17 +424,18 @@ func (a actionGroup) ActionState(actionName string) *glib.Variant {
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GVariant)
-	var goret *glib.Variant
+	var cret *C.GVariant
 
 	cret = C.g_action_group_get_action_state(arg0, arg1)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+	var variant *glib.Variant
+
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return variant
 }
 
 // ActionStateHint requests a hint about the valid range of values for the
@@ -509,17 +464,18 @@ func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GVariant)
-	var goret *glib.Variant
+	var cret *C.GVariant
 
 	cret = C.g_action_group_get_action_state_hint(arg0, arg1)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+	var variant *glib.Variant
+
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return variant
 }
 
 // ActionStateType queries the type of the state of the named action within
@@ -546,13 +502,14 @@ func (a actionGroup) ActionStateType(actionName string) *glib.VariantType {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GVariantType
-	var goret *glib.VariantType
 
 	cret = C.g_action_group_get_action_state_type(arg0, arg1)
 
-	goret = glib.WrapVariantType(unsafe.Pointer(cret))
+	var variantType *glib.VariantType
 
-	return goret
+	variantType = glib.WrapVariantType(unsafe.Pointer(cret))
+
+	return variantType
 }
 
 // HasAction checks if the named action exists within @action_group.
@@ -565,15 +522,16 @@ func (a actionGroup) HasAction(actionName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_action_group_has_action(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ListActions lists the actions contained within @action_group.
@@ -586,9 +544,10 @@ func (a actionGroup) ListActions() []string {
 	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.g_action_group_list_actions(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -599,15 +558,17 @@ func (a actionGroup) ListActions() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			utf8s = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // QueryAction queries all aspects of the named action within an
@@ -637,7 +598,7 @@ func (a actionGroup) ListActions() []string {
 // (as indicated by having a non-nil reference passed in) are filled. If the
 // action doesn't exist, false is returned and the fields may or may not
 // have been modified.
-func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType **glib.VariantType, stateType **glib.VariantType, stateHint **glib.Variant, state **glib.Variant, ok bool) {
+func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
 	var arg0 *C.GActionGroup
 	var arg1 *C.gchar
 
@@ -645,43 +606,26 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(C.gboolean)
-	var ret2 bool
-	arg3 := new(*C.GVariantType)
-	var ret3 **glib.VariantType
-	arg4 := new(*C.GVariantType)
-	var ret4 **glib.VariantType
-	arg5 := new(*C.GVariant)
-	var ret5 **glib.Variant
-	arg6 := new(*C.GVariant)
-	var ret6 **glib.Variant
+	var arg2 C.gboolean
+	var parameterType *glib.VariantType
+	var stateType *glib.VariantType
+	var stateHint *glib.Variant
+	var state *glib.Variant
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.g_action_group_query_action(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.g_action_group_query_action(arg0, arg1, &arg2, (**C.GVariantType)(unsafe.Pointer(&parameterType)), (**C.GVariantType)(unsafe.Pointer(&stateType)), (**C.GVariant)(unsafe.Pointer(&stateHint)), (**C.GVariant)(unsafe.Pointer(&state)))
 
-	if *arg2 {
-		ret2 = true
+	var enabled bool
+
+	var ok bool
+
+	if arg2 {
+		enabled = true
 	}
-	ret3 = glib.WrapVariantType(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **glib.VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret4 = glib.WrapVariantType(unsafe.Pointer(arg4))
-	runtime.SetFinalizer(ret4, func(v **glib.VariantType) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret5 = glib.WrapVariant(unsafe.Pointer(arg5))
-	runtime.SetFinalizer(ret5, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret6 = glib.WrapVariant(unsafe.Pointer(arg6))
-	runtime.SetFinalizer(ret6, func(v **glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, ret3, ret4, ret5, ret6, goret
+	return enabled, parameterType, stateType, stateHint, state, ok
 }

@@ -43,7 +43,7 @@ func (t *TimeCoord) Native() unsafe.Pointer {
 // Time gets the field inside the struct.
 func (t *TimeCoord) Time() uint32 {
 	var v uint32
-	v = uint32(t.native.time)
+	v = (uint32)(t.native.time)
 	return v
 }
 

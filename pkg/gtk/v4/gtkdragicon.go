@@ -21,15 +21,14 @@ func init() {
 	})
 }
 
-// DragIcon: `GtkDragIcon` is a `GtkRoot` implementation for drag icons.
-//
-// A drag icon moves with the pointer during a Drag-and-Drop operation and is
-// destroyed when the drag ends.
+// DragIcon: gtkDragIcon is a Root implementation with the sole purpose to serve
+// as a drag icon during DND operations. A drag icon moves with the pointer
+// during a drag operation and is destroyed when the drag ends.
 //
 // To set up a drag icon and associate it with an ongoing drag operation, use
-// [func@Gtk.DragIcon.get_for_drag] to get the icon for a drag. You can then use
-// it like any other widget and use [method@Gtk.DragIcon.set_child] to set
-// whatever widget should be used for the drag icon.
+// gtk_drag_icon_get_for_drag() to get the icon for a drag. You can then use it
+// like any other widget and use gtk_drag_icon_set_child() to set whatever
+// widget should be used for the drag icon.
 //
 // Keep in mind that drag icons do not allow user input.
 type DragIcon interface {
@@ -84,13 +83,14 @@ func (s dragIcon) Child() Widget {
 	arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_drag_icon_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetChild sets the widget to display as the drag icon.

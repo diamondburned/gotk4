@@ -33,13 +33,14 @@ func TestCreateSimpleWindow(windowTitle string, dialogText string) Widget {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_test_create_simple_window(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // TestFindLabel: this function will search @widget and all its descendants for
@@ -58,13 +59,14 @@ func TestFindLabel(widget Widget, labelPattern string) Widget {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_test_find_label(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var ret Widget
 
-	return goret
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return ret
 }
 
 // TestFindSibling: this function will search siblings of @base_widget and
@@ -81,13 +83,14 @@ func TestFindSibling(baseWidget Widget, widgetType externglib.Type) Widget {
 	arg2 = C.GType(widgetType)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_test_find_sibling(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // TestFindWidget: this function will search the descendants of @widget for a
@@ -108,13 +111,14 @@ func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Ty
 	arg3 = C.GType(widgetType)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_test_find_widget(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var ret Widget
 
-	return goret
+	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return ret
 }
 
 // TestListAllTypes: return the type ids that have been registered after calling
@@ -122,17 +126,22 @@ func TestFindWidget(widget Widget, labelPattern string, widgetType externglib.Ty
 func TestListAllTypes() []externglib.Type {
 	var cret *C.GType
 	var arg1 *C.guint
-	var goret []externglib.Type
 
-	cret = C.gtk_test_list_all_types(arg1)
+	cret = C.gtk_test_list_all_types()
 
-	goret = make([]externglib.Type, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
-		goret[i] = externglib.Type(src)
+	var gTypes []externglib.Type
+
+	{
+		var src []C.GType
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+
+		gTypes = make([]externglib.Type, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			gTypes = externglib.Type(cret)
+		}
 	}
 
-	return ret1, goret
+	return gTypes
 }
 
 // TestRegisterAllTypes: force registration of all core Gtk+ and Gdk object
@@ -152,13 +161,14 @@ func TestSliderGetValue(widget Widget) float64 {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_test_slider_get_value(arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // TestSliderSetPerc: this function will adjust the slider position of all
@@ -190,15 +200,16 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_test_spin_button_click(arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TestTextGet: retrive the text string of @widget if it is a GtkLabel,
@@ -208,15 +219,16 @@ func TestTextGet(widget Widget) string {
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_test_text_get(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // TestTextSet: set the text string of @widget to @string if it is a GtkLabel,
@@ -250,15 +262,16 @@ func TestWidgetClick(widget Widget, button uint, modifiers gdk.ModifierType) boo
 	arg3 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_test_widget_click(arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TestWidgetSendKey: this function will generate keyboard press and release
@@ -278,15 +291,16 @@ func TestWidgetSendKey(widget Widget, keyval uint, modifiers gdk.ModifierType) b
 	arg3 = (C.GdkModifierType)(modifiers)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_test_widget_send_key(arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for @widget to be

@@ -58,11 +58,12 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 // NewCellRendererProgress constructs a class CellRendererProgress.
 func NewCellRendererProgress() CellRendererProgress {
 	var cret C.GtkCellRendererProgress
-	var goret CellRendererProgress
 
 	cret = C.gtk_cell_renderer_progress_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererProgress)
+	var cellRendererProgress CellRendererProgress
 
-	return goret
+	cellRendererProgress = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererProgress)
+
+	return cellRendererProgress
 }

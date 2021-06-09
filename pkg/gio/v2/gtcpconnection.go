@@ -78,15 +78,16 @@ func (c tcpConnection) GracefulDisconnect() bool {
 	arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_tcp_connection_get_graceful_disconnect(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetGracefulDisconnect: this enables graceful disconnects on close. A

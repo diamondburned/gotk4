@@ -73,7 +73,7 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 }
 
 // NewCharsetConverter constructs a class CharsetConverter.
-func NewCharsetConverter(toCharset string, fromCharset string) (charsetConverter CharsetConverter, err error) {
+func NewCharsetConverter(toCharset string, fromCharset string) (charsetConverter CharsetConverter, goerr error) {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -82,17 +82,18 @@ func NewCharsetConverter(toCharset string, fromCharset string) (charsetConverter
 	arg2 = (*C.gchar)(C.CString(fromCharset))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.GCharsetConverter)
-	var goret CharsetConverter
+	var cret C.GCharsetConverter
 	var cerr *C.GError
+
+	cret = C.g_charset_converter_new(arg1, arg2, cerr)
+
+	var charsetConverter CharsetConverter
 	var goerr error
 
-	cret = C.g_charset_converter_new(arg1, arg2, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CharsetConverter)
+	charsetConverter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CharsetConverter)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return charsetConverter, goerr
 }
 
 // NumFallbacks gets the number of fallbacks that @converter has applied so
@@ -103,13 +104,14 @@ func (c charsetConverter) NumFallbacks() uint {
 	arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_charset_converter_get_num_fallbacks(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // UseFallback gets the Converter:use-fallback property.
@@ -119,15 +121,16 @@ func (c charsetConverter) UseFallback() bool {
 	arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_charset_converter_get_use_fallback(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetUseFallback sets the Converter:use-fallback property.

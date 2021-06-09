@@ -25,9 +25,10 @@ func init() {
 // g_error_free() on *@err and sets *@err to nil.
 func ClearError() error {
 	var cerr *C.GError
-	var goerr error
 
-	C.g_clear_error(&cerr)
+	C.g_clear_error(cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -42,19 +43,20 @@ func ClearError() error {
 // Note that @src is no longer valid after this call. If you want to keep using
 // the same GError*, you need to set it to nil after calling this function on
 // it.
-func PropagateError(src error) error {
+func PropagateError(src *error) *error {
 	var arg2 *C.GError
 
 	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(src)))
 
-	arg1 := new(*C.GError)
-	var ret1 error
+	var arg1 *C.GError
 
-	C.g_propagate_error(arg1, arg2)
+	C.g_propagate_error(arg2, &arg1)
 
-	ret1 = gerror.Take(unsafe.Pointer(*arg1))
+	var dest *error
 
-	return ret1
+	dest = gerror.Take(unsafe.Pointer(arg1))
+
+	return dest
 }
 
 // Error: the `GError` structure contains information about an error that has
@@ -86,7 +88,7 @@ func (e *Error) Native() unsafe.Pointer {
 // Code gets the field inside the struct.
 func (e *Error) Code() int {
 	var v int
-	v = int(e.native.code)
+	v = (int)(e.native.code)
 	return v
 }
 
@@ -98,20 +100,21 @@ func (e *Error) Message() string {
 }
 
 // Copy makes a copy of @error.
-func (e *Error) Copy() error {
+func (e *Error) Copy() *error {
 	var arg0 *C.GError
 
 	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
 	defer C.g_error_free(arg0)
 
-	cret := new(C.GError)
-	var goret error
+	var cret *C.GError
 
 	cret = C.g_error_copy(arg0)
 
-	goret = gerror.Take(unsafe.Pointer(cret))
+	var err *error
 
-	return goret
+	err = gerror.Take(unsafe.Pointer(cret))
+
+	return err
 }
 
 // Free frees a #GError and associated resources.

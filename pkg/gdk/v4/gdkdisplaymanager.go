@@ -22,30 +22,22 @@ import "C"
 //
 // By default, GDK tries all included backends.
 //
-// For example:
+// For example,
 //
-// “`c gdk_set_allowed_backends ("wayland,macos,*"); “`
+//    gdk_set_allowed_backends ("wayland,quartz,*");
 //
-// instructs GDK to try the Wayland backend first, followed by the MacOs
+// instructs GDK to try the Wayland backend first, followed by the Quartz
 // backend, and then all others.
 //
 // If the `GDK_BACKEND` environment variable is set, it determines what backends
 // are tried in what order, while still respecting the set of allowed backends
 // that are specified by this function.
 //
-// The possible backend names are:
+// The possible backend names are x11, win32, quartz, broadway, wayland. You can
+// also include a * in the list to try all remaining backends.
 //
-//    - `broadway`
-//    - `macos`
-//    - `wayland`.
-//    - `win32`
-//    - `x11`
-//
-// You can also include a `*` in the list to try all remaining backends.
-//
-// This call must happen prior to functions that open a display, such as
-// [func@Gdk.Display.open], `gtk_init()`, or `gtk_init_check()` in order to take
-// effect.
+// This call must happen prior to gdk_display_open(), gtk_init(), or
+// gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string) {
 	var arg1 *C.char
 

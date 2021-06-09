@@ -68,14 +68,15 @@ func NewGestureDrag(widget Widget) GestureDrag {
 
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	cret := new(C.GtkGestureDrag)
-	var goret GestureDrag
+	var cret C.GtkGestureDrag
 
 	cret = C.gtk_gesture_drag_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureDrag)
+	var gestureDrag GestureDrag
 
-	return goret
+	gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureDrag)
+
+	return gestureDrag
 }
 
 // Offset: if the @gesture is active, this function returns true and fills
@@ -86,22 +87,23 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 
 	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	arg1 := new(C.gdouble)
-	var ret1 float64
-	arg2 := new(C.gdouble)
-	var ret2 float64
+	var arg1 C.gdouble
+	var arg2 C.gdouble
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_gesture_drag_get_offset(arg0, arg1, arg2)
+	cret = C.gtk_gesture_drag_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
+	var x float64
+	var y float64
+	var ok bool
+
+	x = (float64)(arg1)
+	y = (float64)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return x, y, ok
 }
 
 // StartPoint: if the @gesture is active, this function returns true and
@@ -112,20 +114,21 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 
 	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	arg1 := new(C.gdouble)
-	var ret1 float64
-	arg2 := new(C.gdouble)
-	var ret2 float64
+	var arg1 C.gdouble
+	var arg2 C.gdouble
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_gesture_drag_get_start_point(arg0, arg1, arg2)
+	cret = C.gtk_gesture_drag_get_start_point(arg0, &arg1, &arg2)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
+	var x float64
+	var y float64
+	var ok bool
+
+	x = (float64)(arg1)
+	y = (float64)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return x, y, ok
 }

@@ -45,7 +45,7 @@ type EditableOverrider interface {
 	//
 	// Note that the position is in characters, not in bytes. The function
 	// updates @position to point after the newly inserted text.
-	DoInsertText(newText string, newTextLength int, position int)
+	DoInsertText(newText string, newTextLength int, position *int)
 	// Chars retrieves a sequence of characters. The characters that are
 	// retrieved are those characters at positions from @start_pos up to, but
 	// not including @end_pos. If @end_pos is negative, then the characters
@@ -69,7 +69,7 @@ type EditableOverrider interface {
 	//
 	// Note that the position is in characters, not in bytes. The function
 	// updates @position to point after the newly inserted text.
-	InsertText(newText string, newTextLength int, position int)
+	InsertText(newText string, newTextLength int, position *int)
 	// SetPosition sets the cursor position in the editable to the given value.
 	//
 	// The cursor is displayed before the character with the given (base 0)
@@ -235,15 +235,16 @@ func (e editable) Chars(startPos int, endPos int) string {
 	arg1 = C.gint(startPos)
 	arg2 = C.gint(endPos)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_editable_get_chars(arg0, arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Editable retrieves whether @editable is editable. See
@@ -254,15 +255,16 @@ func (e editable) Editable() bool {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_editable_get_editable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Position retrieves the current position of the cursor relative to the
@@ -275,13 +277,14 @@ func (e editable) Position() int {
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_editable_get_position(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SelectionBounds retrieves the selection bound of the editable. start_pos
@@ -294,22 +297,23 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 
 	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_editable_get_selection_bounds(arg0, arg1, arg2)
+	cret = C.gtk_editable_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var startPos int
+	var endPos int
+	var ok bool
+
+	startPos = (int)(arg1)
+	endPos = (int)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return startPos, endPos, ok
 }
 
 // InsertText inserts @new_text_length bytes of @new_text into the contents
@@ -317,7 +321,7 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 //
 // Note that the position is in characters, not in bytes. The function
 // updates @position to point after the newly inserted text.
-func (e editable) InsertText(newText string, newTextLength int, position int) {
+func (e editable) InsertText(newText string, newTextLength int, position *int) {
 	var arg0 *C.GtkEditable
 	var arg1 *C.gchar
 	var arg2 C.gint

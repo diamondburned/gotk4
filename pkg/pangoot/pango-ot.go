@@ -66,17 +66,18 @@ func NewBuffer(font pangofc.Font) *Buffer {
 
 	arg1 = (*C.PangoFcFont)(unsafe.Pointer(font.Native()))
 
-	cret := new(C.PangoOTBuffer)
-	var goret *Buffer
+	var cret *C.PangoOTBuffer
 
 	cret = C.pango_ot_buffer_new(arg1)
 
-	goret = WrapBuffer(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Buffer) {
+	var buffer *Buffer
+
+	buffer = WrapBuffer(unsafe.Pointer(cret))
+	runtime.SetFinalizer(buffer, func(v *Buffer) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return buffer
 }
 
 // Native returns the underlying C source pointer.
@@ -126,9 +127,9 @@ func (b *Buffer) Glyphs() {
 
 	arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
 
-	C.pango_ot_buffer_get_glyphs(arg0, arg1, arg2)
+	C.pango_ot_buffer_get_glyphs(arg0)
 
-	return ret1, ret2
+	return
 }
 
 // Output exports the glyphs in a OTBuffer into a GlyphString. This is typically
@@ -146,12 +147,12 @@ func (b *Buffer) Output(glyphs *pango.GlyphString) {
 
 // SetRTL sets whether glyphs will be rendered right-to-left. This setting is
 // needed for proper horizontal positioning of right-to-left scripts.
-func (b *Buffer) SetRTL(rtL bool) {
+func (b *Buffer) SetRTL(rtl bool) {
 	var arg0 *C.PangoOTBuffer
 	var arg1 C.gboolean
 
 	arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
-	if rtL {
+	if rtl {
 		arg1 = C.gboolean(1)
 	}
 
@@ -211,7 +212,7 @@ func (f *FeatureMap) FeatureName() [5]byte {
 // PropertyBit gets the field inside the struct.
 func (f *FeatureMap) PropertyBit() uint32 {
 	var v uint32
-	v = uint32(f.native.property_bit)
+	v = (uint32)(f.native.property_bit)
 	return v
 }
 
@@ -245,42 +246,42 @@ func (g *Glyph) Native() unsafe.Pointer {
 // Glyph gets the field inside the struct.
 func (g *Glyph) Glyph() uint32 {
 	var v uint32
-	v = uint32(g.native.glyph)
+	v = (uint32)(g.native.glyph)
 	return v
 }
 
 // Properties gets the field inside the struct.
 func (g *Glyph) Properties() uint {
 	var v uint
-	v = uint(g.native.properties)
+	v = (uint)(g.native.properties)
 	return v
 }
 
 // Cluster gets the field inside the struct.
 func (g *Glyph) Cluster() uint {
 	var v uint
-	v = uint(g.native.cluster)
+	v = (uint)(g.native.cluster)
 	return v
 }
 
 // Component gets the field inside the struct.
 func (g *Glyph) Component() uint16 {
 	var v uint16
-	v = uint16(g.native.component)
+	v = (uint16)(g.native.component)
 	return v
 }
 
 // LigID gets the field inside the struct.
 func (g *Glyph) LigID() uint16 {
 	var v uint16
-	v = uint16(g.native.ligID)
+	v = (uint16)(g.native.ligID)
 	return v
 }
 
 // Internal gets the field inside the struct.
 func (g *Glyph) Internal() uint {
 	var v uint
-	v = uint(g.native.internal)
+	v = (uint)(g.native.internal)
 	return v
 }
 
@@ -338,7 +339,7 @@ func (r *RulesetDescription) StaticGsubFeatures() *FeatureMap {
 // NStaticGsubFeatures gets the field inside the struct.
 func (r *RulesetDescription) NStaticGsubFeatures() uint {
 	var v uint
-	v = uint(r.native.n_static_gsub_features)
+	v = (uint)(r.native.n_static_gsub_features)
 	return v
 }
 
@@ -352,7 +353,7 @@ func (r *RulesetDescription) StaticGposFeatures() *FeatureMap {
 // NStaticGposFeatures gets the field inside the struct.
 func (r *RulesetDescription) NStaticGposFeatures() uint {
 	var v uint
-	v = uint(r.native.n_static_gpos_features)
+	v = (uint)(r.native.n_static_gpos_features)
 	return v
 }
 
@@ -366,7 +367,7 @@ func (r *RulesetDescription) OtherFeatures() *FeatureMap {
 // NOtherFeatures gets the field inside the struct.
 func (r *RulesetDescription) NOtherFeatures() uint {
 	var v uint
-	v = uint(r.native.n_other_features)
+	v = (uint)(r.native.n_other_features)
 	return v
 }
 
@@ -379,17 +380,18 @@ func (d *RulesetDescription) Copy() *RulesetDescription {
 
 	arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
 
-	cret := new(C.PangoOTRulesetDescription)
-	var goret *RulesetDescription
+	var cret *C.PangoOTRulesetDescription
 
 	cret = C.pango_ot_ruleset_description_copy(arg0)
 
-	goret = WrapRulesetDescription(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *RulesetDescription) {
+	var rulesetDescription *RulesetDescription
+
+	rulesetDescription = WrapRulesetDescription(unsafe.Pointer(cret))
+	runtime.SetFinalizer(rulesetDescription, func(v *RulesetDescription) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return rulesetDescription
 }
 
 // Equal compares two ruleset descriptions for equality. Two ruleset
@@ -407,15 +409,16 @@ func (d *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 	arg1 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc2.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_ot_ruleset_description_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Free frees a ruleset description allocated by
@@ -436,11 +439,12 @@ func (d *RulesetDescription) Hash() uint {
 	arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.pango_ot_ruleset_description_hash(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }

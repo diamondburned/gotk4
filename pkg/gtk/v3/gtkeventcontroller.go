@@ -76,13 +76,14 @@ func (c eventController) PropagationPhase() PropagationPhase {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkPropagationPhase
-	var goret PropagationPhase
 
 	cret = C.gtk_event_controller_get_propagation_phase(arg0)
 
-	goret = PropagationPhase(cret)
+	var propagationPhase PropagationPhase
 
-	return goret
+	propagationPhase = PropagationPhase(cret)
+
+	return propagationPhase
 }
 
 // Widget returns the Widget this controller relates to.
@@ -92,13 +93,14 @@ func (c eventController) Widget() Widget {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_event_controller_get_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Reset resets the @controller to a clean state. Every interaction the

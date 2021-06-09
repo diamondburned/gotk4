@@ -54,13 +54,14 @@ func (p plugAccessible) ID() string {
 
 	arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gtk_plug_accessible_get_id(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

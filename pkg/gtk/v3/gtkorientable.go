@@ -64,13 +64,14 @@ func (o orientable) Orientation() Orientation {
 	arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_orientable_get_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
 // SetOrientation sets the orientation of the @orientable.

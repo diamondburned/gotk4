@@ -116,32 +116,34 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 // NewImageMenuItem constructs a class ImageMenuItem.
 func NewImageMenuItem() ImageMenuItem {
 	var cret C.GtkImageMenuItem
-	var goret ImageMenuItem
 
 	cret = C.gtk_image_menu_item_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+	var imageMenuItem ImageMenuItem
 
-	return goret
+	imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+
+	return imageMenuItem
 }
 
 // NewImageMenuItemFromStock constructs a class ImageMenuItem.
-func NewImageMenuItemFromStock(stockID string, accelGroup AccelGroup) ImageMenuItem {
+func NewImageMenuItemFromStock(stockId string, accelGroup AccelGroup) ImageMenuItem {
 	var arg1 *C.gchar
 	var arg2 *C.GtkAccelGroup
 
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
 	var cret C.GtkImageMenuItem
-	var goret ImageMenuItem
 
 	cret = C.gtk_image_menu_item_new_from_stock(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+	var imageMenuItem ImageMenuItem
 
-	return goret
+	imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+
+	return imageMenuItem
 }
 
 // NewImageMenuItemWithLabel constructs a class ImageMenuItem.
@@ -152,13 +154,14 @@ func NewImageMenuItemWithLabel(label string) ImageMenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImageMenuItem
-	var goret ImageMenuItem
 
 	cret = C.gtk_image_menu_item_new_with_label(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+	var imageMenuItem ImageMenuItem
 
-	return goret
+	imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+
+	return imageMenuItem
 }
 
 // NewImageMenuItemWithMnemonic constructs a class ImageMenuItem.
@@ -169,13 +172,14 @@ func NewImageMenuItemWithMnemonic(label string) ImageMenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImageMenuItem
-	var goret ImageMenuItem
 
 	cret = C.gtk_image_menu_item_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+	var imageMenuItem ImageMenuItem
 
-	return goret
+	imageMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ImageMenuItem)
+
+	return imageMenuItem
 }
 
 // AlwaysShowImage returns whether the menu item will ignore the
@@ -186,15 +190,16 @@ func (i imageMenuItem) AlwaysShowImage() bool {
 	arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_image_menu_item_get_always_show_image(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Image gets the widget that is currently set as the image of
@@ -205,13 +210,14 @@ func (i imageMenuItem) Image() Widget {
 	arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_image_menu_item_get_image(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // UseStock checks whether the label set in the menuitem is used as a stock
@@ -222,15 +228,16 @@ func (i imageMenuItem) UseStock() bool {
 	arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_image_menu_item_get_use_stock(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetAccelGroup specifies an @accel_group to add the menu items accelerator

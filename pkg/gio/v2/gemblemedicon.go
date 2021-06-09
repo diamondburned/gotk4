@@ -83,14 +83,15 @@ func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 	arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
-	cret := new(C.GEmblemedIcon)
-	var goret EmblemedIcon
+	var cret C.GEmblemedIcon
 
 	cret = C.g_emblemed_icon_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EmblemedIcon)
+	var emblemedIcon EmblemedIcon
 
-	return goret
+	emblemedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EmblemedIcon)
+
+	return emblemedIcon
 }
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
@@ -120,13 +121,14 @@ func (e emblemedIcon) Emblems() *glib.List {
 	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GList
-	var goret *glib.List
 
 	cret = C.g_emblemed_icon_get_emblems(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
+	var list *glib.List
 
-	return goret
+	list = glib.WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // Icon gets the main icon for @emblemed.
@@ -136,11 +138,12 @@ func (e emblemedIcon) Icon() Icon {
 	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GIcon
-	var goret Icon
 
 	cret = C.g_emblemed_icon_get_icon(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+	var icon Icon
 
-	return goret
+	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+
+	return icon
 }

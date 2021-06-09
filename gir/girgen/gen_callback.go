@@ -218,8 +218,8 @@ func (cg *callbackGenerator) renderBlock() bool {
 	for _, converted := range convertedIns {
 		converted.Apply(cg.fg)
 
-		goArgs.Addf("%s %s", converted.Out, converted.OutType)
-		callbackArgs.Add(converted.Out)
+		goArgs.Addf("%s %s", converted.OutName, converted.OutType)
+		callbackArgs.Add(converted.OutCall)
 
 		cg.pen.Line(secInputPre, converted.OutDeclare)
 		cg.pen.Line(secInputConv, converted.Conversion)
@@ -231,8 +231,8 @@ func (cg *callbackGenerator) renderBlock() bool {
 	for _, converted := range convertedOuts {
 		converted.Apply(cg.fg)
 
-		goRets.Addf("%s %s", converted.In, converted.InType)
-		callbackArgs.Add(converted.In)
+		goRets.Addf("%s %s", converted.InName, converted.InType)
+		callbackRets.Add(converted.InCall)
 
 		cg.pen.Line(secOutputConv, converted.Conversion)
 	}

@@ -184,7 +184,7 @@ type Action interface {
 	// SetShortLabel sets a shorter label text on @action.
 	SetShortLabel(shortLabel string)
 	// SetStockID sets the stock id on @action
-	SetStockID(stockID string)
+	SetStockID(stockId string)
 	// SetTooltip sets the tooltip text on @action
 	SetTooltip(tooltip string)
 	// SetVisible sets the :visible property of the action to @visible. Note
@@ -223,7 +223,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 }
 
 // NewAction constructs a class Action.
-func NewAction(name string, label string, tooltip string, stockID string) Action {
+func NewAction(name string, label string, tooltip string, stockId string) Action {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -235,17 +235,18 @@ func NewAction(name string, label string, tooltip string, stockID string) Action
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.gchar)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stockID))
+	arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg4))
 
-	cret := new(C.GtkAction)
-	var goret Action
+	var cret C.GtkAction
 
 	cret = C.gtk_action_new(arg1, arg2, arg3, arg4)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Action)
+	var action Action
 
-	return goret
+	action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Action)
+
+	return action
 }
 
 // Activate emits the “activate” signal on the specified action, if it isn't
@@ -301,13 +302,14 @@ func (a action) CreateIcon(iconSize int) Widget {
 	arg1 = C.GtkIconSize(iconSize)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_action_create_icon(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // CreateMenu: if @action provides a Menu widget as a submenu for the menu
@@ -319,13 +321,14 @@ func (a action) CreateMenu() Widget {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_action_create_menu(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // CreateMenuItem creates a menu item widget that proxies for the given
@@ -336,13 +339,14 @@ func (a action) CreateMenuItem() Widget {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_action_create_menu_item(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // CreateToolItem creates a toolbar item widget that proxies for the given
@@ -353,13 +357,14 @@ func (a action) CreateToolItem() Widget {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_action_create_tool_item(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // DisconnectAccelerator undoes the effect of one call to
@@ -379,13 +384,14 @@ func (a action) AccelPath() string {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_action_get_accel_path(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // AlwaysShowImage returns whether @action's menu item proxies will always
@@ -396,15 +402,16 @@ func (a action) AlwaysShowImage() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_get_always_show_image(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // GIcon gets the gicon of @action.
@@ -414,13 +421,14 @@ func (a action) GIcon() gio.Icon {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GIcon
-	var goret gio.Icon
 
 	cret = C.gtk_action_get_gicon(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+	var icon gio.Icon
 
-	return goret
+	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+
+	return icon
 }
 
 // IconName gets the icon name of @action.
@@ -430,13 +438,14 @@ func (a action) IconName() string {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_action_get_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // IsImportant checks whether @action is important or not
@@ -446,15 +455,16 @@ func (a action) IsImportant() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_get_is_important(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Label gets the label text of @action.
@@ -464,13 +474,14 @@ func (a action) Label() string {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_action_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Name returns the name of the action.
@@ -480,13 +491,14 @@ func (a action) Name() string {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_action_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Proxies returns the proxy widgets for an action. See also
@@ -497,13 +509,14 @@ func (a action) Proxies() *glib.SList {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GSList
-	var goret *glib.SList
 
 	cret = C.gtk_action_get_proxies(arg0)
 
-	goret = glib.WrapSList(unsafe.Pointer(cret))
+	var sList *glib.SList
 
-	return goret
+	sList = glib.WrapSList(unsafe.Pointer(cret))
+
+	return sList
 }
 
 // Sensitive returns whether the action itself is sensitive. Note that this
@@ -515,15 +528,16 @@ func (a action) Sensitive() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_get_sensitive(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShortLabel gets the short label text of @action.
@@ -533,13 +547,14 @@ func (a action) ShortLabel() string {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_action_get_short_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // StockID gets the stock id of @action.
@@ -549,13 +564,14 @@ func (a action) StockID() string {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_action_get_stock_id(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Tooltip gets the tooltip text of @action.
@@ -565,13 +581,14 @@ func (a action) Tooltip() string {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_action_get_tooltip(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Visible returns whether the action itself is visible. Note that this
@@ -583,15 +600,16 @@ func (a action) Visible() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_get_visible(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // VisibleHorizontal checks whether @action is visible when horizontal
@@ -601,15 +619,16 @@ func (a action) VisibleHorizontal() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_get_visible_horizontal(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // VisibleVertical checks whether @action is visible when horizontal
@@ -619,15 +638,16 @@ func (a action) VisibleVertical() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_get_visible_vertical(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsSensitive returns whether the action is effectively sensitive.
@@ -637,15 +657,16 @@ func (a action) IsSensitive() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_is_sensitive(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsVisible returns whether the action is effectively visible.
@@ -655,15 +676,16 @@ func (a action) IsVisible() bool {
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_is_visible(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetAccelGroup sets the AccelGroup in which the accelerator for this
@@ -791,12 +813,12 @@ func (a action) SetShortLabel(shortLabel string) {
 }
 
 // SetStockID sets the stock id on @action
-func (a action) SetStockID(stockID string) {
+func (a action) SetStockID(stockId string) {
 	var arg0 *C.GtkAction
 	var arg1 *C.gchar
 
 	arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_action_set_stock_id(arg0, arg1)

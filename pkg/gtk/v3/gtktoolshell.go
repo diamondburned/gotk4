@@ -104,13 +104,14 @@ func (s toolShell) EllipsizeMode() pango.EllipsizeMode {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret pango.EllipsizeMode
 
 	cret = C.gtk_tool_shell_get_ellipsize_mode(arg0)
 
-	goret = pango.EllipsizeMode(cret)
+	var ellipsizeMode pango.EllipsizeMode
 
-	return goret
+	ellipsizeMode = pango.EllipsizeMode(cret)
+
+	return ellipsizeMode
 }
 
 // IconSize retrieves the icon size for the tool shell. Tool items must not
@@ -122,13 +123,14 @@ func (s toolShell) IconSize() int {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkIconSize
-	var goret int
 
 	cret = C.gtk_tool_shell_get_icon_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Orientation retrieves the current orientation for the tool shell. Tool
@@ -140,13 +142,14 @@ func (s toolShell) Orientation() Orientation {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_tool_shell_get_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
 // ReliefStyle returns the relief style of buttons on @shell. Tool items
@@ -158,13 +161,14 @@ func (s toolShell) ReliefStyle() ReliefStyle {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkReliefStyle
-	var goret ReliefStyle
 
 	cret = C.gtk_tool_shell_get_relief_style(arg0)
 
-	goret = ReliefStyle(cret)
+	var reliefStyle ReliefStyle
 
-	return goret
+	reliefStyle = ReliefStyle(cret)
+
+	return reliefStyle
 }
 
 // Style retrieves whether the tool shell has text, icons, or both. Tool
@@ -176,13 +180,14 @@ func (s toolShell) Style() ToolbarStyle {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkToolbarStyle
-	var goret ToolbarStyle
 
 	cret = C.gtk_tool_shell_get_style(arg0)
 
-	goret = ToolbarStyle(cret)
+	var toolbarStyle ToolbarStyle
 
-	return goret
+	toolbarStyle = ToolbarStyle(cret)
+
+	return toolbarStyle
 }
 
 // TextAlignment retrieves the current text alignment for the tool shell.
@@ -194,13 +199,14 @@ func (s toolShell) TextAlignment() float32 {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret C.gfloat
-	var goret float32
 
 	cret = C.gtk_tool_shell_get_text_alignment(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // TextOrientation retrieves the current text orientation for the tool
@@ -212,13 +218,14 @@ func (s toolShell) TextOrientation() Orientation {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_tool_shell_get_text_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
 // TextSizeGroup retrieves the current text size group for the tool shell.
@@ -230,13 +237,14 @@ func (s toolShell) TextSizeGroup() SizeGroup {
 	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSizeGroup
-	var goret SizeGroup
 
 	cret = C.gtk_tool_shell_get_text_size_group(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
+	var sizeGroup SizeGroup
 
-	return goret
+	sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
+
+	return sizeGroup
 }
 
 // RebuildMenu: calling this function signals the tool shell that the

@@ -3,10 +3,7 @@
 package gio
 
 import (
-	"runtime"
-
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -100,29 +97,7 @@ type InputStream interface {
 	// read before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read_async().
-	ReadAllFinish(result AsyncResult) (bytesRead uint, err error)
-	// ReadBytes: like g_input_stream_read(), this tries to read @count bytes
-	// from the stream in a blocking fashion. However, rather than reading into
-	// a user-supplied buffer, this will create a new #GBytes containing the
-	// data that was read. This may be easier to use from language bindings.
-	//
-	// If count is zero, returns a zero-length #GBytes and does nothing. A value
-	// of @count larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT
-	// error.
-	//
-	// On success, a new #GBytes is returned. It is not an error if the size of
-	// this object is not the same as the requested size, as it can happen e.g.
-	// near the end of a file. A zero-length #GBytes is returned on end of file
-	// (or if @count is zero), but never otherwise.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-	// operation was partially finished when the operation was cancelled the
-	// partial result will be returned, without an error.
-	//
-	// On error nil is returned and @error is set accordingly.
-	ReadBytes(count uint, cancellable Cancellable) (bytes *glib.Bytes, err error)
+	ReadAllFinish(result AsyncResult) (bytesRead uint, goerr error)
 	// ReadBytesAsync: request an asynchronous read of @count bytes from the
 	// stream into a new #GBytes. When the operation is finished @callback will
 	// be called. You can then call g_input_stream_read_bytes_finish() to get
@@ -144,11 +119,8 @@ type InputStream interface {
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
 	ReadBytesAsync()
-	// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
-	// operation.
-	ReadBytesFinish(result AsyncResult) (bytes *glib.Bytes, err error)
 	// ReadFinish finishes an asynchronous stream read operation.
-	ReadFinish(result AsyncResult) (gssize int, err error)
+	ReadFinish(result AsyncResult) (gssize int, goerr error)
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
 	SetPending() error
@@ -167,7 +139,7 @@ type InputStream interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	Skip(count uint, cancellable Cancellable) (gssize int, err error)
+	Skip(count uint, cancellable Cancellable) (gssize int, goerr error)
 	// SkipAsync: request an asynchronous skip of @count bytes from the stream.
 	// When the operation is finished @callback will be called. You can then
 	// call g_input_stream_skip_finish() to get the result of the operation.
@@ -193,7 +165,7 @@ type InputStream interface {
 	// However, if you override one, you must override all.
 	SkipAsync()
 	// SkipFinish finishes a stream skip operation.
-	SkipFinish(result AsyncResult) (gssize int, err error)
+	SkipFinish(result AsyncResult) (gssize int, goerr error)
 }
 
 // inputStream implements the InputStream interface.
@@ -258,9 +230,10 @@ func (s inputStream) Close(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_input_stream_close(arg0, arg1, &cerr)
+	C.g_input_stream_close(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -282,7 +255,7 @@ func (s inputStream) CloseAsync() {
 
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_input_stream_close_async(arg0, arg1, arg2, arg3, arg4)
+	C.g_input_stream_close_async(arg0)
 }
 
 // CloseFinish finishes closing a stream asynchronously, started from
@@ -295,9 +268,10 @@ func (s inputStream) CloseFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_input_stream_close_finish(arg0, arg1, &cerr)
+	C.g_input_stream_close_finish(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -311,15 +285,16 @@ func (s inputStream) HasPending() bool {
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_input_stream_has_pending(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsClosed checks if an input stream is closed.
@@ -329,15 +304,16 @@ func (s inputStream) IsClosed() bool {
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_input_stream_is_closed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ReadAllFinish finishes an asynchronous stream read operation started with
@@ -349,70 +325,25 @@ func (s inputStream) IsClosed() bool {
 // read before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_input_stream_read_async().
-func (s inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, err error) {
+func (s inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, goerr error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	arg2 := new(C.gsize)
-	var ret2 uint
+	var arg2 C.gsize
 	var cerr *C.GError
+
+	C.g_input_stream_read_all_finish(arg0, arg1, &arg2, cerr)
+
+	var bytesRead uint
 	var goerr error
 
-	C.g_input_stream_read_all_finish(arg0, arg1, arg2, &cerr)
-
-	ret2 = uint(*arg2)
+	bytesRead = (uint)(arg2)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret2, goerr
-}
-
-// ReadBytes: like g_input_stream_read(), this tries to read @count bytes
-// from the stream in a blocking fashion. However, rather than reading into
-// a user-supplied buffer, this will create a new #GBytes containing the
-// data that was read. This may be easier to use from language bindings.
-//
-// If count is zero, returns a zero-length #GBytes and does nothing. A value
-// of @count larger than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT
-// error.
-//
-// On success, a new #GBytes is returned. It is not an error if the size of
-// this object is not the same as the requested size, as it can happen e.g.
-// near the end of a file. A zero-length #GBytes is returned on end of file
-// (or if @count is zero), but never otherwise.
-//
-// If @cancellable is not nil, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
-// operation was partially finished when the operation was cancelled the
-// partial result will be returned, without an error.
-//
-// On error nil is returned and @error is set accordingly.
-func (s inputStream) ReadBytes(count uint, cancellable Cancellable) (bytes *glib.Bytes, err error) {
-	var arg0 *C.GInputStream
-	var arg1 C.gsize
-	var arg2 *C.GCancellable
-
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = C.gsize(count)
-	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	cret := new(C.GBytes)
-	var goret *glib.Bytes
-	var cerr *C.GError
-	var goerr error
-
-	cret = C.g_input_stream_read_bytes(arg0, arg1, arg2, &cerr)
-
-	goret = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Bytes) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	goerr = gerror.Take(unsafe.Pointer(cerr))
-
-	return goret, goerr
+	return bytesRead, goerr
 }
 
 // ReadBytesAsync: request an asynchronous read of @count bytes from the
@@ -440,36 +371,11 @@ func (s inputStream) ReadBytesAsync() {
 
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_input_stream_read_bytes_async(arg0, arg1, arg2, arg3, arg4, arg5)
-}
-
-// ReadBytesFinish finishes an asynchronous stream read-into-#GBytes
-// operation.
-func (s inputStream) ReadBytesFinish(result AsyncResult) (bytes *glib.Bytes, err error) {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
-
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	cret := new(C.GBytes)
-	var goret *glib.Bytes
-	var cerr *C.GError
-	var goerr error
-
-	cret = C.g_input_stream_read_bytes_finish(arg0, arg1, &cerr)
-
-	goret = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Bytes) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	goerr = gerror.Take(unsafe.Pointer(cerr))
-
-	return goret, goerr
+	C.g_input_stream_read_bytes_async(arg0)
 }
 
 // ReadFinish finishes an asynchronous stream read operation.
-func (s inputStream) ReadFinish(result AsyncResult) (gssize int, err error) {
+func (s inputStream) ReadFinish(result AsyncResult) (gssize int, goerr error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
 
@@ -477,16 +383,17 @@ func (s inputStream) ReadFinish(result AsyncResult) (gssize int, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.gssize
-	var goret int
 	var cerr *C.GError
+
+	cret = C.g_input_stream_read_finish(arg0, arg1, cerr)
+
+	var gssize int
 	var goerr error
 
-	cret = C.g_input_stream_read_finish(arg0, arg1, &cerr)
-
-	goret = int(cret)
+	gssize = (int)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return gssize, goerr
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
@@ -497,9 +404,10 @@ func (s inputStream) SetPending() error {
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_input_stream_set_pending(arg0, &cerr)
+	C.g_input_stream_set_pending(arg0, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -521,7 +429,7 @@ func (s inputStream) SetPending() error {
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 // operation was partially finished when the operation was cancelled the
 // partial result will be returned, without an error.
-func (s inputStream) Skip(count uint, cancellable Cancellable) (gssize int, err error) {
+func (s inputStream) Skip(count uint, cancellable Cancellable) (gssize int, goerr error) {
 	var arg0 *C.GInputStream
 	var arg1 C.gsize
 	var arg2 *C.GCancellable
@@ -531,16 +439,17 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (gssize int, err 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cret C.gssize
-	var goret int
 	var cerr *C.GError
+
+	cret = C.g_input_stream_skip(arg0, arg1, arg2, cerr)
+
+	var gssize int
 	var goerr error
 
-	cret = C.g_input_stream_skip(arg0, arg1, arg2, &cerr)
-
-	goret = int(cret)
+	gssize = (int)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return gssize, goerr
 }
 
 // SkipAsync: request an asynchronous skip of @count bytes from the stream.
@@ -571,11 +480,11 @@ func (s inputStream) SkipAsync() {
 
 	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_input_stream_skip_async(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.g_input_stream_skip_async(arg0)
 }
 
 // SkipFinish finishes a stream skip operation.
-func (s inputStream) SkipFinish(result AsyncResult) (gssize int, err error) {
+func (s inputStream) SkipFinish(result AsyncResult) (gssize int, goerr error) {
 	var arg0 *C.GInputStream
 	var arg1 *C.GAsyncResult
 
@@ -583,14 +492,15 @@ func (s inputStream) SkipFinish(result AsyncResult) (gssize int, err error) {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cret C.gssize
-	var goret int
 	var cerr *C.GError
+
+	cret = C.g_input_stream_skip_finish(arg0, arg1, cerr)
+
+	var gssize int
 	var goerr error
 
-	cret = C.g_input_stream_skip_finish(arg0, arg1, &cerr)
-
-	goret = int(cret)
+	gssize = (int)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return gssize, goerr
 }

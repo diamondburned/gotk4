@@ -72,13 +72,14 @@ func (l *Language) SampleString() string {
 	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.pango_language_get_sample_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Scripts determines the scripts used to to write @language.
@@ -109,17 +110,22 @@ func (l *Language) Scripts() []Script {
 
 	var cret *C.PangoScript
 	var arg1 *C.int
-	var goret []Script
 
-	cret = C.pango_language_get_scripts(arg0, arg1)
+	cret = C.pango_language_get_scripts(arg0)
 
-	goret = make([]Script, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.PangoScript)(ptr.Add(unsafe.Pointer(cret), i))
-		goret[i] = Script(src)
+	var scripts []Script
+
+	{
+		var src []C.PangoScript
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+
+		scripts = make([]Script, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			scripts = Script(cret)
+		}
 	}
 
-	return ret1, goret
+	return scripts
 }
 
 // IncludesScript determines if @script is one of the scripts used to write
@@ -140,15 +146,16 @@ func (l *Language) IncludesScript(script Script) bool {
 	arg1 = (C.PangoScript)(script)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_language_includes_script(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Matches checks if a language tag matches one of the elements in a list of
@@ -166,15 +173,16 @@ func (l *Language) Matches(rangeList string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_language_matches(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // String gets the RFC-3066 format string representing the given language tag.
@@ -184,11 +192,12 @@ func (l *Language) String() string {
 	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.pango_language_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }

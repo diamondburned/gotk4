@@ -44,13 +44,14 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 	arg3 = C.gint(timeout)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_poll(arg1, arg2, arg3)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PollFD represents a file descriptor, which events to poll for, and which
@@ -82,20 +83,20 @@ func (p *PollFD) Native() unsafe.Pointer {
 // Fd gets the field inside the struct.
 func (p *PollFD) Fd() int {
 	var v int
-	v = int(p.native.fd)
+	v = (int)(p.native.fd)
 	return v
 }
 
 // Events gets the field inside the struct.
 func (p *PollFD) Events() uint16 {
 	var v uint16
-	v = uint16(p.native.events)
+	v = (uint16)(p.native.events)
 	return v
 }
 
 // Revents gets the field inside the struct.
 func (p *PollFD) Revents() uint16 {
 	var v uint16
-	v = uint16(p.native.revents)
+	v = (uint16)(p.native.revents)
 	return v
 }

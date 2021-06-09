@@ -32,7 +32,7 @@ func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer)
 	}
 
 	fn := v.(KeySnoopFunc)
-	fn(gint)
+	gint := fn()
 
 	cret = C.gint(gint)
 }
@@ -65,13 +65,14 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 	arg3 = C.guint(requiredMicro)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_check_version(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // DeviceGrabAdd adds a GTK+ grab on @device, so all the events on @device and
@@ -131,30 +132,32 @@ func DisableSetlocale() {
 //     // ...computation continued
 func EventsPending() bool {
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_events_pending()
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // False: analogical to gtk_true(), this function does nothing but always
 // returns false.
 func False() bool {
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_false()
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // GetBinaryAge returns the binary age as passed to `libtool` when building the
@@ -162,57 +165,61 @@ func False() bool {
 // you, don't worry about it.
 func GetBinaryAge() uint {
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_get_binary_age()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // GetCurrentEventDevice: if there is a current event and it has a device,
 // return that device, otherwise return nil.
 func GetCurrentEventDevice() gdk.Device {
 	var cret *C.GdkDevice
-	var goret gdk.Device
 
 	cret = C.gtk_get_current_event_device()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
+	var device gdk.Device
 
-	return goret
+	device = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
+
+	return device
 }
 
 // GetCurrentEventState: if there is a current event and it has a state field,
 // place that state field in @state and return true, otherwise return false.
-func GetCurrentEventState() (state *gdk.ModifierType, ok bool) {
-	arg1 := new(C.GdkModifierType)
-	var ret1 *gdk.ModifierType
+func GetCurrentEventState() (state gdk.ModifierType, ok bool) {
+	var arg1 C.GdkModifierType
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_get_current_event_state(arg1)
+	cret = C.gtk_get_current_event_state(&arg1)
 
-	ret1 = *gdk.ModifierType(arg1)
+	var state gdk.ModifierType
+	var ok bool
+
+	state = gdk.ModifierType(arg1)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, goret
+	return state, ok
 }
 
 // GetCurrentEventTime: if there is a current event and it has a timestamp,
 // return that timestamp, otherwise return GDK_CURRENT_TIME.
 func GetCurrentEventTime() uint32 {
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gtk_get_current_event_time()
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // GetDefaultLanguage returns the Language for the default language currently in
@@ -224,13 +231,14 @@ func GetCurrentEventTime() uint32 {
 // function for details.
 func GetDefaultLanguage() *pango.Language {
 	var cret *C.PangoLanguage
-	var goret *pango.Language
 
 	cret = C.gtk_get_default_language()
 
-	goret = pango.WrapLanguage(unsafe.Pointer(cret))
+	var language *pango.Language
 
-	return goret
+	language = pango.WrapLanguage(unsafe.Pointer(cret))
+
+	return language
 }
 
 // GetInterfaceAge returns the interface age as passed to `libtool` when
@@ -238,13 +246,14 @@ func GetDefaultLanguage() *pango.Language {
 // nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_get_interface_age()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // GetLocaleDirection: get the direction of the current locale. This is the
@@ -267,13 +276,14 @@ func GetInterfaceAge() uint {
 //    gtk_widget_set_default_direction (direction);
 func GetLocaleDirection() TextDirection {
 	var cret C.GtkTextDirection
-	var goret TextDirection
 
 	cret = C.gtk_get_locale_direction()
 
-	goret = TextDirection(cret)
+	var textDirection TextDirection
 
-	return goret
+	textDirection = TextDirection(cret)
+
+	return textDirection
 }
 
 // GetMajorVersion returns the major version number of the GTK+ library. (e.g.
@@ -285,13 +295,14 @@ func GetLocaleDirection() TextDirection {
 // code.
 func GetMajorVersion() uint {
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_get_major_version()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // GetMicroVersion returns the micro version number of the GTK+ library. (e.g.
@@ -303,13 +314,14 @@ func GetMajorVersion() uint {
 // compiling your code.
 func GetMicroVersion() uint {
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_get_micro_version()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // GetMinorVersion returns the minor version number of the GTK+ library. (e.g.
@@ -321,13 +333,14 @@ func GetMicroVersion() uint {
 // compiling your code.
 func GetMinorVersion() uint {
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_get_minor_version()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // GetOptionGroup returns a Group for the commandline arguments recognized by
@@ -343,49 +356,52 @@ func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
 		arg1 = C.gboolean(1)
 	}
 
-	cret := new(C.GOptionGroup)
-	var goret *glib.OptionGroup
+	var cret *C.GOptionGroup
 
 	cret = C.gtk_get_option_group(arg1)
 
-	goret = glib.WrapOptionGroup(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.OptionGroup) {
+	var optionGroup *glib.OptionGroup
+
+	optionGroup = glib.WrapOptionGroup(unsafe.Pointer(cret))
+	runtime.SetFinalizer(optionGroup, func(v *glib.OptionGroup) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return optionGroup
 }
 
 // GrabGetCurrent queries the current grab of the default window group.
 func GrabGetCurrent() Widget {
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_grab_get_current()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // KeySnooperInstall installs a key snooper function, which will get called on
 // all key events before delivering them normally.
 func KeySnooperInstall() uint {
 	var cret C.guint
-	var goret uint
 
-	cret = C.gtk_key_snooper_install(arg1, arg2)
+	cret = C.gtk_key_snooper_install()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // KeySnooperRemove removes the key snooper function with the given id.
-func KeySnooperRemove(snooperHandlerID uint) {
+func KeySnooperRemove(snooperHandlerId uint) {
 	var arg1 C.guint
 
-	arg1 = C.guint(snooperHandlerID)
+	arg1 = C.guint(snooperHandlerId)
 
 	C.gtk_key_snooper_remove(arg1)
 }
@@ -405,15 +421,16 @@ func Main() {
 // check if any events are pending with gtk_events_pending() first.
 func MainIteration() bool {
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_main_iteration()
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MainIterationDo runs a single iteration of the mainloop. If no events are
@@ -426,27 +443,29 @@ func MainIterationDo(blocking bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_main_iteration_do(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MainLevel asks for the current nesting level of the main loop.
 func MainLevel() uint {
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_main_level()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // MainQuit makes the innermost invocation of the main loop return when it
@@ -496,13 +515,14 @@ func MainQuit() {
 //    }
 func True() bool {
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_true()
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

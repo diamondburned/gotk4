@@ -93,14 +93,15 @@ func NewNetworkService(service string, protocol string, domain string) NetworkSe
 	arg3 = (*C.gchar)(C.CString(domain))
 	defer C.free(unsafe.Pointer(arg3))
 
-	cret := new(C.GNetworkService)
-	var goret NetworkService
+	var cret C.GNetworkService
 
 	cret = C.g_network_service_new(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkService)
+	var networkService NetworkService
 
-	return goret
+	networkService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkService)
+
+	return networkService
 }
 
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
@@ -111,13 +112,14 @@ func (s networkService) Domain() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_network_service_get_domain(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Protocol gets @srv's protocol name (eg, "tcp").
@@ -127,13 +129,14 @@ func (s networkService) Protocol() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_network_service_get_protocol(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Scheme gets the URI scheme used to resolve proxies. By default, the
@@ -144,13 +147,14 @@ func (s networkService) Scheme() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_network_service_get_scheme(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Service gets @srv's service name (eg, "ldap").
@@ -160,13 +164,14 @@ func (s networkService) Service() string {
 	arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_network_service_get_service(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SetScheme set's the URI scheme used to resolve proxies. By default, the

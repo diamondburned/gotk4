@@ -18,17 +18,17 @@ func init() {
 	})
 }
 
-// Filter: a `GtkFilter` object describes the filtering to be performed by a
-// `GtkFilterListModel`.
+// Filter: a Filter object describes the filtering to be performed by a
+// FilterListModel.
 //
 // The model will use the filter to determine if it should include items or not
-// by calling [method@Gtk.Filter.match] for each item and only keeping the ones
-// that the function returns true for.
+// by calling gtk_filter_match() for each item and only keeping the ones that
+// the function returns true for.
 //
 // Filters may change what items they match through their lifetime. In that
-// case, they will emit the [signal@Gtk.Filter::changed] signal to notify that
-// previous filter results are no longer valid and that items should be checked
-// again via [method@Gtk.Filter.match].
+// case, they will emit the Filter::changed signal to notify that previous
+// filter results are no longer valid and that items should be checked again via
+// gtk_filter_match().
 //
 // GTK provides various pre-made filter implementations for common filtering
 // operations. These filters often include properties that can be linked to
@@ -114,13 +114,14 @@ func (s filter) Strictness() FilterMatch {
 	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkFilterMatch
-	var goret FilterMatch
 
 	cret = C.gtk_filter_get_strictness(arg0)
 
-	goret = FilterMatch(cret)
+	var filterMatch FilterMatch
 
-	return goret
+	filterMatch = FilterMatch(cret)
+
+	return filterMatch
 }
 
 // Match checks if the given @item is matched by the filter or not.
@@ -132,13 +133,14 @@ func (s filter) Match(item gextras.Objector) bool {
 	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_filter_match(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -102,14 +103,15 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 
 // NewUnixFDMessage constructs a class UnixFDMessage.
 func NewUnixFDMessage() UnixFDMessage {
-	cret := new(C.GUnixFDMessage)
-	var goret UnixFDMessage
+	var cret C.GUnixFDMessage
 
 	cret = C.g_unix_fd_message_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+	var unixFDMessage UnixFDMessage
 
-	return goret
+	unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+
+	return unixFDMessage
 }
 
 // NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
@@ -118,14 +120,15 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 
 	arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
-	cret := new(C.GUnixFDMessage)
-	var goret UnixFDMessage
+	var cret C.GUnixFDMessage
 
 	cret = C.g_unix_fd_message_new_with_fd_list(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+	var unixFDMessage UnixFDMessage
 
-	return goret
+	unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+
+	return unixFDMessage
 }
 
 // AppendFd adds a file descriptor to @message.
@@ -144,9 +147,10 @@ func (m unixFDMessage) AppendFd(fd int) error {
 	arg1 = C.gint(fd)
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_unix_fd_message_append_fd(arg0, arg1, &cerr)
+	C.g_unix_fd_message_append_fd(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -162,13 +166,14 @@ func (m unixFDMessage) FdList() UnixFDList {
 	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GUnixFDList
-	var goret UnixFDList
 
 	cret = C.g_unix_fd_message_get_fd_list(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(UnixFDList)
+	var unixFDList UnixFDList
 
-	return goret
+	unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(UnixFDList)
+
+	return unixFDList
 }
 
 // StealFds returns the array of file descriptors that is contained in this
@@ -193,14 +198,15 @@ func (m unixFDMessage) StealFds() []int {
 
 	var cret *C.gint
 	var arg1 *C.gint
-	var goret []int
 
-	cret = C.g_unix_fd_message_steal_fds(arg0, arg1)
+	cret = C.g_unix_fd_message_steal_fds(arg0)
 
-	ptr.SetSlice(unsafe.Pointer(&goret), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret, func(v *[]int) {
+	var gints []int
+
+	ptr.SetSlice(unsafe.Pointer(&gints), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&gints, func(v *[]int) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret
+	return gints
 }

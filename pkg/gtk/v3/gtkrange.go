@@ -57,7 +57,7 @@ type Range interface {
 	// trough and its steppers, in widget->window coordinates.
 	//
 	// This function is useful mainly for Range subclasses.
-	RangeRect() *gdk.Rectangle
+	RangeRect() gdk.Rectangle
 	// RestrictToFillLevel gets whether the range is restricted to the fill
 	// level.
 	RestrictToFillLevel() bool
@@ -190,13 +190,14 @@ func (r _range) Adjustment() Adjustment {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_range_get_adjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // FillLevel gets the current position of the fill level indicator.
@@ -206,13 +207,14 @@ func (r _range) FillLevel() float64 {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_range_get_fill_level(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Flippable gets the value set by gtk_range_set_flippable().
@@ -222,15 +224,16 @@ func (r _range) Flippable() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_range_get_flippable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Inverted gets the value set by gtk_range_set_inverted().
@@ -240,15 +243,16 @@ func (r _range) Inverted() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_range_get_inverted(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // LowerStepperSensitivity gets the sensitivity policy for the stepper that
@@ -259,13 +263,14 @@ func (r _range) LowerStepperSensitivity() SensitivityType {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.GtkSensitivityType
-	var goret SensitivityType
 
 	cret = C.gtk_range_get_lower_stepper_sensitivity(arg0)
 
-	goret = SensitivityType(cret)
+	var sensitivityType SensitivityType
 
-	return goret
+	sensitivityType = SensitivityType(cret)
+
+	return sensitivityType
 }
 
 // MinSliderSize: this function is useful mainly for Range subclasses.
@@ -277,32 +282,30 @@ func (r _range) MinSliderSize() int {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_range_get_min_slider_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // RangeRect: this function returns the area that contains the range’s
 // trough and its steppers, in widget->window coordinates.
 //
 // This function is useful mainly for Range subclasses.
-func (r _range) RangeRect() *gdk.Rectangle {
+func (r _range) RangeRect() gdk.Rectangle {
 	var arg0 *C.GtkRange
 
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	arg1 := new(C.GdkRectangle)
-	var ret1 *gdk.Rectangle
+	var rangeRect gdk.Rectangle
 
-	C.gtk_range_get_range_rect(arg0, arg1)
+	C.gtk_range_get_range_rect(arg0, (*C.GdkRectangle)(unsafe.Pointer(&rangeRect)))
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
-
-	return ret1
+	return rangeRect
 }
 
 // RestrictToFillLevel gets whether the range is restricted to the fill
@@ -313,15 +316,16 @@ func (r _range) RestrictToFillLevel() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_range_get_restrict_to_fill_level(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RoundDigits gets the number of digits to round the value to when it
@@ -332,13 +336,14 @@ func (r _range) RoundDigits() int {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_range_get_round_digits(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ShowFillLevel gets whether the range displays the fill level graphically.
@@ -348,15 +353,16 @@ func (r _range) ShowFillLevel() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_range_get_show_fill_level(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SliderRange: this function returns sliders range along the long
@@ -368,17 +374,18 @@ func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
 
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_range_get_slider_range(arg0, arg1, arg2)
+	C.gtk_range_get_slider_range(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var sliderStart int
+	var sliderEnd int
 
-	return ret1, ret2
+	sliderStart = (int)(arg1)
+	sliderEnd = (int)(arg2)
+
+	return sliderStart, sliderEnd
 }
 
 // SliderSizeFixed: this function is useful mainly for Range subclasses.
@@ -390,15 +397,16 @@ func (r _range) SliderSizeFixed() bool {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_range_get_slider_size_fixed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UpperStepperSensitivity gets the sensitivity policy for the stepper that
@@ -409,13 +417,14 @@ func (r _range) UpperStepperSensitivity() SensitivityType {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.GtkSensitivityType
-	var goret SensitivityType
 
 	cret = C.gtk_range_get_upper_stepper_sensitivity(arg0)
 
-	goret = SensitivityType(cret)
+	var sensitivityType SensitivityType
 
-	return goret
+	sensitivityType = SensitivityType(cret)
+
+	return sensitivityType
 }
 
 // Value gets the current value of the range.
@@ -425,13 +434,14 @@ func (r _range) Value() float64 {
 	arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_range_get_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // SetAdjustment sets the adjustment to be used as the “model” object for

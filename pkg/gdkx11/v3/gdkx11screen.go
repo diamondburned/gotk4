@@ -22,13 +22,14 @@ func init() {
 // X11GetDefaultScreen gets the default GTK+ screen number.
 func X11GetDefaultScreen() int {
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_x11_get_default_screen()
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 type X11Screen interface {
@@ -95,13 +96,14 @@ func (s x11Screen) CurrentDesktop() uint32 {
 	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gdk_x11_screen_get_current_desktop(arg0)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // NumberOfDesktops returns the number of workspaces for @screen when
@@ -114,13 +116,14 @@ func (s x11Screen) NumberOfDesktops() uint32 {
 	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gdk_x11_screen_get_number_of_desktops(arg0)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // ScreenNumber returns the index of a Screen.
@@ -130,13 +133,14 @@ func (s x11Screen) ScreenNumber() int {
 	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gdk_x11_screen_get_screen_number(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // WindowManagerName returns the name of the window manager for @screen.
@@ -146,13 +150,14 @@ func (s x11Screen) WindowManagerName() string {
 	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gdk_x11_screen_get_window_manager_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SupportsNetWmHint: this function is specific to the X11 backend of GDK,
@@ -176,13 +181,14 @@ func (s x11Screen) SupportsNetWmHint(property gdk.Atom) bool {
 	arg1 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_x11_screen_supports_net_wm_hint(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

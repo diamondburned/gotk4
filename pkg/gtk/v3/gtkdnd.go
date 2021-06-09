@@ -65,13 +65,14 @@ func DragGetSourceWidget(context gdk.DragContext) Widget {
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_drag_get_source_widget(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // DragSetIconDefault sets the icon for a particular drag to the default icon.
@@ -135,14 +136,14 @@ func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX in
 }
 
 // DragSetIconStock sets the icon for a given drag from a stock ID.
-func DragSetIconStock(context gdk.DragContext, stockID string, hotX int, hotY int) {
+func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY int) {
 	var arg1 *C.GdkDragContext
 	var arg2 *C.gchar
 	var arg3 C.gint
 	var arg4 C.gint
 
 	arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	arg2 = (*C.gchar)(C.CString(stockID))
+	arg2 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gint(hotX)
 	arg4 = C.gint(hotY)

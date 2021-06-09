@@ -18,10 +18,9 @@ func init() {
 	})
 }
 
-// ShortcutsShortcut: a `GtkShortcutsShortcut` represents a single keyboard
-// shortcut or gesture with a short text.
-//
-// This widget is only meant to be used with `GtkShortcutsWindow`.
+// ShortcutsShortcut: a GtkShortcutsShortcut represents a single keyboard
+// shortcut or gesture with a short text. This widget is only meant to be used
+// with ShortcutsWindow.
 type ShortcutsShortcut interface {
 	Widget
 	Accessible

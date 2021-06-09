@@ -65,14 +65,15 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 
 // NewTextChildAnchor constructs a class TextChildAnchor.
 func NewTextChildAnchor() TextChildAnchor {
-	cret := new(C.GtkTextChildAnchor)
-	var goret TextChildAnchor
+	var cret C.GtkTextChildAnchor
 
 	cret = C.gtk_text_child_anchor_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+	var textChildAnchor TextChildAnchor
 
-	return goret
+	textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+
+	return textChildAnchor
 }
 
 // Deleted determines whether a child anchor has been deleted from the
@@ -86,15 +87,16 @@ func (a textChildAnchor) Deleted() bool {
 	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_child_anchor_get_deleted(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Widgets gets a list of all widgets anchored at this child anchor. The
@@ -104,15 +106,16 @@ func (a textChildAnchor) Widgets() *glib.List {
 
 	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_text_child_anchor_get_widgets(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }

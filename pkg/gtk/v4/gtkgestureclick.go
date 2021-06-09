@@ -21,13 +21,10 @@ func init() {
 	})
 }
 
-// GestureClick: `GtkGestureClick` is a `GtkGesture` implementation for clicks.
-//
-// It is able to recognize multiple clicks on a nearby zone, which can be
-// listened for through the [signal@Gtk.GestureClick::pressed] signal. Whenever
-// time or distance between clicks exceed the GTK defaults,
-// [signal@Gtk.GestureClick::stopped] is emitted, and the click counter is
-// reset.
+// GestureClick is a Gesture implementation able to recognize multiple clicks on
+// a nearby zone, which can be listened for through the GestureClick::pressed
+// signal. Whenever time or distance between clicks exceed the GTK defaults,
+// GestureClick::stopped is emitted, and the click counter is reset.
 type GestureClick interface {
 	GestureSingle
 }
@@ -55,12 +52,13 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 
 // NewGestureClick constructs a class GestureClick.
 func NewGestureClick() GestureClick {
-	cret := new(C.GtkGestureClick)
-	var goret GestureClick
+	var cret C.GtkGestureClick
 
 	cret = C.gtk_gesture_click_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureClick)
+	var gestureClick GestureClick
 
-	return goret
+	gestureClick = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureClick)
+
+	return gestureClick
 }

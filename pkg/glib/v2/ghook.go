@@ -53,7 +53,7 @@ func (h *Hook) Native() unsafe.Pointer {
 // Data gets the field inside the struct.
 func (h *Hook) Data() interface{} {
 	var v interface{}
-	v = interface{}(h.native.data)
+	v = (interface{})(h.native.data)
 	return v
 }
 
@@ -74,28 +74,28 @@ func (h *Hook) Prev() *Hook {
 // RefCount gets the field inside the struct.
 func (h *Hook) RefCount() uint {
 	var v uint
-	v = uint(h.native.ref_count)
+	v = (uint)(h.native.ref_count)
 	return v
 }
 
 // HookID gets the field inside the struct.
 func (h *Hook) HookID() uint32 {
 	var v uint32
-	v = uint32(h.native.hook_id)
+	v = (uint32)(h.native.hook_id)
 	return v
 }
 
 // Flags gets the field inside the struct.
 func (h *Hook) Flags() uint {
 	var v uint
-	v = uint(h.native.flags)
+	v = (uint)(h.native.flags)
 	return v
 }
 
 // Func gets the field inside the struct.
 func (h *Hook) Func() interface{} {
 	var v interface{}
-	v = interface{}(h.native._func)
+	v = (interface{})(h.native._func)
 	return v
 }
 
@@ -109,13 +109,14 @@ func (n *Hook) CompareIds(sibling *Hook) int {
 	arg1 = (*C.GHook)(unsafe.Pointer(sibling.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_hook_compare_ids(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // HookList: the List struct represents a list of hook functions.
@@ -146,7 +147,7 @@ func (h *HookList) Native() unsafe.Pointer {
 // SeqID gets the field inside the struct.
 func (h *HookList) SeqID() uint32 {
 	var v uint32
-	v = uint32(h.native.seq_id)
+	v = (uint32)(h.native.seq_id)
 	return v
 }
 
@@ -160,7 +161,7 @@ func (h *HookList) Hooks() *Hook {
 // Dummy3 gets the field inside the struct.
 func (h *HookList) Dummy3() interface{} {
 	var v interface{}
-	v = interface{}(h.native.dummy3)
+	v = (interface{})(h.native.dummy3)
 	return v
 }
 
@@ -224,7 +225,7 @@ func (h *HookList) Marshal() {
 
 	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 
-	C.g_hook_list_marshal(arg0, arg1, arg2, arg3)
+	C.g_hook_list_marshal(arg0)
 }
 
 // MarshalCheck calls a function on each valid #GHook and destroys it if the
@@ -234,5 +235,5 @@ func (h *HookList) MarshalCheck() {
 
 	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 
-	C.g_hook_list_marshal_check(arg0, arg1, arg2, arg3)
+	C.g_hook_list_marshal_check(arg0)
 }

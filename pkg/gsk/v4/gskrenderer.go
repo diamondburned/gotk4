@@ -25,30 +25,20 @@ func init() {
 	})
 }
 
-// Renderer: `GskRenderer` is a class that renders a scene graph defined via a
-// tree of [class@Gsk.RenderNode] instances.
-//
-// Typically you will use a `GskRenderer` instance to repeatedly call
-// [method@Gsk.Renderer.render] to update the contents of its associated
-// [class@Gdk.Surface].
-//
-// It is necessary to realize a `GskRenderer` instance using
-// [method@Gsk.Renderer.realize] before calling [method@Gsk.Renderer.render], in
-// order to create the appropriate windowing system resources needed to render
-// the scene.
+// Renderer: base type for the object managing the rendering pipeline for a
+// Surface.
 type Renderer interface {
 	gextras.Objector
 
-	// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
-	//
-	// If the renderer has not been realized yet, nil will be returned.
+	// Surface retrieves the Surface set using gsk_renderer_realize(). If the
+	// renderer has not been realized yet, nil will be returned.
 	Surface() gdk.Surface
 	// IsRealized checks whether the @renderer is realized or not.
 	IsRealized() bool
 	// Realize creates the resources needed by the @renderer to render the scene
 	// graph.
 	Realize(surface gdk.Surface) error
-	// Render renders the scene graph, described by a tree of `GskRenderNode`
+	// Render renders the scene graph, described by a tree of RenderNode
 	// instances, ensuring that the given @region gets redrawn.
 	//
 	// Renderers must ensure that changes of the contents given by the @root
@@ -56,14 +46,14 @@ type Renderer interface {
 	// free to not redraw any pixel outside of @region if they can guarantee
 	// that it didn't change.
 	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
+	// The @renderer will acquire a reference on the RenderNode tree while the
+	// rendering is in progress.
 	Render(root RenderNode, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of
-	// `GskRenderNode` instances, to a `GdkTexture`.
+	// RenderTexture renders the scene graph, described by a tree of RenderNode
+	// instances, to a Texture.
 	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
+	// The @renderer will acquire a reference on the RenderNode tree while the
+	// rendering is in progress.
 	//
 	// If you want to apply any transformations to @root, you should put it into
 	// a transform node and pass that node instead.
@@ -99,32 +89,33 @@ func NewRendererForSurface(surface gdk.Surface) Renderer {
 
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	cret := new(C.GskRenderer)
-	var goret Renderer
+	var cret C.GskRenderer
 
 	cret = C.gsk_renderer_new_for_surface(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Renderer)
+	var renderer Renderer
 
-	return goret
+	renderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Renderer)
+
+	return renderer
 }
 
-// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
-//
-// If the renderer has not been realized yet, nil will be returned.
+// Surface retrieves the Surface set using gsk_renderer_realize(). If the
+// renderer has not been realized yet, nil will be returned.
 func (r renderer) Surface() gdk.Surface {
 	var arg0 *C.GskRenderer
 
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GdkSurface
-	var goret gdk.Surface
 
 	cret = C.gsk_renderer_get_surface(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+	var surface gdk.Surface
 
-	return goret
+	surface = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+
+	return surface
 }
 
 // IsRealized checks whether the @renderer is realized or not.
@@ -134,15 +125,16 @@ func (r renderer) IsRealized() bool {
 	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gsk_renderer_is_realized(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Realize creates the resources needed by the @renderer to render the scene
@@ -155,16 +147,17 @@ func (r renderer) Realize(surface gdk.Surface) error {
 	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gsk_renderer_realize(arg0, arg1, &cerr)
+	C.gsk_renderer_realize(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
 	return goerr
 }
 
-// Render renders the scene graph, described by a tree of `GskRenderNode`
+// Render renders the scene graph, described by a tree of RenderNode
 // instances, ensuring that the given @region gets redrawn.
 //
 // Renderers must ensure that changes of the contents given by the @root
@@ -172,8 +165,8 @@ func (r renderer) Realize(surface gdk.Surface) error {
 // free to not redraw any pixel outside of @region if they can guarantee
 // that it didn't change.
 //
-// The @renderer will acquire a reference on the `GskRenderNode` tree while
-// the rendering is in progress.
+// The @renderer will acquire a reference on the RenderNode tree while the
+// rendering is in progress.
 func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	var arg0 *C.GskRenderer
 	var arg1 *C.GskRenderNode
@@ -186,11 +179,11 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	C.gsk_renderer_render(arg0, arg1, arg2)
 }
 
-// RenderTexture renders the scene graph, described by a tree of
-// `GskRenderNode` instances, to a `GdkTexture`.
+// RenderTexture renders the scene graph, described by a tree of RenderNode
+// instances, to a Texture.
 //
-// The @renderer will acquire a reference on the `GskRenderNode` tree while
-// the rendering is in progress.
+// The @renderer will acquire a reference on the RenderNode tree while the
+// rendering is in progress.
 //
 // If you want to apply any transformations to @root, you should put it into
 // a transform node and pass that node instead.
@@ -203,14 +196,15 @@ func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Te
 	arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
 	arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
 
-	cret := new(C.GdkTexture)
-	var goret gdk.Texture
+	var cret *C.GdkTexture
 
 	cret = C.gsk_renderer_render_texture(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Texture)
+	var texture gdk.Texture
 
-	return goret
+	texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Texture)
+
+	return texture
 }
 
 // Unrealize releases all the resources created by gsk_renderer_realize().

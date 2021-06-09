@@ -89,14 +89,15 @@ func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
 		arg2 = C.gboolean(1)
 	}
 
-	cret := new(C.GUnixInputStream)
-	var goret UnixInputStream
+	var cret C.GUnixInputStream
 
 	cret = C.g_unix_input_stream_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixInputStream)
+	var unixInputStream UnixInputStream
 
-	return goret
+	unixInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixInputStream)
+
+	return unixInputStream
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed
@@ -107,15 +108,16 @@ func (s unixInputStream) CloseFd() bool {
 	arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unix_input_stream_get_close_fd(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Fd: return the UNIX file descriptor that the stream reads from.
@@ -125,13 +127,14 @@ func (s unixInputStream) Fd() int {
 	arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_unix_input_stream_get_fd(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SetCloseFd sets whether the file descriptor of @stream shall be closed

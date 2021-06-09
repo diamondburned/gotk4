@@ -130,13 +130,14 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 // NewLevelBar constructs a class LevelBar.
 func NewLevelBar() LevelBar {
 	var cret C.GtkLevelBar
-	var goret LevelBar
 
 	cret = C.gtk_level_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+	var levelBar LevelBar
 
-	return goret
+	levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+
+	return levelBar
 }
 
 // NewLevelBarForInterval constructs a class LevelBar.
@@ -148,13 +149,14 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	arg2 = C.gdouble(maxValue)
 
 	var cret C.GtkLevelBar
-	var goret LevelBar
 
 	cret = C.gtk_level_bar_new_for_interval(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+	var levelBar LevelBar
 
-	return goret
+	levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+
+	return levelBar
 }
 
 // AddOffsetValue adds a new offset marker on @self at the position
@@ -183,15 +185,16 @@ func (s levelBar) Inverted() bool {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_level_bar_get_inverted(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MaxValue returns the value of the LevelBar:max-value property.
@@ -201,13 +204,14 @@ func (s levelBar) MaxValue() float64 {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_level_bar_get_max_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // MinValue returns the value of the LevelBar:min-value property.
@@ -217,13 +221,14 @@ func (s levelBar) MinValue() float64 {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_level_bar_get_min_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Mode returns the value of the LevelBar:mode property.
@@ -233,13 +238,14 @@ func (s levelBar) Mode() LevelBarMode {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkLevelBarMode
-	var goret LevelBarMode
 
 	cret = C.gtk_level_bar_get_mode(arg0)
 
-	goret = LevelBarMode(cret)
+	var levelBarMode LevelBarMode
 
-	return goret
+	levelBarMode = LevelBarMode(cret)
+
+	return levelBarMode
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in
@@ -252,19 +258,20 @@ func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 	arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(C.gdouble)
-	var ret2 float64
+	var arg2 C.gdouble
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_level_bar_get_offset_value(arg0, arg1, arg2)
+	cret = C.gtk_level_bar_get_offset_value(arg0, arg1, &arg2)
 
-	ret2 = float64(*arg2)
+	var value float64
+	var ok bool
+
+	value = (float64)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return value, ok
 }
 
 // Value returns the value of the LevelBar:value property.
@@ -274,13 +281,14 @@ func (s levelBar) Value() float64 {
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_level_bar_get_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // RemoveOffsetValue removes an offset marker previously added with

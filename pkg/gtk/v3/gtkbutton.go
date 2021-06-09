@@ -164,13 +164,14 @@ func marshalButton(p uintptr) (interface{}, error) {
 // NewButton constructs a class Button.
 func NewButton() Button {
 	var cret C.GtkButton
-	var goret Button
 
 	cret = C.gtk_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	var button Button
 
-	return goret
+	button = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return button
 }
 
 // NewButtonFromIconName constructs a class Button.
@@ -183,30 +184,32 @@ func NewButtonFromIconName(iconName string, size int) Button {
 	arg2 = C.GtkIconSize(size)
 
 	var cret C.GtkButton
-	var goret Button
 
 	cret = C.gtk_button_new_from_icon_name(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	var button Button
 
-	return goret
+	button = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return button
 }
 
 // NewButtonFromStock constructs a class Button.
-func NewButtonFromStock(stockID string) Button {
+func NewButtonFromStock(stockId string) Button {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkButton
-	var goret Button
 
 	cret = C.gtk_button_new_from_stock(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	var button Button
 
-	return goret
+	button = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return button
 }
 
 // NewButtonWithLabel constructs a class Button.
@@ -217,13 +220,14 @@ func NewButtonWithLabel(label string) Button {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkButton
-	var goret Button
 
 	cret = C.gtk_button_new_with_label(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	var button Button
 
-	return goret
+	button = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return button
 }
 
 // NewButtonWithMnemonic constructs a class Button.
@@ -234,13 +238,14 @@ func NewButtonWithMnemonic(label string) Button {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkButton
-	var goret Button
 
 	cret = C.gtk_button_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	var button Button
 
-	return goret
+	button = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return button
 }
 
 // Clicked emits a Button::clicked signal to the given Button.
@@ -267,17 +272,18 @@ func (b button) Alignment() (xalign float32, yalign float32) {
 
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	arg1 := new(C.gfloat)
-	var ret1 float32
-	arg2 := new(C.gfloat)
-	var ret2 float32
+	var arg1 C.gfloat
+	var arg2 C.gfloat
 
-	C.gtk_button_get_alignment(arg0, arg1, arg2)
+	C.gtk_button_get_alignment(arg0, &arg1, &arg2)
 
-	ret1 = float32(*arg1)
-	ret2 = float32(*arg2)
+	var xalign float32
+	var yalign float32
 
-	return ret1, ret2
+	xalign = (float32)(arg1)
+	yalign = (float32)(arg2)
+
+	return xalign, yalign
 }
 
 // AlwaysShowImage returns whether the button will ignore the
@@ -289,15 +295,16 @@ func (b button) AlwaysShowImage() bool {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_button_get_always_show_image(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // EventWindow returns the button’s event window if it is realized, nil
@@ -308,13 +315,14 @@ func (b button) EventWindow() gdk.Window {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GdkWindow
-	var goret gdk.Window
 
 	cret = C.gtk_button_get_event_window(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	var window gdk.Window
 
-	return goret
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return window
 }
 
 // FocusOnClick returns whether the button grabs focus when it is clicked
@@ -325,15 +333,16 @@ func (b button) FocusOnClick() bool {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_button_get_focus_on_click(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Image gets the widget that is currenty set as the image of @button. This
@@ -345,13 +354,14 @@ func (b button) Image() Widget {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_button_get_image(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ImagePosition gets the position of the image relative to the text inside
@@ -362,13 +372,14 @@ func (b button) ImagePosition() PositionType {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkPositionType
-	var goret PositionType
 
 	cret = C.gtk_button_get_image_position(arg0)
 
-	goret = PositionType(cret)
+	var positionType PositionType
 
-	return goret
+	positionType = PositionType(cret)
+
+	return positionType
 }
 
 // Label fetches the text from the label of the button, as set by
@@ -381,13 +392,14 @@ func (b button) Label() string {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_button_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Relief returns the current relief style of the given Button.
@@ -397,13 +409,14 @@ func (b button) Relief() ReliefStyle {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkReliefStyle
-	var goret ReliefStyle
 
 	cret = C.gtk_button_get_relief(arg0)
 
-	goret = ReliefStyle(cret)
+	var reliefStyle ReliefStyle
 
-	return goret
+	reliefStyle = ReliefStyle(cret)
+
+	return reliefStyle
 }
 
 // UseStock returns whether the button label is a stock item.
@@ -413,15 +426,16 @@ func (b button) UseStock() bool {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_button_get_use_stock(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UseUnderline returns whether an embedded underline in the button label
@@ -432,15 +446,16 @@ func (b button) UseUnderline() bool {
 	arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_button_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Leave emits a Button::leave signal to the given Button.

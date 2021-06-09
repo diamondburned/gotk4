@@ -22,20 +22,21 @@ func init() {
 	})
 }
 
-// Shortcut: a `GtkShortcut` describes a keyboard shortcut.
+// Shortcut: gtkShortcut is the low level object used for managing keyboard
+// shortcuts.
 //
 // It contains a description of how to trigger the shortcut via a
-// [class@Gtk.ShortcutTrigger] and a way to activate the shortcut on a widget
-// via a [class@Gtk.ShortcutAction].
+// ShortcutTrigger and a way to activate the shortcut on a widget via
+// ShortcutAction.
 //
-// The actual work is usually done via [class@Gtk.ShortcutController], which
-// decides if and when to activate a shortcut. Using that controller directly
-// however is rarely necessary as various higher level convenience APIs exist on
-// Widgets that make it easier to use shortcuts in GTK.
+// The actual work is usually done via ShortcutController, which decides if and
+// when to activate a shortcut. Using that controller directly however is rarely
+// necessary as various higher level convenience APIs exist on Widgets that make
+// it easier to use shortcuts in GTK.
 //
-// `GtkShortcut` does provide functionality to make it easy for users to work
-// with shortcuts, either by providing informational strings for display
-// purposes or by allowing shortcuts to be configured.
+// Shortcut does provide functionality to make it easy for users to work with
+// shortcuts, either by providing informational strings for display purposes or
+// by allowing shortcuts to be configured.
 type Shortcut interface {
 	gextras.Objector
 
@@ -83,14 +84,15 @@ func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
 	arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))
 	arg2 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
 
-	cret := new(C.GtkShortcut)
-	var goret Shortcut
+	var cret C.GtkShortcut
 
 	cret = C.gtk_shortcut_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Shortcut)
+	var shortcut Shortcut
 
-	return goret
+	shortcut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Shortcut)
+
+	return shortcut
 }
 
 // Action gets the action that is activated by this shortcut.
@@ -100,13 +102,14 @@ func (s shortcut) Action() ShortcutAction {
 	arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkShortcutAction
-	var goret ShortcutAction
 
 	cret = C.gtk_shortcut_get_action(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutAction)
+	var shortcutAction ShortcutAction
 
-	return goret
+	shortcutAction = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutAction)
+
+	return shortcutAction
 }
 
 // Arguments gets the arguments that are passed when activating the
@@ -117,13 +120,14 @@ func (s shortcut) Arguments() *glib.Variant {
 	arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GVariant
-	var goret *glib.Variant
 
 	cret = C.gtk_shortcut_get_arguments(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	var variant *glib.Variant
 
-	return goret
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return variant
 }
 
 // Trigger gets the trigger used to trigger @self.
@@ -133,13 +137,14 @@ func (s shortcut) Trigger() ShortcutTrigger {
 	arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkShortcutTrigger
-	var goret ShortcutTrigger
 
 	cret = C.gtk_shortcut_get_trigger(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
+	var shortcutTrigger ShortcutTrigger
 
-	return goret
+	shortcutTrigger = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ShortcutTrigger)
+
+	return shortcutTrigger
 }
 
 // SetAction sets the new action for @self to be @action.

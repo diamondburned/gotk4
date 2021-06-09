@@ -128,13 +128,14 @@ func NewPaned(orientation Orientation) Paned {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkPaned
-	var goret Paned
 
 	cret = C.gtk_paned_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Paned)
+	var paned Paned
 
-	return goret
+	paned = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Paned)
+
+	return paned
 }
 
 // Add1 adds a child to the top or left pane with default parameters. This
@@ -168,13 +169,14 @@ func (p paned) Child1() Widget {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_paned_get_child1(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Child2 obtains the second child of the paned widget.
@@ -184,13 +186,14 @@ func (p paned) Child2() Widget {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_paned_get_child2(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // HandleWindow returns the Window of the handle. This function is useful
@@ -202,13 +205,14 @@ func (p paned) HandleWindow() gdk.Window {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GdkWindow
-	var goret gdk.Window
 
 	cret = C.gtk_paned_get_handle_window(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	var window gdk.Window
 
-	return goret
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return window
 }
 
 // Position obtains the position of the divider between the two panes.
@@ -218,13 +222,14 @@ func (p paned) Position() int {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_paned_get_position(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // WideHandle gets the Paned:wide-handle property.
@@ -234,15 +239,16 @@ func (p paned) WideHandle() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_paned_get_wide_handle(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Pack1 adds a child to the top or left pane.

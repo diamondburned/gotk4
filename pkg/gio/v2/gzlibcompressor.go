@@ -80,14 +80,15 @@ func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
 	arg1 = (C.GZlibCompressorFormat)(format)
 	arg2 = C.int(level)
 
-	cret := new(C.GZlibCompressor)
-	var goret ZlibCompressor
+	var cret C.GZlibCompressor
 
 	cret = C.g_zlib_compressor_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibCompressor)
+	var zlibCompressor ZlibCompressor
 
-	return goret
+	zlibCompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibCompressor)
+
+	return zlibCompressor
 }
 
 // FileInfo returns the Compressor:file-info property.
@@ -97,13 +98,14 @@ func (c zlibCompressor) FileInfo() FileInfo {
 	arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GFileInfo
-	var goret FileInfo
 
 	cret = C.g_zlib_compressor_get_file_info(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
+	var fileInfo FileInfo
 
-	return goret
+	fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
+
+	return fileInfo
 }
 
 // SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's

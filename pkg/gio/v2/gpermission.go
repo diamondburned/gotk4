@@ -165,9 +165,10 @@ func (p permission) Acquire(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_permission_acquire(arg0, arg1, &cerr)
+	C.g_permission_acquire(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -184,7 +185,7 @@ func (p permission) AcquireAsync() {
 
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
-	C.g_permission_acquire_async(arg0, arg1, arg2, arg3)
+	C.g_permission_acquire_async(arg0)
 }
 
 // AcquireFinish collects the result of attempting to acquire the permission
@@ -200,9 +201,10 @@ func (p permission) AcquireFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_permission_acquire_finish(arg0, arg1, &cerr)
+	C.g_permission_acquire_finish(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -218,15 +220,16 @@ func (p permission) Allowed() bool {
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_permission_get_allowed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CanAcquire gets the value of the 'can-acquire' property. This property is
@@ -238,15 +241,16 @@ func (p permission) CanAcquire() bool {
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_permission_get_can_acquire(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CanRelease gets the value of the 'can-release' property. This property is
@@ -258,15 +262,16 @@ func (p permission) CanRelease() bool {
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_permission_get_can_release(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ImplUpdate: this function is called by the #GPermission implementation to
@@ -317,9 +322,10 @@ func (p permission) Release(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_permission_release(arg0, arg1, &cerr)
+	C.g_permission_release(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -336,7 +342,7 @@ func (p permission) ReleaseAsync() {
 
 	arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
-	C.g_permission_release_async(arg0, arg1, arg2, arg3)
+	C.g_permission_release_async(arg0)
 }
 
 // ReleaseFinish collects the result of attempting to release the permission
@@ -352,9 +358,10 @@ func (p permission) ReleaseFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_permission_release_finish(arg0, arg1, &cerr)
+	C.g_permission_release_finish(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 

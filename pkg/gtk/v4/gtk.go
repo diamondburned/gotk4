@@ -118,7 +118,6 @@ func init() {
 		{T: externglib.Type(C.gtk_input_hints_get_type()), F: marshalInputHints},
 		{T: externglib.Type(C.gtk_pick_flags_get_type()), F: marshalPickFlags},
 		{T: externglib.Type(C.gtk_popover_menu_flags_get_type()), F: marshalPopoverMenuFlags},
-		{T: externglib.Type(C.gtk_print_capabilities_get_type()), F: marshalPrintCapabilities},
 		{T: externglib.Type(C.gtk_shortcut_action_flags_get_type()), F: marshalShortcutActionFlags},
 		{T: externglib.Type(C.gtk_state_flags_get_type()), F: marshalStateFlags},
 		{T: externglib.Type(C.gtk_style_context_print_flags_get_type()), F: marshalStyleContextPrintFlags},
@@ -174,15 +173,11 @@ func init() {
 		{T: externglib.Type(C.gtk_notebook_page_get_type()), F: marshalNotebookPage},
 		{T: externglib.Type(C.gtk_overlay_get_type()), F: marshalOverlay},
 		{T: externglib.Type(C.gtk_page_setup_get_type()), F: marshalPageSetup},
-		{T: externglib.Type(C.gtk_page_setup_unix_dialog_get_type()), F: marshalPageSetupUnixDialog},
 		{T: externglib.Type(C.gtk_paned_get_type()), F: marshalPaned},
 		{T: externglib.Type(C.gtk_popover_menu_get_type()), F: marshalPopoverMenu},
 		{T: externglib.Type(C.gtk_popover_menu_bar_get_type()), F: marshalPopoverMenuBar},
 		{T: externglib.Type(C.gtk_print_context_get_type()), F: marshalPrintContext},
-		{T: externglib.Type(C.gtk_print_job_get_type()), F: marshalPrintJob},
 		{T: externglib.Type(C.gtk_print_settings_get_type()), F: marshalPrintSettings},
-		{T: externglib.Type(C.gtk_print_unix_dialog_get_type()), F: marshalPrintUnixDialog},
-		{T: externglib.Type(C.gtk_printer_get_type()), F: marshalPrinter},
 		{T: externglib.Type(C.gtk_progress_bar_get_type()), F: marshalProgressBar},
 		{T: externglib.Type(C.gtk_revealer_get_type()), F: marshalRevealer},
 		{T: externglib.Type(C.gtk_scrollbar_get_type()), F: marshalScrollbar},
@@ -261,7 +256,7 @@ func marshalAccessibleInvalidState(p uintptr) (interface{}, error) {
 	return AccessibleInvalidState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleProperty: the possible accessible properties of a `GtkAccessible`.
+// AccessibleProperty: the possible accessible properties of a Accessible.
 type AccessibleProperty int
 
 const (
@@ -337,8 +332,7 @@ func marshalAccessibleProperty(p uintptr) (interface{}, error) {
 	return AccessibleProperty(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleRelation: the possible accessible relations of a `GtkAccessible`.
-//
+// AccessibleRelation: the possible accessible relations of a Accessible.
 // Accessible relations can be references to other widgets, integers or strings.
 type AccessibleRelation int
 
@@ -412,7 +406,7 @@ func marshalAccessibleRelation(p uintptr) (interface{}, error) {
 	return AccessibleRelation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleRole: the accessible role for a `GtkAccessible` implementation.
+// AccessibleRole: the accessible role for a Accessible implementation.
 //
 // Abstract roles are only used as part of the ontology; application developers
 // must not use abstract roles in their code.
@@ -627,7 +621,7 @@ func marshalAccessibleSort(p uintptr) (interface{}, error) {
 	return AccessibleSort(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AccessibleState: the possible accessible states of a `GtkAccessible`.
+// AccessibleState: the possible accessible states of a Accessible.
 type AccessibleState int
 
 const (
@@ -683,14 +677,14 @@ func marshalAccessibleTristate(p uintptr) (interface{}, error) {
 	return AccessibleTristate(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Align controls how a widget deals with extra space in a single dimension.
+// Align controls how a widget deals with extra space in a single (x or y)
+// dimension.
 //
 // Alignment only matters if the widget receives a “too large” allocation, for
-// example if you packed the widget with the [property@Gtk.Widget:hexpand]
-// property inside a `GtkBox`, then the widget might get extra space. If you
-// have for example a 16x16 icon inside a 32x32 space, the icon could be scaled
-// and stretched, it could be centered, or it could be positioned to one side of
-// the space.
+// example if you packed the widget with the Widget:hexpand property inside a
+// Box, then the widget might get extra space. If you have for example a 16x16
+// icon inside a 32x32 space, the icon could be scaled and stretched, it could
+// be centered, or it could be positioned to one side of the space.
 //
 // Note that in horizontal context GTK_ALIGN_START and GTK_ALIGN_END are
 // interpreted relative to text direction.
@@ -738,9 +732,8 @@ func marshalArrowType(p uintptr) (interface{}, error) {
 	return ArrowType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AssistantPageType determines the page role inside a `GtkAssistant`.
-//
-// The role is used to handle buttons sensitivity and visibility.
+// AssistantPageType: an enum for determining the page role inside the
+// Assistant. It's used to handle buttons sensitivity and visibility.
 //
 // Note that an assistant needs to end its page flow with a page of type
 // GTK_ASSISTANT_PAGE_CONFIRM, GTK_ASSISTANT_PAGE_SUMMARY or
@@ -778,12 +771,10 @@ func marshalAssistantPageType(p uintptr) (interface{}, error) {
 	return AssistantPageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// BaselinePosition: baseline position in a row of widgets.
-//
-// Whenever a container has some form of natural row it may align children in
-// that row along a common typographical baseline. If the amount of vertical
-// space in the row is taller than the total requested height of the
-// baseline-aligned children then it can use a `GtkBaselinePosition` to select
+// BaselinePosition: whenever a container has some form of natural row it may
+// align children in that row along a common typographical baseline. If the
+// amount of vertical space in the row is taller than the total requested height
+// of the baseline-aligned children then it can use a BaselinePosition to select
 // where to put the baseline inside the extra available space.
 type BaselinePosition int
 
@@ -884,10 +875,9 @@ func marshalBuilderError(p uintptr) (interface{}, error) {
 	return BuilderError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ButtonsType: prebuilt sets of buttons for `GtkDialog`.
-//
-// If none of these choices are appropriate, simply use GTK_BUTTONS_NONE and
-// call [method@Gtk.Dialog.add_buttons].
+// ButtonsType: prebuilt sets of buttons for the dialog. If none of these
+// choices are appropriate, simply use GTK_BUTTONS_NONE then call
+// gtk_dialog_add_buttons().
 //
 // > Please note that GTK_BUTTONS_OK, GTK_BUTTONS_YES_NO > and
 // GTK_BUTTONS_OK_CANCEL are discouraged by the > GNOME Human Interface
@@ -950,7 +940,7 @@ func marshalCellRendererMode(p uintptr) (interface{}, error) {
 }
 
 // ConstraintAttribute: the widget attributes that can be used when creating a
-// `GtkConstraint`.
+// Constraint.
 type ConstraintAttribute int
 
 const (
@@ -1053,9 +1043,8 @@ func marshalConstraintVflParserError(p uintptr) (interface{}, error) {
 }
 
 // CornerType specifies which corner a child widget should be placed in when
-// packed into a `GtkScrolledWindow.`
-//
-// This is effectively the opposite of where the scroll bars are placed.
+// packed into a ScrolledWindow. This is effectively the opposite of where the
+// scroll bars are placed.
 type CornerType int
 
 const (
@@ -1077,7 +1066,7 @@ func marshalCornerType(p uintptr) (interface{}, error) {
 	return CornerType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// DeleteType: passed to various keybinding signals for deleting text.
+// DeleteType: see also: Entry::delete-from-cursor.
 type DeleteType int
 
 const (
@@ -1164,8 +1153,7 @@ func marshalEntryIconPosition(p uintptr) (interface{}, error) {
 	return EntryIconPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EventSequenceState describes the state of a `GdkEventSequence` in a
-// `GtkGesture`.
+// EventSequenceState describes the state of a EventSequence in a Gesture.
 type EventSequenceState int
 
 const (
@@ -1181,7 +1169,7 @@ func marshalEventSequenceState(p uintptr) (interface{}, error) {
 	return EventSequenceState(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FileChooserAction describes whether a `GtkFileChooser` is being used to open
+// FileChooserAction describes whether a FileChooser is being used to open
 // existing files or to save to a possibly new file.
 type FileChooserAction int
 
@@ -1202,7 +1190,7 @@ func marshalFileChooserAction(p uintptr) (interface{}, error) {
 }
 
 // FileChooserError: these identify the various errors that can occur while
-// calling `GtkFileChooser` functions.
+// calling FileChooser functions.
 type FileChooserError int
 
 const (
@@ -1275,9 +1263,9 @@ func marshalFilterMatch(p uintptr) (interface{}, error) {
 // Icon sizes default to being inherited. Where they cannot be inherited, text
 // size is the default.
 //
-// All widgets which use `GtkIconSize` set the normal-icons or large-icons style
+// All widgets which use GtkIconSize set the normal-icons or large-icons style
 // classes correspondingly, and let themes determine the actual size to be used
-// with the `-gtk-icon-size` CSS property.
+// with the -gtk-icon-size CSS property.
 type IconSize int
 
 const (
@@ -1293,7 +1281,7 @@ func marshalIconSize(p uintptr) (interface{}, error) {
 	return IconSize(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// IconThemeError: error codes for `GtkIconTheme` operations.
+// IconThemeError: error codes for GtkIconTheme operations.
 type IconThemeError int
 
 const (
@@ -1329,16 +1317,12 @@ func marshalIconViewDropPosition(p uintptr) (interface{}, error) {
 	return IconViewDropPosition(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ImageType describes the image data representation used by a
-// [class@Gtk.Image].
-//
-// If you want to get the image from the widget, you can only get the
-// currently-stored representation; for instance, if the
-// gtk_image_get_storage_type() returns GTK_IMAGE_PAINTABLE, then you can call
-// gtk_image_get_paintable().
-//
-// For empty images, you can request any storage type (call any of the "get"
-// functions), but they will all return nil values.
+// ImageType describes the image data representation used by a Image. If you
+// want to get the image from the widget, you can only get the currently-stored
+// representation. e.g. if the gtk_image_get_storage_type() returns
+// K_IMAGE_PAINTABLE, then you can call gtk_image_get_paintable(). For empty
+// images, you can request any storage type (call any of the "get" functions),
+// but they will all return nil values.
 type ImageType int
 
 const (
@@ -1356,10 +1340,9 @@ func marshalImageType(p uintptr) (interface{}, error) {
 	return ImageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// InputPurpose describes primary purpose of the input widget.
-//
-// This information is useful for on-screen keyboards and similar input methods
-// to decide which keys should be presented to the user.
+// InputPurpose describes primary purpose of the input widget. This information
+// is useful for on-screen keyboards and similar input methods to decide which
+// keys should be presented to the user.
 //
 // Note that the purpose is not meant to impose a totally strict rule about
 // allowed characters, and does not replace input validation. It is fine for an
@@ -1405,7 +1388,7 @@ func marshalInputPurpose(p uintptr) (interface{}, error) {
 	return InputPurpose(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Justification: used for justifying the text inside a `GtkLabel` widget.
+// Justification: used for justifying the text inside a Label widget.
 type Justification int
 
 const (
@@ -1423,10 +1406,8 @@ func marshalJustification(p uintptr) (interface{}, error) {
 	return Justification(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// LevelBarMode describes how `GtkLevelBar` contents should be rendered.
-//
-// Note that this enumeration could be extended with additional modes in the
-// future.
+// LevelBarMode describes how LevelBar contents should be rendered. Note that
+// this enumeration could be extended with additional modes in the future.
 type LevelBarMode int
 
 const (
@@ -1494,7 +1475,7 @@ func marshalLicense(p uintptr) (interface{}, error) {
 	return License(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MessageType: the type of message being displayed in a `GtkMessageDialog`.
+// MessageType: the type of message being displayed in the dialog.
 type MessageType int
 
 const (
@@ -1514,8 +1495,6 @@ func marshalMessageType(p uintptr) (interface{}, error) {
 	return MessageType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// MovementStep: passed as argument to various keybinding signals for moving the
-// cursor position.
 type MovementStep int
 
 const (
@@ -1545,7 +1524,7 @@ func marshalMovementStep(p uintptr) (interface{}, error) {
 	return MovementStep(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// NotebookTab: the parameter used in the action signals of `GtkNotebook`.
+// NotebookTab: the parameter used in the action signals of Notebook.
 type NotebookTab int
 
 const (
@@ -1588,9 +1567,9 @@ func marshalNumberUpLayout(p uintptr) (interface{}, error) {
 
 // Ordering describes the way two values can be compared.
 //
-// These values can be used with a `GCompareFunc`. However, a `GCompareFunc` is
-// allowed to return any integer values. For converting such a value to a
-// `GtkOrdering` value, use [func@Gtk.Ordering.from_cmpfunc].
+// These values can be used with a Func. However, a Func is allowed to return
+// any integer values. For converting such a value to a Ordering, use
+// gtk_ordering_from_cmpfunc().
 type Ordering int
 
 const (
@@ -1606,9 +1585,9 @@ func marshalOrdering(p uintptr) (interface{}, error) {
 	return Ordering(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Orientation represents the orientation of widgets and other objects.
-//
-// Typical examples are `GtkBox or `GtkGesturePan`.
+// Orientation represents the orientation of widgets and other objects which can
+// be switched between horizontal and vertical orientation on the fly, like Box
+// or GesturePan.
 type Orientation int
 
 const (
@@ -1622,11 +1601,9 @@ func marshalOrientation(p uintptr) (interface{}, error) {
 	return Orientation(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// Overflow defines how content overflowing a given area should be handled.
-//
-// This is used in [method@Gtk.Widget.set_overflow]. The
-// [property@Gtk.Widget:overflow] property is modeled after the CSS overflow
-// property, but implements it only partially.
+// Overflow defines how content overflowing a given area should be handled, such
+// as with gtk_widget_set_overflow(). This property is modeled after the CSS
+// overflow property, but implements it only partially.
 type Overflow int
 
 const (
@@ -1642,9 +1619,8 @@ func marshalOverflow(p uintptr) (interface{}, error) {
 	return Overflow(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PackType represents the packing location of a children in its parent.
-//
-// See `GtkWindowControls` for example.
+// PackType represents the packing location of a children in its parent. See
+// WindowControls for example.
 type PackType int
 
 const (
@@ -1708,7 +1684,7 @@ func marshalPageSet(p uintptr) (interface{}, error) {
 	return PageSet(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PanDirection describes the panning direction of a `GtkGesturePan`
+// PanDirection describes the panning direction of a GesturePan
 type PanDirection int
 
 const (
@@ -1735,7 +1711,7 @@ const (
 	// independent of the content.
 	PolicyTypeAlways PolicyType = 0
 	// PolicyTypeAutomatic: the scrollbar will appear and disappear as
-	// necessary. For example, when all of a `GtkTreeView` can not be seen.
+	// necessary. For example, when all of a TreeView can not be seen.
 	PolicyTypeAutomatic PolicyType = 1
 	// PolicyTypeNever: the scrollbar should never appear. In this mode the
 	// content determines the size.
@@ -1751,9 +1727,7 @@ func marshalPolicyType(p uintptr) (interface{}, error) {
 }
 
 // PositionType describes which edge of a widget a certain feature is positioned
-// at.
-//
-// For examples, see the tabs of a `GtkNotebook`, or the label of a `GtkScale`.
+// at, e.g. the tabs of a Notebook, or the label of a Scale.
 type PositionType int
 
 const (
@@ -1807,10 +1781,8 @@ func marshalPrintError(p uintptr) (interface{}, error) {
 	return PrintError(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PrintOperationAction determines what action the print operation should
-// perform.
-//
-// A parameter of this typs is passed to [method@Gtk.PrintOperation.run].
+// PrintOperationAction: the @action parameter to gtk_print_operation_run()
+// determines what action the print operation should perform.
 type PrintOperationAction int
 
 const (
@@ -1830,9 +1802,8 @@ func marshalPrintOperationAction(p uintptr) (interface{}, error) {
 	return PrintOperationAction(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PrintOperationResult: the result of a print operation.
-//
-// A value of this type is returned by [method@Gtk.PrintOperation.run].
+// PrintOperationResult: a value of this type is returned by
+// gtk_print_operation_run().
 type PrintOperationResult int
 
 const (
@@ -1922,8 +1893,8 @@ func marshalPrintStatus(p uintptr) (interface{}, error) {
 	return PrintStatus(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PropagationLimit describes limits of a `GtkEventController` for handling
-// events targeting other widgets.
+// PropagationLimit describes limits of a EventController for handling events
+// targeting other widgets.
 type PropagationLimit int
 
 const (
@@ -1941,7 +1912,7 @@ func marshalPropagationLimit(p uintptr) (interface{}, error) {
 }
 
 // PropagationPhase describes the stage at which events are fed into a
-// `GtkEventController`.
+// EventController.
 type PropagationPhase int
 
 const (
@@ -1998,10 +1969,8 @@ func marshalRecentManagerError(p uintptr) (interface{}, error) {
 }
 
 // ResponseType: predefined values for use as response ids in
-// gtk_dialog_add_button().
-//
-// All predefined values are negative; GTK leaves values of 0 or greater for
-// application-defined response ids.
+// gtk_dialog_add_button(). All predefined values are negative; GTK leaves
+// values of 0 or greater for application-defined response ids.
 type ResponseType int
 
 const (
@@ -2035,7 +2004,7 @@ func marshalResponseType(p uintptr) (interface{}, error) {
 }
 
 // RevealerTransitionType: these enumeration values describe the possible
-// transitions when the child of a `GtkRevealer` widget is shown or hidden.
+// transitions when the child of a Revealer widget is shown or hidden.
 type RevealerTransitionType int
 
 const (
@@ -2065,7 +2034,6 @@ func marshalRevealerTransitionType(p uintptr) (interface{}, error) {
 	return RevealerTransitionType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ScrollStep: passed as argument to various keybinding signals.
 type ScrollStep int
 
 const (
@@ -2189,8 +2157,8 @@ func marshalSensitivityType(p uintptr) (interface{}, error) {
 	return SensitivityType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// ShortcutScope describes where `GtkShortcut`s added to a
-// `GtkShortcutController` get handled.
+// ShortcutScope describes where Shortcuts added to a ShortcutController get
+// handled.
 type ShortcutScope int
 
 const (
@@ -2209,40 +2177,38 @@ func marshalShortcutScope(p uintptr) (interface{}, error) {
 }
 
 // ShortcutType: gtkShortcutType specifies the kind of shortcut that is being
-// described.
-//
-// More values may be added to this enumeration over time.
+// described. More values may be added to this enumeration over time.
 type ShortcutType int
 
 const (
 	// ShortcutTypeAccelerator: the shortcut is a keyboard accelerator. The
-	// GtkShortcutsShortcut:accelerator property will be used.
+	// ShortcutsShortcut:accelerator property will be used.
 	ShortcutTypeAccelerator ShortcutType = 0
-	// ShortcutTypeGesturePinch: the shortcut is a pinch gesture. GTK provides
+	// ShortcutTypeGesturePinch: the shortcut is a pinch gesture. GTK+ provides
 	// an icon and subtitle.
 	ShortcutTypeGesturePinch ShortcutType = 1
-	// ShortcutTypeGestureStretch: the shortcut is a stretch gesture. GTK
+	// ShortcutTypeGestureStretch: the shortcut is a stretch gesture. GTK+
 	// provides an icon and subtitle.
 	ShortcutTypeGestureStretch ShortcutType = 2
 	// ShortcutTypeGestureRotateClockwise: the shortcut is a clockwise rotation
-	// gesture. GTK provides an icon and subtitle.
+	// gesture. GTK+ provides an icon and subtitle.
 	ShortcutTypeGestureRotateClockwise ShortcutType = 3
 	// ShortcutTypeGestureRotateCounterclockwise: the shortcut is a
-	// counterclockwise rotation gesture. GTK provides an icon and subtitle.
+	// counterclockwise rotation gesture. GTK+ provides an icon and subtitle.
 	ShortcutTypeGestureRotateCounterclockwise ShortcutType = 4
 	// ShortcutTypeGestureTwoFingerSwipeLeft: the shortcut is a two-finger swipe
-	// gesture. GTK provides an icon and subtitle.
+	// gesture. GTK+ provides an icon and subtitle.
 	ShortcutTypeGestureTwoFingerSwipeLeft ShortcutType = 5
 	// ShortcutTypeGestureTwoFingerSwipeRight: the shortcut is a two-finger
-	// swipe gesture. GTK provides an icon and subtitle.
+	// swipe gesture. GTK+ provides an icon and subtitle.
 	ShortcutTypeGestureTwoFingerSwipeRight ShortcutType = 6
 	// ShortcutTypeGesture: the shortcut is a gesture. The
-	// GtkShortcutsShortcut:icon property will be used.
+	// ShortcutsShortcut:icon property will be used.
 	ShortcutTypeGesture ShortcutType = 7
-	// ShortcutTypeGestureSwipeLeft: the shortcut is a swipe gesture. GTK
+	// ShortcutTypeGestureSwipeLeft: the shortcut is a swipe gesture. GTK+
 	// provides an icon and subtitle.
 	ShortcutTypeGestureSwipeLeft ShortcutType = 8
-	// ShortcutTypeGestureSwipeRight: the shortcut is a swipe gesture. GTK
+	// ShortcutTypeGestureSwipeRight: the shortcut is a swipe gesture. GTK+
 	// provides an icon and subtitle.
 	ShortcutTypeGestureSwipeRight ShortcutType = 9
 )
@@ -2328,7 +2294,7 @@ func marshalSorterChange(p uintptr) (interface{}, error) {
 	return SorterChange(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SorterOrder describes the type of order that a `GtkSorter` may produce.
+// SorterOrder describes the type of order that a Sorter may describe.
 type SorterOrder int
 
 const (
@@ -2347,10 +2313,9 @@ func marshalSorterOrder(p uintptr) (interface{}, error) {
 	return SorterOrder(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// SpinButtonUpdatePolicy determines whether the spin button displays values
-// outside the adjustment bounds.
-//
-// See [method@Gtk.SpinButton.set_update_policy].
+// SpinButtonUpdatePolicy: the spin button update policy determines whether the
+// spin button displays values even if they are outside the bounds of its
+// adjustment. See gtk_spin_button_set_update_policy().
 type SpinButtonUpdatePolicy int
 
 const (
@@ -2392,8 +2357,8 @@ func marshalSpinType(p uintptr) (interface{}, error) {
 	return SpinType(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StackTransitionType: possible transitions between pages in a `GtkStack`
-// widget.
+// StackTransitionType: these enumeration values describe the possible
+// transitions between pages in a Stack widget.
 //
 // New values may be added to this enumeration over time.
 type StackTransitionType int
@@ -2480,12 +2445,10 @@ func marshalStringFilterMatchMode(p uintptr) (interface{}, error) {
 }
 
 // SystemSetting values that can be passed to the
-// GtkWidgetClass.system_setting_changed vfunc.
+// GtkWidgetClass.system_setting_changed vfunc to indicate that a system setting
+// has changed and widgets may need to drop caches, or react otherwise.
 //
-// The values indicate which system setting has changed. Widgets may need to
-// drop caches, or react otherwise.
-//
-// Most of the values correspond to `GtkSettings` properties.
+// Most of the values correspond to Settings properties.
 //
 // More values may be added over time.
 type SystemSetting int
@@ -2681,9 +2644,7 @@ func marshalWrapMode(p uintptr) (interface{}, error) {
 }
 
 // ApplicationInhibitFlags types of user actions that may be blocked by
-// `GtkApplication`.
-//
-// See [method@Gtk.Application.inhibit].
+// gtk_application_inhibit().
 type ApplicationInhibitFlags int
 
 const (
@@ -2705,12 +2666,10 @@ func marshalApplicationInhibitFlags(p uintptr) (interface{}, error) {
 }
 
 // BuilderClosureFlags: the list of flags that can be passed to
-// gtk_builder_create_closure().
-//
-// New values may be added in the future for new features, so external
-// implementations of [interface@Gtk.BuilderScope] should test the flags for
-// unknown values and raise a GTK_BUILDER_ERROR_INVALID_ATTRIBUTE error when
-// they encounter one.
+// gtk_builder_create_closure(). New values may be added in the future for new
+// features, so external implementations of GtkBuilderScopeInterface should test
+// the flags for unknown values and raise a GTK_BUILDER_ERROR_INVALID_ATTRIBUTE
+// error when they encounter one.
 type BuilderClosureFlags int
 
 const (
@@ -2769,7 +2728,6 @@ const (
 	DebugFlagsConstraints    DebugFlags = 32768
 	DebugFlagsBuilderObjects DebugFlags = 65536
 	DebugFlagsA11Y           DebugFlags = 131072
-	DebugFlagsIconfallback   DebugFlags = 262144
 )
 
 func marshalDebugFlags(p uintptr) (interface{}, error) {
@@ -2780,10 +2738,11 @@ func marshalDebugFlags(p uintptr) (interface{}, error) {
 type DialogFlags int
 
 const (
-	// DialogFlagsModal: make the constructed dialog modal
+	// DialogFlagsModal: make the constructed dialog modal, see
+	// gtk_window_set_modal()
 	DialogFlagsModal DialogFlags = 1
 	// DialogFlagsDestroyWithParent: destroy the dialog when its parent is
-	// destroyed
+	// destroyed, see gtk_window_set_destroy_with_parent()
 	DialogFlagsDestroyWithParent DialogFlags = 2
 	// DialogFlagsUseHeaderBar: create dialog with actions in header bar instead
 	// of action area
@@ -2794,8 +2753,7 @@ func marshalDialogFlags(p uintptr) (interface{}, error) {
 	return DialogFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// EventControllerScrollFlags describes the behavior of a
-// `GtkEventControllerScroll`.
+// EventControllerScrollFlags describes the behavior of a EventControllerScroll.
 type EventControllerScrollFlags int
 
 const (
@@ -2808,8 +2766,8 @@ const (
 	// EventControllerScrollFlagsDiscrete: only emit deltas that are multiples
 	// of 1.
 	EventControllerScrollFlagsDiscrete EventControllerScrollFlags = 4
-	// EventControllerScrollFlagsKinetic: emit ::decelerate after continuous
-	// scroll finishes.
+	// EventControllerScrollFlagsKinetic: emit EventControllerScroll::decelerate
+	// after continuous scroll finishes.
 	EventControllerScrollFlagsKinetic EventControllerScrollFlags = 8
 	// EventControllerScrollFlagsBothAxes: emit scroll on both axes.
 	EventControllerScrollFlagsBothAxes EventControllerScrollFlags = 3
@@ -2819,8 +2777,8 @@ func marshalEventControllerScrollFlags(p uintptr) (interface{}, error) {
 	return EventControllerScrollFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// FontChooserLevel specifies the granularity of font selection that is desired
-// in a `GtkFontChooser`.
+// FontChooserLevel: this enumeration specifies the granularity of font
+// selection that is desired in a font chooser.
 //
 // This enumeration may be extended in the future; applications should ignore
 // unknown values.
@@ -2843,7 +2801,7 @@ func marshalFontChooserLevel(p uintptr) (interface{}, error) {
 	return FontChooserLevel(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon().
+// IconLookupFlags: used to specify options for gtk_icon_theme_lookup_icon()
 type IconLookupFlags int
 
 const (
@@ -2863,10 +2821,8 @@ func marshalIconLookupFlags(p uintptr) (interface{}, error) {
 }
 
 // InputHints describes hints that might be taken into account by input methods
-// or applications.
-//
-// Note that input methods may already tailor their behaviour according to the
-// `GtkInputPurpose` of the entry.
+// or applications. Note that input methods may already tailor their behaviour
+// according to the InputPurpose of the entry.
 //
 // Some common sense is expected when using these flags - mixing
 // GTK_INPUT_HINT_LOWERCASE with any of the uppercase hints makes no sense.
@@ -2912,7 +2868,7 @@ func marshalInputHints(p uintptr) (interface{}, error) {
 	return InputHints(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PickFlags flags that influence the behavior of gtk_widget_pick().
+// PickFlags flags that influence the behavior of gtk_widget_pick()
 type PickFlags int
 
 const (
@@ -2944,50 +2900,7 @@ func marshalPopoverMenuFlags(p uintptr) (interface{}, error) {
 	return PopoverMenuFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// PrintCapabilities specifies which features the print dialog should offer.
-//
-// If neither GTK_PRINT_CAPABILITY_GENERATE_PDF nor
-// GTK_PRINT_CAPABILITY_GENERATE_PS is specified, GTK assumes that all formats
-// are supported.
-type PrintCapabilities int
-
-const (
-	// PrintCapabilitiesPageSet: print dialog will offer printing even/odd
-	// pages.
-	PrintCapabilitiesPageSet PrintCapabilities = 1
-	// PrintCapabilitiesCopies: print dialog will allow to print multiple
-	// copies.
-	PrintCapabilitiesCopies PrintCapabilities = 2
-	// PrintCapabilitiesCollate: print dialog will allow to collate multiple
-	// copies.
-	PrintCapabilitiesCollate PrintCapabilities = 4
-	// PrintCapabilitiesReverse: print dialog will allow to print pages in
-	// reverse order.
-	PrintCapabilitiesReverse PrintCapabilities = 8
-	// PrintCapabilitiesScale: print dialog will allow to scale the output.
-	PrintCapabilitiesScale PrintCapabilities = 16
-	// PrintCapabilitiesGeneratePDF: the program will send the document to the
-	// printer in PDF format
-	PrintCapabilitiesGeneratePDF PrintCapabilities = 32
-	// PrintCapabilitiesGeneratePS: the program will send the document to the
-	// printer in Postscript format
-	PrintCapabilitiesGeneratePS PrintCapabilities = 64
-	// PrintCapabilitiesPreview: print dialog will offer a preview
-	PrintCapabilitiesPreview PrintCapabilities = 128
-	// PrintCapabilitiesNumberUp: print dialog will offer printing multiple
-	// pages per sheet
-	PrintCapabilitiesNumberUp PrintCapabilities = 256
-	// PrintCapabilitiesNumberUpLayout: print dialog will allow to rearrange
-	// pages when printing multiple pages per sheet
-	PrintCapabilitiesNumberUpLayout PrintCapabilities = 512
-)
-
-func marshalPrintCapabilities(p uintptr) (interface{}, error) {
-	return PrintCapabilities(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
-}
-
 // ShortcutActionFlags: list of flags that can be passed to action activation.
-//
 // More flags may be added in the future.
 type ShortcutActionFlags int
 
@@ -3002,10 +2915,9 @@ func marshalShortcutActionFlags(p uintptr) (interface{}, error) {
 	return ShortcutActionFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// StateFlags describes a widget state.
-//
-// Widget states are used to match the widget against CSS pseudo-classes. Note
-// that GTK extends the regular CSS classes and sometimes uses different names.
+// StateFlags describes a widget state. Widget states are used to match the
+// widget against CSS pseudo-classes. Note that GTK extends the regular CSS
+// classes and sometimes uses different names.
 type StateFlags int
 
 const (
@@ -3049,9 +2961,7 @@ func marshalStateFlags(p uintptr) (interface{}, error) {
 }
 
 // StyleContextPrintFlags flags that modify the behavior of
-// gtk_style_context_to_string().
-//
-// New values may be added to this enumeration.
+// gtk_style_context_to_string(). New values may be added to this enumeration.
 type StyleContextPrintFlags int
 
 const (
@@ -3074,7 +2984,7 @@ func marshalStyleContextPrintFlags(p uintptr) (interface{}, error) {
 
 // TextSearchFlags flags affecting how a search is done.
 //
-// If neither GTK_TEXT_SEARCH_VISIBLE_ONLY nor GTK_TEXT_SEARCH_TEXT_ONLY are
+// If neither K_TEXT_SEARCH_VISIBLE_ONLY nor K_TEXT_SEARCH_TEXT_ONLY are
 // enabled, the match must be exact; the special 0xFFFC character will match
 // embedded paintables or child widgets.
 type TextSearchFlags int
@@ -3114,31 +3024,29 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 	return TreeModelFlags(C.g_value_get_enum((*C.GValue)(unsafe.Pointer(p)))), nil
 }
 
-// AppChooser: `GtkAppChooser` is an interface for widgets which allow the user
-// to choose an application.
+// AppChooser is an interface that can be implemented by widgets which allow the
+// user to choose an application (typically for the purpose of opening a file).
+// The main objects that implement this interface are AppChooserWidget,
+// AppChooserDialog and AppChooserButton.
 //
-// The main objects that implement this interface are
-// [class@Gtk.AppChooserWidget], [class@Gtk.AppChooserDialog] and
-// [class@Gtk.AppChooserButton].
+// Applications are represented by GIO Info objects here. GIO has a concept of
+// recommended and fallback applications for a given content type. Recommended
+// applications are those that claim to handle the content type itself, while
+// fallback also includes applications that handle a more generic content type.
+// GIO also knows the default and last-used application for a given content
+// type. The AppChooserWidget provides detailed control over whether the shown
+// list of applications should include default, recommended or fallback
+// applications.
 //
-// Applications are represented by GIO `GAppInfo` objects here. GIO has a
-// concept of recommended and fallback applications for a given content type.
-// Recommended applications are those that claim to handle the content type
-// itself, while fallback also includes applications that handle a more generic
-// content type. GIO also knows the default and last-used application for a
-// given content type. The `GtkAppChooserWidget` provides detailed control over
-// whether the shown list of applications should include default, recommended or
-// fallback applications.
-//
-// To obtain the application that has been selected in a `GtkAppChooser`, use
-// [method@Gtk.AppChooser.get_app_info].
+// To obtain the application that has been selected in a AppChooser, use
+// gtk_app_chooser_get_app_info().
 type AppChooser interface {
 	Widget
 
 	// AppInfo returns the currently selected application.
 	AppInfo() gio.AppInfo
-	// ContentType returns the content type for which the `GtkAppChooser` shows
-	// applications.
+	// ContentType returns the current value of the AppChooser:content-type
+	// property.
 	ContentType() string
 	// Refresh reloads the list of applications.
 	Refresh()
@@ -3171,32 +3079,34 @@ func (s appChooser) AppInfo() gio.AppInfo {
 
 	arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GAppInfo)
-	var goret gio.AppInfo
+	var cret *C.GAppInfo
 
 	cret = C.gtk_app_chooser_get_app_info(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.AppInfo)
+	var appInfo gio.AppInfo
 
-	return goret
+	appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.AppInfo)
+
+	return appInfo
 }
 
-// ContentType returns the content type for which the `GtkAppChooser` shows
-// applications.
+// ContentType returns the current value of the AppChooser:content-type
+// property.
 func (s appChooser) ContentType() string {
 	var arg0 *C.GtkAppChooser
 
 	arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gtk_app_chooser_get_content_type(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Refresh reloads the list of applications.
@@ -3208,19 +3118,15 @@ func (s appChooser) Refresh() {
 	C.gtk_app_chooser_refresh(arg0)
 }
 
-// FileChooser: `GtkFileChooser` is an interface that can be implemented by file
-// selection widgets.
+// FileChooser is an interface that can be implemented by file selection
+// widgets. In GTK, the main objects that implement this interface are
+// FileChooserWidget and FileChooserDialog. You do not need to write an object
+// that implements the FileChooser interface unless you are trying to adapt an
+// existing file selector to expose a standard programming interface.
 //
-// In GTK, the main objects that implement this interface are
-// [class@Gtk.FileChooserWidget] and [class@Gtk.FileChooserDialog].
-//
-// You do not need to write an object that implements the `GtkFileChooser`
-// interface unless you are trying to adapt an existing file selector to expose
-// a standard programming interface.
-//
-// `GtkFileChooser` allows for shortcuts to various places in the filesystem. In
-// the default implementation these are displayed in the left pane. It may be a
-// bit confusing at first that these shortcuts come from various sources and in
+// FileChooser allows for shortcuts to various places in the filesystem. In the
+// default implementation these are displayed in the left pane. It may be a bit
+// confusing at first that these shortcuts come from various sources and in
 // various flavours, so lets explain the terminology here:
 //
 // - Bookmarks: are created by the user, by dragging folders from the right pane
@@ -3237,34 +3143,30 @@ func (s appChooser) Refresh() {
 //
 // File Names and Encodings
 //
-// When the user is finished selecting files in a `GtkFileChooser`, your program
-// can get the selected filenames as `GFile`s.
+// When the user is finished selecting files in a FileChooser, your program can
+// get the selected filenames as #GFiles.
 //
 //
 // Adding options
 //
 // You can add extra widgets to a file chooser to provide options that are not
-// present in the default design, by using [method@Gtk.FileChooser.add_choice].
-// Each choice has an identifier and a user visible label; additionally, each
-// choice can have multiple options. If a choice has no option, it will be
-// rendered as a check button with the given label; if a choice has options, it
-// will be rendered as a combo box.
+// present in the default design, by using gtk_file_chooser_add_choice(). Each
+// choice has an identifier and a user visible label; additionally, each choice
+// can have multiple options. If a choice has no option, it will be rendered as
+// a check button with the given label; if a choice has options, it will be
+// rendered as a combo box.
 type FileChooser interface {
 	gextras.Objector
 
-	// AddChoice adds a 'choice' to the file chooser.
-	//
-	// This is typically implemented as a combobox or, for boolean choices, as a
-	// checkbutton. You can select a value using
-	// [method@Gtk.FileChooser.set_choice] before the dialog is shown, and you
-	// can obtain the user-selected value in the [signal@Gtk.Dialog::response]
-	// signal handler using [method@Gtk.FileChooser.get_choice].
-	AddChoice(iD string, label string, options []string, optionLabels []string)
+	// AddChoice adds a 'choice' to the file chooser. This is typically
+	// implemented as a combobox or, for boolean choices, as a checkbutton. You
+	// can select a value using gtk_file_chooser_set_choice() before the dialog
+	// is shown, and you can obtain the user-selected value in the ::response
+	// signal handler using gtk_file_chooser_get_choice().
+	AddChoice(id string, label string, options []string, optionLabels []string)
 	// AddFilter adds @filter to the list of filters that the user can select
-	// between.
-	//
-	// When a filter is selected, only files that are passed by that filter are
-	// displayed.
+	// between. When a filter is selected, only files that are passed by that
+	// filter are displayed.
 	//
 	// Note that the @chooser takes ownership of the filter if it is floating,
 	// so you have to ref and sink it if you want to keep a reference.
@@ -3272,26 +3174,26 @@ type FileChooser interface {
 	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
 	// in a file chooser.
 	AddShortcutFolder(folder gio.File) error
-	// Action gets the type of operation that the file chooser is performing.
+	// Action gets the type of operation that the file chooser is performing;
+	// see gtk_file_chooser_set_action().
 	Action() FileChooserAction
 	// Choice gets the currently selected option in the 'choice' with the given
 	// ID.
-	Choice(iD string) string
+	Choice(id string) string
 	// CreateFolders gets whether file chooser will offer to create new folders.
+	// See gtk_file_chooser_set_create_folders().
 	CreateFolders() bool
 	// CurrentFolder gets the current folder of @chooser as #GFile.
 	CurrentFolder() gio.File
 	// CurrentName gets the current name in the file selector, as entered by the
-	// user.
+	// user in the text entry for “Name”.
 	//
 	// This is meant to be used in save dialogs, to get the currently typed
 	// filename when the file itself does not exist yet.
 	CurrentName() string
-	// File gets the `GFile` for the currently selected file in the file
-	// selector.
-	//
-	// If multiple files are selected, one of the files will be returned at
-	// random.
+	// File gets the #GFile for the currently selected file in the file
+	// selector. If multiple files are selected, one of the files will be
+	// returned at random.
 	//
 	// If the file chooser is in folder mode, this function returns the selected
 	// folder.
@@ -3299,74 +3201,64 @@ type FileChooser interface {
 	// Files lists all the selected files and subfolders in the current folder
 	// of @chooser as #GFile.
 	Files() gio.ListModel
-	// Filter gets the current filter.
+	// Filter gets the current filter; see gtk_file_chooser_set_filter().
 	Filter() FileFilter
-	// Filters gets the current set of user-selectable filters, as a list model.
-	//
-	// See [method@Gtk.FileChooser.add_filter] and
-	// [method@Gtk.FileChooser.remove_filter] for changing individual filters.
+	// Filters gets the current set of user-selectable filters, as a list model;
+	// see gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
 	//
 	// You should not modify the returned list model. Future changes to @chooser
 	// may or may not affect the returned model.
 	Filters() gio.ListModel
 	// SelectMultiple gets whether multiple files can be selected in the file
-	// chooser.
+	// selector. See gtk_file_chooser_set_select_multiple().
 	SelectMultiple() bool
-	// ShortcutFolders queries the list of shortcut folders in the file chooser.
+	// ShortcutFolders queries the list of shortcut folders in the file chooser,
+	// as set by gtk_file_chooser_add_shortcut_folder().
 	//
 	// You should not modify the returned list model. Future changes to @chooser
 	// may or may not affect the returned model.
 	ShortcutFolders() gio.ListModel
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
-	RemoveChoice(iD string)
+	RemoveChoice(id string)
 	// RemoveFilter removes @filter from the list of filters that the user can
 	// select between.
 	RemoveFilter(filter FileFilter)
 	// RemoveShortcutFolder removes a folder from the shortcut folders in a file
 	// chooser.
 	RemoveShortcutFolder(folder gio.File) error
-	// SetAction sets the type of operation that the chooser is performing.
-	//
-	// The user interface is adapted to suit the selected action.
-	//
-	// For example, an option to create a new folder might be shown if the
-	// action is GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+	// SetAction sets the type of operation that the chooser is performing; the
+	// user interface is adapted to suit the selected action. For example, an
+	// option to create a new folder might be shown if the action is
+	// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
 	// GTK_FILE_CHOOSER_ACTION_OPEN.
 	SetAction(action FileChooserAction)
 	// SetChoice selects an option in a 'choice' that has been added with
-	// gtk_file_chooser_add_choice().
-	//
-	// For a boolean choice, the possible options are "true" and "false".
-	SetChoice(iD string, option string)
+	// gtk_file_chooser_add_choice(). For a boolean choice, the possible options
+	// are "true" and "false".
+	SetChoice(id string, option string)
 	// SetCreateFolders sets whether file chooser will offer to create new
-	// folders.
-	//
-	// This is only relevant if the action is not set to be
+	// folders. This is only relevant if the action is not set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN.
 	SetCreateFolders(createFolders bool)
 	// SetCurrentFolder sets the current folder for @chooser from a #GFile.
 	SetCurrentFolder(file gio.File) error
 	// SetCurrentName sets the current name in the file selector, as if entered
-	// by the user.
-	//
-	// Note that the name passed in here is a UTF-8 string rather than a
-	// filename. This function is meant for such uses as a suggested name in a
-	// “Save As...” dialog. You can pass “Untitled.doc” or a similarly suitable
-	// suggestion for the @name.
+	// by the user. Note that the name passed in here is a UTF-8 string rather
+	// than a filename. This function is meant for such uses as a suggested name
+	// in a “Save As...” dialog. You can pass “Untitled.doc” or a similarly
+	// suitable suggestion for the @name.
 	//
 	// If you want to preselect a particular existing file, you should use
-	// [method@Gtk.FileChooser.set_file] instead.
+	// gtk_file_chooser_set_file() instead.
 	//
 	// Please see the documentation for those functions for an example of using
-	// [method@Gtk.FileChooser.set_current_name] as well.
+	// gtk_file_chooser_set_current_name() as well.
 	SetCurrentName(name string)
-	// SetFile sets @file as the current filename for the file chooser.
-	//
-	// This includes changing to the file’s parent folder and actually selecting
-	// the file in list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE
-	// mode, the file’s base name will also appear in the dialog’s file name
-	// entry.
+	// SetFile sets @file as the current filename for the file chooser, by
+	// changing to the file’s parent folder and actually selecting the file in
+	// list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE mode, the file’s
+	// base name will also appear in the dialog’s file name entry.
 	//
 	// If the file name isn’t in the current folder of @chooser, then the
 	// current folder of @chooser will be changed to the folder containing
@@ -3377,45 +3269,40 @@ type FileChooser interface {
 	//
 	// If you are implementing a save dialog, you should use this function if
 	// you already have a file name to which the user may save; for example,
-	// when the user opens an existing file and then does “Save As…”. If you
+	// when the user opens an existing file and then does Save As... If you
 	// don’t have a file name already — for example, if the user just created a
 	// new file and is saving it for the first time, do not call this function.
-	//
 	// Instead, use something similar to this:
 	//
-	// “`c static void prepare_file_chooser (GtkFileChooser *chooser, GFile
-	// *existing_file) { gboolean document_is_new = (existing_file == NULL);
+	//    static void
+	//    prepare_file_chooser (GtkFileChooser *chooser,
+	//                          GFile          *existing_file)
+	//    {
+	//      gboolean document_is_new = (existing_file == NULL);
 	//
-	//    if (document_is_new)
-	//      {
-	//        GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
-	//        // the user just created a new document
-	//        gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
-	//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
-	//        g_object_unref (default_file_for_saving);
-	//      }
-	//    else
-	//      {
-	//        // the user edited an existing document
-	//        gtk_file_chooser_set_file (chooser, existing_file, NULL);
-	//      }
-	//
-	// } “`
+	//      if (document_is_new)
+	//        {
+	//          GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
+	//          // the user just created a new document
+	//          gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
+	//          gtk_file_chooser_set_current_name (chooser, "Untitled document");
+	//          g_object_unref (default_file_for_saving);
+	//        }
+	//      else
+	//        {
+	//          // the user edited an existing document
+	//          gtk_file_chooser_set_file (chooser, existing_file, NULL);
+	//        }
+	//    }
 	SetFile(file gio.File) error
-	// SetFilter sets the current filter.
-	//
-	// Only the files that pass the filter will be displayed. If the
-	// user-selectable list of filters is non-empty, then the filter should be
-	// one of the filters in that list.
-	//
-	// Setting the current filter when the list of filters is empty is useful if
-	// you want to restrict the displayed set of files without letting the user
-	// change it.
+	// SetFilter sets the current filter; only the files that pass the filter
+	// will be displayed. If the user-selectable list of filters is non-empty,
+	// then the filter should be one of the filters in that list. Setting the
+	// current filter when the list of filters is empty is useful if you want to
+	// restrict the displayed set of files without letting the user change it.
 	SetFilter(filter FileFilter)
 	// SetSelectMultiple sets whether multiple files can be selected in the file
-	// chooser.
-	//
-	// This is only relevant if the action is set to be
+	// selector. This is only relevant if the action is set to be
 	// GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 	SetSelectMultiple(selectMultiple bool)
 }
@@ -3441,14 +3328,12 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 	return WrapFileChooser(obj), nil
 }
 
-// AddChoice adds a 'choice' to the file chooser.
-//
-// This is typically implemented as a combobox or, for boolean choices, as a
-// checkbutton. You can select a value using
-// [method@Gtk.FileChooser.set_choice] before the dialog is shown, and you
-// can obtain the user-selected value in the [signal@Gtk.Dialog::response]
-// signal handler using [method@Gtk.FileChooser.get_choice].
-func (c fileChooser) AddChoice(iD string, label string, options []string, optionLabels []string) {
+// AddChoice adds a 'choice' to the file chooser. This is typically
+// implemented as a combobox or, for boolean choices, as a checkbutton. You
+// can select a value using gtk_file_chooser_set_choice() before the dialog
+// is shown, and you can obtain the user-selected value in the ::response
+// signal handler using gtk_file_chooser_get_choice().
+func (c fileChooser) AddChoice(id string, label string, options []string, optionLabels []string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 	var arg2 *C.char
@@ -3456,7 +3341,7 @@ func (c fileChooser) AddChoice(iD string, label string, options []string, option
 	var arg4 **C.char
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(iD))
+	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
@@ -3468,8 +3353,8 @@ func (c fileChooser) AddChoice(iD string, label string, options []string, option
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg3), int(len(options)))
 
 		for i := range options {
-			out[i] = (*C.char)(C.CString(options[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg3 = (*C.char)(C.CString(options))
+			defer C.free(unsafe.Pointer(arg3))
 		}
 	}
 	arg4 = (**C.char)(C.malloc((len(optionLabels) + 1) * unsafe.Sizeof(int(0))))
@@ -3480,8 +3365,8 @@ func (c fileChooser) AddChoice(iD string, label string, options []string, option
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg4), int(len(optionLabels)))
 
 		for i := range optionLabels {
-			out[i] = (*C.char)(C.CString(optionLabels[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg4 = (*C.char)(C.CString(optionLabels))
+			defer C.free(unsafe.Pointer(arg4))
 		}
 	}
 
@@ -3489,10 +3374,8 @@ func (c fileChooser) AddChoice(iD string, label string, options []string, option
 }
 
 // AddFilter adds @filter to the list of filters that the user can select
-// between.
-//
-// When a filter is selected, only files that are passed by that filter are
-// displayed.
+// between. When a filter is selected, only files that are passed by that
+// filter are displayed.
 //
 // Note that the @chooser takes ownership of the filter if it is floating,
 // so you have to ref and sink it if you want to keep a reference.
@@ -3516,67 +3399,73 @@ func (c fileChooser) AddShortcutFolder(folder gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_file_chooser_add_shortcut_folder(arg0, arg1, &cerr)
+	C.gtk_file_chooser_add_shortcut_folder(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
 	return goerr
 }
 
-// Action gets the type of operation that the file chooser is performing.
+// Action gets the type of operation that the file chooser is performing;
+// see gtk_file_chooser_set_action().
 func (c fileChooser) Action() FileChooserAction {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkFileChooserAction
-	var goret FileChooserAction
 
 	cret = C.gtk_file_chooser_get_action(arg0)
 
-	goret = FileChooserAction(cret)
+	var fileChooserAction FileChooserAction
 
-	return goret
+	fileChooserAction = FileChooserAction(cret)
+
+	return fileChooserAction
 }
 
 // Choice gets the currently selected option in the 'choice' with the given
 // ID.
-func (c fileChooser) Choice(iD string) string {
+func (c fileChooser) Choice(id string) string {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(iD))
+	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_file_chooser_get_choice(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // CreateFolders gets whether file chooser will offer to create new folders.
+// See gtk_file_chooser_set_create_folders().
 func (c fileChooser) CreateFolders() bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_file_chooser_get_create_folders(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CurrentFolder gets the current folder of @chooser as #GFile.
@@ -3585,18 +3474,19 @@ func (c fileChooser) CurrentFolder() gio.File {
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GFile)
-	var goret gio.File
+	var cret *C.GFile
 
 	cret = C.gtk_file_chooser_get_current_folder(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	var file gio.File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+
+	return file
 }
 
 // CurrentName gets the current name in the file selector, as entered by the
-// user.
+// user in the text entry for “Name”.
 //
 // This is meant to be used in save dialogs, to get the currently typed
 // filename when the file itself does not exist yet.
@@ -3605,22 +3495,21 @@ func (c fileChooser) CurrentName() string {
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gtk_file_chooser_get_current_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
-// File gets the `GFile` for the currently selected file in the file
-// selector.
-//
-// If multiple files are selected, one of the files will be returned at
-// random.
+// File gets the #GFile for the currently selected file in the file
+// selector. If multiple files are selected, one of the files will be
+// returned at random.
 //
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
@@ -3629,14 +3518,15 @@ func (c fileChooser) File() gio.File {
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GFile)
-	var goret gio.File
+	var cret *C.GFile
 
 	cret = C.gtk_file_chooser_get_file(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	var file gio.File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+
+	return file
 }
 
 // Files lists all the selected files and subfolders in the current folder
@@ -3646,36 +3536,36 @@ func (c fileChooser) Files() gio.ListModel {
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GListModel)
-	var goret gio.ListModel
+	var cret *C.GListModel
 
 	cret = C.gtk_file_chooser_get_files(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
-// Filter gets the current filter.
+// Filter gets the current filter; see gtk_file_chooser_set_filter().
 func (c fileChooser) Filter() FileFilter {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkFileFilter
-	var goret FileFilter
 
 	cret = C.gtk_file_chooser_get_filter(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileFilter)
+	var fileFilter FileFilter
 
-	return goret
+	fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileFilter)
+
+	return fileFilter
 }
 
-// Filters gets the current set of user-selectable filters, as a list model.
-//
-// See [method@Gtk.FileChooser.add_filter] and
-// [method@Gtk.FileChooser.remove_filter] for changing individual filters.
+// Filters gets the current set of user-selectable filters, as a list model;
+// see gtk_file_chooser_add_filter(), gtk_file_chooser_remove_filter().
 //
 // You should not modify the returned list model. Future changes to @chooser
 // may or may not affect the returned model.
@@ -3684,36 +3574,39 @@ func (c fileChooser) Filters() gio.ListModel {
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GListModel)
-	var goret gio.ListModel
+	var cret *C.GListModel
 
 	cret = C.gtk_file_chooser_get_filters(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
 // SelectMultiple gets whether multiple files can be selected in the file
-// chooser.
+// selector. See gtk_file_chooser_set_select_multiple().
 func (c fileChooser) SelectMultiple() bool {
 	var arg0 *C.GtkFileChooser
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_file_chooser_get_select_multiple(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShortcutFolders queries the list of shortcut folders in the file chooser.
+// ShortcutFolders queries the list of shortcut folders in the file chooser,
+// as set by gtk_file_chooser_add_shortcut_folder().
 //
 // You should not modify the returned list model. Future changes to @chooser
 // may or may not affect the returned model.
@@ -3722,24 +3615,25 @@ func (c fileChooser) ShortcutFolders() gio.ListModel {
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GListModel)
-	var goret gio.ListModel
+	var cret *C.GListModel
 
 	cret = C.gtk_file_chooser_get_shortcut_folders(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
 // RemoveChoice removes a 'choice' that has been added with
 // gtk_file_chooser_add_choice().
-func (c fileChooser) RemoveChoice(iD string) {
+func (c fileChooser) RemoveChoice(id string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(iD))
+	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_file_chooser_remove_choice(arg0, arg1)
@@ -3767,21 +3661,20 @@ func (c fileChooser) RemoveShortcutFolder(folder gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(folder.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_file_chooser_remove_shortcut_folder(arg0, arg1, &cerr)
+	C.gtk_file_chooser_remove_shortcut_folder(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
 	return goerr
 }
 
-// SetAction sets the type of operation that the chooser is performing.
-//
-// The user interface is adapted to suit the selected action.
-//
-// For example, an option to create a new folder might be shown if the
-// action is GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
+// SetAction sets the type of operation that the chooser is performing; the
+// user interface is adapted to suit the selected action. For example, an
+// option to create a new folder might be shown if the action is
+// GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
 // GTK_FILE_CHOOSER_ACTION_OPEN.
 func (c fileChooser) SetAction(action FileChooserAction) {
 	var arg0 *C.GtkFileChooser
@@ -3794,16 +3687,15 @@ func (c fileChooser) SetAction(action FileChooserAction) {
 }
 
 // SetChoice selects an option in a 'choice' that has been added with
-// gtk_file_chooser_add_choice().
-//
-// For a boolean choice, the possible options are "true" and "false".
-func (c fileChooser) SetChoice(iD string, option string) {
+// gtk_file_chooser_add_choice(). For a boolean choice, the possible options
+// are "true" and "false".
+func (c fileChooser) SetChoice(id string, option string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
 	var arg2 *C.char
 
 	arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(iD))
+	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.char)(C.CString(option))
 	defer C.free(unsafe.Pointer(arg2))
@@ -3812,9 +3704,7 @@ func (c fileChooser) SetChoice(iD string, option string) {
 }
 
 // SetCreateFolders sets whether file chooser will offer to create new
-// folders.
-//
-// This is only relevant if the action is not set to be
+// folders. This is only relevant if the action is not set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN.
 func (c fileChooser) SetCreateFolders(createFolders bool) {
 	var arg0 *C.GtkFileChooser
@@ -3837,9 +3727,10 @@ func (c fileChooser) SetCurrentFolder(file gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_file_chooser_set_current_folder(arg0, arg1, &cerr)
+	C.gtk_file_chooser_set_current_folder(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -3847,18 +3738,16 @@ func (c fileChooser) SetCurrentFolder(file gio.File) error {
 }
 
 // SetCurrentName sets the current name in the file selector, as if entered
-// by the user.
-//
-// Note that the name passed in here is a UTF-8 string rather than a
-// filename. This function is meant for such uses as a suggested name in a
-// “Save As...” dialog. You can pass “Untitled.doc” or a similarly suitable
-// suggestion for the @name.
+// by the user. Note that the name passed in here is a UTF-8 string rather
+// than a filename. This function is meant for such uses as a suggested name
+// in a “Save As...” dialog. You can pass “Untitled.doc” or a similarly
+// suitable suggestion for the @name.
 //
 // If you want to preselect a particular existing file, you should use
-// [method@Gtk.FileChooser.set_file] instead.
+// gtk_file_chooser_set_file() instead.
 //
 // Please see the documentation for those functions for an example of using
-// [method@Gtk.FileChooser.set_current_name] as well.
+// gtk_file_chooser_set_current_name() as well.
 func (c fileChooser) SetCurrentName(name string) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.char
@@ -3870,12 +3759,10 @@ func (c fileChooser) SetCurrentName(name string) {
 	C.gtk_file_chooser_set_current_name(arg0, arg1)
 }
 
-// SetFile sets @file as the current filename for the file chooser.
-//
-// This includes changing to the file’s parent folder and actually selecting
-// the file in list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE
-// mode, the file’s base name will also appear in the dialog’s file name
-// entry.
+// SetFile sets @file as the current filename for the file chooser, by
+// changing to the file’s parent folder and actually selecting the file in
+// list. If the @chooser is in GTK_FILE_CHOOSER_ACTION_SAVE mode, the file’s
+// base name will also appear in the dialog’s file name entry.
 //
 // If the file name isn’t in the current folder of @chooser, then the
 // current folder of @chooser will be changed to the folder containing
@@ -3886,30 +3773,31 @@ func (c fileChooser) SetCurrentName(name string) {
 //
 // If you are implementing a save dialog, you should use this function if
 // you already have a file name to which the user may save; for example,
-// when the user opens an existing file and then does “Save As…”. If you
+// when the user opens an existing file and then does Save As... If you
 // don’t have a file name already — for example, if the user just created a
 // new file and is saving it for the first time, do not call this function.
-//
 // Instead, use something similar to this:
 //
-// “`c static void prepare_file_chooser (GtkFileChooser *chooser, GFile
-// *existing_file) { gboolean document_is_new = (existing_file == NULL);
+//    static void
+//    prepare_file_chooser (GtkFileChooser *chooser,
+//                          GFile          *existing_file)
+//    {
+//      gboolean document_is_new = (existing_file == NULL);
 //
-//    if (document_is_new)
-//      {
-//        GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
-//        // the user just created a new document
-//        gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
-//        gtk_file_chooser_set_current_name (chooser, "Untitled document");
-//        g_object_unref (default_file_for_saving);
-//      }
-//    else
-//      {
-//        // the user edited an existing document
-//        gtk_file_chooser_set_file (chooser, existing_file, NULL);
-//      }
-//
-// } “`
+//      if (document_is_new)
+//        {
+//          GFile *default_file_for_saving = g_file_new_for_path ("./out.txt");
+//          // the user just created a new document
+//          gtk_file_chooser_set_current_folder (chooser, default_file_for_saving, NULL);
+//          gtk_file_chooser_set_current_name (chooser, "Untitled document");
+//          g_object_unref (default_file_for_saving);
+//        }
+//      else
+//        {
+//          // the user edited an existing document
+//          gtk_file_chooser_set_file (chooser, existing_file, NULL);
+//        }
+//    }
 func (c fileChooser) SetFile(file gio.File) error {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GFile
@@ -3918,24 +3806,21 @@ func (c fileChooser) SetFile(file gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_file_chooser_set_file(arg0, arg1, &cerr)
+	C.gtk_file_chooser_set_file(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
 	return goerr
 }
 
-// SetFilter sets the current filter.
-//
-// Only the files that pass the filter will be displayed. If the
-// user-selectable list of filters is non-empty, then the filter should be
-// one of the filters in that list.
-//
-// Setting the current filter when the list of filters is empty is useful if
-// you want to restrict the displayed set of files without letting the user
-// change it.
+// SetFilter sets the current filter; only the files that pass the filter
+// will be displayed. If the user-selectable list of filters is non-empty,
+// then the filter should be one of the filters in that list. Setting the
+// current filter when the list of filters is empty is useful if you want to
+// restrict the displayed set of files without letting the user change it.
 func (c fileChooser) SetFilter(filter FileFilter) {
 	var arg0 *C.GtkFileChooser
 	var arg1 *C.GtkFileFilter
@@ -3947,9 +3832,7 @@ func (c fileChooser) SetFilter(filter FileFilter) {
 }
 
 // SetSelectMultiple sets whether multiple files can be selected in the file
-// chooser.
-//
-// This is only relevant if the action is set to be
+// selector. This is only relevant if the action is set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 func (c fileChooser) SetSelectMultiple(selectMultiple bool) {
 	var arg0 *C.GtkFileChooser
@@ -3963,15 +3846,9 @@ func (c fileChooser) SetSelectMultiple(selectMultiple bool) {
 	C.gtk_file_chooser_set_select_multiple(arg0, arg1)
 }
 
-// StyleProvider: `GtkStyleProvider` is an interface for style information used
-// by `GtkStyleContext`.
-//
-// See [method@Gtk.StyleContext.add_provider] and
-// [func@Gtk.StyleContext.add_provider_for_display] for adding
-// `GtkStyleProviders`.
-//
-// GTK uses the `GtkStyleProvider` implementation for CSS in
-// [iface@Gtk.CssProvider].
+// StyleProvider: gtkStyleProvider is an interface used to provide style
+// information to a StyleContext. See gtk_style_context_add_provider() and
+// gtk_style_context_add_provider_for_display().
 type StyleProvider interface {
 	gextras.Objector
 }
@@ -3997,49 +3874,47 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 	return WrapStyleProvider(obj), nil
 }
 
-// AboutDialog: the `GtkAboutDialog` offers a simple way to display information
-// about a program.
+// AboutDialog: the GtkAboutDialog offers a simple way to display information
+// about a program like its logo, name, copyright, website and license. It is
+// also possible to give credits to the authors, documenters, translators and
+// artists who have worked on the program. An about dialog is typically opened
+// when the user selects the `About` option from the `Help` menu. All parts of
+// the dialog are optional.
 //
-// The shown information includes the programs' logo, name, copyright, website
-// and license. It is also possible to give credits to the authors, documenters,
-// translators and artists who have worked on the program.
+// About dialogs often contain links and email addresses. GtkAboutDialog
+// displays these as clickable links. By default, it calls gtk_show_uri() when a
+// user clicks one. The behaviour can be overridden with the
+// AboutDialog::activate-link signal.
 //
-// An about dialog is typically opened when the user selects the `About` option
-// from the `Help` menu. All parts of the dialog are optional.
+// To specify a person with an email address, use a string like "Edgar Allan Poe
+// <edgar\@poe.com>". To specify a website with a title, use a string like "GTK
+// team http://www.gtk.org".
 //
-// !An example GtkAboutDialog (aboutdialog.png)
-//
-// About dialogs often contain links and email addresses. `GtkAboutDialog`
-// displays these as clickable links. By default, it calls [func@Gtk.show_uri]
-// when a user clicks one. The behaviour can be overridden with the
-// [signal@Gtk.AboutDialog::activate-link] signal.
-//
-// To specify a person with an email address, use a string like `Edgar Allan Poe
-// <edgar@poe.com>`. To specify a website with a title, use a string like `GTK
-// team https://www.gtk.org`.
-//
-// To make constructing a `GtkAboutDialog` as convenient as possible, you can
-// use the function [func@Gtk.show_about_dialog] which constructs and shows a
-// dialog and keeps it around so that it can be shown again.
+// To make constructing a GtkAboutDialog as convenient as possible, you can use
+// the function gtk_show_about_dialog() which constructs and shows a dialog and
+// keeps it around so that it can be shown again.
 //
 // Note that GTK sets a default title of `_("About s")` on the dialog window
-// (where `s` is replaced by the name of the application, but in order to ensure
+// (where \s is replaced by the name of the application, but in order to ensure
 // proper translation of the title, applications should set the title property
-// explicitly when constructing a `GtkAboutDialog`, as shown in the following
+// explicitly when constructing a GtkAboutDialog, as shown in the following
 // example:
 //
-// “`c GFile *logo_file = g_file_new_for_path ("./logo.png"); GdkTexture
-// *example_logo = gdk_texture_new_from_file (logo_file, NULL); g_object_unref
-// (logo_file);
+//    GFile *logo_file = g_file_new_for_path ("./logo.png");
+//    GdkTexture *example_logo = gdk_texture_new_from_file (logo_file, NULL);
+//    g_object_unref (logo_file);
 //
-// gtk_show_about_dialog (NULL, "program-name", "ExampleCode", "logo",
-// example_logo, "title", _("About ExampleCode"), NULL); “`
+//    gtk_show_about_dialog (NULL,
+//                           "program-name", "ExampleCode",
+//                           "logo", example_logo,
+//                           "title", _("About ExampleCode"),
+//                           NULL);
 //
 //
 // CSS nodes
 //
-// `GtkAboutDialog` has a single CSS node with the name `window` and style class
-// `.aboutdialog`.
+// GtkAboutDialog has a single CSS node with the name window and style class
+// .aboutdialog.
 type AboutDialog interface {
 	Window
 	Accessible
@@ -4049,10 +3924,10 @@ type AboutDialog interface {
 	Root
 	ShortcutManager
 
-	// AddCreditSection creates a new section in the "Credits" page.
+	// AddCreditSection creates a new section in the Credits page.
 	AddCreditSection(sectionName string, people []string)
-	// Artists returns the string which are displayed in the "Artists" tab of
-	// the secondary credits dialog.
+	// Artists returns the string which are displayed in the artists tab of the
+	// secondary credits dialog.
 	Artists() []string
 	// Authors returns the string which are displayed in the authors tab of the
 	// secondary credits dialog.
@@ -4061,12 +3936,13 @@ type AboutDialog interface {
 	Comments() string
 	// Copyright returns the copyright string.
 	Copyright() string
-	// Documenters returns the string which are displayed in the "Documenters"
-	// tab of the secondary credits dialog.
+	// Documenters returns the string which are displayed in the documenters tab
+	// of the secondary credits dialog.
 	Documenters() []string
 	// License returns the license information.
 	License() string
-	// LicenseType retrieves the license type.
+	// LicenseType retrieves the license set using
+	// gtk_about_dialog_set_license_type()
 	LicenseType() License
 	// Logo returns the paintable displayed as logo in the about dialog.
 	Logo() gdk.Paintable
@@ -4086,69 +3962,62 @@ type AboutDialog interface {
 	Website() string
 	// WebsiteLabel returns the label used for the website link.
 	WebsiteLabel() string
-	// WrapLicense returns whether the license text in the about dialog is
-	// automatically wrapped.
+	// WrapLicense returns whether the license text in @about is automatically
+	// wrapped.
 	WrapLicense() bool
-	// SetArtists sets the strings which are displayed in the "Artists" tab of
-	// the secondary credits dialog.
+	// SetArtists sets the strings which are displayed in the artists tab of the
+	// secondary credits dialog.
 	SetArtists(artists []string)
-	// SetAuthors sets the strings which are displayed in the "Authors" tab of
-	// the secondary credits dialog.
+	// SetAuthors sets the strings which are displayed in the authors tab of the
+	// secondary credits dialog.
 	SetAuthors(authors []string)
-	// SetComments sets the comments string to display in the about dialog.
-	//
-	// This should be a short string of one or two lines.
+	// SetComments sets the comments string to display in the about dialog. This
+	// should be a short string of one or two lines.
 	SetComments(comments string)
 	// SetCopyright sets the copyright string to display in the about dialog.
-	//
 	// This should be a short string of one or two lines.
 	SetCopyright(copyright string)
-	// SetDocumenters sets the strings which are displayed in the "Documenters"
+	// SetDocumenters sets the strings which are displayed in the documenters
 	// tab of the credits dialog.
 	SetDocumenters(documenters []string)
 	// SetLicense sets the license information to be displayed in the secondary
-	// license dialog.
-	//
-	// If `license` is `NULL`, the license button is hidden.
+	// license dialog. If @license is nil, the license button is hidden.
 	SetLicense(license string)
-	// SetLicenseType sets the license of the application showing the about
+	// SetLicenseType sets the license of the application showing the @about
 	// dialog from a list of known licenses.
 	//
 	// This function overrides the license set using
-	// [method@Gtk.AboutDialog.set_license].
+	// gtk_about_dialog_set_license().
 	SetLicenseType(licenseType License)
 	// SetLogo sets the logo in the about dialog.
 	SetLogo(logo gdk.Paintable)
 	// SetLogoIconName sets the icon name to be displayed as logo in the about
 	// dialog.
 	SetLogoIconName(iconName string)
-	// SetProgramName sets the name to display in the about dialog.
-	//
-	// If `name` is not set, it defaults to `g_get_application_name()`.
+	// SetProgramName sets the name to display in the about dialog. If this is
+	// not set, it defaults to g_get_application_name().
 	SetProgramName(name string)
 	// SetSystemInformation sets the system information to be displayed in the
-	// about dialog.
+	// about dialog. If @system_information is nil, the system information tab
+	// is hidden.
 	//
-	// If `system_information` is `NULL`, the system information tab is hidden.
-	//
-	// See [property@Gtk.AboutDialog:system-information].
+	// See AboutDialog:system-information.
 	SetSystemInformation(systemInformation string)
 	// SetTranslatorCredits sets the translator credits string which is
 	// displayed in the translators tab of the secondary credits dialog.
 	//
 	// The intended use for this string is to display the translator of the
-	// language which is currently used in the user interface. Using
-	// `gettext()`, a simple way to achieve that is to mark the string for
-	// translation:
+	// language which is currently used in the user interface. Using gettext(),
+	// a simple way to achieve that is to mark the string for translation:
 	//
-	// “`c GtkWidget *about = gtk_about_dialog_new ();
-	// gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
-	// _("translator-credits")); “`
+	//    GtkWidget *about = gtk_about_dialog_new ();
+	//     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+	//                                              _("translator-credits"));
 	//
-	// It is a good idea to use the customary `msgid` “translator-credits” for
+	// It is a good idea to use the customary msgid “translator-credits” for
 	// this purpose, since translators will already know the purpose of that
-	// `msgid`, and since `GtkAboutDialog` will detect if “translator-credits”
-	// is untranslated and hide the tab.
+	// msgid, and since AboutDialog will detect if “translator-credits” is
+	// untranslated and hide the tab.
 	SetTranslatorCredits(translatorCredits string)
 	// SetVersion sets the version string to display in the about dialog.
 	SetVersion(version string)
@@ -4156,8 +4025,8 @@ type AboutDialog interface {
 	SetWebsite(website string)
 	// SetWebsiteLabel sets the label to be used for the website link.
 	SetWebsiteLabel(websiteLabel string)
-	// SetWrapLicense sets whether the license text in the about dialog should
-	// be automatically wrapped.
+	// SetWrapLicense sets whether the license text in @about is automatically
+	// wrapped.
 	SetWrapLicense(wrapLicense bool)
 }
 
@@ -4197,16 +4066,17 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 // NewAboutDialog constructs a class AboutDialog.
 func NewAboutDialog() AboutDialog {
 	var cret C.GtkAboutDialog
-	var goret AboutDialog
 
 	cret = C.gtk_about_dialog_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AboutDialog)
+	var aboutDialog AboutDialog
 
-	return goret
+	aboutDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AboutDialog)
+
+	return aboutDialog
 }
 
-// AddCreditSection creates a new section in the "Credits" page.
+// AddCreditSection creates a new section in the Credits page.
 func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 *C.char
@@ -4223,25 +4093,26 @@ func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg2), int(len(people)))
 
 		for i := range people {
-			out[i] = (*C.char)(C.CString(people[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg2 = (*C.char)(C.CString(people))
+			defer C.free(unsafe.Pointer(arg2))
 		}
 	}
 
 	C.gtk_about_dialog_add_credit_section(arg0, arg1, arg2)
 }
 
-// Artists returns the string which are displayed in the "Artists" tab of
-// the secondary credits dialog.
+// Artists returns the string which are displayed in the artists tab of the
+// secondary credits dialog.
 func (a aboutDialog) Artists() []string {
 	var arg0 *C.GtkAboutDialog
 
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.gtk_about_dialog_get_artists(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -4252,14 +4123,16 @@ func (a aboutDialog) Artists() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // Authors returns the string which are displayed in the authors tab of the
@@ -4270,9 +4143,10 @@ func (a aboutDialog) Authors() []string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.gtk_about_dialog_get_authors(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -4283,14 +4157,16 @@ func (a aboutDialog) Authors() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // Comments returns the comments string.
@@ -4300,13 +4176,14 @@ func (a aboutDialog) Comments() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_comments(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Copyright returns the copyright string.
@@ -4316,26 +4193,28 @@ func (a aboutDialog) Copyright() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_copyright(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// Documenters returns the string which are displayed in the "Documenters"
-// tab of the secondary credits dialog.
+// Documenters returns the string which are displayed in the documenters tab
+// of the secondary credits dialog.
 func (a aboutDialog) Documenters() []string {
 	var arg0 *C.GtkAboutDialog
 
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.gtk_about_dialog_get_documenters(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -4346,14 +4225,16 @@ func (a aboutDialog) Documenters() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // License returns the license information.
@@ -4363,29 +4244,32 @@ func (a aboutDialog) License() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_license(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// LicenseType retrieves the license type.
+// LicenseType retrieves the license set using
+// gtk_about_dialog_set_license_type()
 func (a aboutDialog) LicenseType() License {
 	var arg0 *C.GtkAboutDialog
 
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret C.GtkLicense
-	var goret License
 
 	cret = C.gtk_about_dialog_get_license_type(arg0)
 
-	goret = License(cret)
+	var license License
 
-	return goret
+	license = License(cret)
+
+	return license
 }
 
 // Logo returns the paintable displayed as logo in the about dialog.
@@ -4395,13 +4279,14 @@ func (a aboutDialog) Logo() gdk.Paintable {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GdkPaintable
-	var goret gdk.Paintable
 
 	cret = C.gtk_about_dialog_get_logo(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	var paintable gdk.Paintable
 
-	return goret
+	paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+
+	return paintable
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
@@ -4411,13 +4296,14 @@ func (a aboutDialog) LogoIconName() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_logo_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ProgramName returns the program name displayed in the about dialog.
@@ -4427,13 +4313,14 @@ func (a aboutDialog) ProgramName() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_program_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SystemInformation returns the system information that is shown in the
@@ -4444,13 +4331,14 @@ func (a aboutDialog) SystemInformation() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_system_information(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // TranslatorCredits returns the translator credits string which is
@@ -4461,13 +4349,14 @@ func (a aboutDialog) TranslatorCredits() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_translator_credits(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Version returns the version string.
@@ -4477,13 +4366,14 @@ func (a aboutDialog) Version() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_version(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Website returns the website URL.
@@ -4493,13 +4383,14 @@ func (a aboutDialog) Website() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_website(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // WebsiteLabel returns the label used for the website link.
@@ -4509,36 +4400,38 @@ func (a aboutDialog) WebsiteLabel() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_about_dialog_get_website_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// WrapLicense returns whether the license text in the about dialog is
-// automatically wrapped.
+// WrapLicense returns whether the license text in @about is automatically
+// wrapped.
 func (a aboutDialog) WrapLicense() bool {
 	var arg0 *C.GtkAboutDialog
 
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_about_dialog_get_wrap_license(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetArtists sets the strings which are displayed in the "Artists" tab of
-// the secondary credits dialog.
+// SetArtists sets the strings which are displayed in the artists tab of the
+// secondary credits dialog.
 func (a aboutDialog) SetArtists(artists []string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 **C.char
@@ -4552,16 +4445,16 @@ func (a aboutDialog) SetArtists(artists []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(artists)))
 
 		for i := range artists {
-			out[i] = (*C.char)(C.CString(artists[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.char)(C.CString(artists))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 
 	C.gtk_about_dialog_set_artists(arg0, arg1)
 }
 
-// SetAuthors sets the strings which are displayed in the "Authors" tab of
-// the secondary credits dialog.
+// SetAuthors sets the strings which are displayed in the authors tab of the
+// secondary credits dialog.
 func (a aboutDialog) SetAuthors(authors []string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 **C.char
@@ -4575,17 +4468,16 @@ func (a aboutDialog) SetAuthors(authors []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(authors)))
 
 		for i := range authors {
-			out[i] = (*C.char)(C.CString(authors[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.char)(C.CString(authors))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 
 	C.gtk_about_dialog_set_authors(arg0, arg1)
 }
 
-// SetComments sets the comments string to display in the about dialog.
-//
-// This should be a short string of one or two lines.
+// SetComments sets the comments string to display in the about dialog. This
+// should be a short string of one or two lines.
 func (a aboutDialog) SetComments(comments string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 *C.char
@@ -4598,7 +4490,6 @@ func (a aboutDialog) SetComments(comments string) {
 }
 
 // SetCopyright sets the copyright string to display in the about dialog.
-//
 // This should be a short string of one or two lines.
 func (a aboutDialog) SetCopyright(copyright string) {
 	var arg0 *C.GtkAboutDialog
@@ -4611,7 +4502,7 @@ func (a aboutDialog) SetCopyright(copyright string) {
 	C.gtk_about_dialog_set_copyright(arg0, arg1)
 }
 
-// SetDocumenters sets the strings which are displayed in the "Documenters"
+// SetDocumenters sets the strings which are displayed in the documenters
 // tab of the credits dialog.
 func (a aboutDialog) SetDocumenters(documenters []string) {
 	var arg0 *C.GtkAboutDialog
@@ -4626,8 +4517,8 @@ func (a aboutDialog) SetDocumenters(documenters []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(documenters)))
 
 		for i := range documenters {
-			out[i] = (*C.char)(C.CString(documenters[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.char)(C.CString(documenters))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 
@@ -4635,9 +4526,7 @@ func (a aboutDialog) SetDocumenters(documenters []string) {
 }
 
 // SetLicense sets the license information to be displayed in the secondary
-// license dialog.
-//
-// If `license` is `NULL`, the license button is hidden.
+// license dialog. If @license is nil, the license button is hidden.
 func (a aboutDialog) SetLicense(license string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 *C.char
@@ -4649,11 +4538,11 @@ func (a aboutDialog) SetLicense(license string) {
 	C.gtk_about_dialog_set_license(arg0, arg1)
 }
 
-// SetLicenseType sets the license of the application showing the about
+// SetLicenseType sets the license of the application showing the @about
 // dialog from a list of known licenses.
 //
 // This function overrides the license set using
-// [method@Gtk.AboutDialog.set_license].
+// gtk_about_dialog_set_license().
 func (a aboutDialog) SetLicenseType(licenseType License) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 C.GtkLicense
@@ -4688,9 +4577,8 @@ func (a aboutDialog) SetLogoIconName(iconName string) {
 	C.gtk_about_dialog_set_logo_icon_name(arg0, arg1)
 }
 
-// SetProgramName sets the name to display in the about dialog.
-//
-// If `name` is not set, it defaults to `g_get_application_name()`.
+// SetProgramName sets the name to display in the about dialog. If this is
+// not set, it defaults to g_get_application_name().
 func (a aboutDialog) SetProgramName(name string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 *C.char
@@ -4703,11 +4591,10 @@ func (a aboutDialog) SetProgramName(name string) {
 }
 
 // SetSystemInformation sets the system information to be displayed in the
-// about dialog.
+// about dialog. If @system_information is nil, the system information tab
+// is hidden.
 //
-// If `system_information` is `NULL`, the system information tab is hidden.
-//
-// See [property@Gtk.AboutDialog:system-information].
+// See AboutDialog:system-information.
 func (a aboutDialog) SetSystemInformation(systemInformation string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 *C.char
@@ -4723,18 +4610,17 @@ func (a aboutDialog) SetSystemInformation(systemInformation string) {
 // displayed in the translators tab of the secondary credits dialog.
 //
 // The intended use for this string is to display the translator of the
-// language which is currently used in the user interface. Using
-// `gettext()`, a simple way to achieve that is to mark the string for
-// translation:
+// language which is currently used in the user interface. Using gettext(),
+// a simple way to achieve that is to mark the string for translation:
 //
-// “`c GtkWidget *about = gtk_about_dialog_new ();
-// gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
-// _("translator-credits")); “`
+//    GtkWidget *about = gtk_about_dialog_new ();
+//     gtk_about_dialog_set_translator_credits (GTK_ABOUT_DIALOG (about),
+//                                              _("translator-credits"));
 //
-// It is a good idea to use the customary `msgid` “translator-credits” for
+// It is a good idea to use the customary msgid “translator-credits” for
 // this purpose, since translators will already know the purpose of that
-// `msgid`, and since `GtkAboutDialog` will detect if “translator-credits”
-// is untranslated and hide the tab.
+// msgid, and since AboutDialog will detect if “translator-credits” is
+// untranslated and hide the tab.
 func (a aboutDialog) SetTranslatorCredits(translatorCredits string) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 *C.char
@@ -4782,8 +4668,8 @@ func (a aboutDialog) SetWebsiteLabel(websiteLabel string) {
 	C.gtk_about_dialog_set_website_label(arg0, arg1)
 }
 
-// SetWrapLicense sets whether the license text in the about dialog should
-// be automatically wrapped.
+// SetWrapLicense sets whether the license text in @about is automatically
+// wrapped.
 func (a aboutDialog) SetWrapLicense(wrapLicense bool) {
 	var arg0 *C.GtkAboutDialog
 	var arg1 C.gboolean
@@ -4796,12 +4682,9 @@ func (a aboutDialog) SetWrapLicense(wrapLicense bool) {
 	C.gtk_about_dialog_set_wrap_license(arg0, arg1)
 }
 
-// ActionBar: `GtkActionBar` is designed to present contextual actions.
-//
-// !An example GtkActionBar (action-bar.png)
-//
-// It is expected to be displayed below the content and expand horizontally to
-// fill the area.
+// ActionBar: gtkActionBar is designed to present contextual actions. It is
+// expected to be displayed below the content and expand horizontally to fill
+// the area.
 //
 // It allows placing children at the start or the end. In addition, it contains
 // an internal centered box which is centered with respect to the full width of
@@ -4811,7 +4694,7 @@ func (a aboutDialog) SetWrapLicense(wrapLicense bool) {
 //
 // CSS nodes
 //
-// `GtkActionBar` has a single CSS node with name actionbar.
+// GtkActionBar has a single CSS node with name actionbar.
 type ActionBar interface {
 	Widget
 	Accessible
@@ -4820,7 +4703,7 @@ type ActionBar interface {
 
 	// CenterWidget retrieves the center bar widget of the bar.
 	CenterWidget() Widget
-	// Revealed gets whether the contents of the action bar are revealed.
+	// Revealed gets the value of the ActionBar:revealed property.
 	Revealed() bool
 	// PackEnd adds @child to @action_bar, packed with reference to the end of
 	// the @action_bar.
@@ -4830,13 +4713,14 @@ type ActionBar interface {
 	PackStart(child Widget)
 	// Remove removes a child from @action_bar.
 	Remove(child Widget)
-	// SetCenterWidget sets the center widget for the `GtkActionBar`.
+	// SetCenterWidget sets the center widget for the ActionBar.
 	SetCenterWidget(centerWidget Widget)
-	// SetRevealed reveals or conceals the content of the action bar.
+	// SetRevealed sets the ActionBar:revealed property to @revealed. Changing
+	// this will make @action_bar reveal (true) or conceal (false) itself via a
+	// sliding transition.
 	//
-	// Note: this does not show or hide @action_bar in the
-	// [property@Gtk.Widget:visible] sense, so revealing has no effect if the
-	// action bar is hidden.
+	// Note: this does not show or hide @action_bar in the Widget:visible sense,
+	// so revealing has no effect if Widget:visible is false.
 	SetRevealed(revealed bool)
 }
 
@@ -4870,13 +4754,14 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 // NewActionBar constructs a class ActionBar.
 func NewActionBar() ActionBar {
 	var cret C.GtkActionBar
-	var goret ActionBar
 
 	cret = C.gtk_action_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
+	var actionBar ActionBar
 
-	return goret
+	actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
+
+	return actionBar
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
@@ -4886,31 +4771,33 @@ func (a actionBar) CenterWidget() Widget {
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_action_bar_get_center_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Revealed gets whether the contents of the action bar are revealed.
+// Revealed gets the value of the ActionBar:revealed property.
 func (a actionBar) Revealed() bool {
 	var arg0 *C.GtkActionBar
 
 	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_action_bar_get_revealed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PackEnd adds @child to @action_bar, packed with reference to the end of
@@ -4948,7 +4835,7 @@ func (a actionBar) Remove(child Widget) {
 	C.gtk_action_bar_remove(arg0, arg1)
 }
 
-// SetCenterWidget sets the center widget for the `GtkActionBar`.
+// SetCenterWidget sets the center widget for the ActionBar.
 func (a actionBar) SetCenterWidget(centerWidget Widget) {
 	var arg0 *C.GtkActionBar
 	var arg1 *C.GtkWidget
@@ -4959,11 +4846,12 @@ func (a actionBar) SetCenterWidget(centerWidget Widget) {
 	C.gtk_action_bar_set_center_widget(arg0, arg1)
 }
 
-// SetRevealed reveals or conceals the content of the action bar.
+// SetRevealed sets the ActionBar:revealed property to @revealed. Changing
+// this will make @action_bar reveal (true) or conceal (false) itself via a
+// sliding transition.
 //
-// Note: this does not show or hide @action_bar in the
-// [property@Gtk.Widget:visible] sense, so revealing has no effect if the
-// action bar is hidden.
+// Note: this does not show or hide @action_bar in the Widget:visible sense,
+// so revealing has no effect if Widget:visible is false.
 func (a actionBar) SetRevealed(revealed bool) {
 	var arg0 *C.GtkActionBar
 	var arg1 C.gboolean
@@ -4976,35 +4864,32 @@ func (a actionBar) SetRevealed(revealed bool) {
 	C.gtk_action_bar_set_revealed(arg0, arg1)
 }
 
-// AppChooserButton: the `GtkAppChooserButton` lets the user select an
-// application.
+// AppChooserButton: the AppChooserButton is a widget that lets the user select
+// an application. It implements the AppChooser interface.
 //
-// !An example GtkAppChooserButton (appchooserbutton.png)
-//
-// Initially, a `GtkAppChooserButton` selects the first application in its list,
+// Initially, a AppChooserButton selects the first application in its list,
 // which will either be the most-recently used application or, if
-// [property@Gtk.AppChooserButton:show-default-item] is true, the default
-// application.
+// AppChooserButton:show-default-item is true, the default application.
 //
-// The list of applications shown in a `GtkAppChooserButton` includes the
-// recommended applications for the given content type. When
-// [property@Gtk.AppChooserButton:show-default-item] is set, the default
-// application is also included. To let the user chooser other applications, you
-// can set the [property@Gtk.AppChooserButton:show-dialog-item] property, which
-// allows to open a full [class@Gtk.AppChooserDialog].
+// The list of applications shown in a AppChooserButton includes the recommended
+// applications for the given content type. When
+// AppChooserButton:show-default-item is set, the default application is also
+// included. To let the user chooser other applications, you can set the
+// AppChooserButton:show-dialog-item property, which allows to open a full
+// AppChooserDialog.
 //
 // It is possible to add custom items to the list, using
-// [method@Gtk.AppChooserButton.append_custom_item]. These items cause the
-// [signal@Gtk.AppChooserButton::custom-item-activated] signal to be emitted
-// when they are selected.
+// gtk_app_chooser_button_append_custom_item(). These items cause the
+// AppChooserButton::custom-item-activated signal to be emitted when they are
+// selected.
 //
 // To track changes in the selected application, use the
-// [signal@Gtk.AppChooserButton::changed] signal.
+// AppChooserButton::changed signal.
 //
 //
 // CSS nodes
 //
-// `GtkAppChooserButton` has a single CSS node with the name “appchooserbutton”.
+// GtkAppChooserButton has a single CSS node with the name “appchooserbutton”.
 type AppChooserButton interface {
 	Widget
 	Accessible
@@ -5013,14 +4898,11 @@ type AppChooserButton interface {
 	ConstraintTarget
 
 	// AppendCustomItem appends a custom item to the list of applications that
-	// is shown in the popup.
-	//
-	// The item name must be unique per-widget. Clients can use the provided
-	// name as a detail for the
-	// [signal@Gtk.AppChooserButton::custom-item-activated] signal, to add a
-	// callback for the activation of a particular custom item in the list.
-	//
-	// See also [method@Gtk.AppChooserButton.append_separator].
+	// is shown in the popup; the item name must be unique per-widget. Clients
+	// can use the provided name as a detail for the
+	// AppChooserButton::custom-item-activated signal, to add a callback for the
+	// activation of a particular custom item in the list. See also
+	// gtk_app_chooser_button_append_separator().
 	AppendCustomItem(name string, label string, icon gio.Icon)
 	// AppendSeparator appends a separator to the list of applications that is
 	// shown in the popup.
@@ -5029,22 +4911,20 @@ type AppChooserButton interface {
 	Heading() string
 	// Modal gets whether the dialog is modal.
 	Modal() bool
-	// ShowDefaultItem returns whether the dropdown menu should show the default
-	// application at the top.
+	// ShowDefaultItem returns the current value of the
+	// AppChooserButton:show-default-item property.
 	ShowDefaultItem() bool
-	// ShowDialogItem returns whether the dropdown menu shows an item for a
-	// `GtkAppChooserDialog`.
+	// ShowDialogItem returns the current value of the
+	// AppChooserButton:show-dialog-item property.
 	ShowDialogItem() bool
-	// SetActiveCustomItem selects a custom item.
+	// SetActiveCustomItem selects a custom item previously added with
+	// gtk_app_chooser_button_append_custom_item().
 	//
-	// See [method@Gtk.AppChooserButton.append_custom_item].
-	//
-	// Use [method@Gtk.AppChooser.refresh] to bring the selection to its initial
+	// Use gtk_app_chooser_refresh() to bring the selection to its initial
 	// state.
 	SetActiveCustomItem(name string)
-	// SetHeading sets the text to display at the top of the dialog.
-	//
-	// If the heading is not set, the dialog displays a default text.
+	// SetHeading sets the text to display at the top of the dialog. If the
+	// heading is not set, the dialog displays a default text.
 	SetHeading(heading string)
 	// SetModal sets whether the dialog should be modal.
 	SetModal(modal bool)
@@ -5052,7 +4932,7 @@ type AppChooserButton interface {
 	// show the default application for the given content type at top.
 	SetShowDefaultItem(setting bool)
 	// SetShowDialogItem sets whether the dropdown menu of this button should
-	// show an entry to trigger a `GtkAppChooserDialog`.
+	// show an entry to trigger a AppChooserDialog.
 	SetShowDialogItem(setting bool)
 }
 
@@ -5093,24 +4973,22 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkAppChooserButton
-	var goret AppChooserButton
 
 	cret = C.gtk_app_chooser_button_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
+	var appChooserButton AppChooserButton
 
-	return goret
+	appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
+
+	return appChooserButton
 }
 
 // AppendCustomItem appends a custom item to the list of applications that
-// is shown in the popup.
-//
-// The item name must be unique per-widget. Clients can use the provided
-// name as a detail for the
-// [signal@Gtk.AppChooserButton::custom-item-activated] signal, to add a
-// callback for the activation of a particular custom item in the list.
-//
-// See also [method@Gtk.AppChooserButton.append_separator].
+// is shown in the popup; the item name must be unique per-widget. Clients
+// can use the provided name as a detail for the
+// AppChooserButton::custom-item-activated signal, to add a callback for the
+// activation of a particular custom item in the list. See also
+// gtk_app_chooser_button_append_separator().
 func (s appChooserButton) AppendCustomItem(name string, label string, icon gio.Icon) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 *C.char
@@ -5144,13 +5022,14 @@ func (s appChooserButton) Heading() string {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_app_chooser_button_get_heading(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Modal gets whether the dialog is modal.
@@ -5160,60 +5039,62 @@ func (s appChooserButton) Modal() bool {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_button_get_modal(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowDefaultItem returns whether the dropdown menu should show the default
-// application at the top.
+// ShowDefaultItem returns the current value of the
+// AppChooserButton:show-default-item property.
 func (s appChooserButton) ShowDefaultItem() bool {
 	var arg0 *C.GtkAppChooserButton
 
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_button_get_show_default_item(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowDialogItem returns whether the dropdown menu shows an item for a
-// `GtkAppChooserDialog`.
+// ShowDialogItem returns the current value of the
+// AppChooserButton:show-dialog-item property.
 func (s appChooserButton) ShowDialogItem() bool {
 	var arg0 *C.GtkAppChooserButton
 
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_button_get_show_dialog_item(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetActiveCustomItem selects a custom item.
+// SetActiveCustomItem selects a custom item previously added with
+// gtk_app_chooser_button_append_custom_item().
 //
-// See [method@Gtk.AppChooserButton.append_custom_item].
-//
-// Use [method@Gtk.AppChooser.refresh] to bring the selection to its initial
+// Use gtk_app_chooser_refresh() to bring the selection to its initial
 // state.
 func (s appChooserButton) SetActiveCustomItem(name string) {
 	var arg0 *C.GtkAppChooserButton
@@ -5226,9 +5107,8 @@ func (s appChooserButton) SetActiveCustomItem(name string) {
 	C.gtk_app_chooser_button_set_active_custom_item(arg0, arg1)
 }
 
-// SetHeading sets the text to display at the top of the dialog.
-//
-// If the heading is not set, the dialog displays a default text.
+// SetHeading sets the text to display at the top of the dialog. If the
+// heading is not set, the dialog displays a default text.
 func (s appChooserButton) SetHeading(heading string) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 *C.char
@@ -5268,7 +5148,7 @@ func (s appChooserButton) SetShowDefaultItem(setting bool) {
 }
 
 // SetShowDialogItem sets whether the dropdown menu of this button should
-// show an entry to trigger a `GtkAppChooserDialog`.
+// show an entry to trigger a AppChooserDialog.
 func (s appChooserButton) SetShowDialogItem(setting bool) {
 	var arg0 *C.GtkAppChooserButton
 	var arg1 C.gboolean
@@ -5281,18 +5161,15 @@ func (s appChooserButton) SetShowDialogItem(setting bool) {
 	C.gtk_app_chooser_button_set_show_dialog_item(arg0, arg1)
 }
 
-// AppChooserDialog: `GtkAppChooserDialog` shows a `GtkAppChooserWidget` inside
-// a `GtkDialog`.
+// AppChooserDialog shows a AppChooserWidget inside a Dialog.
 //
-// !An example GtkAppChooserDialog (appchooserdialog.png)
+// Note that AppChooserDialog does not have any interesting methods of its own.
+// Instead, you should get the embedded AppChooserWidget using
+// gtk_app_chooser_dialog_get_widget() and call its methods if the generic
+// AppChooser interface is not sufficient for your needs.
 //
-// Note that `GtkAppChooserDialog` does not have any interesting methods of its
-// own. Instead, you should get the embedded `GtkAppChooserWidget` using
-// [method@Gtk.AppChooserDialog.get_widget] and call its methods if the generic
-// [iface@Gtk.AppChooser] interface is not sufficient for your needs.
-//
-// To set the heading that is shown above the `GtkAppChooserWidget`, use
-// [method@Gtk.AppChooserDialog.set_heading].
+// To set the heading that is shown above the AppChooserWidget, use
+// gtk_app_chooser_dialog_set_heading().
 type AppChooserDialog interface {
 	Dialog
 	Accessible
@@ -5305,11 +5182,10 @@ type AppChooserDialog interface {
 
 	// Heading returns the text to display at the top of the dialog.
 	Heading() string
-	// Widget returns the `GtkAppChooserWidget` of this dialog.
+	// Widget returns the AppChooserWidget of this dialog.
 	Widget() Widget
-	// SetHeading sets the text to display at the top of the dialog.
-	//
-	// If the heading is not set, the dialog displays a default text.
+	// SetHeading sets the text to display at the top of the dialog. If the
+	// heading is not set, the dialog displays a default text.
 	SetHeading(heading string)
 }
 
@@ -5359,13 +5235,14 @@ func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppCho
 	arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GtkAppChooserDialog
-	var goret AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	var appChooserDialog AppChooserDialog
 
-	return goret
+	appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+
+	return appChooserDialog
 }
 
 // NewAppChooserDialogForContentType constructs a class AppChooserDialog.
@@ -5380,13 +5257,14 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.GtkAppChooserDialog
-	var goret AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new_for_content_type(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	var appChooserDialog AppChooserDialog
 
-	return goret
+	appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+
+	return appChooserDialog
 }
 
 // Heading returns the text to display at the top of the dialog.
@@ -5396,34 +5274,35 @@ func (s appChooserDialog) Heading() string {
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_app_chooser_dialog_get_heading(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// Widget returns the `GtkAppChooserWidget` of this dialog.
+// Widget returns the AppChooserWidget of this dialog.
 func (s appChooserDialog) Widget() Widget {
 	var arg0 *C.GtkAppChooserDialog
 
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_app_chooser_dialog_get_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// SetHeading sets the text to display at the top of the dialog.
-//
-// If the heading is not set, the dialog displays a default text.
+// SetHeading sets the text to display at the top of the dialog. If the
+// heading is not set, the dialog displays a default text.
 func (s appChooserDialog) SetHeading(heading string) {
 	var arg0 *C.GtkAppChooserDialog
 	var arg1 *C.char
@@ -5435,30 +5314,25 @@ func (s appChooserDialog) SetHeading(heading string) {
 	C.gtk_app_chooser_dialog_set_heading(arg0, arg1)
 }
 
-// AppChooserWidget: `GtkAppChooserWidget` is a widget for selecting
-// applications.
+// AppChooserWidget is a widget for selecting applications. It is the main
+// building block for AppChooserDialog. Most applications only need to use the
+// latter; but you can use this widget as part of a larger widget if you have
+// special needs.
 //
-// It is the main building block for [class@Gtk.AppChooserDialog]. Most
-// applications only need to use the latter; but you can use this widget as part
-// of a larger widget if you have special needs.
-//
-// `GtkAppChooserWidget` offers detailed control over what applications are
-// shown, using the [property@Gtk.AppChooserWidget:show-default],
-// [property@Gtk.AppChooserWidget:show-recommended],
-// [property@Gtk.AppChooserWidget:show-fallback],
-// [property@Gtk.AppChooserWidget:show-other] and
-// [property@Gtk.AppChooserWidget:show-all] properties. See the
-// [iface@Gtk.AppChooser] documentation for more information about these groups
-// of applications.
+// AppChooserWidget offers detailed control over what applications are shown,
+// using the AppChooserWidget:show-default, AppChooserWidget:show-recommended,
+// AppChooserWidget:show-fallback, AppChooserWidget:show-other and
+// AppChooserWidget:show-all properties. See the AppChooser documentation for
+// more information about these groups of applications.
 //
 // To keep track of the selected application, use the
-// [signal@Gtk.AppChooserWidget::application-selected] and
-// [signal@Gtk.AppChooserWidget::application-activated] signals.
+// AppChooserWidget::application-selected and
+// AppChooserWidget::application-activated signals.
 //
 //
 // CSS nodes
 //
-// `GtkAppChooserWidget` has a single CSS node with name appchooser.
+// GtkAppChooserWidget has a single CSS node with name appchooser.
 type AppChooserWidget interface {
 	Widget
 	Accessible
@@ -5469,20 +5343,20 @@ type AppChooserWidget interface {
 	// DefaultText returns the text that is shown if there are not applications
 	// that can handle the content type.
 	DefaultText() string
-	// ShowAll gets whether the app chooser should show all applications in a
-	// flat list.
+	// ShowAll returns the current value of the AppChooserWidget:show-all
+	// property.
 	ShowAll() bool
-	// ShowDefault gets whether the app chooser should show the default handler
-	// for the content type in a separate section.
+	// ShowDefault returns the current value of the
+	// AppChooserWidget:show-default property.
 	ShowDefault() bool
-	// ShowFallback gets whether the app chooser should show related
-	// applications for the content type in a separate section.
+	// ShowFallback returns the current value of the
+	// AppChooserWidget:show-fallback property.
 	ShowFallback() bool
-	// ShowOther gets whether the app chooser should show applications which are
-	// unrelated to the content type.
+	// ShowOther returns the current value of the AppChooserWidget:show-other
+	// property.
 	ShowOther() bool
-	// ShowRecommended gets whether the app chooser should show recommended
-	// applications for the content type in a separate section.
+	// ShowRecommended returns the current value of the
+	// AppChooserWidget:show-recommended property.
 	ShowRecommended() bool
 	// SetDefaultText sets the text that is shown if there are not applications
 	// that can handle the content type.
@@ -5541,13 +5415,14 @@ func NewAppChooserWidget(contentType string) AppChooserWidget {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkAppChooserWidget
-	var goret AppChooserWidget
 
 	cret = C.gtk_app_chooser_widget_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserWidget)
+	var appChooserWidget AppChooserWidget
 
-	return goret
+	appChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserWidget)
+
+	return appChooserWidget
 }
 
 // DefaultText returns the text that is shown if there are not applications
@@ -5558,108 +5433,114 @@ func (s appChooserWidget) DefaultText() string {
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_app_chooser_widget_get_default_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// ShowAll gets whether the app chooser should show all applications in a
-// flat list.
+// ShowAll returns the current value of the AppChooserWidget:show-all
+// property.
 func (s appChooserWidget) ShowAll() bool {
 	var arg0 *C.GtkAppChooserWidget
 
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_widget_get_show_all(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowDefault gets whether the app chooser should show the default handler
-// for the content type in a separate section.
+// ShowDefault returns the current value of the
+// AppChooserWidget:show-default property.
 func (s appChooserWidget) ShowDefault() bool {
 	var arg0 *C.GtkAppChooserWidget
 
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_widget_get_show_default(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowFallback gets whether the app chooser should show related
-// applications for the content type in a separate section.
+// ShowFallback returns the current value of the
+// AppChooserWidget:show-fallback property.
 func (s appChooserWidget) ShowFallback() bool {
 	var arg0 *C.GtkAppChooserWidget
 
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_widget_get_show_fallback(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowOther gets whether the app chooser should show applications which are
-// unrelated to the content type.
+// ShowOther returns the current value of the AppChooserWidget:show-other
+// property.
 func (s appChooserWidget) ShowOther() bool {
 	var arg0 *C.GtkAppChooserWidget
 
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_widget_get_show_other(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowRecommended gets whether the app chooser should show recommended
-// applications for the content type in a separate section.
+// ShowRecommended returns the current value of the
+// AppChooserWidget:show-recommended property.
 func (s appChooserWidget) ShowRecommended() bool {
 	var arg0 *C.GtkAppChooserWidget
 
 	arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_widget_get_show_recommended(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetDefaultText sets the text that is shown if there are not applications
@@ -5745,7 +5626,9 @@ func (s appChooserWidget) SetShowRecommended(setting bool) {
 	C.gtk_app_chooser_widget_set_show_recommended(arg0, arg1)
 }
 
-// AspectFrame: `GtkAspectFrame` preserves the aspect ratio of its child.
+// AspectFrame: gtkAspectFrame is useful when you want pack a widget so that it
+// can resize while retaining the same aspect ratio. For instance, one might be
+// drawing a small preview of a larger image.
 //
 // The frame can respect the aspect ratio of the child widget, or use its own
 // aspect ratio.
@@ -5753,7 +5636,7 @@ func (s appChooserWidget) SetShowRecommended(setting bool) {
 //
 // CSS nodes
 //
-// `GtkAspectFrame` uses a CSS node with name `frame`.
+// GtkAspectFrame uses a CSS node with name `frame`.
 type AspectFrame interface {
 	Widget
 	Accessible
@@ -5763,28 +5646,29 @@ type AspectFrame interface {
 	// Child gets the child widget of @self.
 	Child() Widget
 	// ObeyChild returns whether the child's size request should override the
-	// set aspect ratio of the `GtkAspectFrame`.
+	// set aspect ratio of the AspectFrame.
 	ObeyChild() bool
-	// Ratio returns the desired aspect ratio of the child.
+	// Ratio returns the desired aspect ratio of the child set using
+	// gtk_aspect_frame_set_ratio().
 	Ratio() float32
 	// Xalign returns the horizontal alignment of the child within the
-	// allocation of the `GtkAspectFrame`.
+	// allocation of the AspectFrame.
 	Xalign() float32
 	// Yalign returns the vertical alignment of the child within the allocation
-	// of the `GtkAspectFrame`.
+	// of the AspectFrame.
 	Yalign() float32
 	// SetChild sets the child widget of @self.
 	SetChild(child Widget)
 	// SetObeyChild sets whether the aspect ratio of the child's size request
-	// should override the set aspect ratio of the `GtkAspectFrame`.
+	// should override the set aspect ratio of the AspectFrame.
 	SetObeyChild(obeyChild bool)
 	// SetRatio sets the desired aspect ratio of the child.
 	SetRatio(ratio float32)
 	// SetXalign sets the horizontal alignment of the child within the
-	// allocation of the `GtkAspectFrame`.
+	// allocation of the AspectFrame.
 	SetXalign(xalign float32)
 	// SetYalign sets the vertical alignment of the child within the allocation
-	// of the `GtkAspectFrame`.
+	// of the AspectFrame.
 	SetYalign(yalign float32)
 }
 
@@ -5830,13 +5714,14 @@ func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild boo
 	}
 
 	var cret C.GtkAspectFrame
-	var goret AspectFrame
 
 	cret = C.gtk_aspect_frame_new(arg1, arg2, arg3, arg4)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
+	var aspectFrame AspectFrame
 
-	return goret
+	aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
+
+	return aspectFrame
 }
 
 // Child gets the child widget of @self.
@@ -5846,82 +5731,88 @@ func (s aspectFrame) Child() Widget {
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_aspect_frame_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ObeyChild returns whether the child's size request should override the
-// set aspect ratio of the `GtkAspectFrame`.
+// set aspect ratio of the AspectFrame.
 func (s aspectFrame) ObeyChild() bool {
 	var arg0 *C.GtkAspectFrame
 
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_aspect_frame_get_obey_child(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Ratio returns the desired aspect ratio of the child.
+// Ratio returns the desired aspect ratio of the child set using
+// gtk_aspect_frame_set_ratio().
 func (s aspectFrame) Ratio() float32 {
 	var arg0 *C.GtkAspectFrame
 
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.gtk_aspect_frame_get_ratio(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Xalign returns the horizontal alignment of the child within the
-// allocation of the `GtkAspectFrame`.
+// allocation of the AspectFrame.
 func (s aspectFrame) Xalign() float32 {
 	var arg0 *C.GtkAspectFrame
 
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.gtk_aspect_frame_get_xalign(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Yalign returns the vertical alignment of the child within the allocation
-// of the `GtkAspectFrame`.
+// of the AspectFrame.
 func (s aspectFrame) Yalign() float32 {
 	var arg0 *C.GtkAspectFrame
 
 	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.gtk_aspect_frame_get_yalign(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // SetChild sets the child widget of @self.
@@ -5936,7 +5827,7 @@ func (s aspectFrame) SetChild(child Widget) {
 }
 
 // SetObeyChild sets whether the aspect ratio of the child's size request
-// should override the set aspect ratio of the `GtkAspectFrame`.
+// should override the set aspect ratio of the AspectFrame.
 func (s aspectFrame) SetObeyChild(obeyChild bool) {
 	var arg0 *C.GtkAspectFrame
 	var arg1 C.gboolean
@@ -5961,7 +5852,7 @@ func (s aspectFrame) SetRatio(ratio float32) {
 }
 
 // SetXalign sets the horizontal alignment of the child within the
-// allocation of the `GtkAspectFrame`.
+// allocation of the AspectFrame.
 func (s aspectFrame) SetXalign(xalign float32) {
 	var arg0 *C.GtkAspectFrame
 	var arg1 C.float
@@ -5973,7 +5864,7 @@ func (s aspectFrame) SetXalign(xalign float32) {
 }
 
 // SetYalign sets the vertical alignment of the child within the allocation
-// of the `GtkAspectFrame`.
+// of the AspectFrame.
 func (s aspectFrame) SetYalign(yalign float32) {
 	var arg0 *C.GtkAspectFrame
 	var arg1 C.float
@@ -5984,43 +5875,40 @@ func (s aspectFrame) SetYalign(yalign float32) {
 	C.gtk_aspect_frame_set_yalign(arg0, arg1)
 }
 
-// Assistant: `GtkAssistant` is used to represent a complex as a series of
-// steps.
+// Assistant: a Assistant is a widget used to represent a generally complex
+// operation split up into several steps. Each step consists of one or more
+// pages. GtkAssistant guides the user through the pages, and controls the page
+// flow to collect the data needed for the operation.
 //
-// !An example GtkAssistant (assistant.png)
+// GtkAssistant handles which buttons to show and to make sensitive based on
+// page sequence knowledge and the [type][GtkAssistantPageType] of each page in
+// addition to state information like the
+// [completion][gtk-assistant-set-page-complete] and
+// [committed][gtk-assistant-commit] page statuses.
 //
-// Each step consists of one or more pages. `GtkAssistant` guides the user
-// through the pages, and controls the page flow to collect the data needed for
-// the operation.
+// If you have a case that doesn’t quite fit in Assistants way of handling
+// buttons, you can use the K_ASSISTANT_PAGE_CUSTOM page type and handle buttons
+// yourself.
 //
-// `GtkAssistant` handles which buttons to show and to make sensitive based on
-// page sequence knowledge and the [enum@Gtk.AssistantPageType] of each page in
-// addition to state information like the *completed* and *committed* page
-// statuses.
-//
-// If you have a case that doesn’t quite fit in `GtkAssistant`s way of handling
-// buttons, you can use the GTK_ASSISTANT_PAGE_CUSTOM page type and handle
-// buttons yourself.
-//
-// `GtkAssistant` maintains a `GtkAssistantPage` object for each added child,
-// which holds additional per-child properties. You obtain the
-// `GtkAssistantPage` for a child with [method@Gtk.Assistant.get_page].
+// GtkAssistant maintains a AssistantPage object for each added child, which
+// holds additional per-child properties. You obtain the AssistantPage for a
+// child with gtk_assistant_get_page().
 //
 //
 // GtkAssistant as GtkBuildable
 //
-// The `GtkAssistant` implementation of the `GtkBuildable` interface exposes the
+// The GtkAssistant implementation of the Buildable interface exposes the
 // @action_area as internal children with the name “action_area”.
 //
-// To add pages to an assistant in `GtkBuilder`, simply add it as a child to the
-// `GtkAssistant` object. If you need to set per-object properties, create a
-// `GtkAssistantPage` object explicitly, and set the child widget as a property
-// on it.
+// To add pages to an assistant in Builder, simply add it as a child to the
+// GtkAssistant object. If you need to set per-object properties, create a
+// AssistantPage object explicitly, and set the child widget as a property on
+// it.
 //
 //
 // CSS nodes
 //
-// `GtkAssistant` has a single CSS node with the name window and style class
+// GtkAssistant has a single CSS node with the name window and style class
 // .assistant.
 type Assistant interface {
 	Window
@@ -6031,14 +5919,12 @@ type Assistant interface {
 	Root
 	ShortcutManager
 
-	// AddActionWidget adds a widget to the action area of a `GtkAssistant`.
+	// AddActionWidget adds a widget to the action area of a Assistant.
 	AddActionWidget(child Widget)
 	// AppendPage appends a page to the @assistant.
 	AppendPage(page Widget) int
-	// Commit erases the visited page history.
-	//
-	// GTK will then hide the back button on the current page, and removes the
-	// cancel button from subsequent pages.
+	// Commit erases the visited page history so the back button is not shown on
+	// the current page, and removes the cancel button from subsequent pages.
 	//
 	// Use this when the information provided up to the current page is
 	// hereafter deemed permanent and cannot be modified or undone. For example,
@@ -6051,7 +5937,7 @@ type Assistant interface {
 	NPages() int
 	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) Widget
-	// Page returns the `GtkAssistantPage` object for @child.
+	// Page returns the AssistantPage object for @child.
 	Page(child Widget) AssistantPage
 	// PageComplete gets whether @page is complete.
 	PageComplete(page Widget) bool
@@ -6069,7 +5955,7 @@ type Assistant interface {
 	// page.
 	//
 	// This function is for use when creating pages of the
-	// GTK_ASSISTANT_PAGE_CUSTOM type.
+	// K_ASSISTANT_PAGE_CUSTOM type.
 	NextPage()
 	// PrependPage prepends a page to the @assistant.
 	PrependPage(page Widget) int
@@ -6079,10 +5965,9 @@ type Assistant interface {
 	// available.
 	//
 	// This function is for use when creating pages of the
-	// GTK_ASSISTANT_PAGE_CUSTOM type.
+	// K_ASSISTANT_PAGE_CUSTOM type.
 	PreviousPage()
-	// RemoveActionWidget removes a widget from the action area of a
-	// `GtkAssistant`.
+	// RemoveActionWidget removes a widget from the action area of a Assistant.
 	RemoveActionWidget(child Widget)
 	// RemovePage removes the @page_num’s page from @assistant.
 	RemovePage(pageNum int)
@@ -6160,16 +6045,17 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 // NewAssistant constructs a class Assistant.
 func NewAssistant() Assistant {
 	var cret C.GtkAssistant
-	var goret Assistant
 
 	cret = C.gtk_assistant_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Assistant)
+	var assistant Assistant
 
-	return goret
+	assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Assistant)
+
+	return assistant
 }
 
-// AddActionWidget adds a widget to the action area of a `GtkAssistant`.
+// AddActionWidget adds a widget to the action area of a Assistant.
 func (a assistant) AddActionWidget(child Widget) {
 	var arg0 *C.GtkAssistant
 	var arg1 *C.GtkWidget
@@ -6189,19 +6075,18 @@ func (a assistant) AppendPage(page Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_assistant_append_page(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// Commit erases the visited page history.
-//
-// GTK will then hide the back button on the current page, and removes the
-// cancel button from subsequent pages.
+// Commit erases the visited page history so the back button is not shown on
+// the current page, and removes the cancel button from subsequent pages.
 //
 // Use this when the information provided up to the current page is
 // hereafter deemed permanent and cannot be modified or undone. For example,
@@ -6222,13 +6107,14 @@ func (a assistant) CurrentPage() int {
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_assistant_get_current_page(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NPages returns the number of pages in the @assistant
@@ -6238,13 +6124,14 @@ func (a assistant) NPages() int {
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_assistant_get_n_pages(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NthPage returns the child widget contained in page number @page_num.
@@ -6256,16 +6143,17 @@ func (a assistant) NthPage(pageNum int) Widget {
 	arg1 = C.int(pageNum)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_assistant_get_nth_page(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Page returns the `GtkAssistantPage` object for @child.
+// Page returns the AssistantPage object for @child.
 func (a assistant) Page(child Widget) AssistantPage {
 	var arg0 *C.GtkAssistant
 	var arg1 *C.GtkWidget
@@ -6274,13 +6162,14 @@ func (a assistant) Page(child Widget) AssistantPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkAssistantPage
-	var goret AssistantPage
 
 	cret = C.gtk_assistant_get_page(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AssistantPage)
+	var assistantPage AssistantPage
 
-	return goret
+	assistantPage = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AssistantPage)
+
+	return assistantPage
 }
 
 // PageComplete gets whether @page is complete.
@@ -6292,15 +6181,16 @@ func (a assistant) PageComplete(page Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_assistant_get_page_complete(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PageTitle gets the title for @page.
@@ -6312,13 +6202,14 @@ func (a assistant) PageTitle(page Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_assistant_get_page_title(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // PageType gets the page type of @page.
@@ -6330,13 +6221,14 @@ func (a assistant) PageType(page Widget) AssistantPageType {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.GtkAssistantPageType
-	var goret AssistantPageType
 
 	cret = C.gtk_assistant_get_page_type(arg0, arg1)
 
-	goret = AssistantPageType(cret)
+	var assistantPageType AssistantPageType
 
-	return goret
+	assistantPageType = AssistantPageType(cret)
+
+	return assistantPageType
 }
 
 // Pages gets a list model of the assistant pages.
@@ -6345,14 +6237,15 @@ func (a assistant) Pages() gio.ListModel {
 
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
-	cret := new(C.GListModel)
-	var goret gio.ListModel
+	var cret *C.GListModel
 
 	cret = C.gtk_assistant_get_pages(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
@@ -6366,13 +6259,14 @@ func (a assistant) InsertPage(page Widget, position int) int {
 	arg2 = C.int(position)
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_assistant_insert_page(arg0, arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NextPage: navigate to the next page.
@@ -6381,7 +6275,7 @@ func (a assistant) InsertPage(page Widget, position int) int {
 // page.
 //
 // This function is for use when creating pages of the
-// GTK_ASSISTANT_PAGE_CUSTOM type.
+// K_ASSISTANT_PAGE_CUSTOM type.
 func (a assistant) NextPage() {
 	var arg0 *C.GtkAssistant
 
@@ -6399,13 +6293,14 @@ func (a assistant) PrependPage(page Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_assistant_prepend_page(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PreviousPage: navigate to the previous visited page.
@@ -6414,7 +6309,7 @@ func (a assistant) PrependPage(page Widget) int {
 // available.
 //
 // This function is for use when creating pages of the
-// GTK_ASSISTANT_PAGE_CUSTOM type.
+// K_ASSISTANT_PAGE_CUSTOM type.
 func (a assistant) PreviousPage() {
 	var arg0 *C.GtkAssistant
 
@@ -6423,8 +6318,7 @@ func (a assistant) PreviousPage() {
 	C.gtk_assistant_previous_page(arg0)
 }
 
-// RemoveActionWidget removes a widget from the action area of a
-// `GtkAssistant`.
+// RemoveActionWidget removes a widget from the action area of a Assistant.
 func (a assistant) RemoveActionWidget(child Widget) {
 	var arg0 *C.GtkAssistant
 	var arg1 *C.GtkWidget
@@ -6471,7 +6365,7 @@ func (a assistant) SetForwardPageFunc() {
 
 	arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
 
-	C.gtk_assistant_set_forward_page_func(arg0, arg1, arg2, arg3)
+	C.gtk_assistant_set_forward_page_func(arg0)
 }
 
 // SetPageComplete sets whether @page contents are complete.
@@ -6541,8 +6435,6 @@ func (a assistant) UpdateButtonsState() {
 	C.gtk_assistant_update_buttons_state(arg0)
 }
 
-// AssistantPage: `GtkAssistantPage` is an auxiliary object used by
-// `GtkAssistant.
 type AssistantPage interface {
 	gextras.Objector
 
@@ -6578,46 +6470,48 @@ func (p assistantPage) Child() Widget {
 	arg0 = (*C.GtkAssistantPage)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_assistant_page_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Calendar: `GtkCalendar` is a widget that displays a Gregorian calendar, one
-// month at a time.
-//
-// !An example GtkCalendar (calendar.png)
-//
-// A `GtkCalendar` can be created with [ctor@Gtk.Calendar.new].
+// Calendar is a widget that displays a Gregorian calendar, one month at a time.
+// It can be created with gtk_calendar_new().
 //
 // The date that is currently displayed can be altered with
-// [method@Gtk.Calendar.select_day].
+// gtk_calendar_select_day().
 //
-// To place a visual marker on a particular day, use
-// [method@Gtk.Calendar.mark_day] and to remove the marker,
-// [method@Gtk.Calendar.unmark_day]. Alternative, all marks can be cleared with
-// [method@Gtk.Calendar.clear_marks].
+// To place a visual marker on a particular day, use gtk_calendar_mark_day() and
+// to remove the marker, gtk_calendar_unmark_day(). Alternative, all marks can
+// be cleared with gtk_calendar_clear_marks().
 //
-// The selected date can be retrieved from a `GtkCalendar` using
-// [method@Gtk.Calendar.get_date].
+// The selected date can be retrieved from a Calendar using
+// gtk_calendar_get_date().
 //
 // Users should be aware that, although the Gregorian calendar is the legal
 // calendar in most countries, it was adopted progressively between 1582 and
 // 1929. Display before these dates is likely to be historically incorrect.
 //
-//
 // CSS nodes
 //
-// “` calendar.view ├── header │ ├── button │ ├── stack.month │ ├── button │ ├──
-// button │ ├── label.year │ ╰── button ╰── grid ╰──
-// label[.day-name][.week-number][.day-number][.other-month][.today] “`
+//    calendar.view
+//    ├── header
+//    │   ├── button
+//    │   ├── stack.month
+//    │   ├── button
+//    │   ├── button
+//    │   ├── label.year
+//    │   ╰── button
+//    ╰── grid
+//        ╰── label[.day-name][.week-number][.day-number][.other-month][.today]
 //
-// `GtkCalendar` has a main node with name calendar. It contains a subnode
-// called header containing the widgets for switching between years and months.
+// GtkCalendar has a main node with name calendar. It contains a subnode called
+// header containing the widgets for switching between years and months.
 //
 // The grid subnode contains all day labels, including week numbers on the left
 // (marked with the .week-number css class) and day names on top (marked with
@@ -6636,36 +6530,28 @@ type Calendar interface {
 	// ClearMarks: remove all visual markers.
 	ClearMarks()
 	// Date returns a Time representing the shown year, month and the selected
-	// day.
-	//
-	// The returned date is in the local time zone.
+	// day, in the local time zone.
 	Date() *glib.DateTime
 	// DayIsMarked returns if the @day of the @calendar is already marked.
 	DayIsMarked(day uint) bool
 	// ShowDayNames returns whether @self is currently showing the names of the
-	// week days.
-	//
-	// This is the value of the [property@Gtk.Calendar:show-day-names] property.
+	// week days above the day numbers, i.e. the value of the
+	// Calendar:show-day-names property.
 	ShowDayNames() bool
-	// ShowHeading returns whether @self is currently showing the heading.
-	//
-	// This is the value of the [property@Gtk.Calendar:show-heading] property.
+	// ShowHeading returns whether @self is currently showing the heading, i.e.
+	// the value of the Calendar:show-heading property.
 	ShowHeading() bool
-	// ShowWeekNumbers returns whether @self is showing week numbers right now.
-	//
-	// This is the value of the [property@Gtk.Calendar:show-week-numbers]
-	// property.
+	// ShowWeekNumbers returns whether @self is showing week numbers right now,
+	// i.e. the value of the Calendar:show-week-numbers property.
 	ShowWeekNumbers() bool
 	// MarkDay places a visual marker on a particular day.
 	MarkDay(day uint)
-	// SelectDay switches to @date's year and month and select its day.
+	// SelectDay: will switch to @date's year and month and select its day.
 	SelectDay(date *glib.DateTime)
 	// SetShowDayNames sets whether the calendar shows day names.
 	SetShowDayNames(value bool)
-	// SetShowHeading sets whether the calendar should show a heading.
-	//
-	// The heading contains the current year and month as well as buttons for
-	// changing both.
+	// SetShowHeading sets whether the calendar should show a heading containing
+	// the current year and month as well as buttons for changing both.
 	SetShowHeading(value bool)
 	// SetShowWeekNumbers sets whether week numbers are shown in the calendar.
 	SetShowWeekNumbers(value bool)
@@ -6703,13 +6589,14 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 // NewCalendar constructs a class Calendar.
 func NewCalendar() Calendar {
 	var cret C.GtkCalendar
-	var goret Calendar
 
 	cret = C.gtk_calendar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
+	var calendar Calendar
 
-	return goret
+	calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
+
+	return calendar
 }
 
 // ClearMarks: remove all visual markers.
@@ -6722,25 +6609,24 @@ func (c calendar) ClearMarks() {
 }
 
 // Date returns a Time representing the shown year, month and the selected
-// day.
-//
-// The returned date is in the local time zone.
+// day, in the local time zone.
 func (s calendar) Date() *glib.DateTime {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GDateTime)
-	var goret *glib.DateTime
+	var cret *C.GDateTime
 
 	cret = C.gtk_calendar_get_date(arg0)
 
-	goret = glib.WrapDateTime(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.DateTime) {
+	var dateTime *glib.DateTime
+
+	dateTime = glib.WrapDateTime(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dateTime, func(v *glib.DateTime) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dateTime
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
@@ -6752,77 +6638,77 @@ func (c calendar) DayIsMarked(day uint) bool {
 	arg1 = C.guint(day)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_calendar_get_day_is_marked(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowDayNames returns whether @self is currently showing the names of the
-// week days.
-//
-// This is the value of the [property@Gtk.Calendar:show-day-names] property.
+// week days above the day numbers, i.e. the value of the
+// Calendar:show-day-names property.
 func (s calendar) ShowDayNames() bool {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_calendar_get_show_day_names(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowHeading returns whether @self is currently showing the heading.
-//
-// This is the value of the [property@Gtk.Calendar:show-heading] property.
+// ShowHeading returns whether @self is currently showing the heading, i.e.
+// the value of the Calendar:show-heading property.
 func (s calendar) ShowHeading() bool {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_calendar_get_show_heading(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowWeekNumbers returns whether @self is showing week numbers right now.
-//
-// This is the value of the [property@Gtk.Calendar:show-week-numbers]
-// property.
+// ShowWeekNumbers returns whether @self is showing week numbers right now,
+// i.e. the value of the Calendar:show-week-numbers property.
 func (s calendar) ShowWeekNumbers() bool {
 	var arg0 *C.GtkCalendar
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_calendar_get_show_week_numbers(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MarkDay places a visual marker on a particular day.
@@ -6836,7 +6722,7 @@ func (c calendar) MarkDay(day uint) {
 	C.gtk_calendar_mark_day(arg0, arg1)
 }
 
-// SelectDay switches to @date's year and month and select its day.
+// SelectDay: will switch to @date's year and month and select its day.
 func (s calendar) SelectDay(date *glib.DateTime) {
 	var arg0 *C.GtkCalendar
 	var arg1 *C.GDateTime
@@ -6860,10 +6746,8 @@ func (s calendar) SetShowDayNames(value bool) {
 	C.gtk_calendar_set_show_day_names(arg0, arg1)
 }
 
-// SetShowHeading sets whether the calendar should show a heading.
-//
-// The heading contains the current year and month as well as buttons for
-// changing both.
+// SetShowHeading sets whether the calendar should show a heading containing
+// the current year and month as well as buttons for changing both.
 func (s calendar) SetShowHeading(value bool) {
 	var arg0 *C.GtkCalendar
 	var arg1 C.gboolean
@@ -6900,10 +6784,8 @@ func (c calendar) UnmarkDay(day uint) {
 	C.gtk_calendar_unmark_day(arg0, arg1)
 }
 
-// CellAreaBox: a cell area that renders GtkCellRenderers into a row or a column
-//
-// The CellAreaBox renders cell renderers into a row or a column depending on
-// its Orientation.
+// CellAreaBox: the CellAreaBox renders cell renderers into a row or a column
+// depending on its Orientation.
 //
 // GtkCellAreaBox uses a notion of packing. Packing refers to adding cell
 // renderers with reference to a particular position in a CellAreaBox. There are
@@ -6970,13 +6852,14 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 // NewCellAreaBox constructs a class CellAreaBox.
 func NewCellAreaBox() CellAreaBox {
 	var cret C.GtkCellAreaBox
-	var goret CellAreaBox
 
 	cret = C.gtk_cell_area_box_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
+	var cellAreaBox CellAreaBox
 
-	return goret
+	cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
+
+	return cellAreaBox
 }
 
 // Spacing gets the spacing added between cell renderers.
@@ -6986,13 +6869,14 @@ func (b cellAreaBox) Spacing() int {
 	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_cell_area_box_get_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PackEnd adds @renderer to @box, packed with reference to the end of @box.
@@ -7059,8 +6943,6 @@ func (b cellAreaBox) SetSpacing(spacing int) {
 	C.gtk_cell_area_box_set_spacing(arg0, arg1)
 }
 
-// CellRendererAccel renders a keyboard accelerator in a cell
-//
 // CellRendererAccel displays a keyboard accelerator (i.e. a key combination
 // like `Control + a`). If the cell renderer is editable, the accelerator can be
 // changed by simply typing the new combination.
@@ -7092,17 +6974,16 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 // NewCellRendererAccel constructs a class CellRendererAccel.
 func NewCellRendererAccel() CellRendererAccel {
 	var cret C.GtkCellRendererAccel
-	var goret CellRendererAccel
 
 	cret = C.gtk_cell_renderer_accel_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererAccel)
+	var cellRendererAccel CellRendererAccel
 
-	return goret
+	cellRendererAccel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererAccel)
+
+	return cellRendererAccel
 }
 
-// CellRendererCombo renders a combobox in a cell
-//
 // CellRendererCombo renders text in a cell like CellRendererText from which it
 // is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererCombo offers a ComboBox widget to edit the text. The values
@@ -7141,20 +7022,20 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 // NewCellRendererCombo constructs a class CellRendererCombo.
 func NewCellRendererCombo() CellRendererCombo {
 	var cret C.GtkCellRendererCombo
-	var goret CellRendererCombo
 
 	cret = C.gtk_cell_renderer_combo_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererCombo)
+	var cellRendererCombo CellRendererCombo
 
-	return goret
+	cellRendererCombo = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererCombo)
+
+	return cellRendererCombo
 }
 
-// CellRendererPixbuf renders a pixbuf in a cell
-//
-// A CellRendererPixbuf can be used to render an image in a cell. It allows to
-// render either a given Pixbuf (set via the CellRendererPixbuf:pixbuf property)
-// or a named icon (set via the CellRendererPixbuf:icon-name property).
+// CellRendererPixbuf: a CellRendererPixbuf can be used to render an image in a
+// cell. It allows to render either a given Pixbuf (set via the
+// CellRendererPixbuf:pixbuf property) or a named icon (set via the
+// CellRendererPixbuf:icon-name property).
 //
 // To support the tree view, CellRendererPixbuf also supports rendering two
 // alternative pixbufs, when the CellRenderer:is-expander property is true. If
@@ -7191,17 +7072,16 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 // NewCellRendererPixbuf constructs a class CellRendererPixbuf.
 func NewCellRendererPixbuf() CellRendererPixbuf {
 	var cret C.GtkCellRendererPixbuf
-	var goret CellRendererPixbuf
 
 	cret = C.gtk_cell_renderer_pixbuf_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererPixbuf)
+	var cellRendererPixbuf CellRendererPixbuf
 
-	return goret
+	cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererPixbuf)
+
+	return cellRendererPixbuf
 }
 
-// CellRendererProgress renders numbers as progress bars
-//
 // CellRendererProgress renders a numeric value as a progress par in a cell.
 // Additionally, it can display a text on top of the progress bar.
 type CellRendererProgress interface {
@@ -7235,17 +7115,16 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 // NewCellRendererProgress constructs a class CellRendererProgress.
 func NewCellRendererProgress() CellRendererProgress {
 	var cret C.GtkCellRendererProgress
-	var goret CellRendererProgress
 
 	cret = C.gtk_cell_renderer_progress_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererProgress)
+	var cellRendererProgress CellRendererProgress
 
-	return goret
+	cellRendererProgress = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererProgress)
+
+	return cellRendererProgress
 }
 
-// CellRendererSpin renders a spin button in a cell
-//
 // CellRendererSpin renders text in a cell like CellRendererText from which it
 // is derived. But while CellRendererText offers a simple entry to edit the
 // text, CellRendererSpin offers a SpinButton widget. Of course, that means that
@@ -7287,20 +7166,20 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 // NewCellRendererSpin constructs a class CellRendererSpin.
 func NewCellRendererSpin() CellRendererSpin {
 	var cret C.GtkCellRendererSpin
-	var goret CellRendererSpin
 
 	cret = C.gtk_cell_renderer_spin_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpin)
+	var cellRendererSpin CellRendererSpin
 
-	return goret
+	cellRendererSpin = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpin)
+
+	return cellRendererSpin
 }
 
-// CellRendererSpinner renders a spinning animation in a cell
-//
-// GtkCellRendererSpinner renders a spinning animation in a cell, very similar
-// to Spinner. It can often be used as an alternative to a CellRendererProgress
-// for displaying indefinite activity, instead of actual progress.
+// CellRendererSpinner: gtkCellRendererSpinner renders a spinning animation in a
+// cell, very similar to Spinner. It can often be used as an alternative to a
+// CellRendererProgress for displaying indefinite activity, instead of actual
+// progress.
 //
 // To start the animation in a cell, set the CellRendererSpinner:active property
 // to true and increment the CellRendererSpinner:pulse property at regular
@@ -7335,17 +7214,16 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 // NewCellRendererSpinner constructs a class CellRendererSpinner.
 func NewCellRendererSpinner() CellRendererSpinner {
 	var cret C.GtkCellRendererSpinner
-	var goret CellRendererSpinner
 
 	cret = C.gtk_cell_renderer_spinner_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpinner)
+	var cellRendererSpinner CellRendererSpinner
 
-	return goret
+	cellRendererSpinner = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpinner)
+
+	return cellRendererSpinner
 }
 
-// CellRendererToggle renders a toggle button in a cell
-//
 // CellRendererToggle renders a toggle button in a cell. The button is drawn as
 // a radio or a checkbutton, depending on the CellRendererToggle:radio property.
 // When activated, it emits the CellRendererToggle::toggled signal.
@@ -7398,13 +7276,14 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 // NewCellRendererToggle constructs a class CellRendererToggle.
 func NewCellRendererToggle() CellRendererToggle {
 	var cret C.GtkCellRendererToggle
-	var goret CellRendererToggle
 
 	cret = C.gtk_cell_renderer_toggle_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererToggle)
+	var cellRendererToggle CellRendererToggle
 
-	return goret
+	cellRendererToggle = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererToggle)
+
+	return cellRendererToggle
 }
 
 // Activatable returns whether the cell renderer is activatable. See
@@ -7415,15 +7294,16 @@ func (t cellRendererToggle) Activatable() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_activatable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Active returns whether the cell renderer is active. See
@@ -7434,15 +7314,16 @@ func (t cellRendererToggle) Active() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Radio returns whether we’re rendering radio toggles rather than
@@ -7453,15 +7334,16 @@ func (t cellRendererToggle) Radio() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_radio(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActivatable makes the cell renderer activatable.
@@ -7508,10 +7390,8 @@ func (t cellRendererToggle) SetRadio(radio bool) {
 	C.gtk_cell_renderer_toggle_set_radio(arg0, arg1)
 }
 
-// CellView: a widget displaying a single row of a GtkTreeModel
-//
-// A CellView displays a single row of a TreeModel using a CellArea and
-// CellAreaContext. A CellAreaContext can be provided to the CellView at
+// CellView: a CellView displays a single row of a TreeModel using a CellArea
+// and CellAreaContext. A CellAreaContext can be provided to the CellView at
 // construction time in order to keep the cellview in context of a group of cell
 // views, this ensures that the renderers displayed will be properly aligned
 // with each other (like the aligned cells in the menus of ComboBox).
@@ -7605,13 +7485,14 @@ func marshalCellView(p uintptr) (interface{}, error) {
 // NewCellView constructs a class CellView.
 func NewCellView() CellView {
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithContext constructs a class CellView.
@@ -7623,13 +7504,14 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_context(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithMarkup constructs a class CellView.
@@ -7640,13 +7522,14 @@ func NewCellViewWithMarkup(markup string) CellView {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_markup(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithText constructs a class CellView.
@@ -7657,13 +7540,14 @@ func NewCellViewWithText(text string) CellView {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_text(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithTexture constructs a class CellView.
@@ -7673,13 +7557,14 @@ func NewCellViewWithTexture(texture gdk.Texture) CellView {
 	arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_texture(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // DisplayedRow returns a TreePath referring to the currently displayed row.
@@ -7689,17 +7574,18 @@ func (c cellView) DisplayedRow() *TreePath {
 
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GtkTreePath)
-	var goret *TreePath
+	var cret *C.GtkTreePath
 
 	cret = C.gtk_cell_view_get_displayed_row(arg0)
 
-	goret = WrapTreePath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *TreePath) {
+	var treePath *TreePath
+
+	treePath = WrapTreePath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(treePath, func(v *TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return treePath
 }
 
 // DrawSensitive gets whether @cell_view is configured to draw all of its
@@ -7710,15 +7596,16 @@ func (c cellView) DrawSensitive() bool {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_view_get_draw_sensitive(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // FitModel gets whether @cell_view is configured to request space to fit
@@ -7729,15 +7616,16 @@ func (c cellView) FitModel() bool {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_view_get_fit_model(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Model returns the model for @cell_view. If no model is used nil is
@@ -7748,13 +7636,14 @@ func (c cellView) Model() TreeModel {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret TreeModel
 
 	cret = C.gtk_cell_view_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	var treeModel TreeModel
 
-	return goret
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+
+	return treeModel
 }
 
 // SetDisplayedRow sets the row of the model that is currently displayed by
@@ -7819,20 +7708,18 @@ func (c cellView) SetModel(model TreeModel) {
 	C.gtk_cell_view_set_model(arg0, arg1)
 }
 
-// ColorButton: the `GtkColorButton` allows to open a color chooser dialog to
-// change the color.
-//
-// !An example GtkColorButton (color-button.png)
-//
-// It is suitable widget for selecting a color in a preference dialog.
-//
+// ColorButton: the ColorButton is a button which displays the currently
+// selected color and allows to open a color selection dialog to change the
+// color. It is suitable widget for selecting a color in a preference dialog.
 //
 // CSS nodes
 //
-// “` colorbutton ╰── button.color ╰── [content] “`
+//    colorbutton
+//    ╰── button.color
+//        ╰── [content]
 //
-// `GtkColorButton` has a single CSS node with name colorbutton which contains a
-// button node. To differentiate it from a plain `GtkButton`, it gets the .color
+// GtkColorButton has a single CSS node with name colorbutton which contains a
+// button node. To differentiate it from a plain Button, it gets the .color
 // style class.
 type ColorButton interface {
 	Widget
@@ -7843,11 +7730,11 @@ type ColorButton interface {
 
 	// Modal gets whether the dialog is modal.
 	Modal() bool
-	// Title gets the title of the color chooser dialog.
+	// Title gets the title of the color selection dialog.
 	Title() string
 	// SetModal sets whether the dialog should be modal.
 	SetModal(modal bool)
-	// SetTitle sets the title for the color chooser dialog.
+	// SetTitle sets the title for the color selection dialog.
 	SetTitle(title string)
 }
 
@@ -7883,29 +7770,31 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 // NewColorButton constructs a class ColorButton.
 func NewColorButton() ColorButton {
 	var cret C.GtkColorButton
-	var goret ColorButton
 
 	cret = C.gtk_color_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+	var colorButton ColorButton
 
-	return goret
+	colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+
+	return colorButton
 }
 
 // NewColorButtonWithRGBA constructs a class ColorButton.
-func NewColorButtonWithRGBA(rgbA *gdk.RGBA) ColorButton {
+func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
 	var arg1 *C.GdkRGBA
 
-	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgbA.Native()))
+	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
 
 	var cret C.GtkColorButton
-	var goret ColorButton
 
 	cret = C.gtk_color_button_new_with_rgba(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+	var colorButton ColorButton
 
-	return goret
+	colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorButton)
+
+	return colorButton
 }
 
 // Modal gets whether the dialog is modal.
@@ -7915,31 +7804,33 @@ func (b colorButton) Modal() bool {
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_color_button_get_modal(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Title gets the title of the color chooser dialog.
+// Title gets the title of the color selection dialog.
 func (b colorButton) Title() string {
 	var arg0 *C.GtkColorButton
 
 	arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_color_button_get_title(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SetModal sets whether the dialog should be modal.
@@ -7955,7 +7846,7 @@ func (b colorButton) SetModal(modal bool) {
 	C.gtk_color_button_set_modal(arg0, arg1)
 }
 
-// SetTitle sets the title for the color chooser dialog.
+// SetTitle sets the title for the color selection dialog.
 func (b colorButton) SetTitle(title string) {
 	var arg0 *C.GtkColorButton
 	var arg1 *C.char
@@ -7967,18 +7858,8 @@ func (b colorButton) SetTitle(title string) {
 	C.gtk_color_button_set_title(arg0, arg1)
 }
 
-// ColorChooserDialog: a dialog for choosing a color.
-//
-// !An example GtkColorChooserDialog (colorchooser.png)
-//
-// `GtkColorChooserDialog` implements the [iface@Gtk.ColorChooser] interface and
-// does not provide much API of its own.
-//
-// To create a `GtkColorChooserDialog`, use [ctor@Gtk.ColorChooserDialog.new].
-//
-// To change the initially selected color, use
-// [method@Gtk.ColorChooser.set_rgba]. To get the selected color use
-// [method@Gtk.ColorChooser.get_rgba].
+// ColorChooserDialog: the ColorChooserDialog widget is a dialog for choosing a
+// color. It implements the ColorChooser interface.
 type ColorChooserDialog interface {
 	Dialog
 	Accessible
@@ -8035,41 +7916,36 @@ func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkColorChooserDialog
-	var goret ColorChooserDialog
 
 	cret = C.gtk_color_chooser_dialog_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserDialog)
+	var colorChooserDialog ColorChooserDialog
 
-	return goret
+	colorChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserDialog)
+
+	return colorChooserDialog
 }
 
-// ColorChooserWidget: the `GtkColorChooserWidget` widget lets the user select a
-// color.
-//
-// By default, the chooser presents a predefined palette of colors, plus a small
-// number of settable custom colors. It is also possible to select a different
-// color with the single-color editor.
-//
-// To enter the single-color editing mode, use the context menu of any color of
-// the palette, or use the '+' button to add a new custom color.
+// ColorChooserWidget: the ColorChooserWidget widget lets the user select a
+// color. By default, the chooser presents a predefined palette of colors, plus
+// a small number of settable custom colors. It is also possible to select a
+// different color with the single-color editor. To enter the single-color
+// editing mode, use the context menu of any color of the palette, or use the
+// '+' button to add a new custom color.
 //
 // The chooser automatically remembers the last selection, as well as custom
 // colors.
 //
-// To create a `GtkColorChooserWidget`, use [ctor@Gtk.ColorChooserWidget.new].
+// To change the initially selected color, use gtk_color_chooser_set_rgba(). To
+// get the selected color use gtk_color_chooser_get_rgba().
 //
-// To change the initially selected color, use
-// [method@Gtk.ColorChooser.set_rgba]. To get the selected color use
-// [method@Gtk.ColorChooser.get_rgba].
-//
-// The `GtkColorChooserWidget` is used in the [class@Gtk.ColorChooserDialog] to
-// provide a dialog for selecting colors.
+// The ColorChooserWidget is used in the ColorChooserDialog to provide a dialog
+// for selecting colors.
 //
 //
 // CSS names
 //
-// `GtkColorChooserWidget` has a single CSS node with name colorchooser.
+// GtkColorChooserWidget has a single CSS node with name colorchooser.
 type ColorChooserWidget interface {
 	Widget
 	Accessible
@@ -8110,58 +7986,61 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 // NewColorChooserWidget constructs a class ColorChooserWidget.
 func NewColorChooserWidget() ColorChooserWidget {
 	var cret C.GtkColorChooserWidget
-	var goret ColorChooserWidget
 
 	cret = C.gtk_color_chooser_widget_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserWidget)
+	var colorChooserWidget ColorChooserWidget
 
-	return goret
+	colorChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserWidget)
+
+	return colorChooserWidget
 }
 
-// ComboBoxText: a `GtkComboBoxText` is a simple variant of `GtkComboBox` for
-// text-only use cases.
+// ComboBoxText: a GtkComboBoxText is a simple variant of ComboBox that hides
+// the model-view complexity for simple text-only use cases.
 //
-// !An example GtkComboBoxText (combo-box-text.png)
+// To create a GtkComboBoxText, use gtk_combo_box_text_new() or
+// gtk_combo_box_text_new_with_entry().
 //
-// `GtkComboBoxText` hides the model-view complexity of `GtkComboBox`.
+// You can add items to a GtkComboBoxText with gtk_combo_box_text_append_text(),
+// gtk_combo_box_text_insert_text() or gtk_combo_box_text_prepend_text() and
+// remove options with gtk_combo_box_text_remove().
 //
-// To create a `GtkComboBoxText`, use [ctor@Gtk.ComboBoxText.new] or
-// [ctor@Gtk.ComboBoxText.new_with_entry].
+// If the GtkComboBoxText contains an entry (via the “has-entry” property), its
+// contents can be retrieved using gtk_combo_box_text_get_active_text(). The
+// entry itself can be accessed by calling gtk_bin_get_child() on the combo box.
 //
-// You can add items to a `GtkComboBoxText` with
-// [method@Gtk.ComboBoxText.append_text], [method@Gtk.ComboBoxText.insert_text]
-// or [method@Gtk.ComboBoxText.prepend_text] and remove options with
-// [method@Gtk.ComboBoxText.remove].
-//
-// If the `GtkComboBoxText` contains an entry (via the
-// [property@Gtk.ComboBox:has-entry] property), its contents can be retrieved
-// using [method@Gtk.ComboBoxText.get_active_text].
-//
-// You should not call [method@Gtk.ComboBox.set_model] or attempt to pack more
-// cells into this combo box via its [interface@Gtk.CellLayout] interface.
+// You should not call gtk_combo_box_set_model() or attempt to pack more cells
+// into this combo box via its GtkCellLayout interface.
 //
 //
 // GtkComboBoxText as GtkBuildable
 //
-// The `GtkComboBoxText` implementation of the `GtkBuildable` interface supports
+// The GtkComboBoxText implementation of the GtkBuildable interface supports
 // adding items directly using the <items> element and specifying <item>
 // elements for each item. Each <item> element can specify the “id”
 // corresponding to the appended text and also supports the regular translation
 // attributes “translatable”, “context” and “comments”.
 //
-// Here is a UI definition fragment specifying `GtkComboBoxText` items: “`xml
-// <object class="GtkComboBoxText"> <items> <item translatable="yes"
-// id="factory">Factory</item> <item translatable="yes" id="home">Home</item>
-// <item translatable="yes" id="subway">Subway</item> </items> </object> “`
+// Here is a UI definition fragment specifying GtkComboBoxText items:
 //
+//    <object class="GtkComboBoxText">
+//      <items>
+//        <item translatable="yes" id="factory">Factory</item>
+//        <item translatable="yes" id="home">Home</item>
+//        <item translatable="yes" id="subway">Subway</item>
+//      </items>
+//    </object>
 //
 // CSS nodes
 //
-// “` combobox ╰── box.linked ├── entry.combo ├── button.combo ╰── window.popup
-// “`
+//    combobox
+//    ╰── box.linked
+//        ├── entry.combo
+//        ├── button.combo
+//        ╰── window.popup
 //
-// `GtkComboBoxText` has a single CSS node with name combobox. It adds the style
+// GtkComboBoxText has a single CSS node with name combobox. It adds the style
 // class .combo to the main CSS nodes of its entry and button children, and the
 // .linked class to the node of its internal box.
 type ComboBoxText interface {
@@ -8172,50 +8051,45 @@ type ComboBoxText interface {
 	CellLayout
 	ConstraintTarget
 
-	// Append appends @text to the list of strings stored in @combo_box.
+	// Append appends @text to the list of strings stored in @combo_box. If @id
+	// is non-nil then it is used as the ID of the row.
 	//
-	// If @id is non-nil then it is used as the ID of the row.
-	//
-	// This is the same as calling [method@Gtk.ComboBoxText.insert] with a
-	// position of -1.
-	Append(iD string, text string)
+	// This is the same as calling gtk_combo_box_text_insert() with a position
+	// of -1.
+	Append(id string, text string)
 	// AppendText appends @text to the list of strings stored in @combo_box.
 	//
-	// This is the same as calling [method@Gtk.ComboBoxText.insert_text] with a
+	// This is the same as calling gtk_combo_box_text_insert_text() with a
 	// position of -1.
 	AppendText(text string)
-	// ActiveText returns the currently active string in @combo_box.
-	//
-	// If no row is currently selected, nil is returned. If @combo_box contains
-	// an entry, this function will return its contents (which will not
-	// necessarily be an item from the list).
+	// ActiveText returns the currently active string in @combo_box, or nil if
+	// none is selected. If @combo_box contains an entry, this function will
+	// return its contents (which will not necessarily be an item from the
+	// list).
 	ActiveText() string
 	// Insert inserts @text at @position in the list of strings stored in
-	// @combo_box.
-	//
-	// If @id is non-nil then it is used as the ID of the row. See
-	// [property@Gtk.ComboBox:id-column].
+	// @combo_box. If @id is non-nil then it is used as the ID of the row. See
+	// ComboBox:id-column.
 	//
 	// If @position is negative then @text is appended.
-	Insert(position int, iD string, text string)
+	Insert(position int, id string, text string)
 	// InsertText inserts @text at @position in the list of strings stored in
 	// @combo_box.
 	//
 	// If @position is negative then @text is appended.
 	//
-	// This is the same as calling [method@Gtk.ComboBoxText.insert] with a nil
-	// ID string.
+	// This is the same as calling gtk_combo_box_text_insert() with a nil ID
+	// string.
 	InsertText(position int, text string)
-	// Prepend prepends @text to the list of strings stored in @combo_box.
+	// Prepend prepends @text to the list of strings stored in @combo_box. If
+	// @id is non-nil then it is used as the ID of the row.
 	//
-	// If @id is non-nil then it is used as the ID of the row.
-	//
-	// This is the same as calling [method@Gtk.ComboBoxText.insert] with a
-	// position of 0.
-	Prepend(iD string, text string)
+	// This is the same as calling gtk_combo_box_text_insert() with a position
+	// of 0.
+	Prepend(id string, text string)
 	// PrependText prepends @text to the list of strings stored in @combo_box.
 	//
-	// This is the same as calling [method@Gtk.ComboBoxText.insert_text] with a
+	// This is the same as calling gtk_combo_box_text_insert_text() with a
 	// position of 0.
 	PrependText(text string)
 	// Remove removes the string at @position from @combo_box.
@@ -8258,40 +8132,41 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 // NewComboBoxText constructs a class ComboBoxText.
 func NewComboBoxText() ComboBoxText {
 	var cret C.GtkComboBoxText
-	var goret ComboBoxText
 
 	cret = C.gtk_combo_box_text_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+	var comboBoxText ComboBoxText
 
-	return goret
+	comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+
+	return comboBoxText
 }
 
 // NewComboBoxTextWithEntry constructs a class ComboBoxText.
 func NewComboBoxTextWithEntry() ComboBoxText {
 	var cret C.GtkComboBoxText
-	var goret ComboBoxText
 
 	cret = C.gtk_combo_box_text_new_with_entry()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+	var comboBoxText ComboBoxText
 
-	return goret
+	comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ComboBoxText)
+
+	return comboBoxText
 }
 
-// Append appends @text to the list of strings stored in @combo_box.
+// Append appends @text to the list of strings stored in @combo_box. If @id
+// is non-nil then it is used as the ID of the row.
 //
-// If @id is non-nil then it is used as the ID of the row.
-//
-// This is the same as calling [method@Gtk.ComboBoxText.insert] with a
-// position of -1.
-func (c comboBoxText) Append(iD string, text string) {
+// This is the same as calling gtk_combo_box_text_insert() with a position
+// of -1.
+func (c comboBoxText) Append(id string, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 *C.char
 	var arg2 *C.char
 
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(iD))
+	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg2))
@@ -8301,7 +8176,7 @@ func (c comboBoxText) Append(iD string, text string) {
 
 // AppendText appends @text to the list of strings stored in @combo_box.
 //
-// This is the same as calling [method@Gtk.ComboBoxText.insert_text] with a
+// This is the same as calling gtk_combo_box_text_insert_text() with a
 // position of -1.
 func (c comboBoxText) AppendText(text string) {
 	var arg0 *C.GtkComboBoxText
@@ -8314,35 +8189,33 @@ func (c comboBoxText) AppendText(text string) {
 	C.gtk_combo_box_text_append_text(arg0, arg1)
 }
 
-// ActiveText returns the currently active string in @combo_box.
-//
-// If no row is currently selected, nil is returned. If @combo_box contains
-// an entry, this function will return its contents (which will not
-// necessarily be an item from the list).
+// ActiveText returns the currently active string in @combo_box, or nil if
+// none is selected. If @combo_box contains an entry, this function will
+// return its contents (which will not necessarily be an item from the
+// list).
 func (c comboBoxText) ActiveText() string {
 	var arg0 *C.GtkComboBoxText
 
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gtk_combo_box_text_get_active_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Insert inserts @text at @position in the list of strings stored in
-// @combo_box.
-//
-// If @id is non-nil then it is used as the ID of the row. See
-// [property@Gtk.ComboBox:id-column].
+// @combo_box. If @id is non-nil then it is used as the ID of the row. See
+// ComboBox:id-column.
 //
 // If @position is negative then @text is appended.
-func (c comboBoxText) Insert(position int, iD string, text string) {
+func (c comboBoxText) Insert(position int, id string, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 C.int
 	var arg2 *C.char
@@ -8350,7 +8223,7 @@ func (c comboBoxText) Insert(position int, iD string, text string) {
 
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
 	arg1 = C.int(position)
-	arg2 = (*C.char)(C.CString(iD))
+	arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg3))
@@ -8363,8 +8236,8 @@ func (c comboBoxText) Insert(position int, iD string, text string) {
 //
 // If @position is negative then @text is appended.
 //
-// This is the same as calling [method@Gtk.ComboBoxText.insert] with a nil
-// ID string.
+// This is the same as calling gtk_combo_box_text_insert() with a nil ID
+// string.
 func (c comboBoxText) InsertText(position int, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 C.int
@@ -8378,19 +8251,18 @@ func (c comboBoxText) InsertText(position int, text string) {
 	C.gtk_combo_box_text_insert_text(arg0, arg1, arg2)
 }
 
-// Prepend prepends @text to the list of strings stored in @combo_box.
+// Prepend prepends @text to the list of strings stored in @combo_box. If
+// @id is non-nil then it is used as the ID of the row.
 //
-// If @id is non-nil then it is used as the ID of the row.
-//
-// This is the same as calling [method@Gtk.ComboBoxText.insert] with a
-// position of 0.
-func (c comboBoxText) Prepend(iD string, text string) {
+// This is the same as calling gtk_combo_box_text_insert() with a position
+// of 0.
+func (c comboBoxText) Prepend(id string, text string) {
 	var arg0 *C.GtkComboBoxText
 	var arg1 *C.char
 	var arg2 *C.char
 
 	arg0 = (*C.GtkComboBoxText)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(iD))
+	arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg2))
@@ -8400,7 +8272,7 @@ func (c comboBoxText) Prepend(iD string, text string) {
 
 // PrependText prepends @text to the list of strings stored in @combo_box.
 //
-// This is the same as calling [method@Gtk.ComboBoxText.insert_text] with a
+// This is the same as calling gtk_combo_box_text_insert_text() with a
 // position of 0.
 func (c comboBoxText) PrependText(text string) {
 	var arg0 *C.GtkComboBoxText
@@ -8433,58 +8305,51 @@ func (c comboBoxText) RemoveAll() {
 	C.gtk_combo_box_text_remove_all(arg0)
 }
 
-// EntryCompletion: `GtkEntryCompletion` is an auxiliary object to provide
-// completion functionality for `GtkEntry`.
-//
-// It implements the [iface@Gtk.CellLayout] interface, to allow the user to add
-// extra cells to the `GtkTreeView` with completion matches.
+// EntryCompletion is an auxiliary object to be used in conjunction with Entry
+// to provide the completion functionality. It implements the CellLayout
+// interface, to allow the user to add extra cells to the TreeView with
+// completion matches.
 //
 // “Completion functionality” means that when the user modifies the text in the
-// entry, `GtkEntryCompletion` checks which rows in the model match the current
+// entry, EntryCompletion checks which rows in the model match the current
 // content of the entry, and displays a list of matches. By default, the
 // matching is done by comparing the entry text case-insensitively against the
-// text column of the model (see [method@Gtk.EntryCompletion.set_text_column]),
-// but this can be overridden with a custom match function (see
-// [method@Gtk.EntryCompletion.set_match_func]).
+// text column of the model (see gtk_entry_completion_set_text_column()), but
+// this can be overridden with a custom match function (see
+// gtk_entry_completion_set_match_func()).
 //
 // When the user selects a completion, the content of the entry is updated. By
 // default, the content of the entry is replaced by the text column of the
 // model, but this can be overridden by connecting to the
-// [signal@Gtk.EntryCompletion::match-selected] signal and updating the entry in
-// the signal handler. Note that you should return true from the signal handler
-// to suppress the default behaviour.
+// EntryCompletion::match-selected signal and updating the entry in the signal
+// handler. Note that you should return true from the signal handler to suppress
+// the default behaviour.
 //
-// To add completion functionality to an entry, use
-// [method@Gtk.Entry.set_completion].
+// To add completion functionality to an entry, use gtk_entry_set_completion().
 //
-// `GtkEntryCompletion` uses a [class@Gtk.TreeModelFilter] model to represent
-// the subset of the entire model that is currently matching. While the
-// `GtkEntryCompletion` signals [signal@Gtk.EntryCompletion::match-selected] and
-// [signal@Gtk.EntryCompletion::cursor-on-match] take the original model and an
-// iter pointing to that model as arguments, other callbacks and signals (such
-// as `GtkCellLayoutDataFunc` or [signal@Gtk.CellArea::apply-attributes)] will
-// generally take the filter model as argument. As long as you are only calling
-// [method@Gtk.TreeModel.get], this will make no difference to you. If for some
-// reason, you need the original model, use
-// [method@Gtk.TreeModelFilter.get_model]. Don’t forget to use
-// [method@Gtk.TreeModelFilter.convert_iter_to_child_iter] to obtain a matching
-// iter.
+// GtkEntryCompletion uses a TreeModelFilter model to represent the subset of
+// the entire model that is currently matching. While the GtkEntryCompletion
+// signals EntryCompletion::match-selected and EntryCompletion::cursor-on-match
+// take the original model and an iter pointing to that model as arguments,
+// other callbacks and signals (such as CellLayoutDataFuncs or
+// CellArea::apply-attributes) will generally take the filter model as argument.
+// As long as you are only calling gtk_tree_model_get(), this will make no
+// difference to you. If for some reason, you need the original model, use
+// gtk_tree_model_filter_get_model(). Don’t forget to use
+// gtk_tree_model_filter_convert_iter_to_child_iter() to obtain a matching iter.
 type EntryCompletion interface {
 	gextras.Objector
 	Buildable
 	CellLayout
 
 	// Complete requests a completion operation, or in other words a refiltering
-	// of the current list with completions, using the current key.
-	//
-	// The completion list view will be updated accordingly.
+	// of the current list with completions, using the current key. The
+	// completion list view will be updated accordingly.
 	Complete()
 	// ComputePrefix computes the common prefix that is shared by all rows in
-	// @completion that start with @key.
-	//
-	// If no row matches @key, nil will be returned. Note that a text column
-	// must have been set for this function to work, see
-	// [method@Gtk.EntryCompletion.set_text_column] for details.
+	// @completion that start with @key. If no row matches @key, nil will be
+	// returned. Note that a text column must have been set for this function to
+	// work, see gtk_entry_completion_set_text_column() for details.
 	ComputePrefix(key string) string
 	// CompletionPrefix: get the original text entered by the user that
 	// triggered the completion or nil if there’s no completion ongoing.
@@ -8498,8 +8363,7 @@ type EntryCompletion interface {
 	InlineSelection() bool
 	// MinimumKeyLength returns the minimum key length as set for @completion.
 	MinimumKeyLength() int
-	// Model returns the model the `GtkEntryCompletion` is using as data source.
-	//
+	// Model returns the model the EntryCompletion is using as data source.
 	// Returns nil if the model is unset.
 	Model() TreeModel
 	// PopupCompletion returns whether the completions should be presented in a
@@ -8522,22 +8386,18 @@ type EntryCompletion interface {
 	// SetInlineSelection sets whether it is possible to cycle through the
 	// possible completions inside the entry.
 	SetInlineSelection(inlineSelection bool)
-	// SetMatchFunc sets the match function for @completion to be @func.
-	//
-	// The match function is used to determine if a row should or should not be
-	// in the completion list.
+	// SetMatchFunc sets the match function for @completion to be @func. The
+	// match function is used to determine if a row should or should not be in
+	// the completion list.
 	SetMatchFunc()
 	// SetMinimumKeyLength requires the length of the search key for @completion
-	// to be at least @length.
-	//
-	// This is useful for long lists, where completing using a small key takes a
-	// lot of time and will come up with meaningless results anyway (ie, a too
-	// large dataset).
+	// to be at least @length. This is useful for long lists, where completing
+	// using a small key takes a lot of time and will come up with meaningless
+	// results anyway (ie, a too large dataset).
 	SetMinimumKeyLength(length int)
-	// SetModel sets the model for a `GtkEntryCompletion`.
-	//
-	// If @completion already has a model set, it will remove it before setting
-	// the new model. If model is nil, then it will unset the model.
+	// SetModel sets the model for a EntryCompletion. If @completion already has
+	// a model set, it will remove it before setting the new model. If model is
+	// nil, then it will unset the model.
 	SetModel(model TreeModel)
 	// SetPopupCompletion sets whether the completions should be presented in a
 	// popup window.
@@ -8546,22 +8406,20 @@ type EntryCompletion interface {
 	// to be the same width as the entry.
 	SetPopupSetWidth(popupSetWidth bool)
 	// SetPopupSingleMatch sets whether the completion popup window will appear
-	// even if there is only a single match.
-	//
-	// You may want to set this to false if you are using
-	// [property@Gtk.EntryCompletion:inline-completion].
+	// even if there is only a single match. You may want to set this to false
+	// if you are using [inline
+	// completion][GtkEntryCompletion--inline-completion].
 	SetPopupSingleMatch(popupSingleMatch bool)
 	// SetTextColumn: convenience function for setting up the most used case of
-	// this code: a completion list with just strings.
+	// this code: a completion list with just strings. This function will set up
+	// @completion to have a list displaying all (and just) strings in the
+	// completion list, and to get those strings from @column in the model of
+	// @completion.
 	//
-	// This function will set up @completion to have a list displaying all (and
-	// just) strings in the completion list, and to get those strings from
-	// @column in the model of @completion.
-	//
-	// This functions creates and adds a `GtkCellRendererText` for the selected
+	// This functions creates and adds a CellRendererText for the selected
 	// column. If you need to set the text column, but don't want the cell
-	// renderer, use g_object_set() to set the
-	// [property@Gtk.EntryCompletion:text-column] property directly.
+	// renderer, use g_object_set() to set the EntryCompletion:text-column
+	// property directly.
 	SetTextColumn(column int)
 }
 
@@ -8592,14 +8450,15 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 
 // NewEntryCompletion constructs a class EntryCompletion.
 func NewEntryCompletion() EntryCompletion {
-	cret := new(C.GtkEntryCompletion)
-	var goret EntryCompletion
+	var cret C.GtkEntryCompletion
 
 	cret = C.gtk_entry_completion_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+	var entryCompletion EntryCompletion
 
-	return goret
+	entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+
+	return entryCompletion
 }
 
 // NewEntryCompletionWithArea constructs a class EntryCompletion.
@@ -8608,20 +8467,20 @@ func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
 
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
-	cret := new(C.GtkEntryCompletion)
-	var goret EntryCompletion
+	var cret C.GtkEntryCompletion
 
 	cret = C.gtk_entry_completion_new_with_area(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+	var entryCompletion EntryCompletion
 
-	return goret
+	entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryCompletion)
+
+	return entryCompletion
 }
 
 // Complete requests a completion operation, or in other words a refiltering
-// of the current list with completions, using the current key.
-//
-// The completion list view will be updated accordingly.
+// of the current list with completions, using the current key. The
+// completion list view will be updated accordingly.
 func (c entryCompletion) Complete() {
 	var arg0 *C.GtkEntryCompletion
 
@@ -8631,11 +8490,9 @@ func (c entryCompletion) Complete() {
 }
 
 // ComputePrefix computes the common prefix that is shared by all rows in
-// @completion that start with @key.
-//
-// If no row matches @key, nil will be returned. Note that a text column
-// must have been set for this function to work, see
-// [method@Gtk.EntryCompletion.set_text_column] for details.
+// @completion that start with @key. If no row matches @key, nil will be
+// returned. Note that a text column must have been set for this function to
+// work, see gtk_entry_completion_set_text_column() for details.
 func (c entryCompletion) ComputePrefix(key string) string {
 	var arg0 *C.GtkEntryCompletion
 	var arg1 *C.char
@@ -8644,15 +8501,16 @@ func (c entryCompletion) ComputePrefix(key string) string {
 	arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gtk_entry_completion_compute_prefix(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // CompletionPrefix: get the original text entered by the user that
@@ -8663,13 +8521,14 @@ func (c entryCompletion) CompletionPrefix() string {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_entry_completion_get_completion_prefix(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Entry gets the entry @completion has been attached to.
@@ -8679,13 +8538,14 @@ func (c entryCompletion) Entry() Widget {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_entry_completion_get_entry(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // InlineCompletion returns whether the common prefix of the possible
@@ -8696,15 +8556,16 @@ func (c entryCompletion) InlineCompletion() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_completion_get_inline_completion(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // InlineSelection returns true if inline-selection mode is turned on.
@@ -8714,15 +8575,16 @@ func (c entryCompletion) InlineSelection() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_completion_get_inline_selection(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MinimumKeyLength returns the minimum key length as set for @completion.
@@ -8732,17 +8594,17 @@ func (c entryCompletion) MinimumKeyLength() int {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_entry_completion_get_minimum_key_length(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// Model returns the model the `GtkEntryCompletion` is using as data source.
-//
+// Model returns the model the EntryCompletion is using as data source.
 // Returns nil if the model is unset.
 func (c entryCompletion) Model() TreeModel {
 	var arg0 *C.GtkEntryCompletion
@@ -8750,13 +8612,14 @@ func (c entryCompletion) Model() TreeModel {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret TreeModel
 
 	cret = C.gtk_entry_completion_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	var treeModel TreeModel
 
-	return goret
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+
+	return treeModel
 }
 
 // PopupCompletion returns whether the completions should be presented in a
@@ -8767,15 +8630,16 @@ func (c entryCompletion) PopupCompletion() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_completion_get_popup_completion(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PopupSetWidth returns whether the completion popup window will be resized
@@ -8786,15 +8650,16 @@ func (c entryCompletion) PopupSetWidth() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_completion_get_popup_set_width(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PopupSingleMatch returns whether the completion popup window will appear
@@ -8805,15 +8670,16 @@ func (c entryCompletion) PopupSingleMatch() bool {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_entry_completion_get_popup_single_match(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TextColumn returns the column in the model of @completion to get strings
@@ -8824,13 +8690,14 @@ func (c entryCompletion) TextColumn() int {
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_entry_completion_get_text_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // InsertPrefix requests a prefix insertion.
@@ -8870,24 +8737,21 @@ func (c entryCompletion) SetInlineSelection(inlineSelection bool) {
 	C.gtk_entry_completion_set_inline_selection(arg0, arg1)
 }
 
-// SetMatchFunc sets the match function for @completion to be @func.
-//
-// The match function is used to determine if a row should or should not be
-// in the completion list.
+// SetMatchFunc sets the match function for @completion to be @func. The
+// match function is used to determine if a row should or should not be in
+// the completion list.
 func (c entryCompletion) SetMatchFunc() {
 	var arg0 *C.GtkEntryCompletion
 
 	arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	C.gtk_entry_completion_set_match_func(arg0, arg1, arg2, arg3)
+	C.gtk_entry_completion_set_match_func(arg0)
 }
 
 // SetMinimumKeyLength requires the length of the search key for @completion
-// to be at least @length.
-//
-// This is useful for long lists, where completing using a small key takes a
-// lot of time and will come up with meaningless results anyway (ie, a too
-// large dataset).
+// to be at least @length. This is useful for long lists, where completing
+// using a small key takes a lot of time and will come up with meaningless
+// results anyway (ie, a too large dataset).
 func (c entryCompletion) SetMinimumKeyLength(length int) {
 	var arg0 *C.GtkEntryCompletion
 	var arg1 C.int
@@ -8898,10 +8762,9 @@ func (c entryCompletion) SetMinimumKeyLength(length int) {
 	C.gtk_entry_completion_set_minimum_key_length(arg0, arg1)
 }
 
-// SetModel sets the model for a `GtkEntryCompletion`.
-//
-// If @completion already has a model set, it will remove it before setting
-// the new model. If model is nil, then it will unset the model.
+// SetModel sets the model for a EntryCompletion. If @completion already has
+// a model set, it will remove it before setting the new model. If model is
+// nil, then it will unset the model.
 func (c entryCompletion) SetModel(model TreeModel) {
 	var arg0 *C.GtkEntryCompletion
 	var arg1 *C.GtkTreeModel
@@ -8941,10 +8804,9 @@ func (c entryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 }
 
 // SetPopupSingleMatch sets whether the completion popup window will appear
-// even if there is only a single match.
-//
-// You may want to set this to false if you are using
-// [property@Gtk.EntryCompletion:inline-completion].
+// even if there is only a single match. You may want to set this to false
+// if you are using [inline
+// completion][GtkEntryCompletion--inline-completion].
 func (c entryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 	var arg0 *C.GtkEntryCompletion
 	var arg1 C.gboolean
@@ -8958,16 +8820,15 @@ func (c entryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 }
 
 // SetTextColumn: convenience function for setting up the most used case of
-// this code: a completion list with just strings.
+// this code: a completion list with just strings. This function will set up
+// @completion to have a list displaying all (and just) strings in the
+// completion list, and to get those strings from @column in the model of
+// @completion.
 //
-// This function will set up @completion to have a list displaying all (and
-// just) strings in the completion list, and to get those strings from
-// @column in the model of @completion.
-//
-// This functions creates and adds a `GtkCellRendererText` for the selected
+// This functions creates and adds a CellRendererText for the selected
 // column. If you need to set the text column, but don't want the cell
-// renderer, use g_object_set() to set the
-// [property@Gtk.EntryCompletion:text-column] property directly.
+// renderer, use g_object_set() to set the EntryCompletion:text-column
+// property directly.
 func (c entryCompletion) SetTextColumn(column int) {
 	var arg0 *C.GtkEntryCompletion
 	var arg1 C.int
@@ -8978,79 +8839,39 @@ func (c entryCompletion) SetTextColumn(column int) {
 	C.gtk_entry_completion_set_text_column(arg0, arg1)
 }
 
-// Expander: `GtkExpander` allows the user to reveal its child by clicking on an
-// expander triangle.
-//
-// !An example GtkExpander (expander.png)
-//
-// This is similar to the triangles used in a `GtkTreeView`.
+// Expander: a Expander allows the user to hide or show its child by clicking on
+// an expander triangle similar to the triangles used in a TreeView.
 //
 // Normally you use an expander as you would use a frame; you create the child
-// widget and use [method@Gtk.Expander.set_child] to add it to the expander.
-// When the expander is toggled, it will take care of showing and hiding the
-// child automatically.
+// widget and use gtk_expander_set_child() to add it to the expander. When the
+// expander is toggled, it will take care of showing and hiding the child
+// automatically.
 //
 //
 // Special Usage
 //
 // There are situations in which you may prefer to show and hide the expanded
 // widget yourself, such as when you want to actually create the widget at
-// expansion time. In this case, create a `GtkExpander` but do not add a child
-// to it. The expander widget has an [property@Gtk.Expander:expanded[ property
-// which can be used to monitor its expansion state. You should watch this
-// property with a signal connection as follows:
+// expansion time. In this case, create a Expander but do not add a child to it.
+// The expander widget has an Expander:expanded property which can be used to
+// monitor its expansion state. You should watch this property with a signal
+// connection as follows:
 //
-// “`c static void expander_callback (GObject *object, GParamSpec *param_spec,
-// gpointer user_data) { GtkExpander *expander;
+//    expander
+//    ╰── box
+//        ├── title
+//        │   ├── arrow
+//        │   ╰── <label widget>
+//        ╰── <child>
 //
-//    expander = GTK_EXPANDER (object);
-//
-//    if (gtk_expander_get_expanded (expander))
-//      {
-//        // Show or create widgets
-//      }
-//    else
-//      {
-//        // Hide or destroy widgets
-//      }
-//
-// }
-//
-// static void create_expander (void) { GtkWidget *expander =
-// gtk_expander_new_with_mnemonic ("_More Options"); g_signal_connect (expander,
-// "notify::expanded", G_CALLBACK (expander_callback), NULL);
-//
-//    // ...
-//
-// } “`
-//
-//
-// GtkExpander as GtkBuildable
-//
-// The `GtkExpander` implementation of the `GtkBuildable` interface supports
-// placing a child in the label position by specifying “label” as the “type”
-// attribute of a <child> element. A normal content child can be specified
-// without specifying a <child> type attribute.
-//
-// An example of a UI definition fragment with GtkExpander:
-//
-// “`xml <object class="GtkExpander"> <child type="label"> <object
-// class="GtkLabel" id="expander-label"/> </child> <child> <object
-// class="GtkEntry" id="expander-content"/> </child> </object> “`
-//
-//
-// CSS nodes
-//
-// “` expander ╰── box ├── title │ ├── arrow │ ╰── <label widget> ╰── <child> “`
-//
-// `GtkExpander` has three CSS nodes, the main node with the name expander, a
+// GtkExpander has three CSS nodes, the main node with the name expander, a
 // subnode with name title and node below it with name arrow. The arrow of an
 // expander that is showing its child gets the :checked pseudoclass added to it.
 //
 //
 // Accessibility
 //
-// `GtkExpander` uses the GTK_ACCESSIBLE_ROLE_BUTTON role.
+// GtkExpander uses the K_ACCESSIBLE_ROLE_BUTTON role.
 type Expander interface {
 	Widget
 	Accessible
@@ -9059,50 +8880,58 @@ type Expander interface {
 
 	// Child gets the child widget of @expander.
 	Child() Widget
-	// Expanded queries a Expander and returns its current state.
+	// Expanded queries a Expander and returns its current state. Returns true
+	// if the child widget is revealed.
 	//
-	// Returns true if the child widget is revealed.
+	// See gtk_expander_set_expanded().
 	Expanded() bool
-	// Label fetches the text from a label widget.
+	// Label fetches the text from a label widget including any embedded
+	// underlines indicating mnemonics and Pango markup, as set by
+	// gtk_expander_set_label(). If the label text has not been set the return
+	// value will be nil. This will be the case if you create an empty button
+	// with gtk_button_new() to use as a container.
 	//
-	// This is including any embedded underlines indicating mnemonics and Pango
-	// markup, as set by [method@Gtk.Expander.set_label]. If the label text has
-	// not been set the return value will be nil. This will be the case if you
-	// create an empty button with gtk_button_new() to use as a container.
+	// Note that this function behaved differently in versions prior to 2.14 and
+	// used to return the label text stripped of embedded underlines indicating
+	// mnemonics and Pango markup. This problem can be avoided by fetching the
+	// label text directly from the label widget.
 	Label() string
-	// LabelWidget retrieves the label widget for the frame.
+	// LabelWidget retrieves the label widget for the frame. See
+	// gtk_expander_set_label_widget().
 	LabelWidget() Widget
 	// ResizeToplevel returns whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	ResizeToplevel() bool
-	// UseMarkup returns whether the label’s text is interpreted as Pango
-	// markup.
+	// UseMarkup returns whether the label’s text is interpreted as marked up
+	// with the [Pango text markup language][PangoMarkupFormat]. See
+	// gtk_expander_set_use_markup().
 	UseMarkup() bool
-	// UseUnderline returns whether an underline in the text indicates a
-	// mnemonic.
+	// UseUnderline returns whether an embedded underline in the expander label
+	// indicates a mnemonic. See gtk_expander_set_use_underline().
 	UseUnderline() bool
 	// SetChild sets the child widget of @expander.
 	SetChild(child Widget)
-	// SetExpanded sets the state of the expander.
-	//
-	// Set to true, if you want the child widget to be revealed, and false if
-	// you want the child widget to be hidden.
+	// SetExpanded sets the state of the expander. Set to true, if you want the
+	// child widget to be revealed, and false if you want the child widget to be
+	// hidden.
 	SetExpanded(expanded bool)
 	// SetLabel sets the text of the label of the expander to @label.
 	//
 	// This will also clear any previously set labels.
 	SetLabel(label string)
-	// SetLabelWidget: set the label widget for the expander.
-	//
-	// This is the widget that will appear embedded alongside the expander
-	// arrow.
+	// SetLabelWidget: set the label widget for the expander. This is the widget
+	// that will appear embedded alongside the expander arrow.
 	SetLabelWidget(labelWidget Widget)
 	// SetResizeToplevel sets whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	SetResizeToplevel(resizeToplevel bool)
-	// SetUseMarkup sets whether the text of the label contains Pango markup.
+	// SetUseMarkup sets whether the text of the label contains markup in
+	// [Pango’s text markup language][PangoMarkupFormat]. See
+	// gtk_label_set_markup().
 	SetUseMarkup(useMarkup bool)
-	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
+	// SetUseUnderline: if true, an underline in the text of the expander label
+	// indicates the next character should be used for the mnemonic accelerator
+	// key.
 	SetUseUnderline(useUnderline bool)
 }
 
@@ -9141,13 +8970,14 @@ func NewExpander(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret Expander
 
 	cret = C.gtk_expander_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	var expander Expander
 
-	return goret
+	expander = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+
+	return expander
 }
 
 // NewExpanderWithMnemonic constructs a class Expander.
@@ -9158,13 +8988,14 @@ func NewExpanderWithMnemonic(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret Expander
 
 	cret = C.gtk_expander_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	var expander Expander
 
-	return goret
+	expander = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+
+	return expander
 }
 
 // Child gets the child widget of @expander.
@@ -9174,70 +9005,80 @@ func (e expander) Child() Widget {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_expander_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Expanded queries a Expander and returns its current state.
+// Expanded queries a Expander and returns its current state. Returns true
+// if the child widget is revealed.
 //
-// Returns true if the child widget is revealed.
+// See gtk_expander_set_expanded().
 func (e expander) Expanded() bool {
 	var arg0 *C.GtkExpander
 
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_expanded(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Label fetches the text from a label widget.
+// Label fetches the text from a label widget including any embedded
+// underlines indicating mnemonics and Pango markup, as set by
+// gtk_expander_set_label(). If the label text has not been set the return
+// value will be nil. This will be the case if you create an empty button
+// with gtk_button_new() to use as a container.
 //
-// This is including any embedded underlines indicating mnemonics and Pango
-// markup, as set by [method@Gtk.Expander.set_label]. If the label text has
-// not been set the return value will be nil. This will be the case if you
-// create an empty button with gtk_button_new() to use as a container.
+// Note that this function behaved differently in versions prior to 2.14 and
+// used to return the label text stripped of embedded underlines indicating
+// mnemonics and Pango markup. This problem can be avoided by fetching the
+// label text directly from the label widget.
 func (e expander) Label() string {
 	var arg0 *C.GtkExpander
 
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_expander_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// LabelWidget retrieves the label widget for the frame.
+// LabelWidget retrieves the label widget for the frame. See
+// gtk_expander_set_label_widget().
 func (e expander) LabelWidget() Widget {
 	var arg0 *C.GtkExpander
 
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_expander_get_label_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ResizeToplevel returns whether the expander will resize the toplevel
@@ -9248,53 +9089,57 @@ func (e expander) ResizeToplevel() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_resize_toplevel(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// UseMarkup returns whether the label’s text is interpreted as Pango
-// markup.
+// UseMarkup returns whether the label’s text is interpreted as marked up
+// with the [Pango text markup language][PangoMarkupFormat]. See
+// gtk_expander_set_use_markup().
 func (e expander) UseMarkup() bool {
 	var arg0 *C.GtkExpander
 
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_use_markup(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// UseUnderline returns whether an underline in the text indicates a
-// mnemonic.
+// UseUnderline returns whether an embedded underline in the expander label
+// indicates a mnemonic. See gtk_expander_set_use_underline().
 func (e expander) UseUnderline() bool {
 	var arg0 *C.GtkExpander
 
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetChild sets the child widget of @expander.
@@ -9308,10 +9153,9 @@ func (e expander) SetChild(child Widget) {
 	C.gtk_expander_set_child(arg0, arg1)
 }
 
-// SetExpanded sets the state of the expander.
-//
-// Set to true, if you want the child widget to be revealed, and false if
-// you want the child widget to be hidden.
+// SetExpanded sets the state of the expander. Set to true, if you want the
+// child widget to be revealed, and false if you want the child widget to be
+// hidden.
 func (e expander) SetExpanded(expanded bool) {
 	var arg0 *C.GtkExpander
 	var arg1 C.gboolean
@@ -9338,10 +9182,8 @@ func (e expander) SetLabel(label string) {
 	C.gtk_expander_set_label(arg0, arg1)
 }
 
-// SetLabelWidget: set the label widget for the expander.
-//
-// This is the widget that will appear embedded alongside the expander
-// arrow.
+// SetLabelWidget: set the label widget for the expander. This is the widget
+// that will appear embedded alongside the expander arrow.
 func (e expander) SetLabelWidget(labelWidget Widget) {
 	var arg0 *C.GtkExpander
 	var arg1 *C.GtkWidget
@@ -9366,7 +9208,9 @@ func (e expander) SetResizeToplevel(resizeToplevel bool) {
 	C.gtk_expander_set_resize_toplevel(arg0, arg1)
 }
 
-// SetUseMarkup sets whether the text of the label contains Pango markup.
+// SetUseMarkup sets whether the text of the label contains markup in
+// [Pango’s text markup language][PangoMarkupFormat]. See
+// gtk_label_set_markup().
 func (e expander) SetUseMarkup(useMarkup bool) {
 	var arg0 *C.GtkExpander
 	var arg1 C.gboolean
@@ -9379,7 +9223,9 @@ func (e expander) SetUseMarkup(useMarkup bool) {
 	C.gtk_expander_set_use_markup(arg0, arg1)
 }
 
-// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
+// SetUseUnderline: if true, an underline in the text of the expander label
+// indicates the next character should be used for the mnemonic accelerator
+// key.
 func (e expander) SetUseUnderline(useUnderline bool) {
 	var arg0 *C.GtkExpander
 	var arg1 C.gboolean
@@ -9392,43 +9238,135 @@ func (e expander) SetUseUnderline(useUnderline bool) {
 	C.gtk_expander_set_use_underline(arg0, arg1)
 }
 
-// FileChooserDialog: `GtkFileChooserDialog` is a dialog suitable for use with
-// “File Open” or “File Save” commands.
+// FileChooserDialog is a dialog box suitable for use with “File Open” or “File
+// Save” commands. This widget works by putting a FileChooserWidget inside a
+// Dialog. It exposes the FileChooser interface, so you can use all of the
+// FileChooser functions on the file chooser dialog as well as those for Dialog.
 //
-// !An example GtkFileChooserDialog (filechooser.png)
-//
-// This widget works by putting a [class@Gtk.FileChooserWidget] inside a
-// [class@Gtk.Dialog]. It exposes the [iface@Gtk.FileChooser] interface, so you
-// can use all of the [iface@Gtk.FileChooser] functions on the file chooser
-// dialog as well as those for [class@Gtk.Dialog].
-//
-// Note that `GtkFileChooserDialog` does not have any methods of its own.
-// Instead, you should use the functions that work on a [iface@Gtk.FileChooser].
+// Note that FileChooserDialog does not have any methods of its own. Instead,
+// you should use the functions that work on a FileChooser.
 //
 // If you want to integrate well with the platform you should use the
-// [class@Gtk.FileChooserNative] API, which will use a platform-specific dialog
-// if available and fall back to `GtkFileChooserDialog` otherwise.
+// FileChooserNative API, which will use a platform-specific dialog if available
+// and fall back to GtkFileChooserDialog otherwise.
 //
 //
 // Typical usage
 //
-// In the simplest of cases, you can the following code to use
-// `GtkFileChooserDialog` to select a file for opening:
+// In the simplest of cases, you can the following code to use FileChooserDialog
+// to select a file for opening:
 //
-// “`c static void on_open_response (GtkDialog *dialog, int response) { if
-// (response == GTK_RESPONSE_ACCEPT) { GtkFileChooser *chooser =
-// GTK_FILE_CHOOSER (dialog);
+//    static void
+//    on_open_response (GtkDialog *dialog,
+//                      int        response)
+//    {
+//      if (response == GTK_RESPONSE_ACCEPT)
+//        {
+//          GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
 //
-//        g_autoptr(GFile) file = gtk_file_chooser_get_file (chooser);
+//          g_autoptr(GFile) file = gtk_file_chooser_get_file (chooser);
 //
-//        open_file (file);
-//      }
+//          open_file (file);
+//        }
 //
-//    gtk_window_destroy (GTK_WINDOW (dialog));
+//      gtk_window_destroy (GTK_WINDOW (dialog));
+//    }
 //
-// }
+//      // ...
+//      GtkWidget *dialog;
+//      GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
 //
-//    // ...
+//      dialog = gtk_file_chooser_dialog_new ("Open File",
+//                                            parent_window,
+//                                            action,
+//                                            _("_Cancel"),
+//                                            GTK_RESPONSE_CANCEL,
+//                                            _("_Open"),
+//                                            GTK_RESPONSE_ACCEPT,
+//                                            NULL);
+//
+//      gtk_widget_show (dialog);
+//
+//      g_signal_connect (dialog, "response",
+//                        G_CALLBACK (on_open_response),
+//                        NULL);
+//
+// To use a dialog for saving, you can use this:
+//
+//    static void
+//    on_save_response (GtkDialog *dialog,
+//                      int        response)
+//    {
+//      if (response == GTK_RESPONSE_ACCEPT)
+//        {
+//          GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+//
+//          g_autoptr(GFile) file = gtk_file_chooser_get_file (chooser);
+//
+//          save_to_file (file);
+//        }
+//
+//      gtk_window_destroy (GTK_WINDOW (dialog));
+//    }
+//
+//      // ...
+//      GtkWidget *dialog;
+//      GtkFileChooser *chooser;
+//      GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
+//
+//      dialog = gtk_file_chooser_dialog_new ("Save File",
+//                                            parent_window,
+//                                            action,
+//                                            _("_Cancel"),
+//                                            GTK_RESPONSE_CANCEL,
+//                                            _("_Save"),
+//                                            GTK_RESPONSE_ACCEPT,
+//                                            NULL);
+//      chooser = GTK_FILE_CHOOSER (dialog);
+//
+//      if (user_edited_a_new_document)
+//        gtk_file_chooser_set_current_name (chooser, _("Untitled document"));
+//      else
+//        gtk_file_chooser_set_file (chooser, existing_filename);
+//
+//      gtk_widget_show (dialog);
+//
+//      g_signal_connect (dialog, "response",
+//                        G_CALLBACK (on_save_response),
+//                        NULL);
+//
+//
+// Setting up a file chooser dialog
+//
+// There are various cases in which you may need to use a FileChooserDialog:
+//
+// - To select a file for opening. Use K_FILE_CHOOSER_ACTION_OPEN.
+//
+// - To save a file for the first time. Use K_FILE_CHOOSER_ACTION_SAVE, and
+// suggest a name such as “Untitled” with gtk_file_chooser_set_current_name().
+//
+// - To save a file under a different name. Use K_FILE_CHOOSER_ACTION_SAVE, and
+// set the existing file with gtk_file_chooser_set_file().
+//
+// - To choose a folder instead of a file. Use
+// K_FILE_CHOOSER_ACTION_SELECT_FOLDER.
+//
+// Note that old versions of the file chooser’s documentation suggested using
+// gtk_file_chooser_set_current_folder() in various situations, with the
+// intention of letting the application suggest a reasonable default folder.
+// This is no longer considered to be a good policy, as now the file chooser is
+// able to make good suggestions on its own. In general, you should only cause
+// the file chooser to show a specific folder when it is appropriate to use
+// gtk_file_chooser_set_file(), i.e. when you are doing a Save As command and
+// you already have a file saved somewhere.
+//
+//
+// Response Codes
+//
+// FileChooserDialog inherits from Dialog, so buttons that go in its action area
+// have response codes such as K_RESPONSE_ACCEPT and K_RESPONSE_CANCEL. For
+// example, you could call gtk_file_chooser_dialog_new() as follows:
+//
 //    GtkWidget *dialog;
 //    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
 //
@@ -9441,111 +9379,22 @@ func (e expander) SetUseUnderline(useUnderline bool) {
 //                                          GTK_RESPONSE_ACCEPT,
 //                                          NULL);
 //
-//    gtk_widget_show (dialog);
-//
-//    g_signal_connect (dialog, "response",
-//                      G_CALLBACK (on_open_response),
-//                      NULL);
-//
-// “`
-//
-// To use a dialog for saving, you can use this:
-//
-// “`c static void on_save_response (GtkDialog *dialog, int response) { if
-// (response == GTK_RESPONSE_ACCEPT) { GtkFileChooser *chooser =
-// GTK_FILE_CHOOSER (dialog);
-//
-//        g_autoptr(GFile) file = gtk_file_chooser_get_file (chooser);
-//
-//        save_to_file (file);
-//      }
-//
-//    gtk_window_destroy (GTK_WINDOW (dialog));
-//
-// }
-//
-//    // ...
-//    GtkWidget *dialog;
-//    GtkFileChooser *chooser;
-//    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SAVE;
-//
-//    dialog = gtk_file_chooser_dialog_new ("Save File",
-//                                          parent_window,
-//                                          action,
-//                                          _("_Cancel"),
-//                                          GTK_RESPONSE_CANCEL,
-//                                          _("_Save"),
-//                                          GTK_RESPONSE_ACCEPT,
-//                                          NULL);
-//    chooser = GTK_FILE_CHOOSER (dialog);
-//
-//    if (user_edited_a_new_document)
-//      gtk_file_chooser_set_current_name (chooser, _("Untitled document"));
-//    else
-//      gtk_file_chooser_set_file (chooser, existing_filename);
-//
-//    gtk_widget_show (dialog);
-//
-//    g_signal_connect (dialog, "response",
-//                      G_CALLBACK (on_save_response),
-//                      NULL);
-//
-// “`
-//
-//
-// Setting up a file chooser dialog
-//
-// There are various cases in which you may need to use a
-// `GtkFileChooserDialog`:
-//
-// - To select a file for opening, use GTK_FILE_CHOOSER_ACTION_OPEN.
-//
-// - To save a file for the first time, use GTK_FILE_CHOOSER_ACTION_SAVE, and
-// suggest a name such as “Untitled” with
-// [method@Gtk.FileChooser.set_current_name].
-//
-// - To save a file under a different name, use GTK_FILE_CHOOSER_ACTION_SAVE,
-// and set the existing file with [method@Gtk.FileChooser.set_file].
-//
-// - To choose a folder instead of a filem use
-// GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
-//
-// In general, you should only cause the file chooser to show a specific folder
-// when it is appropriate to use [method@Gtk,FileChooser.set_file], i.e. when
-// you are doing a “Save As” command and you already have a file saved
-// somewhere.
-//
-//
-// Response Codes
-//
-// `GtkFileChooserDialog` inherits from [class@Gtk.Dialog], so buttons that go
-// in its action area have response codes such as GTK_RESPONSE_ACCEPT and
-// GTK_RESPONSE_CANCEL. For example, you could call
-// [ctor@Gtk.FileChooserDialog.new] as follows:
-//
-// “`c GtkWidget *dialog; GtkFileChooserAction action =
-// GTK_FILE_CHOOSER_ACTION_OPEN;
-//
-// dialog = gtk_file_chooser_dialog_new ("Open File", parent_window, action,
-// _("_Cancel"), GTK_RESPONSE_CANCEL, _("_Open"), GTK_RESPONSE_ACCEPT, NULL); “`
-//
 // This will create buttons for “Cancel” and “Open” that use predefined response
-// identifiers from [enum@Gtk.ResponseType]. For most dialog boxes you can use
-// your own custom response codes rather than the ones in
-// [enum@Gtk.ResponseType], but `GtkFileChooserDialog` assumes that its
-// “accept”-type action, e.g. an “Open” or “Save” button, will have one of the
-// following response codes:
+// identifiers from ResponseType. For most dialog boxes you can use your own
+// custom response codes rather than the ones in ResponseType, but
+// FileChooserDialog assumes that its “accept”-type action, e.g. an “Open” or
+// “Save” button, will have one of the following response codes:
 //
-// - GTK_RESPONSE_ACCEPT - GTK_RESPONSE_OK - GTK_RESPONSE_YES -
-// GTK_RESPONSE_APPLY
+// - K_RESPONSE_ACCEPT - K_RESPONSE_OK - K_RESPONSE_YES - K_RESPONSE_APPLY
 //
-// This is because `GtkFileChooserDialog` must intercept responses and switch to
+// This is because FileChooserDialog must intercept responses and switch to
 // folders if appropriate, rather than letting the dialog terminate — the
 // implementation uses these known response codes to know which responses can be
 // blocked if appropriate.
 //
-// To summarize, make sure you use a predefined response code when you use
-// `GtkFileChooserDialog` to ensure proper operation.
+// To summarize, make sure you use a [predefined response
+// code][gtkfilechooserdialog-responses] when you use FileChooserDialog to
+// ensure proper operation.
 type FileChooserDialog interface {
 	Dialog
 	Accessible
@@ -9592,15 +9441,14 @@ func marshalFileChooserDialog(p uintptr) (interface{}, error) {
 	return WrapFileChooserDialog(obj), nil
 }
 
-// FileChooserWidget: `GtkFileChooserWidget` is a widget for choosing files.
-//
-// It exposes the [iface@Gtk.FileChooser] interface, and you should use the
-// methods of this interface to interact with the widget.
+// FileChooserWidget is a widget for choosing files. It exposes the FileChooser
+// interface, and you should use the methods of this interface to interact with
+// the widget.
 //
 //
 // CSS nodes
 //
-// `GtkFileChooserWidget` has a single CSS node with name filechooser.
+// GtkFileChooserWidget has a single CSS node with name filechooser.
 type FileChooserWidget interface {
 	Widget
 	Accessible
@@ -9645,48 +9493,52 @@ func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
 	arg1 = (C.GtkFileChooserAction)(action)
 
 	var cret C.GtkFileChooserWidget
-	var goret FileChooserWidget
 
 	cret = C.gtk_file_chooser_widget_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserWidget)
+	var fileChooserWidget FileChooserWidget
 
-	return goret
+	fileChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileChooserWidget)
+
+	return fileChooserWidget
 }
 
-// FileFilter: `GtkFileFilter` filters files by name or mime type.
-//
-// `GtkFileFilter` can be used to restrict the files being shown in a
-// `GtkFileChooser`. Files can be filtered based on their name (with
-// [method@Gtk.FileFilter.add_pattern]) or on their mime type (with
-// [method@Gtk.FileFilter.add_mime_type]).
+// FileFilter: a GtkFileFilter can be used to restrict the files being shown in
+// a FileChooser. Files can be filtered based on their name (with
+// gtk_file_filter_add_pattern()) or on their mime type (with
+// gtk_file_filter_add_mime_type()).
 //
 // Filtering by mime types handles aliasing and subclassing of mime types; e.g.
 // a filter for text/plain also matches a file with mime type application/rtf,
-// since application/rtf is a subclass of text/plain. Note that `GtkFileFilter`
+// since application/rtf is a subclass of text/plain. Note that FileFilter
 // allows wildcards for the subtype of a mime type, so you can e.g. filter for
 // image/\*.
 //
-// Normally, file filters are used by adding them to a `GtkFileChooser` (see
-// [method@Gtk.FileChooser.add_filter]), but it is also possible to manually use
-// a file filter on any [class@Gtk.FilterListModel] containing `GFileInfo`
-// objects.
+// Normally, file filters are used by adding them to a FileChooser (see
+// gtk_file_chooser_add_filter()), but it is also possible to manually use a
+// file filter on any FilterListModel containing Info objects.
 //
 //
 // GtkFileFilter as GtkBuildable
 //
-// The `GtkFileFilter` implementation of the `GtkBuildable` interface supports
+// The GtkFileFilter implementation of the GtkBuildable interface supports
 // adding rules using the <mime-types> and <patterns> elements and listing the
 // rules within. Specifying a <mime-type> or <pattern> has the same effect as as
-// calling [method@Gtk.FileFilter.add_mime_type] or
-// [method@Gtk.FileFilter.add_pattern].
+// calling gtk_file_filter_add_mime_type() or gtk_file_filter_add_pattern().
 //
-// An example of a UI definition fragment specifying `GtkFileFilter` rules:
-// “`xml <object class="GtkFileFilter"> <property name="name"
-// translatable="yes">Text and Images</property> <mime-types>
-// <mime-type>text/plain</mime-type> <mime-type>image/ *</mime-type>
-// </mime-types> <patterns> <pattern>*.txt</pattern> <pattern>*.png</pattern>
-// </patterns> </object> “`
+// An example of a UI definition fragment specifying GtkFileFilter rules:
+//
+//    <object class="GtkFileFilter">
+//      <property name="name" translatable="yes">Text and Images</property>
+//      <mime-types>
+//        <mime-type>text/plain</mime-type>
+//        <mime-type>image/ *</mime-type>
+//      </mime-types>
+//      <patterns>
+//        <pattern>*.txt</pattern>
+//        <pattern>*.png</pattern>
+//      </patterns>
+//    </object>
 type FileFilter interface {
 	Filter
 	Buildable
@@ -9698,25 +9550,23 @@ type FileFilter interface {
 	// AddPixbufFormats adds a rule allowing image files in the formats
 	// supported by GdkPixbuf.
 	//
-	// This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for
-	// all the supported mime types.
+	// This is equivalent to calling gtk_file_filter_add_mime_type() for all the
+	// supported mime types.
 	AddPixbufFormats()
-	// Attributes gets the attributes that need to be filled in for the
-	// `GFileInfo` passed to this filter.
+	// Attributes gets the attributes that need to be filled in for the Info
+	// passed to this filter.
 	//
 	// This function will not typically be used by applications; it is intended
-	// principally for use in the implementation of `GtkFileChooser`.
+	// principally for use in the implementation of FileChooser.
 	Attributes() []string
-	// Name gets the human-readable name for the filter.
-	//
-	// See [method@Gtk.FileFilter.set_name].
+	// Name gets the human-readable name for the filter. See
+	// gtk_file_filter_set_name().
 	Name() string
-	// SetName sets a human-readable name of the filter.
-	//
-	// This is the string that will be displayed in the file chooser if there is
-	// a selectable list of filters.
+	// SetName sets a human-readable name of the filter; this is the string that
+	// will be displayed in the file chooser if there is a selectable list of
+	// filters.
 	SetName(name string)
-	// ToGVariant: serialize a file filter to an `a{sv}` variant.
+	// ToGVariant: serialize a file filter to an a{sv} variant.
 	ToGVariant() *glib.Variant
 }
 
@@ -9745,14 +9595,15 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 
 // NewFileFilter constructs a class FileFilter.
 func NewFileFilter() FileFilter {
-	cret := new(C.GtkFileFilter)
-	var goret FileFilter
+	var cret C.GtkFileFilter
 
 	cret = C.gtk_file_filter_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
+	var fileFilter FileFilter
 
-	return goret
+	fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
+
+	return fileFilter
 }
 
 // NewFileFilterFromGVariant constructs a class FileFilter.
@@ -9761,14 +9612,15 @@ func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	cret := new(C.GtkFileFilter)
-	var goret FileFilter
+	var cret C.GtkFileFilter
 
 	cret = C.gtk_file_filter_new_from_gvariant(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
+	var fileFilter FileFilter
 
-	return goret
+	fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileFilter)
+
+	return fileFilter
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
@@ -9798,8 +9650,8 @@ func (f fileFilter) AddPattern(pattern string) {
 // AddPixbufFormats adds a rule allowing image files in the formats
 // supported by GdkPixbuf.
 //
-// This is equivalent to calling [method@Gtk.FileFilter.add_mime_type] for
-// all the supported mime types.
+// This is equivalent to calling gtk_file_filter_add_mime_type() for all the
+// supported mime types.
 func (f fileFilter) AddPixbufFormats() {
 	var arg0 *C.GtkFileFilter
 
@@ -9808,20 +9660,21 @@ func (f fileFilter) AddPixbufFormats() {
 	C.gtk_file_filter_add_pixbuf_formats(arg0)
 }
 
-// Attributes gets the attributes that need to be filled in for the
-// `GFileInfo` passed to this filter.
+// Attributes gets the attributes that need to be filled in for the Info
+// passed to this filter.
 //
 // This function will not typically be used by applications; it is intended
-// principally for use in the implementation of `GtkFileChooser`.
+// principally for use in the implementation of FileChooser.
 func (f fileFilter) Attributes() []string {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.gtk_file_filter_get_attributes(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -9832,38 +9685,39 @@ func (f fileFilter) Attributes() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
-// Name gets the human-readable name for the filter.
-//
-// See [method@Gtk.FileFilter.set_name].
+// Name gets the human-readable name for the filter. See
+// gtk_file_filter_set_name().
 func (f fileFilter) Name() string {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_file_filter_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// SetName sets a human-readable name of the filter.
-//
-// This is the string that will be displayed in the file chooser if there is
-// a selectable list of filters.
+// SetName sets a human-readable name of the filter; this is the string that
+// will be displayed in the file chooser if there is a selectable list of
+// filters.
 func (f fileFilter) SetName(name string) {
 	var arg0 *C.GtkFileFilter
 	var arg1 *C.char
@@ -9875,23 +9729,25 @@ func (f fileFilter) SetName(name string) {
 	C.gtk_file_filter_set_name(arg0, arg1)
 }
 
-// ToGVariant: serialize a file filter to an `a{sv}` variant.
+// ToGVariant: serialize a file filter to an a{sv} variant.
 func (f fileFilter) ToGVariant() *glib.Variant {
 	var arg0 *C.GtkFileFilter
 
 	arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
 	var cret *C.GVariant
-	var goret *glib.Variant
 
 	cret = C.gtk_file_filter_to_gvariant(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	var variant *glib.Variant
 
-	return goret
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return variant
 }
 
-// FlowBox: a `GtkFlowBox` puts child widgets in reflowing grid.
+// FlowBox: a GtkFlowBox positions child widgets in sequence according to its
+// orientation.
 //
 // For instance, with the horizontal orientation, the widgets will be arranged
 // from left to right, starting a new row under the previous row when necessary.
@@ -9902,34 +9758,37 @@ func (f fileFilter) ToGVariant() *glib.Variant {
 // top to bottom, starting a new column to the right when necessary. Reducing
 // the height will require more columns, so a larger width will be requested.
 //
-// The size request of a `GtkFlowBox` alone may not be what you expect; if you
+// The size request of a GtkFlowBox alone may not be what you expect; if you
 // need to be able to shrink it along both axes and dynamically reflow its
-// children, you may have to wrap it in a `GtkScrolledWindow` to enable that.
+// children, you may have to wrap it in a ScrolledWindow to enable that.
 //
-// The children of a `GtkFlowBox` can be dynamically sorted and filtered.
+// The children of a GtkFlowBox can be dynamically sorted and filtered.
 //
-// Although a `GtkFlowBox` must have only `GtkFlowBoxChild` children, you can
-// add any kind of widget to it via [method@Gtk.FlowBox.insert], and a
-// `GtkFlowBoxChild` widget will automatically be inserted between the box and
-// the widget.
+// Although a GtkFlowBox must have only FlowBoxChild children, you can add any
+// kind of widget to it via gtk_flow_box_insert(), and a GtkFlowBoxChild widget
+// will automatically be inserted between the box and the widget.
 //
-// Also see [class@Gtk.ListBox].
-//
+// Also see ListBox.
 //
 // CSS nodes
 //
-// “` flowbox ├── flowboxchild │ ╰── <child> ├── flowboxchild │ ╰── <child> ┊
-// ╰── [rubberband] “`
+//    flowbox
+//    ├── flowboxchild
+//    │   ╰── <child>
+//    ├── flowboxchild
+//    │   ╰── <child>
+//    ┊
+//    ╰── [rubberband]
 //
-// `GtkFlowBox` uses a single CSS node with name flowbox. `GtkFlowBoxChild` uses
-// a single CSS node with name flowboxchild. For rubberband selection, a subnode
+// GtkFlowBox uses a single CSS node with name flowbox. GtkFlowBoxChild uses a
+// single CSS node with name flowboxchild. For rubberband selection, a subnode
 // with name rubberband is used.
 //
 //
 // Accessibility
 //
-// `GtkFlowBox` uses the GTK_ACCESSIBLE_ROLE_GRID role, and `GtkFlowBoxChild`
-// uses the GTK_ACCESSIBLE_ROLE_GRID_CELL role.
+// GtkFlowBox uses the K_ACCESSIBLE_ROLE_GRID role, and GtkFlowBoxChild uses the
+// K_ACCESSIBLE_ROLE_GRID_CELL role.
 type FlowBox interface {
 	Widget
 	Accessible
@@ -9946,23 +9805,23 @@ type FlowBox interface {
 	// @model is nil, @box is left empty.
 	//
 	// It is undefined to add or remove widgets directly (for example, with
-	// [method@Gtk.FlowBox.insert]) while @box is bound to a model.
+	// gtk_flow_box_insert()) while @box is bound to a model.
 	//
 	// Note that using a model is incompatible with the filtering and sorting
-	// functionality in `GtkFlowBox`. When using a model, filtering and sorting
+	// functionality in GtkFlowBox. When using a model, filtering and sorting
 	// should be implemented by the model.
 	BindModel()
 	// ActivateOnSingleClick returns whether children activate on single clicks.
 	ActivateOnSingleClick() bool
 	// ChildAtIndex gets the nth child in the @box.
 	ChildAtIndex(idx int) FlowBoxChild
-	// ChildAtPos gets the child in the (@x, @y) position.
-	//
-	// Both @x and @y are assumed to be relative to the origin of @box.
+	// ChildAtPos gets the child in the (@x, @y) position. Both @x and @y are
+	// assumed to be relative to the origin of @box.
 	ChildAtPos(x int, y int) FlowBoxChild
 	// ColumnSpacing gets the horizontal spacing.
 	ColumnSpacing() uint
-	// Homogeneous returns whether the box is homogeneous.
+	// Homogeneous returns whether the box is homogeneous (all children are the
+	// same size). See gtk_box_set_homogeneous().
 	Homogeneous() bool
 	// MaxChildrenPerLine gets the maximum number of children per line.
 	MaxChildrenPerLine() uint
@@ -10008,34 +9867,32 @@ type FlowBox interface {
 	// SetActivateOnSingleClick: if @single is true, children will be activated
 	// when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
-	// SetColumnSpacing sets the horizontal space to add between children.
+	// SetColumnSpacing sets the horizontal space to add between children. See
+	// the FlowBox:column-spacing property.
 	SetColumnSpacing(spacing uint)
 	// SetFilterFunc: by setting a filter function on the @box one can decide
-	// dynamically which of the children to show.
-	//
-	// For instance, to implement a search function that only shows the children
-	// matching the search terms.
+	// dynamically which of the children to show. For instance, to implement a
+	// search function that only shows the children matching the search terms.
 	//
 	// The @filter_func will be called for each child after the call, and it
 	// will continue to be called each time a child changes (via
-	// [method@Gtk.FlowBoxChild.changed]) or when
-	// [method@Gtk.FlowBox.invalidate_filter] is called.
+	// gtk_flow_box_child_changed()) or when gtk_flow_box_invalidate_filter() is
+	// called.
 	//
 	// Note that using a filter function is incompatible with using a model (see
-	// [method@Gtk.FlowBox.bind_model]).
+	// gtk_flow_box_bind_model()).
 	SetFilterFunc()
-	// SetHAdjustment hooks up an adjustment to focus handling in @box.
-	//
-	// The adjustment is also used for autoscrolling during rubberband
-	// selection. See [method@Gtk.ScrolledWindow.get_hadjustment] for a typical
-	// way of obtaining the adjustment, and [method@Gtk.FlowBox.set_vadjustment]
-	// for setting the vertical adjustment.
+	// SetHAdjustment hooks up an adjustment to focus handling in @box. The
+	// adjustment is also used for autoscrolling during rubberband selection.
+	// See gtk_scrolled_window_get_hadjustment() for a typical way of obtaining
+	// the adjustment, and gtk_flow_box_set_vadjustment()for setting the
+	// vertical adjustment.
 	//
 	// The adjustments have to be in pixel units and in the same coordinate
 	// system as the allocation for immediate children of the box.
 	SetHAdjustment(adjustment Adjustment)
-	// SetHomogeneous sets whether or not all children of @box are given equal
-	// space in the box.
+	// SetHomogeneous sets the FlowBox:homogeneous property of @box, controlling
+	// whether or not all children of @box are given equal space in the box.
 	SetHomogeneous(homogeneous bool)
 	// SetMaxChildrenPerLine sets the maximum number of children to request and
 	// allocate space for in @box’s orientation.
@@ -10047,27 +9904,28 @@ type FlowBox interface {
 	// SetMinChildrenPerLine sets the minimum number of children to line up in
 	// @box’s orientation before flowing.
 	SetMinChildrenPerLine(nChildren uint)
-	// SetRowSpacing sets the vertical space to add between children.
+	// SetRowSpacing sets the vertical space to add between children. See the
+	// FlowBox:row-spacing property.
 	SetRowSpacing(spacing uint)
-	// SetSelectionMode sets how selection works in @box.
+	// SetSelectionMode sets how selection works in @box. See SelectionMode for
+	// details.
 	SetSelectionMode(mode SelectionMode)
 	// SetSortFunc: by setting a sort function on the @box, one can dynamically
 	// reorder the children of the box, based on the contents of the children.
 	//
 	// The @sort_func will be called for each child after the call, and will
 	// continue to be called each time a child changes (via
-	// [method@Gtk.FlowBoxChild.changed]) and when
-	// [method@Gtk.FlowBox.invalidate_sort] is called.
+	// gtk_flow_box_child_changed()) and when gtk_flow_box_invalidate_sort() is
+	// called.
 	//
 	// Note that using a sort function is incompatible with using a model (see
-	// [method@Gtk.FlowBox.bind_model]).
+	// gtk_flow_box_bind_model()).
 	SetSortFunc()
-	// SetVAdjustment hooks up an adjustment to focus handling in @box.
-	//
-	// The adjustment is also used for autoscrolling during rubberband
-	// selection. See [method@Gtk.ScrolledWindow.get_vadjustment] for a typical
-	// way of obtaining the adjustment, and [method@Gtk.FlowBox.set_hadjustment]
-	// for setting the horizontal adjustment.
+	// SetVAdjustment hooks up an adjustment to focus handling in @box. The
+	// adjustment is also used for autoscrolling during rubberband selection.
+	// See gtk_scrolled_window_get_vadjustment() for a typical way of obtaining
+	// the adjustment, and gtk_flow_box_set_hadjustment()for setting the
+	// horizontal adjustment.
 	//
 	// The adjustments have to be in pixel units and in the same coordinate
 	// system as the allocation for immediate children of the box.
@@ -10112,13 +9970,14 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 // NewFlowBox constructs a class FlowBox.
 func NewFlowBox() FlowBox {
 	var cret C.GtkFlowBox
-	var goret FlowBox
 
 	cret = C.gtk_flow_box_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBox)
+	var flowBox FlowBox
 
-	return goret
+	flowBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBox)
+
+	return flowBox
 }
 
 // BindModel binds @model to @box.
@@ -10130,17 +9989,17 @@ func NewFlowBox() FlowBox {
 // @model is nil, @box is left empty.
 //
 // It is undefined to add or remove widgets directly (for example, with
-// [method@Gtk.FlowBox.insert]) while @box is bound to a model.
+// gtk_flow_box_insert()) while @box is bound to a model.
 //
 // Note that using a model is incompatible with the filtering and sorting
-// functionality in `GtkFlowBox`. When using a model, filtering and sorting
+// functionality in GtkFlowBox. When using a model, filtering and sorting
 // should be implemented by the model.
 func (b flowBox) BindModel() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_bind_model(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_flow_box_bind_model(arg0)
 }
 
 // ActivateOnSingleClick returns whether children activate on single clicks.
@@ -10150,15 +10009,16 @@ func (b flowBox) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_flow_box_get_activate_on_single_click(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ChildAtIndex gets the nth child in the @box.
@@ -10170,18 +10030,18 @@ func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
 	arg1 = C.int(idx)
 
 	var cret *C.GtkFlowBoxChild
-	var goret FlowBoxChild
 
 	cret = C.gtk_flow_box_get_child_at_index(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	var flowBoxChild FlowBoxChild
 
-	return goret
+	flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+
+	return flowBoxChild
 }
 
-// ChildAtPos gets the child in the (@x, @y) position.
-//
-// Both @x and @y are assumed to be relative to the origin of @box.
+// ChildAtPos gets the child in the (@x, @y) position. Both @x and @y are
+// assumed to be relative to the origin of @box.
 func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.int
@@ -10192,13 +10052,14 @@ func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
 	arg2 = C.int(y)
 
 	var cret *C.GtkFlowBoxChild
-	var goret FlowBoxChild
 
 	cret = C.gtk_flow_box_get_child_at_pos(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	var flowBoxChild FlowBoxChild
 
-	return goret
+	flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+
+	return flowBoxChild
 }
 
 // ColumnSpacing gets the horizontal spacing.
@@ -10208,31 +10069,34 @@ func (b flowBox) ColumnSpacing() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_flow_box_get_column_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
-// Homogeneous returns whether the box is homogeneous.
+// Homogeneous returns whether the box is homogeneous (all children are the
+// same size). See gtk_box_set_homogeneous().
 func (b flowBox) Homogeneous() bool {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_flow_box_get_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MaxChildrenPerLine gets the maximum number of children per line.
@@ -10242,13 +10106,14 @@ func (b flowBox) MaxChildrenPerLine() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_flow_box_get_max_children_per_line(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // MinChildrenPerLine gets the minimum number of children per line.
@@ -10258,13 +10123,14 @@ func (b flowBox) MinChildrenPerLine() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_flow_box_get_min_children_per_line(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // RowSpacing gets the vertical spacing.
@@ -10274,13 +10140,14 @@ func (b flowBox) RowSpacing() uint {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_flow_box_get_row_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // SelectedChildren creates a list of all selected children.
@@ -10289,17 +10156,18 @@ func (b flowBox) SelectedChildren() *glib.List {
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_flow_box_get_selected_children(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // SelectionMode gets the selection mode of @box.
@@ -10309,13 +10177,14 @@ func (b flowBox) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret SelectionMode
 
 	cret = C.gtk_flow_box_get_selection_mode(arg0)
 
-	goret = SelectionMode(cret)
+	var selectionMode SelectionMode
 
-	return goret
+	selectionMode = SelectionMode(cret)
+
+	return selectionMode
 }
 
 // Insert inserts the @widget into @box at @position.
@@ -10403,7 +10272,7 @@ func (b flowBox) SelectedForeach() {
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_selected_foreach(arg0, arg1, arg2)
+	C.gtk_flow_box_selected_foreach(arg0)
 }
 
 // SetActivateOnSingleClick: if @single is true, children will be activated
@@ -10420,7 +10289,8 @@ func (b flowBox) SetActivateOnSingleClick(single bool) {
 	C.gtk_flow_box_set_activate_on_single_click(arg0, arg1)
 }
 
-// SetColumnSpacing sets the horizontal space to add between children.
+// SetColumnSpacing sets the horizontal space to add between children. See
+// the FlowBox:column-spacing property.
 func (b flowBox) SetColumnSpacing(spacing uint) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.guint
@@ -10432,32 +10302,29 @@ func (b flowBox) SetColumnSpacing(spacing uint) {
 }
 
 // SetFilterFunc: by setting a filter function on the @box one can decide
-// dynamically which of the children to show.
-//
-// For instance, to implement a search function that only shows the children
-// matching the search terms.
+// dynamically which of the children to show. For instance, to implement a
+// search function that only shows the children matching the search terms.
 //
 // The @filter_func will be called for each child after the call, and it
 // will continue to be called each time a child changes (via
-// [method@Gtk.FlowBoxChild.changed]) or when
-// [method@Gtk.FlowBox.invalidate_filter] is called.
+// gtk_flow_box_child_changed()) or when gtk_flow_box_invalidate_filter() is
+// called.
 //
 // Note that using a filter function is incompatible with using a model (see
-// [method@Gtk.FlowBox.bind_model]).
+// gtk_flow_box_bind_model()).
 func (b flowBox) SetFilterFunc() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_set_filter_func(arg0, arg1, arg2, arg3)
+	C.gtk_flow_box_set_filter_func(arg0)
 }
 
-// SetHAdjustment hooks up an adjustment to focus handling in @box.
-//
-// The adjustment is also used for autoscrolling during rubberband
-// selection. See [method@Gtk.ScrolledWindow.get_hadjustment] for a typical
-// way of obtaining the adjustment, and [method@Gtk.FlowBox.set_vadjustment]
-// for setting the vertical adjustment.
+// SetHAdjustment hooks up an adjustment to focus handling in @box. The
+// adjustment is also used for autoscrolling during rubberband selection.
+// See gtk_scrolled_window_get_hadjustment() for a typical way of obtaining
+// the adjustment, and gtk_flow_box_set_vadjustment()for setting the
+// vertical adjustment.
 //
 // The adjustments have to be in pixel units and in the same coordinate
 // system as the allocation for immediate children of the box.
@@ -10471,8 +10338,8 @@ func (b flowBox) SetHAdjustment(adjustment Adjustment) {
 	C.gtk_flow_box_set_hadjustment(arg0, arg1)
 }
 
-// SetHomogeneous sets whether or not all children of @box are given equal
-// space in the box.
+// SetHomogeneous sets the FlowBox:homogeneous property of @box, controlling
+// whether or not all children of @box are given equal space in the box.
 func (b flowBox) SetHomogeneous(homogeneous bool) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.gboolean
@@ -10513,7 +10380,8 @@ func (b flowBox) SetMinChildrenPerLine(nChildren uint) {
 	C.gtk_flow_box_set_min_children_per_line(arg0, arg1)
 }
 
-// SetRowSpacing sets the vertical space to add between children.
+// SetRowSpacing sets the vertical space to add between children. See the
+// FlowBox:row-spacing property.
 func (b flowBox) SetRowSpacing(spacing uint) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.guint
@@ -10524,7 +10392,8 @@ func (b flowBox) SetRowSpacing(spacing uint) {
 	C.gtk_flow_box_set_row_spacing(arg0, arg1)
 }
 
-// SetSelectionMode sets how selection works in @box.
+// SetSelectionMode sets how selection works in @box. See SelectionMode for
+// details.
 func (b flowBox) SetSelectionMode(mode SelectionMode) {
 	var arg0 *C.GtkFlowBox
 	var arg1 C.GtkSelectionMode
@@ -10540,25 +10409,24 @@ func (b flowBox) SetSelectionMode(mode SelectionMode) {
 //
 // The @sort_func will be called for each child after the call, and will
 // continue to be called each time a child changes (via
-// [method@Gtk.FlowBoxChild.changed]) and when
-// [method@Gtk.FlowBox.invalidate_sort] is called.
+// gtk_flow_box_child_changed()) and when gtk_flow_box_invalidate_sort() is
+// called.
 //
 // Note that using a sort function is incompatible with using a model (see
-// [method@Gtk.FlowBox.bind_model]).
+// gtk_flow_box_bind_model()).
 func (b flowBox) SetSortFunc() {
 	var arg0 *C.GtkFlowBox
 
 	arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_flow_box_set_sort_func(arg0, arg1, arg2, arg3)
+	C.gtk_flow_box_set_sort_func(arg0)
 }
 
-// SetVAdjustment hooks up an adjustment to focus handling in @box.
-//
-// The adjustment is also used for autoscrolling during rubberband
-// selection. See [method@Gtk.ScrolledWindow.get_vadjustment] for a typical
-// way of obtaining the adjustment, and [method@Gtk.FlowBox.set_hadjustment]
-// for setting the horizontal adjustment.
+// SetVAdjustment hooks up an adjustment to focus handling in @box. The
+// adjustment is also used for autoscrolling during rubberband selection.
+// See gtk_scrolled_window_get_vadjustment() for a typical way of obtaining
+// the adjustment, and gtk_flow_box_set_hadjustment()for setting the
+// horizontal adjustment.
 //
 // The adjustments have to be in pixel units and in the same coordinate
 // system as the allocation for immediate children of the box.
@@ -10594,19 +10462,17 @@ func (b flowBox) UnselectChild(child FlowBoxChild) {
 	C.gtk_flow_box_unselect_child(arg0, arg1)
 }
 
-// FontButton: the `GtkFontButton` allows to open a font chooser dialog to
-// change the font.
-//
-// !An example GtkFontButton (font-button.png)
-//
-// It is suitable widget for selecting a font in a preference dialog.
-//
+// FontButton: the FontButton is a button which displays the currently selected
+// font an allows to open a font chooser dialog to change the font. It is
+// suitable widget for selecting a font in a preference dialog.
 //
 // CSS nodes
 //
-// “` fontbutton ╰── button.font ╰── [content] “`
+//    fontbutton
+//    ╰── button.font
+//        ╰── [content]
 //
-// `GtkFontButton` has a single CSS node with name fontbutton which contains a
+// GtkFontButton has a single CSS node with name fontbutton which contains a
 // button node with the .font style class.
 type FontButton interface {
 	Widget
@@ -10667,13 +10533,14 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 // NewFontButton constructs a class FontButton.
 func NewFontButton() FontButton {
 	var cret C.GtkFontButton
-	var goret FontButton
 
 	cret = C.gtk_font_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+	var fontButton FontButton
 
-	return goret
+	fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+
+	return fontButton
 }
 
 // NewFontButtonWithFont constructs a class FontButton.
@@ -10684,13 +10551,14 @@ func NewFontButtonWithFont(fontname string) FontButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkFontButton
-	var goret FontButton
 
 	cret = C.gtk_font_button_new_with_font(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+	var fontButton FontButton
 
-	return goret
+	fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontButton)
+
+	return fontButton
 }
 
 // Modal gets whether the dialog is modal.
@@ -10700,15 +10568,16 @@ func (f fontButton) Modal() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_font_button_get_modal(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Title retrieves the title of the font chooser dialog.
@@ -10718,13 +10587,14 @@ func (f fontButton) Title() string {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_font_button_get_title(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UseFont returns whether the selected font is used in the label.
@@ -10734,15 +10604,16 @@ func (f fontButton) UseFont() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_font_button_get_use_font(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UseSize returns whether the selected size is used in the label.
@@ -10752,15 +10623,16 @@ func (f fontButton) UseSize() bool {
 	arg0 = (*C.GtkFontButton)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_font_button_get_use_size(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetModal sets whether the dialog should be modal.
@@ -10816,21 +10688,14 @@ func (f fontButton) SetUseSize(useSize bool) {
 	C.gtk_font_button_set_use_size(arg0, arg1)
 }
 
-// FontChooserDialog: the `GtkFontChooserDialog` widget is a dialog for
-// selecting a font.
-//
-// !An example GtkFontChooserDialog (fontchooser.png)
-//
-// `GtkFontChooserDialog` implements the [iface@Gtk.FontChooser] interface and
-// does not provide much API of its own.
-//
-// To create a `GtkFontChooserDialog`, use [ctor@Gtk.FontChooserDialog.new].
+// FontChooserDialog: the FontChooserDialog widget is a dialog for selecting a
+// font. It implements the FontChooser interface.
 //
 //
 // GtkFontChooserDialog as GtkBuildable
 //
-// The `GtkFontChooserDialog` implementation of the `GtkBuildable` interface
-// exposes the buttons with the names “select_button” and “cancel_button”.
+// The GtkFontChooserDialog implementation of the Buildable interface exposes
+// the buttons with the names “select_button” and “cancel_button”.
 type FontChooserDialog interface {
 	Dialog
 	Accessible
@@ -10887,34 +10752,33 @@ func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkFontChooserDialog
-	var goret FontChooserDialog
 
 	cret = C.gtk_font_chooser_dialog_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
+	var fontChooserDialog FontChooserDialog
 
-	return goret
+	fontChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
+
+	return fontChooserDialog
 }
 
-// FontChooserWidget: the `GtkFontChooserWidget` widget lets the user select a
-// font.
+// FontChooserWidget: the FontChooserWidget widget lists the available fonts,
+// styles and sizes, allowing the user to select a font. It is used in the
+// FontChooserDialog widget to provide a dialog box for selecting fonts.
 //
-// It is used in the `GtkFontChooserDialog` widget to provide a dialog for
-// selecting fonts.
+// To set the font which is initially selected, use gtk_font_chooser_set_font()
+// or gtk_font_chooser_set_font_desc().
 //
-// To set the font which is initially selected, use
-// [method@Gtk.FontChooser.set_font] or [method@Gtk.FontChooser.set_font_desc].
-//
-// To get the selected font use [method@Gtk.FontChooser.get_font] or
-// [method@Gtk.FontChooser.get_font_desc].
+// To get the selected font use gtk_font_chooser_get_font() or
+// gtk_font_chooser_get_font_desc().
 //
 // To change the text which is shown in the preview area, use
-// [method@Gtk.FontChooser.set_preview_text].
+// gtk_font_chooser_set_preview_text().
 //
 //
 // CSS nodes
 //
-// `GtkFontChooserWidget` has a single CSS node with name fontchooser.
+// GtkFontChooserWidget has a single CSS node with name fontchooser.
 type FontChooserWidget interface {
 	Widget
 	Accessible
@@ -10955,84 +10819,90 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 // NewFontChooserWidget constructs a class FontChooserWidget.
 func NewFontChooserWidget() FontChooserWidget {
 	var cret C.GtkFontChooserWidget
-	var goret FontChooserWidget
 
 	cret = C.gtk_font_chooser_widget_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserWidget)
+	var fontChooserWidget FontChooserWidget
 
-	return goret
+	fontChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserWidget)
+
+	return fontChooserWidget
 }
 
-// HeaderBar: `GtkHeaderBar` is a widget for creating custom title bars for
-// windows.
-//
-// !An example GtkHeaderBar (headerbar.png)
-//
-// `GtkHeaderBar` is similar to a horizontal `GtkCenterBox`. It allows children
-// to be placed at the start or the end. In addition, it allows the window title
-// to be displayed. The title will be centered with respect to the width of the
+// HeaderBar: gtkHeaderBar is similar to a horizontal Box. It allows children to
+// be placed at the start or the end. In addition, it allows the window title to
+// be displayed. The title will be centered with respect to the width of the
 // box, even if the children at either side take up different amounts of space.
 //
-// `GtkHeaderBar` can add typical window frame controls, such as minimize,
+// GtkHeaderBar can add typical window frame controls, such as minimize,
 // maximize and close buttons, or the window icon.
 //
-// For these reasons, `GtkHeaderBar` is the natural choice for use as the custom
-// titlebar widget of a `GtkWindow (see [method@Gtk.Window.set_titlebar]), as it
-// gives features typical of titlebars while allowing the addition of child
-// widgets.
+// For these reasons, GtkHeaderBar is the natural choice for use as the custom
+// titlebar widget of a Window (see gtk_window_set_titlebar()), as it gives
+// features typical of titlebars while allowing the addition of child widgets.
 //
-//
-// GtkHeaderBar as GtkBuildable
-//
-// The `GtkHeaderBar` implementation of the `GtkBuildable` interface supports
-// adding children at the start or end sides by specifying “start” or “end” as
-// the “type” attribute of a <child> element, or setting the title widget by
+// The GtkHeaderBar implementation of the Buildable interface supports adding
+// children at the start or end sides by specifying “start” or “end” as the
+// “type” attribute of a <child> element, or setting the title widget by
 // specifying “title” value.
 //
-// By default the `GtkHeaderBar` uses a `GtkLabel` displaying the title of the
-// window it is contained in as the title widget, equivalent to the following UI
+// By default the GtkHeaderBar uses a Label displaying the title of the window
+// it is contained in as the title widget, equivalent to the following UI
 // definition:
 //
-// “`xml <object class="GtkHeaderBar"> <property name="title-widget"> <object
-// class="GtkLabel"> <property name="label" translatable="yes">Label</property>
-// <property name="single-line-mode">True</property> <property
-// name="ellipsize">end</property> <property name="width-chars">5</property>
-// <style> <class name="title"/> </style> </object> </property> </object> “`
-//
+//    <object class="GtkHeaderBar">
+//      <property name="title-widget">
+//        <object class="GtkLabel">
+//          <property name="label" translatable="yes">Label</property>
+//          <property name="single-line-mode">True</property>
+//          <property name="ellipsize">end</property>
+//          <property name="width-chars">5</property>
+//          <style>
+//            <class name="title"/>
+//          </style>
+//        </object>
+//      </property>
+//    </object>
 //
 // CSS nodes
 //
-// “` headerbar ╰── windowhandle ╰── box ├── box.start │ ├──
-// windowcontrols.start │ ╰── [other children] ├── [Title Widget] ╰── box.end
-// ├── [other children] ╰── windowcontrols.end “`
+//    headerbar
+//    ╰── windowhandle
+//        ╰── box
+//            ├── box.start
+//            │   ├── windowcontrols.start
+//            │   ╰── [other children]
+//            ├── [Title Widget]
+//            ╰── box.end
+//                ├── [other children]
+//                ╰── windowcontrols.end
 //
-// A `GtkHeaderBar`'s CSS node is called `headerbar`. It contains a
-// `windowhandle` subnode, which contains a `box` subnode, which contains two
-// `box` subnodes at the start and end of the header bar, as well as a center
-// node that represents the title.
+// A HeaderBar's CSS node is called `headerbar`. It contains a `windowhandle`
+// subnode, which contains a `box` subnode, which contains two `box` subnodes at
+// the start and end of the header bar, as well as a center node that represents
+// the title.
 //
-// Each of the boxes contains a `windowcontrols` subnode, see
-// [class@Gtk.WindowControls] for details, as well as other children.
+// Each of the boxes contains a `windowcontrols` subnode, see WindowControls for
+// details, as well as other children.
 //
 //
 // Accessibility
 //
-// `GtkHeaderBar` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkHeaderBar uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type HeaderBar interface {
 	Widget
 	Accessible
 	Buildable
 	ConstraintTarget
 
-	// DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
+	// DecorationLayout gets the decoration layout set with
+	// gtk_header_bar_set_decoration_layout().
 	DecorationLayout() string
 	// ShowTitleButtons returns whether this header bar shows the standard
 	// window title buttons.
 	ShowTitleButtons() bool
-	// TitleWidget retrieves the title widget of the header.
-	//
-	// See [method@Gtk.HeaderBar.set_title_widget].
+	// TitleWidget retrieves the title widget of the header. See
+	// gtk_header_bar_set_title_widget().
 	TitleWidget() Widget
 	// PackEnd adds @child to @bar, packed with reference to the end of the
 	// @bar.
@@ -11040,16 +10910,12 @@ type HeaderBar interface {
 	// PackStart adds @child to @bar, packed with reference to the start of the
 	// @bar.
 	PackStart(child Widget)
-	// Remove removes a child from the `GtkHeaderBar`.
-	//
-	// The child must have been added with [method@Gtk.HeaderBar.pack_start],
-	// [method@Gtk.HeaderBar.pack_end] or
-	// [method@Gtk.HeaderBar.set_title_widget].
+	// Remove removes a child from @bar, after it has been added with
+	// gtk_header_bar_pack_start(), gtk_header_bar_pack_end() or
+	// gtk_header_bar_set_title_widget().
 	Remove(child Widget)
-	// SetDecorationLayout sets the decoration layout for this header bar.
-	//
-	// This property overrides the [property@Gtk.Settings:gtk-decoration-layout]
-	// setting.
+	// SetDecorationLayout sets the decoration layout for this header bar,
+	// overriding the Settings:gtk-decoration-layout setting.
 	//
 	// There can be valid reasons for overriding the setting, such as a header
 	// bar design that does not allow for buttons to take room on the right, or
@@ -11065,9 +10931,9 @@ type HeaderBar interface {
 	// and minimize, maximize and close buttons on the right.
 	SetDecorationLayout(layout string)
 	// SetShowTitleButtons sets whether this header bar shows the standard
-	// window title buttons.
+	// window title buttons including close, maximize, and minimize.
 	SetShowTitleButtons(setting bool)
-	// SetTitleWidget sets the title for the `GtkHeaderBar`.
+	// SetTitleWidget sets the title for the HeaderBar.
 	//
 	// When set to nil, the headerbar will display the title of the window it is
 	// contained in.
@@ -11110,29 +10976,32 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 // NewHeaderBar constructs a class HeaderBar.
 func NewHeaderBar() HeaderBar {
 	var cret C.GtkHeaderBar
-	var goret HeaderBar
 
 	cret = C.gtk_header_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+	var headerBar HeaderBar
 
-	return goret
+	headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+
+	return headerBar
 }
 
-// DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
+// DecorationLayout gets the decoration layout set with
+// gtk_header_bar_set_decoration_layout().
 func (b headerBar) DecorationLayout() string {
 	var arg0 *C.GtkHeaderBar
 
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_header_bar_get_decoration_layout(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ShowTitleButtons returns whether this header bar shows the standard
@@ -11143,33 +11012,34 @@ func (b headerBar) ShowTitleButtons() bool {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_header_bar_get_show_title_buttons(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// TitleWidget retrieves the title widget of the header.
-//
-// See [method@Gtk.HeaderBar.set_title_widget].
+// TitleWidget retrieves the title widget of the header. See
+// gtk_header_bar_set_title_widget().
 func (b headerBar) TitleWidget() Widget {
 	var arg0 *C.GtkHeaderBar
 
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_header_bar_get_title_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // PackEnd adds @child to @bar, packed with reference to the end of the
@@ -11196,11 +11066,9 @@ func (b headerBar) PackStart(child Widget) {
 	C.gtk_header_bar_pack_start(arg0, arg1)
 }
 
-// Remove removes a child from the `GtkHeaderBar`.
-//
-// The child must have been added with [method@Gtk.HeaderBar.pack_start],
-// [method@Gtk.HeaderBar.pack_end] or
-// [method@Gtk.HeaderBar.set_title_widget].
+// Remove removes a child from @bar, after it has been added with
+// gtk_header_bar_pack_start(), gtk_header_bar_pack_end() or
+// gtk_header_bar_set_title_widget().
 func (b headerBar) Remove(child Widget) {
 	var arg0 *C.GtkHeaderBar
 	var arg1 *C.GtkWidget
@@ -11211,10 +11079,8 @@ func (b headerBar) Remove(child Widget) {
 	C.gtk_header_bar_remove(arg0, arg1)
 }
 
-// SetDecorationLayout sets the decoration layout for this header bar.
-//
-// This property overrides the [property@Gtk.Settings:gtk-decoration-layout]
-// setting.
+// SetDecorationLayout sets the decoration layout for this header bar,
+// overriding the Settings:gtk-decoration-layout setting.
 //
 // There can be valid reasons for overriding the setting, such as a header
 // bar design that does not allow for buttons to take room on the right, or
@@ -11240,7 +11106,7 @@ func (b headerBar) SetDecorationLayout(layout string) {
 }
 
 // SetShowTitleButtons sets whether this header bar shows the standard
-// window title buttons.
+// window title buttons including close, maximize, and minimize.
 func (b headerBar) SetShowTitleButtons(setting bool) {
 	var arg0 *C.GtkHeaderBar
 	var arg1 C.gboolean
@@ -11253,7 +11119,7 @@ func (b headerBar) SetShowTitleButtons(setting bool) {
 	C.gtk_header_bar_set_show_title_buttons(arg0, arg1)
 }
 
-// SetTitleWidget sets the title for the `GtkHeaderBar`.
+// SetTitleWidget sets the title for the HeaderBar.
 //
 // When set to nil, the headerbar will display the title of the window it is
 // contained in.
@@ -11273,17 +11139,14 @@ func (b headerBar) SetTitleWidget(titleWidget Widget) {
 	C.gtk_header_bar_set_title_widget(arg0, arg1)
 }
 
-// IconPaintable contains information found when looking up an icon in
-// `GtkIconTheme`.
-//
-// `GtkIconPaintable` implements `GdkPaintable`.
+// IconPaintable contains information found when looking up an icon in an icon
+// theme and supports painting it as a Paintable.
 type IconPaintable interface {
 	gextras.Objector
 	gdk.Paintable
 
-	// File gets the `GFile` that was used to load the icon.
-	//
-	// Returns nil if the icon was not loaded from a file.
+	// File gets the #GFile that was used to load the icon, or nil if the icon
+	// was not loaded from a file.
 	File() gio.File
 	// IconName: get the icon name being used for this icon.
 	//
@@ -11293,14 +11156,13 @@ type IconPaintable interface {
 	// icon chosen is returned by this function.
 	//
 	// If the icon was created without an icon theme, this function returns nil.
-	IconName() string
-	// IsSymbolic checks if the icon is symbolic or not.
+	IconName() *string
+	// IsSymbolic checks if the icon is symbolic or not. This currently uses
+	// only the file name and not the file contents for determining this. This
+	// behaviour may change in the future.
 	//
-	// This currently uses only the file name and not the file contents for
-	// determining this. This behaviour may change in the future.
-	//
-	// Note that to render a symbolic `GtkIconPaintable` properly (with
-	// recoloring), you have to set its icon name on a `GtkImage`.
+	// Note that to render a symbolic IconPaintable properly (with recoloring),
+	// you have to set its icon name on a Image.
 	IsSymbolic() bool
 }
 
@@ -11337,32 +11199,33 @@ func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable {
 	arg2 = C.int(size)
 	arg3 = C.int(scale)
 
-	cret := new(C.GtkIconPaintable)
-	var goret IconPaintable
+	var cret C.GtkIconPaintable
 
 	cret = C.gtk_icon_paintable_new_for_file(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+	var iconPaintable IconPaintable
 
-	return goret
+	iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+
+	return iconPaintable
 }
 
-// File gets the `GFile` that was used to load the icon.
-//
-// Returns nil if the icon was not loaded from a file.
+// File gets the #GFile that was used to load the icon, or nil if the icon
+// was not loaded from a file.
 func (s iconPaintable) File() gio.File {
 	var arg0 *C.GtkIconPaintable
 
 	arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GFile)
-	var goret gio.File
+	var cret *C.GFile
 
 	cret = C.gtk_icon_paintable_get_file(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+	var file gio.File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.File)
+
+	return file
 }
 
 // IconName: get the icon name being used for this icon.
@@ -11373,135 +11236,129 @@ func (s iconPaintable) File() gio.File {
 // icon chosen is returned by this function.
 //
 // If the icon was created without an icon theme, this function returns nil.
-func (s iconPaintable) IconName() string {
+func (s iconPaintable) IconName() *string {
 	var arg0 *C.GtkIconPaintable
 
 	arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_icon_paintable_get_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }
 
-// IsSymbolic checks if the icon is symbolic or not.
+// IsSymbolic checks if the icon is symbolic or not. This currently uses
+// only the file name and not the file contents for determining this. This
+// behaviour may change in the future.
 //
-// This currently uses only the file name and not the file contents for
-// determining this. This behaviour may change in the future.
-//
-// Note that to render a symbolic `GtkIconPaintable` properly (with
-// recoloring), you have to set its icon name on a `GtkImage`.
+// Note that to render a symbolic IconPaintable properly (with recoloring),
+// you have to set its icon name on a Image.
 func (s iconPaintable) IsSymbolic() bool {
 	var arg0 *C.GtkIconPaintable
 
 	arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_paintable_is_symbolic(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IconTheme: `GtkIconTheme` provides a facility for loading themed icons.
+// IconTheme provides a facility for looking up icons by name and size. The main
+// reason for using a name rather than simply providing a filename is to allow
+// different icons to be used depending on what “icon theme” is selected by the
+// user. The operation of icon themes on Linux and Unix follows the Icon Theme
+// Specification (http://www.freedesktop.org/Standards/icon-theme-spec) There is
+// a fallback icon theme, named `hicolor`, where applications should install
+// their icons, but additional icon themes can be installed as operating system
+// vendors and users choose.
 //
-// The main reason for using a name rather than simply providing a filename is
-// to allow different icons to be used depending on what “icon theme” is
-// selected by the user. The operation of icon themes on Linux and Unix follows
-// the Icon Theme Specification
-// (http://www.freedesktop.org/Standards/icon-theme-spec) There is a fallback
-// icon theme, named `hicolor`, where applications should install their icons,
-// but additional icon themes can be installed as operating system vendors and
-// users choose.
+// In many cases, named themes are used indirectly, via Image rather than
+// directly, but looking up icons directly is also simple. The IconTheme object
+// acts as a database of all the icons in the current theme. You can create new
+// IconTheme objects, but it’s much more efficient to use the standard icon
+// theme of the Widget so that the icon information is shared with other people
+// looking up icons.
 //
-// In many cases, named themes are used indirectly, via [class@Gtk.Image] rather
-// than directly, but looking up icons directly is also simple. The
-// `GtkIconTheme` object acts as a database of all the icons in the current
-// theme. You can create new `GtkIconTheme` objects, but it’s much more
-// efficient to use the standard icon theme of the `GtkWidget` so that the icon
-// information is shared with other people looking up icons.
+//    GtkIconTheme *icon_theme;
+//    GtkIconPaintable *icon;
+//    GdkPaintable *paintable;
 //
-// “`c GtkIconTheme *icon_theme; GtkIconPaintable *icon; GdkPaintable
-// *paintable;
-//
-// icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display
-// (my_widget)); icon = gtk_icon_theme_lookup_icon (icon_theme, "my-icon-name",
-// // icon name 48, // icon size 1, // scale 0, // flags); paintable =
-// GDK_PAINTABLE (icon); // Use the paintable g_object_unref (icon); “`
+//    icon_theme = gtk_icon_theme_get_for_display (gtk_widget_get_display (my_widget));
+//    icon = gtk_icon_theme_lookup_icon (icon_theme,
+//                                       "my-icon-name", // icon name
+//                                       48, // icon size
+//                                       1,  // scale
+//                                       0,  // flags);
+//     paintable = GDK_PAINTABLE (icon);
+//     // Use the paintable
+//     g_object_unref (icon);
 type IconTheme interface {
 	gextras.Objector
 
 	// AddResourcePath adds a resource path that will be looked at when looking
 	// for icons, similar to search paths.
 	//
-	// See [method@Gtk.IconTheme.set_resource_path].
+	// See gtk_icon_theme_set_resource_path().
 	//
 	// This function should be used to make application-specific icons available
 	// as part of the icon theme.
 	AddResourcePath(path string)
-	// AddSearchPath appends a directory to the search path.
-	//
-	// See [method@Gtk.IconTheme.set_search_path].
-	AddSearchPath(path string)
-	// Display returns the display that the `GtkIconTheme` object was created
-	// for.
+	// AddSearchPath appends a directory to the search path. See
+	// gtk_icon_theme_set_search_path().
+	AddSearchPath(path *string)
+	// Display returns the display that the GtkIconTheme object was created for.
 	Display() gdk.Display
 	// IconNames lists the names of icons in the current icon theme.
 	IconNames() []string
 	// IconSizes returns an array of integers describing the sizes at which the
-	// icon is available without scaling.
-	//
-	// A size of -1 means that the icon is available in a scalable format. The
-	// array is zero-terminated.
+	// icon is available without scaling. A size of -1 means that the icon is
+	// available in a scalable format. The array is zero-terminated.
 	IconSizes(iconName string) []int
 	// ResourcePath gets the current resource path.
 	//
-	// See [method@Gtk.IconTheme.set_resource_path].
+	// See gtk_icon_theme_set_resource_path().
 	ResourcePath() []string
-	// SearchPath gets the current search path.
-	//
-	// See [method@Gtk.IconTheme.set_search_path].
-	SearchPath() []string
+	// SearchPath gets the current search path. See
+	// gtk_icon_theme_set_search_path().
+	SearchPath() []*string
 	// ThemeName gets the current icon theme name.
 	//
 	// Returns (transfer full): the current icon theme name,
 	ThemeName() string
-	// HasGIcon checks whether an icon theme includes an icon for a particular
-	// `GIcon`.
-	HasGIcon(gIcon gio.Icon) bool
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
-	// LookupByGIcon looks up a icon for a desired size and window scale.
-	//
-	// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-	// get information such as the filename and size.
+	// LookupByGIcon looks up a icon for a desired size and window scale,
+	// returning a IconPaintable. The icon can then be rendered by using it as a
+	// Paintable, or you can get information such as the filename and size.
 	LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
 	// LookupIcon looks up a named icon for a desired size and window scale,
-	// returning a `GtkIconPaintable`.
-	//
-	// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-	// get information such as the filename and size.
+	// returning a IconPaintable. The icon can then be rendered by using it as a
+	// Paintable, or you can get information such as the filename and size.
 	//
 	// If the available @icon_name is not available and @fallbacks are provided,
 	// they will be tried in order.
 	//
 	// If no matching icon is found, then a paintable that renders the "missing
 	// icon" icon is returned. If you need to do something else for missing
-	// icons you need to use [method@Gtk.IconTheme.has_icon].
+	// icons you need to use gtk_icon_theme_has_icon().
 	//
 	// Note that you probably want to listen for icon theme changes and update
 	// the icon. This is usually done by overriding the
-	// GtkWidgetClass.css-changed() function.
+	// WidgetClass.css-changed() function.
 	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
 	// SetResourcePath sets the resource paths that will be looked at when
 	// looking for icons, similar to search paths.
@@ -11514,11 +11371,10 @@ type IconTheme interface {
 	// Icons that are directly placed in the resource path instead of a
 	// subdirectory are also considered as ultimate fallback, but they are
 	// treated like unthemed icons.
-	SetResourcePath(path string)
-	// SetSearchPath sets the search path for the icon theme object.
-	//
-	// When looking for an icon theme, GTK will search for a subdirectory of one
-	// or more of the directories in @path with the same name as the icon theme
+	SetResourcePath(path *string)
+	// SetSearchPath sets the search path for the icon theme object. When
+	// looking for an icon theme, GTK will search for a subdirectory of one or
+	// more of the directories in @path with the same name as the icon theme
 	// containing an index.theme file. (Themes from multiple of the path
 	// elements are combined to allow themes to be extended by adding icons in
 	// the user’s home directory.)
@@ -11529,12 +11385,10 @@ type IconTheme interface {
 	// for the icon name. (This is legacy feature, and new icons should be put
 	// into the fallback icon theme, which is called hicolor, rather than
 	// directly on the icon path.)
-	SetSearchPath(path []string)
-	// SetThemeName sets the name of the icon theme that the `GtkIconTheme`
-	// object uses overriding system configuration.
-	//
-	// This function cannot be called on the icon theme objects returned from
-	// [type_func@Gtk.IconTheme.get_for_display].
+	SetSearchPath(path []*string)
+	// SetThemeName sets the name of the icon theme that the IconTheme object
+	// uses overriding system configuration. This function cannot be called on
+	// the icon theme objects returned from gtk_icon_theme_get_for_display().
 	SetThemeName(themeName string)
 }
 
@@ -11561,20 +11415,21 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 
 // NewIconTheme constructs a class IconTheme.
 func NewIconTheme() IconTheme {
-	cret := new(C.GtkIconTheme)
-	var goret IconTheme
+	var cret C.GtkIconTheme
 
 	cret = C.gtk_icon_theme_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconTheme)
+	var iconTheme IconTheme
 
-	return goret
+	iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconTheme)
+
+	return iconTheme
 }
 
 // AddResourcePath adds a resource path that will be looked at when looking
 // for icons, similar to search paths.
 //
-// See [method@Gtk.IconTheme.set_resource_path].
+// See gtk_icon_theme_set_resource_path().
 //
 // This function should be used to make application-specific icons available
 // as part of the icon theme.
@@ -11589,10 +11444,9 @@ func (s iconTheme) AddResourcePath(path string) {
 	C.gtk_icon_theme_add_resource_path(arg0, arg1)
 }
 
-// AddSearchPath appends a directory to the search path.
-//
-// See [method@Gtk.IconTheme.set_search_path].
-func (s iconTheme) AddSearchPath(path string) {
+// AddSearchPath appends a directory to the search path. See
+// gtk_icon_theme_set_search_path().
+func (s iconTheme) AddSearchPath(path *string) {
 	var arg0 *C.GtkIconTheme
 	var arg1 *C.char
 
@@ -11603,21 +11457,21 @@ func (s iconTheme) AddSearchPath(path string) {
 	C.gtk_icon_theme_add_search_path(arg0, arg1)
 }
 
-// Display returns the display that the `GtkIconTheme` object was created
-// for.
+// Display returns the display that the GtkIconTheme object was created for.
 func (s iconTheme) Display() gdk.Display {
 	var arg0 *C.GtkIconTheme
 
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDisplay
-	var goret gdk.Display
 
 	cret = C.gtk_icon_theme_get_display(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+	var display gdk.Display
 
-	return goret
+	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+
+	return display
 }
 
 // IconNames lists the names of icons in the current icon theme.
@@ -11627,9 +11481,10 @@ func (s iconTheme) IconNames() []string {
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.gtk_icon_theme_get_icon_names(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -11640,22 +11495,22 @@ func (s iconTheme) IconNames() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			utf8s = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // IconSizes returns an array of integers describing the sizes at which the
-// icon is available without scaling.
-//
-// A size of -1 means that the icon is available in a scalable format. The
-// array is zero-terminated.
+// icon is available without scaling. A size of -1 means that the icon is
+// available in a scalable format. The array is zero-terminated.
 func (s iconTheme) IconSizes(iconName string) []int {
 	var arg0 *C.GtkIconTheme
 	var arg1 *C.char
@@ -11665,9 +11520,10 @@ func (s iconTheme) IconSizes(iconName string) []int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.int
-	var goret []int
 
 	cret = C.gtk_icon_theme_get_icon_sizes(arg0, arg1)
+
+	var gints []int
 
 	{
 		var length int
@@ -11678,28 +11534,31 @@ func (s iconTheme) IconSizes(iconName string) []int {
 			}
 		}
 
-		goret = make([]int, length)
+		var src []C.int
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		gints = make([]int, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_int {
-			src := (C.int)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = int(src)
+			gints = (int)(cret)
 		}
 	}
 
-	return goret
+	return gints
 }
 
 // ResourcePath gets the current resource path.
 //
-// See [method@Gtk.IconTheme.set_resource_path].
+// See gtk_icon_theme_set_resource_path().
 func (s iconTheme) ResourcePath() []string {
 	var arg0 *C.GtkIconTheme
 
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.gtk_icon_theme_get_resource_path(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -11710,29 +11569,31 @@ func (s iconTheme) ResourcePath() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			utf8s = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
-// SearchPath gets the current search path.
-//
-// See [method@Gtk.IconTheme.set_search_path].
-func (s iconTheme) SearchPath() []string {
+// SearchPath gets the current search path. See
+// gtk_icon_theme_set_search_path().
+func (s iconTheme) SearchPath() []*string {
 	var arg0 *C.GtkIconTheme
 
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.gtk_icon_theme_get_search_path(arg0)
+
+	var filenames []*string
 
 	{
 		var length int
@@ -11743,15 +11604,17 @@ func (s iconTheme) SearchPath() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			filenames = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return filenames
 }
 
 // ThemeName gets the current icon theme name.
@@ -11762,36 +11625,16 @@ func (s iconTheme) ThemeName() string {
 
 	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gtk_icon_theme_get_theme_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
-}
-
-// HasGIcon checks whether an icon theme includes an icon for a particular
-// `GIcon`.
-func (s iconTheme) HasGIcon(gIcon gio.Icon) bool {
-	var arg0 *C.GtkIconTheme
-	var arg1 *C.GIcon
-
-	arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GIcon)(unsafe.Pointer(gIcon.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_icon_theme_has_gicon(arg0, arg1)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
+	return utf8
 }
 
 // HasIcon checks whether an icon theme includes an icon for a particular
@@ -11805,21 +11648,21 @@ func (s iconTheme) HasIcon(iconName string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_theme_has_icon(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// LookupByGIcon looks up a icon for a desired size and window scale.
-//
-// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-// get information such as the filename and size.
+// LookupByGIcon looks up a icon for a desired size and window scale,
+// returning a IconPaintable. The icon can then be rendered by using it as a
+// Paintable, or you can get information such as the filename and size.
 func (s iconTheme) LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
 	var arg0 *C.GtkIconTheme
 	var arg1 *C.GIcon
@@ -11835,32 +11678,31 @@ func (s iconTheme) LookupByGIcon(icon gio.Icon, size int, scale int, direction T
 	arg4 = (C.GtkTextDirection)(direction)
 	arg5 = (C.GtkIconLookupFlags)(flags)
 
-	cret := new(C.GtkIconPaintable)
-	var goret IconPaintable
+	var cret *C.GtkIconPaintable
 
 	cret = C.gtk_icon_theme_lookup_by_gicon(arg0, arg1, arg2, arg3, arg4, arg5)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+	var iconPaintable IconPaintable
 
-	return goret
+	iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+
+	return iconPaintable
 }
 
 // LookupIcon looks up a named icon for a desired size and window scale,
-// returning a `GtkIconPaintable`.
-//
-// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-// get information such as the filename and size.
+// returning a IconPaintable. The icon can then be rendered by using it as a
+// Paintable, or you can get information such as the filename and size.
 //
 // If the available @icon_name is not available and @fallbacks are provided,
 // they will be tried in order.
 //
 // If no matching icon is found, then a paintable that renders the "missing
 // icon" icon is returned. If you need to do something else for missing
-// icons you need to use [method@Gtk.IconTheme.has_icon].
+// icons you need to use gtk_icon_theme_has_icon().
 //
 // Note that you probably want to listen for icon theme changes and update
 // the icon. This is usually done by overriding the
-// GtkWidgetClass.css-changed() function.
+// WidgetClass.css-changed() function.
 func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
 	var arg0 *C.GtkIconTheme
 	var arg1 *C.char
@@ -11881,8 +11723,8 @@ func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, sca
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg2), int(len(fallbacks)))
 
 		for i := range fallbacks {
-			out[i] = (*C.char)(C.CString(fallbacks[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg2 = (*C.char)(C.CString(fallbacks))
+			defer C.free(unsafe.Pointer(arg2))
 		}
 	}
 	arg3 = C.int(size)
@@ -11890,14 +11732,15 @@ func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, sca
 	arg5 = (C.GtkTextDirection)(direction)
 	arg6 = (C.GtkIconLookupFlags)(flags)
 
-	cret := new(C.GtkIconPaintable)
-	var goret IconPaintable
+	var cret *C.GtkIconPaintable
 
 	cret = C.gtk_icon_theme_lookup_icon(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+	var iconPaintable IconPaintable
 
-	return goret
+	iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconPaintable)
+
+	return iconPaintable
 }
 
 // SetResourcePath sets the resource paths that will be looked at when
@@ -11911,7 +11754,7 @@ func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, sca
 // Icons that are directly placed in the resource path instead of a
 // subdirectory are also considered as ultimate fallback, but they are
 // treated like unthemed icons.
-func (s iconTheme) SetResourcePath(path string) {
+func (s iconTheme) SetResourcePath(path *string) {
 	var arg0 *C.GtkIconTheme
 	var arg1 **C.char
 
@@ -11922,10 +11765,9 @@ func (s iconTheme) SetResourcePath(path string) {
 	C.gtk_icon_theme_set_resource_path(arg0, arg1)
 }
 
-// SetSearchPath sets the search path for the icon theme object.
-//
-// When looking for an icon theme, GTK will search for a subdirectory of one
-// or more of the directories in @path with the same name as the icon theme
+// SetSearchPath sets the search path for the icon theme object. When
+// looking for an icon theme, GTK will search for a subdirectory of one or
+// more of the directories in @path with the same name as the icon theme
 // containing an index.theme file. (Themes from multiple of the path
 // elements are combined to allow themes to be extended by adding icons in
 // the user’s home directory.)
@@ -11936,7 +11778,7 @@ func (s iconTheme) SetResourcePath(path string) {
 // for the icon name. (This is legacy feature, and new icons should be put
 // into the fallback icon theme, which is called hicolor, rather than
 // directly on the icon path.)
-func (s iconTheme) SetSearchPath(path []string) {
+func (s iconTheme) SetSearchPath(path []*string) {
 	var arg0 *C.GtkIconTheme
 	var arg1 **C.char
 
@@ -11949,19 +11791,17 @@ func (s iconTheme) SetSearchPath(path []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(path)))
 
 		for i := range path {
-			out[i] = (*C.gchar)(C.CString(path[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.gchar)(C.CString(path))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 
 	C.gtk_icon_theme_set_search_path(arg0, arg1)
 }
 
-// SetThemeName sets the name of the icon theme that the `GtkIconTheme`
-// object uses overriding system configuration.
-//
-// This function cannot be called on the icon theme objects returned from
-// [type_func@Gtk.IconTheme.get_for_display].
+// SetThemeName sets the name of the icon theme that the IconTheme object
+// uses overriding system configuration. This function cannot be called on
+// the icon theme objects returned from gtk_icon_theme_get_for_display().
 func (s iconTheme) SetThemeName(themeName string) {
 	var arg0 *C.GtkIconTheme
 	var arg1 *C.char
@@ -11973,25 +11813,23 @@ func (s iconTheme) SetThemeName(themeName string) {
 	C.gtk_icon_theme_set_theme_name(arg0, arg1)
 }
 
-// IconView: `GtkIconView` is a widget which displays data in a grid of icons.
-//
-// `GtkIconView` provides an alternative view on a `GtkTreeModel`. It displays
-// the model as a grid of icons with labels. Like [class@Gtk.TreeView], it
-// allows to select one or multiple items (depending on the selection mode, see
-// [method@Gtk.IconView.set_selection_mode]). In addition to selection with the
-// arrow keys, `GtkIconView` supports rubberband selection, which is controlled
-// by dragging the pointer.
+// IconView provides an alternative view on a TreeModel. It displays the model
+// as a grid of icons with labels. Like TreeView, it allows to select one or
+// multiple items (depending on the selection mode, see
+// gtk_icon_view_set_selection_mode()). In addition to selection with the arrow
+// keys, IconView supports rubberband selection, which is controlled by dragging
+// the pointer.
 //
 // Note that if the tree model is backed by an actual tree store (as opposed to
 // a flat list where the mapping to icons is obvious), IconView will only
 // display the first level of the tree and ignore the tree’s branches.
 //
-//
 // CSS nodes
 //
-// “` iconview.view ╰── [rubberband] “`
+//    iconview.view
+//    ╰── [rubberband]
 //
-// `GtkIconView` has a single CSS node with name iconview and style class .view.
+// GtkIconView has a single CSS node with name iconview and style class .view.
 // For rubberband selection, a subnode with name rubberband is used.
 type IconView interface {
 	Widget
@@ -12017,7 +11855,7 @@ type IconView interface {
 	// specified by @path and @cell. If @cell is nil the main cell area is used.
 	//
 	// This function is only valid if @icon_view is realized.
-	CellRect(path *TreePath, cell CellRenderer) (rect *gdk.Rectangle, ok bool)
+	CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangle, ok bool)
 	// ColumnSpacing returns the value of the ::column-spacing property.
 	ColumnSpacing() int
 	// Columns returns the value of the ::columns property.
@@ -12027,14 +11865,14 @@ type IconView interface {
 	// currently has focus, then *@cell will be nil.
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free().
-	Cursor() (path **TreePath, cell CellRenderer, ok bool)
+	Cursor() (path *TreePath, cell CellRenderer, ok bool)
 	// DestItemAtPos determines the destination item for a given position.
-	DestItemAtPos(dragX int, dragY int) (path **TreePath, pos *IconViewDropPosition, ok bool)
+	DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
 	// DragDestItem gets information about the item that is highlighted for
 	// feedback.
-	DragDestItem() (path **TreePath, pos *IconViewDropPosition)
+	DragDestItem() (path *TreePath, pos IconViewDropPosition)
 	// ItemAtPos gets the path and cell for the icon at the given position.
-	ItemAtPos(x int, y int) (path **TreePath, cell CellRenderer, ok bool)
+	ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
 	// ItemColumn gets the column in which the item @path is currently
 	// displayed. Column numbers start at 0.
 	ItemColumn(path *TreePath) int
@@ -12093,12 +11931,12 @@ type IconView interface {
 	// tooltips the item returned will be the cursor item. When true, then any
 	// of @model, @path and @iter which have been provided will be set to point
 	// to that row and the corresponding model.
-	TooltipContext(x int, y int, keyboardTip bool) (model *TreeModel, path **TreePath, iter *TreeIter, ok bool)
+	TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 	// VisibleRange sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// Both paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (startPath **TreePath, endPath **TreePath, ok bool)
+	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 	// ItemActivated activates the item determined by @path.
 	ItemActivated(path *TreePath)
 	// PathIsSelected returns true if the icon pointed to by @path is currently
@@ -12270,13 +12108,14 @@ func marshalIconView(p uintptr) (interface{}, error) {
 // NewIconView constructs a class IconView.
 func NewIconView() IconView {
 	var cret C.GtkIconView
-	var goret IconView
 
 	cret = C.gtk_icon_view_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	var iconView IconView
 
-	return goret
+	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+
+	return iconView
 }
 
 // NewIconViewWithArea constructs a class IconView.
@@ -12286,13 +12125,14 @@ func NewIconViewWithArea(area CellArea) IconView {
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	var cret C.GtkIconView
-	var goret IconView
 
 	cret = C.gtk_icon_view_new_with_area(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	var iconView IconView
 
-	return goret
+	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+
+	return iconView
 }
 
 // NewIconViewWithModel constructs a class IconView.
@@ -12302,13 +12142,14 @@ func NewIconViewWithModel(model TreeModel) IconView {
 	arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkIconView
-	var goret IconView
 
 	cret = C.gtk_icon_view_new_with_model(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	var iconView IconView
 
-	return goret
+	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+
+	return iconView
 }
 
 // CreateDragIcon creates a #cairo_surface_t representation of the item at
@@ -12320,14 +12161,15 @@ func (i iconView) CreateDragIcon(path *TreePath) gdk.Paintable {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
-	cret := new(C.GdkPaintable)
-	var goret gdk.Paintable
+	var cret *C.GdkPaintable
 
 	cret = C.gtk_icon_view_create_drag_icon(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	var paintable gdk.Paintable
 
-	return goret
+	paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+
+	return paintable
 }
 
 // EnableModelDragDest turns @icon_view into a drop destination for
@@ -12368,22 +12210,23 @@ func (i iconView) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_view_get_activate_on_single_click(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CellRect fills the bounding rectangle in widget coordinates for the cell
 // specified by @path and @cell. If @cell is nil the main cell area is used.
 //
 // This function is only valid if @icon_view is realized.
-func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect *gdk.Rectangle, ok bool) {
+func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangle, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 *C.GtkTreePath
 	var arg2 *C.GtkCellRenderer
@@ -12392,19 +12235,18 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect *gdk.Rectang
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
-	arg3 := new(C.GdkRectangle)
-	var ret3 *gdk.Rectangle
+	var rect gdk.Rectangle
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_cell_rect(arg0, arg1, arg2, arg3)
+	cret = C.gtk_icon_view_get_cell_rect(arg0, arg1, arg2, (*C.GdkRectangle)(unsafe.Pointer(&rect)))
 
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret3, goret
+	return rect, ok
 }
 
 // ColumnSpacing returns the value of the ::column-spacing property.
@@ -12414,13 +12256,14 @@ func (i iconView) ColumnSpacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_column_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Columns returns the value of the ::columns property.
@@ -12430,13 +12273,14 @@ func (i iconView) Columns() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_columns(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Cursor fills in @path and @cell with the current cursor path and cell. If
@@ -12444,34 +12288,30 @@ func (i iconView) Columns() int {
 // currently has focus, then *@cell will be nil.
 //
 // The returned TreePath must be freed with gtk_tree_path_free().
-func (i iconView) Cursor() (path **TreePath, cell CellRenderer, ok bool) {
+func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 	var arg0 *C.GtkIconView
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.GtkTreePath)
-	var ret1 **TreePath
+	var path *TreePath
 	var arg2 **C.GtkCellRenderer
-	var ret2 CellRenderer
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_cursor(arg0, arg1, arg2)
+	cret = C.gtk_icon_view_get_cursor(arg0, (**C.GtkTreePath)(unsafe.Pointer(&path)), arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
+	var cell CellRenderer
+	var ok bool
+
+	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return path, cell, ok
 }
 
 // DestItemAtPos determines the destination item for a given position.
-func (i iconView) DestItemAtPos(dragX int, dragY int) (path **TreePath, pos *IconViewDropPosition, ok bool) {
+func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 C.int
 	var arg2 C.int
@@ -12480,52 +12320,44 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (path **TreePath, pos *Ico
 	arg1 = C.int(dragX)
 	arg2 = C.int(dragY)
 
-	arg3 := new(*C.GtkTreePath)
-	var ret3 **TreePath
-	arg4 := new(C.GtkIconViewDropPosition)
-	var ret4 *IconViewDropPosition
+	var path *TreePath
+	var arg4 C.GtkIconViewDropPosition
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_dest_item_at_pos(arg0, arg1, arg2, arg3, arg4)
+	cret = C.gtk_icon_view_get_dest_item_at_pos(arg0, arg1, arg2, (**C.GtkTreePath)(unsafe.Pointer(&path)), &arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret4 = *IconViewDropPosition(arg4)
+	var pos IconViewDropPosition
+	var ok bool
+
+	pos = IconViewDropPosition(arg4)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret3, ret4, goret
+	return path, pos, ok
 }
 
 // DragDestItem gets information about the item that is highlighted for
 // feedback.
-func (i iconView) DragDestItem() (path **TreePath, pos *IconViewDropPosition) {
+func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition) {
 	var arg0 *C.GtkIconView
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.GtkTreePath)
-	var ret1 **TreePath
-	arg2 := new(C.GtkIconViewDropPosition)
-	var ret2 *IconViewDropPosition
+	var path *TreePath
+	var arg2 C.GtkIconViewDropPosition
 
-	C.gtk_icon_view_get_drag_dest_item(arg0, arg1, arg2)
+	C.gtk_icon_view_get_drag_dest_item(arg0, (**C.GtkTreePath)(unsafe.Pointer(&path)), &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret2 = *IconViewDropPosition(arg2)
+	var pos IconViewDropPosition
 
-	return ret1, ret2
+	pos = IconViewDropPosition(arg2)
+
+	return path, pos
 }
 
 // ItemAtPos gets the path and cell for the icon at the given position.
-func (i iconView) ItemAtPos(x int, y int) (path **TreePath, cell CellRenderer, ok bool) {
+func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 C.int
 	var arg2 C.int
@@ -12534,25 +12366,21 @@ func (i iconView) ItemAtPos(x int, y int) (path **TreePath, cell CellRenderer, o
 	arg1 = C.int(x)
 	arg2 = C.int(y)
 
-	arg3 := new(*C.GtkTreePath)
-	var ret3 **TreePath
+	var path *TreePath
 	var arg4 **C.GtkCellRenderer
-	var ret4 CellRenderer
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_item_at_pos(arg0, arg1, arg2, arg3, arg4)
+	cret = C.gtk_icon_view_get_item_at_pos(arg0, arg1, arg2, (**C.GtkTreePath)(unsafe.Pointer(&path)), arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
+	var cell CellRenderer
+	var ok bool
+
+	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret3, ret4, goret
+	return path, cell, ok
 }
 
 // ItemColumn gets the column in which the item @path is currently
@@ -12565,13 +12393,14 @@ func (i iconView) ItemColumn(path *TreePath) int {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_column(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ItemOrientation returns the value of the ::item-orientation property
@@ -12583,13 +12412,14 @@ func (i iconView) ItemOrientation() Orientation {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_icon_view_get_item_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
 // ItemPadding returns the value of the ::item-padding property.
@@ -12599,13 +12429,14 @@ func (i iconView) ItemPadding() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_padding(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ItemRow gets the row in which the item @path is currently displayed. Row
@@ -12618,13 +12449,14 @@ func (i iconView) ItemRow(path *TreePath) int {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_row(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ItemWidth returns the value of the ::item-width property.
@@ -12634,13 +12466,14 @@ func (i iconView) ItemWidth() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Margin returns the value of the ::margin property.
@@ -12650,13 +12483,14 @@ func (i iconView) Margin() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_margin(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MarkupColumn returns the column with markup text for @icon_view.
@@ -12666,13 +12500,14 @@ func (i iconView) MarkupColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_markup_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Model returns the model the IconView is based on. Returns nil if the
@@ -12683,13 +12518,14 @@ func (i iconView) Model() TreeModel {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret TreeModel
 
 	cret = C.gtk_icon_view_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	var treeModel TreeModel
 
-	return goret
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+
+	return treeModel
 }
 
 // PathAtPos gets the path for the icon at the given position.
@@ -12702,17 +12538,18 @@ func (i iconView) PathAtPos(x int, y int) *TreePath {
 	arg1 = C.int(x)
 	arg2 = C.int(y)
 
-	cret := new(C.GtkTreePath)
-	var goret *TreePath
+	var cret *C.GtkTreePath
 
 	cret = C.gtk_icon_view_get_path_at_pos(arg0, arg1, arg2)
 
-	goret = WrapTreePath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *TreePath) {
+	var treePath *TreePath
+
+	treePath = WrapTreePath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(treePath, func(v *TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return treePath
 }
 
 // PixbufColumn returns the column with pixbufs for @icon_view.
@@ -12722,13 +12559,14 @@ func (i iconView) PixbufColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_pixbuf_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Reorderable retrieves whether the user can reorder the list via
@@ -12739,15 +12577,16 @@ func (i iconView) Reorderable() bool {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_view_get_reorderable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RowSpacing returns the value of the ::row-spacing property.
@@ -12757,13 +12596,14 @@ func (i iconView) RowSpacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_row_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SelectedItems creates a list of paths of all selected items.
@@ -12779,17 +12619,18 @@ func (i iconView) SelectedItems() *glib.List {
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_icon_view_get_selected_items(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // SelectionMode gets the selection mode of the @icon_view.
@@ -12799,13 +12640,14 @@ func (i iconView) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret SelectionMode
 
 	cret = C.gtk_icon_view_get_selection_mode(arg0)
 
-	goret = SelectionMode(cret)
+	var selectionMode SelectionMode
 
-	return goret
+	selectionMode = SelectionMode(cret)
+
+	return selectionMode
 }
 
 // Spacing returns the value of the ::spacing property.
@@ -12815,13 +12657,14 @@ func (i iconView) Spacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // TextColumn returns the column with text for @icon_view.
@@ -12831,13 +12674,14 @@ func (i iconView) TextColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_text_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // TooltipColumn returns the column of @icon_view’s model which is being
@@ -12848,13 +12692,14 @@ func (i iconView) TooltipColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_icon_view_get_tooltip_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // TooltipContext: this function is supposed to be used in a
@@ -12867,7 +12712,7 @@ func (i iconView) TooltipColumn() int {
 // tooltips the item returned will be the cursor item. When true, then any
 // of @model, @path and @iter which have been provided will be set to point
 // to that row and the corresponding model.
-func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model *TreeModel, path **TreePath, iter *TreeIter, ok bool) {
+func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 C.int
 	var arg2 C.int
@@ -12881,60 +12726,47 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model *TreeMod
 	}
 
 	var arg4 **C.GtkTreeModel
-	var ret4 *TreeModel
-	arg5 := new(*C.GtkTreePath)
-	var ret5 **TreePath
-	arg6 := new(C.GtkTreeIter)
-	var ret6 *TreeIter
+	var path *TreePath
+	var iter TreeIter
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_tooltip_context(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.gtk_icon_view_get_tooltip_context(arg0, arg1, arg2, arg3, arg4, (**C.GtkTreePath)(unsafe.Pointer(&path)), (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
-	ret5 = WrapTreePath(unsafe.Pointer(arg5))
-	runtime.SetFinalizer(ret5, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret6 = WrapTreeIter(unsafe.Pointer(arg6))
+	var model TreeModel
+
+	var ok bool
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeModel)
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret4, ret5, ret6, goret
+	return model, path, iter, ok
 }
 
 // VisibleRange sets @start_path and @end_path to be the first and last
 // visible path. Note that there may be invisible paths in between.
 //
 // Both paths should be freed with gtk_tree_path_free() after use.
-func (i iconView) VisibleRange() (startPath **TreePath, endPath **TreePath, ok bool) {
+func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
 	var arg0 *C.GtkIconView
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.GtkTreePath)
-	var ret1 **TreePath
-	arg2 := new(*C.GtkTreePath)
-	var ret2 **TreePath
+	var startPath *TreePath
+	var endPath *TreePath
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_visible_range(arg0, arg1, arg2)
+	cret = C.gtk_icon_view_get_visible_range(arg0, (**C.GtkTreePath)(unsafe.Pointer(&startPath)), (**C.GtkTreePath)(unsafe.Pointer(&endPath)))
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret2 = WrapTreePath(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return startPath, endPath, ok
 }
 
 // ItemActivated activates the item determined by @path.
@@ -12958,15 +12790,16 @@ func (i iconView) PathIsSelected(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_view_path_is_selected(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ScrollToPath moves the alignments of @icon_view to the position specified
@@ -13030,7 +12863,7 @@ func (i iconView) SelectedForeach() {
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	C.gtk_icon_view_selected_foreach(arg0, arg1, arg2)
+	C.gtk_icon_view_selected_foreach(arg0)
 }
 
 // SetActivateOnSingleClick causes the IconView::item-activated signal to be
@@ -13367,45 +13200,39 @@ func (i iconView) UnsetModelDragSource() {
 	C.gtk_icon_view_unset_model_drag_source(arg0)
 }
 
-// Image: the `GtkImage` widget displays an image.
+// Image: the Image widget displays an image. Various kinds of object can be
+// displayed as an image; most typically, you would load a Texture from a file,
+// and then display that. There’s a convenience function to do this,
+// gtk_image_new_from_file(), used as follows:
 //
-// !An example GtkImage (image.png)
-//
-// Various kinds of object can be displayed as an image; most typically, you
-// would load a `GdkTexture` from a file, using the convenience function
-// [ctor@Gtk.Image.new_from_file], for instance:
-//
-// “`c GtkWidget *image = gtk_image_new_from_file ("myfile.png"); “`
+//    GtkWidget *image;
+//    image = gtk_image_new_from_file ("myfile.png");
 //
 // If the file isn’t loaded successfully, the image will contain a “broken
-// image” icon similar to that used in many web browsers.
-//
-// If you want to handle errors in loading the file yourself, for example by
-// displaying an error message, then load the image with
-// [ctor@Gdk.Texture.new_from_file], then create the `GtkImage` with
-// [ctor@Gtk.Image.new_from_paintable].
+// image” icon similar to that used in many web browsers. If you want to handle
+// errors in loading the file yourself, for example by displaying an error
+// message, then load the image with gdk_texture_new_from_file(), then create
+// the Image with gtk_image_new_from_paintable().
 //
 // Sometimes an application will want to avoid depending on external data files,
-// such as image files. See the documentation of `GResource` inside GIO, for
-// details. In this case, [property@Gtk.Image:resource],
-// [ctor@Gtk.Image.new_from_resource], and [method@Gtk.Image.set_from_resource]
-// should be used.
+// such as image files. See the documentation of #GResource for details. In this
+// case, the Image:resource, gtk_image_new_from_resource() and
+// gtk_image_set_from_resource() should be used.
 //
-// `GtkImage` displays its image as an icon, with a size that is determined by
-// the application. See [class@Gtk.Picture] if you want to show an image at is
-// actual size.
+// GtkImage displays its image as an icon, with a size that is determined by the
+// application. See Picture if you want to show an image at is actual size.
 //
 //
 // CSS nodes
 //
-// `GtkImage` has a single CSS node with the name `image`. The style classes
-// `.normal-icons` or `.large-icons` may appear, depending on the
-// [property@Gtk.Image:icon-size] property.
+// GtkImage has a single CSS node with the name image. The style classes
+// .normal-icons or .large-icons may appear, depending on the Image:icon-size
+// property.
 //
 //
 // Accessibility
 //
-// `GtkImage` uses the `GTK_ACCESSIBLE_ROLE_IMG` role.
+// GtkImage uses the K_ACCESSIBLE_ROLE_IMG role.
 type Image interface {
 	Widget
 	Accessible
@@ -13414,68 +13241,63 @@ type Image interface {
 
 	// Clear resets the image to be empty.
 	Clear()
-	// GIcon gets the `GIcon` being displayed by the `GtkImage`.
+	// GIcon gets the #GIcon and size being displayed by the Image. The storage
+	// type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+	// gtk_image_get_storage_type()). The caller of this function does not own a
+	// reference to the returned #GIcon.
 	//
-	// The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON
-	// (see [method@Gtk.Image.get_storage_type]). The caller of this function
-	// does not own a reference to the returned `GIcon`.
+	// Note: This function was changed in 3.94 not to use out parameters
+	// anymore, but return the GIcon directly. See gtk_image_get_icon_size() for
+	// a way to get the icon size.
 	GIcon() gio.Icon
-	// IconName gets the icon name and size being displayed by the `GtkImage`.
+	// IconName gets the icon name and size being displayed by the Image. The
+	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME
+	// (see gtk_image_get_storage_type()). The returned string is owned by the
+	// Image and should not be freed.
 	//
-	// The storage type of the image must be GTK_IMAGE_EMPTY or
-	// GTK_IMAGE_ICON_NAME (see [method@Gtk.Image.get_storage_type]). The
-	// returned string is owned by the `GtkImage` and should not be freed.
+	// Note: This function was changed in 3.94 not to use out parameters
+	// anymore, but return the icon name directly. See gtk_image_get_icon_size()
+	// for a way to get the icon size.
 	IconName() string
 	// IconSize gets the icon size used by the @image when rendering icons.
 	IconSize() IconSize
-	// Paintable gets the image `GdkPaintable` being displayed by the
-	// `GtkImage`.
-	//
-	// The storage type of the image must be GTK_IMAGE_EMPTY or
-	// GTK_IMAGE_PAINTABLE (see [method@Gtk.Image.get_storage_type]). The caller
-	// of this function does not own a reference to the returned paintable.
+	// Paintable gets the image Paintable being displayed by the Image. The
+	// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PAINTABLE
+	// (see gtk_image_get_storage_type()). The caller of this function does not
+	// own a reference to the returned paintable.
 	Paintable() gdk.Paintable
 	// PixelSize gets the pixel size used for named icons.
 	PixelSize() int
-	// StorageType gets the type of representation being used by the `GtkImage`
-	// to store image data.
-	//
-	// If the `GtkImage` has no image data, the return value will be
-	// GTK_IMAGE_EMPTY.
+	// StorageType gets the type of representation being used by the Image to
+	// store image data. If the Image has no image data, the return value will
+	// be GTK_IMAGE_EMPTY.
 	StorageType() ImageType
-	// SetFromFile sets a `GtkImage` to show a file.
+	// SetFromFile: see gtk_image_new_from_file() for details.
+	SetFromFile(filename *string)
+	// SetFromGIcon: see gtk_image_new_from_gicon() for details.
 	//
-	// See [ctor@Gtk.Image.new_from_file] for details.
-	SetFromFile(filename string)
-	// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
-	//
-	// See [ctor@Gtk.Image.new_from_gicon] for details.
+	// Note: Before 3.94, this function was taking an extra icon size argument.
+	// See gtk_image_set_icon_size() for another way to set the icon size.
 	SetFromGIcon(icon gio.Icon)
-	// SetFromIconName sets a `GtkImage` to show a named icon.
+	// SetFromIconName: see gtk_image_new_from_icon_name() for details.
 	//
-	// See [ctor@Gtk.Image.new_from_icon_name] for details.
+	// Note: Before 3.94, this function was taking an extra icon size argument.
+	// See gtk_image_set_icon_size() for another way to set the icon size.
 	SetFromIconName(iconName string)
-	// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
-	//
-	// See [ctor@Gtk.Image.new_from_paintable] for details.
+	// SetFromPaintable: see gtk_image_new_from_paintable() for details.
 	SetFromPaintable(paintable gdk.Paintable)
-	// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
+	// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
 	//
-	// See [ctor@Gtk.Image.new_from_pixbuf] for details.
-	//
-	// Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
-	// can't get back the exact pixbuf once this is called, only a paintable.
+	// Note: This is a helper for gtk_image_set_from_paintable(), and you can't
+	// get back the exact pixbuf once this is called, only a paintable.
 	SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf)
-	// SetFromResource sets a `GtkImage` to show a resource.
-	//
-	// See [ctor@Gtk.Image.new_from_resource] for details.
+	// SetFromResource: see gtk_image_new_from_resource() for details.
 	SetFromResource(resourcePath string)
 	// SetIconSize suggests an icon size to the theme for named icons.
 	SetIconSize(iconSize IconSize)
-	// SetPixelSize sets the pixel size to use for named icons.
-	//
-	// If the pixel size is set to a value != -1, it is used instead of the icon
-	// size set by [method@Gtk.Image.set_from_icon_name].
+	// SetPixelSize sets the pixel size to use for named icons. If the pixel
+	// size is set to a value != -1, it is used instead of the icon size set by
+	// gtk_image_set_from_icon_name().
 	SetPixelSize(pixelSize int)
 }
 
@@ -13509,30 +13331,32 @@ func marshalImage(p uintptr) (interface{}, error) {
 // NewImage constructs a class Image.
 func NewImage() Image {
 	var cret C.GtkImage
-	var goret Image
 
 	cret = C.gtk_image_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	var image Image
 
-	return goret
+	image = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+
+	return image
 }
 
 // NewImageFromFile constructs a class Image.
-func NewImageFromFile(filename string) Image {
+func NewImageFromFile(filename *string) Image {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImage
-	var goret Image
 
 	cret = C.gtk_image_new_from_file(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	var image Image
 
-	return goret
+	image = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+
+	return image
 }
 
 // NewImageFromGIcon constructs a class Image.
@@ -13542,13 +13366,14 @@ func NewImageFromGIcon(icon gio.Icon) Image {
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
 	var cret C.GtkImage
-	var goret Image
 
 	cret = C.gtk_image_new_from_gicon(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	var image Image
 
-	return goret
+	image = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+
+	return image
 }
 
 // NewImageFromIconName constructs a class Image.
@@ -13559,13 +13384,14 @@ func NewImageFromIconName(iconName string) Image {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImage
-	var goret Image
 
 	cret = C.gtk_image_new_from_icon_name(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	var image Image
 
-	return goret
+	image = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+
+	return image
 }
 
 // NewImageFromPaintable constructs a class Image.
@@ -13575,13 +13401,14 @@ func NewImageFromPaintable(paintable gdk.Paintable) Image {
 	arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
 
 	var cret C.GtkImage
-	var goret Image
 
 	cret = C.gtk_image_new_from_paintable(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	var image Image
 
-	return goret
+	image = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+
+	return image
 }
 
 // NewImageFromPixbuf constructs a class Image.
@@ -13591,13 +13418,14 @@ func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	var cret C.GtkImage
-	var goret Image
 
 	cret = C.gtk_image_new_from_pixbuf(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	var image Image
 
-	return goret
+	image = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+
+	return image
 }
 
 // NewImageFromResource constructs a class Image.
@@ -13608,13 +13436,14 @@ func NewImageFromResource(resourcePath string) Image {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkImage
-	var goret Image
 
 	cret = C.gtk_image_new_from_resource(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+	var image Image
 
-	return goret
+	image = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Image)
+
+	return image
 }
 
 // Clear resets the image to be empty.
@@ -13626,44 +13455,52 @@ func (i image) Clear() {
 	C.gtk_image_clear(arg0)
 }
 
-// GIcon gets the `GIcon` being displayed by the `GtkImage`.
+// GIcon gets the #GIcon and size being displayed by the Image. The storage
+// type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON (see
+// gtk_image_get_storage_type()). The caller of this function does not own a
+// reference to the returned #GIcon.
 //
-// The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON
-// (see [method@Gtk.Image.get_storage_type]). The caller of this function
-// does not own a reference to the returned `GIcon`.
+// Note: This function was changed in 3.94 not to use out parameters
+// anymore, but return the GIcon directly. See gtk_image_get_icon_size() for
+// a way to get the icon size.
 func (i image) GIcon() gio.Icon {
 	var arg0 *C.GtkImage
 
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GIcon
-	var goret gio.Icon
 
 	cret = C.gtk_image_get_gicon(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+	var icon gio.Icon
 
-	return goret
+	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Icon)
+
+	return icon
 }
 
-// IconName gets the icon name and size being displayed by the `GtkImage`.
+// IconName gets the icon name and size being displayed by the Image. The
+// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_ICON_NAME
+// (see gtk_image_get_storage_type()). The returned string is owned by the
+// Image and should not be freed.
 //
-// The storage type of the image must be GTK_IMAGE_EMPTY or
-// GTK_IMAGE_ICON_NAME (see [method@Gtk.Image.get_storage_type]). The
-// returned string is owned by the `GtkImage` and should not be freed.
+// Note: This function was changed in 3.94 not to use out parameters
+// anymore, but return the icon name directly. See gtk_image_get_icon_size()
+// for a way to get the icon size.
 func (i image) IconName() string {
 	var arg0 *C.GtkImage
 
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_image_get_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // IconSize gets the icon size used by the @image when rendering icons.
@@ -13673,34 +13510,34 @@ func (i image) IconSize() IconSize {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkIconSize
-	var goret IconSize
 
 	cret = C.gtk_image_get_icon_size(arg0)
 
-	goret = IconSize(cret)
+	var iconSize IconSize
 
-	return goret
+	iconSize = IconSize(cret)
+
+	return iconSize
 }
 
-// Paintable gets the image `GdkPaintable` being displayed by the
-// `GtkImage`.
-//
-// The storage type of the image must be GTK_IMAGE_EMPTY or
-// GTK_IMAGE_PAINTABLE (see [method@Gtk.Image.get_storage_type]). The caller
-// of this function does not own a reference to the returned paintable.
+// Paintable gets the image Paintable being displayed by the Image. The
+// storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_PAINTABLE
+// (see gtk_image_get_storage_type()). The caller of this function does not
+// own a reference to the returned paintable.
 func (i image) Paintable() gdk.Paintable {
 	var arg0 *C.GtkImage
 
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GdkPaintable
-	var goret gdk.Paintable
 
 	cret = C.gtk_image_get_paintable(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+	var paintable gdk.Paintable
 
-	return goret
+	paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Paintable)
+
+	return paintable
 }
 
 // PixelSize gets the pixel size used for named icons.
@@ -13710,39 +13547,37 @@ func (i image) PixelSize() int {
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_image_get_pixel_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// StorageType gets the type of representation being used by the `GtkImage`
-// to store image data.
-//
-// If the `GtkImage` has no image data, the return value will be
-// GTK_IMAGE_EMPTY.
+// StorageType gets the type of representation being used by the Image to
+// store image data. If the Image has no image data, the return value will
+// be GTK_IMAGE_EMPTY.
 func (i image) StorageType() ImageType {
 	var arg0 *C.GtkImage
 
 	arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkImageType
-	var goret ImageType
 
 	cret = C.gtk_image_get_storage_type(arg0)
 
-	goret = ImageType(cret)
+	var imageType ImageType
 
-	return goret
+	imageType = ImageType(cret)
+
+	return imageType
 }
 
-// SetFromFile sets a `GtkImage` to show a file.
-//
-// See [ctor@Gtk.Image.new_from_file] for details.
-func (i image) SetFromFile(filename string) {
+// SetFromFile: see gtk_image_new_from_file() for details.
+func (i image) SetFromFile(filename *string) {
 	var arg0 *C.GtkImage
 	var arg1 *C.char
 
@@ -13753,9 +13588,10 @@ func (i image) SetFromFile(filename string) {
 	C.gtk_image_set_from_file(arg0, arg1)
 }
 
-// SetFromGIcon sets a `GtkImage` to show a `GIcon`.
+// SetFromGIcon: see gtk_image_new_from_gicon() for details.
 //
-// See [ctor@Gtk.Image.new_from_gicon] for details.
+// Note: Before 3.94, this function was taking an extra icon size argument.
+// See gtk_image_set_icon_size() for another way to set the icon size.
 func (i image) SetFromGIcon(icon gio.Icon) {
 	var arg0 *C.GtkImage
 	var arg1 *C.GIcon
@@ -13766,9 +13602,10 @@ func (i image) SetFromGIcon(icon gio.Icon) {
 	C.gtk_image_set_from_gicon(arg0, arg1)
 }
 
-// SetFromIconName sets a `GtkImage` to show a named icon.
+// SetFromIconName: see gtk_image_new_from_icon_name() for details.
 //
-// See [ctor@Gtk.Image.new_from_icon_name] for details.
+// Note: Before 3.94, this function was taking an extra icon size argument.
+// See gtk_image_set_icon_size() for another way to set the icon size.
 func (i image) SetFromIconName(iconName string) {
 	var arg0 *C.GtkImage
 	var arg1 *C.char
@@ -13780,9 +13617,7 @@ func (i image) SetFromIconName(iconName string) {
 	C.gtk_image_set_from_icon_name(arg0, arg1)
 }
 
-// SetFromPaintable sets a `GtkImage` to show a `GdkPaintable`.
-//
-// See [ctor@Gtk.Image.new_from_paintable] for details.
+// SetFromPaintable: see gtk_image_new_from_paintable() for details.
 func (i image) SetFromPaintable(paintable gdk.Paintable) {
 	var arg0 *C.GtkImage
 	var arg1 *C.GdkPaintable
@@ -13793,12 +13628,10 @@ func (i image) SetFromPaintable(paintable gdk.Paintable) {
 	C.gtk_image_set_from_paintable(arg0, arg1)
 }
 
-// SetFromPixbuf sets a `GtkImage` to show a `GdkPixbuf`.
+// SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
 //
-// See [ctor@Gtk.Image.new_from_pixbuf] for details.
-//
-// Note: This is a helper for [method@Gtk.Image.set_from_paintable], and you
-// can't get back the exact pixbuf once this is called, only a paintable.
+// Note: This is a helper for gtk_image_set_from_paintable(), and you can't
+// get back the exact pixbuf once this is called, only a paintable.
 func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	var arg0 *C.GtkImage
 	var arg1 *C.GdkPixbuf
@@ -13809,9 +13642,7 @@ func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 	C.gtk_image_set_from_pixbuf(arg0, arg1)
 }
 
-// SetFromResource sets a `GtkImage` to show a resource.
-//
-// See [ctor@Gtk.Image.new_from_resource] for details.
+// SetFromResource: see gtk_image_new_from_resource() for details.
 func (i image) SetFromResource(resourcePath string) {
 	var arg0 *C.GtkImage
 	var arg1 *C.char
@@ -13834,10 +13665,9 @@ func (i image) SetIconSize(iconSize IconSize) {
 	C.gtk_image_set_icon_size(arg0, arg1)
 }
 
-// SetPixelSize sets the pixel size to use for named icons.
-//
-// If the pixel size is set to a value != -1, it is used instead of the icon
-// size set by [method@Gtk.Image.set_from_icon_name].
+// SetPixelSize sets the pixel size to use for named icons. If the pixel
+// size is set to a value != -1, it is used instead of the icon size set by
+// gtk_image_set_from_icon_name().
 func (i image) SetPixelSize(pixelSize int) {
 	var arg0 *C.GtkImage
 	var arg1 C.int
@@ -13848,52 +13678,64 @@ func (i image) SetPixelSize(pixelSize int) {
 	C.gtk_image_set_pixel_size(arg0, arg1)
 }
 
-// InfoBar: `GtkInfoBar` can be show messages to the user without a dialog.
+// InfoBar is a widget that can be used to show messages to the user without
+// showing a dialog. It is often temporarily shown at the top or bottom of a
+// document. In contrast to Dialog, which has an action area at the bottom,
+// InfoBar has an action area at the side.
 //
-// !An example GtkInfoBar (info-bar.png)
+// The API of InfoBar is very similar to Dialog, allowing you to add buttons to
+// the action area with gtk_info_bar_add_button() or
+// gtk_info_bar_new_with_buttons(). The sensitivity of action widgets can be
+// controlled with gtk_info_bar_set_response_sensitive().
 //
-// It is often temporarily shown at the top or bottom of a document. In contrast
-// to [class@Gtk.Dialog], which has an action area at the bottom, `GtkInfoBar`
-// has an action area at the side.
+// To add widgets to the main content area of a InfoBar, use
+// gtk_info_bar_add_child().
 //
-// The API of `GtkInfoBar` is very similar to `GtkDialog`, allowing you to add
-// buttons to the action area with [method@Gtk.InfoBar.add_button] or
-// [ctor@Gtk.InfoBar.new_with_buttons]. The sensitivity of action widgets can be
-// controlled with [method@Gtk.InfoBar.set_response_sensitive].
+// Similar to MessageDialog, the contents of a InfoBar can by classified as
+// error message, warning, informational message, etc, by using
+// gtk_info_bar_set_message_type(). GTK may use the message type to determine
+// how the message is displayed.
 //
-// To add widgets to the main content area of a `GtkInfoBar`, use
-// [method@Gtk.InfoBar.add_child].
+// A simple example for using a InfoBar:
 //
-// Similar to [class@Gtk.MessageDialog], the contents of a `GtkInfoBar` can by
-// classified as error message, warning, informational message, etc, by using
-// [method@Gtk.InfoBar.set_message_type]. GTK may use the message type to
-// determine how the message is displayed.
+//    GtkWidget *message_label;
+//    GtkWidget *widget;
+//    GtkWidget *grid;
+//    GtkInfoBar *bar;
 //
-// A simple example for using a `GtkInfoBar`: “`c GtkWidget *message_label;
-// GtkWidget *widget; GtkWidget *grid; GtkInfoBar *bar;
+//    // set up info bar
+//    widget = gtk_info_bar_new ();
+//    bar = GTK_INFO_BAR (widget);
+//    grid = gtk_grid_new ();
 //
-// // set up info bar widget = gtk_info_bar_new (); bar = GTK_INFO_BAR (widget);
-// // grid = gtk_grid_new ();
+//    message_label = gtk_label_new ("");
+//    gtk_info_bar_add_child (bar, message_label);
+//    gtk_info_bar_add_button (bar,
+//                             _("_OK"),
+//                             GTK_RESPONSE_OK);
+//    g_signal_connect (bar,
+//                      "response",
+//                      G_CALLBACK (gtk_widget_hide),
+//                      NULL);
+//    gtk_grid_attach (GTK_GRID (grid),
+//                     widget,
+//                     0, 2, 1, 1);
 //
-// message_label = gtk_label_new (""); gtk_info_bar_add_child (bar,
-// message_label); gtk_info_bar_add_button (bar, _("_OK"), GTK_RESPONSE_OK);
-// g_signal_connect (bar, "response", G_CALLBACK (gtk_widget_hide), NULL);
-// gtk_grid_attach (GTK_GRID (grid), widget, 0, 2, 1, 1);
+//    // ...
 //
-// // ...
-//
-// // show an error message gtk_label_set_text (GTK_LABEL (message_label), "An
-// // error occurred!"); gtk_info_bar_set_message_type (bar, GTK_MESSAGE_ERROR);
-// // gtk_widget_show (bar); “`
+//    // show an error message
+//    gtk_label_set_text (GTK_LABEL (message_label), "An error occurred!");
+//    gtk_info_bar_set_message_type (bar, GTK_MESSAGE_ERROR);
+//    gtk_widget_show (bar);
 //
 //
 // GtkInfoBar as GtkBuildable
 //
-// The `GtkInfoBar` implementation of the `GtkBuildable` interface exposes the
+// The GtkInfoBar implementation of the GtkBuildable interface exposes the
 // content area and action area as internal children with the names
 // “content_area” and “action_area”.
 //
-// `GtkInfoBar` supports a custom <action-widgets> element, which can contain
+// GtkInfoBar supports a custom <action-widgets> element, which can contain
 // multiple <action-widget> elements. The “response” attribute specifies a
 // numeric response, and the content of the element is the id of widget (which
 // should be a child of the dialogs @action_area).
@@ -13901,7 +13743,7 @@ func (i image) SetPixelSize(pixelSize int) {
 //
 // CSS nodes
 //
-// `GtkInfoBar` has a single CSS node with name infobar. The node may get one of
+// GtkInfoBar has a single CSS node with name infobar. The node may get one of
 // the style classes .info, .warning, .error or .question, depending on the
 // message type. If the info bar shows a close button, that button will have the
 // .close style class applied.
@@ -13912,20 +13754,15 @@ type InfoBar interface {
 	ConstraintTarget
 
 	// AddActionWidget: add an activatable widget to the action area of a
-	// `GtkInfoBar`.
-	//
-	// This also connects a signal handler that will emit the
-	// [signal@Gtk.InfoBar::response] signal on the message area when the widget
-	// is activated. The widget is appended to the end of the message areas
-	// action area.
-	AddActionWidget(child Widget, responseID int)
-	// AddButton adds a button with the given text.
-	//
-	// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
-	// with the given response_id. The button is appended to the end of the info
-	// bars's action area. The button widget is returned, but usually you don't
-	// need it.
-	AddButton(buttonText string, responseID int) Button
+	// InfoBar, connecting a signal handler that will emit the InfoBar::response
+	// signal on the message area when the widget is activated. The widget is
+	// appended to the end of the message areas action area.
+	AddActionWidget(child Widget, responseId int)
+	// AddButton adds a button with the given text and sets things up so that
+	// clicking the button will emit the “response” signal with the given
+	// response_id. The button is appended to the end of the info bars's action
+	// area. The button widget is returned, but usually you don't need it.
+	AddButton(buttonText string, responseId int) Button
 	// AddChild adds a widget to the content area of the info bar.
 	AddChild(widget Widget)
 	// MessageType returns the message type of the message area.
@@ -13935,47 +13772,39 @@ type InfoBar interface {
 	// ShowCloseButton returns whether the widget will display a standard close
 	// button.
 	ShowCloseButton() bool
-	// RemoveActionWidget removes a widget from the action area of @info_bar.
-	//
-	// The widget must have been put there by a call to
-	// [method@Gtk.InfoBar.add_action_widget] or
-	// [method@Gtk.InfoBar.add_button].
+	// RemoveActionWidget removes a widget from the action area of @info_bar,
+	// after it been put there by a call to gtk_info_bar_add_action_widget() or
+	// gtk_info_bar_add_button().
 	RemoveActionWidget(widget Widget)
-	// RemoveChild removes a widget from the content area of the info bar.
+	// RemoveChild removes a widget from the content area of the info bar, after
+	// it has been added with gtk_info_bar_add_child().
 	RemoveChild(widget Widget)
 	// Response emits the “response” signal with the given @response_id.
-	Response(responseID int)
+	Response(responseId int)
 	// SetDefaultResponse sets the last widget in the info bar’s action area
-	// with the given response_id as the default widget for the dialog.
-	//
-	// Pressing “Enter” normally activates the default widget.
+	// with the given response_id as the default widget for the dialog. Pressing
+	// “Enter” normally activates the default widget.
 	//
 	// Note that this function currently requires @info_bar to be added to a
 	// widget hierarchy.
-	SetDefaultResponse(responseID int)
+	SetDefaultResponse(responseId int)
 	// SetMessageType sets the message type of the message area.
 	//
 	// GTK uses this type to determine how the message is displayed.
 	SetMessageType(messageType MessageType)
-	// SetResponseSensitive sets the sensitivity of action widgets for
-	// @response_id.
+	// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
+	// each widget in the info bars’s action area with the given response_id. A
+	// convenient way to sensitize/desensitize dialog buttons.
+	SetResponseSensitive(responseId int, setting bool)
+	// SetRevealed sets the InfoBar:revealed property to @revealed. Changing
+	// this will make @info_bar reveal (true) or conceal (false) itself via a
+	// sliding transition.
 	//
-	// Calls `gtk_widget_set_sensitive (widget, setting)` for each widget in the
-	// info bars’s action area with the given @response_id. A convenient way to
-	// sensitize/desensitize buttons.
-	SetResponseSensitive(responseID int, setting bool)
-	// SetRevealed sets whether the `GtkInfoBar` is revealed.
-	//
-	// Changing this will make @info_bar reveal or conceal itself via a sliding
-	// transition.
-	//
-	// Note: this does not show or hide @info_bar in the
-	// [property@Gtk.Widget:visible] sense, so revealing has no effect if
-	// [property@Gtk.Widget:visible] is false.
+	// Note: this does not show or hide @info_bar in the Widget:visible sense,
+	// so revealing has no effect if Widget:visible is false.
 	SetRevealed(revealed bool)
-	// SetShowCloseButton: if true, a standard close button is shown.
-	//
-	// When clicked it emits the response GTK_RESPONSE_CLOSE.
+	// SetShowCloseButton: if true, a standard close button is shown. When
+	// clicked it emits the response GTK_RESPONSE_CLOSE.
 	SetShowCloseButton(setting bool)
 }
 
@@ -14009,41 +13838,37 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 // NewInfoBar constructs a class InfoBar.
 func NewInfoBar() InfoBar {
 	var cret C.GtkInfoBar
-	var goret InfoBar
 
 	cret = C.gtk_info_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InfoBar)
+	var infoBar InfoBar
 
-	return goret
+	infoBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InfoBar)
+
+	return infoBar
 }
 
 // AddActionWidget: add an activatable widget to the action area of a
-// `GtkInfoBar`.
-//
-// This also connects a signal handler that will emit the
-// [signal@Gtk.InfoBar::response] signal on the message area when the widget
-// is activated. The widget is appended to the end of the message areas
-// action area.
-func (i infoBar) AddActionWidget(child Widget, responseID int) {
+// InfoBar, connecting a signal handler that will emit the InfoBar::response
+// signal on the message area when the widget is activated. The widget is
+// appended to the end of the message areas action area.
+func (i infoBar) AddActionWidget(child Widget, responseId int) {
 	var arg0 *C.GtkInfoBar
 	var arg1 *C.GtkWidget
 	var arg2 C.int
 
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = C.int(responseID)
+	arg2 = C.int(responseId)
 
 	C.gtk_info_bar_add_action_widget(arg0, arg1, arg2)
 }
 
-// AddButton adds a button with the given text.
-//
-// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
-// with the given response_id. The button is appended to the end of the info
-// bars's action area. The button widget is returned, but usually you don't
-// need it.
-func (i infoBar) AddButton(buttonText string, responseID int) Button {
+// AddButton adds a button with the given text and sets things up so that
+// clicking the button will emit the “response” signal with the given
+// response_id. The button is appended to the end of the info bars's action
+// area. The button widget is returned, but usually you don't need it.
+func (i infoBar) AddButton(buttonText string, responseId int) Button {
 	var arg0 *C.GtkInfoBar
 	var arg1 *C.char
 	var arg2 C.int
@@ -14051,16 +13876,17 @@ func (i infoBar) AddButton(buttonText string, responseID int) Button {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.char)(C.CString(buttonText))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(responseID)
+	arg2 = C.int(responseId)
 
 	var cret *C.GtkWidget
-	var goret Button
 
 	cret = C.gtk_info_bar_add_button(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+	var button Button
 
-	return goret
+	button = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Button)
+
+	return button
 }
 
 // AddChild adds a widget to the content area of the info bar.
@@ -14081,13 +13907,14 @@ func (i infoBar) MessageType() MessageType {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkMessageType
-	var goret MessageType
 
 	cret = C.gtk_info_bar_get_message_type(arg0)
 
-	goret = MessageType(cret)
+	var messageType MessageType
 
-	return goret
+	messageType = MessageType(cret)
+
+	return messageType
 }
 
 // Revealed returns whether the info bar is currently revealed.
@@ -14097,15 +13924,16 @@ func (i infoBar) Revealed() bool {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_info_bar_get_revealed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowCloseButton returns whether the widget will display a standard close
@@ -14116,22 +13944,21 @@ func (i infoBar) ShowCloseButton() bool {
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_info_bar_get_show_close_button(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// RemoveActionWidget removes a widget from the action area of @info_bar.
-//
-// The widget must have been put there by a call to
-// [method@Gtk.InfoBar.add_action_widget] or
-// [method@Gtk.InfoBar.add_button].
+// RemoveActionWidget removes a widget from the action area of @info_bar,
+// after it been put there by a call to gtk_info_bar_add_action_widget() or
+// gtk_info_bar_add_button().
 func (i infoBar) RemoveActionWidget(widget Widget) {
 	var arg0 *C.GtkInfoBar
 	var arg1 *C.GtkWidget
@@ -14142,7 +13969,8 @@ func (i infoBar) RemoveActionWidget(widget Widget) {
 	C.gtk_info_bar_remove_action_widget(arg0, arg1)
 }
 
-// RemoveChild removes a widget from the content area of the info bar.
+// RemoveChild removes a widget from the content area of the info bar, after
+// it has been added with gtk_info_bar_add_child().
 func (i infoBar) RemoveChild(widget Widget) {
 	var arg0 *C.GtkInfoBar
 	var arg1 *C.GtkWidget
@@ -14154,29 +13982,28 @@ func (i infoBar) RemoveChild(widget Widget) {
 }
 
 // Response emits the “response” signal with the given @response_id.
-func (i infoBar) Response(responseID int) {
+func (i infoBar) Response(responseId int) {
 	var arg0 *C.GtkInfoBar
 	var arg1 C.int
 
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	arg1 = C.int(responseID)
+	arg1 = C.int(responseId)
 
 	C.gtk_info_bar_response(arg0, arg1)
 }
 
 // SetDefaultResponse sets the last widget in the info bar’s action area
-// with the given response_id as the default widget for the dialog.
-//
-// Pressing “Enter” normally activates the default widget.
+// with the given response_id as the default widget for the dialog. Pressing
+// “Enter” normally activates the default widget.
 //
 // Note that this function currently requires @info_bar to be added to a
 // widget hierarchy.
-func (i infoBar) SetDefaultResponse(responseID int) {
+func (i infoBar) SetDefaultResponse(responseId int) {
 	var arg0 *C.GtkInfoBar
 	var arg1 C.int
 
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	arg1 = C.int(responseID)
+	arg1 = C.int(responseId)
 
 	C.gtk_info_bar_set_default_response(arg0, arg1)
 }
@@ -14194,19 +14021,16 @@ func (i infoBar) SetMessageType(messageType MessageType) {
 	C.gtk_info_bar_set_message_type(arg0, arg1)
 }
 
-// SetResponseSensitive sets the sensitivity of action widgets for
-// @response_id.
-//
-// Calls `gtk_widget_set_sensitive (widget, setting)` for each widget in the
-// info bars’s action area with the given @response_id. A convenient way to
-// sensitize/desensitize buttons.
-func (i infoBar) SetResponseSensitive(responseID int, setting bool) {
+// SetResponseSensitive calls gtk_widget_set_sensitive (widget, setting) for
+// each widget in the info bars’s action area with the given response_id. A
+// convenient way to sensitize/desensitize dialog buttons.
+func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
 	var arg0 *C.GtkInfoBar
 	var arg1 C.int
 	var arg2 C.gboolean
 
 	arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	arg1 = C.int(responseID)
+	arg1 = C.int(responseId)
 	if setting {
 		arg2 = C.gboolean(1)
 	}
@@ -14214,14 +14038,12 @@ func (i infoBar) SetResponseSensitive(responseID int, setting bool) {
 	C.gtk_info_bar_set_response_sensitive(arg0, arg1, arg2)
 }
 
-// SetRevealed sets whether the `GtkInfoBar` is revealed.
+// SetRevealed sets the InfoBar:revealed property to @revealed. Changing
+// this will make @info_bar reveal (true) or conceal (false) itself via a
+// sliding transition.
 //
-// Changing this will make @info_bar reveal or conceal itself via a sliding
-// transition.
-//
-// Note: this does not show or hide @info_bar in the
-// [property@Gtk.Widget:visible] sense, so revealing has no effect if
-// [property@Gtk.Widget:visible] is false.
+// Note: this does not show or hide @info_bar in the Widget:visible sense,
+// so revealing has no effect if Widget:visible is false.
 func (i infoBar) SetRevealed(revealed bool) {
 	var arg0 *C.GtkInfoBar
 	var arg1 C.gboolean
@@ -14234,9 +14056,8 @@ func (i infoBar) SetRevealed(revealed bool) {
 	C.gtk_info_bar_set_revealed(arg0, arg1)
 }
 
-// SetShowCloseButton: if true, a standard close button is shown.
-//
-// When clicked it emits the response GTK_RESPONSE_CLOSE.
+// SetShowCloseButton: if true, a standard close button is shown. When
+// clicked it emits the response GTK_RESPONSE_CLOSE.
 func (i infoBar) SetShowCloseButton(setting bool) {
 	var arg0 *C.GtkInfoBar
 	var arg1 C.gboolean
@@ -14249,445 +14070,242 @@ func (i infoBar) SetShowCloseButton(setting bool) {
 	C.gtk_info_bar_set_show_close_button(arg0, arg1)
 }
 
-// Label: the `GtkLabel` widget displays a small amount of text.
-//
-// As the name implies, most labels are used to label another widget such as a
-// [class@Button].
-//
-// !An example GtkLabel (label.png)
-//
+// Label: the Label widget displays a small amount of text. As the name implies,
+// most labels are used to label another widget such as a Button.
 //
 // CSS nodes
 //
-// “` label ├── [selection] ├── [link] ┊ ╰── [link] “`
-//
-// `GtkLabel` has a single CSS node with the name label. A wide variety of style
-// classes may be applied to labels, such as .title, .subtitle, .dim-label, etc.
-// In the `GtkShortcutsWindow`, labels are used with the .keycap style class.
-//
-// If the label has a selection, it gets a subnode with name selection.
-//
-// If the label has links, there is one subnode per link. These subnodes carry
-// the link or visited state depending on whether they have been visited. In
-// this case, label node also gets a .link style class.
-//
-//
-// GtkLabel as GtkBuildable
-//
-// The GtkLabel implementation of the GtkBuildable interface supports a custom
-// <attributes> element, which supports any number of <attribute> elements. The
-// <attribute> element has attributes named “name“, “value“, “start“ and “end“
-// and allows you to specify [struct@Pango.Attribute] values for this label.
-//
-// An example of a UI definition fragment specifying Pango attributes: “`xml
-// <object class="GtkLabel"> <attributes> <attribute name="weight"
-// value="PANGO_WEIGHT_BOLD"/> <attribute name="background" value="red"
-// start="5" end="10"/> </attributes> </object> “`
-//
-// The start and end attributes specify the range of characters to which the
-// Pango attribute applies. If start and end are not specified, the attribute is
-// applied to the whole text. Note that specifying ranges does not make much
-// sense with translatable attributes. Use markup embedded in the translatable
-// content instead.
-//
-//
-// Accessibility
-//
-// `GtkLabel` uses the K_ACCESSIBLE_ROLE_LABEL role.
-//
-//
-// Mnemonics
-//
-// Labels may contain “mnemonics”. Mnemonics are underlined characters in the
-// label, used for keyboard navigation. Mnemonics are created by providing a
-// string with an underscore before the mnemonic character, such as `"_File"`,
-// to the functions [ctor@Gtk.Label.new_with_mnemonic] or
-// [method@Gtk.Label.set_text_with_mnemonic].
-//
-// Mnemonics automatically activate any activatable widget the label is inside,
-// such as a [class@Gtk.Button]; if the label is not inside the mnemonic’s
-// target widget, you have to tell the label about the target using
-// [class@Gtk.Label.set_mnemonic_widget]. Here’s a simple example where the
-// label is inside a button:
-//
-// “`c // Pressing Alt+H will activate this button GtkWidget *button =
-// gtk_button_new (); GtkWidget *label = gtk_label_new_with_mnemonic ("_Hello");
-// gtk_button_set_child (GTK_BUTTON (button), label); “`
-//
-// There’s a convenience function to create buttons with a mnemonic label
-// already inside:
-//
-// “`c // Pressing Alt+H will activate this button GtkWidget *button =
-// gtk_button_new_with_mnemonic ("_Hello"); “`
-//
-// To create a mnemonic for a widget alongside the label, such as a
-// [class@Gtk.Entry], you have to point the label at the entry with
-// [method@Gtk.Label.set_mnemonic_widget]:
-//
-// “`c // Pressing Alt+H will focus the entry GtkWidget *entry = gtk_entry_new
-// (); GtkWidget *label = gtk_label_new_with_mnemonic ("_Hello");
-// gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry); “`
-//
-// Markup (styled text)
-//
-// To make it easy to format text in a label (changing colors, fonts, etc.),
-// label text can be provided in a simple markup format:
-//
-// Here’s how to create a label with a small font: “`c GtkWidget *label =
-// gtk_label_new (NULL); gtk_label_set_markup (GTK_LABEL (label), "<small>Small
-// text</small>"); “`
-//
-// (See the Pango manual for complete documentation] of available tags,
-// [func@Pango.parse_markup])
-//
-// The markup passed to gtk_label_set_markup() must be valid; for example,
-// literal <, > and & characters must be escaped as &lt;, &gt;, and &amp;. If
-// you pass text obtained from the user, file, or a network to
-// [method@Gtk.Label.set_markup], you’ll want to escape it with
-// g_markup_escape_text() or g_markup_printf_escaped().
-//
-// Markup strings are just a convenient way to set the [struct@Pango.AttrList]
-// on a label; [method@Gtk.Label.set_attributes] may be a simpler way to set
-// attributes in some cases. Be careful though; [struct@Pango.AttrList] tends to
-// cause internationalization problems, unless you’re applying attributes to the
-// entire string (i.e. unless you set the range of each attribute to [0,
-// G_MAXINT)). The reason is that specifying the start_index and end_index for a
-// [struct@Pango.Attribute] requires knowledge of the exact string being
-// displayed, so translations will cause problems.
-//
-//
-// Selectable labels
-//
-// Labels can be made selectable with [method@Gtk.Label.set_selectable].
-// Selectable labels allow the user to copy the label contents to the clipboard.
-// Only labels that contain useful-to-copy information — such as error messages
-// — should be made selectable.
-//
-//
-// Text layout
-//
-// A label can contain any number of paragraphs, but will have performance
-// problems if it contains more than a small number. Paragraphs are separated by
-// newlines or other paragraph separators understood by Pango.
-//
-// Labels can automatically wrap text if you call [method@Gtk.Label.set_wrap].
-//
-// [method@Gtk.Label.set_justify] sets how the lines in a label align with one
-// another. If you want to set how the label as a whole aligns in its available
-// space, see the [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign]
-// properties.
-//
-// The [property@Gtk.Label:width-chars] and [property@Gtk.Label:max-width-chars]
-// properties can be used to control the size allocation of ellipsized or
-// wrapped labels. For ellipsizing labels, if either is specified (and less than
-// the actual text size), it is used as the minimum width, and the actual text
-// size is used as the natural width of the label. For wrapping labels,
-// width-chars is used as the minimum width, if specified, and max-width-chars
-// is used as the natural width. Even if max-width-chars specified, wrapping
-// labels will be rewrapped to use all of the available width.
-//
-//
-// Links
-//
-// GTK supports markup for clickable hyperlinks in addition to regular Pango
-// markup. The markup for links is borrowed from HTML, using the `<a>` with
-// “href“, “title“ and “class“ attributes. GTK renders links similar to the way
-// they appear in web browsers, with colored, underlined text. The “title“
-// attribute is displayed as a tooltip on the link. The “class“ attribute is
-// used as style class on the CSS node for the link.
-//
-// An example looks like this:
-//
-// “`c const char *text = "Go to the" "<a href=\"http://www.gtk.org
-// title=\"&lt;i&gt;Our&lt;/i&gt; website\">" "GTK website</a> for more...";
-// GtkWidget *label = gtk_label_new (NULL); gtk_label_set_markup (GTK_LABEL
-// (label), text); “`
+//    const char *text =
+//    "Go to the"
+//    "<a href=\"http://www.gtk.org title=\"&lt;i&gt;Our&lt;/i&gt; website\">"
+//    "GTK website</a> for more...";
+//    GtkWidget *label = gtk_label_new (NULL);
+//    gtk_label_set_markup (GTK_LABEL (label), text);
 //
 // It is possible to implement custom handling for links and their tooltips with
-// the [signal@Gtk.Label::activate-link] signal and the
-// [method@Gtk.Label.get_current_uri] function.
+// the Label::activate-link signal and the gtk_label_get_current_uri() function.
 type Label interface {
 	Widget
 	Accessible
 	Buildable
 	ConstraintTarget
 
-	// Attributes gets the labels attribute list.
-	//
-	// This is the [struct@Pango.AttrList] that was set on the label using
-	// [method@Gtk.Label.set_attributes], if any. This function does not reflect
-	// attributes that come from the labels markup (see
-	// [method@Gtk.Label.set_markup]). If you want to get the effective
-	// attributes for the label, use `pango_layout_get_attribute
-	// (gtk_label_get_layout (self))`.
+	// Attributes gets the attribute list that was set on the label using
+	// gtk_label_set_attributes(), if any. This function does not reflect
+	// attributes that come from the labels markup (see gtk_label_set_markup()).
+	// If you want to get the effective attributes for the label, use
+	// pango_layout_get_attribute (gtk_label_get_layout (self)).
 	Attributes() *pango.AttrList
 	// CurrentURI returns the URI for the currently active link in the label.
-	//
 	// The active link is the one under the mouse pointer or, in a selectable
 	// label, the link in which the text cursor is currently positioned.
 	//
-	// This function is intended for use in a [signal@Gtk.Label::activate-link]
-	// handler or for use in a [signal@Gtk.Widget::query-tooltip] handler.
+	// This function is intended for use in a Label::activate-link handler or
+	// for use in a Widget::query-tooltip handler.
 	CurrentURI() string
-	// Ellipsize returns the ellipsizing position of the label.
-	//
-	// See [method@Gtk.Label.set_ellipsize].
+	// Ellipsize returns the ellipsizing position of the label. See
+	// gtk_label_set_ellipsize().
 	Ellipsize() pango.EllipsizeMode
-	// ExtraMenu gets the extra menu model of @label.
-	//
-	// See [method@Gtk.Label.set_extra_menu].
+	// ExtraMenu gets the menu model set with gtk_label_set_extra_menu().
 	ExtraMenu() gio.MenuModel
-	// Justify returns the justification of the label.
-	//
-	// See [method@Gtk.Label.set_justify].
+	// Justify returns the justification of the label. See
+	// gtk_label_set_justify().
 	Justify() Justification
-	// Label fetches the text from a label.
-	//
-	// The returned text includes any embedded underlines indicating mnemonics
-	// and Pango markup. (See [method@Gtk.Label.get_text]).
+	// Label fetches the text from a label widget including any embedded
+	// underlines indicating mnemonics and Pango markup. (See
+	// gtk_label_get_text()).
 	Label() string
-	// Layout gets the `PangoLayout` used to display the label.
-	//
-	// The layout is useful to e.g. convert text positions to pixel positions,
-	// in combination with [method@Gtk.Label.get_layout_offsets]. The returned
-	// layout is owned by the @label so need not be freed by the caller. The
-	// @label is free to recreate its layout at any time, so it should be
-	// considered read-only.
+	// Layout gets the Layout used to display the label. The layout is useful to
+	// e.g. convert text positions to pixel positions, in combination with
+	// gtk_label_get_layout_offsets(). The returned layout is owned by the
+	// @label so need not be freed by the caller. The @label is free to recreate
+	// its layout at any time, so it should be considered read-only.
 	Layout() pango.Layout
-	// LayoutOffsets obtains the coordinates where the label will draw its
-	// `PangoLayout`.
-	//
-	// The coordinates are useful to convert mouse events into coordinates
-	// inside the [class@Pango.Layout], e.g. to take some action if some part of
-	// the label is clicked. Remember when using the [class@Pango.Layout]
-	// functions you need to convert to and from pixels using PANGO_PIXELS() or
-	// [constant@Pango.SCALE].
+	// LayoutOffsets obtains the coordinates where the label will draw the
+	// Layout representing the text in the label; useful to convert mouse events
+	// into coordinates inside the Layout, e.g. to take some action if some part
+	// of the label is clicked. Remember when using the Layout functions you
+	// need to convert to and from pixels using PANGO_PIXELS() or NGO_SCALE.
 	LayoutOffsets() (x int, y int)
 	// Lines gets the number of lines to which an ellipsized, wrapping label
-	// should be limited.
-	//
-	// See [method@Gtk.Label.set_lines].
+	// should be limited. See gtk_label_set_lines().
 	Lines() int
 	// MaxWidthChars retrieves the desired maximum width of @label, in
-	// characters.
-	//
-	// See [method@Gtk.Label.set_width_chars].
+	// characters. See gtk_label_set_width_chars().
 	MaxWidthChars() int
-	// MnemonicKeyval: return the mnemonic accelerator.
-	//
-	// If the label has been set so that it has a mnemonic key this function
-	// returns the keyval used for the mnemonic accelerator. If there is no
-	// mnemonic set up it returns `GDK_KEY_VoidSymbol`.
+	// MnemonicKeyval: if the label has been set so that it has a mnemonic key
+	// this function returns the keyval used for the mnemonic accelerator. If
+	// there is no mnemonic set up it returns K_KEY_VoidSymbol.
 	MnemonicKeyval() uint
 	// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
-	// of this label.
-	//
-	// See [method@Gtk.Label.set_mnemonic_widget].
+	// of this label. See gtk_label_set_mnemonic_widget().
 	MnemonicWidget() Widget
-	// Selectable returns whether the label is selectable.
+	// Selectable gets the value set by gtk_label_set_selectable().
 	Selectable() bool
-	// SelectionBounds gets the selected range of characters in the label.
+	// SelectionBounds gets the selected range of characters in the label,
+	// returning true if there’s a selection.
 	SelectionBounds() (start int, end int, ok bool)
 	// SingleLineMode returns whether the label is in single line mode.
 	SingleLineMode() bool
-	// Text fetches the text from a label.
-	//
-	// The returned text is as it appears on screen. This does not include any
-	// embedded underlines indicating mnemonics or Pango markup. (See
-	// [method@Gtk.Label.get_label])
+	// Text fetches the text from a label widget, as displayed on the screen.
+	// This does not include any embedded underlines indicating mnemonics or
+	// Pango markup. (See gtk_label_get_label())
 	Text() string
-	// UseMarkup returns whether the label’s text is interpreted as Pango
-	// markup.
-	//
-	// See [method@Gtk.Label.set_use_markup].
+	// UseMarkup returns whether the label’s text is interpreted as marked up
+	// with the [Pango text markup language][PangoMarkupFormat]. See
+	// gtk_label_set_use_markup ().
 	UseMarkup() bool
-	// UseUnderline returns whether an embedded underlines in the label indicate
-	// mnemonics.
-	//
-	// See [method@Gtk.Label.set_use_underline].
+	// UseUnderline returns whether an embedded underline in the label indicates
+	// a mnemonic. See gtk_label_set_use_underline().
 	UseUnderline() bool
-	// WidthChars retrieves the desired width of @label, in characters.
-	//
-	// See [method@Gtk.Label.set_width_chars].
+	// WidthChars retrieves the desired width of @label, in characters. See
+	// gtk_label_set_width_chars().
 	WidthChars() int
-	// Wrap returns whether lines in the label are automatically wrapped.
-	//
-	// See [method@Gtk.Label.set_wrap].
+	// Wrap returns whether lines in the label are automatically wrapped. See
+	// gtk_label_set_wrap().
 	Wrap() bool
-	// WrapMode returns line wrap mode used by the label.
-	//
-	// See [method@Gtk.Label.set_wrap_mode].
+	// WrapMode returns line wrap mode used by the label. See
+	// gtk_label_set_wrap_mode().
 	WrapMode() pango.WrapMode
-	// Xalign gets the `xalign` of the label.
-	//
-	// See the [property@Gtk.Label:xalign] property.
+	// Xalign gets the Label:xalign property for @label.
 	Xalign() float32
-	// Yalign gets the `yalign` of the label.
-	//
-	// See the [property@Gtk.Label:yalign] property.
+	// Yalign gets the Label:yalign property for @label.
 	Yalign() float32
 	// SelectRegion selects a range of characters in the label, if the label is
-	// selectable.
-	//
-	// See [method@Gtk.Label.set_selectable]. If the label is not selectable,
-	// this function has no effect. If @start_offset or @end_offset are -1, then
-	// the end of the label will be substituted.
+	// selectable. See gtk_label_set_selectable(). If the label is not
+	// selectable, this function has no effect. If @start_offset or @end_offset
+	// are -1, then the end of the label will be substituted.
 	SelectRegion(startOffset int, endOffset int)
-	// SetAttributes: apply attributes to the label text.
+	// SetAttributes sets a AttrList; the attributes in the list are applied to
+	// the label text.
 	//
 	// The attributes set with this function will be applied and merged with any
-	// other attributes previously effected by way of the
-	// [property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
-	// properties. While it is not recommended to mix markup strings with
-	// manually set attributes, if you must; know that the attributes will be
-	// applied to the label after the markup string is parsed.
+	// other attributes previously effected by way of the Label:use-underline or
+	// Label:use-markup properties. While it is not recommended to mix markup
+	// strings with manually set attributes, if you must; know that the
+	// attributes will be applied to the label after the markup string is
+	// parsed.
 	SetAttributes(attrs *pango.AttrList)
-	// SetEllipsize sets the mode used to ellipsizei the text.
-	//
-	// The text will be ellipsized if there is not enough space to render the
-	// entire string.
+	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
+	// the text if there is not enough space to render the entire string.
 	SetEllipsize(mode pango.EllipsizeMode)
 	// SetExtraMenu sets a menu model to add when constructing the context menu
 	// for @label.
 	SetExtraMenu(model gio.MenuModel)
 	// SetJustify sets the alignment of the lines in the text of the label
-	// relative to each other.
-	//
-	// GTK_JUSTIFY_LEFT is the default value when the widget is first created
-	// with [ctor@Gtk.Label.new]. If you instead want to set the alignment of
-	// the label as a whole, use [method@Gtk.Widget.set_halign] instead.
-	// [method@Gtk.Label.set_justify] has no effect on labels containing only a
-	// single line.
+	// relative to each other. GTK_JUSTIFY_LEFT is the default value when the
+	// widget is first created with gtk_label_new(). If you instead want to set
+	// the alignment of the label as a whole, use gtk_widget_set_halign()
+	// instead. gtk_label_set_justify() has no effect on labels containing only
+	// a single line.
 	SetJustify(jtype Justification)
-	// SetLabel sets the text of the label.
-	//
-	// The label is interpreted as including embedded underlines and/or Pango
-	// markup depending on the values of the [property@Gtk.Label:use-underline]
-	// and [property@Gtk.Label:use-markup] properties.
+	// SetLabel sets the text of the label. The label is interpreted as
+	// including embedded underlines and/or Pango markup depending on the values
+	// of the Label:use-underline and Label:use-markup properties.
 	SetLabel(str string)
 	// SetLines sets the number of lines to which an ellipsized, wrapping label
-	// should be limited.
-	//
-	// This has no effect if the label is not wrapping or ellipsized. Set this
-	// to -1 if you don’t want to limit the number of lines.
+	// should be limited. This has no effect if the label is not wrapping or
+	// ellipsized. Set this to -1 if you don’t want to limit the number of
+	// lines.
 	SetLines(lines int)
-	// SetMarkup sets the labels text and attributes from markup.
-	//
-	// The string must be marked up with Pango markup (see
-	// [func@Pango.parse_markup]).
+	// SetMarkup parses @str which is marked up with the [Pango text markup
+	// language][PangoMarkupFormat], setting the label’s text and attribute list
+	// based on the parse results.
 	//
 	// If the @str is external data, you may need to escape it with
 	// g_markup_escape_text() or g_markup_printf_escaped():
 	//
-	// “`c GtkWidget *self = gtk_label_new (NULL); const char *str = "...";
-	// const char *format = "<span style=\"italic\">\s</span>"; char *markup;
+	//    GtkWidget *self = gtk_label_new (NULL);
+	//    const char *str = "...";
+	//    const char *format = "<span style=\"italic\">\s</span>";
+	//    char *markup;
 	//
-	// markup = g_markup_printf_escaped (format, str); gtk_label_set_markup
-	// (GTK_LABEL (self), markup); g_free (markup); “`
+	//    markup = g_markup_printf_escaped (format, str);
+	//    gtk_label_set_markup (GTK_LABEL (self), markup);
+	//    g_free (markup);
 	//
-	// This function will set the [property@Gtk.Label:use-markup] property to
-	// true as a side effect.
+	// This function will set the Label:use-markup property to true as a side
+	// effect.
 	//
-	// If you set the label contents using the [property@Gtk.Label:label]
-	// property you should also ensure that you set the
-	// [property@Gtk.Label:use-markup] property accordingly.
+	// If you set the label contents using the Label:label property you should
+	// also ensure that you set the Label:use-markup property accordingly.
 	//
-	// See also: [method@Gtk.Label.set_text]
+	// See also: gtk_label_set_text()
 	SetMarkup(str string)
-	// SetMarkupWithMnemonic sets the labels text, attributes and mnemonic from
-	// markup.
-	//
-	// Parses @str which is marked up with Pango markup (see
-	// [func@Pango.parse_markup]), setting the label’s text and attribute list
-	// based on the parse results. If characters in @str are preceded by an
-	// underscore, they are underlined indicating that they represent a keyboard
-	// accelerator called a mnemonic.
+	// SetMarkupWithMnemonic parses @str which is marked up with the [Pango text
+	// markup language][PangoMarkupFormat], setting the label’s text and
+	// attribute list based on the parse results. If characters in @str are
+	// preceded by an underscore, they are underlined indicating that they
+	// represent a keyboard accelerator called a mnemonic.
 	//
 	// The mnemonic key can be used to activate another widget, chosen
-	// automatically, or explicitly using method@Gtk.Label.set_mnemonic_widget].
+	// automatically, or explicitly using gtk_label_set_mnemonic_widget().
 	SetMarkupWithMnemonic(str string)
 	// SetMaxWidthChars sets the desired maximum width in characters of @label
 	// to @n_chars.
 	SetMaxWidthChars(nChars int)
-	// SetMnemonicWidget: associate the label with its mnemonic target.
-	//
-	// If the label has been set so that it has a mnemonic key (using i.e.
-	// [method@Gtk.Label.set_markup_with_mnemonic],
-	// [method@Gtk.Label.set_text_with_mnemonic],
-	// [ctor@Gtk.Label.new_with_mnemonic] or the
-	// [property@Gtk.Label:use_underline] property) the label can be associated
-	// with a widget that is the target of the mnemonic. When the label is
-	// inside a widget (like a [class@Gtk.Button] or a [class@Gtk.Notebook] tab)
-	// it is automatically associated with the correct widget, but sometimes
-	// (i.e. when the target is a [class@Gtk.Entry] next to the label) you need
-	// to set it explicitly using this function.
+	// SetMnemonicWidget: if the label has been set so that it has a mnemonic
+	// key (using i.e. gtk_label_set_markup_with_mnemonic(),
+	// gtk_label_set_text_with_mnemonic(), gtk_label_new_with_mnemonic() or the
+	// “use_underline” property) the label can be associated with a widget that
+	// is the target of the mnemonic. When the label is inside a widget (like a
+	// Button or a Notebook tab) it is automatically associated with the correct
+	// widget, but sometimes (i.e. when the target is a Entry next to the label)
+	// you need to set it explicitly using this function.
 	//
 	// The target widget will be accelerated by emitting the
-	// [signal@GtkWidget::mnemonic-activate] signal on it. The default handler
-	// for this signal will activate the widget if there are no mnemonic
-	// collisions and toggle focus between the colliding widgets otherwise.
+	// GtkWidget::mnemonic-activate signal on it. The default handler for this
+	// signal will activate the widget if there are no mnemonic collisions and
+	// toggle focus between the colliding widgets otherwise.
 	SetMnemonicWidget(widget Widget)
-	// SetSelectable makes text in the label selectable.
-	//
-	// Selectable labels allow the user to select text from the label, for
-	// copy-and-paste.
+	// SetSelectable: selectable labels allow the user to select text from the
+	// label, for copy-and-paste.
 	SetSelectable(setting bool)
 	// SetSingleLineMode sets whether the label is in single line mode.
 	SetSingleLineMode(singleLineMode bool)
-	// SetText sets the text within the `GtkLabel` widget.
-	//
-	// It overwrites any text that was there before.
+	// SetText sets the text within the Label widget. It overwrites any text
+	// that was there before.
 	//
 	// This function will clear any previously set mnemonic accelerators, and
-	// set the [property@Gtk.Label:use-underline property] to false as a side
+	// set the Label:use-underline property to false as a side effect.
+	//
+	// This function will set the Label:use-markup property to false as a side
 	// effect.
 	//
-	// This function will set the [property@Gtk.Label:use-markup] property to
-	// false as a side effect.
-	//
-	// See also: [method@Gtk.Label.set_markup]
+	// See also: gtk_label_set_markup()
 	SetText(str string)
-	// SetTextWithMnemonic sets the label’s text from the string @str.
-	//
-	// If characters in @str are preceded by an underscore, they are underlined
+	// SetTextWithMnemonic sets the label’s text from the string @str. If
+	// characters in @str are preceded by an underscore, they are underlined
 	// indicating that they represent a keyboard accelerator called a mnemonic.
 	// The mnemonic key can be used to activate another widget, chosen
-	// automatically, or explicitly using
-	// [method@Gtk.Label.set_mnemonic_widget].
+	// automatically, or explicitly using gtk_label_set_mnemonic_widget().
 	SetTextWithMnemonic(str string)
-	// SetUseMarkup sets whether the text of the label contains markup.
-	//
-	// See [method@Gtk.Label.set_markup].
+	// SetUseMarkup sets whether the text of the label contains markup in
+	// [Pango’s text markup language][PangoMarkupFormat]. See
+	// gtk_label_set_markup().
 	SetUseMarkup(setting bool)
-	// SetUseUnderline sets whether underlines in the text indicate mnemonics.
+	// SetUseUnderline: if true, an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
 	SetUseUnderline(setting bool)
 	// SetWidthChars sets the desired width in characters of @label to @n_chars.
 	SetWidthChars(nChars int)
-	// SetWrap toggles line wrapping within the `GtkLabel` widget.
-	//
-	// true makes it break lines if text exceeds the widget’s size. false lets
-	// the text get cut off by the edge of the widget if it exceeds the widget
-	// size.
+	// SetWrap toggles line wrapping within the Label widget. true makes it
+	// break lines if text exceeds the widget’s size. false lets the text get
+	// cut off by the edge of the widget if it exceeds the widget size.
 	//
 	// Note that setting line wrapping to true does not make the label wrap at
 	// its parent container’s width, because GTK widgets conceptually can’t make
 	// their requisition depend on the parent container’s size. For a label that
 	// wraps at a specific position, set the label’s width using
-	// [method@Gtk.Widget.set_size_request].
+	// gtk_widget_set_size_request().
 	SetWrap(wrap bool)
-	// SetWrapMode controls how line wrapping is done.
-	//
-	// This only affects the label if line wrapping is on. (See
-	// [method@Gtk.Label.set_wrap]) The default is PANGO_WRAP_WORD which means
-	// wrap on word boundaries.
+	// SetWrapMode: if line wrapping is on (see gtk_label_set_wrap()) this
+	// controls how the line wrapping is done. The default is PANGO_WRAP_WORD
+	// which means wrap on word boundaries.
 	SetWrapMode(wrapMode pango.WrapMode)
-	// SetXalign sets the `xalign` of the label.
-	//
-	// See the [property@Gtk.Label:xalign] property.
+	// SetXalign sets the Label:xalign property for @label.
 	SetXalign(xalign float32)
-	// SetYalign sets the `yalign` of the label.
-	//
-	// See the [property@Gtk.Label:yalign] property.
+	// SetYalign sets the Label:yalign property for @label.
 	SetYalign(yalign float32)
 }
 
@@ -14726,13 +14344,14 @@ func NewLabel(str string) Label {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkLabel
-	var goret Label
 
 	cret = C.gtk_label_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
+	var label Label
 
-	return goret
+	label = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
+
+	return label
 }
 
 // NewLabelWithMnemonic constructs a class Label.
@@ -14743,298 +14362,292 @@ func NewLabelWithMnemonic(str string) Label {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkLabel
-	var goret Label
 
 	cret = C.gtk_label_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
+	var label Label
 
-	return goret
+	label = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Label)
+
+	return label
 }
 
-// Attributes gets the labels attribute list.
-//
-// This is the [struct@Pango.AttrList] that was set on the label using
-// [method@Gtk.Label.set_attributes], if any. This function does not reflect
-// attributes that come from the labels markup (see
-// [method@Gtk.Label.set_markup]). If you want to get the effective
-// attributes for the label, use `pango_layout_get_attribute
-// (gtk_label_get_layout (self))`.
+// Attributes gets the attribute list that was set on the label using
+// gtk_label_set_attributes(), if any. This function does not reflect
+// attributes that come from the labels markup (see gtk_label_set_markup()).
+// If you want to get the effective attributes for the label, use
+// pango_layout_get_attribute (gtk_label_get_layout (self)).
 func (s label) Attributes() *pango.AttrList {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoAttrList
-	var goret *pango.AttrList
 
 	cret = C.gtk_label_get_attributes(arg0)
 
-	goret = pango.WrapAttrList(unsafe.Pointer(cret))
+	var attrList *pango.AttrList
 
-	return goret
+	attrList = pango.WrapAttrList(unsafe.Pointer(cret))
+
+	return attrList
 }
 
 // CurrentURI returns the URI for the currently active link in the label.
-//
 // The active link is the one under the mouse pointer or, in a selectable
 // label, the link in which the text cursor is currently positioned.
 //
-// This function is intended for use in a [signal@Gtk.Label::activate-link]
-// handler or for use in a [signal@Gtk.Widget::query-tooltip] handler.
+// This function is intended for use in a Label::activate-link handler or
+// for use in a Widget::query-tooltip handler.
 func (s label) CurrentURI() string {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_label_get_current_uri(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// Ellipsize returns the ellipsizing position of the label.
-//
-// See [method@Gtk.Label.set_ellipsize].
+// Ellipsize returns the ellipsizing position of the label. See
+// gtk_label_set_ellipsize().
 func (s label) Ellipsize() pango.EllipsizeMode {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret pango.EllipsizeMode
 
 	cret = C.gtk_label_get_ellipsize(arg0)
 
-	goret = pango.EllipsizeMode(cret)
+	var ellipsizeMode pango.EllipsizeMode
 
-	return goret
+	ellipsizeMode = pango.EllipsizeMode(cret)
+
+	return ellipsizeMode
 }
 
-// ExtraMenu gets the extra menu model of @label.
-//
-// See [method@Gtk.Label.set_extra_menu].
+// ExtraMenu gets the menu model set with gtk_label_set_extra_menu().
 func (s label) ExtraMenu() gio.MenuModel {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GMenuModel
-	var goret gio.MenuModel
 
 	cret = C.gtk_label_get_extra_menu(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	var menuModel gio.MenuModel
 
-	return goret
+	menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+
+	return menuModel
 }
 
-// Justify returns the justification of the label.
-//
-// See [method@Gtk.Label.set_justify].
+// Justify returns the justification of the label. See
+// gtk_label_set_justify().
 func (s label) Justify() Justification {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkJustification
-	var goret Justification
 
 	cret = C.gtk_label_get_justify(arg0)
 
-	goret = Justification(cret)
+	var justification Justification
 
-	return goret
+	justification = Justification(cret)
+
+	return justification
 }
 
-// Label fetches the text from a label.
-//
-// The returned text includes any embedded underlines indicating mnemonics
-// and Pango markup. (See [method@Gtk.Label.get_text]).
+// Label fetches the text from a label widget including any embedded
+// underlines indicating mnemonics and Pango markup. (See
+// gtk_label_get_text()).
 func (s label) Label() string {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_label_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// Layout gets the `PangoLayout` used to display the label.
-//
-// The layout is useful to e.g. convert text positions to pixel positions,
-// in combination with [method@Gtk.Label.get_layout_offsets]. The returned
-// layout is owned by the @label so need not be freed by the caller. The
-// @label is free to recreate its layout at any time, so it should be
-// considered read-only.
+// Layout gets the Layout used to display the label. The layout is useful to
+// e.g. convert text positions to pixel positions, in combination with
+// gtk_label_get_layout_offsets(). The returned layout is owned by the
+// @label so need not be freed by the caller. The @label is free to recreate
+// its layout at any time, so it should be considered read-only.
 func (s label) Layout() pango.Layout {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoLayout
-	var goret pango.Layout
 
 	cret = C.gtk_label_get_layout(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	var layout pango.Layout
 
-	return goret
+	layout = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Layout)
+
+	return layout
 }
 
-// LayoutOffsets obtains the coordinates where the label will draw its
-// `PangoLayout`.
-//
-// The coordinates are useful to convert mouse events into coordinates
-// inside the [class@Pango.Layout], e.g. to take some action if some part of
-// the label is clicked. Remember when using the [class@Pango.Layout]
-// functions you need to convert to and from pixels using PANGO_PIXELS() or
-// [constant@Pango.SCALE].
+// LayoutOffsets obtains the coordinates where the label will draw the
+// Layout representing the text in the label; useful to convert mouse events
+// into coordinates inside the Layout, e.g. to take some action if some part
+// of the label is clicked. Remember when using the Layout functions you
+// need to convert to and from pixels using PANGO_PIXELS() or NGO_SCALE.
 func (s label) LayoutOffsets() (x int, y int) {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
-	arg1 := new(C.int)
-	var ret1 int
-	arg2 := new(C.int)
-	var ret2 int
+	var arg1 C.int
+	var arg2 C.int
 
-	C.gtk_label_get_layout_offsets(arg0, arg1, arg2)
+	C.gtk_label_get_layout_offsets(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var x int
+	var y int
 
-	return ret1, ret2
+	x = (int)(arg1)
+	y = (int)(arg2)
+
+	return x, y
 }
 
 // Lines gets the number of lines to which an ellipsized, wrapping label
-// should be limited.
-//
-// See [method@Gtk.Label.set_lines].
+// should be limited. See gtk_label_set_lines().
 func (s label) Lines() int {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_label_get_lines(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MaxWidthChars retrieves the desired maximum width of @label, in
-// characters.
-//
-// See [method@Gtk.Label.set_width_chars].
+// characters. See gtk_label_set_width_chars().
 func (s label) MaxWidthChars() int {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_label_get_max_width_chars(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// MnemonicKeyval: return the mnemonic accelerator.
-//
-// If the label has been set so that it has a mnemonic key this function
-// returns the keyval used for the mnemonic accelerator. If there is no
-// mnemonic set up it returns `GDK_KEY_VoidSymbol`.
+// MnemonicKeyval: if the label has been set so that it has a mnemonic key
+// this function returns the keyval used for the mnemonic accelerator. If
+// there is no mnemonic set up it returns K_KEY_VoidSymbol.
 func (s label) MnemonicKeyval() uint {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_label_get_mnemonic_keyval(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
-// of this label.
-//
-// See [method@Gtk.Label.set_mnemonic_widget].
+// of this label. See gtk_label_set_mnemonic_widget().
 func (s label) MnemonicWidget() Widget {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_label_get_mnemonic_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Selectable returns whether the label is selectable.
+// Selectable gets the value set by gtk_label_set_selectable().
 func (s label) Selectable() bool {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_label_get_selectable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SelectionBounds gets the selected range of characters in the label.
+// SelectionBounds gets the selected range of characters in the label,
+// returning true if there’s a selection.
 func (s label) SelectionBounds() (start int, end int, ok bool) {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
-	arg1 := new(C.int)
-	var ret1 int
-	arg2 := new(C.int)
-	var ret2 int
+	var arg1 C.int
+	var arg2 C.int
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_label_get_selection_bounds(arg0, arg1, arg2)
+	cret = C.gtk_label_get_selection_bounds(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var start int
+	var end int
+	var ok bool
+
+	start = (int)(arg1)
+	end = (int)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return start, end, ok
 }
 
 // SingleLineMode returns whether the label is in single line mode.
@@ -15044,177 +14657,172 @@ func (s label) SingleLineMode() bool {
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_label_get_single_line_mode(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Text fetches the text from a label.
-//
-// The returned text is as it appears on screen. This does not include any
-// embedded underlines indicating mnemonics or Pango markup. (See
-// [method@Gtk.Label.get_label])
+// Text fetches the text from a label widget, as displayed on the screen.
+// This does not include any embedded underlines indicating mnemonics or
+// Pango markup. (See gtk_label_get_label())
 func (s label) Text() string {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_label_get_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// UseMarkup returns whether the label’s text is interpreted as Pango
-// markup.
-//
-// See [method@Gtk.Label.set_use_markup].
+// UseMarkup returns whether the label’s text is interpreted as marked up
+// with the [Pango text markup language][PangoMarkupFormat]. See
+// gtk_label_set_use_markup ().
 func (s label) UseMarkup() bool {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_label_get_use_markup(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// UseUnderline returns whether an embedded underlines in the label indicate
-// mnemonics.
-//
-// See [method@Gtk.Label.set_use_underline].
+// UseUnderline returns whether an embedded underline in the label indicates
+// a mnemonic. See gtk_label_set_use_underline().
 func (s label) UseUnderline() bool {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_label_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// WidthChars retrieves the desired width of @label, in characters.
-//
-// See [method@Gtk.Label.set_width_chars].
+// WidthChars retrieves the desired width of @label, in characters. See
+// gtk_label_set_width_chars().
 func (s label) WidthChars() int {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_label_get_width_chars(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// Wrap returns whether lines in the label are automatically wrapped.
-//
-// See [method@Gtk.Label.set_wrap].
+// Wrap returns whether lines in the label are automatically wrapped. See
+// gtk_label_set_wrap().
 func (s label) Wrap() bool {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_label_get_wrap(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// WrapMode returns line wrap mode used by the label.
-//
-// See [method@Gtk.Label.set_wrap_mode].
+// WrapMode returns line wrap mode used by the label. See
+// gtk_label_set_wrap_mode().
 func (s label) WrapMode() pango.WrapMode {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.PangoWrapMode
-	var goret pango.WrapMode
 
 	cret = C.gtk_label_get_wrap_mode(arg0)
 
-	goret = pango.WrapMode(cret)
+	var wrapMode pango.WrapMode
 
-	return goret
+	wrapMode = pango.WrapMode(cret)
+
+	return wrapMode
 }
 
-// Xalign gets the `xalign` of the label.
-//
-// See the [property@Gtk.Label:xalign] property.
+// Xalign gets the Label:xalign property for @label.
 func (s label) Xalign() float32 {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.gtk_label_get_xalign(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
-// Yalign gets the `yalign` of the label.
-//
-// See the [property@Gtk.Label:yalign] property.
+// Yalign gets the Label:yalign property for @label.
 func (s label) Yalign() float32 {
 	var arg0 *C.GtkLabel
 
 	arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.gtk_label_get_yalign(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // SelectRegion selects a range of characters in the label, if the label is
-// selectable.
-//
-// See [method@Gtk.Label.set_selectable]. If the label is not selectable,
-// this function has no effect. If @start_offset or @end_offset are -1, then
-// the end of the label will be substituted.
+// selectable. See gtk_label_set_selectable(). If the label is not
+// selectable, this function has no effect. If @start_offset or @end_offset
+// are -1, then the end of the label will be substituted.
 func (s label) SelectRegion(startOffset int, endOffset int) {
 	var arg0 *C.GtkLabel
 	var arg1 C.int
@@ -15227,14 +14835,15 @@ func (s label) SelectRegion(startOffset int, endOffset int) {
 	C.gtk_label_select_region(arg0, arg1, arg2)
 }
 
-// SetAttributes: apply attributes to the label text.
+// SetAttributes sets a AttrList; the attributes in the list are applied to
+// the label text.
 //
 // The attributes set with this function will be applied and merged with any
-// other attributes previously effected by way of the
-// [property@Gtk.Label:use-underline] or [property@Gtk.Label:use-markup]
-// properties. While it is not recommended to mix markup strings with
-// manually set attributes, if you must; know that the attributes will be
-// applied to the label after the markup string is parsed.
+// other attributes previously effected by way of the Label:use-underline or
+// Label:use-markup properties. While it is not recommended to mix markup
+// strings with manually set attributes, if you must; know that the
+// attributes will be applied to the label after the markup string is
+// parsed.
 func (s label) SetAttributes(attrs *pango.AttrList) {
 	var arg0 *C.GtkLabel
 	var arg1 *C.PangoAttrList
@@ -15245,10 +14854,8 @@ func (s label) SetAttributes(attrs *pango.AttrList) {
 	C.gtk_label_set_attributes(arg0, arg1)
 }
 
-// SetEllipsize sets the mode used to ellipsizei the text.
-//
-// The text will be ellipsized if there is not enough space to render the
-// entire string.
+// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") to
+// the text if there is not enough space to render the entire string.
 func (s label) SetEllipsize(mode pango.EllipsizeMode) {
 	var arg0 *C.GtkLabel
 	var arg1 C.PangoEllipsizeMode
@@ -15272,13 +14879,11 @@ func (s label) SetExtraMenu(model gio.MenuModel) {
 }
 
 // SetJustify sets the alignment of the lines in the text of the label
-// relative to each other.
-//
-// GTK_JUSTIFY_LEFT is the default value when the widget is first created
-// with [ctor@Gtk.Label.new]. If you instead want to set the alignment of
-// the label as a whole, use [method@Gtk.Widget.set_halign] instead.
-// [method@Gtk.Label.set_justify] has no effect on labels containing only a
-// single line.
+// relative to each other. GTK_JUSTIFY_LEFT is the default value when the
+// widget is first created with gtk_label_new(). If you instead want to set
+// the alignment of the label as a whole, use gtk_widget_set_halign()
+// instead. gtk_label_set_justify() has no effect on labels containing only
+// a single line.
 func (s label) SetJustify(jtype Justification) {
 	var arg0 *C.GtkLabel
 	var arg1 C.GtkJustification
@@ -15289,11 +14894,9 @@ func (s label) SetJustify(jtype Justification) {
 	C.gtk_label_set_justify(arg0, arg1)
 }
 
-// SetLabel sets the text of the label.
-//
-// The label is interpreted as including embedded underlines and/or Pango
-// markup depending on the values of the [property@Gtk.Label:use-underline]
-// and [property@Gtk.Label:use-markup] properties.
+// SetLabel sets the text of the label. The label is interpreted as
+// including embedded underlines and/or Pango markup depending on the values
+// of the Label:use-underline and Label:use-markup properties.
 func (s label) SetLabel(str string) {
 	var arg0 *C.GtkLabel
 	var arg1 *C.char
@@ -15306,10 +14909,9 @@ func (s label) SetLabel(str string) {
 }
 
 // SetLines sets the number of lines to which an ellipsized, wrapping label
-// should be limited.
-//
-// This has no effect if the label is not wrapping or ellipsized. Set this
-// to -1 if you don’t want to limit the number of lines.
+// should be limited. This has no effect if the label is not wrapping or
+// ellipsized. Set this to -1 if you don’t want to limit the number of
+// lines.
 func (s label) SetLines(lines int) {
 	var arg0 *C.GtkLabel
 	var arg1 C.int
@@ -15320,28 +14922,29 @@ func (s label) SetLines(lines int) {
 	C.gtk_label_set_lines(arg0, arg1)
 }
 
-// SetMarkup sets the labels text and attributes from markup.
-//
-// The string must be marked up with Pango markup (see
-// [func@Pango.parse_markup]).
+// SetMarkup parses @str which is marked up with the [Pango text markup
+// language][PangoMarkupFormat], setting the label’s text and attribute list
+// based on the parse results.
 //
 // If the @str is external data, you may need to escape it with
 // g_markup_escape_text() or g_markup_printf_escaped():
 //
-// “`c GtkWidget *self = gtk_label_new (NULL); const char *str = "...";
-// const char *format = "<span style=\"italic\">\s</span>"; char *markup;
+//    GtkWidget *self = gtk_label_new (NULL);
+//    const char *str = "...";
+//    const char *format = "<span style=\"italic\">\s</span>";
+//    char *markup;
 //
-// markup = g_markup_printf_escaped (format, str); gtk_label_set_markup
-// (GTK_LABEL (self), markup); g_free (markup); “`
+//    markup = g_markup_printf_escaped (format, str);
+//    gtk_label_set_markup (GTK_LABEL (self), markup);
+//    g_free (markup);
 //
-// This function will set the [property@Gtk.Label:use-markup] property to
-// true as a side effect.
+// This function will set the Label:use-markup property to true as a side
+// effect.
 //
-// If you set the label contents using the [property@Gtk.Label:label]
-// property you should also ensure that you set the
-// [property@Gtk.Label:use-markup] property accordingly.
+// If you set the label contents using the Label:label property you should
+// also ensure that you set the Label:use-markup property accordingly.
 //
-// See also: [method@Gtk.Label.set_text]
+// See also: gtk_label_set_text()
 func (s label) SetMarkup(str string) {
 	var arg0 *C.GtkLabel
 	var arg1 *C.char
@@ -15353,17 +14956,14 @@ func (s label) SetMarkup(str string) {
 	C.gtk_label_set_markup(arg0, arg1)
 }
 
-// SetMarkupWithMnemonic sets the labels text, attributes and mnemonic from
-// markup.
-//
-// Parses @str which is marked up with Pango markup (see
-// [func@Pango.parse_markup]), setting the label’s text and attribute list
-// based on the parse results. If characters in @str are preceded by an
-// underscore, they are underlined indicating that they represent a keyboard
-// accelerator called a mnemonic.
+// SetMarkupWithMnemonic parses @str which is marked up with the [Pango text
+// markup language][PangoMarkupFormat], setting the label’s text and
+// attribute list based on the parse results. If characters in @str are
+// preceded by an underscore, they are underlined indicating that they
+// represent a keyboard accelerator called a mnemonic.
 //
 // The mnemonic key can be used to activate another widget, chosen
-// automatically, or explicitly using method@Gtk.Label.set_mnemonic_widget].
+// automatically, or explicitly using gtk_label_set_mnemonic_widget().
 func (s label) SetMarkupWithMnemonic(str string) {
 	var arg0 *C.GtkLabel
 	var arg1 *C.char
@@ -15387,23 +14987,19 @@ func (s label) SetMaxWidthChars(nChars int) {
 	C.gtk_label_set_max_width_chars(arg0, arg1)
 }
 
-// SetMnemonicWidget: associate the label with its mnemonic target.
-//
-// If the label has been set so that it has a mnemonic key (using i.e.
-// [method@Gtk.Label.set_markup_with_mnemonic],
-// [method@Gtk.Label.set_text_with_mnemonic],
-// [ctor@Gtk.Label.new_with_mnemonic] or the
-// [property@Gtk.Label:use_underline] property) the label can be associated
-// with a widget that is the target of the mnemonic. When the label is
-// inside a widget (like a [class@Gtk.Button] or a [class@Gtk.Notebook] tab)
-// it is automatically associated with the correct widget, but sometimes
-// (i.e. when the target is a [class@Gtk.Entry] next to the label) you need
-// to set it explicitly using this function.
+// SetMnemonicWidget: if the label has been set so that it has a mnemonic
+// key (using i.e. gtk_label_set_markup_with_mnemonic(),
+// gtk_label_set_text_with_mnemonic(), gtk_label_new_with_mnemonic() or the
+// “use_underline” property) the label can be associated with a widget that
+// is the target of the mnemonic. When the label is inside a widget (like a
+// Button or a Notebook tab) it is automatically associated with the correct
+// widget, but sometimes (i.e. when the target is a Entry next to the label)
+// you need to set it explicitly using this function.
 //
 // The target widget will be accelerated by emitting the
-// [signal@GtkWidget::mnemonic-activate] signal on it. The default handler
-// for this signal will activate the widget if there are no mnemonic
-// collisions and toggle focus between the colliding widgets otherwise.
+// GtkWidget::mnemonic-activate signal on it. The default handler for this
+// signal will activate the widget if there are no mnemonic collisions and
+// toggle focus between the colliding widgets otherwise.
 func (s label) SetMnemonicWidget(widget Widget) {
 	var arg0 *C.GtkLabel
 	var arg1 *C.GtkWidget
@@ -15414,10 +15010,8 @@ func (s label) SetMnemonicWidget(widget Widget) {
 	C.gtk_label_set_mnemonic_widget(arg0, arg1)
 }
 
-// SetSelectable makes text in the label selectable.
-//
-// Selectable labels allow the user to select text from the label, for
-// copy-and-paste.
+// SetSelectable: selectable labels allow the user to select text from the
+// label, for copy-and-paste.
 func (s label) SetSelectable(setting bool) {
 	var arg0 *C.GtkLabel
 	var arg1 C.gboolean
@@ -15443,18 +15037,16 @@ func (s label) SetSingleLineMode(singleLineMode bool) {
 	C.gtk_label_set_single_line_mode(arg0, arg1)
 }
 
-// SetText sets the text within the `GtkLabel` widget.
-//
-// It overwrites any text that was there before.
+// SetText sets the text within the Label widget. It overwrites any text
+// that was there before.
 //
 // This function will clear any previously set mnemonic accelerators, and
-// set the [property@Gtk.Label:use-underline property] to false as a side
+// set the Label:use-underline property to false as a side effect.
+//
+// This function will set the Label:use-markup property to false as a side
 // effect.
 //
-// This function will set the [property@Gtk.Label:use-markup] property to
-// false as a side effect.
-//
-// See also: [method@Gtk.Label.set_markup]
+// See also: gtk_label_set_markup()
 func (s label) SetText(str string) {
 	var arg0 *C.GtkLabel
 	var arg1 *C.char
@@ -15466,13 +15058,11 @@ func (s label) SetText(str string) {
 	C.gtk_label_set_text(arg0, arg1)
 }
 
-// SetTextWithMnemonic sets the label’s text from the string @str.
-//
-// If characters in @str are preceded by an underscore, they are underlined
+// SetTextWithMnemonic sets the label’s text from the string @str. If
+// characters in @str are preceded by an underscore, they are underlined
 // indicating that they represent a keyboard accelerator called a mnemonic.
 // The mnemonic key can be used to activate another widget, chosen
-// automatically, or explicitly using
-// [method@Gtk.Label.set_mnemonic_widget].
+// automatically, or explicitly using gtk_label_set_mnemonic_widget().
 func (s label) SetTextWithMnemonic(str string) {
 	var arg0 *C.GtkLabel
 	var arg1 *C.char
@@ -15484,9 +15074,9 @@ func (s label) SetTextWithMnemonic(str string) {
 	C.gtk_label_set_text_with_mnemonic(arg0, arg1)
 }
 
-// SetUseMarkup sets whether the text of the label contains markup.
-//
-// See [method@Gtk.Label.set_markup].
+// SetUseMarkup sets whether the text of the label contains markup in
+// [Pango’s text markup language][PangoMarkupFormat]. See
+// gtk_label_set_markup().
 func (s label) SetUseMarkup(setting bool) {
 	var arg0 *C.GtkLabel
 	var arg1 C.gboolean
@@ -15499,7 +15089,8 @@ func (s label) SetUseMarkup(setting bool) {
 	C.gtk_label_set_use_markup(arg0, arg1)
 }
 
-// SetUseUnderline sets whether underlines in the text indicate mnemonics.
+// SetUseUnderline: if true, an underline in the text indicates the next
+// character should be used for the mnemonic accelerator key.
 func (s label) SetUseUnderline(setting bool) {
 	var arg0 *C.GtkLabel
 	var arg1 C.gboolean
@@ -15523,17 +15114,15 @@ func (s label) SetWidthChars(nChars int) {
 	C.gtk_label_set_width_chars(arg0, arg1)
 }
 
-// SetWrap toggles line wrapping within the `GtkLabel` widget.
-//
-// true makes it break lines if text exceeds the widget’s size. false lets
-// the text get cut off by the edge of the widget if it exceeds the widget
-// size.
+// SetWrap toggles line wrapping within the Label widget. true makes it
+// break lines if text exceeds the widget’s size. false lets the text get
+// cut off by the edge of the widget if it exceeds the widget size.
 //
 // Note that setting line wrapping to true does not make the label wrap at
 // its parent container’s width, because GTK widgets conceptually can’t make
 // their requisition depend on the parent container’s size. For a label that
 // wraps at a specific position, set the label’s width using
-// [method@Gtk.Widget.set_size_request].
+// gtk_widget_set_size_request().
 func (s label) SetWrap(wrap bool) {
 	var arg0 *C.GtkLabel
 	var arg1 C.gboolean
@@ -15546,11 +15135,9 @@ func (s label) SetWrap(wrap bool) {
 	C.gtk_label_set_wrap(arg0, arg1)
 }
 
-// SetWrapMode controls how line wrapping is done.
-//
-// This only affects the label if line wrapping is on. (See
-// [method@Gtk.Label.set_wrap]) The default is PANGO_WRAP_WORD which means
-// wrap on word boundaries.
+// SetWrapMode: if line wrapping is on (see gtk_label_set_wrap()) this
+// controls how the line wrapping is done. The default is PANGO_WRAP_WORD
+// which means wrap on word boundaries.
 func (s label) SetWrapMode(wrapMode pango.WrapMode) {
 	var arg0 *C.GtkLabel
 	var arg1 C.PangoWrapMode
@@ -15561,9 +15148,7 @@ func (s label) SetWrapMode(wrapMode pango.WrapMode) {
 	C.gtk_label_set_wrap_mode(arg0, arg1)
 }
 
-// SetXalign sets the `xalign` of the label.
-//
-// See the [property@Gtk.Label:xalign] property.
+// SetXalign sets the Label:xalign property for @label.
 func (s label) SetXalign(xalign float32) {
 	var arg0 *C.GtkLabel
 	var arg1 C.float
@@ -15574,9 +15159,7 @@ func (s label) SetXalign(xalign float32) {
 	C.gtk_label_set_xalign(arg0, arg1)
 }
 
-// SetYalign sets the `yalign` of the label.
-//
-// See the [property@Gtk.Label:yalign] property.
+// SetYalign sets the Label:yalign property for @label.
 func (s label) SetYalign(yalign float32) {
 	var arg0 *C.GtkLabel
 	var arg1 C.float
@@ -15587,82 +15170,30 @@ func (s label) SetYalign(yalign float32) {
 	C.gtk_label_set_yalign(arg0, arg1)
 }
 
-// LevelBar: `GtkLevelBar` is a widget that can be used as a level indicator.
-//
+// LevelBar: the LevelBar is a bar widget that can be used as a level indicator.
 // Typical use cases are displaying the strength of a password, or showing the
 // charge level of a battery.
 //
-// !An example GtkLevelBar (levelbar.png)
-//
-// Use [method@Gtk.LevelBar.set_value] to set the current value, and
-// [method@Gtk.LevelBar.add_offset_value] to set the value offsets at which the
-// bar will be considered in a different state. GTK will add a few offsets by
-// default on the level bar: GTK_LEVEL_BAR_OFFSET_LOW, GTK_LEVEL_BAR_OFFSET_HIGH
-// and GTK_LEVEL_BAR_OFFSET_FULL, with values 0.25, 0.75 and 1.0 respectively.
+// Use gtk_level_bar_set_value() to set the current value, and
+// gtk_level_bar_add_offset_value() to set the value offsets at which the bar
+// will be considered in a different state. GTK will add a few offsets by
+// default on the level bar: K_LEVEL_BAR_OFFSET_LOW, K_LEVEL_BAR_OFFSET_HIGH and
+// K_LEVEL_BAR_OFFSET_FULL, with values 0.25, 0.75 and 1.0 respectively.
 //
 // Note that it is your responsibility to update preexisting offsets when
 // changing the minimum or maximum value. GTK will simply clamp them to the new
 // range.
 //
-//
 // Adding a custom offset on the bar
 //
-// “`c static GtkWidget * create_level_bar (void) { GtkWidget *widget;
-// GtkLevelBar *bar;
+//    levelbar[.discrete]
+//    ╰── trough
+//        ├── block.filled.level-name
+//        ┊
+//        ├── block.empty
+//        ┊
 //
-//    widget = gtk_level_bar_new ();
-//    bar = GTK_LEVEL_BAR (widget);
-//
-//    // This changes the value of the default low offset
-//
-//    gtk_level_bar_add_offset_value (bar,
-//                                    GTK_LEVEL_BAR_OFFSET_LOW,
-//                                    0.10);
-//
-//    // This adds a new offset to the bar; the application will
-//    // be able to change its color CSS like this:
-//    //
-//    // levelbar block.my-offset {
-//    //   background-color: magenta;
-//    //   border-style: solid;
-//    //   border-color: black;
-//    //   border-style: 1px;
-//    // }
-//
-//    gtk_level_bar_add_offset_value (bar, "my-offset", 0.60);
-//
-//    return widget;
-//
-// } “`
-//
-// The default interval of values is between zero and one, but it’s possible to
-// modify the interval using [method@Gtk.LevelBar.set_min_value] and
-// [method@Gtk.LevelBar.set_max_value]. The value will be always drawn in
-// proportion to the admissible interval, i.e. a value of 15 with a specified
-// interval between 10 and 20 is equivalent to a value of 0.5 with an interval
-// between 0 and 1. When K_LEVEL_BAR_MODE_DISCRETE is used, the bar level is
-// rendered as a finite number of separated blocks instead of a single one. The
-// number of blocks that will be rendered is equal to the number of units
-// specified by the admissible interval.
-//
-// For instance, to build a bar rendered with five blocks, it’s sufficient to
-// set the minimum value to 0 and the maximum value to 5 after changing the
-// indicator mode to discrete.
-//
-//
-// GtkLevelBar as GtkBuildable
-//
-// The `GtkLevelBar` implementation of the `GtkBuildable` interface supports a
-// custom <offsets> element, which can contain any number of <offset> elements,
-// each of which must have name and value attributes.
-//
-//
-// CSS nodes
-//
-// “` levelbar[.discrete] ╰── trough ├── block.filled.level-name ┊ ├──
-// block.empty ┊ “`
-//
-// `GtkLevelBar` has a main CSS node with name levelbar and one of the style
+// GtkLevelBar has a main CSS node with name levelbar and one of the style
 // classes .discrete or .continuous and a subnode with name trough. Below the
 // trough node are a number of nodes with name block and style class .filled or
 // .empty. In continuous mode, there is exactly one node of each, in discrete
@@ -15676,7 +15207,7 @@ func (s label) SetYalign(yalign float32) {
 //
 // Accessibility
 //
-// `GtkLevelBar` uses the K_ACCESSIBLE_ROLE_METER role.
+// GtkLevelBar uses the K_ACCESSIBLE_ROLE_METER role.
 type LevelBar interface {
 	Widget
 	Accessible
@@ -15685,49 +15216,43 @@ type LevelBar interface {
 	Orientable
 
 	// AddOffsetValue adds a new offset marker on @self at the position
-	// specified by @value.
-	//
-	// When the bar value is in the interval topped by @value (or between @value
-	// and [property@Gtk.LevelBar:max-value] in case the offset is the last one
-	// on the bar) a style class named `level-`@name will be applied when
-	// rendering the level bar fill.
-	//
-	// If another offset marker named @name exists, its value will be replaced
-	// by @value.
+	// specified by @value. When the bar value is in the interval topped by
+	// @value (or between @value and LevelBar:max-value in case the offset is
+	// the last one on the bar) a style class named `level-`@name will be
+	// applied when rendering the level bar fill. If another offset marker named
+	// @name exists, its value will be replaced by @value.
 	AddOffsetValue(name string, value float64)
-	// Inverted returns whether the levelbar is inverted.
+	// Inverted: return the value of the LevelBar:inverted property.
 	Inverted() bool
-	// MaxValue returns the `max-value` of the `GtkLevelBar`.
+	// MaxValue returns the value of the LevelBar:max-value property.
 	MaxValue() float64
-	// MinValue returns the `min-value of the `GtkLevelBar`.
+	// MinValue returns the value of the LevelBar:min-value property.
 	MinValue() float64
-	// Mode returns the `mode` of the `GtkLevelBar`.
+	// Mode returns the value of the LevelBar:mode property.
 	Mode() LevelBarMode
 	// OffsetValue fetches the value specified for the offset marker @name in
-	// @self.
+	// @self, returning true in case an offset named @name was found.
 	OffsetValue(name string) (value float64, ok bool)
-	// Value returns the `value` of the `GtkLevelBar`.
+	// Value returns the value of the LevelBar:value property.
 	Value() float64
-	// RemoveOffsetValue removes an offset marker from a `GtkLevelBar`.
-	//
-	// The marker must have been previously added with
-	// [method@Gtk.LevelBar.add_offset_value].
+	// RemoveOffsetValue removes an offset marker previously added with
+	// gtk_level_bar_add_offset_value().
 	RemoveOffsetValue(name string)
-	// SetInverted sets whether the `GtkLevelBar` is inverted.
+	// SetInverted sets the value of the LevelBar:inverted property.
 	SetInverted(inverted bool)
-	// SetMaxValue sets the `max-value` of the `GtkLevelBar`.
+	// SetMaxValue sets the value of the LevelBar:max-value property.
 	//
 	// You probably want to update preexisting level offsets after calling this
 	// function.
 	SetMaxValue(value float64)
-	// SetMinValue sets the `min-value` of the `GtkLevelBar`.
+	// SetMinValue sets the value of the LevelBar:min-value property.
 	//
 	// You probably want to update preexisting level offsets after calling this
 	// function.
 	SetMinValue(value float64)
-	// SetMode sets the `mode` of the `GtkLevelBar`.
+	// SetMode sets the value of the LevelBar:mode property.
 	SetMode(mode LevelBarMode)
-	// SetValue sets the value of the `GtkLevelBar`.
+	// SetValue sets the value of the LevelBar:value property.
 	SetValue(value float64)
 }
 
@@ -15763,13 +15288,14 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 // NewLevelBar constructs a class LevelBar.
 func NewLevelBar() LevelBar {
 	var cret C.GtkLevelBar
-	var goret LevelBar
 
 	cret = C.gtk_level_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+	var levelBar LevelBar
 
-	return goret
+	levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+
+	return levelBar
 }
 
 // NewLevelBarForInterval constructs a class LevelBar.
@@ -15781,25 +15307,22 @@ func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
 	arg2 = C.double(maxValue)
 
 	var cret C.GtkLevelBar
-	var goret LevelBar
 
 	cret = C.gtk_level_bar_new_for_interval(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+	var levelBar LevelBar
 
-	return goret
+	levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LevelBar)
+
+	return levelBar
 }
 
 // AddOffsetValue adds a new offset marker on @self at the position
-// specified by @value.
-//
-// When the bar value is in the interval topped by @value (or between @value
-// and [property@Gtk.LevelBar:max-value] in case the offset is the last one
-// on the bar) a style class named `level-`@name will be applied when
-// rendering the level bar fill.
-//
-// If another offset marker named @name exists, its value will be replaced
-// by @value.
+// specified by @value. When the bar value is in the interval topped by
+// @value (or between @value and LevelBar:max-value in case the offset is
+// the last one on the bar) a style class named `level-`@name will be
+// applied when rendering the level bar fill. If another offset marker named
+// @name exists, its value will be replaced by @value.
 func (s levelBar) AddOffsetValue(name string, value float64) {
 	var arg0 *C.GtkLevelBar
 	var arg1 *C.char
@@ -15813,74 +15336,78 @@ func (s levelBar) AddOffsetValue(name string, value float64) {
 	C.gtk_level_bar_add_offset_value(arg0, arg1, arg2)
 }
 
-// Inverted returns whether the levelbar is inverted.
+// Inverted: return the value of the LevelBar:inverted property.
 func (s levelBar) Inverted() bool {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_level_bar_get_inverted(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// MaxValue returns the `max-value` of the `GtkLevelBar`.
+// MaxValue returns the value of the LevelBar:max-value property.
 func (s levelBar) MaxValue() float64 {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_level_bar_get_max_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// MinValue returns the `min-value of the `GtkLevelBar`.
+// MinValue returns the value of the LevelBar:min-value property.
 func (s levelBar) MinValue() float64 {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_level_bar_get_min_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// Mode returns the `mode` of the `GtkLevelBar`.
+// Mode returns the value of the LevelBar:mode property.
 func (s levelBar) Mode() LevelBarMode {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkLevelBarMode
-	var goret LevelBarMode
 
 	cret = C.gtk_level_bar_get_mode(arg0)
 
-	goret = LevelBarMode(cret)
+	var levelBarMode LevelBarMode
 
-	return goret
+	levelBarMode = LevelBarMode(cret)
+
+	return levelBarMode
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in
-// @self.
+// @self, returning true in case an offset named @name was found.
 func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 	var arg0 *C.GtkLevelBar
 	var arg1 *C.char
@@ -15889,41 +15416,41 @@ func (s levelBar) OffsetValue(name string) (value float64, ok bool) {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(C.double)
-	var ret2 float64
+	var arg2 C.double
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_level_bar_get_offset_value(arg0, arg1, arg2)
+	cret = C.gtk_level_bar_get_offset_value(arg0, arg1, &arg2)
 
-	ret2 = float64(*arg2)
+	var value float64
+	var ok bool
+
+	value = (float64)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return value, ok
 }
 
-// Value returns the `value` of the `GtkLevelBar`.
+// Value returns the value of the LevelBar:value property.
 func (s levelBar) Value() float64 {
 	var arg0 *C.GtkLevelBar
 
 	arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_level_bar_get_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// RemoveOffsetValue removes an offset marker from a `GtkLevelBar`.
-//
-// The marker must have been previously added with
-// [method@Gtk.LevelBar.add_offset_value].
+// RemoveOffsetValue removes an offset marker previously added with
+// gtk_level_bar_add_offset_value().
 func (s levelBar) RemoveOffsetValue(name string) {
 	var arg0 *C.GtkLevelBar
 	var arg1 *C.char
@@ -15935,7 +15462,7 @@ func (s levelBar) RemoveOffsetValue(name string) {
 	C.gtk_level_bar_remove_offset_value(arg0, arg1)
 }
 
-// SetInverted sets whether the `GtkLevelBar` is inverted.
+// SetInverted sets the value of the LevelBar:inverted property.
 func (s levelBar) SetInverted(inverted bool) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.gboolean
@@ -15948,7 +15475,7 @@ func (s levelBar) SetInverted(inverted bool) {
 	C.gtk_level_bar_set_inverted(arg0, arg1)
 }
 
-// SetMaxValue sets the `max-value` of the `GtkLevelBar`.
+// SetMaxValue sets the value of the LevelBar:max-value property.
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
@@ -15962,7 +15489,7 @@ func (s levelBar) SetMaxValue(value float64) {
 	C.gtk_level_bar_set_max_value(arg0, arg1)
 }
 
-// SetMinValue sets the `min-value` of the `GtkLevelBar`.
+// SetMinValue sets the value of the LevelBar:min-value property.
 //
 // You probably want to update preexisting level offsets after calling this
 // function.
@@ -15976,7 +15503,7 @@ func (s levelBar) SetMinValue(value float64) {
 	C.gtk_level_bar_set_min_value(arg0, arg1)
 }
 
-// SetMode sets the `mode` of the `GtkLevelBar`.
+// SetMode sets the value of the LevelBar:mode property.
 func (s levelBar) SetMode(mode LevelBarMode) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.GtkLevelBarMode
@@ -15987,7 +15514,7 @@ func (s levelBar) SetMode(mode LevelBarMode) {
 	C.gtk_level_bar_set_mode(arg0, arg1)
 }
 
-// SetValue sets the value of the `GtkLevelBar`.
+// SetValue sets the value of the LevelBar:value property.
 func (s levelBar) SetValue(value float64) {
 	var arg0 *C.GtkLevelBar
 	var arg1 C.double
@@ -15998,34 +15525,31 @@ func (s levelBar) SetValue(value float64) {
 	C.gtk_level_bar_set_value(arg0, arg1)
 }
 
-// LinkButton: a `GtkLinkButton` is a button with a hyperlink.
+// LinkButton: a GtkLinkButton is a Button with a hyperlink, similar to the one
+// used by web browsers, which triggers an action when clicked. It is useful to
+// show quick links to resources.
 //
-// !An example GtkLinkButton (link-button.png)
+// A link button is created by calling either gtk_link_button_new() or
+// gtk_link_button_new_with_label(). If using the former, the URI you pass to
+// the constructor is used as a label for the widget.
 //
-// It is useful to show quick links to resources.
+// The URI bound to a GtkLinkButton can be set specifically using
+// gtk_link_button_set_uri(), and retrieved using gtk_link_button_get_uri().
 //
-// A link button is created by calling either [ctor@Gtk.LinkButton.new] or
-// [ctor@Gtk.LinkButton.new_with_label]. If using the former, the URI you pass
-// to the constructor is used as a label for the widget.
-//
-// The URI bound to a `GtkLinkButton` can be set specifically using
-// [method@Gtk.LinkButton.set_uri].
-//
-// By default, `GtkLinkButton` calls [func@Gtk.show_uri] when the button is
-// clicked. This behaviour can be overridden by connecting to the
-// [signal@Gtk.LinkButton::activate-link] signal and returning true from the
-// signal handler.
+// By default, GtkLinkButton calls gtk_show_uri() when the button is clicked.
+// This behaviour can be overridden by connecting to the
+// LinkButton::activate-link signal and returning true from the signal handler.
 //
 //
 // CSS nodes
 //
-// `GtkLinkButton` has a single CSS node with name button. To differentiate it
-// from a plain `GtkButton`, it gets the .link style class.
+// GtkLinkButton has a single CSS node with name button. To differentiate it
+// from a plain Button, it gets the .link style class.
 //
 //
 // Accessibility
 //
-// `GtkLinkButton` uses the K_ACCESSIBLE_ROLE_LINK role.
+// GtkLinkButton uses the K_ACCESSIBLE_ROLE_LINK role.
 type LinkButton interface {
 	Button
 	Accessible
@@ -16033,22 +15557,19 @@ type LinkButton interface {
 	Buildable
 	ConstraintTarget
 
-	// URI retrieves the URI of the `GtkLinkButton`.
+	// URI retrieves the URI set using gtk_link_button_set_uri().
 	URI() string
-	// Visited retrieves the “visited” state of the `GtkLinkButton`.
+	// Visited retrieves the “visited” state of the URI where the LinkButton
+	// points. The button becomes visited when it is clicked. If the URI is
+	// changed on the button, the “visited” state is unset again.
 	//
-	// The button becomes visited when it is clicked. If the URI is changed on
-	// the button, the “visited” state is unset again.
-	//
-	// The state may also be changed using [method@Gtk.LinkButton.set_visited].
+	// The state may also be changed using gtk_link_button_set_visited().
 	Visited() bool
-	// SetURI sets @uri as the URI where the `GtkLinkButton` points.
-	//
-	// As a side-effect this unsets the “visited” state of the button.
-	SetURI(urI string)
-	// SetVisited sets the “visited” state of the `GtkLinkButton`.
-	//
-	// See [method@Gtk.LinkButton.get_visited] for more details.
+	// SetURI sets @uri as the URI where the LinkButton points. As a side-effect
+	// this unsets the “visited” state of the button.
+	SetURI(uri string)
+	// SetVisited sets the “visited” state of the URI where the LinkButton
+	// points. See gtk_link_button_get_visited() for more details.
 	SetVisited(visited bool)
 }
 
@@ -16082,98 +15603,99 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 }
 
 // NewLinkButton constructs a class LinkButton.
-func NewLinkButton(urI string) LinkButton {
+func NewLinkButton(uri string) LinkButton {
 	var arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(urI))
+	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkLinkButton
-	var goret LinkButton
 
 	cret = C.gtk_link_button_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	var linkButton LinkButton
 
-	return goret
+	linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+
+	return linkButton
 }
 
 // NewLinkButtonWithLabel constructs a class LinkButton.
-func NewLinkButtonWithLabel(urI string, label string) LinkButton {
+func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	var arg1 *C.char
 	var arg2 *C.char
 
-	arg1 = (*C.char)(C.CString(urI))
+	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.char)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkLinkButton
-	var goret LinkButton
 
 	cret = C.gtk_link_button_new_with_label(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	var linkButton LinkButton
 
-	return goret
+	linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+
+	return linkButton
 }
 
-// URI retrieves the URI of the `GtkLinkButton`.
+// URI retrieves the URI set using gtk_link_button_set_uri().
 func (l linkButton) URI() string {
 	var arg0 *C.GtkLinkButton
 
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_link_button_get_uri(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// Visited retrieves the “visited” state of the `GtkLinkButton`.
+// Visited retrieves the “visited” state of the URI where the LinkButton
+// points. The button becomes visited when it is clicked. If the URI is
+// changed on the button, the “visited” state is unset again.
 //
-// The button becomes visited when it is clicked. If the URI is changed on
-// the button, the “visited” state is unset again.
-//
-// The state may also be changed using [method@Gtk.LinkButton.set_visited].
+// The state may also be changed using gtk_link_button_set_visited().
 func (l linkButton) Visited() bool {
 	var arg0 *C.GtkLinkButton
 
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_link_button_get_visited(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetURI sets @uri as the URI where the `GtkLinkButton` points.
-//
-// As a side-effect this unsets the “visited” state of the button.
-func (l linkButton) SetURI(urI string) {
+// SetURI sets @uri as the URI where the LinkButton points. As a side-effect
+// this unsets the “visited” state of the button.
+func (l linkButton) SetURI(uri string) {
 	var arg0 *C.GtkLinkButton
 	var arg1 *C.char
 
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
-	arg1 = (*C.char)(C.CString(urI))
+	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_link_button_set_uri(arg0, arg1)
 }
 
-// SetVisited sets the “visited” state of the `GtkLinkButton`.
-//
-// See [method@Gtk.LinkButton.get_visited] for more details.
+// SetVisited sets the “visited” state of the URI where the LinkButton
+// points. See gtk_link_button_get_visited() for more details.
 func (l linkButton) SetVisited(visited bool) {
 	var arg0 *C.GtkLinkButton
 	var arg1 C.gboolean
@@ -16186,66 +15708,59 @@ func (l linkButton) SetVisited(visited bool) {
 	C.gtk_link_button_set_visited(arg0, arg1)
 }
 
-// ListBox: `GtkListBox` is a vertical list.
+// ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
+// children. These rows can by dynamically sorted and filtered, and headers can
+// be added dynamically depending on the row content. It also allows keyboard
+// and mouse navigation and selection like a typical list.
 //
-// A `GtkListBox` only contains `GtkListBoxRow` children. These rows can by
-// dynamically sorted and filtered, and headers can be added dynamically
-// depending on the row content. It also allows keyboard and mouse navigation
-// and selection like a typical list.
+// Using GtkListBox is often an alternative to TreeView, especially when the
+// list contents has a more complicated layout than what is allowed by a
+// CellRenderer, or when the contents is interactive (i.e. has a button in it).
 //
-// Using `GtkListBox` is often an alternative to `GtkTreeView`, especially when
-// the list contents has a more complicated layout than what is allowed by a
-// `GtkCellRenderer`, or when the contents is interactive (i.e. has a button in
-// it).
+// Although a ListBox must have only ListBoxRow children you can add any kind of
+// widget to it via gtk_list_box_prepend(), gtk_list_box_append() and
+// gtk_list_box_insert() and a ListBoxRow widget will automatically be inserted
+// between the list and the widget.
 //
-// Although a `GtkListBox` must have only `GtkListBoxRow` children, you can add
-// any kind of widget to it via [method@Gtk.ListBox.prepend],
-// [method@Gtk.ListBox.append] and [method@Gtk.ListBox.insert] and a
-// `GtkListBoxRow` widget will automatically be inserted between the list and
-// the widget.
-//
-// `GtkListBoxRows` can be marked as activatable or selectable. If a row is
-// activatable, [signal@Gtk.ListBox::row-activated] will be emitted for it when
-// the user tries to activate it. If it is selectable, the row will be marked as
-// selected when the user tries to select it.
+// ListBoxRows can be marked as activatable or selectable. If a row is
+// activatable, ListBox::row-activated will be emitted for it when the user
+// tries to activate it. If it is selectable, the row will be marked as selected
+// when the user tries to select it.
 //
 //
 // GtkListBox as GtkBuildable
 //
-// The `GtkListBox` implementation of the `GtkBuildable` interface supports
-// setting a child as the placeholder by specifying “placeholder” as the “type”
-// attribute of a <child> element. See [method@Gtk.ListBox.set_placeholder] for
-// info.
+// The GtkListBox implementation of the Buildable interface supports setting a
+// child as the placeholder by specifying “placeholder” as the “type” attribute
+// of a <child> element. See gtk_list_box_set_placeholder() for info.
 //
 // CSS nodes
 //
 //    list[.separators][.rich-list][.navigation-sidebar]
 //    ╰── row[.activatable]
 //
-// `GtkListBox` uses a single CSS node named list. It may carry the .separators
-// style class, when the [property@Gtk.ListBox:show-separators] property is set.
-// Each `GtkListBoxRow` uses a single CSS node named row. The row nodes get the
+// GtkListBox uses a single CSS node named list. It may carry the .separators
+// style class, when the ListBox:show-separators property is set. Each
+// GtkListBoxRow uses a single CSS node named row. The row nodes get the
 // .activatable style class added when appropriate.
 //
 // The main list node may also carry style classes to select the style of list
-// presentation (section-list-widget.html#list-styles): .rich-list,
+// presentation (ListContainers.html#list-styles): .rich-list,
 // .navigation-sidebar or .data-table.
 //
 //
 // Accessibility
 //
-// `GtkListBox` uses the GTK_ACCESSIBLE_ROLE_LIST role and `GtkListBoxRow` uses
-// the GTK_ACCESSIBLE_ROLE_LIST_ITEM role.
+// GtkListBox uses the K_ACCESSIBLE_ROLE_LIST role and GtkListBoxRow uses the
+// K_ACCESSIBLE_ROLE_LIST_ITEM role.
 type ListBox interface {
 	Widget
 	Accessible
 	Buildable
 	ConstraintTarget
 
-	// Append: append a widget to the list.
-	//
-	// If a sort function is set, the widget will actually be inserted at the
-	// calculated position.
+	// Append: append a widget to the list. If a sort function is set, the
+	// widget will actually be inserted at the calculated position.
 	Append(child Widget)
 	// BindModel binds @model to @box.
 	//
@@ -16256,41 +15771,38 @@ type ListBox interface {
 	// @model is nil, @box is left empty.
 	//
 	// It is undefined to add or remove widgets directly (for example, with
-	// [method@Gtk.ListBox.insert]) while @box is bound to a model.
+	// gtk_list_box_insert()) while @box is bound to a model.
 	//
 	// Note that using a model is incompatible with the filtering and sorting
-	// functionality in `GtkListBox`. When using a model, filtering and sorting
+	// functionality in GtkListBox. When using a model, filtering and sorting
 	// should be implemented by the model.
 	BindModel()
-	// DragHighlightRow: add a drag highlight to a row.
-	//
-	// This is a helper function for implementing DnD onto a `GtkListBox`. The
-	// passed in @row will be highlighted by setting the
-	// GTK_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will
-	// be unhighlighted.
+	// DragHighlightRow: this is a helper function for implementing DnD onto a
+	// ListBox. The passed in @row will be highlighted by setting the
+	// K_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will be
+	// unhighlighted.
 	//
 	// The row will also be unhighlighted when the widget gets a drag leave
 	// event.
 	DragHighlightRow(row ListBoxRow)
 	// DragUnhighlightRow: if a row has previously been highlighted via
-	// gtk_list_box_drag_highlight_row(), it will have the highlight removed.
+	// gtk_list_box_drag_highlight_row() it will have the highlight removed.
 	DragUnhighlightRow()
 	// ActivateOnSingleClick returns whether rows activate on single clicks.
 	ActivateOnSingleClick() bool
 	// Adjustment gets the adjustment (if any) that the widget uses to for
 	// vertical scrolling.
 	Adjustment() Adjustment
-	// RowAtIndex gets the n-th child in the list (not counting headers).
-	//
-	// If @index_ is negative or larger than the number of items in the list,
-	// nil is returned.
+	// RowAtIndex gets the n-th child in the list (not counting headers). If
+	// @_index is negative or larger than the number of items in the list, nil
+	// is returned.
 	RowAtIndex(index_ int) ListBoxRow
 	// RowAtY gets the row at the @y position.
 	RowAtY(y int) ListBoxRow
-	// SelectedRow gets the selected row, or nil if no rows are selected.
+	// SelectedRow gets the selected row.
 	//
 	// Note that the box may allow multiple selection, in which case you should
-	// use [method@Gtk.ListBox.selected_foreach] to find all selected rows.
+	// use gtk_list_box_selected_foreach() to find all selected rows.
 	SelectedRow() ListBoxRow
 	// SelectedRows creates a list of all selected children.
 	SelectedRows() *glib.List
@@ -16299,35 +15811,27 @@ type ListBox interface {
 	// ShowSeparators returns whether the list box should show separators
 	// between rows.
 	ShowSeparators() bool
-	// Insert: insert the @child into the @box at @position.
-	//
-	// If a sort function is set, the widget will actually be inserted at the
-	// calculated position.
+	// Insert: insert the @child into the @box at @position. If a sort function
+	// is set, the widget will actually be inserted at the calculated position.
 	//
 	// If @position is -1, or larger than the total number of items in the @box,
 	// then the @child will be appended to the end.
 	Insert(child Widget, position int)
-	// InvalidateFilter: update the filtering for all rows.
-	//
-	// Call this when result of the filter function on the @box is changed due
-	// to an external factor. For instance, this would be used if the filter
-	// function just looked for a specific search string and the entry with the
-	// search string has changed.
+	// InvalidateFilter: update the filtering for all rows. Call this when
+	// result of the filter function on the @box is changed due to an external
+	// factor. For instance, this would be used if the filter function just
+	// looked for a specific search string and the entry with the search string
+	// has changed.
 	InvalidateFilter()
-	// InvalidateHeaders: update the separators for all rows.
-	//
-	// Call this when result of the header function on the @box is changed due
-	// to an external factor.
+	// InvalidateHeaders: update the separators for all rows. Call this when
+	// result of the header function on the @box is changed due to an external
+	// factor.
 	InvalidateHeaders()
-	// InvalidateSort: update the sorting for all rows.
-	//
-	// Call this when result of the sort function on the @box is changed due to
-	// an external factor.
+	// InvalidateSort: update the sorting for all rows. Call this when result of
+	// the sort function on the @box is changed due to an external factor.
 	InvalidateSort()
-	// Prepend: prepend a widget to the list.
-	//
-	// If a sort function is set, the widget will actually be inserted at the
-	// calculated position.
+	// Prepend: prepend a widget to the list. If a sort function is set, the
+	// widget will actually be inserted at the calculated position.
 	Prepend(child Widget)
 	// Remove removes a child from @box.
 	Remove(child Widget)
@@ -16343,43 +15847,36 @@ type ListBox interface {
 	// you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
 	// SetAdjustment sets the adjustment (if any) that the widget uses to for
-	// vertical scrolling.
+	// vertical scrolling. For instance, this is used to get the page size for
+	// PageUp/Down key handling.
 	//
-	// For instance, this is used to get the page size for PageUp/Down key
-	// handling.
-	//
-	// In the normal case when the @box is packed inside a `GtkScrolledWindow`
-	// the adjustment from that will be picked up automatically, so there is no
-	// need to manually do that.
+	// In the normal case when the @box is packed inside a ScrolledWindow the
+	// adjustment from that will be picked up automatically, so there is no need
+	// to manually do that.
 	SetAdjustment(adjustment Adjustment)
 	// SetFilterFunc: by setting a filter function on the @box one can decide
-	// dynamically which of the rows to show.
-	//
-	// For instance, to implement a search function on a list that filters the
-	// original list to only show the matching rows.
+	// dynamically which of the rows to show. For instance, to implement a
+	// search function on a list that filters the original list to only show the
+	// matching rows.
 	//
 	// The @filter_func will be called for each row after the call, and it will
 	// continue to be called each time a row changes (via
-	// [method@Gtk.ListBoxRow.changed]) or when
-	// [method@Gtk.ListBox.invalidate_filter] is called.
+	// gtk_list_box_row_changed()) or when gtk_list_box_invalidate_filter() is
+	// called.
 	//
 	// Note that using a filter function is incompatible with using a model (see
-	// [method@Gtk.ListBox.bind_model]).
+	// gtk_list_box_bind_model()).
 	SetFilterFunc()
-	// SetHeaderFunc sets a header function.
-	//
-	// By setting a header function on the @box one can dynamically add headers
-	// in front of rows, depending on the contents of the row and its position
-	// in the list.
-	//
-	// For instance, one could use it to add headers in front of the first item
-	// of a new kind, in a list sorted by the kind.
+	// SetHeaderFunc: by setting a header function on the @box one can
+	// dynamically add headers in front of rows, depending on the contents of
+	// the row and its position in the list. For instance, one could use it to
+	// add headers in front of the first item of a new kind, in a list sorted by
+	// the kind.
 	//
 	// The @update_header can look at the current header widget using
-	// [method@Gtk.ListBoxRow.get_header] and either update the state of the
-	// widget as needed, or set a new one using
-	// [method@Gtk.ListBoxRow.set_header]. If no header is needed, set the
-	// header to nil.
+	// gtk_list_box_row_get_header() and either update the state of the widget
+	// as needed, or set a new one using gtk_list_box_row_set_header(). If no
+	// header is needed, set the header to nil.
 	//
 	// Note that you may get many calls @update_header to this for a particular
 	// row when e.g. changing things that don’t affect the header. In this case
@@ -16388,31 +15885,30 @@ type ListBox interface {
 	//
 	// The @update_header function will be called for each row after the call,
 	// and it will continue to be called each time a row changes (via
-	// [method@Gtk.ListBoxRow.changed]) and when the row before changes (either
-	// by [method@Gtk.ListBoxRow.changed] on the previous row, or when the
-	// previous row becomes a different row). It is also called for all rows
-	// when [method@Gtk.ListBox.invalidate_headers] is called.
+	// gtk_list_box_row_changed()) and when the row before changes (either by
+	// gtk_list_box_row_changed() on the previous row, or when the previous row
+	// becomes a different row). It is also called for all rows when
+	// gtk_list_box_invalidate_headers() is called.
 	SetHeaderFunc()
 	// SetPlaceholder sets the placeholder widget that is shown in the list when
 	// it doesn't display any visible children.
 	SetPlaceholder(placeholder Widget)
-	// SetSelectionMode sets how selection works in the listbox.
+	// SetSelectionMode sets how selection works in the listbox. See
+	// SelectionMode for details.
 	SetSelectionMode(mode SelectionMode)
 	// SetShowSeparators sets whether the list box should show separators
 	// between rows.
 	SetShowSeparators(showSeparators bool)
-	// SetSortFunc sets a sort function.
-	//
-	// By setting a sort function on the @box one can dynamically reorder the
-	// rows of the list, based on the contents of the rows.
+	// SetSortFunc: by setting a sort function on the @box one can dynamically
+	// reorder the rows of the list, based on the contents of the rows.
 	//
 	// The @sort_func will be called for each row after the call, and will
 	// continue to be called each time a row changes (via
-	// [method@Gtk.ListBoxRow.changed]) and when
-	// [method@Gtk.ListBox.invalidate_sort] is called.
+	// gtk_list_box_row_changed()) and when gtk_list_box_invalidate_sort() is
+	// called.
 	//
 	// Note that using a sort function is incompatible with using a model (see
-	// [method@Gtk.ListBox.bind_model]).
+	// gtk_list_box_bind_model()).
 	SetSortFunc()
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
@@ -16452,19 +15948,18 @@ func marshalListBox(p uintptr) (interface{}, error) {
 // NewListBox constructs a class ListBox.
 func NewListBox() ListBox {
 	var cret C.GtkListBox
-	var goret ListBox
 
 	cret = C.gtk_list_box_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBox)
+	var listBox ListBox
 
-	return goret
+	listBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBox)
+
+	return listBox
 }
 
-// Append: append a widget to the list.
-//
-// If a sort function is set, the widget will actually be inserted at the
-// calculated position.
+// Append: append a widget to the list. If a sort function is set, the
+// widget will actually be inserted at the calculated position.
 func (b listBox) Append(child Widget) {
 	var arg0 *C.GtkListBox
 	var arg1 *C.GtkWidget
@@ -16484,25 +15979,23 @@ func (b listBox) Append(child Widget) {
 // @model is nil, @box is left empty.
 //
 // It is undefined to add or remove widgets directly (for example, with
-// [method@Gtk.ListBox.insert]) while @box is bound to a model.
+// gtk_list_box_insert()) while @box is bound to a model.
 //
 // Note that using a model is incompatible with the filtering and sorting
-// functionality in `GtkListBox`. When using a model, filtering and sorting
+// functionality in GtkListBox. When using a model, filtering and sorting
 // should be implemented by the model.
 func (b listBox) BindModel() {
 	var arg0 *C.GtkListBox
 
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_list_box_bind_model(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_list_box_bind_model(arg0)
 }
 
-// DragHighlightRow: add a drag highlight to a row.
-//
-// This is a helper function for implementing DnD onto a `GtkListBox`. The
-// passed in @row will be highlighted by setting the
-// GTK_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will
-// be unhighlighted.
+// DragHighlightRow: this is a helper function for implementing DnD onto a
+// ListBox. The passed in @row will be highlighted by setting the
+// K_STATE_FLAG_DROP_ACTIVE state and any previously highlighted row will be
+// unhighlighted.
 //
 // The row will also be unhighlighted when the widget gets a drag leave
 // event.
@@ -16517,7 +16010,7 @@ func (b listBox) DragHighlightRow(row ListBoxRow) {
 }
 
 // DragUnhighlightRow: if a row has previously been highlighted via
-// gtk_list_box_drag_highlight_row(), it will have the highlight removed.
+// gtk_list_box_drag_highlight_row() it will have the highlight removed.
 func (b listBox) DragUnhighlightRow() {
 	var arg0 *C.GtkListBox
 
@@ -16533,15 +16026,16 @@ func (b listBox) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_list_box_get_activate_on_single_click(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Adjustment gets the adjustment (if any) that the widget uses to for
@@ -16552,19 +16046,19 @@ func (b listBox) Adjustment() Adjustment {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_list_box_get_adjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
-// RowAtIndex gets the n-th child in the list (not counting headers).
-//
-// If @index_ is negative or larger than the number of items in the list,
-// nil is returned.
+// RowAtIndex gets the n-th child in the list (not counting headers). If
+// @_index is negative or larger than the number of items in the list, nil
+// is returned.
 func (b listBox) RowAtIndex(index_ int) ListBoxRow {
 	var arg0 *C.GtkListBox
 	var arg1 C.int
@@ -16573,13 +16067,14 @@ func (b listBox) RowAtIndex(index_ int) ListBoxRow {
 	arg1 = C.int(index_)
 
 	var cret *C.GtkListBoxRow
-	var goret ListBoxRow
 
 	cret = C.gtk_list_box_get_row_at_index(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+	var listBoxRow ListBoxRow
 
-	return goret
+	listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+
+	return listBoxRow
 }
 
 // RowAtY gets the row at the @y position.
@@ -16591,32 +16086,34 @@ func (b listBox) RowAtY(y int) ListBoxRow {
 	arg1 = C.int(y)
 
 	var cret *C.GtkListBoxRow
-	var goret ListBoxRow
 
 	cret = C.gtk_list_box_get_row_at_y(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+	var listBoxRow ListBoxRow
 
-	return goret
+	listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+
+	return listBoxRow
 }
 
-// SelectedRow gets the selected row, or nil if no rows are selected.
+// SelectedRow gets the selected row.
 //
 // Note that the box may allow multiple selection, in which case you should
-// use [method@Gtk.ListBox.selected_foreach] to find all selected rows.
+// use gtk_list_box_selected_foreach() to find all selected rows.
 func (b listBox) SelectedRow() ListBoxRow {
 	var arg0 *C.GtkListBox
 
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkListBoxRow
-	var goret ListBoxRow
 
 	cret = C.gtk_list_box_get_selected_row(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+	var listBoxRow ListBoxRow
 
-	return goret
+	listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListBoxRow)
+
+	return listBoxRow
 }
 
 // SelectedRows creates a list of all selected children.
@@ -16625,17 +16122,18 @@ func (b listBox) SelectedRows() *glib.List {
 
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_list_box_get_selected_rows(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // SelectionMode gets the selection mode of the listbox.
@@ -16645,13 +16143,14 @@ func (b listBox) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret SelectionMode
 
 	cret = C.gtk_list_box_get_selection_mode(arg0)
 
-	goret = SelectionMode(cret)
+	var selectionMode SelectionMode
 
-	return goret
+	selectionMode = SelectionMode(cret)
+
+	return selectionMode
 }
 
 // ShowSeparators returns whether the list box should show separators
@@ -16662,21 +16161,20 @@ func (b listBox) ShowSeparators() bool {
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_list_box_get_show_separators(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Insert: insert the @child into the @box at @position.
-//
-// If a sort function is set, the widget will actually be inserted at the
-// calculated position.
+// Insert: insert the @child into the @box at @position. If a sort function
+// is set, the widget will actually be inserted at the calculated position.
 //
 // If @position is -1, or larger than the total number of items in the @box,
 // then the @child will be appended to the end.
@@ -16692,12 +16190,11 @@ func (b listBox) Insert(child Widget, position int) {
 	C.gtk_list_box_insert(arg0, arg1, arg2)
 }
 
-// InvalidateFilter: update the filtering for all rows.
-//
-// Call this when result of the filter function on the @box is changed due
-// to an external factor. For instance, this would be used if the filter
-// function just looked for a specific search string and the entry with the
-// search string has changed.
+// InvalidateFilter: update the filtering for all rows. Call this when
+// result of the filter function on the @box is changed due to an external
+// factor. For instance, this would be used if the filter function just
+// looked for a specific search string and the entry with the search string
+// has changed.
 func (b listBox) InvalidateFilter() {
 	var arg0 *C.GtkListBox
 
@@ -16706,10 +16203,9 @@ func (b listBox) InvalidateFilter() {
 	C.gtk_list_box_invalidate_filter(arg0)
 }
 
-// InvalidateHeaders: update the separators for all rows.
-//
-// Call this when result of the header function on the @box is changed due
-// to an external factor.
+// InvalidateHeaders: update the separators for all rows. Call this when
+// result of the header function on the @box is changed due to an external
+// factor.
 func (b listBox) InvalidateHeaders() {
 	var arg0 *C.GtkListBox
 
@@ -16718,10 +16214,8 @@ func (b listBox) InvalidateHeaders() {
 	C.gtk_list_box_invalidate_headers(arg0)
 }
 
-// InvalidateSort: update the sorting for all rows.
-//
-// Call this when result of the sort function on the @box is changed due to
-// an external factor.
+// InvalidateSort: update the sorting for all rows. Call this when result of
+// the sort function on the @box is changed due to an external factor.
 func (b listBox) InvalidateSort() {
 	var arg0 *C.GtkListBox
 
@@ -16730,10 +16224,8 @@ func (b listBox) InvalidateSort() {
 	C.gtk_list_box_invalidate_sort(arg0)
 }
 
-// Prepend: prepend a widget to the list.
-//
-// If a sort function is set, the widget will actually be inserted at the
-// calculated position.
+// Prepend: prepend a widget to the list. If a sort function is set, the
+// widget will actually be inserted at the calculated position.
 func (b listBox) Prepend(child Widget) {
 	var arg0 *C.GtkListBox
 	var arg1 *C.GtkWidget
@@ -16783,7 +16275,7 @@ func (b listBox) SelectedForeach() {
 
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_list_box_selected_foreach(arg0, arg1, arg2)
+	C.gtk_list_box_selected_foreach(arg0)
 }
 
 // SetActivateOnSingleClick: if @single is true, rows will be activated when
@@ -16801,14 +16293,12 @@ func (b listBox) SetActivateOnSingleClick(single bool) {
 }
 
 // SetAdjustment sets the adjustment (if any) that the widget uses to for
-// vertical scrolling.
+// vertical scrolling. For instance, this is used to get the page size for
+// PageUp/Down key handling.
 //
-// For instance, this is used to get the page size for PageUp/Down key
-// handling.
-//
-// In the normal case when the @box is packed inside a `GtkScrolledWindow`
-// the adjustment from that will be picked up automatically, so there is no
-// need to manually do that.
+// In the normal case when the @box is packed inside a ScrolledWindow the
+// adjustment from that will be picked up automatically, so there is no need
+// to manually do that.
 func (b listBox) SetAdjustment(adjustment Adjustment) {
 	var arg0 *C.GtkListBox
 	var arg1 *C.GtkAdjustment
@@ -16820,40 +16310,35 @@ func (b listBox) SetAdjustment(adjustment Adjustment) {
 }
 
 // SetFilterFunc: by setting a filter function on the @box one can decide
-// dynamically which of the rows to show.
-//
-// For instance, to implement a search function on a list that filters the
-// original list to only show the matching rows.
+// dynamically which of the rows to show. For instance, to implement a
+// search function on a list that filters the original list to only show the
+// matching rows.
 //
 // The @filter_func will be called for each row after the call, and it will
 // continue to be called each time a row changes (via
-// [method@Gtk.ListBoxRow.changed]) or when
-// [method@Gtk.ListBox.invalidate_filter] is called.
+// gtk_list_box_row_changed()) or when gtk_list_box_invalidate_filter() is
+// called.
 //
 // Note that using a filter function is incompatible with using a model (see
-// [method@Gtk.ListBox.bind_model]).
+// gtk_list_box_bind_model()).
 func (b listBox) SetFilterFunc() {
 	var arg0 *C.GtkListBox
 
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_list_box_set_filter_func(arg0, arg1, arg2, arg3)
+	C.gtk_list_box_set_filter_func(arg0)
 }
 
-// SetHeaderFunc sets a header function.
-//
-// By setting a header function on the @box one can dynamically add headers
-// in front of rows, depending on the contents of the row and its position
-// in the list.
-//
-// For instance, one could use it to add headers in front of the first item
-// of a new kind, in a list sorted by the kind.
+// SetHeaderFunc: by setting a header function on the @box one can
+// dynamically add headers in front of rows, depending on the contents of
+// the row and its position in the list. For instance, one could use it to
+// add headers in front of the first item of a new kind, in a list sorted by
+// the kind.
 //
 // The @update_header can look at the current header widget using
-// [method@Gtk.ListBoxRow.get_header] and either update the state of the
-// widget as needed, or set a new one using
-// [method@Gtk.ListBoxRow.set_header]. If no header is needed, set the
-// header to nil.
+// gtk_list_box_row_get_header() and either update the state of the widget
+// as needed, or set a new one using gtk_list_box_row_set_header(). If no
+// header is needed, set the header to nil.
 //
 // Note that you may get many calls @update_header to this for a particular
 // row when e.g. changing things that don’t affect the header. In this case
@@ -16862,16 +16347,16 @@ func (b listBox) SetFilterFunc() {
 //
 // The @update_header function will be called for each row after the call,
 // and it will continue to be called each time a row changes (via
-// [method@Gtk.ListBoxRow.changed]) and when the row before changes (either
-// by [method@Gtk.ListBoxRow.changed] on the previous row, or when the
-// previous row becomes a different row). It is also called for all rows
-// when [method@Gtk.ListBox.invalidate_headers] is called.
+// gtk_list_box_row_changed()) and when the row before changes (either by
+// gtk_list_box_row_changed() on the previous row, or when the previous row
+// becomes a different row). It is also called for all rows when
+// gtk_list_box_invalidate_headers() is called.
 func (b listBox) SetHeaderFunc() {
 	var arg0 *C.GtkListBox
 
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_list_box_set_header_func(arg0, arg1, arg2, arg3)
+	C.gtk_list_box_set_header_func(arg0)
 }
 
 // SetPlaceholder sets the placeholder widget that is shown in the list when
@@ -16886,7 +16371,8 @@ func (b listBox) SetPlaceholder(placeholder Widget) {
 	C.gtk_list_box_set_placeholder(arg0, arg1)
 }
 
-// SetSelectionMode sets how selection works in the listbox.
+// SetSelectionMode sets how selection works in the listbox. See
+// SelectionMode for details.
 func (b listBox) SetSelectionMode(mode SelectionMode) {
 	var arg0 *C.GtkListBox
 	var arg1 C.GtkSelectionMode
@@ -16911,24 +16397,22 @@ func (b listBox) SetShowSeparators(showSeparators bool) {
 	C.gtk_list_box_set_show_separators(arg0, arg1)
 }
 
-// SetSortFunc sets a sort function.
-//
-// By setting a sort function on the @box one can dynamically reorder the
-// rows of the list, based on the contents of the rows.
+// SetSortFunc: by setting a sort function on the @box one can dynamically
+// reorder the rows of the list, based on the contents of the rows.
 //
 // The @sort_func will be called for each row after the call, and will
 // continue to be called each time a row changes (via
-// [method@Gtk.ListBoxRow.changed]) and when
-// [method@Gtk.ListBox.invalidate_sort] is called.
+// gtk_list_box_row_changed()) and when gtk_list_box_invalidate_sort() is
+// called.
 //
 // Note that using a sort function is incompatible with using a model (see
-// [method@Gtk.ListBox.bind_model]).
+// gtk_list_box_bind_model()).
 func (b listBox) SetSortFunc() {
 	var arg0 *C.GtkListBox
 
 	arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
-	C.gtk_list_box_set_sort_func(arg0, arg1, arg2, arg3)
+	C.gtk_list_box_set_sort_func(arg0)
 }
 
 // UnselectAll: unselect all children of @box, if the selection mode allows
@@ -16953,17 +16437,12 @@ func (b listBox) UnselectRow(row ListBoxRow) {
 	C.gtk_list_box_unselect_row(arg0, arg1)
 }
 
-// LockButton: `GtkLockButton` is a widget to obtain and revoke authorizations
-// needed to operate the controls.
-//
-// !An example GtkLockButton (lock-button.png)
-//
-// It is typically used in preference dialogs or control panels.
-//
-// The required authorization is represented by a `GPermission` object. Concrete
-// implementations of `GPermission` may use PolicyKit or some other
-// authorization framework. To obtain a PolicyKit-based `GPermission`, use
-// `polkit_permission_new()`.
+// LockButton: gtkLockButton is a widget that can be used in control panels or
+// preference dialogs to allow users to obtain and revoke authorizations needed
+// to operate the controls. The required authorization is represented by a
+// #GPermission object. Concrete implementations of #GPermission may use
+// PolicyKit or some other authorization framework. To obtain a PolicyKit-based
+// #GPermission, use polkit_permission_new().
 //
 // If the user is not currently allowed to perform the action, but can obtain
 // the permission, the widget looks like this:
@@ -16985,11 +16464,9 @@ func (b listBox) UnselectRow(row ListBoxRow) {
 // If the user has the permission and cannot drop it, the button is hidden.
 //
 // The text (and tooltips) that are shown in the various cases can be adjusted
-// with the [property@Gtk.LockButton:text-lock],
-// [property@Gtk.LockButton:text-unlock],
-// [property@Gtk.LockButton:tooltip-lock],
-// [property@Gtk.LockButton:tooltip-unlock] and
-// [property@Gtk.LockButton:tooltip-not-authorized] properties.
+// with the LockButton:text-lock, LockButton:text-unlock,
+// LockButton:tooltip-lock, LockButton:tooltip-unlock and
+// LockButton:tooltip-not-authorized properties.
 type LockButton interface {
 	Button
 	Accessible
@@ -16997,9 +16474,9 @@ type LockButton interface {
 	Buildable
 	ConstraintTarget
 
-	// Permission obtains the `GPermission` object that controls @button.
+	// Permission obtains the #GPermission object that controls @button.
 	Permission() gio.Permission
-	// SetPermission sets the `GPermission` object that controls @button.
+	// SetPermission sets the #GPermission object that controls @button.
 	SetPermission(permission gio.Permission)
 }
 
@@ -17039,32 +16516,34 @@ func NewLockButton(permission gio.Permission) LockButton {
 	arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	var cret C.GtkLockButton
-	var goret LockButton
 
 	cret = C.gtk_lock_button_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
+	var lockButton LockButton
 
-	return goret
+	lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
+
+	return lockButton
 }
 
-// Permission obtains the `GPermission` object that controls @button.
+// Permission obtains the #GPermission object that controls @button.
 func (b lockButton) Permission() gio.Permission {
 	var arg0 *C.GtkLockButton
 
 	arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GPermission
-	var goret gio.Permission
 
 	cret = C.gtk_lock_button_get_permission(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
+	var permission gio.Permission
 
-	return goret
+	permission = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
+
+	return permission
 }
 
-// SetPermission sets the `GPermission` object that controls @button.
+// SetPermission sets the #GPermission object that controls @button.
 func (b lockButton) SetPermission(permission gio.Permission) {
 	var arg0 *C.GtkLockButton
 	var arg1 *C.GPermission
@@ -17075,60 +16554,95 @@ func (b lockButton) SetPermission(permission gio.Permission) {
 	C.gtk_lock_button_set_permission(arg0, arg1)
 }
 
-// MenuButton: the `GtkMenuButton` widget is used to display a popup when
-// clicked.
+// MenuButton: the MenuButton widget is used to display a popup when clicked on.
+// This popup can be provided either as a Popover or as an abstract Model.
 //
-// !An example GtkMenuButton (menu-button.png)
+// The MenuButton widget can show either an icon (set with the
+// MenuButton:icon-name property) or a label (set with the MenuButton:label
+// property). If neither is explicitly set, a Image is automatically created,
+// using an arrow image oriented according to MenuButton:direction or the
+// generic “open-menu-symbolic” icon if the direction is not set.
 //
-// This popup can be provided either as a `GtkPopover` or as an abstract
-// `GMenuModel`.
+// The positioning of the popup is determined by the MenuButton:direction
+// property of the menu button.
 //
-// The `GtkMenuButton` widget can show either an icon (set with the
-// [property@Gtk.MenuButton:icon-name] property) or a label (set with the
-// [property@Gtk.MenuButton:label] property). If neither is explicitly set, a
-// [class@Gtk.Image] is automatically created, using an arrow image oriented
-// according to [property@Gtk.MenuButton:direction] or the generic
-// “open-menu-symbolic” icon if the direction is not set.
+// For menus, the Widget:halign and Widget:valign properties of the menu are
+// also taken into account. For example, when the direction is GTK_ARROW_DOWN
+// and the horizontal alignment is GTK_ALIGN_START, the menu will be positioned
+// below the button, with the starting edge (depending on the text direction) of
+// the menu aligned with the starting edge of the button. If there is not enough
+// space below the button, the menu is popped up above the button instead. If
+// the alignment would move part of the menu offscreen, it is “pushed in”.
 //
-// The positioning of the popup is determined by the
-// [property@Gtk.MenuButton:direction] property of the menu button.
+// Direction = Down
 //
-// For menus, the [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign]
-// properties of the menu are also taken into account. For example, when the
-// direction is GTK_ARROW_DOWN and the horizontal alignment is GTK_ALIGN_START,
-// the menu will be positioned below the button, with the starting edge
-// (depending on the text direction) of the menu aligned with the starting edge
-// of the button. If there is not enough space below the button, the menu is
-// popped up above the button instead. If the alignment would move part of the
-// menu offscreen, it is “pushed in”.
+// - halign = start
 //
-// | | start | center | end | | - | --- | --- | --- | | **down** | !
-// (down-start.png) | ! (down-center.png) | ! (down-end.png) | | **up** | !
-// (up-start.png) | ! (up-center.png) | ! (up-end.png) | | **left** | !
-// (left-start.png) | ! (left-center.png) | ! (left-end.png) | | **right** | !
-// (right-start.png) | ! (right-center.png) | ! (right-end.png) |
+//    ! (down-start.png)
 //
+// - halign = center
+//
+//    ! (down-center.png)
+//
+// - halign = end
+//
+//    ! (down-end.png)
+//
+// Direction = Up
+//
+// - halign = start
+//
+//    ! (up-start.png)
+//
+// - halign = center
+//
+//    ! (up-center.png)
+//
+// - halign = end
+//
+//    ! (up-end.png)
+//
+// Direction = Left
+//
+// - valign = start
+//
+//    ! (left-start.png)
+//
+// - valign = center
+//
+//    ! (left-center.png)
+//
+// - valign = end
+//
+//    ! (left-end.png)
+//
+// Direction = Right
+//
+// - valign = start
+//
+//    ! (right-start.png)
+//
+// - valign = center
+//
+//    ! (right-center.png)
+//
+// - valign = end
+//
+//    ! (right-end.png)
 //
 // CSS nodes
 //
-// “` menubutton ╰── button.toggle ╰── <content> ╰── [arrow] “`
+//    menubutton
+//    ╰── button.toggle
+//        ╰── [content]
 //
-// `GtkMenuButton` has a single CSS node with name `menubutton` which contains a
-// `button` node with a `.toggle` style class.
-//
-// Inside the toggle button content, there is an `arrow` node for the indicator,
-// which will carry one of the `.none`, `.up`, `.down`, `.left` or `.right`
-// style classes to indicate the direction that the menu will appear in. The CSS
-// is expected to provide a suitable image for each of these cases using the
-// `-gtk-icon-source` property.
-//
-// Optionally, the `menubutton` node can carry the `.circular` style class to
-// request a round appearance.
+// GtkMenuButton has a single CSS node with name menubutton which contains a
+// toggle button node.
 //
 //
 // Accessibility
 //
-// `GtkMenuButton` uses the K_ACCESSIBLE_ROLE_BUTTON role.
+// GtkMenuButton uses the K_ACCESSIBLE_ROLE_BUTTON role.
 type MenuButton interface {
 	Widget
 	Accessible
@@ -17144,26 +16658,23 @@ type MenuButton interface {
 	IconName() string
 	// Label gets the label shown in the button
 	Label() string
-	// MenuModel returns the `GMenuModel` used to generate the popup.
+	// MenuModel returns the Model used to generate the popup.
 	MenuModel() gio.MenuModel
-	// Popover returns the `GtkPopover` that pops out of the button.
-	//
-	// If the button is not using a `GtkPopover`, this function returns nil.
+	// Popover returns the Popover that pops out of the button. If the button is
+	// not using a Popover, this function returns nil.
 	Popover() Popover
 	// UseUnderline returns whether an embedded underline in the text indicates
-	// a mnemonic.
+	// a mnemonic. See gtk_menu_button_set_use_underline().
 	UseUnderline() bool
 	// Popdown dismiss the menu.
 	Popdown()
 	// Popup: pop up the menu.
 	Popup()
 	// SetCreatePopupFunc sets @func to be called when a popup is about to be
-	// shown.
+	// shown. @func should use one of
 	//
-	// @func should use one of
-	//
-	//    - [method@Gtk.MenuButton.set_popover]
-	//    - [method@Gtk.MenuButton.set_menu_model]
+	//    - gtk_menu_button_set_popover()
+	//    - gtk_menu_button_set_menu_model()
 	//
 	// to set a popup for @menu_button. If @func is non-nil, @menu_button will
 	// always be sensitive.
@@ -17171,10 +16682,9 @@ type MenuButton interface {
 	// Using this function will not reset the menu widget attached to
 	// @menu_button. Instead, this can be done manually in @func.
 	SetCreatePopupFunc()
-	// SetDirection sets the direction in which the popup will be popped up.
-	//
-	// If the button is automatically populated with an arrow icon, its
-	// direction will be changed to match.
+	// SetDirection sets the direction in which the popup will be popped up, as
+	// well as changing the arrow’s direction. The child will not be changed to
+	// an arrow if it was customized.
 	//
 	// If the does not fit in the available space in the given direction, GTK
 	// will its best to keep it inside the screen and fully visible.
@@ -17188,27 +16698,25 @@ type MenuButton interface {
 	SetIconName(iconName string)
 	// SetLabel sets the label to show inside the menu button.
 	SetLabel(label string)
-	// SetMenuModel sets the `GMenuModel` from which the popup will be
-	// constructed.
+	// SetMenuModel sets the Model from which the popup will be constructed, or
+	// nil to dissociate any existing menu model and disable the button.
 	//
-	// If @menu_model is nil, the button is disabled.
-	//
-	// A [class@Gtk.Popover] will be created from the menu model with
-	// [ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected as
+	// A Popover will be created from the menu model with
+	// gtk_popover_menu_new_from_model(). Actions will be connected as
 	// documented for this function.
 	//
-	// If [property@Gtk.MenuButton:popover] is already set, it will be
-	// dissociated from the @menu_button, and the property is set to nil.
+	// If MenuButton:popover is already set, it will be dissociated from the
+	// @menu_button, and the property is set to nil.
 	SetMenuModel(menuModel gio.MenuModel)
-	// SetPopover sets the `GtkPopover` that will be popped up when the
-	// @menu_button is clicked.
+	// SetPopover sets the Popover that will be popped up when the @menu_button
+	// is clicked, or nil to dissociate any existing popover and disable the
+	// button.
 	//
-	// If @popover is nil, the button is disabled.
-	//
-	// If [property@Gtk.MenuButton:menu-model] is set, the menu model is
-	// dissociated from the @menu_button, and the property is set to nil.
+	// If MenuButton:menu-model is set, the menu model is dissociated from the
+	// @menu_button, and the property is set to nil.
 	SetPopover(popover Widget)
-	// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
+	// SetUseUnderline: if true, an underline in the text indicates the next
+	// character should be used for the mnemonic accelerator key.
 	SetUseUnderline(useUnderline bool)
 }
 
@@ -17242,13 +16750,14 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 // NewMenuButton constructs a class MenuButton.
 func NewMenuButton() MenuButton {
 	var cret C.GtkMenuButton
-	var goret MenuButton
 
 	cret = C.gtk_menu_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuButton)
+	var menuButton MenuButton
 
-	return goret
+	menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuButton)
+
+	return menuButton
 }
 
 // Direction returns the direction the popup will be pointing at when popped
@@ -17259,13 +16768,14 @@ func (m menuButton) Direction() ArrowType {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.GtkArrowType
-	var goret ArrowType
 
 	cret = C.gtk_menu_button_get_direction(arg0)
 
-	goret = ArrowType(cret)
+	var arrowType ArrowType
 
-	return goret
+	arrowType = ArrowType(cret)
+
+	return arrowType
 }
 
 // HasFrame returns whether the button has a frame.
@@ -17275,15 +16785,16 @@ func (m menuButton) HasFrame() bool {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_menu_button_get_has_frame(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IconName gets the name of the icon shown in the button.
@@ -17293,13 +16804,14 @@ func (m menuButton) IconName() string {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_menu_button_get_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Label gets the label shown in the button
@@ -17309,66 +16821,69 @@ func (m menuButton) Label() string {
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_menu_button_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// MenuModel returns the `GMenuModel` used to generate the popup.
+// MenuModel returns the Model used to generate the popup.
 func (m menuButton) MenuModel() gio.MenuModel {
 	var arg0 *C.GtkMenuButton
 
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GMenuModel
-	var goret gio.MenuModel
 
 	cret = C.gtk_menu_button_get_menu_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	var menuModel gio.MenuModel
 
-	return goret
+	menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+
+	return menuModel
 }
 
-// Popover returns the `GtkPopover` that pops out of the button.
-//
-// If the button is not using a `GtkPopover`, this function returns nil.
+// Popover returns the Popover that pops out of the button. If the button is
+// not using a Popover, this function returns nil.
 func (m menuButton) Popover() Popover {
 	var arg0 *C.GtkMenuButton
 
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkPopover
-	var goret Popover
 
 	cret = C.gtk_menu_button_get_popover(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
+	var popover Popover
 
-	return goret
+	popover = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
+
+	return popover
 }
 
 // UseUnderline returns whether an embedded underline in the text indicates
-// a mnemonic.
+// a mnemonic. See gtk_menu_button_set_use_underline().
 func (m menuButton) UseUnderline() bool {
 	var arg0 *C.GtkMenuButton
 
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_menu_button_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Popdown dismiss the menu.
@@ -17390,12 +16905,10 @@ func (m menuButton) Popup() {
 }
 
 // SetCreatePopupFunc sets @func to be called when a popup is about to be
-// shown.
+// shown. @func should use one of
 //
-// @func should use one of
-//
-//    - [method@Gtk.MenuButton.set_popover]
-//    - [method@Gtk.MenuButton.set_menu_model]
+//    - gtk_menu_button_set_popover()
+//    - gtk_menu_button_set_menu_model()
 //
 // to set a popup for @menu_button. If @func is non-nil, @menu_button will
 // always be sensitive.
@@ -17407,13 +16920,12 @@ func (m menuButton) SetCreatePopupFunc() {
 
 	arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_button_set_create_popup_func(arg0, arg1, arg2, arg3)
+	C.gtk_menu_button_set_create_popup_func(arg0)
 }
 
-// SetDirection sets the direction in which the popup will be popped up.
-//
-// If the button is automatically populated with an arrow icon, its
-// direction will be changed to match.
+// SetDirection sets the direction in which the popup will be popped up, as
+// well as changing the arrow’s direction. The child will not be changed to
+// an arrow if it was customized.
 //
 // If the does not fit in the available space in the given direction, GTK
 // will its best to keep it inside the screen and fully visible.
@@ -17467,17 +16979,15 @@ func (m menuButton) SetLabel(label string) {
 	C.gtk_menu_button_set_label(arg0, arg1)
 }
 
-// SetMenuModel sets the `GMenuModel` from which the popup will be
-// constructed.
+// SetMenuModel sets the Model from which the popup will be constructed, or
+// nil to dissociate any existing menu model and disable the button.
 //
-// If @menu_model is nil, the button is disabled.
-//
-// A [class@Gtk.Popover] will be created from the menu model with
-// [ctor@Gtk.PopoverMenu.new_from_model]. Actions will be connected as
+// A Popover will be created from the menu model with
+// gtk_popover_menu_new_from_model(). Actions will be connected as
 // documented for this function.
 //
-// If [property@Gtk.MenuButton:popover] is already set, it will be
-// dissociated from the @menu_button, and the property is set to nil.
+// If MenuButton:popover is already set, it will be dissociated from the
+// @menu_button, and the property is set to nil.
 func (m menuButton) SetMenuModel(menuModel gio.MenuModel) {
 	var arg0 *C.GtkMenuButton
 	var arg1 *C.GMenuModel
@@ -17488,13 +16998,12 @@ func (m menuButton) SetMenuModel(menuModel gio.MenuModel) {
 	C.gtk_menu_button_set_menu_model(arg0, arg1)
 }
 
-// SetPopover sets the `GtkPopover` that will be popped up when the
-// @menu_button is clicked.
+// SetPopover sets the Popover that will be popped up when the @menu_button
+// is clicked, or nil to dissociate any existing popover and disable the
+// button.
 //
-// If @popover is nil, the button is disabled.
-//
-// If [property@Gtk.MenuButton:menu-model] is set, the menu model is
-// dissociated from the @menu_button, and the property is set to nil.
+// If MenuButton:menu-model is set, the menu model is dissociated from the
+// @menu_button, and the property is set to nil.
 func (m menuButton) SetPopover(popover Widget) {
 	var arg0 *C.GtkMenuButton
 	var arg1 *C.GtkWidget
@@ -17505,7 +17014,8 @@ func (m menuButton) SetPopover(popover Widget) {
 	C.gtk_menu_button_set_popover(arg0, arg1)
 }
 
-// SetUseUnderline: if true, an underline in the text indicates a mnemonic.
+// SetUseUnderline: if true, an underline in the text indicates the next
+// character should be used for the mnemonic accelerator key.
 func (m menuButton) SetUseUnderline(useUnderline bool) {
 	var arg0 *C.GtkMenuButton
 	var arg1 C.gboolean
@@ -17518,46 +17028,64 @@ func (m menuButton) SetUseUnderline(useUnderline bool) {
 	C.gtk_menu_button_set_use_underline(arg0, arg1)
 }
 
-// Notebook: `GtkNotebook` is a container whose children are pages switched
-// between using tabs.
+// Notebook: the Notebook widget is a layout container whose children are pages
+// that can be switched between using tab labels along one edge.
 //
-// !An example GtkNotebook (notebook.png)
-//
-// There are many configuration options for `GtkNotebook`. Among other things,
-// you can choose on which edge the tabs appear (see
-// [method@Gtk.Notebook.set_tab_pos]), whether, if there are too many tabs to
-// fit the notebook should be made bigger or scrolling arrows added (see
-// [method@Gtk.Notebook.set_scrollable]), and whether there will be a popup menu
-// allowing the users to switch pages. (see [method@Gtk.Notebook.popup_enable]).
+// There are many configuration options for GtkNotebook. Among other things, you
+// can choose on which edge the tabs appear (see gtk_notebook_set_tab_pos()),
+// whether, if there are too many tabs to fit the notebook should be made bigger
+// or scrolling arrows added (see gtk_notebook_set_scrollable()), and whether
+// there will be a popup menu allowing the users to switch pages. (see
+// gtk_notebook_popup_enable(), gtk_notebook_popup_disable())
 //
 //
 // GtkNotebook as GtkBuildable
 //
-// The `GtkNotebook` implementation of the `GtkBuildable` interface supports
-// placing children into tabs by specifying “tab” as the “type” attribute of a
-// <child> element. Note that the content of the tab must be created before the
-// tab can be filled. A tab child can be specified without specifying a <child>
-// type attribute.
+// The GtkNotebook implementation of the Buildable interface supports placing
+// children into tabs by specifying “tab” as the “type” attribute of a <child>
+// element. Note that the content of the tab must be created before the tab can
+// be filled. A tab child can be specified without specifying a <child> type
+// attribute.
 //
 // To add a child widget in the notebooks action area, specify "action-start" or
 // “action-end” as the “type” attribute of the <child> element.
 //
-// An example of a UI definition fragment with `GtkNotebook`:
+// An example of a UI definition fragment with GtkNotebook:
 //
-// “`xml <object class="GtkNotebook"> <child> <object class="GtkLabel"
-// id="notebook-content"> <property name="label">Content</property> </object>
-// </child> <child type="tab"> <object class="GtkLabel" id="notebook-tab">
-// <property name="label">Tab</property> </object> </child> </object> “`
-//
+//    <object class="GtkNotebook">
+//      <child>
+//        <object class="GtkLabel" id="notebook-content">
+//          <property name="label">Content</property>
+//        </object>
+//      </child>
+//      <child type="tab">
+//        <object class="GtkLabel" id="notebook-tab">
+//          <property name="label">Tab</property>
+//        </object>
+//      </child>
+//    </object>
 //
 // CSS nodes
 //
-// “` notebook ├── header.top │ ├── [<action widget>] │ ├── tabs │ │ ├── [arrow]
-// │ │ ├── tab │ │ │ ╰── <tab label> ┊ ┊ ┊ │ │ ├── tab[.reorderable-page] │ │ │
-// ╰── <tab label> │ │ ╰── [arrow] │ ╰── [<action widget>] │ ╰── stack ├──
-// <child> ┊ ╰── <child> “`
+//    notebook
+//    ├── header.top
+//    │   ├── [<action widget>]
+//    │   ├── tabs
+//    │   │   ├── [arrow]
+//    │   │   ├── tab
+//    │   │   │   ╰── <tab label>
+//    ┊   ┊   ┊
+//    │   │   ├── tab[.reorderable-page]
+//    │   │   │   ╰── <tab label>
+//    │   │   ╰── [arrow]
+//    │   ╰── [<action widget>]
+//    │
+//    ╰── stack
+//        ├── <child>
+//        ┊
+//        ╰── <child>
 //
-// `GtkNotebook` has a main CSS node with name `notebook`, a subnode with name
+// GtkNotebook has a main CSS node with name `notebook`, a subnode with name
 // `header` and below that a subnode with name `tabs` which contains one subnode
 // per tab with name `tab`.
 //
@@ -17566,7 +17094,7 @@ func (m menuButton) SetUseUnderline(useUnderline bool) {
 // as first and last child of the `tabs` node.
 //
 // The main node gets the `.frame` style class when the notebook has a border
-// (see [method@Gtk.Notebook.set_show_border]).
+// (see gtk_notebook_set_show_border()).
 //
 // The header node gets one of the style class `.top`, `.bottom`, `.left` or
 // `.right`, depending on where the tabs are placed. For reorderable pages, the
@@ -17581,7 +17109,7 @@ func (m menuButton) SetUseUnderline(useUnderline bool) {
 //
 // Accessibility
 //
-// `GtkNotebook` uses the following roles:
+// GtkNotebook uses the following roles:
 //
 //    - GTK_ACCESSIBLE_ROLE_GROUP for the notebook widget
 //    - GTK_ACCESSIBLE_ROLE_TAB_LIST for the list of tabs
@@ -17600,13 +17128,12 @@ type Notebook interface {
 	AppendPageMenu(child Widget, tabLabel Widget, menuLabel Widget) int
 	// DetachTab removes the child from the notebook.
 	//
-	// This function is very similar to [method@Gtk.Notebook.remove_page], but
+	// This function is very similar to gtk_notebook_remove_page(), but
 	// additionally informs the notebook that the removal is happening as part
 	// of a tab DND operation, which should not be cancelled.
 	DetachTab(child Widget)
-	// ActionWidget gets one of the action widgets.
-	//
-	// See [method@Gtk.Notebook.set_action_widget].
+	// ActionWidget gets one of the action widgets. See
+	// gtk_notebook_set_action_widget().
 	ActionWidget(packType PackType) Widget
 	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
@@ -17621,33 +17148,32 @@ type Notebook interface {
 	NPages() int
 	// NthPage returns the child widget contained in page number @page_num.
 	NthPage(pageNum int) Widget
-	// Page returns the `GtkNotebookPage` for @child.
+	// Page returns the NotebookPage for @child.
 	Page(child Widget) NotebookPage
-	// Pages returns a `GListModel` that contains the pages of the notebook.
-	//
-	// This can be used to keep an up-to-date view. The model also implements
-	// [iface@Gtk.SelectionModel] and can be used to track and modify the
-	// visible page.
+	// Pages returns a Model that contains the pages of the notebook, and can be
+	// used to keep an up-to-date view.
 	Pages() gio.ListModel
 	// Scrollable returns whether the tab label area has arrows for scrolling.
+	// See gtk_notebook_set_scrollable().
 	Scrollable() bool
 	// ShowBorder returns whether a bevel will be drawn around the notebook
-	// pages.
+	// pages. See gtk_notebook_set_show_border().
 	ShowBorder() bool
-	// ShowTabs returns whether the tabs of the notebook are shown.
+	// ShowTabs returns whether the tabs of the notebook are shown. See
+	// gtk_notebook_set_show_tabs().
 	ShowTabs() bool
 	// TabDetachable returns whether the tab contents can be detached from
 	// @notebook.
 	TabDetachable(child Widget) bool
-	// TabLabel returns the tab label widget for the page @child.
-	//
-	// nil is returned if @child is not in @notebook or if no tab label has
+	// TabLabel returns the tab label widget for the page @child. nil is
+	// returned if @child is not in @notebook or if no tab label has
 	// specifically been set for @child.
 	TabLabel(child Widget) Widget
 	// TabLabelText retrieves the text of the tab label for the page containing
 	// @child.
 	TabLabelText(child Widget) string
-	// TabPos gets the edge at which the tabs are drawn.
+	// TabPos gets the edge at which the tabs for switching pages in the
+	// notebook are drawn.
 	TabPos() PositionType
 	// TabReorderable gets whether the tab can be reordered via drag and drop or
 	// not.
@@ -17657,43 +17183,37 @@ type Notebook interface {
 	// InsertPageMenu: insert a page into @notebook at the given position,
 	// specifying the widget to use as the label in the popup menu.
 	InsertPageMenu(child Widget, tabLabel Widget, menuLabel Widget, position int) int
-	// NextPage switches to the next page.
-	//
-	// Nothing happens if the current page is the last page.
+	// NextPage switches to the next page. Nothing happens if the current page
+	// is the last page.
 	NextPage()
 	// PageNum finds the index of the page which contains the given child
 	// widget.
 	PageNum(child Widget) int
 	// PopupDisable disables the popup menu.
 	PopupDisable()
-	// PopupEnable enables the popup menu.
-	//
-	// If the user clicks with the right mouse button on the tab labels, a menu
-	// with all the pages will be popped up.
+	// PopupEnable enables the popup menu: if the user clicks with the right
+	// mouse button on the tab labels, a menu with all the pages will be popped
+	// up.
 	PopupEnable()
 	// PrependPage prepends a page to @notebook.
 	PrependPage(child Widget, tabLabel Widget) int
 	// PrependPageMenu prepends a page to @notebook, specifying the widget to
 	// use as the label in the popup menu.
 	PrependPageMenu(child Widget, tabLabel Widget, menuLabel Widget) int
-	// PrevPage switches to the previous page.
-	//
-	// Nothing happens if the current page is the first page.
+	// PrevPage switches to the previous page. Nothing happens if the current
+	// page is the first page.
 	PrevPage()
 	// RemovePage removes a page from the notebook given its index in the
 	// notebook.
 	RemovePage(pageNum int)
 	// ReorderChild reorders the page containing @child, so that it appears in
-	// position @position.
-	//
-	// If @position is greater than or equal to the number of children in the
-	// list or negative, @child will be moved to the end of the list.
+	// position @position. If @position is greater than or equal to the number
+	// of children in the list or negative, @child will be moved to the end of
+	// the list.
 	ReorderChild(child Widget, position int)
-	// SetActionWidget sets @widget as one of the action widgets.
-	//
-	// Depending on the pack type the widget will be placed before or after the
-	// tabs. You can use a `GtkBox` if you need to pack more than one widget on
-	// the same side.
+	// SetActionWidget sets @widget as one of the action widgets. Depending on
+	// the pack type the widget will be placed before or after the tabs. You can
+	// use a Box if you need to pack more than one widget on the same side.
 	SetActionWidget(widget Widget, packType PackType)
 	// SetCurrentPage switches to the page number @page_num.
 	//
@@ -17716,17 +17236,16 @@ type Notebook interface {
 	// scrolling if there are too many tabs to fit in the area.
 	SetScrollable(scrollable bool)
 	// SetShowBorder sets whether a bevel will be drawn around the notebook
-	// pages.
-	//
-	// This only has a visual effect when the tabs are not shown.
+	// pages. This only has a visual effect when the tabs are not shown. See
+	// gtk_notebook_set_show_tabs().
 	SetShowBorder(showBorder bool)
 	// SetShowTabs sets whether to show the tabs for the notebook or not.
 	SetShowTabs(showTabs bool)
 	// SetTabDetachable sets whether the tab can be detached from @notebook to
 	// another notebook or widget.
 	//
-	// Note that two notebooks must share a common group identificator (see
-	// [method@Gtk.Notebook.set_group_name]) to allow automatic tabs interchange
+	// Note that 2 notebooks must share a common group identificator (see
+	// gtk_notebook_set_group_name()) to allow automatic tabs interchange
 	// between them.
 	//
 	// If you want a widget to interact with a notebook through DnD (i.e.:
@@ -17735,38 +17254,43 @@ type Notebook interface {
 	// selection with a GtkWidget** pointing to the child widget that
 	// corresponds to the dropped tab.
 	//
-	// Note that you should use [method@Gtk.Notebook.detach_tab] instead of
-	// [method@Gtk.Notebook.remove_page] if you want to remove the tab from the
-	// source notebook as part of accepting a drop. Otherwise, the source
-	// notebook will think that the dragged tab was removed from underneath the
-	// ongoing drag operation, and will initiate a drag cancel animation.
+	// Note that you should use gtk_notebook_detach_tab() instead of
+	// gtk_notebook_remove_page() if you want to remove the tab from the source
+	// notebook as part of accepting a drop. Otherwise, the source notebook will
+	// think that the dragged tab was removed from underneath the ongoing drag
+	// operation, and will initiate a drag cancel animation.
 	//
-	// “`c static void on_drag_data_received (GtkWidget *widget, GdkDrop *drop,
-	// GtkSelectionData *data, guint time, gpointer user_data) { GtkDrag *drag;
-	// GtkWidget *notebook; GtkWidget **child;
+	//     static void
+	//     on_drag_data_received (GtkWidget        *widget,
+	//                            GdkDrop          *drop,
+	//                            GtkSelectionData *data,
+	//                            guint             time,
+	//                            gpointer          user_data)
+	//     {
+	//       GtkDrag *drag;
+	//       GtkWidget *notebook;
+	//       GtkWidget **child;
 	//
-	//    drag = gtk_drop_get_drag (drop);
-	//    notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
-	//    child = (void*) gtk_selection_data_get_data (data);
+	//       drag = gtk_drop_get_drag (drop);
+	//       notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
+	//       child = (void*) gtk_selection_data_get_data (data);
 	//
-	//    // process_widget (*child);
+	//       // process_widget (*child);
 	//
-	//    gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
-	//
-	// } “`
+	//       gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
+	//     }
 	//
 	// If you want a notebook to accept drags from other widgets, you will have
 	// to set your own DnD code to do it.
 	SetTabDetachable(child Widget, detachable bool)
-	// SetTabLabel changes the tab label for @child.
-	//
-	// If nil is specified for @tab_label, then the page will have the label
-	// “page N”.
+	// SetTabLabel changes the tab label for @child. If nil is specified for
+	// @tab_label, then the page will have the label “page N”.
 	SetTabLabel(child Widget, tabLabel Widget)
 	// SetTabLabelText creates a new label and sets it as the tab label for the
 	// page containing @child.
 	SetTabLabelText(child Widget, tabText string)
-	// SetTabPos sets the edge at which the tabs are drawn.
+	// SetTabPos sets the edge at which the tabs for switching pages in the
+	// notebook are drawn.
 	SetTabPos(pos PositionType)
 	// SetTabReorderable sets whether the notebook tab can be reordered via drag
 	// and drop or not.
@@ -17803,13 +17327,14 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 // NewNotebook constructs a class Notebook.
 func NewNotebook() Notebook {
 	var cret C.GtkNotebook
-	var goret Notebook
 
 	cret = C.gtk_notebook_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Notebook)
+	var notebook Notebook
 
-	return goret
+	notebook = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Notebook)
+
+	return notebook
 }
 
 // AppendPage appends a page to @notebook.
@@ -17823,13 +17348,14 @@ func (n notebook) AppendPage(child Widget, tabLabel Widget) int {
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_append_page(arg0, arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // AppendPageMenu appends a page to @notebook, specifying the widget to use
@@ -17846,18 +17372,19 @@ func (n notebook) AppendPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_append_page_menu(arg0, arg1, arg2, arg3)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // DetachTab removes the child from the notebook.
 //
-// This function is very similar to [method@Gtk.Notebook.remove_page], but
+// This function is very similar to gtk_notebook_remove_page(), but
 // additionally informs the notebook that the removal is happening as part
 // of a tab DND operation, which should not be cancelled.
 func (n notebook) DetachTab(child Widget) {
@@ -17870,9 +17397,8 @@ func (n notebook) DetachTab(child Widget) {
 	C.gtk_notebook_detach_tab(arg0, arg1)
 }
 
-// ActionWidget gets one of the action widgets.
-//
-// See [method@Gtk.Notebook.set_action_widget].
+// ActionWidget gets one of the action widgets. See
+// gtk_notebook_set_action_widget().
 func (n notebook) ActionWidget(packType PackType) Widget {
 	var arg0 *C.GtkNotebook
 	var arg1 C.GtkPackType
@@ -17881,13 +17407,14 @@ func (n notebook) ActionWidget(packType PackType) Widget {
 	arg1 = (C.GtkPackType)(packType)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_notebook_get_action_widget(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // CurrentPage returns the page number of the current page.
@@ -17897,13 +17424,14 @@ func (n notebook) CurrentPage() int {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_get_current_page(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // GroupName gets the current group name for @notebook.
@@ -17913,13 +17441,14 @@ func (n notebook) GroupName() string {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_notebook_get_group_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // MenuLabel retrieves the menu label widget of the page containing @child.
@@ -17931,13 +17460,14 @@ func (n notebook) MenuLabel(child Widget) Widget {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_notebook_get_menu_label(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // MenuLabelText retrieves the text of the menu label for the page
@@ -17950,13 +17480,14 @@ func (n notebook) MenuLabelText(child Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_notebook_get_menu_label_text(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // NPages gets the number of pages in a notebook.
@@ -17966,13 +17497,14 @@ func (n notebook) NPages() int {
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_get_n_pages(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NthPage returns the child widget contained in page number @page_num.
@@ -17984,16 +17516,17 @@ func (n notebook) NthPage(pageNum int) Widget {
 	arg1 = C.int(pageNum)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_notebook_get_nth_page(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Page returns the `GtkNotebookPage` for @child.
+// Page returns the NotebookPage for @child.
 func (n notebook) Page(child Widget) NotebookPage {
 	var arg0 *C.GtkNotebook
 	var arg1 *C.GtkWidget
@@ -18002,88 +17535,92 @@ func (n notebook) Page(child Widget) NotebookPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkNotebookPage
-	var goret NotebookPage
 
 	cret = C.gtk_notebook_get_page(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(NotebookPage)
+	var notebookPage NotebookPage
 
-	return goret
+	notebookPage = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(NotebookPage)
+
+	return notebookPage
 }
 
-// Pages returns a `GListModel` that contains the pages of the notebook.
-//
-// This can be used to keep an up-to-date view. The model also implements
-// [iface@Gtk.SelectionModel] and can be used to track and modify the
-// visible page.
+// Pages returns a Model that contains the pages of the notebook, and can be
+// used to keep an up-to-date view.
 func (n notebook) Pages() gio.ListModel {
 	var arg0 *C.GtkNotebook
 
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
-	cret := new(C.GListModel)
-	var goret gio.ListModel
+	var cret *C.GListModel
 
 	cret = C.gtk_notebook_get_pages(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
 // Scrollable returns whether the tab label area has arrows for scrolling.
+// See gtk_notebook_set_scrollable().
 func (n notebook) Scrollable() bool {
 	var arg0 *C.GtkNotebook
 
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_notebook_get_scrollable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowBorder returns whether a bevel will be drawn around the notebook
-// pages.
+// pages. See gtk_notebook_set_show_border().
 func (n notebook) ShowBorder() bool {
 	var arg0 *C.GtkNotebook
 
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_notebook_get_show_border(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// ShowTabs returns whether the tabs of the notebook are shown.
+// ShowTabs returns whether the tabs of the notebook are shown. See
+// gtk_notebook_set_show_tabs().
 func (n notebook) ShowTabs() bool {
 	var arg0 *C.GtkNotebook
 
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_notebook_get_show_tabs(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TabDetachable returns whether the tab contents can be detached from
@@ -18096,20 +17633,20 @@ func (n notebook) TabDetachable(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_notebook_get_tab_detachable(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// TabLabel returns the tab label widget for the page @child.
-//
-// nil is returned if @child is not in @notebook or if no tab label has
+// TabLabel returns the tab label widget for the page @child. nil is
+// returned if @child is not in @notebook or if no tab label has
 // specifically been set for @child.
 func (n notebook) TabLabel(child Widget) Widget {
 	var arg0 *C.GtkNotebook
@@ -18119,13 +17656,14 @@ func (n notebook) TabLabel(child Widget) Widget {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_notebook_get_tab_label(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // TabLabelText retrieves the text of the tab label for the page containing
@@ -18138,29 +17676,32 @@ func (n notebook) TabLabelText(child Widget) string {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_notebook_get_tab_label_text(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// TabPos gets the edge at which the tabs are drawn.
+// TabPos gets the edge at which the tabs for switching pages in the
+// notebook are drawn.
 func (n notebook) TabPos() PositionType {
 	var arg0 *C.GtkNotebook
 
 	arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
 
 	var cret C.GtkPositionType
-	var goret PositionType
 
 	cret = C.gtk_notebook_get_tab_pos(arg0)
 
-	goret = PositionType(cret)
+	var positionType PositionType
 
-	return goret
+	positionType = PositionType(cret)
+
+	return positionType
 }
 
 // TabReorderable gets whether the tab can be reordered via drag and drop or
@@ -18173,15 +17714,16 @@ func (n notebook) TabReorderable(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_notebook_get_tab_reorderable(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // InsertPage: insert a page into @notebook at the given position.
@@ -18197,13 +17739,14 @@ func (n notebook) InsertPage(child Widget, tabLabel Widget, position int) int {
 	arg3 = C.int(position)
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_insert_page(arg0, arg1, arg2, arg3)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // InsertPageMenu: insert a page into @notebook at the given position,
@@ -18222,18 +17765,18 @@ func (n notebook) InsertPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 	arg4 = C.int(position)
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_insert_page_menu(arg0, arg1, arg2, arg3, arg4)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// NextPage switches to the next page.
-//
-// Nothing happens if the current page is the last page.
+// NextPage switches to the next page. Nothing happens if the current page
+// is the last page.
 func (n notebook) NextPage() {
 	var arg0 *C.GtkNotebook
 
@@ -18252,13 +17795,14 @@ func (n notebook) PageNum(child Widget) int {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_page_num(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PopupDisable disables the popup menu.
@@ -18270,10 +17814,9 @@ func (n notebook) PopupDisable() {
 	C.gtk_notebook_popup_disable(arg0)
 }
 
-// PopupEnable enables the popup menu.
-//
-// If the user clicks with the right mouse button on the tab labels, a menu
-// with all the pages will be popped up.
+// PopupEnable enables the popup menu: if the user clicks with the right
+// mouse button on the tab labels, a menu with all the pages will be popped
+// up.
 func (n notebook) PopupEnable() {
 	var arg0 *C.GtkNotebook
 
@@ -18293,13 +17836,14 @@ func (n notebook) PrependPage(child Widget, tabLabel Widget) int {
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_prepend_page(arg0, arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PrependPageMenu prepends a page to @notebook, specifying the widget to
@@ -18316,18 +17860,18 @@ func (n notebook) PrependPageMenu(child Widget, tabLabel Widget, menuLabel Widge
 	arg3 = (*C.GtkWidget)(unsafe.Pointer(menuLabel.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_notebook_prepend_page_menu(arg0, arg1, arg2, arg3)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// PrevPage switches to the previous page.
-//
-// Nothing happens if the current page is the first page.
+// PrevPage switches to the previous page. Nothing happens if the current
+// page is the first page.
 func (n notebook) PrevPage() {
 	var arg0 *C.GtkNotebook
 
@@ -18349,10 +17893,9 @@ func (n notebook) RemovePage(pageNum int) {
 }
 
 // ReorderChild reorders the page containing @child, so that it appears in
-// position @position.
-//
-// If @position is greater than or equal to the number of children in the
-// list or negative, @child will be moved to the end of the list.
+// position @position. If @position is greater than or equal to the number
+// of children in the list or negative, @child will be moved to the end of
+// the list.
 func (n notebook) ReorderChild(child Widget, position int) {
 	var arg0 *C.GtkNotebook
 	var arg1 *C.GtkWidget
@@ -18365,11 +17908,9 @@ func (n notebook) ReorderChild(child Widget, position int) {
 	C.gtk_notebook_reorder_child(arg0, arg1, arg2)
 }
 
-// SetActionWidget sets @widget as one of the action widgets.
-//
-// Depending on the pack type the widget will be placed before or after the
-// tabs. You can use a `GtkBox` if you need to pack more than one widget on
-// the same side.
+// SetActionWidget sets @widget as one of the action widgets. Depending on
+// the pack type the widget will be placed before or after the tabs. You can
+// use a Box if you need to pack more than one widget on the same side.
 func (n notebook) SetActionWidget(widget Widget, packType PackType) {
 	var arg0 *C.GtkNotebook
 	var arg1 *C.GtkWidget
@@ -18456,9 +17997,8 @@ func (n notebook) SetScrollable(scrollable bool) {
 }
 
 // SetShowBorder sets whether a bevel will be drawn around the notebook
-// pages.
-//
-// This only has a visual effect when the tabs are not shown.
+// pages. This only has a visual effect when the tabs are not shown. See
+// gtk_notebook_set_show_tabs().
 func (n notebook) SetShowBorder(showBorder bool) {
 	var arg0 *C.GtkNotebook
 	var arg1 C.gboolean
@@ -18487,8 +18027,8 @@ func (n notebook) SetShowTabs(showTabs bool) {
 // SetTabDetachable sets whether the tab can be detached from @notebook to
 // another notebook or widget.
 //
-// Note that two notebooks must share a common group identificator (see
-// [method@Gtk.Notebook.set_group_name]) to allow automatic tabs interchange
+// Note that 2 notebooks must share a common group identificator (see
+// gtk_notebook_set_group_name()) to allow automatic tabs interchange
 // between them.
 //
 // If you want a widget to interact with a notebook through DnD (i.e.:
@@ -18497,25 +18037,31 @@ func (n notebook) SetShowTabs(showTabs bool) {
 // selection with a GtkWidget** pointing to the child widget that
 // corresponds to the dropped tab.
 //
-// Note that you should use [method@Gtk.Notebook.detach_tab] instead of
-// [method@Gtk.Notebook.remove_page] if you want to remove the tab from the
-// source notebook as part of accepting a drop. Otherwise, the source
-// notebook will think that the dragged tab was removed from underneath the
-// ongoing drag operation, and will initiate a drag cancel animation.
+// Note that you should use gtk_notebook_detach_tab() instead of
+// gtk_notebook_remove_page() if you want to remove the tab from the source
+// notebook as part of accepting a drop. Otherwise, the source notebook will
+// think that the dragged tab was removed from underneath the ongoing drag
+// operation, and will initiate a drag cancel animation.
 //
-// “`c static void on_drag_data_received (GtkWidget *widget, GdkDrop *drop,
-// GtkSelectionData *data, guint time, gpointer user_data) { GtkDrag *drag;
-// GtkWidget *notebook; GtkWidget **child;
+//     static void
+//     on_drag_data_received (GtkWidget        *widget,
+//                            GdkDrop          *drop,
+//                            GtkSelectionData *data,
+//                            guint             time,
+//                            gpointer          user_data)
+//     {
+//       GtkDrag *drag;
+//       GtkWidget *notebook;
+//       GtkWidget **child;
 //
-//    drag = gtk_drop_get_drag (drop);
-//    notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
-//    child = (void*) gtk_selection_data_get_data (data);
+//       drag = gtk_drop_get_drag (drop);
+//       notebook = g_object_get_data (drag, "gtk-notebook-drag-origin");
+//       child = (void*) gtk_selection_data_get_data (data);
 //
-//    // process_widget (*child);
+//       // process_widget (*child);
 //
-//    gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
-//
-// } “`
+//       gtk_notebook_detach_tab (GTK_NOTEBOOK (notebook), *child);
+//     }
 //
 // If you want a notebook to accept drags from other widgets, you will have
 // to set your own DnD code to do it.
@@ -18533,10 +18079,8 @@ func (n notebook) SetTabDetachable(child Widget, detachable bool) {
 	C.gtk_notebook_set_tab_detachable(arg0, arg1, arg2)
 }
 
-// SetTabLabel changes the tab label for @child.
-//
-// If nil is specified for @tab_label, then the page will have the label
-// “page N”.
+// SetTabLabel changes the tab label for @child. If nil is specified for
+// @tab_label, then the page will have the label “page N”.
 func (n notebook) SetTabLabel(child Widget, tabLabel Widget) {
 	var arg0 *C.GtkNotebook
 	var arg1 *C.GtkWidget
@@ -18564,7 +18108,8 @@ func (n notebook) SetTabLabelText(child Widget, tabText string) {
 	C.gtk_notebook_set_tab_label_text(arg0, arg1, arg2)
 }
 
-// SetTabPos sets the edge at which the tabs are drawn.
+// SetTabPos sets the edge at which the tabs for switching pages in the
+// notebook are drawn.
 func (n notebook) SetTabPos(pos PositionType) {
 	var arg0 *C.GtkNotebook
 	var arg1 C.GtkPositionType
@@ -18591,7 +18136,9 @@ func (n notebook) SetTabReorderable(child Widget, reorderable bool) {
 	C.gtk_notebook_set_tab_reorderable(arg0, arg1, arg2)
 }
 
-// NotebookPage: `GtkNotebookPage` is an auxiliary object used by `GtkNotebook`.
+// NotebookPage: a page in the Notebook.
+//
+// The `GtkNotebookPage` structure only contains private data.
 type NotebookPage interface {
 	gextras.Objector
 
@@ -18627,31 +18174,27 @@ func (p notebookPage) Child() Widget {
 	arg0 = (*C.GtkNotebookPage)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_notebook_page_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Overlay: `GtkOverlay` is a container which contains a single main child, on
-// top of which it can place “overlay” widgets.
-//
-// !An example GtkOverlay (overlay.png)
-//
-// The position of each overlay widget is determined by its
-// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
-// E.g. a widget with both alignments set to GTK_ALIGN_START will be placed at
-// the top left corner of the `GtkOverlay` container, whereas an overlay with
-// halign set to GTK_ALIGN_CENTER and valign set to GTK_ALIGN_END will be placed
-// a the bottom edge of the `GtkOverlay`, horizontally centered. The position
-// can be adjusted by setting the margin properties of the child to non-zero
-// values.
+// Overlay: gtkOverlay is a container which contains a single main child, on top
+// of which it can place “overlay” widgets. The position of each overlay widget
+// is determined by its Widget:halign and Widget:valign properties. E.g. a
+// widget with both alignments set to GTK_ALIGN_START will be placed at the top
+// left corner of the GtkOverlay container, whereas an overlay with halign set
+// to GTK_ALIGN_CENTER and valign set to GTK_ALIGN_END will be placed a the
+// bottom edge of the GtkOverlay, horizontally centered. The position can be
+// adjusted by setting the margin properties of the child to non-zero values.
 //
 // More complicated placement of overlays is possible by connecting to the
-// [signal@Gtk.Overlay::get-child-position] signal.
+// Overlay::get-child-position signal.
 //
 // An overlay’s minimum and natural sizes are those of its main child. The sizes
 // of overlay children are not considered when measuring these preferred sizes.
@@ -18659,14 +18202,14 @@ func (p notebookPage) Child() Widget {
 //
 // GtkOverlay as GtkBuildable
 //
-// The `GtkOverlay` implementation of the `GtkBuildable` interface supports
-// placing a child as an overlay by specifying “overlay” as the “type” attribute
-// of a `<child>` element.
+// The GtkOverlay implementation of the GtkBuildable interface supports placing
+// a child as an overlay by specifying “overlay” as the “type” attribute of a
+// `<child>` element.
 //
 //
 // CSS nodes
 //
-// `GtkOverlay` has a single CSS node with the name “overlay”. Overlay children
+// GtkOverlay has a single CSS node with the name “overlay”. Overlay children
 // whose alignments cause them to be positioned at an edge get the style classes
 // “.left”, “.right”, “.top”, and/or “.bottom” according to their position.
 type Overlay interface {
@@ -18678,10 +18221,10 @@ type Overlay interface {
 	// AddOverlay adds @widget to @overlay.
 	//
 	// The widget will be stacked on top of the main widget added with
-	// [method@Gtk.Overlay.set_child].
+	// gtk_overlay_set_child().
 	//
 	// The position at which @widget is placed is determined from its
-	// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
+	// Widget:halign and Widget:valign properties.
 	AddOverlay(widget Widget)
 	// Child gets the child widget of @overlay.
 	Child() Widget
@@ -18736,22 +18279,23 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 // NewOverlay constructs a class Overlay.
 func NewOverlay() Overlay {
 	var cret C.GtkOverlay
-	var goret Overlay
 
 	cret = C.gtk_overlay_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
+	var overlay Overlay
 
-	return goret
+	overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
+
+	return overlay
 }
 
 // AddOverlay adds @widget to @overlay.
 //
 // The widget will be stacked on top of the main widget added with
-// [method@Gtk.Overlay.set_child].
+// gtk_overlay_set_child().
 //
 // The position at which @widget is placed is determined from its
-// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
+// Widget:halign and Widget:valign properties.
 func (o overlay) AddOverlay(widget Widget) {
 	var arg0 *C.GtkOverlay
 	var arg1 *C.GtkWidget
@@ -18769,13 +18313,14 @@ func (o overlay) Child() Widget {
 	arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_overlay_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ClipOverlay gets whether @widget should be clipped within the parent.
@@ -18787,15 +18332,16 @@ func (o overlay) ClipOverlay(widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_overlay_get_clip_overlay(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MeasureOverlay gets whether @widget's size is included in the measurement
@@ -18808,15 +18354,16 @@ func (o overlay) MeasureOverlay(widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_overlay_get_measure_overlay(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RemoveOverlay removes an overlay that was added with
@@ -18877,13 +18424,11 @@ func (o overlay) SetMeasureOverlay(widget Widget, measure bool) {
 	C.gtk_overlay_set_measure_overlay(arg0, arg1, arg2)
 }
 
-// PageSetup: a `GtkPageSetup` object stores the page size, orientation and
-// margins.
-//
-// The idea is that you can get one of these from the page setup dialog and then
-// pass it to the `GtkPrintOperation` when printing. The benefit of splitting
-// this out of the `GtkPrintSettings` is that these affect the actual layout of
-// the page, and thus need to be set long before user prints.
+// PageSetup: a GtkPageSetup object stores the page size, orientation and
+// margins. The idea is that you can get one of these from the page setup dialog
+// and then pass it to the PrintOperation when printing. The benefit of
+// splitting this out of the PrintSettings is that these affect the actual
+// layout of the page, and thus need to be set long before user prints.
 //
 //
 // Margins
@@ -18893,94 +18438,92 @@ func (o overlay) SetMeasureOverlay(widget Widget, measure bool) {
 // layout margins that a word processor uses; they are typically used to
 // determine the minimal size for the layout margins.
 //
-// To obtain a `GtkPageSetup` use [ctor@Gtk.PageSetup.new] to get the defaults,
-// or use [func@Gtk.print_run_page_setup_dialog] to show the page setup dialog
-// and receive the resulting page setup.
-//
+// To obtain a PageSetup use gtk_page_setup_new() to get the defaults, or use
+// gtk_print_run_page_setup_dialog() to show the page setup dialog and receive
+// the resulting page setup.
 //
 // A page setup dialog
 //
-// “`c static GtkPrintSettings *settings = NULL; static GtkPageSetup *page_setup
-// = NULL;
+//    static GtkPrintSettings *settings = NULL;
+//    static GtkPageSetup *page_setup = NULL;
 //
-// static void do_page_setup (void) { GtkPageSetup *new_page_setup;
+//    static void
+//    do_page_setup (void)
+//    {
+//      GtkPageSetup *new_page_setup;
 //
-//    if (settings == NULL)
-//      settings = gtk_print_settings_new ();
+//      if (settings == NULL)
+//        settings = gtk_print_settings_new ();
 //
-//    new_page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (main_window),
-//                                                      page_setup, settings);
+//      new_page_setup = gtk_print_run_page_setup_dialog (GTK_WINDOW (main_window),
+//                                                        page_setup, settings);
 //
-//    if (page_setup)
-//      g_object_unref (page_setup);
+//      if (page_setup)
+//        g_object_unref (page_setup);
 //
-//    page_setup = new_page_setup;
-//
-// } “`
+//      page_setup = new_page_setup;
+//    }
 type PageSetup interface {
 	gextras.Objector
 
-	// Copy copies a `GtkPageSetup`.
+	// Copy copies a PageSetup.
 	Copy() PageSetup
 	// BottomMargin gets the bottom margin in units of @unit.
 	BottomMargin(unit Unit) float64
 	// LeftMargin gets the left margin in units of @unit.
 	LeftMargin(unit Unit) float64
-	// Orientation gets the page orientation of the `GtkPageSetup`.
+	// Orientation gets the page orientation of the PageSetup.
 	Orientation() PageOrientation
 	// PageHeight returns the page height in units of @unit.
 	//
 	// Note that this function takes orientation and margins into consideration.
-	// See [method@Gtk.PageSetup.get_paper_height].
+	// See gtk_page_setup_get_paper_height().
 	PageHeight(unit Unit) float64
 	// PageWidth returns the page width in units of @unit.
 	//
 	// Note that this function takes orientation and margins into consideration.
-	// See [method@Gtk.PageSetup.get_paper_width].
+	// See gtk_page_setup_get_paper_width().
 	PageWidth(unit Unit) float64
 	// PaperHeight returns the paper height in units of @unit.
 	//
 	// Note that this function takes orientation, but not margins into
-	// consideration. See [method@Gtk.PageSetup.get_page_height].
+	// consideration. See gtk_page_setup_get_page_height().
 	PaperHeight(unit Unit) float64
-	// PaperSize gets the paper size of the `GtkPageSetup`.
+	// PaperSize gets the paper size of the PageSetup.
 	PaperSize() *PaperSize
 	// PaperWidth returns the paper width in units of @unit.
 	//
 	// Note that this function takes orientation, but not margins into
-	// consideration. See [method@Gtk.PageSetup.get_page_width].
+	// consideration. See gtk_page_setup_get_page_width().
 	PaperWidth(unit Unit) float64
 	// RightMargin gets the right margin in units of @unit.
 	RightMargin(unit Unit) float64
 	// TopMargin gets the top margin in units of @unit.
 	TopMargin(unit Unit) float64
-	// LoadFile reads the page setup from the file @file_name.
-	//
-	// See [method@Gtk.PageSetup.to_file].
-	LoadFile(fileName string) error
+	// LoadFile reads the page setup from the file @file_name. See
+	// gtk_page_setup_to_file().
+	LoadFile(fileName *string) error
 	// LoadKeyFile reads the page setup from the group @group_name in the key
 	// file @key_file.
 	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
-	// SetBottomMargin sets the bottom margin of the `GtkPageSetup`.
+	// SetBottomMargin sets the bottom margin of the PageSetup.
 	SetBottomMargin(margin float64, unit Unit)
-	// SetLeftMargin sets the left margin of the `GtkPageSetup`.
+	// SetLeftMargin sets the left margin of the PageSetup.
 	SetLeftMargin(margin float64, unit Unit)
-	// SetOrientation sets the page orientation of the `GtkPageSetup`.
+	// SetOrientation sets the page orientation of the PageSetup.
 	SetOrientation(orientation PageOrientation)
-	// SetPaperSize sets the paper size of the `GtkPageSetup` without changing
-	// the margins.
-	//
-	// See [method@Gtk.PageSetup.set_paper_size_and_default_margins].
+	// SetPaperSize sets the paper size of the PageSetup without changing the
+	// margins. See gtk_page_setup_set_paper_size_and_default_margins().
 	SetPaperSize(size *PaperSize)
-	// SetPaperSizeAndDefaultMargins sets the paper size of the `GtkPageSetup`
-	// and modifies the margins according to the new paper size.
+	// SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
+	// modifies the margins according to the new paper size.
 	SetPaperSizeAndDefaultMargins(size *PaperSize)
-	// SetRightMargin sets the right margin of the `GtkPageSetup`.
+	// SetRightMargin sets the right margin of the PageSetup.
 	SetRightMargin(margin float64, unit Unit)
-	// SetTopMargin sets the top margin of the `GtkPageSetup`.
+	// SetTopMargin sets the top margin of the PageSetup.
 	SetTopMargin(margin float64, unit Unit)
 	// ToFile: this function saves the information from @setup to @file_name.
-	ToFile(fileName string) error
+	ToFile(fileName *string) error
 	// ToGVariant: serialize page setup to an a{sv} variant.
 	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the page setup from @setup to @key_file.
@@ -19010,34 +18553,36 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 
 // NewPageSetup constructs a class PageSetup.
 func NewPageSetup() PageSetup {
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
+	var cret C.GtkPageSetup
 
 	cret = C.gtk_page_setup_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
 // NewPageSetupFromFile constructs a class PageSetup.
-func NewPageSetupFromFile(fileName string) (pageSetup PageSetup, err error) {
+func NewPageSetupFromFile(fileName *string) (pageSetup PageSetup, goerr error) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
+	var cret C.GtkPageSetup
 	var cerr *C.GError
+
+	cret = C.gtk_page_setup_new_from_file(arg1, cerr)
+
+	var pageSetup PageSetup
 	var goerr error
 
-	cret = C.gtk_page_setup_new_from_file(arg1, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return pageSetup, goerr
 }
 
 // NewPageSetupFromGVariant constructs a class PageSetup.
@@ -19046,18 +18591,19 @@ func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
+	var cret C.GtkPageSetup
 
 	cret = C.gtk_page_setup_new_from_gvariant(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
 // NewPageSetupFromKeyFile constructs a class PageSetup.
-func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup PageSetup, err error) {
+func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup PageSetup, goerr error) {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
 
@@ -19065,33 +18611,35 @@ func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (pageSetup
 	arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
+	var cret C.GtkPageSetup
 	var cerr *C.GError
+
+	cret = C.gtk_page_setup_new_from_key_file(arg1, arg2, cerr)
+
+	var pageSetup PageSetup
 	var goerr error
 
-	cret = C.gtk_page_setup_new_from_key_file(arg1, arg2, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return pageSetup, goerr
 }
 
-// Copy copies a `GtkPageSetup`.
+// Copy copies a PageSetup.
 func (o pageSetup) Copy() PageSetup {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(o.Native()))
 
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
+	var cret *C.GtkPageSetup
 
 	cret = C.gtk_page_setup_copy(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
 // BottomMargin gets the bottom margin in units of @unit.
@@ -19103,13 +18651,14 @@ func (s pageSetup) BottomMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_bottom_margin(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // LeftMargin gets the left margin in units of @unit.
@@ -19121,35 +18670,37 @@ func (s pageSetup) LeftMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_left_margin(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// Orientation gets the page orientation of the `GtkPageSetup`.
+// Orientation gets the page orientation of the PageSetup.
 func (s pageSetup) Orientation() PageOrientation {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPageOrientation
-	var goret PageOrientation
 
 	cret = C.gtk_page_setup_get_orientation(arg0)
 
-	goret = PageOrientation(cret)
+	var pageOrientation PageOrientation
 
-	return goret
+	pageOrientation = PageOrientation(cret)
+
+	return pageOrientation
 }
 
 // PageHeight returns the page height in units of @unit.
 //
 // Note that this function takes orientation and margins into consideration.
-// See [method@Gtk.PageSetup.get_paper_height].
+// See gtk_page_setup_get_paper_height().
 func (s pageSetup) PageHeight(unit Unit) float64 {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
@@ -19158,19 +18709,20 @@ func (s pageSetup) PageHeight(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_page_height(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // PageWidth returns the page width in units of @unit.
 //
 // Note that this function takes orientation and margins into consideration.
-// See [method@Gtk.PageSetup.get_paper_width].
+// See gtk_page_setup_get_paper_width().
 func (s pageSetup) PageWidth(unit Unit) float64 {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
@@ -19179,19 +18731,20 @@ func (s pageSetup) PageWidth(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_page_width(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // PaperHeight returns the paper height in units of @unit.
 //
 // Note that this function takes orientation, but not margins into
-// consideration. See [method@Gtk.PageSetup.get_page_height].
+// consideration. See gtk_page_setup_get_page_height().
 func (s pageSetup) PaperHeight(unit Unit) float64 {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
@@ -19200,35 +18753,37 @@ func (s pageSetup) PaperHeight(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_paper_height(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// PaperSize gets the paper size of the `GtkPageSetup`.
+// PaperSize gets the paper size of the PageSetup.
 func (s pageSetup) PaperSize() *PaperSize {
 	var arg0 *C.GtkPageSetup
 
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkPaperSize
-	var goret *PaperSize
 
 	cret = C.gtk_page_setup_get_paper_size(arg0)
 
-	goret = WrapPaperSize(unsafe.Pointer(cret))
+	var paperSize *PaperSize
 
-	return goret
+	paperSize = WrapPaperSize(unsafe.Pointer(cret))
+
+	return paperSize
 }
 
 // PaperWidth returns the paper width in units of @unit.
 //
 // Note that this function takes orientation, but not margins into
-// consideration. See [method@Gtk.PageSetup.get_page_width].
+// consideration. See gtk_page_setup_get_page_width().
 func (s pageSetup) PaperWidth(unit Unit) float64 {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkUnit
@@ -19237,13 +18792,14 @@ func (s pageSetup) PaperWidth(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_paper_width(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // RightMargin gets the right margin in units of @unit.
@@ -19255,13 +18811,14 @@ func (s pageSetup) RightMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_right_margin(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // TopMargin gets the top margin in units of @unit.
@@ -19273,19 +18830,19 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_page_setup_get_top_margin(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// LoadFile reads the page setup from the file @file_name.
-//
-// See [method@Gtk.PageSetup.to_file].
-func (s pageSetup) LoadFile(fileName string) error {
+// LoadFile reads the page setup from the file @file_name. See
+// gtk_page_setup_to_file().
+func (s pageSetup) LoadFile(fileName *string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
 
@@ -19294,9 +18851,10 @@ func (s pageSetup) LoadFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_page_setup_load_file(arg0, arg1, &cerr)
+	C.gtk_page_setup_load_file(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -19316,16 +18874,17 @@ func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_page_setup_load_key_file(arg0, arg1, arg2, &cerr)
+	C.gtk_page_setup_load_key_file(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
 	return goerr
 }
 
-// SetBottomMargin sets the bottom margin of the `GtkPageSetup`.
+// SetBottomMargin sets the bottom margin of the PageSetup.
 func (s pageSetup) SetBottomMargin(margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.double
@@ -19338,7 +18897,7 @@ func (s pageSetup) SetBottomMargin(margin float64, unit Unit) {
 	C.gtk_page_setup_set_bottom_margin(arg0, arg1, arg2)
 }
 
-// SetLeftMargin sets the left margin of the `GtkPageSetup`.
+// SetLeftMargin sets the left margin of the PageSetup.
 func (s pageSetup) SetLeftMargin(margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.double
@@ -19351,7 +18910,7 @@ func (s pageSetup) SetLeftMargin(margin float64, unit Unit) {
 	C.gtk_page_setup_set_left_margin(arg0, arg1, arg2)
 }
 
-// SetOrientation sets the page orientation of the `GtkPageSetup`.
+// SetOrientation sets the page orientation of the PageSetup.
 func (s pageSetup) SetOrientation(orientation PageOrientation) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.GtkPageOrientation
@@ -19362,10 +18921,8 @@ func (s pageSetup) SetOrientation(orientation PageOrientation) {
 	C.gtk_page_setup_set_orientation(arg0, arg1)
 }
 
-// SetPaperSize sets the paper size of the `GtkPageSetup` without changing
-// the margins.
-//
-// See [method@Gtk.PageSetup.set_paper_size_and_default_margins].
+// SetPaperSize sets the paper size of the PageSetup without changing the
+// margins. See gtk_page_setup_set_paper_size_and_default_margins().
 func (s pageSetup) SetPaperSize(size *PaperSize) {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GtkPaperSize
@@ -19376,8 +18933,8 @@ func (s pageSetup) SetPaperSize(size *PaperSize) {
 	C.gtk_page_setup_set_paper_size(arg0, arg1)
 }
 
-// SetPaperSizeAndDefaultMargins sets the paper size of the `GtkPageSetup`
-// and modifies the margins according to the new paper size.
+// SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
+// modifies the margins according to the new paper size.
 func (s pageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.GtkPaperSize
@@ -19388,7 +18945,7 @@ func (s pageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 	C.gtk_page_setup_set_paper_size_and_default_margins(arg0, arg1)
 }
 
-// SetRightMargin sets the right margin of the `GtkPageSetup`.
+// SetRightMargin sets the right margin of the PageSetup.
 func (s pageSetup) SetRightMargin(margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.double
@@ -19401,7 +18958,7 @@ func (s pageSetup) SetRightMargin(margin float64, unit Unit) {
 	C.gtk_page_setup_set_right_margin(arg0, arg1, arg2)
 }
 
-// SetTopMargin sets the top margin of the `GtkPageSetup`.
+// SetTopMargin sets the top margin of the PageSetup.
 func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
 	var arg0 *C.GtkPageSetup
 	var arg1 C.double
@@ -19415,7 +18972,7 @@ func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
 }
 
 // ToFile: this function saves the information from @setup to @file_name.
-func (s pageSetup) ToFile(fileName string) error {
+func (s pageSetup) ToFile(fileName *string) error {
 	var arg0 *C.GtkPageSetup
 	var arg1 *C.char
 
@@ -19424,9 +18981,10 @@ func (s pageSetup) ToFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_page_setup_to_file(arg0, arg1, &cerr)
+	C.gtk_page_setup_to_file(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -19440,13 +18998,14 @@ func (s pageSetup) ToGVariant() *glib.Variant {
 	arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GVariant
-	var goret *glib.Variant
 
 	cret = C.gtk_page_setup_to_gvariant(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	var variant *glib.Variant
 
-	return goret
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return variant
 }
 
 // ToKeyFile: this function adds the page setup from @setup to @key_file.
@@ -19463,201 +19022,48 @@ func (s pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	C.gtk_page_setup_to_key_file(arg0, arg1, arg2)
 }
 
-// PageSetupUnixDialog: `GtkPageSetupUnixDialog` implements a page setup dialog
-// for platforms which don’t provide a native page setup dialog, like Unix.
-//
-// !An example GtkPageSetupUnixDialog (pagesetupdialog.png)
-//
-// It can be used very much like any other GTK dialog, at the cost of the
-// portability offered by the high-level printing API in
-// [class@Gtk.PrintOperation].
-type PageSetupUnixDialog interface {
-	Dialog
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
-
-	// PageSetup gets the currently selected page setup from the dialog.
-	PageSetup() PageSetup
-	// PrintSettings gets the current print settings from the dialog.
-	PrintSettings() PrintSettings
-	// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
-	// takes its values.
-	SetPageSetup(pageSetup PageSetup)
-	// SetPrintSettings sets the `GtkPrintSettings` from which the page setup
-	// dialog takes its values.
-	SetPrintSettings(printSettings PrintSettings)
-}
-
-// pageSetupUnixDialog implements the PageSetupUnixDialog interface.
-type pageSetupUnixDialog struct {
-	Dialog
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
-}
-
-var _ PageSetupUnixDialog = (*pageSetupUnixDialog)(nil)
-
-// WrapPageSetupUnixDialog wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPageSetupUnixDialog(obj *externglib.Object) PageSetupUnixDialog {
-	return PageSetupUnixDialog{
-		Dialog:           WrapDialog(obj),
-		Accessible:       WrapAccessible(obj),
-		Buildable:        WrapBuildable(obj),
-		ConstraintTarget: WrapConstraintTarget(obj),
-		Native:           WrapNative(obj),
-		Root:             WrapRoot(obj),
-		ShortcutManager:  WrapShortcutManager(obj),
-	}
-}
-
-func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPageSetupUnixDialog(obj), nil
-}
-
-// NewPageSetupUnixDialog constructs a class PageSetupUnixDialog.
-func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
-	var arg1 *C.char
-	var arg2 *C.GtkWindow
-
-	arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var cret C.GtkPageSetupUnixDialog
-	var goret PageSetupUnixDialog
-
-	cret = C.gtk_page_setup_unix_dialog_new(arg1, arg2)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetupUnixDialog)
-
-	return goret
-}
-
-// PageSetup gets the currently selected page setup from the dialog.
-func (d pageSetupUnixDialog) PageSetup() PageSetup {
-	var arg0 *C.GtkPageSetupUnixDialog
-
-	arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret *C.GtkPageSetup
-	var goret PageSetup
-
-	cret = C.gtk_page_setup_unix_dialog_get_page_setup(arg0)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
-
-	return goret
-}
-
-// PrintSettings gets the current print settings from the dialog.
-func (d pageSetupUnixDialog) PrintSettings() PrintSettings {
-	var arg0 *C.GtkPageSetupUnixDialog
-
-	arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret *C.GtkPrintSettings
-	var goret PrintSettings
-
-	cret = C.gtk_page_setup_unix_dialog_get_print_settings(arg0)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
-
-	return goret
-}
-
-// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
-// takes its values.
-func (d pageSetupUnixDialog) SetPageSetup(pageSetup PageSetup) {
-	var arg0 *C.GtkPageSetupUnixDialog
-	var arg1 *C.GtkPageSetup
-
-	arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-
-	C.gtk_page_setup_unix_dialog_set_page_setup(arg0, arg1)
-}
-
-// SetPrintSettings sets the `GtkPrintSettings` from which the page setup
-// dialog takes its values.
-func (d pageSetupUnixDialog) SetPrintSettings(printSettings PrintSettings) {
-	var arg0 *C.GtkPageSetupUnixDialog
-	var arg1 *C.GtkPrintSettings
-
-	arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
-
-	C.gtk_page_setup_unix_dialog_set_print_settings(arg0, arg1)
-}
-
-// Paned: `GtkPaned` has two panes, arranged either horizontally or vertically.
-//
-// !An example GtkPaned (panes.png)
-//
-// The division between the two panes is adjustable by the user by dragging a
-// handle.
+// Paned has two panes, arranged either horizontally or vertically. The division
+// between the two panes is adjustable by the user by dragging a handle.
 //
 // Child widgets are added to the panes of the widget with
-// [method@Gtk.Paned.set_start_child] and [method@Gtk.Paned.set_end_child]. The
-// division between the two children is set by default from the size requests of
-// the children, but it can be adjusted by the user.
+// gtk_paned_set_start_child() and gtk_paned_set_end_child(). The division
+// between the two children is set by default from the size requests of the
+// children, but it can be adjusted by the user.
 //
 // A paned widget draws a separator between the two child widgets and a small
 // handle that the user can drag to adjust the division. It does not draw any
 // relief around the children or around the separator. (The space in which the
 // separator is called the gutter.) Often, it is useful to put each child inside
-// a [class@Gtk.Frame] so that the gutter appears as a ridge. No separator is
-// drawn if one of the children is missing.
+// a Frame so that the gutter appears as a ridge. No separator is drawn if one
+// of the children is missing.
 //
 // Each child has two options that can be set, @resize and @shrink. If @resize
-// is true, then when the `GtkPaned` is resized, that child will expand or
-// shrink along with the paned widget. If @shrink is true, then that child can
-// be made smaller than its requisition by the user. Setting @shrink to false
-// allows the application to set a minimum size. If @resize is false for both
-// children, then this is treated as if @resize is true for both children.
+// is true, then when the Paned is resized, that child will expand or shrink
+// along with the paned widget. If @shrink is true, then that child can be made
+// smaller than its requisition by the user. Setting @shrink to false allows the
+// application to set a minimum size. If @resize is false for both children,
+// then this is treated as if @resize is true for both children.
 //
 // The application can set the position of the slider as if it were set by the
-// user, by calling [method@Gtk.Paned.set_position].
-//
+// user, by calling gtk_paned_set_position().
 //
 // CSS nodes
 //
-// “` paned ├── <child> ├── separator[.wide] ╰── <child> “`
+//    GtkWidget *hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL);
+//    GtkWidget *frame1 = gtk_frame_new (NULL);
+//    GtkWidget *frame2 = gtk_frame_new (NULL);
 //
-// `GtkPaned` has a main CSS node with name paned, and a subnode for the
-// separator with name separator. The subnode gets a .wide style class when the
-// paned is supposed to be wide.
+//    gtk_widget_set_size_request (hpaned, 200, -1);
 //
-// In horizontal orientation, the nodes are arranged based on the text
-// direction, so in left-to-right mode, :first-child will select the leftmost
-// child, while it will select the rightmost child in RTL layouts.
+//    gtk_paned_set_start_child (GTK_PANED (hpaned), frame1);
+//    gtk_paned_set_start_child_resize (GTK_PANED (hpaned), TRUE);
+//    gtk_paned_set_start_child_shrink (GTK_PANED (hpaned), FALSE);
+//    gtk_widget_set_size_request (frame1, 50, -1);
 //
-// Creating a paned widget with minimum sizes.
-//
-// “`c GtkWidget *hpaned = gtk_paned_new (GTK_ORIENTATION_HORIZONTAL); GtkWidget
-// *frame1 = gtk_frame_new (NULL); GtkWidget *frame2 = gtk_frame_new (NULL);
-//
-// gtk_widget_set_size_request (hpaned, 200, -1);
-//
-// gtk_paned_set_start_child (GTK_PANED (hpaned), frame1);
-// gtk_paned_set_start_child_resize (GTK_PANED (hpaned), TRUE);
-// gtk_paned_set_start_child_shrink (GTK_PANED (hpaned), FALSE);
-// gtk_widget_set_size_request (frame1, 50, -1);
-//
-// gtk_paned_set_end_child (GTK_PANED (hpaned), frame2);
-// gtk_paned_set_end_child_resize (GTK_PANED (hpaned), FALSE);
-// gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
-// gtk_widget_set_size_request (frame2, 50, -1); “`
+//    gtk_paned_set_end_child (GTK_PANED (hpaned), frame2);
+//    gtk_paned_set_end_child_resize (GTK_PANED (hpaned), FALSE);
+//    gtk_paned_set_end_child_shrink (GTK_PANED (hpaned), FALSE);
+//    gtk_widget_set_size_request (frame2, 50, -1);
 type Paned interface {
 	Widget
 	Accessible
@@ -19665,9 +19071,9 @@ type Paned interface {
 	ConstraintTarget
 	Orientable
 
-	// EndChild retrieves the end child of the given `GtkPaned`.
+	// EndChild retrieves the end child of the given Paned.
 	//
-	// See also: `GtkPaned`:end-child
+	// See also: Paned:end-child
 	EndChild() Widget
 	// Position obtains the position of the divider between the two panes.
 	Position() int
@@ -19679,27 +19085,27 @@ type Paned interface {
 	ShrinkEndChild() bool
 	// ShrinkStartChild returns whether the start child can be shrunk.
 	ShrinkStartChild() bool
-	// StartChild retrieves the start child of the given `GtkPaned`.
+	// StartChild retrieves the start child of the given Paned.
 	//
-	// See also: `GtkPaned`:start-child
+	// See also: Paned:start-child
 	StartChild() Widget
-	// WideHandle gets whether the separator should be wide.
+	// WideHandle gets the Paned:wide-handle property.
 	WideHandle() bool
 	// SetEndChild sets the end child of @paned to @child.
 	SetEndChild(child Widget)
 	// SetPosition sets the position of the divider between the two panes.
 	SetPosition(position int)
-	// SetResizeEndChild sets the `GtkPaned`:resize-end-child property
+	// SetResizeEndChild sets the Paned:resize-end-child property
 	SetResizeEndChild(resize bool)
-	// SetResizeStartChild sets the `GtkPaned`:resize-start-child property
+	// SetResizeStartChild sets the Paned:resize-start-child property
 	SetResizeStartChild(resize bool)
-	// SetShrinkEndChild sets the `GtkPaned`:shrink-end-child property
+	// SetShrinkEndChild sets the Paned:shrink-end-child property
 	SetShrinkEndChild(resize bool)
-	// SetShrinkStartChild sets the `GtkPaned`:shrink-start-child property
+	// SetShrinkStartChild sets the Paned:shrink-start-child property
 	SetShrinkStartChild(resize bool)
 	// SetStartChild sets the start child of @paned to @child.
 	SetStartChild(child Widget)
-	// SetWideHandle sets whether the separator should be wide.
+	// SetWideHandle sets the Paned:wide-handle property.
 	SetWideHandle(wide bool)
 }
 
@@ -19739,31 +19145,33 @@ func NewPaned(orientation Orientation) Paned {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkPaned
-	var goret Paned
 
 	cret = C.gtk_paned_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Paned)
+	var paned Paned
 
-	return goret
+	paned = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Paned)
+
+	return paned
 }
 
-// EndChild retrieves the end child of the given `GtkPaned`.
+// EndChild retrieves the end child of the given Paned.
 //
-// See also: `GtkPaned`:end-child
+// See also: Paned:end-child
 func (p paned) EndChild() Widget {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_paned_get_end_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Position obtains the position of the divider between the two panes.
@@ -19773,13 +19181,14 @@ func (p paned) Position() int {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_paned_get_position(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ResizeEndChild returns whether the end child can be resized.
@@ -19789,15 +19198,16 @@ func (p paned) ResizeEndChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_paned_get_resize_end_child(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ResizeStartChild returns whether the start child can be resized.
@@ -19807,15 +19217,16 @@ func (p paned) ResizeStartChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_paned_get_resize_start_child(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShrinkEndChild returns whether the end child can be shrunk.
@@ -19825,15 +19236,16 @@ func (p paned) ShrinkEndChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_paned_get_shrink_end_child(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShrinkStartChild returns whether the start child can be shrunk.
@@ -19843,51 +19255,54 @@ func (p paned) ShrinkStartChild() bool {
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_paned_get_shrink_start_child(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// StartChild retrieves the start child of the given `GtkPaned`.
+// StartChild retrieves the start child of the given Paned.
 //
-// See also: `GtkPaned`:start-child
+// See also: Paned:start-child
 func (p paned) StartChild() Widget {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_paned_get_start_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// WideHandle gets whether the separator should be wide.
+// WideHandle gets the Paned:wide-handle property.
 func (p paned) WideHandle() bool {
 	var arg0 *C.GtkPaned
 
 	arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_paned_get_wide_handle(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetEndChild sets the end child of @paned to @child.
@@ -19912,7 +19327,7 @@ func (p paned) SetPosition(position int) {
 	C.gtk_paned_set_position(arg0, arg1)
 }
 
-// SetResizeEndChild sets the `GtkPaned`:resize-end-child property
+// SetResizeEndChild sets the Paned:resize-end-child property
 func (p paned) SetResizeEndChild(resize bool) {
 	var arg0 *C.GtkPaned
 	var arg1 C.gboolean
@@ -19925,7 +19340,7 @@ func (p paned) SetResizeEndChild(resize bool) {
 	C.gtk_paned_set_resize_end_child(arg0, arg1)
 }
 
-// SetResizeStartChild sets the `GtkPaned`:resize-start-child property
+// SetResizeStartChild sets the Paned:resize-start-child property
 func (p paned) SetResizeStartChild(resize bool) {
 	var arg0 *C.GtkPaned
 	var arg1 C.gboolean
@@ -19938,7 +19353,7 @@ func (p paned) SetResizeStartChild(resize bool) {
 	C.gtk_paned_set_resize_start_child(arg0, arg1)
 }
 
-// SetShrinkEndChild sets the `GtkPaned`:shrink-end-child property
+// SetShrinkEndChild sets the Paned:shrink-end-child property
 func (p paned) SetShrinkEndChild(resize bool) {
 	var arg0 *C.GtkPaned
 	var arg1 C.gboolean
@@ -19951,7 +19366,7 @@ func (p paned) SetShrinkEndChild(resize bool) {
 	C.gtk_paned_set_shrink_end_child(arg0, arg1)
 }
 
-// SetShrinkStartChild sets the `GtkPaned`:shrink-start-child property
+// SetShrinkStartChild sets the Paned:shrink-start-child property
 func (p paned) SetShrinkStartChild(resize bool) {
 	var arg0 *C.GtkPaned
 	var arg1 C.gboolean
@@ -19975,7 +19390,7 @@ func (p paned) SetStartChild(child Widget) {
 	C.gtk_paned_set_start_child(arg0, arg1)
 }
 
-// SetWideHandle sets whether the separator should be wide.
+// SetWideHandle sets the Paned:wide-handle property.
 func (p paned) SetWideHandle(wide bool) {
 	var arg0 *C.GtkPaned
 	var arg1 C.gboolean
@@ -19988,93 +19403,90 @@ func (p paned) SetWideHandle(wide bool) {
 	C.gtk_paned_set_wide_handle(arg0, arg1)
 }
 
-// PopoverMenu: `GtkPopoverMenu` is a subclass of `GtkPopover` that implements
-// menu behavior.
+// PopoverMenu: gtkPopoverMenu is a subclass of Popover that treats its children
+// like menus and allows switching between them. It can open submenus as
+// traditional, nested submenus, or in a more touch-friendly sliding fashion.
 //
-// !An example GtkPopoverMenu (menu.png)
-//
-// `GtkPopoverMenu` treats its children like menus and allows switching between
-// them. It can open submenus as traditional, nested submenus, or in a more
-// touch-friendly sliding fashion.
-//
-// `GtkPopoverMenu` is meant to be used primarily with menu models, using
-// [ctor@Gtk.PopoverMenu.new_from_model]. If you need to put other widgets such
-// as a `GtkSpinButton` or a `GtkSwitch` into a popover, you can use
-// [method@Gtk.PopoverMenu.add_child].
-//
-// For more dialog-like behavior, use a plain `GtkPopover`.
+// GtkPopoverMenu is meant to be used primarily with menu models, using
+// gtk_popover_menu_new_from_model(). If you need to put other widgets such as
+// SpinButton or Switch into a popover, use a plain Popover.
 //
 //
 // Menu models
 //
-// The XML format understood by `GtkBuilder` for `GMenuModel` consists of a
-// toplevel `<menu>` element, which contains one or more `<item>` elements. Each
-// `<item>` element contains `<attribute>` and `<link>` elements with a
-// mandatory name attribute. `<link>` elements have the same content model as
-// `<menu>`. Instead of `<link name="submenu>` or `<link name="section">`, you
-// can use `<submenu>` or `<section>` elements.
+// The XML format understood by Builder for Model consists of a toplevel
+// `<menu>` element, which contains one or more `<item>` elements. Each `<item>`
+// element contains `<attribute>` and `<link>` elements with a mandatory name
+// attribute. `<link>` elements have the same content model as `<menu>`. Instead
+// of `<link name="submenu>` or `<link name="section">`, you can use `<submenu>`
+// or `<section>` elements.
 //
-// “`xml <menu id='app-menu'> <section> <item> <attribute name='label'
-// translatable='yes'>_New Window</attribute> <attribute
-// name='action'>app.new</attribute> </item> <item> <attribute name='label'
-// translatable='yes'>_About Sunny</attribute> <attribute
-// name='action'>app.about</attribute> </item> <item> <attribute name='label'
-// translatable='yes'>_Quit</attribute> <attribute
-// name='action'>app.quit</attribute> </item> </section> </menu> “`
+//    <menu id='app-menu'>
+//      <section>
+//        <item>
+//          <attribute name='label' translatable='yes'>_New Window</attribute>
+//          <attribute name='action'>app.new</attribute>
+//        </item>
+//        <item>
+//          <attribute name='label' translatable='yes'>_About Sunny</attribute>
+//          <attribute name='action'>app.about</attribute>
+//        </item>
+//        <item>
+//          <attribute name='label' translatable='yes'>_Quit</attribute>
+//          <attribute name='action'>app.quit</attribute>
+//        </item>
+//      </section>
+//    </menu>
 //
-// Attribute values can be translated using gettext, like other `GtkBuilder`
-// content. `<attribute>` elements can be marked for translation with a
+// Attribute values can be translated using gettext, like other Builder content.
+// `<attribute>` elements can be marked for translation with a
 // `translatable="yes"` attribute. It is also possible to specify message
 // context and translator comments, using the context and comments attributes.
 // To make use of this, the Builder must have been given the gettext domain to
 // use.
 //
-// The following attributes are used when constructing menu items:
+// The following attributes are used when constructing menu items: - "label": a
+// user-visible string to display - "action": the prefixed name of the action to
+// trigger - "target": the parameter to use when activating the action - "icon"
+// and "verb-icon": names of icons that may be displayed - "submenu-action":
+// name of an action that may be used to determine if a submenu can be opened -
+// "hidden-when": a string used to determine when the item will be hidden.
+// Possible values include "action-disabled", "action-missing", "macos-menubar".
+// This is mainly useful for exported menus, see gtk_application_set_menubar().
+// - "custom": a string used to match against the ID of a custom child added
+// with gtk_popover_menu_add_child(), gtk_popover_menu_bar_add_child(), or in
+// the ui file with `<child type="ID">`.
 //
-// - "label": a user-visible string to display - "action": the prefixed name of
-// the action to trigger - "target": the parameter to use when activating the
-// action - "icon" and "verb-icon": names of icons that may be displayed -
-// "submenu-action": name of an action that may be used to determine if a
-// submenu can be opened - "hidden-when": a string used to determine when the
-// item will be hidden. Possible values include "action-disabled",
-// "action-missing", "macos-menubar". This is mainly useful for exported menus,
-// see [method@Gtk.Application.set_menubar]. - "custom": a string used to match
-// against the ID of a custom child added with
-// [method@Gtk.PopoverMenu.add_child], [method@Gtk.PopoverMenuBar.add_child], or
-// in the ui file with `<child type="ID">`.
+// The following attributes are used when constructing sections: - "label": a
+// user-visible string to use as section heading - "display-hint": a string used
+// to determine special formatting for the section. Possible values include
+// "horizontal-buttons", "circular-buttons" and "inline-buttons". They all
+// indicate that section should be displayed as a horizontal row of buttons. -
+// "text-direction": a string used to determine the TextDirection to use when
+// "display-hint" is set to "horizontal-buttons". Possible values include "rtl",
+// "ltr", and "none".
 //
-// The following attributes are used when constructing sections:
-//
-// - "label": a user-visible string to use as section heading - "display-hint":
-// a string used to determine special formatting for the section. Possible
-// values include "horizontal-buttons", "circular-buttons" and "inline-buttons".
-// They all indicate that section should be displayed as a horizontal row of
-// buttons. - "text-direction": a string used to determine the
-// `GtkTextDirection` to use when "display-hint" is set to "horizontal-buttons".
-// Possible values include "rtl", "ltr", and "none".
-//
-// The following attributes are used when constructing submenus:
-//
-// - "label": a user-visible string to display - "icon": icon name to display
+// The following attributes are used when constructing submenus: - "label": a
+// user-visible string to display - "icon": icon name to display
 //
 // Menu items will also show accelerators, which are usually associated with
-// actions via [method@Gtk.Application.set_accels_for_action],
-// [id@gtk_widget_class_add_binding_action] or
-// [method@Gtk.ShortcutController.add_shortcut].
+// actions via gtk_application_set_accels_for_action(),
+// gtk_widget_class_add_binding_action() or
+// gtk_shortcut_controller_add_shortcut().
 //
 //
 // CSS Nodes
 //
-// `GtkPopoverMenu` is just a subclass of `GtkPopover` that adds custom content
-// to it, therefore it has the same CSS nodes. It is one of the cases that add a
-// .menu style class to the popover's main node.
+// PopoverMenu is just a subclass of Popover that adds custom content to it,
+// therefore it has the same CSS nodes. It is one of the cases that add a .menu
+// style class to the popover's main node.
 //
 //
 // Accessibility
 //
-// `GtkPopoverMenu` uses the GTK_ACCESSIBLE_ROLE_MENU role, and its items use
-// the GTK_ACCESSIBLE_ROLE_MENU_ITEM, GTK_ACCESSIBLE_ROLE_MENU_ITEM_CHECKBOX or
-// GTK_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
+// GtkPopoverMenu uses the K_ACCESSIBLE_ROLE_MENU role, and its items use the
+// K_ACCESSIBLE_ROLE_MENU_ITEM, K_ACCESSIBLE_ROLE_MENU_ITEM_CHECKBOX or
+// K_ACCESSIBLE_ROLE_MENU_ITEM_RADIO roles, depending on the action they are
 // connected to.
 type PopoverMenu interface {
 	Popover
@@ -20088,7 +19500,7 @@ type PopoverMenu interface {
 	//
 	// For this to work, the menu model of @popover must have an item with a
 	// `custom` attribute that matches @id.
-	AddChild(child Widget, iD string) bool
+	AddChild(child Widget, id string) bool
 	// MenuModel returns the menu model used to populate the popover.
 	MenuModel() gio.MenuModel
 	// RemoveChild removes a widget that has previously been added with
@@ -20139,13 +19551,14 @@ func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkPopoverMenu
-	var goret PopoverMenu
 
 	cret = C.gtk_popover_menu_new_from_model(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+	var popoverMenu PopoverMenu
 
-	return goret
+	popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+
+	return popoverMenu
 }
 
 // NewPopoverMenuFromModelFull constructs a class PopoverMenu.
@@ -20156,40 +19569,42 @@ func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) Po
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 	arg2 = (C.GtkPopoverMenuFlags)(flags)
 
-	cret := new(C.GtkPopoverMenu)
-	var goret PopoverMenu
+	var cret C.GtkPopoverMenu
 
 	cret = C.gtk_popover_menu_new_from_model_full(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+	var popoverMenu PopoverMenu
 
-	return goret
+	popoverMenu = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+
+	return popoverMenu
 }
 
 // AddChild adds a custom widget to a generated menu.
 //
 // For this to work, the menu model of @popover must have an item with a
 // `custom` attribute that matches @id.
-func (p popoverMenu) AddChild(child Widget, iD string) bool {
+func (p popoverMenu) AddChild(child Widget, id string) bool {
 	var arg0 *C.GtkPopoverMenu
 	var arg1 *C.GtkWidget
 	var arg2 *C.char
 
 	arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = (*C.char)(C.CString(iD))
+	arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_popover_menu_add_child(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MenuModel returns the menu model used to populate the popover.
@@ -20199,13 +19614,14 @@ func (p popoverMenu) MenuModel() gio.MenuModel {
 	arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GMenuModel
-	var goret gio.MenuModel
 
 	cret = C.gtk_popover_menu_get_menu_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	var menuModel gio.MenuModel
 
-	return goret
+	menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+
+	return menuModel
 }
 
 // RemoveChild removes a widget that has previously been added with
@@ -20218,15 +19634,16 @@ func (p popoverMenu) RemoveChild(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_popover_menu_remove_child(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetMenuModel sets a new menu model on @popover.
@@ -20243,20 +19660,20 @@ func (p popoverMenu) SetMenuModel(model gio.MenuModel) {
 	C.gtk_popover_menu_set_menu_model(arg0, arg1)
 }
 
-// PopoverMenuBar: `GtkPopoverMenuBar` presents a horizontal bar of items that
-// pop up popover menus when clicked.
+// PopoverMenuBar: gtkPopoverMenuBar presents a horizontal bar of items that pop
+// up popover menus when clicked.
 //
-// !An example GtkPopoverMenuBar (menubar.png)
-//
-// The only way to create instances of `GtkPopoverMenuBar` is from a
-// `GMenuModel`.
-//
+// The only way to create instances of GtkPopoverMenuBar is from a Model.
 //
 // CSS nodes
 //
-// “` menubar ├── item[.active] ┊ ╰── popover ╰── item ╰── popover “`
+//    menubar
+//    ├── item[.active]
+//    ┊   ╰── popover
+//    ╰── item
+//        ╰── popover
 //
-// `GtkPopoverMenuBar` has a single CSS node with name menubar, below which each
+// GtkPopoverMenuBar has a single CSS node with name menubar, below which each
 // item has its CSS node, and below that the corresponding popover.
 //
 // The item whose popover is currently open gets the .active style class.
@@ -20264,9 +19681,9 @@ func (p popoverMenu) SetMenuModel(model gio.MenuModel) {
 //
 // Accessibility
 //
-// `GtkPopoverMenuBar` uses the GTK_ACCESSIBLE_ROLE_MENU_BAR role, the menu
-// items use the GTK_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
-// GTK_ACCESSIBLE_ROLE_MENU role.
+// GtkPopoverMenuBar uses the K_ACCESSIBLE_ROLE_MENU_BAR role, the menu items
+// use the K_ACCESSIBLE_ROLE_MENU_ITEM role and the menus use the
+// K_ACCESSIBLE_ROLE_MENU role.
 type PopoverMenuBar interface {
 	Widget
 	Accessible
@@ -20277,7 +19694,7 @@ type PopoverMenuBar interface {
 	//
 	// For this to work, the menu model of @bar must have an item with a
 	// `custom` attribute that matches @id.
-	AddChild(child Widget, iD string) bool
+	AddChild(child Widget, id string) bool
 	// MenuModel returns the model from which the contents of @bar are taken.
 	MenuModel() gio.MenuModel
 	// RemoveChild removes a widget that has previously been added with
@@ -20321,39 +19738,41 @@ func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
 	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkPopoverMenuBar
-	var goret PopoverMenuBar
 
 	cret = C.gtk_popover_menu_bar_new_from_model(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenuBar)
+	var popoverMenuBar PopoverMenuBar
 
-	return goret
+	popoverMenuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenuBar)
+
+	return popoverMenuBar
 }
 
 // AddChild adds a custom widget to a generated menubar.
 //
 // For this to work, the menu model of @bar must have an item with a
 // `custom` attribute that matches @id.
-func (b popoverMenuBar) AddChild(child Widget, iD string) bool {
+func (b popoverMenuBar) AddChild(child Widget, id string) bool {
 	var arg0 *C.GtkPopoverMenuBar
 	var arg1 *C.GtkWidget
 	var arg2 *C.char
 
 	arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = (*C.char)(C.CString(iD))
+	arg2 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_popover_menu_bar_add_child(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MenuModel returns the model from which the contents of @bar are taken.
@@ -20363,13 +19782,14 @@ func (b popoverMenuBar) MenuModel() gio.MenuModel {
 	arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GMenuModel
-	var goret gio.MenuModel
 
 	cret = C.gtk_popover_menu_bar_get_menu_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	var menuModel gio.MenuModel
 
-	return goret
+	menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+
+	return menuModel
 }
 
 // RemoveChild removes a widget that has previously been added with
@@ -20382,15 +19802,16 @@ func (b popoverMenuBar) RemoveChild(child Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_popover_menu_bar_remove_child(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetMenuModel sets a menu model from which @bar should take its contents.
@@ -20404,100 +19825,99 @@ func (b popoverMenuBar) SetMenuModel(model gio.MenuModel) {
 	C.gtk_popover_menu_bar_set_menu_model(arg0, arg1)
 }
 
-// PrintContext: a `GtkPrintContext` encapsulates context information that is
-// required when drawing pages for printing.
-//
-// This includes the cairo context and important parameters like page size and
-// resolution. It also lets you easily create [class@Pango.Layout] and
-// [class@Pango.Context] objects that match the font metrics of the cairo
+// PrintContext: a GtkPrintContext encapsulates context information that is
+// required when drawing pages for printing, such as the cairo context and
+// important parameters like page size and resolution. It also lets you easily
+// create Layout and Context objects that match the font metrics of the cairo
 // surface.
 //
-// `GtkPrintContext` objects get passed to the
-// [signal@Gtk.PrintOperation::begin-print],
-// [signal@Gtk.PrintOperation::end-print],
-// [signal@Gtk.PrintOperation::request-page-setup] and
-// [signal@Gtk.PrintOperation::draw-page] signals on the
-// [class@Gtk.PrintOperation] object.
+// GtkPrintContext objects gets passed to the PrintOperation::begin-print,
+// PrintOperation::end-print, PrintOperation::request-page-setup and
+// PrintOperation::draw-page signals on the PrintOperation.
 //
-// Using GtkPrintContext in a ::draw-page callback
+// Using GtkPrintContext in a PrintOperation::draw-page callback
 //
-// “`c static void draw_page (GtkPrintOperation *operation, GtkPrintContext
-// *context, int page_nr) { cairo_t *cr; PangoLayout *layout;
-// PangoFontDescription *desc;
+//    static void
+//    draw_page (GtkPrintOperation *operation,
+//    	   GtkPrintContext   *context,
+//    	   int                page_nr)
+//    {
+//      cairo_t *cr;
+//      PangoLayout *layout;
+//      PangoFontDescription *desc;
 //
-//    cr = gtk_print_context_get_cairo_context (context);
+//      cr = gtk_print_context_get_cairo_context (context);
 //
-//    // Draw a red rectangle, as wide as the paper (inside the margins)
-//    cairo_set_source_rgb (cr, 1.0, 0, 0);
-//    cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
+//      // Draw a red rectangle, as wide as the paper (inside the margins)
+//      cairo_set_source_rgb (cr, 1.0, 0, 0);
+//      cairo_rectangle (cr, 0, 0, gtk_print_context_get_width (context), 50);
 //
-//    cairo_fill (cr);
+//      cairo_fill (cr);
 //
-//    // Draw some lines
-//    cairo_move_to (cr, 20, 10);
-//    cairo_line_to (cr, 40, 20);
-//    cairo_arc (cr, 60, 60, 20, 0, M_PI);
-//    cairo_line_to (cr, 80, 20);
+//      // Draw some lines
+//      cairo_move_to (cr, 20, 10);
+//      cairo_line_to (cr, 40, 20);
+//      cairo_arc (cr, 60, 60, 20, 0, M_PI);
+//      cairo_line_to (cr, 80, 20);
 //
-//    cairo_set_source_rgb (cr, 0, 0, 0);
-//    cairo_set_line_width (cr, 5);
-//    cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
-//    cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
+//      cairo_set_source_rgb (cr, 0, 0, 0);
+//      cairo_set_line_width (cr, 5);
+//      cairo_set_line_cap (cr, CAIRO_LINE_CAP_ROUND);
+//      cairo_set_line_join (cr, CAIRO_LINE_JOIN_ROUND);
 //
-//    cairo_stroke (cr);
+//      cairo_stroke (cr);
 //
-//    // Draw some text
-//    layout = gtk_print_context_create_pango_layout (context);
-//    pango_layout_set_text (layout, "Hello World! Printing is easy", -1);
-//    desc = pango_font_description_from_string ("sans 28");
-//    pango_layout_set_font_description (layout, desc);
-//    pango_font_description_free (desc);
+//      // Draw some text
+//      layout = gtk_print_context_create_pango_layout (context);
+//      pango_layout_set_text (layout, "Hello World! Printing is easy", -1);
+//      desc = pango_font_description_from_string ("sans 28");
+//      pango_layout_set_font_description (layout, desc);
+//      pango_font_description_free (desc);
 //
-//    cairo_move_to (cr, 30, 20);
-//    pango_cairo_layout_path (cr, layout);
+//      cairo_move_to (cr, 30, 20);
+//      pango_cairo_layout_path (cr, layout);
 //
-//    // Font Outline
-//    cairo_set_source_rgb (cr, 0.93, 1.0, 0.47);
-//    cairo_set_line_width (cr, 0.5);
-//    cairo_stroke_preserve (cr);
+//      // Font Outline
+//      cairo_set_source_rgb (cr, 0.93, 1.0, 0.47);
+//      cairo_set_line_width (cr, 0.5);
+//      cairo_stroke_preserve (cr);
 //
-//    // Font Fill
-//    cairo_set_source_rgb (cr, 0, 0.0, 1.0);
-//    cairo_fill (cr);
+//      // Font Fill
+//      cairo_set_source_rgb (cr, 0, 0.0, 1.0);
+//      cairo_fill (cr);
 //
-//    g_object_unref (layout);
-//
-// } “`
+//      g_object_unref (layout);
+//    }
 type PrintContext interface {
 	gextras.Objector
 
-	// CreatePangoContext creates a new `PangoContext` that can be used with the
-	// `GtkPrintContext`.
+	// CreatePangoContext creates a new Context that can be used with the
+	// PrintContext.
 	CreatePangoContext() pango.Context
-	// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
-	// with the `GtkPrintContext`.
+	// CreatePangoLayout creates a new Layout that is suitable for use with the
+	// PrintContext.
 	CreatePangoLayout() pango.Layout
 	// CairoContext obtains the cairo context that is associated with the
-	// `GtkPrintContext`.
+	// PrintContext.
 	CairoContext() *cairo.Context
-	// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
-	// per inch.
+	// DPIX obtains the horizontal resolution of the PrintContext, in dots per
+	// inch.
 	DPIX() float64
-	// DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots
-	// per inch.
+	// DPIY obtains the vertical resolution of the PrintContext, in dots per
+	// inch.
 	DPIY() float64
-	// HardMargins obtains the hardware printer margins of the
-	// `GtkPrintContext`, in units.
+	// HardMargins obtains the hardware printer margins of the PrintContext, in
+	// units.
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-	// Height obtains the height of the `GtkPrintContext`, in pixels.
+	// Height obtains the height of the PrintContext, in pixels.
 	Height() float64
-	// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
-	// of the `GtkPrintContext`.
+	// PageSetup obtains the PageSetup that determines the page dimensions of
+	// the PrintContext.
 	PageSetup() PageSetup
-	// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
-	// `GtkPrintContext`.
+	// PangoFontmap returns a FontMap that is suitable for use with the
+	// PrintContext.
 	PangoFontmap() pango.FontMap
-	// Width obtains the width of the `GtkPrintContext`, in pixels.
+	// Width obtains the width of the PrintContext, in pixels.
 	Width() float64
 	// SetCairoContext sets a new cairo context on a print context.
 	//
@@ -20528,186 +19948,196 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 	return WrapPrintContext(obj), nil
 }
 
-// CreatePangoContext creates a new `PangoContext` that can be used with the
-// `GtkPrintContext`.
+// CreatePangoContext creates a new Context that can be used with the
+// PrintContext.
 func (c printContext) CreatePangoContext() pango.Context {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.PangoContext)
-	var goret pango.Context
+	var cret *C.PangoContext
 
 	cret = C.gtk_print_context_create_pango_context(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	var ret pango.Context
 
-	return goret
+	ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+
+	return ret
 }
 
-// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
-// with the `GtkPrintContext`.
+// CreatePangoLayout creates a new Layout that is suitable for use with the
+// PrintContext.
 func (c printContext) CreatePangoLayout() pango.Layout {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.PangoLayout)
-	var goret pango.Layout
+	var cret *C.PangoLayout
 
 	cret = C.gtk_print_context_create_pango_layout(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	var layout pango.Layout
 
-	return goret
+	layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
+
+	return layout
 }
 
 // CairoContext obtains the cairo context that is associated with the
-// `GtkPrintContext`.
+// PrintContext.
 func (c printContext) CairoContext() *cairo.Context {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.cairo_t
-	var goret *cairo.Context
 
 	cret = C.gtk_print_context_get_cairo_context(arg0)
 
-	goret = cairo.WrapContext(unsafe.Pointer(cret))
+	var ret *cairo.Context
 
-	return goret
+	ret = cairo.WrapContext(unsafe.Pointer(cret))
+
+	return ret
 }
 
-// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
-// per inch.
+// DPIX obtains the horizontal resolution of the PrintContext, in dots per
+// inch.
 func (c printContext) DPIX() float64 {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_context_get_dpi_x(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// DPIY obtains the vertical resolution of the `GtkPrintContext`, in dots
-// per inch.
+// DPIY obtains the vertical resolution of the PrintContext, in dots per
+// inch.
 func (c printContext) DPIY() float64 {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_context_get_dpi_y(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// HardMargins obtains the hardware printer margins of the
-// `GtkPrintContext`, in units.
+// HardMargins obtains the hardware printer margins of the PrintContext, in
+// units.
 func (c printContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(C.double)
-	var ret1 float64
-	arg2 := new(C.double)
-	var ret2 float64
-	arg3 := new(C.double)
-	var ret3 float64
-	arg4 := new(C.double)
-	var ret4 float64
+	var arg1 C.double
+	var arg2 C.double
+	var arg3 C.double
+	var arg4 C.double
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_print_context_get_hard_margins(arg0, arg1, arg2, arg3, arg4)
+	cret = C.gtk_print_context_get_hard_margins(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
-	ret3 = float64(*arg3)
-	ret4 = float64(*arg4)
+	var top float64
+	var bottom float64
+	var left float64
+	var right float64
+	var ok bool
+
+	top = (float64)(arg1)
+	bottom = (float64)(arg2)
+	left = (float64)(arg3)
+	right = (float64)(arg4)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, ret3, ret4, goret
+	return top, bottom, left, right, ok
 }
 
-// Height obtains the height of the `GtkPrintContext`, in pixels.
+// Height obtains the height of the PrintContext, in pixels.
 func (c printContext) Height() float64 {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_context_get_height(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
-// of the `GtkPrintContext`.
+// PageSetup obtains the PageSetup that determines the page dimensions of
+// the PrintContext.
 func (c printContext) PageSetup() PageSetup {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkPageSetup
-	var goret PageSetup
 
 	cret = C.gtk_print_context_get_page_setup(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
-// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
-// `GtkPrintContext`.
+// PangoFontmap returns a FontMap that is suitable for use with the
+// PrintContext.
 func (c printContext) PangoFontmap() pango.FontMap {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.PangoFontMap
-	var goret pango.FontMap
 
 	cret = C.gtk_print_context_get_pango_fontmap(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontMap)
+	var fontMap pango.FontMap
 
-	return goret
+	fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.FontMap)
+
+	return fontMap
 }
 
-// Width obtains the width of the `GtkPrintContext`, in pixels.
+// Width obtains the width of the PrintContext, in pixels.
 func (c printContext) Width() float64 {
 	var arg0 *C.GtkPrintContext
 
 	arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_context_get_width(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // SetCairoContext sets a new cairo context on a print context.
@@ -20729,629 +20159,11 @@ func (c printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY floa
 	C.gtk_print_context_set_cairo_context(arg0, arg1, arg2, arg3)
 }
 
-// PrintJob: a `GtkPrintJob` object represents a job that is sent to a printer.
-//
-// You only need to deal directly with print jobs if you use the non-portable
-// [class@Gtk.PrintUnixDialog] API.
-//
-// Use [method@Gtk.PrintJob.get_surface] to obtain the cairo surface onto which
-// the pages must be drawn. Use [method@Gtk.PrintJob.send] to send the finished
-// job to the printer. If you don’t use cairo `GtkPrintJob` also supports
-// printing of manually generated PostScript, via
-// [method@Gtk.PrintJob.set_source_file].
-type PrintJob interface {
-	gextras.Objector
-
-	// Collate gets whether this job is printed collated.
-	Collate() bool
-	// NUp gets the n-up setting for this job.
-	NUp() uint
-	// NUpLayout gets the n-up layout setting for this job.
-	NUpLayout() NumberUpLayout
-	// NumCopies gets the number of copies of this job.
-	NumCopies() int
-	// PageRanges gets the page ranges for this job.
-	PageRanges() []PageRange
-	// PageSet gets the `GtkPageSet` setting for this job.
-	PageSet() PageSet
-	// Pages gets the `GtkPrintPages` setting for this job.
-	Pages() PrintPages
-	// Printer gets the `GtkPrinter` of the print job.
-	Printer() Printer
-	// Reverse gets whether this job is printed reversed.
-	Reverse() bool
-	// Rotate gets whether the job is printed rotated.
-	Rotate() bool
-	// Scale gets the scale for this job.
-	Scale() float64
-	// Settings gets the `GtkPrintSettings` of the print job.
-	Settings() PrintSettings
-	// Status gets the status of the print job.
-	Status() PrintStatus
-	// Surface gets a cairo surface onto which the pages of the print job should
-	// be rendered.
-	Surface() (surface *cairo.Surface, err error)
-	// Title gets the job title.
-	Title() string
-	// TrackPrintStatus returns whether jobs will be tracked after printing.
-	//
-	// For details, see [method@Gtk.PrintJob.set_track_print_status].
-	TrackPrintStatus() bool
-	// Send sends the print job off to the printer.
-	Send()
-	// SetCollate sets whether this job is printed collated.
-	SetCollate(collate bool)
-	// SetNUp sets the n-up setting for this job.
-	SetNUp(nUp uint)
-	// SetNUpLayout sets the n-up layout setting for this job.
-	SetNUpLayout(layout NumberUpLayout)
-	// SetNumCopies sets the number of copies for this job.
-	SetNumCopies(numCopies int)
-	// SetPageRanges sets the page ranges for this job.
-	SetPageRanges()
-	// SetPageSet sets the `GtkPageSet` setting for this job.
-	SetPageSet(pageSet PageSet)
-	// SetPages sets the `GtkPrintPages` setting for this job.
-	SetPages(pages PrintPages)
-	// SetReverse sets whether this job is printed reversed.
-	SetReverse(reverse bool)
-	// SetRotate sets whether this job is printed rotated.
-	SetRotate(rotate bool)
-	// SetScale sets the scale for this job.
-	//
-	// 1.0 means unscaled.
-	SetScale(scale float64)
-	// SetSourceFd: make the `GtkPrintJob` send an existing document to the
-	// printing system.
-	//
-	// The file can be in any format understood by the platforms printing system
-	// (typically PostScript, but on many platforms PDF may work too). See
-	// [method@Gtk.Printer.accepts_pdf] and [method@Gtk.Printer.accepts_ps].
-	//
-	// This is similar to [method@Gtk.PrintJob.set_source_file], but takes
-	// expects an open file descriptor for the file, instead of a filename.
-	SetSourceFd(fd int) error
-	// SetSourceFile: make the `GtkPrintJob` send an existing document to the
-	// printing system.
-	//
-	// The file can be in any format understood by the platforms printing system
-	// (typically PostScript, but on many platforms PDF may work too). See
-	// [method@Gtk.Printer.accepts_pdf] and [method@Gtk.Printer.accepts_ps].
-	SetSourceFile(filename string) error
-	// SetTrackPrintStatus: if track_status is true, the print job will try to
-	// continue report on the status of the print job in the printer queues and
-	// printer.
-	//
-	// This can allow your application to show things like “out of paper”
-	// issues, and when the print job actually reaches the printer.
-	//
-	// This function is often implemented using some form of polling, so it
-	// should not be enabled unless needed.
-	SetTrackPrintStatus(trackStatus bool)
-}
-
-// printJob implements the PrintJob interface.
-type printJob struct {
-	gextras.Objector
-}
-
-var _ PrintJob = (*printJob)(nil)
-
-// WrapPrintJob wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPrintJob(obj *externglib.Object) PrintJob {
-	return PrintJob{
-		Objector: obj,
-	}
-}
-
-func marshalPrintJob(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPrintJob(obj), nil
-}
-
-// NewPrintJob constructs a class PrintJob.
-func NewPrintJob(title string, printer Printer, settings PrintSettings, pageSetup PageSetup) PrintJob {
-	var arg1 *C.char
-	var arg2 *C.GtkPrinter
-	var arg3 *C.GtkPrintSettings
-	var arg4 *C.GtkPageSetup
-
-	arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkPrinter)(unsafe.Pointer(printer.Native()))
-	arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	arg4 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-
-	cret := new(C.GtkPrintJob)
-	var goret PrintJob
-
-	cret = C.gtk_print_job_new(arg1, arg2, arg3, arg4)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintJob)
-
-	return goret
-}
-
-// Collate gets whether this job is printed collated.
-func (j printJob) Collate() bool {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_job_get_collate(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// NUp gets the n-up setting for this job.
-func (j printJob) NUp() uint {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.guint
-	var goret uint
-
-	cret = C.gtk_print_job_get_n_up(arg0)
-
-	goret = uint(cret)
-
-	return goret
-}
-
-// NUpLayout gets the n-up layout setting for this job.
-func (j printJob) NUpLayout() NumberUpLayout {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.GtkNumberUpLayout
-	var goret NumberUpLayout
-
-	cret = C.gtk_print_job_get_n_up_layout(arg0)
-
-	goret = NumberUpLayout(cret)
-
-	return goret
-}
-
-// NumCopies gets the number of copies of this job.
-func (j printJob) NumCopies() int {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.int
-	var goret int
-
-	cret = C.gtk_print_job_get_num_copies(arg0)
-
-	goret = int(cret)
-
-	return goret
-}
-
-// PageRanges gets the page ranges for this job.
-func (j printJob) PageRanges() []PageRange {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret *C.GtkPageRange
-	var arg1 *C.int
-	var goret []PageRange
-
-	cret = C.gtk_print_job_get_page_ranges(arg0, arg1)
-
-	goret = make([]PageRange, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.GtkPageRange)(ptr.Add(unsafe.Pointer(cret), i))
-		goret[i] = *WrapPageRange(unsafe.Pointer(&src))
-	}
-
-	return ret1, goret
-}
-
-// PageSet gets the `GtkPageSet` setting for this job.
-func (j printJob) PageSet() PageSet {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.GtkPageSet
-	var goret PageSet
-
-	cret = C.gtk_print_job_get_page_set(arg0)
-
-	goret = PageSet(cret)
-
-	return goret
-}
-
-// Pages gets the `GtkPrintPages` setting for this job.
-func (j printJob) Pages() PrintPages {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.GtkPrintPages
-	var goret PrintPages
-
-	cret = C.gtk_print_job_get_pages(arg0)
-
-	goret = PrintPages(cret)
-
-	return goret
-}
-
-// Printer gets the `GtkPrinter` of the print job.
-func (j printJob) Printer() Printer {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret *C.GtkPrinter
-	var goret Printer
-
-	cret = C.gtk_print_job_get_printer(arg0)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Printer)
-
-	return goret
-}
-
-// Reverse gets whether this job is printed reversed.
-func (j printJob) Reverse() bool {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_job_get_reverse(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// Rotate gets whether the job is printed rotated.
-func (j printJob) Rotate() bool {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_job_get_rotate(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// Scale gets the scale for this job.
-func (j printJob) Scale() float64 {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.double
-	var goret float64
-
-	cret = C.gtk_print_job_get_scale(arg0)
-
-	goret = float64(cret)
-
-	return goret
-}
-
-// Settings gets the `GtkPrintSettings` of the print job.
-func (j printJob) Settings() PrintSettings {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret *C.GtkPrintSettings
-	var goret PrintSettings
-
-	cret = C.gtk_print_job_get_settings(arg0)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
-
-	return goret
-}
-
-// Status gets the status of the print job.
-func (j printJob) Status() PrintStatus {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.GtkPrintStatus
-	var goret PrintStatus
-
-	cret = C.gtk_print_job_get_status(arg0)
-
-	goret = PrintStatus(cret)
-
-	return goret
-}
-
-// Surface gets a cairo surface onto which the pages of the print job should
-// be rendered.
-func (j printJob) Surface() (surface *cairo.Surface, err error) {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret *C.cairo_surface_t
-	var goret *cairo.Surface
-	var cerr *C.GError
-	var goerr error
-
-	cret = C.gtk_print_job_get_surface(arg0, &cerr)
-
-	goret = cairo.WrapSurface(unsafe.Pointer(cret))
-	goerr = gerror.Take(unsafe.Pointer(cerr))
-
-	return goret, goerr
-}
-
-// Title gets the job title.
-func (j printJob) Title() string {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret *C.char
-	var goret string
-
-	cret = C.gtk_print_job_get_title(arg0)
-
-	goret = C.GoString(cret)
-
-	return goret
-}
-
-// TrackPrintStatus returns whether jobs will be tracked after printing.
-//
-// For details, see [method@Gtk.PrintJob.set_track_print_status].
-func (j printJob) TrackPrintStatus() bool {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_job_get_track_print_status(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// Send sends the print job off to the printer.
-func (j printJob) Send() {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	C.gtk_print_job_send(arg0, arg1, arg2, arg3)
-}
-
-// SetCollate sets whether this job is printed collated.
-func (j printJob) SetCollate(collate bool) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.gboolean
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	if collate {
-		arg1 = C.gboolean(1)
-	}
-
-	C.gtk_print_job_set_collate(arg0, arg1)
-}
-
-// SetNUp sets the n-up setting for this job.
-func (j printJob) SetNUp(nUp uint) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.guint
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = C.guint(nUp)
-
-	C.gtk_print_job_set_n_up(arg0, arg1)
-}
-
-// SetNUpLayout sets the n-up layout setting for this job.
-func (j printJob) SetNUpLayout(layout NumberUpLayout) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.GtkNumberUpLayout
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = (C.GtkNumberUpLayout)(layout)
-
-	C.gtk_print_job_set_n_up_layout(arg0, arg1)
-}
-
-// SetNumCopies sets the number of copies for this job.
-func (j printJob) SetNumCopies(numCopies int) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.int
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = C.int(numCopies)
-
-	C.gtk_print_job_set_num_copies(arg0, arg1)
-}
-
-// SetPageRanges sets the page ranges for this job.
-func (j printJob) SetPageRanges() {
-	var arg0 *C.GtkPrintJob
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	C.gtk_print_job_set_page_ranges(arg0, arg1, arg2)
-}
-
-// SetPageSet sets the `GtkPageSet` setting for this job.
-func (j printJob) SetPageSet(pageSet PageSet) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.GtkPageSet
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = (C.GtkPageSet)(pageSet)
-
-	C.gtk_print_job_set_page_set(arg0, arg1)
-}
-
-// SetPages sets the `GtkPrintPages` setting for this job.
-func (j printJob) SetPages(pages PrintPages) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.GtkPrintPages
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = (C.GtkPrintPages)(pages)
-
-	C.gtk_print_job_set_pages(arg0, arg1)
-}
-
-// SetReverse sets whether this job is printed reversed.
-func (j printJob) SetReverse(reverse bool) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.gboolean
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	if reverse {
-		arg1 = C.gboolean(1)
-	}
-
-	C.gtk_print_job_set_reverse(arg0, arg1)
-}
-
-// SetRotate sets whether this job is printed rotated.
-func (j printJob) SetRotate(rotate bool) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.gboolean
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	if rotate {
-		arg1 = C.gboolean(1)
-	}
-
-	C.gtk_print_job_set_rotate(arg0, arg1)
-}
-
-// SetScale sets the scale for this job.
-//
-// 1.0 means unscaled.
-func (j printJob) SetScale(scale float64) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.double
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = C.double(scale)
-
-	C.gtk_print_job_set_scale(arg0, arg1)
-}
-
-// SetSourceFd: make the `GtkPrintJob` send an existing document to the
-// printing system.
-//
-// The file can be in any format understood by the platforms printing system
-// (typically PostScript, but on many platforms PDF may work too). See
-// [method@Gtk.Printer.accepts_pdf] and [method@Gtk.Printer.accepts_ps].
-//
-// This is similar to [method@Gtk.PrintJob.set_source_file], but takes
-// expects an open file descriptor for the file, instead of a filename.
-func (j printJob) SetSourceFd(fd int) error {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.int
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = C.int(fd)
-
-	var cerr *C.GError
-	var goerr error
-
-	C.gtk_print_job_set_source_fd(arg0, arg1, &cerr)
-
-	goerr = gerror.Take(unsafe.Pointer(cerr))
-
-	return goerr
-}
-
-// SetSourceFile: make the `GtkPrintJob` send an existing document to the
-// printing system.
-//
-// The file can be in any format understood by the platforms printing system
-// (typically PostScript, but on many platforms PDF may work too). See
-// [method@Gtk.Printer.accepts_pdf] and [method@Gtk.Printer.accepts_ps].
-func (j printJob) SetSourceFile(filename string) error {
-	var arg0 *C.GtkPrintJob
-	var arg1 *C.char
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
-
-	var cerr *C.GError
-	var goerr error
-
-	C.gtk_print_job_set_source_file(arg0, arg1, &cerr)
-
-	goerr = gerror.Take(unsafe.Pointer(cerr))
-
-	return goerr
-}
-
-// SetTrackPrintStatus: if track_status is true, the print job will try to
-// continue report on the status of the print job in the printer queues and
-// printer.
-//
-// This can allow your application to show things like “out of paper”
-// issues, and when the print job actually reaches the printer.
-//
-// This function is often implemented using some form of polling, so it
-// should not be enabled unless needed.
-func (j printJob) SetTrackPrintStatus(trackStatus bool) {
-	var arg0 *C.GtkPrintJob
-	var arg1 C.gboolean
-
-	arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-	if trackStatus {
-		arg1 = C.gboolean(1)
-	}
-
-	C.gtk_print_job_set_track_print_status(arg0, arg1)
-}
-
-// PrintSettings: a `GtkPrintSettings` object represents the settings of a print
-// dialog in a system-independent way.
-//
-// The main use for this object is that once you’ve printed you can get a
-// settings object that represents the settings the user chose, and the next
-// time you print you can pass that object in so that the user doesn’t have to
-// re-set all his settings.
+// PrintSettings: a GtkPrintSettings object represents the settings of a print
+// dialog in a system-independent way. The main use for this object is that once
+// you’ve printed you can get a settings object that represents the settings the
+// user chose, and the next time you print you can pass that object in so that
+// the user doesn’t have to re-set all his settings.
 //
 // Its also possible to enumerate the settings so that you can easily save the
 // settings for the next time your app runs, or even store them in a document.
@@ -21360,7 +20172,7 @@ func (j printJob) SetTrackPrintStatus(trackStatus bool) {
 type PrintSettings interface {
 	gextras.Objector
 
-	// Copy copies a `GtkPrintSettings` object.
+	// Copy copies a PrintSettings object.
 	Copy() PrintSettings
 	// Foreach calls @func for each key-value pair of @settings.
 	Foreach()
@@ -21395,7 +20207,6 @@ type PrintSettings interface {
 	// the default value.
 	IntWithDefault(key string, def int) int
 	// Length returns the value associated with @key, interpreted as a length.
-	//
 	// The returned value is converted to @units.
 	Length(key string, unit Unit) float64
 	// MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
@@ -21409,7 +20220,7 @@ type PrintSettings interface {
 	// NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
 	NumberUpLayout() NumberUpLayout
 	// Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
-	// to a `GtkPageOrientation`.
+	// to a PageOrientation.
 	Orientation() PageOrientation
 	// OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	OutputBin() string
@@ -21421,7 +20232,7 @@ type PrintSettings interface {
 	// to @unit.
 	PaperHeight(unit Unit) float64
 	// PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
-	// a `GtkPaperSize`.
+	// a PaperSize.
 	PaperSize() *PaperSize
 	// PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
 	// @unit.
@@ -21449,18 +20260,13 @@ type PrintSettings interface {
 	UseColor() bool
 	// HasKey returns true, if a value is associated with @key.
 	HasKey(key string) bool
-	// LoadFile reads the print settings from @file_name.
-	//
-	// If the file could not be loaded then error is set to either a
-	// `GFileError` or `GKeyFileError`.
-	//
-	// See [method@Gtk.PrintSettings.to_file].
-	LoadFile(fileName string) error
+	// LoadFile reads the print settings from @file_name. If the file could not
+	// be loaded then error is set to either a Error or FileError. See
+	// gtk_print_settings_to_file().
+	LoadFile(fileName *string) error
 	// LoadKeyFile reads the print settings from the group @group_name in
-	// @key_file.
-	//
-	// If the file could not be loaded then error is set to either a
-	// `GFileError` or `GKeyFileError`.
+	// @key_file. If the file could not be loaded then error is set to either a
+	// Error or FileError.
 	LoadKeyFile(keyFile *glib.KeyFile, groupName string) error
 	// Set associates @value with @key.
 	Set(key string, value string)
@@ -21529,19 +20335,16 @@ type PrintSettings interface {
 	// SetUseColor sets the value of GTK_PRINT_SETTINGS_USE_COLOR.
 	SetUseColor(useColor bool)
 	// ToFile: this function saves the print settings from @settings to
-	// @file_name.
-	//
-	// If the file could not be written then error is set to either a
-	// `GFileError` or `GKeyFileError`.
-	ToFile(fileName string) error
+	// @file_name. If the file could not be loaded then error is set to either a
+	// Error or FileError.
+	ToFile(fileName *string) error
 	// ToGVariant: serialize print settings to an a{sv} variant.
 	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the print settings from @settings to
 	// @key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
-	// Unset removes any value associated with @key.
-	//
-	// This has the same effect as setting the value to nil.
+	// Unset removes any value associated with @key. This has the same effect as
+	// setting the value to nil.
 	Unset(key string)
 }
 
@@ -21568,34 +20371,36 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 
 // NewPrintSettings constructs a class PrintSettings.
 func NewPrintSettings() PrintSettings {
-	cret := new(C.GtkPrintSettings)
-	var goret PrintSettings
+	var cret C.GtkPrintSettings
 
 	cret = C.gtk_print_settings_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	var printSettings PrintSettings
 
-	return goret
+	printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+
+	return printSettings
 }
 
 // NewPrintSettingsFromFile constructs a class PrintSettings.
-func NewPrintSettingsFromFile(fileName string) (printSettings PrintSettings, err error) {
+func NewPrintSettingsFromFile(fileName *string) (printSettings PrintSettings, goerr error) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkPrintSettings)
-	var goret PrintSettings
+	var cret C.GtkPrintSettings
 	var cerr *C.GError
+
+	cret = C.gtk_print_settings_new_from_file(arg1, cerr)
+
+	var printSettings PrintSettings
 	var goerr error
 
-	cret = C.gtk_print_settings_new_from_file(arg1, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return printSettings, goerr
 }
 
 // NewPrintSettingsFromGVariant constructs a class PrintSettings.
@@ -21604,18 +20409,19 @@ func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
 
 	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	cret := new(C.GtkPrintSettings)
-	var goret PrintSettings
+	var cret C.GtkPrintSettings
 
 	cret = C.gtk_print_settings_new_from_gvariant(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	var printSettings PrintSettings
 
-	return goret
+	printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+
+	return printSettings
 }
 
 // NewPrintSettingsFromKeyFile constructs a class PrintSettings.
-func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (printSettings PrintSettings, err error) {
+func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (printSettings PrintSettings, goerr error) {
 	var arg1 *C.GKeyFile
 	var arg2 *C.char
 
@@ -21623,33 +20429,35 @@ func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (print
 	arg2 = (*C.char)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.GtkPrintSettings)
-	var goret PrintSettings
+	var cret C.GtkPrintSettings
 	var cerr *C.GError
+
+	cret = C.gtk_print_settings_new_from_key_file(arg1, arg2, cerr)
+
+	var printSettings PrintSettings
 	var goerr error
 
-	cret = C.gtk_print_settings_new_from_key_file(arg1, arg2, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return printSettings, goerr
 }
 
-// Copy copies a `GtkPrintSettings` object.
+// Copy copies a PrintSettings object.
 func (o printSettings) Copy() PrintSettings {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(o.Native()))
 
-	cret := new(C.GtkPrintSettings)
-	var goret PrintSettings
+	var cret *C.GtkPrintSettings
 
 	cret = C.gtk_print_settings_copy(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	var printSettings PrintSettings
 
-	return goret
+	printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
+
+	return printSettings
 }
 
 // Foreach calls @func for each key-value pair of @settings.
@@ -21658,7 +20466,7 @@ func (s printSettings) Foreach() {
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	C.gtk_print_settings_foreach(arg0, arg1, arg2)
+	C.gtk_print_settings_foreach(arg0)
 }
 
 // Get looks up the string value associated with @key.
@@ -21671,13 +20479,14 @@ func (s printSettings) Get(key string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_settings_get(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Bool returns the boolean represented by the value that is associated with
@@ -21693,15 +20502,16 @@ func (s printSettings) Bool(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_settings_get_bool(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Collate gets the value of GTK_PRINT_SETTINGS_COLLATE.
@@ -21711,15 +20521,16 @@ func (s printSettings) Collate() bool {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_settings_get_collate(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // DefaultSource gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
@@ -21729,13 +20540,14 @@ func (s printSettings) DefaultSource() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_settings_get_default_source(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Dither gets the value of GTK_PRINT_SETTINGS_DITHER.
@@ -21745,13 +20557,14 @@ func (s printSettings) Dither() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_settings_get_dither(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Double returns the double value associated with @key, or 0.
@@ -21764,13 +20577,14 @@ func (s printSettings) Double(key string) float64 {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_settings_get_double(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // DoubleWithDefault returns the floating point number represented by the
@@ -21789,13 +20603,14 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 	arg2 = C.double(def)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_settings_get_double_with_default(arg0, arg1, arg2)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
@@ -21805,13 +20620,14 @@ func (s printSettings) Duplex() PrintDuplex {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPrintDuplex
-	var goret PrintDuplex
 
 	cret = C.gtk_print_settings_get_duplex(arg0)
 
-	goret = PrintDuplex(cret)
+	var printDuplex PrintDuplex
 
-	return goret
+	printDuplex = PrintDuplex(cret)
+
+	return printDuplex
 }
 
 // Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
@@ -21821,13 +20637,14 @@ func (s printSettings) Finishings() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_settings_get_finishings(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Int returns the integer value of @key, or 0.
@@ -21840,13 +20657,14 @@ func (s printSettings) Int(key string) int {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_settings_get_int(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // IntWithDefault returns the value of @key, interpreted as an integer, or
@@ -21862,17 +20680,17 @@ func (s printSettings) IntWithDefault(key string, def int) int {
 	arg2 = C.int(def)
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_settings_get_int_with_default(arg0, arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Length returns the value associated with @key, interpreted as a length.
-//
 // The returned value is converted to @units.
 func (s printSettings) Length(key string, unit Unit) float64 {
 	var arg0 *C.GtkPrintSettings
@@ -21885,13 +20703,14 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 	arg2 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_settings_get_length(arg0, arg1, arg2)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // MediaType gets the value of GTK_PRINT_SETTINGS_MEDIA_TYPE.
@@ -21903,13 +20722,14 @@ func (s printSettings) MediaType() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_settings_get_media_type(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
@@ -21919,13 +20739,14 @@ func (s printSettings) NCopies() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_settings_get_n_copies(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
@@ -21935,13 +20756,14 @@ func (s printSettings) NumberUp() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_settings_get_number_up(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
@@ -21951,30 +20773,32 @@ func (s printSettings) NumberUpLayout() NumberUpLayout {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkNumberUpLayout
-	var goret NumberUpLayout
 
 	cret = C.gtk_print_settings_get_number_up_layout(arg0)
 
-	goret = NumberUpLayout(cret)
+	var numberUpLayout NumberUpLayout
 
-	return goret
+	numberUpLayout = NumberUpLayout(cret)
+
+	return numberUpLayout
 }
 
 // Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
-// to a `GtkPageOrientation`.
+// to a PageOrientation.
 func (s printSettings) Orientation() PageOrientation {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPageOrientation
-	var goret PageOrientation
 
 	cret = C.gtk_print_settings_get_orientation(arg0)
 
-	goret = PageOrientation(cret)
+	var pageOrientation PageOrientation
 
-	return goret
+	pageOrientation = PageOrientation(cret)
+
+	return pageOrientation
 }
 
 // OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
@@ -21984,13 +20808,14 @@ func (s printSettings) OutputBin() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_settings_get_output_bin(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
@@ -22001,16 +20826,17 @@ func (s printSettings) PageRanges() []PageRange {
 
 	var cret *C.GtkPageRange
 	var arg1 *C.int
-	var goret []PageRange
 
-	cret = C.gtk_print_settings_get_page_ranges(arg0, arg1)
+	cret = C.gtk_print_settings_get_page_ranges(arg0)
 
-	ptr.SetSlice(unsafe.Pointer(&goret), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&goret, func(v *[]PageRange) {
+	var pageRanges []PageRange
+
+	ptr.SetSlice(unsafe.Pointer(&pageRanges), unsafe.Pointer(cret), int(arg1))
+	runtime.SetFinalizer(&pageRanges, func(v *[]PageRange) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return ret1, goret
+	return pageRanges
 }
 
 // PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
@@ -22020,13 +20846,14 @@ func (s printSettings) PageSet() PageSet {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPageSet
-	var goret PageSet
 
 	cret = C.gtk_print_settings_get_page_set(arg0)
 
-	goret = PageSet(cret)
+	var pageSet PageSet
 
-	return goret
+	pageSet = PageSet(cret)
+
+	return pageSet
 }
 
 // PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
@@ -22039,33 +20866,35 @@ func (s printSettings) PaperHeight(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_settings_get_paper_height(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
-// a `GtkPaperSize`.
+// a PaperSize.
 func (s printSettings) PaperSize() *PaperSize {
 	var arg0 *C.GtkPrintSettings
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GtkPaperSize)
-	var goret *PaperSize
+	var cret *C.GtkPaperSize
 
 	cret = C.gtk_print_settings_get_paper_size(arg0)
 
-	goret = WrapPaperSize(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *PaperSize) {
+	var paperSize *PaperSize
+
+	paperSize = WrapPaperSize(unsafe.Pointer(cret))
+	runtime.SetFinalizer(paperSize, func(v *PaperSize) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return paperSize
 }
 
 // PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
@@ -22078,13 +20907,14 @@ func (s printSettings) PaperWidth(unit Unit) float64 {
 	arg1 = (C.GtkUnit)(unit)
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_settings_get_paper_width(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
@@ -22094,13 +20924,14 @@ func (s printSettings) PrintPages() PrintPages {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPrintPages
-	var goret PrintPages
 
 	cret = C.gtk_print_settings_get_print_pages(arg0)
 
-	goret = PrintPages(cret)
+	var printPages PrintPages
 
-	return goret
+	printPages = PrintPages(cret)
+
+	return printPages
 }
 
 // Printer: convenience function to obtain the value of
@@ -22111,13 +20942,14 @@ func (s printSettings) Printer() string {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_settings_get_printer(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
@@ -22127,13 +20959,14 @@ func (s printSettings) PrinterLpi() float64 {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_settings_get_printer_lpi(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
@@ -22143,13 +20976,14 @@ func (s printSettings) Quality() PrintQuality {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkPrintQuality
-	var goret PrintQuality
 
 	cret = C.gtk_print_settings_get_quality(arg0)
 
-	goret = PrintQuality(cret)
+	var printQuality PrintQuality
 
-	return goret
+	printQuality = PrintQuality(cret)
+
+	return printQuality
 }
 
 // Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
@@ -22159,13 +20993,14 @@ func (s printSettings) Resolution() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_settings_get_resolution(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
@@ -22175,13 +21010,14 @@ func (s printSettings) ResolutionX() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_settings_get_resolution_x(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
@@ -22191,13 +21027,14 @@ func (s printSettings) ResolutionY() int {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_settings_get_resolution_y(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Reverse gets the value of GTK_PRINT_SETTINGS_REVERSE.
@@ -22207,15 +21044,16 @@ func (s printSettings) Reverse() bool {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_settings_get_reverse(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Scale gets the value of GTK_PRINT_SETTINGS_SCALE.
@@ -22225,13 +21063,14 @@ func (s printSettings) Scale() float64 {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_print_settings_get_scale(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // UseColor gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
@@ -22241,15 +21080,16 @@ func (s printSettings) UseColor() bool {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_settings_get_use_color(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // HasKey returns true, if a value is associated with @key.
@@ -22262,24 +21102,22 @@ func (s printSettings) HasKey(key string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_settings_has_key(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// LoadFile reads the print settings from @file_name.
-//
-// If the file could not be loaded then error is set to either a
-// `GFileError` or `GKeyFileError`.
-//
-// See [method@Gtk.PrintSettings.to_file].
-func (s printSettings) LoadFile(fileName string) error {
+// LoadFile reads the print settings from @file_name. If the file could not
+// be loaded then error is set to either a Error or FileError. See
+// gtk_print_settings_to_file().
+func (s printSettings) LoadFile(fileName *string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.char
 
@@ -22288,9 +21126,10 @@ func (s printSettings) LoadFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_print_settings_load_file(arg0, arg1, &cerr)
+	C.gtk_print_settings_load_file(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -22298,10 +21137,8 @@ func (s printSettings) LoadFile(fileName string) error {
 }
 
 // LoadKeyFile reads the print settings from the group @group_name in
-// @key_file.
-//
-// If the file could not be loaded then error is set to either a
-// `GFileError` or `GKeyFileError`.
+// @key_file. If the file could not be loaded then error is set to either a
+// Error or FileError.
 func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.GKeyFile
@@ -22313,9 +21150,10 @@ func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) erro
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_print_settings_load_key_file(arg0, arg1, arg2, &cerr)
+	C.gtk_print_settings_load_key_file(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -22533,7 +21371,7 @@ func (s printSettings) SetPageRanges() {
 
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	C.gtk_print_settings_set_page_ranges(arg0, arg1, arg2)
+	C.gtk_print_settings_set_page_ranges(arg0)
 }
 
 // SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
@@ -22695,11 +21533,9 @@ func (s printSettings) SetUseColor(useColor bool) {
 }
 
 // ToFile: this function saves the print settings from @settings to
-// @file_name.
-//
-// If the file could not be written then error is set to either a
-// `GFileError` or `GKeyFileError`.
-func (s printSettings) ToFile(fileName string) error {
+// @file_name. If the file could not be loaded then error is set to either a
+// Error or FileError.
+func (s printSettings) ToFile(fileName *string) error {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.char
 
@@ -22708,9 +21544,10 @@ func (s printSettings) ToFile(fileName string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_print_settings_to_file(arg0, arg1, &cerr)
+	C.gtk_print_settings_to_file(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -22724,13 +21561,14 @@ func (s printSettings) ToGVariant() *glib.Variant {
 	arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GVariant
-	var goret *glib.Variant
 
 	cret = C.gtk_print_settings_to_gvariant(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	var variant *glib.Variant
 
-	return goret
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return variant
 }
 
 // ToKeyFile: this function adds the print settings from @settings to
@@ -22748,9 +21586,8 @@ func (s printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	C.gtk_print_settings_to_key_file(arg0, arg1, arg2)
 }
 
-// Unset removes any value associated with @key.
-//
-// This has the same effect as setting the value to nil.
+// Unset removes any value associated with @key. This has the same effect as
+// setting the value to nil.
 func (s printSettings) Unset(key string) {
 	var arg0 *C.GtkPrintSettings
 	var arg1 *C.char
@@ -22762,1036 +21599,37 @@ func (s printSettings) Unset(key string) {
 	C.gtk_print_settings_unset(arg0, arg1)
 }
 
-// PrintUnixDialog: `GtkPrintUnixDialog` implements a print dialog for platforms
-// which don’t provide a native print dialog, like Unix.
-//
-// !An example GtkPrintUnixDialog (printdialog.png)
-//
-// It can be used very much like any other GTK dialog, at the cost of the
-// portability offered by the high-level printing API with
-// [class@Gtk.PrintOperation].
-//
-// In order to print something with `GtkPrintUnixDialog`, you need to use
-// [method@Gtk.PrintUnixDialog.get_selected_printer] to obtain a
-// [class@Gtk.Printer] object and use it to construct a [class@Gtk.PrintJob]
-// using [ctor@Gtk.PrintJob.new].
-//
-// `GtkPrintUnixDialog` uses the following response values:
-//
-// - GTK_RESPONSE_OK: for the “Print” button - GTK_RESPONSE_APPLY: for the
-// “Preview” button - GTK_RESPONSE_CANCEL: for the “Cancel” button
-//
-//
-// GtkPrintUnixDialog as GtkBuildable
-//
-// The `GtkPrintUnixDialog` implementation of the `GtkBuildable` interface
-// exposes its @notebook internal children with the name “notebook”.
-//
-// An example of a `GtkPrintUnixDialog` UI definition fragment:
-//
-// “`xml <object class="GtkPrintUnixDialog" id="dialog1"> <child
-// internal-child="notebook"> <object class="GtkNotebook" id="notebook"> <child>
-// <object type="GtkNotebookPage"> <property name="tab_expand">False</property>
-// <property name="tab_fill">False</property> <property name="tab"> <object
-// class="GtkLabel" id="tablabel"> <property name="label">Tab label</property>
-// </object> </property> <property name="child"> <object class="GtkLabel"
-// id="tabcontent"> <property name="label">Content on notebook tab</property>
-// </object> </property> </object> </child> </object> </child> </object> “`
-//
-//
-// CSS nodes
-//
-// `GtkPrintUnixDialog` has a single CSS node with name window. The style
-// classes dialog and print are added.
-type PrintUnixDialog interface {
-	Dialog
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
-
-	// AddCustomTab adds a custom tab to the print dialog.
-	AddCustomTab(child Widget, tabLabel Widget)
-	// CurrentPage gets the current page of the `GtkPrintUnixDialog`.
-	CurrentPage() int
-	// EmbedPageSetup gets whether to embed the page setup.
-	EmbedPageSetup() bool
-	// HasSelection gets whether there is a selection.
-	HasSelection() bool
-	// ManualCapabilities gets the capabilities that have been set on this
-	// `GtkPrintUnixDialog`.
-	ManualCapabilities() PrintCapabilities
-	// PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
-	PageSetup() PageSetup
-	// PageSetupSet gets whether a page setup was set by the user.
-	PageSetupSet() bool
-	// SelectedPrinter gets the currently selected printer.
-	SelectedPrinter() Printer
-	// Settings gets a new `GtkPrintSettings` object that represents the current
-	// values in the print dialog.
-	//
-	// Note that this creates a new object, and you need to unref it if don’t
-	// want to keep it.
-	Settings() PrintSettings
-	// SupportSelection gets whether the print dialog allows user to print a
-	// selection.
-	SupportSelection() bool
-	// SetCurrentPage sets the current page number.
-	//
-	// If @current_page is not -1, this enables the current page choice for the
-	// range of pages to print.
-	SetCurrentPage(currentPage int)
-	// SetEmbedPageSetup: embed page size combo box and orientation combo box
-	// into page setup page.
-	SetEmbedPageSetup(embed bool)
-	// SetHasSelection sets whether a selection exists.
-	SetHasSelection(hasSelection bool)
-	// SetManualCapabilities: this lets you specify the printing capabilities
-	// your application supports.
-	//
-	// For instance, if you can handle scaling the output then you pass
-	// GTK_PRINT_CAPABILITY_SCALE. If you don’t pass that, then the dialog will
-	// only let you select the scale if the printing system automatically
-	// handles scaling.
-	SetManualCapabilities(capabilities PrintCapabilities)
-	// SetPageSetup sets the page setup of the `GtkPrintUnixDialog`.
-	SetPageSetup(pageSetup PageSetup)
-	// SetSettings sets the `GtkPrintSettings` for the `GtkPrintUnixDialog`.
-	//
-	// Typically, this is used to restore saved print settings from a previous
-	// print operation before the print dialog is shown.
-	SetSettings(settings PrintSettings)
-	// SetSupportSelection sets whether the print dialog allows user to print a
-	// selection.
-	SetSupportSelection(supportSelection bool)
-}
-
-// printUnixDialog implements the PrintUnixDialog interface.
-type printUnixDialog struct {
-	Dialog
-	Accessible
-	Buildable
-	ConstraintTarget
-	Native
-	Root
-	ShortcutManager
-}
-
-var _ PrintUnixDialog = (*printUnixDialog)(nil)
-
-// WrapPrintUnixDialog wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPrintUnixDialog(obj *externglib.Object) PrintUnixDialog {
-	return PrintUnixDialog{
-		Dialog:           WrapDialog(obj),
-		Accessible:       WrapAccessible(obj),
-		Buildable:        WrapBuildable(obj),
-		ConstraintTarget: WrapConstraintTarget(obj),
-		Native:           WrapNative(obj),
-		Root:             WrapRoot(obj),
-		ShortcutManager:  WrapShortcutManager(obj),
-	}
-}
-
-func marshalPrintUnixDialog(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPrintUnixDialog(obj), nil
-}
-
-// NewPrintUnixDialog constructs a class PrintUnixDialog.
-func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
-	var arg1 *C.char
-	var arg2 *C.GtkWindow
-
-	arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var cret C.GtkPrintUnixDialog
-	var goret PrintUnixDialog
-
-	cret = C.gtk_print_unix_dialog_new(arg1, arg2)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintUnixDialog)
-
-	return goret
-}
-
-// AddCustomTab adds a custom tab to the print dialog.
-func (d printUnixDialog) AddCustomTab(child Widget, tabLabel Widget) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 *C.GtkWidget
-	var arg2 *C.GtkWidget
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = (*C.GtkWidget)(unsafe.Pointer(tabLabel.Native()))
-
-	C.gtk_print_unix_dialog_add_custom_tab(arg0, arg1, arg2)
-}
-
-// CurrentPage gets the current page of the `GtkPrintUnixDialog`.
-func (d printUnixDialog) CurrentPage() int {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret C.int
-	var goret int
-
-	cret = C.gtk_print_unix_dialog_get_current_page(arg0)
-
-	goret = int(cret)
-
-	return goret
-}
-
-// EmbedPageSetup gets whether to embed the page setup.
-func (d printUnixDialog) EmbedPageSetup() bool {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_unix_dialog_get_embed_page_setup(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// HasSelection gets whether there is a selection.
-func (d printUnixDialog) HasSelection() bool {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_unix_dialog_get_has_selection(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// ManualCapabilities gets the capabilities that have been set on this
-// `GtkPrintUnixDialog`.
-func (d printUnixDialog) ManualCapabilities() PrintCapabilities {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret C.GtkPrintCapabilities
-	var goret PrintCapabilities
-
-	cret = C.gtk_print_unix_dialog_get_manual_capabilities(arg0)
-
-	goret = PrintCapabilities(cret)
-
-	return goret
-}
-
-// PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
-func (d printUnixDialog) PageSetup() PageSetup {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret *C.GtkPageSetup
-	var goret PageSetup
-
-	cret = C.gtk_print_unix_dialog_get_page_setup(arg0)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
-
-	return goret
-}
-
-// PageSetupSet gets whether a page setup was set by the user.
-func (d printUnixDialog) PageSetupSet() bool {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_unix_dialog_get_page_setup_set(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// SelectedPrinter gets the currently selected printer.
-func (d printUnixDialog) SelectedPrinter() Printer {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret *C.GtkPrinter
-	var goret Printer
-
-	cret = C.gtk_print_unix_dialog_get_selected_printer(arg0)
-
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Printer)
-
-	return goret
-}
-
-// Settings gets a new `GtkPrintSettings` object that represents the current
-// values in the print dialog.
-//
-// Note that this creates a new object, and you need to unref it if don’t
-// want to keep it.
-func (d printUnixDialog) Settings() PrintSettings {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	cret := new(C.GtkPrintSettings)
-	var goret PrintSettings
-
-	cret = C.gtk_print_unix_dialog_get_settings(arg0)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintSettings)
-
-	return goret
-}
-
-// SupportSelection gets whether the print dialog allows user to print a
-// selection.
-func (d printUnixDialog) SupportSelection() bool {
-	var arg0 *C.GtkPrintUnixDialog
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_print_unix_dialog_get_support_selection(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// SetCurrentPage sets the current page number.
-//
-// If @current_page is not -1, this enables the current page choice for the
-// range of pages to print.
-func (d printUnixDialog) SetCurrentPage(currentPage int) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 C.int
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(currentPage)
-
-	C.gtk_print_unix_dialog_set_current_page(arg0, arg1)
-}
-
-// SetEmbedPageSetup: embed page size combo box and orientation combo box
-// into page setup page.
-func (d printUnixDialog) SetEmbedPageSetup(embed bool) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 C.gboolean
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	if embed {
-		arg1 = C.gboolean(1)
-	}
-
-	C.gtk_print_unix_dialog_set_embed_page_setup(arg0, arg1)
-}
-
-// SetHasSelection sets whether a selection exists.
-func (d printUnixDialog) SetHasSelection(hasSelection bool) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 C.gboolean
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	if hasSelection {
-		arg1 = C.gboolean(1)
-	}
-
-	C.gtk_print_unix_dialog_set_has_selection(arg0, arg1)
-}
-
-// SetManualCapabilities: this lets you specify the printing capabilities
-// your application supports.
-//
-// For instance, if you can handle scaling the output then you pass
-// GTK_PRINT_CAPABILITY_SCALE. If you don’t pass that, then the dialog will
-// only let you select the scale if the printing system automatically
-// handles scaling.
-func (d printUnixDialog) SetManualCapabilities(capabilities PrintCapabilities) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 C.GtkPrintCapabilities
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (C.GtkPrintCapabilities)(capabilities)
-
-	C.gtk_print_unix_dialog_set_manual_capabilities(arg0, arg1)
-}
-
-// SetPageSetup sets the page setup of the `GtkPrintUnixDialog`.
-func (d printUnixDialog) SetPageSetup(pageSetup PageSetup) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 *C.GtkPageSetup
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-
-	C.gtk_print_unix_dialog_set_page_setup(arg0, arg1)
-}
-
-// SetSettings sets the `GtkPrintSettings` for the `GtkPrintUnixDialog`.
-//
-// Typically, this is used to restore saved print settings from a previous
-// print operation before the print dialog is shown.
-func (d printUnixDialog) SetSettings(settings PrintSettings) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 *C.GtkPrintSettings
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-
-	C.gtk_print_unix_dialog_set_settings(arg0, arg1)
-}
-
-// SetSupportSelection sets whether the print dialog allows user to print a
-// selection.
-func (d printUnixDialog) SetSupportSelection(supportSelection bool) {
-	var arg0 *C.GtkPrintUnixDialog
-	var arg1 C.gboolean
-
-	arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-	if supportSelection {
-		arg1 = C.gboolean(1)
-	}
-
-	C.gtk_print_unix_dialog_set_support_selection(arg0, arg1)
-}
-
-// Printer: a `GtkPrinter` object represents a printer.
-//
-// You only need to deal directly with printers if you use the non-portable
-// [class@Gtk.PrintUnixDialog] API.
-//
-// A `GtkPrinter` allows to get status information about the printer, such as
-// its description, its location, the number of queued jobs, etc. Most
-// importantly, a `GtkPrinter` object can be used to create a
-// [class@Gtk.PrintJob] object, which lets you print to the printer.
-type Printer interface {
-	gextras.Objector
-
-	// AcceptsPDF returns whether the printer accepts input in PDF format.
-	AcceptsPDF() bool
-	// AcceptsPS returns whether the printer accepts input in PostScript format.
-	AcceptsPS() bool
-	// Compare compares two printers.
-	Compare(b Printer) int
-	// Backend returns the backend of the printer.
-	Backend() *PrintBackend
-	// Capabilities returns the printer’s capabilities.
-	//
-	// This is useful when you’re using `GtkPrintUnixDialog`’s
-	// manual-capabilities setting and need to know which settings the printer
-	// can handle and which you must handle yourself.
-	//
-	// This will return 0 unless the printer’s details are available, see
-	// [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	Capabilities() PrintCapabilities
-	// DefaultPageSize returns default page size of @printer.
-	DefaultPageSize() PageSetup
-	// Description gets the description of the printer.
-	Description() string
-	// HardMargins: retrieve the hard margins of @printer.
-	//
-	// These are the margins that define the area at the borders of the paper
-	// that the printer cannot print to.
-	//
-	// Note: This will not succeed unless the printer’s details are available,
-	// see [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
-	// HardMarginsForPaperSize: retrieve the hard margins of @printer for
-	// @paper_size.
-	//
-	// These are the margins that define the area at the borders of the paper
-	// that the printer cannot print to.
-	//
-	// Note: This will not succeed unless the printer’s details are available,
-	// see [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool)
-	// IconName gets the name of the icon to use for the printer.
-	IconName() string
-	// JobCount gets the number of jobs currently queued on the printer.
-	JobCount() int
-	// Location returns a description of the location of the printer.
-	Location() string
-	// Name returns the name of the printer.
-	Name() string
-	// StateMessage returns the state message describing the current state of
-	// the printer.
-	StateMessage() string
-	// HasDetails returns whether the printer details are available.
-	HasDetails() bool
-	// IsAcceptingJobs returns whether the printer is accepting jobs
-	IsAcceptingJobs() bool
-	// IsActive returns whether the printer is currently active (i.e. accepts
-	// new jobs).
-	IsActive() bool
-	// IsDefault returns whether the printer is the default printer.
-	IsDefault() bool
-	// IsPaused returns whether the printer is currently paused.
-	//
-	// A paused printer still accepts jobs, but it is not printing them.
-	IsPaused() bool
-	// IsVirtual returns whether the printer is virtual (i.e. does not represent
-	// actual printer hardware, but something like a CUPS class).
-	IsVirtual() bool
-	// ListPapers lists all the paper sizes @printer supports.
-	//
-	// This will return and empty list unless the printer’s details are
-	// available, see [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	ListPapers() *glib.List
-	// RequestDetails requests the printer details.
-	//
-	// When the details are available, the
-	// [signal@Gtk.Printer::details-acquired] signal will be emitted on
-	// @printer.
-	RequestDetails()
-}
-
-// printer implements the Printer interface.
-type printer struct {
-	gextras.Objector
-}
-
-var _ Printer = (*printer)(nil)
-
-// WrapPrinter wraps a GObject to the right type. It is
-// primarily used internally.
-func WrapPrinter(obj *externglib.Object) Printer {
-	return Printer{
-		Objector: obj,
-	}
-}
-
-func marshalPrinter(p uintptr) (interface{}, error) {
-	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
-	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapPrinter(obj), nil
-}
-
-// NewPrinter constructs a class Printer.
-func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
-	var arg1 *C.char
-	var arg2 *C.GtkPrintBackend
-	var arg3 C.gboolean
-
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkPrintBackend)(unsafe.Pointer(backend.Native()))
-	if virtual_ {
-		arg3 = C.gboolean(1)
-	}
-
-	cret := new(C.GtkPrinter)
-	var goret Printer
-
-	cret = C.gtk_printer_new(arg1, arg2, arg3)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Printer)
-
-	return goret
-}
-
-// AcceptsPDF returns whether the printer accepts input in PDF format.
-func (p printer) AcceptsPDF() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_accepts_pdf(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// AcceptsPS returns whether the printer accepts input in PostScript format.
-func (p printer) AcceptsPS() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_accepts_ps(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// Compare compares two printers.
-func (a printer) Compare(b Printer) int {
-	var arg0 *C.GtkPrinter
-	var arg1 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkPrinter)(unsafe.Pointer(b.Native()))
-
-	var cret C.int
-	var goret int
-
-	cret = C.gtk_printer_compare(arg0, arg1)
-
-	goret = int(cret)
-
-	return goret
-}
-
-// Backend returns the backend of the printer.
-func (p printer) Backend() *PrintBackend {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret *C.GtkPrintBackend
-	var goret *PrintBackend
-
-	cret = C.gtk_printer_get_backend(arg0)
-
-	goret = WrapPrintBackend(unsafe.Pointer(cret))
-
-	return goret
-}
-
-// Capabilities returns the printer’s capabilities.
-//
-// This is useful when you’re using `GtkPrintUnixDialog`’s
-// manual-capabilities setting and need to know which settings the printer
-// can handle and which you must handle yourself.
-//
-// This will return 0 unless the printer’s details are available, see
-// [method@Gtk.Printer.has_details] and
-// [method@Gtk.Printer.request_details].
-func (p printer) Capabilities() PrintCapabilities {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.GtkPrintCapabilities
-	var goret PrintCapabilities
-
-	cret = C.gtk_printer_get_capabilities(arg0)
-
-	goret = PrintCapabilities(cret)
-
-	return goret
-}
-
-// DefaultPageSize returns default page size of @printer.
-func (p printer) DefaultPageSize() PageSetup {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
-
-	cret = C.gtk_printer_get_default_page_size(arg0)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
-
-	return goret
-}
-
-// Description gets the description of the printer.
-func (p printer) Description() string {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret *C.char
-	var goret string
-
-	cret = C.gtk_printer_get_description(arg0)
-
-	goret = C.GoString(cret)
-
-	return goret
-}
-
-// HardMargins: retrieve the hard margins of @printer.
-//
-// These are the margins that define the area at the borders of the paper
-// that the printer cannot print to.
-//
-// Note: This will not succeed unless the printer’s details are available,
-// see [method@Gtk.Printer.has_details] and
-// [method@Gtk.Printer.request_details].
-func (p printer) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	arg1 := new(C.double)
-	var ret1 float64
-	arg2 := new(C.double)
-	var ret2 float64
-	arg3 := new(C.double)
-	var ret3 float64
-	arg4 := new(C.double)
-	var ret4 float64
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_get_hard_margins(arg0, arg1, arg2, arg3, arg4)
-
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
-	ret3 = float64(*arg3)
-	ret4 = float64(*arg4)
-	if cret {
-		goret = true
-	}
-
-	return ret1, ret2, ret3, ret4, goret
-}
-
-// HardMarginsForPaperSize: retrieve the hard margins of @printer for
-// @paper_size.
-//
-// These are the margins that define the area at the borders of the paper
-// that the printer cannot print to.
-//
-// Note: This will not succeed unless the printer’s details are available,
-// see [method@Gtk.Printer.has_details] and
-// [method@Gtk.Printer.request_details].
-func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bottom float64, left float64, right float64, ok bool) {
-	var arg0 *C.GtkPrinter
-	var arg1 *C.GtkPaperSize
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize.Native()))
-
-	arg2 := new(C.double)
-	var ret2 float64
-	arg3 := new(C.double)
-	var ret3 float64
-	arg4 := new(C.double)
-	var ret4 float64
-	arg5 := new(C.double)
-	var ret5 float64
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_get_hard_margins_for_paper_size(arg0, arg1, arg2, arg3, arg4, arg5)
-
-	ret2 = float64(*arg2)
-	ret3 = float64(*arg3)
-	ret4 = float64(*arg4)
-	ret5 = float64(*arg5)
-	if cret {
-		goret = true
-	}
-
-	return ret2, ret3, ret4, ret5, goret
-}
-
-// IconName gets the name of the icon to use for the printer.
-func (p printer) IconName() string {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret *C.char
-	var goret string
-
-	cret = C.gtk_printer_get_icon_name(arg0)
-
-	goret = C.GoString(cret)
-
-	return goret
-}
-
-// JobCount gets the number of jobs currently queued on the printer.
-func (p printer) JobCount() int {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.int
-	var goret int
-
-	cret = C.gtk_printer_get_job_count(arg0)
-
-	goret = int(cret)
-
-	return goret
-}
-
-// Location returns a description of the location of the printer.
-func (p printer) Location() string {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret *C.char
-	var goret string
-
-	cret = C.gtk_printer_get_location(arg0)
-
-	goret = C.GoString(cret)
-
-	return goret
-}
-
-// Name returns the name of the printer.
-func (p printer) Name() string {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret *C.char
-	var goret string
-
-	cret = C.gtk_printer_get_name(arg0)
-
-	goret = C.GoString(cret)
-
-	return goret
-}
-
-// StateMessage returns the state message describing the current state of
-// the printer.
-func (p printer) StateMessage() string {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret *C.char
-	var goret string
-
-	cret = C.gtk_printer_get_state_message(arg0)
-
-	goret = C.GoString(cret)
-
-	return goret
-}
-
-// HasDetails returns whether the printer details are available.
-func (p printer) HasDetails() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_has_details(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// IsAcceptingJobs returns whether the printer is accepting jobs
-func (p printer) IsAcceptingJobs() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_is_accepting_jobs(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// IsActive returns whether the printer is currently active (i.e. accepts
-// new jobs).
-func (p printer) IsActive() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_is_active(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// IsDefault returns whether the printer is the default printer.
-func (p printer) IsDefault() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_is_default(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// IsPaused returns whether the printer is currently paused.
-//
-// A paused printer still accepts jobs, but it is not printing them.
-func (p printer) IsPaused() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_is_paused(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// IsVirtual returns whether the printer is virtual (i.e. does not represent
-// actual printer hardware, but something like a CUPS class).
-func (p printer) IsVirtual() bool {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.gtk_printer_is_virtual(arg0)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
-// ListPapers lists all the paper sizes @printer supports.
-//
-// This will return and empty list unless the printer’s details are
-// available, see [method@Gtk.Printer.has_details] and
-// [method@Gtk.Printer.request_details].
-func (p printer) ListPapers() *glib.List {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	cret := new(C.GList)
-	var goret *glib.List
-
-	cret = C.gtk_printer_list_papers(arg0)
-
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return goret
-}
-
-// RequestDetails requests the printer details.
-//
-// When the details are available, the
-// [signal@Gtk.Printer::details-acquired] signal will be emitted on
-// @printer.
-func (p printer) RequestDetails() {
-	var arg0 *C.GtkPrinter
-
-	arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	C.gtk_printer_request_details(arg0)
-}
-
-// ProgressBar: `GtkProgressBar` is typically used to display the progress of a
-// long running operation.
-//
-// It provides a visual clue that processing is underway. `GtkProgressBar` can
-// be used in two different modes: percentage mode and activity mode.
-//
-// !An example GtkProgressBar (progressbar.png)
+// ProgressBar: the ProgressBar is typically used to display the progress of a
+// long running operation. It provides a visual clue that processing is
+// underway. The GtkProgressBar can be used in two different modes: percentage
+// mode and activity mode.
 //
 // When an application can determine how much work needs to take place (e.g.
 // read a fixed number of bytes from a file) and can monitor its progress, it
-// can use the `GtkProgressBar` in percentage mode and the user sees a growing
-// bar indicating the percentage of the work that has been completed. In this
-// mode, the application is required to call
-// [method@Gtk.ProgressBar.set_fraction] periodically to update the progress
-// bar.
+// can use the GtkProgressBar in percentage mode and the user sees a growing bar
+// indicating the percentage of the work that has been completed. In this mode,
+// the application is required to call gtk_progress_bar_set_fraction()
+// periodically to update the progress bar.
 //
 // When an application has no accurate way of knowing the amount of work to do,
-// it can use the `GtkProgressBar` in activity mode, which shows activity by a
-// block moving back and forth within the progress area. In this mode, the
-// application is required to call [method@Gtk.ProgressBar.pulse] periodically
-// to update the progress bar.
+// it can use the ProgressBar in activity mode, which shows activity by a block
+// moving back and forth within the progress area. In this mode, the application
+// is required to call gtk_progress_bar_pulse() periodically to update the
+// progress bar.
 //
 // There is quite a bit of flexibility provided to control the appearance of the
-// `GtkProgressBar`. Functions are provided to control the orientation of the
-// bar, optional text can be displayed along with the bar, and the step size
-// used in activity mode can be set.
-//
+// ProgressBar. Functions are provided to control the orientation of the bar,
+// optional text can be displayed along with the bar, and the step size used in
+// activity mode can be set.
 //
 // CSS nodes
 //
-// “` progressbar[.osd] ├── [text] ╰── trough[.empty][.full] ╰──
-// progress[.pulse] “`
+//    progressbar[.osd]
+//    ├── [text]
+//    ╰── trough[.empty][.full]
+//        ╰── progress[.pulse]
 //
-// `GtkProgressBar` has a main CSS node with name progressbar and subnodes with
+// GtkProgressBar has a main CSS node with name progressbar and subnodes with
 // names text and trough, of which the latter has a subnode named progress. The
 // text subnode is only present if text is shown. The progress subnode has the
 // style class .pulse when in activity mode. It gets the style classes .left,
@@ -23802,7 +21640,7 @@ func (p printer) RequestDetails() {
 //
 // Accessibility
 //
-// `GtkProgressBar` uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
+// GtkProgressBar uses the K_ACCESSIBLE_ROLE_PROGRESS_BAR role.
 type ProgressBar interface {
 	Widget
 	Accessible
@@ -23810,78 +21648,59 @@ type ProgressBar interface {
 	ConstraintTarget
 	Orientable
 
-	// Ellipsize returns the ellipsizing position of the progress bar.
-	//
-	// See [method@Gtk.ProgressBar.set_ellipsize].
+	// Ellipsize returns the ellipsizing position of the progress bar. See
+	// gtk_progress_bar_set_ellipsize().
 	Ellipsize() pango.EllipsizeMode
 	// Fraction returns the current fraction of the task that’s been completed.
 	Fraction() float64
-	// Inverted returns whether the progress bar is inverted.
+	// Inverted gets the value set by gtk_progress_bar_set_inverted().
 	Inverted() bool
-	// PulseStep retrieves the pulse step.
-	//
-	// See [method@Gtk.ProgressBar.set_pulse_step].
+	// PulseStep retrieves the pulse step set with
+	// gtk_progress_bar_set_pulse_step().
 	PulseStep() float64
-	// ShowText returns whether the `GtkProgressBar` shows text.
-	//
-	// See [method@Gtk.ProgressBar.set_show_text].
+	// ShowText gets the value of the ProgressBar:show-text property. See
+	// gtk_progress_bar_set_show_text().
 	ShowText() bool
-	// Text retrieves the text that is displayed with the progress bar.
-	//
-	// The return value is a reference to the text, not a copy of it, so will
-	// become invalid if you change the text in the progress bar.
+	// Text retrieves the text that is displayed with the progress bar, if any,
+	// otherwise nil. The return value is a reference to the text, not a copy of
+	// it, so will become invalid if you change the text in the progress bar.
 	Text() string
 	// Pulse indicates that some progress has been made, but you don’t know how
-	// much.
-	//
-	// Causes the progress bar to enter “activity mode,” where a block bounces
-	// back and forth. Each call to [method@Gtk.ProgressBar.pulse] causes the
+	// much. Causes the progress bar to enter “activity mode,” where a block
+	// bounces back and forth. Each call to gtk_progress_bar_pulse() causes the
 	// block to move by a little bit (the amount of movement per pulse is
-	// determined by [method@Gtk.ProgressBar.set_pulse_step]).
+	// determined by gtk_progress_bar_set_pulse_step()).
 	Pulse()
-	// SetEllipsize sets the mode used to ellipsize the text.
-	//
-	// The text is ellipsized if there is not enough space to render the entire
-	// string.
+	// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") the
+	// text if there is not enough space to render the entire string.
 	SetEllipsize(mode pango.EllipsizeMode)
 	// SetFraction causes the progress bar to “fill in” the given fraction of
-	// the bar.
-	//
-	// The fraction should be between 0.0 and 1.0, inclusive.
+	// the bar. The fraction should be between 0.0 and 1.0, inclusive.
 	SetFraction(fraction float64)
-	// SetInverted sets whether the progress bar is inverted.
-	//
-	// Progress bars normally grow from top to bottom or left to right. Inverted
-	// progress bars grow in the opposite direction.
+	// SetInverted progress bars normally grow from top to bottom or left to
+	// right. Inverted progress bars grow in the opposite direction.
 	SetInverted(inverted bool)
 	// SetPulseStep sets the fraction of total progress bar length to move the
-	// bouncing block.
-	//
-	// The bouncing block is moved when [method@Gtk.ProgressBar.pulse] is
-	// called.
+	// bouncing block for each call to gtk_progress_bar_pulse().
 	SetPulseStep(fraction float64)
 	// SetShowText sets whether the progress bar will show text next to the bar.
-	//
-	// The shown text is either the value of the [property@Gtk.ProgressBar:text]
-	// property or, if that is nil, the [property@Gtk.ProgressBar:fraction]
-	// value, as a percentage.
+	// The shown text is either the value of the ProgressBar:text property or,
+	// if that is nil, the ProgressBar:fraction value, as a percentage.
 	//
 	// To make a progress bar that is styled and sized suitably for containing
-	// text (even if the actual text is blank), set
-	// [property@Gtk.ProgressBar:show-text] to true and
-	// [property@Gtk.ProgressBar:text] to the empty string (not nil).
+	// text (even if the actual text is blank), set ProgressBar:show-text to
+	// true and ProgressBar:text to the empty string (not nil).
 	SetShowText(showText bool)
 	// SetText causes the given @text to appear next to the progress bar.
 	//
-	// If @text is nil and [property@Gtk.ProgressBar:show-text] is true, the
-	// current value of [property@Gtk.ProgressBar:fraction] will be displayed as
-	// a percentage.
+	// If @text is nil and ProgressBar:show-text is true, the current value of
+	// ProgressBar:fraction will be displayed as a percentage.
 	//
-	// If @text is non-nil and [property@Gtk.ProgressBar:show-text] is true, the
-	// text will be displayed. In this case, it will not display the progress
-	// percentage. If @text is the empty string, the progress bar will still be
-	// styled and sized suitably for containing text, as long as
-	// [property@Gtk.ProgressBar:show-text] is true.
+	// If @text is non-nil and ProgressBar:show-text is true, the text will be
+	// displayed. In this case, it will not display the progress percentage. If
+	// @text is the empty string, the progress bar will still be styled and
+	// sized suitably for containing text, as long as ProgressBar:show-text is
+	// true.
 	SetText(text string)
 }
 
@@ -23917,31 +21736,32 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 // NewProgressBar constructs a class ProgressBar.
 func NewProgressBar() ProgressBar {
 	var cret C.GtkProgressBar
-	var goret ProgressBar
 
 	cret = C.gtk_progress_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProgressBar)
+	var progressBar ProgressBar
 
-	return goret
+	progressBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ProgressBar)
+
+	return progressBar
 }
 
-// Ellipsize returns the ellipsizing position of the progress bar.
-//
-// See [method@Gtk.ProgressBar.set_ellipsize].
+// Ellipsize returns the ellipsizing position of the progress bar. See
+// gtk_progress_bar_set_ellipsize().
 func (p progressBar) Ellipsize() pango.EllipsizeMode {
 	var arg0 *C.GtkProgressBar
 
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret pango.EllipsizeMode
 
 	cret = C.gtk_progress_bar_get_ellipsize(arg0)
 
-	goret = pango.EllipsizeMode(cret)
+	var ellipsizeMode pango.EllipsizeMode
 
-	return goret
+	ellipsizeMode = pango.EllipsizeMode(cret)
+
+	return ellipsizeMode
 }
 
 // Fraction returns the current fraction of the task that’s been completed.
@@ -23951,97 +21771,97 @@ func (p progressBar) Fraction() float64 {
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_progress_bar_get_fraction(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// Inverted returns whether the progress bar is inverted.
+// Inverted gets the value set by gtk_progress_bar_set_inverted().
 func (p progressBar) Inverted() bool {
 	var arg0 *C.GtkProgressBar
 
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_progress_bar_get_inverted(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// PulseStep retrieves the pulse step.
-//
-// See [method@Gtk.ProgressBar.set_pulse_step].
+// PulseStep retrieves the pulse step set with
+// gtk_progress_bar_set_pulse_step().
 func (p progressBar) PulseStep() float64 {
 	var arg0 *C.GtkProgressBar
 
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_progress_bar_get_pulse_step(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// ShowText returns whether the `GtkProgressBar` shows text.
-//
-// See [method@Gtk.ProgressBar.set_show_text].
+// ShowText gets the value of the ProgressBar:show-text property. See
+// gtk_progress_bar_set_show_text().
 func (p progressBar) ShowText() bool {
 	var arg0 *C.GtkProgressBar
 
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_progress_bar_get_show_text(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Text retrieves the text that is displayed with the progress bar.
-//
-// The return value is a reference to the text, not a copy of it, so will
-// become invalid if you change the text in the progress bar.
+// Text retrieves the text that is displayed with the progress bar, if any,
+// otherwise nil. The return value is a reference to the text, not a copy of
+// it, so will become invalid if you change the text in the progress bar.
 func (p progressBar) Text() string {
 	var arg0 *C.GtkProgressBar
 
 	arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_progress_bar_get_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Pulse indicates that some progress has been made, but you don’t know how
-// much.
-//
-// Causes the progress bar to enter “activity mode,” where a block bounces
-// back and forth. Each call to [method@Gtk.ProgressBar.pulse] causes the
+// much. Causes the progress bar to enter “activity mode,” where a block
+// bounces back and forth. Each call to gtk_progress_bar_pulse() causes the
 // block to move by a little bit (the amount of movement per pulse is
-// determined by [method@Gtk.ProgressBar.set_pulse_step]).
+// determined by gtk_progress_bar_set_pulse_step()).
 func (p progressBar) Pulse() {
 	var arg0 *C.GtkProgressBar
 
@@ -24050,10 +21870,8 @@ func (p progressBar) Pulse() {
 	C.gtk_progress_bar_pulse(arg0)
 }
 
-// SetEllipsize sets the mode used to ellipsize the text.
-//
-// The text is ellipsized if there is not enough space to render the entire
-// string.
+// SetEllipsize sets the mode used to ellipsize (add an ellipsis: "...") the
+// text if there is not enough space to render the entire string.
 func (p progressBar) SetEllipsize(mode pango.EllipsizeMode) {
 	var arg0 *C.GtkProgressBar
 	var arg1 C.PangoEllipsizeMode
@@ -24065,9 +21883,7 @@ func (p progressBar) SetEllipsize(mode pango.EllipsizeMode) {
 }
 
 // SetFraction causes the progress bar to “fill in” the given fraction of
-// the bar.
-//
-// The fraction should be between 0.0 and 1.0, inclusive.
+// the bar. The fraction should be between 0.0 and 1.0, inclusive.
 func (p progressBar) SetFraction(fraction float64) {
 	var arg0 *C.GtkProgressBar
 	var arg1 C.double
@@ -24078,10 +21894,8 @@ func (p progressBar) SetFraction(fraction float64) {
 	C.gtk_progress_bar_set_fraction(arg0, arg1)
 }
 
-// SetInverted sets whether the progress bar is inverted.
-//
-// Progress bars normally grow from top to bottom or left to right. Inverted
-// progress bars grow in the opposite direction.
+// SetInverted progress bars normally grow from top to bottom or left to
+// right. Inverted progress bars grow in the opposite direction.
 func (p progressBar) SetInverted(inverted bool) {
 	var arg0 *C.GtkProgressBar
 	var arg1 C.gboolean
@@ -24095,10 +21909,7 @@ func (p progressBar) SetInverted(inverted bool) {
 }
 
 // SetPulseStep sets the fraction of total progress bar length to move the
-// bouncing block.
-//
-// The bouncing block is moved when [method@Gtk.ProgressBar.pulse] is
-// called.
+// bouncing block for each call to gtk_progress_bar_pulse().
 func (p progressBar) SetPulseStep(fraction float64) {
 	var arg0 *C.GtkProgressBar
 	var arg1 C.double
@@ -24110,15 +21921,12 @@ func (p progressBar) SetPulseStep(fraction float64) {
 }
 
 // SetShowText sets whether the progress bar will show text next to the bar.
-//
-// The shown text is either the value of the [property@Gtk.ProgressBar:text]
-// property or, if that is nil, the [property@Gtk.ProgressBar:fraction]
-// value, as a percentage.
+// The shown text is either the value of the ProgressBar:text property or,
+// if that is nil, the ProgressBar:fraction value, as a percentage.
 //
 // To make a progress bar that is styled and sized suitably for containing
-// text (even if the actual text is blank), set
-// [property@Gtk.ProgressBar:show-text] to true and
-// [property@Gtk.ProgressBar:text] to the empty string (not nil).
+// text (even if the actual text is blank), set ProgressBar:show-text to
+// true and ProgressBar:text to the empty string (not nil).
 func (p progressBar) SetShowText(showText bool) {
 	var arg0 *C.GtkProgressBar
 	var arg1 C.gboolean
@@ -24133,15 +21941,14 @@ func (p progressBar) SetShowText(showText bool) {
 
 // SetText causes the given @text to appear next to the progress bar.
 //
-// If @text is nil and [property@Gtk.ProgressBar:show-text] is true, the
-// current value of [property@Gtk.ProgressBar:fraction] will be displayed as
-// a percentage.
+// If @text is nil and ProgressBar:show-text is true, the current value of
+// ProgressBar:fraction will be displayed as a percentage.
 //
-// If @text is non-nil and [property@Gtk.ProgressBar:show-text] is true, the
-// text will be displayed. In this case, it will not display the progress
-// percentage. If @text is the empty string, the progress bar will still be
-// styled and sized suitably for containing text, as long as
-// [property@Gtk.ProgressBar:show-text] is true.
+// If @text is non-nil and ProgressBar:show-text is true, the text will be
+// displayed. In this case, it will not display the progress percentage. If
+// @text is the empty string, the progress bar will still be styled and
+// sized suitably for containing text, as long as ProgressBar:show-text is
+// true.
 func (p progressBar) SetText(text string) {
 	var arg0 *C.GtkProgressBar
 	var arg1 *C.char
@@ -24153,29 +21960,28 @@ func (p progressBar) SetText(text string) {
 	C.gtk_progress_bar_set_text(arg0, arg1)
 }
 
-// Revealer: a `GtkRevealer` animates the transition of its child from invisible
-// to visible.
+// Revealer: the GtkRevealer widget is a container which animates the transition
+// of its child from invisible to visible.
 //
 // The style of transition can be controlled with
-// [method@Gtk.Revealer.set_transition_type].
+// gtk_revealer_set_transition_type().
 //
-// These animations respect the [property@Gtk.Settings:gtk-enable-animations]
-// setting.
+// These animations respect the Settings:gtk-enable-animations setting.
 //
 //
 // CSS nodes
 //
-// `GtkRevealer` has a single CSS node with name revealer. When styling
-// `GtkRevealer` using CSS, remember that it only hides its contents, not
-// itself. That means applied margin, padding and borders will be visible even
-// when the [property@Gtk.Revealer:reveal-child] property is set to false.
+// GtkRevealer has a single CSS node with name revealer. When styling Revealer
+// using CSS, remember that it only hides its contents, not itself. That means
+// applied margin, padding and borders will be visible even when the
+// Revealer:reveal-child property is set to false.
 //
 //
 // Accessibility
 //
-// `GtkRevealer` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkRevealer uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 //
-// The child of `GtkRevealer`, if set, is always available in the accessibility
+// The child of GtkRevealer, if set, is always available in the accessibility
 // tree, regardless of the state of the revealer widget.
 type Revealer interface {
 	Widget
@@ -24185,16 +21991,15 @@ type Revealer interface {
 
 	// Child gets the child widget of @revealer.
 	Child() Widget
-	// ChildRevealed returns whether the child is fully revealed.
-	//
-	// In other words, this returns whether the transition to the revealed state
-	// is completed.
+	// ChildRevealed returns whether the child is fully revealed, in other words
+	// whether the transition to the revealed state is completed.
 	ChildRevealed() bool
-	// RevealChild returns whether the child is currently revealed.
+	// RevealChild returns whether the child is currently revealed. See
+	// gtk_revealer_set_reveal_child().
 	//
 	// This function returns true as soon as the transition is to the revealed
 	// state is started. To learn whether the child is fully revealed (ie the
-	// transition is completed), use [method@Gtk.Revealer.get_child_revealed].
+	// transition is completed), use gtk_revealer_get_child_revealed().
 	RevealChild() bool
 	// TransitionDuration returns the amount of time (in milliseconds) that
 	// transitions will take.
@@ -24204,7 +22009,7 @@ type Revealer interface {
 	TransitionType() RevealerTransitionType
 	// SetChild sets the child widget of @revealer.
 	SetChild(child Widget)
-	// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
+	// SetRevealChild tells the Revealer to reveal or conceal its child.
 	//
 	// The transition will be animated with the current transition type of
 	// @revealer.
@@ -24212,9 +22017,8 @@ type Revealer interface {
 	// SetTransitionDuration sets the duration that transitions will take.
 	SetTransitionDuration(duration uint)
 	// SetTransitionType sets the type of animation that will be used for
-	// transitions in @revealer.
-	//
-	// Available types include various kinds of fades and slides.
+	// transitions in @revealer. Available types include various kinds of fades
+	// and slides.
 	SetTransitionType(transition RevealerTransitionType)
 }
 
@@ -24248,13 +22052,14 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 // NewRevealer constructs a class Revealer.
 func NewRevealer() Revealer {
 	var cret C.GtkRevealer
-	var goret Revealer
 
 	cret = C.gtk_revealer_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Revealer)
+	var revealer Revealer
 
-	return goret
+	revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Revealer)
+
+	return revealer
 }
 
 // Child gets the child widget of @revealer.
@@ -24264,56 +22069,58 @@ func (r revealer) Child() Widget {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_revealer_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// ChildRevealed returns whether the child is fully revealed.
-//
-// In other words, this returns whether the transition to the revealed state
-// is completed.
+// ChildRevealed returns whether the child is fully revealed, in other words
+// whether the transition to the revealed state is completed.
 func (r revealer) ChildRevealed() bool {
 	var arg0 *C.GtkRevealer
 
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_revealer_get_child_revealed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// RevealChild returns whether the child is currently revealed.
+// RevealChild returns whether the child is currently revealed. See
+// gtk_revealer_set_reveal_child().
 //
 // This function returns true as soon as the transition is to the revealed
 // state is started. To learn whether the child is fully revealed (ie the
-// transition is completed), use [method@Gtk.Revealer.get_child_revealed].
+// transition is completed), use gtk_revealer_get_child_revealed().
 func (r revealer) RevealChild() bool {
 	var arg0 *C.GtkRevealer
 
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_revealer_get_reveal_child(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -24324,13 +22131,14 @@ func (r revealer) TransitionDuration() uint {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_revealer_get_transition_duration(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // TransitionType gets the type of animation that will be used for
@@ -24341,13 +22149,14 @@ func (r revealer) TransitionType() RevealerTransitionType {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.GtkRevealerTransitionType
-	var goret RevealerTransitionType
 
 	cret = C.gtk_revealer_get_transition_type(arg0)
 
-	goret = RevealerTransitionType(cret)
+	var revealerTransitionType RevealerTransitionType
 
-	return goret
+	revealerTransitionType = RevealerTransitionType(cret)
+
+	return revealerTransitionType
 }
 
 // SetChild sets the child widget of @revealer.
@@ -24361,7 +22170,7 @@ func (r revealer) SetChild(child Widget) {
 	C.gtk_revealer_set_child(arg0, arg1)
 }
 
-// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
+// SetRevealChild tells the Revealer to reveal or conceal its child.
 //
 // The transition will be animated with the current transition type of
 // @revealer.
@@ -24389,9 +22198,8 @@ func (r revealer) SetTransitionDuration(duration uint) {
 }
 
 // SetTransitionType sets the type of animation that will be used for
-// transitions in @revealer.
-//
-// Available types include various kinds of fades and slides.
+// transitions in @revealer. Available types include various kinds of fades
+// and slides.
 func (r revealer) SetTransitionType(transition RevealerTransitionType) {
 	var arg0 *C.GtkRevealer
 	var arg1 C.GtkRevealerTransitionType
@@ -24402,45 +22210,42 @@ func (r revealer) SetTransitionType(transition RevealerTransitionType) {
 	C.gtk_revealer_set_transition_type(arg0, arg1)
 }
 
-// Scrollbar: the `GtkScrollbar` widget is a horizontal or vertical scrollbar.
-//
-// !An example GtkScrollbar (scrollbar.png)
+// Scrollbar: the Scrollbar widget is a horizontal or vertical scrollbar,
+// depending on the value of the Orientable:orientation property.
 //
 // Its position and movement are controlled by the adjustment that is passed to
-// or created by [ctor@Gtk.Scrollbar.new]. See [class.Gtk.Adjustment] for more
-// details. The [property@Gtk.Adjustment:value] field sets the position of the
-// thumb and must be between [property@Gtk.Adjustment:lower] and
-// [property@Gtk.Adjustment:upper] - [property@Gtk.Adjustment:page-size]. The
-// [property@Gtk.Adjustment:page-size] represents the size of the visible
-// scrollable area.
-//
-// The fields [property@Gtk.Adjustment:step-increment] and
-// [property@Gtk.Adjustment:page-increment] fields are added to or subtracted
-// from the [property@Gtk.Adjustment:value] when the user asks to move by a step
-// (using e.g. the cursor arrow keys) or by a page (using e.g. the Page Down/Up
-// keys).
-//
+// or created by gtk_scrollbar_new(). See Adjustment for more details. The
+// Adjustment:value field sets the position of the thumb and must be between
+// Adjustment:lower and Adjustment:upper - Adjustment:page-size. The
+// Adjustment:page-size represents the size of the visible scrollable area. The
+// fields Adjustment:step-increment and Adjustment:page-increment fields are
+// added to or subtracted from the Adjustment:value when the user asks to move
+// by a step (using e.g. the cursor arrow keys) or by a page (using e.g. the
+// Page Down/Up keys).
 //
 // CSS nodes
 //
-// “` scrollbar ╰── range[.fine-tune] ╰── trough ╰── slider “`
+//    scrollbar
+//    ╰── range[.fine-tune]
+//        ╰── trough
+//            ╰── slider
 //
-// `GtkScrollbar` has a main CSS node with name scrollbar and a subnode for its
+// GtkScrollbar has a main CSS node with name scrollbar and a subnode for its
 // contents. The main node gets the .horizontal or .vertical style classes
 // applied, depending on the scrollbar's orientation.
 //
 // The range node gets the style class .fine-tune added when the scrollbar is in
 // 'fine-tuning' mode.
 //
-// Other style classes that may be added to scrollbars inside
-// [class@Gtk.ScrolledWindow] include the positional classes (.left, .right,
-// .top, .bottom) and style classes related to overlay scrolling
-// (.overlay-indicator, .dragging, .hovering).
+// Other style classes that may be added to scrollbars inside ScrolledWindow
+// include the positional classes (.left, .right, .top, .bottom) and style
+// classes related to overlay scrolling (.overlay-indicator, .dragging,
+// .hovering).
 //
 //
 // Accessibility
 //
-// `GtkScrollbar` uses the GTK_ACCESSIBLE_ROLE_SCROLLBAR role.
+// GtkScrollbar uses the K_ACCESSIBLE_ROLE_SCROLLBAR role.
 type Scrollbar interface {
 	Widget
 	Accessible
@@ -24492,13 +22297,14 @@ func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkScrollbar
-	var goret Scrollbar
 
 	cret = C.gtk_scrollbar_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
+	var scrollbar Scrollbar
 
-	return goret
+	scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
+
+	return scrollbar
 }
 
 // Adjustment returns the scrollbar's adjustment.
@@ -24508,13 +22314,14 @@ func (s scrollbar) Adjustment() Adjustment {
 	arg0 = (*C.GtkScrollbar)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_scrollbar_get_adjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // SetAdjustment makes the scrollbar use the given adjustment.
@@ -24528,79 +22335,79 @@ func (s scrollbar) SetAdjustment(adjustment Adjustment) {
 	C.gtk_scrollbar_set_adjustment(arg0, arg1)
 }
 
-// ScrolledWindow: `GtkScrolledWindow` is a container that makes its child
-// scrollable.
-//
-// It does so using either internally added scrollbars or externally associated
-// adjustments, and optionally draws a frame around the child.
+// ScrolledWindow: gtkScrolledWindow is a container that accepts a single child
+// widget, makes that child scrollable using either internally added scrollbars
+// or externally associated adjustments, and optionally draws a frame around the
+// child.
 //
 // Widgets with native scrolling support, i.e. those whose classes implement the
-// [iface@Gtk.Scrollable] interface, are added directly. For other types of
-// widget, the class [class@Gtk.Viewport] acts as an adaptor, giving
-// scrollability to other widgets. [method@Gtk.ScrolledWindow.set_child]
-// intelligently accounts for whether or not the added child is a
-// `GtkScrollable`. If it isn’t, then it wraps the child in a `GtkViewport`.
-// Therefore, you can just add any child widget and not worry about the details.
+// Scrollable interface, are added directly. For other types of widget, the
+// class Viewport acts as an adaptor, giving scrollability to other widgets.
+// gtk_scrolled_window_set_child() intelligently accounts for whether or not the
+// added child is a Scrollable. If it isn’t, ScrolledWindow wraps the child in a
+// Viewport and adds that for you. Therefore, you can just add any child widget
+// and not worry about the details.
 //
-// If [method@Gtk.ScrolledWindow.set_child] has added a `GtkViewport` for you,
-// you can remove both your added child widget from the `GtkViewport`, and the
-// `GtkViewport` from the `GtkScrolledWindow`, like this:
+// If gtk_scrolled_window_set_child() has added a Viewport for you, you can
+// remove both your added child widget from the Viewport, and the Viewport from
+// the GtkScrolledWindow, like this:
 //
-// “`c GtkWidget *scrolled_window = gtk_scrolled_window_new (); GtkWidget
-// *child_widget = gtk_button_new ();
+//    GtkWidget *scrolled_window = gtk_scrolled_window_new ();
+//    GtkWidget *child_widget = gtk_button_new ();
 //
-// // GtkButton is not a GtkScrollable, so GtkScrolledWindow will automatically
-// // add a GtkViewport. gtk_box_append (GTK_BOX (scrolled_window),
-// // child_widget);
+//    // GtkButton is not a GtkScrollable, so GtkScrolledWindow will automatically
+//    // add a GtkViewport.
+//    gtk_box_append (GTK_BOX (scrolled_window),
+//                       child_widget);
 //
-// // Either of these will result in child_widget being unparented:
-// // gtk_box_remove (GTK_BOX (scrolled_window), child_widget); // or
-// // gtk_box_remove (GTK_BOX (scrolled_window), gtk_bin_get_child (GTK_BIN
-// // (scrolled_window))); “`
+//    // Either of these will result in child_widget being unparented:
+//    gtk_box_remove (GTK_BOX (scrolled_window),
+//                          child_widget);
+//    // or
+//    gtk_box_remove (GTK_BOX (scrolled_window),
+//                          gtk_bin_get_child (GTK_BIN (scrolled_window)));
 //
-// Unless [property@Gtk.ScrolledWindow:hscrollbar-policy] and
-// [property@Gtk.ScrolledWindow:vscrollbar-policy] are GTK_POLICY_NEVER or
-// GTK_POLICY_EXTERNAL, `GtkScrolledWindow` adds internal `GtkScrollbar` widgets
-// around its child. The scroll position of the child, and if applicable the
-// scrollbars, is controlled by the [property@Gtk.ScrolledWindow:hadjustment]
-// and [property@Gtk.ScrolledWindow:vadjustment] that are associated with the
-// `GtkScrolledWindow`. See the docs on [class@Gtk.Scrollbar] for the details,
-// but note that the “step_increment” and “page_increment” fields are only
-// effective if the policy causes scrollbars to be present.
+// Unless ScrolledWindow:hscrollbar-policy and ScrolledWindow:vscrollbar-policy
+// are GTK_POLICY_NEVER or GTK_POLICY_EXTERNAL, GtkScrolledWindow adds internal
+// Scrollbar widgets around its child. The scroll position of the child, and if
+// applicable the scrollbars, is controlled by the ScrolledWindow:hadjustment
+// and ScrolledWindow:vadjustment that are associated with the
+// GtkScrolledWindow. See the docs on Scrollbar for the details, but note that
+// the “step_increment” and “page_increment” fields are only effective if the
+// policy causes scrollbars to be present.
 //
-// If a `GtkScrolledWindow` doesn’t behave quite as you would like, or doesn’t
+// If a GtkScrolledWindow doesn’t behave quite as you would like, or doesn’t
 // have exactly the right layout, it’s very possible to set up your own
-// scrolling with `GtkScrollbar` and for example a `GtkGrid`.
+// scrolling with Scrollbar and for example a Grid.
 //
 //
 // Touch support
 //
-// `GtkScrolledWindow` has built-in support for touch devices. When a
-// touchscreen is used, swiping will move the scrolled window, and will expose
-// 'kinetic' behavior. This can be turned off with the
-// [property@Gtk.ScrolledWindow:kinetic-scrolling] property if it is undesired.
+// GtkScrolledWindow has built-in support for touch devices. When a touchscreen
+// is used, swiping will move the scrolled window, and will expose 'kinetic'
+// behavior. This can be turned off with the ScrolledWindow:kinetic-scrolling
+// property if it is undesired.
 //
-// `GtkScrolledWindow` also displays visual 'overshoot' indication when the
+// GtkScrolledWindow also displays visual 'overshoot' indication when the
 // content is pulled beyond the end, and this situation can be captured with the
-// [signal@Gtk.ScrolledWindow::edge-overshot] signal.
+// ScrolledWindow::edge-overshot signal.
 //
 // If no mouse device is present, the scrollbars will overlaid as narrow,
 // auto-hiding indicators over the content. If traditional scrollbars are
 // desired although no mouse is present, this behaviour can be turned off with
-// the [property@Gtk.ScrolledWindow:overlay-scrolling] property.
+// the ScrolledWindow:overlay-scrolling property.
 //
 //
 // CSS nodes
 //
-// `GtkScrolledWindow` has a main CSS node with name scrolledwindow. It gets a
-// .frame style class added when [property@Gtk.ScrolledWindow:has-frame] is
-// true.
+// GtkScrolledWindow has a main CSS node with name scrolledwindow. It gets a
+// .frame style class added when ScrolledWindow:has-frame is true.
 //
 // It uses subnodes with names overshoot and undershoot to draw the overflow and
 // underflow indications. These nodes get the .left, .right, .top or .bottom
 // style class added depending on where the indication is drawn.
 //
-// `GtkScrolledWindow` also sets the positional style classes (.left, .right,
+// GtkScrolledWindow also sets the positional style classes (.left, .right,
 // .top, .bottom) and style classes related to overlay scrolling
 // (.overlay-indicator, .dragging, .hovering) on its scrollbars.
 //
@@ -24610,7 +22417,7 @@ func (s scrollbar) SetAdjustment(adjustment Adjustment) {
 //
 // Accessibility
 //
-// `GtkScrolledWindow` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkScrolledWindow uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type ScrolledWindow interface {
 	Widget
 	Accessible
@@ -24619,12 +22426,12 @@ type ScrolledWindow interface {
 
 	// Child gets the child widget of @scrolled_window.
 	Child() Widget
-	// HAdjustment returns the horizontal scrollbar’s adjustment.
-	//
-	// This is the adjustment used to connect the horizontal scrollbar to the
-	// child widget’s horizontal scroll functionality.
+	// HAdjustment returns the horizontal scrollbar’s adjustment, used to
+	// connect the horizontal scrollbar to the child widget’s horizontal scroll
+	// functionality.
 	HAdjustment() Adjustment
-	// HasFrame gets whether the scrolled window draws a frame.
+	// HasFrame gets whether the scrolled window draws a frame. See
+	// gtk_scrolled_window_set_has_frame().
 	HasFrame() bool
 	// HScrollbar returns the horizontal scrollbar of @scrolled_window.
 	HScrollbar() Widget
@@ -24634,21 +22441,22 @@ type ScrolledWindow interface {
 	MaxContentHeight() int
 	// MaxContentWidth returns the maximum content width set.
 	MaxContentWidth() int
-	// MinContentHeight gets the minimal content height of @scrolled_window.
+	// MinContentHeight gets the minimal content height of @scrolled_window, or
+	// -1 if not set.
 	MinContentHeight() int
-	// MinContentWidth gets the minimum content width of @scrolled_window.
+	// MinContentWidth gets the minimum content width of @scrolled_window, or -1
+	// if not set.
 	MinContentWidth() int
 	// OverlayScrolling returns whether overlay scrolling is enabled for this
 	// scrolled window.
 	OverlayScrolling() bool
 	// Placement gets the placement of the contents with respect to the
-	// scrollbars.
+	// scrollbars for the scrolled window. See
+	// gtk_scrolled_window_set_placement().
 	Placement() CornerType
 	// Policy retrieves the current policy values for the horizontal and
-	// vertical scrollbars.
-	//
-	// See [method@Gtk.ScrolledWindow.set_policy].
-	Policy() (hScrollbarPolicy *PolicyType, vScrollbarPolicy *PolicyType)
+	// vertical scrollbars. See gtk_scrolled_window_set_policy().
+	Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 	// PropagateNaturalHeight reports whether the natural height of the child
 	// will be calculated and propagated through the scrolled window’s requested
 	// natural height.
@@ -24657,60 +22465,49 @@ type ScrolledWindow interface {
 	// be calculated and propagated through the scrolled window’s requested
 	// natural width.
 	PropagateNaturalWidth() bool
-	// VAdjustment returns the vertical scrollbar’s adjustment.
-	//
-	// This is the adjustment used to connect the vertical scrollbar to the
-	// child widget’s vertical scroll functionality.
+	// VAdjustment returns the vertical scrollbar’s adjustment, used to connect
+	// the vertical scrollbar to the child widget’s vertical scroll
+	// functionality.
 	VAdjustment() Adjustment
 	// VScrollbar returns the vertical scrollbar of @scrolled_window.
 	VScrollbar() Widget
 	// SetChild sets the child widget of @scrolled_window.
 	SetChild(child Widget)
-	// SetHAdjustment sets the `GtkAdjustment` for the horizontal scrollbar.
-	SetHAdjustment(hAdjustment Adjustment)
+	// SetHAdjustment sets the Adjustment for the horizontal scrollbar.
+	SetHAdjustment(hadjustment Adjustment)
 	// SetHasFrame changes the frame drawn around the contents of
 	// @scrolled_window.
 	SetHasFrame(hasFrame bool)
-	// SetKineticScrolling turns kinetic scrolling on or off.
-	//
-	// Kinetic scrolling only applies to devices with source
-	// GDK_SOURCE_TOUCHSCREEN.
+	// SetKineticScrolling turns kinetic scrolling on or off. Kinetic scrolling
+	// only applies to devices with source GDK_SOURCE_TOUCHSCREEN.
 	SetKineticScrolling(kineticScrolling bool)
 	// SetMaxContentHeight sets the maximum height that @scrolled_window should
-	// keep visible.
-	//
-	// The @scrolled_window will grow up to this height before it starts
-	// scrolling the content.
+	// keep visible. The @scrolled_window will grow up to this height before it
+	// starts scrolling the content.
 	//
 	// It is a programming error to set the maximum content height to a value
-	// smaller than [property@Gtk.ScrolledWindow:min-content-height].
+	// smaller than ScrolledWindow:min-content-height.
 	SetMaxContentHeight(height int)
 	// SetMaxContentWidth sets the maximum width that @scrolled_window should
-	// keep visible.
-	//
-	// The @scrolled_window will grow up to this width before it starts
-	// scrolling the content.
+	// keep visible. The @scrolled_window will grow up to this width before it
+	// starts scrolling the content.
 	//
 	// It is a programming error to set the maximum content width to a value
-	// smaller than [property@Gtk.ScrolledWindow:min-content-width].
+	// smaller than ScrolledWindow:min-content-width.
 	SetMaxContentWidth(width int)
 	// SetMinContentHeight sets the minimum height that @scrolled_window should
-	// keep visible.
-	//
-	// Note that this can and (usually will) be smaller than the minimum size of
-	// the content.
+	// keep visible. Note that this can and (usually will) be smaller than the
+	// minimum size of the content.
 	//
 	// It is a programming error to set the minimum content height to a value
-	// greater than [property@Gtk.ScrolledWindow:max-content-height].
+	// greater than ScrolledWindow:max-content-height.
 	SetMinContentHeight(height int)
 	// SetMinContentWidth sets the minimum width that @scrolled_window should
-	// keep visible.
-	//
-	// Note that this can and (usually will) be smaller than the minimum size of
-	// the content.
+	// keep visible. Note that this can and (usually will) be smaller than the
+	// minimum size of the content.
 	//
 	// It is a programming error to set the minimum content width to a value
-	// greater than [property@Gtk.ScrolledWindow:max-content-width].
+	// greater than ScrolledWindow:max-content-width.
 	SetMinContentWidth(width int)
 	// SetOverlayScrolling enables or disables overlay scrolling for this
 	// scrolled window.
@@ -24720,22 +22517,22 @@ type ScrolledWindow interface {
 	//
 	// The default is GTK_CORNER_TOP_LEFT, meaning the child is in the top left,
 	// with the scrollbars underneath and to the right. Other values in
-	// [enum@Gtk.CornerType] are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT,
-	// and GTK_CORNER_BOTTOM_RIGHT.
+	// CornerType are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT, and
+	// GTK_CORNER_BOTTOM_RIGHT.
 	//
-	// See also [method@Gtk.ScrolledWindow.get_placement] and
-	// [method@Gtk.ScrolledWindow.unset_placement].
+	// See also gtk_scrolled_window_get_placement() and
+	// gtk_scrolled_window_unset_placement().
 	SetPlacement(windowPlacement CornerType)
 	// SetPolicy sets the scrollbar policy for the horizontal and vertical
 	// scrollbars.
 	//
 	// The policy determines when the scrollbar should appear; it is a value
-	// from the [enum@Gtk.PolicyType] enumeration. If GTK_POLICY_ALWAYS, the
-	// scrollbar is always present; if GTK_POLICY_NEVER, the scrollbar is never
-	// present; if GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed
-	// (that is, if the slider part of the bar would be smaller than the trough
-	// — the display is larger than the page size).
-	SetPolicy(hScrollbarPolicy PolicyType, vScrollbarPolicy PolicyType)
+	// from the PolicyType enumeration. If GTK_POLICY_ALWAYS, the scrollbar is
+	// always present; if GTK_POLICY_NEVER, the scrollbar is never present; if
+	// GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is,
+	// if the slider part of the bar would be smaller than the trough — the
+	// display is larger than the page size).
+	SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 	// SetPropagateNaturalHeight sets whether the natural height of the child
 	// should be calculated and propagated through the scrolled window’s
 	// requested natural height.
@@ -24744,13 +22541,14 @@ type ScrolledWindow interface {
 	// should be calculated and propagated through the scrolled window’s
 	// requested natural width.
 	SetPropagateNaturalWidth(propagate bool)
-	// SetVAdjustment sets the `GtkAdjustment` for the vertical scrollbar.
-	SetVAdjustment(vAdjustment Adjustment)
+	// SetVAdjustment sets the Adjustment for the vertical scrollbar.
+	SetVAdjustment(vadjustment Adjustment)
 	// UnsetPlacement unsets the placement of the contents with respect to the
-	// scrollbars.
+	// scrollbars for the scrolled window. If no window placement is set for a
+	// scrolled window, it defaults to GTK_CORNER_TOP_LEFT.
 	//
-	// If no window placement is set for a scrolled window, it defaults to
-	// GTK_CORNER_TOP_LEFT.
+	// See also gtk_scrolled_window_set_placement() and
+	// gtk_scrolled_window_get_placement().
 	UnsetPlacement()
 }
 
@@ -24784,13 +22582,14 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 // NewScrolledWindow constructs a class ScrolledWindow.
 func NewScrolledWindow() ScrolledWindow {
 	var cret C.GtkScrolledWindow
-	var goret ScrolledWindow
 
 	cret = C.gtk_scrolled_window_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ScrolledWindow)
+	var scrolledWindow ScrolledWindow
 
-	return goret
+	scrolledWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ScrolledWindow)
+
+	return scrolledWindow
 }
 
 // Child gets the child widget of @scrolled_window.
@@ -24800,50 +22599,53 @@ func (s scrolledWindow) Child() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_scrolled_window_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// HAdjustment returns the horizontal scrollbar’s adjustment.
-//
-// This is the adjustment used to connect the horizontal scrollbar to the
-// child widget’s horizontal scroll functionality.
+// HAdjustment returns the horizontal scrollbar’s adjustment, used to
+// connect the horizontal scrollbar to the child widget’s horizontal scroll
+// functionality.
 func (s scrolledWindow) HAdjustment() Adjustment {
 	var arg0 *C.GtkScrolledWindow
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_scrolled_window_get_hadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
-// HasFrame gets whether the scrolled window draws a frame.
+// HasFrame gets whether the scrolled window draws a frame. See
+// gtk_scrolled_window_set_has_frame().
 func (s scrolledWindow) HasFrame() bool {
 	var arg0 *C.GtkScrolledWindow
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_scrolled_window_get_has_frame(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // HScrollbar returns the horizontal scrollbar of @scrolled_window.
@@ -24853,13 +22655,14 @@ func (s scrolledWindow) HScrollbar() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_scrolled_window_get_hscrollbar(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // KineticScrolling returns the specified kinetic scrolling behavior.
@@ -24869,15 +22672,16 @@ func (s scrolledWindow) KineticScrolling() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_scrolled_window_get_kinetic_scrolling(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MaxContentHeight returns the maximum content height set.
@@ -24887,13 +22691,14 @@ func (s scrolledWindow) MaxContentHeight() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_scrolled_window_get_max_content_height(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MaxContentWidth returns the maximum content width set.
@@ -24903,45 +22708,50 @@ func (s scrolledWindow) MaxContentWidth() int {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_scrolled_window_get_max_content_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// MinContentHeight gets the minimal content height of @scrolled_window.
+// MinContentHeight gets the minimal content height of @scrolled_window, or
+// -1 if not set.
 func (s scrolledWindow) MinContentHeight() int {
 	var arg0 *C.GtkScrolledWindow
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_scrolled_window_get_min_content_height(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// MinContentWidth gets the minimum content width of @scrolled_window.
+// MinContentWidth gets the minimum content width of @scrolled_window, or -1
+// if not set.
 func (s scrolledWindow) MinContentWidth() int {
 	var arg0 *C.GtkScrolledWindow
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_scrolled_window_get_min_content_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // OverlayScrolling returns whether overlay scrolling is enabled for this
@@ -24952,54 +22762,56 @@ func (s scrolledWindow) OverlayScrolling() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_scrolled_window_get_overlay_scrolling(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Placement gets the placement of the contents with respect to the
-// scrollbars.
+// scrollbars for the scrolled window. See
+// gtk_scrolled_window_set_placement().
 func (s scrolledWindow) Placement() CornerType {
 	var arg0 *C.GtkScrolledWindow
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkCornerType
-	var goret CornerType
 
 	cret = C.gtk_scrolled_window_get_placement(arg0)
 
-	goret = CornerType(cret)
+	var cornerType CornerType
 
-	return goret
+	cornerType = CornerType(cret)
+
+	return cornerType
 }
 
 // Policy retrieves the current policy values for the horizontal and
-// vertical scrollbars.
-//
-// See [method@Gtk.ScrolledWindow.set_policy].
-func (s scrolledWindow) Policy() (hScrollbarPolicy *PolicyType, vScrollbarPolicy *PolicyType) {
+// vertical scrollbars. See gtk_scrolled_window_set_policy().
+func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
 	var arg0 *C.GtkScrolledWindow
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	arg1 := new(C.GtkPolicyType)
-	var ret1 *PolicyType
-	arg2 := new(C.GtkPolicyType)
-	var ret2 *PolicyType
+	var arg1 C.GtkPolicyType
+	var arg2 C.GtkPolicyType
 
-	C.gtk_scrolled_window_get_policy(arg0, arg1, arg2)
+	C.gtk_scrolled_window_get_policy(arg0, &arg1, &arg2)
 
-	ret1 = *PolicyType(arg1)
-	ret2 = *PolicyType(arg2)
+	var hscrollbarPolicy PolicyType
+	var vscrollbarPolicy PolicyType
 
-	return ret1, ret2
+	hscrollbarPolicy = PolicyType(arg1)
+	vscrollbarPolicy = PolicyType(arg2)
+
+	return hscrollbarPolicy, vscrollbarPolicy
 }
 
 // PropagateNaturalHeight reports whether the natural height of the child
@@ -25011,15 +22823,16 @@ func (s scrolledWindow) PropagateNaturalHeight() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_scrolled_window_get_propagate_natural_height(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PropagateNaturalWidth reports whether the natural width of the child will
@@ -25031,34 +22844,35 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_scrolled_window_get_propagate_natural_width(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// VAdjustment returns the vertical scrollbar’s adjustment.
-//
-// This is the adjustment used to connect the vertical scrollbar to the
-// child widget’s vertical scroll functionality.
+// VAdjustment returns the vertical scrollbar’s adjustment, used to connect
+// the vertical scrollbar to the child widget’s vertical scroll
+// functionality.
 func (s scrolledWindow) VAdjustment() Adjustment {
 	var arg0 *C.GtkScrolledWindow
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_scrolled_window_get_vadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // VScrollbar returns the vertical scrollbar of @scrolled_window.
@@ -25068,13 +22882,14 @@ func (s scrolledWindow) VScrollbar() Widget {
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_scrolled_window_get_vscrollbar(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetChild sets the child widget of @scrolled_window.
@@ -25088,13 +22903,13 @@ func (s scrolledWindow) SetChild(child Widget) {
 	C.gtk_scrolled_window_set_child(arg0, arg1)
 }
 
-// SetHAdjustment sets the `GtkAdjustment` for the horizontal scrollbar.
-func (s scrolledWindow) SetHAdjustment(hAdjustment Adjustment) {
+// SetHAdjustment sets the Adjustment for the horizontal scrollbar.
+func (s scrolledWindow) SetHAdjustment(hadjustment Adjustment) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 *C.GtkAdjustment
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hAdjustment.Native()))
+	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
 
 	C.gtk_scrolled_window_set_hadjustment(arg0, arg1)
 }
@@ -25113,10 +22928,8 @@ func (s scrolledWindow) SetHasFrame(hasFrame bool) {
 	C.gtk_scrolled_window_set_has_frame(arg0, arg1)
 }
 
-// SetKineticScrolling turns kinetic scrolling on or off.
-//
-// Kinetic scrolling only applies to devices with source
-// GDK_SOURCE_TOUCHSCREEN.
+// SetKineticScrolling turns kinetic scrolling on or off. Kinetic scrolling
+// only applies to devices with source GDK_SOURCE_TOUCHSCREEN.
 func (s scrolledWindow) SetKineticScrolling(kineticScrolling bool) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 C.gboolean
@@ -25130,13 +22943,11 @@ func (s scrolledWindow) SetKineticScrolling(kineticScrolling bool) {
 }
 
 // SetMaxContentHeight sets the maximum height that @scrolled_window should
-// keep visible.
-//
-// The @scrolled_window will grow up to this height before it starts
-// scrolling the content.
+// keep visible. The @scrolled_window will grow up to this height before it
+// starts scrolling the content.
 //
 // It is a programming error to set the maximum content height to a value
-// smaller than [property@Gtk.ScrolledWindow:min-content-height].
+// smaller than ScrolledWindow:min-content-height.
 func (s scrolledWindow) SetMaxContentHeight(height int) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 C.int
@@ -25148,13 +22959,11 @@ func (s scrolledWindow) SetMaxContentHeight(height int) {
 }
 
 // SetMaxContentWidth sets the maximum width that @scrolled_window should
-// keep visible.
-//
-// The @scrolled_window will grow up to this width before it starts
-// scrolling the content.
+// keep visible. The @scrolled_window will grow up to this width before it
+// starts scrolling the content.
 //
 // It is a programming error to set the maximum content width to a value
-// smaller than [property@Gtk.ScrolledWindow:min-content-width].
+// smaller than ScrolledWindow:min-content-width.
 func (s scrolledWindow) SetMaxContentWidth(width int) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 C.int
@@ -25166,13 +22975,11 @@ func (s scrolledWindow) SetMaxContentWidth(width int) {
 }
 
 // SetMinContentHeight sets the minimum height that @scrolled_window should
-// keep visible.
-//
-// Note that this can and (usually will) be smaller than the minimum size of
-// the content.
+// keep visible. Note that this can and (usually will) be smaller than the
+// minimum size of the content.
 //
 // It is a programming error to set the minimum content height to a value
-// greater than [property@Gtk.ScrolledWindow:max-content-height].
+// greater than ScrolledWindow:max-content-height.
 func (s scrolledWindow) SetMinContentHeight(height int) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 C.int
@@ -25184,13 +22991,11 @@ func (s scrolledWindow) SetMinContentHeight(height int) {
 }
 
 // SetMinContentWidth sets the minimum width that @scrolled_window should
-// keep visible.
-//
-// Note that this can and (usually will) be smaller than the minimum size of
-// the content.
+// keep visible. Note that this can and (usually will) be smaller than the
+// minimum size of the content.
 //
 // It is a programming error to set the minimum content width to a value
-// greater than [property@Gtk.ScrolledWindow:max-content-width].
+// greater than ScrolledWindow:max-content-width.
 func (s scrolledWindow) SetMinContentWidth(width int) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 C.int
@@ -25220,11 +23025,11 @@ func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
 //
 // The default is GTK_CORNER_TOP_LEFT, meaning the child is in the top left,
 // with the scrollbars underneath and to the right. Other values in
-// [enum@Gtk.CornerType] are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT,
-// and GTK_CORNER_BOTTOM_RIGHT.
+// CornerType are GTK_CORNER_TOP_RIGHT, GTK_CORNER_BOTTOM_LEFT, and
+// GTK_CORNER_BOTTOM_RIGHT.
 //
-// See also [method@Gtk.ScrolledWindow.get_placement] and
-// [method@Gtk.ScrolledWindow.unset_placement].
+// See also gtk_scrolled_window_get_placement() and
+// gtk_scrolled_window_unset_placement().
 func (s scrolledWindow) SetPlacement(windowPlacement CornerType) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 C.GtkCornerType
@@ -25239,19 +23044,19 @@ func (s scrolledWindow) SetPlacement(windowPlacement CornerType) {
 // scrollbars.
 //
 // The policy determines when the scrollbar should appear; it is a value
-// from the [enum@Gtk.PolicyType] enumeration. If GTK_POLICY_ALWAYS, the
-// scrollbar is always present; if GTK_POLICY_NEVER, the scrollbar is never
-// present; if GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed
-// (that is, if the slider part of the bar would be smaller than the trough
-// — the display is larger than the page size).
-func (s scrolledWindow) SetPolicy(hScrollbarPolicy PolicyType, vScrollbarPolicy PolicyType) {
+// from the PolicyType enumeration. If GTK_POLICY_ALWAYS, the scrollbar is
+// always present; if GTK_POLICY_NEVER, the scrollbar is never present; if
+// GTK_POLICY_AUTOMATIC, the scrollbar is present only if needed (that is,
+// if the slider part of the bar would be smaller than the trough — the
+// display is larger than the page size).
+func (s scrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 C.GtkPolicyType
 	var arg2 C.GtkPolicyType
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkPolicyType)(hScrollbarPolicy)
-	arg2 = (C.GtkPolicyType)(vScrollbarPolicy)
+	arg1 = (C.GtkPolicyType)(hscrollbarPolicy)
+	arg2 = (C.GtkPolicyType)(vscrollbarPolicy)
 
 	C.gtk_scrolled_window_set_policy(arg0, arg1, arg2)
 }
@@ -25286,22 +23091,23 @@ func (s scrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 	C.gtk_scrolled_window_set_propagate_natural_width(arg0, arg1)
 }
 
-// SetVAdjustment sets the `GtkAdjustment` for the vertical scrollbar.
-func (s scrolledWindow) SetVAdjustment(vAdjustment Adjustment) {
+// SetVAdjustment sets the Adjustment for the vertical scrollbar.
+func (s scrolledWindow) SetVAdjustment(vadjustment Adjustment) {
 	var arg0 *C.GtkScrolledWindow
 	var arg1 *C.GtkAdjustment
 
 	arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vAdjustment.Native()))
+	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	C.gtk_scrolled_window_set_vadjustment(arg0, arg1)
 }
 
 // UnsetPlacement unsets the placement of the contents with respect to the
-// scrollbars.
+// scrollbars for the scrolled window. If no window placement is set for a
+// scrolled window, it defaults to GTK_CORNER_TOP_LEFT.
 //
-// If no window placement is set for a scrolled window, it defaults to
-// GTK_CORNER_TOP_LEFT.
+// See also gtk_scrolled_window_set_placement() and
+// gtk_scrolled_window_get_placement().
 func (s scrolledWindow) UnsetPlacement() {
 	var arg0 *C.GtkScrolledWindow
 
@@ -25310,38 +23116,37 @@ func (s scrolledWindow) UnsetPlacement() {
 	C.gtk_scrolled_window_unset_placement(arg0)
 }
 
-// SearchBar: `GtkSearchBar` is a container made to have a search entry.
-//
-// !An example GtkSearchBar (search-bar.png)
-//
-// It can also contain additional widgets, such as drop-down menus, or buttons.
-// The search bar would appear when a search is started through typing on the
+// SearchBar is a container made to have a search entry (possibly with
+// additional connex widgets, such as drop-down menus, or buttons) built-in. The
+// search bar would appear when a search is started through typing on the
 // keyboard, or the application’s search mode is toggled on.
 //
 // For keyboard presses to start a search, the search bar must be told of a
 // widget to capture key events from through
-// [method@Gtk.SearchBar.set_key_capture_widget]. This widget will typically be
-// the top-level window, or a parent container of the search bar. Common
-// shortcuts such as Ctrl+F should be handled as an application action, or
-// through the menu items.
+// gtk_search_bar_set_key_capture_widget(). This widget will typically be the
+// top-level window, or a parent container of the search bar. Common shortcuts
+// such as Ctrl+F should be handled as an application action, or through the
+// menu items.
 //
 // You will also need to tell the search bar about which entry you are using as
-// your search entry using [method@Gtk.SearchBar.connect_entry].
+// your search entry using gtk_search_bar_connect_entry(). The following example
+// shows you how to create a more complex search entry.
 //
 //
 // Creating a search bar
 //
-// The following example shows you how to create a more complex search entry.
-//
 // A simple example
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/examples/search-bar.c)
 //
-//
 // CSS nodes
 //
-// “` searchbar ╰── revealer ╰── box ├── [child] ╰── [button.close] “`
+//    searchbar
+//    ╰── revealer
+//        ╰── box
+//             ├── [child]
+//             ╰── [button.close]
 //
-// `GtkSearchBar` has a main CSS node with name searchbar. It has a child node
+// GtkSearchBar has a main CSS node with name searchbar. It has a child node
 // with name revealer that contains a node with name box. The box node contains
 // both the CSS node of the child widget as well as an optional button node
 // which gets the .close style class applied.
@@ -25349,19 +23154,17 @@ func (s scrolledWindow) UnsetPlacement() {
 //
 // Accessibility
 //
-// `GtkSearchBar` uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
+// GtkSearchBar uses the GTK_ACCESSIBLE_ROLE_SEARCH role.
 type SearchBar interface {
 	Widget
 	Accessible
 	Buildable
 	ConstraintTarget
 
-	// ConnectEntry connects the `GtkEditable widget passed as the one to be
-	// used in this search bar.
-	//
-	// The entry should be a descendant of the search bar. Calling this function
-	// manually is only required if the entry isn’t the direct child of the
-	// search bar (as in our main example).
+	// ConnectEntry connects the Entry widget passed as the one to be used in
+	// this search bar. The entry should be a descendant of the search bar. This
+	// is only required if the entry isn’t the direct child of the search bar
+	// (as in our main example).
 	ConnectEntry(entry Editable)
 	// Child gets the child widget of @bar.
 	Child() Widget
@@ -25378,20 +23181,12 @@ type SearchBar interface {
 	//
 	// If key events are handled by the search bar, the bar will be shown, and
 	// the entry populated with the entered text.
-	//
-	// Note that despite the name of this function, the events are only
-	// 'captured' in the bubble phase, which means that editable child widgets
-	// of @widget will receive text input before it gets captured. If that is
-	// not desired, you can capture and forward the events yourself with
-	// [method@Gtk.EventControllerKey.forward].
 	SetKeyCaptureWidget(widget Widget)
 	// SetSearchMode switches the search mode on or off.
 	SetSearchMode(searchMode bool)
-	// SetShowCloseButton shows or hides the close button.
-	//
-	// Applications that already have a “search” toggle button should not show a
-	// close button in their search bar, as it duplicates the role of the toggle
-	// button.
+	// SetShowCloseButton shows or hides the close button. Applications that
+	// already have a “search” toggle button should not show a close button in
+	// their search bar, as it duplicates the role of the toggle button.
 	SetShowCloseButton(visible bool)
 }
 
@@ -25425,21 +23220,20 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 // NewSearchBar constructs a class SearchBar.
 func NewSearchBar() SearchBar {
 	var cret C.GtkSearchBar
-	var goret SearchBar
 
 	cret = C.gtk_search_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchBar)
+	var searchBar SearchBar
 
-	return goret
+	searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchBar)
+
+	return searchBar
 }
 
-// ConnectEntry connects the `GtkEditable widget passed as the one to be
-// used in this search bar.
-//
-// The entry should be a descendant of the search bar. Calling this function
-// manually is only required if the entry isn’t the direct child of the
-// search bar (as in our main example).
+// ConnectEntry connects the Entry widget passed as the one to be used in
+// this search bar. The entry should be a descendant of the search bar. This
+// is only required if the entry isn’t the direct child of the search bar
+// (as in our main example).
 func (b searchBar) ConnectEntry(entry Editable) {
 	var arg0 *C.GtkSearchBar
 	var arg1 *C.GtkEditable
@@ -25457,13 +23251,14 @@ func (b searchBar) Child() Widget {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_search_bar_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // KeyCaptureWidget gets the widget that @bar is capturing key events from.
@@ -25473,13 +23268,14 @@ func (b searchBar) KeyCaptureWidget() Widget {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_search_bar_get_key_capture_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SearchMode returns whether the search mode is on or off.
@@ -25489,15 +23285,16 @@ func (b searchBar) SearchMode() bool {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_search_bar_get_search_mode(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowCloseButton returns whether the close button is shown.
@@ -25507,15 +23304,16 @@ func (b searchBar) ShowCloseButton() bool {
 	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_search_bar_get_show_close_button(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetChild sets the child widget of @bar.
@@ -25534,12 +23332,6 @@ func (b searchBar) SetChild(child Widget) {
 //
 // If key events are handled by the search bar, the bar will be shown, and
 // the entry populated with the entered text.
-//
-// Note that despite the name of this function, the events are only
-// 'captured' in the bubble phase, which means that editable child widgets
-// of @widget will receive text input before it gets captured. If that is
-// not desired, you can capture and forward the events yourself with
-// [method@Gtk.EventControllerKey.forward].
 func (b searchBar) SetKeyCaptureWidget(widget Widget) {
 	var arg0 *C.GtkSearchBar
 	var arg1 *C.GtkWidget
@@ -25563,11 +23355,9 @@ func (b searchBar) SetSearchMode(searchMode bool) {
 	C.gtk_search_bar_set_search_mode(arg0, arg1)
 }
 
-// SetShowCloseButton shows or hides the close button.
-//
-// Applications that already have a “search” toggle button should not show a
-// close button in their search bar, as it duplicates the role of the toggle
-// button.
+// SetShowCloseButton shows or hides the close button. Applications that
+// already have a “search” toggle button should not show a close button in
+// their search bar, as it duplicates the role of the toggle button.
 func (b searchBar) SetShowCloseButton(visible bool) {
 	var arg0 *C.GtkSearchBar
 	var arg1 C.gboolean
@@ -25580,13 +23370,9 @@ func (b searchBar) SetShowCloseButton(visible bool) {
 	C.gtk_search_bar_set_show_close_button(arg0, arg1)
 }
 
-// SearchEntry: `GtkSearchEntry` is an entry widget that has been tailored for
-// use as a search entry.
-//
-// The main API for interacting with a `GtkSearchEntry` as entry is the
-// `GtkEditable` interface.
-//
-// !An example GtkSearchEntry (search-entry.png)
+// SearchEntry is an entry widget that has been tailored for use as a search
+// entry. The main aPI for interacting with a GtkSearchEntry as entry is the
+// Editable interface.
 //
 // It will show an inactive symbolic “find” icon when the search entry is empty,
 // and a symbolic “clear” icon when there is text. Clicking on the “clear” icon
@@ -25594,35 +23380,30 @@ func (b searchBar) SetShowCloseButton(visible bool) {
 //
 // To make filtering appear more reactive, it is a good idea to not react to
 // every change in the entry text immediately, but only after a short delay. To
-// support this, `GtkSearchEntry` emits the
-// [signal@Gtk.SearchEntry::search-changed] signal which can be used instead of
-// the [signal@Gtk.Editable::changed] signal.
+// support this, SearchEntry emits the SearchEntry::search-changed signal which
+// can be used instead of the Editable::changed signal.
 //
-// The [signal@Gtk.SearchEntry::previous-match],
-// [signal@Gtk.SearchEntry::next-match] and
-// [signal@Gtk.SearchEntry::stop-search] signals can be used to implement moving
-// between search results and ending the search.
+// The SearchEntry::previous-match, SearchEntry::next-match and
+// SearchEntry::stop-search signals can be used to implement moving between
+// search results and ending the search.
 //
-// Often, `GtkSearchEntry` will be fed events by means of being placed inside a
-// [class@Gtk.SearchBar]. If that is not the case, you can use
-// [method@Gtk.SearchEntry.set_key_capture_widget] to let it capture key input
-// from another widget.
-//
-// `GtkSearchEntry` provides only minimal API and should be used with the
-// [iface@Gtk.Editable] API.
-//
+// Often, GtkSearchEntry will be fed events by means of being placed inside a
+// SearchBar. If that is not the case, you can use
+// gtk_search_entry_set_key_capture_widget() to let it capture key input from
+// another widget.
 //
 // CSS Nodes
 //
-// “` entry.search ╰── text “`
+//    entry.search
+//    ╰── text
 //
-// `GtkSearchEntry` has a single CSS node with name entry that carries a
-// `.search` style class, and the text node is a child of that.
+// GtkSearchEntry has a single CSS node with name entry that carries a .sarch
+// style class, and the text node is a child of that.
 //
 //
 // Accessibility
 //
-// `GtkSearchEntry` uses the GTK_ACCESSIBLE_ROLE_SEARCH_BOX role.
+// GtkSearchEntry uses the K_ACCESSIBLE_ROLE_SEARCH_BOX role.
 type SearchEntry interface {
 	Widget
 	Accessible
@@ -25639,15 +23420,9 @@ type SearchEntry interface {
 	// Key events are consumed by the search entry to start or continue a
 	// search.
 	//
-	// If the entry is part of a `GtkSearchBar`, it is preferable to call
-	// [method@Gtk.SearchBar.set_key_capture_widget] instead, which will reveal
-	// the entry in addition to triggering the search entry.
-	//
-	// Note that despite the name of this function, the events are only
-	// 'captured' in the bubble phase, which means that editable child widgets
-	// of @widget will receive text input before it gets captured. If that is
-	// not desired, you can capture and forward the events yourself with
-	// [method@Gtk.EventControllerKey.forward].
+	// If the entry is part of a SearchBar, it is preferable to call
+	// gtk_search_bar_set_key_capture_widget() instead, which will reveal the
+	// entry in addition to triggering the search entry.
 	SetKeyCaptureWidget(widget Widget)
 }
 
@@ -25683,13 +23458,14 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 // NewSearchEntry constructs a class SearchEntry.
 func NewSearchEntry() SearchEntry {
 	var cret C.GtkSearchEntry
-	var goret SearchEntry
 
 	cret = C.gtk_search_entry_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchEntry)
+	var searchEntry SearchEntry
 
-	return goret
+	searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchEntry)
+
+	return searchEntry
 }
 
 // KeyCaptureWidget gets the widget that @entry is capturing key events
@@ -25700,13 +23476,14 @@ func (e searchEntry) KeyCaptureWidget() Widget {
 	arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_search_entry_get_key_capture_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetKeyCaptureWidget sets @widget as the widget that @entry will capture
@@ -25715,15 +23492,9 @@ func (e searchEntry) KeyCaptureWidget() Widget {
 // Key events are consumed by the search entry to start or continue a
 // search.
 //
-// If the entry is part of a `GtkSearchBar`, it is preferable to call
-// [method@Gtk.SearchBar.set_key_capture_widget] instead, which will reveal
-// the entry in addition to triggering the search entry.
-//
-// Note that despite the name of this function, the events are only
-// 'captured' in the bubble phase, which means that editable child widgets
-// of @widget will receive text input before it gets captured. If that is
-// not desired, you can capture and forward the events yourself with
-// [method@Gtk.EventControllerKey.forward].
+// If the entry is part of a SearchBar, it is preferable to call
+// gtk_search_bar_set_key_capture_widget() instead, which will reveal the
+// entry in addition to triggering the search entry.
 func (e searchEntry) SetKeyCaptureWidget(widget Widget) {
 	var arg0 *C.GtkSearchEntry
 	var arg1 *C.GtkWidget
@@ -25734,23 +23505,21 @@ func (e searchEntry) SetKeyCaptureWidget(widget Widget) {
 	C.gtk_search_entry_set_key_capture_widget(arg0, arg1)
 }
 
-// Separator: `GtkSeparator` is a horizontal or vertical separator widget.
-//
-// !An example GtkSeparator (separators.png)
-//
-// A `GtkSeparator` can be used to group the widgets within a window. It
-// displays a line with a shadow to make it appear sunken into the interface.
+// Separator: gtkSeparator is a horizontal or vertical separator widget,
+// depending on the value of the Orientable:orientation property, used to group
+// the widgets within a window. It displays a line with a shadow to make it
+// appear sunken into the interface.
 //
 //
 // CSS nodes
 //
-// `GtkSeparator` has a single CSS node with name separator. The node gets one
-// of the .horizontal or .vertical style classes.
+// GtkSeparator has a single CSS node with name separator. The node gets one of
+// the .horizontal or .vertical style classes.
 //
 //
 // Accessibility
 //
-// `GtkSeparator` uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
+// GtkSeparator uses the K_ACCESSIBLE_ROLE_SEPARATOR role.
 type Separator interface {
 	Widget
 	Accessible
@@ -25795,16 +23564,17 @@ func NewSeparator(orientation Orientation) Separator {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkSeparator
-	var goret Separator
 
 	cret = C.gtk_separator_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Separator)
+	var separator Separator
 
-	return goret
+	separator = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Separator)
+
+	return separator
 }
 
-// Settings: `GtkSettings` provides a mechanism to share global settings between
+// Settings gtkSettings provide a mechanism to share global settings between
 // applications.
 //
 // On the X window system, this sharing is realized by an XSettings
@@ -25818,27 +23588,25 @@ func NewSeparator(orientation Orientation) Separator {
 // In the absence of these sharing mechanisms, GTK reads default values for
 // settings from `settings.ini` files in `/etc/gtk-4.0`,
 // `$XDG_CONFIG_DIRS/gtk-4.0` and `$XDG_CONFIG_HOME/gtk-4.0`. These files must
-// be valid key files (see `GKeyFile`), and have a section called Settings.
-// Themes can also provide default values for settings by installing a
-// `settings.ini` file next to their `gtk.css` file.
+// be valid key files (see File), and have a section called Settings. Themes can
+// also provide default values for settings by installing a `settings.ini` file
+// next to their `gtk.css` file.
 //
 // Applications can override system-wide settings by setting the property of the
-// `GtkSettings` object with g_object_set(). This should be restricted to
-// special cases though; `GtkSettings` are not meant as an application
-// configuration facility.
+// GtkSettings object with g_object_set(). This should be restricted to special
+// cases though; GtkSettings are not meant as an application configuration
+// facility.
 //
-// There is one `GtkSettings` instance per display. It can be obtained with
-// [type_func@GtkSettings.get_for_display], but in many cases, it is more
-// convenient to use [method@Gtk.Widget.get_settings].
+// There is one GtkSettings instance per display. It can be obtained with
+// gtk_settings_get_for_display(), but in many cases, it is more convenient to
+// use gtk_widget_get_settings().
 type Settings interface {
 	gextras.Objector
 	StyleProvider
 
 	// ResetProperty undoes the effect of calling g_object_set() to install an
-	// application-specific value for a setting.
-	//
-	// After this call, the setting will again follow the session-wide value for
-	// this setting.
+	// application-specific value for a setting. After this call, the setting
+	// will again follow the session-wide value for this setting.
 	ResetProperty(name string)
 }
 
@@ -25866,10 +23634,8 @@ func marshalSettings(p uintptr) (interface{}, error) {
 }
 
 // ResetProperty undoes the effect of calling g_object_set() to install an
-// application-specific value for a setting.
-//
-// After this call, the setting will again follow the session-wide value for
-// this setting.
+// application-specific value for a setting. After this call, the setting
+// will again follow the session-wide value for this setting.
 func (s settings) ResetProperty(name string) {
 	var arg0 *C.GtkSettings
 	var arg1 *C.char
@@ -25881,19 +23647,18 @@ func (s settings) ResetProperty(name string) {
 	C.gtk_settings_reset_property(arg0, arg1)
 }
 
-// ShortcutsWindow: a `GtkShortcutsWindow` shows information about the keyboard
-// shortcuts and gestures of an application.
-//
-// The shortcuts can be grouped, and you can have multiple sections in this
-// window, corresponding to the major modes of your application.
+// ShortcutsWindow: a GtkShortcutsWindow shows brief information about the
+// keyboard shortcuts and gestures of an application. The shortcuts can be
+// grouped, and you can have multiple sections in this window, corresponding to
+// the major modes of your application.
 //
 // Additionally, the shortcuts can be filtered by the current view, to avoid
 // showing information that is not relevant in the current application context.
 //
-// The recommended way to construct a `GtkShortcutsWindow` is with
-// [class@Gtk.Builder], by populating a `GtkShortcutsWindow` with one or more
-// `GtkShortcutsSection` objects, which contain `GtkShortcutsGroups` that in
-// turn contain objects of class `GtkShortcutsShortcut`.
+// The recommended way to construct a GtkShortcutsWindow is with GtkBuilder, by
+// populating a ShortcutsWindow with one or more ShortcutsSection objects, which
+// contain ShortcutsGroups that in turn contain objects of class
+// ShortcutsShortcut.
 //
 // A simple example:
 //
@@ -25910,8 +23675,8 @@ func (s settings) ResetProperty(name string) {
 //
 // ! (clocks-shortcuts.png)
 //
-// This example shows a `GtkShortcutsWindow` that has been configured to show
-// only the shortcuts relevant to the "stopwatch" view.
+// This example shows a ShortcutsWindow that has been configured to show only
+// the shortcuts relevant to the "stopwatch" view.
 //
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-clocks.ui).
@@ -25920,8 +23685,8 @@ func (s settings) ResetProperty(name string) {
 //
 // ! (builder-shortcuts.png)
 //
-// This example shows a `GtkShortcutsWindow` with two sections, "Editor
-// Shortcuts" and "Terminal Shortcuts".
+// This example shows a ShortcutsWindow with two sections, "Editor Shortcuts"
+// and "Terminal Shortcuts".
 //
 // The .ui file for this example can be found here
 // (https://gitlab.gnome.org/GNOME/gtk/tree/master/demos/gtk-demo/shortcuts-builder.ui).
@@ -25968,29 +23733,29 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 	return WrapShortcutsWindow(obj), nil
 }
 
-// SizeGroup: `GtkSizeGroup` groups widgets together so they all request the
-// same size.
+// SizeGroup provides a mechanism for grouping a number of widgets together so
+// they all request the same amount of space. This is typically useful when you
+// want a column of widgets to have the same size, but you can’t use a Grid
+// widget.
 //
-// This is typically useful when you want a column of widgets to have the same
-// size, but you can’t use a `GtkGrid`.
-//
-// In detail, the size requested for each widget in a `GtkSizeGroup` is the
-// maximum of the sizes that would have been requested for each widget in the
-// size group if they were not in the size group. The mode of the size group
-// (see [method@Gtk.SizeGroup.set_mode]) determines whether this applies to the
-// horizontal size, the vertical size, or both sizes.
+// In detail, the size requested for each widget in a SizeGroup is the maximum
+// of the sizes that would have been requested for each widget in the size group
+// if they were not in the size group. The mode of the size group (see
+// gtk_size_group_set_mode()) determines whether this applies to the horizontal
+// size, the vertical size, or both sizes.
 //
 // Note that size groups only affect the amount of space requested, not the size
-// that the widgets finally receive. If you want the widgets in a `GtkSizeGroup`
-// to actually be the same size, you need to pack them in such a way that they
-// get the size they request and not more.
+// that the widgets finally receive. If you want the widgets in a SizeGroup to
+// actually be the same size, you need to pack them in such a way that they get
+// the size they request and not more. For example, if you are packing your
+// widgets into a table, you would not include the GTK_FILL flag.
 //
-// `GtkSizeGroup` objects are referenced by each widget in the size group, so
-// once you have added all widgets to a `GtkSizeGroup`, you can drop the initial
-// reference to the size group with g_object_unref(). If the widgets in the size
-// group are subsequently destroyed, then they will be removed from the size
-// group and drop their references on the size group; when all widgets have been
-// removed, the size group will be freed.
+// SizeGroup objects are referenced by each widget in the size group, so once
+// you have added all widgets to a SizeGroup, you can drop the initial reference
+// to the size group with g_object_unref(). If the widgets in the size group are
+// subsequently destroyed, then they will be removed from the size group and
+// drop their references on the size group; when all widgets have been removed,
+// the size group will be freed.
 //
 // Widgets can be part of multiple size groups; GTK will compute the horizontal
 // size of a widget from the horizontal requisition of all widgets that can be
@@ -26009,9 +23774,9 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 // same is of course true when horizontally grouping width for height widgets.
 //
 // Widgets that trade height-for-width should set a reasonably large minimum
-// width by way of [property@Gtk.Label:width-chars] for instance. Widgets with
-// static sizes as well as widgets that grow (such as ellipsizing text) need no
-// such considerations.
+// width by way of Label:width-chars for instance. Widgets with static sizes as
+// well as widgets that grow (such as ellipsizing text) need no such
+// considerations.
 //
 //
 // GtkSizeGroup as GtkBuildable
@@ -26022,37 +23787,40 @@ func marshalShortcutsWindow(p uintptr) (interface{}, error) {
 // that may contain multiple <widget> elements, one for each member of the size
 // group. The ”name” attribute gives the id of the widget.
 //
-// An example of a UI definition fragment with `GtkSizeGroup`: “`xml <object
-// class="GtkSizeGroup"> <property name="mode">horizontal</property> <widgets>
-// <widget name="radio1"/> <widget name="radio2"/> </widgets> </object> “`
+// An example of a UI definition fragment with GtkSizeGroup:
+//
+//    <object class="GtkSizeGroup">
+//      <property name="mode">horizontal</property>
+//      <widgets>
+//        <widget name="radio1"/>
+//        <widget name="radio2"/>
+//      </widgets>
+//    </object>
 type SizeGroup interface {
 	gextras.Objector
 	Buildable
 
-	// AddWidget adds a widget to a `GtkSizeGroup`.
-	//
-	// In the future, the requisition of the widget will be determined as the
-	// maximum of its requisition and the requisition of the other widgets in
-	// the size group. Whether this applies horizontally, vertically, or in both
-	// directions depends on the mode of the size group. See
-	// [method@Gtk.SizeGroup.set_mode].
+	// AddWidget adds a widget to a SizeGroup. In the future, the requisition of
+	// the widget will be determined as the maximum of its requisition and the
+	// requisition of the other widgets in the size group. Whether this applies
+	// horizontally, vertically, or in both directions depends on the mode of
+	// the size group. See gtk_size_group_set_mode().
 	//
 	// When the widget is destroyed or no longer referenced elsewhere, it will
 	// be removed from the size group.
 	AddWidget(widget Widget)
-	// Mode gets the current mode of the size group.
+	// Mode gets the current mode of the size group. See
+	// gtk_size_group_set_mode().
 	Mode() SizeGroupMode
 	// Widgets returns the list of widgets associated with @size_group.
 	Widgets() *glib.SList
-	// RemoveWidget removes a widget from a `GtkSizeGroup`.
+	// RemoveWidget removes a widget from a SizeGroup.
 	RemoveWidget(widget Widget)
-	// SetMode sets the `GtkSizeGroupMode` of the size group.
-	//
-	// The mode of the size group determines whether the widgets in the size
-	// group should all have the same horizontal requisition
-	// (GTK_SIZE_GROUP_HORIZONTAL) all have the same vertical requisition
-	// (GTK_SIZE_GROUP_VERTICAL), or should all have the same requisition in
-	// both directions (GTK_SIZE_GROUP_BOTH).
+	// SetMode sets the SizeGroupMode of the size group. The mode of the size
+	// group determines whether the widgets in the size group should all have
+	// the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL) all have the
+	// same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should all have
+	// the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
 	SetMode(mode SizeGroupMode)
 }
 
@@ -26085,23 +23853,22 @@ func NewSizeGroup(mode SizeGroupMode) SizeGroup {
 
 	arg1 = (C.GtkSizeGroupMode)(mode)
 
-	cret := new(C.GtkSizeGroup)
-	var goret SizeGroup
+	var cret C.GtkSizeGroup
 
 	cret = C.gtk_size_group_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SizeGroup)
+	var sizeGroup SizeGroup
 
-	return goret
+	sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SizeGroup)
+
+	return sizeGroup
 }
 
-// AddWidget adds a widget to a `GtkSizeGroup`.
-//
-// In the future, the requisition of the widget will be determined as the
-// maximum of its requisition and the requisition of the other widgets in
-// the size group. Whether this applies horizontally, vertically, or in both
-// directions depends on the mode of the size group. See
-// [method@Gtk.SizeGroup.set_mode].
+// AddWidget adds a widget to a SizeGroup. In the future, the requisition of
+// the widget will be determined as the maximum of its requisition and the
+// requisition of the other widgets in the size group. Whether this applies
+// horizontally, vertically, or in both directions depends on the mode of
+// the size group. See gtk_size_group_set_mode().
 //
 // When the widget is destroyed or no longer referenced elsewhere, it will
 // be removed from the size group.
@@ -26115,20 +23882,22 @@ func (s sizeGroup) AddWidget(widget Widget) {
 	C.gtk_size_group_add_widget(arg0, arg1)
 }
 
-// Mode gets the current mode of the size group.
+// Mode gets the current mode of the size group. See
+// gtk_size_group_set_mode().
 func (s sizeGroup) Mode() SizeGroupMode {
 	var arg0 *C.GtkSizeGroup
 
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSizeGroupMode
-	var goret SizeGroupMode
 
 	cret = C.gtk_size_group_get_mode(arg0)
 
-	goret = SizeGroupMode(cret)
+	var sizeGroupMode SizeGroupMode
 
-	return goret
+	sizeGroupMode = SizeGroupMode(cret)
+
+	return sizeGroupMode
 }
 
 // Widgets returns the list of widgets associated with @size_group.
@@ -26138,16 +23907,17 @@ func (s sizeGroup) Widgets() *glib.SList {
 	arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GSList
-	var goret *glib.SList
 
 	cret = C.gtk_size_group_get_widgets(arg0)
 
-	goret = glib.WrapSList(unsafe.Pointer(cret))
+	var sList *glib.SList
 
-	return goret
+	sList = glib.WrapSList(unsafe.Pointer(cret))
+
+	return sList
 }
 
-// RemoveWidget removes a widget from a `GtkSizeGroup`.
+// RemoveWidget removes a widget from a SizeGroup.
 func (s sizeGroup) RemoveWidget(widget Widget) {
 	var arg0 *C.GtkSizeGroup
 	var arg1 *C.GtkWidget
@@ -26158,13 +23928,11 @@ func (s sizeGroup) RemoveWidget(widget Widget) {
 	C.gtk_size_group_remove_widget(arg0, arg1)
 }
 
-// SetMode sets the `GtkSizeGroupMode` of the size group.
-//
-// The mode of the size group determines whether the widgets in the size
-// group should all have the same horizontal requisition
-// (GTK_SIZE_GROUP_HORIZONTAL) all have the same vertical requisition
-// (GTK_SIZE_GROUP_VERTICAL), or should all have the same requisition in
-// both directions (GTK_SIZE_GROUP_BOTH).
+// SetMode sets the SizeGroupMode of the size group. The mode of the size
+// group determines whether the widgets in the size group should all have
+// the same horizontal requisition (GTK_SIZE_GROUP_HORIZONTAL) all have the
+// same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should all have
+// the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
 func (s sizeGroup) SetMode(mode SizeGroupMode) {
 	var arg0 *C.GtkSizeGroup
 	var arg1 C.GtkSizeGroupMode
@@ -26175,94 +23943,39 @@ func (s sizeGroup) SetMode(mode SizeGroupMode) {
 	C.gtk_size_group_set_mode(arg0, arg1)
 }
 
-// SpinButton: a `GtkSpinButton` is an ideal way to allow the user to set the
-// value of some attribute.
-//
-// !An example GtkSpinButton (spinbutton.png)
-//
-// Rather than having to directly type a number into a `GtkEntry`,
-// `GtkSpinButton` allows the user to click on one of two arrows to increment or
+// SpinButton: a SpinButton is an ideal way to allow the user to set the value
+// of some attribute. Rather than having to directly type a number into a Entry,
+// GtkSpinButton allows the user to click on one of two arrows to increment or
 // decrement the displayed value. A value can still be typed in, with the bonus
 // that it can be checked to ensure it is in a given range.
 //
-// The main properties of a `GtkSpinButton` are through an adjustment. See the
-// [class@Gtk.Adjustment] documentation for more details about an adjustment's
-// properties.
+// The main properties of a GtkSpinButton are through an adjustment. See the
+// Adjustment section for more details about an adjustment's properties.
 //
-// Note that `GtkSpinButton` will by default make its entry large enough to
+// Note that GtkSpinButton will by default make its entry large enough to
 // accommodate the lower and upper bounds of the adjustment. If this is not
 // desired, the automatic sizing can be turned off by explicitly setting
-// [property@Gtk.Editable:width-chars] to a value != -1.
-//
+// Editable::width-chars to a value != -1.
 //
 // Using a GtkSpinButton to get an integer
 //
-// “`c // Provides a function to retrieve an integer value from a GtkSpinButton
-// // and creates a spin button to model percentage values.
+//    spinbutton.vertical
+//    ├── button.up
+//    ├── text
+//    │    ├── undershoot.left
+//    │    ╰── undershoot.right
+//    ╰── button.down
 //
-// int grab_int_value (GtkSpinButton *button, gpointer user_data) { return
-// gtk_spin_button_get_value_as_int (button); }
-//
-// void create_integer_spin_button (void) {
-//
-//    GtkWidget *window, *button;
-//    GtkAdjustment *adjustment;
-//
-//    adjustment = gtk_adjustment_new (50.0, 0.0, 100.0, 1.0, 5.0, 0.0);
-//
-//    window = gtk_window_new ();
-//
-//    // creates the spinbutton, with no decimal places
-//    button = gtk_spin_button_new (adjustment, 1.0, 0);
-//    gtk_window_set_child (GTK_WINDOW (window), button);
-//
-//    gtk_widget_show (window);
-//
-// } “`
-//
-//
-// Using a GtkSpinButton to get a floating point value
-//
-// “`c // Provides a function to retrieve a floating point value from a //
-// GtkSpinButton, and creates a high precision spin button.
-//
-// float grab_float_value (GtkSpinButton *button, gpointer user_data) { return
-// gtk_spin_button_get_value (button); }
-//
-// void create_floating_spin_button (void) { GtkWidget *window, *button;
-// GtkAdjustment *adjustment;
-//
-//    adjustment = gtk_adjustment_new (2.500, 0.0, 5.0, 0.001, 0.1, 0.0);
-//
-//    window = gtk_window_new ();
-//
-//    // creates the spinbutton, with three decimal places
-//    button = gtk_spin_button_new (adjustment, 0.001, 3);
-//    gtk_window_set_child (GTK_WINDOW (window), button);
-//
-//    gtk_widget_show (window);
-//
-// } “`
-//
-//
-// CSS nodes
-//
-// “` spinbutton.horizontal ├── text │ ├── undershoot.left │ ╰──
-// undershoot.right ├── button.down ╰── button.up “`
-//
-// “` spinbutton.vertical ├── button.up ├── text │ ├── undershoot.left │ ╰──
-// undershoot.right ╰── button.down “`
-//
-// `GtkSpinButton`s main CSS node has the name spinbutton. It creates subnodes
-// for the entry and the two buttons, with these names. The button nodes have
-// the style classes .up and .down. The `GtkText` subnodes (if present) are put
-// below the text node. The orientation of the spin button is reflected in the
+// GtkSpinButtons main CSS node has the name spinbutton. It creates subnodes for
+// the entry and the two buttons, with these names. The button nodes have the
+// style classes .up and .down. The GtkText subnodes (if present) are put below
+// the text node. The orientation of the spin button is reflected in the
 // .vertical or .horizontal style class on the main node.
 //
 //
 // Accessiblity
 //
-// `GtkSpinButton` uses the GTK_ACCESSIBLE_ROLE_SPIN_BUTTON role.
+// GtkSpinButton uses the K_ACCESSIBLE_ROLE_SPIN_BUTTON role.
 type SpinButton interface {
 	Widget
 	Accessible
@@ -26272,55 +23985,51 @@ type SpinButton interface {
 	Editable
 	Orientable
 
-	// Configure changes the properties of an existing spin button.
-	//
-	// The adjustment, climb rate, and number of decimal places are updated
+	// Configure changes the properties of an existing spin button. The
+	// adjustment, climb rate, and number of decimal places are updated
 	// accordingly.
 	Configure(adjustment Adjustment, climbRate float64, digits uint)
-	// Adjustment: get the adjustment associated with a `GtkSpinButton`.
+	// Adjustment: get the adjustment associated with a SpinButton
 	Adjustment() Adjustment
 	// ClimbRate returns the acceleration rate for repeated changes.
 	ClimbRate() float64
-	// Digits fetches the precision of @spin_button.
+	// Digits fetches the precision of @spin_button. See
+	// gtk_spin_button_set_digits().
 	Digits() uint
 	// Increments gets the current step and page the increments used by
-	// @spin_button.
-	//
-	// See [method@Gtk.SpinButton.set_increments].
+	// @spin_button. See gtk_spin_button_set_increments().
 	Increments() (step float64, page float64)
 	// Numeric returns whether non-numeric text can be typed into the spin
-	// button.
+	// button. See gtk_spin_button_set_numeric().
 	Numeric() bool
-	// Range gets the range allowed for @spin_button.
-	//
-	// See [method@Gtk.SpinButton.set_range].
+	// Range gets the range allowed for @spin_button. See
+	// gtk_spin_button_set_range().
 	Range() (min float64, max float64)
 	// SnapToTicks returns whether the values are corrected to the nearest step.
+	// See gtk_spin_button_set_snap_to_ticks().
 	SnapToTicks() bool
-	// UpdatePolicy gets the update behavior of a spin button.
-	//
-	// See [method@Gtk.SpinButton.set_update_policy].
+	// UpdatePolicy gets the update behavior of a spin button. See
+	// gtk_spin_button_set_update_policy().
 	UpdatePolicy() SpinButtonUpdatePolicy
 	// Value: get the value in the @spin_button.
 	Value() float64
 	// ValueAsInt: get the value @spin_button represented as an integer.
 	ValueAsInt() int
 	// Wrap returns whether the spin button’s value wraps around to the opposite
-	// limit when the upper or lower limit of the range is exceeded.
+	// limit when the upper or lower limit of the range is exceeded. See
+	// gtk_spin_button_set_wrap().
 	Wrap() bool
-	// SetAdjustment replaces the `GtkAdjustment` associated with @spin_button.
+	// SetAdjustment replaces the Adjustment associated with @spin_button.
 	SetAdjustment(adjustment Adjustment)
 	// SetClimbRate sets the acceleration rate for repeated changes when you
 	// hold down a button or key.
 	SetClimbRate(climbRate float64)
-	// SetDigits: set the precision to be displayed by @spin_button.
-	//
-	// Up to 20 digit precision is allowed.
+	// SetDigits: set the precision to be displayed by @spin_button. Up to 20
+	// digit precision is allowed.
 	SetDigits(digits uint)
-	// SetIncrements sets the step and page increments for spin_button.
-	//
-	// This affects how quickly the value changes when the spin button’s arrows
-	// are activated.
+	// SetIncrements sets the step and page increments for spin_button. This
+	// affects how quickly the value changes when the spin button’s arrows are
+	// activated.
 	SetIncrements(step float64, page float64)
 	// SetNumeric sets the flag that determines if non-numeric text can be typed
 	// into the spin button.
@@ -26334,10 +24043,9 @@ type SpinButton interface {
 	// nearest step increment when a spin button is activated after providing an
 	// invalid value.
 	SetSnapToTicks(snapToTicks bool)
-	// SetUpdatePolicy sets the update behavior of a spin button.
-	//
-	// This determines whether the spin button is always updated or only when a
-	// valid value is set.
+	// SetUpdatePolicy sets the update behavior of a spin button. This
+	// determines whether the spin button is always updated or only when a valid
+	// value is set.
 	SetUpdatePolicy(policy SpinButtonUpdatePolicy)
 	// SetValue sets the value of @spin_button.
 	SetValue(value float64)
@@ -26396,13 +24104,14 @@ func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinBu
 	arg3 = C.guint(digits)
 
 	var cret C.GtkSpinButton
-	var goret SpinButton
 
 	cret = C.gtk_spin_button_new(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
+	var spinButton SpinButton
 
-	return goret
+	spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
+
+	return spinButton
 }
 
 // NewSpinButtonWithRange constructs a class SpinButton.
@@ -26416,18 +24125,18 @@ func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
 	arg3 = C.double(step)
 
 	var cret C.GtkSpinButton
-	var goret SpinButton
 
 	cret = C.gtk_spin_button_new_with_range(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
+	var spinButton SpinButton
 
-	return goret
+	spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SpinButton)
+
+	return spinButton
 }
 
-// Configure changes the properties of an existing spin button.
-//
-// The adjustment, climb rate, and number of decimal places are updated
+// Configure changes the properties of an existing spin button. The
+// adjustment, climb rate, and number of decimal places are updated
 // accordingly.
 func (s spinButton) Configure(adjustment Adjustment, climbRate float64, digits uint) {
 	var arg0 *C.GtkSpinButton
@@ -26443,20 +24152,21 @@ func (s spinButton) Configure(adjustment Adjustment, climbRate float64, digits u
 	C.gtk_spin_button_configure(arg0, arg1, arg2, arg3)
 }
 
-// Adjustment: get the adjustment associated with a `GtkSpinButton`.
+// Adjustment: get the adjustment associated with a SpinButton
 func (s spinButton) Adjustment() Adjustment {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_spin_button_get_adjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // ClimbRate returns the acceleration rate for repeated changes.
@@ -26466,127 +24176,132 @@ func (s spinButton) ClimbRate() float64 {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_spin_button_get_climb_rate(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// Digits fetches the precision of @spin_button.
+// Digits fetches the precision of @spin_button. See
+// gtk_spin_button_set_digits().
 func (s spinButton) Digits() uint {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_spin_button_get_digits(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Increments gets the current step and page the increments used by
-// @spin_button.
-//
-// See [method@Gtk.SpinButton.set_increments].
+// @spin_button. See gtk_spin_button_set_increments().
 func (s spinButton) Increments() (step float64, page float64) {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
-	arg1 := new(C.double)
-	var ret1 float64
-	arg2 := new(C.double)
-	var ret2 float64
+	var arg1 C.double
+	var arg2 C.double
 
-	C.gtk_spin_button_get_increments(arg0, arg1, arg2)
+	C.gtk_spin_button_get_increments(arg0, &arg1, &arg2)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
+	var step float64
+	var page float64
 
-	return ret1, ret2
+	step = (float64)(arg1)
+	page = (float64)(arg2)
+
+	return step, page
 }
 
 // Numeric returns whether non-numeric text can be typed into the spin
-// button.
+// button. See gtk_spin_button_set_numeric().
 func (s spinButton) Numeric() bool {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_spin_button_get_numeric(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Range gets the range allowed for @spin_button.
-//
-// See [method@Gtk.SpinButton.set_range].
+// Range gets the range allowed for @spin_button. See
+// gtk_spin_button_set_range().
 func (s spinButton) Range() (min float64, max float64) {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
-	arg1 := new(C.double)
-	var ret1 float64
-	arg2 := new(C.double)
-	var ret2 float64
+	var arg1 C.double
+	var arg2 C.double
 
-	C.gtk_spin_button_get_range(arg0, arg1, arg2)
+	C.gtk_spin_button_get_range(arg0, &arg1, &arg2)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
+	var min float64
+	var max float64
 
-	return ret1, ret2
+	min = (float64)(arg1)
+	max = (float64)(arg2)
+
+	return min, max
 }
 
 // SnapToTicks returns whether the values are corrected to the nearest step.
+// See gtk_spin_button_set_snap_to_ticks().
 func (s spinButton) SnapToTicks() bool {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_spin_button_get_snap_to_ticks(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// UpdatePolicy gets the update behavior of a spin button.
-//
-// See [method@Gtk.SpinButton.set_update_policy].
+// UpdatePolicy gets the update behavior of a spin button. See
+// gtk_spin_button_set_update_policy().
 func (s spinButton) UpdatePolicy() SpinButtonUpdatePolicy {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSpinButtonUpdatePolicy
-	var goret SpinButtonUpdatePolicy
 
 	cret = C.gtk_spin_button_get_update_policy(arg0)
 
-	goret = SpinButtonUpdatePolicy(cret)
+	var spinButtonUpdatePolicy SpinButtonUpdatePolicy
 
-	return goret
+	spinButtonUpdatePolicy = SpinButtonUpdatePolicy(cret)
+
+	return spinButtonUpdatePolicy
 }
 
 // Value: get the value in the @spin_button.
@@ -26596,13 +24311,14 @@ func (s spinButton) Value() float64 {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_spin_button_get_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // ValueAsInt: get the value @spin_button represented as an integer.
@@ -26612,35 +24328,38 @@ func (s spinButton) ValueAsInt() int {
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_spin_button_get_value_as_int(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Wrap returns whether the spin button’s value wraps around to the opposite
-// limit when the upper or lower limit of the range is exceeded.
+// limit when the upper or lower limit of the range is exceeded. See
+// gtk_spin_button_set_wrap().
 func (s spinButton) Wrap() bool {
 	var arg0 *C.GtkSpinButton
 
 	arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_spin_button_get_wrap(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetAdjustment replaces the `GtkAdjustment` associated with @spin_button.
+// SetAdjustment replaces the Adjustment associated with @spin_button.
 func (s spinButton) SetAdjustment(adjustment Adjustment) {
 	var arg0 *C.GtkSpinButton
 	var arg1 *C.GtkAdjustment
@@ -26663,9 +24382,8 @@ func (s spinButton) SetClimbRate(climbRate float64) {
 	C.gtk_spin_button_set_climb_rate(arg0, arg1)
 }
 
-// SetDigits: set the precision to be displayed by @spin_button.
-//
-// Up to 20 digit precision is allowed.
+// SetDigits: set the precision to be displayed by @spin_button. Up to 20
+// digit precision is allowed.
 func (s spinButton) SetDigits(digits uint) {
 	var arg0 *C.GtkSpinButton
 	var arg1 C.guint
@@ -26676,10 +24394,9 @@ func (s spinButton) SetDigits(digits uint) {
 	C.gtk_spin_button_set_digits(arg0, arg1)
 }
 
-// SetIncrements sets the step and page increments for spin_button.
-//
-// This affects how quickly the value changes when the spin button’s arrows
-// are activated.
+// SetIncrements sets the step and page increments for spin_button. This
+// affects how quickly the value changes when the spin button’s arrows are
+// activated.
 func (s spinButton) SetIncrements(step float64, page float64) {
 	var arg0 *C.GtkSpinButton
 	var arg1 C.double
@@ -26737,10 +24454,9 @@ func (s spinButton) SetSnapToTicks(snapToTicks bool) {
 	C.gtk_spin_button_set_snap_to_ticks(arg0, arg1)
 }
 
-// SetUpdatePolicy sets the update behavior of a spin button.
-//
-// This determines whether the spin button is always updated or only when a
-// valid value is set.
+// SetUpdatePolicy sets the update behavior of a spin button. This
+// determines whether the spin button is always updated or only when a valid
+// value is set.
 func (s spinButton) SetUpdatePolicy(policy SpinButtonUpdatePolicy) {
 	var arg0 *C.GtkSpinButton
 	var arg1 C.GtkSpinButtonUpdatePolicy
@@ -26800,21 +24516,18 @@ func (s spinButton) Update() {
 	C.gtk_spin_button_update(arg0)
 }
 
-// Spinner: a `GtkSpinner` widget displays an icon-size spinning animation.
+// Spinner: a GtkSpinner widget displays an icon-size spinning animation. It is
+// often used as an alternative to a ProgressBar for displaying indefinite
+// activity, instead of actual progress.
 //
-// It is often used as an alternative to a [class@Gtk.ProgressBar] for
-// displaying indefinite activity, instead of actual progress.
-//
-// !An example GtkSpinner (spinner.png)
-//
-// To start the animation, use [method@Gtk.Spinner.start], to stop it use
-// [method@Gtk.Spinner.stop].
+// To start the animation, use gtk_spinner_start(), to stop it use
+// gtk_spinner_stop().
 //
 //
 // CSS nodes
 //
-// `GtkSpinner` has a single CSS node with the name spinner. When the animation
-// is active, the :checked pseudoclass is added to this node.
+// GtkSpinner has a single CSS node with the name spinner. When the animation is
+// active, the :checked pseudoclass is added to this node.
 type Spinner interface {
 	Widget
 	Accessible
@@ -26861,13 +24574,14 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 // NewSpinner constructs a class Spinner.
 func NewSpinner() Spinner {
 	var cret C.GtkSpinner
-	var goret Spinner
 
 	cret = C.gtk_spinner_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Spinner)
+	var spinner Spinner
 
-	return goret
+	spinner = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Spinner)
+
+	return spinner
 }
 
 // Spinning returns whether the spinner is spinning.
@@ -26877,15 +24591,16 @@ func (s spinner) Spinning() bool {
 	arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_spinner_get_spinning(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetSpinning sets the activity of the spinner.
@@ -26919,46 +24634,48 @@ func (s spinner) Stop() {
 	C.gtk_spinner_stop(arg0)
 }
 
-// Stack: `GtkStack` is a container which only shows one of its children at a
-// time.
-//
-// In contrast to `GtkNotebook`, `GtkStack` does not provide a means for users
-// to change the visible child. Instead, a separate widget such as
-// [class@Gtk.StackSwitcher] or [class@Gtk.StackSidebar] can be used with
-// `GtkStack` to provide this functionality.
+// Stack: the GtkStack widget is a container which only shows one of its
+// children at a time. In contrast to GtkNotebook, GtkStack does not provide a
+// means for users to change the visible child. Instead, the StackSwitcher
+// widget can be used with GtkStack to provide this functionality.
 //
 // Transitions between pages can be animated as slides or fades. This can be
-// controlled with [method@Gtk.Stack.set_transition_type]. These animations
-// respect the [property@Gtk.Settings:gtk-enable-animations] setting.
+// controlled with gtk_stack_set_transition_type(). These animations respect the
+// Settings:gtk-enable-animations setting.
 //
-// `GtkStack` maintains a [class@Gtk.StackPage] object for each added child,
-// which holds additional per-child properties. You obtain the `GtkStackPage`
-// for a child with [method@Gtk.Stack.get_page] and you can obtain a
-// `GtkSelectionModel` containing all the pages with
-// [method@Gtk.Stack.get_pages].
+// GtkStack maintains a StackPage object for each added child, which holds
+// additional per-child properties. You obtain the StackPage for a child with
+// gtk_stack_get_page().
 //
 //
 // GtkStack as GtkBuildable
 //
-// To set child-specific properties in a .ui file, create `GtkStackPage` objects
+// To set child-specific properties in a .ui file, create GtkStackPage objects
 // explicitly, and set the child widget as a property on it:
 //
-// “`xml <object class="GtkStack" id="stack"> <child> <object
-// class="GtkStackPage"> <property name="name">page1</property> <property
-// name="title">In the beginning…</property> <property name="child"> <object
-// class="GtkLabel"> <property name="label">It was dark</property> </object>
-// </property> </object> </child> “`
+//    <object class="GtkStack" id="stack">
+//      <child>
+//        <object class="GtkStackPage">
+//          <property name="name">page1</property>
+//          <property name="title">In the beginning…</property>
+//          <property name="child">
+//            <object class="GtkLabel">
+//              <property name="label">It was dark</property>
+//            </object>
+//          </property>
+//        </object>
+//      </child>
 //
 //
 // CSS nodes
 //
-// `GtkStack` has a single CSS node named stack.
+// GtkStack has a single CSS node named stack.
 //
 //
 // Accessibility
 //
-// `GtkStack` uses the GTK_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages, which
-// are the accessible parent objects of the child widgets.
+// GtkStack uses the K_ACCESSIBLE_ROLE_TAB_PANEL for the stack pages, which are
+// the accessible parent objects of the child widgets.
 type Stack interface {
 	Widget
 	Accessible
@@ -26967,32 +24684,26 @@ type Stack interface {
 
 	// AddChild adds a child to @stack.
 	AddChild(child Widget) StackPage
-	// AddNamed adds a child to @stack.
-	//
-	// The child is identified by the @name.
+	// AddNamed adds a child to @stack. The child is identified by the @name.
 	AddNamed(child Widget, name string) StackPage
-	// AddTitled adds a child to @stack.
-	//
-	// The child is identified by the @name. The @title will be used by
-	// `GtkStackSwitcher` to represent @child in a tab bar, so it should be
-	// short.
+	// AddTitled adds a child to @stack. The child is identified by the @name.
+	// The @title will be used by StackSwitcher to represent @child in a tab
+	// bar, so it should be short.
 	AddTitled(child Widget, name string, title string) StackPage
-	// ChildByName finds the child with the name given as the argument.
-	//
-	// Returns nil if there is no child with this name.
+	// ChildByName finds the child of the Stack with the name given as the
+	// argument. Returns nil if there is no child with this name.
 	ChildByName(name string) Widget
-	// Hhomogeneous gets whether @stack is horizontally homogeneous.
+	// Hhomogeneous gets whether @stack is horizontally homogeneous. See
+	// gtk_stack_set_hhomogeneous().
 	Hhomogeneous() bool
 	// InterpolateSize returns whether the Stack is set up to interpolate
 	// between the sizes of children on page switch.
 	InterpolateSize() bool
-	// Page returns the `GtkStackPage` object for @child.
+	// Page returns the StackPage object for @child.
 	Page(child Widget) StackPage
-	// Pages returns a `GListModel` that contains the pages of the stack.
-	//
-	// This can be used to keep an up-to-date view. The model also implements
-	// [iface@Gtk.SelectionModel] and can be used to track and modify the
-	// visible page.
+	// Pages returns a Model that contains the pages of the stack, and can be
+	// used to keep an up-to-date view. The model also implements SelectionModel
+	// and can be used to track and modify the visible page.
 	Pages() SelectionModel
 	// TransitionDuration returns the amount of time (in milliseconds) that
 	// transitions between pages in @stack will take.
@@ -27003,51 +24714,43 @@ type Stack interface {
 	// TransitionType gets the type of animation that will be used for
 	// transitions between pages in @stack.
 	TransitionType() StackTransitionType
-	// Vhomogeneous gets whether @stack is vertically homogeneous.
+	// Vhomogeneous gets whether @stack is vertically homogeneous. See
+	// gtk_stack_set_vhomogeneous().
 	Vhomogeneous() bool
-	// VisibleChild gets the currently visible child of @stack.
-	//
-	// Returns nil if there are no visible children.
+	// VisibleChild gets the currently visible child of @stack, or nil if there
+	// are no visible children.
 	VisibleChild() Widget
 	// VisibleChildName returns the name of the currently visible child of
-	// @stack.
-	//
-	// Returns nil if there is no visible child.
+	// @stack, or nil if there is no visible child.
 	VisibleChildName() string
 	// Remove removes a child widget from @stack.
 	Remove(child Widget)
-	// SetHhomogeneous sets the `GtkStack` to be horizontally homogeneous or
-	// not.
-	//
-	// If it is homogeneous, the `GtkStack` will request the same width for all
-	// its children. If it isn't, the stack may change width when a different
-	// child becomes visible.
+	// SetHhomogeneous sets the Stack to be horizontally homogeneous or not. If
+	// it is homogeneous, the Stack will request the same width for all its
+	// children. If it isn't, the stack may change width when a different child
+	// becomes visible.
 	SetHhomogeneous(hhomogeneous bool)
 	// SetInterpolateSize sets whether or not @stack will interpolate its size
-	// when changing the visible child.
-	//
-	// If the [property@Gtk.Stack:interpolate-size] property is set to true,
-	// @stack will interpolate its size between the current one and the one
-	// it'll take after changing the visible child, according to the set
-	// transition duration.
+	// when changing the visible child. If the Stack:interpolate-size property
+	// is set to true, @stack will interpolate its size between the current one
+	// and the one it'll take after changing the visible child, according to the
+	// set transition duration.
 	SetInterpolateSize(interpolateSize bool)
 	// SetTransitionDuration sets the duration that transitions between pages in
 	// @stack will take.
 	SetTransitionDuration(duration uint)
 	// SetTransitionType sets the type of animation that will be used for
-	// transitions between pages in @stack.
-	//
-	// Available types include various kinds of fades and slides.
+	// transitions between pages in @stack. Available types include various
+	// kinds of fades and slides.
 	//
 	// The transition type can be changed without problems at runtime, so it is
 	// possible to change the animation based on the page that is about to
 	// become current.
 	SetTransitionType(transition StackTransitionType)
-	// SetVhomogeneous sets the Stack to be vertically homogeneous or not.
-	//
-	// If it is homogeneous, the `GtkStack` will request the same height for all
-	// its children. If it isn't, the stack may change height when a different
-	// child becomes visible.
+	// SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it
+	// is homogeneous, the Stack will request the same height for all its
+	// children. If it isn't, the stack may change height when a different child
+	// becomes visible.
 	SetVhomogeneous(vhomogeneous bool)
 	// SetVisibleChild makes @child the visible child of @stack.
 	//
@@ -27056,12 +24759,12 @@ type Stack interface {
 	// @stack.
 	//
 	// Note that the @child widget has to be visible itself (see
-	// [method@Gtk.Widget.show]) in order to become the visible child of @stack.
+	// gtk_widget_show()) in order to become the visible child of @stack.
 	SetVisibleChild(child Widget)
 	// SetVisibleChildFull makes the child with the given name visible.
 	//
 	// Note that the child widget has to be visible itself (see
-	// [method@Gtk.Widget.show]) in order to become the visible child of @stack.
+	// gtk_widget_show()) in order to become the visible child of @stack.
 	SetVisibleChildFull(name string, transition StackTransitionType)
 	// SetVisibleChildName makes the child with the given name visible.
 	//
@@ -27070,7 +24773,7 @@ type Stack interface {
 	// @stack.
 	//
 	// Note that the child widget has to be visible itself (see
-	// [method@Gtk.Widget.show]) in order to become the visible child of @stack.
+	// gtk_widget_show()) in order to become the visible child of @stack.
 	SetVisibleChildName(name string)
 }
 
@@ -27104,13 +24807,14 @@ func marshalStack(p uintptr) (interface{}, error) {
 // NewStack constructs a class Stack.
 func NewStack() Stack {
 	var cret C.GtkStack
-	var goret Stack
 
 	cret = C.gtk_stack_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	var stack Stack
 
-	return goret
+	stack = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+
+	return stack
 }
 
 // AddChild adds a child to @stack.
@@ -27122,18 +24826,17 @@ func (s stack) AddChild(child Widget) StackPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkStackPage
-	var goret StackPage
 
 	cret = C.gtk_stack_add_child(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	var stackPage StackPage
 
-	return goret
+	stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+
+	return stackPage
 }
 
-// AddNamed adds a child to @stack.
-//
-// The child is identified by the @name.
+// AddNamed adds a child to @stack. The child is identified by the @name.
 func (s stack) AddNamed(child Widget, name string) StackPage {
 	var arg0 *C.GtkStack
 	var arg1 *C.GtkWidget
@@ -27145,20 +24848,19 @@ func (s stack) AddNamed(child Widget, name string) StackPage {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GtkStackPage
-	var goret StackPage
 
 	cret = C.gtk_stack_add_named(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	var stackPage StackPage
 
-	return goret
+	stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+
+	return stackPage
 }
 
-// AddTitled adds a child to @stack.
-//
-// The child is identified by the @name. The @title will be used by
-// `GtkStackSwitcher` to represent @child in a tab bar, so it should be
-// short.
+// AddTitled adds a child to @stack. The child is identified by the @name.
+// The @title will be used by StackSwitcher to represent @child in a tab
+// bar, so it should be short.
 func (s stack) AddTitled(child Widget, name string, title string) StackPage {
 	var arg0 *C.GtkStack
 	var arg1 *C.GtkWidget
@@ -27173,18 +24875,18 @@ func (s stack) AddTitled(child Widget, name string, title string) StackPage {
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret *C.GtkStackPage
-	var goret StackPage
 
 	cret = C.gtk_stack_add_titled(arg0, arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	var stackPage StackPage
 
-	return goret
+	stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+
+	return stackPage
 }
 
-// ChildByName finds the child with the name given as the argument.
-//
-// Returns nil if there is no child with this name.
+// ChildByName finds the child of the Stack with the name given as the
+// argument. Returns nil if there is no child with this name.
 func (s stack) ChildByName(name string) Widget {
 	var arg0 *C.GtkStack
 	var arg1 *C.char
@@ -27194,31 +24896,34 @@ func (s stack) ChildByName(name string) Widget {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_stack_get_child_by_name(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Hhomogeneous gets whether @stack is horizontally homogeneous.
+// Hhomogeneous gets whether @stack is horizontally homogeneous. See
+// gtk_stack_set_hhomogeneous().
 func (s stack) Hhomogeneous() bool {
 	var arg0 *C.GtkStack
 
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_hhomogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // InterpolateSize returns whether the Stack is set up to interpolate
@@ -27229,18 +24934,19 @@ func (s stack) InterpolateSize() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_interpolate_size(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Page returns the `GtkStackPage` object for @child.
+// Page returns the StackPage object for @child.
 func (s stack) Page(child Widget) StackPage {
 	var arg0 *C.GtkStack
 	var arg1 *C.GtkWidget
@@ -27249,33 +24955,33 @@ func (s stack) Page(child Widget) StackPage {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	var cret *C.GtkStackPage
-	var goret StackPage
 
 	cret = C.gtk_stack_get_page(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+	var stackPage StackPage
 
-	return goret
+	stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackPage)
+
+	return stackPage
 }
 
-// Pages returns a `GListModel` that contains the pages of the stack.
-//
-// This can be used to keep an up-to-date view. The model also implements
-// [iface@Gtk.SelectionModel] and can be used to track and modify the
-// visible page.
+// Pages returns a Model that contains the pages of the stack, and can be
+// used to keep an up-to-date view. The model also implements SelectionModel
+// and can be used to track and modify the visible page.
 func (s stack) Pages() SelectionModel {
 	var arg0 *C.GtkStack
 
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GtkSelectionModel)
-	var goret SelectionModel
+	var cret *C.GtkSelectionModel
 
 	cret = C.gtk_stack_get_pages(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	var selectionModel SelectionModel
 
-	return goret
+	selectionModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionModel)
+
+	return selectionModel
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -27286,13 +24992,14 @@ func (s stack) TransitionDuration() uint {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_stack_get_transition_duration(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // TransitionRunning returns whether the @stack is currently in a transition
@@ -27303,15 +25010,16 @@ func (s stack) TransitionRunning() bool {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_transition_running(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TransitionType gets the type of animation that will be used for
@@ -27322,68 +25030,70 @@ func (s stack) TransitionType() StackTransitionType {
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkStackTransitionType
-	var goret StackTransitionType
 
 	cret = C.gtk_stack_get_transition_type(arg0)
 
-	goret = StackTransitionType(cret)
+	var stackTransitionType StackTransitionType
 
-	return goret
+	stackTransitionType = StackTransitionType(cret)
+
+	return stackTransitionType
 }
 
-// Vhomogeneous gets whether @stack is vertically homogeneous.
+// Vhomogeneous gets whether @stack is vertically homogeneous. See
+// gtk_stack_set_vhomogeneous().
 func (s stack) Vhomogeneous() bool {
 	var arg0 *C.GtkStack
 
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_get_vhomogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// VisibleChild gets the currently visible child of @stack.
-//
-// Returns nil if there are no visible children.
+// VisibleChild gets the currently visible child of @stack, or nil if there
+// are no visible children.
 func (s stack) VisibleChild() Widget {
 	var arg0 *C.GtkStack
 
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_stack_get_visible_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // VisibleChildName returns the name of the currently visible child of
-// @stack.
-//
-// Returns nil if there is no visible child.
+// @stack, or nil if there is no visible child.
 func (s stack) VisibleChildName() string {
 	var arg0 *C.GtkStack
 
 	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_stack_get_visible_child_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Remove removes a child widget from @stack.
@@ -27397,12 +25107,10 @@ func (s stack) Remove(child Widget) {
 	C.gtk_stack_remove(arg0, arg1)
 }
 
-// SetHhomogeneous sets the `GtkStack` to be horizontally homogeneous or
-// not.
-//
-// If it is homogeneous, the `GtkStack` will request the same width for all
-// its children. If it isn't, the stack may change width when a different
-// child becomes visible.
+// SetHhomogeneous sets the Stack to be horizontally homogeneous or not. If
+// it is homogeneous, the Stack will request the same width for all its
+// children. If it isn't, the stack may change width when a different child
+// becomes visible.
 func (s stack) SetHhomogeneous(hhomogeneous bool) {
 	var arg0 *C.GtkStack
 	var arg1 C.gboolean
@@ -27416,12 +25124,10 @@ func (s stack) SetHhomogeneous(hhomogeneous bool) {
 }
 
 // SetInterpolateSize sets whether or not @stack will interpolate its size
-// when changing the visible child.
-//
-// If the [property@Gtk.Stack:interpolate-size] property is set to true,
-// @stack will interpolate its size between the current one and the one
-// it'll take after changing the visible child, according to the set
-// transition duration.
+// when changing the visible child. If the Stack:interpolate-size property
+// is set to true, @stack will interpolate its size between the current one
+// and the one it'll take after changing the visible child, according to the
+// set transition duration.
 func (s stack) SetInterpolateSize(interpolateSize bool) {
 	var arg0 *C.GtkStack
 	var arg1 C.gboolean
@@ -27447,9 +25153,8 @@ func (s stack) SetTransitionDuration(duration uint) {
 }
 
 // SetTransitionType sets the type of animation that will be used for
-// transitions between pages in @stack.
-//
-// Available types include various kinds of fades and slides.
+// transitions between pages in @stack. Available types include various
+// kinds of fades and slides.
 //
 // The transition type can be changed without problems at runtime, so it is
 // possible to change the animation based on the page that is about to
@@ -27464,11 +25169,10 @@ func (s stack) SetTransitionType(transition StackTransitionType) {
 	C.gtk_stack_set_transition_type(arg0, arg1)
 }
 
-// SetVhomogeneous sets the Stack to be vertically homogeneous or not.
-//
-// If it is homogeneous, the `GtkStack` will request the same height for all
-// its children. If it isn't, the stack may change height when a different
-// child becomes visible.
+// SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it
+// is homogeneous, the Stack will request the same height for all its
+// children. If it isn't, the stack may change height when a different child
+// becomes visible.
 func (s stack) SetVhomogeneous(vhomogeneous bool) {
 	var arg0 *C.GtkStack
 	var arg1 C.gboolean
@@ -27488,7 +25192,7 @@ func (s stack) SetVhomogeneous(vhomogeneous bool) {
 // @stack.
 //
 // Note that the @child widget has to be visible itself (see
-// [method@Gtk.Widget.show]) in order to become the visible child of @stack.
+// gtk_widget_show()) in order to become the visible child of @stack.
 func (s stack) SetVisibleChild(child Widget) {
 	var arg0 *C.GtkStack
 	var arg1 *C.GtkWidget
@@ -27502,7 +25206,7 @@ func (s stack) SetVisibleChild(child Widget) {
 // SetVisibleChildFull makes the child with the given name visible.
 //
 // Note that the child widget has to be visible itself (see
-// [method@Gtk.Widget.show]) in order to become the visible child of @stack.
+// gtk_widget_show()) in order to become the visible child of @stack.
 func (s stack) SetVisibleChildFull(name string, transition StackTransitionType) {
 	var arg0 *C.GtkStack
 	var arg1 *C.char
@@ -27523,7 +25227,7 @@ func (s stack) SetVisibleChildFull(name string, transition StackTransitionType) 
 // @stack.
 //
 // Note that the child widget has to be visible itself (see
-// [method@Gtk.Widget.show]) in order to become the visible child of @stack.
+// gtk_widget_show()) in order to become the visible child of @stack.
 func (s stack) SetVisibleChildName(name string) {
 	var arg0 *C.GtkStack
 	var arg1 *C.char
@@ -27535,41 +25239,44 @@ func (s stack) SetVisibleChildName(name string) {
 	C.gtk_stack_set_visible_child_name(arg0, arg1)
 }
 
-// StackPage: `GtkStackPage` is an auxiliary class used by `GtkStack`.
 type StackPage interface {
 	gextras.Objector
 	Accessible
 
 	// Child returns the stack child to which @self belongs.
 	Child() Widget
-	// IconName returns the icon name of the page.
+	// IconName returns the current value of the StackPage:icon-name property.
 	IconName() string
-	// Name returns the name of the page.
+	// Name returns the current value of the StackPage:name property.
 	Name() string
-	// NeedsAttention returns whether the page is marked as “needs attention”.
+	// NeedsAttention returns the current value of the StackPage:needs-attention
+	// property.
 	NeedsAttention() bool
-	// Title gets the page title.
+	// Title returns the current value of the StackPage:title property.
 	Title() string
-	// UseUnderline gets whether underlines in the page title indicate
-	// mnemonics.
+	// UseUnderline returns the current value of the StackPage:use-underline
+	// property.
 	UseUnderline() bool
-	// Visible returns whether @page is visible in its `GtkStack`.
-	//
-	// This is independent from the [property@Gtk.Widget:visible] property of
-	// its widget.
+	// Visible returns whether @page is visible in its Stack. This is
+	// independent from the Widget:visible value of its Widget.
 	Visible() bool
-	// SetIconName sets the icon name of the page.
+	// SetIconName sets the new value of the StackPage:icon-name property. See
+	// also gtk_stack_page_get_icon_name()
 	SetIconName(setting string)
-	// SetName sets the name of the page.
+	// SetName sets the new value of the StackPage:name property. See also
+	// gtk_stack_page_get_name()
 	SetName(setting string)
-	// SetNeedsAttention sets whether the page is marked as “needs attention”.
+	// SetNeedsAttention sets the new value of the StackPage:needs-attention
+	// property. See also gtk_stack_page_get_needs_attention()
 	SetNeedsAttention(setting bool)
-	// SetTitle sets the page title.
+	// SetTitle sets the new value of the StackPage:title property. See also
+	// gtk_stack_page_get_title()
 	SetTitle(setting string)
-	// SetUseUnderline sets whether underlines in the page title indicate
-	// mnemonics.
+	// SetUseUnderline sets the new value of the StackPage:use-underline
+	// property. See also gtk_stack_page_get_use_underline()
 	SetUseUnderline(setting bool)
-	// SetVisible sets whether @page is visible in its `GtkStack`.
+	// SetVisible sets the new value of the StackPage:visible property to
+	// @visible.
 	SetVisible(visible bool)
 }
 
@@ -27603,122 +25310,129 @@ func (s stackPage) Child() Widget {
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_stack_page_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// IconName returns the icon name of the page.
+// IconName returns the current value of the StackPage:icon-name property.
 func (s stackPage) IconName() string {
 	var arg0 *C.GtkStackPage
 
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_stack_page_get_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// Name returns the name of the page.
+// Name returns the current value of the StackPage:name property.
 func (s stackPage) Name() string {
 	var arg0 *C.GtkStackPage
 
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_stack_page_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// NeedsAttention returns whether the page is marked as “needs attention”.
+// NeedsAttention returns the current value of the StackPage:needs-attention
+// property.
 func (s stackPage) NeedsAttention() bool {
 	var arg0 *C.GtkStackPage
 
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_page_get_needs_attention(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Title gets the page title.
+// Title returns the current value of the StackPage:title property.
 func (s stackPage) Title() string {
 	var arg0 *C.GtkStackPage
 
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_stack_page_get_title(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// UseUnderline gets whether underlines in the page title indicate
-// mnemonics.
+// UseUnderline returns the current value of the StackPage:use-underline
+// property.
 func (s stackPage) UseUnderline() bool {
 	var arg0 *C.GtkStackPage
 
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_page_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Visible returns whether @page is visible in its `GtkStack`.
-//
-// This is independent from the [property@Gtk.Widget:visible] property of
-// its widget.
+// Visible returns whether @page is visible in its Stack. This is
+// independent from the Widget:visible value of its Widget.
 func (s stackPage) Visible() bool {
 	var arg0 *C.GtkStackPage
 
 	arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_stack_page_get_visible(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetIconName sets the icon name of the page.
+// SetIconName sets the new value of the StackPage:icon-name property. See
+// also gtk_stack_page_get_icon_name()
 func (s stackPage) SetIconName(setting string) {
 	var arg0 *C.GtkStackPage
 	var arg1 *C.char
@@ -27730,7 +25444,8 @@ func (s stackPage) SetIconName(setting string) {
 	C.gtk_stack_page_set_icon_name(arg0, arg1)
 }
 
-// SetName sets the name of the page.
+// SetName sets the new value of the StackPage:name property. See also
+// gtk_stack_page_get_name()
 func (s stackPage) SetName(setting string) {
 	var arg0 *C.GtkStackPage
 	var arg1 *C.char
@@ -27742,7 +25457,8 @@ func (s stackPage) SetName(setting string) {
 	C.gtk_stack_page_set_name(arg0, arg1)
 }
 
-// SetNeedsAttention sets whether the page is marked as “needs attention”.
+// SetNeedsAttention sets the new value of the StackPage:needs-attention
+// property. See also gtk_stack_page_get_needs_attention()
 func (s stackPage) SetNeedsAttention(setting bool) {
 	var arg0 *C.GtkStackPage
 	var arg1 C.gboolean
@@ -27755,7 +25471,8 @@ func (s stackPage) SetNeedsAttention(setting bool) {
 	C.gtk_stack_page_set_needs_attention(arg0, arg1)
 }
 
-// SetTitle sets the page title.
+// SetTitle sets the new value of the StackPage:title property. See also
+// gtk_stack_page_get_title()
 func (s stackPage) SetTitle(setting string) {
 	var arg0 *C.GtkStackPage
 	var arg1 *C.char
@@ -27767,8 +25484,8 @@ func (s stackPage) SetTitle(setting string) {
 	C.gtk_stack_page_set_title(arg0, arg1)
 }
 
-// SetUseUnderline sets whether underlines in the page title indicate
-// mnemonics.
+// SetUseUnderline sets the new value of the StackPage:use-underline
+// property. See also gtk_stack_page_get_use_underline()
 func (s stackPage) SetUseUnderline(setting bool) {
 	var arg0 *C.GtkStackPage
 	var arg1 C.gboolean
@@ -27781,7 +25498,8 @@ func (s stackPage) SetUseUnderline(setting bool) {
 	C.gtk_stack_page_set_use_underline(arg0, arg1)
 }
 
-// SetVisible sets whether @page is visible in its `GtkStack`.
+// SetVisible sets the new value of the StackPage:visible property to
+// @visible.
 func (s stackPage) SetVisible(visible bool) {
 	var arg0 *C.GtkStackPage
 	var arg1 C.gboolean
@@ -27794,21 +25512,20 @@ func (s stackPage) SetVisible(visible bool) {
 	C.gtk_stack_page_set_visible(arg0, arg1)
 }
 
-// StackSidebar: a `GtkStackSidebar` uses a sidebar to switch between `GtkStack`
-// pages.
+// StackSidebar: a GtkStackSidebar enables you to quickly and easily provide a
+// consistent "sidebar" object for your user interface.
 //
-// In order to use a `GtkStackSidebar`, you simply use a `GtkStack` to organize
-// your UI flow, and add the sidebar to your sidebar area. You can use
-// [method@Gtk.StackSidebar.set_stack] to connect the `GtkStackSidebar` to the
-// `GtkStack`.
+// In order to use a GtkStackSidebar, you simply use a GtkStack to organize your
+// UI flow, and add the sidebar to your sidebar area. You can use
+// gtk_stack_sidebar_set_stack() to connect the StackSidebar to the Stack.
 //
 //
 // CSS nodes
 //
-// `GtkStackSidebar` has a single CSS node with name stacksidebar and style
-// class .sidebar.
+// GtkStackSidebar has a single CSS node with name stacksidebar and style class
+// .sidebar.
 //
-// When circumstances require it, `GtkStackSidebar` adds the .needs-attention
+// When circumstances require it, GtkStackSidebar adds the .needs-attention
 // style class to the widgets representing the stack pages.
 type StackSidebar interface {
 	Widget
@@ -27816,12 +25533,12 @@ type StackSidebar interface {
 	Buildable
 	ConstraintTarget
 
-	// Stack retrieves the stack.
+	// Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
 	Stack() Stack
-	// SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
+	// SetStack: set the Stack associated with this StackSidebar.
 	//
-	// The sidebar widget will automatically update according to the order and
-	// items within the given `GtkStack`.
+	// The sidebar widget will automatically update according to the order
+	// (packing) and items within the given Stack.
 	SetStack(stack Stack)
 }
 
@@ -27855,35 +25572,37 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 // NewStackSidebar constructs a class StackSidebar.
 func NewStackSidebar() StackSidebar {
 	var cret C.GtkStackSidebar
-	var goret StackSidebar
 
 	cret = C.gtk_stack_sidebar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSidebar)
+	var stackSidebar StackSidebar
 
-	return goret
+	stackSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSidebar)
+
+	return stackSidebar
 }
 
-// Stack retrieves the stack.
+// Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
 func (s stackSidebar) Stack() Stack {
 	var arg0 *C.GtkStackSidebar
 
 	arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkStack
-	var goret Stack
 
 	cret = C.gtk_stack_sidebar_get_stack(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	var stack Stack
 
-	return goret
+	stack = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+
+	return stack
 }
 
-// SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
+// SetStack: set the Stack associated with this StackSidebar.
 //
-// The sidebar widget will automatically update according to the order and
-// items within the given `GtkStack`.
+// The sidebar widget will automatically update according to the order
+// (packing) and items within the given Stack.
 func (s stackSidebar) SetStack(stack Stack) {
 	var arg0 *C.GtkStackSidebar
 	var arg1 *C.GtkStack
@@ -27894,41 +25613,38 @@ func (s stackSidebar) SetStack(stack Stack) {
 	C.gtk_stack_sidebar_set_stack(arg0, arg1)
 }
 
-// StackSwitcher: the `GtkStackSwitcher` shows a row of buttons to switch
-// between `GtkStack` pages.
+// StackSwitcher: the GtkStackSwitcher widget acts as a controller for a Stack;
+// it shows a row of buttons to switch between the various pages of the
+// associated stack widget.
 //
-// !An example GtkStackSwitcher (stackswitcher.png)
+// All the content for the buttons comes from the child properties of the Stack;
+// the button visibility in a StackSwitcher widget is controlled by the
+// visibility of the child in the Stack.
 //
-// It acts as a controller for the associated `GtkStack`.
-//
-// All the content for the buttons comes from the properties of the stacks
-// [class@Gtk.StackPage] objects; the button visibility in a `GtkStackSwitcher`
-// widget is controlled by the visibility of the child in the `GtkStack`.
-//
-// It is possible to associate multiple `GtkStackSwitcher` widgets with the same
-// `GtkStack` widget.
+// It is possible to associate multiple StackSwitcher widgets with the same
+// Stack widget.
 //
 //
 // CSS nodes
 //
-// `GtkStackSwitcher` has a single CSS node named stackswitcher and style class
+// GtkStackSwitcher has a single CSS node named stackswitcher and style class
 // .stack-switcher.
 //
-// When circumstances require it, `GtkStackSwitcher` adds the .needs-attention
+// When circumstances require it, GtkStackSwitcher adds the .needs-attention
 // style class to the widgets representing the stack pages.
 //
 //
 // Accessibility
 //
-// `GtkStackSwitcher` uses the GTK_ACCESSIBLE_ROLE_TAB_LIST role and uses the
-// GTK_ACCESSIBLE_ROLE_TAB for its buttons.
+// GtkStackSwitcher uses the K_ACCESSIBLE_ROLE_TAB_LIST role and uses the
+// K_ACCESSIBLE_ROLE_TAB for its buttons.
 type StackSwitcher interface {
 	Widget
 	Accessible
 	Buildable
 	ConstraintTarget
 
-	// Stack retrieves the stack.
+	// Stack retrieves the stack. See gtk_stack_switcher_set_stack().
 	Stack() Stack
 	// SetStack sets the stack to control.
 	SetStack(stack Stack)
@@ -27964,29 +25680,31 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 // NewStackSwitcher constructs a class StackSwitcher.
 func NewStackSwitcher() StackSwitcher {
 	var cret C.GtkStackSwitcher
-	var goret StackSwitcher
 
 	cret = C.gtk_stack_switcher_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSwitcher)
+	var stackSwitcher StackSwitcher
 
-	return goret
+	stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSwitcher)
+
+	return stackSwitcher
 }
 
-// Stack retrieves the stack.
+// Stack retrieves the stack. See gtk_stack_switcher_set_stack().
 func (s stackSwitcher) Stack() Stack {
 	var arg0 *C.GtkStackSwitcher
 
 	arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkStack
-	var goret Stack
 
 	cret = C.gtk_stack_switcher_get_stack(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	var stack Stack
 
-	return goret
+	stack = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+
+	return stack
 }
 
 // SetStack sets the stack to control.
@@ -28000,22 +25718,18 @@ func (s stackSwitcher) SetStack(stack Stack) {
 	C.gtk_stack_switcher_set_stack(arg0, arg1)
 }
 
-// Statusbar: a `GtkStatusbar` widget is usually placed along the bottom of an
-// application's main [class@Gtk.Window].
-//
-// !An example GtkStatusbar (statusbar.png)
-//
-// A `GtkStatusBar` may provide a regular commentary of the application's status
+// Statusbar: a Statusbar is usually placed along the bottom of an application's
+// main Window. It may provide a regular commentary of the application's status
 // (as is usually the case in a web browser, for example), or may be used to
 // simply output a message when the status changes, (when an upload is complete
 // in an FTP client, for example).
 //
-// Status bars in GTK maintain a stack of messages. The message at the top of
+// Status bars in GTK+ maintain a stack of messages. The message at the top of
 // the each bar’s stack is the one that will currently be displayed.
 //
 // Any messages added to a statusbar’s stack must specify a context id that is
 // used to uniquely identify the source of a message. This context id can be
-// generated by [method@Gtk.Statusbar.get_context_id], given a message and the
+// generated by gtk_statusbar_get_context_id(), given a message and the
 // statusbar that it will be added to. Note that messages are stored in a stack,
 // and when choosing which message to display, the stack structure is adhered
 // to, regardless of the context identifier of a message.
@@ -28024,19 +25738,18 @@ func (s stackSwitcher) SetStack(stack Stack) {
 // purposes, but allows multiple message producers to maintain sub-stacks of the
 // messages they produced (via context ids).
 //
-// Status bars are created using [ctor@Gtk.Statusbar.new].
+// Status bars are created using gtk_statusbar_new().
 //
-// Messages are added to the bar’s stack with [method@Gtk.Statusbar.push].
+// Messages are added to the bar’s stack with gtk_statusbar_push().
 //
-// The message at the top of the stack can be removed using
-// [method@Gtk.Statusbar.pop]. A message can be removed from anywhere in the
-// stack if its message id was recorded at the time it was added. This is done
-// using [method@Gtk.Statusbar.remove].
+// The message at the top of the stack can be removed using gtk_statusbar_pop().
+// A message can be removed from anywhere in the stack if its message id was
+// recorded at the time it was added. This is done using gtk_statusbar_remove().
 //
 //
 // CSS node
 //
-// `GtkStatusbar` has a single CSS node with name `statusbar`.
+// GtkStatusbar has a single CSS node with name statusbar.
 type Statusbar interface {
 	Widget
 	Accessible
@@ -28044,24 +25757,22 @@ type Statusbar interface {
 	ConstraintTarget
 
 	// ContextID returns a new context identifier, given a description of the
-	// actual context.
-	//
-	// Note that the description is not shown in the UI.
+	// actual context. Note that the description is not shown in the UI.
 	ContextID(contextDescription string) uint
-	// Pop removes the first message in the `GtkStatusbar`’s stack with the
-	// given context id.
+	// Pop removes the first message in the Statusbar’s stack with the given
+	// context id.
 	//
 	// Note that this may not change the displayed message, if the message at
 	// the top of the stack has a different context id.
-	Pop(contextID uint)
+	Pop(contextId uint)
 	// Push pushes a new message onto a statusbar’s stack.
-	Push(contextID uint, text string) uint
+	Push(contextId uint, text string) uint
 	// Remove forces the removal of a message from a statusbar’s stack. The
 	// exact @context_id and @message_id must be specified.
-	Remove(contextID uint, messageID uint)
+	Remove(contextId uint, messageId uint)
 	// RemoveAll forces the removal of all messages from a statusbar's stack
 	// with the exact @context_id.
-	RemoveAll(contextID uint)
+	RemoveAll(contextId uint)
 }
 
 // statusbar implements the Statusbar interface.
@@ -28094,19 +25805,18 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 // NewStatusbar constructs a class Statusbar.
 func NewStatusbar() Statusbar {
 	var cret C.GtkStatusbar
-	var goret Statusbar
 
 	cret = C.gtk_statusbar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Statusbar)
+	var statusbar Statusbar
 
-	return goret
+	statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Statusbar)
+
+	return statusbar
 }
 
 // ContextID returns a new context identifier, given a description of the
-// actual context.
-//
-// Note that the description is not shown in the UI.
+// actual context. Note that the description is not shown in the UI.
 func (s statusbar) ContextID(contextDescription string) uint {
 	var arg0 *C.GtkStatusbar
 	var arg1 *C.char
@@ -28116,100 +25826,100 @@ func (s statusbar) ContextID(contextDescription string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_statusbar_get_context_id(arg0, arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
-// Pop removes the first message in the `GtkStatusbar`’s stack with the
-// given context id.
+// Pop removes the first message in the Statusbar’s stack with the given
+// context id.
 //
 // Note that this may not change the displayed message, if the message at
 // the top of the stack has a different context id.
-func (s statusbar) Pop(contextID uint) {
+func (s statusbar) Pop(contextId uint) {
 	var arg0 *C.GtkStatusbar
 	var arg1 C.guint
 
 	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextID)
+	arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_pop(arg0, arg1)
 }
 
 // Push pushes a new message onto a statusbar’s stack.
-func (s statusbar) Push(contextID uint, text string) uint {
+func (s statusbar) Push(contextId uint, text string) uint {
 	var arg0 *C.GtkStatusbar
 	var arg1 C.guint
 	var arg2 *C.char
 
 	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextID)
+	arg1 = C.guint(contextId)
 	arg2 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_statusbar_push(arg0, arg1, arg2)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Remove forces the removal of a message from a statusbar’s stack. The
 // exact @context_id and @message_id must be specified.
-func (s statusbar) Remove(contextID uint, messageID uint) {
+func (s statusbar) Remove(contextId uint, messageId uint) {
 	var arg0 *C.GtkStatusbar
 	var arg1 C.guint
 	var arg2 C.guint
 
 	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextID)
-	arg2 = C.guint(messageID)
+	arg1 = C.guint(contextId)
+	arg2 = C.guint(messageId)
 
 	C.gtk_statusbar_remove(arg0, arg1, arg2)
 }
 
 // RemoveAll forces the removal of all messages from a statusbar's stack
 // with the exact @context_id.
-func (s statusbar) RemoveAll(contextID uint) {
+func (s statusbar) RemoveAll(contextId uint) {
 	var arg0 *C.GtkStatusbar
 	var arg1 C.guint
 
 	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextID)
+	arg1 = C.guint(contextId)
 
 	C.gtk_statusbar_remove_all(arg0, arg1)
 }
 
-// Switch: `GtkSwitch` is a "light switch" that has two states: on or off.
+// Switch is a widget that has two states: on or off. The user can control which
+// state should be active by clicking the empty area, or by dragging the handle.
 //
-// !An example GtkSwitch (switch.png)
-//
-// The user can control which state should be active by clicking the empty area,
-// or by dragging the handle.
-//
-// `GtkSwitch` can also handle situations where the underlying state changes
-// with a delay. See [signal@GtkSwitch::state-set] for details.
-//
+// GtkSwitch can also handle situations where the underlying state changes with
+// a delay. See Switch::state-set for details.
 //
 // CSS nodes
 //
-// “` switch ├── label ├── label ╰── slider “`
+//    switch
+//    ├── label
+//    ├── label
+//    ╰── slider
 //
-// `GtkSwitch` has four css nodes, the main node with the name switch and
-// subnodes for the slider and the on and off labels. Neither of them is using
-// any style classes.
+// GtkSwitch has four css nodes, the main node with the name switch and subnodes
+// for the slider and the on and off labels. Neither of them is using any style
+// classes.
 //
 //
 // Accessibility
 //
-// `GtkSwitch` uses the GTK_ACCESSIBLE_ROLE_SWITCH role.
+// GtkSwitch uses the K_ACCESSIBLE_ROLE_SWITCH role.
 type Switch interface {
 	Widget
 	Accessible
@@ -28217,19 +25927,19 @@ type Switch interface {
 	Buildable
 	ConstraintTarget
 
-	// Active gets whether the `GtkSwitch` is in its “on” or “off” state.
+	// Active gets whether the Switch is in its “on” or “off” state.
 	Active() bool
-	// State gets the underlying state of the `GtkSwitch`.
+	// State gets the underlying state of the Switch.
 	State() bool
 	// SetActive changes the state of @self to the desired one.
 	SetActive(isActive bool)
-	// SetState sets the underlying state of the `GtkSwitch`.
+	// SetState sets the underlying state of the Switch.
 	//
-	// Normally, this is the same as [property@Gtk.Switch:active], unless the
-	// switch is set up for delayed state changes. This function is typically
-	// called from a [signal@Gtk.Switch`::state-set] signal handler.
+	// Normally, this is the same as Switch:active, unless the switch is set up
+	// for delayed state changes. This function is typically called from a
+	// Switch::state-set signal handler.
 	//
-	// See [signal@Gtk.Switch::state-set] for details.
+	// See Switch::state-set for details.
 	SetState(state bool)
 }
 
@@ -28265,49 +25975,52 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 // NewSwitch constructs a class Switch.
 func NewSwitch() Switch {
 	var cret C.GtkSwitch
-	var goret Switch
 
 	cret = C.gtk_switch_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
+	var _switch Switch
 
-	return goret
+	_switch = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
+
+	return _switch
 }
 
-// Active gets whether the `GtkSwitch` is in its “on” or “off” state.
+// Active gets whether the Switch is in its “on” or “off” state.
 func (s _switch) Active() bool {
 	var arg0 *C.GtkSwitch
 
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_switch_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// State gets the underlying state of the `GtkSwitch`.
+// State gets the underlying state of the Switch.
 func (s _switch) State() bool {
 	var arg0 *C.GtkSwitch
 
 	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_switch_get_state(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActive changes the state of @self to the desired one.
@@ -28323,13 +26036,13 @@ func (s _switch) SetActive(isActive bool) {
 	C.gtk_switch_set_active(arg0, arg1)
 }
 
-// SetState sets the underlying state of the `GtkSwitch`.
+// SetState sets the underlying state of the Switch.
 //
-// Normally, this is the same as [property@Gtk.Switch:active], unless the
-// switch is set up for delayed state changes. This function is typically
-// called from a [signal@Gtk.Switch`::state-set] signal handler.
+// Normally, this is the same as Switch:active, unless the switch is set up
+// for delayed state changes. This function is typically called from a
+// Switch::state-set signal handler.
 //
-// See [signal@Gtk.Switch::state-set] for details.
+// See Switch::state-set for details.
 func (s _switch) SetState(state bool) {
 	var arg0 *C.GtkSwitch
 	var arg1 C.gboolean
@@ -28342,36 +26055,35 @@ func (s _switch) SetState(state bool) {
 	C.gtk_switch_set_state(arg0, arg1)
 }
 
-// Text: the `GtkText` widget is a single-line text entry widget.
-//
-// `GtkText` is the common implementation of single-line text editing that is
-// shared between `GtkEntry`, `GtkPasswordEntry, `GtkSpinButton` and other
-// widgets. In all of these, `GtkText` is used as the delegate for the
-// [iface@Gtk.Editable] implementation.
+// Text: the Text widget is a single line text entry widget.
 //
 // A fairly large set of key bindings are supported by default. If the entered
 // text is longer than the allocation of the widget, the widget will scroll so
 // that the cursor position is visible.
 //
 // When using an entry for passwords and other sensitive information, it can be
-// put into “password mode” using [method@Gtk.Text.set_visibility]. In this
-// mode, entered text is displayed using a “invisible” character. By default,
-// GTK picks the best invisible character that is available in the current font,
-// but it can be changed with [method@Gtk.Text.set_invisible_char].
+// put into “password mode” using gtk_text_set_visibility(). In this mode,
+// entered text is displayed using a “invisible” character. By default, GTK
+// picks the best invisible character that is available in the current font, but
+// it can be changed with gtk_text_set_invisible_char().
 //
 // If you are looking to add icons or progress display in an entry, look at
-// `GtkEntry`. There other alternatives for more specialized use cases, such as
-// `GtkSearchEntry`.
+// Entry. There other alternatives for more specialized use cases, such as
+// SearchEntry.
 //
-// If you need multi-line editable text, look at `GtkTextView`.
-//
+// If you need multi-line editable text, look at TextView.
 //
 // CSS nodes
 //
-// “` text[.read-only] ├── placeholder ├── undershoot.left ├── undershoot.right
-// ├── [selection] ├── [block-cursor] ╰── [window.popup] “`
+//    text[.read-only]
+//    ├── placeholder
+//    ├── undershoot.left
+//    ├── undershoot.right
+//    ├── [selection]
+//    ├── [block-cursor]
+//    ╰── [window.popup]
 //
-// `GtkText` has a main node with the name text. Depending on the properties of
+// GtkText has a main node with the name text. Depending on the properties of
 // the widget, the .read-only style class may appear.
 //
 // When the entry has a selection, it adds a subnode with the name selection.
@@ -28394,9 +26106,9 @@ func (s _switch) SetState(state bool) {
 //
 // Accessibility
 //
-// `GtkText` uses the GTK_ACCESSIBLE_ROLE_NONE role, which causes it to be
-// skipped for accessibility. This is because `GtkText` is expected to be used
-// as a delegate for a `GtkEditable` implementation that will be represented to
+// GtkText uses the K_ACCESSIBLE_ROLE_NONE role, which causes it to be skipped
+// for accessibility. This is because GtkText is expected to be used as a
+// delegate for a Editable implementation that will be represented to
 // accessibility.
 type Text interface {
 	Widget
@@ -28408,92 +26120,89 @@ type Text interface {
 	// ActivatesDefault retrieves the value set by
 	// gtk_text_set_activates_default().
 	ActivatesDefault() bool
-	// Attributes gets the attribute list that was set on the `GtkText` using
-	// gtk_text_set_attributes().
+	// Attributes gets the attribute list that was set on the self using
+	// gtk_text_set_attributes(), if any.
 	Attributes() *pango.AttrList
-	// Buffer: get the `GtkEntryBuffer` object which holds the text for this
-	// self.
+	// Buffer: get the EntryBuffer object which holds the text for this self.
 	Buffer() EntryBuffer
 	// EnableEmojiCompletion returns whether Emoji completion is enabled for
-	// this `GtkText` widget.
+	// this GtkText widget.
 	EnableEmojiCompletion() bool
 	// ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
 	ExtraMenu() gio.MenuModel
-	// InputHints gets the input hints of the `GtkText`.
+	// InputHints gets the value of the Text:input-hints property.
 	InputHints() InputHints
-	// InputPurpose gets the input purpose of the `GtkText`.
+	// InputPurpose gets the value of the Text:input-purpose property.
 	InputPurpose() InputPurpose
 	// InvisibleChar retrieves the character displayed in place of the real
-	// characters for entries with visibility set to false.
-	//
-	// Note that GTK does not compute this value unless it needs it, so the
-	// value returned by this function is not very useful unless it has been
-	// explicitly set with [method@Gtk.Text.set_invisible_char].
+	// characters for entries with visibility set to false. Note that GTK does
+	// not compute this value unless it needs it, so the value returned by this
+	// function is not very useful unless it has been explicitly set with
+	// gtk_text_set_invisible_char()
 	InvisibleChar() uint32
-	// MaxLength retrieves the maximum allowed length of the text in @self.
+	// MaxLength retrieves the maximum allowed length of the text in @self. See
+	// gtk_text_set_max_length().
 	//
-	// See [method@Gtk.Text.set_max_length].
-	//
-	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
-	// [method@Gtk.EntryBuffer.get_max_length] on it.
+	// This is equivalent to getting @self's EntryBuffer and calling
+	// gtk_entry_buffer_get_max_length() on it.
 	MaxLength() int
 	// OverwriteMode gets the value set by gtk_text_set_overwrite_mode().
 	OverwriteMode() bool
 	// PlaceholderText retrieves the text that will be displayed when @self is
 	// empty and unfocused
 	PlaceholderText() string
-	// PropagateTextWidth returns whether the `GtkText` will grow and shrink
-	// with the content.
+	// PropagateTextWidth returns whether the Text will grow and shrink with the
+	// content.
 	PropagateTextWidth() bool
-	// Tabs gets the tabstops that were set on the `GtkText` using
-	// gtk_text_set_tabs().
+	// Tabs gets the tabstops that were set on the self using
+	// gtk_text_set_tabs(), if any.
 	Tabs() *pango.TabArray
 	// TextLength retrieves the current length of the text in @self.
 	//
-	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
-	// [method@Gtk.EntryBuffer.get_length] on it.
+	// This is equivalent to getting @self's EntryBuffer and calling
+	// gtk_entry_buffer_get_length() on it.
 	TextLength() uint16
-	// TruncateMultiline returns whether the `GtkText` will truncate multi-line
-	// text that is pasted into the widget
+	// TruncateMultiline returns whether the Text will truncate multi-line text
+	// that is pasted into the widget
 	TruncateMultiline() bool
-	// Visibility retrieves whether the text in @self is visible.
+	// Visibility retrieves whether the text in @self is visible. See
+	// gtk_text_set_visibility().
 	Visibility() bool
 	// GrabFocusWithoutSelecting causes @self to have keyboard focus.
 	//
-	// It behaves like [method@Gtk.Widget.grab_focus], except that it doesn't
-	// select the contents of @self. You only want to call this on some special
-	// entries which the user usually doesn't want to replace all text in, such
-	// as search-as-you-type entries.
+	// It behaves like gtk_widget_grab_focus(), except that it doesn't select
+	// the contents of @self. You only want to call this on some special entries
+	// which the user usually doesn't want to replace all text in, such as
+	// search-as-you-type entries.
 	GrabFocusWithoutSelecting() bool
 	// SetActivatesDefault: if @activates is true, pressing Enter in the @self
-	// will activate the default widget for the window containing @self.
-	//
-	// This usually means that the dialog containing the `GtkText` will be
-	// closed, since the default widget is usually one of the dialog buttons.
+	// will activate the default widget for the window containing the self. This
+	// usually means that the dialog box containing the self will be closed,
+	// since the default widget is usually one of the dialog buttons.
 	SetActivatesDefault(activates bool)
-	// SetAttributes sets attributes that are applied to the text.
+	// SetAttributes sets a AttrList; the attributes in the list are applied to
+	// the text.
 	SetAttributes(attrs *pango.AttrList)
-	// SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
+	// SetBuffer: set the EntryBuffer object which holds the text for this
 	// widget.
 	SetBuffer(buffer EntryBuffer)
-	// SetEnableEmojiCompletion sets whether Emoji completion is enabled.
-	//
-	// If it is, typing ':', followed by a recognized keyword, will pop up a
-	// window with suggested Emojis matching the keyword.
+	// SetEnableEmojiCompletion sets whether Emoji completion is enabled. If it
+	// is, typing ':', followed by a recognized keyword, will pop up a window
+	// with suggested Emojis matching the keyword.
 	SetEnableEmojiCompletion(enableEmojiCompletion bool)
 	// SetExtraMenu sets a menu model to add when constructing the context menu
 	// for @self.
 	SetExtraMenu(model gio.MenuModel)
-	// SetInputHints sets input hints that allow input methods to fine-tune
-	// their behaviour.
+	// SetInputHints sets the Text:input-hints property, which allows input
+	// methods to fine-tune their behaviour.
 	SetInputHints(hints InputHints)
-	// SetInputPurpose sets the input purpose of the `GtkText`.
-	//
-	// This can be used by on-screen keyboards and other input methods to adjust
-	// their behaviour.
+	// SetInputPurpose sets the Text:input-purpose property which can be used by
+	// on-screen keyboards and other input methods to adjust their behaviour.
 	SetInputPurpose(purpose InputPurpose)
 	// SetInvisibleChar sets the character to use in place of the actual text
-	// when in “password mode”.
+	// when gtk_text_set_visibility() has been called to set text visibility to
+	// false. i.e. this is the character used in “password mode” to show the
+	// user how many characters have been typed.
 	//
 	// By default, GTK picks the best invisible char available in the current
 	// font. If you set the invisible char to 0, then the user will get no
@@ -28505,44 +26214,42 @@ type Text interface {
 	// If the current contents are longer than the given length, then they will
 	// be truncated to fit.
 	//
-	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
-	// [method@Gtk.EntryBuffer.set_max_length] on it.
+	// This is equivalent to getting @self's EntryBuffer and calling
+	// gtk_entry_buffer_set_max_length() on it. ]|
 	SetMaxLength(length int)
 	// SetOverwriteMode sets whether the text is overwritten when typing in the
-	// `GtkText`.
+	// Text.
 	SetOverwriteMode(overwrite bool)
 	// SetPlaceholderText sets text to be displayed in @self when it is empty.
 	//
 	// This can be used to give a visual hint of the expected contents of the
-	// `GtkText`.
+	// self.
 	SetPlaceholderText(text string)
-	// SetPropagateTextWidth sets whether the `GtkText` should grow and shrink
+	// SetPropagateTextWidth sets whether the GtkText should grow and shrink
 	// with the content.
 	SetPropagateTextWidth(propagateTextWidth bool)
-	// SetTabs sets tabstops that are applied to the text.
+	// SetTabs sets a TabArray; the tabstops in the array are applied to the
+	// self text.
 	SetTabs(tabs *pango.TabArray)
-	// SetTruncateMultiline sets whether the `GtkText` should truncate
-	// multi-line text that is pasted into the widget.
+	// SetTruncateMultiline sets whether the GtkText should truncate multi-line
+	// text that is pasted into the widget.
 	SetTruncateMultiline(truncateMultiline bool)
-	// SetVisibility sets whether the contents of the `GtkText` are visible or
-	// not.
-	//
+	// SetVisibility sets whether the contents of the self are visible or not.
 	// When visibility is set to false, characters are displayed as the
-	// invisible char, and will also appear that way when the text in the widget
-	// is copied to the clipboard.
+	// invisible char, and will also appear that way when the text in the self
+	// widget is copied to the clipboard.
 	//
 	// By default, GTK picks the best invisible character available in the
-	// current font, but it can be changed with
-	// [method@Gtk.Text.set_invisible_char].
+	// current font, but it can be changed with gtk_text_set_invisible_char().
 	//
-	// Note that you probably want to set [property@Gtk.Text:input-purpose] to
+	// Note that you probably want to set Text:input-purpose to
 	// GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input
 	// methods about the purpose of this self, in addition to setting visibility
 	// to false.
 	SetVisibility(visible bool)
-	// UnsetInvisibleChar unsets the invisible char.
-	//
-	// After calling this, the default invisible char is used again.
+	// UnsetInvisibleChar unsets the invisible char previously set with
+	// gtk_text_set_invisible_char(). So that the default invisible char is used
+	// again.
 	UnsetInvisibleChar()
 }
 
@@ -28578,13 +26285,14 @@ func marshalText(p uintptr) (interface{}, error) {
 // NewText constructs a class Text.
 func NewText() Text {
 	var cret C.GtkText
-	var goret Text
 
 	cret = C.gtk_text_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
+	var text Text
 
-	return goret
+	text = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
+
+	return text
 }
 
 // NewTextWithBuffer constructs a class Text.
@@ -28594,13 +26302,14 @@ func NewTextWithBuffer(buffer EntryBuffer) Text {
 	arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
 
 	var cret C.GtkText
-	var goret Text
 
 	cret = C.gtk_text_new_with_buffer(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
+	var text Text
 
-	return goret
+	text = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Text)
+
+	return text
 }
 
 // ActivatesDefault retrieves the value set by
@@ -28611,68 +26320,71 @@ func (s text) ActivatesDefault() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_get_activates_default(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Attributes gets the attribute list that was set on the `GtkText` using
-// gtk_text_set_attributes().
+// Attributes gets the attribute list that was set on the self using
+// gtk_text_set_attributes(), if any.
 func (s text) Attributes() *pango.AttrList {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoAttrList
-	var goret *pango.AttrList
 
 	cret = C.gtk_text_get_attributes(arg0)
 
-	goret = pango.WrapAttrList(unsafe.Pointer(cret))
+	var attrList *pango.AttrList
 
-	return goret
+	attrList = pango.WrapAttrList(unsafe.Pointer(cret))
+
+	return attrList
 }
 
-// Buffer: get the `GtkEntryBuffer` object which holds the text for this
-// self.
+// Buffer: get the EntryBuffer object which holds the text for this self.
 func (s text) Buffer() EntryBuffer {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkEntryBuffer
-	var goret EntryBuffer
 
 	cret = C.gtk_text_get_buffer(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+	var entryBuffer EntryBuffer
 
-	return goret
+	entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+
+	return entryBuffer
 }
 
 // EnableEmojiCompletion returns whether Emoji completion is enabled for
-// this `GtkText` widget.
+// this GtkText widget.
 func (s text) EnableEmojiCompletion() bool {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_get_enable_emoji_completion(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
@@ -28682,87 +26394,90 @@ func (s text) ExtraMenu() gio.MenuModel {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GMenuModel
-	var goret gio.MenuModel
 
 	cret = C.gtk_text_get_extra_menu(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	var menuModel gio.MenuModel
 
-	return goret
+	menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+
+	return menuModel
 }
 
-// InputHints gets the input hints of the `GtkText`.
+// InputHints gets the value of the Text:input-hints property.
 func (s text) InputHints() InputHints {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkInputHints
-	var goret InputHints
 
 	cret = C.gtk_text_get_input_hints(arg0)
 
-	goret = InputHints(cret)
+	var inputHints InputHints
 
-	return goret
+	inputHints = InputHints(cret)
+
+	return inputHints
 }
 
-// InputPurpose gets the input purpose of the `GtkText`.
+// InputPurpose gets the value of the Text:input-purpose property.
 func (s text) InputPurpose() InputPurpose {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkInputPurpose
-	var goret InputPurpose
 
 	cret = C.gtk_text_get_input_purpose(arg0)
 
-	goret = InputPurpose(cret)
+	var inputPurpose InputPurpose
 
-	return goret
+	inputPurpose = InputPurpose(cret)
+
+	return inputPurpose
 }
 
 // InvisibleChar retrieves the character displayed in place of the real
-// characters for entries with visibility set to false.
-//
-// Note that GTK does not compute this value unless it needs it, so the
-// value returned by this function is not very useful unless it has been
-// explicitly set with [method@Gtk.Text.set_invisible_char].
+// characters for entries with visibility set to false. Note that GTK does
+// not compute this value unless it needs it, so the value returned by this
+// function is not very useful unless it has been explicitly set with
+// gtk_text_set_invisible_char()
 func (s text) InvisibleChar() uint32 {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gunichar
-	var goret uint32
 
 	cret = C.gtk_text_get_invisible_char(arg0)
 
-	goret = uint32(cret)
+	var gunichar uint32
 
-	return goret
+	gunichar = (uint32)(cret)
+
+	return gunichar
 }
 
-// MaxLength retrieves the maximum allowed length of the text in @self.
+// MaxLength retrieves the maximum allowed length of the text in @self. See
+// gtk_text_set_max_length().
 //
-// See [method@Gtk.Text.set_max_length].
-//
-// This is equivalent to getting @self's `GtkEntryBuffer` and calling
-// [method@Gtk.EntryBuffer.get_max_length] on it.
+// This is equivalent to getting @self's EntryBuffer and calling
+// gtk_entry_buffer_get_max_length() on it.
 func (s text) MaxLength() int {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_text_get_max_length(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // OverwriteMode gets the value set by gtk_text_set_overwrite_mode().
@@ -28772,15 +26487,16 @@ func (s text) OverwriteMode() bool {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_get_overwrite_mode(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PlaceholderText retrieves the text that will be displayed when @self is
@@ -28791,135 +26507,142 @@ func (s text) PlaceholderText() string {
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_text_get_placeholder_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// PropagateTextWidth returns whether the `GtkText` will grow and shrink
-// with the content.
+// PropagateTextWidth returns whether the Text will grow and shrink with the
+// content.
 func (s text) PropagateTextWidth() bool {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_get_propagate_text_width(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Tabs gets the tabstops that were set on the `GtkText` using
-// gtk_text_set_tabs().
+// Tabs gets the tabstops that were set on the self using
+// gtk_text_set_tabs(), if any.
 func (s text) Tabs() *pango.TabArray {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret *C.PangoTabArray
-	var goret *pango.TabArray
 
 	cret = C.gtk_text_get_tabs(arg0)
 
-	goret = pango.WrapTabArray(unsafe.Pointer(cret))
+	var tabArray *pango.TabArray
 
-	return goret
+	tabArray = pango.WrapTabArray(unsafe.Pointer(cret))
+
+	return tabArray
 }
 
 // TextLength retrieves the current length of the text in @self.
 //
-// This is equivalent to getting @self's `GtkEntryBuffer` and calling
-// [method@Gtk.EntryBuffer.get_length] on it.
+// This is equivalent to getting @self's EntryBuffer and calling
+// gtk_entry_buffer_get_length() on it.
 func (s text) TextLength() uint16 {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint16
-	var goret uint16
 
 	cret = C.gtk_text_get_text_length(arg0)
 
-	goret = uint16(cret)
+	var guint16 uint16
 
-	return goret
+	guint16 = (uint16)(cret)
+
+	return guint16
 }
 
-// TruncateMultiline returns whether the `GtkText` will truncate multi-line
-// text that is pasted into the widget
+// TruncateMultiline returns whether the Text will truncate multi-line text
+// that is pasted into the widget
 func (s text) TruncateMultiline() bool {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_get_truncate_multiline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Visibility retrieves whether the text in @self is visible.
+// Visibility retrieves whether the text in @self is visible. See
+// gtk_text_set_visibility().
 func (s text) Visibility() bool {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_get_visibility(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // GrabFocusWithoutSelecting causes @self to have keyboard focus.
 //
-// It behaves like [method@Gtk.Widget.grab_focus], except that it doesn't
-// select the contents of @self. You only want to call this on some special
-// entries which the user usually doesn't want to replace all text in, such
-// as search-as-you-type entries.
+// It behaves like gtk_widget_grab_focus(), except that it doesn't select
+// the contents of @self. You only want to call this on some special entries
+// which the user usually doesn't want to replace all text in, such as
+// search-as-you-type entries.
 func (s text) GrabFocusWithoutSelecting() bool {
 	var arg0 *C.GtkText
 
 	arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_grab_focus_without_selecting(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActivatesDefault: if @activates is true, pressing Enter in the @self
-// will activate the default widget for the window containing @self.
-//
-// This usually means that the dialog containing the `GtkText` will be
-// closed, since the default widget is usually one of the dialog buttons.
+// will activate the default widget for the window containing the self. This
+// usually means that the dialog box containing the self will be closed,
+// since the default widget is usually one of the dialog buttons.
 func (s text) SetActivatesDefault(activates bool) {
 	var arg0 *C.GtkText
 	var arg1 C.gboolean
@@ -28932,7 +26655,8 @@ func (s text) SetActivatesDefault(activates bool) {
 	C.gtk_text_set_activates_default(arg0, arg1)
 }
 
-// SetAttributes sets attributes that are applied to the text.
+// SetAttributes sets a AttrList; the attributes in the list are applied to
+// the text.
 func (s text) SetAttributes(attrs *pango.AttrList) {
 	var arg0 *C.GtkText
 	var arg1 *C.PangoAttrList
@@ -28943,7 +26667,7 @@ func (s text) SetAttributes(attrs *pango.AttrList) {
 	C.gtk_text_set_attributes(arg0, arg1)
 }
 
-// SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
+// SetBuffer: set the EntryBuffer object which holds the text for this
 // widget.
 func (s text) SetBuffer(buffer EntryBuffer) {
 	var arg0 *C.GtkText
@@ -28955,10 +26679,9 @@ func (s text) SetBuffer(buffer EntryBuffer) {
 	C.gtk_text_set_buffer(arg0, arg1)
 }
 
-// SetEnableEmojiCompletion sets whether Emoji completion is enabled.
-//
-// If it is, typing ':', followed by a recognized keyword, will pop up a
-// window with suggested Emojis matching the keyword.
+// SetEnableEmojiCompletion sets whether Emoji completion is enabled. If it
+// is, typing ':', followed by a recognized keyword, will pop up a window
+// with suggested Emojis matching the keyword.
 func (s text) SetEnableEmojiCompletion(enableEmojiCompletion bool) {
 	var arg0 *C.GtkText
 	var arg1 C.gboolean
@@ -28983,8 +26706,8 @@ func (s text) SetExtraMenu(model gio.MenuModel) {
 	C.gtk_text_set_extra_menu(arg0, arg1)
 }
 
-// SetInputHints sets input hints that allow input methods to fine-tune
-// their behaviour.
+// SetInputHints sets the Text:input-hints property, which allows input
+// methods to fine-tune their behaviour.
 func (s text) SetInputHints(hints InputHints) {
 	var arg0 *C.GtkText
 	var arg1 C.GtkInputHints
@@ -28995,10 +26718,8 @@ func (s text) SetInputHints(hints InputHints) {
 	C.gtk_text_set_input_hints(arg0, arg1)
 }
 
-// SetInputPurpose sets the input purpose of the `GtkText`.
-//
-// This can be used by on-screen keyboards and other input methods to adjust
-// their behaviour.
+// SetInputPurpose sets the Text:input-purpose property which can be used by
+// on-screen keyboards and other input methods to adjust their behaviour.
 func (s text) SetInputPurpose(purpose InputPurpose) {
 	var arg0 *C.GtkText
 	var arg1 C.GtkInputPurpose
@@ -29010,7 +26731,9 @@ func (s text) SetInputPurpose(purpose InputPurpose) {
 }
 
 // SetInvisibleChar sets the character to use in place of the actual text
-// when in “password mode”.
+// when gtk_text_set_visibility() has been called to set text visibility to
+// false. i.e. this is the character used in “password mode” to show the
+// user how many characters have been typed.
 //
 // By default, GTK picks the best invisible char available in the current
 // font. If you set the invisible char to 0, then the user will get no
@@ -29031,8 +26754,8 @@ func (s text) SetInvisibleChar(ch uint32) {
 // If the current contents are longer than the given length, then they will
 // be truncated to fit.
 //
-// This is equivalent to getting @self's `GtkEntryBuffer` and calling
-// [method@Gtk.EntryBuffer.set_max_length] on it.
+// This is equivalent to getting @self's EntryBuffer and calling
+// gtk_entry_buffer_set_max_length() on it. ]|
 func (s text) SetMaxLength(length int) {
 	var arg0 *C.GtkText
 	var arg1 C.int
@@ -29044,7 +26767,7 @@ func (s text) SetMaxLength(length int) {
 }
 
 // SetOverwriteMode sets whether the text is overwritten when typing in the
-// `GtkText`.
+// Text.
 func (s text) SetOverwriteMode(overwrite bool) {
 	var arg0 *C.GtkText
 	var arg1 C.gboolean
@@ -29060,7 +26783,7 @@ func (s text) SetOverwriteMode(overwrite bool) {
 // SetPlaceholderText sets text to be displayed in @self when it is empty.
 //
 // This can be used to give a visual hint of the expected contents of the
-// `GtkText`.
+// self.
 func (s text) SetPlaceholderText(text string) {
 	var arg0 *C.GtkText
 	var arg1 *C.char
@@ -29072,7 +26795,7 @@ func (s text) SetPlaceholderText(text string) {
 	C.gtk_text_set_placeholder_text(arg0, arg1)
 }
 
-// SetPropagateTextWidth sets whether the `GtkText` should grow and shrink
+// SetPropagateTextWidth sets whether the GtkText should grow and shrink
 // with the content.
 func (s text) SetPropagateTextWidth(propagateTextWidth bool) {
 	var arg0 *C.GtkText
@@ -29086,7 +26809,8 @@ func (s text) SetPropagateTextWidth(propagateTextWidth bool) {
 	C.gtk_text_set_propagate_text_width(arg0, arg1)
 }
 
-// SetTabs sets tabstops that are applied to the text.
+// SetTabs sets a TabArray; the tabstops in the array are applied to the
+// self text.
 func (s text) SetTabs(tabs *pango.TabArray) {
 	var arg0 *C.GtkText
 	var arg1 *C.PangoTabArray
@@ -29097,8 +26821,8 @@ func (s text) SetTabs(tabs *pango.TabArray) {
 	C.gtk_text_set_tabs(arg0, arg1)
 }
 
-// SetTruncateMultiline sets whether the `GtkText` should truncate
-// multi-line text that is pasted into the widget.
+// SetTruncateMultiline sets whether the GtkText should truncate multi-line
+// text that is pasted into the widget.
 func (s text) SetTruncateMultiline(truncateMultiline bool) {
 	var arg0 *C.GtkText
 	var arg1 C.gboolean
@@ -29111,18 +26835,15 @@ func (s text) SetTruncateMultiline(truncateMultiline bool) {
 	C.gtk_text_set_truncate_multiline(arg0, arg1)
 }
 
-// SetVisibility sets whether the contents of the `GtkText` are visible or
-// not.
-//
+// SetVisibility sets whether the contents of the self are visible or not.
 // When visibility is set to false, characters are displayed as the
-// invisible char, and will also appear that way when the text in the widget
-// is copied to the clipboard.
+// invisible char, and will also appear that way when the text in the self
+// widget is copied to the clipboard.
 //
 // By default, GTK picks the best invisible character available in the
-// current font, but it can be changed with
-// [method@Gtk.Text.set_invisible_char].
+// current font, but it can be changed with gtk_text_set_invisible_char().
 //
-// Note that you probably want to set [property@Gtk.Text:input-purpose] to
+// Note that you probably want to set Text:input-purpose to
 // GTK_INPUT_PURPOSE_PASSWORD or GTK_INPUT_PURPOSE_PIN to inform input
 // methods about the purpose of this self, in addition to setting visibility
 // to false.
@@ -29138,9 +26859,9 @@ func (s text) SetVisibility(visible bool) {
 	C.gtk_text_set_visibility(arg0, arg1)
 }
 
-// UnsetInvisibleChar unsets the invisible char.
-//
-// After calling this, the default invisible char is used again.
+// UnsetInvisibleChar unsets the invisible char previously set with
+// gtk_text_set_invisible_char(). So that the default invisible char is used
+// again.
 func (s text) UnsetInvisibleChar() {
 	var arg0 *C.GtkText
 
@@ -29149,46 +26870,45 @@ func (s text) UnsetInvisibleChar() {
 	C.gtk_text_unset_invisible_char(arg0)
 }
 
-// TextTagTable: the collection of tags in a `GtkTextBuffer`
-//
-// You may wish to begin by reading the text widget conceptual overview
-// (section-text-widget.html), which gives an overview of all the objects and
-// data types related to the text widget and how they work together.
+// TextTagTable: you may wish to begin by reading the [text widget conceptual
+// overview][TextWidget] which gives an overview of all the objects and data
+// types related to the text widget and how they work together.
 //
 //
 // GtkTextTagTables as GtkBuildable
 //
-// The `GtkTextTagTable` implementation of the `GtkBuildable` interface supports
+// The GtkTextTagTable implementation of the GtkBuildable interface supports
 // adding tags by specifying “tag” as the “type” attribute of a <child> element.
 //
-// An example of a UI definition fragment specifying tags: “`xml <object
-// class="GtkTextTagTable"> <child type="tag"> <object class="GtkTextTag"/>
-// </child> </object> “`
+// An example of a UI definition fragment specifying tags:
+//
+//    <object class="GtkTextTagTable">
+//     <child type="tag">
+//       <object class="GtkTextTag"/>
+//     </child>
+//    </object>
 type TextTagTable interface {
 	gextras.Objector
 	Buildable
 
-	// Add: add a tag to the table.
-	//
-	// The tag is assigned the highest priority in the table.
+	// Add: add a tag to the table. The tag is assigned the highest priority in
+	// the table.
 	//
 	// @tag must not be in a tag table already, and may not have the same name
 	// as an already-added tag.
 	Add(tag TextTag) bool
-	// Foreach calls @func on each tag in @table, with user data @data.
-	//
-	// Note that the table may not be modified while iterating over it (you
-	// can’t add/remove tags).
+	// Foreach calls @func on each tag in @table, with user data @data. Note
+	// that the table may not be modified while iterating over it (you can’t
+	// add/remove tags).
 	Foreach()
 	// Size returns the size of the table (number of tags)
 	Size() int
 	// Lookup: look up a named tag.
 	Lookup(name string) TextTag
-	// Remove: remove a tag from the table.
-	//
-	// If a `GtkTextBuffer` has @table as its tag table, the tag is removed from
-	// the buffer. The table’s reference to the tag is removed, so the tag will
-	// end up destroyed if you don’t have a reference to it.
+	// Remove: remove a tag from the table. If a TextBuffer has @table as its
+	// tag table, the tag is removed from the buffer. The table’s reference to
+	// the tag is removed, so the tag will end up destroyed if you don’t have a
+	// reference to it.
 	Remove(tag TextTag)
 }
 
@@ -29217,19 +26937,19 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 
 // NewTextTagTable constructs a class TextTagTable.
 func NewTextTagTable() TextTagTable {
-	cret := new(C.GtkTextTagTable)
-	var goret TextTagTable
+	var cret C.GtkTextTagTable
 
 	cret = C.gtk_text_tag_table_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
+	var textTagTable TextTagTable
 
-	return goret
+	textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
+
+	return textTagTable
 }
 
-// Add: add a tag to the table.
-//
-// The tag is assigned the highest priority in the table.
+// Add: add a tag to the table. The tag is assigned the highest priority in
+// the table.
 //
 // @tag must not be in a tag table already, and may not have the same name
 // as an already-added tag.
@@ -29241,27 +26961,27 @@ func (t textTagTable) Add(tag TextTag) bool {
 	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_text_tag_table_add(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Foreach calls @func on each tag in @table, with user data @data.
-//
-// Note that the table may not be modified while iterating over it (you
-// can’t add/remove tags).
+// Foreach calls @func on each tag in @table, with user data @data. Note
+// that the table may not be modified while iterating over it (you can’t
+// add/remove tags).
 func (t textTagTable) Foreach() {
 	var arg0 *C.GtkTextTagTable
 
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
-	C.gtk_text_tag_table_foreach(arg0, arg1, arg2)
+	C.gtk_text_tag_table_foreach(arg0)
 }
 
 // Size returns the size of the table (number of tags)
@@ -29271,13 +26991,14 @@ func (t textTagTable) Size() int {
 	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_text_tag_table_get_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Lookup: look up a named tag.
@@ -29290,20 +27011,20 @@ func (t textTagTable) Lookup(name string) TextTag {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkTextTag
-	var goret TextTag
 
 	cret = C.gtk_text_tag_table_lookup(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
+	var textTag TextTag
 
-	return goret
+	textTag = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
+
+	return textTag
 }
 
-// Remove: remove a tag from the table.
-//
-// If a `GtkTextBuffer` has @table as its tag table, the tag is removed from
-// the buffer. The table’s reference to the tag is removed, so the tag will
-// end up destroyed if you don’t have a reference to it.
+// Remove: remove a tag from the table. If a TextBuffer has @table as its
+// tag table, the tag is removed from the buffer. The table’s reference to
+// the tag is removed, so the tag will end up destroyed if you don’t have a
+// reference to it.
 func (t textTagTable) Remove(tag TextTag) {
 	var arg0 *C.GtkTextTagTable
 	var arg1 *C.GtkTextTag
@@ -29314,30 +27035,28 @@ func (t textTagTable) Remove(tag TextTag) {
 	C.gtk_text_tag_table_remove(arg0, arg1)
 }
 
-// Tooltip: `GtkTooltip` is an object representing a widget tooltip.
-//
-// Basic tooltips can be realized simply by using
-// [method@Gtk.Widget.set_tooltip_text] or
-// [method@Gtk.Widget.set_tooltip_markup] without any explicit tooltip object.
+// Tooltip: basic tooltips can be realized simply by using
+// gtk_widget_set_tooltip_text() or gtk_widget_set_tooltip_markup() without any
+// explicit tooltip object.
 //
 // When you need a tooltip with a little more fancy contents, like adding an
-// image, or you want the tooltip to have different contents per `GtkTreeView`
-// row or cell, you will have to do a little more work:
+// image, or you want the tooltip to have different contents per TreeView row or
+// cell, you will have to do a little more work:
 //
-// - Set the [property@Gtk.Widget:has-tooltip] property to true. This will make
-// GTK monitor the widget for motion and related events which are needed to
-// determine when and where to show a tooltip.
+// - Set the Widget:has-tooltip property to true, this will make GTK monitor the
+// widget for motion and related events which are needed to determine when and
+// where to show a tooltip.
 //
-// - Connect to the [signal@Gtk.Widget::query-tooltip] signal. This signal will
-// be emitted when a tooltip is supposed to be shown. One of the arguments
-// passed to the signal handler is a `GtkTooltip` object. This is the object
-// that we are about to display as a tooltip, and can be manipulated in your
-// callback using functions like [method@Gtk.Tooltip.set_icon]. There are
-// functions for setting the tooltip’s markup, setting an image from a named
-// icon, or even putting in a custom widget.
+// - Connect to the Widget::query-tooltip signal. This signal will be emitted
+// when a tooltip is supposed to be shown. One of the arguments passed to the
+// signal handler is a GtkTooltip object. This is the object that we are about
+// to display as a tooltip, and can be manipulated in your callback using
+// functions like gtk_tooltip_set_icon(). There are functions for setting the
+// tooltip’s markup, setting an image from a named icon, or even putting in a
+// custom widget.
 //
-// - Return true from your ::query-tooltip handler. This causes the tooltip to
-// be show. If you return false, it will not be shown.
+//    Return true from your query-tooltip handler. This causes the tooltip to be
+//    show. If you return false, it will not be shown.
 type Tooltip interface {
 	gextras.Objector
 
@@ -29353,20 +27072,17 @@ type Tooltip interface {
 	// SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 	// text) to be the icon indicated by @gicon with the size indicated by
 	// @size. If @gicon is nil, the image will be hidden.
-	SetIconFromGIcon(gIcon gio.Icon)
+	SetIconFromGIcon(gicon gio.Icon)
 	// SetIconFromIconName sets the icon of the tooltip (which is in front of
 	// the text) to be the icon indicated by @icon_name with the size indicated
 	// by @size. If @icon_name is nil, the image will be hidden.
 	SetIconFromIconName(iconName string)
-	// SetMarkup sets the text of the tooltip to be @markup.
-	//
-	// The string must be marked up with Pango markup. If @markup is nil, the
-	// label will be hidden.
+	// SetMarkup sets the text of the tooltip to be @markup, which is marked up
+	// with the [Pango text markup language][PangoMarkupFormat]. If @markup is
+	// nil, the label will be hidden.
 	SetMarkup(markup string)
-	// SetText sets the text of the tooltip to be @text.
-	//
-	// If @text is nil, the label will be hidden. See also
-	// [method@Gtk.Tooltip.set_markup].
+	// SetText sets the text of the tooltip to be @text. If @text is nil, the
+	// label will be hidden. See also gtk_tooltip_set_markup().
 	SetText(text string)
 	// SetTipArea sets the area of the widget, where the contents of this
 	// tooltip apply, to be @rect (in widget coordinates). This is especially
@@ -29430,12 +27146,12 @@ func (t tooltip) SetIcon(paintable gdk.Paintable) {
 // SetIconFromGIcon sets the icon of the tooltip (which is in front of the
 // text) to be the icon indicated by @gicon with the size indicated by
 // @size. If @gicon is nil, the image will be hidden.
-func (t tooltip) SetIconFromGIcon(gIcon gio.Icon) {
+func (t tooltip) SetIconFromGIcon(gicon gio.Icon) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.GIcon
 
 	arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.GIcon)(unsafe.Pointer(gIcon.Native()))
+	arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
 
 	C.gtk_tooltip_set_icon_from_gicon(arg0, arg1)
 }
@@ -29454,10 +27170,9 @@ func (t tooltip) SetIconFromIconName(iconName string) {
 	C.gtk_tooltip_set_icon_from_icon_name(arg0, arg1)
 }
 
-// SetMarkup sets the text of the tooltip to be @markup.
-//
-// The string must be marked up with Pango markup. If @markup is nil, the
-// label will be hidden.
+// SetMarkup sets the text of the tooltip to be @markup, which is marked up
+// with the [Pango text markup language][PangoMarkupFormat]. If @markup is
+// nil, the label will be hidden.
 func (t tooltip) SetMarkup(markup string) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.char
@@ -29469,10 +27184,8 @@ func (t tooltip) SetMarkup(markup string) {
 	C.gtk_tooltip_set_markup(arg0, arg1)
 }
 
-// SetText sets the text of the tooltip to be @text.
-//
-// If @text is nil, the label will be hidden. See also
-// [method@Gtk.Tooltip.set_markup].
+// SetText sets the text of the tooltip to be @text. If @text is nil, the
+// label will be hidden. See also gtk_tooltip_set_markup().
 func (t tooltip) SetText(text string) {
 	var arg0 *C.GtkTooltip
 	var arg1 *C.char
@@ -29502,14 +27215,13 @@ func (t tooltip) SetTipArea(rect *gdk.Rectangle) {
 	C.gtk_tooltip_set_tip_area(arg0, arg1)
 }
 
-// TreeSelection: the selection object for GtkTreeView
-//
-// The TreeSelection object is a helper object to manage the selection for a
-// TreeView widget. The TreeSelection object is automatically created when a new
-// TreeView widget is created, and cannot exist independently of this widget.
-// The primary reason the TreeSelection objects exists is for cleanliness of
-// code and API. That is, there is no conceptual reason all these functions
-// could not be methods on the TreeView widget instead of a separate function.
+// TreeSelection: the TreeSelection object is a helper object to manage the
+// selection for a TreeView widget. The TreeSelection object is automatically
+// created when a new TreeView widget is created, and cannot exist independently
+// of this widget. The primary reason the TreeSelection objects exists is for
+// cleanliness of code and API. That is, there is no conceptual reason all these
+// functions could not be methods on the TreeView widget instead of a separate
+// function.
 //
 // The TreeSelection object is gotten from a TreeView by calling
 // gtk_tree_view_get_selection(). It can be manipulated to check the selection
@@ -29539,7 +27251,7 @@ type TreeSelection interface {
 	// just want to test if @selection has any selected nodes. @model is filled
 	// with the current model as a convenience. This function will not work if
 	// you use @selection is K_SELECTION_MULTIPLE.
-	Selected() (model *TreeModel, iter *TreeIter, ok bool)
+	Selected() (model TreeModel, iter TreeIter, ok bool)
 	// SelectedRows creates a list of path of all selected rows. Additionally,
 	// if you are planning on modifying the model after calling this function,
 	// you may want to convert the returned list into a list of
@@ -29548,7 +27260,7 @@ type TreeSelection interface {
 	// To free the return value, use:
 	//
 	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-	SelectedRows() (model *TreeModel, list *glib.List)
+	SelectedRows() (model TreeModel, list *glib.List)
 	// TreeView returns the tree view associated with @selection.
 	TreeView() TreeView
 	// UserData returns the user data for the selection function.
@@ -29623,13 +27335,14 @@ func (s treeSelection) CountSelectedRows() int {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_selection_count_selected_rows(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Mode gets the selection mode for @selection. See
@@ -29640,13 +27353,14 @@ func (s treeSelection) Mode() SelectionMode {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret SelectionMode
 
 	cret = C.gtk_tree_selection_get_mode(arg0)
 
-	goret = SelectionMode(cret)
+	var selectionMode SelectionMode
 
-	return goret
+	selectionMode = SelectionMode(cret)
+
+	return selectionMode
 }
 
 // Selected sets @iter to the currently selected node if @selection is set
@@ -29654,27 +27368,28 @@ func (s treeSelection) Mode() SelectionMode {
 // just want to test if @selection has any selected nodes. @model is filled
 // with the current model as a convenience. This function will not work if
 // you use @selection is K_SELECTION_MULTIPLE.
-func (s treeSelection) Selected() (model *TreeModel, iter *TreeIter, ok bool) {
+func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 	var arg0 *C.GtkTreeSelection
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var arg1 **C.GtkTreeModel
-	var ret1 *TreeModel
-	arg2 := new(C.GtkTreeIter)
-	var ret2 *TreeIter
+	var iter TreeIter
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_tree_selection_get_selected(arg0, arg1, arg2)
+	cret = C.gtk_tree_selection_get_selected(arg0, arg1, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	ret2 = WrapTreeIter(unsafe.Pointer(arg2))
+	var model TreeModel
+
+	var ok bool
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(TreeModel)
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return model, iter, ok
 }
 
 // SelectedRows creates a list of path of all selected rows. Additionally,
@@ -29685,25 +27400,26 @@ func (s treeSelection) Selected() (model *TreeModel, iter *TreeIter, ok bool) {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-func (s treeSelection) SelectedRows() (model *TreeModel, list *glib.List) {
+func (s treeSelection) SelectedRows() (model TreeModel, list *glib.List) {
 	var arg0 *C.GtkTreeSelection
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var arg1 **C.GtkTreeModel
-	var ret1 *TreeModel
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_tree_selection_get_selected_rows(arg0, arg1)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var model TreeModel
+	var list *glib.List
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(TreeModel)
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ret1, goret
+	return model, list
 }
 
 // TreeView returns the tree view associated with @selection.
@@ -29713,13 +27429,14 @@ func (s treeSelection) TreeView() TreeView {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTreeView
-	var goret TreeView
 
 	cret = C.gtk_tree_selection_get_tree_view(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
+	var treeView TreeView
 
-	return goret
+	treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
+
+	return treeView
 }
 
 // UserData returns the user data for the selection function.
@@ -29729,13 +27446,14 @@ func (s treeSelection) UserData() interface{} {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.gtk_tree_selection_get_user_data(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // IterIsSelected returns true if the row at @iter is currently selected.
@@ -29747,15 +27465,16 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_selection_iter_is_selected(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PathIsSelected returns true if the row pointed to by @path is currently
@@ -29768,15 +27487,16 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_selection_path_is_selected(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SelectAll selects all the nodes. @selection must be set to
@@ -29833,7 +27553,7 @@ func (s treeSelection) SelectedForeach() {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_selection_selected_foreach(arg0, arg1, arg2)
+	C.gtk_tree_selection_selected_foreach(arg0)
 }
 
 // SetMode sets the selection mode of the @selection. If the previous type
@@ -29860,7 +27580,7 @@ func (s treeSelection) SetSelectFunction() {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_selection_set_select_function(arg0, arg1, arg2, arg3)
+	C.gtk_tree_selection_set_select_function(arg0)
 }
 
 // UnselectAll unselects all the nodes.
@@ -29908,17 +27628,14 @@ func (s treeSelection) UnselectRange(startPath *TreePath, endPath *TreePath) {
 	C.gtk_tree_selection_unselect_range(arg0, arg1, arg2)
 }
 
-// TreeViewColumn: a visible column in a GtkTreeView widget
-//
-// The GtkTreeViewColumn object represents a visible column in a TreeView
-// widget. It allows to set properties of the column header, and functions as a
-// holding pen for the cell renderers which determine how the data in the column
-// is displayed.
+// TreeViewColumn: the GtkTreeViewColumn object represents a visible column in a
+// TreeView widget. It allows to set properties of the column header, and
+// functions as a holding pen for the cell renderers which determine how the
+// data in the column is displayed.
 //
 // Please refer to the [tree widget conceptual overview][TreeWidget] for an
 // overview of all the objects and data types related to the tree widget and how
-// they work together, and to the TreeView documentation for specifics about the
-// CSS node structure for treeviews and their headers.
+// they work together.
 type TreeViewColumn interface {
 	gextras.Objector
 	Buildable
@@ -30074,7 +27791,7 @@ type TreeViewColumn interface {
 	// SetSortColumnID sets the logical @sort_column_id that this column sorts
 	// on when this column is selected for sorting. Doing so makes the column
 	// header clickable.
-	SetSortColumnID(sortColumnID int)
+	SetSortColumnID(sortColumnId int)
 	// SetSortIndicator: call this function with a @setting of true to display
 	// an arrow in the header button indicating the column is sorted. Call
 	// gtk_tree_view_column_set_sort_order() to change the direction of the
@@ -30135,13 +27852,14 @@ func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 // NewTreeViewColumn constructs a class TreeViewColumn.
 func NewTreeViewColumn() TreeViewColumn {
 	var cret C.GtkTreeViewColumn
-	var goret TreeViewColumn
 
 	cret = C.gtk_tree_view_column_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
+	var treeViewColumn TreeViewColumn
 
-	return goret
+	treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
+
+	return treeViewColumn
 }
 
 // NewTreeViewColumnWithArea constructs a class TreeViewColumn.
@@ -30151,13 +27869,14 @@ func NewTreeViewColumnWithArea(area CellArea) TreeViewColumn {
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	var cret C.GtkTreeViewColumn
-	var goret TreeViewColumn
 
 	cret = C.gtk_tree_view_column_new_with_area(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
+	var treeViewColumn TreeViewColumn
 
-	return goret
+	treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeViewColumn)
+
+	return treeViewColumn
 }
 
 // AddAttribute adds an attribute mapping to the list in @tree_column. The
@@ -30190,22 +27909,23 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cellRenderer.Native()))
 
-	arg2 := new(C.int)
-	var ret2 int
-	arg3 := new(C.int)
-	var ret3 int
+	var arg2 C.int
+	var arg3 C.int
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_tree_view_column_cell_get_position(arg0, arg1, arg2, arg3)
+	cret = C.gtk_tree_view_column_cell_get_position(arg0, arg1, &arg2, &arg3)
 
-	ret2 = int(*arg2)
-	ret3 = int(*arg3)
+	var xOffset int
+	var width int
+	var ok bool
+
+	xOffset = (int)(arg2)
+	width = (int)(arg3)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, ret3, goret
+	return xOffset, width, ok
 }
 
 // CellGetSize obtains the width and height needed to render the column.
@@ -30215,23 +27935,24 @@ func (t treeViewColumn) CellGetSize() (xOffset int, yOffset int, width int, heig
 
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
-	arg1 := new(C.int)
-	var ret1 int
-	arg2 := new(C.int)
-	var ret2 int
-	arg3 := new(C.int)
-	var ret3 int
-	arg4 := new(C.int)
-	var ret4 int
+	var arg1 C.int
+	var arg2 C.int
+	var arg3 C.int
+	var arg4 C.int
 
-	C.gtk_tree_view_column_cell_get_size(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_tree_view_column_cell_get_size(arg0, &arg1, &arg2, &arg3, &arg4)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
-	ret3 = int(*arg3)
-	ret4 = int(*arg4)
+	var xOffset int
+	var yOffset int
+	var width int
+	var height int
 
-	return ret1, ret2, ret3, ret4
+	xOffset = (int)(arg1)
+	yOffset = (int)(arg2)
+	width = (int)(arg3)
+	height = (int)(arg4)
+
+	return xOffset, yOffset, width, height
 }
 
 // CellIsVisible returns true if any of the cells packed into the
@@ -30243,15 +27964,16 @@ func (t treeViewColumn) CellIsVisible() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_view_column_cell_is_visible(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CellSetCellData sets the cell renderer based on the @tree_model and
@@ -30329,13 +28051,14 @@ func (t treeViewColumn) Alignment() float32 {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.float
-	var goret float32
 
 	cret = C.gtk_tree_view_column_get_alignment(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // Button returns the button used in the treeview column header
@@ -30345,13 +28068,14 @@ func (t treeViewColumn) Button() Widget {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tree_view_column_get_button(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Clickable returns true if the user can click on the header for the
@@ -30362,15 +28086,16 @@ func (t treeViewColumn) Clickable() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_view_column_get_clickable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Expand returns true if the column expands to fill available space.
@@ -30380,15 +28105,16 @@ func (t treeViewColumn) Expand() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_view_column_get_expand(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // FixedWidth gets the fixed width of the column. This may not be the actual
@@ -30400,13 +28126,14 @@ func (t treeViewColumn) FixedWidth() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_view_column_get_fixed_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MaxWidth returns the maximum width in pixels of the @tree_column, or -1
@@ -30417,13 +28144,14 @@ func (t treeViewColumn) MaxWidth() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_view_column_get_max_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MinWidth returns the minimum width in pixels of the @tree_column, or -1
@@ -30434,13 +28162,14 @@ func (t treeViewColumn) MinWidth() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_view_column_get_min_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Reorderable returns true if the @tree_column can be reordered by the
@@ -30451,15 +28180,16 @@ func (t treeViewColumn) Reorderable() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_view_column_get_reorderable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Resizable returns true if the @tree_column can be resized by the end
@@ -30470,15 +28200,16 @@ func (t treeViewColumn) Resizable() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_view_column_get_resizable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Sizing returns the current type of @tree_column.
@@ -30488,13 +28219,14 @@ func (t treeViewColumn) Sizing() TreeViewColumnSizing {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkTreeViewColumnSizing
-	var goret TreeViewColumnSizing
 
 	cret = C.gtk_tree_view_column_get_sizing(arg0)
 
-	goret = TreeViewColumnSizing(cret)
+	var treeViewColumnSizing TreeViewColumnSizing
 
-	return goret
+	treeViewColumnSizing = TreeViewColumnSizing(cret)
+
+	return treeViewColumnSizing
 }
 
 // SortColumnID gets the logical @sort_column_id that the model sorts on
@@ -30506,13 +28238,14 @@ func (t treeViewColumn) SortColumnID() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_view_column_get_sort_column_id(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SortIndicator gets the value set by
@@ -30523,15 +28256,16 @@ func (t treeViewColumn) SortIndicator() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_view_column_get_sort_indicator(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SortOrder gets the value set by gtk_tree_view_column_set_sort_order().
@@ -30541,13 +28275,14 @@ func (t treeViewColumn) SortOrder() SortType {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkSortType
-	var goret SortType
 
 	cret = C.gtk_tree_view_column_get_sort_order(arg0)
 
-	goret = SortType(cret)
+	var sortType SortType
 
-	return goret
+	sortType = SortType(cret)
+
+	return sortType
 }
 
 // Spacing returns the spacing of @tree_column.
@@ -30557,13 +28292,14 @@ func (t treeViewColumn) Spacing() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_view_column_get_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Title returns the title of the widget.
@@ -30573,13 +28309,14 @@ func (t treeViewColumn) Title() string {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_tree_view_column_get_title(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // TreeView returns the TreeView wherein @tree_column has been inserted. If
@@ -30590,13 +28327,14 @@ func (t treeViewColumn) TreeView() Widget {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tree_view_column_get_tree_view(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Visible returns true if @tree_column is visible.
@@ -30606,15 +28344,16 @@ func (t treeViewColumn) Visible() bool {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_view_column_get_visible(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Widget returns the Widget in the button on the column header. If a custom
@@ -30625,13 +28364,14 @@ func (t treeViewColumn) Widget() Widget {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tree_view_column_get_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Width returns the current size of @tree_column in pixels.
@@ -30641,13 +28381,14 @@ func (t treeViewColumn) Width() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_view_column_get_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // XOffset returns the current X offset of @tree_column in pixels.
@@ -30657,13 +28398,14 @@ func (t treeViewColumn) XOffset() int {
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_tree_view_column_get_x_offset(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PackEnd adds the @cell to end of the column. If @expand is false, then
@@ -30732,7 +28474,7 @@ func (t treeViewColumn) SetCellDataFunc() {
 
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
 
-	C.gtk_tree_view_column_set_cell_data_func(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_tree_view_column_set_cell_data_func(arg0)
 }
 
 // SetClickable sets the header to be active if @clickable is true. When the
@@ -30859,12 +28601,12 @@ func (t treeViewColumn) SetSizing(typ TreeViewColumnSizing) {
 // SetSortColumnID sets the logical @sort_column_id that this column sorts
 // on when this column is selected for sorting. Doing so makes the column
 // header clickable.
-func (t treeViewColumn) SetSortColumnID(sortColumnID int) {
+func (t treeViewColumn) SetSortColumnID(sortColumnId int) {
 	var arg0 *C.GtkTreeViewColumn
 	var arg1 C.int
 
 	arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-	arg1 = C.int(sortColumnID)
+	arg1 = C.int(sortColumnId)
 
 	C.gtk_tree_view_column_set_sort_column_id(arg0, arg1)
 }
@@ -30958,24 +28700,22 @@ func (t treeViewColumn) SetWidget(widget Widget) {
 	C.gtk_tree_view_column_set_widget(arg0, arg1)
 }
 
-// Viewport: `GtkViewport` implements scrollability for widgets that lack their
-// own scrolling capabilities.
+// Viewport: the Viewport widget acts as an adaptor class, implementing
+// scrollability for child widgets that lack their own scrolling capabilities.
+// Use GtkViewport to scroll child widgets such as Grid, Box, and so on.
 //
-// Use `GtkViewport` to scroll child widgets such as `GtkGrid`, `GtkBox`, and so
-// on.
-//
-// The `GtkViewport` will start scrolling content only if allocated less than
-// the child widget’s minimum size in a given orientation.
+// The GtkViewport will start scrolling content only if allocated less than the
+// child widget’s minimum size in a given orientation.
 //
 //
 // CSS nodes
 //
-// `GtkViewport` has a single CSS node with name `viewport`.
+// GtkViewport has a single CSS node with name `viewport`.
 //
 //
 // Accessibility
 //
-// `GtkViewport` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkViewport uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type Viewport interface {
 	Widget
 	Accessible
@@ -30986,7 +28726,7 @@ type Viewport interface {
 	// Child gets the child widget of @viewport.
 	Child() Widget
 	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
-	// child in view.
+	// child in view. See gtk_viewport_set_scroll_to_focus().
 	ScrollToFocus() bool
 	// SetChild sets the child widget of @viewport.
 	SetChild(child Widget)
@@ -31025,21 +28765,22 @@ func marshalViewport(p uintptr) (interface{}, error) {
 }
 
 // NewViewport constructs a class Viewport.
-func NewViewport(hAdjustment Adjustment, vAdjustment Adjustment) Viewport {
+func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
 	var arg1 *C.GtkAdjustment
 	var arg2 *C.GtkAdjustment
 
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hAdjustment.Native()))
-	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vAdjustment.Native()))
+	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	var cret C.GtkViewport
-	var goret Viewport
 
 	cret = C.gtk_viewport_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Viewport)
+	var viewport Viewport
 
-	return goret
+	viewport = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Viewport)
+
+	return viewport
 }
 
 // Child gets the child widget of @viewport.
@@ -31049,32 +28790,34 @@ func (v viewport) Child() Widget {
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_viewport_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ScrollToFocus gets whether the viewport is scrolling to keep the focused
-// child in view.
+// child in view. See gtk_viewport_set_scroll_to_focus().
 func (v viewport) ScrollToFocus() bool {
 	var arg0 *C.GtkViewport
 
 	arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_viewport_get_scroll_to_focus(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetChild sets the child widget of @viewport.
@@ -31102,10 +28845,8 @@ func (v viewport) SetScrollToFocus(scrollToFocus bool) {
 	C.gtk_viewport_set_scroll_to_focus(arg0, arg1)
 }
 
-// VolumeButton: `GtkVolumeButton` is a `GtkScaleButton` subclass tailored for
-// volume control.
-//
-// !An example GtkVolumeButton (volumebutton.png)
+// VolumeButton is a subclass of ScaleButton that has been tailored for use as a
+// volume control widget with suitable icons, tooltips and accessible labels.
 type VolumeButton interface {
 	ScaleButton
 	Accessible
@@ -31146,11 +28887,12 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 // NewVolumeButton constructs a class VolumeButton.
 func NewVolumeButton() VolumeButton {
 	var cret C.GtkVolumeButton
-	var goret VolumeButton
 
 	cret = C.gtk_volume_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VolumeButton)
+	var volumeButton VolumeButton
 
-	return goret
+	volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VolumeButton)
+
+	return volumeButton
 }

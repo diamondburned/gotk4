@@ -37,7 +37,7 @@ func gotk4_CalendarDetailFunc(arg0 *C.GtkCalendar, arg1 C.guint, arg2 C.guint, a
 	}
 
 	fn := v.(CalendarDetailFunc)
-	fn(utf8)
+	utf8 := fn()
 
 	cret = (*C.gchar)(C.CString(utf8))
 }
@@ -135,13 +135,14 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 // NewCalendar constructs a class Calendar.
 func NewCalendar() Calendar {
 	var cret C.GtkCalendar
-	var goret Calendar
 
 	cret = C.gtk_calendar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
+	var calendar Calendar
 
-	return goret
+	calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
+
+	return calendar
 }
 
 // ClearMarks: remove all visual markers.
@@ -159,20 +160,21 @@ func (c calendar) Date() (year uint, month uint, day uint) {
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(C.guint)
-	var ret1 uint
-	arg2 := new(C.guint)
-	var ret2 uint
-	arg3 := new(C.guint)
-	var ret3 uint
+	var arg1 C.guint
+	var arg2 C.guint
+	var arg3 C.guint
 
-	C.gtk_calendar_get_date(arg0, arg1, arg2, arg3)
+	C.gtk_calendar_get_date(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = uint(*arg1)
-	ret2 = uint(*arg2)
-	ret3 = uint(*arg3)
+	var year uint
+	var month uint
+	var day uint
 
-	return ret1, ret2, ret3
+	year = (uint)(arg1)
+	month = (uint)(arg2)
+	day = (uint)(arg3)
+
+	return year, month, day
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
@@ -184,15 +186,16 @@ func (c calendar) DayIsMarked(day uint) bool {
 	arg1 = C.guint(day)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_calendar_get_day_is_marked(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // DetailHeightRows queries the height of detail cells, in rows. See
@@ -203,13 +206,14 @@ func (c calendar) DetailHeightRows() int {
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_calendar_get_detail_height_rows(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // DetailWidthChars queries the width of detail cells, in characters. See
@@ -220,13 +224,14 @@ func (c calendar) DetailWidthChars() int {
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_calendar_get_detail_width_chars(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // DisplayOptions returns the current display options of @calendar.
@@ -236,13 +241,14 @@ func (c calendar) DisplayOptions() CalendarDisplayOptions {
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkCalendarDisplayOptions
-	var goret CalendarDisplayOptions
 
 	cret = C.gtk_calendar_get_display_options(arg0)
 
-	goret = CalendarDisplayOptions(cret)
+	var calendarDisplayOptions CalendarDisplayOptions
 
-	return goret
+	calendarDisplayOptions = CalendarDisplayOptions(cret)
+
+	return calendarDisplayOptions
 }
 
 // MarkDay places a visual marker on a particular day.
@@ -294,7 +300,7 @@ func (c calendar) SetDetailFunc() {
 
 	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	C.gtk_calendar_set_detail_func(arg0, arg1, arg2, arg3)
+	C.gtk_calendar_set_detail_func(arg0)
 }
 
 // SetDetailHeightRows updates the height of detail cells. See

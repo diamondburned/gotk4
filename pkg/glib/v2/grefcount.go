@@ -9,7 +9,7 @@ import "C"
 
 // AtomicRefCountCompare: atomically compares the current value of @arc with
 // @val.
-func AtomicRefCountCompare(arc int, val int) bool {
+func AtomicRefCountCompare(arc *int, val int) bool {
 	var arg1 *C.gatomicrefcount
 	var arg2 C.gint
 
@@ -17,37 +17,39 @@ func AtomicRefCountCompare(arc int, val int) bool {
 	arg2 = C.gint(val)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_atomic_ref_count_compare(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // AtomicRefCountDec: atomically decreases the reference count.
-func AtomicRefCountDec(arc int) bool {
+func AtomicRefCountDec(arc *int) bool {
 	var arg1 *C.gatomicrefcount
 
 	arg1 = *C.gatomicrefcount(arc)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_atomic_ref_count_dec(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // AtomicRefCountInc: atomically increases the reference count.
-func AtomicRefCountInc(arc int) {
+func AtomicRefCountInc(arc *int) {
 	var arg1 *C.gatomicrefcount
 
 	arg1 = *C.gatomicrefcount(arc)
@@ -56,7 +58,7 @@ func AtomicRefCountInc(arc int) {
 }
 
 // AtomicRefCountInit initializes a reference count variable.
-func AtomicRefCountInit(arc int) {
+func AtomicRefCountInit(arc *int) {
 	var arg1 *C.gatomicrefcount
 
 	arg1 = *C.gatomicrefcount(arc)
@@ -65,57 +67,59 @@ func AtomicRefCountInit(arc int) {
 }
 
 // RefCountCompare compares the current value of @rc with @val.
-func RefCountCompare(rC int, val int) bool {
+func RefCountCompare(rc *int, val int) bool {
 	var arg1 *C.grefcount
 	var arg2 C.gint
 
-	arg1 = *C.grefcount(rC)
+	arg1 = *C.grefcount(rc)
 	arg2 = C.gint(val)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_ref_count_compare(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RefCountDec decreases the reference count.
-func RefCountDec(rC int) bool {
+func RefCountDec(rc *int) bool {
 	var arg1 *C.grefcount
 
-	arg1 = *C.grefcount(rC)
+	arg1 = *C.grefcount(rc)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_ref_count_dec(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RefCountInc increases the reference count.
-func RefCountInc(rC int) {
+func RefCountInc(rc *int) {
 	var arg1 *C.grefcount
 
-	arg1 = *C.grefcount(rC)
+	arg1 = *C.grefcount(rc)
 
 	C.g_ref_count_inc(arg1)
 }
 
 // RefCountInit initializes a reference count variable.
-func RefCountInit(rC int) {
+func RefCountInit(rc *int) {
 	var arg1 *C.grefcount
 
-	arg1 = *C.grefcount(rC)
+	arg1 = *C.grefcount(rc)
 
 	C.g_ref_count_init(arg1)
 }

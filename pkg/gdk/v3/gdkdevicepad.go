@@ -83,13 +83,14 @@ func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 	arg2 = C.gint(featureIdx)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_device_pad_get_feature_group(arg0, arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // GroupNModes returns the number of modes that @group may have.
@@ -101,13 +102,14 @@ func (p devicePad) GroupNModes(groupIdx int) int {
 	arg1 = C.gint(groupIdx)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_device_pad_get_group_n_modes(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NFeatures returns the number of features a tablet pad has.
@@ -119,13 +121,14 @@ func (p devicePad) NFeatures(feature DevicePadFeature) int {
 	arg1 = (C.GdkDevicePadFeature)(feature)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_device_pad_get_n_features(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NGroups returns the number of groups this pad device has. Pads have at
@@ -137,11 +140,12 @@ func (p devicePad) NGroups() int {
 	arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_device_pad_get_n_groups(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }

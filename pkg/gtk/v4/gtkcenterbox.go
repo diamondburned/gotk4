@@ -21,15 +21,11 @@ func init() {
 	})
 }
 
-// CenterBox: `GtkCenterBox` arranges three children in a row, keeping the
-// middle child centered as well as possible.
+// CenterBox: the GtkCenterBox widget arranges three children in a horizontal or
+// vertical arrangement, keeping the middle child centered as well as possible.
 //
-// !An example GtkCenterBox (centerbox.png)
-//
-// To add children to `GtkCenterBox`, use
-// [method@Gtk.CenterBox.set_start_widget],
-// [method@Gtk.CenterBox.set_center_widget] and
-// [method@Gtk.CenterBox.set_end_widget].
+// To add children to GtkCenterBox, use gtk_center_box_set_start_widget(),
+// gtk_center_box_set_center_widget() and gtk_center_box_set_end_widget().
 //
 // The sizing and positioning of children can be influenced with the align and
 // expand properties of the children.
@@ -37,16 +33,16 @@ func init() {
 //
 // GtkCenterBox as GtkBuildable
 //
-// The `GtkCenterBox` implementation of the `GtkBuildable` interface supports
-// placing children in the 3 positions by specifying “start”, “center” or “end”
-// as the “type” attribute of a <child> element.
+// The GtkCenterBox implementation of the Buildable interface supports placing
+// children in the 3 positions by specifying “start”, “center” or “end” as the
+// “type” attribute of a <child> element.
 //
 //
 // CSS nodes
 //
-// `GtkCenterBox` uses a single CSS node with the name “box”,
+// GtkCenterBox uses a single CSS node with the name “box”,
 //
-// The first child of the `GtkCenterBox` will be allocated depending on the text
+// The first child of the CenterBox will be allocated depending on the text
 // direction, i.e. in left-to-right layouts it will be allocated on the left and
 // in right-to-left layouts on the right.
 //
@@ -56,7 +52,7 @@ func init() {
 //
 // Accessibility
 //
-// `GtkCenterBox` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkCenterBox uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type CenterBox interface {
 	Widget
 	Accessible
@@ -80,17 +76,14 @@ type CenterBox interface {
 	// baseline is not allocated by the parent then @position is used to
 	// allocate the baseline wrt. the extra space available.
 	SetBaselinePosition(position BaselinePosition)
-	// SetCenterWidget sets the center widget.
-	//
-	// To remove the existing center widget, pas nil.
+	// SetCenterWidget sets the center widget. To remove the existing center
+	// widget, pas nil.
 	SetCenterWidget(child Widget)
-	// SetEndWidget sets the end widget.
-	//
-	// To remove the existing end widget, pass nil.
+	// SetEndWidget sets the end widget. To remove the existing end widget, pass
+	// nil.
 	SetEndWidget(child Widget)
-	// SetStartWidget sets the start widget.
-	//
-	// To remove the existing start widget, pass nil.
+	// SetStartWidget sets the start widget. To remove the existing start
+	// widget, pass nil.
 	SetStartWidget(child Widget)
 }
 
@@ -126,13 +119,14 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 // NewCenterBox constructs a class CenterBox.
 func NewCenterBox() CenterBox {
 	var cret C.GtkCenterBox
-	var goret CenterBox
 
 	cret = C.gtk_center_box_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CenterBox)
+	var centerBox CenterBox
 
-	return goret
+	centerBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CenterBox)
+
+	return centerBox
 }
 
 // BaselinePosition gets the value set by
@@ -143,13 +137,14 @@ func (s centerBox) BaselinePosition() BaselinePosition {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkBaselinePosition
-	var goret BaselinePosition
 
 	cret = C.gtk_center_box_get_baseline_position(arg0)
 
-	goret = BaselinePosition(cret)
+	var baselinePosition BaselinePosition
 
-	return goret
+	baselinePosition = BaselinePosition(cret)
+
+	return baselinePosition
 }
 
 // CenterWidget gets the center widget, or nil if there is none.
@@ -159,13 +154,14 @@ func (s centerBox) CenterWidget() Widget {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_center_box_get_center_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // EndWidget gets the end widget, or nil if there is none.
@@ -175,13 +171,14 @@ func (s centerBox) EndWidget() Widget {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_center_box_get_end_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // StartWidget gets the start widget, or nil if there is none.
@@ -191,13 +188,14 @@ func (s centerBox) StartWidget() Widget {
 	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_center_box_get_start_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetBaselinePosition sets the baseline position of a center box.
@@ -216,9 +214,8 @@ func (s centerBox) SetBaselinePosition(position BaselinePosition) {
 	C.gtk_center_box_set_baseline_position(arg0, arg1)
 }
 
-// SetCenterWidget sets the center widget.
-//
-// To remove the existing center widget, pas nil.
+// SetCenterWidget sets the center widget. To remove the existing center
+// widget, pas nil.
 func (s centerBox) SetCenterWidget(child Widget) {
 	var arg0 *C.GtkCenterBox
 	var arg1 *C.GtkWidget
@@ -229,9 +226,8 @@ func (s centerBox) SetCenterWidget(child Widget) {
 	C.gtk_center_box_set_center_widget(arg0, arg1)
 }
 
-// SetEndWidget sets the end widget.
-//
-// To remove the existing end widget, pass nil.
+// SetEndWidget sets the end widget. To remove the existing end widget, pass
+// nil.
 func (s centerBox) SetEndWidget(child Widget) {
 	var arg0 *C.GtkCenterBox
 	var arg1 *C.GtkWidget
@@ -242,9 +238,8 @@ func (s centerBox) SetEndWidget(child Widget) {
 	C.gtk_center_box_set_end_widget(arg0, arg1)
 }
 
-// SetStartWidget sets the start widget.
-//
-// To remove the existing start widget, pass nil.
+// SetStartWidget sets the start widget. To remove the existing start
+// widget, pass nil.
 func (s centerBox) SetStartWidget(child Widget) {
 	var arg0 *C.GtkCenterBox
 	var arg1 *C.GtkWidget

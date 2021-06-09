@@ -71,7 +71,7 @@ type ListStore interface {
 	// to this new row. The row will be empty after this function is called. To
 	// fill in values, you need to call gtk_list_store_set() or
 	// gtk_list_store_set_value().
-	Append() *TreeIter
+	Append() TreeIter
 	// Clear removes all rows from the list store.
 	Clear()
 	// Insert creates a new row at @position. @iter will be changed to point to
@@ -79,23 +79,23 @@ type ListStore interface {
 	// the list, then the new row will be appended to the list. The row will be
 	// empty after this function is called. To fill in values, you need to call
 	// gtk_list_store_set() or gtk_list_store_set_value().
-	Insert(position int) *TreeIter
+	Insert(position int) TreeIter
 	// InsertAfter inserts a new row after @sibling. If @sibling is nil, then
 	// the row will be prepended to the beginning of the list. @iter will be
 	// changed to point to this new row. The row will be empty after this
 	// function is called. To fill in values, you need to call
 	// gtk_list_store_set() or gtk_list_store_set_value().
-	InsertAfter(sibling *TreeIter) *TreeIter
+	InsertAfter(sibling *TreeIter) TreeIter
 	// InsertBefore inserts a new row before @sibling. If @sibling is nil, then
 	// the row will be appended to the end of the list. @iter will be changed to
 	// point to this new row. The row will be empty after this function is
 	// called. To fill in values, you need to call gtk_list_store_set() or
 	// gtk_list_store_set_value().
-	InsertBefore(sibling *TreeIter) *TreeIter
+	InsertBefore(sibling *TreeIter) TreeIter
 	// InsertWithValuesv: a variant of gtk_list_store_insert_with_values() which
 	// takes the columns and values as two arrays, instead of varargs. This
 	// function is mainly intended for language-bindings.
-	InsertWithValuesv() *TreeIter
+	InsertWithValuesv() TreeIter
 	// IterIsValid: > This function is slow. Only use it for debugging and/or
 	// testing > purposes.
 	//
@@ -113,7 +113,7 @@ type ListStore interface {
 	// to this new row. The row will be empty after this function is called. To
 	// fill in values, you need to call gtk_list_store_set() or
 	// gtk_list_store_set_value().
-	Prepend() *TreeIter
+	Prepend() TreeIter
 	// Remove removes the given row from the list store. After being removed,
 	// @iter is set to be the next valid row, or invalidated if it pointed to
 	// the last row in @list_store.
@@ -123,7 +123,7 @@ type ListStore interface {
 	Reorder(newOrder []int)
 	// SetValue sets the data in the cell specified by @iter and @column. The
 	// type of @value must be convertible to the type of the column.
-	SetValue(iter *TreeIter, column int, value *externglib.Value)
+	SetValue(iter *TreeIter, column int, value **externglib.Value)
 	// SetValuesv: a variant of gtk_list_store_set_valist() which takes the
 	// columns and values as two arrays, instead of varargs. This function is
 	// mainly intended for language-bindings and in case the number of columns
@@ -169,19 +169,16 @@ func marshalListStore(p uintptr) (interface{}, error) {
 // to this new row. The row will be empty after this function is called. To
 // fill in values, you need to call gtk_list_store_set() or
 // gtk_list_store_set_value().
-func (l listStore) Append() *TreeIter {
+func (l listStore) Append() TreeIter {
 	var arg0 *C.GtkListStore
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	arg1 := new(C.GtkTreeIter)
-	var ret1 *TreeIter
+	var iter TreeIter
 
-	C.gtk_list_store_append(arg0, arg1)
+	C.gtk_list_store_append(arg0, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
-
-	return ret1
+	return iter
 }
 
 // Clear removes all rows from the list store.
@@ -198,21 +195,18 @@ func (l listStore) Clear() {
 // the list, then the new row will be appended to the list. The row will be
 // empty after this function is called. To fill in values, you need to call
 // gtk_list_store_set() or gtk_list_store_set_value().
-func (l listStore) Insert(position int) *TreeIter {
+func (l listStore) Insert(position int) TreeIter {
 	var arg0 *C.GtkListStore
 	var arg2 C.gint
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	arg2 = C.gint(position)
 
-	arg1 := new(C.GtkTreeIter)
-	var ret1 *TreeIter
+	var iter TreeIter
 
-	C.gtk_list_store_insert(arg0, arg1, arg2)
+	C.gtk_list_store_insert(arg0, arg2, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
-
-	return ret1
+	return iter
 }
 
 // InsertAfter inserts a new row after @sibling. If @sibling is nil, then
@@ -220,21 +214,18 @@ func (l listStore) Insert(position int) *TreeIter {
 // changed to point to this new row. The row will be empty after this
 // function is called. To fill in values, you need to call
 // gtk_list_store_set() or gtk_list_store_set_value().
-func (l listStore) InsertAfter(sibling *TreeIter) *TreeIter {
+func (l listStore) InsertAfter(sibling *TreeIter) TreeIter {
 	var arg0 *C.GtkListStore
 	var arg2 *C.GtkTreeIter
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	arg1 := new(C.GtkTreeIter)
-	var ret1 *TreeIter
+	var iter TreeIter
 
-	C.gtk_list_store_insert_after(arg0, arg1, arg2)
+	C.gtk_list_store_insert_after(arg0, arg2, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
-
-	return ret1
+	return iter
 }
 
 // InsertBefore inserts a new row before @sibling. If @sibling is nil, then
@@ -242,39 +233,33 @@ func (l listStore) InsertAfter(sibling *TreeIter) *TreeIter {
 // point to this new row. The row will be empty after this function is
 // called. To fill in values, you need to call gtk_list_store_set() or
 // gtk_list_store_set_value().
-func (l listStore) InsertBefore(sibling *TreeIter) *TreeIter {
+func (l listStore) InsertBefore(sibling *TreeIter) TreeIter {
 	var arg0 *C.GtkListStore
 	var arg2 *C.GtkTreeIter
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 	arg2 = (*C.GtkTreeIter)(unsafe.Pointer(sibling.Native()))
 
-	arg1 := new(C.GtkTreeIter)
-	var ret1 *TreeIter
+	var iter TreeIter
 
-	C.gtk_list_store_insert_before(arg0, arg1, arg2)
+	C.gtk_list_store_insert_before(arg0, arg2, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
-
-	return ret1
+	return iter
 }
 
 // InsertWithValuesv: a variant of gtk_list_store_insert_with_values() which
 // takes the columns and values as two arrays, instead of varargs. This
 // function is mainly intended for language-bindings.
-func (l listStore) InsertWithValuesv() *TreeIter {
+func (l listStore) InsertWithValuesv() TreeIter {
 	var arg0 *C.GtkListStore
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	arg1 := new(C.GtkTreeIter)
-	var ret1 *TreeIter
+	var iter TreeIter
 
-	C.gtk_list_store_insert_with_valuesv(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_list_store_insert_with_valuesv(arg0, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
-
-	return ret1
+	return iter
 }
 
 // IterIsValid: > This function is slow. Only use it for debugging and/or
@@ -289,15 +274,16 @@ func (l listStore) IterIsValid(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_list_store_iter_is_valid(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MoveAfter moves @iter in @store to the position after @position. Note
@@ -334,19 +320,16 @@ func (s listStore) MoveBefore(iter *TreeIter, position *TreeIter) {
 // to this new row. The row will be empty after this function is called. To
 // fill in values, you need to call gtk_list_store_set() or
 // gtk_list_store_set_value().
-func (l listStore) Prepend() *TreeIter {
+func (l listStore) Prepend() TreeIter {
 	var arg0 *C.GtkListStore
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	arg1 := new(C.GtkTreeIter)
-	var ret1 *TreeIter
+	var iter TreeIter
 
-	C.gtk_list_store_prepend(arg0, arg1)
+	C.gtk_list_store_prepend(arg0, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = WrapTreeIter(unsafe.Pointer(arg1))
-
-	return ret1
+	return iter
 }
 
 // Remove removes the given row from the list store. After being removed,
@@ -360,15 +343,16 @@ func (l listStore) Remove(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_list_store_remove(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Reorder reorders @store to follow the order indicated by @new_order. Note
@@ -386,7 +370,7 @@ func (s listStore) Reorder(newOrder []int) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(newOrder)))
 
 		for i := range newOrder {
-			out[i] = C.gint(newOrder[i])
+			arg1 = C.gint(newOrder)
 		}
 	}
 
@@ -395,7 +379,7 @@ func (s listStore) Reorder(newOrder []int) {
 
 // SetValue sets the data in the cell specified by @iter and @column. The
 // type of @value must be convertible to the type of the column.
-func (l listStore) SetValue(iter *TreeIter, column int, value *externglib.Value) {
+func (l listStore) SetValue(iter *TreeIter, column int, value **externglib.Value) {
 	var arg0 *C.GtkListStore
 	var arg1 *C.GtkTreeIter
 	var arg2 C.gint
@@ -418,7 +402,7 @@ func (l listStore) SetValuesv() {
 
 	arg0 = (*C.GtkListStore)(unsafe.Pointer(l.Native()))
 
-	C.gtk_list_store_set_valuesv(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_list_store_set_valuesv(arg0)
 }
 
 // Swap swaps @a and @b in @store. Note that this function only works with

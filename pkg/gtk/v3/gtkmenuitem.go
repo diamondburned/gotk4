@@ -117,7 +117,7 @@ type MenuItem interface {
 	ToggleSizeAllocate(allocation int)
 	// ToggleSizeRequest emits the MenuItem::toggle-size-request signal on the
 	// given item.
-	ToggleSizeRequest(requisition int)
+	ToggleSizeRequest(requisition *int)
 }
 
 // menuItem implements the MenuItem interface.
@@ -150,13 +150,14 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 // NewMenuItem constructs a class MenuItem.
 func NewMenuItem() MenuItem {
 	var cret C.GtkMenuItem
-	var goret MenuItem
 
 	cret = C.gtk_menu_item_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+	var menuItem MenuItem
 
-	return goret
+	menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+
+	return menuItem
 }
 
 // NewMenuItemWithLabel constructs a class MenuItem.
@@ -167,13 +168,14 @@ func NewMenuItemWithLabel(label string) MenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkMenuItem
-	var goret MenuItem
 
 	cret = C.gtk_menu_item_new_with_label(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+	var menuItem MenuItem
 
-	return goret
+	menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+
+	return menuItem
 }
 
 // NewMenuItemWithMnemonic constructs a class MenuItem.
@@ -184,13 +186,14 @@ func NewMenuItemWithMnemonic(label string) MenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkMenuItem
-	var goret MenuItem
 
 	cret = C.gtk_menu_item_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+	var menuItem MenuItem
 
-	return goret
+	menuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuItem)
+
+	return menuItem
 }
 
 // Activate emits the MenuItem::activate signal on the given item
@@ -221,13 +224,14 @@ func (m menuItem) AccelPath() string {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_menu_item_get_accel_path(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Label sets @text on the @menu_item label
@@ -237,13 +241,14 @@ func (m menuItem) Label() string {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_menu_item_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ReserveIndicator returns whether the @menu_item reserves space for the
@@ -254,15 +259,16 @@ func (m menuItem) ReserveIndicator() bool {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_menu_item_get_reserve_indicator(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RightJustified gets whether the menu item appears justified at the right
@@ -273,15 +279,16 @@ func (m menuItem) RightJustified() bool {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_menu_item_get_right_justified(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Submenu gets the submenu underneath this menu item, if any. See
@@ -292,13 +299,14 @@ func (m menuItem) Submenu() Widget {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_menu_item_get_submenu(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // UseUnderline checks if an underline in the text indicates the next
@@ -309,15 +317,16 @@ func (m menuItem) UseUnderline() bool {
 	arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_menu_item_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Select emits the MenuItem::select signal on the given item.
@@ -443,7 +452,7 @@ func (m menuItem) ToggleSizeAllocate(allocation int) {
 
 // ToggleSizeRequest emits the MenuItem::toggle-size-request signal on the
 // given item.
-func (m menuItem) ToggleSizeRequest(requisition int) {
+func (m menuItem) ToggleSizeRequest(requisition *int) {
 	var arg0 *C.GtkMenuItem
 	var arg1 *C.gint
 

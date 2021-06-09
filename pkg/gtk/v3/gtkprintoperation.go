@@ -59,14 +59,15 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 	arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
 	arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
+	var cret *C.GtkPageSetup
 
 	cret = C.gtk_print_run_page_setup_dialog(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
 // PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
@@ -76,7 +77,7 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 // showing the page setup dialog on platforms that support this, and calls
 // @done_cb from a signal handler for the ::response signal of the dialog.
 func PrintRunPageSetupDialogAsync() {
-	C.gtk_print_run_page_setup_dialog_async(arg1, arg2, arg3, arg4, arg5)
+	C.gtk_print_run_page_setup_dialog_async()
 }
 
 // PrintOperation: gtkPrintOperation is the high-level, portable printing API.
@@ -255,7 +256,7 @@ type PrintOperation interface {
 	//
 	// Note that gtk_print_operation_run() can only be called once on a given
 	// PrintOperation.
-	Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, err error)
+	Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, goerr error)
 	// SetAllowAsync sets whether the gtk_print_operation_run() may return
 	// before the print operation is completed. Note that some platforms may not
 	// allow asynchronous operation.
@@ -294,7 +295,7 @@ type PrintOperation interface {
 	// “Print to PDF” support is independent of this and is done by letting the
 	// user pick the “Print to PDF” item from the list of printers in the print
 	// dialog.
-	SetExportFilename(filename string)
+	SetExportFilename(filename *string)
 	// SetHasSelection sets whether there is a selection to print.
 	//
 	// Application has to set number of pages to which the selection will draw
@@ -373,14 +374,15 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 
 // NewPrintOperation constructs a class PrintOperation.
 func NewPrintOperation() PrintOperation {
-	cret := new(C.GtkPrintOperation)
-	var goret PrintOperation
+	var cret C.GtkPrintOperation
 
 	cret = C.gtk_print_operation_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintOperation)
+	var printOperation PrintOperation
 
-	return goret
+	printOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintOperation)
+
+	return printOperation
 }
 
 // Cancel cancels a running print operation. This function may be called
@@ -417,13 +419,14 @@ func (o printOperation) DefaultPageSetup() PageSetup {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPageSetup
-	var goret PageSetup
 
 	cret = C.gtk_print_operation_get_default_page_setup(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
 // EmbedPageSetup gets the value of PrintOperation:embed-page-setup
@@ -434,15 +437,16 @@ func (o printOperation) EmbedPageSetup() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_get_embed_page_setup(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Error: call this when the result of a print operation is
@@ -455,9 +459,10 @@ func (o printOperation) Error() error {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_print_operation_get_error(arg0, &cerr)
+	C.gtk_print_operation_get_error(arg0, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -471,15 +476,16 @@ func (o printOperation) HasSelection() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_get_has_selection(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // NPagesToPrint returns the number of pages that will be printed.
@@ -497,13 +503,14 @@ func (o printOperation) NPagesToPrint() int {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_print_operation_get_n_pages_to_print(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PrintSettings returns the current print settings.
@@ -517,13 +524,14 @@ func (o printOperation) PrintSettings() PrintSettings {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPrintSettings
-	var goret PrintSettings
 
 	cret = C.gtk_print_operation_get_print_settings(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	var printSettings PrintSettings
 
-	return goret
+	printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
+
+	return printSettings
 }
 
 // Status returns the status of the print operation. Also see
@@ -534,13 +542,14 @@ func (o printOperation) Status() PrintStatus {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.GtkPrintStatus
-	var goret PrintStatus
 
 	cret = C.gtk_print_operation_get_status(arg0)
 
-	goret = PrintStatus(cret)
+	var printStatus PrintStatus
 
-	return goret
+	printStatus = PrintStatus(cret)
+
+	return printStatus
 }
 
 // StatusString returns a string representation of the status of the print
@@ -555,13 +564,14 @@ func (o printOperation) StatusString() string {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_print_operation_get_status_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SupportSelection gets the value of PrintOperation:support-selection
@@ -572,15 +582,16 @@ func (o printOperation) SupportSelection() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_get_support_selection(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsFinished: a convenience function to find out if the print operation is
@@ -596,15 +607,16 @@ func (o printOperation) IsFinished() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_is_finished(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Run runs the print operation, by first letting the user modify print
@@ -660,7 +672,7 @@ func (o printOperation) IsFinished() bool {
 //
 // Note that gtk_print_operation_run() can only be called once on a given
 // PrintOperation.
-func (o printOperation) Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, err error) {
+func (o printOperation) Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, goerr error) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.GtkPrintOperationAction
 	var arg2 *C.GtkWindow
@@ -670,16 +682,17 @@ func (o printOperation) Run(action PrintOperationAction, parent Window) (printOp
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkPrintOperationResult
-	var goret PrintOperationResult
 	var cerr *C.GError
+
+	cret = C.gtk_print_operation_run(arg0, arg1, arg2, cerr)
+
+	var printOperationResult PrintOperationResult
 	var goerr error
 
-	cret = C.gtk_print_operation_run(arg0, arg1, arg2, &cerr)
-
-	goret = PrintOperationResult(cret)
+	printOperationResult = PrintOperationResult(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return printOperationResult, goerr
 }
 
 // SetAllowAsync sets whether the gtk_print_operation_run() may return
@@ -777,7 +790,7 @@ func (o printOperation) SetEmbedPageSetup(embed bool) {
 // “Print to PDF” support is independent of this and is done by letting the
 // user pick the “Print to PDF” item from the list of printers in the print
 // dialog.
-func (o printOperation) SetExportFilename(filename string) {
+func (o printOperation) SetExportFilename(filename *string) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 *C.gchar
 

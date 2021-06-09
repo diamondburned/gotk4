@@ -116,14 +116,15 @@ func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(nInitialChars)
 
-	cret := new(C.GtkEntryBuffer)
-	var goret EntryBuffer
+	var cret C.GtkEntryBuffer
 
 	cret = C.gtk_entry_buffer_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+	var entryBuffer EntryBuffer
 
-	return goret
+	entryBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+
+	return entryBuffer
 }
 
 // DeleteText deletes a sequence of characters from the buffer. @n_chars
@@ -144,13 +145,14 @@ func (b entryBuffer) DeleteText(position uint, nChars int) uint {
 	arg2 = C.gint(nChars)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_entry_buffer_delete_text(arg0, arg1, arg2)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // EmitDeletedText: used when subclassing EntryBuffer
@@ -190,13 +192,14 @@ func (b entryBuffer) Bytes() uint {
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gsize
-	var goret uint
 
 	cret = C.gtk_entry_buffer_get_bytes(arg0)
 
-	goret = uint(cret)
+	var gsize uint
 
-	return goret
+	gsize = (uint)(cret)
+
+	return gsize
 }
 
 // Length retrieves the length in characters of the buffer.
@@ -206,13 +209,14 @@ func (b entryBuffer) Length() uint {
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_entry_buffer_get_length(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // MaxLength retrieves the maximum allowed length of the text in @buffer.
@@ -223,13 +227,14 @@ func (b entryBuffer) MaxLength() int {
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_entry_buffer_get_max_length(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Text retrieves the contents of the buffer.
@@ -242,13 +247,14 @@ func (b entryBuffer) Text() string {
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_entry_buffer_get_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // InsertText inserts @n_chars characters of @chars into the contents of the
@@ -273,13 +279,14 @@ func (b entryBuffer) InsertText(position uint, chars string, nChars int) uint {
 	arg3 = C.gint(nChars)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_entry_buffer_insert_text(arg0, arg1, arg2, arg3)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // SetMaxLength sets the maximum allowed length of the contents of the

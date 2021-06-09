@@ -32,13 +32,14 @@ func SliceAlloc(blockSize uint) interface{} {
 	arg1 = C.gsize(blockSize)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_slice_alloc(arg1)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // SliceAlloc0 allocates a block of memory via g_slice_alloc() and initializes
@@ -51,13 +52,14 @@ func SliceAlloc0(blockSize uint) interface{} {
 	arg1 = C.gsize(blockSize)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_slice_alloc0(arg1)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // SliceCopy allocates a block of memory from the slice allocator and copies
@@ -72,13 +74,14 @@ func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
 	arg2 = C.gpointer(memBlock)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_slice_copy(arg1, arg2)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // SliceFree1 frees a block of memory.
@@ -129,16 +132,17 @@ func SliceGetConfig(ckey SliceConfig) int64 {
 	arg1 = (C.GSliceConfig)(ckey)
 
 	var cret C.gint64
-	var goret int64
 
 	cret = C.g_slice_get_config(arg1)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
-func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64 {
+func SliceGetConfigState(ckey SliceConfig, address int64, nValues *uint) *int64 {
 	var arg1 C.GSliceConfig
 	var arg2 C.gint64
 	var arg3 *C.guint
@@ -148,13 +152,14 @@ func SliceGetConfigState(ckey SliceConfig, address int64, nValues uint) int64 {
 	arg3 = *C.guint(nValues)
 
 	var cret *C.gint64
-	var goret int64
 
 	cret = C.g_slice_get_config_state(arg1, arg2, arg3)
 
-	goret = int64(cret)
+	var gint64 *int64
 
-	return goret
+	gint64 = (*int64)(cret)
+
+	return gint64
 }
 
 func SliceSetConfig(ckey SliceConfig, value int64) {

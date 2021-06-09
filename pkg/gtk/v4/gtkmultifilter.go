@@ -24,10 +24,6 @@ func init() {
 	})
 }
 
-// AnyFilter: `GtkAnyFilter` matches an item when at least one of its filters
-// matches.
-//
-// To add filters to a `GtkAnyFilter`, use [method@Gtk.MultiFilter.append].
 type AnyFilter interface {
 	MultiFilter
 	gio.ListModel
@@ -61,20 +57,17 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 
 // NewAnyFilter constructs a class AnyFilter.
 func NewAnyFilter() AnyFilter {
-	cret := new(C.GtkAnyFilter)
-	var goret AnyFilter
+	var cret C.GtkAnyFilter
 
 	cret = C.gtk_any_filter_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AnyFilter)
+	var anyFilter AnyFilter
 
-	return goret
+	anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AnyFilter)
+
+	return anyFilter
 }
 
-// EveryFilter: `GtkEveryFilter` matches an item when each of its filters
-// matches.
-//
-// To add filters to a `GtkEveryFilter`, use [method@Gtk.MultiFilter.append].
 type EveryFilter interface {
 	MultiFilter
 	gio.ListModel
@@ -108,18 +101,25 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 
 // NewEveryFilter constructs a class EveryFilter.
 func NewEveryFilter() EveryFilter {
-	cret := new(C.GtkEveryFilter)
-	var goret EveryFilter
+	var cret C.GtkEveryFilter
 
 	cret = C.gtk_every_filter_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EveryFilter)
+	var everyFilter EveryFilter
 
-	return goret
+	everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EveryFilter)
+
+	return everyFilter
 }
 
-// MultiFilter: `GtkMultiFilter` is the base class for filters that combine
-// multiple filters.
+// MultiFilter: gtkMultiFilter is the base type that implements support for
+// handling multiple filters.
+//
+// GtkAnyFilter is a subclass of GtkMultiFilter that matches an item when at
+// least one of its filters matches.
+//
+// GtkEveryFilter is a subclass of GtkMultiFilter that matches an item when each
+// of its filters matches.
 type MultiFilter interface {
 	Filter
 	gio.ListModel
@@ -128,10 +128,8 @@ type MultiFilter interface {
 	// Append adds a @filter to @self to use for matching.
 	Append(filter Filter)
 	// Remove removes the filter at the given @position from the list of filters
-	// used by @self.
-	//
-	// If @position is larger than the number of filters, nothing happens and
-	// the function returns.
+	// used by @self. If @position is larger than the number of filters, nothing
+	// happens and the function returns.
 	Remove(position uint)
 }
 
@@ -172,10 +170,8 @@ func (s multiFilter) Append(filter Filter) {
 }
 
 // Remove removes the filter at the given @position from the list of filters
-// used by @self.
-//
-// If @position is larger than the number of filters, nothing happens and
-// the function returns.
+// used by @self. If @position is larger than the number of filters, nothing
+// happens and the function returns.
 func (s multiFilter) Remove(position uint) {
 	var arg0 *C.GtkMultiFilter
 	var arg1 C.guint

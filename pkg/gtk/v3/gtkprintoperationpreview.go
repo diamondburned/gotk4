@@ -92,15 +92,16 @@ func (p printOperationPreview) IsSelected(pageNr int) bool {
 	arg1 = C.gint(pageNr)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_preview_is_selected(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RenderPage renders a page to the preview, using the print context that

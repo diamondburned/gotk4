@@ -156,13 +156,14 @@ func marshalGrid(p uintptr) (interface{}, error) {
 // NewGrid constructs a class Grid.
 func NewGrid() Grid {
 	var cret C.GtkGrid
-	var goret Grid
 
 	cret = C.gtk_grid_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Grid)
+	var grid Grid
 
-	return goret
+	grid = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Grid)
+
+	return grid
 }
 
 // Attach adds a widget to the grid.
@@ -221,13 +222,14 @@ func (g grid) BaselineRow() int {
 	arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_grid_get_baseline_row(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ChildAt gets the child of @grid whose area covers the grid cell whose
@@ -242,13 +244,14 @@ func (g grid) ChildAt(left int, top int) Widget {
 	arg2 = C.gint(top)
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_grid_get_child_at(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ColumnHomogeneous returns whether all columns of @grid have the same
@@ -259,15 +262,16 @@ func (g grid) ColumnHomogeneous() bool {
 	arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_grid_get_column_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ColumnSpacing returns the amount of space between the columns of @grid.
@@ -277,13 +281,14 @@ func (g grid) ColumnSpacing() uint {
 	arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_grid_get_column_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // RowBaselinePosition returns the baseline position of @row as set by
@@ -297,13 +302,14 @@ func (g grid) RowBaselinePosition(row int) BaselinePosition {
 	arg1 = C.gint(row)
 
 	var cret C.GtkBaselinePosition
-	var goret BaselinePosition
 
 	cret = C.gtk_grid_get_row_baseline_position(arg0, arg1)
 
-	goret = BaselinePosition(cret)
+	var baselinePosition BaselinePosition
 
-	return goret
+	baselinePosition = BaselinePosition(cret)
+
+	return baselinePosition
 }
 
 // RowHomogeneous returns whether all rows of @grid have the same height.
@@ -313,15 +319,16 @@ func (g grid) RowHomogeneous() bool {
 	arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_grid_get_row_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RowSpacing returns the amount of space between the rows of @grid.
@@ -331,13 +338,14 @@ func (g grid) RowSpacing() uint {
 	arg0 = (*C.GtkGrid)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_grid_get_row_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // InsertColumn inserts a column at the specified position.

@@ -80,11 +80,12 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 // NewColorChooserWidget constructs a class ColorChooserWidget.
 func NewColorChooserWidget() ColorChooserWidget {
 	var cret C.GtkColorChooserWidget
-	var goret ColorChooserWidget
 
 	cret = C.gtk_color_chooser_widget_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserWidget)
+	var colorChooserWidget ColorChooserWidget
 
-	return goret
+	colorChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorChooserWidget)
+
+	return colorChooserWidget
 }

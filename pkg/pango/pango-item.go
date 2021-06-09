@@ -52,14 +52,14 @@ func (a *Analysis) Native() unsafe.Pointer {
 // ShapeEngine gets the field inside the struct.
 func (a *Analysis) ShapeEngine() interface{} {
 	var v interface{}
-	v = interface{}(a.native.shape_engine)
+	v = (interface{})(a.native.shape_engine)
 	return v
 }
 
 // LangEngine gets the field inside the struct.
 func (a *Analysis) LangEngine() interface{} {
 	var v interface{}
-	v = interface{}(a.native.lang_engine)
+	v = (interface{})(a.native.lang_engine)
 	return v
 }
 
@@ -73,28 +73,28 @@ func (a *Analysis) Font() Font {
 // Level gets the field inside the struct.
 func (a *Analysis) Level() byte {
 	var v byte
-	v = byte(a.native.level)
+	v = (byte)(a.native.level)
 	return v
 }
 
 // Gravity gets the field inside the struct.
 func (a *Analysis) Gravity() byte {
 	var v byte
-	v = byte(a.native.gravity)
+	v = (byte)(a.native.gravity)
 	return v
 }
 
 // Flags gets the field inside the struct.
 func (a *Analysis) Flags() byte {
 	var v byte
-	v = byte(a.native.flags)
+	v = (byte)(a.native.flags)
 	return v
 }
 
 // Script gets the field inside the struct.
 func (a *Analysis) Script() byte {
 	var v byte
-	v = byte(a.native.script)
+	v = (byte)(a.native.script)
 	return v
 }
 
@@ -137,17 +137,18 @@ func marshalItem(p uintptr) (interface{}, error) {
 
 // NewItem constructs a struct Item.
 func NewItem() *Item {
-	cret := new(C.PangoItem)
-	var goret *Item
+	var cret *C.PangoItem
 
 	cret = C.pango_item_new()
 
-	goret = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Item) {
+	var item *Item
+
+	item = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(item, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return item
 }
 
 // Native returns the underlying C source pointer.
@@ -158,21 +159,21 @@ func (i *Item) Native() unsafe.Pointer {
 // Offset gets the field inside the struct.
 func (i *Item) Offset() int {
 	var v int
-	v = int(i.native.offset)
+	v = (int)(i.native.offset)
 	return v
 }
 
 // Length gets the field inside the struct.
 func (i *Item) Length() int {
 	var v int
-	v = int(i.native.length)
+	v = (int)(i.native.length)
 	return v
 }
 
 // NumChars gets the field inside the struct.
 func (i *Item) NumChars() int {
 	var v int
-	v = int(i.native.num_chars)
+	v = (int)(i.native.num_chars)
 	return v
 }
 
@@ -209,17 +210,18 @@ func (i *Item) Copy() *Item {
 
 	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.PangoItem)
-	var goret *Item
+	var cret *C.PangoItem
 
 	cret = C.pango_item_copy(arg0)
 
-	goret = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Item) {
+	var ret *Item
+
+	ret = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return ret
 }
 
 // Free: free a `PangoItem` and all associated memory.
@@ -250,15 +252,16 @@ func (o *Item) Split(splitIndex int, splitOffset int) *Item {
 	arg1 = C.int(splitIndex)
 	arg2 = C.int(splitOffset)
 
-	cret := new(C.PangoItem)
-	var goret *Item
+	var cret *C.PangoItem
 
 	cret = C.pango_item_split(arg0, arg1, arg2)
 
-	goret = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Item) {
+	var item *Item
+
+	item = WrapItem(unsafe.Pointer(cret))
+	runtime.SetFinalizer(item, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return item
 }

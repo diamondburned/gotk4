@@ -554,59 +554,61 @@ const (
 
 // Ucs4ToUTF16: convert a string from UCS-4 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func Ucs4ToUTF16(str uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16, err error) {
+func Ucs4ToUTF16(str *uint32, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
 	var arg1 *C.gunichar
 	var arg2 C.glong
 
 	arg1 = *C.gunichar(str)
 	arg2 = C.glong(len)
 
-	arg3 := new(C.glong)
-	var ret3 int32
-	arg4 := new(C.glong)
-	var ret4 int32
-	cret := new(C.gunichar2)
-	var goret uint16
+	var arg3 C.glong
+	var arg4 C.glong
+	var cret *C.gunichar2
 	var cerr *C.GError
+
+	cret = C.g_ucs4_to_utf16(arg1, arg2, &arg3, &arg4, cerr)
+
+	var itemsRead int32
+	var itemsWritten int32
+	var guint16 *uint16
 	var goerr error
 
-	cret = C.g_ucs4_to_utf16(arg1, arg2, arg3, arg4, &cerr)
-
-	ret3 = int32(*arg3)
-	ret4 = int32(*arg4)
-	goret = uint16(cret)
+	itemsRead = (int32)(arg3)
+	itemsWritten = (int32)(arg4)
+	guint16 = (*uint16)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret3, ret4, goret, goerr
+	return itemsRead, itemsWritten, guint16, goerr
 }
 
 // Ucs4ToUTF8: convert a string from a 32-bit fixed width representation as
 // UCS-4. to UTF-8. The result will be terminated with a 0 byte.
-func Ucs4ToUTF8(str uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, err error) {
+func Ucs4ToUTF8(str *uint32, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
 	var arg1 *C.gunichar
 	var arg2 C.glong
 
 	arg1 = *C.gunichar(str)
 	arg2 = C.glong(len)
 
-	arg3 := new(C.glong)
-	var ret3 int32
-	arg4 := new(C.glong)
-	var ret4 int32
-	cret := new(C.gchar)
-	var goret string
+	var arg3 C.glong
+	var arg4 C.glong
+	var cret *C.gchar
 	var cerr *C.GError
+
+	cret = C.g_ucs4_to_utf8(arg1, arg2, &arg3, &arg4, cerr)
+
+	var itemsRead int32
+	var itemsWritten int32
+	var utf8 string
 	var goerr error
 
-	cret = C.g_ucs4_to_utf8(arg1, arg2, arg3, arg4, &cerr)
-
-	ret3 = int32(*arg3)
-	ret4 = int32(*arg4)
-	goret = C.GoString(cret)
+	itemsRead = (int32)(arg3)
+	itemsWritten = (int32)(arg4)
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret3, ret4, goret, goerr
+	return itemsRead, itemsWritten, utf8, goerr
 }
 
 // UnicharBreakType determines the break type of @c. @c should be a Unicode
@@ -621,13 +623,14 @@ func UnicharBreakType(c uint32) UnicodeBreakType {
 	arg1 = C.gunichar(c)
 
 	var cret C.GUnicodeBreakType
-	var goret UnicodeBreakType
 
 	cret = C.g_unichar_break_type(arg1)
 
-	goret = UnicodeBreakType(cret)
+	var unicodeBreakType UnicodeBreakType
 
-	return goret
+	unicodeBreakType = UnicodeBreakType(cret)
+
+	return unicodeBreakType
 }
 
 // UnicharCombiningClass determines the canonical combining class of a Unicode
@@ -638,13 +641,14 @@ func UnicharCombiningClass(uc uint32) int {
 	arg1 = C.gunichar(uc)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_unichar_combining_class(arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // UnicharCompose performs a single composition step of the Unicode canonical
@@ -667,19 +671,20 @@ func UnicharCompose(a uint32, b uint32) (ch uint32, ok bool) {
 	arg1 = C.gunichar(a)
 	arg2 = C.gunichar(b)
 
-	arg3 := new(C.gunichar)
-	var ret3 uint32
+	var arg3 C.gunichar
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.g_unichar_compose(arg1, arg2, arg3)
+	cret = C.g_unichar_compose(arg1, arg2, &arg3)
 
-	ret3 = uint32(*arg3)
+	var ch uint32
+	var ok bool
+
+	ch = (uint32)(arg3)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret3, goret
+	return ch, ok
 }
 
 // UnicharDecompose performs a single decomposition step of the Unicode
@@ -703,22 +708,23 @@ func UnicharDecompose(ch uint32) (a uint32, b uint32, ok bool) {
 
 	arg1 = C.gunichar(ch)
 
-	arg2 := new(C.gunichar)
-	var ret2 uint32
-	arg3 := new(C.gunichar)
-	var ret3 uint32
+	var arg2 C.gunichar
+	var arg3 C.gunichar
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.g_unichar_decompose(arg1, arg2, arg3)
+	cret = C.g_unichar_decompose(arg1, &arg2, &arg3)
 
-	ret2 = uint32(*arg2)
-	ret3 = uint32(*arg3)
+	var a uint32
+	var b uint32
+	var ok bool
+
+	a = (uint32)(arg2)
+	b = (uint32)(arg3)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, ret3, goret
+	return a, b, ok
 }
 
 // UnicharDigitValue determines the numeric value of a character as a decimal
@@ -729,13 +735,14 @@ func UnicharDigitValue(c uint32) int {
 	arg1 = C.gunichar(c)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_unichar_digit_value(arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // UnicharFullyDecompose computes the canonical or compatibility decomposition
@@ -763,17 +770,18 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (result uint3
 	}
 	arg4 = C.gsize(resultLen)
 
-	arg3 := new(C.gunichar)
-	var ret3 uint32
+	var arg3 C.gunichar
 	var cret C.gsize
-	var goret uint
 
-	cret = C.g_unichar_fully_decompose(arg1, arg2, arg3, arg4)
+	cret = C.g_unichar_fully_decompose(arg1, arg2, arg4, &arg3)
 
-	ret3 = uint32(*arg3)
-	goret = uint(cret)
+	var result uint32
+	var gsize uint
 
-	return ret3, goret
+	result = (uint32)(arg3)
+	gsize = (uint)(cret)
+
+	return result, gsize
 }
 
 // UnicharGetMirrorChar: in Unicode, some characters are "mirrored". This means
@@ -785,7 +793,7 @@ func UnicharFullyDecompose(ch uint32, compat bool, resultLen uint) (result uint3
 // character that typically has a glyph that is the mirror image of @ch's glyph
 // and @mirrored_ch is set, it puts that character in the address pointed to by
 // @mirrored_ch. Otherwise the original character is put.
-func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool {
+func UnicharGetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var arg1 C.gunichar
 	var arg2 *C.gunichar
 
@@ -793,15 +801,16 @@ func UnicharGetMirrorChar(ch uint32, mirroredCh uint32) bool {
 	arg2 = *C.gunichar(mirroredCh)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_get_mirror_char(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharGetScript looks up the Script for a particular character (as defined
@@ -816,13 +825,14 @@ func UnicharGetScript(ch uint32) UnicodeScript {
 	arg1 = C.gunichar(ch)
 
 	var cret C.GUnicodeScript
-	var goret UnicodeScript
 
 	cret = C.g_unichar_get_script(arg1)
 
-	goret = UnicodeScript(cret)
+	var unicodeScript UnicodeScript
 
-	return goret
+	unicodeScript = UnicodeScript(cret)
+
+	return unicodeScript
 }
 
 // UnicharIsalnum determines whether a character is alphanumeric. Given some
@@ -833,15 +843,16 @@ func UnicharIsalnum(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isalnum(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsalpha determines whether a character is alphabetic (i.e. a letter).
@@ -852,15 +863,16 @@ func UnicharIsalpha(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isalpha(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIscntrl determines whether a character is a control character. Given
@@ -871,15 +883,16 @@ func UnicharIscntrl(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_iscntrl(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsdefined determines if a given character is assigned in the Unicode
@@ -890,15 +903,16 @@ func UnicharIsdefined(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isdefined(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsdigit determines whether a character is numeric (i.e. a digit). This
@@ -910,15 +924,16 @@ func UnicharIsdigit(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isdigit(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsgraph determines whether a character is printable and not a space
@@ -931,15 +946,16 @@ func UnicharIsgraph(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isgraph(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIslower determines whether a character is a lowercase letter. Given
@@ -950,15 +966,16 @@ func UnicharIslower(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_islower(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsmark determines whether a character is a mark (non-spacing mark,
@@ -974,15 +991,16 @@ func UnicharIsmark(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_ismark(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsprint determines whether a character is printable. Unlike
@@ -994,15 +1012,16 @@ func UnicharIsprint(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isprint(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIspunct determines whether a character is punctuation or a symbol.
@@ -1013,15 +1032,16 @@ func UnicharIspunct(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_ispunct(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsspace determines whether a character is a space, tab, or line
@@ -1036,15 +1056,16 @@ func UnicharIsspace(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isspace(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIstitle determines if a character is titlecase. Some characters in
@@ -1058,15 +1079,16 @@ func UnicharIstitle(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_istitle(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsupper determines if a character is uppercase.
@@ -1076,15 +1098,16 @@ func UnicharIsupper(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isupper(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIswide determines if a character is typically rendered in a
@@ -1095,15 +1118,16 @@ func UnicharIswide(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_iswide(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIswideCjk determines if a character is typically rendered in a
@@ -1121,15 +1145,16 @@ func UnicharIswideCjk(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_iswide_cjk(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIsxdigit determines if a character is a hexadecimal digit.
@@ -1139,15 +1164,16 @@ func UnicharIsxdigit(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_isxdigit(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharIszerowidth determines if a given character typically takes zero width
@@ -1165,34 +1191,36 @@ func UnicharIszerowidth(c uint32) bool {
 	arg1 = C.gunichar(c)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_iszerowidth(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharToUTF8 converts a single character to UTF-8.
-func UnicharToUTF8(c uint32) (outbuf string, gint int) {
+func UnicharToUTF8(c uint32) (outbuf ***************************************************************************************************************************************************************************************************************************************************************string, gint int) {
 	var arg1 C.gunichar
 
 	arg1 = C.gunichar(c)
 
-	arg2 := new(C.gchar)
-	var ret2 string
+	var arg2 C.gchar
 	var cret C.gint
-	var goret int
 
-	cret = C.g_unichar_to_utf8(arg1, arg2)
+	cret = C.g_unichar_to_utf8(arg1, &arg2)
 
-	ret2 = C.GoString(*arg2)
-	goret = int(cret)
+	var outbuf ***************************************************************************************************************************************************************************************************************************************************************string
+	var gint int
 
-	return ret2, goret
+	outbuf = C.GoString(arg2)
+	gint = (int)(cret)
+
+	return outbuf, gint
 }
 
 // UnicharToLower converts a character to lower case.
@@ -1202,13 +1230,14 @@ func UnicharToLower(c uint32) uint32 {
 	arg1 = C.gunichar(c)
 
 	var cret C.gunichar
-	var goret uint32
 
 	cret = C.g_unichar_tolower(arg1)
 
-	goret = uint32(cret)
+	var gunichar uint32
 
-	return goret
+	gunichar = (uint32)(cret)
+
+	return gunichar
 }
 
 // UnicharTotitle converts a character to the titlecase.
@@ -1218,13 +1247,14 @@ func UnicharTotitle(c uint32) uint32 {
 	arg1 = C.gunichar(c)
 
 	var cret C.gunichar
-	var goret uint32
 
 	cret = C.g_unichar_totitle(arg1)
 
-	goret = uint32(cret)
+	var gunichar uint32
 
-	return goret
+	gunichar = (uint32)(cret)
+
+	return gunichar
 }
 
 // UnicharToUpper converts a character to uppercase.
@@ -1234,13 +1264,14 @@ func UnicharToUpper(c uint32) uint32 {
 	arg1 = C.gunichar(c)
 
 	var cret C.gunichar
-	var goret uint32
 
 	cret = C.g_unichar_toupper(arg1)
 
-	goret = uint32(cret)
+	var gunichar uint32
 
-	return goret
+	gunichar = (uint32)(cret)
+
+	return gunichar
 }
 
 // UnicharType classifies a Unicode character by type.
@@ -1250,13 +1281,14 @@ func UnicharType(c uint32) UnicodeType {
 	arg1 = C.gunichar(c)
 
 	var cret C.GUnicodeType
-	var goret UnicodeType
 
 	cret = C.g_unichar_type(arg1)
 
-	goret = UnicodeType(cret)
+	var unicodeType UnicodeType
 
-	return goret
+	unicodeType = UnicodeType(cret)
+
+	return unicodeType
 }
 
 // UnicharValidate checks whether @ch is a valid Unicode character. Some
@@ -1268,15 +1300,16 @@ func UnicharValidate(ch uint32) bool {
 	arg1 = C.gunichar(ch)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_unichar_validate(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharXDigitValue determines the numeric value of a character as a
@@ -1287,18 +1320,19 @@ func UnicharXDigitValue(c uint32) int {
 	arg1 = C.gunichar(c)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_unichar_xdigit_value(arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // UnicodeCanonicalDecomposition computes the canonical decomposition of a
 // Unicode character.
-func UnicodeCanonicalDecomposition(ch uint32, resultLen uint) uint32 {
+func UnicodeCanonicalDecomposition(ch uint32, resultLen *uint) *uint32 {
 	var arg1 C.gunichar
 	var arg2 *C.gsize
 
@@ -1306,19 +1340,20 @@ func UnicodeCanonicalDecomposition(ch uint32, resultLen uint) uint32 {
 	arg2 = *C.gsize(resultLen)
 
 	var cret *C.gunichar
-	var goret uint32
 
 	cret = C.g_unicode_canonical_decomposition(arg1, arg2)
 
-	goret = uint32(cret)
+	var gunichar *uint32
 
-	return goret
+	gunichar = (*uint32)(cret)
+
+	return gunichar
 }
 
 // UnicodeCanonicalOrdering computes the canonical ordering of a string
 // in-place. This rearranges decomposed characters in the string according to
 // their combining classes. See the Unicode manual for more information.
-func UnicodeCanonicalOrdering(string uint32, len uint) {
+func UnicodeCanonicalOrdering(string *uint32, len uint) {
 	var arg1 *C.gunichar
 	var arg2 C.gsize
 
@@ -1342,13 +1377,14 @@ func UnicodeScriptFromIso15924(iso15924 uint32) UnicodeScript {
 	arg1 = C.guint32(iso15924)
 
 	var cret C.GUnicodeScript
-	var goret UnicodeScript
 
 	cret = C.g_unicode_script_from_iso15924(arg1)
 
-	goret = UnicodeScript(cret)
+	var unicodeScript UnicodeScript
 
-	return goret
+	unicodeScript = UnicodeScript(cret)
+
+	return unicodeScript
 }
 
 // UnicodeScriptToIso15924 looks up the ISO 15924 code for @script. ISO 15924
@@ -1365,41 +1401,43 @@ func UnicodeScriptToIso15924(script UnicodeScript) uint32 {
 	arg1 = (C.GUnicodeScript)(script)
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.g_unicode_script_to_iso15924(arg1)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // UTF16ToUcs4: convert a string from UTF-16 to UCS-4. The result will be
 // nul-terminated.
-func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32, err error) {
+func UTF16ToUcs4(str *uint16, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var arg1 *C.gunichar2
 	var arg2 C.glong
 
 	arg1 = *C.gunichar2(str)
 	arg2 = C.glong(len)
 
-	arg3 := new(C.glong)
-	var ret3 int32
-	arg4 := new(C.glong)
-	var ret4 int32
-	cret := new(C.gunichar)
-	var goret uint32
+	var arg3 C.glong
+	var arg4 C.glong
+	var cret *C.gunichar
 	var cerr *C.GError
+
+	cret = C.g_utf16_to_ucs4(arg1, arg2, &arg3, &arg4, cerr)
+
+	var itemsRead int32
+	var itemsWritten int32
+	var gunichar *uint32
 	var goerr error
 
-	cret = C.g_utf16_to_ucs4(arg1, arg2, arg3, arg4, &cerr)
-
-	ret3 = int32(*arg3)
-	ret4 = int32(*arg4)
-	goret = uint32(cret)
+	itemsRead = (int32)(arg3)
+	itemsWritten = (int32)(arg4)
+	gunichar = (*uint32)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret3, ret4, goret, goerr
+	return itemsRead, itemsWritten, gunichar, goerr
 }
 
 // UTF16ToUTF8: convert a string from UTF-16 to UTF-8. The result will be
@@ -1413,31 +1451,32 @@ func UTF16ToUcs4(str uint16, len int32) (itemsRead int32, itemsWritten int32, gu
 // e.g. include embedded NUL characters. The only validation done by this
 // function is to ensure that the input can be correctly interpreted as UTF-16,
 // i.e. it doesn't contain unpaired surrogates or partial character sequences.
-func UTF16ToUTF8(str uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, err error) {
+func UTF16ToUTF8(str *uint16, len int32) (itemsRead int32, itemsWritten int32, utf8 string, goerr error) {
 	var arg1 *C.gunichar2
 	var arg2 C.glong
 
 	arg1 = *C.gunichar2(str)
 	arg2 = C.glong(len)
 
-	arg3 := new(C.glong)
-	var ret3 int32
-	arg4 := new(C.glong)
-	var ret4 int32
-	cret := new(C.gchar)
-	var goret string
+	var arg3 C.glong
+	var arg4 C.glong
+	var cret *C.gchar
 	var cerr *C.GError
+
+	cret = C.g_utf16_to_utf8(arg1, arg2, &arg3, &arg4, cerr)
+
+	var itemsRead int32
+	var itemsWritten int32
+	var utf8 string
 	var goerr error
 
-	cret = C.g_utf16_to_utf8(arg1, arg2, arg3, arg4, &cerr)
-
-	ret3 = int32(*arg3)
-	ret4 = int32(*arg4)
-	goret = C.GoString(cret)
+	itemsRead = (int32)(arg3)
+	itemsWritten = (int32)(arg4)
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret3, ret4, goret, goerr
+	return itemsRead, itemsWritten, utf8, goerr
 }
 
 // UTF8Casefold converts a string into a form that is independent of case. The
@@ -1458,15 +1497,16 @@ func UTF8Casefold(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_casefold(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8Collate compares two strings for ordering using the linguistically
@@ -1484,13 +1524,14 @@ func UTF8Collate(str1 string, str2 string) int {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_utf8_collate(arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // UTF8CollateKey converts a string into a collation key that can be compared
@@ -1508,15 +1549,16 @@ func UTF8CollateKey(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_collate_key(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8CollateKeyForFilename converts a string into a collation key that can be
@@ -1539,15 +1581,16 @@ func UTF8CollateKeyForFilename(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_collate_key_for_filename(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8FindNextChar finds the start of the next UTF-8 character in the string
@@ -1570,13 +1613,14 @@ func UTF8FindNextChar(p string, end string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_utf8_find_next_char(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UTF8FindPrevChar: given a position @p with a UTF-8 encoded string @str, find
@@ -1596,13 +1640,14 @@ func UTF8FindPrevChar(str string, p string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_utf8_find_prev_char(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UTF8GetChar converts a sequence of bytes encoded as UTF-8 to a Unicode
@@ -1618,13 +1663,14 @@ func UTF8GetChar(p string) uint32 {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gunichar
-	var goret uint32
 
 	cret = C.g_utf8_get_char(arg1)
 
-	goret = uint32(cret)
+	var gunichar uint32
 
-	return goret
+	gunichar = (uint32)(cret)
+
+	return gunichar
 }
 
 // UTF8GetCharValidated: convert a sequence of bytes encoded as UTF-8 to a
@@ -1643,13 +1689,14 @@ func UTF8GetCharValidated(p string, maxLen int) uint32 {
 	arg2 = C.gssize(maxLen)
 
 	var cret C.gunichar
-	var goret uint32
 
 	cret = C.g_utf8_get_char_validated(arg1, arg2)
 
-	goret = uint32(cret)
+	var gunichar uint32
 
-	return goret
+	gunichar = (uint32)(cret)
+
+	return gunichar
 }
 
 // UTF8MakeValid: if the provided string is valid UTF-8, return a copy of it. If
@@ -1669,15 +1716,16 @@ func UTF8MakeValid(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_make_valid(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8Normalize converts a string into canonical form, standardizing such
@@ -1708,15 +1756,16 @@ func UTF8Normalize(str string, len int, mode NormalizeMode) string {
 	arg2 = C.gssize(len)
 	arg3 = (C.GNormalizeMode)(mode)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_normalize(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8OffsetToPointer converts from an integer character offset to a pointer to
@@ -1741,13 +1790,14 @@ func UTF8OffsetToPointer(str string, offset int32) string {
 	arg2 = C.glong(offset)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_utf8_offset_to_pointer(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UTF8PointerToOffset converts from a pointer to position within a string to an
@@ -1765,13 +1815,14 @@ func UTF8PointerToOffset(str string, pos string) int32 {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.glong
-	var goret int32
 
 	cret = C.g_utf8_pointer_to_offset(arg1, arg2)
 
-	goret = int32(cret)
+	var glong int32
 
-	return goret
+	glong = (int32)(cret)
+
+	return glong
 }
 
 // UTF8PrevChar finds the previous UTF-8 character in the string before @p.
@@ -1787,13 +1838,14 @@ func UTF8PrevChar(p string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_utf8_prev_char(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UTF8Strchr finds the leftmost occurrence of the given Unicode character in a
@@ -1810,13 +1862,14 @@ func UTF8Strchr(p string, len int, c uint32) string {
 	arg3 = C.gunichar(c)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_utf8_strchr(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UTF8Strdown converts all Unicode characters in the string that have a case to
@@ -1830,15 +1883,16 @@ func UTF8Strdown(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_strdown(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8Strlen computes the length of the string in characters, not including the
@@ -1853,13 +1907,14 @@ func UTF8Strlen(p string, max int) int32 {
 	arg2 = C.gssize(max)
 
 	var cret C.glong
-	var goret int32
 
 	cret = C.g_utf8_strlen(arg1, arg2)
 
-	goret = int32(cret)
+	var glong int32
 
-	return goret
+	glong = (int32)(cret)
+
+	return glong
 }
 
 // UTF8Strncpy: like the standard C strncpy() function, but copies a given
@@ -1881,13 +1936,14 @@ func UTF8Strncpy(dest string, src string, n uint) string {
 	arg3 = C.gsize(n)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_utf8_strncpy(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UTF8Strrchr: find the rightmost occurrence of the given Unicode character in
@@ -1904,13 +1960,14 @@ func UTF8Strrchr(p string, len int, c uint32) string {
 	arg3 = C.gunichar(c)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_utf8_strrchr(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // UTF8Strreverse reverses a UTF-8 string. @str must be valid UTF-8 encoded
@@ -1932,15 +1989,16 @@ func UTF8Strreverse(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_strreverse(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8Strup converts all Unicode characters in the string that have a case to
@@ -1955,15 +2013,16 @@ func UTF8Strup(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_strup(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8Substring copies a substring out of a UTF-8 encoded string. The substring
@@ -1978,21 +2037,22 @@ func UTF8Substring(str string, startPos int32, endPos int32) string {
 	arg2 = C.glong(startPos)
 	arg3 = C.glong(endPos)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_utf8_substring(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // UTF8ToUcs4: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4. A trailing 0 character will be added to the string
 // after the converted text.
-func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar uint32, err error) {
+func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gunichar *uint32, goerr error) {
 	var arg1 *C.gchar
 	var arg2 C.glong
 
@@ -2000,30 +2060,31 @@ func UTF8ToUcs4(str string, len int32) (itemsRead int32, itemsWritten int32, gun
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.glong(len)
 
-	arg3 := new(C.glong)
-	var ret3 int32
-	arg4 := new(C.glong)
-	var ret4 int32
-	cret := new(C.gunichar)
-	var goret uint32
+	var arg3 C.glong
+	var arg4 C.glong
+	var cret *C.gunichar
 	var cerr *C.GError
+
+	cret = C.g_utf8_to_ucs4(arg1, arg2, &arg3, &arg4, cerr)
+
+	var itemsRead int32
+	var itemsWritten int32
+	var gunichar *uint32
 	var goerr error
 
-	cret = C.g_utf8_to_ucs4(arg1, arg2, arg3, arg4, &cerr)
-
-	ret3 = int32(*arg3)
-	ret4 = int32(*arg4)
-	goret = uint32(cret)
+	itemsRead = (int32)(arg3)
+	itemsWritten = (int32)(arg4)
+	gunichar = (*uint32)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret3, ret4, goret, goerr
+	return itemsRead, itemsWritten, gunichar, goerr
 }
 
 // UTF8ToUcs4Fast: convert a string from UTF-8 to a 32-bit fixed width
 // representation as UCS-4, assuming valid UTF-8 input. This function is roughly
 // twice as fast as g_utf8_to_ucs4() but does no error checking on the input. A
 // trailing 0 character will be added to the string after the converted text.
-func UTF8ToUcs4Fast(str string, len int32) (itemsWritten int32, gunichar uint32) {
+func UTF8ToUcs4Fast(str string, len int32) (itemsWritten int32, gunichar *uint32) {
 	var arg1 *C.gchar
 	var arg2 C.glong
 
@@ -2031,22 +2092,23 @@ func UTF8ToUcs4Fast(str string, len int32) (itemsWritten int32, gunichar uint32)
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.glong(len)
 
-	arg3 := new(C.glong)
-	var ret3 int32
-	cret := new(C.gunichar)
-	var goret uint32
+	var arg3 C.glong
+	var cret *C.gunichar
 
-	cret = C.g_utf8_to_ucs4_fast(arg1, arg2, arg3)
+	cret = C.g_utf8_to_ucs4_fast(arg1, arg2, &arg3)
 
-	ret3 = int32(*arg3)
-	goret = uint32(cret)
+	var itemsWritten int32
+	var gunichar *uint32
 
-	return ret3, goret
+	itemsWritten = (int32)(arg3)
+	gunichar = (*uint32)(cret)
+
+	return itemsWritten, gunichar
 }
 
 // UTF8ToUTF16: convert a string from UTF-8 to UTF-16. A 0 character will be
 // added to the result after the converted text.
-func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 uint16, err error) {
+func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, guint16 *uint16, goerr error) {
 	var arg1 *C.gchar
 	var arg2 C.glong
 
@@ -2054,21 +2116,22 @@ func UTF8ToUTF16(str string, len int32) (itemsRead int32, itemsWritten int32, gu
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.glong(len)
 
-	arg3 := new(C.glong)
-	var ret3 int32
-	arg4 := new(C.glong)
-	var ret4 int32
-	cret := new(C.gunichar2)
-	var goret uint16
+	var arg3 C.glong
+	var arg4 C.glong
+	var cret *C.gunichar2
 	var cerr *C.GError
+
+	cret = C.g_utf8_to_utf16(arg1, arg2, &arg3, &arg4, cerr)
+
+	var itemsRead int32
+	var itemsWritten int32
+	var guint16 *uint16
 	var goerr error
 
-	cret = C.g_utf8_to_utf16(arg1, arg2, arg3, arg4, &cerr)
-
-	ret3 = int32(*arg3)
-	ret4 = int32(*arg4)
-	goret = uint16(cret)
+	itemsRead = (int32)(arg3)
+	itemsWritten = (int32)(arg4)
+	guint16 = (*uint16)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret3, ret4, goret, goerr
+	return itemsRead, itemsWritten, guint16, goerr
 }

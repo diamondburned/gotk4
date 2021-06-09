@@ -18,7 +18,8 @@ func init() {
 	})
 }
 
-// DragSurface: a DragSurface is an interface for surfaces used during DND.
+// DragSurface: a DragSurface is an interface implemented by Surfaces used
+// during a DND operation.
 type DragSurface interface {
 	Surface
 
@@ -58,13 +59,14 @@ func (d dragSurface) Present(width int, height int) bool {
 	arg2 = C.int(height)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_drag_surface_present(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

@@ -74,7 +74,7 @@ func (t *Timer) Destroy() {
 // between the time it was started and the time it was stopped. The return value
 // is the number of seconds elapsed, including any fractional part. The
 // @microseconds out parameter is essentially useless.
-func (t *Timer) Elapsed(microseconds uint32) float64 {
+func (t *Timer) Elapsed(microseconds *uint32) float64 {
 	var arg0 *C.GTimer
 	var arg1 *C.gulong
 
@@ -82,13 +82,14 @@ func (t *Timer) Elapsed(microseconds uint32) float64 {
 	arg1 = *C.gulong(microseconds)
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.g_timer_elapsed(arg0, arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // IsActive exposes whether the timer is currently active.
@@ -98,15 +99,16 @@ func (t *Timer) IsActive() bool {
 	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_timer_is_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Reset: this function is useless; it's fine to call g_timer_start() on an

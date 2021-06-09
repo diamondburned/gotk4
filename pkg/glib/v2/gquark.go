@@ -30,13 +30,14 @@ func InternStaticString(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_intern_static_string(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // InternString returns a canonical representation for @string. Interned strings
@@ -53,11 +54,12 @@ func InternString(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_intern_string(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }

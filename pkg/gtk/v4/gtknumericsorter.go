@@ -21,10 +21,9 @@ func init() {
 	})
 }
 
-// NumericSorter: `GtkNumericSorter` is a `GtkSorter` that compares numbers.
+// NumericSorter: gtkNumericSorter is a Sorter that compares numbers.
 //
-// To obtain the numbers to compare, this sorter evaluates a
-// [class@Gtk.Expression].
+// To obtain the numbers to compare, this sorter evaluates a Expression.
 type NumericSorter interface {
 	Sorter
 
@@ -40,7 +39,7 @@ type NumericSorter interface {
 	// items as invalid.
 	//
 	// The expression must have a return type that can be compared numerically,
-	// such as G_TYPE_INT or G_TYPE_DOUBLE.
+	// such as TYPE_INT or TYPE_DOUBLE.
 	SetExpression(expression Expression)
 	// SetSortOrder sets whether to sort smaller numbers before larger ones.
 	SetSortOrder(sortOrder SortType)
@@ -73,14 +72,15 @@ func NewNumericSorter(expression Expression) NumericSorter {
 
 	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	cret := new(C.GtkNumericSorter)
-	var goret NumericSorter
+	var cret C.GtkNumericSorter
 
 	cret = C.gtk_numeric_sorter_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NumericSorter)
+	var numericSorter NumericSorter
 
-	return goret
+	numericSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NumericSorter)
+
+	return numericSorter
 }
 
 // Expression gets the expression that is evaluated to obtain numbers from
@@ -91,13 +91,14 @@ func (s numericSorter) Expression() Expression {
 	arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkExpression
-	var goret Expression
 
 	cret = C.gtk_numeric_sorter_get_expression(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	var expression Expression
 
-	return goret
+	expression = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+
+	return expression
 }
 
 // SortOrder gets whether this sorter will sort smaller numbers first.
@@ -107,13 +108,14 @@ func (s numericSorter) SortOrder() SortType {
 	arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSortType
-	var goret SortType
 
 	cret = C.gtk_numeric_sorter_get_sort_order(arg0)
 
-	goret = SortType(cret)
+	var sortType SortType
 
-	return goret
+	sortType = SortType(cret)
+
+	return sortType
 }
 
 // SetExpression sets the expression that is evaluated to obtain numbers
@@ -123,7 +125,7 @@ func (s numericSorter) SortOrder() SortType {
 // items as invalid.
 //
 // The expression must have a return type that can be compared numerically,
-// such as G_TYPE_INT or G_TYPE_DOUBLE.
+// such as TYPE_INT or TYPE_DOUBLE.
 func (s numericSorter) SetExpression(expression Expression) {
 	var arg0 *C.GtkNumericSorter
 	var arg1 *C.GtkExpression

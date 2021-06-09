@@ -15,13 +15,14 @@ import "C"
 // output based on GTK+ debug flags.
 func GetDebugFlags() uint {
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_get_debug_flags()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // SetDebugFlags sets the GTK+ debug flags.

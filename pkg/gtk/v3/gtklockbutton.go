@@ -100,13 +100,14 @@ func NewLockButton(permission gio.Permission) LockButton {
 	arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
 	var cret C.GtkLockButton
-	var goret LockButton
 
 	cret = C.gtk_lock_button_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
+	var lockButton LockButton
 
-	return goret
+	lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
+
+	return lockButton
 }
 
 // Permission obtains the #GPermission object that controls @button.
@@ -116,13 +117,14 @@ func (b lockButton) Permission() gio.Permission {
 	arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GPermission
-	var goret gio.Permission
 
 	cret = C.gtk_lock_button_get_permission(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
+	var permission gio.Permission
 
-	return goret
+	permission = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
+
+	return permission
 }
 
 // SetPermission sets the #GPermission object that controls @button.

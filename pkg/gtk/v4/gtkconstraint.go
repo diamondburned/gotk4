@@ -22,10 +22,9 @@ func init() {
 	})
 }
 
-// ConstraintTarget: the `GtkConstraintTarget` interface is implemented by
-// objects that can be used as source or target in `GtkConstraint`s.
-//
-// Besides `GtkWidget`, it is also implemented by `GtkConstraintGuide`.
+// ConstraintTarget: the GtkConstraintTarget interface is implemented by objects
+// that can be used as source or target in Constraints. Besides Widget, it is
+// also implemented by ConstraintGuide.
 type ConstraintTarget interface {
 	gextras.Objector
 }
@@ -51,18 +50,15 @@ func marshalConstraintTarget(p uintptr) (interface{}, error) {
 	return WrapConstraintTarget(obj), nil
 }
 
-// Constraint: `GtkConstraint` describes a constraint between attributes of two
-// widgets, expressed as a linear equation.
+// Constraint describes a constraint between an attribute on a widget and
+// another attribute on another widget, expressed as a linear equation like:
 //
-// The typical equation for a constraint is:
+//    target.attr1 = source.attr2 × multiplier + constant
 //
-// “` target.target_attr = source.source_attr × multiplier + constant “`
+// Each Constraint is part of a system that will be solved by a ConstraintLayout
+// in order to allocate and position each child widget.
 //
-// Each `GtkConstraint` is part of a system that will be solved by a
-// [class@Gtk.ConstraintLayout] in order to allocate and position each child
-// widget or guide.
-//
-// The source and target, as well as their attributes, of a `GtkConstraint`
+// The source and target widgets, as well as their attributes, of a Constraint
 // instance are immutable after creation.
 type Constraint interface {
 	gextras.Objector
@@ -73,35 +69,33 @@ type Constraint interface {
 	// Multiplier retrieves the multiplication factor applied to the source
 	// attribute's value.
 	Multiplier() float64
-	// Relation: the order relation between the terms of the constraint.
+	// Relation: the order relation between the terms of the @constraint.
 	Relation() ConstraintRelation
-	// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for
-	// the constraint.
+	// Source retrieves the ConstraintTarget used as the source for @constraint.
 	//
-	// If the source is set to `NULL` at creation, the constraint will use the
-	// widget using the [class@Gtk.ConstraintLayout] as the source.
+	// If the Constraint:source property is set to nil, the @constraint will use
+	// the ConstraintLayout's widget.
 	Source() ConstraintTarget
 	// SourceAttribute retrieves the attribute of the source to be read by the
-	// constraint.
+	// @constraint.
 	SourceAttribute() ConstraintAttribute
 	// Strength retrieves the strength of the constraint.
 	Strength() int
-	// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for
-	// the constraint.
+	// Target retrieves the ConstraintTarget used as the target for @constraint.
 	//
-	// If the targe is set to `NULL` at creation, the constraint will use the
-	// widget using the [class@Gtk.ConstraintLayout] as the target.
+	// If the Constraint:target property is set to nil, the @constraint will use
+	// the ConstraintLayout's widget.
 	Target() ConstraintTarget
 	// TargetAttribute retrieves the attribute of the target to be set by the
-	// constraint.
+	// @constraint.
 	TargetAttribute() ConstraintAttribute
-	// IsAttached checks whether the constraint is attached to a
-	// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
+	// IsAttached checks whether the @constraint is attached to a
+	// ConstraintLayout, and it is contributing to the layout.
 	IsAttached() bool
-	// IsConstant checks whether the constraint describes a relation between an
-	// attribute on the [property@Gtk.Constraint:target] and a constant value.
+	// IsConstant checks whether the @constraint describes a relation between an
+	// attribute on the Constraint:target and a constant value.
 	IsConstant() bool
-	// IsRequired checks whether the constraint is a required relation for
+	// IsRequired checks whether the @constraint is a required relation for
 	// solving the constraint layout.
 	IsRequired() bool
 }
@@ -147,14 +141,15 @@ func NewConstraint(target ConstraintTarget, targetAttribute ConstraintAttribute,
 	arg7 = C.double(constant)
 	arg8 = C.int(strength)
 
-	cret := new(C.GtkConstraint)
-	var goret Constraint
+	var cret C.GtkConstraint
 
 	cret = C.gtk_constraint_new(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
+	var constraint Constraint
 
-	return goret
+	constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
+
+	return constraint
 }
 
 // NewConstraintConstant constructs a class Constraint.
@@ -171,14 +166,15 @@ func NewConstraintConstant(target ConstraintTarget, targetAttribute ConstraintAt
 	arg4 = C.double(constant)
 	arg5 = C.int(strength)
 
-	cret := new(C.GtkConstraint)
-	var goret Constraint
+	var cret C.GtkConstraint
 
 	cret = C.gtk_constraint_new_constant(arg1, arg2, arg3, arg4, arg5)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
+	var constraint Constraint
 
-	return goret
+	constraint = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Constraint)
+
+	return constraint
 }
 
 // Constant retrieves the constant factor added to the source attributes'
@@ -189,13 +185,14 @@ func (c constraint) Constant() float64 {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_constraint_get_constant(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Multiplier retrieves the multiplication factor applied to the source
@@ -206,66 +203,69 @@ func (c constraint) Multiplier() float64 {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_constraint_get_multiplier(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
-// Relation: the order relation between the terms of the constraint.
+// Relation: the order relation between the terms of the @constraint.
 func (c constraint) Relation() ConstraintRelation {
 	var arg0 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkConstraintRelation
-	var goret ConstraintRelation
 
 	cret = C.gtk_constraint_get_relation(arg0)
 
-	goret = ConstraintRelation(cret)
+	var constraintRelation ConstraintRelation
 
-	return goret
+	constraintRelation = ConstraintRelation(cret)
+
+	return constraintRelation
 }
 
-// Source retrieves the [iface@Gtk.ConstraintTarget] used as the source for
-// the constraint.
+// Source retrieves the ConstraintTarget used as the source for @constraint.
 //
-// If the source is set to `NULL` at creation, the constraint will use the
-// widget using the [class@Gtk.ConstraintLayout] as the source.
+// If the Constraint:source property is set to nil, the @constraint will use
+// the ConstraintLayout's widget.
 func (c constraint) Source() ConstraintTarget {
 	var arg0 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkConstraintTarget
-	var goret ConstraintTarget
 
 	cret = C.gtk_constraint_get_source(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
+	var constraintTarget ConstraintTarget
 
-	return goret
+	constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
+
+	return constraintTarget
 }
 
 // SourceAttribute retrieves the attribute of the source to be read by the
-// constraint.
+// @constraint.
 func (c constraint) SourceAttribute() ConstraintAttribute {
 	var arg0 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkConstraintAttribute
-	var goret ConstraintAttribute
 
 	cret = C.gtk_constraint_get_source_attribute(arg0)
 
-	goret = ConstraintAttribute(cret)
+	var constraintAttribute ConstraintAttribute
 
-	return goret
+	constraintAttribute = ConstraintAttribute(cret)
+
+	return constraintAttribute
 }
 
 // Strength retrieves the strength of the constraint.
@@ -275,91 +275,95 @@ func (c constraint) Strength() int {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_constraint_get_strength(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// Target retrieves the [iface@Gtk.ConstraintTarget] used as the target for
-// the constraint.
+// Target retrieves the ConstraintTarget used as the target for @constraint.
 //
-// If the targe is set to `NULL` at creation, the constraint will use the
-// widget using the [class@Gtk.ConstraintLayout] as the target.
+// If the Constraint:target property is set to nil, the @constraint will use
+// the ConstraintLayout's widget.
 func (c constraint) Target() ConstraintTarget {
 	var arg0 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkConstraintTarget
-	var goret ConstraintTarget
 
 	cret = C.gtk_constraint_get_target(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
+	var constraintTarget ConstraintTarget
 
-	return goret
+	constraintTarget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ConstraintTarget)
+
+	return constraintTarget
 }
 
 // TargetAttribute retrieves the attribute of the target to be set by the
-// constraint.
+// @constraint.
 func (c constraint) TargetAttribute() ConstraintAttribute {
 	var arg0 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkConstraintAttribute
-	var goret ConstraintAttribute
 
 	cret = C.gtk_constraint_get_target_attribute(arg0)
 
-	goret = ConstraintAttribute(cret)
+	var constraintAttribute ConstraintAttribute
 
-	return goret
+	constraintAttribute = ConstraintAttribute(cret)
+
+	return constraintAttribute
 }
 
-// IsAttached checks whether the constraint is attached to a
-// [class@Gtk.ConstraintLayout], and it is contributing to the layout.
+// IsAttached checks whether the @constraint is attached to a
+// ConstraintLayout, and it is contributing to the layout.
 func (c constraint) IsAttached() bool {
 	var arg0 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_constraint_is_attached(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IsConstant checks whether the constraint describes a relation between an
-// attribute on the [property@Gtk.Constraint:target] and a constant value.
+// IsConstant checks whether the @constraint describes a relation between an
+// attribute on the Constraint:target and a constant value.
 func (c constraint) IsConstant() bool {
 	var arg0 *C.GtkConstraint
 
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_constraint_is_constant(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IsRequired checks whether the constraint is a required relation for
+// IsRequired checks whether the @constraint is a required relation for
 // solving the constraint layout.
 func (c constraint) IsRequired() bool {
 	var arg0 *C.GtkConstraint
@@ -367,13 +371,14 @@ func (c constraint) IsRequired() bool {
 	arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_constraint_is_required(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

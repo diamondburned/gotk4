@@ -18,7 +18,7 @@ func init() {
 	})
 }
 
-// ListBase: `GtkListBase` is the abstract base class for GTK's list widgets.
+// ListBase: gtkListBase is the abstract base class for GTK's list widgets.
 type ListBase interface {
 	Widget
 	Accessible

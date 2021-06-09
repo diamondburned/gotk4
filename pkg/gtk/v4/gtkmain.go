@@ -11,12 +11,11 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// DisableSetlocale prevents [id@gtk_init] and [id@gtk_init_check] from
-// automatically calling `setlocale (LC_ALL, "")`.
-//
-// You would want to use this function if you wanted to set the locale for your
-// program to something other than the user’s locale, or if you wanted to set
-// different values for different locale categories.
+// DisableSetlocale prevents gtk_init(), gtk_init_check() and gtk_parse_args()
+// from automatically calling `setlocale (LC_ALL, "")`. You would want to use
+// this function if you wanted to set the locale for your program to something
+// other than the user’s locale, or if you wanted to set different values for
+// different locale categories.
 //
 // Most programs should not need to call this function.
 func DisableSetlocale() {
@@ -32,13 +31,14 @@ func DisableSetlocale() {
 // function for details.
 func GetDefaultLanguage() *pango.Language {
 	var cret *C.PangoLanguage
-	var goret *pango.Language
 
 	cret = C.gtk_get_default_language()
 
-	goret = pango.WrapLanguage(unsafe.Pointer(cret))
+	var language *pango.Language
 
-	return goret
+	language = pango.WrapLanguage(unsafe.Pointer(cret))
+
+	return language
 }
 
 // GetLocaleDirection: get the direction of the current locale. This is the
@@ -61,13 +61,14 @@ func GetDefaultLanguage() *pango.Language {
 //    gtk_widget_set_default_direction (direction);
 func GetLocaleDirection() TextDirection {
 	var cret C.GtkTextDirection
-	var goret TextDirection
 
 	cret = C.gtk_get_locale_direction()
 
-	goret = TextDirection(cret)
+	var textDirection TextDirection
 
-	return goret
+	textDirection = TextDirection(cret)
+
+	return textDirection
 }
 
 // Init: call this function before using any other GTK functions in your GUI
@@ -98,28 +99,30 @@ func Init() {
 // with the user - for example a curses or command line interface.
 func InitCheck() bool {
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_init_check()
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsInitialized: use this function to check if GTK has been initialized with
 // gtk_init() or gtk_init_check().
 func IsInitialized() bool {
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_is_initialized()
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

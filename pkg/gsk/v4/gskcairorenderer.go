@@ -21,9 +21,6 @@ func init() {
 	})
 }
 
-// CairoRenderer: a GSK renderer that is using cairo.
-//
-// Since it is using cairo, this renderer cannot support 3D transformations.
 type CairoRenderer interface {
 	Renderer
 }
@@ -51,12 +48,13 @@ func marshalCairoRenderer(p uintptr) (interface{}, error) {
 
 // NewCairoRenderer constructs a class CairoRenderer.
 func NewCairoRenderer() CairoRenderer {
-	cret := new(C.GskCairoRenderer)
-	var goret CairoRenderer
+	var cret C.GskCairoRenderer
 
 	cret = C.gsk_cairo_renderer_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoRenderer)
+	var cairoRenderer CairoRenderer
 
-	return goret
+	cairoRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CairoRenderer)
+
+	return cairoRenderer
 }

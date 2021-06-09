@@ -166,26 +166,27 @@ const (
 
 // Basename gets the name of the file without any leading directory components.
 // It returns a pointer into the given file name string.
-func Basename(fileName string) string {
+func Basename(fileName *string) *string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_basename(arg1)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }
 
 // BuildFilenamev behaves exactly like g_build_filename(), but takes the path
 // elements as a string array, instead of varargs. This function is mainly meant
 // for language bindings.
-func BuildFilenamev(args []string) string {
+func BuildFilenamev(args []*string) *string {
 	var arg1 **C.gchar
 
 	arg1 = (**C.gchar)(C.malloc((len(args) + 1) * unsafe.Sizeof(int(0))))
@@ -196,26 +197,27 @@ func BuildFilenamev(args []string) string {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(args)))
 
 		for i := range args {
-			out[i] = (*C.gchar)(C.CString(args[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.gchar)(C.CString(args))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_build_filenamev(arg1)
 
-	goret = C.GoString(cret)
+	var filename *string
+
+	filename = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return filename
 }
 
 // BuildPathv behaves exactly like g_build_path(), but takes the path elements
 // as a string array, instead of varargs. This function is mainly meant for
 // language bindings.
-func BuildPathv(separator string, args []string) string {
+func BuildPathv(separator string, args []*string) *string {
 	var arg1 *C.gchar
 	var arg2 **C.gchar
 
@@ -229,20 +231,21 @@ func BuildPathv(separator string, args []string) string {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg2), int(len(args)))
 
 		for i := range args {
-			out[i] = (*C.gchar)(C.CString(args[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg2 = (*C.gchar)(C.CString(args))
+			defer C.free(unsafe.Pointer(arg2))
 		}
 	}
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_build_pathv(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var filename *string
+
+	filename = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return filename
 }
 
 // CanonicalizeFilename gets the canonical file name from @filename. All triple
@@ -261,7 +264,7 @@ func BuildPathv(separator string, args []string) string {
 // don't exist.
 //
 // No file system I/O is done.
-func CanonicalizeFilename(filename string, relativeTo string) string {
+func CanonicalizeFilename(filename *string, relativeTo *string) *string {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
@@ -270,15 +273,16 @@ func CanonicalizeFilename(filename string, relativeTo string) string {
 	arg2 = (*C.gchar)(C.CString(relativeTo))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_canonicalize_filename(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var ret *string
+
+	ret = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return ret
 }
 
 // FileErrorFromErrno gets a Error constant based on the passed-in @err_no. For
@@ -295,13 +299,14 @@ func FileErrorFromErrno(errNo int) FileError {
 	arg1 = C.gint(errNo)
 
 	var cret C.GFileError
-	var goret FileError
 
 	cret = C.g_file_error_from_errno(arg1)
 
-	goret = FileError(cret)
+	var fileError FileError
 
-	return goret
+	fileError = FileError(cret)
+
+	return fileError
 }
 
 // FileGetContents reads an entire file into allocated memory, with good error
@@ -314,20 +319,21 @@ func FileErrorFromErrno(errNo int) FileError {
 // false and sets @error. The error domain is FILE_ERROR. Possible error codes
 // are those in the Error enumeration. In the error case, @contents is set to
 // nil and @length is set to zero.
-func FileGetContents(filename string) error {
+func FileGetContents(filename *string) error {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_file_get_contents(arg1, arg2, arg3, &cerr)
+	C.g_file_get_contents(arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret2, ret3, goerr
+	return goerr
 }
 
 // FileOpenTmp opens a file for writing in the preferred directory for temporary
@@ -344,61 +350,64 @@ func FileGetContents(filename string) error {
 // Upon success, and if @name_used is non-nil, the actual name used is returned
 // in @name_used. This string should be freed with g_free() when not needed any
 // longer. The returned name is in the GLib file name encoding.
-func FileOpenTmp(tmpl string) (nameUsed string, gint int, err error) {
+func FileOpenTmp(tmpl *string) (nameUsed *string, gint int, goerr error) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(*C.gchar)
-	var ret2 string
+	var arg2 *C.gchar
 	var cret C.gint
-	var goret int
 	var cerr *C.GError
+
+	cret = C.g_file_open_tmp(arg1, &arg2, cerr)
+
+	var nameUsed *string
+	var gint int
 	var goerr error
 
-	cret = C.g_file_open_tmp(arg1, arg2, &cerr)
-
-	ret2 = C.GoString(*arg2)
-	defer C.free(unsafe.Pointer(*arg2))
-	goret = int(cret)
+	nameUsed = C.GoString(arg2)
+	defer C.free(unsafe.Pointer(arg2))
+	gint = (int)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret2, goret, goerr
+	return nameUsed, gint, goerr
 }
 
 // FileReadLink reads the contents of the symbolic link @filename like the POSIX
 // readlink() function. The returned string is in the encoding used for
 // filenames. Use g_filename_to_utf8() to convert it to UTF-8.
-func FileReadLink(filename string) (ret string, err error) {
+func FileReadLink(filename *string) (ret *string, goerr error) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 	var cerr *C.GError
+
+	cret = C.g_file_read_link(arg1, cerr)
+
+	var ret *string
 	var goerr error
 
-	cret = C.g_file_read_link(arg1, &cerr)
-
-	goret = C.GoString(cret)
+	ret = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return ret, goerr
 }
 
 // FileSetContents writes all of @contents to a file named @filename. This is a
-// convenience wrapper around calling g_file_set_contents_full() with `flags`
-// set to `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING`
-// and `mode` set to `0666`.
+// convenience wrapper around calling g_file_set_contents() with `flags` set to
+// `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING` and
+// `mode` set to `0666`.
 func FileSetContents() error {
 	var cerr *C.GError
-	var goerr error
 
-	C.g_file_set_contents(arg1, arg2, arg3, &cerr)
+	C.g_file_set_contents(cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -443,7 +452,7 @@ func FileSetContents() error {
 // that the file exists and its name indicates that it is executable, checking
 // for well-known extensions and those listed in the `PATHEXT` environment
 // variable.
-func FileTest(filename string, test FileTest) bool {
+func FileTest(filename *string, test FileTest) bool {
 	var arg1 *C.gchar
 	var arg2 C.GFileTest
 
@@ -452,15 +461,16 @@ func FileTest(filename string, test FileTest) bool {
 	arg2 = (C.GFileTest)(test)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_file_test(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // GetCurrentDir gets the current directory.
@@ -472,21 +482,22 @@ func FileTest(filename string, test FileTest) bool {
 // variable if it is set and it happens to be the same as the current directory.
 // This can make a difference in the case that the current directory is the
 // target of a symbolic link.
-func GetCurrentDir() string {
-	cret := new(C.gchar)
-	var goret string
+func GetCurrentDir() *string {
+	var cret *C.gchar
 
 	cret = C.g_get_current_dir()
 
-	goret = C.GoString(cret)
+	var filename *string
+
+	filename = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return filename
 }
 
 // MkdirWithParents: create a directory if it doesn't already exist. Create
 // intermediate parent directories as needed, too.
-func MkdirWithParents(pathname string, mode int) int {
+func MkdirWithParents(pathname *string, mode int) int {
 	var arg1 *C.gchar
 	var arg2 C.gint
 
@@ -495,13 +506,14 @@ func MkdirWithParents(pathname string, mode int) int {
 	arg2 = C.gint(mode)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_mkdir_with_parents(arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Mkdtemp creates a temporary directory. See the mkdtemp() documentation on
@@ -516,21 +528,22 @@ func MkdirWithParents(pathname string, mode int) int {
 //
 // If you are going to be creating a temporary directory inside the directory
 // returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
-func Mkdtemp(tmpl string) string {
+func Mkdtemp(tmpl *string) *string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_mkdtemp(arg1)
 
-	goret = C.GoString(cret)
+	var filename *string
+
+	filename = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return filename
 }
 
 // MkdtempFull creates a temporary directory. See the mkdtemp() documentation on
@@ -546,7 +559,7 @@ func Mkdtemp(tmpl string) string {
 //
 // If you are going to be creating a temporary directory inside the directory
 // returned by g_get_tmp_dir(), you might want to use g_dir_make_tmp() instead.
-func MkdtempFull(tmpl string, mode int) string {
+func MkdtempFull(tmpl *string, mode int) *string {
 	var arg1 *C.gchar
 	var arg2 C.gint
 
@@ -554,15 +567,16 @@ func MkdtempFull(tmpl string, mode int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(mode)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_mkdtemp_full(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var filename *string
+
+	filename = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return filename
 }
 
 // Mkstemp opens a temporary file. See the mkstemp() documentation on most
@@ -574,20 +588,21 @@ func MkdtempFull(tmpl string, mode int) string {
 // very end of the template. The X string will be modified to form the name of a
 // file that didn't exist. The string should be in the GLib file name encoding.
 // Most importantly, on Windows it should be in UTF-8.
-func Mkstemp(tmpl string) int {
+func Mkstemp(tmpl *string) int {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(tmpl))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_mkstemp(arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MkstempFull opens a temporary file. See the mkstemp() documentation on most
@@ -600,7 +615,7 @@ func Mkstemp(tmpl string) int {
 // The X string will be modified to form the name of a file that didn't exist.
 // The string should be in the GLib file name encoding. Most importantly, on
 // Windows it should be in UTF-8.
-func MkstempFull(tmpl string, flags int, mode int) int {
+func MkstempFull(tmpl *string, flags int, mode int) int {
 	var arg1 *C.gchar
 	var arg2 C.gint
 	var arg3 C.gint
@@ -611,13 +626,14 @@ func MkstempFull(tmpl string, flags int, mode int) int {
 	arg3 = C.gint(mode)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_mkstemp_full(arg1, arg2, arg3)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PathGetBasename gets the last component of the filename.
@@ -626,21 +642,22 @@ func MkstempFull(tmpl string, flags int, mode int) int {
 // the last slash. If @file_name consists only of directory separators (and on
 // Windows, possibly a drive letter), a single separator is returned. If
 // @file_name is empty, it gets ".".
-func PathGetBasename(fileName string) string {
+func PathGetBasename(fileName *string) *string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_path_get_basename(arg1)
 
-	goret = C.GoString(cret)
+	var filename *string
+
+	filename = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return filename
 }
 
 // PathGetDirname gets the directory components of a file name. For example, the
@@ -649,21 +666,22 @@ func PathGetBasename(fileName string) string {
 //
 // If the file name has no directory components "." is returned. The returned
 // string should be freed when no longer needed.
-func PathGetDirname(fileName string) string {
+func PathGetDirname(fileName *string) *string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_path_get_dirname(arg1)
 
-	goret = C.GoString(cret)
+	var filename *string
+
+	filename = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return filename
 }
 
 // PathIsAbsolute returns true if the given @file_name is an absolute file name.
@@ -688,39 +706,41 @@ func PathGetDirname(fileName string) string {
 // obviously are not relative to the normal current directory as returned by
 // getcwd() or g_get_current_dir() either. Such paths should be avoided, or need
 // to be handled using Windows-specific code.
-func PathIsAbsolute(fileName string) bool {
+func PathIsAbsolute(fileName *string) bool {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_path_is_absolute(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PathSkipRoot returns a pointer into @file_name after the root component, i.e.
 // after the "/" in UNIX or "C:\" under Windows. If @file_name is not an
 // absolute path it returns nil.
-func PathSkipRoot(fileName string) string {
+func PathSkipRoot(fileName *string) *string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_path_skip_root(arg1)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }

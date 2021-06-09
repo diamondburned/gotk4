@@ -105,13 +105,14 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 // NewOverlay constructs a class Overlay.
 func NewOverlay() Overlay {
 	var cret C.GtkOverlay
-	var goret Overlay
 
 	cret = C.gtk_overlay_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
+	var overlay Overlay
 
-	return goret
+	overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
+
+	return overlay
 }
 
 // AddOverlay adds @widget to @overlay.
@@ -141,15 +142,16 @@ func (o overlay) OverlayPassThrough(widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_overlay_get_overlay_pass_through(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ReorderOverlay moves @child to a new @index in the list of @overlay

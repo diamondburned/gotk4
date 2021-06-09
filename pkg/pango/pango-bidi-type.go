@@ -22,13 +22,14 @@ func FindBaseDir(text string, length int) Direction {
 	arg2 = C.gint(length)
 
 	var cret C.PangoDirection
-	var goret Direction
 
 	cret = C.pango_find_base_dir(arg1, arg2)
 
-	goret = Direction(cret)
+	var direction Direction
 
-	return goret
+	direction = Direction(cret)
+
+	return direction
 }
 
 // GetMirrorChar returns the mirrored character of a Unicode character.
@@ -37,7 +38,7 @@ func FindBaseDir(text string, length int) Direction {
 //
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
-func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
+func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 	var arg1 C.gunichar
 	var arg2 *C.gunichar
 
@@ -45,15 +46,16 @@ func GetMirrorChar(ch uint32, mirroredCh uint32) bool {
 	arg2 = *C.gunichar(mirroredCh)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_get_mirror_char(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnicharDirection determines the inherent direction of a character.
@@ -71,11 +73,12 @@ func UnicharDirection(ch uint32) Direction {
 	arg1 = C.gunichar(ch)
 
 	var cret C.PangoDirection
-	var goret Direction
 
 	cret = C.pango_unichar_direction(arg1)
 
-	goret = Direction(cret)
+	var direction Direction
 
-	return goret
+	direction = Direction(cret)
+
+	return direction
 }

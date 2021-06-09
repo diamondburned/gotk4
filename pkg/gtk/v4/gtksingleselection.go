@@ -22,11 +22,12 @@ func init() {
 	})
 }
 
-// SingleSelection: `GtkSingleSelection` is a `GtkSelectionModel` that allows
-// selecting a single item.
+// SingleSelection: gtkSingleSelection is an implementation of the
+// SelectionModel interface that allows selecting a single element. It is the
+// default selection method used by list widgets in GTK.
 //
 // Note that the selection is *persistent* -- if the selected item is removed
-// and re-added in the same ::items-changed emission, it stays selected. In
+// and re-added in the same Model::items-changed emission, it stays selected. In
 // particular, this means that changing the sort order of an underlying sort
 // model will preserve the selection.
 type SingleSelection interface {
@@ -42,38 +43,34 @@ type SingleSelection interface {
 	CanUnselect() bool
 	// Model gets the model that @self is wrapping.
 	Model() gio.ListModel
-	// Selected gets the position of the selected item.
-	//
-	// If no item is selected, GTK_INVALID_LIST_POSITION is returned.
+	// Selected gets the position of the selected item. If no item is selected,
+	// K_INVALID_LIST_POSITION is returned.
 	Selected() uint
 	// SelectedItem gets the selected item.
 	//
 	// If no item is selected, nil is returned.
-	SelectedItem() gextras.Objector
-	// SetAutoselect enables or disables autoselect.
-	//
-	// If @autoselect is true, @self will enforce that an item is always
-	// selected. It will select a new item when the currently selected item is
-	// deleted and it will disallow unselecting the current item.
+	SelectedItem() interface{}
+	// SetAutoselect: if @autoselect is true, @self will enforce that an item is
+	// always selected. It will select a new item when the currently selected
+	// item is deleted and it will disallow unselecting the current item.
 	SetAutoselect(autoselect bool)
 	// SetCanUnselect: if true, unselecting the current item via
 	// gtk_selection_model_unselect_item() is supported.
 	//
-	// Note that setting [property@Gtk.SingleSelection:autoselect] will cause
-	// unselecting to not work, so it practically makes no sense to set both at
-	// the same time the same time.
+	// Note that setting SingleSelection:autoselect will cause the unselecting
+	// to not work, so it practically makes no sense to set both at the same
+	// time the same time.
 	SetCanUnselect(canUnselect bool)
-	// SetModel sets the model that @self should wrap.
-	//
-	// If @model is nil, @self will be empty.
+	// SetModel sets the model that @self should wrap. If @model is nil, @self
+	// will be empty.
 	SetModel(model gio.ListModel)
 	// SetSelected selects the item at the given position.
 	//
-	// If the list does not have an item at @position or
-	// GTK_INVALID_LIST_POSITION is given, the behavior depends on the value of
-	// the [property@Gtk.SingleSelection:autoselect] property: If it is set, no
-	// change will occur and the old item will stay selected. If it is unset,
-	// the selection will be unset and no item will be selected.
+	// If the list does not have an item at @position or K_INVALID_LIST_POSITION
+	// is given, the behavior depends on the value of the
+	// SingleSelection:autoselect property: If it is set, no change will occur
+	// and the old item will stay selected. If it is unset, the selection will
+	// be unset and no item will be selected.
 	SetSelected(position uint)
 }
 
@@ -108,14 +105,15 @@ func NewSingleSelection(model gio.ListModel) SingleSelection {
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	cret := new(C.GtkSingleSelection)
-	var goret SingleSelection
+	var cret C.GtkSingleSelection
 
 	cret = C.gtk_single_selection_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SingleSelection)
+	var singleSelection SingleSelection
 
-	return goret
+	singleSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SingleSelection)
+
+	return singleSelection
 }
 
 // Autoselect checks if autoselect has been enabled or disabled via
@@ -126,15 +124,16 @@ func (s singleSelection) Autoselect() bool {
 	arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_single_selection_get_autoselect(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CanUnselect: if true, gtk_selection_model_unselect_item() is supported
@@ -145,15 +144,16 @@ func (s singleSelection) CanUnselect() bool {
 	arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_single_selection_get_can_unselect(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Model gets the model that @self is wrapping.
@@ -163,56 +163,56 @@ func (s singleSelection) Model() gio.ListModel {
 	arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret gio.ListModel
 
 	cret = C.gtk_single_selection_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
-// Selected gets the position of the selected item.
-//
-// If no item is selected, GTK_INVALID_LIST_POSITION is returned.
+// Selected gets the position of the selected item. If no item is selected,
+// K_INVALID_LIST_POSITION is returned.
 func (s singleSelection) Selected() uint {
 	var arg0 *C.GtkSingleSelection
 
 	arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_single_selection_get_selected(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // SelectedItem gets the selected item.
 //
 // If no item is selected, nil is returned.
-func (s singleSelection) SelectedItem() gextras.Objector {
+func (s singleSelection) SelectedItem() interface{} {
 	var arg0 *C.GtkSingleSelection
 
 	arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret gextras.Objector
 
 	cret = C.gtk_single_selection_get_selected_item(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
-// SetAutoselect enables or disables autoselect.
-//
-// If @autoselect is true, @self will enforce that an item is always
-// selected. It will select a new item when the currently selected item is
-// deleted and it will disallow unselecting the current item.
+// SetAutoselect: if @autoselect is true, @self will enforce that an item is
+// always selected. It will select a new item when the currently selected
+// item is deleted and it will disallow unselecting the current item.
 func (s singleSelection) SetAutoselect(autoselect bool) {
 	var arg0 *C.GtkSingleSelection
 	var arg1 C.gboolean
@@ -228,9 +228,9 @@ func (s singleSelection) SetAutoselect(autoselect bool) {
 // SetCanUnselect: if true, unselecting the current item via
 // gtk_selection_model_unselect_item() is supported.
 //
-// Note that setting [property@Gtk.SingleSelection:autoselect] will cause
-// unselecting to not work, so it practically makes no sense to set both at
-// the same time the same time.
+// Note that setting SingleSelection:autoselect will cause the unselecting
+// to not work, so it practically makes no sense to set both at the same
+// time the same time.
 func (s singleSelection) SetCanUnselect(canUnselect bool) {
 	var arg0 *C.GtkSingleSelection
 	var arg1 C.gboolean
@@ -243,9 +243,8 @@ func (s singleSelection) SetCanUnselect(canUnselect bool) {
 	C.gtk_single_selection_set_can_unselect(arg0, arg1)
 }
 
-// SetModel sets the model that @self should wrap.
-//
-// If @model is nil, @self will be empty.
+// SetModel sets the model that @self should wrap. If @model is nil, @self
+// will be empty.
 func (s singleSelection) SetModel(model gio.ListModel) {
 	var arg0 *C.GtkSingleSelection
 	var arg1 *C.GListModel
@@ -258,11 +257,11 @@ func (s singleSelection) SetModel(model gio.ListModel) {
 
 // SetSelected selects the item at the given position.
 //
-// If the list does not have an item at @position or
-// GTK_INVALID_LIST_POSITION is given, the behavior depends on the value of
-// the [property@Gtk.SingleSelection:autoselect] property: If it is set, no
-// change will occur and the old item will stay selected. If it is unset,
-// the selection will be unset and no item will be selected.
+// If the list does not have an item at @position or K_INVALID_LIST_POSITION
+// is given, the behavior depends on the value of the
+// SingleSelection:autoselect property: If it is set, no change will occur
+// and the old item will stay selected. If it is unset, the selection will
+// be unset and no item will be selected.
 func (s singleSelection) SetSelected(position uint) {
 	var arg0 *C.GtkSingleSelection
 	var arg1 C.guint

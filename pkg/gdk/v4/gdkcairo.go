@@ -14,15 +14,14 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// CairoDrawFromGL: the main way to draw GL content in GTK.
+// CairoDrawFromGL: this is the main way to draw GL content in GTK. It takes a
+// render buffer ID (@source_type == RENDERBUFFER) or a texture id (@source_type
+// == TEXTURE) and draws it onto @cr with an OVER operation, respecting the
+// current clip. The top left corner of the rectangle specified by @x, @y,
+// @width and @height will be drawn at the current (0,0) position of the
+// cairo_t.
 //
-// It takes a render buffer ID (@source_type == RENDERBUFFER) or a texture id
-// (@source_type == TEXTURE) and draws it onto @cr with an OVER operation,
-// respecting the current clip. The top left corner of the rectangle specified
-// by @x, @y, @width and @height will be drawn at the current (0,0) position of
-// the `cairo_t`.
-//
-// This will work for *all* `cairo_t`, as long as @surface is realized, but the
+// This will work for *all* cairo_t, as long as @surface is realized, but the
 // fallback implementation that reads back the pixels from the buffer may be
 // used in the general case. In the case of direct drawing to a surface with no
 // special effects applied to @cr it will however use a more efficient approach.
@@ -77,8 +76,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	C.gdk_cairo_region(arg1, arg2)
 }
 
-// CairoRegionCreateFromSurface creates region that covers the area where the
-// given @surface is more than 50% opaque.
+// CairoRegionCreateFromSurface creates region that describes covers the area
+// where the given @surface is more than 50% opaque.
 //
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
@@ -87,17 +86,18 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 
 	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
-	cret := new(C.cairo_region_t)
-	var goret *cairo.Region
+	var cret *C.cairo_region_t
 
 	cret = C.gdk_cairo_region_create_from_surface(arg1)
 
-	goret = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *cairo.Region) {
+	var region *cairo.Region
+
+	region = cairo.WrapRegion(unsafe.Pointer(cret))
+	runtime.SetFinalizer(region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return region
 }
 
 // CairoSetSourcePixbuf sets the given pixbuf as the source pattern for @cr.
@@ -119,12 +119,12 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
-func CairoSetSourceRGBA(cr *cairo.Context, rgbA *RGBA) {
+func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 	var arg1 *C.cairo_t
 	var arg2 *C.GdkRGBA
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgbA.Native()))
+	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
 
 	C.gdk_cairo_set_source_rgba(arg1, arg2)
 }

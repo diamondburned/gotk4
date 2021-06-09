@@ -30,11 +30,12 @@ func IOErrorFromErrno(errNo int) IOErrorEnum {
 	arg1 = C.gint(errNo)
 
 	var cret C.GIOErrorEnum
-	var goret IOErrorEnum
 
 	cret = C.g_io_error_from_errno(arg1)
 
-	goret = IOErrorEnum(cret)
+	var ioErrorEnum IOErrorEnum
 
-	return goret
+	ioErrorEnum = IOErrorEnum(cret)
+
+	return ioErrorEnum
 }

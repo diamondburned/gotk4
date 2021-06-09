@@ -80,14 +80,15 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 
 // NewWindowGroup constructs a class WindowGroup.
 func NewWindowGroup() WindowGroup {
-	cret := new(C.GtkWindowGroup)
-	var goret WindowGroup
+	var cret C.GtkWindowGroup
 
 	cret = C.gtk_window_group_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
+	var windowGroup WindowGroup
 
-	return goret
+	windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
+
+	return windowGroup
 }
 
 // AddWindow adds a window to a WindowGroup.
@@ -111,13 +112,14 @@ func (w windowGroup) CurrentDeviceGrab(device gdk.Device) Widget {
 	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_window_group_get_current_device_grab(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // CurrentGrab gets the current grab widget of the given group, see
@@ -128,13 +130,14 @@ func (w windowGroup) CurrentGrab() Widget {
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_window_group_get_current_grab(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ListWindows returns a list of the Windows that belong to @window_group.
@@ -143,17 +146,18 @@ func (w windowGroup) ListWindows() *glib.List {
 
 	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_window_group_list_windows(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // RemoveWindow removes a window from a WindowGroup.

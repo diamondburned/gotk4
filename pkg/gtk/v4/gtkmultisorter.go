@@ -22,9 +22,7 @@ func init() {
 	})
 }
 
-// MultiSorter: `GtkMultiSorter` combines multiple sorters by trying them in
-// turn.
-//
+// MultiSorter: gtkMultiSorter combines multiple sorters by trying them in turn.
 // If the first sorter compares two items as equal, the second is tried next,
 // and so on.
 type MultiSorter interface {
@@ -32,10 +30,8 @@ type MultiSorter interface {
 	gio.ListModel
 	Buildable
 
-	// Append: add @sorter to @self to use for sorting at the end.
-	//
-	// @self will consult all existing sorters before it will sort with the
-	// given @sorter.
+	// Append: add @sorter to @self to use for sorting at the end. @self will
+	// consult all existing sorters before it will sort with the given @sorter.
 	Append(sorter Sorter)
 	// Remove removes the sorter at the given @position from the list of sorter
 	// used by @self.
@@ -71,20 +67,19 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 
 // NewMultiSorter constructs a class MultiSorter.
 func NewMultiSorter() MultiSorter {
-	cret := new(C.GtkMultiSorter)
-	var goret MultiSorter
+	var cret C.GtkMultiSorter
 
 	cret = C.gtk_multi_sorter_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSorter)
+	var multiSorter MultiSorter
 
-	return goret
+	multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSorter)
+
+	return multiSorter
 }
 
-// Append: add @sorter to @self to use for sorting at the end.
-//
-// @self will consult all existing sorters before it will sort with the
-// given @sorter.
+// Append: add @sorter to @self to use for sorting at the end. @self will
+// consult all existing sorters before it will sort with the given @sorter.
 func (s multiSorter) Append(sorter Sorter) {
 	var arg0 *C.GtkMultiSorter
 	var arg1 *C.GtkSorter

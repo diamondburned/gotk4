@@ -21,23 +21,16 @@ func init() {
 	})
 }
 
-// EventControllerMotion: `GtkEventControllerMotion` is an event controller
-// tracking the pointer position.
-//
-// The event controller offers [signal@Gtk.EventControllerMotion::enter] and
-// [signal@Gtk.EventControllerMotion::leave] signals, as well as
-// [property@Gtk.EventControllerMotion:is-pointer] and
-// [property@Gtk.EventControllerMotion:contains-pointer] properties which are
-// updated to reflect changes in the pointer position as it moves over the
-// widget.
+// EventControllerMotion is an event controller meant for situations where you
+// need to track the position of the pointer.
 type EventControllerMotion interface {
 	EventController
 
-	// ContainsPointer returns if a pointer is within @self or one of its
-	// children.
+	// ContainsPointer returns the value of the
+	// GtkEventControllerMotion:contains-pointer property.
 	ContainsPointer() bool
-	// IsPointer returns if a pointer is within @self, but not one of its
-	// children.
+	// IsPointer returns the value of the GtkEventControllerMotion:is-pointer
+	// property.
 	IsPointer() bool
 }
 
@@ -64,50 +57,53 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion constructs a class EventControllerMotion.
 func NewEventControllerMotion() EventControllerMotion {
-	cret := new(C.GtkEventControllerMotion)
-	var goret EventControllerMotion
+	var cret C.GtkEventControllerMotion
 
 	cret = C.gtk_event_controller_motion_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
+	var eventControllerMotion EventControllerMotion
 
-	return goret
+	eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
+
+	return eventControllerMotion
 }
 
-// ContainsPointer returns if a pointer is within @self or one of its
-// children.
+// ContainsPointer returns the value of the
+// GtkEventControllerMotion:contains-pointer property.
 func (s eventControllerMotion) ContainsPointer() bool {
 	var arg0 *C.GtkEventControllerMotion
 
 	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_event_controller_motion_contains_pointer(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IsPointer returns if a pointer is within @self, but not one of its
-// children.
+// IsPointer returns the value of the GtkEventControllerMotion:is-pointer
+// property.
 func (s eventControllerMotion) IsPointer() bool {
 	var arg0 *C.GtkEventControllerMotion
 
 	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_event_controller_motion_is_pointer(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

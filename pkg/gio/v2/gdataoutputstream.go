@@ -89,14 +89,15 @@ func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
 
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
-	cret := new(C.GDataOutputStream)
-	var goret DataOutputStream
+	var cret C.GDataOutputStream
 
 	cret = C.g_data_output_stream_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DataOutputStream)
+	var dataOutputStream DataOutputStream
 
-	return goret
+	dataOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DataOutputStream)
+
+	return dataOutputStream
 }
 
 // ByteOrder gets the byte order for the stream.
@@ -106,13 +107,14 @@ func (s dataOutputStream) ByteOrder() DataStreamByteOrder {
 	arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.GDataStreamByteOrder
-	var goret DataStreamByteOrder
 
 	cret = C.g_data_output_stream_get_byte_order(arg0)
 
-	goret = DataStreamByteOrder(cret)
+	var dataStreamByteOrder DataStreamByteOrder
 
-	return goret
+	dataStreamByteOrder = DataStreamByteOrder(cret)
+
+	return dataStreamByteOrder
 }
 
 // PutByte puts a byte into the output stream.
@@ -126,9 +128,10 @@ func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_byte(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_byte(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -146,9 +149,10 @@ func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_int16(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_int16(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -166,9 +170,10 @@ func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_int32(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_int32(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -186,9 +191,10 @@ func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_int64(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_int64(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -207,9 +213,10 @@ func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_string(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_string(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -227,9 +234,10 @@ func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_uint16(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_uint16(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -247,9 +255,10 @@ func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_uint32(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_uint32(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -267,9 +276,10 @@ func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error 
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_data_output_stream_put_uint64(arg0, arg1, arg2, &cerr)
+	C.g_data_output_stream_put_uint64(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 

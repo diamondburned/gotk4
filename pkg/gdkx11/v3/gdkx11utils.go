@@ -17,17 +17,18 @@ import "C"
 // inherit background from parent window. Useful for imitating transparency when
 // compositing is not available. Otherwise behaves like a transparent pattern.
 func X11GetParentRelativePattern() *cairo.Pattern {
-	cret := new(C.cairo_pattern_t)
-	var goret *cairo.Pattern
+	var cret *C.cairo_pattern_t
 
 	cret = C.gdk_x11_get_parent_relative_pattern()
 
-	goret = cairo.WrapPattern(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *cairo.Pattern) {
+	var pattern *cairo.Pattern
+
+	pattern = cairo.WrapPattern(unsafe.Pointer(cret))
+	runtime.SetFinalizer(pattern, func(v *cairo.Pattern) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return pattern
 }
 
 // X11GrabServer: call gdk_x11_display_grab() on the default display. To ungrab

@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// SelectionFilterModel: `GtkSelectionFilterModel` is a list model that presents
-// the selection from a `GtkSelectionModel`.
+// SelectionFilterModel is a list model that presents the selected items in a
+// SelectionModel as its own list model.
 type SelectionFilterModel interface {
 	gextras.Objector
 	gio.ListModel
@@ -67,14 +67,15 @@ func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
 
 	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
-	cret := new(C.GtkSelectionFilterModel)
-	var goret SelectionFilterModel
+	var cret C.GtkSelectionFilterModel
 
 	cret = C.gtk_selection_filter_model_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionFilterModel)
+	var selectionFilterModel SelectionFilterModel
 
-	return goret
+	selectionFilterModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionFilterModel)
+
+	return selectionFilterModel
 }
 
 // Model gets the model currently filtered or nil if none.
@@ -84,13 +85,14 @@ func (s selectionFilterModel) Model() SelectionModel {
 	arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkSelectionModel
-	var goret SelectionModel
 
 	cret = C.gtk_selection_filter_model_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	var selectionModel SelectionModel
 
-	return goret
+	selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+
+	return selectionModel
 }
 
 // SetModel sets the model to be filtered.

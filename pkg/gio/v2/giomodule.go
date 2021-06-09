@@ -32,23 +32,24 @@ import "C"
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectory(dirname string) *glib.List {
+func IOModulesLoadAllInDirectory(dirname *string) *glib.List {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_io_modules_load_all_in_directory(arg1)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // IOModulesLoadAllInDirectoryWithScope loads all the modules in the specified
@@ -57,7 +58,7 @@ func IOModulesLoadAllInDirectory(dirname string) *glib.List {
 // If don't require all modules to be initialized (and thus registering all
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) *glib.List {
+func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) *glib.List {
 	var arg1 *C.gchar
 	var arg2 *C.GIOModuleScope
 
@@ -65,17 +66,18 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_io_modules_load_all_in_directory_with_scope(arg1, arg2)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
@@ -88,7 +90,7 @@ func IOModulesLoadAllInDirectoryWithScope(dirname string, scope *IOModuleScope) 
 //
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectory(dirname string) {
+func IOModulesScanAllInDirectory(dirname *string) {
 	var arg1 *C.char
 
 	arg1 = (*C.char)(C.CString(dirname))
@@ -108,7 +110,7 @@ func IOModulesScanAllInDirectory(dirname string) {
 //
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
-func IOModulesScanAllInDirectoryWithScope(dirname string, scope *IOModuleScope) {
+func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) {
 	var arg1 *C.gchar
 	var arg2 *C.GIOModuleScope
 

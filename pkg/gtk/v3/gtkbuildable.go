@@ -39,7 +39,7 @@ type BuildableOverrider interface {
 	CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{})
 	// CustomTagEnd: this is called at the end of each custom element handled by
 	// the buildable.
-	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{})
+	CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{})
 	// InternalChild: get the internal child called @childname of the @buildable
 	// object.
 	InternalChild(builder Builder, childname string) gextras.Objector
@@ -55,7 +55,7 @@ type BuildableOverrider interface {
 	ParserFinished(builder Builder)
 	// SetBuildableProperty sets the property name @name to @value on the
 	// @buildable object.
-	SetBuildableProperty(builder Builder, name string, value *externglib.Value)
+	SetBuildableProperty(builder Builder, name string, value **externglib.Value)
 	// SetName sets the name of the @buildable object.
 	SetName(name string)
 }
@@ -129,14 +129,15 @@ func (b buildable) ConstructChild(builder Builder, name string) gextras.Objector
 	arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.GObject)
-	var goret gextras.Objector
+	var cret *C.GObject
 
 	cret = C.gtk_buildable_construct_child(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // CustomFinished: this is similar to gtk_buildable_parser_finished() but is
@@ -160,7 +161,7 @@ func (b buildable) CustomFinished(builder Builder, child gextras.Objector, tagna
 
 // CustomTagEnd: this is called at the end of each custom element handled by
 // the buildable.
-func (b buildable) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data interface{}) {
+func (b buildable) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
 	var arg0 *C.GtkBuildable
 	var arg1 *C.GtkBuilder
 	var arg2 *C.GObject
@@ -190,13 +191,14 @@ func (b buildable) InternalChild(builder Builder, childname string) gextras.Obje
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.GObject
-	var goret gextras.Objector
 
 	cret = C.gtk_buildable_get_internal_child(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // Name gets the name of the @buildable object.
@@ -209,13 +211,14 @@ func (b buildable) Name() string {
 	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_buildable_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ParserFinished: called when the builder finishes the parsing of a
@@ -234,7 +237,7 @@ func (b buildable) ParserFinished(builder Builder) {
 
 // SetBuildableProperty sets the property name @name to @value on the
 // @buildable object.
-func (b buildable) SetBuildableProperty(builder Builder, name string, value *externglib.Value) {
+func (b buildable) SetBuildableProperty(builder Builder, name string, value **externglib.Value) {
 	var arg0 *C.GtkBuildable
 	var arg1 *C.GtkBuilder
 	var arg2 *C.gchar

@@ -91,14 +91,15 @@ func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
 
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 
-	cret := new(C.GBufferedOutputStream)
-	var goret BufferedOutputStream
+	var cret C.GBufferedOutputStream
 
 	cret = C.g_buffered_output_stream_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+	var bufferedOutputStream BufferedOutputStream
 
-	return goret
+	bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+
+	return bufferedOutputStream
 }
 
 // NewBufferedOutputStreamSized constructs a class BufferedOutputStream.
@@ -109,14 +110,15 @@ func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOu
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 	arg2 = C.gsize(size)
 
-	cret := new(C.GBufferedOutputStream)
-	var goret BufferedOutputStream
+	var cret C.GBufferedOutputStream
 
 	cret = C.g_buffered_output_stream_new_sized(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+	var bufferedOutputStream BufferedOutputStream
 
-	return goret
+	bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BufferedOutputStream)
+
+	return bufferedOutputStream
 }
 
 // AutoGrow checks if the buffer automatically grows as data is added.
@@ -126,15 +128,16 @@ func (s bufferedOutputStream) AutoGrow() bool {
 	arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_buffered_output_stream_get_auto_grow(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // BufferSize gets the size of the buffer in the @stream.
@@ -144,13 +147,14 @@ func (s bufferedOutputStream) BufferSize() uint {
 	arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
 	var cret C.gsize
-	var goret uint
 
 	cret = C.g_buffered_output_stream_get_buffer_size(arg0)
 
-	goret = uint(cret)
+	var gsize uint
 
-	return goret
+	gsize = (uint)(cret)
+
+	return gsize
 }
 
 // SetAutoGrow sets whether or not the @stream's buffer should automatically

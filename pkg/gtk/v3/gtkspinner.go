@@ -71,13 +71,14 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 // NewSpinner constructs a class Spinner.
 func NewSpinner() Spinner {
 	var cret C.GtkSpinner
-	var goret Spinner
 
 	cret = C.gtk_spinner_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Spinner)
+	var spinner Spinner
 
-	return goret
+	spinner = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Spinner)
+
+	return spinner
 }
 
 // Start starts the animation of the spinner.

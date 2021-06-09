@@ -3,6 +3,8 @@
 package gdkx11
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,7 +28,7 @@ type X11Monitor interface {
 	// within the display coordinate space. The returned geometry is in
 	// ”application pixels”, not in ”device pixels” (see
 	// gdk_monitor_get_scale_factor()).
-	Workarea() *gdk.Rectangle
+	Workarea() gdk.Rectangle
 }
 
 // x11Monitor implements the X11Monitor interface.
@@ -54,17 +56,14 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 // within the display coordinate space. The returned geometry is in
 // ”application pixels”, not in ”device pixels” (see
 // gdk_monitor_get_scale_factor()).
-func (m x11Monitor) Workarea() *gdk.Rectangle {
+func (m x11Monitor) Workarea() gdk.Rectangle {
 	var arg0 *C.GdkMonitor
 
 	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	arg1 := new(C.GdkRectangle)
-	var ret1 *gdk.Rectangle
+	var workarea gdk.Rectangle
 
-	C.gdk_x11_monitor_get_workarea(arg0, arg1)
+	C.gdk_x11_monitor_get_workarea(arg0, (*C.GdkRectangle)(unsafe.Pointer(&workarea)))
 
-	ret1 = gdk.WrapRectangle(unsafe.Pointer(arg1))
-
-	return ret1
+	return workarea
 }

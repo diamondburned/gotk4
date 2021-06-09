@@ -30,13 +30,14 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 	arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_distribute_natural_allocation(arg1, arg2, arg3)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // RequestedSize represents a request of a screen object in a given orientation.
@@ -69,20 +70,20 @@ func (r *RequestedSize) Native() unsafe.Pointer {
 // Data gets the field inside the struct.
 func (r *RequestedSize) Data() interface{} {
 	var v interface{}
-	v = interface{}(r.native.data)
+	v = (interface{})(r.native.data)
 	return v
 }
 
 // MinimumSize gets the field inside the struct.
 func (r *RequestedSize) MinimumSize() int {
 	var v int
-	v = int(r.native.minimum_size)
+	v = (int)(r.native.minimum_size)
 	return v
 }
 
 // NaturalSize gets the field inside the struct.
 func (r *RequestedSize) NaturalSize() int {
 	var v int
-	v = int(r.native.natural_size)
+	v = (int)(r.native.natural_size)
 	return v
 }

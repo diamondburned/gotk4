@@ -187,9 +187,10 @@ func SpawnCheckExitStatus(exitStatus int) error {
 	arg1 = C.gint(exitStatus)
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_spawn_check_exit_status(arg1, &cerr)
+	C.g_spawn_check_exit_status(arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -205,16 +206,17 @@ func SpawnCheckExitStatus(exitStatus int) error {
 // g_shell_parse_argv() and g_spawn_async().
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
-func SpawnCommandLineAsync(commandLine string) error {
+func SpawnCommandLineAsync(commandLine *string) error {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_spawn_command_line_async(arg1, &cerr)
+	C.g_spawn_command_line_async(arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -241,55 +243,60 @@ func SpawnCommandLineAsync(commandLine string) error {
 // eaten, and the space will act as a separator. You need to enclose such paths
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
-func SpawnCommandLineSync(commandLine string) (standardOutput []byte, standardError []byte, exitStatus int, err error) {
+func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(arg1))
 
-	var arg2 **C.gchar
-	var ret2 []byte
-	var arg3 **C.gchar
-	var ret3 []byte
-	arg4 := new(C.gint)
-	var ret4 int
+	var arg2 *C.gchar
+	var arg3 *C.gchar
+	var arg4 C.gint
 	var cerr *C.GError
+
+	C.g_spawn_command_line_sync(arg1, &arg2, &arg3, &arg4, cerr)
+
+	var standardOutput []byte
+	var standardError []byte
+	var exitStatus int
 	var goerr error
 
-	C.g_spawn_command_line_sync(arg1, arg2, arg3, arg4, &cerr)
-
 	{
 		var length int
-		for p := arg2; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := arg2; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		ret2 = make([]byte, length)
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(arg2), int(length))
+
+		standardOutput = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
-			src := (C.guint8)(ptr.Add(unsafe.Pointer(arg2), i))
-			ret2[i] = byte(src)
+			standardOutput = (byte)(arg2)
 		}
 	}
 	{
 		var length int
-		for p := arg3; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := arg3; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
 			}
 		}
 
-		ret3 = make([]byte, length)
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(arg3), int(length))
+
+		standardError = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
-			src := (C.guint8)(ptr.Add(unsafe.Pointer(arg3), i))
-			ret3[i] = byte(src)
+			standardError = (byte)(arg3)
 		}
 	}
-	ret4 = int(*arg4)
+	exitStatus = (int)(arg4)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret2, ret3, ret4, goerr
+	return standardOutput, standardError, exitStatus, goerr
 }

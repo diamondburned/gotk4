@@ -12,7 +12,7 @@ import (
 import "C"
 
 // PropertyChange changes the contents of a property on a window.
-func PropertyChange(window Window, property Atom, typ Atom, format int, mode PropMode, data byte, nelements int) {
+func PropertyChange(window Window, property Atom, typ Atom, format int, mode PropMode, data *byte, nelements int) {
 	var arg1 *C.GdkWindow
 	var arg2 C.GdkAtom
 	var arg3 C.GdkAtom
@@ -53,13 +53,14 @@ func UTF8ToStringTarget(str string) string {
 	arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gdk_utf8_to_string_target(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

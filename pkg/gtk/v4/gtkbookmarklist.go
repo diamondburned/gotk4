@@ -22,13 +22,11 @@ func init() {
 	})
 }
 
-// BookmarkList: `GtkBookmarkList` is a list model that wraps `GBookmarkFile`.
+// BookmarkList is a list model that wraps GBookmarkFile. It presents a Model
+// and fills it asynchronously with the Infos returned from that function.
 //
-// It presents a `GListModel` and fills it asynchronously with the `GFileInfo`s
-// returned from that function.
-//
-// The `GFileInfo`s in the list have some attributes in the recent namespace
-// added: `recent::private` (boolean) and `recent:applications` (stringv).
+// The Infos in the list have some attributes in the recent namespace added:
+// recent::private (boolean) and recent:applications (stringv).
 type BookmarkList interface {
 	gextras.Objector
 	gio.ListModel
@@ -38,7 +36,8 @@ type BookmarkList interface {
 	// Filename returns the filename of the bookmark file that this list is
 	// loading.
 	Filename() string
-	// IOPriority gets the IO priority to use while loading file.
+	// IOPriority gets the IO priority set via
+	// gtk_bookmark_list_set_io_priority().
 	IOPriority() int
 	// IsLoading returns true if the files are currently being loaded.
 	//
@@ -90,14 +89,15 @@ func NewBookmarkList(filename string, attributes string) BookmarkList {
 	arg2 = (*C.char)(C.CString(attributes))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.GtkBookmarkList)
-	var goret BookmarkList
+	var cret C.GtkBookmarkList
 
 	cret = C.gtk_bookmark_list_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BookmarkList)
+	var bookmarkList BookmarkList
 
-	return goret
+	bookmarkList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BookmarkList)
+
+	return bookmarkList
 }
 
 // Attributes gets the attributes queried on the children.
@@ -107,13 +107,14 @@ func (s bookmarkList) Attributes() string {
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_bookmark_list_get_attributes(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Filename returns the filename of the bookmark file that this list is
@@ -124,29 +125,32 @@ func (s bookmarkList) Filename() string {
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_bookmark_list_get_filename(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// IOPriority gets the IO priority to use while loading file.
+// IOPriority gets the IO priority set via
+// gtk_bookmark_list_set_io_priority().
 func (s bookmarkList) IOPriority() int {
 	var arg0 *C.GtkBookmarkList
 
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_bookmark_list_get_io_priority(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // IsLoading returns true if the files are currently being loaded.
@@ -159,15 +163,16 @@ func (s bookmarkList) IsLoading() bool {
 	arg0 = (*C.GtkBookmarkList)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_bookmark_list_is_loading(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetAttributes sets the @attributes to be enumerated and starts the

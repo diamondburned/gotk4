@@ -165,13 +165,14 @@ func marshalToolPalette(p uintptr) (interface{}, error) {
 // NewToolPalette constructs a class ToolPalette.
 func NewToolPalette() ToolPalette {
 	var cret C.GtkToolPalette
-	var goret ToolPalette
 
 	cret = C.gtk_tool_palette_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolPalette)
+	var toolPalette ToolPalette
 
-	return goret
+	toolPalette = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolPalette)
+
+	return toolPalette
 }
 
 // AddDragDest sets @palette as drag source (see
@@ -203,13 +204,14 @@ func (p toolPalette) DragItem(selection *SelectionData) Widget {
 	arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selection.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tool_palette_get_drag_item(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // DropGroup gets the group at position (x, y).
@@ -223,13 +225,14 @@ func (p toolPalette) DropGroup(x int, y int) ToolItemGroup {
 	arg2 = C.gint(y)
 
 	var cret *C.GtkToolItemGroup
-	var goret ToolItemGroup
 
 	cret = C.gtk_tool_palette_get_drop_group(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItemGroup)
+	var toolItemGroup ToolItemGroup
 
-	return goret
+	toolItemGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItemGroup)
+
+	return toolItemGroup
 }
 
 // DropItem gets the item at position (x, y). See
@@ -244,13 +247,14 @@ func (p toolPalette) DropItem(x int, y int) ToolItem {
 	arg2 = C.gint(y)
 
 	var cret *C.GtkToolItem
-	var goret ToolItem
 
 	cret = C.gtk_tool_palette_get_drop_item(arg0, arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+	var toolItem ToolItem
 
-	return goret
+	toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+
+	return toolItem
 }
 
 // Exclusive gets whether @group is exclusive or not. See
@@ -263,15 +267,16 @@ func (p toolPalette) Exclusive(group ToolItemGroup) bool {
 	arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_palette_get_exclusive(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Expand gets whether group should be given extra space. See
@@ -284,15 +289,16 @@ func (p toolPalette) Expand(group ToolItemGroup) bool {
 	arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_palette_get_expand(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // GroupPosition gets the position of @group in @palette as index. See
@@ -305,13 +311,14 @@ func (p toolPalette) GroupPosition(group ToolItemGroup) int {
 	arg1 = (*C.GtkToolItemGroup)(unsafe.Pointer(group.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_tool_palette_get_group_position(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // HAdjustment gets the horizontal adjustment of the tool palette.
@@ -321,13 +328,14 @@ func (p toolPalette) HAdjustment() Adjustment {
 	arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_tool_palette_get_hadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // IconSize gets the size of icons in the tool palette. See
@@ -338,13 +346,14 @@ func (p toolPalette) IconSize() int {
 	arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 
 	var cret C.GtkIconSize
-	var goret int
 
 	cret = C.gtk_tool_palette_get_icon_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Style gets the style (icons, text or both) of items in the tool palette.
@@ -354,13 +363,14 @@ func (p toolPalette) Style() ToolbarStyle {
 	arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 
 	var cret C.GtkToolbarStyle
-	var goret ToolbarStyle
 
 	cret = C.gtk_tool_palette_get_style(arg0)
 
-	goret = ToolbarStyle(cret)
+	var toolbarStyle ToolbarStyle
 
-	return goret
+	toolbarStyle = ToolbarStyle(cret)
+
+	return toolbarStyle
 }
 
 // VAdjustment gets the vertical adjustment of the tool palette.
@@ -370,13 +380,14 @@ func (p toolPalette) VAdjustment() Adjustment {
 	arg0 = (*C.GtkToolPalette)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_tool_palette_get_vadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // SetDragSource sets the tool palette as a drag source. Enables all groups

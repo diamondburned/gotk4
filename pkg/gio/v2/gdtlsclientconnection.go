@@ -96,17 +96,18 @@ func (c dtlsClientConnection) AcceptedCAS() *glib.List {
 
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_dtls_client_connection_get_accepted_cas(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // ServerIdentity gets @conn's expected server identity
@@ -116,13 +117,14 @@ func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketConnectable
-	var goret SocketConnectable
 
 	cret = C.g_dtls_client_connection_get_server_identity(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
+	var socketConnectable SocketConnectable
 
-	return goret
+	socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
+
+	return socketConnectable
 }
 
 // ValidationFlags gets @conn's validation flags
@@ -132,13 +134,14 @@ func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.GTlsCertificateFlags
-	var goret TLSCertificateFlags
 
 	cret = C.g_dtls_client_connection_get_validation_flags(arg0)
 
-	goret = TLSCertificateFlags(cret)
+	var tlsCertificateFlags TLSCertificateFlags
 
-	return goret
+	tlsCertificateFlags = TLSCertificateFlags(cret)
+
+	return tlsCertificateFlags
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used

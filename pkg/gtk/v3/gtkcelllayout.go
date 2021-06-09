@@ -254,13 +254,14 @@ func (c cellLayout) Area() CellArea {
 	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkCellArea
-	var goret CellArea
 
 	cret = C.gtk_cell_layout_get_area(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellArea)
+	var cellArea CellArea
 
-	return goret
+	cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellArea)
+
+	return cellArea
 }
 
 // Cells returns the cell renderers which have been added to @cell_layout.
@@ -269,17 +270,18 @@ func (c cellLayout) Cells() *glib.List {
 
 	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_cell_layout_get_cells(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
@@ -348,5 +350,5 @@ func (c cellLayout) SetCellDataFunc() {
 
 	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 
-	C.gtk_cell_layout_set_cell_data_func(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_cell_layout_set_cell_data_func(arg0)
 }

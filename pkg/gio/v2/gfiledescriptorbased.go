@@ -74,11 +74,12 @@ func (f fileDescriptorBased) Fd() int {
 	arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(f.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.g_file_descriptor_based_get_fd(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }

@@ -23,29 +23,25 @@ func init() {
 	})
 }
 
-// DirectoryList: `GtkDirectoryList` is a list model that wraps
-// g_file_enumerate_children_async().
+// DirectoryList is a list model that wraps g_file_enumerate_children_async().
+// It presents a Model and fills it asynchronously with the Infos returned from
+// that function.
 //
-// It presents a `GListModel` and fills it asynchronously with the `GFileInfo`s
-// returned from that function.
+// Enumeration will start automatically when a the DirectoryList:file property
+// is set.
 //
-// Enumeration will start automatically when a the
-// [property@Gtk.DirectoryList:file] property is set.
+// While the DirectoryList is being filled, the DirectoryList:loading property
+// will be set to true. You can listen to that property if you want to show
+// information like a Spinner or a "Loading..." text.
 //
-// While the `GtkDirectoryList` is being filled, the
-// [property@Gtk.DirectoryList:loading] property will be set to true. You can
-// listen to that property if you want to show information like a `GtkSpinner`
-// or a "Loading..." text.
+// If loading fails at any point, the DirectoryList:error property will be set
+// to give more indication about the failure.
 //
-// If loading fails at any point, the [property@Gtk.DirectoryList:error]
-// property will be set to give more indication about the failure.
-//
-// The `GFileInfo`s returned from a `GtkDirectoryList` have the "standard::file"
-// attribute set to the `GFile` they refer to. This way you can get at the file
-// that is referred to in the same way you would via
-// g_file_enumerator_get_child(). This means you do not need access to the
-// `GtkDirectoryList`, but can access the `GFile` directly from the `GFileInfo`
-// when operating with a `GtkListView` or similar.
+// The Infos returned from a DirectoryList have the "standard::file" attribute
+// set to the #GFile they refer to. This way you can get at the file that is
+// referred to in the same way you would via g_file_enumerator_get_child(). This
+// means you do not need access to the DirectoryList but can access the #GFile
+// directly from the Info when operating with a ListView or similar.
 type DirectoryList interface {
 	gextras.Objector
 	gio.ListModel
@@ -60,7 +56,7 @@ type DirectoryList interface {
 	//
 	// An error being set does not mean that no files were loaded, and all
 	// successfully queried files will remain in the list.
-	Error() error
+	Error() *error
 	// File gets the file whose children are currently enumerated.
 	File() gio.File
 	// IOPriority gets the IO priority set via
@@ -78,8 +74,8 @@ type DirectoryList interface {
 	// SetAttributes sets the @attributes to be enumerated and starts the
 	// enumeration.
 	//
-	// If @attributes is nil, no attributes will be queried, but a list of
-	// `GFileInfo`s will still be created.
+	// If @attributes is nil, no attributes will be queried, but a list of Infos
+	// will still be created.
 	SetAttributes(attributes string)
 	// SetFile sets the @file to be enumerated and starts the enumeration.
 	//
@@ -96,8 +92,8 @@ type DirectoryList interface {
 	// responsiveness.
 	SetIOPriority(ioPriority int)
 	// SetMonitored sets whether the directory list will monitor the directory
-	// for changes. If monitoring is enabled, the ::items-changed signal will be
-	// emitted when the directory contents change.
+	// for changes. If monitoring is enabled, the Model::items-changed signal
+	// will be emitted when the directory contents change.
 	//
 	// When monitoring is turned on after the initial creation of the directory
 	// list, the directory is reloaded to avoid missing files that appeared
@@ -137,14 +133,15 @@ func NewDirectoryList(attributes string, file gio.File) DirectoryList {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	cret := new(C.GtkDirectoryList)
-	var goret DirectoryList
+	var cret C.GtkDirectoryList
 
 	cret = C.gtk_directory_list_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DirectoryList)
+	var directoryList DirectoryList
 
-	return goret
+	directoryList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DirectoryList)
+
+	return directoryList
 }
 
 // Attributes gets the attributes queried on the children.
@@ -154,13 +151,14 @@ func (s directoryList) Attributes() string {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_directory_list_get_attributes(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Error gets the loading error, if any.
@@ -171,19 +169,20 @@ func (s directoryList) Attributes() string {
 //
 // An error being set does not mean that no files were loaded, and all
 // successfully queried files will remain in the list.
-func (s directoryList) Error() error {
+func (s directoryList) Error() *error {
 	var arg0 *C.GtkDirectoryList
 
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GError
-	var goret error
 
 	cret = C.gtk_directory_list_get_error(arg0)
 
-	goret = gerror.Take(unsafe.Pointer(cret))
+	var err *error
 
-	return goret
+	err = gerror.Take(unsafe.Pointer(cret))
+
+	return err
 }
 
 // File gets the file whose children are currently enumerated.
@@ -193,13 +192,14 @@ func (s directoryList) File() gio.File {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GFile
-	var goret gio.File
 
 	cret = C.gtk_directory_list_get_file(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+	var file gio.File
 
-	return goret
+	file = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+
+	return file
 }
 
 // IOPriority gets the IO priority set via
@@ -210,13 +210,14 @@ func (s directoryList) IOPriority() int {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_directory_list_get_io_priority(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Monitored returns whether the directory list is monitoring the directory
@@ -227,15 +228,16 @@ func (s directoryList) Monitored() bool {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_directory_list_get_monitored(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsLoading returns true if the children enumeration is currently in
@@ -249,22 +251,23 @@ func (s directoryList) IsLoading() bool {
 	arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_directory_list_is_loading(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetAttributes sets the @attributes to be enumerated and starts the
 // enumeration.
 //
-// If @attributes is nil, no attributes will be queried, but a list of
-// `GFileInfo`s will still be created.
+// If @attributes is nil, no attributes will be queried, but a list of Infos
+// will still be created.
 func (s directoryList) SetAttributes(attributes string) {
 	var arg0 *C.GtkDirectoryList
 	var arg1 *C.char
@@ -309,8 +312,8 @@ func (s directoryList) SetIOPriority(ioPriority int) {
 }
 
 // SetMonitored sets whether the directory list will monitor the directory
-// for changes. If monitoring is enabled, the ::items-changed signal will be
-// emitted when the directory contents change.
+// for changes. If monitoring is enabled, the Model::items-changed signal
+// will be emitted when the directory contents change.
 //
 // When monitoring is turned on after the initial creation of the directory
 // list, the directory is reloaded to avoid missing files that appeared

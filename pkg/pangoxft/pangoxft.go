@@ -26,7 +26,7 @@ func init() {
 // This function can be used to do things like set hinting and antialiasing
 // options.
 func SetDefaultSubstitute() {
-	C.pango_xft_set_default_substitute(arg1, arg2, arg3, arg4, arg5)
+	C.pango_xft_set_default_substitute()
 }
 
 // Font is an implementation of FcFont using the Xft library for rendering. It
@@ -85,13 +85,14 @@ func (f font) Glyph(wc uint32) uint {
 	arg1 = C.gunichar(wc)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.pango_xft_font_get_glyph(arg0, arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
@@ -105,15 +106,16 @@ func (f font) HasChar(wc uint32) bool {
 	arg1 = C.gunichar(wc)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_xft_font_has_char(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnlockFace releases a font previously obtained with

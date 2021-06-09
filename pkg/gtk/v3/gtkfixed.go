@@ -96,13 +96,14 @@ func marshalFixed(p uintptr) (interface{}, error) {
 // NewFixed constructs a class Fixed.
 func NewFixed() Fixed {
 	var cret C.GtkFixed
-	var goret Fixed
 
 	cret = C.gtk_fixed_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
+	var fixed Fixed
 
-	return goret
+	fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
+
+	return fixed
 }
 
 // Move moves a child of a Fixed container to the given position.
@@ -169,13 +170,13 @@ func (f *FixedChild) Widget() Widget {
 // X gets the field inside the struct.
 func (f *FixedChild) X() int {
 	var v int
-	v = int(f.native.x)
+	v = (int)(f.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (f *FixedChild) Y() int {
 	var v int
-	v = int(f.native.y)
+	v = (int)(f.native.y)
 	return v
 }

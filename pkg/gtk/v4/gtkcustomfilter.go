@@ -23,10 +23,8 @@ func init() {
 }
 
 // CustomFilterFunc: user function that is called to determine if the @item
-// should be matched.
-//
-// If the filter matches the item, this function must return true. If the item
-// should be filtered out, false must be returned.
+// should be matched. If the filter matches the item, this function must return
+// true. If the item should be filtered out, false must be returned.
 type CustomFilterFunc func() (ok bool)
 
 //export gotk4_CustomFilterFunc
@@ -37,19 +35,19 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 	}
 
 	fn := v.(CustomFilterFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
 	}
 }
 
-// CustomFilter: `GtkCustomFilter` determines whether to include items with a
-// callback.
+// CustomFilter is a Filter that uses a callback to determine whether to include
+// an item or not.
 type CustomFilter interface {
 	Filter
 
-	// SetFilterFunc sets the function used for filtering items.
+	// SetFilterFunc sets (or unsets) the function used for filtering items.
 	//
 	// If @match_func is nil, the filter matches all items.
 	//
@@ -83,17 +81,18 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 
 // NewCustomFilter constructs a class CustomFilter.
 func NewCustomFilter() CustomFilter {
-	cret := new(C.GtkCustomFilter)
-	var goret CustomFilter
+	var cret C.GtkCustomFilter
 
-	cret = C.gtk_custom_filter_new(arg1, arg2, arg3)
+	cret = C.gtk_custom_filter_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomFilter)
+	var customFilter CustomFilter
 
-	return goret
+	customFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomFilter)
+
+	return customFilter
 }
 
-// SetFilterFunc sets the function used for filtering items.
+// SetFilterFunc sets (or unsets) the function used for filtering items.
 //
 // If @match_func is nil, the filter matches all items.
 //
@@ -106,5 +105,5 @@ func (s customFilter) SetFilterFunc() {
 
 	arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_custom_filter_set_filter_func(arg0, arg1, arg2, arg3)
+	C.gtk_custom_filter_set_filter_func(arg0)
 }

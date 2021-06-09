@@ -235,46 +235,14 @@ func (p typePlugin) Use() {
 type Binding interface {
 	gextras.Objector
 
-	// DupSource retrieves the #GObject instance used as the source of the
-	// binding.
-	//
-	// A #GBinding can outlive the source #GObject as the binding does not hold
-	// a strong reference to the source. If the source is destroyed before the
-	// binding then this function will return nil.
-	DupSource() gextras.Objector
-	// DupTarget retrieves the #GObject instance used as the target of the
-	// binding.
-	//
-	// A #GBinding can outlive the target #GObject as the binding does not hold
-	// a strong reference to the target. If the target is destroyed before the
-	// binding then this function will return nil.
-	DupTarget() gextras.Objector
 	// Flags retrieves the flags passed when constructing the #GBinding.
 	Flags() BindingFlags
 	// Source retrieves the #GObject instance used as the source of the binding.
-	//
-	// A #GBinding can outlive the source #GObject as the binding does not hold
-	// a strong reference to the source. If the source is destroyed before the
-	// binding then this function will return nil.
-	//
-	// Use g_binding_dup_source() if the source or binding are used from
-	// different threads as otherwise the pointer returned from this function
-	// might become invalid if the source is finalized from another thread in
-	// the meantime.
 	Source() gextras.Objector
 	// SourceProperty retrieves the name of the property of #GBinding:source
 	// used as the source of the binding.
 	SourceProperty() string
 	// Target retrieves the #GObject instance used as the target of the binding.
-	//
-	// A #GBinding can outlive the target #GObject as the binding does not hold
-	// a strong reference to the target. If the target is destroyed before the
-	// binding then this function will return nil.
-	//
-	// Use g_binding_dup_target() if the target or binding are used from
-	// different threads as otherwise the pointer returned from this function
-	// might become invalid if the target is finalized from another thread in
-	// the meantime.
 	Target() gextras.Objector
 	// TargetProperty retrieves the name of the property of #GBinding:target
 	// used as the target of the binding.
@@ -283,13 +251,8 @@ type Binding interface {
 	// property expressed by @binding.
 	//
 	// This function will release the reference that is being held on the
-	// @binding instance if the binding is still bound; if you want to hold on
-	// to the #GBinding instance after calling g_binding_unbind(), you will need
-	// to hold a reference to it.
-	//
-	// Note however that this function does not take ownership of @binding, it
-	// only unrefs the reference that was initially created by
-	// g_object_bind_property() and is owned by the binding.
+	// @binding instance; if you want to hold on to the #GBinding instance after
+	// calling g_binding_unbind(), you will need to hold a reference to it.
 	Unbind()
 }
 
@@ -314,48 +277,6 @@ func marshalBinding(p uintptr) (interface{}, error) {
 	return WrapBinding(obj), nil
 }
 
-// DupSource retrieves the #GObject instance used as the source of the
-// binding.
-//
-// A #GBinding can outlive the source #GObject as the binding does not hold
-// a strong reference to the source. If the source is destroyed before the
-// binding then this function will return nil.
-func (b binding) DupSource() gextras.Objector {
-	var arg0 *C.GBinding
-
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	cret := new(C.GObject)
-	var goret gextras.Objector
-
-	cret = C.g_binding_dup_source(arg0)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
-
-	return goret
-}
-
-// DupTarget retrieves the #GObject instance used as the target of the
-// binding.
-//
-// A #GBinding can outlive the target #GObject as the binding does not hold
-// a strong reference to the target. If the target is destroyed before the
-// binding then this function will return nil.
-func (b binding) DupTarget() gextras.Objector {
-	var arg0 *C.GBinding
-
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	cret := new(C.GObject)
-	var goret gextras.Objector
-
-	cret = C.g_binding_dup_target(arg0)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
-
-	return goret
-}
-
 // Flags retrieves the flags passed when constructing the #GBinding.
 func (b binding) Flags() BindingFlags {
 	var arg0 *C.GBinding
@@ -363,38 +284,31 @@ func (b binding) Flags() BindingFlags {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret C.GBindingFlags
-	var goret BindingFlags
 
 	cret = C.g_binding_get_flags(arg0)
 
-	goret = BindingFlags(cret)
+	var bindingFlags BindingFlags
 
-	return goret
+	bindingFlags = BindingFlags(cret)
+
+	return bindingFlags
 }
 
 // Source retrieves the #GObject instance used as the source of the binding.
-//
-// A #GBinding can outlive the source #GObject as the binding does not hold
-// a strong reference to the source. If the source is destroyed before the
-// binding then this function will return nil.
-//
-// Use g_binding_dup_source() if the source or binding are used from
-// different threads as otherwise the pointer returned from this function
-// might become invalid if the source is finalized from another thread in
-// the meantime.
 func (b binding) Source() gextras.Objector {
 	var arg0 *C.GBinding
 
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GObject
-	var goret gextras.Objector
 
 	cret = C.g_binding_get_source(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // SourceProperty retrieves the name of the property of #GBinding:source
@@ -405,38 +319,31 @@ func (b binding) SourceProperty() string {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_binding_get_source_property(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Target retrieves the #GObject instance used as the target of the binding.
-//
-// A #GBinding can outlive the target #GObject as the binding does not hold
-// a strong reference to the target. If the target is destroyed before the
-// binding then this function will return nil.
-//
-// Use g_binding_dup_target() if the target or binding are used from
-// different threads as otherwise the pointer returned from this function
-// might become invalid if the target is finalized from another thread in
-// the meantime.
 func (b binding) Target() gextras.Objector {
 	var arg0 *C.GBinding
 
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GObject
-	var goret gextras.Objector
 
 	cret = C.g_binding_get_target(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // TargetProperty retrieves the name of the property of #GBinding:target
@@ -447,26 +354,22 @@ func (b binding) TargetProperty() string {
 	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_binding_get_target_property(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Unbind: explicitly releases the binding between the source and the target
 // property expressed by @binding.
 //
 // This function will release the reference that is being held on the
-// @binding instance if the binding is still bound; if you want to hold on
-// to the #GBinding instance after calling g_binding_unbind(), you will need
-// to hold a reference to it.
-//
-// Note however that this function does not take ownership of @binding, it
-// only unrefs the reference that was initially created by
-// g_object_bind_property() and is owned by the binding.
+// @binding instance; if you want to hold on to the #GBinding instance after
+// calling g_binding_unbind(), you will need to hold a reference to it.
 func (b binding) Unbind() {
 	var arg0 *C.GBinding
 
@@ -536,8 +439,8 @@ func (o *ObjectConstructParam) Pspec() ParamSpec {
 }
 
 // Value gets the field inside the struct.
-func (o *ObjectConstructParam) Value() *externglib.Value {
-	var v *externglib.Value
+func (o *ObjectConstructParam) Value() **externglib.Value {
+	var v **externglib.Value
 	v = externglib.ValueFromNative(unsafe.Pointer(o.native.value))
 	return v
 }
@@ -611,14 +514,15 @@ func (w *WeakRef) Get() gextras.Objector {
 
 	arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
 
-	cret := new(C.gpointer)
-	var goret gextras.Objector
+	var cret C.gpointer
 
 	cret = C.g_weak_ref_get(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // Init: initialise a non-statically-allocated Ref.

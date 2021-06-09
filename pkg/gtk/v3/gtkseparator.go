@@ -71,11 +71,12 @@ func NewSeparator(orientation Orientation) Separator {
 	arg1 = (C.GtkOrientation)(orientation)
 
 	var cret C.GtkSeparator
-	var goret Separator
 
 	cret = C.gtk_separator_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Separator)
+	var separator Separator
 
-	return goret
+	separator = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Separator)
+
+	return separator
 }

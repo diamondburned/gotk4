@@ -116,14 +116,15 @@ func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
 	arg1 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GDBusObjectManagerServer)
-	var goret DBusObjectManagerServer
+	var cret C.GDBusObjectManagerServer
 
 	cret = C.g_dbus_object_manager_server_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerServer)
+	var dBusObjectManagerServer DBusObjectManagerServer
 
-	return goret
+	dBusObjectManagerServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectManagerServer)
+
+	return dBusObjectManagerServer
 }
 
 // Export exports @object on @manager.
@@ -166,14 +167,15 @@ func (m dBusObjectManagerServer) Connection() DBusConnection {
 
 	arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
 
-	cret := new(C.GDBusConnection)
-	var goret DBusConnection
+	var cret *C.GDBusConnection
 
 	cret = C.g_dbus_object_manager_server_get_connection(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	var dBusConnection DBusConnection
 
-	return goret
+	dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return dBusConnection
 }
 
 // IsExported returns whether @object is currently exported on @manager.
@@ -185,15 +187,16 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	arg1 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(object.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_dbus_object_manager_server_is_exported(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetConnection exports all objects managed by @manager on @connection. If
@@ -222,13 +225,14 @@ func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_dbus_object_manager_server_unexport(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

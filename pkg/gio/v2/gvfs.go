@@ -49,7 +49,7 @@ func gotk4_VFSFileLookupFunc(arg0 *C.GVfs, arg1 *C.char, arg2 C.gpointer) *C.GFi
 	}
 
 	fn := v.(VFSFileLookupFunc)
-	fn(file)
+	file := fn()
 
 	cret = (*C.GFile)(unsafe.Pointer(file.Native()))
 }
@@ -65,7 +65,7 @@ type VFS interface {
 	// This operation never fails, but the returned object might not support any
 	// I/O operation if the URI is malformed or if the URI scheme is not
 	// supported.
-	FileForURI(urI string) File
+	FileForURI(uri string) File
 	// SupportedURISchemes gets a list of URI schemes supported by @vfs.
 	SupportedURISchemes() []string
 	// IsActive checks if the VFS is active.
@@ -131,14 +131,15 @@ func (v vfS) FileForPath(path string) File {
 	arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GFile)
-	var goret File
+	var cret *C.GFile
 
 	cret = C.g_vfs_get_file_for_path(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	var file File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+
+	return file
 }
 
 // FileForURI gets a #GFile for @uri.
@@ -146,22 +147,23 @@ func (v vfS) FileForPath(path string) File {
 // This operation never fails, but the returned object might not support any
 // I/O operation if the URI is malformed or if the URI scheme is not
 // supported.
-func (v vfS) FileForURI(urI string) File {
+func (v vfS) FileForURI(uri string) File {
 	var arg0 *C.GVfs
 	var arg1 *C.char
 
 	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(urI))
+	arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GFile)
-	var goret File
+	var cret *C.GFile
 
 	cret = C.g_vfs_get_file_for_uri(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	var file File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+
+	return file
 }
 
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
@@ -171,9 +173,10 @@ func (v vfS) SupportedURISchemes() []string {
 	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.g_vfs_get_supported_uri_schemes(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -184,14 +187,16 @@ func (v vfS) SupportedURISchemes() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // IsActive checks if the VFS is active.
@@ -201,15 +206,16 @@ func (v vfS) IsActive() bool {
 	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_vfs_is_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ParseName: this operation never fails, but the returned object might not
@@ -223,14 +229,15 @@ func (v vfS) ParseName(parseName string) File {
 	arg1 = (*C.char)(C.CString(parseName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GFile)
-	var goret File
+	var cret *C.GFile
 
 	cret = C.g_vfs_parse_name(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	var file File
 
-	return goret
+	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+
+	return file
 }
 
 // RegisterURIScheme registers @uri_func and @parse_name_func as the #GFile
@@ -260,15 +267,16 @@ func (v vfS) RegisterURIScheme() bool {
 	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.g_vfs_register_uri_scheme(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	cret = C.g_vfs_register_uri_scheme(arg0)
+
+	var ok bool
 
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UnregisterURIScheme unregisters the URI handler for @scheme previously
@@ -282,13 +290,14 @@ func (v vfS) UnregisterURIScheme(scheme string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_vfs_unregister_uri_scheme(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

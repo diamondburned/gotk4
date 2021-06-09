@@ -89,7 +89,7 @@ func RenderBackground(context StyleContext, cr *cairo.Context, x float64, y floa
 // RenderBackgroundGetClip returns the area that will be affected (i.e. drawn
 // to) when calling gtk_render_background() for the given @context and
 // rectangle.
-func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width float64, height float64) *gdk.Rectangle {
+func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width float64, height float64) gdk.Rectangle {
 	var arg1 *C.GtkStyleContext
 	var arg2 C.gdouble
 	var arg3 C.gdouble
@@ -102,14 +102,11 @@ func RenderBackgroundGetClip(context StyleContext, x float64, y float64, width f
 	arg4 = C.gdouble(width)
 	arg5 = C.gdouble(height)
 
-	arg6 := new(C.GdkRectangle)
-	var ret6 *gdk.Rectangle
+	var outClip gdk.Rectangle
 
-	C.gtk_render_background_get_clip(arg1, arg2, arg3, arg4, arg5, arg6)
+	C.gtk_render_background_get_clip(arg1, arg2, arg3, arg4, arg5, (*C.GdkRectangle)(unsafe.Pointer(&outClip)))
 
-	ret6 = gdk.WrapRectangle(unsafe.Pointer(arg6))
-
-	return ret6
+	return outClip
 }
 
 // RenderCheck renders a checkmark (as in a CheckButton).
@@ -248,7 +245,7 @@ func RenderFrame(context StyleContext, cr *cairo.Context, x float64, y float64, 
 // Typical rendering of a frame with a gap:
 //
 // ! (frame-gap.png)
-func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xY0Gap float64, xY1Gap float64) {
+func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float64, width float64, height float64, gapSide PositionType, xy0Gap float64, xy1Gap float64) {
 	var arg1 *C.GtkStyleContext
 	var arg2 *C.cairo_t
 	var arg3 C.gdouble
@@ -266,8 +263,8 @@ func RenderFrameGap(context StyleContext, cr *cairo.Context, x float64, y float6
 	arg5 = C.gdouble(width)
 	arg6 = C.gdouble(height)
 	arg7 = (C.GtkPositionType)(gapSide)
-	arg8 = C.gdouble(xY0Gap)
-	arg9 = C.gdouble(xY1Gap)
+	arg8 = C.gdouble(xy0Gap)
+	arg9 = C.gdouble(xy1Gap)
 
 	C.gtk_render_frame_gap(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
 }
@@ -332,14 +329,15 @@ func RenderIconPixbuf(context StyleContext, source *IconSource, size int) gdkpix
 	arg2 = (*C.GtkIconSource)(unsafe.Pointer(source.Native()))
 	arg3 = C.GtkIconSize(size)
 
-	cret := new(C.GdkPixbuf)
-	var goret gdkpixbuf.Pixbuf
+	var cret *C.GdkPixbuf
 
 	cret = C.gtk_render_icon_pixbuf(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	var pixbuf gdkpixbuf.Pixbuf
 
-	return goret
+	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return pixbuf
 }
 
 // RenderIconSurface renders the icon in @surface at the specified @x and @y

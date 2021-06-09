@@ -80,15 +80,16 @@ func (p plug) Embedded() bool {
 	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_plug_get_embedded(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SocketWindow retrieves the socket the plug is embedded in.
@@ -98,11 +99,12 @@ func (p plug) SocketWindow() gdk.Window {
 	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
 	var cret *C.GdkWindow
-	var goret gdk.Window
 
 	cret = C.gtk_plug_get_socket_window(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	var window gdk.Window
 
-	return goret
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return window
 }

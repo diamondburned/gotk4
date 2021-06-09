@@ -51,13 +51,14 @@ func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	var cret *C.cairo_font_options_t
-	var goret *cairo.FontOptions
 
 	cret = C.pango_cairo_context_get_font_options(arg1)
 
-	goret = cairo.WrapFontOptions(unsafe.Pointer(cret))
+	var fontOptions *cairo.FontOptions
 
-	return goret
+	fontOptions = cairo.WrapFontOptions(unsafe.Pointer(cret))
+
+	return fontOptions
 }
 
 // ContextGetResolution gets the resolution for the context. See
@@ -68,13 +69,14 @@ func ContextGetResolution(context pango.Context) float64 {
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.pango_cairo_context_get_resolution(arg1)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // ContextSetFontOptions sets the font options used when rendering text with
@@ -97,12 +99,12 @@ func ContextSetFontOptions(context pango.Context, options *cairo.FontOptions) {
 // This is a scale factor between points specified in a `PangoFontDescription`
 // and Cairo units. The default value is 96, meaning that a 10 point font will
 // be 13 units high. (10 * 96. / 72. = 13.3).
-func ContextSetResolution(context pango.Context, dpI float64) {
+func ContextSetResolution(context pango.Context, dpi float64) {
 	var arg1 *C.PangoContext
 	var arg2 C.double
 
 	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	arg2 = C.double(dpI)
+	arg2 = C.double(dpi)
 
 	C.pango_cairo_context_set_resolution(arg1, arg2)
 }
@@ -112,7 +114,7 @@ func ContextSetResolution(context pango.Context, dpI float64) {
 //
 // See `PangoCairoShapeRendererFunc` for details.
 func ContextSetShapeRenderer() {
-	C.pango_cairo_context_set_shape_renderer(arg1, arg2, arg3, arg4)
+	C.pango_cairo_context_set_shape_renderer()
 }
 
 // CreateContext creates a context object set up to match the current
@@ -130,14 +132,15 @@ func CreateContext(cr *cairo.Context) pango.Context {
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	cret := new(C.PangoContext)
-	var goret pango.Context
+	var cret *C.PangoContext
 
 	cret = C.pango_cairo_create_context(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	var context pango.Context
 
-	return goret
+	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+
+	return context
 }
 
 // CreateLayout creates a layout object set up to match the current
@@ -157,14 +160,15 @@ func CreateLayout(cr *cairo.Context) pango.Layout {
 
 	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	cret := new(C.PangoLayout)
-	var goret pango.Layout
+	var cret *C.PangoLayout
 
 	cret = C.pango_cairo_create_layout(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	var layout pango.Layout
 
-	return goret
+	layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
+
+	return layout
 }
 
 // ErrorUnderlinePath: add a squiggly line to the current path in the specified
@@ -395,13 +399,14 @@ func (f font) ScaledFont() *cairo.ScaledFont {
 	arg0 = (*C.PangoCairoFont)(unsafe.Pointer(f.Native()))
 
 	var cret *C.cairo_scaled_font_t
-	var goret *cairo.ScaledFont
 
 	cret = C.pango_cairo_font_get_scaled_font(arg0)
 
-	goret = cairo.WrapScaledFont(unsafe.Pointer(cret))
+	var scaledFont *cairo.ScaledFont
 
-	return goret
+	scaledFont = cairo.WrapScaledFont(unsafe.Pointer(cret))
+
+	return scaledFont
 }
 
 // FontMap: `PangoCairoFontMap` is an interface exported by font maps for use
@@ -440,7 +445,7 @@ type FontMap interface {
 	// This is a scale factor between points specified in a
 	// `PangoFontDescription` and Cairo units. The default value is 96, meaning
 	// that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
-	SetResolution(dpI float64)
+	SetResolution(dpi float64)
 }
 
 // fontMap implements the FontMap interface.
@@ -471,13 +476,14 @@ func (f fontMap) CreateContext() pango.Context {
 	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret *C.PangoContext
-	var goret pango.Context
 
 	cret = C.pango_cairo_font_map_create_context(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Context)
+	var context pango.Context
 
-	return goret
+	context = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Context)
+
+	return context
 }
 
 // FontType gets the type of Cairo font backend that @fontmap uses.
@@ -487,13 +493,14 @@ func (f fontMap) FontType() cairo.FontType {
 	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret C.cairo_font_type_t
-	var goret cairo.FontType
 
 	cret = C.pango_cairo_font_map_get_font_type(arg0)
 
-	goret = cairo.FontType(cret)
+	var fontType cairo.FontType
 
-	return goret
+	fontType = cairo.FontType(cret)
+
+	return fontType
 }
 
 // Resolution gets the resolution for the fontmap.
@@ -505,13 +512,14 @@ func (f fontMap) Resolution() float64 {
 	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.pango_cairo_font_map_get_resolution(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // SetDefault sets a default `PangoCairoFontMap` to use with Cairo.
@@ -541,12 +549,12 @@ func (f fontMap) SetDefault() {
 // This is a scale factor between points specified in a
 // `PangoFontDescription` and Cairo units. The default value is 96, meaning
 // that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
-func (f fontMap) SetResolution(dpI float64) {
+func (f fontMap) SetResolution(dpi float64) {
 	var arg0 *C.PangoCairoFontMap
 	var arg1 C.double
 
 	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
-	arg1 = C.double(dpI)
+	arg1 = C.double(dpi)
 
 	C.pango_cairo_font_map_set_resolution(arg0, arg1)
 }

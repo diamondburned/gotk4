@@ -245,14 +245,15 @@ func NewFileChooserNative(title string, parent Window, action FileChooserAction,
 	arg5 = (*C.gchar)(C.CString(cancelLabel))
 	defer C.free(unsafe.Pointer(arg5))
 
-	cret := new(C.GtkFileChooserNative)
-	var goret FileChooserNative
+	var cret C.GtkFileChooserNative
 
 	cret = C.gtk_file_chooser_native_new(arg1, arg2, arg3, arg4, arg5)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileChooserNative)
+	var fileChooserNative FileChooserNative
 
-	return goret
+	fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileChooserNative)
+
+	return fileChooserNative
 }
 
 // AcceptLabel retrieves the custom label text for the accept button.
@@ -262,13 +263,14 @@ func (s fileChooserNative) AcceptLabel() string {
 	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_file_chooser_native_get_accept_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // CancelLabel retrieves the custom label text for the cancel button.
@@ -278,13 +280,14 @@ func (s fileChooserNative) CancelLabel() string {
 	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_file_chooser_native_get_cancel_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SetAcceptLabel sets the custom label text for the accept button.

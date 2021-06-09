@@ -60,14 +60,14 @@ type ToolItem interface {
 	// subclasses of ToolItem should call this function to find out what size
 	// icons they should use.
 	Orientation() Orientation
-	// ProxyMenuItem: if @menu_item_id matches the string passed to
+	// ProXYMenuItem: if @menu_item_id matches the string passed to
 	// gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
 	//
 	// Custom subclasses of ToolItem should use this function to update their
 	// menu item when the ToolItem changes. That the @menu_item_ids must match
 	// ensures that a ToolItem will not inadvertently change a menu item that
 	// they did not create.
-	ProxyMenuItem(menuItemID string) Widget
+	ProXYMenuItem(menuItemId string) Widget
 	// ReliefStyle returns the relief style of @tool_item. See
 	// gtk_button_set_relief(). Custom subclasses of ToolItem should call this
 	// function in the handler of the ToolItem::toolbar_reconfigured signal to
@@ -112,10 +112,10 @@ type ToolItem interface {
 	// The function must be called when the tool item changes what it will do in
 	// response to the ToolItem::create-menu-proxy signal.
 	RebuildMenu()
-	// RetrieveProxyMenuItem returns the MenuItem that was last set by
+	// RetrieveProXYMenuItem returns the MenuItem that was last set by
 	// gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
 	// appear in the overflow menu.
-	RetrieveProxyMenuItem() Widget
+	RetrieveProXYMenuItem() Widget
 	// SetExpand sets whether @tool_item is allocated extra space when there is
 	// more room on the toolbar then needed for the items. The effect is that
 	// the item gets bigger when the toolbar gets bigger and smaller when the
@@ -131,12 +131,12 @@ type ToolItem interface {
 	// result is that only tool buttons with the “is_important” property set
 	// have labels, an effect known as “priority text”
 	SetIsImportant(isImportant bool)
-	// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
+	// SetProXYMenuItem sets the MenuItem used in the toolbar overflow menu. The
 	// @menu_item_id is used to identify the caller of this function and should
 	// also be used with gtk_tool_item_get_proxy_menu_item().
 	//
 	// See also ToolItem::create-menu-proxy.
-	SetProxyMenuItem(menuItemID string, menuItem Widget)
+	SetProXYMenuItem(menuItemId string, menuItem Widget)
 	// SetTooltipMarkup sets the markup text to be displayed as tooltip on the
 	// item. See gtk_widget_set_tooltip_markup().
 	SetTooltipMarkup(markup string)
@@ -190,13 +190,14 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 // NewToolItem constructs a class ToolItem.
 func NewToolItem() ToolItem {
 	var cret C.GtkToolItem
-	var goret ToolItem
 
 	cret = C.gtk_tool_item_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+	var toolItem ToolItem
 
-	return goret
+	toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+
+	return toolItem
 }
 
 // EllipsizeMode returns the ellipsize mode used for @tool_item. Custom
@@ -208,13 +209,14 @@ func (t toolItem) EllipsizeMode() pango.EllipsizeMode {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.PangoEllipsizeMode
-	var goret pango.EllipsizeMode
 
 	cret = C.gtk_tool_item_get_ellipsize_mode(arg0)
 
-	goret = pango.EllipsizeMode(cret)
+	var ellipsizeMode pango.EllipsizeMode
 
-	return goret
+	ellipsizeMode = pango.EllipsizeMode(cret)
+
+	return ellipsizeMode
 }
 
 // Expand returns whether @tool_item is allocated extra space. See
@@ -225,15 +227,16 @@ func (t toolItem) Expand() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_item_get_expand(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Homogeneous returns whether @tool_item is the same size as other
@@ -244,15 +247,16 @@ func (t toolItem) Homogeneous() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_item_get_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IconSize returns the icon size used for @tool_item. Custom subclasses of
@@ -264,13 +268,14 @@ func (t toolItem) IconSize() int {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkIconSize
-	var goret int
 
 	cret = C.gtk_tool_item_get_icon_size(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // IsImportant returns whether @tool_item is considered important. See
@@ -281,15 +286,16 @@ func (t toolItem) IsImportant() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_item_get_is_important(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Orientation returns the orientation used for @tool_item. Custom
@@ -301,38 +307,40 @@ func (t toolItem) Orientation() Orientation {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_tool_item_get_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
-// ProxyMenuItem: if @menu_item_id matches the string passed to
+// ProXYMenuItem: if @menu_item_id matches the string passed to
 // gtk_tool_item_set_proxy_menu_item() return the corresponding MenuItem.
 //
 // Custom subclasses of ToolItem should use this function to update their
 // menu item when the ToolItem changes. That the @menu_item_ids must match
 // ensures that a ToolItem will not inadvertently change a menu item that
 // they did not create.
-func (t toolItem) ProxyMenuItem(menuItemID string) Widget {
+func (t toolItem) ProXYMenuItem(menuItemId string) Widget {
 	var arg0 *C.GtkToolItem
 	var arg1 *C.gchar
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.gchar)(C.CString(menuItemID))
+	arg1 = (*C.gchar)(C.CString(menuItemId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tool_item_get_proxy_menu_item(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ReliefStyle returns the relief style of @tool_item. See
@@ -345,13 +353,14 @@ func (t toolItem) ReliefStyle() ReliefStyle {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkReliefStyle
-	var goret ReliefStyle
 
 	cret = C.gtk_tool_item_get_relief_style(arg0)
 
-	goret = ReliefStyle(cret)
+	var reliefStyle ReliefStyle
 
-	return goret
+	reliefStyle = ReliefStyle(cret)
+
+	return reliefStyle
 }
 
 // TextAlignment returns the text alignment used for @tool_item. Custom
@@ -363,13 +372,14 @@ func (t toolItem) TextAlignment() float32 {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gfloat
-	var goret float32
 
 	cret = C.gtk_tool_item_get_text_alignment(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // TextOrientation returns the text orientation used for @tool_item. Custom
@@ -381,13 +391,14 @@ func (t toolItem) TextOrientation() Orientation {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_tool_item_get_text_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
 // TextSizeGroup returns the size group used for labels in @tool_item.
@@ -399,13 +410,14 @@ func (t toolItem) TextSizeGroup() SizeGroup {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkSizeGroup
-	var goret SizeGroup
 
 	cret = C.gtk_tool_item_get_text_size_group(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
+	var sizeGroup SizeGroup
 
-	return goret
+	sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
+
+	return sizeGroup
 }
 
 // ToolbarStyle returns the toolbar style used for @tool_item. Custom
@@ -424,13 +436,14 @@ func (t toolItem) ToolbarStyle() ToolbarStyle {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkToolbarStyle
-	var goret ToolbarStyle
 
 	cret = C.gtk_tool_item_get_toolbar_style(arg0)
 
-	goret = ToolbarStyle(cret)
+	var toolbarStyle ToolbarStyle
 
-	return goret
+	toolbarStyle = ToolbarStyle(cret)
+
+	return toolbarStyle
 }
 
 // UseDragWindow returns whether @tool_item has a drag window. See
@@ -441,15 +454,16 @@ func (t toolItem) UseDragWindow() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_item_get_use_drag_window(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // VisibleHorizontal returns whether the @tool_item is visible on toolbars
@@ -460,15 +474,16 @@ func (t toolItem) VisibleHorizontal() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_item_get_visible_horizontal(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // VisibleVertical returns whether @tool_item is visible when the toolbar is
@@ -479,15 +494,16 @@ func (t toolItem) VisibleVertical() bool {
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tool_item_get_visible_vertical(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RebuildMenu: calling this function signals to the toolbar that the
@@ -504,22 +520,23 @@ func (t toolItem) RebuildMenu() {
 	C.gtk_tool_item_rebuild_menu(arg0)
 }
 
-// RetrieveProxyMenuItem returns the MenuItem that was last set by
+// RetrieveProXYMenuItem returns the MenuItem that was last set by
 // gtk_tool_item_set_proxy_menu_item(), ie. the MenuItem that is going to
 // appear in the overflow menu.
-func (t toolItem) RetrieveProxyMenuItem() Widget {
+func (t toolItem) RetrieveProXYMenuItem() Widget {
 	var arg0 *C.GtkToolItem
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_tool_item_retrieve_proxy_menu_item(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetExpand sets whether @tool_item is allocated extra space when there is
@@ -570,18 +587,18 @@ func (t toolItem) SetIsImportant(isImportant bool) {
 	C.gtk_tool_item_set_is_important(arg0, arg1)
 }
 
-// SetProxyMenuItem sets the MenuItem used in the toolbar overflow menu. The
+// SetProXYMenuItem sets the MenuItem used in the toolbar overflow menu. The
 // @menu_item_id is used to identify the caller of this function and should
 // also be used with gtk_tool_item_get_proxy_menu_item().
 //
 // See also ToolItem::create-menu-proxy.
-func (t toolItem) SetProxyMenuItem(menuItemID string, menuItem Widget) {
+func (t toolItem) SetProXYMenuItem(menuItemId string, menuItem Widget) {
 	var arg0 *C.GtkToolItem
 	var arg1 *C.gchar
 	var arg2 *C.GtkWidget
 
 	arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.gchar)(C.CString(menuItemID))
+	arg1 = (*C.gchar)(C.CString(menuItemId))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 

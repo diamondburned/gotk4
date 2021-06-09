@@ -9,7 +9,6 @@ import (
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -33,7 +32,7 @@ import "C"
 // terminated list of strings which should be released with g_strfreev().
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (utf8s []string, err error) {
+func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (utf8s []string, goerr error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
 
@@ -42,11 +41,12 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var cret **C.char
-	var goret []string
 	var cerr *C.GError
-	var goerr error
 
-	cret = C.g_resources_enumerate_children(arg1, arg2, &cerr)
+	cret = C.g_resources_enumerate_children(arg1, arg2, cerr)
+
+	var utf8s []string
+	var goerr error
 
 	{
 		var length int
@@ -57,23 +57,25 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			utf8s = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return utf8s, goerr
 }
 
 // ResourcesGetInfo looks for a file at the specified @path in the set of
 // globally registered resources and if found returns information about it.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, err error) {
+func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, goerr error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
 
@@ -81,57 +83,21 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	arg3 := new(C.gsize)
-	var ret3 uint
-	arg4 := new(C.guint32)
-	var ret4 uint32
+	var arg3 C.gsize
+	var arg4 C.guint32
 	var cerr *C.GError
+
+	C.g_resources_get_info(arg1, arg2, &arg3, &arg4, cerr)
+
+	var size uint
+	var flags uint32
 	var goerr error
 
-	C.g_resources_get_info(arg1, arg2, arg3, arg4, &cerr)
-
-	ret3 = uint(*arg3)
-	ret4 = uint32(*arg4)
+	size = (uint)(arg3)
+	flags = (uint32)(arg4)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret3, ret4, goerr
-}
-
-// ResourcesLookupData looks for a file at the specified @path in the set of
-// globally registered resources and returns a #GBytes that lets you directly
-// access the data in memory.
-//
-// The data is always followed by a zero byte, so you can safely use the data as
-// a C string. However, that byte is not included in the size of the GBytes.
-//
-// For uncompressed resource files this is a pointer directly into the resource
-// bundle, which is typically in some readonly data section in the program
-// binary. For compressed files we allocate memory on the heap and automatically
-// uncompress the data.
-//
-// @lookup_flags controls the behaviour of the lookup.
-func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *glib.Bytes, err error) {
-	var arg1 *C.char
-	var arg2 C.GResourceLookupFlags
-
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GResourceLookupFlags)(lookupFlags)
-
-	cret := new(C.GBytes)
-	var goret *glib.Bytes
-	var cerr *C.GError
-	var goerr error
-
-	cret = C.g_resources_lookup_data(arg1, arg2, &cerr)
-
-	goret = glib.WrapBytes(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Bytes) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	goerr = gerror.Take(unsafe.Pointer(cerr))
-
-	return goret, goerr
+	return size, flags, goerr
 }
 
 // ResourcesOpenStream looks for a file at the specified @path in the set of
@@ -139,7 +105,7 @@ func ResourcesLookupData(path string, lookupFlags ResourceLookupFlags) (bytes *g
 // data.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (inputStream InputStream, err error) {
+func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (inputStream InputStream, goerr error) {
 	var arg1 *C.char
 	var arg2 C.GResourceLookupFlags
 
@@ -147,17 +113,18 @@ func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (inputStr
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	cret := new(C.GInputStream)
-	var goret InputStream
+	var cret *C.GInputStream
 	var cerr *C.GError
+
+	cret = C.g_resources_open_stream(arg1, arg2, cerr)
+
+	var inputStream InputStream
 	var goerr error
 
-	cret = C.g_resources_open_stream(arg1, arg2, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
+	inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return inputStream, goerr
 }
 
 // ResourcesRegister registers the resource with the process-global set of
@@ -232,13 +199,14 @@ func (s *StaticResource) Resource() *Resource {
 	arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GResource
-	var goret *Resource
 
 	cret = C.g_static_resource_get_resource(arg0)
 
-	goret = WrapResource(unsafe.Pointer(cret))
+	var resource *Resource
 
-	return goret
+	resource = WrapResource(unsafe.Pointer(cret))
+
+	return resource
 }
 
 // Init initializes a GResource from static data using a GStaticResource.

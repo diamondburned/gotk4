@@ -342,13 +342,14 @@ func (r renderer) Alpha(part RenderPart) uint16 {
 	arg1 = (C.PangoRenderPart)(part)
 
 	var cret C.guint16
-	var goret uint16
 
 	cret = C.pango_renderer_get_alpha(arg0, arg1)
 
-	goret = uint16(cret)
+	var guint16 uint16
 
-	return goret
+	guint16 = (uint16)(cret)
+
+	return guint16
 }
 
 // Color gets the current rendering color for the specified part.
@@ -360,13 +361,14 @@ func (r renderer) Color(part RenderPart) *Color {
 	arg1 = (C.PangoRenderPart)(part)
 
 	var cret *C.PangoColor
-	var goret *Color
 
 	cret = C.pango_renderer_get_color(arg0, arg1)
 
-	goret = WrapColor(unsafe.Pointer(cret))
+	var color *Color
 
-	return goret
+	color = WrapColor(unsafe.Pointer(cret))
+
+	return color
 }
 
 // Layout gets the layout currently being rendered using @renderer.
@@ -381,13 +383,14 @@ func (r renderer) Layout() Layout {
 	arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.PangoLayout
-	var goret Layout
 
 	cret = C.pango_renderer_get_layout(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
+	var layout Layout
 
-	return goret
+	layout = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
+
+	return layout
 }
 
 // LayoutLine gets the layout line currently being rendered using @renderer.
@@ -403,13 +406,14 @@ func (r renderer) LayoutLine() *LayoutLine {
 	arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.PangoLayoutLine
-	var goret *LayoutLine
 
 	cret = C.pango_renderer_get_layout_line(arg0)
 
-	goret = WrapLayoutLine(unsafe.Pointer(cret))
+	var layoutLine *LayoutLine
 
-	return goret
+	layoutLine = WrapLayoutLine(unsafe.Pointer(cret))
+
+	return layoutLine
 }
 
 // Matrix gets the transformation matrix that will be applied when
@@ -422,13 +426,14 @@ func (r renderer) Matrix() *Matrix {
 	arg0 = (*C.PangoRenderer)(unsafe.Pointer(r.Native()))
 
 	var cret *C.PangoMatrix
-	var goret *Matrix
 
 	cret = C.pango_renderer_get_matrix(arg0)
 
-	goret = WrapMatrix(unsafe.Pointer(cret))
+	var matrix *Matrix
 
-	return goret
+	matrix = WrapMatrix(unsafe.Pointer(cret))
+
+	return matrix
 }
 
 // PartChanged informs Pango that the way that the rendering is done for

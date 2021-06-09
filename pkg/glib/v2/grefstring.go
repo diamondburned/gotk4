@@ -28,15 +28,16 @@ func RefStringAcquire(str string) string {
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_ref_string_acquire(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // RefStringLength retrieves the length of @str.
@@ -47,13 +48,14 @@ func RefStringLength(str string) uint {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gsize
-	var goret uint
 
 	cret = C.g_ref_string_length(arg1)
 
-	goret = uint(cret)
+	var gsize uint
 
-	return goret
+	gsize = (uint)(cret)
+
+	return gsize
 }
 
 // NewRefString creates a new reference counted string and copies the contents
@@ -64,15 +66,16 @@ func NewRefString(str string) string {
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_ref_string_new(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // RefStringNewIntern creates a new reference counted string and copies the
@@ -87,15 +90,16 @@ func RefStringNewIntern(str string) string {
 	arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_ref_string_new_intern(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // RefStringNewLen creates a new reference counted string and copies the
@@ -111,15 +115,16 @@ func RefStringNewLen(str string, len int) string {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gssize(len)
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_ref_string_new_len(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // RefStringRelease releases a reference on a string; if it was the last

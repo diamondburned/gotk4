@@ -21,41 +21,40 @@ func init() {
 	})
 }
 
-// EntryBuffer: a `GtkEntryBuffer` hold the text displayed in a `GtkText`
-// widget.
+// EntryBuffer: the EntryBuffer class contains the actual text displayed in a
+// Entry widget.
 //
-// A single `GtkEntryBuffer` object can be shared by multiple widgets which will
-// then share the same text content, but not the cursor position, visibility
-// attributes, icon etc.
+// A single EntryBuffer object can be shared by multiple Entry widgets which
+// will then share the same text content, but not the cursor position,
+// visibility attributes, icon etc.
 //
-// `GtkEntryBuffer` may be derived from. Such a derived class might allow text
-// to be stored in an alternate location, such as non-pageable memory, useful in
-// the case of important passwords. Or a derived class could integrate with an
+// EntryBuffer may be derived from. Such a derived class might allow text to be
+// stored in an alternate location, such as non-pageable memory, useful in the
+// case of important passwords. Or a derived class could integrate with an
 // application’s concept of undo/redo.
 type EntryBuffer interface {
 	gextras.Objector
 
-	// DeleteText deletes a sequence of characters from the buffer.
-	//
-	// @n_chars characters are deleted starting at @position. If @n_chars is
-	// negative, then all characters until the end of the text are deleted.
+	// DeleteText deletes a sequence of characters from the buffer. @n_chars
+	// characters are deleted starting at @position. If @n_chars is negative,
+	// then all characters until the end of the text are deleted.
 	//
 	// If @position or @n_chars are out of bounds, then they are coerced to sane
 	// values.
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DeleteText(position uint, nChars int) uint
-	// EmitDeletedText: used when subclassing `GtkEntryBuffer`.
+	// EmitDeletedText: used when subclassing EntryBuffer
 	EmitDeletedText(position uint, nChars uint)
-	// EmitInsertedText: used when subclassing `GtkEntryBuffer`.
+	// EmitInsertedText: used when subclassing EntryBuffer
 	EmitInsertedText(position uint, chars string, nChars uint)
-	// Bytes retrieves the length in bytes of the buffer.
-	//
-	// See [method@Gtk.EntryBuffer.get_length].
+	// Bytes retrieves the length in bytes of the buffer. See
+	// gtk_entry_buffer_get_length().
 	Bytes() uint
 	// Length retrieves the length in characters of the buffer.
 	Length() uint
 	// MaxLength retrieves the maximum allowed length of the text in @buffer.
+	// See gtk_entry_buffer_set_max_length().
 	MaxLength() int
 	// Text retrieves the contents of the buffer.
 	//
@@ -73,16 +72,13 @@ type EntryBuffer interface {
 	// Note that the position and length are in characters, not in bytes.
 	InsertText(position uint, chars string, nChars int) uint
 	// SetMaxLength sets the maximum allowed length of the contents of the
-	// buffer.
-	//
-	// If the current contents are longer than the given length, then they will
-	// be truncated to fit.
+	// buffer. If the current contents are longer than the given length, then
+	// they will be truncated to fit.
 	SetMaxLength(maxLength int)
 	// SetText sets the text in the buffer.
 	//
-	// This is roughly equivalent to calling
-	// [method@Gtk.EntryBuffer.delete_text] and
-	// [method@Gtk.EntryBuffer.insert_text].
+	// This is roughly equivalent to calling gtk_entry_buffer_delete_text() and
+	// gtk_entry_buffer_insert_text().
 	//
 	// Note that @n_chars is in characters, not in bytes.
 	SetText(chars string, nChars int)
@@ -118,20 +114,20 @@ func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.int(nInitialChars)
 
-	cret := new(C.GtkEntryBuffer)
-	var goret EntryBuffer
+	var cret C.GtkEntryBuffer
 
 	cret = C.gtk_entry_buffer_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+	var entryBuffer EntryBuffer
 
-	return goret
+	entryBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EntryBuffer)
+
+	return entryBuffer
 }
 
-// DeleteText deletes a sequence of characters from the buffer.
-//
-// @n_chars characters are deleted starting at @position. If @n_chars is
-// negative, then all characters until the end of the text are deleted.
+// DeleteText deletes a sequence of characters from the buffer. @n_chars
+// characters are deleted starting at @position. If @n_chars is negative,
+// then all characters until the end of the text are deleted.
 //
 // If @position or @n_chars are out of bounds, then they are coerced to sane
 // values.
@@ -147,16 +143,17 @@ func (b entryBuffer) DeleteText(position uint, nChars int) uint {
 	arg2 = C.int(nChars)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_entry_buffer_delete_text(arg0, arg1, arg2)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
-// EmitDeletedText: used when subclassing `GtkEntryBuffer`.
+// EmitDeletedText: used when subclassing EntryBuffer
 func (b entryBuffer) EmitDeletedText(position uint, nChars uint) {
 	var arg0 *C.GtkEntryBuffer
 	var arg1 C.guint
@@ -169,7 +166,7 @@ func (b entryBuffer) EmitDeletedText(position uint, nChars uint) {
 	C.gtk_entry_buffer_emit_deleted_text(arg0, arg1, arg2)
 }
 
-// EmitInsertedText: used when subclassing `GtkEntryBuffer`.
+// EmitInsertedText: used when subclassing EntryBuffer
 func (b entryBuffer) EmitInsertedText(position uint, chars string, nChars uint) {
 	var arg0 *C.GtkEntryBuffer
 	var arg1 C.guint
@@ -185,22 +182,22 @@ func (b entryBuffer) EmitInsertedText(position uint, chars string, nChars uint) 
 	C.gtk_entry_buffer_emit_inserted_text(arg0, arg1, arg2, arg3)
 }
 
-// Bytes retrieves the length in bytes of the buffer.
-//
-// See [method@Gtk.EntryBuffer.get_length].
+// Bytes retrieves the length in bytes of the buffer. See
+// gtk_entry_buffer_get_length().
 func (b entryBuffer) Bytes() uint {
 	var arg0 *C.GtkEntryBuffer
 
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.gsize
-	var goret uint
 
 	cret = C.gtk_entry_buffer_get_bytes(arg0)
 
-	goret = uint(cret)
+	var gsize uint
 
-	return goret
+	gsize = (uint)(cret)
+
+	return gsize
 }
 
 // Length retrieves the length in characters of the buffer.
@@ -210,29 +207,32 @@ func (b entryBuffer) Length() uint {
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_entry_buffer_get_length(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // MaxLength retrieves the maximum allowed length of the text in @buffer.
+// See gtk_entry_buffer_set_max_length().
 func (b entryBuffer) MaxLength() int {
 	var arg0 *C.GtkEntryBuffer
 
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_entry_buffer_get_max_length(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Text retrieves the contents of the buffer.
@@ -245,13 +245,14 @@ func (b entryBuffer) Text() string {
 	arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_entry_buffer_get_text(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // InsertText inserts @n_chars characters of @chars into the contents of the
@@ -276,20 +277,19 @@ func (b entryBuffer) InsertText(position uint, chars string, nChars int) uint {
 	arg3 = C.int(nChars)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_entry_buffer_insert_text(arg0, arg1, arg2, arg3)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // SetMaxLength sets the maximum allowed length of the contents of the
-// buffer.
-//
-// If the current contents are longer than the given length, then they will
-// be truncated to fit.
+// buffer. If the current contents are longer than the given length, then
+// they will be truncated to fit.
 func (b entryBuffer) SetMaxLength(maxLength int) {
 	var arg0 *C.GtkEntryBuffer
 	var arg1 C.int
@@ -302,9 +302,8 @@ func (b entryBuffer) SetMaxLength(maxLength int) {
 
 // SetText sets the text in the buffer.
 //
-// This is roughly equivalent to calling
-// [method@Gtk.EntryBuffer.delete_text] and
-// [method@Gtk.EntryBuffer.insert_text].
+// This is roughly equivalent to calling gtk_entry_buffer_delete_text() and
+// gtk_entry_buffer_insert_text().
 //
 // Note that @n_chars is in characters, not in bytes.
 func (b entryBuffer) SetText(chars string, nChars int) {

@@ -75,13 +75,14 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 // NewCellRendererToggle constructs a class CellRendererToggle.
 func NewCellRendererToggle() CellRendererToggle {
 	var cret C.GtkCellRendererToggle
-	var goret CellRendererToggle
 
 	cret = C.gtk_cell_renderer_toggle_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererToggle)
+	var cellRendererToggle CellRendererToggle
 
-	return goret
+	cellRendererToggle = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererToggle)
+
+	return cellRendererToggle
 }
 
 // Activatable returns whether the cell renderer is activatable. See
@@ -92,15 +93,16 @@ func (t cellRendererToggle) Activatable() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_activatable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Active returns whether the cell renderer is active. See
@@ -111,15 +113,16 @@ func (t cellRendererToggle) Active() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Radio returns whether we’re rendering radio toggles rather than
@@ -130,15 +133,16 @@ func (t cellRendererToggle) Radio() bool {
 	arg0 = (*C.GtkCellRendererToggle)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_renderer_toggle_get_radio(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActivatable makes the cell renderer activatable.

@@ -21,20 +21,19 @@ func init() {
 	})
 }
 
-// WindowHandle: `GtkWindowHandle` is a titlebar area widget.
-//
-// When added into a window, it can be dragged to move the window, and handles
-// right click, double click and middle click as expected of a titlebar.
+// WindowHandle: gtkWindowHandle is a titlebar area widget. When added into a
+// window, it can be dragged to move the window, and handles right click, double
+// click and middle click as expected of a titlebar.
 //
 //
 // CSS nodes
 //
-// `GtkWindowHandle` has a single CSS node with the name `windowhandle`.
+// WindowHandle has a single CSS node with the name `windowhandle`.
 //
 //
 // Accessibility
 //
-// `GtkWindowHandle` uses the GTK_ACCESSIBLE_ROLE_GROUP role.
+// GtkWindowHandle uses the GTK_ACCESSIBLE_ROLE_GROUP role.
 type WindowHandle interface {
 	Widget
 	Accessible
@@ -77,13 +76,14 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 // NewWindowHandle constructs a class WindowHandle.
 func NewWindowHandle() WindowHandle {
 	var cret C.GtkWindowHandle
-	var goret WindowHandle
 
 	cret = C.gtk_window_handle_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowHandle)
+	var windowHandle WindowHandle
 
-	return goret
+	windowHandle = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowHandle)
+
+	return windowHandle
 }
 
 // Child gets the child widget of @self.
@@ -93,13 +93,14 @@ func (s windowHandle) Child() Widget {
 	arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_window_handle_get_child(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetChild sets the child widget of @self.

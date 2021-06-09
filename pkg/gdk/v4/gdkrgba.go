@@ -21,14 +21,8 @@ func init() {
 	})
 }
 
-// RGBA: a `GdkRGBA` is used to represent a color, in a way that is compatible
-// with cairo’s notion of color.
-//
-// `GdkRGBA` is a convenient way to pass colors around. It’s based on cairo’s
-// way to deal with colors and mirrors its behavior. All values are in the range
-// from 0.0 to 1.0 inclusive. So the color (0.0, 0.0, 0.0, 0.0) represents
-// transparent black and (1.0, 1.0, 1.0, 1.0) is opaque white. Other values will
-// be clamped to this range when drawing.
+// RGBA: a RGBA is used to represent a (possibly translucent) color, in a way
+// that is compatible with cairo’s notion of color.
 type RGBA struct {
 	native C.GdkRGBA
 }
@@ -56,53 +50,54 @@ func (r *RGBA) Native() unsafe.Pointer {
 // Red gets the field inside the struct.
 func (r *RGBA) Red() float32 {
 	var v float32
-	v = float32(r.native.red)
+	v = (float32)(r.native.red)
 	return v
 }
 
 // Green gets the field inside the struct.
 func (r *RGBA) Green() float32 {
 	var v float32
-	v = float32(r.native.green)
+	v = (float32)(r.native.green)
 	return v
 }
 
 // Blue gets the field inside the struct.
 func (r *RGBA) Blue() float32 {
 	var v float32
-	v = float32(r.native.blue)
+	v = (float32)(r.native.blue)
 	return v
 }
 
 // Alpha gets the field inside the struct.
 func (r *RGBA) Alpha() float32 {
 	var v float32
-	v = float32(r.native.alpha)
+	v = (float32)(r.native.alpha)
 	return v
 }
 
-// Copy makes a copy of a `GdkRGBA`.
+// Copy makes a copy of a RGBA.
 //
-// The result must be freed through [method@Gdk.RGBA.free].
+// The result must be freed through gdk_rgba_free().
 func (r *RGBA) Copy() *RGBA {
 	var arg0 *C.GdkRGBA
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	cret := new(C.GdkRGBA)
-	var goret *RGBA
+	var cret *C.GdkRGBA
 
 	cret = C.gdk_rgba_copy(arg0)
 
-	goret = WrapRGBA(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *RGBA) {
+	var rgbA *RGBA
+
+	rgbA = WrapRGBA(unsafe.Pointer(cret))
+	runtime.SetFinalizer(rgbA, func(v *RGBA) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return rgbA
 }
 
-// Equal compares two `GdkRGBA` colors.
+// Equal compares two RGBA colors.
 func (p *RGBA) Equal(p2 RGBA) bool {
 	var arg0 C.gpointer
 	var arg1 C.gpointer
@@ -111,18 +106,19 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 	arg1 = (C.gpointer)(unsafe.Pointer(p2.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_rgba_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Free frees a `GdkRGBA`.
+// Free frees a RGBA created with gdk_rgba_copy()
 func (r *RGBA) Free() {
 	var arg0 *C.GdkRGBA
 
@@ -131,73 +127,72 @@ func (r *RGBA) Free() {
 	C.gdk_rgba_free(arg0)
 }
 
-// Hash: a hash function suitable for using for a hash table that stores
-// `GdkRGBA`s.
+// Hash: a hash function suitable for using for a hash table that stores RGBAs.
 func (p *RGBA) Hash() uint {
 	var arg0 C.gpointer
 
 	arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gdk_rgba_hash(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
-// IsClear checks if an @rgba value is transparent.
-//
-// That is, drawing with the value would not produce any change.
+// IsClear checks if an @rgba value is transparent. That is, drawing with the
+// value would not produce any change.
 func (r *RGBA) IsClear() bool {
 	var arg0 *C.GdkRGBA
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_rgba_is_clear(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IsOpaque checks if an @rgba value is opaque.
-//
-// That is, drawing with the value will not retain any results from previous
-// contents.
+// IsOpaque checks if an @rgba value is opaque. That is, drawing with the value
+// will not retain any results from previous contents.
 func (r *RGBA) IsOpaque() bool {
 	var arg0 *C.GdkRGBA
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_rgba_is_opaque(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Parse parses a textual representation of a color.
+// Parse parses a textual representation of a color, filling in the @red,
+// @green, @blue and @alpha fields of the @rgba RGBA.
 //
-// The string can be either one of:
-//
-// - A standard name (Taken from the X11 rgb.txt file). - A hexadecimal value in
-// the form “\#rgb”, “\#rrggbb”, “\#rrrgggbbb” or ”\#rrrrggggbbbb” - A
-// hexadecimal value in the form “\#rgba”, “\#rrggbbaa”, or ”\#rrrrggggbbbbaaaa”
-// - A RGB color in the form “rgb(r,g,b)” (In this case the color will have full
-// opacity) - A RGBA color in the form “rgba(r,g,b,a)”
+// The string can be either one of: - A standard name (Taken from the X11
+// rgb.txt file). - A hexadecimal value in the form “\#rgb”, “\#rrggbb”,
+// “\#rrrgggbbb” or ”\#rrrrggggbbbb” - A hexadecimal value in the form “\#rgba”,
+// “\#rrggbbaa”, or ”\#rrrrggggbbbbaaaa” - A RGB color in the form “rgb(r,g,b)”
+// (In this case the color will have full opacity) - A RGBA color in the form
+// “rgba(r,g,b,a)”
 //
 // Where “r”, “g”, “b” and “a” are respectively the red, green, blue and alpha
 // color values. In the last two cases, “r”, “g”, and “b” are either integers in
@@ -212,15 +207,16 @@ func (r *RGBA) Parse(spec string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_rgba_parse(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // String returns a textual specification of @rgba in the form `rgb(r,g,b)` or
@@ -230,7 +226,7 @@ func (r *RGBA) Parse(spec string) bool {
 // the range 0 to 1.
 //
 // These string forms are string forms that are supported by the CSS3 colors
-// module, and can be parsed by [method@Gdk.RGBA.parse].
+// module, and can be parsed by gdk_rgba_parse().
 //
 // Note that this string representation may lose some precision, since “r”, “g”
 // and “b” are represented as 8-bit integers. If this is a concern, you should
@@ -240,13 +236,14 @@ func (r *RGBA) String() string {
 
 	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gdk_rgba_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

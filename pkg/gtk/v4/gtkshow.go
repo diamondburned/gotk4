@@ -16,13 +16,13 @@ import "C"
 
 // ShowURI: this function launches the default application for showing a given
 // uri, or shows an error dialog if that fails.
-func ShowURI(parent Window, urI string, timestamp uint32) {
+func ShowURI(parent Window, uri string, timestamp uint32) {
 	var arg1 *C.GtkWindow
 	var arg2 *C.char
 	var arg3 C.guint32
 
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	arg2 = (*C.char)(C.CString(urI))
+	arg2 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.guint32(timestamp)
 
@@ -38,7 +38,7 @@ func ShowURI(parent Window, urI string, timestamp uint32) {
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
 func ShowURIFull() {
-	C.gtk_show_uri_full(arg1, arg2, arg3, arg4, arg5, arg6)
+	C.gtk_show_uri_full()
 }
 
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
@@ -51,9 +51,10 @@ func ShowURIFullFinish(parent Window, result gio.AsyncResult) error {
 	arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_show_uri_full_finish(arg1, arg2, &cerr)
+	C.gtk_show_uri_full_finish(arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 

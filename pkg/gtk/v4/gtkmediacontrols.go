@@ -21,11 +21,8 @@ func init() {
 	})
 }
 
-// MediaControls: `GtkMediaControls` is a widget to show controls for a video.
-//
-// !An example GtkMediaControls (media-controls.png)
-//
-// Usually, `GtkMediaControls` is used as part of [class@Gtk.Video].
+// MediaControls gtkMediaControls is a widget to show controls for a MediaStream
+// and giving users a way to use it.
 type MediaControls interface {
 	Widget
 	Accessible
@@ -72,13 +69,14 @@ func NewMediaControls(stream MediaStream) MediaControls {
 	arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
 	var cret C.GtkMediaControls
-	var goret MediaControls
 
 	cret = C.gtk_media_controls_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaControls)
+	var mediaControls MediaControls
 
-	return goret
+	mediaControls = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaControls)
+
+	return mediaControls
 }
 
 // MediaStream gets the media stream managed by @controls or nil if none.
@@ -88,13 +86,14 @@ func (c mediaControls) MediaStream() MediaStream {
 	arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkMediaStream
-	var goret MediaStream
 
 	cret = C.gtk_media_controls_get_media_stream(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
+	var mediaStream MediaStream
 
-	return goret
+	mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
+
+	return mediaStream
 }
 
 // SetMediaStream sets the stream that is controlled by @controls.

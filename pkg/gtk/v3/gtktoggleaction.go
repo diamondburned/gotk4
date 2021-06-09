@@ -67,7 +67,7 @@ func marshalToggleAction(p uintptr) (interface{}, error) {
 }
 
 // NewToggleAction constructs a class ToggleAction.
-func NewToggleAction(name string, label string, tooltip string, stockID string) ToggleAction {
+func NewToggleAction(name string, label string, tooltip string, stockId string) ToggleAction {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -79,17 +79,18 @@ func NewToggleAction(name string, label string, tooltip string, stockID string) 
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.gchar)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stockID))
+	arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg4))
 
-	cret := new(C.GtkToggleAction)
-	var goret ToggleAction
+	var cret C.GtkToggleAction
 
 	cret = C.gtk_toggle_action_new(arg1, arg2, arg3, arg4)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ToggleAction)
+	var toggleAction ToggleAction
 
-	return goret
+	toggleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ToggleAction)
+
+	return toggleAction
 }
 
 // Active returns the checked state of the toggle action.
@@ -99,15 +100,16 @@ func (a toggleAction) Active() bool {
 	arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toggle_action_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // DrawAsRadio returns whether the action should have proxies like a radio
@@ -118,15 +120,16 @@ func (a toggleAction) DrawAsRadio() bool {
 	arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toggle_action_get_draw_as_radio(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActive sets the checked state on the toggle action.

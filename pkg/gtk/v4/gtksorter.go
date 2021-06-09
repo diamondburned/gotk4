@@ -18,56 +18,50 @@ func init() {
 	})
 }
 
-// Sorter: `GtkSorter` is an object to describe sorting criteria.
-//
-// Its primary user is [class@Gtk.SortListModel]
+// Sorter is the way to describe sorting criteria. Its primary user is
+// SortListModel.
 //
 // The model will use a sorter to determine the order in which its items should
-// appear by calling [method@Gtk.Sorter.compare] for pairs of items.
+// appear by calling gtk_sorter_compare() for pairs of items.
 //
 // Sorters may change their sorting behavior through their lifetime. In that
-// case, they will emit the [signal@Gtk.Sorter::changed] signal to notify that
-// the sort order is no longer valid and should be updated by calling
-// gtk_sorter_compare() again.
+// case, they will emit the Sorter::changed signal to notify that the sort order
+// is no longer valid and should be updated by calling gtk_sorter_compare()
+// again.
 //
 // GTK provides various pre-made sorter implementations for common sorting
-// operations. [class@Gtk.ColumnView] has built-in support for sorting lists via
-// the [property@Gtk.ColumnViewColumn:sorter] property, where the user can
-// change the sorting by clicking on list headers.
+// operations. ColumnView has built-in support for sorting lists via the
+// ColumnViewColumn:sorter property, where the user can change the sorting by
+// clicking on list headers.
 //
 // Of course, in particular for large lists, it is also possible to subclass
-// `GtkSorter` and provide one's own sorter.
+// Sorter and provide one's own sorter.
 type Sorter interface {
 	gextras.Objector
 
-	// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
-	// of the sorter that it has changed.
-	//
-	// Users of the sorter should then update the sort order via
-	// gtk_sorter_compare().
+	// Changed emits the Sorter::changed signal to notify all users of the
+	// sorter that it has changed. Users of the sorter should then update the
+	// sort order via gtk_sorter_compare().
 	//
 	// Depending on the @change parameter, it may be possible to update the sort
-	// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
-	// documentation for details.
+	// order without a full resorting. Refer to the SorterChange documentation
+	// for details.
 	//
-	// This function is intended for implementors of `GtkSorter` subclasses and
+	// This function is intended for implementors of Sorter subclasses and
 	// should not be called from other functions.
 	Changed(change SorterChange)
 	// Compare compares two given items according to the sort order implemented
 	// by the sorter.
 	//
-	// Sorters implement a partial order:
-	//
-	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-	// then a ≤ c
+	// Sorters implement a partial order: * It is reflexive, ie a = a * It is
+	// antisymmetric, ie if a < b and b < a, then a = b * It is transitive, ie
+	// given any 3 items with a ≤ b and b ≤ c, then a ≤ c
 	//
 	// The sorter may signal it conforms to additional constraints via the
-	// return value of [method@Gtk.Sorter.get_order].
+	// return value of gtk_sorter_get_order().
 	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// Order gets the order that @self conforms to.
-	//
-	// See [enum@Gtk.SorterOrder] for details of the possible return values.
+	// Order gets the order that @self conforms to. See SorterOrder for details
+	// of the possible return values.
 	//
 	// This function is intended to allow optimizations.
 	Order() SorterOrder
@@ -94,17 +88,15 @@ func marshalSorter(p uintptr) (interface{}, error) {
 	return WrapSorter(obj), nil
 }
 
-// Changed emits the [signal@Gtk.Sorter::changed] signal to notify all users
-// of the sorter that it has changed.
-//
-// Users of the sorter should then update the sort order via
-// gtk_sorter_compare().
+// Changed emits the Sorter::changed signal to notify all users of the
+// sorter that it has changed. Users of the sorter should then update the
+// sort order via gtk_sorter_compare().
 //
 // Depending on the @change parameter, it may be possible to update the sort
-// order without a full resorting. Refer to the [enum@Gtk.SorterChange]
-// documentation for details.
+// order without a full resorting. Refer to the SorterChange documentation
+// for details.
 //
-// This function is intended for implementors of `GtkSorter` subclasses and
+// This function is intended for implementors of Sorter subclasses and
 // should not be called from other functions.
 func (s sorter) Changed(change SorterChange) {
 	var arg0 *C.GtkSorter
@@ -119,14 +111,12 @@ func (s sorter) Changed(change SorterChange) {
 // Compare compares two given items according to the sort order implemented
 // by the sorter.
 //
-// Sorters implement a partial order:
-//
-// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-// then a ≤ c
+// Sorters implement a partial order: * It is reflexive, ie a = a * It is
+// antisymmetric, ie if a < b and b < a, then a = b * It is transitive, ie
+// given any 3 items with a ≤ b and b ≤ c, then a ≤ c
 //
 // The sorter may signal it conforms to additional constraints via the
-// return value of [method@Gtk.Sorter.get_order].
+// return value of gtk_sorter_get_order().
 func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
 	var arg0 *C.GtkSorter
 	var arg1 C.gpointer
@@ -137,18 +127,18 @@ func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 	arg2 = (*C.GObject)(unsafe.Pointer(item2.Native()))
 
 	var cret C.GtkOrdering
-	var goret Ordering
 
 	cret = C.gtk_sorter_compare(arg0, arg1, arg2)
 
-	goret = Ordering(cret)
+	var ordering Ordering
 
-	return goret
+	ordering = Ordering(cret)
+
+	return ordering
 }
 
-// Order gets the order that @self conforms to.
-//
-// See [enum@Gtk.SorterOrder] for details of the possible return values.
+// Order gets the order that @self conforms to. See SorterOrder for details
+// of the possible return values.
 //
 // This function is intended to allow optimizations.
 func (s sorter) Order() SorterOrder {
@@ -157,11 +147,12 @@ func (s sorter) Order() SorterOrder {
 	arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSorterOrder
-	var goret SorterOrder
 
 	cret = C.gtk_sorter_get_order(arg0)
 
-	goret = SorterOrder(cret)
+	var sorterOrder SorterOrder
 
-	return goret
+	sorterOrder = SorterOrder(cret)
+
+	return sorterOrder
 }

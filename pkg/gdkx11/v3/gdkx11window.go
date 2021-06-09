@@ -28,13 +28,14 @@ func X11GetServerTime(window X11Window) uint32 {
 	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gdk_x11_get_server_time(arg1)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 type X11Window interface {
@@ -127,13 +128,14 @@ func (w x11Window) Desktop() uint32 {
 	arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gdk_x11_window_get_desktop(arg0)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // MoveToCurrentDesktop moves the window to the correct workspace when

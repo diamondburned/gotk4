@@ -124,13 +124,14 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkAppChooserButton
-	var goret AppChooserButton
 
 	cret = C.gtk_app_chooser_button_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
+	var appChooserButton AppChooserButton
 
-	return goret
+	appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
+
+	return appChooserButton
 }
 
 // AppendCustomItem appends a custom item to the list of applications that
@@ -172,13 +173,14 @@ func (s appChooserButton) Heading() string {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_app_chooser_button_get_heading(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ShowDefaultItem returns the current value of the
@@ -189,15 +191,16 @@ func (s appChooserButton) ShowDefaultItem() bool {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_button_get_show_default_item(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowDialogItem returns the current value of the
@@ -208,15 +211,16 @@ func (s appChooserButton) ShowDialogItem() bool {
 	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_app_chooser_button_get_show_dialog_item(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActiveCustomItem selects a custom item previously added with

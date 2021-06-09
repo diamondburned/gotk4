@@ -47,15 +47,16 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 	arg6 = (C.GdkEventType)(buttonPressrelease)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_test_simulate_button(arg1, arg2, arg3, arg4, arg5, arg6)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TestSimulateKey: this function is intended to be used in GTK+ test programs.
@@ -88,13 +89,14 @@ func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers Modifie
 	arg6 = (C.GdkEventType)(keyPressrelease)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_test_simulate_key(arg1, arg2, arg3, arg4, arg5, arg6)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

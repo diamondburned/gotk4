@@ -3,7 +3,6 @@
 package gobject
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -33,24 +32,18 @@ import "C"
 //
 //      g_enum_complete_type_info (type, info, values);
 //    }
-func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) *TypeInfo {
+func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) TypeInfo {
 	var arg1 C.GType
 	var arg3 *C.GEnumValue
 
 	arg1 = C.GType(gEnumType)
 	arg3 = (*C.GEnumValue)(unsafe.Pointer(constValues.Native()))
 
-	arg2 := new(C.GTypeInfo)
-	var ret2 *TypeInfo
+	var info TypeInfo
 
-	C.g_enum_complete_type_info(arg1, arg2, arg3)
+	C.g_enum_complete_type_info(arg1, arg3, (*C.GTypeInfo)(unsafe.Pointer(&info)))
 
-	ret2 = WrapTypeInfo(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v *TypeInfo) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret2
+	return info
 }
 
 // EnumRegisterStatic registers a new static enumeration type with the name
@@ -68,13 +61,14 @@ func EnumRegisterStatic(name string, constStaticValues *EnumValue) externglib.Ty
 	arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
 
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_enum_register_static(arg1, arg2)
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 // EnumToString pretty-prints @value in the form of the enum’s name.
@@ -88,38 +82,33 @@ func EnumToString(gEnumType externglib.Type, value int) string {
 	arg1 = C.GType(gEnumType)
 	arg2 = C.gint(value)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_enum_to_string(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // FlagsCompleteTypeInfo: this function is meant to be called from the
 // complete_type_info() function of a Plugin implementation, see the example for
 // g_enum_complete_type_info() above.
-func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) *TypeInfo {
+func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) TypeInfo {
 	var arg1 C.GType
 	var arg3 *C.GFlagsValue
 
 	arg1 = C.GType(gFlagsType)
 	arg3 = (*C.GFlagsValue)(unsafe.Pointer(constValues.Native()))
 
-	arg2 := new(C.GTypeInfo)
-	var ret2 *TypeInfo
+	var info TypeInfo
 
-	C.g_flags_complete_type_info(arg1, arg2, arg3)
+	C.g_flags_complete_type_info(arg1, arg3, (*C.GTypeInfo)(unsafe.Pointer(&info)))
 
-	ret2 = WrapTypeInfo(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v *TypeInfo) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return ret2
+	return info
 }
 
 // FlagsRegisterStatic registers a new static flags type with the name @name.
@@ -136,13 +125,14 @@ func FlagsRegisterStatic(name string, constStaticValues *FlagsValue) externglib.
 	arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
 
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_flags_register_static(arg1, arg2)
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 // FlagsToString pretty-prints @value in the form of the flag names separated by
@@ -158,15 +148,16 @@ func FlagsToString(flagsType externglib.Type, value uint) string {
 	arg1 = C.GType(flagsType)
 	arg2 = C.guint(value)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_flags_to_string(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // EnumValue: a structure which contains a single enum value, its name, and its
@@ -198,7 +189,7 @@ func (e *EnumValue) Native() unsafe.Pointer {
 // Value gets the field inside the struct.
 func (e *EnumValue) Value() int {
 	var v int
-	v = int(e.native.value)
+	v = (int)(e.native.value)
 	return v
 }
 
@@ -245,7 +236,7 @@ func (f *FlagsValue) Native() unsafe.Pointer {
 // Value gets the field inside the struct.
 func (f *FlagsValue) Value() uint {
 	var v uint
-	v = uint(f.native.value)
+	v = (uint)(f.native.value)
 	return v
 }
 

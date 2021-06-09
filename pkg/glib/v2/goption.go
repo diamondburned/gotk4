@@ -163,7 +163,7 @@ func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain 
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(entries)))
 
 		for i := range entries {
-			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
+			arg1 = (C.GOptionEntry)(unsafe.Pointer(entries.Native()))
 		}
 	}
 	arg2 = (*C.gchar)(C.CString(translationDomain))
@@ -190,13 +190,14 @@ func (c *OptionContext) Description() string {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_option_context_get_description(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Help returns a formatted, translated help text for the given context. To
@@ -216,15 +217,16 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 	}
 	arg2 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_option_context_get_help(arg0, arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // HelpEnabled returns whether automatic `--help` generation is turned on for
@@ -235,15 +237,16 @@ func (c *OptionContext) HelpEnabled() bool {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_option_context_get_help_enabled(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IgnoreUnknownOptions returns whether unknown options are ignored or not. See
@@ -254,15 +257,16 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_option_context_get_ignore_unknown_options(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // MainGroup returns a pointer to the main group of @context.
@@ -272,13 +276,14 @@ func (c *OptionContext) MainGroup() *OptionGroup {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GOptionGroup
-	var goret *OptionGroup
 
 	cret = C.g_option_context_get_main_group(arg0)
 
-	goret = WrapOptionGroup(unsafe.Pointer(cret))
+	var optionGroup *OptionGroup
 
-	return goret
+	optionGroup = WrapOptionGroup(unsafe.Pointer(cret))
+
+	return optionGroup
 }
 
 // StrictPosix returns whether strict POSIX code is enabled.
@@ -290,15 +295,16 @@ func (c *OptionContext) StrictPosix() bool {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_option_context_get_strict_posix(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Summary returns the summary. See g_option_context_set_summary().
@@ -308,13 +314,14 @@ func (c *OptionContext) Summary() string {
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_option_context_get_summary(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SetDescription adds a string to be displayed in `--help` output after the
@@ -449,7 +456,7 @@ func (c *OptionContext) SetTranslateFunc() {
 
 	arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	C.g_option_context_set_translate_func(arg0, arg1, arg2, arg3)
+	C.g_option_context_set_translate_func(arg0)
 }
 
 // SetTranslationDomain: a convenience function to use gettext() for translating
@@ -502,14 +509,14 @@ func (o *OptionEntry) LongName() string {
 // ShortName gets the field inside the struct.
 func (o *OptionEntry) ShortName() byte {
 	var v byte
-	v = byte(o.native.short_name)
+	v = (byte)(o.native.short_name)
 	return v
 }
 
 // Flags gets the field inside the struct.
 func (o *OptionEntry) Flags() int {
 	var v int
-	v = int(o.native.flags)
+	v = (int)(o.native.flags)
 	return v
 }
 
@@ -523,7 +530,7 @@ func (o *OptionEntry) Arg() OptionArg {
 // ArgData gets the field inside the struct.
 func (o *OptionEntry) ArgData() interface{} {
 	var v interface{}
-	v = interface{}(o.native.arg_data)
+	v = (interface{})(o.native.arg_data)
 	return v
 }
 
@@ -586,7 +593,7 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(entries)))
 
 		for i := range entries {
-			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
+			arg1 = (C.GOptionEntry)(unsafe.Pointer(entries.Native()))
 		}
 	}
 
@@ -609,17 +616,18 @@ func (g *OptionGroup) Ref() *OptionGroup {
 
 	arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
-	cret := new(C.GOptionGroup)
-	var goret *OptionGroup
+	var cret *C.GOptionGroup
 
 	cret = C.g_option_group_ref(arg0)
 
-	goret = WrapOptionGroup(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *OptionGroup) {
+	var optionGroup *OptionGroup
+
+	optionGroup = WrapOptionGroup(unsafe.Pointer(cret))
+	runtime.SetFinalizer(optionGroup, func(v *OptionGroup) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return optionGroup
 }
 
 // SetTranslateFunc sets the function which is used to translate user-visible
@@ -633,7 +641,7 @@ func (g *OptionGroup) SetTranslateFunc() {
 
 	arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
-	C.g_option_group_set_translate_func(arg0, arg1, arg2, arg3)
+	C.g_option_group_set_translate_func(arg0)
 }
 
 // SetTranslationDomain: a convenience function to use gettext() for translating

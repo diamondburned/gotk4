@@ -100,7 +100,7 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 }
 
 // NewRadioAction constructs a class RadioAction.
-func NewRadioAction(name string, label string, tooltip string, stockID string, value int) RadioAction {
+func NewRadioAction(name string, label string, tooltip string, stockId string, value int) RadioAction {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -113,18 +113,19 @@ func NewRadioAction(name string, label string, tooltip string, stockID string, v
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.gchar)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stockID))
+	arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = C.gint(value)
 
-	cret := new(C.GtkRadioAction)
-	var goret RadioAction
+	var cret C.GtkRadioAction
 
 	cret = C.gtk_radio_action_new(arg1, arg2, arg3, arg4, arg5)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RadioAction)
+	var radioAction RadioAction
 
-	return goret
+	radioAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RadioAction)
+
+	return radioAction
 }
 
 // CurrentValue obtains the value property of the currently active member of
@@ -135,13 +136,14 @@ func (a radioAction) CurrentValue() int {
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_radio_action_get_current_value(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Group returns the list representing the radio group for this object. Note
@@ -165,13 +167,14 @@ func (a radioAction) Group() *glib.SList {
 	arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GSList
-	var goret *glib.SList
 
 	cret = C.gtk_radio_action_get_group(arg0)
 
-	goret = glib.WrapSList(unsafe.Pointer(cret))
+	var sList *glib.SList
 
-	return goret
+	sList = glib.WrapSList(unsafe.Pointer(cret))
+
+	return sList
 }
 
 // JoinGroup joins a radio action object to the group of another radio

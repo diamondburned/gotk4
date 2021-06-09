@@ -80,7 +80,7 @@ type IconView interface {
 	// specified by @path and @cell. If @cell is nil the main cell area is used.
 	//
 	// This function is only valid if @icon_view is realized.
-	CellRect(path *TreePath, cell CellRenderer) (rect *gdk.Rectangle, ok bool)
+	CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangle, ok bool)
 	// ColumnSpacing returns the value of the ::column-spacing property.
 	ColumnSpacing() int
 	// Columns returns the value of the ::columns property.
@@ -90,19 +90,19 @@ type IconView interface {
 	// currently has focus, then *@cell will be nil.
 	//
 	// The returned TreePath must be freed with gtk_tree_path_free().
-	Cursor() (path **TreePath, cell CellRenderer, ok bool)
+	Cursor() (path *TreePath, cell CellRenderer, ok bool)
 	// DestItemAtPos determines the destination item for a given position.
-	DestItemAtPos(dragX int, dragY int) (path **TreePath, pos *IconViewDropPosition, ok bool)
+	DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool)
 	// DragDestItem gets information about the item that is highlighted for
 	// feedback.
-	DragDestItem() (path **TreePath, pos *IconViewDropPosition)
+	DragDestItem() (path *TreePath, pos IconViewDropPosition)
 	// ItemAtPos finds the path at the point (@x, @y), relative to bin_window
 	// coordinates. In contrast to gtk_icon_view_get_path_at_pos(), this
 	// function also obtains the cell at the specified position. The returned
 	// path should be freed with gtk_tree_path_free(). See
 	// gtk_icon_view_convert_widget_to_bin_window_coords() for converting widget
 	// coordinates to bin_window coordinates.
-	ItemAtPos(x int, y int) (path **TreePath, cell CellRenderer, ok bool)
+	ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool)
 	// ItemColumn gets the column in which the item @path is currently
 	// displayed. Column numbers start at 0.
 	ItemColumn(path *TreePath) int
@@ -167,12 +167,12 @@ type IconView interface {
 	// to that row and the corresponding model. @x and @y will always be
 	// converted to be relative to @icon_view’s bin_window if @keyboard_tooltip
 	// is false.
-	TooltipContext(x int, y int, keyboardTip bool) (model *TreeModel, path **TreePath, iter *TreeIter, ok bool)
+	TooltipContext(x *int, y *int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool)
 	// VisibleRange sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
 	// Both paths should be freed with gtk_tree_path_free() after use.
-	VisibleRange() (startPath **TreePath, endPath **TreePath, ok bool)
+	VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool)
 	// ItemActivated activates the item determined by @path.
 	ItemActivated(path *TreePath)
 	// PathIsSelected returns true if the icon pointed to by @path is currently
@@ -340,13 +340,14 @@ func marshalIconView(p uintptr) (interface{}, error) {
 // NewIconView constructs a class IconView.
 func NewIconView() IconView {
 	var cret C.GtkIconView
-	var goret IconView
 
 	cret = C.gtk_icon_view_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	var iconView IconView
 
-	return goret
+	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+
+	return iconView
 }
 
 // NewIconViewWithArea constructs a class IconView.
@@ -356,13 +357,14 @@ func NewIconViewWithArea(area CellArea) IconView {
 	arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
 
 	var cret C.GtkIconView
-	var goret IconView
 
 	cret = C.gtk_icon_view_new_with_area(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	var iconView IconView
 
-	return goret
+	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+
+	return iconView
 }
 
 // NewIconViewWithModel constructs a class IconView.
@@ -372,13 +374,14 @@ func NewIconViewWithModel(model TreeModel) IconView {
 	arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
 
 	var cret C.GtkIconView
-	var goret IconView
 
 	cret = C.gtk_icon_view_new_with_model(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+	var iconView IconView
 
-	return goret
+	iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconView)
+
+	return iconView
 }
 
 // ConvertWidgetToBinWindowCoords converts widget coordinates to coordinates
@@ -392,17 +395,18 @@ func (i iconView) ConvertWidgetToBinWindowCoords(wx int, wy int) (bx int, by int
 	arg1 = C.gint(wx)
 	arg2 = C.gint(wy)
 
-	arg3 := new(C.gint)
-	var ret3 int
-	arg4 := new(C.gint)
-	var ret4 int
+	var arg3 C.gint
+	var arg4 C.gint
 
-	C.gtk_icon_view_convert_widget_to_bin_window_coords(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_icon_view_convert_widget_to_bin_window_coords(arg0, arg1, arg2, &arg3, &arg4)
 
-	ret3 = int(*arg3)
-	ret4 = int(*arg4)
+	var bx int
+	var by int
 
-	return ret3, ret4
+	bx = (int)(arg3)
+	by = (int)(arg4)
+
+	return bx, by
 }
 
 // CreateDragIcon creates a #cairo_surface_t representation of the item at
@@ -414,17 +418,18 @@ func (i iconView) CreateDragIcon(path *TreePath) *cairo.Surface {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
-	cret := new(C.cairo_surface_t)
-	var goret *cairo.Surface
+	var cret *C.cairo_surface_t
 
 	cret = C.gtk_icon_view_create_drag_icon(arg0, arg1)
 
-	goret = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *cairo.Surface) {
+	var surface *cairo.Surface
+
+	surface = cairo.WrapSurface(unsafe.Pointer(cret))
+	runtime.SetFinalizer(surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return surface
 }
 
 // ActivateOnSingleClick gets the setting set by
@@ -435,22 +440,23 @@ func (i iconView) ActivateOnSingleClick() bool {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_view_get_activate_on_single_click(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CellRect fills the bounding rectangle in widget coordinates for the cell
 // specified by @path and @cell. If @cell is nil the main cell area is used.
 //
 // This function is only valid if @icon_view is realized.
-func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect *gdk.Rectangle, ok bool) {
+func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect gdk.Rectangle, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 *C.GtkTreePath
 	var arg2 *C.GtkCellRenderer
@@ -459,19 +465,18 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (rect *gdk.Rectang
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 	arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
-	arg3 := new(C.GdkRectangle)
-	var ret3 *gdk.Rectangle
+	var rect gdk.Rectangle
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_cell_rect(arg0, arg1, arg2, arg3)
+	cret = C.gtk_icon_view_get_cell_rect(arg0, arg1, arg2, (*C.GdkRectangle)(unsafe.Pointer(&rect)))
 
-	ret3 = gdk.WrapRectangle(unsafe.Pointer(arg3))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret3, goret
+	return rect, ok
 }
 
 // ColumnSpacing returns the value of the ::column-spacing property.
@@ -481,13 +486,14 @@ func (i iconView) ColumnSpacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_column_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Columns returns the value of the ::columns property.
@@ -497,13 +503,14 @@ func (i iconView) Columns() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_columns(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Cursor fills in @path and @cell with the current cursor path and cell. If
@@ -511,34 +518,30 @@ func (i iconView) Columns() int {
 // currently has focus, then *@cell will be nil.
 //
 // The returned TreePath must be freed with gtk_tree_path_free().
-func (i iconView) Cursor() (path **TreePath, cell CellRenderer, ok bool) {
+func (i iconView) Cursor() (path *TreePath, cell CellRenderer, ok bool) {
 	var arg0 *C.GtkIconView
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.GtkTreePath)
-	var ret1 **TreePath
+	var path *TreePath
 	var arg2 **C.GtkCellRenderer
-	var ret2 CellRenderer
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_cursor(arg0, arg1, arg2)
+	cret = C.gtk_icon_view_get_cursor(arg0, (**C.GtkTreePath)(unsafe.Pointer(&path)), arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
+	var cell CellRenderer
+	var ok bool
+
+	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(CellRenderer)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return path, cell, ok
 }
 
 // DestItemAtPos determines the destination item for a given position.
-func (i iconView) DestItemAtPos(dragX int, dragY int) (path **TreePath, pos *IconViewDropPosition, ok bool) {
+func (i iconView) DestItemAtPos(dragX int, dragY int) (path *TreePath, pos IconViewDropPosition, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 C.gint
 	var arg2 C.gint
@@ -547,48 +550,40 @@ func (i iconView) DestItemAtPos(dragX int, dragY int) (path **TreePath, pos *Ico
 	arg1 = C.gint(dragX)
 	arg2 = C.gint(dragY)
 
-	arg3 := new(*C.GtkTreePath)
-	var ret3 **TreePath
-	arg4 := new(C.GtkIconViewDropPosition)
-	var ret4 *IconViewDropPosition
+	var path *TreePath
+	var arg4 C.GtkIconViewDropPosition
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_dest_item_at_pos(arg0, arg1, arg2, arg3, arg4)
+	cret = C.gtk_icon_view_get_dest_item_at_pos(arg0, arg1, arg2, (**C.GtkTreePath)(unsafe.Pointer(&path)), &arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret4 = *IconViewDropPosition(arg4)
+	var pos IconViewDropPosition
+	var ok bool
+
+	pos = IconViewDropPosition(arg4)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret3, ret4, goret
+	return path, pos, ok
 }
 
 // DragDestItem gets information about the item that is highlighted for
 // feedback.
-func (i iconView) DragDestItem() (path **TreePath, pos *IconViewDropPosition) {
+func (i iconView) DragDestItem() (path *TreePath, pos IconViewDropPosition) {
 	var arg0 *C.GtkIconView
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.GtkTreePath)
-	var ret1 **TreePath
-	arg2 := new(C.GtkIconViewDropPosition)
-	var ret2 *IconViewDropPosition
+	var path *TreePath
+	var arg2 C.GtkIconViewDropPosition
 
-	C.gtk_icon_view_get_drag_dest_item(arg0, arg1, arg2)
+	C.gtk_icon_view_get_drag_dest_item(arg0, (**C.GtkTreePath)(unsafe.Pointer(&path)), &arg2)
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret2 = *IconViewDropPosition(arg2)
+	var pos IconViewDropPosition
 
-	return ret1, ret2
+	pos = IconViewDropPosition(arg2)
+
+	return path, pos
 }
 
 // ItemAtPos finds the path at the point (@x, @y), relative to bin_window
@@ -597,7 +592,7 @@ func (i iconView) DragDestItem() (path **TreePath, pos *IconViewDropPosition) {
 // path should be freed with gtk_tree_path_free(). See
 // gtk_icon_view_convert_widget_to_bin_window_coords() for converting widget
 // coordinates to bin_window coordinates.
-func (i iconView) ItemAtPos(x int, y int) (path **TreePath, cell CellRenderer, ok bool) {
+func (i iconView) ItemAtPos(x int, y int) (path *TreePath, cell CellRenderer, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 C.gint
 	var arg2 C.gint
@@ -606,25 +601,21 @@ func (i iconView) ItemAtPos(x int, y int) (path **TreePath, cell CellRenderer, o
 	arg1 = C.gint(x)
 	arg2 = C.gint(y)
 
-	arg3 := new(*C.GtkTreePath)
-	var ret3 **TreePath
+	var path *TreePath
 	var arg4 **C.GtkCellRenderer
-	var ret4 CellRenderer
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_item_at_pos(arg0, arg1, arg2, arg3, arg4)
+	cret = C.gtk_icon_view_get_item_at_pos(arg0, arg1, arg2, (**C.GtkTreePath)(unsafe.Pointer(&path)), arg4)
 
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
+	var cell CellRenderer
+	var ok bool
+
+	cell = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(CellRenderer)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret3, ret4, goret
+	return path, cell, ok
 }
 
 // ItemColumn gets the column in which the item @path is currently
@@ -637,13 +628,14 @@ func (i iconView) ItemColumn(path *TreePath) int {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_column(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ItemOrientation returns the value of the ::item-orientation property
@@ -655,13 +647,14 @@ func (i iconView) ItemOrientation() Orientation {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_icon_view_get_item_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
 // ItemPadding returns the value of the ::item-padding property.
@@ -671,13 +664,14 @@ func (i iconView) ItemPadding() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_padding(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ItemRow gets the row in which the item @path is currently displayed. Row
@@ -690,13 +684,14 @@ func (i iconView) ItemRow(path *TreePath) int {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_row(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ItemWidth returns the value of the ::item-width property.
@@ -706,13 +701,14 @@ func (i iconView) ItemWidth() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_item_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Margin returns the value of the ::margin property.
@@ -722,13 +718,14 @@ func (i iconView) Margin() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_margin(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // MarkupColumn returns the column with markup text for @icon_view.
@@ -738,13 +735,14 @@ func (i iconView) MarkupColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_markup_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Model returns the model the IconView is based on. Returns nil if the
@@ -755,13 +753,14 @@ func (i iconView) Model() TreeModel {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret TreeModel
 
 	cret = C.gtk_icon_view_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	var treeModel TreeModel
 
-	return goret
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+
+	return treeModel
 }
 
 // PathAtPos finds the path at the point (@x, @y), relative to bin_window
@@ -778,17 +777,18 @@ func (i iconView) PathAtPos(x int, y int) *TreePath {
 	arg1 = C.gint(x)
 	arg2 = C.gint(y)
 
-	cret := new(C.GtkTreePath)
-	var goret *TreePath
+	var cret *C.GtkTreePath
 
 	cret = C.gtk_icon_view_get_path_at_pos(arg0, arg1, arg2)
 
-	goret = WrapTreePath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *TreePath) {
+	var treePath *TreePath
+
+	treePath = WrapTreePath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(treePath, func(v *TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return treePath
 }
 
 // PixbufColumn returns the column with pixbufs for @icon_view.
@@ -798,13 +798,14 @@ func (i iconView) PixbufColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_pixbuf_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Reorderable retrieves whether the user can reorder the list via
@@ -815,15 +816,16 @@ func (i iconView) Reorderable() bool {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_view_get_reorderable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RowSpacing returns the value of the ::row-spacing property.
@@ -833,13 +835,14 @@ func (i iconView) RowSpacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_row_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SelectedItems creates a list of paths of all selected items.
@@ -855,17 +858,18 @@ func (i iconView) SelectedItems() *glib.List {
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_icon_view_get_selected_items(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // SelectionMode gets the selection mode of the @icon_view.
@@ -875,13 +879,14 @@ func (i iconView) SelectionMode() SelectionMode {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret SelectionMode
 
 	cret = C.gtk_icon_view_get_selection_mode(arg0)
 
-	goret = SelectionMode(cret)
+	var selectionMode SelectionMode
 
-	return goret
+	selectionMode = SelectionMode(cret)
+
+	return selectionMode
 }
 
 // Spacing returns the value of the ::spacing property.
@@ -891,13 +896,14 @@ func (i iconView) Spacing() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // TextColumn returns the column with text for @icon_view.
@@ -907,13 +913,14 @@ func (i iconView) TextColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_text_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // TooltipColumn returns the column of @icon_view’s model which is being
@@ -924,13 +931,14 @@ func (i iconView) TooltipColumn() int {
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_icon_view_get_tooltip_column(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // TooltipContext: this function is supposed to be used in a
@@ -945,7 +953,7 @@ func (i iconView) TooltipColumn() int {
 // to that row and the corresponding model. @x and @y will always be
 // converted to be relative to @icon_view’s bin_window if @keyboard_tooltip
 // is false.
-func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model *TreeModel, path **TreePath, iter *TreeIter, ok bool) {
+func (i iconView) TooltipContext(x *int, y *int, keyboardTip bool) (model TreeModel, path *TreePath, iter TreeIter, ok bool) {
 	var arg0 *C.GtkIconView
 	var arg1 *C.gint
 	var arg2 *C.gint
@@ -959,60 +967,47 @@ func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (model *TreeMod
 	}
 
 	var arg4 **C.GtkTreeModel
-	var ret4 *TreeModel
-	arg5 := new(*C.GtkTreePath)
-	var ret5 **TreePath
-	arg6 := new(C.GtkTreeIter)
-	var ret6 *TreeIter
+	var path *TreePath
+	var iter TreeIter
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_tooltip_context(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.gtk_icon_view_get_tooltip_context(arg0, arg1, arg2, arg3, arg4, (**C.GtkTreePath)(unsafe.Pointer(&path)), (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret4 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(*TreeModel)
-	ret5 = WrapTreePath(unsafe.Pointer(arg5))
-	runtime.SetFinalizer(ret5, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret6 = WrapTreeIter(unsafe.Pointer(arg6))
+	var model TreeModel
+
+	var ok bool
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg4.Native()))).(TreeModel)
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret4, ret5, ret6, goret
+	return model, path, iter, ok
 }
 
 // VisibleRange sets @start_path and @end_path to be the first and last
 // visible path. Note that there may be invisible paths in between.
 //
 // Both paths should be freed with gtk_tree_path_free() after use.
-func (i iconView) VisibleRange() (startPath **TreePath, endPath **TreePath, ok bool) {
+func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok bool) {
 	var arg0 *C.GtkIconView
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.GtkTreePath)
-	var ret1 **TreePath
-	arg2 := new(*C.GtkTreePath)
-	var ret2 **TreePath
+	var startPath *TreePath
+	var endPath *TreePath
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_icon_view_get_visible_range(arg0, arg1, arg2)
+	cret = C.gtk_icon_view_get_visible_range(arg0, (**C.GtkTreePath)(unsafe.Pointer(&startPath)), (**C.GtkTreePath)(unsafe.Pointer(&endPath)))
 
-	ret1 = WrapTreePath(unsafe.Pointer(arg1))
-	runtime.SetFinalizer(ret1, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret2 = WrapTreePath(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return startPath, endPath, ok
 }
 
 // ItemActivated activates the item determined by @path.
@@ -1036,15 +1031,16 @@ func (i iconView) PathIsSelected(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_icon_view_path_is_selected(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ScrollToPath moves the alignments of @icon_view to the position specified
@@ -1108,7 +1104,7 @@ func (i iconView) SelectedForeach() {
 
 	arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
 
-	C.gtk_icon_view_selected_foreach(arg0, arg1, arg2)
+	C.gtk_icon_view_selected_foreach(arg0)
 }
 
 // SetActivateOnSingleClick causes the IconView::item-activated signal to be

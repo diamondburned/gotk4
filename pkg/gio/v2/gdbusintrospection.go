@@ -68,7 +68,7 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 // RefCount gets the field inside the struct.
 func (d *DBusAnnotationInfo) RefCount() int {
 	var v int
-	v = int(d.native.ref_count)
+	v = (int)(d.native.ref_count)
 	return v
 }
 
@@ -98,10 +98,12 @@ func (d *DBusAnnotationInfo) Annotations() []*DBusAnnotationInfo {
 			}
 		}
 
+		var src []*C.GDBusAnnotationInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.annotations), int(length))
+
 		v = make([]*DBusAnnotationInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusAnnotationInfo)(ptr.Add(unsafe.Pointer(d.native.annotations), i))
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
+			v = WrapDBusAnnotationInfo(unsafe.Pointer(d.native.annotations))
 		}
 	}
 	return v
@@ -114,17 +116,18 @@ func (i *DBusAnnotationInfo) Ref() *DBusAnnotationInfo {
 
 	arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GDBusAnnotationInfo)
-	var goret *DBusAnnotationInfo
+	var cret *C.GDBusAnnotationInfo
 
 	cret = C.g_dbus_annotation_info_ref(arg0)
 
-	goret = WrapDBusAnnotationInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusAnnotationInfo) {
+	var dBusAnnotationInfo *DBusAnnotationInfo
+
+	dBusAnnotationInfo = WrapDBusAnnotationInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusAnnotationInfo, func(v *DBusAnnotationInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dBusAnnotationInfo
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
@@ -166,7 +169,7 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 // RefCount gets the field inside the struct.
 func (d *DBusArgInfo) RefCount() int {
 	var v int
-	v = int(d.native.ref_count)
+	v = (int)(d.native.ref_count)
 	return v
 }
 
@@ -196,10 +199,12 @@ func (d *DBusArgInfo) Annotations() []*DBusAnnotationInfo {
 			}
 		}
 
+		var src []*C.GDBusAnnotationInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.annotations), int(length))
+
 		v = make([]*DBusAnnotationInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusAnnotationInfo)(ptr.Add(unsafe.Pointer(d.native.annotations), i))
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
+			v = WrapDBusAnnotationInfo(unsafe.Pointer(d.native.annotations))
 		}
 	}
 	return v
@@ -212,17 +217,18 @@ func (i *DBusArgInfo) Ref() *DBusArgInfo {
 
 	arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GDBusArgInfo)
-	var goret *DBusArgInfo
+	var cret *C.GDBusArgInfo
 
 	cret = C.g_dbus_arg_info_ref(arg0)
 
-	goret = WrapDBusArgInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusArgInfo) {
+	var dBusArgInfo *DBusArgInfo
+
+	dBusArgInfo = WrapDBusArgInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusArgInfo, func(v *DBusArgInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dBusArgInfo
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
@@ -264,7 +270,7 @@ func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 // RefCount gets the field inside the struct.
 func (d *DBusInterfaceInfo) RefCount() int {
 	var v int
-	v = int(d.native.ref_count)
+	v = (int)(d.native.ref_count)
 	return v
 }
 
@@ -287,10 +293,12 @@ func (d *DBusInterfaceInfo) Methods() []*DBusMethodInfo {
 			}
 		}
 
+		var src []*C.GDBusMethodInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.methods), int(length))
+
 		v = make([]*DBusMethodInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusMethodInfo)(ptr.Add(unsafe.Pointer(d.native.methods), i))
-			v[i] = WrapDBusMethodInfo(unsafe.Pointer(src))
+			v = WrapDBusMethodInfo(unsafe.Pointer(d.native.methods))
 		}
 	}
 	return v
@@ -308,10 +316,12 @@ func (d *DBusInterfaceInfo) Signals() []*DBusSignalInfo {
 			}
 		}
 
+		var src []*C.GDBusSignalInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.signals), int(length))
+
 		v = make([]*DBusSignalInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusSignalInfo)(ptr.Add(unsafe.Pointer(d.native.signals), i))
-			v[i] = WrapDBusSignalInfo(unsafe.Pointer(src))
+			v = WrapDBusSignalInfo(unsafe.Pointer(d.native.signals))
 		}
 	}
 	return v
@@ -329,10 +339,12 @@ func (d *DBusInterfaceInfo) Properties() []*DBusPropertyInfo {
 			}
 		}
 
+		var src []*C.GDBusPropertyInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.properties), int(length))
+
 		v = make([]*DBusPropertyInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusPropertyInfo)(ptr.Add(unsafe.Pointer(d.native.properties), i))
-			v[i] = WrapDBusPropertyInfo(unsafe.Pointer(src))
+			v = WrapDBusPropertyInfo(unsafe.Pointer(d.native.properties))
 		}
 	}
 	return v
@@ -350,10 +362,12 @@ func (d *DBusInterfaceInfo) Annotations() []*DBusAnnotationInfo {
 			}
 		}
 
+		var src []*C.GDBusAnnotationInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.annotations), int(length))
+
 		v = make([]*DBusAnnotationInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusAnnotationInfo)(ptr.Add(unsafe.Pointer(d.native.annotations), i))
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
+			v = WrapDBusAnnotationInfo(unsafe.Pointer(d.native.annotations))
 		}
 	}
 	return v
@@ -418,13 +432,14 @@ func (i *DBusInterfaceInfo) LookupMethod(name string) *DBusMethodInfo {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GDBusMethodInfo
-	var goret *DBusMethodInfo
 
 	cret = C.g_dbus_interface_info_lookup_method(arg0, arg1)
 
-	goret = WrapDBusMethodInfo(unsafe.Pointer(cret))
+	var dBusMethodInfo *DBusMethodInfo
 
-	return goret
+	dBusMethodInfo = WrapDBusMethodInfo(unsafe.Pointer(cret))
+
+	return dBusMethodInfo
 }
 
 // LookupProperty looks up information about a property.
@@ -440,13 +455,14 @@ func (i *DBusInterfaceInfo) LookupProperty(name string) *DBusPropertyInfo {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GDBusPropertyInfo
-	var goret *DBusPropertyInfo
 
 	cret = C.g_dbus_interface_info_lookup_property(arg0, arg1)
 
-	goret = WrapDBusPropertyInfo(unsafe.Pointer(cret))
+	var dBusPropertyInfo *DBusPropertyInfo
 
-	return goret
+	dBusPropertyInfo = WrapDBusPropertyInfo(unsafe.Pointer(cret))
+
+	return dBusPropertyInfo
 }
 
 // LookupSignal looks up information about a signal.
@@ -462,13 +478,14 @@ func (i *DBusInterfaceInfo) LookupSignal(name string) *DBusSignalInfo {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GDBusSignalInfo
-	var goret *DBusSignalInfo
 
 	cret = C.g_dbus_interface_info_lookup_signal(arg0, arg1)
 
-	goret = WrapDBusSignalInfo(unsafe.Pointer(cret))
+	var dBusSignalInfo *DBusSignalInfo
 
-	return goret
+	dBusSignalInfo = WrapDBusSignalInfo(unsafe.Pointer(cret))
+
+	return dBusSignalInfo
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
@@ -478,17 +495,18 @@ func (i *DBusInterfaceInfo) Ref() *DBusInterfaceInfo {
 
 	arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GDBusInterfaceInfo)
-	var goret *DBusInterfaceInfo
+	var cret *C.GDBusInterfaceInfo
 
 	cret = C.g_dbus_interface_info_ref(arg0)
 
-	goret = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusInterfaceInfo) {
+	var dBusInterfaceInfo *DBusInterfaceInfo
+
+	dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusInterfaceInfo, func(v *DBusInterfaceInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dBusInterfaceInfo
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
@@ -530,7 +548,7 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 // RefCount gets the field inside the struct.
 func (d *DBusMethodInfo) RefCount() int {
 	var v int
-	v = int(d.native.ref_count)
+	v = (int)(d.native.ref_count)
 	return v
 }
 
@@ -553,10 +571,12 @@ func (d *DBusMethodInfo) InArgs() []*DBusArgInfo {
 			}
 		}
 
+		var src []*C.GDBusArgInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.in_args), int(length))
+
 		v = make([]*DBusArgInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusArgInfo)(ptr.Add(unsafe.Pointer(d.native.in_args), i))
-			v[i] = WrapDBusArgInfo(unsafe.Pointer(src))
+			v = WrapDBusArgInfo(unsafe.Pointer(d.native.in_args))
 		}
 	}
 	return v
@@ -574,10 +594,12 @@ func (d *DBusMethodInfo) OutArgs() []*DBusArgInfo {
 			}
 		}
 
+		var src []*C.GDBusArgInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.out_args), int(length))
+
 		v = make([]*DBusArgInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusArgInfo)(ptr.Add(unsafe.Pointer(d.native.out_args), i))
-			v[i] = WrapDBusArgInfo(unsafe.Pointer(src))
+			v = WrapDBusArgInfo(unsafe.Pointer(d.native.out_args))
 		}
 	}
 	return v
@@ -595,10 +617,12 @@ func (d *DBusMethodInfo) Annotations() []*DBusAnnotationInfo {
 			}
 		}
 
+		var src []*C.GDBusAnnotationInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.annotations), int(length))
+
 		v = make([]*DBusAnnotationInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusAnnotationInfo)(ptr.Add(unsafe.Pointer(d.native.annotations), i))
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
+			v = WrapDBusAnnotationInfo(unsafe.Pointer(d.native.annotations))
 		}
 	}
 	return v
@@ -611,17 +635,18 @@ func (i *DBusMethodInfo) Ref() *DBusMethodInfo {
 
 	arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GDBusMethodInfo)
-	var goret *DBusMethodInfo
+	var cret *C.GDBusMethodInfo
 
 	cret = C.g_dbus_method_info_ref(arg0)
 
-	goret = WrapDBusMethodInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusMethodInfo) {
+	var dBusMethodInfo *DBusMethodInfo
+
+	dBusMethodInfo = WrapDBusMethodInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusMethodInfo, func(v *DBusMethodInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dBusMethodInfo
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
@@ -656,26 +681,27 @@ func marshalDBusNodeInfo(p uintptr) (interface{}, error) {
 }
 
 // NewDBusNodeInfoForXML constructs a struct DBusNodeInfo.
-func NewDBusNodeInfoForXML(xmlData string) (dBusNodeInfo *DBusNodeInfo, err error) {
+func NewDBusNodeInfoForXML(xmlData string) (dBusNodeInfo *DBusNodeInfo, goerr error) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(xmlData))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GDBusNodeInfo)
-	var goret *DBusNodeInfo
+	var cret *C.GDBusNodeInfo
 	var cerr *C.GError
+
+	cret = C.g_dbus_node_info_new_for_xml(arg1, cerr)
+
+	var dBusNodeInfo *DBusNodeInfo
 	var goerr error
 
-	cret = C.g_dbus_node_info_new_for_xml(arg1, &cerr)
-
-	goret = WrapDBusNodeInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusNodeInfo) {
+	dBusNodeInfo = WrapDBusNodeInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return dBusNodeInfo, goerr
 }
 
 // Native returns the underlying C source pointer.
@@ -686,7 +712,7 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 // RefCount gets the field inside the struct.
 func (d *DBusNodeInfo) RefCount() int {
 	var v int
-	v = int(d.native.ref_count)
+	v = (int)(d.native.ref_count)
 	return v
 }
 
@@ -709,10 +735,12 @@ func (d *DBusNodeInfo) Interfaces() []*DBusInterfaceInfo {
 			}
 		}
 
+		var src []*C.GDBusInterfaceInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.interfaces), int(length))
+
 		v = make([]*DBusInterfaceInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusInterfaceInfo)(ptr.Add(unsafe.Pointer(d.native.interfaces), i))
-			v[i] = WrapDBusInterfaceInfo(unsafe.Pointer(src))
+			v = WrapDBusInterfaceInfo(unsafe.Pointer(d.native.interfaces))
 		}
 	}
 	return v
@@ -730,10 +758,12 @@ func (d *DBusNodeInfo) Nodes() []*DBusNodeInfo {
 			}
 		}
 
+		var src []*C.GDBusNodeInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.nodes), int(length))
+
 		v = make([]*DBusNodeInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusNodeInfo)(ptr.Add(unsafe.Pointer(d.native.nodes), i))
-			v[i] = WrapDBusNodeInfo(unsafe.Pointer(src))
+			v = WrapDBusNodeInfo(unsafe.Pointer(d.native.nodes))
 		}
 	}
 	return v
@@ -751,10 +781,12 @@ func (d *DBusNodeInfo) Annotations() []*DBusAnnotationInfo {
 			}
 		}
 
+		var src []*C.GDBusAnnotationInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.annotations), int(length))
+
 		v = make([]*DBusAnnotationInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusAnnotationInfo)(ptr.Add(unsafe.Pointer(d.native.annotations), i))
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
+			v = WrapDBusAnnotationInfo(unsafe.Pointer(d.native.annotations))
 		}
 	}
 	return v
@@ -790,13 +822,14 @@ func (i *DBusNodeInfo) LookupInterface(name string) *DBusInterfaceInfo {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.GDBusInterfaceInfo
-	var goret *DBusInterfaceInfo
 
 	cret = C.g_dbus_node_info_lookup_interface(arg0, arg1)
 
-	goret = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+	var dBusInterfaceInfo *DBusInterfaceInfo
 
-	return goret
+	dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+
+	return dBusInterfaceInfo
 }
 
 // Ref: if @info is statically allocated does nothing. Otherwise increases the
@@ -806,17 +839,18 @@ func (i *DBusNodeInfo) Ref() *DBusNodeInfo {
 
 	arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GDBusNodeInfo)
-	var goret *DBusNodeInfo
+	var cret *C.GDBusNodeInfo
 
 	cret = C.g_dbus_node_info_ref(arg0)
 
-	goret = WrapDBusNodeInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusNodeInfo) {
+	var dBusNodeInfo *DBusNodeInfo
+
+	dBusNodeInfo = WrapDBusNodeInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusNodeInfo, func(v *DBusNodeInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dBusNodeInfo
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
@@ -858,7 +892,7 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 // RefCount gets the field inside the struct.
 func (d *DBusPropertyInfo) RefCount() int {
 	var v int
-	v = int(d.native.ref_count)
+	v = (int)(d.native.ref_count)
 	return v
 }
 
@@ -895,10 +929,12 @@ func (d *DBusPropertyInfo) Annotations() []*DBusAnnotationInfo {
 			}
 		}
 
+		var src []*C.GDBusAnnotationInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.annotations), int(length))
+
 		v = make([]*DBusAnnotationInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusAnnotationInfo)(ptr.Add(unsafe.Pointer(d.native.annotations), i))
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
+			v = WrapDBusAnnotationInfo(unsafe.Pointer(d.native.annotations))
 		}
 	}
 	return v
@@ -911,17 +947,18 @@ func (i *DBusPropertyInfo) Ref() *DBusPropertyInfo {
 
 	arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GDBusPropertyInfo)
-	var goret *DBusPropertyInfo
+	var cret *C.GDBusPropertyInfo
 
 	cret = C.g_dbus_property_info_ref(arg0)
 
-	goret = WrapDBusPropertyInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusPropertyInfo) {
+	var dBusPropertyInfo *DBusPropertyInfo
+
+	dBusPropertyInfo = WrapDBusPropertyInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusPropertyInfo, func(v *DBusPropertyInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dBusPropertyInfo
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases
@@ -963,7 +1000,7 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 // RefCount gets the field inside the struct.
 func (d *DBusSignalInfo) RefCount() int {
 	var v int
-	v = int(d.native.ref_count)
+	v = (int)(d.native.ref_count)
 	return v
 }
 
@@ -986,10 +1023,12 @@ func (d *DBusSignalInfo) Args() []*DBusArgInfo {
 			}
 		}
 
+		var src []*C.GDBusArgInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.args), int(length))
+
 		v = make([]*DBusArgInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusArgInfo)(ptr.Add(unsafe.Pointer(d.native.args), i))
-			v[i] = WrapDBusArgInfo(unsafe.Pointer(src))
+			v = WrapDBusArgInfo(unsafe.Pointer(d.native.args))
 		}
 	}
 	return v
@@ -1007,10 +1046,12 @@ func (d *DBusSignalInfo) Annotations() []*DBusAnnotationInfo {
 			}
 		}
 
+		var src []*C.GDBusAnnotationInfo
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(d.native.annotations), int(length))
+
 		v = make([]*DBusAnnotationInfo, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.GDBusAnnotationInfo)(ptr.Add(unsafe.Pointer(d.native.annotations), i))
-			v[i] = WrapDBusAnnotationInfo(unsafe.Pointer(src))
+			v = WrapDBusAnnotationInfo(unsafe.Pointer(d.native.annotations))
 		}
 	}
 	return v
@@ -1023,17 +1064,18 @@ func (i *DBusSignalInfo) Ref() *DBusSignalInfo {
 
 	arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GDBusSignalInfo)
-	var goret *DBusSignalInfo
+	var cret *C.GDBusSignalInfo
 
 	cret = C.g_dbus_signal_info_ref(arg0)
 
-	goret = WrapDBusSignalInfo(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *DBusSignalInfo) {
+	var dBusSignalInfo *DBusSignalInfo
+
+	dBusSignalInfo = WrapDBusSignalInfo(unsafe.Pointer(cret))
+	runtime.SetFinalizer(dBusSignalInfo, func(v *DBusSignalInfo) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return dBusSignalInfo
 }
 
 // Unref: if @info is statically allocated, does nothing. Otherwise decreases

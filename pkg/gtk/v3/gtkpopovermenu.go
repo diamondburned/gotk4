@@ -131,13 +131,14 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 // NewPopoverMenu constructs a class PopoverMenu.
 func NewPopoverMenu() PopoverMenu {
 	var cret C.GtkPopoverMenu
-	var goret PopoverMenu
 
 	cret = C.gtk_popover_menu_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+	var popoverMenu PopoverMenu
 
-	return goret
+	popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+
+	return popoverMenu
 }
 
 // OpenSubmenu opens a submenu of the @popover. The @name must be one of the

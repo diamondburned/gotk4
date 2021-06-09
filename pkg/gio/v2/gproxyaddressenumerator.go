@@ -24,11 +24,11 @@ import "C"
 
 func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProxyAddressEnumerator},
+		{T: externglib.Type(C.g_proxy_address_enumerator_get_type()), F: marshalProXYAddressEnumerator},
 	})
 }
 
-// ProxyAddressEnumerator is a wrapper around AddressEnumerator which takes the
+// ProXYAddressEnumerator is a wrapper around AddressEnumerator which takes the
 // Address instances returned by the AddressEnumerator and wraps them in Address
 // instances, using the given AddressEnumerator:proxy-resolver.
 //
@@ -36,27 +36,27 @@ func init() {
 // g_socket_connectable_enumerate()) as appropriate when a proxy is configured;
 // there should be no need to manually wrap a AddressEnumerator instance with
 // one.
-type ProxyAddressEnumerator interface {
+type ProXYAddressEnumerator interface {
 	SocketAddressEnumerator
 }
 
-// proxyAddressEnumerator implements the ProxyAddressEnumerator interface.
-type proxyAddressEnumerator struct {
+// proXYAddressEnumerator implements the ProXYAddressEnumerator interface.
+type proXYAddressEnumerator struct {
 	SocketAddressEnumerator
 }
 
-var _ ProxyAddressEnumerator = (*proxyAddressEnumerator)(nil)
+var _ ProXYAddressEnumerator = (*proXYAddressEnumerator)(nil)
 
-// WrapProxyAddressEnumerator wraps a GObject to the right type. It is
+// WrapProXYAddressEnumerator wraps a GObject to the right type. It is
 // primarily used internally.
-func WrapProxyAddressEnumerator(obj *externglib.Object) ProxyAddressEnumerator {
-	return ProxyAddressEnumerator{
+func WrapProXYAddressEnumerator(obj *externglib.Object) ProXYAddressEnumerator {
+	return ProXYAddressEnumerator{
 		SocketAddressEnumerator: WrapSocketAddressEnumerator(obj),
 	}
 }
 
-func marshalProxyAddressEnumerator(p uintptr) (interface{}, error) {
+func marshalProXYAddressEnumerator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
-	return WrapProxyAddressEnumerator(obj), nil
+	return WrapProXYAddressEnumerator(obj), nil
 }

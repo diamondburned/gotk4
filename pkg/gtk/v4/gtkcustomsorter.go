@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-// CustomSorter: `GtkCustomSorter` is a `GtkSorter` implementation that sorts
-// via a callback function.
+// CustomSorter: gtkCustomSorter is a Sorter implementation that sorts via a
+// traditional DataFunc callback.
 type CustomSorter interface {
 	Sorter
 
@@ -60,14 +60,15 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 
 // NewCustomSorter constructs a class CustomSorter.
 func NewCustomSorter() CustomSorter {
-	cret := new(C.GtkCustomSorter)
-	var goret CustomSorter
+	var cret C.GtkCustomSorter
 
-	cret = C.gtk_custom_sorter_new(arg1, arg2, arg3)
+	cret = C.gtk_custom_sorter_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomSorter)
+	var customSorter CustomSorter
 
-	return goret
+	customSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomSorter)
+
+	return customSorter
 }
 
 // SetSortFunc sets (or unsets) the function used for sorting items.
@@ -83,5 +84,5 @@ func (s customSorter) SetSortFunc() {
 
 	arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_custom_sorter_set_sort_func(arg0, arg1, arg2, arg3)
+	C.gtk_custom_sorter_set_sort_func(arg0)
 }

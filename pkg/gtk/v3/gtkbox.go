@@ -92,7 +92,7 @@ type Box interface {
 	PackStart(child Widget, expand bool, fill bool, padding uint)
 	// QueryChildPacking obtains information about how @child is packed into
 	// @box.
-	QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType *PackType)
+	QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType PackType)
 	// ReorderChild moves @child to a new @position in the list of @box
 	// children. The list contains widgets packed K_PACK_START as well as
 	// widgets packed K_PACK_END, in the order that these widgets were added to
@@ -157,13 +157,14 @@ func NewBox(orientation Orientation, spacing int) Box {
 	arg2 = C.gint(spacing)
 
 	var cret C.GtkBox
-	var goret Box
 
 	cret = C.gtk_box_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	var box Box
 
-	return goret
+	box = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+
+	return box
 }
 
 // BaselinePosition gets the value set by gtk_box_set_baseline_position().
@@ -173,13 +174,14 @@ func (b box) BaselinePosition() BaselinePosition {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.GtkBaselinePosition
-	var goret BaselinePosition
 
 	cret = C.gtk_box_get_baseline_position(arg0)
 
-	goret = BaselinePosition(cret)
+	var baselinePosition BaselinePosition
 
-	return goret
+	baselinePosition = BaselinePosition(cret)
+
+	return baselinePosition
 }
 
 // CenterWidget retrieves the center widget of the box.
@@ -189,13 +191,14 @@ func (b box) CenterWidget() Widget {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_box_get_center_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // Homogeneous returns whether the box is homogeneous (all children are the
@@ -206,15 +209,16 @@ func (b box) Homogeneous() bool {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_box_get_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Spacing gets the value set by gtk_box_set_spacing().
@@ -224,13 +228,14 @@ func (b box) Spacing() int {
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_box_get_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PackEnd adds @child to @box, packed with reference to the end of @box.
@@ -281,34 +286,35 @@ func (b box) PackStart(child Widget, expand bool, fill bool, padding uint) {
 
 // QueryChildPacking obtains information about how @child is packed into
 // @box.
-func (b box) QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType *PackType) {
+func (b box) QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType PackType) {
 	var arg0 *C.GtkBox
 	var arg1 *C.GtkWidget
 
 	arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	arg2 := new(C.gboolean)
-	var ret2 bool
-	arg3 := new(C.gboolean)
-	var ret3 bool
-	arg4 := new(C.guint)
-	var ret4 uint
-	arg5 := new(C.GtkPackType)
-	var ret5 *PackType
+	var arg2 C.gboolean
+	var arg3 C.gboolean
+	var arg4 C.guint
+	var arg5 C.GtkPackType
 
-	C.gtk_box_query_child_packing(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_box_query_child_packing(arg0, arg1, &arg2, &arg3, &arg4, &arg5)
 
-	if *arg2 {
-		ret2 = true
+	var expand bool
+	var fill bool
+	var padding uint
+	var packType PackType
+
+	if arg2 {
+		expand = true
 	}
-	if *arg3 {
-		ret3 = true
+	if arg3 {
+		fill = true
 	}
-	ret4 = uint(*arg4)
-	ret5 = *PackType(arg5)
+	padding = (uint)(arg4)
+	packType = PackType(arg5)
 
-	return ret2, ret3, ret4, ret5
+	return expand, fill, padding, packType
 }
 
 // ReorderChild moves @child to a new @position in the list of @box

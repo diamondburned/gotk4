@@ -3,13 +3,11 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
@@ -17,12 +15,6 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
-
-func init() {
-	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
-		{T: externglib.Type(C.gtk_expression_watch_get_type()), F: marshalExpressionWatch},
-	})
-}
 
 // ExpressionNotify: callback called by gtk_expression_watch() when the
 // expression value changes.
@@ -39,10 +31,10 @@ func gotk4_ExpressionNotify(arg0 C.gpointer) {
 	fn()
 }
 
-// ParamSpecExpression creates a new `GParamSpec` instance for a property
-// holding a `GtkExpression`.
+// ParamSpecExpression creates a new Spec instance for a property holding a
+// Expression.
 //
-// See `g_param_spec_internal()` for details on the property strings.
+// See g_param_spec_internal() for details on the property strings.
 func ParamSpecExpression(name string, nick string, blurb string, flags gobject.ParamFlags) gobject.ParamSpec {
 	var arg1 *C.char
 	var arg2 *C.char
@@ -57,54 +49,56 @@ func ParamSpecExpression(name string, nick string, blurb string, flags gobject.P
 	defer C.free(unsafe.Pointer(arg3))
 	arg4 = (C.GParamFlags)(flags)
 
-	cret := new(C.GParamSpec)
-	var goret gobject.ParamSpec
+	var cret *C.GParamSpec
 
 	cret = C.gtk_param_spec_expression(arg1, arg2, arg3, arg4)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gobject.ParamSpec)
+	var paramSpec gobject.ParamSpec
 
-	return goret
+	paramSpec = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gobject.ParamSpec)
+
+	return paramSpec
 }
 
-// ValueDupExpression retrieves the `GtkExpression` stored inside the given
-// `value`, and acquires a reference to it.
-func ValueDupExpression(value *externglib.Value) Expression {
-	var arg1 *C.GValue
-
-	arg1 = (*C.GValue)(value.GValue)
-
-	cret := new(C.GtkExpression)
-	var goret Expression
-
-	cret = C.gtk_value_dup_expression(arg1)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Expression)
-
-	return goret
-}
-
-// ValueGetExpression retrieves the `GtkExpression` stored inside the given
-// `value`.
-func ValueGetExpression(value *externglib.Value) Expression {
+// ValueDupExpression retrieves the Expression stored inside the given @value,
+// and acquires a reference to it.
+func ValueDupExpression(value **externglib.Value) Expression {
 	var arg1 *C.GValue
 
 	arg1 = (*C.GValue)(value.GValue)
 
 	var cret *C.GtkExpression
-	var goret Expression
+
+	cret = C.gtk_value_dup_expression(arg1)
+
+	var expression Expression
+
+	expression = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Expression)
+
+	return expression
+}
+
+// ValueGetExpression retrieves the Expression stored inside the given @value.
+func ValueGetExpression(value **externglib.Value) Expression {
+	var arg1 *C.GValue
+
+	arg1 = (*C.GValue)(value.GValue)
+
+	var cret *C.GtkExpression
 
 	cret = C.gtk_value_get_expression(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	var expression Expression
 
-	return goret
+	expression = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+
+	return expression
 }
 
-// ValueSetExpression stores the given `GtkExpression` inside `value`.
+// ValueSetExpression stores the given Expression inside @value.
 //
-// The `GValue` will acquire a reference to the `expression`.
-func ValueSetExpression(value *externglib.Value, expression Expression) {
+// The #GValue will acquire a reference to the @expression.
+func ValueSetExpression(value **externglib.Value, expression Expression) {
 	var arg1 *C.GValue
 	var arg2 *C.GtkExpression
 
@@ -114,10 +108,10 @@ func ValueSetExpression(value *externglib.Value, expression Expression) {
 	C.gtk_value_set_expression(arg1, arg2)
 }
 
-// ValueTakeExpression stores the given `GtkExpression` inside `value`.
+// ValueTakeExpression stores the given Expression inside @value.
 //
-// This function transfers the ownership of the `expression` to the `GValue`.
-func ValueTakeExpression(value *externglib.Value, expression Expression) {
+// This function transfers the ownership of the @expression to the #GValue.
+func ValueTakeExpression(value **externglib.Value, expression Expression) {
 	var arg1 *C.GValue
 	var arg2 *C.GtkExpression
 
@@ -127,10 +121,6 @@ func ValueTakeExpression(value *externglib.Value, expression Expression) {
 	C.gtk_value_take_expression(arg1, arg2)
 }
 
-// ExpressionWatch: an opaque structure representing a watched `GtkExpression`.
-//
-// The contents of `GtkExpressionWatch` should only be accessed through the
-// provided API.
 type ExpressionWatch struct {
 	native C.GtkExpressionWatch
 }
@@ -156,11 +146,11 @@ func (e *ExpressionWatch) Native() unsafe.Pointer {
 }
 
 // Evaluate evaluates the watched expression and on success stores the result in
-// `value`.
+// @value.
 //
-// This is equivalent to calling [method@Gtk.Expression.evaluate] with the
-// expression and this pointer originally used to create `watch`.
-func (w *ExpressionWatch) Evaluate(value *externglib.Value) bool {
+// This is equivalent to calling gtk_expression_evaluate() with the expression
+// and this pointer originally used to create @watch.
+func (w *ExpressionWatch) Evaluate(value **externglib.Value) bool {
 	var arg0 *C.GtkExpressionWatch
 	var arg1 *C.GValue
 
@@ -168,39 +158,38 @@ func (w *ExpressionWatch) Evaluate(value *externglib.Value) bool {
 	arg1 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expression_watch_evaluate(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Ref acquires a reference on the given `GtkExpressionWatch`.
+// Ref acquires a reference on the given ExpressionWatch.
 func (w *ExpressionWatch) Ref() *ExpressionWatch {
 	var arg0 *C.GtkExpressionWatch
 
 	arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
 
-	cret := new(C.GtkExpressionWatch)
-	var goret *ExpressionWatch
+	var cret *C.GtkExpressionWatch
 
 	cret = C.gtk_expression_watch_ref(arg0)
 
-	goret = WrapExpressionWatch(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ExpressionWatch) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	var expressionWatch *ExpressionWatch
 
-	return goret
+	expressionWatch = WrapExpressionWatch(unsafe.Pointer(cret))
+
+	return expressionWatch
 }
 
-// Unref releases a reference on the given `GtkExpressionWatch`.
+// Unref releases a reference on the given ExpressionWatch.
 //
-// If the reference was the last, the resources associated to `self` are freed.
+// If the reference was the last, the resources associated to @self are freed.
 func (w *ExpressionWatch) Unref() {
 	var arg0 *C.GtkExpressionWatch
 
@@ -209,9 +198,8 @@ func (w *ExpressionWatch) Unref() {
 	C.gtk_expression_watch_unref(arg0)
 }
 
-// Unwatch stops watching an expression.
-//
-// See [method@Gtk.Expression.watch] for how the watch was established.
+// Unwatch stops watching an expression that was established via
+// gtk_expression_watch().
 func (w *ExpressionWatch) Unwatch() {
 	var arg0 *C.GtkExpressionWatch
 

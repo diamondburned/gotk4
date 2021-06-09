@@ -73,14 +73,15 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 
 	arg1 = (C.GZlibCompressorFormat)(format)
 
-	cret := new(C.GZlibDecompressor)
-	var goret ZlibDecompressor
+	var cret C.GZlibDecompressor
 
 	cret = C.g_zlib_decompressor_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibDecompressor)
+	var zlibDecompressor ZlibDecompressor
 
-	return goret
+	zlibDecompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibDecompressor)
+
+	return zlibDecompressor
 }
 
 // FileInfo retrieves the Info constructed from the GZIP header data of
@@ -94,11 +95,12 @@ func (d zlibDecompressor) FileInfo() FileInfo {
 	arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GFileInfo
-	var goret FileInfo
 
 	cret = C.g_zlib_decompressor_get_file_info(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
+	var fileInfo FileInfo
 
-	return goret
+	fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
+
+	return fileInfo
 }

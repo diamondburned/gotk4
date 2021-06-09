@@ -65,15 +65,16 @@ func (t *FrameTimings) Complete() bool {
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_frame_timings_get_complete(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // FrameCounter gets the frame counter value of the FrameClock when this this
@@ -84,13 +85,14 @@ func (t *FrameTimings) FrameCounter() int64 {
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint64
-	var goret int64
 
 	cret = C.gdk_frame_timings_get_frame_counter(arg0)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
 // FrameTime returns the frame time for the frame. This is the time value that
@@ -102,13 +104,14 @@ func (t *FrameTimings) FrameTime() int64 {
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint64
-	var goret int64
 
 	cret = C.gdk_frame_timings_get_frame_time(arg0)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
 // PredictedPresentationTime gets the predicted time at which this frame will be
@@ -126,13 +129,14 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint64
-	var goret int64
 
 	cret = C.gdk_frame_timings_get_predicted_presentation_time(arg0)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
 // PresentationTime reurns the presentation time. This is the time at which the
@@ -143,13 +147,14 @@ func (t *FrameTimings) PresentationTime() int64 {
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint64
-	var goret int64
 
 	cret = C.gdk_frame_timings_get_presentation_time(arg0)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
 // RefreshInterval gets the natural interval between presentation times for the
@@ -161,13 +166,14 @@ func (t *FrameTimings) RefreshInterval() int64 {
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint64
-	var goret int64
 
 	cret = C.gdk_frame_timings_get_refresh_interval(arg0)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
 // Ref increases the reference count of @timings.
@@ -176,17 +182,18 @@ func (t *FrameTimings) Ref() *FrameTimings {
 
 	arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	cret := new(C.GdkFrameTimings)
-	var goret *FrameTimings
+	var cret *C.GdkFrameTimings
 
 	cret = C.gdk_frame_timings_ref(arg0)
 
-	goret = WrapFrameTimings(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *FrameTimings) {
+	var frameTimings *FrameTimings
+
+	frameTimings = WrapFrameTimings(unsafe.Pointer(cret))
+	runtime.SetFinalizer(frameTimings, func(v *FrameTimings) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return frameTimings
 }
 
 // Unref decreases the reference count of @timings. If @timings is no longer

@@ -81,17 +81,18 @@ func (m misc) Alignment() (xalign float32, yalign float32) {
 
 	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
-	arg1 := new(C.gfloat)
-	var ret1 float32
-	arg2 := new(C.gfloat)
-	var ret2 float32
+	var arg1 C.gfloat
+	var arg2 C.gfloat
 
-	C.gtk_misc_get_alignment(arg0, arg1, arg2)
+	C.gtk_misc_get_alignment(arg0, &arg1, &arg2)
 
-	ret1 = float32(*arg1)
-	ret2 = float32(*arg2)
+	var xalign float32
+	var yalign float32
 
-	return ret1, ret2
+	xalign = (float32)(arg1)
+	yalign = (float32)(arg2)
+
+	return xalign, yalign
 }
 
 // Padding gets the padding in the X and Y directions of the widget. See
@@ -101,17 +102,18 @@ func (m misc) Padding() (xpad int, ypad int) {
 
 	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_misc_get_padding(arg0, arg1, arg2)
+	C.gtk_misc_get_padding(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var xpad int
+	var ypad int
 
-	return ret1, ret2
+	xpad = (int)(arg1)
+	ypad = (int)(arg2)
+
+	return xpad, ypad
 }
 
 // SetAlignment sets the alignment of the widget.

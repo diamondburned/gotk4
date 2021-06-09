@@ -27,13 +27,14 @@ func Dcgettext(domain string, msgid string, category int) string {
 	arg3 = C.gint(category)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dcgettext(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Dgettext: this function is a wrapper of dgettext() which does not translate
@@ -77,13 +78,14 @@ func Dgettext(domain string, msgid string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dgettext(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Dngettext: this function is a wrapper of dngettext() which does not translate
@@ -106,13 +108,14 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 	arg4 = C.gulong(n)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dngettext(arg1, arg2, arg3, arg4)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Dpgettext: this function is a variant of g_dgettext() which supports a
@@ -138,13 +141,14 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 	arg3 = C.gsize(msgidoffset)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dpgettext(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Dpgettext2: this function is a variant of g_dgettext() which supports a
@@ -169,13 +173,14 @@ func Dpgettext2(domain string, context string, msgid string) string {
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dpgettext2(arg1, arg2, arg3)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // StripContext: an auxiliary function for gettext() support (see Q_()).
@@ -189,11 +194,12 @@ func StripContext(msgid string, msgval string) string {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_strip_context(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }

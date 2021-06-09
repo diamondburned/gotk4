@@ -409,7 +409,7 @@ type Application interface {
 	//
 	// If @notification is no longer relevant, it can be withdrawn with
 	// g_application_withdraw_notification().
-	SendNotification(iD string, notification Notification)
+	SendNotification(id string, notification Notification)
 	// SetActionGroup: this used to be how actions were associated with a
 	// #GApplication. Now there is Map for that.
 	SetActionGroup(actionGroup ActionGroup)
@@ -420,7 +420,7 @@ type Application interface {
 	//
 	// If non-nil, the application id must be valid. See
 	// g_application_id_is_valid().
-	SetApplicationID(applicationID string)
+	SetApplicationID(applicationId string)
 	// SetDefault sets or unsets the default application for the process, as
 	// returned by g_application_get_default().
 	//
@@ -524,7 +524,7 @@ type Application interface {
 	// Note that notifications are dismissed when the user clicks on one of the
 	// buttons in a notification or triggers its default action, so there is no
 	// need to explicitly withdraw the notification in that case.
-	WithdrawNotification(iD string)
+	WithdrawNotification(id string)
 }
 
 // application implements the Application interface.
@@ -553,22 +553,23 @@ func marshalApplication(p uintptr) (interface{}, error) {
 }
 
 // NewApplication constructs a class Application.
-func NewApplication(applicationID string, flags ApplicationFlags) Application {
+func NewApplication(applicationId string, flags ApplicationFlags) Application {
 	var arg1 *C.gchar
 	var arg2 C.GApplicationFlags
 
-	arg1 = (*C.gchar)(C.CString(applicationID))
+	arg1 = (*C.gchar)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GApplicationFlags)(flags)
 
-	cret := new(C.GApplication)
-	var goret Application
+	var cret C.GApplication
 
 	cret = C.g_application_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
+	var application Application
 
-	return goret
+	application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
+
+	return application
 }
 
 // Activate activates the application.
@@ -685,7 +686,7 @@ func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(entries)))
 
 		for i := range entries {
-			out[i] = (C.GOptionEntry)(unsafe.Pointer(entries[i].Native()))
+			arg1 = (C.GOptionEntry)(unsafe.Pointer(entries.Native()))
 		}
 	}
 
@@ -751,13 +752,14 @@ func (a application) ApplicationID() string {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_application_get_application_id(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // DBusConnection gets the BusConnection being used by the application, or
@@ -779,13 +781,14 @@ func (a application) DBusConnection() DBusConnection {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GDBusConnection
-	var goret DBusConnection
 
 	cret = C.g_application_get_dbus_connection(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	var dBusConnection DBusConnection
 
-	return goret
+	dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+
+	return dBusConnection
 }
 
 // DBusObjectPath gets the D-Bus object path being used by the application,
@@ -809,13 +812,14 @@ func (a application) DBusObjectPath() string {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_application_get_dbus_object_path(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Flags gets the flags for @application.
@@ -827,13 +831,14 @@ func (a application) Flags() ApplicationFlags {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.GApplicationFlags
-	var goret ApplicationFlags
 
 	cret = C.g_application_get_flags(arg0)
 
-	goret = ApplicationFlags(cret)
+	var applicationFlags ApplicationFlags
 
-	return goret
+	applicationFlags = ApplicationFlags(cret)
+
+	return applicationFlags
 }
 
 // InactivityTimeout gets the current inactivity timeout for the
@@ -847,13 +852,14 @@ func (a application) InactivityTimeout() uint {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_application_get_inactivity_timeout(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // IsBusy gets the application's current busy state, as set through
@@ -864,15 +870,16 @@ func (a application) IsBusy() bool {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_application_get_is_busy(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsRegistered checks if @application is registered.
@@ -885,15 +892,16 @@ func (a application) IsRegistered() bool {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_application_get_is_registered(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsRemote checks if @application is remote.
@@ -912,15 +920,16 @@ func (a application) IsRemote() bool {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_application_get_is_remote(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ResourceBasePath gets the resource base path of @application.
@@ -932,13 +941,14 @@ func (a application) ResourceBasePath() string {
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_application_get_resource_base_path(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Hold increases the use count of @application.
@@ -1030,9 +1040,10 @@ func (a application) Register(cancellable Cancellable) error {
 	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_application_register(arg0, arg1, &cerr)
+	C.g_application_register(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -1077,13 +1088,13 @@ func (a application) Release() {
 //
 // If @notification is no longer relevant, it can be withdrawn with
 // g_application_withdraw_notification().
-func (a application) SendNotification(iD string, notification Notification) {
+func (a application) SendNotification(id string, notification Notification) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 	var arg2 *C.GNotification
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(iD))
+	arg1 = (*C.gchar)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.GNotification)(unsafe.Pointer(notification.Native()))
 
@@ -1109,12 +1120,12 @@ func (a application) SetActionGroup(actionGroup ActionGroup) {
 //
 // If non-nil, the application id must be valid. See
 // g_application_id_is_valid().
-func (a application) SetApplicationID(applicationID string) {
+func (a application) SetApplicationID(applicationId string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(applicationID))
+	arg1 = (*C.gchar)(C.CString(applicationId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_application_set_application_id(arg0, arg1)
@@ -1307,12 +1318,12 @@ func (a application) UnmarkBusy() {
 // Note that notifications are dismissed when the user clicks on one of the
 // buttons in a notification or triggers its default action, so there is no
 // need to explicitly withdraw the notification in that case.
-func (a application) WithdrawNotification(iD string) {
+func (a application) WithdrawNotification(id string) {
 	var arg0 *C.GApplication
 	var arg1 *C.gchar
 
 	arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(iD))
+	arg1 = (*C.gchar)(C.CString(id))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_application_withdraw_notification(arg0, arg1)

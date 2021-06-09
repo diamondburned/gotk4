@@ -40,7 +40,7 @@ func (l *List) Native() unsafe.Pointer {
 // Data gets the field inside the struct.
 func (l *List) Data() interface{} {
 	var v interface{}
-	v = interface{}(l.native.data)
+	v = (interface{})(l.native.data)
 	return v
 }
 

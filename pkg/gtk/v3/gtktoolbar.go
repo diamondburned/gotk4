@@ -150,13 +150,14 @@ func marshalToolbar(p uintptr) (interface{}, error) {
 // NewToolbar constructs a class Toolbar.
 func NewToolbar() Toolbar {
 	var cret C.GtkToolbar
-	var goret Toolbar
 
 	cret = C.gtk_toolbar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Toolbar)
+	var toolbar Toolbar
 
-	return goret
+	toolbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Toolbar)
+
+	return toolbar
 }
 
 // DropIndex returns the position corresponding to the indicated point on
@@ -174,13 +175,14 @@ func (t toolbar) DropIndex(x int, y int) int {
 	arg2 = C.gint(y)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_toolbar_get_drop_index(arg0, arg1, arg2)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // IconSize retrieves the icon size for the toolbar. See
@@ -191,13 +193,14 @@ func (t toolbar) IconSize() IconSize {
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkIconSize
-	var goret IconSize
 
 	cret = C.gtk_toolbar_get_icon_size(arg0)
 
-	goret = IconSize(cret)
+	var iconSize IconSize
 
-	return goret
+	iconSize = IconSize(cret)
+
+	return iconSize
 }
 
 // ItemIndex returns the position of @item on the toolbar, starting from 0.
@@ -210,13 +213,14 @@ func (t toolbar) ItemIndex(item ToolItem) int {
 	arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_toolbar_get_item_index(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NItems returns the number of items on the toolbar.
@@ -226,13 +230,14 @@ func (t toolbar) NItems() int {
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_toolbar_get_n_items(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NthItem returns the @n'th item on @toolbar, or nil if the toolbar does
@@ -245,13 +250,14 @@ func (t toolbar) NthItem(n int) ToolItem {
 	arg1 = C.gint(n)
 
 	var cret *C.GtkToolItem
-	var goret ToolItem
 
 	cret = C.gtk_toolbar_get_nth_item(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+	var toolItem ToolItem
 
-	return goret
+	toolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToolItem)
+
+	return toolItem
 }
 
 // ReliefStyle returns the relief style of buttons on @toolbar. See
@@ -262,13 +268,14 @@ func (t toolbar) ReliefStyle() ReliefStyle {
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkReliefStyle
-	var goret ReliefStyle
 
 	cret = C.gtk_toolbar_get_relief_style(arg0)
 
-	goret = ReliefStyle(cret)
+	var reliefStyle ReliefStyle
 
-	return goret
+	reliefStyle = ReliefStyle(cret)
+
+	return reliefStyle
 }
 
 // ShowArrow returns whether the toolbar has an overflow menu. See
@@ -279,15 +286,16 @@ func (t toolbar) ShowArrow() bool {
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toolbar_get_show_arrow(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Style retrieves whether the toolbar has text, icons, or both . See
@@ -298,13 +306,14 @@ func (t toolbar) Style() ToolbarStyle {
 	arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
 	var cret C.GtkToolbarStyle
-	var goret ToolbarStyle
 
 	cret = C.gtk_toolbar_get_style(arg0)
 
-	goret = ToolbarStyle(cret)
+	var toolbarStyle ToolbarStyle
 
-	return goret
+	toolbarStyle = ToolbarStyle(cret)
+
+	return toolbarStyle
 }
 
 // Insert: insert a ToolItem into the toolbar at position @pos. If @pos is 0

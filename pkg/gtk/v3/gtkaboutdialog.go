@@ -191,13 +191,14 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 // NewAboutDialog constructs a class AboutDialog.
 func NewAboutDialog() AboutDialog {
 	var cret C.GtkAboutDialog
-	var goret AboutDialog
 
 	cret = C.gtk_about_dialog_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AboutDialog)
+	var aboutDialog AboutDialog
 
-	return goret
+	aboutDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AboutDialog)
+
+	return aboutDialog
 }
 
 // AddCreditSection creates a new section in the Credits page.
@@ -217,8 +218,8 @@ func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg2), int(len(people)))
 
 		for i := range people {
-			out[i] = (*C.gchar)(C.CString(people[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg2 = (*C.gchar)(C.CString(people))
+			defer C.free(unsafe.Pointer(arg2))
 		}
 	}
 
@@ -233,9 +234,10 @@ func (a aboutDialog) Artists() []string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.gtk_about_dialog_get_artists(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -246,14 +248,16 @@ func (a aboutDialog) Artists() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // Authors returns the string which are displayed in the authors tab of the
@@ -264,9 +268,10 @@ func (a aboutDialog) Authors() []string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.gtk_about_dialog_get_authors(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -277,14 +282,16 @@ func (a aboutDialog) Authors() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // Comments returns the comments string.
@@ -294,13 +301,14 @@ func (a aboutDialog) Comments() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_comments(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Copyright returns the copyright string.
@@ -310,13 +318,14 @@ func (a aboutDialog) Copyright() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_copyright(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Documenters returns the string which are displayed in the documenters tab
@@ -327,9 +336,10 @@ func (a aboutDialog) Documenters() []string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.gtk_about_dialog_get_documenters(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -340,14 +350,16 @@ func (a aboutDialog) Documenters() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // License returns the license information.
@@ -357,13 +369,14 @@ func (a aboutDialog) License() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_license(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // LicenseType retrieves the license set using
@@ -374,13 +387,14 @@ func (a aboutDialog) LicenseType() License {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret C.GtkLicense
-	var goret License
 
 	cret = C.gtk_about_dialog_get_license_type(arg0)
 
-	goret = License(cret)
+	var license License
 
-	return goret
+	license = License(cret)
+
+	return license
 }
 
 // Logo returns the pixbuf displayed as logo in the about dialog.
@@ -390,13 +404,14 @@ func (a aboutDialog) Logo() gdkpixbuf.Pixbuf {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GdkPixbuf
-	var goret gdkpixbuf.Pixbuf
 
 	cret = C.gtk_about_dialog_get_logo(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	var pixbuf gdkpixbuf.Pixbuf
 
-	return goret
+	pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+
+	return pixbuf
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
@@ -406,13 +421,14 @@ func (a aboutDialog) LogoIconName() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_logo_icon_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ProgramName returns the program name displayed in the about dialog.
@@ -422,13 +438,14 @@ func (a aboutDialog) ProgramName() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_program_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // TranslatorCredits returns the translator credits string which is
@@ -439,13 +456,14 @@ func (a aboutDialog) TranslatorCredits() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_translator_credits(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Version returns the version string.
@@ -455,13 +473,14 @@ func (a aboutDialog) Version() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_version(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Website returns the website URL.
@@ -471,13 +490,14 @@ func (a aboutDialog) Website() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_website(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // WebsiteLabel returns the label used for the website link.
@@ -487,13 +507,14 @@ func (a aboutDialog) WebsiteLabel() string {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_about_dialog_get_website_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // WrapLicense returns whether the license text in @about is automatically
@@ -504,15 +525,16 @@ func (a aboutDialog) WrapLicense() bool {
 	arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_about_dialog_get_wrap_license(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetArtists sets the strings which are displayed in the artists tab of the
@@ -530,8 +552,8 @@ func (a aboutDialog) SetArtists(artists []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(artists)))
 
 		for i := range artists {
-			out[i] = (*C.gchar)(C.CString(artists[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.gchar)(C.CString(artists))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 
@@ -553,8 +575,8 @@ func (a aboutDialog) SetAuthors(authors []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(authors)))
 
 		for i := range authors {
-			out[i] = (*C.gchar)(C.CString(authors[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.gchar)(C.CString(authors))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 
@@ -602,8 +624,8 @@ func (a aboutDialog) SetDocumenters(documenters []string) {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(documenters)))
 
 		for i := range documenters {
-			out[i] = (*C.gchar)(C.CString(documenters[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.gchar)(C.CString(documenters))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 

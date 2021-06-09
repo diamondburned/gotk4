@@ -33,7 +33,7 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 	}
 
 	fn := v.(TranslateFunc)
-	fn(utf8)
+	utf8 := fn()
 
 	cret = (*C.gchar)(C.CString(utf8))
 }
@@ -44,53 +44,53 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 // @items and @items can be freed. Use gtk_stock_add_static() if @items is
 // persistent and GTK+ need not copy the array.
 func StockAdd() {
-	C.gtk_stock_add(arg1, arg2)
+	C.gtk_stock_add()
 }
 
 // StockAddStatic: same as gtk_stock_add(), but doesn’t copy @items, so @items
 // must persist until application exit.
 func StockAddStatic() {
-	C.gtk_stock_add_static(arg1, arg2)
+	C.gtk_stock_add_static()
 }
 
 // StockListIds retrieves a list of all known stock IDs added to a IconFactory
 // or registered with gtk_stock_add(). The list must be freed with
 // g_slist_free(), and each string in the list must be freed with g_free().
 func StockListIds() *glib.SList {
-	cret := new(C.GSList)
-	var goret *glib.SList
+	var cret *C.GSList
 
 	cret = C.gtk_stock_list_ids()
 
-	goret = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.SList) {
+	var sList *glib.SList
+
+	sList = glib.WrapSList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(sList, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return sList
 }
 
 // StockLookup fills @item with the registered values for @stock_id, returning
 // true if @stock_id was known.
-func StockLookup(stockID string) (item *StockItem, ok bool) {
+func StockLookup(stockId string) (item StockItem, ok bool) {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
-	arg2 := new(C.GtkStockItem)
-	var ret2 *StockItem
+	var item StockItem
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_stock_lookup(arg1, arg2)
+	cret = C.gtk_stock_lookup(arg1, (*C.GtkStockItem)(unsafe.Pointer(&item)))
 
-	ret2 = WrapStockItem(unsafe.Pointer(arg2))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return item, ok
 }
 
 // StockSetTranslateFunc sets a function to be used for translating the @label
@@ -124,7 +124,7 @@ func StockLookup(stockID string) (item *StockItem, ok bool) {
 //    gtk_stock_set_translate_func ("odd-item-domain", my_translate_func, "odd items");
 //    gtk_stock_set_translate_func ("even-item-domain", my_translate_func, "even items");
 func StockSetTranslateFunc() {
-	C.gtk_stock_set_translate_func(arg1, arg2, arg3, arg4)
+	C.gtk_stock_set_translate_func()
 }
 
 type StockItem struct {
@@ -175,7 +175,7 @@ func (s *StockItem) Modifier() gdk.ModifierType {
 // Keyval gets the field inside the struct.
 func (s *StockItem) Keyval() uint {
 	var v uint
-	v = uint(s.native.keyval)
+	v = (uint)(s.native.keyval)
 	return v
 }
 
@@ -194,13 +194,14 @@ func (i *StockItem) Copy() *StockItem {
 	arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GtkStockItem
-	var goret *StockItem
 
 	cret = C.gtk_stock_item_copy(arg0)
 
-	goret = WrapStockItem(unsafe.Pointer(cret))
+	var stockItem *StockItem
 
-	return goret
+	stockItem = WrapStockItem(unsafe.Pointer(cret))
+
+	return stockItem
 }
 
 // Free frees a stock item allocated on the heap, such as one returned by

@@ -76,13 +76,14 @@ func marshalHSV(p uintptr) (interface{}, error) {
 // NewHSV constructs a class HSV.
 func NewHSV() HSV {
 	var cret C.GtkHSV
-	var goret HSV
 
 	cret = C.gtk_hsv_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HSV)
+	var hsV HSV
 
-	return goret
+	hsV = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HSV)
+
+	return hsV
 }
 
 // Color queries the current color in an HSV color selector. Returned values
@@ -92,20 +93,21 @@ func (h hsV) Color() (h float64, s float64, v float64) {
 
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
-	arg1 := new(C.gdouble)
-	var ret1 float64
-	arg2 := new(C.gdouble)
-	var ret2 float64
-	arg3 := new(C.gdouble)
-	var ret3 float64
+	var arg1 C.gdouble
+	var arg2 C.gdouble
+	var arg3 C.gdouble
 
-	C.gtk_hsv_get_color(arg0, arg1, arg2, arg3)
+	C.gtk_hsv_get_color(arg0, &arg1, &arg2, &arg3)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
-	ret3 = float64(*arg3)
+	var h float64
+	var s float64
+	var v float64
 
-	return ret1, ret2, ret3
+	h = (float64)(arg1)
+	s = (float64)(arg2)
+	v = (float64)(arg3)
+
+	return h, s, v
 }
 
 // Metrics queries the size and ring width of an HSV color selector.
@@ -114,17 +116,18 @@ func (h hsV) Metrics() (size int, ringWidth int) {
 
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_hsv_get_metrics(arg0, arg1, arg2)
+	C.gtk_hsv_get_metrics(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var size int
+	var ringWidth int
 
-	return ret1, ret2
+	size = (int)(arg1)
+	ringWidth = (int)(arg2)
+
+	return size, ringWidth
 }
 
 // IsAdjusting: an HSV color selector can be said to be adjusting if
@@ -137,15 +140,16 @@ func (h hsV) IsAdjusting() bool {
 	arg0 = (*C.GtkHSV)(unsafe.Pointer(h.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_hsv_is_adjusting(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetColor sets the current color in an HSV color selector. Color component

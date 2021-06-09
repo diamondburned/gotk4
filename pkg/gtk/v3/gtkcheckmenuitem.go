@@ -100,13 +100,14 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 // NewCheckMenuItem constructs a class CheckMenuItem.
 func NewCheckMenuItem() CheckMenuItem {
 	var cret C.GtkCheckMenuItem
-	var goret CheckMenuItem
 
 	cret = C.gtk_check_menu_item_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+	var checkMenuItem CheckMenuItem
 
-	return goret
+	checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+
+	return checkMenuItem
 }
 
 // NewCheckMenuItemWithLabel constructs a class CheckMenuItem.
@@ -117,13 +118,14 @@ func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCheckMenuItem
-	var goret CheckMenuItem
 
 	cret = C.gtk_check_menu_item_new_with_label(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+	var checkMenuItem CheckMenuItem
 
-	return goret
+	checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+
+	return checkMenuItem
 }
 
 // NewCheckMenuItemWithMnemonic constructs a class CheckMenuItem.
@@ -134,13 +136,14 @@ func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCheckMenuItem
-	var goret CheckMenuItem
 
 	cret = C.gtk_check_menu_item_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+	var checkMenuItem CheckMenuItem
 
-	return goret
+	checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+
+	return checkMenuItem
 }
 
 // Active returns whether the check menu item is active. See
@@ -151,15 +154,16 @@ func (c checkMenuItem) Active() bool {
 	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_check_menu_item_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
@@ -169,15 +173,16 @@ func (c checkMenuItem) DrawAsRadio() bool {
 	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_check_menu_item_get_draw_as_radio(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Inconsistent retrieves the value set by
@@ -188,15 +193,16 @@ func (c checkMenuItem) Inconsistent() bool {
 	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_check_menu_item_get_inconsistent(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActive sets the active state of the menu item’s check box.

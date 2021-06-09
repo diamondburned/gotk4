@@ -91,12 +91,6 @@ const (
 	// URIFlagsEncodedFragment: same as G_URI_FLAGS_ENCODED, for the fragment
 	// only.
 	URIFlagsEncodedFragment URIFlags = 128
-	// URIFlagsSchemeNormalize: a scheme-based normalization will be applied.
-	// For example, when parsing an HTTP URI changing omitted path to `/` and
-	// omitted port to `80`; and when building a URI, changing empty path to `/`
-	// and default port `80`). This only supports a subset of known schemes.
-	// (Since: 2.68)
-	URIFlagsSchemeNormalize URIFlags = 256
 )
 
 // URIHideFlags flags describing what parts of the URI to hide in
@@ -237,11 +231,11 @@ const (
 // URI Equality
 //
 // Note that there is no `g_uri_equal ()` function, because comparing URIs
-// usefully requires scheme-specific knowledge that #GUri does not have. #GUri
-// can help with normalization if you use the various encoded Flags as well as
-// G_URI_FLAGS_SCHEME_NORMALIZE however it is not comprehensive. For example,
-// `data:,foo` and `data:;base64,Zm9v` resolve to the same thing according to
-// the `data:` URI specification which GLib does not handle.
+// usefully requires scheme-specific knowledge that #GUri does not have. For
+// example, `http://example.com/` and `http://EXAMPLE.COM:80` have exactly the
+// same meaning according to the HTTP specification, and `data:,foo` and
+// `data:;base64,Zm9v` resolve to the same thing according to the `data:` URI
+// specification.
 type URI struct {
 	native C.GUri
 }
@@ -278,13 +272,14 @@ func (u *URI) AuthParams() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_auth_params(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Flags gets @uri's flags set upon construction.
@@ -294,13 +289,14 @@ func (u *URI) Flags() URIFlags {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret C.GUriFlags
-	var goret URIFlags
 
 	cret = C.g_uri_get_flags(arg0)
 
-	goret = URIFlags(cret)
+	var uriFlags URIFlags
 
-	return goret
+	uriFlags = URIFlags(cret)
+
+	return uriFlags
 }
 
 // Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
@@ -311,13 +307,14 @@ func (u *URI) Fragment() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_fragment(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Host gets @uri's host. This will never have `%`-encoded characters, unless it
@@ -335,13 +332,14 @@ func (u *URI) Host() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_host(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Password gets @uri's password, which may contain `%`-encoding, depending on
@@ -353,13 +351,14 @@ func (u *URI) Password() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_password(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Path gets @uri's path, which may contain `%`-encoding, depending on the flags
@@ -370,13 +369,14 @@ func (u *URI) Path() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_path(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Port gets @uri's port.
@@ -386,13 +386,14 @@ func (u *URI) Port() int {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_uri_get_port(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Query gets @uri's query, which may contain `%`-encoding, depending on the
@@ -406,13 +407,14 @@ func (u *URI) Query() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_query(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Scheme gets @uri's scheme. Note that this will always be all-lowercase,
@@ -423,13 +425,14 @@ func (u *URI) Scheme() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_scheme(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // User gets the ‘username’ component of @uri's userinfo, which may contain
@@ -442,13 +445,14 @@ func (u *URI) User() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_user(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Userinfo gets @uri's userinfo, which may contain `%`-encoding, depending on
@@ -459,20 +463,21 @@ func (u *URI) Userinfo() string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_uri_get_userinfo(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // ParseRelative parses @uri_ref according to @flags and, if it is a [relative
 // URI][relative-absolute-uris], resolves it relative to @base_uri. If the
 // result is not a valid absolute URI, it will be discarded, and an error
 // returned.
-func (b *URI) ParseRelative(uriRef string, flags URIFlags) (uri *URI, err error) {
+func (b *URI) ParseRelative(uriRef string, flags URIFlags) (uri *URI, goerr error) {
 	var arg0 *C.GUri
 	var arg1 *C.gchar
 	var arg2 C.GUriFlags
@@ -482,20 +487,21 @@ func (b *URI) ParseRelative(uriRef string, flags URIFlags) (uri *URI, err error)
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (C.GUriFlags)(flags)
 
-	cret := new(C.GUri)
-	var goret *URI
+	var cret *C.GUri
 	var cerr *C.GError
+
+	cret = C.g_uri_parse_relative(arg0, arg1, arg2, cerr)
+
+	var uri *URI
 	var goerr error
 
-	cret = C.g_uri_parse_relative(arg0, arg1, arg2, &cerr)
-
-	goret = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *URI) {
+	uri = WrapURI(unsafe.Pointer(cret))
+	runtime.SetFinalizer(uri, func(v *URI) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return uri, goerr
 }
 
 // Ref increments the reference count of @uri by one.
@@ -504,17 +510,18 @@ func (u *URI) Ref() *URI {
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	cret := new(C.GUri)
-	var goret *URI
+	var cret *C.GUri
 
 	cret = C.g_uri_ref(arg0)
 
-	goret = WrapURI(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *URI) {
+	var ret *URI
+
+	ret = WrapURI(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret, func(v *URI) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return ret
 }
 
 // String returns a string representing @uri.
@@ -533,15 +540,16 @@ func (u *URI) String() string {
 
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_uri_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // ToStringPartial returns a string representing @uri, subject to the options in
@@ -553,15 +561,16 @@ func (u *URI) ToStringPartial(flags URIHideFlags) string {
 	arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 	arg1 = (C.GUriHideFlags)(flags)
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_uri_to_string_partial(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Unref: atomically decrements the reference count of @uri by one.
@@ -667,25 +676,26 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 //
 // Note that the same @attribute may be returned multiple times, since URIs
 // allow repeated attributes.
-func (i *URIParamsIter) Next() (attribute string, value string, err error) {
+func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
 	var arg0 *C.GUriParamsIter
 
 	arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(*C.gchar)
-	var ret1 string
-	arg2 := new(*C.gchar)
-	var ret2 string
+	var arg1 *C.gchar
+	var arg2 *C.gchar
 	var cerr *C.GError
+
+	C.g_uri_params_iter_next(arg0, &arg1, &arg2, cerr)
+
+	var attribute string
+	var value string
 	var goerr error
 
-	C.g_uri_params_iter_next(arg0, arg1, arg2, &cerr)
-
-	ret1 = C.GoString(*arg1)
-	defer C.free(unsafe.Pointer(*arg1))
-	ret2 = C.GoString(*arg2)
-	defer C.free(unsafe.Pointer(*arg2))
+	attribute = C.GoString(arg1)
+	defer C.free(unsafe.Pointer(arg1))
+	value = C.GoString(arg2)
+	defer C.free(unsafe.Pointer(arg2))
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret1, ret2, goerr
+	return attribute, value, goerr
 }

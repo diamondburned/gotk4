@@ -22,8 +22,8 @@ func init() {
 	})
 }
 
-// MultiSelection: `GtkMultiSelection` is a `GtkSelectionModel` that allows
-// selecting multiple elements.
+// MultiSelection: gtkMultiSelection is an implementation of the SelectionModel
+// interface that allows selecting multiple elements.
 type MultiSelection interface {
 	gextras.Objector
 	gio.ListModel
@@ -31,9 +31,8 @@ type MultiSelection interface {
 
 	// Model returns the underlying model of @self.
 	Model() gio.ListModel
-	// SetModel sets the model that @self should wrap.
-	//
-	// If @model is nil, @self will be empty.
+	// SetModel sets the model that @self should wrap. If @model is nil, @self
+	// will be empty.
 	SetModel(model gio.ListModel)
 }
 
@@ -68,14 +67,15 @@ func NewMultiSelection(model gio.ListModel) MultiSelection {
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	cret := new(C.GtkMultiSelection)
-	var goret MultiSelection
+	var cret C.GtkMultiSelection
 
 	cret = C.gtk_multi_selection_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSelection)
+	var multiSelection MultiSelection
 
-	return goret
+	multiSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSelection)
+
+	return multiSelection
 }
 
 // Model returns the underlying model of @self.
@@ -85,18 +85,18 @@ func (s multiSelection) Model() gio.ListModel {
 	arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret gio.ListModel
 
 	cret = C.gtk_multi_selection_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
-// SetModel sets the model that @self should wrap.
-//
-// If @model is nil, @self will be empty.
+// SetModel sets the model that @self should wrap. If @model is nil, @self
+// will be empty.
 func (s multiSelection) SetModel(model gio.ListModel) {
 	var arg0 *C.GtkMultiSelection
 	var arg1 *C.GListModel

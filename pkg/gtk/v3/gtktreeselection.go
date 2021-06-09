@@ -56,7 +56,7 @@ func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg
 	}
 
 	fn := v.(TreeSelectionFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
@@ -99,7 +99,7 @@ type TreeSelection interface {
 	// just want to test if @selection has any selected nodes. @model is filled
 	// with the current model as a convenience. This function will not work if
 	// you use @selection is K_SELECTION_MULTIPLE.
-	Selected() (model *TreeModel, iter *TreeIter, ok bool)
+	Selected() (model TreeModel, iter TreeIter, ok bool)
 	// SelectedRows creates a list of path of all selected rows. Additionally,
 	// if you are planning on modifying the model after calling this function,
 	// you may want to convert the returned list into a list of
@@ -108,7 +108,7 @@ type TreeSelection interface {
 	// To free the return value, use:
 	//
 	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-	SelectedRows() (model *TreeModel, list *glib.List)
+	SelectedRows() (model TreeModel, list *glib.List)
 	// TreeView returns the tree view associated with @selection.
 	TreeView() TreeView
 	// UserData returns the user data for the selection function.
@@ -183,13 +183,14 @@ func (s treeSelection) CountSelectedRows() int {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_tree_selection_count_selected_rows(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Mode gets the selection mode for @selection. See
@@ -200,13 +201,14 @@ func (s treeSelection) Mode() SelectionMode {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.GtkSelectionMode
-	var goret SelectionMode
 
 	cret = C.gtk_tree_selection_get_mode(arg0)
 
-	goret = SelectionMode(cret)
+	var selectionMode SelectionMode
 
-	return goret
+	selectionMode = SelectionMode(cret)
+
+	return selectionMode
 }
 
 // Selected sets @iter to the currently selected node if @selection is set
@@ -214,27 +216,28 @@ func (s treeSelection) Mode() SelectionMode {
 // just want to test if @selection has any selected nodes. @model is filled
 // with the current model as a convenience. This function will not work if
 // you use @selection is K_SELECTION_MULTIPLE.
-func (s treeSelection) Selected() (model *TreeModel, iter *TreeIter, ok bool) {
+func (s treeSelection) Selected() (model TreeModel, iter TreeIter, ok bool) {
 	var arg0 *C.GtkTreeSelection
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var arg1 **C.GtkTreeModel
-	var ret1 *TreeModel
-	arg2 := new(C.GtkTreeIter)
-	var ret2 *TreeIter
+	var iter TreeIter
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_tree_selection_get_selected(arg0, arg1, arg2)
+	cret = C.gtk_tree_selection_get_selected(arg0, arg1, (*C.GtkTreeIter)(unsafe.Pointer(&iter)))
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	ret2 = WrapTreeIter(unsafe.Pointer(arg2))
+	var model TreeModel
+
+	var ok bool
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(TreeModel)
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return model, iter, ok
 }
 
 // SelectedRows creates a list of path of all selected rows. Additionally,
@@ -245,25 +248,26 @@ func (s treeSelection) Selected() (model *TreeModel, iter *TreeIter, ok bool) {
 // To free the return value, use:
 //
 //    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-func (s treeSelection) SelectedRows() (model *TreeModel, list *glib.List) {
+func (s treeSelection) SelectedRows() (model TreeModel, list *glib.List) {
 	var arg0 *C.GtkTreeSelection
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var arg1 **C.GtkTreeModel
-	var ret1 *TreeModel
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gtk_tree_selection_get_selected_rows(arg0, arg1)
 
-	ret1 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(*TreeModel)
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var model TreeModel
+	var list *glib.List
+
+	model = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(TreeModel)
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ret1, goret
+	return model, list
 }
 
 // TreeView returns the tree view associated with @selection.
@@ -273,13 +277,14 @@ func (s treeSelection) TreeView() TreeView {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkTreeView
-	var goret TreeView
 
 	cret = C.gtk_tree_selection_get_tree_view(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
+	var treeView TreeView
 
-	return goret
+	treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeView)
+
+	return treeView
 }
 
 // UserData returns the user data for the selection function.
@@ -289,13 +294,14 @@ func (s treeSelection) UserData() interface{} {
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.gtk_tree_selection_get_user_data(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // IterIsSelected returns true if the row at @iter is currently selected.
@@ -307,15 +313,16 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 	arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_selection_iter_is_selected(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PathIsSelected returns true if the row pointed to by @path is currently
@@ -328,15 +335,16 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_selection_path_is_selected(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SelectAll selects all the nodes. @selection must be set to
@@ -393,7 +401,7 @@ func (s treeSelection) SelectedForeach() {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_selection_selected_foreach(arg0, arg1, arg2)
+	C.gtk_tree_selection_selected_foreach(arg0)
 }
 
 // SetMode sets the selection mode of the @selection. If the previous type
@@ -420,7 +428,7 @@ func (s treeSelection) SetSelectFunction() {
 
 	arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_selection_set_select_function(arg0, arg1, arg2, arg3)
+	C.gtk_tree_selection_set_select_function(arg0)
 }
 
 // UnselectAll unselects all the nodes.

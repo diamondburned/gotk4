@@ -21,18 +21,15 @@ func init() {
 	})
 }
 
-// GestureRotate: `GtkGestureRotate` is a `GtkGesture` for 2-finger rotations.
-//
-// Whenever the angle between both handled sequences changes, the
-// [signal@Gtk.GestureRotate::angle-changed] signal is emitted.
+// GestureRotate is a Gesture implementation able to recognize 2-finger
+// rotations, whenever the angle between both handled sequences changes, the
+// GestureRotate::angle-changed signal is emitted.
 type GestureRotate interface {
 	Gesture
 
-	// AngleDelta gets the angle delta in radians.
-	//
-	// If @gesture is active, this function returns the angle difference in
-	// radians since the gesture was first recognized. If @gesture is not
-	// active, 0 is returned.
+	// AngleDelta: if @gesture is active, this function returns the angle
+	// difference in radians since the gesture was first recognized. If @gesture
+	// is not active, 0 is returned.
 	AngleDelta() float64
 }
 
@@ -59,32 +56,32 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 
 // NewGestureRotate constructs a class GestureRotate.
 func NewGestureRotate() GestureRotate {
-	cret := new(C.GtkGestureRotate)
-	var goret GestureRotate
+	var cret C.GtkGestureRotate
 
 	cret = C.gtk_gesture_rotate_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureRotate)
+	var gestureRotate GestureRotate
 
-	return goret
+	gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureRotate)
+
+	return gestureRotate
 }
 
-// AngleDelta gets the angle delta in radians.
-//
-// If @gesture is active, this function returns the angle difference in
-// radians since the gesture was first recognized. If @gesture is not
-// active, 0 is returned.
+// AngleDelta: if @gesture is active, this function returns the angle
+// difference in radians since the gesture was first recognized. If @gesture
+// is not active, 0 is returned.
 func (g gestureRotate) AngleDelta() float64 {
 	var arg0 *C.GtkGestureRotate
 
 	arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gtk_gesture_rotate_get_angle_delta(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }

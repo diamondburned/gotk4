@@ -70,14 +70,15 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 
 // NewUnixCredentialsMessage constructs a class UnixCredentialsMessage.
 func NewUnixCredentialsMessage() UnixCredentialsMessage {
-	cret := new(C.GUnixCredentialsMessage)
-	var goret UnixCredentialsMessage
+	var cret C.GUnixCredentialsMessage
 
 	cret = C.g_unix_credentials_message_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+	var unixCredentialsMessage UnixCredentialsMessage
 
-	return goret
+	unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+
+	return unixCredentialsMessage
 }
 
 // NewUnixCredentialsMessageWithCredentials constructs a class UnixCredentialsMessage.
@@ -86,14 +87,15 @@ func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCrede
 
 	arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
-	cret := new(C.GUnixCredentialsMessage)
-	var goret UnixCredentialsMessage
+	var cret C.GUnixCredentialsMessage
 
 	cret = C.g_unix_credentials_message_new_with_credentials(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+	var unixCredentialsMessage UnixCredentialsMessage
 
-	return goret
+	unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+
+	return unixCredentialsMessage
 }
 
 // Credentials gets the credentials stored in @message.
@@ -103,11 +105,12 @@ func (m unixCredentialsMessage) Credentials() Credentials {
 	arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GCredentials
-	var goret Credentials
 
 	cret = C.g_unix_credentials_message_get_credentials(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Credentials)
+	var credentials Credentials
 
-	return goret
+	credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Credentials)
+
+	return credentials
 }

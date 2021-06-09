@@ -108,13 +108,14 @@ func (d messageDialog) Image() Widget {
 	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_message_dialog_get_image(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // MessageArea returns the message area of the dialog. This is the box where
@@ -128,13 +129,14 @@ func (m messageDialog) MessageArea() Widget {
 	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_message_dialog_get_message_area(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetImage sets the dialog’s image to @image.

@@ -101,11 +101,12 @@ func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
 	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	var cret C.GtkScrollbar
-	var goret Scrollbar
 
 	cret = C.gtk_scrollbar_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
+	var scrollbar Scrollbar
 
-	return goret
+	scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
+
+	return scrollbar
 }

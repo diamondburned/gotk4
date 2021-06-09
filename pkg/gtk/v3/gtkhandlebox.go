@@ -106,13 +106,14 @@ func marshalHandleBox(p uintptr) (interface{}, error) {
 // NewHandleBox constructs a class HandleBox.
 func NewHandleBox() HandleBox {
 	var cret C.GtkHandleBox
-	var goret HandleBox
 
 	cret = C.gtk_handle_box_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HandleBox)
+	var handleBox HandleBox
 
-	return goret
+	handleBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HandleBox)
+
+	return handleBox
 }
 
 // ChildDetached: whether the handlebox’s child is currently detached.
@@ -122,15 +123,16 @@ func (h handleBox) ChildDetached() bool {
 	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_handle_box_get_child_detached(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // HandlePosition gets the handle position of the handle box. See
@@ -141,13 +143,14 @@ func (h handleBox) HandlePosition() PositionType {
 	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
 	var cret C.GtkPositionType
-	var goret PositionType
 
 	cret = C.gtk_handle_box_get_handle_position(arg0)
 
-	goret = PositionType(cret)
+	var positionType PositionType
 
-	return goret
+	positionType = PositionType(cret)
+
+	return positionType
 }
 
 // ShadowType gets the type of shadow drawn around the handle box. See
@@ -158,13 +161,14 @@ func (h handleBox) ShadowType() ShadowType {
 	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
 	var cret C.GtkShadowType
-	var goret ShadowType
 
 	cret = C.gtk_handle_box_get_shadow_type(arg0)
 
-	goret = ShadowType(cret)
+	var shadowType ShadowType
 
-	return goret
+	shadowType = ShadowType(cret)
+
+	return shadowType
 }
 
 // SnapEdge gets the edge used for determining reattachment of the handle
@@ -175,13 +179,14 @@ func (h handleBox) SnapEdge() PositionType {
 	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
 	var cret C.GtkPositionType
-	var goret PositionType
 
 	cret = C.gtk_handle_box_get_snap_edge(arg0)
 
-	goret = PositionType(cret)
+	var positionType PositionType
 
-	return goret
+	positionType = PositionType(cret)
+
+	return positionType
 }
 
 // SetHandlePosition sets the side of the handlebox where the handle is

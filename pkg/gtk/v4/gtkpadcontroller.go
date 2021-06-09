@@ -23,64 +23,61 @@ func init() {
 	})
 }
 
-// PadController: `GtkPadController` is an event controller for the pads found
-// in drawing tablets.
-//
-// Pads are the collection of buttons and tactile sensors often found around the
-// stylus-sensitive area.
+// PadController is an event controller for the pads found in drawing tablets
+// (The collection of buttons and tactile sensors often found around the
+// stylus-sensitive area).
 //
 // These buttons and sensors have no implicit meaning, and by default they
-// perform no action. `GtkPadController` is provided to map those to `GAction`
-// objects, thus letting the application give them a more semantic meaning.
+// perform no action, this event controller is provided to map those to #GAction
+// objects, thus letting the application give those a more semantic meaning.
 //
 // Buttons and sensors are not constrained to triggering a single action, some
-// GDK_SOURCE_TABLET_PAD devices feature multiple "modes". All these input
+// GDK_SOURCE_TABLET_PAD devices feature multiple "modes", all these input
 // elements have one current mode, which may determine the final action being
-// triggered.
-//
-// Pad devices often divide buttons and sensors into groups. All elements in a
-// group share the same current mode, but different groups may have different
-// modes. See [method@Gdk.DevicePad.get_n_groups] and
-// [method@Gdk.DevicePad.get_group_n_modes].
+// triggered. Pad devices often divide buttons and sensors into groups, all
+// elements in a group share the same current mode, but different groups may
+// have different modes. See gdk_device_pad_get_n_groups() and
+// gdk_device_pad_get_group_n_modes().
 //
 // Each of the actions that a given button/strip/ring performs for a given mode
-// is defined by a [struct@Gtk.PadActionEntry]. It contains an action name that
-// will be looked up in the given `GActionGroup` and activated whenever the
-// specified input element and mode are triggered.
+// is defined by PadActionEntry, it contains an action name that will be looked
+// up in the given Group and activated whenever the specified input element and
+// mode are triggered.
 //
-// A simple example of `GtkPadController` usage: Assigning button 1 in all modes
-// and pad devices to an "invert-selection" action:
+// A simple example of PadController usage, assigning button 1 in all modes and
+// pad devices to an "invert-selection" action:
 //
-// “`c GtkPadActionEntry *pad_actions[] = { { GTK_PAD_ACTION_BUTTON, 1, -1,
-// "Invert selection", "pad-actions.invert-selection" }, … };
+//      GtkPadActionEntry *pad_actions[] = {
+//        { GTK_PAD_ACTION_BUTTON, 1, -1, "Invert selection", "pad-actions.invert-selection" },
+//        …
+//      };
 //
-// … action_group = g_simple_action_group_new (); action = g_simple_action_new
-// ("pad-actions.invert-selection", NULL); g_signal_connect (action, "activate",
-// on_invert_selection_activated, NULL); g_action_map_add_action (G_ACTION_MAP
-// (action_group), action); … pad_controller = gtk_pad_controller_new
-// (action_group, NULL); “`
+//      …
+//      action_group = g_simple_action_group_new ();
+//      action = g_simple_action_new ("pad-actions.invert-selection", NULL);
+//      g_signal_connect (action, "activate", on_invert_selection_activated, NULL);
+//      g_action_map_add_action (G_ACTION_MAP (action_group), action);
+//      …
+//      pad_controller = gtk_pad_controller_new (action_group, NULL);
 //
 // The actions belonging to rings/strips will be activated with a parameter of
 // type G_VARIANT_TYPE_DOUBLE bearing the value of the given axis, it is
-// required that those are made stateful and accepting this `GVariantType`.
+// required that those are made stateful and accepting this Type.
 type PadController interface {
 	EventController
 
-	// SetAction adds an individual action to @controller.
-	//
-	// This action will only be activated if the given button/ring/strip number
-	// in @index is interacted while the current mode is @mode. -1 may be used
-	// for simple cases, so the action is triggered on all modes.
+	// SetAction adds an individual action to @controller. This action will only
+	// be activated if the given button/ring/strip number in @index is
+	// interacted while the current mode is @mode. -1 may be used for simple
+	// cases, so the action is triggered on all modes.
 	//
 	// The given @label should be considered user-visible, so
 	// internationalization rules apply. Some windowing systems may be able to
 	// use those for user feedback.
 	SetAction(typ PadActionType, index int, mode int, label string, actionName string)
-	// SetActionEntries: a convenience function to add a group of action entries
-	// on @controller.
-	//
-	// See [struct@Gtk.PadActionEntry] and
-	// [method@Gtk.PadController.set_action].
+	// SetActionEntries: this is a convenience function to add a group of action
+	// entries on @controller. See PadActionEntry and
+	// gtk_pad_controller_set_action().
 	SetActionEntries()
 }
 
@@ -113,21 +110,21 @@ func NewPadController(group gio.ActionGroup, pad gdk.Device) PadController {
 	arg1 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
 	arg2 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
-	cret := new(C.GtkPadController)
-	var goret PadController
+	var cret C.GtkPadController
 
 	cret = C.gtk_pad_controller_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
+	var padController PadController
 
-	return goret
+	padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
+
+	return padController
 }
 
-// SetAction adds an individual action to @controller.
-//
-// This action will only be activated if the given button/ring/strip number
-// in @index is interacted while the current mode is @mode. -1 may be used
-// for simple cases, so the action is triggered on all modes.
+// SetAction adds an individual action to @controller. This action will only
+// be activated if the given button/ring/strip number in @index is
+// interacted while the current mode is @mode. -1 may be used for simple
+// cases, so the action is triggered on all modes.
 //
 // The given @label should be considered user-visible, so
 // internationalization rules apply. Some windowing systems may be able to
@@ -152,17 +149,15 @@ func (c padController) SetAction(typ PadActionType, index int, mode int, label s
 	C.gtk_pad_controller_set_action(arg0, arg1, arg2, arg3, arg4, arg5)
 }
 
-// SetActionEntries: a convenience function to add a group of action entries
-// on @controller.
-//
-// See [struct@Gtk.PadActionEntry] and
-// [method@Gtk.PadController.set_action].
+// SetActionEntries: this is a convenience function to add a group of action
+// entries on @controller. See PadActionEntry and
+// gtk_pad_controller_set_action().
 func (c padController) SetActionEntries() {
 	var arg0 *C.GtkPadController
 
 	arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
 
-	C.gtk_pad_controller_set_action_entries(arg0, arg1, arg2)
+	C.gtk_pad_controller_set_action_entries(arg0)
 }
 
 // PadActionEntry: struct defining a pad action entry.
@@ -200,14 +195,14 @@ func (p *PadActionEntry) Type() PadActionType {
 // Index gets the field inside the struct.
 func (p *PadActionEntry) Index() int {
 	var v int
-	v = int(p.native.index)
+	v = (int)(p.native.index)
 	return v
 }
 
 // Mode gets the field inside the struct.
 func (p *PadActionEntry) Mode() int {
 	var v int
-	v = int(p.native.mode)
+	v = (int)(p.native.mode)
 	return v
 }
 

@@ -182,17 +182,18 @@ func (c cellAreaContext) Allocation() (width int, height int) {
 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_cell_area_context_get_allocation(arg0, arg1, arg2)
+	C.gtk_cell_area_context_get_allocation(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var width int
+	var height int
 
-	return ret1, ret2
+	width = (int)(arg1)
+	height = (int)(arg2)
+
+	return width, height
 }
 
 // Area fetches the CellArea this @context was created by.
@@ -210,13 +211,14 @@ func (c cellAreaContext) Area() CellArea {
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkCellArea
-	var goret CellArea
 
 	cret = C.gtk_cell_area_context_get_area(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellArea)
+	var cellArea CellArea
 
-	return goret
+	cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellArea)
+
+	return cellArea
 }
 
 // PreferredHeight gets the accumulative preferred height for all rows which
@@ -229,17 +231,18 @@ func (c cellAreaContext) PreferredHeight() (minimumHeight int, naturalHeight int
 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_cell_area_context_get_preferred_height(arg0, arg1, arg2)
+	C.gtk_cell_area_context_get_preferred_height(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var minimumHeight int
+	var naturalHeight int
 
-	return ret1, ret2
+	minimumHeight = (int)(arg1)
+	naturalHeight = (int)(arg2)
+
+	return minimumHeight, naturalHeight
 }
 
 // PreferredHeightForWidth gets the accumulative preferred height for @width
@@ -255,17 +258,18 @@ func (c cellAreaContext) PreferredHeightForWidth(width int) (minimumHeight int, 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 	arg1 = C.gint(width)
 
-	arg2 := new(C.gint)
-	var ret2 int
-	arg3 := new(C.gint)
-	var ret3 int
+	var arg2 C.gint
+	var arg3 C.gint
 
-	C.gtk_cell_area_context_get_preferred_height_for_width(arg0, arg1, arg2, arg3)
+	C.gtk_cell_area_context_get_preferred_height_for_width(arg0, arg1, &arg2, &arg3)
 
-	ret2 = int(*arg2)
-	ret3 = int(*arg3)
+	var minimumHeight int
+	var naturalHeight int
 
-	return ret2, ret3
+	minimumHeight = (int)(arg2)
+	naturalHeight = (int)(arg3)
+
+	return minimumHeight, naturalHeight
 }
 
 // PreferredWidth gets the accumulative preferred width for all rows which
@@ -278,17 +282,18 @@ func (c cellAreaContext) PreferredWidth() (minimumWidth int, naturalWidth int) {
 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(C.gint)
-	var ret1 int
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 C.gint
+	var arg2 C.gint
 
-	C.gtk_cell_area_context_get_preferred_width(arg0, arg1, arg2)
+	C.gtk_cell_area_context_get_preferred_width(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var minimumWidth int
+	var naturalWidth int
 
-	return ret1, ret2
+	minimumWidth = (int)(arg1)
+	naturalWidth = (int)(arg2)
+
+	return minimumWidth, naturalWidth
 }
 
 // PreferredWidthForHeight gets the accumulative preferred width for @height
@@ -304,17 +309,18 @@ func (c cellAreaContext) PreferredWidthForHeight(height int) (minimumWidth int, 
 	arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
 	arg1 = C.gint(height)
 
-	arg2 := new(C.gint)
-	var ret2 int
-	arg3 := new(C.gint)
-	var ret3 int
+	var arg2 C.gint
+	var arg3 C.gint
 
-	C.gtk_cell_area_context_get_preferred_width_for_height(arg0, arg1, arg2, arg3)
+	C.gtk_cell_area_context_get_preferred_width_for_height(arg0, arg1, &arg2, &arg3)
 
-	ret2 = int(*arg2)
-	ret3 = int(*arg3)
+	var minimumWidth int
+	var naturalWidth int
 
-	return ret2, ret3
+	minimumWidth = (int)(arg2)
+	naturalWidth = (int)(arg3)
+
+	return minimumWidth, naturalWidth
 }
 
 // PushPreferredHeight causes the minimum and/or natural height to grow if

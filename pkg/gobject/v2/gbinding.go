@@ -30,7 +30,7 @@ func gotk4_BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue
 	}
 
 	fn := v.(BindingTransformFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)

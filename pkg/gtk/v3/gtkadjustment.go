@@ -159,13 +159,14 @@ func NewAdjustment(value float64, lower float64, upper float64, stepIncrement fl
 	arg6 = C.gdouble(pageSize)
 
 	var cret C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_adjustment_new(arg1, arg2, arg3, arg4, arg5, arg6)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // Changed emits a Adjustment::changed signal from the Adjustment. This is
@@ -231,13 +232,14 @@ func (a adjustment) Lower() float64 {
 	arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_adjustment_get_lower(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // MinimumIncrement gets the smaller of step increment and page increment.
@@ -247,13 +249,14 @@ func (a adjustment) MinimumIncrement() float64 {
 	arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_adjustment_get_minimum_increment(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // PageIncrement retrieves the page increment of the adjustment.
@@ -263,13 +266,14 @@ func (a adjustment) PageIncrement() float64 {
 	arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_adjustment_get_page_increment(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // PageSize retrieves the page size of the adjustment.
@@ -279,13 +283,14 @@ func (a adjustment) PageSize() float64 {
 	arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_adjustment_get_page_size(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // StepIncrement retrieves the step increment of the adjustment.
@@ -295,13 +300,14 @@ func (a adjustment) StepIncrement() float64 {
 	arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_adjustment_get_step_increment(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Upper retrieves the maximum value of the adjustment.
@@ -311,13 +317,14 @@ func (a adjustment) Upper() float64 {
 	arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_adjustment_get_upper(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Value gets the current value of the adjustment. See
@@ -328,13 +335,14 @@ func (a adjustment) Value() float64 {
 	arg0 = (*C.GtkAdjustment)(unsafe.Pointer(a.Native()))
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.gtk_adjustment_get_value(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // SetLower sets the minimum value of the adjustment.

@@ -105,21 +105,22 @@ func marshalLayout(p uintptr) (interface{}, error) {
 }
 
 // NewLayout constructs a class Layout.
-func NewLayout(hAdjustment Adjustment, vAdjustment Adjustment) Layout {
+func NewLayout(hadjustment Adjustment, vadjustment Adjustment) Layout {
 	var arg1 *C.GtkAdjustment
 	var arg2 *C.GtkAdjustment
 
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hAdjustment.Native()))
-	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vAdjustment.Native()))
+	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
+	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
 
 	var cret C.GtkLayout
-	var goret Layout
 
 	cret = C.gtk_layout_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
+	var layout Layout
 
-	return goret
+	layout = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Layout)
+
+	return layout
 }
 
 // BinWindow: retrieve the bin window of the layout used for drawing
@@ -130,13 +131,14 @@ func (l layout) BinWindow() gdk.Window {
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GdkWindow
-	var goret gdk.Window
 
 	cret = C.gtk_layout_get_bin_window(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	var window gdk.Window
 
-	return goret
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+
+	return window
 }
 
 // HAdjustment: this function should only be called after the layout has
@@ -151,13 +153,14 @@ func (l layout) HAdjustment() Adjustment {
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_layout_get_hadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // Size gets the size that has been set on the layout, and that determines
@@ -168,17 +171,18 @@ func (l layout) Size() (width uint, height uint) {
 
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
-	arg1 := new(C.guint)
-	var ret1 uint
-	arg2 := new(C.guint)
-	var ret2 uint
+	var arg1 C.guint
+	var arg2 C.guint
 
-	C.gtk_layout_get_size(arg0, arg1, arg2)
+	C.gtk_layout_get_size(arg0, &arg1, &arg2)
 
-	ret1 = uint(*arg1)
-	ret2 = uint(*arg2)
+	var width uint
+	var height uint
 
-	return ret1, ret2
+	width = (uint)(arg1)
+	height = (uint)(arg2)
+
+	return width, height
 }
 
 // VAdjustment: this function should only be called after the layout has
@@ -193,13 +197,14 @@ func (l layout) VAdjustment() Adjustment {
 	arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GtkAdjustment
-	var goret Adjustment
 
 	cret = C.gtk_layout_get_vadjustment(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+	var adjustment Adjustment
 
-	return goret
+	adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Adjustment)
+
+	return adjustment
 }
 
 // Move moves a current child of @layout to a new position.

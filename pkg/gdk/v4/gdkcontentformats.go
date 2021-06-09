@@ -34,17 +34,19 @@ func InternMIMEType(string string) string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gdk_intern_mime_type(arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// ContentFormatsBuilder: a `GdkContentFormatsBuilder` is an auxiliary struct
-// used to create new `GdkContentFormats`, and should not be kept around.
+// ContentFormatsBuilder: a ContentFormatsBuilder struct is an opaque struct. It
+// is meant to not be kept around and only be used to create new ContentFormats
+// objects.
 type ContentFormatsBuilder struct {
 	native C.GdkContentFormatsBuilder
 }
@@ -66,17 +68,18 @@ func marshalContentFormatsBuilder(p uintptr) (interface{}, error) {
 
 // NewContentFormatsBuilder constructs a struct ContentFormatsBuilder.
 func NewContentFormatsBuilder() *ContentFormatsBuilder {
-	cret := new(C.GdkContentFormatsBuilder)
-	var goret *ContentFormatsBuilder
+	var cret *C.GdkContentFormatsBuilder
 
 	cret = C.gdk_content_formats_builder_new()
 
-	goret = WrapContentFormatsBuilder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ContentFormatsBuilder) {
+	var contentFormatsBuilder *ContentFormatsBuilder
+
+	contentFormatsBuilder = WrapContentFormatsBuilder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(contentFormatsBuilder, func(v *ContentFormatsBuilder) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return contentFormatsBuilder
 }
 
 // Native returns the underlying C source pointer.
@@ -96,7 +99,7 @@ func (b *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 	C.gdk_content_formats_builder_add_formats(arg0, arg1)
 }
 
-// AddGType appends @type to @builder if it has not already been added.
+// AddGType appends @gtype to @builder if it has not already been added.
 func (b *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 	var arg0 *C.GdkContentFormatsBuilder
 	var arg1 C.GType
@@ -119,29 +122,30 @@ func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 	C.gdk_content_formats_builder_add_mime_type(arg0, arg1)
 }
 
-// FreeToFormats creates a new `GdkContentFormats` from the current state of the
+// FreeToFormats creates a new ContentFormats from the current state of the
 // given @builder, and frees the @builder instance.
 func (b *ContentFormatsBuilder) FreeToFormats() *ContentFormats {
 	var arg0 *C.GdkContentFormatsBuilder
 
 	arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
 
-	cret := new(C.GdkContentFormats)
-	var goret *ContentFormats
+	var cret *C.GdkContentFormats
 
 	cret = C.gdk_content_formats_builder_free_to_formats(arg0)
 
-	goret = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ContentFormats) {
+	var contentFormats *ContentFormats
+
+	contentFormats = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(contentFormats, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return contentFormats
 }
 
 // Ref acquires a reference on the given @builder.
 //
-// This function is intended primarily for bindings. `GdkContentFormatsBuilder`
+// This function is intended primarily for bindings. ContentFormatsBuilder
 // objects should not be kept around.
 func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 	var arg0 *C.GdkContentFormatsBuilder
@@ -149,38 +153,40 @@ func (b *ContentFormatsBuilder) Ref() *ContentFormatsBuilder {
 	arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GdkContentFormatsBuilder
-	var goret *ContentFormatsBuilder
 
 	cret = C.gdk_content_formats_builder_ref(arg0)
 
-	goret = WrapContentFormatsBuilder(unsafe.Pointer(cret))
+	var contentFormatsBuilder *ContentFormatsBuilder
 
-	return goret
+	contentFormatsBuilder = WrapContentFormatsBuilder(unsafe.Pointer(cret))
+
+	return contentFormatsBuilder
 }
 
-// ToFormats creates a new `GdkContentFormats` from the given @builder.
+// ToFormats creates a new ContentFormats from the given @builder.
 //
-// The given `GdkContentFormatsBuilder` is reset once this function returns; you
+// The given ContentFormatsBuilder is reset once this function returns; you
 // cannot call this function multiple times on the same @builder instance.
 //
 // This function is intended primarily for bindings. C code should use
-// [method@Gdk.ContentFormatsBuilder.free_to_formats].
+// gdk_content_formats_builder_free_to_formats().
 func (b *ContentFormatsBuilder) ToFormats() *ContentFormats {
 	var arg0 *C.GdkContentFormatsBuilder
 
 	arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
 
-	cret := new(C.GdkContentFormats)
-	var goret *ContentFormats
+	var cret *C.GdkContentFormats
 
 	cret = C.gdk_content_formats_builder_to_formats(arg0)
 
-	goret = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *ContentFormats) {
+	var contentFormats *ContentFormats
+
+	contentFormats = WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(contentFormats, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return contentFormats
 }
 
 // Unref releases a reference on the given @builder.

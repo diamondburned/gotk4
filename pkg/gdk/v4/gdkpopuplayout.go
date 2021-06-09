@@ -21,8 +21,8 @@ func init() {
 	})
 }
 
-// PopupLayout: the `GdkPopupLayout` struct contains information that is
-// necessary position a [interface@Gdk.Popup] relative to its parent.
+// PopupLayout popups are positioned relative to their parent surface. The
+// GdkPopupLayout struct contains information that is necessary to do so.
 //
 // The positioning requires a negotiation with the windowing system, since it
 // depends on external constraints, such as the position of the parent surface,
@@ -47,12 +47,12 @@ func init() {
 //
 // Ultimatively, it is up to the windowing system to determine the position and
 // size of the popup. You can learn about the result by calling
-// [method@Gdk.Popup.get_position_x], [method@Gdk.Popup.get_position_y],
-// [method@Gdk.Popup.get_rect_anchor] and [method@Gdk.Popup.get_surface_anchor]
-// after the popup has been presented. This can be used to adjust the rendering.
-// For example, [class@Gtk.Popover] changes its arrow position accordingly. But
-// you have to be careful avoid changing the size of the popover, or it has to
-// be presented again.
+// gdk_popup_get_position_x(), gdk_popup_get_position_y(),
+// gdk_popup_get_rect_anchor() and gdk_popup_get_surface_anchor() after the
+// popup has been presented. This can be used to adjust the rendering. For
+// example, GtkPopover changes its arrow position accordingly. But you have to
+// be careful avoid changing the size of the popover, or it has to be presented
+// again.
 type PopupLayout struct {
 	native C.GdkPopupLayout
 }
@@ -82,17 +82,18 @@ func NewPopupLayout(anchorRect *Rectangle, rectAnchor Gravity, surfaceAnchor Gra
 	arg2 = (C.GdkGravity)(rectAnchor)
 	arg3 = (C.GdkGravity)(surfaceAnchor)
 
-	cret := new(C.GdkPopupLayout)
-	var goret *PopupLayout
+	var cret *C.GdkPopupLayout
 
 	cret = C.gdk_popup_layout_new(arg1, arg2, arg3)
 
-	goret = WrapPopupLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *PopupLayout) {
+	var popupLayout *PopupLayout
+
+	popupLayout = WrapPopupLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(popupLayout, func(v *PopupLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return popupLayout
 }
 
 // Native returns the underlying C source pointer.
@@ -100,23 +101,24 @@ func (p *PopupLayout) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Copy makes a copy of @layout.
+// Copy: create a new PopupLayout and copy the contents of @layout into it.
 func (l *PopupLayout) Copy() *PopupLayout {
 	var arg0 *C.GdkPopupLayout
 
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
-	cret := new(C.GdkPopupLayout)
-	var goret *PopupLayout
+	var cret *C.GdkPopupLayout
 
 	cret = C.gdk_popup_layout_copy(arg0)
 
-	goret = WrapPopupLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *PopupLayout) {
+	var popupLayout *PopupLayout
+
+	popupLayout = WrapPopupLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(popupLayout, func(v *PopupLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return popupLayout
 }
 
 // Equal: check whether @layout and @other has identical layout properties.
@@ -128,31 +130,33 @@ func (l *PopupLayout) Equal(other *PopupLayout) bool {
 	arg1 = (*C.GdkPopupLayout)(unsafe.Pointer(other.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_popup_layout_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// AnchorHints: get the `GdkAnchorHints`.
+// AnchorHints: get the AnchorHints.
 func (l *PopupLayout) AnchorHints() AnchorHints {
 	var arg0 *C.GdkPopupLayout
 
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.GdkAnchorHints
-	var goret AnchorHints
 
 	cret = C.gdk_popup_layout_get_anchor_hints(arg0)
 
-	goret = AnchorHints(cret)
+	var anchorHints AnchorHints
 
-	return goret
+	anchorHints = AnchorHints(cret)
+
+	return anchorHints
 }
 
 // AnchorRect: get the anchor rectangle.
@@ -162,13 +166,14 @@ func (l *PopupLayout) AnchorRect() *Rectangle {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret *C.GdkRectangle
-	var goret *Rectangle
 
 	cret = C.gdk_popup_layout_get_anchor_rect(arg0)
 
-	goret = WrapRectangle(unsafe.Pointer(cret))
+	var rectangle *Rectangle
 
-	return goret
+	rectangle = WrapRectangle(unsafe.Pointer(cret))
+
+	return rectangle
 }
 
 // Offset retrieves the offset for the anchor rectangle.
@@ -177,17 +182,18 @@ func (l *PopupLayout) Offset() (dx int, dy int) {
 
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
-	arg1 := new(C.int)
-	var ret1 int
-	arg2 := new(C.int)
-	var ret2 int
+	var arg1 C.int
+	var arg2 C.int
 
-	C.gdk_popup_layout_get_offset(arg0, arg1, arg2)
+	C.gdk_popup_layout_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
+	var dx int
+	var dy int
 
-	return ret1, ret2
+	dx = (int)(arg1)
+	dy = (int)(arg2)
+
+	return dx, dy
 }
 
 // RectAnchor returns the anchor position on the anchor rectangle.
@@ -197,38 +203,14 @@ func (l *PopupLayout) RectAnchor() Gravity {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.GdkGravity
-	var goret Gravity
 
 	cret = C.gdk_popup_layout_get_rect_anchor(arg0)
 
-	goret = Gravity(cret)
+	var gravity Gravity
 
-	return goret
-}
+	gravity = Gravity(cret)
 
-// ShadowWidth obtains the shadow widths of this layout.
-func (l *PopupLayout) ShadowWidth() (left int, right int, top int, bottom int) {
-	var arg0 *C.GdkPopupLayout
-
-	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
-
-	arg1 := new(C.int)
-	var ret1 int
-	arg2 := new(C.int)
-	var ret2 int
-	arg3 := new(C.int)
-	var ret3 int
-	arg4 := new(C.int)
-	var ret4 int
-
-	C.gdk_popup_layout_get_shadow_width(arg0, arg1, arg2, arg3, arg4)
-
-	ret1 = int(*arg1)
-	ret2 = int(*arg2)
-	ret3 = int(*arg3)
-	ret4 = int(*arg4)
-
-	return ret1, ret2, ret3, ret4
+	return gravity
 }
 
 // SurfaceAnchor returns the anchor position on the popup surface.
@@ -238,13 +220,14 @@ func (l *PopupLayout) SurfaceAnchor() Gravity {
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
 	var cret C.GdkGravity
-	var goret Gravity
 
 	cret = C.gdk_popup_layout_get_surface_anchor(arg0)
 
-	goret = Gravity(cret)
+	var gravity Gravity
 
-	return goret
+	gravity = Gravity(cret)
+
+	return gravity
 }
 
 // Ref increases the reference count of @value.
@@ -253,17 +236,18 @@ func (l *PopupLayout) Ref() *PopupLayout {
 
 	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
 
-	cret := new(C.GdkPopupLayout)
-	var goret *PopupLayout
+	var cret *C.GdkPopupLayout
 
 	cret = C.gdk_popup_layout_ref(arg0)
 
-	goret = WrapPopupLayout(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *PopupLayout) {
+	var popupLayout *PopupLayout
+
+	popupLayout = WrapPopupLayout(unsafe.Pointer(cret))
+	runtime.SetFinalizer(popupLayout, func(v *PopupLayout) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return popupLayout
 }
 
 // SetAnchorHints: set new anchor hints.
@@ -315,27 +299,6 @@ func (l *PopupLayout) SetRectAnchor(anchor Gravity) {
 	arg1 = (C.GdkGravity)(anchor)
 
 	C.gdk_popup_layout_set_rect_anchor(arg0, arg1)
-}
-
-// SetShadowWidth sets the shadow width of the popup.
-//
-// The shadow width corresponds to the part of the computed surface size that
-// would consist of the shadow margin surrounding the window, would there be
-// any.
-func (l *PopupLayout) SetShadowWidth(left int, right int, top int, bottom int) {
-	var arg0 *C.GdkPopupLayout
-	var arg1 C.int
-	var arg2 C.int
-	var arg3 C.int
-	var arg4 C.int
-
-	arg0 = (*C.GdkPopupLayout)(unsafe.Pointer(l.Native()))
-	arg1 = C.int(left)
-	arg2 = C.int(right)
-	arg3 = C.int(top)
-	arg4 = C.int(bottom)
-
-	C.gdk_popup_layout_set_shadow_width(arg0, arg1, arg2, arg3, arg4)
 }
 
 // SetSurfaceAnchor: set the anchor on the popup surface.

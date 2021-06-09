@@ -52,7 +52,7 @@ type VolumeMonitor interface {
 	// have been unreffed with g_object_unref().
 	ConnectedDrives() *glib.List
 	// MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-	MountForUUID(uuiD string) Mount
+	MountForUUID(uuid string) Mount
 	// Mounts gets a list of the mounts on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -60,7 +60,7 @@ type VolumeMonitor interface {
 	Mounts() *glib.List
 	// VolumeForUUID finds a #GVolume object by its UUID (see
 	// g_volume_get_uuid())
-	VolumeForUUID(uuiD string) Volume
+	VolumeForUUID(uuid string) Volume
 	// Volumes gets a list of the volumes on the system.
 	//
 	// The returned list should be freed with g_list_free(), after its elements
@@ -98,36 +98,38 @@ func (v volumeMonitor) ConnectedDrives() *glib.List {
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_volume_monitor_get_connected_drives(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
-func (v volumeMonitor) MountForUUID(uuiD string) Mount {
+func (v volumeMonitor) MountForUUID(uuid string) Mount {
 	var arg0 *C.GVolumeMonitor
 	var arg1 *C.char
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(uuiD))
+	arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GMount)
-	var goret Mount
+	var cret *C.GMount
 
 	cret = C.g_volume_monitor_get_mount_for_uuid(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
+	var mount Mount
 
-	return goret
+	mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
+
+	return mount
 }
 
 // Mounts gets a list of the mounts on the system.
@@ -139,37 +141,39 @@ func (v volumeMonitor) Mounts() *glib.List {
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_volume_monitor_get_mounts(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // VolumeForUUID finds a #GVolume object by its UUID (see
 // g_volume_get_uuid())
-func (v volumeMonitor) VolumeForUUID(uuiD string) Volume {
+func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 	var arg0 *C.GVolumeMonitor
 	var arg1 *C.char
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(uuiD))
+	arg1 = (*C.char)(C.CString(uuid))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GVolume)
-	var goret Volume
+	var cret *C.GVolume
 
 	cret = C.g_volume_monitor_get_volume_for_uuid(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Volume)
+	var volume Volume
 
-	return goret
+	volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Volume)
+
+	return volume
 }
 
 // Volumes gets a list of the volumes on the system.
@@ -181,15 +185,16 @@ func (v volumeMonitor) Volumes() *glib.List {
 
 	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_volume_monitor_get_volumes(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }

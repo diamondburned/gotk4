@@ -66,6 +66,7 @@ var (
 		`Sha(\d+)?`,
 		`Utf(\d+)?`,
 		`[XY][^aiueo]`,
+		`[XYZxyz]{2,3}`,
 		`(|S|R)[XYZxyz]{3}`,
 	}
 	pascalWords = strings.NewReplacer(
@@ -170,18 +171,16 @@ func UnexportPascal(pascal string) string {
 	pascal = strings.ToLower(string(runes[:i])) + string(runes[i:])
 	pascal = snakeNoGo(pascal)
 
-	switch pascal {
-	case "error":
-		pascal = "err"
-	}
-
 	return pascal
 }
 
 // SnakeToGo converts snake case to Go's special case. If Pascal is true, then
 // the first letter is capitalized.
 func SnakeToGo(pascal bool, snakeString string) string {
-	snakeString = "_" + snakeString
+	if pascal {
+		snakeString = "_" + snakeString
+	}
+
 	snakeString = snakeRegex.ReplaceAllStringFunc(snakeString,
 		func(orig string) string {
 			orig = strings.ToUpper(orig)
@@ -190,13 +189,11 @@ func SnakeToGo(pascal bool, snakeString string) string {
 		},
 	)
 
-	snakeString = PascalToGo(snakeString)
-
 	if !pascal {
-		return UnexportPascal(snakeString)
+		return snakeNoGo(snakeString)
 	}
 
-	return snakeString
+	return PascalToGo(snakeString)
 }
 
 // See Go specs, section Keywords.
@@ -240,18 +237,21 @@ func cgoField(field string) string {
 
 // snakeNoGo ensures the snake-case string is never a Go keyword.
 func snakeNoGo(snake string) string {
+	switch snake {
+	case "func":
+		snake = "fn"
+	case "type":
+		snake = "typ"
+	case "error":
+		snake = "err"
+	case "return":
+		snake = "ret"
+	}
+
 	_, isKeyword := goKeywords[snake]
 	if isKeyword {
-		switch snake {
-		case "func":
-			snake = "fn"
-		case "type":
-			snake = "typ"
-		case "return":
-			snake = "ret"
-		default:
-			snake = "_" + snake
-		}
+		snake = "_" + snake
 	}
+
 	return snake
 }

@@ -150,9 +150,10 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_network_monitor_can_reach(arg0, arg1, arg2, &cerr)
+	C.g_network_monitor_can_reach(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -173,7 +174,7 @@ func (m networkMonitor) CanReachAsync() {
 
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
-	C.g_network_monitor_can_reach_async(arg0, arg1, arg2, arg3, arg4)
+	C.g_network_monitor_can_reach_async(arg0)
 }
 
 // CanReachFinish finishes an async network connectivity test. See
@@ -186,9 +187,10 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_network_monitor_can_reach_finish(arg0, arg1, &cerr)
+	C.g_network_monitor_can_reach_finish(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -220,13 +222,14 @@ func (m networkMonitor) Connectivity() NetworkConnectivity {
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.GNetworkConnectivity
-	var goret NetworkConnectivity
 
 	cret = C.g_network_monitor_get_connectivity(arg0)
 
-	goret = NetworkConnectivity(cret)
+	var networkConnectivity NetworkConnectivity
 
-	return goret
+	networkConnectivity = NetworkConnectivity(cret)
+
+	return networkConnectivity
 }
 
 // NetworkAvailable checks if the network is available. "Available" here
@@ -239,15 +242,16 @@ func (m networkMonitor) NetworkAvailable() bool {
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_network_monitor_get_network_available(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // NetworkMetered checks if the network is metered. See
@@ -258,13 +262,14 @@ func (m networkMonitor) NetworkMetered() bool {
 	arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_network_monitor_get_network_metered(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

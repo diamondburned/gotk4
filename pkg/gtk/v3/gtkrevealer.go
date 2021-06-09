@@ -96,13 +96,14 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 // NewRevealer constructs a class Revealer.
 func NewRevealer() Revealer {
 	var cret C.GtkRevealer
-	var goret Revealer
 
 	cret = C.gtk_revealer_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Revealer)
+	var revealer Revealer
 
-	return goret
+	revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Revealer)
+
+	return revealer
 }
 
 // ChildRevealed returns whether the child is fully revealed, in other words
@@ -113,15 +114,16 @@ func (r revealer) ChildRevealed() bool {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_revealer_get_child_revealed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RevealChild returns whether the child is currently revealed. See
@@ -136,15 +138,16 @@ func (r revealer) RevealChild() bool {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_revealer_get_reveal_child(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -155,13 +158,14 @@ func (r revealer) TransitionDuration() uint {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_revealer_get_transition_duration(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // TransitionType gets the type of animation that will be used for
@@ -172,13 +176,14 @@ func (r revealer) TransitionType() RevealerTransitionType {
 	arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
 
 	var cret C.GtkRevealerTransitionType
-	var goret RevealerTransitionType
 
 	cret = C.gtk_revealer_get_transition_type(arg0)
 
-	goret = RevealerTransitionType(cret)
+	var revealerTransitionType RevealerTransitionType
 
-	return goret
+	revealerTransitionType = RevealerTransitionType(cret)
+
+	return revealerTransitionType
 }
 
 // SetRevealChild tells the Revealer to reveal or conceal its child.

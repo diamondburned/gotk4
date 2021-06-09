@@ -18,22 +18,18 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// ContentRegisterSerializer registers a function to serialize objects of a
-// given type.
+// ContentRegisterSerializer registers a function to convert objects of the
+// given @type to a serialized representation with the given mime type.
 func ContentRegisterSerializer() {
-	C.gdk_content_register_serializer(arg1, arg2, arg3, arg4, arg5)
+	C.gdk_content_register_serializer()
 }
 
 // ContentSerializeAsync: serialize content and write it to the given output
-// stream, asynchronously.
-//
-// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
-// indicate a higher priority.
-//
-// When the operation is finished, @callback will be called. You must then call
-// [func@content_serialize_finish] to get the result of the operation.
+// stream, asynchronously. When the operation is finished, @callback will be
+// called. You can then call gdk_content_serialize_finish() to get the result of
+// the operation.
 func ContentSerializeAsync() {
-	C.gdk_content_serialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	C.gdk_content_serialize_async()
 }
 
 // ContentSerializeFinish finishes a content serialization operation.
@@ -43,9 +39,10 @@ func ContentSerializeFinish(result gio.AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gdk_content_serialize_finish(arg1, &cerr)
+	C.gdk_content_serialize_finish(arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 

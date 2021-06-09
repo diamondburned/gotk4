@@ -33,17 +33,18 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 
 	arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
 
-	cret := new(C.GSource)
-	var goret *glib.Source
+	var cret *C.GSource
 
 	cret = C.g_pollable_source_new(arg1)
 
-	goret = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Source) {
+	var source *glib.Source
+
+	source = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return source
 }
 
 // PollableSourceNewFull: utility method for InputStream and OutputStream
@@ -59,15 +60,16 @@ func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.So
 	arg2 = (*C.GSource)(unsafe.Pointer(childSource.Native()))
 	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	cret := new(C.GSource)
-	var goret *glib.Source
+	var cret *C.GSource
 
 	cret = C.g_pollable_source_new_full(arg1, arg2, arg3)
 
-	goret = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Source) {
+	var source *glib.Source
+
+	source = glib.WrapSource(unsafe.Pointer(cret))
+	runtime.SetFinalizer(source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return source
 }

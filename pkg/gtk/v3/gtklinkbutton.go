@@ -59,7 +59,7 @@ type LinkButton interface {
 	Visited() bool
 	// SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 	// this unsets the “visited” state of the button.
-	SetURI(urI string)
+	SetURI(uri string)
 	// SetVisited sets the “visited” state of the URI where the LinkButton
 	// points. See gtk_link_button_get_visited() for more details.
 	SetVisited(visited bool)
@@ -93,40 +93,42 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 }
 
 // NewLinkButton constructs a class LinkButton.
-func NewLinkButton(urI string) LinkButton {
+func NewLinkButton(uri string) LinkButton {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(urI))
+	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkLinkButton
-	var goret LinkButton
 
 	cret = C.gtk_link_button_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	var linkButton LinkButton
 
-	return goret
+	linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+
+	return linkButton
 }
 
 // NewLinkButtonWithLabel constructs a class LinkButton.
-func NewLinkButtonWithLabel(urI string, label string) LinkButton {
+func NewLinkButtonWithLabel(uri string, label string) LinkButton {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(urI))
+	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = (*C.gchar)(C.CString(label))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.GtkLinkButton
-	var goret LinkButton
 
 	cret = C.gtk_link_button_new_with_label(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	var linkButton LinkButton
 
-	return goret
+	linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+
+	return linkButton
 }
 
 // URI retrieves the URI set using gtk_link_button_set_uri().
@@ -136,13 +138,14 @@ func (l linkButton) URI() string {
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_link_button_get_uri(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Visited retrieves the “visited” state of the URI where the LinkButton
@@ -156,25 +159,26 @@ func (l linkButton) Visited() bool {
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_link_button_get_visited(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 // this unsets the “visited” state of the button.
-func (l linkButton) SetURI(urI string) {
+func (l linkButton) SetURI(uri string) {
 	var arg0 *C.GtkLinkButton
 	var arg1 *C.gchar
 
 	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
-	arg1 = (*C.gchar)(C.CString(urI))
+	arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.gtk_link_button_set_uri(arg0, arg1)

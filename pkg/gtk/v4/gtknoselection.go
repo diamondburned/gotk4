@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// NoSelection: `GtkNoSelection` is a `GtkSelectionModel` that does not allow
-// selecting anything.
+// NoSelection: gtkNoSelection is an implementation of the SelectionModel
+// interface that does not allow selecting anything.
 //
-// This model is meant to be used as a simple wrapper around a `GListModel` when
-// a `GtkSelectionModel` is required.
+// This model is meant to be used as a simple wrapper to Models when a
+// SelectionModel is required.
 type NoSelection interface {
 	gextras.Objector
 	gio.ListModel
@@ -34,9 +34,8 @@ type NoSelection interface {
 
 	// Model gets the model that @self is wrapping.
 	Model() gio.ListModel
-	// SetModel sets the model that @self should wrap.
-	//
-	// If @model is nil, this model will be empty.
+	// SetModel sets the model that @self should wrap. If @model is nil, this
+	// model will be empty.
 	SetModel(model gio.ListModel)
 }
 
@@ -71,14 +70,15 @@ func NewNoSelection(model gio.ListModel) NoSelection {
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	cret := new(C.GtkNoSelection)
-	var goret NoSelection
+	var cret C.GtkNoSelection
 
 	cret = C.gtk_no_selection_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NoSelection)
+	var noSelection NoSelection
 
-	return goret
+	noSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NoSelection)
+
+	return noSelection
 }
 
 // Model gets the model that @self is wrapping.
@@ -88,18 +88,18 @@ func (s noSelection) Model() gio.ListModel {
 	arg0 = (*C.GtkNoSelection)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret gio.ListModel
 
 	cret = C.gtk_no_selection_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
-// SetModel sets the model that @self should wrap.
-//
-// If @model is nil, this model will be empty.
+// SetModel sets the model that @self should wrap. If @model is nil, this
+// model will be empty.
 func (s noSelection) SetModel(model gio.ListModel) {
 	var arg0 *C.GtkNoSelection
 	var arg1 *C.GListModel

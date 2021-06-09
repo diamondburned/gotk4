@@ -180,7 +180,7 @@ type AsyncInitable interface {
 
 	// NewFinish finishes the async construction for the various
 	// g_async_initable_new calls, returning the created object or nil on error.
-	NewFinish(res AsyncResult) (object gextras.Objector, err error)
+	NewFinish(res AsyncResult) (object gextras.Objector, goerr error)
 }
 
 // asyncInitable implements the AsyncInitable interface.
@@ -245,7 +245,7 @@ func (i asyncInitable) InitAsync() {
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 
-	C.g_async_initable_init_async(arg0, arg1, arg2, arg3, arg4)
+	C.g_async_initable_init_async(arg0)
 }
 
 // InitFinish finishes asynchronous initialization and returns the result.
@@ -258,9 +258,10 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_async_initable_init_finish(arg0, arg1, &cerr)
+	C.g_async_initable_init_finish(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -269,22 +270,23 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 
 // NewFinish finishes the async construction for the various
 // g_async_initable_new calls, returning the created object or nil on error.
-func (i asyncInitable) NewFinish(res AsyncResult) (object gextras.Objector, err error) {
+func (i asyncInitable) NewFinish(res AsyncResult) (object gextras.Objector, goerr error) {
 	var arg0 *C.GAsyncInitable
 	var arg1 *C.GAsyncResult
 
 	arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	cret := new(C.GObject)
-	var goret gextras.Objector
+	var cret *C.GObject
 	var cerr *C.GError
+
+	cret = C.g_async_initable_new_finish(arg0, arg1, cerr)
+
+	var object gextras.Objector
 	var goerr error
 
-	cret = C.g_async_initable_new_finish(arg0, arg1, &cerr)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return object, goerr
 }

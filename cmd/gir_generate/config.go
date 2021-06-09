@@ -24,12 +24,16 @@ var filters = []girgen.FilterMatcher{
 	girgen.AbsoluteFilter("C.cairo_image_surface_create"),
 
 	girgen.FileFilter("gdate.h"),
+	girgen.FileFilter("garray.h"),
+	girgen.FileFilter("gbytes.h"),
 	girgen.FileFilter("gstdio.h"),
 	girgen.FileFilter("gatomic.h"),
 	girgen.FileFilter("gmacros.h"),
 	girgen.FileFilter("gthread.h"),
 	girgen.FileFilter("gbitlock.h"),
 	girgen.FileFilter("glib-unix.h"),
+	girgen.FileFilter("gtestutils.h"),
+	girgen.FileFilter("gasyncqueue.h"),
 
 	// These are missing on build for some reason.
 	girgen.AbsoluteFilter("C.g_array_get_type"),

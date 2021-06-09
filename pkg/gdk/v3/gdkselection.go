@@ -35,13 +35,14 @@ func SelectionOwnerGet(selection Atom) Window {
 	arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	var cret *C.GdkWindow
-	var goret Window
 
 	cret = C.gdk_selection_owner_get(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	var window Window
 
-	return goret
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+
+	return window
 }
 
 // SelectionOwnerGetForDisplay: determine the owner of the given selection.
@@ -57,13 +58,14 @@ func SelectionOwnerGetForDisplay(display Display, selection Atom) Window {
 	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
 	var cret *C.GdkWindow
-	var goret Window
 
 	cret = C.gdk_selection_owner_get_for_display(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	var window Window
 
-	return goret
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+
+	return window
 }
 
 // SelectionOwnerSet sets the owner of the given selection.
@@ -81,15 +83,16 @@ func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent boo
 	}
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_selection_owner_set(arg1, arg2, arg3, arg4)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SelectionOwnerSetForDisplay sets the Window @owner as the current owner of
@@ -110,22 +113,23 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 	}
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_selection_owner_set_for_display(arg1, arg2, arg3, arg4, arg5)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SelectionPropertyGet retrieves selection data that was stored by the
 // selection data in response to a call to gdk_selection_convert(). This
 // function will not be used by applications, who should use the Clipboard API
 // instead.
-func SelectionPropertyGet(requestor Window, data byte, propType *Atom, propFormat int) int {
+func SelectionPropertyGet(requestor Window, data **byte, propType *Atom, propFormat *int) int {
 	var arg1 *C.GdkWindow
 	var arg2 **C.guchar
 	var arg3 *C.GdkAtom
@@ -137,13 +141,14 @@ func SelectionPropertyGet(requestor Window, data byte, propType *Atom, propForma
 	arg4 = *C.gint(propFormat)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_selection_property_get(arg1, arg2, arg3, arg4)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // SelectionSendNotify sends a response to SelectionRequest event.

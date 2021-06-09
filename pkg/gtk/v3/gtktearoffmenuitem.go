@@ -74,11 +74,12 @@ func marshalTearoffMenuItem(p uintptr) (interface{}, error) {
 // NewTearoffMenuItem constructs a class TearoffMenuItem.
 func NewTearoffMenuItem() TearoffMenuItem {
 	var cret C.GtkTearoffMenuItem
-	var goret TearoffMenuItem
 
 	cret = C.gtk_tearoff_menu_item_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TearoffMenuItem)
+	var tearoffMenuItem TearoffMenuItem
 
-	return goret
+	tearoffMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TearoffMenuItem)
+
+	return tearoffMenuItem
 }

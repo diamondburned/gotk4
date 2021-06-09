@@ -126,21 +126,21 @@ func (s *Scanner) Native() unsafe.Pointer {
 // UserData gets the field inside the struct.
 func (s *Scanner) UserData() interface{} {
 	var v interface{}
-	v = interface{}(s.native.user_data)
+	v = (interface{})(s.native.user_data)
 	return v
 }
 
 // MaxParseErrors gets the field inside the struct.
 func (s *Scanner) MaxParseErrors() uint {
 	var v uint
-	v = uint(s.native.max_parse_errors)
+	v = (uint)(s.native.max_parse_errors)
 	return v
 }
 
 // ParseErrors gets the field inside the struct.
 func (s *Scanner) ParseErrors() uint {
 	var v uint
-	v = uint(s.native.parse_errors)
+	v = (uint)(s.native.parse_errors)
 	return v
 }
 
@@ -175,28 +175,28 @@ func (s *Scanner) Token() TokenType {
 // Line gets the field inside the struct.
 func (s *Scanner) Line() uint {
 	var v uint
-	v = uint(s.native.line)
+	v = (uint)(s.native.line)
 	return v
 }
 
 // Position gets the field inside the struct.
 func (s *Scanner) Position() uint {
 	var v uint
-	v = uint(s.native.position)
+	v = (uint)(s.native.position)
 	return v
 }
 
 // NextLine gets the field inside the struct.
 func (s *Scanner) NextLine() uint {
 	var v uint
-	v = uint(s.native.next_line)
+	v = (uint)(s.native.next_line)
 	return v
 }
 
 // NextPosition gets the field inside the struct.
 func (s *Scanner) NextPosition() uint {
 	var v uint
-	v = uint(s.native.next_position)
+	v = (uint)(s.native.next_position)
 	return v
 }
 
@@ -208,13 +208,14 @@ func (s *Scanner) CurLine() uint {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_scanner_cur_line(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // CurPosition returns the current position in the current line (counting from
@@ -226,13 +227,14 @@ func (s *Scanner) CurPosition() uint {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_scanner_cur_position(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // CurToken gets the current token type. This is simply the @token field in the
@@ -243,13 +245,14 @@ func (s *Scanner) CurToken() TokenType {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.GTokenType
-	var goret TokenType
 
 	cret = C.g_scanner_cur_token(arg0)
 
-	goret = TokenType(cret)
+	var tokenType TokenType
 
-	return goret
+	tokenType = TokenType(cret)
+
+	return tokenType
 }
 
 // Destroy frees all memory used by the #GScanner.
@@ -269,15 +272,16 @@ func (s *Scanner) EOF() bool {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_scanner_eof(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // NextToken parses the next token just like g_scanner_peek_next_token() and
@@ -289,13 +293,14 @@ func (s *Scanner) NextToken() TokenType {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.GTokenType
-	var goret TokenType
 
 	cret = C.g_scanner_get_next_token(arg0)
 
-	goret = TokenType(cret)
+	var tokenType TokenType
 
-	return goret
+	tokenType = TokenType(cret)
+
+	return tokenType
 }
 
 // InputFile prepares to scan a file.
@@ -334,13 +339,14 @@ func (s *Scanner) LookupSymbol(symbol string) interface{} {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_scanner_lookup_symbol(arg0, arg1)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PeekNextToken parses the next token, without removing it from the input
@@ -360,24 +366,25 @@ func (s *Scanner) PeekNextToken() TokenType {
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
 	var cret C.GTokenType
-	var goret TokenType
 
 	cret = C.g_scanner_peek_next_token(arg0)
 
-	goret = TokenType(cret)
+	var tokenType TokenType
 
-	return goret
+	tokenType = TokenType(cret)
+
+	return tokenType
 }
 
 // ScopeAddSymbol adds a symbol to the given scope.
-func (s *Scanner) ScopeAddSymbol(scopeID uint, symbol string, value interface{}) {
+func (s *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value interface{}) {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 *C.gchar
 	var arg3 C.gpointer
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(scopeID)
+	arg1 = C.guint(scopeId)
 	arg2 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = C.gpointer(value)
@@ -393,39 +400,40 @@ func (s *Scanner) ScopeForeachSymbol() {
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	C.g_scanner_scope_foreach_symbol(arg0, arg1, arg2, arg3)
+	C.g_scanner_scope_foreach_symbol(arg0)
 }
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
 // symbol is not bound in the scope, nil is returned.
-func (s *Scanner) ScopeLookupSymbol(scopeID uint, symbol string) interface{} {
+func (s *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) interface{} {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 *C.gchar
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(scopeID)
+	arg1 = C.guint(scopeId)
 	arg2 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_scanner_scope_lookup_symbol(arg0, arg1, arg2)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // ScopeRemoveSymbol removes a symbol from a scope.
-func (s *Scanner) ScopeRemoveSymbol(scopeID uint, symbol string) {
+func (s *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 	var arg2 *C.gchar
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(scopeID)
+	arg1 = C.guint(scopeId)
 	arg2 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(arg2))
 
@@ -433,21 +441,22 @@ func (s *Scanner) ScopeRemoveSymbol(scopeID uint, symbol string) {
 }
 
 // SetScope sets the current scope.
-func (s *Scanner) SetScope(scopeID uint) uint {
+func (s *Scanner) SetScope(scopeId uint) uint {
 	var arg0 *C.GScanner
 	var arg1 C.guint
 
 	arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(scopeID)
+	arg1 = C.guint(scopeId)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_scanner_set_scope(arg0, arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // SyncFileOffset rewinds the filedescriptor to the current buffer position and

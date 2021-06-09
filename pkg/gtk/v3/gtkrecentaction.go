@@ -71,7 +71,7 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 }
 
 // NewRecentAction constructs a class RecentAction.
-func NewRecentAction(name string, label string, tooltip string, stockID string) RecentAction {
+func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -83,21 +83,22 @@ func NewRecentAction(name string, label string, tooltip string, stockID string) 
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.gchar)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stockID))
+	arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg4))
 
-	cret := new(C.GtkRecentAction)
-	var goret RecentAction
+	var cret C.GtkRecentAction
 
 	cret = C.gtk_recent_action_new(arg1, arg2, arg3, arg4)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+	var recentAction RecentAction
 
-	return goret
+	recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+
+	return recentAction
 }
 
 // NewRecentActionForManager constructs a class RecentAction.
-func NewRecentActionForManager(name string, label string, tooltip string, stockID string, manager RecentManager) RecentAction {
+func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) RecentAction {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -110,18 +111,19 @@ func NewRecentActionForManager(name string, label string, tooltip string, stockI
 	defer C.free(unsafe.Pointer(arg2))
 	arg3 = (*C.gchar)(C.CString(tooltip))
 	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stockID))
+	arg4 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg4))
 	arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
-	cret := new(C.GtkRecentAction)
-	var goret RecentAction
+	var cret C.GtkRecentAction
 
 	cret = C.gtk_recent_action_new_for_manager(arg1, arg2, arg3, arg4, arg5)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+	var recentAction RecentAction
 
-	return goret
+	recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+
+	return recentAction
 }
 
 // ShowNumbers returns the value set by
@@ -132,15 +134,16 @@ func (a recentAction) ShowNumbers() bool {
 	arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_recent_action_get_show_numbers(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetShowNumbers sets whether a number should be added to the items shown

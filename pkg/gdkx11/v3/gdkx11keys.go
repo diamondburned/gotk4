@@ -66,13 +66,14 @@ func (k x11Keymap) GroupForState(state uint) int {
 	arg1 = C.guint(state)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gdk_x11_keymap_get_group_for_state(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // KeyIsModifier determines whether a particular key code represents a key
@@ -88,13 +89,14 @@ func (k x11Keymap) KeyIsModifier(keycode uint) bool {
 	arg1 = C.guint(keycode)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_x11_keymap_key_is_modifier(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

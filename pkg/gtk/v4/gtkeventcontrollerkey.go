@@ -21,21 +21,19 @@ func init() {
 	})
 }
 
-// EventControllerKey: `GtkEventControllerKey` is an event controller that
-// provides access to key events.
+// EventControllerKey is an event controller meant for situations where you need
+// access to key events.
 type EventControllerKey interface {
 	EventController
 
 	// Forward forwards the current event of this @controller to a @widget.
 	//
 	// This function can only be used in handlers for the
-	// [signal@Gtk.EventControllerKey::key-pressed],
-	// [signal@Gtk.EventControllerKey::key-released] or
-	// [signal@Gtk.EventControllerKey::modifiers] signals.
+	// EventControllerKey::key-pressed, EventControllerKey::key-released or
+	// EventControllerKey::modifiers signals.
 	Forward(widget Widget) bool
-	// Group gets the key group of the current event of this @controller.
-	//
-	// See [method@Gdk.KeyEvent.get_layout].
+	// Group gets the key group of the current event of this @controller. See
+	// gdk_key_event_get_group().
 	Group() uint
 	// ImContext gets the input method context of the key @controller.
 	ImContext() IMContext
@@ -66,22 +64,22 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 
 // NewEventControllerKey constructs a class EventControllerKey.
 func NewEventControllerKey() EventControllerKey {
-	cret := new(C.GtkEventControllerKey)
-	var goret EventControllerKey
+	var cret C.GtkEventControllerKey
 
 	cret = C.gtk_event_controller_key_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerKey)
+	var eventControllerKey EventControllerKey
 
-	return goret
+	eventControllerKey = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerKey)
+
+	return eventControllerKey
 }
 
 // Forward forwards the current event of this @controller to a @widget.
 //
 // This function can only be used in handlers for the
-// [signal@Gtk.EventControllerKey::key-pressed],
-// [signal@Gtk.EventControllerKey::key-released] or
-// [signal@Gtk.EventControllerKey::modifiers] signals.
+// EventControllerKey::key-pressed, EventControllerKey::key-released or
+// EventControllerKey::modifiers signals.
 func (c eventControllerKey) Forward(widget Widget) bool {
 	var arg0 *C.GtkEventControllerKey
 	var arg1 *C.GtkWidget
@@ -90,33 +88,34 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_event_controller_key_forward(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Group gets the key group of the current event of this @controller.
-//
-// See [method@Gdk.KeyEvent.get_layout].
+// Group gets the key group of the current event of this @controller. See
+// gdk_key_event_get_group().
 func (c eventControllerKey) Group() uint {
 	var arg0 *C.GtkEventControllerKey
 
 	arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_event_controller_key_get_group(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // ImContext gets the input method context of the key @controller.
@@ -126,13 +125,14 @@ func (c eventControllerKey) ImContext() IMContext {
 	arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkIMContext
-	var goret IMContext
 
 	cret = C.gtk_event_controller_key_get_im_context(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IMContext)
+	var imContext IMContext
 
-	return goret
+	imContext = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IMContext)
+
+	return imContext
 }
 
 // SetImContext sets the input method context of the key @controller.

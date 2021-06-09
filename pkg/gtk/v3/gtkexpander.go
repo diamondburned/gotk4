@@ -151,13 +151,14 @@ func NewExpander(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret Expander
 
 	cret = C.gtk_expander_new(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	var expander Expander
 
-	return goret
+	expander = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+
+	return expander
 }
 
 // NewExpanderWithMnemonic constructs a class Expander.
@@ -168,13 +169,14 @@ func NewExpanderWithMnemonic(label string) Expander {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkExpander
-	var goret Expander
 
 	cret = C.gtk_expander_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+	var expander Expander
 
-	return goret
+	expander = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expander)
+
+	return expander
 }
 
 // Expanded queries a Expander and returns its current state. Returns true
@@ -187,15 +189,16 @@ func (e expander) Expanded() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_expanded(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Label fetches the text from a label widget including any embedded
@@ -214,13 +217,14 @@ func (e expander) Label() string {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_expander_get_label(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // LabelFill returns whether the label widget will fill all available
@@ -231,15 +235,16 @@ func (e expander) LabelFill() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_label_fill(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // LabelWidget retrieves the label widget for the frame. See
@@ -250,13 +255,14 @@ func (e expander) LabelWidget() Widget {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_expander_get_label_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // ResizeToplevel returns whether the expander will resize the toplevel
@@ -267,15 +273,16 @@ func (e expander) ResizeToplevel() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_resize_toplevel(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Spacing gets the value set by gtk_expander_set_spacing().
@@ -285,13 +292,14 @@ func (e expander) Spacing() int {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.gtk_expander_get_spacing(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // UseMarkup returns whether the label’s text is interpreted as marked up
@@ -303,15 +311,16 @@ func (e expander) UseMarkup() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_use_markup(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // UseUnderline returns whether an embedded underline in the expander label
@@ -322,15 +331,16 @@ func (e expander) UseUnderline() bool {
 	arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_expander_get_use_underline(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetExpanded sets the state of the expander. Set to true, if you want the

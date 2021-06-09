@@ -36,7 +36,7 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean 
 	}
 
 	fn := v.(HRFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
@@ -58,15 +58,16 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_direct_equal(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // DirectHash converts a gpointer to a hash value. It can be passed to
@@ -81,13 +82,14 @@ func DirectHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_direct_hash(arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // DoubleEqual compares the two #gdouble values being pointed to and returns
@@ -102,15 +104,16 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_double_equal(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // DoubleHash converts a pointer to a #gdouble to a hash value. It can be passed
@@ -123,13 +126,14 @@ func DoubleHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_double_hash(arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Int64Equal compares the two #gint64 values being pointed to and returns true
@@ -144,15 +148,16 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_int64_equal(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Int64Hash converts a pointer to a #gint64 to a hash value.
@@ -165,13 +170,14 @@ func Int64Hash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_int64_hash(arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // IntEqual compares the two #gint values being pointed to and returns true if
@@ -189,15 +195,16 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_int_equal(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IntHash converts a pointer to a #gint to a hash value. It can be passed to
@@ -213,13 +220,14 @@ func IntHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_int_hash(arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // StrEqual compares two strings for byte-by-byte equality and returns true if
@@ -237,15 +245,16 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 	arg2 = C.gpointer(v2)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_str_equal(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // StrHash converts a string to a hash value.
@@ -266,13 +275,14 @@ func StrHash(v interface{}) uint {
 	arg1 = C.gpointer(v)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_str_hash(arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // HashTable: the Table struct is an opaque data structure to represent a [Hash
@@ -340,13 +350,14 @@ func (i *HashTableIter) HashTable() *HashTable {
 	arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 
 	var cret *C.GHashTable
-	var goret *HashTable
 
 	cret = C.g_hash_table_iter_get_hash_table(arg0)
 
-	goret = WrapHashTable(unsafe.Pointer(cret))
+	var hashTable *HashTable
 
-	return goret
+	hashTable = WrapHashTable(unsafe.Pointer(cret))
+
+	return hashTable
 }
 
 // Init initializes a key/value pair iterator and associates it with
@@ -382,22 +393,23 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 
 	arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 
-	arg1 := new(C.gpointer)
-	var ret1 interface{}
-	arg2 := new(C.gpointer)
-	var ret2 interface{}
+	var arg1 C.gpointer
+	var arg2 C.gpointer
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.g_hash_table_iter_next(arg0, arg1, arg2)
+	cret = C.g_hash_table_iter_next(arg0, &arg1, &arg2)
 
-	ret1 = interface{}(*arg1)
-	ret2 = interface{}(*arg2)
+	var key interface{}
+	var value interface{}
+	var ok bool
+
+	key = (interface{})(arg1)
+	value = (interface{})(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return key, value, ok
 }
 
 // Remove removes the key/value pair currently pointed to by the iterator from

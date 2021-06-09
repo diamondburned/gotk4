@@ -20,17 +20,22 @@ import "C"
 func TestListAllTypes() []externglib.Type {
 	var cret *C.GType
 	var arg1 *C.guint
-	var goret []externglib.Type
 
-	cret = C.gtk_test_list_all_types(arg1)
+	cret = C.gtk_test_list_all_types()
 
-	goret = make([]externglib.Type, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
-		goret[i] = externglib.Type(src)
+	var gTypes []externglib.Type
+
+	{
+		var src []C.GType
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+
+		gTypes = make([]externglib.Type, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			gTypes = externglib.Type(cret)
+		}
 	}
 
-	return ret1, goret
+	return gTypes
 }
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
@@ -42,10 +47,8 @@ func TestRegisterAllTypes() {
 }
 
 // TestWidgetWaitForDraw enters the main loop and waits for @widget to be
-// “drawn”.
-//
-// In this context that means it waits for the frame clock of @widget to have
-// run a full styling, layout and drawing cycle.
+// “drawn”. In this context that means it waits for the frame clock of @widget
+// to have run a full styling, layout and drawing cycle.
 //
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.

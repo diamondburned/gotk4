@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -100,7 +99,7 @@ type IMContext interface {
 	// PreeditString: retrieve the current preedit string for the input context,
 	// and a list of attributes to apply to the string. This string should be
 	// displayed inserted at the insertion point.
-	PreeditString() (str string, attrs **pango.AttrList, cursorPos int)
+	PreeditString() (str string, attrs *pango.AttrList, cursorPos int)
 	// Surrounding retrieves context around the insertion point. Input methods
 	// typically want context in order to constrain input text based on existing
 	// text; this is important for languages such as Thai where only some
@@ -185,15 +184,16 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 	arg2 = C.gint(nChars)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_im_context_delete_surrounding(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // FilterKeypress: allow an input method to internally handle key press and
@@ -207,15 +207,16 @@ func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
 	arg1 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_im_context_filter_keypress(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // FocusIn: notify the input method that the widget to which this input
@@ -244,29 +245,27 @@ func (c imContext) FocusOut() {
 // PreeditString: retrieve the current preedit string for the input context,
 // and a list of attributes to apply to the string. This string should be
 // displayed inserted at the insertion point.
-func (c imContext) PreeditString() (str string, attrs **pango.AttrList, cursorPos int) {
+func (c imContext) PreeditString() (str string, attrs *pango.AttrList, cursorPos int) {
 	var arg0 *C.GtkIMContext
 
 	arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(*C.gchar)
-	var ret1 string
-	arg2 := new(*C.PangoAttrList)
-	var ret2 **pango.AttrList
-	arg3 := new(C.gint)
-	var ret3 int
+	var arg1 *C.gchar
+	var attrs *pango.AttrList
+	var arg3 C.gint
 
-	C.gtk_im_context_get_preedit_string(arg0, arg1, arg2, arg3)
+	C.gtk_im_context_get_preedit_string(arg0, &arg1, (**C.PangoAttrList)(unsafe.Pointer(&attrs)), &arg3)
 
-	ret1 = C.GoString(*arg1)
-	defer C.free(unsafe.Pointer(*arg1))
-	ret2 = pango.WrapAttrList(unsafe.Pointer(arg2))
-	runtime.SetFinalizer(ret2, func(v **pango.AttrList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	ret3 = int(*arg3)
+	var str string
 
-	return ret1, ret2, ret3
+	var cursorPos int
+
+	str = C.GoString(arg1)
+	defer C.free(unsafe.Pointer(arg1))
+
+	cursorPos = (int)(arg3)
+
+	return str, attrs, cursorPos
 }
 
 // Surrounding retrieves context around the insertion point. Input methods
@@ -286,23 +285,24 @@ func (c imContext) Surrounding() (text string, cursorIndex int, ok bool) {
 
 	arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(*C.gchar)
-	var ret1 string
-	arg2 := new(C.gint)
-	var ret2 int
+	var arg1 *C.gchar
+	var arg2 C.gint
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_im_context_get_surrounding(arg0, arg1, arg2)
+	cret = C.gtk_im_context_get_surrounding(arg0, &arg1, &arg2)
 
-	ret1 = C.GoString(*arg1)
-	defer C.free(unsafe.Pointer(*arg1))
-	ret2 = int(*arg2)
+	var text string
+	var cursorIndex int
+	var ok bool
+
+	text = C.GoString(arg1)
+	defer C.free(unsafe.Pointer(arg1))
+	cursorIndex = (int)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return text, cursorIndex, ok
 }
 
 // Reset: notify the input method that a change such as a change in cursor

@@ -86,26 +86,28 @@ func NewThemedIcon(iconname string) ThemedIcon {
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GThemedIcon)
-	var goret ThemedIcon
+	var cret C.GThemedIcon
 
 	cret = C.g_themed_icon_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	var themedIcon ThemedIcon
 
-	return goret
+	themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+
+	return themedIcon
 }
 
 // NewThemedIconFromNames constructs a class ThemedIcon.
 func NewThemedIconFromNames() ThemedIcon {
-	cret := new(C.GThemedIcon)
-	var goret ThemedIcon
+	var cret C.GThemedIcon
 
-	cret = C.g_themed_icon_new_from_names(arg1, arg2)
+	cret = C.g_themed_icon_new_from_names()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	var themedIcon ThemedIcon
 
-	return goret
+	themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+
+	return themedIcon
 }
 
 // NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
@@ -115,14 +117,15 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 	arg1 = (*C.char)(C.CString(iconname))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GThemedIcon)
-	var goret ThemedIcon
+	var cret C.GThemedIcon
 
 	cret = C.g_themed_icon_new_with_default_fallbacks(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	var themedIcon ThemedIcon
 
-	return goret
+	themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+
+	return themedIcon
 }
 
 // AppendName: append a name to the list of icons from within @icon.
@@ -147,9 +150,10 @@ func (i themedIcon) Names() []string {
 	arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.g_themed_icon_get_names(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -160,14 +164,16 @@ func (i themedIcon) Names() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // PrependName: prepend a name to the list of icons from within @icon.

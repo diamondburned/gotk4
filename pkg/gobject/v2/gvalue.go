@@ -52,7 +52,7 @@ func (v *Value) Native() unsafe.Pointer {
 }
 
 // Copy copies the value of @src_value into @dest_value.
-func (s *Value) Copy(destValue *externglib.Value) {
+func (s *Value) Copy(destValue **externglib.Value) {
 	var arg0 *C.GValue
 	var arg1 *C.GValue
 
@@ -72,13 +72,14 @@ func (v *Value) DupBoxed() interface{} {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_value_dup_boxed(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // DupObject: get the contents of a G_TYPE_OBJECT derived #GValue, increasing
@@ -89,14 +90,15 @@ func (v *Value) DupObject() gextras.Objector {
 
 	arg0 = (*C.GValue)(v.GValue)
 
-	cret := new(C.gpointer)
-	var goret gextras.Objector
+	var cret C.gpointer
 
 	cret = C.g_value_dup_object(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // DupParam: get the contents of a G_TYPE_PARAM #GValue, increasing its
@@ -106,14 +108,15 @@ func (v *Value) DupParam() ParamSpec {
 
 	arg0 = (*C.GValue)(v.GValue)
 
-	cret := new(C.GParamSpec)
-	var goret ParamSpec
+	var cret *C.GParamSpec
 
 	cret = C.g_value_dup_param(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ParamSpec)
+	var paramSpec ParamSpec
 
-	return goret
+	paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+
+	return paramSpec
 }
 
 // DupString: get a copy the contents of a G_TYPE_STRING #GValue.
@@ -122,15 +125,16 @@ func (v *Value) DupString() string {
 
 	arg0 = (*C.GValue)(v.GValue)
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_value_dup_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // DupVariant: get the contents of a variant #GValue, increasing its refcount.
@@ -140,17 +144,18 @@ func (v *Value) DupVariant() *glib.Variant {
 
 	arg0 = (*C.GValue)(v.GValue)
 
-	cret := new(C.GVariant)
-	var goret *glib.Variant
+	var cret *C.GVariant
 
 	cret = C.g_value_dup_variant(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+	var variant *glib.Variant
+
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return variant
 }
 
 // FitsPointer determines if @value will fit inside the size of a pointer value.
@@ -161,15 +166,16 @@ func (v *Value) FitsPointer() bool {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_value_fits_pointer(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Boolean: get the contents of a G_TYPE_BOOLEAN #GValue.
@@ -179,15 +185,16 @@ func (v *Value) Boolean() bool {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_value_get_boolean(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Boxed: get the contents of a G_TYPE_BOXED derived #GValue.
@@ -197,13 +204,14 @@ func (v *Value) Boxed() interface{} {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_value_get_boxed(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // Char: do not use this function; it is broken on platforms where the char type
@@ -216,13 +224,14 @@ func (v *Value) Char() byte {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gchar
-	var goret byte
 
 	cret = C.g_value_get_char(arg0)
 
-	goret = byte(cret)
+	var gchar byte
 
-	return goret
+	gchar = (byte)(cret)
+
+	return gchar
 }
 
 // Double: get the contents of a G_TYPE_DOUBLE #GValue.
@@ -232,13 +241,14 @@ func (v *Value) Double() float64 {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gdouble
-	var goret float64
 
 	cret = C.g_value_get_double(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // Enum: get the contents of a G_TYPE_ENUM #GValue.
@@ -248,13 +258,14 @@ func (v *Value) Enum() int {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_value_get_enum(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Flags: get the contents of a G_TYPE_FLAGS #GValue.
@@ -264,13 +275,14 @@ func (v *Value) Flags() uint {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_value_get_flags(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Float: get the contents of a G_TYPE_FLOAT #GValue.
@@ -280,13 +292,14 @@ func (v *Value) Float() float32 {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gfloat
-	var goret float32
 
 	cret = C.g_value_get_float(arg0)
 
-	goret = float32(cret)
+	var gfloat float32
 
-	return goret
+	gfloat = (float32)(cret)
+
+	return gfloat
 }
 
 // GType: get the contents of a G_TYPE_GTYPE #GValue.
@@ -296,13 +309,14 @@ func (v *Value) GType() externglib.Type {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_value_get_gtype(arg0)
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 // Int: get the contents of a G_TYPE_INT #GValue.
@@ -312,13 +326,14 @@ func (v *Value) Int() int {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_value_get_int(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Int64: get the contents of a G_TYPE_INT64 #GValue.
@@ -328,13 +343,14 @@ func (v *Value) Int64() int64 {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gint64
-	var goret int64
 
 	cret = C.g_value_get_int64(arg0)
 
-	goret = int64(cret)
+	var gint64 int64
 
-	return goret
+	gint64 = (int64)(cret)
+
+	return gint64
 }
 
 // Long: get the contents of a G_TYPE_LONG #GValue.
@@ -344,13 +360,14 @@ func (v *Value) Long() int32 {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.glong
-	var goret int32
 
 	cret = C.g_value_get_long(arg0)
 
-	goret = int32(cret)
+	var glong int32
 
-	return goret
+	glong = (int32)(cret)
+
+	return glong
 }
 
 // Object: get the contents of a G_TYPE_OBJECT derived #GValue.
@@ -360,13 +377,14 @@ func (v *Value) Object() gextras.Objector {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gpointer
-	var goret gextras.Objector
 
 	cret = C.g_value_get_object(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // Param: get the contents of a G_TYPE_PARAM #GValue.
@@ -376,13 +394,14 @@ func (v *Value) Param() ParamSpec {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret *C.GParamSpec
-	var goret ParamSpec
 
 	cret = C.g_value_get_param(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+	var paramSpec ParamSpec
 
-	return goret
+	paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+
+	return paramSpec
 }
 
 // Pointer: get the contents of a pointer #GValue.
@@ -392,13 +411,14 @@ func (v *Value) Pointer() interface{} {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_value_get_pointer(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // Schar: get the contents of a G_TYPE_CHAR #GValue.
@@ -408,13 +428,14 @@ func (v *Value) Schar() int8 {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gint8
-	var goret int8
 
 	cret = C.g_value_get_schar(arg0)
 
-	goret = int8(cret)
+	var gint8 int8
 
-	return goret
+	gint8 = (int8)(cret)
+
+	return gint8
 }
 
 // String: get the contents of a G_TYPE_STRING #GValue.
@@ -424,13 +445,14 @@ func (v *Value) String() string {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_value_get_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Uchar: get the contents of a G_TYPE_UCHAR #GValue.
@@ -440,13 +462,14 @@ func (v *Value) Uchar() byte {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.guchar
-	var goret byte
 
 	cret = C.g_value_get_uchar(arg0)
 
-	goret = byte(cret)
+	var guint8 byte
 
-	return goret
+	guint8 = (byte)(cret)
+
+	return guint8
 }
 
 // Uint: get the contents of a G_TYPE_UINT #GValue.
@@ -456,13 +479,14 @@ func (v *Value) Uint() uint {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_value_get_uint(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Uint64: get the contents of a G_TYPE_UINT64 #GValue.
@@ -472,13 +496,14 @@ func (v *Value) Uint64() uint64 {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.guint64
-	var goret uint64
 
 	cret = C.g_value_get_uint64(arg0)
 
-	goret = uint64(cret)
+	var guint64 uint64
 
-	return goret
+	guint64 = (uint64)(cret)
+
+	return guint64
 }
 
 // Ulong: get the contents of a G_TYPE_ULONG #GValue.
@@ -488,13 +513,14 @@ func (v *Value) Ulong() uint32 {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gulong
-	var goret uint32
 
 	cret = C.g_value_get_ulong(arg0)
 
-	goret = uint32(cret)
+	var gulong uint32
 
-	return goret
+	gulong = (uint32)(cret)
+
+	return gulong
 }
 
 // Variant: get the contents of a variant #GValue.
@@ -504,17 +530,18 @@ func (v *Value) Variant() *glib.Variant {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret *C.GVariant
-	var goret *glib.Variant
 
 	cret = C.g_value_get_variant(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
+	var variant *glib.Variant
 
-	return goret
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+
+	return variant
 }
 
 // Init initializes @value with the default value of @type.
-func (v *Value) Init(gType externglib.Type) *externglib.Value {
+func (v *Value) Init(gType externglib.Type) **externglib.Value {
 	var arg0 *C.GValue
 	var arg1 C.GType
 
@@ -522,13 +549,14 @@ func (v *Value) Init(gType externglib.Type) *externglib.Value {
 	arg1 = C.GType(gType)
 
 	var cret *C.GValue
-	var goret *externglib.Value
 
 	cret = C.g_value_init(arg0, arg1)
 
-	goret = externglib.ValueFromNative(unsafe.Pointer(cret))
+	var ret **externglib.Value
 
-	return goret
+	ret = externglib.ValueFromNative(unsafe.Pointer(cret))
+
+	return ret
 }
 
 // InitFromInstance initializes and sets @value from an instantiatable type via
@@ -556,33 +584,35 @@ func (v *Value) PeekPointer() interface{} {
 	arg0 = (*C.GValue)(v.GValue)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_value_peek_pointer(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // Reset clears the current value in @value and resets it to the default value
 // (as if the value had just been initialized).
-func (v *Value) Reset() *externglib.Value {
+func (v *Value) Reset() **externglib.Value {
 	var arg0 *C.GValue
 
 	arg0 = (*C.GValue)(v.GValue)
 
-	cret := new(C.GValue)
-	var goret *externglib.Value
+	var cret *C.GValue
 
 	cret = C.g_value_reset(arg0)
 
-	goret = externglib.ValueFromNative(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *externglib.Value) {
+	var ret **externglib.Value
+
+	ret = externglib.ValueFromNative(unsafe.Pointer(cret))
+	runtime.SetFinalizer(ret, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(v.GValue))
 	})
 
-	return goret
+	return ret
 }
 
 // SetBoolean: set the contents of a G_TYPE_BOOLEAN #GValue to @v_boolean.
@@ -677,12 +707,12 @@ func (v *Value) SetFloat(vFloat float32) {
 }
 
 // SetGType: set the contents of a G_TYPE_GTYPE #GValue to @v_gtype.
-func (v *Value) SetGType(vgType externglib.Type) {
+func (v *Value) SetGType(vGtype externglib.Type) {
 	var arg0 *C.GValue
 	var arg1 C.GType
 
 	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.GType(vgType)
+	arg1 = C.GType(vGtype)
 
 	C.g_value_set_gtype(arg0, arg1)
 }
@@ -1017,7 +1047,7 @@ func (v *Value) TakeVariant(variant *glib.Variant) {
 // incur precision lossage. Especially transformations into strings might reveal
 // seemingly arbitrary results and shouldn't be relied upon for production code
 // (such as rcfile value or object property serialization).
-func (s *Value) Transform(destValue *externglib.Value) bool {
+func (s *Value) Transform(destValue **externglib.Value) bool {
 	var arg0 *C.GValue
 	var arg1 *C.GValue
 
@@ -1025,15 +1055,16 @@ func (s *Value) Transform(destValue *externglib.Value) bool {
 	arg1 = (*C.GValue)(destValue.GValue)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_value_transform(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Unset clears the current value in @value (if any) and "unsets" the type, this

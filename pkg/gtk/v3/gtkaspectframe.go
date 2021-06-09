@@ -82,13 +82,14 @@ func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32,
 	}
 
 	var cret C.GtkAspectFrame
-	var goret AspectFrame
 
 	cret = C.gtk_aspect_frame_new(arg1, arg2, arg3, arg4, arg5)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
+	var aspectFrame AspectFrame
 
-	return goret
+	aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
+
+	return aspectFrame
 }
 
 // Set: set parameters for an existing AspectFrame.

@@ -235,7 +235,7 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateInt() (gssize int, err error)
+	PropagateInt() (gssize int, goerr error)
 	// PropagatePointer gets the result of @task as a pointer, and transfers
 	// ownership of that value to the caller.
 	//
@@ -244,7 +244,7 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagatePointer() (gpointer interface{}, err error)
+	PropagatePointer() (gpointer interface{}, goerr error)
 	// PropagateValue gets the result of @task as a #GValue, and transfers
 	// ownership of that value to the caller. As with g_task_return_value(),
 	// this is a generic low-level method; g_task_propagate_pointer() and the
@@ -255,7 +255,7 @@ type Task interface {
 	//
 	// Since this method transfers ownership of the return value (or error) to
 	// the caller, you may only call it once.
-	PropagateValue() (value *externglib.Value, err error)
+	PropagateValue() (value *externglib.Value, goerr error)
 	// ReturnBoolean sets @task's result to @result and completes the task (see
 	// g_task_return_pointer() for more discussion of exactly what this means).
 	ReturnBoolean(result bool)
@@ -269,7 +269,7 @@ type Task interface {
 	// on the error if you need to keep a local copy as well.
 	//
 	// See also g_task_return_new_error().
-	ReturnError(err error)
+	ReturnError(err *error)
 	// ReturnErrorIfCancelled checks if @task's #GCancellable has been
 	// cancelled, and if so, sets @task's error accordingly and completes the
 	// task (see g_task_return_pointer() for more discussion of exactly what
@@ -287,7 +287,7 @@ type Task interface {
 	// This is a very generic low-level method intended primarily for use by
 	// language bindings; for C code, g_task_return_pointer() and the like will
 	// normally be much easier to use.
-	ReturnValue(result *externglib.Value)
+	ReturnValue(result **externglib.Value)
 	// SetCheckCancellable sets or clears @task's check-cancellable flag. If
 	// this is true (the default), then g_task_propagate_pointer(), etc, and
 	// g_task_had_error() will check the task's #GCancellable first, and if it
@@ -379,14 +379,15 @@ func marshalTask(p uintptr) (interface{}, error) {
 
 // NewTask constructs a class Task.
 func NewTask() Task {
-	cret := new(C.GTask)
-	var goret Task
+	var cret C.GTask
 
-	cret = C.g_task_new(arg1, arg2, arg3, arg4)
+	cret = C.g_task_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Task)
+	var task Task
 
-	return goret
+	task = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Task)
+
+	return task
 }
 
 // Cancellable gets @task's #GCancellable
@@ -396,13 +397,14 @@ func (t task) Cancellable() Cancellable {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GCancellable
-	var goret Cancellable
 
 	cret = C.g_task_get_cancellable(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cancellable)
+	var cancellable Cancellable
 
-	return goret
+	cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Cancellable)
+
+	return cancellable
 }
 
 // CheckCancellable gets @task's check-cancellable flag. See
@@ -413,15 +415,16 @@ func (t task) CheckCancellable() bool {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_task_get_check_cancellable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Completed gets the value of #GTask:completed. This changes from false to
@@ -433,15 +436,16 @@ func (t task) Completed() bool {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_task_get_completed(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Context gets the Context that @task will return its result in (that is,
@@ -457,13 +461,14 @@ func (t task) Context() *glib.MainContext {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret *C.GMainContext
-	var goret *glib.MainContext
 
 	cret = C.g_task_get_context(arg0)
 
-	goret = glib.WrapMainContext(unsafe.Pointer(cret))
+	var mainContext *glib.MainContext
 
-	return goret
+	mainContext = glib.WrapMainContext(unsafe.Pointer(cret))
+
+	return mainContext
 }
 
 // Name gets @task’s name. See g_task_set_name().
@@ -473,13 +478,14 @@ func (t task) Name() string {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_task_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Priority gets @task's priority
@@ -489,13 +495,14 @@ func (t task) Priority() int {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_task_get_priority(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ReturnOnCancel gets @task's return-on-cancel flag. See
@@ -506,15 +513,16 @@ func (t task) ReturnOnCancel() bool {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_task_get_return_on_cancel(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SourceObject gets the source object from @task. Like
@@ -525,13 +533,14 @@ func (t task) SourceObject() gextras.Objector {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gpointer
-	var goret gextras.Objector
 
 	cret = C.g_task_get_source_object(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	var object gextras.Objector
 
-	return goret
+	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+
+	return object
 }
 
 // SourceTag gets @task's source tag. See g_task_set_source_tag().
@@ -541,13 +550,14 @@ func (t task) SourceTag() interface{} {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_task_get_source_tag(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // TaskData gets @task's `task_data`.
@@ -557,13 +567,14 @@ func (t task) TaskData() interface{} {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_task_get_task_data(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // HadError tests if @task resulted in an error.
@@ -573,15 +584,16 @@ func (t task) HadError() bool {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_task_had_error(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // PropagateBoolean gets the result of @task as a #gboolean.
@@ -597,9 +609,10 @@ func (t task) PropagateBoolean() error {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_task_propagate_boolean(arg0, &cerr)
+	C.g_task_propagate_boolean(arg0, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -613,22 +626,23 @@ func (t task) PropagateBoolean() error {
 //
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
-func (t task) PropagateInt() (gssize int, err error) {
+func (t task) PropagateInt() (gssize int, goerr error) {
 	var arg0 *C.GTask
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gssize
-	var goret int
 	var cerr *C.GError
+
+	cret = C.g_task_propagate_int(arg0, cerr)
+
+	var gssize int
 	var goerr error
 
-	cret = C.g_task_propagate_int(arg0, &cerr)
-
-	goret = int(cret)
+	gssize = (int)(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return gssize, goerr
 }
 
 // PropagatePointer gets the result of @task as a pointer, and transfers
@@ -639,22 +653,23 @@ func (t task) PropagateInt() (gssize int, err error) {
 //
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
-func (t task) PropagatePointer() (gpointer interface{}, err error) {
+func (t task) PropagatePointer() (gpointer interface{}, goerr error) {
 	var arg0 *C.GTask
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
-	cret := new(C.gpointer)
-	var goret interface{}
+	var cret C.gpointer
 	var cerr *C.GError
+
+	cret = C.g_task_propagate_pointer(arg0, cerr)
+
+	var gpointer interface{}
 	var goerr error
 
-	cret = C.g_task_propagate_pointer(arg0, &cerr)
-
-	goret = interface{}(cret)
+	gpointer = (interface{})(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return gpointer, goerr
 }
 
 // PropagateValue gets the result of @task as a #GValue, and transfers
@@ -667,22 +682,23 @@ func (t task) PropagatePointer() (gpointer interface{}, err error) {
 //
 // Since this method transfers ownership of the return value (or error) to
 // the caller, you may only call it once.
-func (t task) PropagateValue() (value *externglib.Value, err error) {
+func (t task) PropagateValue() (value *externglib.Value, goerr error) {
 	var arg0 *C.GTask
 
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
-	arg1 := new(C.GValue)
-	var ret1 *externglib.Value
+	var arg1 C.GValue
 	var cerr *C.GError
+
+	C.g_task_propagate_value(arg0, &arg1, cerr)
+
+	var value *externglib.Value
 	var goerr error
 
-	C.g_task_propagate_value(arg0, arg1, &cerr)
-
-	ret1 = externglib.ValueFromNative(unsafe.Pointer(*arg1))
+	value = externglib.ValueFromNative(unsafe.Pointer(arg1))
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return ret1, goerr
+	return value, goerr
 }
 
 // ReturnBoolean sets @task's result to @result and completes the task (see
@@ -709,7 +725,7 @@ func (t task) ReturnBoolean(result bool) {
 // on the error if you need to keep a local copy as well.
 //
 // See also g_task_return_new_error().
-func (t task) ReturnError(err error) {
+func (t task) ReturnError(err *error) {
 	var arg0 *C.GTask
 	var arg1 *C.GError
 
@@ -729,15 +745,16 @@ func (t task) ReturnErrorIfCancelled() bool {
 	arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_task_return_error_if_cancelled(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ReturnInt sets @task's result to @result and completes the task (see
@@ -761,7 +778,7 @@ func (t task) ReturnInt(result int) {
 // This is a very generic low-level method intended primarily for use by
 // language bindings; for C code, g_task_return_pointer() and the like will
 // normally be much easier to use.
-func (t task) ReturnValue(result *externglib.Value) {
+func (t task) ReturnValue(result **externglib.Value) {
 	var arg0 *C.GTask
 	var arg1 *C.GValue
 
@@ -868,15 +885,16 @@ func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_task_set_return_on_cancel(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetSourceTag sets @task's source tag. You can use this to tag a task

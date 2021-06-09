@@ -102,14 +102,15 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 
 // NewCSSProvider constructs a class CSSProvider.
 func NewCSSProvider() CSSProvider {
-	cret := new(C.GtkCssProvider)
-	var goret CSSProvider
+	var cret C.GtkCssProvider
 
 	cret = C.gtk_css_provider_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CSSProvider)
+	var cssProvider CSSProvider
 
-	return goret
+	cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CSSProvider)
+
+	return cssProvider
 }
 
 // LoadFromData loads @data into @css_provider, and by doing so clears any
@@ -120,9 +121,10 @@ func (c cssProvider) LoadFromData() error {
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_css_provider_load_from_data(arg0, arg1, arg2, &cerr)
+	C.gtk_css_provider_load_from_data(arg0, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -139,9 +141,10 @@ func (c cssProvider) LoadFromFile(file gio.File) error {
 	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_css_provider_load_from_file(arg0, arg1, &cerr)
+	C.gtk_css_provider_load_from_file(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -159,9 +162,10 @@ func (c cssProvider) LoadFromPath(path string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_css_provider_load_from_path(arg0, arg1, &cerr)
+	C.gtk_css_provider_load_from_path(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -195,13 +199,14 @@ func (p cssProvider) String() string {
 
 	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gtk_css_provider_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

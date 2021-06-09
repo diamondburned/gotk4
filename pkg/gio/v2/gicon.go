@@ -62,7 +62,7 @@ type IconOverrider interface {
 	//
 	// - If @icon is a Icon with exactly one name and no fallbacks, the encoding
 	// is simply the name (such as `network-server`).
-	ToTokens(tokens []interface{}, outVersion int) bool
+	ToTokens(tokens []interface{}, outVersion *int) bool
 }
 
 // Icon is a very minimal interface for icons. It provides functions for
@@ -142,15 +142,16 @@ func (i icon) Equal(icon2 Icon) bool {
 	arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_icon_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -164,17 +165,18 @@ func (i icon) Serialize() *glib.Variant {
 
 	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.GVariant)
-	var goret *glib.Variant
+	var cret *C.GVariant
 
 	cret = C.g_icon_serialize(arg0)
 
-	goret = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.Variant) {
+	var variant *glib.Variant
+
+	variant = glib.WrapVariant(unsafe.Pointer(cret))
+	runtime.SetFinalizer(variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return variant
 }
 
 // String generates a textual representation of @icon that can be used for
@@ -197,13 +199,14 @@ func (i icon) String() string {
 
 	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.g_icon_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }

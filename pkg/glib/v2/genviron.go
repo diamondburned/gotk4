@@ -15,7 +15,7 @@ import "C"
 
 // EnvironGetenv returns the value of the environment variable @variable in the
 // provided list @envp.
-func EnvironGetenv(envp []string, variable string) string {
+func EnvironGetenv(envp []*string, variable *string) *string {
 	var arg1 **C.gchar
 	var arg2 *C.gchar
 
@@ -27,26 +27,27 @@ func EnvironGetenv(envp []string, variable string) string {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(envp)))
 
 		for i := range envp {
-			out[i] = (*C.gchar)(C.CString(envp[i]))
-			defer C.free(unsafe.Pointer(out[i]))
+			arg1 = (*C.gchar)(C.CString(envp))
+			defer C.free(unsafe.Pointer(arg1))
 		}
 	}
 	arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_environ_getenv(arg1, arg2)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }
 
 // EnvironSetenv sets the environment variable @variable in the provided list
 // @envp to @value.
-func EnvironSetenv(envp []string, variable string, value string, overwrite bool) []string {
+func EnvironSetenv(envp []*string, variable *string, value *string, overwrite bool) []*string {
 	var arg1 **C.gchar
 	var arg2 *C.gchar
 	var arg3 *C.gchar
@@ -58,7 +59,7 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(envp)))
 
 		for i := range envp {
-			out[i] = (*C.gchar)(C.CString(envp[i]))
+			arg1 = (*C.gchar)(C.CString(envp))
 		}
 	}
 	arg2 = (*C.gchar)(C.CString(variable))
@@ -70,9 +71,10 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 	}
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.g_environ_setenv(arg1, arg2, arg3, arg4)
+
+	var filenames []*string
 
 	{
 		var length int
@@ -83,20 +85,22 @@ func EnvironSetenv(envp []string, variable string, value string, overwrite bool)
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			filenames = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return filenames
 }
 
 // EnvironUnsetenv removes the environment variable @variable from the provided
 // environment @envp.
-func EnvironUnsetenv(envp []string, variable string) []string {
+func EnvironUnsetenv(envp []*string, variable *string) []*string {
 	var arg1 **C.gchar
 	var arg2 *C.gchar
 
@@ -106,16 +110,17 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(envp)))
 
 		for i := range envp {
-			out[i] = (*C.gchar)(C.CString(envp[i]))
+			arg1 = (*C.gchar)(C.CString(envp))
 		}
 	}
 	arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.g_environ_unsetenv(arg1, arg2)
+
+	var filenames []*string
 
 	{
 		var length int
@@ -126,15 +131,17 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			filenames = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return filenames
 }
 
 // GetEnviron gets the list of environment variables for the current process.
@@ -147,11 +154,12 @@ func EnvironUnsetenv(envp []string, variable string) []string {
 //
 // The return value is freshly allocated and it should be freed with
 // g_strfreev() when it is no longer needed.
-func GetEnviron() []string {
+func GetEnviron() []*string {
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.g_get_environ()
+
+	var filenames []*string
 
 	{
 		var length int
@@ -162,15 +170,17 @@ func GetEnviron() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			filenames = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return filenames
 }
 
 // Getenv returns the value of an environment variable.
@@ -179,20 +189,21 @@ func GetEnviron() []string {
 // some consistent character set and encoding. On Windows, they are in UTF-8. On
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
-func Getenv(variable string) string {
+func Getenv(variable *string) *string {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_getenv(arg1)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }
 
 // Listenv gets the names of all variables set in the environment.
@@ -203,11 +214,12 @@ func Getenv(variable string) string {
 // encoding, while in most of the typical use cases for environment variables in
 // GLib-using programs you want the UTF-8 encoding that this function and
 // g_getenv() provide.
-func Listenv() []string {
+func Listenv() []*string {
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.g_listenv()
+
+	var filenames []*string
 
 	{
 		var length int
@@ -218,15 +230,17 @@ func Listenv() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			filenames = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return filenames
 }
 
 // Setenv sets an environment variable. On UNIX, both the variable's name and
@@ -247,7 +261,7 @@ func Listenv() []string {
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
-func Setenv(variable string, value string, overwrite bool) bool {
+func Setenv(variable *string, value *string, overwrite bool) bool {
 	var arg1 *C.gchar
 	var arg2 *C.gchar
 	var arg3 C.gboolean
@@ -261,15 +275,16 @@ func Setenv(variable string, value string, overwrite bool) bool {
 	}
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_setenv(arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Unsetenv removes an environment variable from the environment.
@@ -288,7 +303,7 @@ func Setenv(variable string, value string, overwrite bool) bool {
 // g_get_environ() to get an environment array, modify that with
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
-func Unsetenv(variable string) {
+func Unsetenv(variable *string) {
 	var arg1 *C.gchar
 
 	arg1 = (*C.gchar)(C.CString(variable))

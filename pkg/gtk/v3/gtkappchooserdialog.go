@@ -83,13 +83,14 @@ func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppCho
 	arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
 	var cret C.GtkAppChooserDialog
-	var goret AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	var appChooserDialog AppChooserDialog
 
-	return goret
+	appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+
+	return appChooserDialog
 }
 
 // NewAppChooserDialogForContentType constructs a class AppChooserDialog.
@@ -104,13 +105,14 @@ func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, content
 	defer C.free(unsafe.Pointer(arg3))
 
 	var cret C.GtkAppChooserDialog
-	var goret AppChooserDialog
 
 	cret = C.gtk_app_chooser_dialog_new_for_content_type(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+	var appChooserDialog AppChooserDialog
 
-	return goret
+	appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserDialog)
+
+	return appChooserDialog
 }
 
 // Heading returns the text to display at the top of the dialog.
@@ -120,13 +122,14 @@ func (s appChooserDialog) Heading() string {
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_app_chooser_dialog_get_heading(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Widget returns the AppChooserWidget of this dialog.
@@ -136,13 +139,14 @@ func (s appChooserDialog) Widget() Widget {
 	arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_app_chooser_dialog_get_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // SetHeading sets the text to display at the top of the dialog. If the

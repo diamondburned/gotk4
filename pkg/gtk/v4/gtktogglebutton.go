@@ -21,69 +21,60 @@ func init() {
 	})
 }
 
-// ToggleButton: a `GtkToggleButton` is a button which remains “pressed-in” when
-// clicked.
+// ToggleButton: a ToggleButton is a Button which will remain “pressed-in” when
+// clicked. Clicking again will cause the toggle button to return to its normal
+// state.
 //
-// Clicking again will cause the toggle button to return to its normal state.
+// A toggle button is created by calling either gtk_toggle_button_new() or
+// gtk_toggle_button_new_with_label(). If using the former, it is advisable to
+// pack a widget, (such as a Label and/or a Image), into the toggle button’s
+// container. (See Button for more information).
 //
-// A toggle button is created by calling either [ctor@Gtk.ToggleButton.new] or
-// [ctor@Gtk.ToggleButton.new_with_label]. If using the former, it is advisable
-// to pack a widget, (such as a `GtkLabel` and/or a `GtkImage`), into the toggle
-// button’s container. (See [class@Gtk.Button] for more information).
-//
-// The state of a `GtkToggleButton` can be set specifically using
-// [method@Gtk.ToggleButton.set_active], and retrieved using
-// [method@Gtk.ToggleButton.get_active].
+// The state of a ToggleButton can be set specifically using
+// gtk_toggle_button_set_active(), and retrieved using
+// gtk_toggle_button_get_active().
 //
 // To simply switch the state of a toggle button, use
-// [method@Gtk.ToggleButton.toggled].
-//
-//
-// Grouping
-//
-// Toggle buttons can be grouped together, to form mutually exclusive groups -
-// only one of the buttons can be toggled at a time, and toggling another one
-// will switch the currently toggled one off.
-//
-// To add a `GtkToggleButton` to a group, use
-// [method@Gtk.ToggleButton.set_group].
+// gtk_toggle_button_toggled().
 //
 //
 // CSS nodes
 //
-// `GtkToggleButton` has a single CSS node with name button. To differentiate it
-// from a plain `GtkButton`, it gets the .toggle style class.
+// GtkToggleButton has a single CSS node with name button. To differentiate it
+// from a plain Button, it gets the .toggle style class.
 //
-// Creating two `GtkToggleButton` widgets.
+// Creating two ToggleButton widgets.
 //
-// “`c static void output_state (GtkToggleButton *source, gpointer user_data) {
-// printf ("Active: d\n", gtk_toggle_button_get_active (source)); }
+//    static void output_state (GtkToggleButton *source, gpointer user_data) {
+//      printf ("Active: d\n", gtk_toggle_button_get_active (source));
+//    }
 //
-// void make_toggles (void) { GtkWidget *window, *toggle1, *toggle2; GtkWidget
-// *box; const char *text;
+//    void make_toggles (void) {
+//      GtkWidget *window, *toggle1, *toggle2;
+//      GtkWidget *box;
+//      const char *text;
 //
-//    window = gtk_window_new ();
-//    box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
+//      window = gtk_window_new ();
+//      box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 12);
 //
-//    text = "Hi, I’m a toggle button.";
-//    toggle1 = gtk_toggle_button_new_with_label (text);
+//      text = "Hi, I’m a toggle button.";
+//      toggle1 = gtk_toggle_button_new_with_label (text);
 //
-//    g_signal_connect (toggle1, "toggled",
-//                      G_CALLBACK (output_state),
-//                      NULL);
-//    gtk_box_append (GTK_BOX (box), toggle1);
+//      g_signal_connect (toggle1, "toggled",
+//                        G_CALLBACK (output_state),
+//                        NULL);
+//      gtk_box_append (GTK_BOX (box), toggle1);
 //
-//    text = "Hi, I’m a toggle button.";
-//    toggle2 = gtk_toggle_button_new_with_label (text);
-//    g_signal_connect (toggle2, "toggled",
-//                      G_CALLBACK (output_state),
-//                      NULL);
-//    gtk_box_append (GTK_BOX (box), toggle2);
+//      text = "Hi, I’m a toggle button.";
+//      toggle2 = gtk_toggle_button_new_with_label (text);
+//      g_signal_connect (toggle2, "toggled",
+//                        G_CALLBACK (output_state),
+//                        NULL);
+//      gtk_box_append (GTK_BOX (box), toggle2);
 //
-//    gtk_window_set_child (GTK_WINDOW (window), box);
-//    gtk_widget_show (window);
-//
-// } “`
+//      gtk_window_set_child (GTK_WINDOW (window), box);
+//      gtk_widget_show (window);
+//    }
 type ToggleButton interface {
 	Button
 	Accessible
@@ -91,34 +82,24 @@ type ToggleButton interface {
 	Buildable
 	ConstraintTarget
 
-	// Active queries a `GtkToggleButton` and returns its current state.
-	//
-	// Returns true if the toggle button is pressed in and false if it is
-	// raised.
+	// Active queries a ToggleButton and returns its current state. Returns true
+	// if the toggle button is pressed in and false if it is raised.
 	Active() bool
-	// SetActive sets the status of the toggle button.
-	//
-	// Set to true if you want the `GtkToggleButton` to be “pressed in”, and
-	// false to raise it.
+	// SetActive sets the status of the toggle button. Set to true if you want
+	// the GtkToggleButton to be “pressed in”, and false to raise it.
 	//
 	// If the status of the button changes, this action causes the
-	// [signal@GtkToggleButton::toggled] signal to be emitted.
+	// ToggleButton::toggled signal to be emitted.
 	SetActive(isActive bool)
-	// SetGroup adds @self to the group of @group.
+	// SetGroup adds @self to the group of @group. In a group of multiple toggle
+	// buttons, only one button can be active at a time.
 	//
-	// In a group of multiple toggle buttons, only one button can be active at a
-	// time.
-	//
-	// Setting up groups in a cycle leads to undefined behavior.
-	//
-	// Note that the same effect can be achieved via the
-	// [interface@Gtk.Actionable] API, by using the same action with parameter
-	// type and state type 's' for all buttons in the group, and giving each
-	// button its own target value.
+	// Note that the same effect can be achieved via the Actionable api, by
+	// using the same action with parameter type and state type 's' for all
+	// buttons in the group, and giving each button its own target value.
 	SetGroup(group ToggleButton)
-	// Toggled emits the ::toggled signal on the `GtkToggleButton`.
-	//
-	// There is no good reason for an application ever to call this function.
+	// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
+	// is no good reason for an application ever to call this function.
 	Toggled()
 }
 
@@ -154,13 +135,14 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 // NewToggleButton constructs a class ToggleButton.
 func NewToggleButton() ToggleButton {
 	var cret C.GtkToggleButton
-	var goret ToggleButton
 
 	cret = C.gtk_toggle_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	var toggleButton ToggleButton
 
-	return goret
+	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+
+	return toggleButton
 }
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
@@ -171,13 +153,14 @@ func NewToggleButtonWithLabel(label string) ToggleButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToggleButton
-	var goret ToggleButton
 
 	cret = C.gtk_toggle_button_new_with_label(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	var toggleButton ToggleButton
 
-	return goret
+	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+
+	return toggleButton
 }
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
@@ -188,43 +171,41 @@ func NewToggleButtonWithMnemonic(label string) ToggleButton {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToggleButton
-	var goret ToggleButton
 
 	cret = C.gtk_toggle_button_new_with_mnemonic(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	var toggleButton ToggleButton
 
-	return goret
+	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+
+	return toggleButton
 }
 
-// Active queries a `GtkToggleButton` and returns its current state.
-//
-// Returns true if the toggle button is pressed in and false if it is
-// raised.
+// Active queries a ToggleButton and returns its current state. Returns true
+// if the toggle button is pressed in and false if it is raised.
 func (t toggleButton) Active() bool {
 	var arg0 *C.GtkToggleButton
 
 	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toggle_button_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetActive sets the status of the toggle button.
-//
-// Set to true if you want the `GtkToggleButton` to be “pressed in”, and
-// false to raise it.
+// SetActive sets the status of the toggle button. Set to true if you want
+// the GtkToggleButton to be “pressed in”, and false to raise it.
 //
 // If the status of the button changes, this action causes the
-// [signal@GtkToggleButton::toggled] signal to be emitted.
+// ToggleButton::toggled signal to be emitted.
 func (t toggleButton) SetActive(isActive bool) {
 	var arg0 *C.GtkToggleButton
 	var arg1 C.gboolean
@@ -237,17 +218,12 @@ func (t toggleButton) SetActive(isActive bool) {
 	C.gtk_toggle_button_set_active(arg0, arg1)
 }
 
-// SetGroup adds @self to the group of @group.
+// SetGroup adds @self to the group of @group. In a group of multiple toggle
+// buttons, only one button can be active at a time.
 //
-// In a group of multiple toggle buttons, only one button can be active at a
-// time.
-//
-// Setting up groups in a cycle leads to undefined behavior.
-//
-// Note that the same effect can be achieved via the
-// [interface@Gtk.Actionable] API, by using the same action with parameter
-// type and state type 's' for all buttons in the group, and giving each
-// button its own target value.
+// Note that the same effect can be achieved via the Actionable api, by
+// using the same action with parameter type and state type 's' for all
+// buttons in the group, and giving each button its own target value.
 func (t toggleButton) SetGroup(group ToggleButton) {
 	var arg0 *C.GtkToggleButton
 	var arg1 *C.GtkToggleButton
@@ -258,9 +234,8 @@ func (t toggleButton) SetGroup(group ToggleButton) {
 	C.gtk_toggle_button_set_group(arg0, arg1)
 }
 
-// Toggled emits the ::toggled signal on the `GtkToggleButton`.
-//
-// There is no good reason for an application ever to call this function.
+// Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
+// is no good reason for an application ever to call this function.
 func (t toggleButton) Toggled() {
 	var arg0 *C.GtkToggleButton
 

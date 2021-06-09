@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
@@ -33,30 +32,28 @@ func init() {
 // get memory corruption. In the TreeDragDest drag_data_received handler, you
 // can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
 // current process. The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(selectionData *SelectionData) (treeModel *TreeModel, path **TreePath, ok bool) {
+func TreeGetRowDragData(selectionData *SelectionData) (treeModel TreeModel, path *TreePath, ok bool) {
 	var arg1 *C.GtkSelectionData
 
 	arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
 	var arg2 **C.GtkTreeModel
-	var ret2 *TreeModel
-	arg3 := new(*C.GtkTreePath)
-	var ret3 **TreePath
+	var path *TreePath
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_tree_get_row_drag_data(arg1, arg2, arg3)
+	cret = C.gtk_tree_get_row_drag_data(arg1, arg2, (**C.GtkTreePath)(unsafe.Pointer(&path)))
 
-	ret2 = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(*TreeModel)
-	ret3 = WrapTreePath(unsafe.Pointer(arg3))
-	runtime.SetFinalizer(ret3, func(v **TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
+	var treeModel TreeModel
+
+	var ok bool
+
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(arg2.Native()))).(TreeModel)
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, ret3, goret
+	return treeModel, path, ok
 }
 
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
@@ -71,15 +68,16 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 	arg3 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_set_row_drag_data(arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TreeDragDestOverrider contains methods that are overridable. This
@@ -142,15 +140,16 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionD
 	arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_drag_dest_drag_data_received(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RowDropPossible determines whether a drop is possible before the given
@@ -168,15 +167,16 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *Selecti
 	arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_drag_dest_row_drop_possible(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TreeDragSourceOverrider contains methods that are overridable. This
@@ -238,15 +238,16 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_drag_source_drag_data_delete(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // DragDataGet asks the TreeDragSource to fill in @selection_data with a
@@ -263,15 +264,16 @@ func (d treeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData
 	arg2 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_drag_source_drag_data_get(arg0, arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RowDraggable asks the TreeDragSource whether a particular row can be used
@@ -285,13 +287,14 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_tree_drag_source_row_draggable(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }

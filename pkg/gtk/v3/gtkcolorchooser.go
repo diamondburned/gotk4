@@ -3,6 +3,8 @@
 package gtk
 
 import (
+	"unsafe"
+
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,7 +28,7 @@ func init() {
 type ColorChooserOverrider interface {
 	ColorActivated(color *gdk.RGBA)
 	// RGBA gets the currently-selected color.
-	RGBA() *gdk.RGBA
+	RGBA() gdk.RGBA
 	// SetRGBA sets the color.
 	SetRGBA(color *gdk.RGBA)
 }
@@ -70,19 +72,16 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 }
 
 // RGBA gets the currently-selected color.
-func (c colorChooser) RGBA() *gdk.RGBA {
+func (c colorChooser) RGBA() gdk.RGBA {
 	var arg0 *C.GtkColorChooser
 
 	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
-	arg1 := new(C.GdkRGBA)
-	var ret1 *gdk.RGBA
+	var color gdk.RGBA
 
-	C.gtk_color_chooser_get_rgba(arg0, arg1)
+	C.gtk_color_chooser_get_rgba(arg0, (*C.GdkRGBA)(unsafe.Pointer(&color)))
 
-	ret1 = gdk.WrapRGBA(unsafe.Pointer(arg1))
-
-	return ret1
+	return color
 }
 
 // UseAlpha returns whether the color chooser shows the alpha channel.
@@ -92,15 +91,16 @@ func (c colorChooser) UseAlpha() bool {
 	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_color_chooser_get_use_alpha(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetRGBA sets the color.

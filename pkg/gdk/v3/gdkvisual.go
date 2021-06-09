@@ -22,17 +22,18 @@ import "C"
 //
 // Call g_list_free() on the return value when you’re finished with it.
 func ListVisuals() *glib.List {
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.gdk_list_visuals()
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // QueryDepths: this function returns the available bit depths for the default
@@ -41,9 +42,9 @@ func ListVisuals() *glib.List {
 //
 // The array returned by this function should not be freed.
 func QueryDepths() {
-	C.gdk_query_depths(arg1, arg2)
+	C.gdk_query_depths()
 
-	return ret1, ret2
+	return
 }
 
 // QueryVisualTypes: this function returns the available visual types for the
@@ -52,7 +53,7 @@ func QueryDepths() {
 //
 // The array returned by this function should not be freed.
 func QueryVisualTypes() {
-	C.gdk_query_visual_types(arg1, arg2)
+	C.gdk_query_visual_types()
 
-	return ret1, ret2
+	return
 }

@@ -63,11 +63,11 @@ type CellView interface {
 	Model() TreeModel
 	// SizeOfRow sets @requisition to the size needed by @cell_view to display
 	// the model row pointed to by @path.
-	SizeOfRow(path *TreePath) (requisition *Requisition, ok bool)
+	SizeOfRow(path *TreePath) (requisition Requisition, ok bool)
 	// SetBackgroundColor sets the background color of @view.
 	SetBackgroundColor(color *gdk.Color)
 	// SetBackgroundRGBA sets the background color of @cell_view.
-	SetBackgroundRGBA(rgbA *gdk.RGBA)
+	SetBackgroundRGBA(rgba *gdk.RGBA)
 	// SetDisplayedRow sets the row of the model that is currently displayed by
 	// the CellView. If the path is unset, then the contents of the cellview
 	// “stick” at their last value; this is not normally a desired result, but
@@ -122,13 +122,14 @@ func marshalCellView(p uintptr) (interface{}, error) {
 // NewCellView constructs a class CellView.
 func NewCellView() CellView {
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithContext constructs a class CellView.
@@ -140,13 +141,14 @@ func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
 	arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_context(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithMarkup constructs a class CellView.
@@ -157,13 +159,14 @@ func NewCellViewWithMarkup(markup string) CellView {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_markup(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithPixbuf constructs a class CellView.
@@ -173,13 +176,14 @@ func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuf) CellView {
 	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_pixbuf(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // NewCellViewWithText constructs a class CellView.
@@ -190,13 +194,14 @@ func NewCellViewWithText(text string) CellView {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkCellView
-	var goret CellView
 
 	cret = C.gtk_cell_view_new_with_text(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+	var cellView CellView
 
-	return goret
+	cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellView)
+
+	return cellView
 }
 
 // DisplayedRow returns a TreePath referring to the currently displayed row.
@@ -206,17 +211,18 @@ func (c cellView) DisplayedRow() *TreePath {
 
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GtkTreePath)
-	var goret *TreePath
+	var cret *C.GtkTreePath
 
 	cret = C.gtk_cell_view_get_displayed_row(arg0)
 
-	goret = WrapTreePath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *TreePath) {
+	var treePath *TreePath
+
+	treePath = WrapTreePath(unsafe.Pointer(cret))
+	runtime.SetFinalizer(treePath, func(v *TreePath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return treePath
 }
 
 // DrawSensitive gets whether @cell_view is configured to draw all of its
@@ -227,15 +233,16 @@ func (c cellView) DrawSensitive() bool {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_view_get_draw_sensitive(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // FitModel gets whether @cell_view is configured to request space to fit
@@ -246,15 +253,16 @@ func (c cellView) FitModel() bool {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_cell_view_get_fit_model(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Model returns the model for @cell_view. If no model is used nil is
@@ -265,37 +273,37 @@ func (c cellView) Model() TreeModel {
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkTreeModel
-	var goret TreeModel
 
 	cret = C.gtk_cell_view_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+	var treeModel TreeModel
 
-	return goret
+	treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TreeModel)
+
+	return treeModel
 }
 
 // SizeOfRow sets @requisition to the size needed by @cell_view to display
 // the model row pointed to by @path.
-func (c cellView) SizeOfRow(path *TreePath) (requisition *Requisition, ok bool) {
+func (c cellView) SizeOfRow(path *TreePath) (requisition Requisition, ok bool) {
 	var arg0 *C.GtkCellView
 	var arg1 *C.GtkTreePath
 
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
-	arg2 := new(C.GtkRequisition)
-	var ret2 *Requisition
+	var requisition Requisition
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_cell_view_get_size_of_row(arg0, arg1, arg2)
+	cret = C.gtk_cell_view_get_size_of_row(arg0, arg1, (*C.GtkRequisition)(unsafe.Pointer(&requisition)))
 
-	ret2 = WrapRequisition(unsafe.Pointer(arg2))
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret2, goret
+	return requisition, ok
 }
 
 // SetBackgroundColor sets the background color of @view.
@@ -310,12 +318,12 @@ func (c cellView) SetBackgroundColor(color *gdk.Color) {
 }
 
 // SetBackgroundRGBA sets the background color of @cell_view.
-func (c cellView) SetBackgroundRGBA(rgbA *gdk.RGBA) {
+func (c cellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 	var arg0 *C.GtkCellView
 	var arg1 *C.GdkRGBA
 
 	arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgbA.Native()))
+	arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
 
 	C.gtk_cell_view_set_background_rgba(arg0, arg1)
 }

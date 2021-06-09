@@ -13,7 +13,7 @@ import "C"
 
 // X11FreeCompoundText frees the data returned from
 // gdk_x11_display_string_to_compound_text().
-func X11FreeCompoundText(ctext byte) {
+func X11FreeCompoundText(ctext *byte) {
 	var arg1 *C.guchar
 
 	arg1 = *C.guchar(ctext)
@@ -23,7 +23,7 @@ func X11FreeCompoundText(ctext byte) {
 
 // X11FreeTextList frees the array of strings created by
 // gdk_x11_display_text_property_to_text_list().
-func X11FreeTextList(list string) {
+func X11FreeTextList(list *string) {
 	var arg1 **C.char
 
 	arg1 = (**C.char)(C.CString(list))

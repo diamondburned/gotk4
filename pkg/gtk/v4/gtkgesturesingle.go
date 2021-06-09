@@ -21,57 +21,47 @@ func init() {
 	})
 }
 
-// GestureSingle: `GtkGestureSingle` is a `GtkGestures` subclass optimized for
-// singe-touch and mouse gestures.
+// GestureSingle is a subclass of Gesture, optimized (although not restricted)
+// for dealing with mouse and single-touch gestures. Under interaction, these
+// gestures stick to the first interacting sequence, which is accessible through
+// gtk_gesture_single_get_current_sequence() while the gesture is being
+// interacted with.
 //
-// Under interaction, these gestures stick to the first interacting sequence,
-// which is accessible through [method@Gtk.GestureSingle.get_current_sequence]
-// while the gesture is being interacted with.
-//
-// By default gestures react to both GDK_BUTTON_PRIMARY and touch events.
-// [method@Gtk.GestureSingle.set_touch_only] can be used to change the touch
-// behavior. Callers may also specify a different mouse button number to
-// interact with through [method@Gtk.GestureSingle.set_button], or react to any
-// mouse button by setting it to 0. While the gesture is active, the button
-// being currently pressed can be known through
-// [method@Gtk.GestureSingle.get_current_button].
+// By default gestures react to both GDK_BUTTON_PRIMARY and touch events,
+// gtk_gesture_single_set_touch_only() can be used to change the touch behavior.
+// Callers may also specify a different mouse button number to interact with
+// through gtk_gesture_single_set_button(), or react to any mouse button by
+// setting 0. While the gesture is active, the button being currently pressed
+// can be known through gtk_gesture_single_get_current_button().
 type GestureSingle interface {
 	Gesture
 
-	// Button returns the button number @gesture listens for.
-	//
-	// If this is 0, the gesture reacts to any button press.
+	// Button returns the button number @gesture listens for, or 0 if @gesture
+	// reacts to any button press.
 	Button() uint
 	// CurrentButton returns the button number currently interacting with
 	// @gesture, or 0 if there is none.
 	CurrentButton() uint
 	// CurrentSequence returns the event sequence currently interacting with
-	// @gesture.
-	//
-	// This is only meaningful if [method@Gtk.Gesture.is_active] returns true.
+	// @gesture. This is only meaningful if gtk_gesture_is_active() returns
+	// true.
 	CurrentSequence() *gdk.EventSequence
-	// Exclusive gets whether a gesture is exclusive.
-	//
-	// For more information, see [method@Gtk.GestureSingle.set_exclusive].
+	// Exclusive gets whether a gesture is exclusive. For more information, see
+	// gtk_gesture_single_set_exclusive().
 	Exclusive() bool
 	// TouchOnly returns true if the gesture is only triggered by touch events.
 	TouchOnly() bool
-	// SetButton sets the button number @gesture listens to.
-	//
-	// If non-0, every button press from a different button number will be
-	// ignored. Touch events implicitly match with button 1.
+	// SetButton sets the button number @gesture listens to. If non-0, every
+	// button press from a different button number will be ignored. Touch events
+	// implicitly match with button 1.
 	SetButton(button uint)
-	// SetExclusive sets whether @gesture is exclusive.
-	//
-	// An exclusive gesture will only handle pointer and "pointer emulated"
-	// touch events, so at any given time, there is only one sequence able to
-	// interact with those.
+	// SetExclusive sets whether @gesture is exclusive. An exclusive gesture
+	// will only handle pointer and "pointer emulated" touch events, so at any
+	// given time, there is only one sequence able to interact with those.
 	SetExclusive(exclusive bool)
-	// SetTouchOnly sets whether to handle only touch events.
-	//
-	// If @touch_only is true, @gesture will only handle events of type
-	// GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE or GDK_TOUCH_END. If false, mouse
-	// events will be handled too.
+	// SetTouchOnly: if @touch_only is true, @gesture will only handle events of
+	// type K_TOUCH_BEGIN, K_TOUCH_UPDATE or K_TOUCH_END. If false, mouse events
+	// will be handled too.
 	SetTouchOnly(touchOnly bool)
 }
 
@@ -96,22 +86,22 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 	return WrapGestureSingle(obj), nil
 }
 
-// Button returns the button number @gesture listens for.
-//
-// If this is 0, the gesture reacts to any button press.
+// Button returns the button number @gesture listens for, or 0 if @gesture
+// reacts to any button press.
 func (g gestureSingle) Button() uint {
 	var arg0 *C.GtkGestureSingle
 
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_gesture_single_get_button(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // CurrentButton returns the button number currently interacting with
@@ -122,55 +112,56 @@ func (g gestureSingle) CurrentButton() uint {
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_gesture_single_get_current_button(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // CurrentSequence returns the event sequence currently interacting with
-// @gesture.
-//
-// This is only meaningful if [method@Gtk.Gesture.is_active] returns true.
+// @gesture. This is only meaningful if gtk_gesture_is_active() returns
+// true.
 func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
 	var arg0 *C.GtkGestureSingle
 
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
-	cret := new(C.GdkEventSequence)
-	var goret *gdk.EventSequence
+	var cret *C.GdkEventSequence
 
 	cret = C.gtk_gesture_single_get_current_sequence(arg0)
 
-	goret = gdk.WrapEventSequence(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *gdk.EventSequence) {
+	var eventSequence *gdk.EventSequence
+
+	eventSequence = gdk.WrapEventSequence(unsafe.Pointer(cret))
+	runtime.SetFinalizer(eventSequence, func(v *gdk.EventSequence) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return eventSequence
 }
 
-// Exclusive gets whether a gesture is exclusive.
-//
-// For more information, see [method@Gtk.GestureSingle.set_exclusive].
+// Exclusive gets whether a gesture is exclusive. For more information, see
+// gtk_gesture_single_set_exclusive().
 func (g gestureSingle) Exclusive() bool {
 	var arg0 *C.GtkGestureSingle
 
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gesture_single_get_exclusive(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TouchOnly returns true if the gesture is only triggered by touch events.
@@ -180,21 +171,21 @@ func (g gestureSingle) TouchOnly() bool {
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gesture_single_get_touch_only(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetButton sets the button number @gesture listens to.
-//
-// If non-0, every button press from a different button number will be
-// ignored. Touch events implicitly match with button 1.
+// SetButton sets the button number @gesture listens to. If non-0, every
+// button press from a different button number will be ignored. Touch events
+// implicitly match with button 1.
 func (g gestureSingle) SetButton(button uint) {
 	var arg0 *C.GtkGestureSingle
 	var arg1 C.guint
@@ -205,11 +196,9 @@ func (g gestureSingle) SetButton(button uint) {
 	C.gtk_gesture_single_set_button(arg0, arg1)
 }
 
-// SetExclusive sets whether @gesture is exclusive.
-//
-// An exclusive gesture will only handle pointer and "pointer emulated"
-// touch events, so at any given time, there is only one sequence able to
-// interact with those.
+// SetExclusive sets whether @gesture is exclusive. An exclusive gesture
+// will only handle pointer and "pointer emulated" touch events, so at any
+// given time, there is only one sequence able to interact with those.
 func (g gestureSingle) SetExclusive(exclusive bool) {
 	var arg0 *C.GtkGestureSingle
 	var arg1 C.gboolean
@@ -222,11 +211,9 @@ func (g gestureSingle) SetExclusive(exclusive bool) {
 	C.gtk_gesture_single_set_exclusive(arg0, arg1)
 }
 
-// SetTouchOnly sets whether to handle only touch events.
-//
-// If @touch_only is true, @gesture will only handle events of type
-// GDK_TOUCH_BEGIN, GDK_TOUCH_UPDATE or GDK_TOUCH_END. If false, mouse
-// events will be handled too.
+// SetTouchOnly: if @touch_only is true, @gesture will only handle events of
+// type K_TOUCH_BEGIN, K_TOUCH_UPDATE or K_TOUCH_END. If false, mouse events
+// will be handled too.
 func (g gestureSingle) SetTouchOnly(touchOnly bool) {
 	var arg0 *C.GtkGestureSingle
 	var arg1 C.gboolean

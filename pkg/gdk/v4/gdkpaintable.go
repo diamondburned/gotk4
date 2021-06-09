@@ -32,116 +32,100 @@ type PaintableOverrider interface {
 	//
 	// If the @paintable is already immutable, it will return itself.
 	CurrentImage() Paintable
-	// Flags: get flags for the paintable.
+	// Flags: get flags for the paintable. This is oftentimes useful for
+	// optimizations.
 	//
-	// This is oftentimes useful for optimizations.
-	//
-	// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
+	// See PaintableFlags for the flags and what they mean.
 	Flags() PaintableFlags
 	// IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
-	// like to be displayed at.
-	//
-	// The aspect ratio is the width divided by the height, so a value of 0.5
-	// means that the @paintable prefers to be displayed twice as high as it is
-	// wide. Consumers of this interface can use this to preserve aspect ratio
-	// when displaying the paintable.
+	// like to be displayed at. The aspect ratio is the width divided by the
+	// height, so a value of 0.5 means that the @paintable prefers to be
+	// displayed twice as high as it is wide. Consumers of this interface can
+	// use this to preserve aspect ratio when displaying the paintable.
 	//
 	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
+	// values that may be passed to gdk_paintable_snapshot().
 	//
 	// Usually when a @paintable returns nonzero values from
-	// [method@Gdk.Paintable.get_intrinsic_width] and
-	// [method@Gdk.Paintable.get_intrinsic_height] the aspect ratio should
-	// conform to those values, though that is not required.
+	// gdk_paintable_get_intrinsic_width() and
+	// gdk_paintable_get_intrinsic_height() the aspect ratio should conform to
+	// those values, though that is not required.
 	//
 	// If the @paintable does not have a preferred aspect ratio, it returns 0.
 	// Negative values are never returned.
 	IntrinsicAspectRatio() float64
 	// IntrinsicHeight gets the preferred height the @paintable would like to be
-	// displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
+	// displayed at. Consumers of this interface can use this to reserve enough
+	// space to draw the paintable.
 	//
 	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
+	// values that may be passed to gdk_paintable_snapshot().
 	//
 	// If the @paintable does not have a preferred height, it returns 0.
 	// Negative values are never returned.
 	IntrinsicHeight() int
 	// IntrinsicWidth gets the preferred width the @paintable would like to be
-	// displayed at.
-	//
-	// Consumers of this interface can use this to reserve enough space to draw
-	// the paintable.
+	// displayed at. Consumers of this interface can use this to reserve enough
+	// space to draw the paintable.
 	//
 	// This is a purely informational value and does not in any way limit the
-	// values that may be passed to [method@Gdk.Paintable.snapshot].
+	// values that may be passed to gdk_paintable_snapshot().
 	//
 	// If the @paintable does not have a preferred width, it returns 0. Negative
 	// values are never returned.
 	IntrinsicWidth() int
-	// Snapshot snapshots the given paintable with the given @width and @height.
-	//
-	// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-	// @width and @height are not larger than zero, this function will do
-	// nothing.
+	// Snapshot snapshots the given paintable with the given @width and @height
+	// at the current (0,0) offset of the @snapshot. If @width and @height are
+	// not larger than zero, this function will do nothing.
 	Snapshot(snapshot Snapshot, width float64, height float64)
 }
 
-// Paintable: `GdkPaintable` is a simple interface used by GTK to represent
-// content that can be painted.
-//
-// The content of a `GdkPaintable` can be painted anywhere at any size without
-// requiring any sort of layout. The interface is inspired by similar concepts
-// elsewhere, such as ClutterContent
+// Paintable is a simple interface used by GDK and GTK to represent objects that
+// can be painted anywhere at any size without requiring any sort of layout. The
+// interface is inspired by similar concepts elsewhere, such as ClutterContent
 // (https://developer.gnome.org/clutter/stable/ClutterContent.html), HTML/CSS
 // Paint Sources (https://www.w3.org/TR/css-images-4/#paint-source), or SVG
 // Paint Servers (https://www.w3.org/TR/SVG2/pservers.html).
 //
-// A `GdkPaintable` can be snapshot at any time and size using
-// [method@Gdk.Paintable.snapshot]. How the paintable interprets that size and
-// if it scales or centers itself into the given rectangle is implementation
-// defined, though if you are implementing a `GdkPaintable` and don't know what
-// to do, it is suggested that you scale your paintable ignoring any potential
-// aspect ratio.
+// A Paintable can be snapshot at any time and size using
+// gdk_paintable_snapshot(). How the paintable interprets that size and if it
+// scales or centers itself into the given rectangle is implementation defined,
+// though if you are implementing a Paintable and don't know what to do, it is
+// suggested that you scale your paintable ignoring any potential aspect ratio.
 //
-// The contents that a `GdkPaintable` produces may depend on the
-// [class@GdkSnapshot] passed to it. For example, paintables may decide to use
-// more detailed images on higher resolution screens or when OpenGL is
-// available. A `GdkPaintable` will however always produce the same output for
-// the same snapshot.
+// The contents that a Paintable produces may depend on the Snapshot passed to
+// it. For example, paintables may decide to use more detailed images on higher
+// resolution screens or when OpenGL is available. A Paintable will however
+// always produce the same output for the same snapshot.
 //
-// A `GdkPaintable` may change its contents, meaning that it will now produce a
+// A Paintable may change its contents, meaning that it will now produce a
 // different output with the same snapshot. Once that happens, it will call
-// [method@Gdk.Paintable.invalidate_contents] which will emit the
-// [signal@GdkPaintable::invalidate-contents] signal. If a paintable is known to
-// never change its contents, it will set the GDK_PAINTABLE_STATIC_CONTENTS
-// flag. If a consumer cannot deal with changing contents, it may call
-// [method@Gdk.Paintable.get_current_image] which will return a static paintable
-// and use that.
+// gdk_paintable_invalidate_contents() which will emit the
+// Paintable::invalidate-contents signal. If a paintable is known to never
+// change its contents, it will set the GDK_PAINTABLE_STATIC_CONTENTS flag. If a
+// consumer cannot deal with changing contents, it may call
+// gdk_paintable_get_current_image() which will return a static paintable and
+// use that.
 //
 // A paintable can report an intrinsic (or preferred) size or aspect ratio it
 // wishes to be rendered at, though it doesn't have to. Consumers of the
 // interface can use this information to layout thepaintable appropriately. Just
 // like the contents, the size of a paintable can change. A paintable will
-// indicate this by calling [method@Gdk.Paintable.invalidate_size] which will
-// emit the [signal@GdkPaintable::invalidate-size] signal. And just like for
-// contents, if a paintable is known to never change its size, it will set the
-// GDK_PAINTABLE_STATIC_SIZE flag.
+// indicate this by calling gdk_paintable_invalidate_size() which will emit the
+// Paintable::invalidate-size signal. And just like for contents, if a paintable
+// is known to never change its size, it will set the GDK_PAINTABLE_STATIC_SIZE
+// flag.
 //
 // Besides API for applications, there are some functions that are only useful
 // for implementing subclasses and should not be used by applications:
-// [method@Gdk.Paintable.invalidate_contents],
-// [method@Gdk.Paintable.invalidate_size], [func@Gdk.Paintable.new_empty].
+// gdk_paintable_invalidate_contents(), gdk_paintable_invalidate_size(),
+// gdk_paintable_new_empty().
 type Paintable interface {
 	gextras.Objector
 	PaintableOverrider
 
-	// ComputeConcreteSize: compute a concrete size for the `GdkPaintable`.
-	//
-	// Applies the sizing algorithm outlined in the CSS Image spec
-	// (https://drafts.csswg.org/css-images-3/#default-sizing) to the given
+	// ComputeConcreteSize applies the sizing algorithm outlined in
+	// https://drafts.csswg.org/css-images-3/#default-sizing to the given
 	// @paintable. See that link for more details.
 	//
 	// It is not necessary to call this function when both @specified_width and
@@ -149,27 +133,21 @@ type Paintable interface {
 	// GtkWidget:measure implementations to compute the other dimension when
 	// only one dimension is given.
 	ComputeConcreteSize(specifiedWidth float64, specifiedHeight float64, defaultWidth float64, defaultHeight float64) (concreteWidth float64, concreteHeight float64)
-	// InvalidateContents: called by implementations of `GdkPaintable` to
-	// invalidate their contents.
+	// InvalidateContents: called by implementations of Paintable to invalidate
+	// their contents. Unless the contents are invalidated, implementations must
+	// guarantee that multiple calls of gdk_paintable_snapshot() produce the
+	// same output.
 	//
-	// Unless the contents are invalidated, implementations must guarantee that
-	// multiple calls of [method@Gdk.Paintable.snapshot] produce the same
-	// output.
-	//
-	// This function will emit the [signal@Gdk.Paintable::invalidate-contents]
-	// signal.
+	// This function will emit the Paintable::invalidate-contents signal.
 	//
 	// If a @paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must
 	// not call this function.
 	InvalidateContents()
-	// InvalidateSize: called by implementations of `GdkPaintable` to invalidate
-	// their size.
+	// InvalidateSize: called by implementations of Paintable to invalidate
+	// their size. As long as the size is not invalidated, @paintable must
+	// return the same values for its intrinsic width, height and aspect ratio.
 	//
-	// As long as the size is not invalidated, @paintable must return the same
-	// values for its intrinsic width, height and aspect ratio.
-	//
-	// This function will emit the [signal@Gdk.Paintable::invalidate-size]
-	// signal.
+	// This function will emit the Paintable::invalidate-size signal.
 	//
 	// If a @paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not
 	// call this function.
@@ -197,10 +175,8 @@ func marshalPaintable(p uintptr) (interface{}, error) {
 	return WrapPaintable(obj), nil
 }
 
-// ComputeConcreteSize: compute a concrete size for the `GdkPaintable`.
-//
-// Applies the sizing algorithm outlined in the CSS Image spec
-// (https://drafts.csswg.org/css-images-3/#default-sizing) to the given
+// ComputeConcreteSize applies the sizing algorithm outlined in
+// https://drafts.csswg.org/css-images-3/#default-sizing to the given
 // @paintable. See that link for more details.
 //
 // It is not necessary to call this function when both @specified_width and
@@ -220,17 +196,18 @@ func (p paintable) ComputeConcreteSize(specifiedWidth float64, specifiedHeight f
 	arg3 = C.double(defaultWidth)
 	arg4 = C.double(defaultHeight)
 
-	arg5 := new(C.double)
-	var ret5 float64
-	arg6 := new(C.double)
-	var ret6 float64
+	var arg5 C.double
+	var arg6 C.double
 
-	C.gdk_paintable_compute_concrete_size(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	C.gdk_paintable_compute_concrete_size(arg0, arg1, arg2, arg3, arg4, &arg5, &arg6)
 
-	ret5 = float64(*arg5)
-	ret6 = float64(*arg6)
+	var concreteWidth float64
+	var concreteHeight float64
 
-	return ret5, ret6
+	concreteWidth = (float64)(arg5)
+	concreteHeight = (float64)(arg6)
+
+	return concreteWidth, concreteHeight
 }
 
 // CurrentImage gets an immutable paintable for the current contents
@@ -245,51 +222,50 @@ func (p paintable) CurrentImage() Paintable {
 
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
-	cret := new(C.GdkPaintable)
-	var goret Paintable
+	var cret *C.GdkPaintable
 
 	cret = C.gdk_paintable_get_current_image(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Paintable)
+	var ret Paintable
 
-	return goret
+	ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Paintable)
+
+	return ret
 }
 
-// Flags: get flags for the paintable.
+// Flags: get flags for the paintable. This is oftentimes useful for
+// optimizations.
 //
-// This is oftentimes useful for optimizations.
-//
-// See [flags@Gdk.PaintableFlags] for the flags and what they mean.
+// See PaintableFlags for the flags and what they mean.
 func (p paintable) Flags() PaintableFlags {
 	var arg0 *C.GdkPaintable
 
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.GdkPaintableFlags
-	var goret PaintableFlags
 
 	cret = C.gdk_paintable_get_flags(arg0)
 
-	goret = PaintableFlags(cret)
+	var paintableFlags PaintableFlags
 
-	return goret
+	paintableFlags = PaintableFlags(cret)
+
+	return paintableFlags
 }
 
 // IntrinsicAspectRatio gets the preferred aspect ratio the @paintable would
-// like to be displayed at.
-//
-// The aspect ratio is the width divided by the height, so a value of 0.5
-// means that the @paintable prefers to be displayed twice as high as it is
-// wide. Consumers of this interface can use this to preserve aspect ratio
-// when displaying the paintable.
+// like to be displayed at. The aspect ratio is the width divided by the
+// height, so a value of 0.5 means that the @paintable prefers to be
+// displayed twice as high as it is wide. Consumers of this interface can
+// use this to preserve aspect ratio when displaying the paintable.
 //
 // This is a purely informational value and does not in any way limit the
-// values that may be passed to [method@Gdk.Paintable.snapshot].
+// values that may be passed to gdk_paintable_snapshot().
 //
 // Usually when a @paintable returns nonzero values from
-// [method@Gdk.Paintable.get_intrinsic_width] and
-// [method@Gdk.Paintable.get_intrinsic_height] the aspect ratio should
-// conform to those values, though that is not required.
+// gdk_paintable_get_intrinsic_width() and
+// gdk_paintable_get_intrinsic_height() the aspect ratio should conform to
+// those values, though that is not required.
 //
 // If the @paintable does not have a preferred aspect ratio, it returns 0.
 // Negative values are never returned.
@@ -299,23 +275,22 @@ func (p paintable) IntrinsicAspectRatio() float64 {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.double
-	var goret float64
 
 	cret = C.gdk_paintable_get_intrinsic_aspect_ratio(arg0)
 
-	goret = float64(cret)
+	var gdouble float64
 
-	return goret
+	gdouble = (float64)(cret)
+
+	return gdouble
 }
 
 // IntrinsicHeight gets the preferred height the @paintable would like to be
-// displayed at.
-//
-// Consumers of this interface can use this to reserve enough space to draw
-// the paintable.
+// displayed at. Consumers of this interface can use this to reserve enough
+// space to draw the paintable.
 //
 // This is a purely informational value and does not in any way limit the
-// values that may be passed to [method@Gdk.Paintable.snapshot].
+// values that may be passed to gdk_paintable_snapshot().
 //
 // If the @paintable does not have a preferred height, it returns 0.
 // Negative values are never returned.
@@ -325,23 +300,22 @@ func (p paintable) IntrinsicHeight() int {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gdk_paintable_get_intrinsic_height(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // IntrinsicWidth gets the preferred width the @paintable would like to be
-// displayed at.
-//
-// Consumers of this interface can use this to reserve enough space to draw
-// the paintable.
+// displayed at. Consumers of this interface can use this to reserve enough
+// space to draw the paintable.
 //
 // This is a purely informational value and does not in any way limit the
-// values that may be passed to [method@Gdk.Paintable.snapshot].
+// values that may be passed to gdk_paintable_snapshot().
 //
 // If the @paintable does not have a preferred width, it returns 0. Negative
 // values are never returned.
@@ -351,24 +325,22 @@ func (p paintable) IntrinsicWidth() int {
 	arg0 = (*C.GdkPaintable)(unsafe.Pointer(p.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gdk_paintable_get_intrinsic_width(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
-// InvalidateContents: called by implementations of `GdkPaintable` to
-// invalidate their contents.
+// InvalidateContents: called by implementations of Paintable to invalidate
+// their contents. Unless the contents are invalidated, implementations must
+// guarantee that multiple calls of gdk_paintable_snapshot() produce the
+// same output.
 //
-// Unless the contents are invalidated, implementations must guarantee that
-// multiple calls of [method@Gdk.Paintable.snapshot] produce the same
-// output.
-//
-// This function will emit the [signal@Gdk.Paintable::invalidate-contents]
-// signal.
+// This function will emit the Paintable::invalidate-contents signal.
 //
 // If a @paintable reports the GDK_PAINTABLE_STATIC_CONTENTS flag, it must
 // not call this function.
@@ -380,14 +352,11 @@ func (p paintable) InvalidateContents() {
 	C.gdk_paintable_invalidate_contents(arg0)
 }
 
-// InvalidateSize: called by implementations of `GdkPaintable` to invalidate
-// their size.
+// InvalidateSize: called by implementations of Paintable to invalidate
+// their size. As long as the size is not invalidated, @paintable must
+// return the same values for its intrinsic width, height and aspect ratio.
 //
-// As long as the size is not invalidated, @paintable must return the same
-// values for its intrinsic width, height and aspect ratio.
-//
-// This function will emit the [signal@Gdk.Paintable::invalidate-size]
-// signal.
+// This function will emit the Paintable::invalidate-size signal.
 //
 // If a @paintable reports the GDK_PAINTABLE_STATIC_SIZE flag, it must not
 // call this function.
@@ -399,11 +368,9 @@ func (p paintable) InvalidateSize() {
 	C.gdk_paintable_invalidate_size(arg0)
 }
 
-// Snapshot snapshots the given paintable with the given @width and @height.
-//
-// The paintable is drawn at the current (0,0) offset of the @snapshot. If
-// @width and @height are not larger than zero, this function will do
-// nothing.
+// Snapshot snapshots the given paintable with the given @width and @height
+// at the current (0,0) offset of the @snapshot. If @width and @height are
+// not larger than zero, this function will do nothing.
 func (p paintable) Snapshot(snapshot Snapshot, width float64, height float64) {
 	var arg0 *C.GdkPaintable
 	var arg1 *C.GdkSnapshot

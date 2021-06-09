@@ -70,14 +70,15 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 
 // NewFilenameCompleter constructs a class FilenameCompleter.
 func NewFilenameCompleter() FilenameCompleter {
-	cret := new(C.GFilenameCompleter)
-	var goret FilenameCompleter
+	var cret C.GFilenameCompleter
 
 	cret = C.g_filename_completer_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilenameCompleter)
+	var filenameCompleter FilenameCompleter
 
-	return goret
+	filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilenameCompleter)
+
+	return filenameCompleter
 }
 
 // CompletionSuffix obtains a completion for @initial_text from @completer.
@@ -89,15 +90,16 @@ func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_filename_completer_get_completion_suffix(arg0, arg1)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Completions gets an array of completion strings for a given initial text.
@@ -110,9 +112,10 @@ func (c filenameCompleter) Completions(initialText string) []string {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.g_filename_completer_get_completions(arg0, arg1)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -123,15 +126,17 @@ func (c filenameCompleter) Completions(initialText string) []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			utf8s = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // SetDirsOnly: if @dirs_only is true, @completer will only complete

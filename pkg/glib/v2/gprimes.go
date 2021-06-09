@@ -19,11 +19,12 @@ func SpacedPrimesClosest(num uint) uint {
 	arg1 = C.guint(num)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_spaced_primes_closest(arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }

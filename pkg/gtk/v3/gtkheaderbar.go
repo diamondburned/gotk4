@@ -136,13 +136,14 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 // NewHeaderBar constructs a class HeaderBar.
 func NewHeaderBar() HeaderBar {
 	var cret C.GtkHeaderBar
-	var goret HeaderBar
 
 	cret = C.gtk_header_bar_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+	var headerBar HeaderBar
 
-	return goret
+	headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+
+	return headerBar
 }
 
 // CustomTitle retrieves the custom title widget of the header. See
@@ -153,13 +154,14 @@ func (b headerBar) CustomTitle() Widget {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_header_bar_get_custom_title(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
 // DecorationLayout gets the decoration layout set with
@@ -170,13 +172,14 @@ func (b headerBar) DecorationLayout() string {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_header_bar_get_decoration_layout(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // HasSubtitle retrieves whether the header bar reserves space for a
@@ -187,15 +190,16 @@ func (b headerBar) HasSubtitle() bool {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_header_bar_get_has_subtitle(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ShowCloseButton returns whether this header bar shows the standard window
@@ -206,15 +210,16 @@ func (b headerBar) ShowCloseButton() bool {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_header_bar_get_show_close_button(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Subtitle retrieves the subtitle of the header. See
@@ -225,13 +230,14 @@ func (b headerBar) Subtitle() string {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_header_bar_get_subtitle(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Title retrieves the title of the header. See gtk_header_bar_set_title().
@@ -241,13 +247,14 @@ func (b headerBar) Title() string {
 	arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.gtk_header_bar_get_title(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // PackEnd adds @child to @bar, packed with reference to the end of the

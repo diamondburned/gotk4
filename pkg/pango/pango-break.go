@@ -17,7 +17,7 @@ import "C"
 //
 // For most purposes you may want to use pango_get_log_attrs().
 func Break() {
-	C.pango_break(arg1, arg2, arg3, arg4, arg5)
+	C.pango_break()
 }
 
 // DefaultBreak: this is the default break algorithm.
@@ -62,17 +62,18 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 	defer C.free(unsafe.Pointer(arg1))
 	arg2 = C.gint(length)
 
-	arg3 := new(C.gint)
-	var ret3 int
-	arg4 := new(C.gint)
-	var ret4 int
+	var arg3 C.gint
+	var arg4 C.gint
 
-	C.pango_find_paragraph_boundary(arg1, arg2, arg3, arg4)
+	C.pango_find_paragraph_boundary(arg1, arg2, &arg3, &arg4)
 
-	ret3 = int(*arg3)
-	ret4 = int(*arg4)
+	var paragraphDelimiterIndex int
+	var nextParagraphStart int
 
-	return ret3, ret4
+	paragraphDelimiterIndex = (int)(arg3)
+	nextParagraphStart = (int)(arg4)
+
+	return paragraphDelimiterIndex, nextParagraphStart
 }
 
 // GetLogAttrs computes a `PangoLogAttr` for each character in @text.
@@ -83,7 +84,7 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
 func GetLogAttrs() {
-	C.pango_get_log_attrs(arg1, arg2, arg3, arg4, arg5, arg6)
+	C.pango_get_log_attrs()
 }
 
 // TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
@@ -93,7 +94,7 @@ func GetLogAttrs() {
 // If @offset is not -1, it is used to apply attributes from @analysis that are
 // relevant to line breaking.
 func TailorBreak() {
-	C.pango_tailor_break(arg1, arg2, arg3, arg4, arg5, arg6)
+	C.pango_tailor_break()
 }
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes

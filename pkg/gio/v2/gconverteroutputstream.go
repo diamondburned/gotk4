@@ -74,14 +74,15 @@ func NewConverterOutputStream(baseStream OutputStream, converter Converter) Conv
 	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
 	arg2 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
 
-	cret := new(C.GConverterOutputStream)
-	var goret ConverterOutputStream
+	var cret C.GConverterOutputStream
 
 	cret = C.g_converter_output_stream_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConverterOutputStream)
+	var converterOutputStream ConverterOutputStream
 
-	return goret
+	converterOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConverterOutputStream)
+
+	return converterOutputStream
 }
 
 // Converter gets the #GConverter that is used by @converter_stream.
@@ -91,11 +92,12 @@ func (c converterOutputStream) Converter() Converter {
 	arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GConverter
-	var goret Converter
 
 	cret = C.g_converter_output_stream_get_converter(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Converter)
+	var converter Converter
 
-	return goret
+	converter = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Converter)
+
+	return converter
 }

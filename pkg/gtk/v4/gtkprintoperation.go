@@ -57,14 +57,15 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 	arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
 	arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
-	cret := new(C.GtkPageSetup)
-	var goret PageSetup
+	var cret *C.GtkPageSetup
 
 	cret = C.gtk_print_run_page_setup_dialog(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
 // PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
@@ -74,191 +75,194 @@ func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintS
 // showing the page setup dialog on platforms that support this, and calls
 // @done_cb from a signal handler for the ::response signal of the dialog.
 func PrintRunPageSetupDialogAsync() {
-	C.gtk_print_run_page_setup_dialog_async(arg1, arg2, arg3, arg4, arg5)
+	C.gtk_print_run_page_setup_dialog_async()
 }
 
-// PrintOperation: `GtkPrintOperation` is the high-level, portable printing API.
-//
-// It looks a bit different than other GTK dialogs such as the `GtkFileChooser`,
+// PrintOperation: gtkPrintOperation is the high-level, portable printing API.
+// It looks a bit different than other GTK dialogs such as the FileChooser,
 // since some platforms don’t expose enough infrastructure to implement a good
-// print dialog. On such platforms, `GtkPrintOperation` uses the native print
+// print dialog. On such platforms, GtkPrintOperation uses the native print
 // dialog. On platforms which do not provide a native print dialog, GTK uses its
-// own, see [class@Gtk.PrintUnixDialog].
+// own, see PrintUnixDialog.
 //
 // The typical way to use the high-level printing API is to create a
-// `GtkPrintOperation` object with [ctor@Gtk.PrintOperation.new] when the user
-// selects to print. Then you set some properties on it, e.g. the page size, any
-// [class@Gtk.PrintSettings] from previous print operations, the number of
-// pages, the current page, etc.
+// GtkPrintOperation object with gtk_print_operation_new() when the user selects
+// to print. Then you set some properties on it, e.g. the page size, any
+// PrintSettings from previous print operations, the number of pages, the
+// current page, etc.
 //
-// Then you start the print operation by calling
-// [method@Gtk.PrintOperation.run]. It will then show a dialog, let the user
-// select a printer and options. When the user finished the dialog, various
-// signals will be emitted on the `GtkPrintOperation`, the main one being
-// [signal@Gtk.PrintOperation::draw-page], which you are supposed to handle and
-// render the page on the provided [class@Gtk.PrintContext] using Cairo.
-//
+// Then you start the print operation by calling gtk_print_operation_run(). It
+// will then show a dialog, let the user select a printer and options. When the
+// user finished the dialog various signals will be emitted on the
+// PrintOperation, the main one being PrintOperation::draw-page, which you are
+// supposed to catch and render the page on the provided PrintContext using
+// Cairo.
 //
 // The high-level printing API
 //
-// “`c static GtkPrintSettings *settings = NULL;
+//    static GtkPrintSettings *settings = NULL;
 //
-// static void do_print (void) { GtkPrintOperation *print;
-// GtkPrintOperationResult res;
+//    static void
+//    do_print (void)
+//    {
+//      GtkPrintOperation *print;
+//      GtkPrintOperationResult res;
 //
-//    print = gtk_print_operation_new ();
+//      print = gtk_print_operation_new ();
 //
-//    if (settings != NULL)
-//      gtk_print_operation_set_print_settings (print, settings);
+//      if (settings != NULL)
+//        gtk_print_operation_set_print_settings (print, settings);
 //
-//    g_signal_connect (print, "begin_print", G_CALLBACK (begin_print), NULL);
-//    g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), NULL);
+//      g_signal_connect (print, "begin_print", G_CALLBACK (begin_print), NULL);
+//      g_signal_connect (print, "draw_page", G_CALLBACK (draw_page), NULL);
 //
-//    res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
-//                                   GTK_WINDOW (main_window), NULL);
+//      res = gtk_print_operation_run (print, GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+//                                     GTK_WINDOW (main_window), NULL);
 //
-//    if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
-//      {
-//        if (settings != NULL)
-//          g_object_unref (settings);
-//        settings = g_object_ref (gtk_print_operation_get_print_settings (print));
-//      }
+//      if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+//        {
+//          if (settings != NULL)
+//            g_object_unref (settings);
+//          settings = g_object_ref (gtk_print_operation_get_print_settings (print));
+//        }
 //
-//    g_object_unref (print);
+//      g_object_unref (print);
+//    }
 //
-// } “`
-//
-// By default `GtkPrintOperation` uses an external application to do print
+// By default GtkPrintOperation uses an external application to do print
 // preview. To implement a custom print preview, an application must connect to
-// the preview signal. The functions
-// [method@Gtk.PrintOperationPreview.render_page],
-// [method@Gtk.PrintOperationPreview.end_preview] and
-// [method@Gtk.PrintOperationPreview.is_selected] are useful when implementing a
+// the preview signal. The functions gtk_print_operation_preview_render_page(),
+// gtk_print_operation_preview_end_preview() and
+// gtk_print_operation_preview_is_selected() are useful when implementing a
 // print preview.
 type PrintOperation interface {
 	gextras.Objector
 	PrintOperationPreview
 
-	// Cancel cancels a running print operation.
-	//
-	// This function may be called from a
-	// [signal@Gtk.PrintOperation::begin-print],
-	// [signal@Gtk.PrintOperation::paginate] or
-	// [signal@Gtk.PrintOperation::draw-page] signal handler to stop the
-	// currently running print operation.
+	// Cancel cancels a running print operation. This function may be called
+	// from a PrintOperation::begin-print, PrintOperation::paginate or
+	// PrintOperation::draw-page signal handler to stop the currently running
+	// print operation.
 	Cancel()
-	// DrawPageFinish: signal that drawing of particular page is complete.
+	// DrawPageFinish: signalize that drawing of particular page is complete.
 	//
 	// It is called after completion of page drawing (e.g. drawing in another
-	// thread). If [method@Gtk.PrintOperation.set_defer_drawing] was called
-	// before, then this function has to be called by application. Otherwise it
-	// is called by GTK itself.
+	// thread). If gtk_print_operation_set_defer_drawing() was called before,
+	// then this function has to be called by application. In another case it is
+	// called by the library itself.
 	DrawPageFinish()
-	// DefaultPageSetup returns the default page setup.
+	// DefaultPageSetup returns the default page setup, see
+	// gtk_print_operation_set_default_page_setup().
 	DefaultPageSetup() PageSetup
-	// EmbedPageSetup gets whether page setup selection combos are embedded
+	// EmbedPageSetup gets the value of PrintOperation:embed-page-setup
+	// property.
 	EmbedPageSetup() bool
 	// Error: call this when the result of a print operation is
-	// GTK_PRINT_OPERATION_RESULT_ERROR.
-	//
-	// It can be called either after [method@Gtk.PrintOperation.run] returns, or
-	// in the [signal@Gtk.PrintOperation::done] signal handler.
-	//
-	// The returned `GError` will contain more details on what went wrong.
+	// GTK_PRINT_OPERATION_RESULT_ERROR, either as returned by
+	// gtk_print_operation_run(), or in the PrintOperation::done signal handler.
+	// The returned #GError will contain more details on what went wrong.
 	Error() error
-	// HasSelection gets whether there is a selection.
+	// HasSelection gets the value of PrintOperation:has-selection property.
 	HasSelection() bool
 	// NPagesToPrint returns the number of pages that will be printed.
 	//
 	// Note that this value is set during print preparation phase
 	// (GTK_PRINT_STATUS_PREPARING), so this function should never be called
 	// before the data generation phase (GTK_PRINT_STATUS_GENERATING_DATA). You
-	// can connect to the [signal@Gtk.PrintOperation::status-changed] signal and
-	// call gtk_print_operation_get_n_pages_to_print() when print status is
-	// GTK_PRINT_STATUS_GENERATING_DATA.
-	//
-	// This is typically used to track the progress of print operation.
+	// can connect to the PrintOperation::status-changed signal and call
+	// gtk_print_operation_get_n_pages_to_print() when print status is
+	// GTK_PRINT_STATUS_GENERATING_DATA. This is typically used to track the
+	// progress of print operation.
 	NPagesToPrint() int
 	// PrintSettings returns the current print settings.
 	//
 	// Note that the return value is nil until either
-	// [method@Gtk.PrintOperation.set_print_settings] or
-	// [method@Gtk.PrintOperation.run] have been called.
+	// gtk_print_operation_set_print_settings() or gtk_print_operation_run()
+	// have been called.
 	PrintSettings() PrintSettings
-	// Status returns the status of the print operation.
-	//
-	// Also see [method@Gtk.PrintOperation.get_status_string].
+	// Status returns the status of the print operation. Also see
+	// gtk_print_operation_get_status_string().
 	Status() PrintStatus
 	// StatusString returns a string representation of the status of the print
-	// operation.
+	// operation. The string is translated and suitable for displaying the print
+	// status e.g. in a Statusbar.
 	//
-	// The string is translated and suitable for displaying the print status
-	// e.g. in a `GtkStatusbar`.
-	//
-	// Use [method@Gtk.PrintOperation.get_status] to obtain a status value that
-	// is suitable for programmatic use.
+	// Use gtk_print_operation_get_status() to obtain a status value that is
+	// suitable for programmatic use.
 	StatusString() string
-	// SupportSelection gets whether the application supports print of selection
+	// SupportSelection gets the value of PrintOperation:support-selection
+	// property.
 	SupportSelection() bool
 	// IsFinished: a convenience function to find out if the print operation is
-	// finished.
-	//
-	// a print operation is finished if its status is either
-	// GTK_PRINT_STATUS_FINISHED or GTK_PRINT_STATUS_FINISHED_ABORTED.
+	// finished, either successfully (GTK_PRINT_STATUS_FINISHED) or
+	// unsuccessfully (GTK_PRINT_STATUS_FINISHED_ABORTED).
 	//
 	// Note: when you enable print status tracking the print operation can be in
 	// a non-finished state even after done has been called, as the operation
 	// status then tracks the print job status on the printer.
 	IsFinished() bool
-	// Run runs the print operation.
+	// Run runs the print operation, by first letting the user modify print
+	// settings in the print dialog, and then print the document.
 	//
 	// Normally that this function does not return until the rendering of all
-	// pages is complete. You can connect to the
-	// [signal@Gtk.PrintOperation::status-changed] signal on @op to obtain some
-	// information about the progress of the print operation.
+	// pages is complete. You can connect to the PrintOperation::status-changed
+	// signal on @op to obtain some information about the progress of the print
+	// operation. Furthermore, it may use a recursive mainloop to show the print
+	// dialog.
 	//
-	// Furthermore, it may use a recursive mainloop to show the print dialog.
+	// If you call gtk_print_operation_set_allow_async() or set the
+	// PrintOperation:allow-async property the operation will run asynchronously
+	// if this is supported on the platform. The PrintOperation::done signal
+	// will be emitted with the result of the operation when the it is done
+	// (i.e. when the dialog is canceled, or when the print succeeds or fails).
 	//
-	// If you set the [Gtk.PrintOperation:allow-async] property, the operation
-	// will run asynchronously if this is supported on the platform. The
-	// [signal@Gtk.PrintOperation::done] signal will be emitted with the result
-	// of the operation when the it is done (i.e. when the dialog is canceled,
-	// or when the print succeeds or fails).
+	//    if (settings != NULL)
+	//      gtk_print_operation_set_print_settings (print, settings);
 	//
-	// “`c if (settings != NULL) gtk_print_operation_set_print_settings (print,
-	// settings);
+	//    if (page_setup != NULL)
+	//      gtk_print_operation_set_default_page_setup (print, page_setup);
 	//
-	// if (page_setup != NULL) gtk_print_operation_set_default_page_setup
-	// (print, page_setup);
+	//    g_signal_connect (print, "begin-print",
+	//                      G_CALLBACK (begin_print), &data);
+	//    g_signal_connect (print, "draw-page",
+	//                      G_CALLBACK (draw_page), &data);
 	//
-	// g_signal_connect (print, "begin-print", G_CALLBACK (begin_print), &data);
-	// g_signal_connect (print, "draw-page", G_CALLBACK (draw_page), &data);
+	//    res = gtk_print_operation_run (print,
+	//                                   GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+	//                                   parent,
+	//                                   &error);
 	//
-	// res = gtk_print_operation_run (print,
-	// GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, parent, &error);
-	//
-	// if (res == GTK_PRINT_OPERATION_RESULT_ERROR) { error_dialog =
-	// gtk_message_dialog_new (GTK_WINDOW (parent),
-	// GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-	// "Error printing file:\ns", error->message); g_signal_connect
-	// (error_dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
-	// gtk_widget_show (error_dialog); g_error_free (error); } else if (res ==
-	// GTK_PRINT_OPERATION_RESULT_APPLY) { if (settings != NULL) g_object_unref
-	// (settings); settings = g_object_ref
-	// (gtk_print_operation_get_print_settings (print)); } “`
+	//    if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
+	//     {
+	//       error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
+	//      			                     GTK_DIALOG_DESTROY_WITH_PARENT,
+	//    					     GTK_MESSAGE_ERROR,
+	//    					     GTK_BUTTONS_CLOSE,
+	//    					     "Error printing file:\ns",
+	//    					     error->message);
+	//       g_signal_connect (error_dialog, "response",
+	//                         G_CALLBACK (gtk_window_destroy), NULL);
+	//       gtk_widget_show (error_dialog);
+	//       g_error_free (error);
+	//     }
+	//    else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+	//     {
+	//       if (settings != NULL)
+	//    g_object_unref (settings);
+	//       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
+	//     }
 	//
 	// Note that gtk_print_operation_run() can only be called once on a given
-	// `GtkPrintOperation`.
-	Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, err error)
-	// SetAllowAsync sets whether gtk_print_operation_run() may return before
-	// the print operation is completed.
-	//
-	// Note that some platforms may not allow asynchronous operation.
+	// PrintOperation.
+	Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, goerr error)
+	// SetAllowAsync sets whether the gtk_print_operation_run() may return
+	// before the print operation is completed. Note that some platforms may not
+	// allow asynchronous operation.
 	SetAllowAsync(allowAsync bool)
 	// SetCurrentPage sets the current page.
 	//
-	// If this is called before [method@Gtk.PrintOperation.run], the user will
-	// be able to select to print only the current page.
+	// If this is called before gtk_print_operation_run(), the user will be able
+	// to select to print only the current page.
 	//
 	// Note that this only makes sense for pre-paginated documents.
 	SetCurrentPage(currentPage int)
@@ -267,44 +271,37 @@ type PrintOperation interface {
 	// SetDefaultPageSetup makes @default_page_setup the default page setup for
 	// @op.
 	//
-	// This page setup will be used by [method@Gtk.PrintOperation.run], but it
-	// can be overridden on a per-page basis by connecting to the
-	// [signal@Gtk.PrintOperation::request-page-setup] signal.
+	// This page setup will be used by gtk_print_operation_run(), but it can be
+	// overridden on a per-page basis by connecting to the
+	// PrintOperation::request-page-setup signal.
 	SetDefaultPageSetup(defaultPageSetup PageSetup)
-	// SetDeferDrawing sets up the `GtkPrintOperation` to wait for calling of
-	// [method@Gtk.PrintOperation.draw_page_finish from application.
+	// SetDeferDrawing sets up the PrintOperation to wait for calling of
+	// gtk_print_operation_draw_page_finish() from application. It can be used
+	// for drawing page in another thread.
 	//
-	// This can be used for drawing page in another thread.
-	//
-	// This function must be called in the callback of the
-	// [signal@Gtk.PrintOperation::draw-page] signal.
+	// This function must be called in the callback of “draw-page” signal.
 	SetDeferDrawing()
 	// SetEmbedPageSetup: embed page size combo box and orientation combo box
-	// into page setup page.
-	//
-	// Selected page setup is stored as default page setup in
-	// `GtkPrintOperation`.
+	// into page setup page. Selected page setup is stored as default page setup
+	// in PrintOperation.
 	SetEmbedPageSetup(embed bool)
-	// SetExportFilename sets up the `GtkPrintOperation` to generate a file
-	// instead of showing the print dialog.
-	//
-	// The intended use of this function is for implementing “Export to PDF”
-	// actions. Currently, PDF is the only supported format.
+	// SetExportFilename sets up the PrintOperation to generate a file instead
+	// of showing the print dialog. The intended use of this function is for
+	// implementing “Export to PDF” actions. Currently, PDF is the only
+	// supported format.
 	//
 	// “Print to PDF” support is independent of this and is done by letting the
 	// user pick the “Print to PDF” item from the list of printers in the print
 	// dialog.
-	SetExportFilename(filename string)
+	SetExportFilename(filename *string)
 	// SetHasSelection sets whether there is a selection to print.
 	//
 	// Application has to set number of pages to which the selection will draw
-	// by [method@Gtk.PrintOperation.set_n_pages] in a handler for the
-	// [signal@Gtk.PrintOperation::begin-print] signal.
+	// by gtk_print_operation_set_n_pages() in a callback of
+	// PrintOperation::begin-print.
 	SetHasSelection(hasSelection bool)
-	// SetJobName sets the name of the print job.
-	//
-	// The name is used to identify the job (e.g. in monitoring applications
-	// like eggcups).
+	// SetJobName sets the name of the print job. The name is used to identify
+	// the job (e.g. in monitoring applications like eggcups).
 	//
 	// If you don’t set a job name, GTK picks a default one by numbering
 	// successive print jobs.
@@ -312,46 +309,41 @@ type PrintOperation interface {
 	// SetNPages sets the number of pages in the document.
 	//
 	// This must be set to a positive number before the rendering starts. It may
-	// be set in a [signal@Gtk.PrintOperation::begin-print] signal handler.
+	// be set in a PrintOperation::begin-print signal handler.
 	//
 	// Note that the page numbers passed to the
-	// [signal@Gtk.PrintOperation::request-page-setup] and
-	// [signal@Gtk.PrintOperation::draw-page] signals are 0-based, i.e. if the
-	// user chooses to print all pages, the last ::draw-page signal will be for
-	// page @n_pages - 1.
+	// PrintOperation::request-page-setup and PrintOperation::draw-page signals
+	// are 0-based, i.e. if the user chooses to print all pages, the last
+	// ::draw-page signal will be for page @n_pages - 1.
 	SetNPages(nPages int)
-	// SetPrintSettings sets the print settings for @op.
-	//
-	// This is typically used to re-establish print settings from a previous
-	// print operation, see [method@Gtk.PrintOperation.run].
+	// SetPrintSettings sets the print settings for @op. This is typically used
+	// to re-establish print settings from a previous print operation, see
+	// gtk_print_operation_run().
 	SetPrintSettings(printSettings PrintSettings)
 	// SetShowProgress: if @show_progress is true, the print operation will show
 	// a progress dialog during the print operation.
 	SetShowProgress(showProgress bool)
 	// SetSupportSelection sets whether selection is supported by
-	// `GtkPrintOperation`.
+	// PrintOperation.
 	SetSupportSelection(supportSelection bool)
 	// SetTrackPrintStatus: if track_status is true, the print operation will
 	// try to continue report on the status of the print job in the printer
-	// queues and printer.
-	//
-	// This can allow your application to show things like “out of paper”
-	// issues, and when the print job actually reaches the printer.
+	// queues and printer. This can allow your application to show things like
+	// “out of paper” issues, and when the print job actually reaches the
+	// printer.
 	//
 	// This function is often implemented using some form of polling, so it
 	// should not be enabled unless needed.
 	SetTrackPrintStatus(trackStatus bool)
 	// SetUnit sets up the transformation for the cairo context obtained from
-	// `GtkPrintContext` in such a way that distances are measured in units of
-	// @unit.
+	// PrintContext in such a way that distances are measured in units of @unit.
 	SetUnit(unit Unit)
 	// SetUseFullPage: if @full_page is true, the transformation for the cairo
-	// context obtained from `GtkPrintContext` puts the origin at the top left
-	// corner of the page.
-	//
-	// This may not be the top left corner of the sheet, depending on page
-	// orientation and the number of pages per sheet). Otherwise, the origin is
-	// at the top left corner of the imageable area (i.e. inside the margins).
+	// context obtained from PrintContext puts the origin at the top left corner
+	// of the page (which may not be the top left corner of the sheet, depending
+	// on page orientation and the number of pages per sheet). Otherwise, the
+	// origin is at the top left corner of the imageable area (i.e. inside the
+	// margins).
 	SetUseFullPage(fullPage bool)
 }
 
@@ -380,23 +372,21 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 
 // NewPrintOperation constructs a class PrintOperation.
 func NewPrintOperation() PrintOperation {
-	cret := new(C.GtkPrintOperation)
-	var goret PrintOperation
+	var cret C.GtkPrintOperation
 
 	cret = C.gtk_print_operation_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintOperation)
+	var printOperation PrintOperation
 
-	return goret
+	printOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintOperation)
+
+	return printOperation
 }
 
-// Cancel cancels a running print operation.
-//
-// This function may be called from a
-// [signal@Gtk.PrintOperation::begin-print],
-// [signal@Gtk.PrintOperation::paginate] or
-// [signal@Gtk.PrintOperation::draw-page] signal handler to stop the
-// currently running print operation.
+// Cancel cancels a running print operation. This function may be called
+// from a PrintOperation::begin-print, PrintOperation::paginate or
+// PrintOperation::draw-page signal handler to stop the currently running
+// print operation.
 func (o printOperation) Cancel() {
 	var arg0 *C.GtkPrintOperation
 
@@ -405,12 +395,12 @@ func (o printOperation) Cancel() {
 	C.gtk_print_operation_cancel(arg0)
 }
 
-// DrawPageFinish: signal that drawing of particular page is complete.
+// DrawPageFinish: signalize that drawing of particular page is complete.
 //
 // It is called after completion of page drawing (e.g. drawing in another
-// thread). If [method@Gtk.PrintOperation.set_defer_drawing] was called
-// before, then this function has to be called by application. Otherwise it
-// is called by GTK itself.
+// thread). If gtk_print_operation_set_defer_drawing() was called before,
+// then this function has to be called by application. In another case it is
+// called by the library itself.
 func (o printOperation) DrawPageFinish() {
 	var arg0 *C.GtkPrintOperation
 
@@ -419,78 +409,81 @@ func (o printOperation) DrawPageFinish() {
 	C.gtk_print_operation_draw_page_finish(arg0)
 }
 
-// DefaultPageSetup returns the default page setup.
+// DefaultPageSetup returns the default page setup, see
+// gtk_print_operation_set_default_page_setup().
 func (o printOperation) DefaultPageSetup() PageSetup {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPageSetup
-	var goret PageSetup
 
 	cret = C.gtk_print_operation_get_default_page_setup(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+	var pageSetup PageSetup
 
-	return goret
+	pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+
+	return pageSetup
 }
 
-// EmbedPageSetup gets whether page setup selection combos are embedded
+// EmbedPageSetup gets the value of PrintOperation:embed-page-setup
+// property.
 func (o printOperation) EmbedPageSetup() bool {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_get_embed_page_setup(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Error: call this when the result of a print operation is
-// GTK_PRINT_OPERATION_RESULT_ERROR.
-//
-// It can be called either after [method@Gtk.PrintOperation.run] returns, or
-// in the [signal@Gtk.PrintOperation::done] signal handler.
-//
-// The returned `GError` will contain more details on what went wrong.
+// GTK_PRINT_OPERATION_RESULT_ERROR, either as returned by
+// gtk_print_operation_run(), or in the PrintOperation::done signal handler.
+// The returned #GError will contain more details on what went wrong.
 func (o printOperation) Error() error {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gtk_print_operation_get_error(arg0, &cerr)
+	C.gtk_print_operation_get_error(arg0, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
 	return goerr
 }
 
-// HasSelection gets whether there is a selection.
+// HasSelection gets the value of PrintOperation:has-selection property.
 func (o printOperation) HasSelection() bool {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_get_has_selection(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // NPagesToPrint returns the number of pages that will be printed.
@@ -498,110 +491,110 @@ func (o printOperation) HasSelection() bool {
 // Note that this value is set during print preparation phase
 // (GTK_PRINT_STATUS_PREPARING), so this function should never be called
 // before the data generation phase (GTK_PRINT_STATUS_GENERATING_DATA). You
-// can connect to the [signal@Gtk.PrintOperation::status-changed] signal and
-// call gtk_print_operation_get_n_pages_to_print() when print status is
-// GTK_PRINT_STATUS_GENERATING_DATA.
-//
-// This is typically used to track the progress of print operation.
+// can connect to the PrintOperation::status-changed signal and call
+// gtk_print_operation_get_n_pages_to_print() when print status is
+// GTK_PRINT_STATUS_GENERATING_DATA. This is typically used to track the
+// progress of print operation.
 func (o printOperation) NPagesToPrint() int {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.int
-	var goret int
 
 	cret = C.gtk_print_operation_get_n_pages_to_print(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PrintSettings returns the current print settings.
 //
 // Note that the return value is nil until either
-// [method@Gtk.PrintOperation.set_print_settings] or
-// [method@Gtk.PrintOperation.run] have been called.
+// gtk_print_operation_set_print_settings() or gtk_print_operation_run()
+// have been called.
 func (o printOperation) PrintSettings() PrintSettings {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkPrintSettings
-	var goret PrintSettings
 
 	cret = C.gtk_print_operation_get_print_settings(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	var printSettings PrintSettings
 
-	return goret
+	printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
+
+	return printSettings
 }
 
-// Status returns the status of the print operation.
-//
-// Also see [method@Gtk.PrintOperation.get_status_string].
+// Status returns the status of the print operation. Also see
+// gtk_print_operation_get_status_string().
 func (o printOperation) Status() PrintStatus {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.GtkPrintStatus
-	var goret PrintStatus
 
 	cret = C.gtk_print_operation_get_status(arg0)
 
-	goret = PrintStatus(cret)
+	var printStatus PrintStatus
 
-	return goret
+	printStatus = PrintStatus(cret)
+
+	return printStatus
 }
 
 // StatusString returns a string representation of the status of the print
-// operation.
+// operation. The string is translated and suitable for displaying the print
+// status e.g. in a Statusbar.
 //
-// The string is translated and suitable for displaying the print status
-// e.g. in a `GtkStatusbar`.
-//
-// Use [method@Gtk.PrintOperation.get_status] to obtain a status value that
-// is suitable for programmatic use.
+// Use gtk_print_operation_get_status() to obtain a status value that is
+// suitable for programmatic use.
 func (o printOperation) StatusString() string {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_print_operation_get_status_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// SupportSelection gets whether the application supports print of selection
+// SupportSelection gets the value of PrintOperation:support-selection
+// property.
 func (o printOperation) SupportSelection() bool {
 	var arg0 *C.GtkPrintOperation
 
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_get_support_selection(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsFinished: a convenience function to find out if the print operation is
-// finished.
-//
-// a print operation is finished if its status is either
-// GTK_PRINT_STATUS_FINISHED or GTK_PRINT_STATUS_FINISHED_ABORTED.
+// finished, either successfully (GTK_PRINT_STATUS_FINISHED) or
+// unsuccessfully (GTK_PRINT_STATUS_FINISHED_ABORTED).
 //
 // Note: when you enable print status tracking the print operation can be in
 // a non-finished state even after done has been called, as the operation
@@ -612,57 +605,72 @@ func (o printOperation) IsFinished() bool {
 	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_print_operation_is_finished(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Run runs the print operation.
+// Run runs the print operation, by first letting the user modify print
+// settings in the print dialog, and then print the document.
 //
 // Normally that this function does not return until the rendering of all
-// pages is complete. You can connect to the
-// [signal@Gtk.PrintOperation::status-changed] signal on @op to obtain some
-// information about the progress of the print operation.
+// pages is complete. You can connect to the PrintOperation::status-changed
+// signal on @op to obtain some information about the progress of the print
+// operation. Furthermore, it may use a recursive mainloop to show the print
+// dialog.
 //
-// Furthermore, it may use a recursive mainloop to show the print dialog.
+// If you call gtk_print_operation_set_allow_async() or set the
+// PrintOperation:allow-async property the operation will run asynchronously
+// if this is supported on the platform. The PrintOperation::done signal
+// will be emitted with the result of the operation when the it is done
+// (i.e. when the dialog is canceled, or when the print succeeds or fails).
 //
-// If you set the [Gtk.PrintOperation:allow-async] property, the operation
-// will run asynchronously if this is supported on the platform. The
-// [signal@Gtk.PrintOperation::done] signal will be emitted with the result
-// of the operation when the it is done (i.e. when the dialog is canceled,
-// or when the print succeeds or fails).
+//    if (settings != NULL)
+//      gtk_print_operation_set_print_settings (print, settings);
 //
-// “`c if (settings != NULL) gtk_print_operation_set_print_settings (print,
-// settings);
+//    if (page_setup != NULL)
+//      gtk_print_operation_set_default_page_setup (print, page_setup);
 //
-// if (page_setup != NULL) gtk_print_operation_set_default_page_setup
-// (print, page_setup);
+//    g_signal_connect (print, "begin-print",
+//                      G_CALLBACK (begin_print), &data);
+//    g_signal_connect (print, "draw-page",
+//                      G_CALLBACK (draw_page), &data);
 //
-// g_signal_connect (print, "begin-print", G_CALLBACK (begin_print), &data);
-// g_signal_connect (print, "draw-page", G_CALLBACK (draw_page), &data);
+//    res = gtk_print_operation_run (print,
+//                                   GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG,
+//                                   parent,
+//                                   &error);
 //
-// res = gtk_print_operation_run (print,
-// GTK_PRINT_OPERATION_ACTION_PRINT_DIALOG, parent, &error);
-//
-// if (res == GTK_PRINT_OPERATION_RESULT_ERROR) { error_dialog =
-// gtk_message_dialog_new (GTK_WINDOW (parent),
-// GTK_DIALOG_DESTROY_WITH_PARENT, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
-// "Error printing file:\ns", error->message); g_signal_connect
-// (error_dialog, "response", G_CALLBACK (gtk_window_destroy), NULL);
-// gtk_widget_show (error_dialog); g_error_free (error); } else if (res ==
-// GTK_PRINT_OPERATION_RESULT_APPLY) { if (settings != NULL) g_object_unref
-// (settings); settings = g_object_ref
-// (gtk_print_operation_get_print_settings (print)); } “`
+//    if (res == GTK_PRINT_OPERATION_RESULT_ERROR)
+//     {
+//       error_dialog = gtk_message_dialog_new (GTK_WINDOW (parent),
+//      			                     GTK_DIALOG_DESTROY_WITH_PARENT,
+//    					     GTK_MESSAGE_ERROR,
+//    					     GTK_BUTTONS_CLOSE,
+//    					     "Error printing file:\ns",
+//    					     error->message);
+//       g_signal_connect (error_dialog, "response",
+//                         G_CALLBACK (gtk_window_destroy), NULL);
+//       gtk_widget_show (error_dialog);
+//       g_error_free (error);
+//     }
+//    else if (res == GTK_PRINT_OPERATION_RESULT_APPLY)
+//     {
+//       if (settings != NULL)
+//    g_object_unref (settings);
+//       settings = g_object_ref (gtk_print_operation_get_print_settings (print));
+//     }
 //
 // Note that gtk_print_operation_run() can only be called once on a given
-// `GtkPrintOperation`.
-func (o printOperation) Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, err error) {
+// PrintOperation.
+func (o printOperation) Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, goerr error) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.GtkPrintOperationAction
 	var arg2 *C.GtkWindow
@@ -672,22 +680,22 @@ func (o printOperation) Run(action PrintOperationAction, parent Window) (printOp
 	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
 	var cret C.GtkPrintOperationResult
-	var goret PrintOperationResult
 	var cerr *C.GError
+
+	cret = C.gtk_print_operation_run(arg0, arg1, arg2, cerr)
+
+	var printOperationResult PrintOperationResult
 	var goerr error
 
-	cret = C.gtk_print_operation_run(arg0, arg1, arg2, &cerr)
-
-	goret = PrintOperationResult(cret)
+	printOperationResult = PrintOperationResult(cret)
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
-	return goret, goerr
+	return printOperationResult, goerr
 }
 
-// SetAllowAsync sets whether gtk_print_operation_run() may return before
-// the print operation is completed.
-//
-// Note that some platforms may not allow asynchronous operation.
+// SetAllowAsync sets whether the gtk_print_operation_run() may return
+// before the print operation is completed. Note that some platforms may not
+// allow asynchronous operation.
 func (o printOperation) SetAllowAsync(allowAsync bool) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.gboolean
@@ -702,8 +710,8 @@ func (o printOperation) SetAllowAsync(allowAsync bool) {
 
 // SetCurrentPage sets the current page.
 //
-// If this is called before [method@Gtk.PrintOperation.run], the user will
-// be able to select to print only the current page.
+// If this is called before gtk_print_operation_run(), the user will be able
+// to select to print only the current page.
 //
 // Note that this only makes sense for pre-paginated documents.
 func (o printOperation) SetCurrentPage(currentPage int) {
@@ -731,9 +739,9 @@ func (o printOperation) SetCustomTabLabel(label string) {
 // SetDefaultPageSetup makes @default_page_setup the default page setup for
 // @op.
 //
-// This page setup will be used by [method@Gtk.PrintOperation.run], but it
-// can be overridden on a per-page basis by connecting to the
-// [signal@Gtk.PrintOperation::request-page-setup] signal.
+// This page setup will be used by gtk_print_operation_run(), but it can be
+// overridden on a per-page basis by connecting to the
+// PrintOperation::request-page-setup signal.
 func (o printOperation) SetDefaultPageSetup(defaultPageSetup PageSetup) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 *C.GtkPageSetup
@@ -744,13 +752,11 @@ func (o printOperation) SetDefaultPageSetup(defaultPageSetup PageSetup) {
 	C.gtk_print_operation_set_default_page_setup(arg0, arg1)
 }
 
-// SetDeferDrawing sets up the `GtkPrintOperation` to wait for calling of
-// [method@Gtk.PrintOperation.draw_page_finish from application.
+// SetDeferDrawing sets up the PrintOperation to wait for calling of
+// gtk_print_operation_draw_page_finish() from application. It can be used
+// for drawing page in another thread.
 //
-// This can be used for drawing page in another thread.
-//
-// This function must be called in the callback of the
-// [signal@Gtk.PrintOperation::draw-page] signal.
+// This function must be called in the callback of “draw-page” signal.
 func (o printOperation) SetDeferDrawing() {
 	var arg0 *C.GtkPrintOperation
 
@@ -760,10 +766,8 @@ func (o printOperation) SetDeferDrawing() {
 }
 
 // SetEmbedPageSetup: embed page size combo box and orientation combo box
-// into page setup page.
-//
-// Selected page setup is stored as default page setup in
-// `GtkPrintOperation`.
+// into page setup page. Selected page setup is stored as default page setup
+// in PrintOperation.
 func (o printOperation) SetEmbedPageSetup(embed bool) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.gboolean
@@ -776,16 +780,15 @@ func (o printOperation) SetEmbedPageSetup(embed bool) {
 	C.gtk_print_operation_set_embed_page_setup(arg0, arg1)
 }
 
-// SetExportFilename sets up the `GtkPrintOperation` to generate a file
-// instead of showing the print dialog.
-//
-// The intended use of this function is for implementing “Export to PDF”
-// actions. Currently, PDF is the only supported format.
+// SetExportFilename sets up the PrintOperation to generate a file instead
+// of showing the print dialog. The intended use of this function is for
+// implementing “Export to PDF” actions. Currently, PDF is the only
+// supported format.
 //
 // “Print to PDF” support is independent of this and is done by letting the
 // user pick the “Print to PDF” item from the list of printers in the print
 // dialog.
-func (o printOperation) SetExportFilename(filename string) {
+func (o printOperation) SetExportFilename(filename *string) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 *C.char
 
@@ -799,8 +802,8 @@ func (o printOperation) SetExportFilename(filename string) {
 // SetHasSelection sets whether there is a selection to print.
 //
 // Application has to set number of pages to which the selection will draw
-// by [method@Gtk.PrintOperation.set_n_pages] in a handler for the
-// [signal@Gtk.PrintOperation::begin-print] signal.
+// by gtk_print_operation_set_n_pages() in a callback of
+// PrintOperation::begin-print.
 func (o printOperation) SetHasSelection(hasSelection bool) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.gboolean
@@ -813,10 +816,8 @@ func (o printOperation) SetHasSelection(hasSelection bool) {
 	C.gtk_print_operation_set_has_selection(arg0, arg1)
 }
 
-// SetJobName sets the name of the print job.
-//
-// The name is used to identify the job (e.g. in monitoring applications
-// like eggcups).
+// SetJobName sets the name of the print job. The name is used to identify
+// the job (e.g. in monitoring applications like eggcups).
 //
 // If you don’t set a job name, GTK picks a default one by numbering
 // successive print jobs.
@@ -834,13 +835,12 @@ func (o printOperation) SetJobName(jobName string) {
 // SetNPages sets the number of pages in the document.
 //
 // This must be set to a positive number before the rendering starts. It may
-// be set in a [signal@Gtk.PrintOperation::begin-print] signal handler.
+// be set in a PrintOperation::begin-print signal handler.
 //
 // Note that the page numbers passed to the
-// [signal@Gtk.PrintOperation::request-page-setup] and
-// [signal@Gtk.PrintOperation::draw-page] signals are 0-based, i.e. if the
-// user chooses to print all pages, the last ::draw-page signal will be for
-// page @n_pages - 1.
+// PrintOperation::request-page-setup and PrintOperation::draw-page signals
+// are 0-based, i.e. if the user chooses to print all pages, the last
+// ::draw-page signal will be for page @n_pages - 1.
 func (o printOperation) SetNPages(nPages int) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.int
@@ -851,10 +851,9 @@ func (o printOperation) SetNPages(nPages int) {
 	C.gtk_print_operation_set_n_pages(arg0, arg1)
 }
 
-// SetPrintSettings sets the print settings for @op.
-//
-// This is typically used to re-establish print settings from a previous
-// print operation, see [method@Gtk.PrintOperation.run].
+// SetPrintSettings sets the print settings for @op. This is typically used
+// to re-establish print settings from a previous print operation, see
+// gtk_print_operation_run().
 func (o printOperation) SetPrintSettings(printSettings PrintSettings) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 *C.GtkPrintSettings
@@ -880,7 +879,7 @@ func (o printOperation) SetShowProgress(showProgress bool) {
 }
 
 // SetSupportSelection sets whether selection is supported by
-// `GtkPrintOperation`.
+// PrintOperation.
 func (o printOperation) SetSupportSelection(supportSelection bool) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.gboolean
@@ -895,10 +894,9 @@ func (o printOperation) SetSupportSelection(supportSelection bool) {
 
 // SetTrackPrintStatus: if track_status is true, the print operation will
 // try to continue report on the status of the print job in the printer
-// queues and printer.
-//
-// This can allow your application to show things like “out of paper”
-// issues, and when the print job actually reaches the printer.
+// queues and printer. This can allow your application to show things like
+// “out of paper” issues, and when the print job actually reaches the
+// printer.
 //
 // This function is often implemented using some form of polling, so it
 // should not be enabled unless needed.
@@ -915,8 +913,7 @@ func (o printOperation) SetTrackPrintStatus(trackStatus bool) {
 }
 
 // SetUnit sets up the transformation for the cairo context obtained from
-// `GtkPrintContext` in such a way that distances are measured in units of
-// @unit.
+// PrintContext in such a way that distances are measured in units of @unit.
 func (o printOperation) SetUnit(unit Unit) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.GtkUnit
@@ -928,12 +925,11 @@ func (o printOperation) SetUnit(unit Unit) {
 }
 
 // SetUseFullPage: if @full_page is true, the transformation for the cairo
-// context obtained from `GtkPrintContext` puts the origin at the top left
-// corner of the page.
-//
-// This may not be the top left corner of the sheet, depending on page
-// orientation and the number of pages per sheet). Otherwise, the origin is
-// at the top left corner of the imageable area (i.e. inside the margins).
+// context obtained from PrintContext puts the origin at the top left corner
+// of the page (which may not be the top left corner of the sheet, depending
+// on page orientation and the number of pages per sheet). Otherwise, the
+// origin is at the top left corner of the imageable area (i.e. inside the
+// margins).
 func (o printOperation) SetUseFullPage(fullPage bool) {
 	var arg0 *C.GtkPrintOperation
 	var arg1 C.gboolean

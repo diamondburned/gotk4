@@ -77,30 +77,32 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 // NewToggleToolButton constructs a class ToggleToolButton.
 func NewToggleToolButton() ToggleToolButton {
 	var cret C.GtkToggleToolButton
-	var goret ToggleToolButton
 
 	cret = C.gtk_toggle_tool_button_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+	var toggleToolButton ToggleToolButton
 
-	return goret
+	toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+
+	return toggleToolButton
 }
 
 // NewToggleToolButtonFromStock constructs a class ToggleToolButton.
-func NewToggleToolButtonFromStock(stockID string) ToggleToolButton {
+func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
 	var arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(stockID))
+	arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.GtkToggleToolButton
-	var goret ToggleToolButton
 
 	cret = C.gtk_toggle_tool_button_new_from_stock(arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+	var toggleToolButton ToggleToolButton
 
-	return goret
+	toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+
+	return toggleToolButton
 }
 
 // Active queries a ToggleToolButton and returns its current state. Returns
@@ -111,15 +113,16 @@ func (b toggleToolButton) Active() bool {
 	arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_toggle_tool_button_get_active(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetActive sets the status of the toggle tool button. Set to true if you

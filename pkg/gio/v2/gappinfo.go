@@ -58,12 +58,12 @@ type AppInfoOverrider interface {
 	Dup() AppInfo
 	// Equal checks if two Infos are equal.
 	//
-	// Note that the check *may not* compare each individual field, and only
-	// does an identity check. In case detecting changes in the contents is
-	// needed, program code must additionally compare relevant fields.
+	// Note that the check <emphasis>may not</emphasis> compare each individual
+	// field, and only does an identity check. In case detecting changes in the
+	// contents is needed, program code must additionally compare relevant
+	// fields.
 	Equal(appinfo2 AppInfo) bool
-	// Commandline gets the commandline with which the application will be
-	// started.
+
 	Commandline() string
 	// Description gets a human-readable description of an installed
 	// application.
@@ -71,7 +71,7 @@ type AppInfoOverrider interface {
 	// DisplayName gets the display name of the application. The display name is
 	// often more descriptive to the user than the name itself.
 	DisplayName() string
-	// Executable gets the executable's name for the installed application.
+
 	Executable() string
 	// Icon gets the icon for the application.
 	Icon() Icon
@@ -144,7 +144,7 @@ type AppInfoOverrider interface {
 	RemoveSupportsType(contentType string) error
 	// SetAsDefaultForExtension sets the application as the default handler for
 	// the given file extension.
-	SetAsDefaultForExtension(extension string) error
+	SetAsDefaultForExtension(extension *string) error
 	// SetAsDefaultForType sets the application as the default handler for a
 	// given type.
 	SetAsDefaultForType(contentType string) error
@@ -250,9 +250,10 @@ func (a appInfo) AddSupportsType(contentType string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_add_supports_type(arg0, arg1, &cerr)
+	C.g_app_info_add_supports_type(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -267,15 +268,16 @@ func (a appInfo) CanDelete() bool {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_app_info_can_delete(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // CanRemoveSupportsType checks if a supported content type can be removed
@@ -286,15 +288,16 @@ func (a appInfo) CanRemoveSupportsType() bool {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_app_info_can_remove_supports_type(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Delete tries to delete a Info.
@@ -308,15 +311,16 @@ func (a appInfo) Delete() bool {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_app_info_delete(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Dup creates a duplicate of a Info.
@@ -325,21 +329,23 @@ func (a appInfo) Dup() AppInfo {
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
-	cret := new(C.GAppInfo)
-	var goret AppInfo
+	var cret *C.GAppInfo
 
 	cret = C.g_app_info_dup(arg0)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
+	var appInfo AppInfo
 
-	return goret
+	appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppInfo)
+
+	return appInfo
 }
 
 // Equal checks if two Infos are equal.
 //
-// Note that the check *may not* compare each individual field, and only
-// does an identity check. In case detecting changes in the contents is
-// needed, program code must additionally compare relevant fields.
+// Note that the check <emphasis>may not</emphasis> compare each individual
+// field, and only does an identity check. In case detecting changes in the
+// contents is needed, program code must additionally compare relevant
+// fields.
 func (a appInfo) Equal(appinfo2 AppInfo) bool {
 	var arg0 *C.GAppInfo
 	var arg1 *C.GAppInfo
@@ -348,32 +354,34 @@ func (a appInfo) Equal(appinfo2 AppInfo) bool {
 	arg1 = (*C.GAppInfo)(unsafe.Pointer(appinfo2.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_app_info_equal(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Commandline gets the commandline with which the application will be
 // started.
-func (a appInfo) Commandline() string {
+func (a appInfo) Commandline() *string {
 	var arg0 *C.GAppInfo
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_app_info_get_commandline(arg0)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }
 
 // Description gets a human-readable description of an installed
@@ -384,13 +392,14 @@ func (a appInfo) Description() string {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_app_info_get_description(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // DisplayName gets the display name of the application. The display name is
@@ -401,29 +410,31 @@ func (a appInfo) DisplayName() string {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_app_info_get_display_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Executable gets the executable's name for the installed application.
-func (a appInfo) Executable() string {
+func (a appInfo) Executable() *string {
 	var arg0 *C.GAppInfo
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_app_info_get_executable(arg0)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }
 
 // Icon gets the icon for the application.
@@ -433,13 +444,14 @@ func (a appInfo) Icon() Icon {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret *C.GIcon
-	var goret Icon
 
 	cret = C.g_app_info_get_icon(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+	var icon Icon
 
-	return goret
+	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+
+	return icon
 }
 
 // ID gets the ID of an application. An id is a string that identifies the
@@ -455,13 +467,14 @@ func (a appInfo) ID() string {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_app_info_get_id(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Name gets the installed name of the application.
@@ -471,13 +484,14 @@ func (a appInfo) Name() string {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.g_app_info_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // SupportedTypes retrieves the list of content types that @app_info claims
@@ -491,9 +505,10 @@ func (a appInfo) SupportedTypes() []string {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.g_app_info_get_supported_types(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -504,14 +519,16 @@ func (a appInfo) SupportedTypes() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
+			utf8s = C.GoString(cret)
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // Launch launches the application. Passes @files to the launched
@@ -551,9 +568,10 @@ func (a appInfo) Launch(files *glib.List, context AppLaunchContext) error {
 	arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_launch(arg0, arg1, arg2, &cerr)
+	C.g_app_info_launch(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -580,9 +598,10 @@ func (a appInfo) LaunchUris(uris *glib.List, context AppLaunchContext) error {
 	arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_launch_uris(arg0, arg1, arg2, &cerr)
+	C.g_app_info_launch_uris(arg0, arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -600,7 +619,7 @@ func (a appInfo) LaunchUrisAsync() {
 
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
-	C.g_app_info_launch_uris_async(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.g_app_info_launch_uris_async(arg0)
 }
 
 // LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
@@ -612,9 +631,10 @@ func (a appInfo) LaunchUrisFinish(result AsyncResult) error {
 	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_launch_uris_finish(arg0, arg1, &cerr)
+	C.g_app_info_launch_uris_finish(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -632,9 +652,10 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_remove_supports_type(arg0, arg1, &cerr)
+	C.g_app_info_remove_supports_type(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -643,7 +664,7 @@ func (a appInfo) RemoveSupportsType(contentType string) error {
 
 // SetAsDefaultForExtension sets the application as the default handler for
 // the given file extension.
-func (a appInfo) SetAsDefaultForExtension(extension string) error {
+func (a appInfo) SetAsDefaultForExtension(extension *string) error {
 	var arg0 *C.GAppInfo
 	var arg1 *C.char
 
@@ -652,9 +673,10 @@ func (a appInfo) SetAsDefaultForExtension(extension string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_set_as_default_for_extension(arg0, arg1, &cerr)
+	C.g_app_info_set_as_default_for_extension(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -672,9 +694,10 @@ func (a appInfo) SetAsDefaultForType(contentType string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_set_as_default_for_type(arg0, arg1, &cerr)
+	C.g_app_info_set_as_default_for_type(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -694,9 +717,10 @@ func (a appInfo) SetAsLastUsedForType(contentType string) error {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_app_info_set_as_last_used_for_type(arg0, arg1, &cerr)
+	C.g_app_info_set_as_last_used_for_type(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -711,15 +735,16 @@ func (a appInfo) ShouldShow() bool {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_app_info_should_show(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SupportsFiles checks if the application accepts files as arguments.
@@ -729,15 +754,16 @@ func (a appInfo) SupportsFiles() bool {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_app_info_supports_files(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SupportsUris checks if the application supports reading files and
@@ -748,15 +774,16 @@ func (a appInfo) SupportsUris() bool {
 	arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_app_info_supports_uris(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // AppLaunchContext: integrating the launch with the launching application. This
@@ -773,7 +800,7 @@ type AppLaunchContext interface {
 	// the child process when @context is used to launch an application. This is
 	// a nil-terminated array of strings, where each string has the form
 	// `KEY=VALUE`.
-	Environment() []string
+	Environment() []*string
 	// StartupNotifyID initiates startup notification for the application and
 	// returns the `DESKTOP_STARTUP_ID` for the launched operation, if
 	// supported.
@@ -785,13 +812,13 @@ type AppLaunchContext interface {
 	// LaunchFailed: called when an application has failed to launch, so that it
 	// can cancel the application startup notification started in
 	// g_app_launch_context_get_startup_notify_id().
-	LaunchFailed(startupNotifyID string)
+	LaunchFailed(startupNotifyId string)
 	// Setenv arranges for @variable to be set to @value in the child's
 	// environment when @context is used to launch an application.
-	Setenv(variable string, value string)
+	Setenv(variable *string, value *string)
 	// Unsetenv arranges for @variable to be unset in the child's environment
 	// when @context is used to launch an application.
-	Unsetenv(variable string)
+	Unsetenv(variable *string)
 }
 
 // appLaunchContext implements the AppLaunchContext interface.
@@ -817,14 +844,15 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 
 // NewAppLaunchContext constructs a class AppLaunchContext.
 func NewAppLaunchContext() AppLaunchContext {
-	cret := new(C.GAppLaunchContext)
-	var goret AppLaunchContext
+	var cret C.GAppLaunchContext
 
 	cret = C.g_app_launch_context_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppLaunchContext)
+	var appLaunchContext AppLaunchContext
 
-	return goret
+	appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppLaunchContext)
+
+	return appLaunchContext
 }
 
 // Display gets the display string for the @context. This is used to ensure
@@ -839,30 +867,32 @@ func (c appLaunchContext) Display(info AppInfo, files *glib.List) string {
 	arg1 = (*C.GAppInfo)(unsafe.Pointer(info.Native()))
 	arg2 = (*C.GList)(unsafe.Pointer(files.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_app_launch_context_get_display(arg0, arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Environment gets the complete environment variable list to be passed to
 // the child process when @context is used to launch an application. This is
 // a nil-terminated array of strings, where each string has the form
 // `KEY=VALUE`.
-func (c appLaunchContext) Environment() []string {
+func (c appLaunchContext) Environment() []*string {
 	var arg0 *C.GAppLaunchContext
 
 	arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(c.Native()))
 
 	var cret **C.char
-	var goret []string
 
 	cret = C.g_app_launch_context_get_environment(arg0)
+
+	var filenames []*string
 
 	{
 		var length int
@@ -873,15 +903,17 @@ func (c appLaunchContext) Environment() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			filenames = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return filenames
 }
 
 // StartupNotifyID initiates startup notification for the application and
@@ -900,26 +932,27 @@ func (c appLaunchContext) StartupNotifyID(info AppInfo, files *glib.List) string
 	arg1 = (*C.GAppInfo)(unsafe.Pointer(info.Native()))
 	arg2 = (*C.GList)(unsafe.Pointer(files.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.g_app_launch_context_get_startup_notify_id(arg0, arg1, arg2)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // LaunchFailed: called when an application has failed to launch, so that it
 // can cancel the application startup notification started in
 // g_app_launch_context_get_startup_notify_id().
-func (c appLaunchContext) LaunchFailed(startupNotifyID string) {
+func (c appLaunchContext) LaunchFailed(startupNotifyId string) {
 	var arg0 *C.GAppLaunchContext
 	var arg1 *C.char
 
 	arg0 = (*C.GAppLaunchContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(startupNotifyID))
+	arg1 = (*C.char)(C.CString(startupNotifyId))
 	defer C.free(unsafe.Pointer(arg1))
 
 	C.g_app_launch_context_launch_failed(arg0, arg1)
@@ -927,7 +960,7 @@ func (c appLaunchContext) LaunchFailed(startupNotifyID string) {
 
 // Setenv arranges for @variable to be set to @value in the child's
 // environment when @context is used to launch an application.
-func (c appLaunchContext) Setenv(variable string, value string) {
+func (c appLaunchContext) Setenv(variable *string, value *string) {
 	var arg0 *C.GAppLaunchContext
 	var arg1 *C.char
 	var arg2 *C.char
@@ -943,7 +976,7 @@ func (c appLaunchContext) Setenv(variable string, value string) {
 
 // Unsetenv arranges for @variable to be unset in the child's environment
 // when @context is used to launch an application.
-func (c appLaunchContext) Unsetenv(variable string) {
+func (c appLaunchContext) Unsetenv(variable *string) {
 	var arg0 *C.GAppLaunchContext
 	var arg1 *C.char
 

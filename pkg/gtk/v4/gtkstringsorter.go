@@ -21,14 +21,12 @@ func init() {
 	})
 }
 
-// StringSorter: `GtkStringSorter` is a `GtkSorter` that compares strings.
+// StringSorter: gtkStringSorter is a Sorter that compares strings. It does the
+// comparison in a linguistically correct way using the current locale by
+// normalizing Unicode strings and possibly case-folding them before performing
+// the comparison.
 //
-// It does the comparison in a linguistically correct way using the current
-// locale by normalizing Unicode strings and possibly case-folding them before
-// performing the comparison.
-//
-// To obtain the strings to compare, this sorter evaluates a
-// [class@Gtk.Expression].
+// To obtain the strings to compare, this sorter evaluates a Expression.
 type StringSorter interface {
 	Sorter
 
@@ -73,14 +71,15 @@ func NewStringSorter(expression Expression) StringSorter {
 
 	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	cret := new(C.GtkStringSorter)
-	var goret StringSorter
+	var cret C.GtkStringSorter
 
 	cret = C.gtk_string_sorter_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringSorter)
+	var stringSorter StringSorter
 
-	return goret
+	stringSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringSorter)
+
+	return stringSorter
 }
 
 // Expression gets the expression that is evaluated to obtain strings from
@@ -91,13 +90,14 @@ func (s stringSorter) Expression() Expression {
 	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkExpression
-	var goret Expression
 
 	cret = C.gtk_string_sorter_get_expression(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	var expression Expression
 
-	return goret
+	expression = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+
+	return expression
 }
 
 // IgnoreCase gets whether the sorter ignores case differences.
@@ -107,15 +107,16 @@ func (s stringSorter) IgnoreCase() bool {
 	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_string_sorter_get_ignore_case(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetExpression sets the expression that is evaluated to obtain strings

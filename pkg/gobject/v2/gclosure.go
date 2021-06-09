@@ -41,7 +41,7 @@ func (c *CClosure) Native() unsafe.Pointer {
 // Callback gets the field inside the struct.
 func (c *CClosure) Callback() interface{} {
 	var v interface{}
-	v = interface{}(c.native.callback)
+	v = (interface{})(c.native.callback)
 	return v
 }
 
@@ -72,6 +72,6 @@ func (c *ClosureNotifyData) Native() unsafe.Pointer {
 // Data gets the field inside the struct.
 func (c *ClosureNotifyData) Data() interface{} {
 	var v interface{}
-	v = interface{}(c.native.data)
+	v = (interface{})(c.native.data)
 	return v
 }

@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -23,87 +22,6 @@ func init() {
 	})
 }
 
-// PixbufFormatFlags flags which allow a module to specify further details about
-// the supported operations.
-type PixbufFormatFlags int
-
-const (
-	// PixbufFormatFlagsWritable: the module can write out images in the format.
-	PixbufFormatFlagsWritable PixbufFormatFlags = 1
-	// PixbufFormatFlagsScalable: the image format is scalable
-	PixbufFormatFlagsScalable PixbufFormatFlags = 2
-	// PixbufFormatFlagsThreadsafe: the module is threadsafe. gdk-pixbuf ignores
-	// modules that are not marked as threadsafe. (Since 2.28).
-	PixbufFormatFlagsThreadsafe PixbufFormatFlags = 4
-)
-
-// PixbufModulePreparedFunc defines the type of the function that gets called
-// once the initial setup of @pixbuf is done.
-//
-// PixbufLoader uses a function of this type to emit the "<link
-// linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
-type PixbufModulePreparedFunc func()
-
-//export gotk4_PixbufModulePreparedFunc
-func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(PixbufModulePreparedFunc)
-	fn()
-}
-
-// PixbufModuleSizeFunc defines the type of the function that gets called once
-// the size of the loaded image is known.
-//
-// The function is expected to set @width and @height to the desired size to
-// which the image should be scaled. If a module has no efficient way to achieve
-// the desired scaling during the loading of the image, it may either ignore the
-// size request, or only approximate it - gdk-pixbuf will then perform the
-// required scaling on the completely loaded image.
-//
-// If the function sets @width or @height to zero, the module should interpret
-// this as a hint that it will be closed soon and shouldn't allocate further
-// resources. This convention is used to implement gdk_pixbuf_get_file_info()
-// efficiently.
-type PixbufModuleSizeFunc func()
-
-//export gotk4_PixbufModuleSizeFunc
-func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(PixbufModuleSizeFunc)
-	fn()
-}
-
-// PixbufModuleUpdatedFunc defines the type of the function that gets called
-// every time a region of @pixbuf is updated.
-//
-// PixbufLoader uses a function of this type to emit the "<link
-// linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
-type PixbufModuleUpdatedFunc func()
-
-//export gotk4_PixbufModuleUpdatedFunc
-func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
-	v := box.Get(uintptr(arg5))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(PixbufModuleUpdatedFunc)
-	fn()
-}
-
-// PixbufFormat: a `GdkPixbufFormat` contains information about the image format
-// accepted by a module.
-//
-// Only modules should access the fields directly, applications should use the
-// `gdk_pixbuf_format_*` family of functions.
 type PixbufFormat struct {
 	native C.GdkPixbufFormat
 }
@@ -128,56 +46,27 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Signature gets the field inside the struct.
-func (p *PixbufFormat) Signature() *PixbufModulePattern {
-	var v *PixbufModulePattern
-	v = WrapPixbufModulePattern(unsafe.Pointer(p.native.signature))
-	return v
-}
-
-// Domain gets the field inside the struct.
-func (p *PixbufFormat) Domain() string {
-	var v string
-	v = C.GoString(p.native.domain)
-	return v
-}
-
-// Flags gets the field inside the struct.
-func (p *PixbufFormat) Flags() uint32 {
-	var v uint32
-	v = uint32(p.native.flags)
-	return v
-}
-
-// Disabled gets the field inside the struct.
-func (p *PixbufFormat) Disabled() bool {
-	var v bool
-	if p.native.disabled {
-		v = true
-	}
-	return v
-}
-
-// Copy creates a copy of `format`.
+// Copy creates a copy of @format
 func (f *PixbufFormat) Copy() *PixbufFormat {
 	var arg0 *C.GdkPixbufFormat
 
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	cret := new(C.GdkPixbufFormat)
-	var goret *PixbufFormat
+	var cret *C.GdkPixbufFormat
 
 	cret = C.gdk_pixbuf_format_copy(arg0)
 
-	goret = WrapPixbufFormat(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *PixbufFormat) {
+	var pixbufFormat *PixbufFormat
+
+	pixbufFormat = WrapPixbufFormat(unsafe.Pointer(cret))
+	runtime.SetFinalizer(pixbufFormat, func(v *PixbufFormat) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return pixbufFormat
 }
 
-// Free frees the resources allocated when copying a `GdkPixbufFormat` using
+// Free frees the resources allocated when copying a PixbufFormat using
 // gdk_pixbuf_format_copy()
 func (f *PixbufFormat) Free() {
 	var arg0 *C.GdkPixbufFormat
@@ -193,15 +82,16 @@ func (f *PixbufFormat) Description() string {
 
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gdk_pixbuf_format_get_description(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // Extensions returns the filename extensions typically used for files in the
@@ -212,9 +102,10 @@ func (f *PixbufFormat) Extensions() []string {
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.gdk_pixbuf_format_get_extensions(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -225,36 +116,39 @@ func (f *PixbufFormat) Extensions() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			utf8s = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // License returns information about the license of the image loader for the
-// format.
-//
-// The returned string should be a shorthand for a well known license, e.g.
-// "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other license.
+// format. The returned string should be a shorthand for a wellknown license,
+// e.g. "LGPL", "GPL", "QPL", "GPL/QPL", or "other" to indicate some other
+// license. This string should be freed with g_free() when it's no longer
+// needed.
 func (f *PixbufFormat) License() string {
 	var arg0 *C.GdkPixbufFormat
 
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gdk_pixbuf_format_get_license(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
 // MIMETypes returns the mime types supported by the format.
@@ -264,9 +158,10 @@ func (f *PixbufFormat) MIMETypes() []string {
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
 	var cret **C.gchar
-	var goret []string
 
 	cret = C.gdk_pixbuf_format_get_mime_types(arg0)
+
+	var utf8s []string
 
 	{
 		var length int
@@ -277,15 +172,17 @@ func (f *PixbufFormat) MIMETypes() []string {
 			}
 		}
 
-		goret = make([]string, length)
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+
+		utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(cret), i))
-			goret[i] = C.GoString(src)
-			defer C.free(unsafe.Pointer(src))
+			utf8s = C.GoString(cret)
+			defer C.free(unsafe.Pointer(cret))
 		}
 	}
 
-	return goret
+	return utf8s
 }
 
 // Name returns the name of the format.
@@ -294,42 +191,41 @@ func (f *PixbufFormat) Name() string {
 
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	cret := new(C.gchar)
-	var goret string
+	var cret *C.gchar
 
 	cret = C.gdk_pixbuf_format_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
-// IsDisabled returns whether this image format is disabled.
-//
-// See gdk_pixbuf_format_set_disabled().
+// IsDisabled returns whether this image format is disabled. See
+// gdk_pixbuf_format_set_disabled().
 func (f *PixbufFormat) IsDisabled() bool {
 	var arg0 *C.GdkPixbufFormat
 
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_pixbuf_format_is_disabled(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IsSaveOptionSupported returns `TRUE` if the save option specified by
+// IsSaveOptionSupported returns true if the save option specified by
 // @option_key is supported when saving a pixbuf using the module implementing
-// @format.
-//
-// See gdk_pixbuf_save() for more information about option keys.
+// @format. See gdk_pixbuf_save() for more information about option keys.
 func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 	var arg0 *C.GdkPixbufFormat
 	var arg1 *C.gchar
@@ -339,37 +235,38 @@ func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 	defer C.free(unsafe.Pointer(arg1))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_pixbuf_format_is_save_option_supported(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// IsScalable returns whether this image format is scalable.
-//
-// If a file is in a scalable format, it is preferable to load it at the desired
-// size, rather than loading it at the default size and scaling the resulting
-// pixbuf to the desired size.
+// IsScalable returns whether this image format is scalable. If a file is in a
+// scalable format, it is preferable to load it at the desired size, rather than
+// loading it at the default size and scaling the resulting pixbuf to the
+// desired size.
 func (f *PixbufFormat) IsScalable() bool {
 	var arg0 *C.GdkPixbufFormat
 
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_pixbuf_format_is_scalable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // IsWritable returns whether pixbufs can be saved in the given format.
@@ -379,22 +276,20 @@ func (f *PixbufFormat) IsWritable() bool {
 	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gdk_pixbuf_format_is_writable(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// SetDisabled disables or enables an image format.
-//
-// If a format is disabled, GdkPixbuf won't use the image loader for this format
-// to load images.
-//
+// SetDisabled disables or enables an image format. If a format is disabled,
+// gdk-pixbuf won't use the image loader for this format to load images.
 // Applications can use this to avoid using image loaders with an inappropriate
 // license, see gdk_pixbuf_format_get_license().
 func (f *PixbufFormat) SetDisabled(disabled bool) {
@@ -407,72 +302,4 @@ func (f *PixbufFormat) SetDisabled(disabled bool) {
 	}
 
 	C.gdk_pixbuf_format_set_disabled(arg0, arg1)
-}
-
-// PixbufModulePattern: the signature prefix for a module.
-//
-// The signature of a module is a set of prefixes. Prefixes are encoded as pairs
-// of ordinary strings, where the second string, called the mask, if not `NULL`,
-// must be of the same length as the first one and may contain ' ', '!', 'x',
-// 'z', and 'n' to indicate bytes that must be matched, not matched,
-// "don't-care"-bytes, zeros and non-zeros, respectively.
-//
-// Each prefix has an associated integer that describes the relevance of the
-// prefix, with 0 meaning a mismatch and 100 a "perfect match".
-//
-// Starting with gdk-pixbuf 2.8, the first byte of the mask may be '*',
-// indicating an unanchored pattern that matches not only at the beginning, but
-// also in the middle. Versions prior to 2.8 will interpret the '*' like an 'x'.
-//
-// The signature of a module is stored as an array of `GdkPixbufModulePatterns`.
-// The array is terminated by a pattern where the `prefix` is `NULL`.
-//
-// “`c GdkPixbufModulePattern *signature[] = { { "abcdx", " !x z", 100 }, {
-// "bla", NULL, 90 }, { NULL, NULL, 0 } }; “`
-//
-// In the example above, the signature matches e.g. "auud\0" with relevance 100,
-// and "blau" with relevance 90.
-type PixbufModulePattern struct {
-	native C.GdkPixbufModulePattern
-}
-
-// WrapPixbufModulePattern wraps the C unsafe.Pointer to be the right type. It is
-// primarily used internally.
-func WrapPixbufModulePattern(ptr unsafe.Pointer) *PixbufModulePattern {
-	if ptr == nil {
-		return nil
-	}
-
-	return (*PixbufModulePattern)(ptr)
-}
-
-func marshalPixbufModulePattern(p uintptr) (interface{}, error) {
-	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
-	return WrapPixbufModulePattern(unsafe.Pointer(b)), nil
-}
-
-// Native returns the underlying C source pointer.
-func (p *PixbufModulePattern) Native() unsafe.Pointer {
-	return unsafe.Pointer(&p.native)
-}
-
-// Prefix gets the field inside the struct.
-func (p *PixbufModulePattern) Prefix() string {
-	var v string
-	v = C.GoString(p.native.prefix)
-	return v
-}
-
-// Mask gets the field inside the struct.
-func (p *PixbufModulePattern) Mask() string {
-	var v string
-	v = C.GoString(p.native.mask)
-	return v
-}
-
-// Relevance gets the field inside the struct.
-func (p *PixbufModulePattern) Relevance() int {
-	var v int
-	v = int(p.native.relevance)
-	return v
 }

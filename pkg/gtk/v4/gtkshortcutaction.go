@@ -40,14 +40,14 @@ func gotk4_ShortcutFunc(arg0 *C.GtkWidget, arg1 *C.GVariant, arg2 C.gpointer) C.
 	}
 
 	fn := v.(ShortcutFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
 	}
 }
 
-// ActivateAction: a `GtkShortcutAction` that calls gtk_widget_activate().
+// ActivateAction: a ShortcutAction that calls gtk_widget_activate().
 type ActivateAction interface {
 	ShortcutAction
 }
@@ -73,7 +73,7 @@ func marshalActivateAction(p uintptr) (interface{}, error) {
 	return WrapActivateAction(obj), nil
 }
 
-// CallbackAction: a `GtkShortcutAction` that invokes a callback.
+// CallbackAction: a ShortcutAction that invokes a callback.
 type CallbackAction interface {
 	ShortcutAction
 }
@@ -101,18 +101,18 @@ func marshalCallbackAction(p uintptr) (interface{}, error) {
 
 // NewCallbackAction constructs a class CallbackAction.
 func NewCallbackAction() CallbackAction {
-	cret := new(C.GtkCallbackAction)
-	var goret CallbackAction
+	var cret C.GtkCallbackAction
 
-	cret = C.gtk_callback_action_new(arg1, arg2, arg3)
+	cret = C.gtk_callback_action_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CallbackAction)
+	var callbackAction CallbackAction
 
-	return goret
+	callbackAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CallbackAction)
+
+	return callbackAction
 }
 
-// MnemonicAction: a `GtkShortcutAction` that calls
-// gtk_widget_mnemonic_activate().
+// MnemonicAction: a ShortcutAction that calls gtk_widget_mnemonic_activate().
 type MnemonicAction interface {
 	ShortcutAction
 }
@@ -138,7 +138,7 @@ func marshalMnemonicAction(p uintptr) (interface{}, error) {
 	return WrapMnemonicAction(obj), nil
 }
 
-// NamedAction: a `GtkShortcutAction` that activates an action by name.
+// NamedAction: a ShortcutAction that activates an action by name.
 type NamedAction interface {
 	ShortcutAction
 
@@ -174,14 +174,15 @@ func NewNamedAction(name string) NamedAction {
 	arg1 = (*C.char)(C.CString(name))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkNamedAction)
-	var goret NamedAction
+	var cret C.GtkNamedAction
 
 	cret = C.gtk_named_action_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NamedAction)
+	var namedAction NamedAction
 
-	return goret
+	namedAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NamedAction)
+
+	return namedAction
 }
 
 // ActionName returns the name of the action that will be activated.
@@ -191,16 +192,17 @@ func (s namedAction) ActionName() string {
 	arg0 = (*C.GtkNamedAction)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_named_action_get_action_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
-// NothingAction: a `GtkShortcutAction` that does nothing.
+// NothingAction: a ShortcutAction that does nothing.
 type NothingAction interface {
 	ShortcutAction
 }
@@ -226,33 +228,31 @@ func marshalNothingAction(p uintptr) (interface{}, error) {
 	return WrapNothingAction(obj), nil
 }
 
-// ShortcutAction: `GtkShortcutAction` encodes an action that can be triggered
-// by a keyboard shortcut.
+// ShortcutAction is the object used to describe what a Shortcut should do when
+// triggered. To activate a ShortcutAction manually,
+// gtk_shortcut_action_activate() can be called.
 //
-// `GtkShortcutActions` contain functions that allow easy presentation to end
-// users as well as being printed for debugging.
+// ShortcutActions contain functions that allow easy presentation to end users
+// as well as being printed for debugging.
 //
-// All `GtkShortcutActions` are immutable, you can only specify their properties
+// All ShortcutActions are immutable, you can only specify their properties
 // during construction. If you want to change a action, you have to replace it
 // with a new one. If you need to pass arguments to an action, these are
-// specified by the higher-level `GtkShortcut` object.
-//
-// To activate a `GtkShortcutAction` manually,
-// [method@Gtk.ShortcutAction.activate] can be called.
+// specified by the higher-level Shortcut object.
 //
 // GTK provides various actions:
 //
-//    - [class@Gtk.MnemonicAction]: a shortcut action that calls
-//      gtk_widget_mnemonic_activate()
-//    - [class@Gtk.CallbackAction]: a shortcut action that invokes
-//      a given callback
-//    - [class@Gtk.SignalAction]: a shortcut action that emits a
-//      given signal
-//    - [class@Gtk.ActivateAction]: a shortcut action that calls
-//      gtk_widget_activate()
-//    - [class@Gtk.NamedAction]: a shortcut action that calls
-//      gtk_widget_activate_action()
-//    - [class@Gtk.NothingAction]: a shortcut action that does nothing
+//    - MnemonicAction: a shortcut action that calls gtk_widget_mnemonic_activate()
+//    - CallbackAction: a shortcut action that invokes a given callback
+//    - SignalAction: a shortcut action that emits a given signal
+//    - ActivateAction: a shortcut action that calls gtk_widget_activate()
+//    - NamedAction: a shortcut action that calls gtk_widget_activate_action()
+//    - NothingAction: a shortcut action that does nothing
+//
+//
+// GtkShortcutAction as GtkBuildable
+//
+// GtkShortcut
 type ShortcutAction interface {
 	gextras.Objector
 
@@ -264,17 +264,14 @@ type ShortcutAction interface {
 	// not supported by the @widget, if the @args don't match the action or if
 	// the activation otherwise had no effect, false will be returned.
 	Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool
-	// Print prints the given action into a string for the developer.
-	//
-	// This is meant for debugging and logging.
+	// Print prints the given action into a string for the developer. This is
+	// meant for debugging and logging.
 	//
 	// The form of the representation may change at any time and is not
 	// guaranteed to stay identical.
 	Print(string *glib.String)
-	// String prints the given action into a human-readable string.
-	//
-	// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
-	// when debugging.
+	// String prints the given action into a human-readable string. This is a
+	// small wrapper around gtk_shortcut_action_print() to help when debugging.
 	String() string
 }
 
@@ -306,14 +303,15 @@ func NewShortcutActionParseString(string string) ShortcutAction {
 	arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkShortcutAction)
-	var goret ShortcutAction
+	var cret C.GtkShortcutAction
 
 	cret = C.gtk_shortcut_action_parse_string(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutAction)
+	var shortcutAction ShortcutAction
 
-	return goret
+	shortcutAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutAction)
+
+	return shortcutAction
 }
 
 // Activate activates the action on the @widget with the given @args.
@@ -335,20 +333,20 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 	arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_shortcut_action_activate(arg0, arg1, arg2, arg3)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Print prints the given action into a string for the developer.
-//
-// This is meant for debugging and logging.
+// Print prints the given action into a string for the developer. This is
+// meant for debugging and logging.
 //
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
@@ -362,27 +360,26 @@ func (s shortcutAction) Print(string *glib.String) {
 	C.gtk_shortcut_action_print(arg0, arg1)
 }
 
-// String prints the given action into a human-readable string.
-//
-// This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
-// when debugging.
+// String prints the given action into a human-readable string. This is a
+// small wrapper around gtk_shortcut_action_print() to help when debugging.
 func (s shortcutAction) String() string {
 	var arg0 *C.GtkShortcutAction
 
 	arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.char)
-	var goret string
+	var cret *C.char
 
 	cret = C.gtk_shortcut_action_to_string(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
+
+	utf8 = C.GoString(cret)
 	defer C.free(unsafe.Pointer(cret))
 
-	return goret
+	return utf8
 }
 
-// SignalAction: a `GtkShortcut`Action that emits a signal.
+// SignalAction: a ShortcutAction that emits a signal.
 //
 // Signals that are used in this way are referred to as keybinding signals, and
 // they are expected to be defined with the G_SIGNAL_ACTION flag.
@@ -421,14 +418,15 @@ func NewSignalAction(signalName string) SignalAction {
 	arg1 = (*C.char)(C.CString(signalName))
 	defer C.free(unsafe.Pointer(arg1))
 
-	cret := new(C.GtkSignalAction)
-	var goret SignalAction
+	var cret C.GtkSignalAction
 
 	cret = C.gtk_signal_action_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalAction)
+	var signalAction SignalAction
 
-	return goret
+	signalAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SignalAction)
+
+	return signalAction
 }
 
 // SignalName returns the name of the signal that will be emitted.
@@ -438,11 +436,12 @@ func (s signalAction) SignalName() string {
 	arg0 = (*C.GtkSignalAction)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_signal_action_get_signal_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }

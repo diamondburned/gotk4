@@ -24,67 +24,70 @@ func init() {
 	})
 }
 
-// DropTarget: `GtkDropTarget` is an event controller to receive Drag-and-Drop
-// operations.
+// DropTarget: gtkDropTarget is an event controller implementing a simple way to
+// receive Drag-and-Drop operations.
 //
-// The most basic way to use a `GtkDropTarget` to receive drops on a widget is
-// to create it via [ctor@Gtk.DropTarget.new], passing in the `GType` of the
-// data you want to receive and connect to the [signal@Gtk.DropTarget::drop]
-// signal to receive the data:
+// The most basic way to use a DropTarget to receive drops on a widget is to
+// create it via gtk_drop_target_new() passing in the #GType of the data you
+// want to receive and connect to the DropTarget::drop signal to receive the
+// data:
 //
-// “`c static gboolean on_drop (GtkDropTarget *target, const GValue *value,
-// double x, double y, gpointer data) { MyWidget *self = data;
+//    static gboolean
+//    on_drop (GtkDropTarget *target,
+//             const GValue  *value,
+//             double         x,
+//             double         y,
+//             gpointer       data)
+//    {
+//      MyWidget *self = data;
 //
-//    // Call the appropriate setter depending on the type of data
-//    // that we received
-//    if (G_VALUE_HOLDS (value, G_TYPE_FILE))
-//      my_widget_set_file (self, g_value_get_object (value));
-//    else if (G_VALUE_HOLDS (value, GDK_TYPE_PIXBUF))
-//      my_widget_set_pixbuf (self, g_value_get_object (value));
-//    else
-//      return FALSE;
+//      // Call the appropriate setter depending on the type of data
+//      // that we received
+//      if (G_VALUE_HOLDS (value, G_TYPE_FILE))
+//        my_widget_set_file (self, g_value_get_object (value));
+//      else if (G_VALUE_HOLDS (value, GDK_TYPE_PIXBUF))
+//        my_widget_set_pixbuf (self, g_value_get_object (value));
+//      else
+//        return FALSE;
 //
-//    return TRUE;
+//      return TRUE;
+//    }
 //
-// }
+//    static void
+//    my_widget_init (MyWidget *self)
+//    {
+//      GtkDropTarget *target =
+//        gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY);
 //
-// static void my_widget_init (MyWidget *self) { GtkDropTarget *target =
-// gtk_drop_target_new (G_TYPE_INVALID, GDK_ACTION_COPY);
+//      // This widget accepts two types of drop types: GFile objects
+//      // and GdkPixbuf objects
+//      gtk_drop_target_set_gtypes (target, (GTypes [2]) {
+//        G_TYPE_FILE,
+//        GDK_TYPE_PIXBUF,
+//      }, 2);
 //
-//    // This widget accepts two types of drop types: GFile objects
-//    // and GdkPixbuf objects
-//    gtk_drop_target_set_gtypes (target, (GTypes [2]) {
-//      G_TYPE_FILE,
-//      GDK_TYPE_PIXBUF,
-//    }, 2);
+//      gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (target));
+//    }
 //
-//    gtk_widget_add_controller (GTK_WIDGET (self), GTK_EVENT_CONTROLLER (target));
+// DropTarget supports more options, such as:
 //
-// } “`
-//
-// `GtkDropTarget` supports more options, such as:
-//
-//    * rejecting potential drops via the [signal@Gtk.DropTarget::accept] signal
-//      and the [method@Gtk.DropTarget.reject] function to let other drop
+//    * rejecting potential drops via the DropTarget::accept signal
+//      and the gtk_drop_target_reject() function to let other drop
 //      targets handle the drop
 //    * tracking an ongoing drag operation before the drop via the
-//      [signal@Gtk.DropTarget::enter], [signal@Gtk.DropTarget::motion] and
-//      [signal@Gtk.DropTarget::leave] signals
+//      DropTarget::enter, DropTarget::motion and
+//      DropTarget::leave signals
 //    * configuring how to receive data by setting the
-//      [property@Gtk.DropTarget:preload] property and listening for its
-//      availability via the [property@Gtk.DropTarget:value] property
+//      DropTarget:preload property and listening for its availability
+//      via the DropTarget:value property
 //
-// However, `GtkDropTarget` is ultimately modeled in a synchronous way and only
-// supports data transferred via `GType`. If you want full control over an
-// ongoing drop, the [class@Gtk.DropTargetAsync] object gives you this ability.
+// However, DropTarget is ultimately modeled in a synchronous way and only
+// supports data transferred via #GType. If you want full control over an
+// ongoing drop, the DropTargetAsync object gives you this ability.
 //
 // While a pointer is dragged over the drop target's widget and the drop has not
 // been rejected, that widget will receive the GTK_STATE_FLAG_DROP_ACTIVE state,
 // which can be used to style the widget.
-//
-// If you are not interested in receiving the drop, but just want to update UI
-// state during a Drag-and-Drop operation (e.g. switching tabs), you can use
-// [class@Gtk.DropControllerMotion].
 type DropTarget interface {
 	EventController
 
@@ -98,27 +101,26 @@ type DropTarget interface {
 	//
 	// If the result is nil, all formats are expected to be supported.
 	Formats() *gdk.ContentFormats
-	// GTypes gets the list of supported `GTypes` for @self.
-	//
-	// If no type have been set, nil will be returned.
+	// GTypes gets the list of supported #GTypes for @self. If no type have been
+	// set, nil will be returned.
 	GTypes() []externglib.Type
-	// Preload gets whether data should be preloaded on hover.
+	// Preload gets the value of the GtkDropTarget:preload property.
 	Preload() bool
-	// Value gets the current drop data, as a `GValue`.
-	Value() *externglib.Value
+	// Value gets the value of the GtkDropTarget:value property.
+	Value() **externglib.Value
 	// Reject rejects the ongoing drop operation.
 	//
-	// If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop]
-	// is nil, this function does nothing.
+	// If no drop operation is ongoing - when GdkDropTarget:drop returns nil -
+	// this function does nothing.
 	//
 	// This function should be used when delaying the decision on whether to
 	// accept a drag or not until after reading the data.
 	Reject()
 	// SetActions sets the actions that this drop target supports.
 	SetActions(actions gdk.DragAction)
-	// SetGTypes sets the supported `GTypes` for this drop target.
+	// SetGTypes sets the supported #GTypes for this drop target.
 	SetGTypes()
-	// SetPreload sets whether data should be preloaded on hover.
+	// SetPreload sets the GtkDropTarget:preload property.
 	SetPreload(preload bool)
 }
 
@@ -151,14 +153,15 @@ func NewDropTarget(typ externglib.Type, actions gdk.DragAction) DropTarget {
 	arg1 = C.GType(typ)
 	arg2 = (C.GdkDragAction)(actions)
 
-	cret := new(C.GtkDropTarget)
-	var goret DropTarget
+	var cret C.GtkDropTarget
 
 	cret = C.gtk_drop_target_new(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DropTarget)
+	var dropTarget DropTarget
 
-	return goret
+	dropTarget = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DropTarget)
+
+	return dropTarget
 }
 
 // Actions gets the actions that this drop target supports.
@@ -168,13 +171,14 @@ func (s dropTarget) Actions() gdk.DragAction {
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret C.GdkDragAction
-	var goret gdk.DragAction
 
 	cret = C.gtk_drop_target_get_actions(arg0)
 
-	goret = gdk.DragAction(cret)
+	var dragAction gdk.DragAction
 
-	return goret
+	dragAction = gdk.DragAction(cret)
+
+	return dragAction
 }
 
 // Drop gets the currently handled drop operation.
@@ -186,13 +190,14 @@ func (s dropTarget) Drop() gdk.Drop {
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GdkDrop
-	var goret gdk.Drop
 
 	cret = C.gtk_drop_target_get_drop(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drop)
+	var drop gdk.Drop
 
-	return goret
+	drop = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Drop)
+
+	return drop
 }
 
 // Formats gets the data formats that this drop target accepts.
@@ -203,22 +208,22 @@ func (s dropTarget) Formats() *gdk.ContentFormats {
 
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
-	cret := new(C.GdkContentFormats)
-	var goret *gdk.ContentFormats
+	var cret *C.GdkContentFormats
 
 	cret = C.gtk_drop_target_get_formats(arg0)
 
-	goret = gdk.WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *gdk.ContentFormats) {
+	var contentFormats *gdk.ContentFormats
+
+	contentFormats = gdk.WrapContentFormats(unsafe.Pointer(cret))
+	runtime.SetFinalizer(contentFormats, func(v *gdk.ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return contentFormats
 }
 
-// GTypes gets the list of supported `GTypes` for @self.
-//
-// If no type have been set, nil will be returned.
+// GTypes gets the list of supported #GTypes for @self. If no type have been
+// set, nil will be returned.
 func (s dropTarget) GTypes() []externglib.Type {
 	var arg0 *C.GtkDropTarget
 
@@ -226,57 +231,64 @@ func (s dropTarget) GTypes() []externglib.Type {
 
 	var cret *C.GType
 	var arg1 *C.gsize
-	var goret []externglib.Type
 
-	cret = C.gtk_drop_target_get_gtypes(arg0, arg1)
+	cret = C.gtk_drop_target_get_gtypes(arg0)
 
-	goret = make([]externglib.Type, arg1)
-	for i := 0; i < uintptr(arg1); i++ {
-		src := (C.GType)(ptr.Add(unsafe.Pointer(cret), i))
-		goret[i] = externglib.Type(src)
+	var gTypes []externglib.Type
+
+	{
+		var src []C.GType
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+
+		gTypes = make([]externglib.Type, arg1)
+		for i := 0; i < uintptr(arg1); i++ {
+			gTypes = externglib.Type(cret)
+		}
 	}
 
-	return ret1, goret
+	return gTypes
 }
 
-// Preload gets whether data should be preloaded on hover.
+// Preload gets the value of the GtkDropTarget:preload property.
 func (s dropTarget) Preload() bool {
 	var arg0 *C.GtkDropTarget
 
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_drop_target_get_preload(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
-// Value gets the current drop data, as a `GValue`.
-func (s dropTarget) Value() *externglib.Value {
+// Value gets the value of the GtkDropTarget:value property.
+func (s dropTarget) Value() **externglib.Value {
 	var arg0 *C.GtkDropTarget
 
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GValue
-	var goret *externglib.Value
 
 	cret = C.gtk_drop_target_get_value(arg0)
 
-	goret = externglib.ValueFromNative(unsafe.Pointer(cret))
+	var value **externglib.Value
 
-	return goret
+	value = externglib.ValueFromNative(unsafe.Pointer(cret))
+
+	return value
 }
 
 // Reject rejects the ongoing drop operation.
 //
-// If no drop operation is ongoing, i.e when [property@Gtk.DropTarget:drop]
-// is nil, this function does nothing.
+// If no drop operation is ongoing - when GdkDropTarget:drop returns nil -
+// this function does nothing.
 //
 // This function should be used when delaying the decision on whether to
 // accept a drag or not until after reading the data.
@@ -299,16 +311,16 @@ func (s dropTarget) SetActions(actions gdk.DragAction) {
 	C.gtk_drop_target_set_actions(arg0, arg1)
 }
 
-// SetGTypes sets the supported `GTypes` for this drop target.
+// SetGTypes sets the supported #GTypes for this drop target.
 func (s dropTarget) SetGTypes() {
 	var arg0 *C.GtkDropTarget
 
 	arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
-	C.gtk_drop_target_set_gtypes(arg0, arg1, arg2)
+	C.gtk_drop_target_set_gtypes(arg0)
 }
 
-// SetPreload sets whether data should be preloaded on hover.
+// SetPreload sets the GtkDropTarget:preload property.
 func (s dropTarget) SetPreload(preload bool) {
 	var arg0 *C.GtkDropTarget
 	var arg1 C.gboolean

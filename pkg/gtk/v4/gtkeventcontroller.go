@@ -22,19 +22,9 @@ func init() {
 	})
 }
 
-// EventController: `GtkEventController` is the base class for event
-// controllers.
-//
-// These are ancillary objects associated to widgets, which react to
-// `GdkEvents`, and possibly trigger actions as a consequence.
-//
-// Event controllers are added to a widget with
-// [method@Gtk.Widget.add_controller]. It is rarely necessary to explicitly
-// remove a controller with [method@Gtk.Widget.remove_controller].
-//
-// See the chapter of input handling (input-handling.html) for an overview of
-// the basic concepts, such as the capture and bubble phases of even
-// propagation.
+// EventController is a base, low-level implementation for event controllers.
+// Those react to a series of Events, and possibly trigger actions as a
+// consequence of those.
 type EventController interface {
 	gextras.Objector
 
@@ -59,7 +49,9 @@ type EventController interface {
 	PropagationPhase() PropagationPhase
 	// Widget returns the Widget this controller relates to.
 	Widget() Widget
-	// Reset resets the @controller to a clean state.
+	// Reset resets the @controller to a clean state. Every interaction the
+	// controller did through gtk_event_controller_handle_event() will be
+	// dropped at this point.
 	Reset()
 	// SetName sets a name on the controller that can be used for debugging.
 	SetName(name string)
@@ -74,7 +66,8 @@ type EventController interface {
 	// handles events.
 	//
 	// If @phase is GTK_PHASE_NONE, no automatic event handling will be
-	// performed, but other additional gesture maintenance will.
+	// performed, but other additional gesture maintenance will. In that phase,
+	// the events can be managed by calling gtk_event_controller_handle_event().
 	SetPropagationPhase(phase PropagationPhase)
 }
 
@@ -107,13 +100,14 @@ func (c eventController) CurrentEvent() gdk.Event {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkEvent
-	var goret gdk.Event
 
 	cret = C.gtk_event_controller_get_current_event(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Event)
+	var event gdk.Event
 
-	return goret
+	event = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Event)
+
+	return event
 }
 
 // CurrentEventDevice returns the device of the event that is currently
@@ -124,13 +118,14 @@ func (c eventController) CurrentEventDevice() gdk.Device {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GdkDevice
-	var goret gdk.Device
 
 	cret = C.gtk_event_controller_get_current_event_device(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
+	var device gdk.Device
 
-	return goret
+	device = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Device)
+
+	return device
 }
 
 // CurrentEventState returns the modifier state of the event that is
@@ -141,13 +136,14 @@ func (c eventController) CurrentEventState() gdk.ModifierType {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.GdkModifierType
-	var goret gdk.ModifierType
 
 	cret = C.gtk_event_controller_get_current_event_state(arg0)
 
-	goret = gdk.ModifierType(cret)
+	var modifierType gdk.ModifierType
 
-	return goret
+	modifierType = gdk.ModifierType(cret)
+
+	return modifierType
 }
 
 // CurrentEventTime returns the timestamp of the event that is currently
@@ -158,13 +154,14 @@ func (c eventController) CurrentEventTime() uint32 {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.guint32
-	var goret uint32
 
 	cret = C.gtk_event_controller_get_current_event_time(arg0)
 
-	goret = uint32(cret)
+	var guint32 uint32
 
-	return goret
+	guint32 = (uint32)(cret)
+
+	return guint32
 }
 
 // Name gets the name of @controller.
@@ -174,13 +171,14 @@ func (c eventController) Name() string {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_event_controller_get_name(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // PropagationLimit gets the propagation limit of the event controller.
@@ -190,13 +188,14 @@ func (c eventController) PropagationLimit() PropagationLimit {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkPropagationLimit
-	var goret PropagationLimit
 
 	cret = C.gtk_event_controller_get_propagation_limit(arg0)
 
-	goret = PropagationLimit(cret)
+	var propagationLimit PropagationLimit
 
-	return goret
+	propagationLimit = PropagationLimit(cret)
+
+	return propagationLimit
 }
 
 // PropagationPhase gets the propagation phase at which @controller handles
@@ -207,13 +206,14 @@ func (c eventController) PropagationPhase() PropagationPhase {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret C.GtkPropagationPhase
-	var goret PropagationPhase
 
 	cret = C.gtk_event_controller_get_propagation_phase(arg0)
 
-	goret = PropagationPhase(cret)
+	var propagationPhase PropagationPhase
 
-	return goret
+	propagationPhase = PropagationPhase(cret)
+
+	return propagationPhase
 }
 
 // Widget returns the Widget this controller relates to.
@@ -223,16 +223,19 @@ func (c eventController) Widget() Widget {
 	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GtkWidget
-	var goret Widget
 
 	cret = C.gtk_event_controller_get_widget(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	var widget Widget
 
-	return goret
+	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+
+	return widget
 }
 
-// Reset resets the @controller to a clean state.
+// Reset resets the @controller to a clean state. Every interaction the
+// controller did through gtk_event_controller_handle_event() will be
+// dropped at this point.
 func (c eventController) Reset() {
 	var arg0 *C.GtkEventController
 
@@ -273,7 +276,8 @@ func (c eventController) SetPropagationLimit(limit PropagationLimit) {
 // handles events.
 //
 // If @phase is GTK_PHASE_NONE, no automatic event handling will be
-// performed, but other additional gesture maintenance will.
+// performed, but other additional gesture maintenance will. In that phase,
+// the events can be managed by calling gtk_event_controller_handle_event().
 func (c eventController) SetPropagationPhase(phase PropagationPhase) {
 	var arg0 *C.GtkEventController
 	var arg1 C.GtkPropagationPhase

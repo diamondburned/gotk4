@@ -96,13 +96,14 @@ func (g gestureSingle) Button() uint {
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_gesture_single_get_button(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // CurrentButton returns the button number currently interacting with
@@ -113,13 +114,14 @@ func (g gestureSingle) CurrentButton() uint {
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_gesture_single_get_current_button(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // CurrentSequence returns the event sequence currently interacting with
@@ -130,17 +132,18 @@ func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
 
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
-	cret := new(C.GdkEventSequence)
-	var goret *gdk.EventSequence
+	var cret *C.GdkEventSequence
 
 	cret = C.gtk_gesture_single_get_current_sequence(arg0)
 
-	goret = gdk.WrapEventSequence(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *gdk.EventSequence) {
+	var eventSequence *gdk.EventSequence
+
+	eventSequence = gdk.WrapEventSequence(unsafe.Pointer(cret))
+	runtime.SetFinalizer(eventSequence, func(v *gdk.EventSequence) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return eventSequence
 }
 
 // Exclusive gets whether a gesture is exclusive. For more information, see
@@ -151,15 +154,16 @@ func (g gestureSingle) Exclusive() bool {
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gesture_single_get_exclusive(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // TouchOnly returns true if the gesture is only triggered by touch events.
@@ -169,15 +173,16 @@ func (g gestureSingle) TouchOnly() bool {
 	arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_gesture_single_get_touch_only(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetButton sets the button number @gesture listens to. If non-0, every

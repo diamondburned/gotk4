@@ -21,26 +21,21 @@ func init() {
 	})
 }
 
-// GestureDrag: `GtkGestureDrag` is a `GtkGesture` implementation for drags.
-//
-// The drag operation itself can be tracked throughout the
-// [signal@Gtk.GestureDrag::drag-begin], [signal@Gtk.GestureDrag::drag-update]
-// and [signal@Gtk.GestureDrag::drag-end] signals, and the relevant coordinates
-// can be extracted through [method@Gtk.GestureDrag.get_offset] and
-// [method@Gtk.GestureDrag.get_start_point].
+// GestureDrag is a Gesture implementation that recognizes drag operations. The
+// drag operation itself can be tracked throughout the GestureDrag::drag-begin,
+// GestureDrag::drag-update and GestureDrag::drag-end signals, or the relevant
+// coordinates be extracted through gtk_gesture_drag_get_offset() and
+// gtk_gesture_drag_get_start_point().
 type GestureDrag interface {
 	GestureSingle
 
-	// Offset gets the offset from the start point.
-	//
-	// If the @gesture is active, this function returns true and fills in @x and
-	// @y with the coordinates of the current point, as an offset to the
-	// starting drag point.
+	// Offset: if the @gesture is active, this function returns true and fills
+	// in @x and @y with the coordinates of the current point, as an offset to
+	// the starting drag point.
 	Offset() (x float64, y float64, ok bool)
-	// StartPoint gets the point where the drag started.
-	//
-	// If the @gesture is active, this function returns true and fills in @x and
-	// @y with the drag start coordinates, in surface-relative coordinates.
+	// StartPoint: if the @gesture is active, this function returns true and
+	// fills in @x and @y with the drag start coordinates, in window-relative
+	// coordinates.
 	StartPoint() (x float64, y float64, ok bool)
 }
 
@@ -67,67 +62,67 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 
 // NewGestureDrag constructs a class GestureDrag.
 func NewGestureDrag() GestureDrag {
-	cret := new(C.GtkGestureDrag)
-	var goret GestureDrag
+	var cret C.GtkGestureDrag
 
 	cret = C.gtk_gesture_drag_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureDrag)
+	var gestureDrag GestureDrag
 
-	return goret
+	gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureDrag)
+
+	return gestureDrag
 }
 
-// Offset gets the offset from the start point.
-//
-// If the @gesture is active, this function returns true and fills in @x and
-// @y with the coordinates of the current point, as an offset to the
-// starting drag point.
+// Offset: if the @gesture is active, this function returns true and fills
+// in @x and @y with the coordinates of the current point, as an offset to
+// the starting drag point.
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var arg0 *C.GtkGestureDrag
 
 	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	arg1 := new(C.double)
-	var ret1 float64
-	arg2 := new(C.double)
-	var ret2 float64
+	var arg1 C.double
+	var arg2 C.double
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_gesture_drag_get_offset(arg0, arg1, arg2)
+	cret = C.gtk_gesture_drag_get_offset(arg0, &arg1, &arg2)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
+	var x float64
+	var y float64
+	var ok bool
+
+	x = (float64)(arg1)
+	y = (float64)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return x, y, ok
 }
 
-// StartPoint gets the point where the drag started.
-//
-// If the @gesture is active, this function returns true and fills in @x and
-// @y with the drag start coordinates, in surface-relative coordinates.
+// StartPoint: if the @gesture is active, this function returns true and
+// fills in @x and @y with the drag start coordinates, in window-relative
+// coordinates.
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var arg0 *C.GtkGestureDrag
 
 	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	arg1 := new(C.double)
-	var ret1 float64
-	arg2 := new(C.double)
-	var ret2 float64
+	var arg1 C.double
+	var arg2 C.double
 	var cret C.gboolean
-	var goret bool
 
-	cret = C.gtk_gesture_drag_get_start_point(arg0, arg1, arg2)
+	cret = C.gtk_gesture_drag_get_start_point(arg0, &arg1, &arg2)
 
-	ret1 = float64(*arg1)
-	ret2 = float64(*arg2)
+	var x float64
+	var y float64
+	var ok bool
+
+	x = (float64)(arg1)
+	y = (float64)(arg2)
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return ret1, ret2, goret
+	return x, y, ok
 }

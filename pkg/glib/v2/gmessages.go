@@ -110,7 +110,7 @@ func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize,
 	}
 
 	fn := v.(LogWriterFunc)
-	fn(logWriterOutput)
+	logWriterOutput := fn()
 
 	cret = (C.GLogWriterOutput)(logWriterOutput)
 }
@@ -154,8 +154,7 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 // printed.
 //
 // stderr is used for levels G_LOG_LEVEL_ERROR, G_LOG_LEVEL_CRITICAL,
-// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest,
-// unless stderr was requested by g_log_writer_default_set_use_stderr().
+// G_LOG_LEVEL_WARNING and G_LOG_LEVEL_MESSAGE. stdout is used for the rest.
 //
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
@@ -179,13 +178,13 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 //
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
-func LogRemoveHandler(logDomain string, handlerID uint) {
+func LogRemoveHandler(logDomain string, handlerId uint) {
 	var arg1 *C.gchar
 	var arg2 C.guint
 
 	arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.guint(handlerID)
+	arg2 = C.guint(handlerId)
 
 	C.g_log_remove_handler(arg1, arg2)
 }
@@ -212,13 +211,14 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 	arg1 = (C.GLogLevelFlags)(fatalMask)
 
 	var cret C.GLogLevelFlags
-	var goret LogLevelFlags
 
 	cret = C.g_log_set_always_fatal(arg1)
 
-	goret = LogLevelFlags(cret)
+	var logLevelFlags LogLevelFlags
 
-	return goret
+	logLevelFlags = LogLevelFlags(cret)
+
+	return logLevelFlags
 }
 
 // LogSetFatalMask sets the log levels which are fatal in the given domain.
@@ -243,13 +243,14 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 	arg2 = (C.GLogLevelFlags)(fatalMask)
 
 	var cret C.GLogLevelFlags
-	var goret LogLevelFlags
 
 	cret = C.g_log_set_fatal_mask(arg1, arg2)
 
-	goret = LogLevelFlags(cret)
+	var logLevelFlags LogLevelFlags
 
-	return goret
+	logLevelFlags = LogLevelFlags(cret)
+
+	return logLevelFlags
 }
 
 // LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
@@ -259,13 +260,14 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 // Logging][using-structured-logging].
 func LogSetHandlerFull() uint {
 	var cret C.guint
-	var goret uint
 
-	cret = C.g_log_set_handler_full(arg1, arg2, arg3, arg4, arg5)
+	cret = C.g_log_set_handler_full()
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // LogSetWriterFunc: set a writer function which will be called to format and
@@ -278,7 +280,7 @@ func LogSetHandlerFull() uint {
 //
 // There can only be one writer function. It is an error to set more than one.
 func LogSetWriterFunc() {
-	C.g_log_set_writer_func(arg1, arg2, arg3)
+	C.g_log_set_writer_func()
 }
 
 // LogStructuredArray: log a message with structured data. The message will be
@@ -291,7 +293,7 @@ func LogSetWriterFunc() {
 // This assumes that @log_level is already present in @fields (typically as the
 // `PRIORITY` field).
 func LogStructuredArray() {
-	C.g_log_structured_array(arg1, arg2, arg3)
+	C.g_log_structured_array()
 }
 
 // LogVariant: log a message with structured data, accepting the data within a
@@ -324,67 +326,6 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 	C.g_log_variant(arg1, arg2, arg3)
 }
 
-// LogWriterDefaultSetUseStderr: configure whether the built-in log functions
-// (g_log_default_handler() for the old-style API, and both
-// g_log_writer_default() and g_log_writer_standard_streams() for the structured
-// API) will output all log messages to `stderr`.
-//
-// By default, log messages of levels G_LOG_LEVEL_INFO and G_LOG_LEVEL_DEBUG are
-// sent to `stdout`, and other log messages are sent to `stderr`. This is
-// problematic for applications that intend to reserve `stdout` for structured
-// output such as JSON or XML.
-//
-// This function sets global state. It is not thread-aware, and should be called
-// at the very start of a program, before creating any other threads or creating
-// objects that could create worker threads of their own.
-func LogWriterDefaultSetUseStderr(useStderr bool) {
-	var arg1 C.gboolean
-
-	if useStderr {
-		arg1 = C.gboolean(1)
-	}
-
-	C.g_log_writer_default_set_use_stderr(arg1)
-}
-
-// LogWriterDefaultWouldDrop: check whether g_log_writer_default() and
-// g_log_default_handler() would ignore a message with the given domain and
-// level.
-//
-// As with g_log_default_handler(), this function drops debug and informational
-// messages unless their log domain (or `all`) is listed in the space-separated
-// `G_MESSAGES_DEBUG` environment variable.
-//
-// This can be used when implementing log writers with the same filtering
-// behaviour as the default, but a different destination or output format:
-//
-//      if (!g_log_writer_default_would_drop (G_LOG_LEVEL_DEBUG, G_LOG_DOMAIN))
-//        {
-//          gchar *result = expensive_computation (my_object);
-//
-//          g_debug ("my_object result: s", result);
-//          g_free (result);
-//        }
-func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
-	var arg1 C.GLogLevelFlags
-	var arg2 *C.char
-
-	arg1 = (C.GLogLevelFlags)(logLevel)
-	arg2 = (*C.char)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg2))
-
-	var cret C.gboolean
-	var goret bool
-
-	cret = C.g_log_writer_default_would_drop(arg1, arg2)
-
-	if cret {
-		goret = true
-	}
-
-	return goret
-}
-
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a
 // connection to the systemd journal, or something else (like a log file or
 // `stdout` or `stderr`).
@@ -399,15 +340,16 @@ func LogWriterIsJournald(outputFd int) bool {
 	arg1 = C.gint(outputFd)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_log_writer_is_journald(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // LogWriterSupportsColor: check whether the given @output_fd file descriptor
@@ -419,15 +361,16 @@ func LogWriterSupportsColor(outputFd int) bool {
 	arg1 = C.gint(outputFd)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_log_writer_supports_color(arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ReturnIfFailWarning: internal function used to print messages from the public
@@ -510,13 +453,13 @@ func (l *LogField) Key() string {
 // Value gets the field inside the struct.
 func (l *LogField) Value() interface{} {
 	var v interface{}
-	v = interface{}(l.native.value)
+	v = (interface{})(l.native.value)
 	return v
 }
 
 // Length gets the field inside the struct.
 func (l *LogField) Length() int {
 	var v int
-	v = int(l.native.length)
+	v = (int)(l.native.length)
 	return v
 }

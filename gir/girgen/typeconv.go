@@ -9,13 +9,47 @@ import (
 )
 
 // TODO:
-//   - support OutputIsParameter
+//   - support ParameterIsOutput
 //   - support CallerAllocates
+
+// TypeConverted is the result of conversion for a single value.
+//
+// Quick convention note:
+//
+//    - {In,Out}Name is for the original name with no modifications.
+//    - {In,Out}Call is used for the C or Go function arguments.
+//    - {in,out}Set is used for setting the variables.
+//
+// Usually, these are the same, but they're sometimes different depending on the
+// edge case.
+type TypeConverted struct {
+	*ValueProp // original
+
+	InCall    string // use for calls
+	InType    string
+	InDeclare string
+
+	OutCall    string // use for calls
+	OutType    string
+	OutDeclare string
+
+	// InSet  string // internal
+	// OutSet string // internal
+
+	Conversion string
+	ConversionSideEffects
+}
+
+func (c *TypeConverted) finalize() {
+	c.InDeclare = c.inDecl.String()
+	c.OutDeclare = c.outDecl.String()
+	c.Conversion = c.p.String()
+}
 
 // ValueProp describes the generic properties of a Go or C value for conversion.
 type ValueProp struct {
-	In        string
-	Out       string
+	InName    string
+	OutName   string
 	AnyType   gir.AnyType
 	Ownership gir.TransferOwnership
 
@@ -33,9 +67,9 @@ type ValueProp struct {
 	// or length.
 	ParameterIndex *int
 
-	// OutputIsParameter makes the conversion treat this value like an output
+	// ParameterIsOutput makes the conversion treat this value like an output
 	// parameter. Specifically, the output will be dereferenced when it is set.
-	OutputIsParameter bool
+	ParameterIsOutput bool
 
 	// CallerAllocates determines if the converter should take care of
 	// allocating the type or not.
@@ -50,11 +84,7 @@ type ValueProp struct {
 
 // valuePropState wraps around ValueProp for internal use.
 type valuePropState struct {
-	ConversionExtras
-
-	// use these names for setting.
-	setIn  string
-	setOut string
+	TypeConverted
 
 	resolved       *ResolvedType // only for type conversions
 	needsNamespace bool
@@ -64,16 +94,10 @@ type valuePropState struct {
 	outDecl *pen.PaperString
 }
 
-// ConversionExtras contains extra information obtained during conversion.
-type ConversionExtras struct {
-	InType  string
-	OutType string
-}
-
 // errorValueProp is an invalid GoValueProp returned when valueAt errors out.
 var errorValueProp = ValueProp{
-	In:  "NotAvailable",
-	Out: "NotAvailable",
+	InName:  "NotAvailable",
+	OutName: "NotAvailable",
 	AnyType: gir.AnyType{
 		Type: &gir.Type{
 			Name:  "none",
@@ -85,15 +109,15 @@ var errorValueProp = ValueProp{
 // NewValuePropParam creates a ValueProp from the given parameter attribute.
 func NewValuePropParam(in, out string, i *int, param gir.ParameterAttrs) ValueProp {
 	return ValueProp{
-		In:                in,
-		Out:               out,
+		InName:            in,
+		OutName:           out,
 		AnyType:           param.AnyType,
 		Ownership:         param.TransferOwnership,
 		Closure:           param.Closure,
 		Destroy:           param.Destroy,
 		AllowNone:         param.AllowNone,
 		CallerAllocates:   param.CallerAllocates,
-		OutputIsParameter: param.Direction == "out",
+		ParameterIsOutput: param.Direction == "out",
 		ParameterIndex:    i,
 	}
 }
@@ -101,8 +125,8 @@ func NewValuePropParam(in, out string, i *int, param gir.ParameterAttrs) ValuePr
 // NewValuePropReturn creates a new ValueProp from the given return attribute.
 func NewValuePropReturn(in, out string, ret gir.ReturnValue) ValueProp {
 	return ValueProp{
-		In:        in,
-		Out:       out,
+		InName:    in,
+		OutName:   out,
 		AnyType:   ret.AnyType,
 		Ownership: ret.TransferOwnership,
 		AllowNone: ret.Skip || ret.AllowNone,
@@ -115,31 +139,35 @@ func NewValuePropReturn(in, out string, ret gir.ReturnValue) ValueProp {
 // assumed to have a native field.
 func NewValuePropField(recv, out string, field gir.Field) ValueProp {
 	return ValueProp{
-		In:      fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
-		Out:     out,
+		InName:  fmt.Sprintf("%s.native.%s", recv, cgoField(field.Name)),
+		OutName: out,
 		AnyType: field.AnyType,
 	}
 }
 
-// newThrowValue creates a new GError value.
-func newThrowValue(in, out string) ValueProp {
+// NewThrowValue creates a new GError value.
+func NewThrowValue(in, out string) ValueProp {
 	return ValueProp{
-		In:  in,
-		Out: out,
+		InName:  in,
+		OutName: out,
 		AnyType: gir.AnyType{
 			Type: &gir.Type{
 				Name:  "GLib.Error",
 				CType: "GError*",
 			},
 		},
-		AllowNone: true,
+		AllowNone:         true,
+		ParameterIsOutput: true,
 	}
 }
 
 func (value *ValueProp) init() {
 	value.valuePropState = &valuePropState{
-		setIn:   value.In,
-		setOut:  value.Out,
+		TypeConverted: TypeConverted{
+			ValueProp: value,
+			InCall:    value.InName,
+			OutCall:   value.OutName,
+		},
 		p:       pen.NewPaperStringSize(2048), // 2KB
 		inDecl:  pen.NewPaperStringSize(128),  // 0.1KB
 		outDecl: pen.NewPaperStringSize(128),  // 0.1KB
@@ -163,6 +191,12 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 		return false
 	}
 
+	// If this is the output parameter, then the pointer count should be less.
+	// This only affects the Go type.
+	if value.ParameterIsOutput {
+		value.resolved.Ptr--
+	}
+
 	value.needsNamespace = value.resolved.NeedsNamespace(conv.ng.current)
 	if value.needsNamespace {
 		conv.sides.addImportAlias(value.resolved.Import, value.resolved.Package)
@@ -179,20 +213,19 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 		value.InType = goType
 	}
 
-	value.outDecl.Linef("var %s %s", value.Out, value.OutType)
-
 	if inputC && value.outputAllocs() {
-		deref := strings.TrimPrefix(value.InType, "*")
-		value.inDecl.Linef("%s := new(%s)", value.In, deref)
-	} else {
-		value.inDecl.Linef("var %s %s", value.In, value.InType)
+		value.InCall = "&" + value.InCall
+		value.InType = strings.TrimPrefix(value.InType, "*")
 	}
 
-	// Primitive output parameters are returned as values, so we dereference
-	// them on conversion.
-	if value.OutputIsParameter && value.resolved.Builtin != nil {
-		value.setIn = "*" + value.In
-	}
+	value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
+	value.inDecl.Linef("var %s %s", value.InName, value.InType)
+
+	// // Primitive output parameters are returned as values, so we dereference
+	// // them on conversion.
+	// if value.ParameterIsOutput && value.resolved.Builtin != nil {
+	// 	value.setIn = "*" + value.In
+	// }
 
 	// if value.outputIsParameter {
 	// 	if inputC {
@@ -212,13 +245,12 @@ func (value *ValueProp) resolveType(conv *conversionTo, inputC bool) bool {
 // outputAllocs returns true if the parameter is a value we need to allocate
 // ourselves.
 func (value *ValueProp) outputAllocs() bool {
-	return value.isTransferring() ||
-		(value.OutputIsParameter && value.CallerAllocates)
+	return value.ParameterIsOutput && (value.CallerAllocates || value.isTransferring())
 }
 
 // IsZero returns true if ValueProp is empty.
 func (value *ValueProp) IsZero() bool {
-	return value.In == "" || value.Out == ""
+	return value.InName == "" || value.OutName == ""
 }
 
 func (value *ValueProp) loadIgnore(ignores map[int]struct{}) {
@@ -250,7 +282,7 @@ func (prop *ValueProp) isTransferring() bool {
 
 // cgoSetObject generates a glib.Take or glib.AssumeOwnership into a new
 // function.
-func (prop *ValueProp) cgoSetObject(ifaceType string) string {
+func (prop *ValueProp) cgoSetObject() string {
 	var gobjectFunction string
 	if prop.isTransferring() {
 		// Full or container means we implicitly own the object, so we must
@@ -264,7 +296,7 @@ func (prop *ValueProp) cgoSetObject(ifaceType string) string {
 
 	return fmt.Sprintf(
 		"%s = gextras.CastObject(externglib.%s(unsafe.Pointer(%s.Native()))).(%s)",
-		prop.Out, gobjectFunction, prop.In, ifaceType,
+		prop.OutName, gobjectFunction, prop.InName, prop.OutType,
 	)
 }
 
@@ -290,36 +322,14 @@ func (value ValueProp) inner(in, out string) ValueProp {
 	}
 
 	prop := ValueProp{
-		In:        in,
-		Out:       out,
+		InName:    value.InName,
+		OutName:   value.OutName,
 		AnyType:   value.AnyType.Array.AnyType,
 		Ownership: value.Ownership,
 	}
 	prop.init()
 
 	return prop
-}
-
-// TypeConverted is the result of conversion for a single value.
-type TypeConverted struct {
-	*ValueProp
-
-	InDeclare  string
-	OutDeclare string
-	Conversion string
-	ConversionSideEffects
-}
-
-func (conved *TypeConverted) WriteAll(in, out, conv *pen.BlockSection) {
-	if in != nil {
-		in.Linef(conved.InDeclare)
-	}
-	if out != nil {
-		out.Linef(conved.OutDeclare)
-	}
-	if conv != nil {
-		conv.Linef(conved.Conversion)
-	}
 }
 
 // TypeConverter describes a bidirectional type converter between Go and C

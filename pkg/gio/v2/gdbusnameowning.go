@@ -72,10 +72,10 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 // has returned. You should continue to iterate the Context until the Notify
 // function passed to g_bus_own_name() is called, in order to avoid memory leaks
 // through callbacks queued on the Context after it’s stopped being iterated.
-func BusUnownName(ownerID uint) {
+func BusUnownName(ownerId uint) {
 	var arg1 C.guint
 
-	arg1 = C.guint(ownerID)
+	arg1 = C.guint(ownerId)
 
 	C.g_bus_unown_name(arg1)
 }

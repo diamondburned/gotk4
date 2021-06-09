@@ -14,22 +14,24 @@ import "C"
 
 func StrvGetType() externglib.Type {
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_strv_get_type()
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }
 
 func VariantGetGType() externglib.Type {
 	var cret C.GType
-	var goret externglib.Type
 
 	cret = C.g_variant_get_gtype()
 
-	goret = externglib.Type(cret)
+	var gType externglib.Type
 
-	return goret
+	gType = externglib.Type(cret)
+
+	return gType
 }

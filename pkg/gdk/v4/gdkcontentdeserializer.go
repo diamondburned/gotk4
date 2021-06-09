@@ -19,19 +19,15 @@ import (
 import "C"
 
 // ContentDeserializeAsync: read content from the given input stream and
-// deserialize it, asynchronously.
-//
-// The default I/O priority is G_PRIORITY_DEFAULT (i.e. 0), and lower numbers
-// indicate a higher priority.
-//
-// When the operation is finished, @callback will be called. You must then call
-// [func@content_deserialize_finish] to get the result of the operation.
+// deserialize it, asynchronously. When the operation is finished, @callback
+// will be called. You can then call gdk_content_deserialize_finish() to get the
+// result of the operation.
 func ContentDeserializeAsync() {
-	C.gdk_content_deserialize_async(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	C.gdk_content_deserialize_async()
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
-func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) error {
+func ContentDeserializeFinish(result gio.AsyncResult, value **externglib.Value) error {
 	var arg1 *C.GAsyncResult
 	var arg2 *C.GValue
 
@@ -39,17 +35,18 @@ func ContentDeserializeFinish(result gio.AsyncResult, value *externglib.Value) e
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cerr *C.GError
-	var goerr error
 
-	C.gdk_content_deserialize_finish(arg1, arg2, &cerr)
+	C.gdk_content_deserialize_finish(arg1, arg2, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
 	return goerr
 }
 
-// ContentRegisterDeserializer registers a function to deserialize object of a
-// given type.
+// ContentRegisterDeserializer registers a function to create objects of a given
+// @type from a serialized representation with the given mime type.
 func ContentRegisterDeserializer() {
-	C.gdk_content_register_deserializer(arg1, arg2, arg3, arg4, arg5)
+	C.gdk_content_register_deserializer()
 }

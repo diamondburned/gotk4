@@ -22,11 +22,11 @@ func init() {
 	})
 }
 
-// FlattenListModel: `GtkFlattenListModel` is a list model that concatenates
-// other list models.
+// FlattenListModel is a list model that takes a list model containing list
+// models and flattens it into a single model.
 //
-// `GtkFlattenListModel` takes a list model containing list models, and flattens
-// it into a single model.
+// Another term for this is concatenation: FlattenListModel takes a list of
+// lists and concatenates them into a single list.
 type FlattenListModel interface {
 	gextras.Objector
 	gio.ListModel
@@ -68,14 +68,15 @@ func NewFlattenListModel(model gio.ListModel) FlattenListModel {
 
 	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	cret := new(C.GtkFlattenListModel)
-	var goret FlattenListModel
+	var cret C.GtkFlattenListModel
 
 	cret = C.gtk_flatten_list_model_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FlattenListModel)
+	var flattenListModel FlattenListModel
 
-	return goret
+	flattenListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FlattenListModel)
+
+	return flattenListModel
 }
 
 // Model gets the model set via gtk_flatten_list_model_set_model().
@@ -85,13 +86,14 @@ func (s flattenListModel) Model() gio.ListModel {
 	arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GListModel
-	var goret gio.ListModel
 
 	cret = C.gtk_flatten_list_model_get_model(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
 // ModelForItem returns the model containing the item at the given position.
@@ -103,13 +105,14 @@ func (s flattenListModel) ModelForItem(position uint) gio.ListModel {
 	arg1 = C.guint(position)
 
 	var cret *C.GListModel
-	var goret gio.ListModel
 
 	cret = C.gtk_flatten_list_model_get_model_for_item(arg0, arg1)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	var listModel gio.ListModel
 
-	return goret
+	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+
+	return listModel
 }
 
 // SetModel sets a new model to be flattened.

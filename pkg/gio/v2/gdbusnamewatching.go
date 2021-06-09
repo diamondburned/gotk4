@@ -62,10 +62,10 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // Notify function passed to g_bus_watch_name() is called, in order to avoid
 // memory leaks through callbacks queued on the Context after it’s stopped being
 // iterated.
-func BusUnwatchName(watcherID uint) {
+func BusUnwatchName(watcherId uint) {
 	var arg1 C.guint
 
-	arg1 = C.guint(watcherID)
+	arg1 = C.guint(watcherId)
 
 	C.g_bus_unwatch_name(arg1)
 }

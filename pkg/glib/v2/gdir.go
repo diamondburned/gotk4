@@ -58,19 +58,20 @@ func (d *Dir) Close() {
 //
 // On Windows, as is true of all GLib functions which operate on filenames, the
 // returned name is in UTF-8.
-func (d *Dir) ReadName() string {
+func (d *Dir) ReadName() *string {
 	var arg0 *C.GDir
 
 	arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
 
 	var cret *C.gchar
-	var goret string
 
 	cret = C.g_dir_read_name(arg0)
 
-	goret = C.GoString(cret)
+	var filename *string
 
-	return goret
+	filename = C.GoString(cret)
+
+	return filename
 }
 
 // Rewind resets the given directory. The next call to g_dir_read_name() will

@@ -69,7 +69,7 @@ const (
 //
 // See also g_value_type_transformable(), g_value_transform() and
 // g_param_value_validate().
-func ParamValueConvert(pspec ParamSpec, srcValue *externglib.Value, destValue *externglib.Value, strictValidation bool) bool {
+func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue **externglib.Value, strictValidation bool) bool {
 	var arg1 *C.GParamSpec
 	var arg2 *C.GValue
 	var arg3 *C.GValue
@@ -83,20 +83,21 @@ func ParamValueConvert(pspec ParamSpec, srcValue *externglib.Value, destValue *e
 	}
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_param_value_convert(arg1, arg2, arg3, arg4)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ParamValueDefaults checks whether @value contains the default value as
 // specified in @pspec.
-func ParamValueDefaults(pspec ParamSpec, value *externglib.Value) bool {
+func ParamValueDefaults(pspec ParamSpec, value **externglib.Value) bool {
 	var arg1 *C.GParamSpec
 	var arg2 *C.GValue
 
@@ -104,19 +105,20 @@ func ParamValueDefaults(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_param_value_defaults(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ParamValueSetDefault sets @value to its default value as specified in @pspec.
-func ParamValueSetDefault(pspec ParamSpec, value *externglib.Value) {
+func ParamValueSetDefault(pspec ParamSpec, value **externglib.Value) {
 	var arg1 *C.GParamSpec
 	var arg2 *C.GValue
 
@@ -131,7 +133,7 @@ func ParamValueSetDefault(pspec ParamSpec, value *externglib.Value) {
 // integers stored in @value may not be smaller than -42 and not be greater than
 // +42. If @value contains an integer outside of this range, it is modified
 // accordingly, so the resulting value will fit into the range -42 .. +42.
-func ParamValueValidate(pspec ParamSpec, value *externglib.Value) bool {
+func ParamValueValidate(pspec ParamSpec, value **externglib.Value) bool {
 	var arg1 *C.GParamSpec
 	var arg2 *C.GValue
 
@@ -139,21 +141,22 @@ func ParamValueValidate(pspec ParamSpec, value *externglib.Value) bool {
 	arg2 = (*C.GValue)(value.GValue)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_param_value_validate(arg1, arg2)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ParamValuesCmp compares @value1 with @value2 according to @pspec, and return
 // -1, 0 or +1, if @value1 is found to be less than, equal to or greater than
 // @value2, respectively.
-func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externglib.Value) int {
+func ParamValuesCmp(pspec ParamSpec, value1 **externglib.Value, value2 **externglib.Value) int {
 	var arg1 *C.GParamSpec
 	var arg2 *C.GValue
 	var arg3 *C.GValue
@@ -163,13 +166,14 @@ func ParamValuesCmp(pspec ParamSpec, value1 *externglib.Value, value2 *externgli
 	arg3 = (*C.GValue)(value2.GValue)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_param_values_cmp(arg1, arg2, arg3)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // ParamSpecPool: a SpecPool maintains a collection of Specs which can be
@@ -223,17 +227,22 @@ func (p *ParamSpecPool) List(ownerType externglib.Type) []ParamSpec {
 
 	var cret **C.GParamSpec
 	var arg2 *C.guint
-	var goret []ParamSpec
 
-	cret = C.g_param_spec_pool_list(arg0, arg1, arg2)
+	cret = C.g_param_spec_pool_list(arg0, arg1)
 
-	goret = make([]ParamSpec, arg2)
-	for i := 0; i < uintptr(arg2); i++ {
-		src := (*C.GParamSpec)(ptr.Add(unsafe.Pointer(cret), i))
-		goret[i] = gextras.CastObject(externglib.Take(unsafe.Pointer(src.Native()))).(ParamSpec)
+	var paramSpecs []ParamSpec
+
+	{
+		var src []*C.GParamSpec
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg2))
+
+		paramSpecs = make([]ParamSpec, arg2)
+		for i := 0; i < uintptr(arg2); i++ {
+			paramSpecs = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+		}
 	}
 
-	return ret2, goret
+	return paramSpecs
 }
 
 // ListOwned gets an #GList of all Specs owned by @owner_type in the pool.
@@ -244,17 +253,18 @@ func (p *ParamSpecPool) ListOwned(ownerType externglib.Type) *glib.List {
 	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	arg1 = C.GType(ownerType)
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_param_spec_pool_list_owned(arg0, arg1)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // Lookup looks up a Spec in the pool.
@@ -273,13 +283,14 @@ func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walk
 	}
 
 	var cret *C.GParamSpec
-	var goret ParamSpec
 
 	cret = C.g_param_spec_pool_lookup(arg0, arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+	var paramSpec ParamSpec
 
-	return goret
+	paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+
+	return paramSpec
 }
 
 // Remove removes a Spec from the pool.
@@ -327,8 +338,8 @@ func (p *Parameter) Name() string {
 }
 
 // Value gets the field inside the struct.
-func (p *Parameter) Value() *externglib.Value {
-	var v *externglib.Value
+func (p *Parameter) Value() **externglib.Value {
+	var v **externglib.Value
 	v = externglib.ValueFromNative(unsafe.Pointer(p.native.value))
 	return v
 }

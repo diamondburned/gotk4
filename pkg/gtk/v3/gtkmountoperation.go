@@ -72,14 +72,15 @@ func NewMountOperation(parent Window) MountOperation {
 
 	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	cret := new(C.GtkMountOperation)
-	var goret MountOperation
+	var cret C.GtkMountOperation
 
 	cret = C.gtk_mount_operation_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+	var mountOperation MountOperation
 
-	return goret
+	mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+
+	return mountOperation
 }
 
 // Parent gets the transient parent used by the MountOperation
@@ -89,13 +90,14 @@ func (o mountOperation) Parent() Window {
 	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GtkWindow
-	var goret Window
 
 	cret = C.gtk_mount_operation_get_parent(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	var window Window
 
-	return goret
+	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+
+	return window
 }
 
 // Screen gets the screen on which windows of the MountOperation will be
@@ -106,13 +108,14 @@ func (o mountOperation) Screen() gdk.Screen {
 	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret *C.GdkScreen
-	var goret gdk.Screen
 
 	cret = C.gtk_mount_operation_get_screen(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Screen)
+	var screen gdk.Screen
 
-	return goret
+	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Screen)
+
+	return screen
 }
 
 // IsShowing returns whether the MountOperation is currently displaying a
@@ -123,15 +126,16 @@ func (o mountOperation) IsShowing() bool {
 	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_mount_operation_is_showing(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetParent sets the transient parent for windows shown by the

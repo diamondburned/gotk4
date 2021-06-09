@@ -8,6 +8,7 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
@@ -31,7 +32,7 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 	}
 
 	fn := v.(TextBufferDeserializeFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
@@ -40,7 +41,7 @@ func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffe
 
 // TextBufferSerializeFunc: a function that is called to serialize the content
 // of a text buffer. It must return the serialized form of the content.
-type TextBufferSerializeFunc func() (guint8 byte)
+type TextBufferSerializeFunc func() (guint8 *byte)
 
 //export gotk4_TextBufferSerializeFunc
 func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) *C.guint8 {
@@ -50,7 +51,7 @@ func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer,
 	}
 
 	fn := v.(TextBufferSerializeFunc)
-	fn(guint8)
+	guint8 := fn()
 
 	cret = *C.guint8(guint8)
 }

@@ -86,13 +86,14 @@ func (f font) Glyph(wc uint32) uint {
 	arg1 = C.gunichar(wc)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.pango_fc_font_get_glyph(arg0, arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Languages returns the languages that are supported by @font.
@@ -107,13 +108,14 @@ func (f font) Languages() **pango.Language {
 	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 
 	var cret **C.PangoLanguage
-	var goret **pango.Language
 
 	cret = C.pango_fc_font_get_languages(arg0)
 
-	goret = pango.WrapLanguage(unsafe.Pointer(cret))
+	var language **pango.Language
 
-	return goret
+	language = pango.WrapLanguage(unsafe.Pointer(cret))
+
+	return language
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
@@ -125,15 +127,16 @@ func (f font) HasChar(wc uint32) bool {
 	arg1 = C.gunichar(wc)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.pango_fc_font_has_char(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // KernGlyphs: this function used to adjust each adjacent pair of glyphs in

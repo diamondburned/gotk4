@@ -21,19 +21,18 @@ func init() {
 	})
 }
 
-// GesturePan: `GtkGesturePan` is a `GtkGesture` for pan gestures.
+// GesturePan is a Gesture implementation able to recognize pan gestures, those
+// are drags that are locked to happen along one axis. The axis that a
+// GesturePan handles is defined at construct time, and can be changed through
+// gtk_gesture_pan_set_orientation().
 //
-// These are drags that are locked to happen along one axis. The axis that a
-// `GtkGesturePan` handles is defined at construct time, and can be changed
-// through [method@Gtk.GesturePan.set_orientation].
-//
-// When the gesture starts to be recognized, `GtkGesturePan` will attempt to
+// When the gesture starts to be recognized, GesturePan will attempt to
 // determine as early as possible whether the sequence is moving in the expected
 // direction, and denying the sequence if this does not happen.
 //
 // Once a panning gesture along the expected axis is recognized, the
-// [signal@Gtk.GesturePan::pan] signal will be emitted as input events are
-// received, containing the offset in the given axis.
+// GesturePan::pan signal will be emitted as input events are received,
+// containing the offset in the given axis.
 type GesturePan interface {
 	GestureDrag
 
@@ -71,14 +70,15 @@ func NewGesturePan(orientation Orientation) GesturePan {
 
 	arg1 = (C.GtkOrientation)(orientation)
 
-	cret := new(C.GtkGesturePan)
-	var goret GesturePan
+	var cret C.GtkGesturePan
 
 	cret = C.gtk_gesture_pan_new(arg1)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
+	var gesturePan GesturePan
 
-	return goret
+	gesturePan = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
+
+	return gesturePan
 }
 
 // Orientation returns the orientation of the pan gestures that this
@@ -89,13 +89,14 @@ func (g gesturePan) Orientation() Orientation {
 	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 
 	var cret C.GtkOrientation
-	var goret Orientation
 
 	cret = C.gtk_gesture_pan_get_orientation(arg0)
 
-	goret = Orientation(cret)
+	var orientation Orientation
 
-	return goret
+	orientation = Orientation(cret)
+
+	return orientation
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.

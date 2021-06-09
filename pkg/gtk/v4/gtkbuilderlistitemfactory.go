@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -22,23 +21,29 @@ func init() {
 	})
 }
 
-// BuilderListItemFactory: `GtkBuilderListItemFactory` is a `GtkListItemFactory`
-// that creates widgets by instantiating `GtkBuilder` UI templates.
+// BuilderListItemFactory is a ListItemFactory that creates widgets by
+// instantiating Builder UI templates. The templates must be extending ListItem,
+// and typically use Expressions to obtain data from the items in the model.
 //
-// The templates must be extending `GtkListItem`, and typically use
-// `GtkExpression`s to obtain data from the items in the model.
+// Example:
 //
-// Example: “`xml <interface> <template class="GtkListItem"> <property
-// name="child"> <object class="GtkLabel"> <property name="xalign">0</property>
-// <binding name="label"> <lookup name="name" type="SettingsKey"> <lookup
-// name="item">GtkListItem</lookup> </lookup> </binding> </object> </property>
-// </template> </interface> “`
+//    <interface>
+//      <template class="GtkListItem">
+//        <property name="child">
+//          <object class="GtkLabel">
+//            <property name="xalign">0</property>
+//            <binding name="label">
+//              <lookup name="name" type="SettingsKey">
+//                <lookup name="item">GtkListItem</lookup>
+//              </lookup>
+//            </binding>
+//          </object>
+//        </property>
+//      </template>
+//    </interface>
 type BuilderListItemFactory interface {
 	ListItemFactory
 
-	// Bytes gets the data used as the `GtkBuilder` UI template for constructing
-	// listitems.
-	Bytes() *glib.Bytes
 	// Resource: if the data references a resource, gets the path of that
 	// resource.
 	Resource() string
@@ -67,24 +72,6 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	return WrapBuilderListItemFactory(obj), nil
 }
 
-// NewBuilderListItemFactoryFromBytes constructs a class BuilderListItemFactory.
-func NewBuilderListItemFactoryFromBytes(scope BuilderScope, bytes *glib.Bytes) BuilderListItemFactory {
-	var arg1 *C.GtkBuilderScope
-	var arg2 *C.GBytes
-
-	arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
-	arg2 = (*C.GBytes)(unsafe.Pointer(bytes.Native()))
-
-	cret := new(C.GtkBuilderListItemFactory)
-	var goret BuilderListItemFactory
-
-	cret = C.gtk_builder_list_item_factory_new_from_bytes(arg1, arg2)
-
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
-
-	return goret
-}
-
 // NewBuilderListItemFactoryFromResource constructs a class BuilderListItemFactory.
 func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) BuilderListItemFactory {
 	var arg1 *C.GtkBuilderScope
@@ -94,31 +81,15 @@ func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath stri
 	arg2 = (*C.char)(C.CString(resourcePath))
 	defer C.free(unsafe.Pointer(arg2))
 
-	cret := new(C.GtkBuilderListItemFactory)
-	var goret BuilderListItemFactory
+	var cret C.GtkBuilderListItemFactory
 
 	cret = C.gtk_builder_list_item_factory_new_from_resource(arg1, arg2)
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
+	var builderListItemFactory BuilderListItemFactory
 
-	return goret
-}
+	builderListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
 
-// Bytes gets the data used as the `GtkBuilder` UI template for constructing
-// listitems.
-func (s builderListItemFactory) Bytes() *glib.Bytes {
-	var arg0 *C.GtkBuilderListItemFactory
-
-	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
-
-	var cret *C.GBytes
-	var goret *glib.Bytes
-
-	cret = C.gtk_builder_list_item_factory_get_bytes(arg0)
-
-	goret = glib.WrapBytes(unsafe.Pointer(cret))
-
-	return goret
+	return builderListItemFactory
 }
 
 // Resource: if the data references a resource, gets the path of that
@@ -129,13 +100,14 @@ func (s builderListItemFactory) Resource() string {
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
 	var cret *C.char
-	var goret string
 
 	cret = C.gtk_builder_list_item_factory_get_resource(arg0)
 
-	goret = C.GoString(cret)
+	var utf8 string
 
-	return goret
+	utf8 = C.GoString(cret)
+
+	return utf8
 }
 
 // Scope gets the scope used when constructing listitems.
@@ -145,11 +117,12 @@ func (s builderListItemFactory) Scope() BuilderScope {
 	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
 	var cret *C.GtkBuilderScope
-	var goret BuilderScope
 
 	cret = C.gtk_builder_list_item_factory_get_scope(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(BuilderScope)
+	var builderScope BuilderScope
 
-	return goret
+	builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(BuilderScope)
+
+	return builderScope
 }

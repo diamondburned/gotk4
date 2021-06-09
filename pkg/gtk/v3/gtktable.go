@@ -148,13 +148,14 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 	}
 
 	var cret C.GtkTable
-	var goret Table
 
 	cret = C.gtk_table_new(arg1, arg2, arg3)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Table)
+	var table Table
 
-	return goret
+	table = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Table)
+
+	return table
 }
 
 // Attach adds a widget to a table. The number of “cells” that a widget will
@@ -232,13 +233,14 @@ func (t table) ColSpacing(column uint) uint {
 	arg1 = C.guint(column)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_table_get_col_spacing(arg0, arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // DefaultColSpacing gets the default column spacing for the table. This is
@@ -250,13 +252,14 @@ func (t table) DefaultColSpacing() uint {
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_table_get_default_col_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // DefaultRowSpacing gets the default row spacing for the table. This is the
@@ -268,13 +271,14 @@ func (t table) DefaultRowSpacing() uint {
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_table_get_default_row_spacing(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Homogeneous returns whether the table cells are all constrained to the
@@ -285,15 +289,16 @@ func (t table) Homogeneous() bool {
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_table_get_homogeneous(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RowSpacing gets the amount of space between row @row, and row @row + 1.
@@ -306,13 +311,14 @@ func (t table) RowSpacing(row uint) uint {
 	arg1 = C.guint(row)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.gtk_table_get_row_spacing(arg0, arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Size gets the number of rows and columns in the table.
@@ -321,17 +327,18 @@ func (t table) Size() (rows uint, columns uint) {
 
 	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	arg1 := new(C.guint)
-	var ret1 uint
-	arg2 := new(C.guint)
-	var ret2 uint
+	var arg1 C.guint
+	var arg2 C.guint
 
-	C.gtk_table_get_size(arg0, arg1, arg2)
+	C.gtk_table_get_size(arg0, &arg1, &arg2)
 
-	ret1 = uint(*arg1)
-	ret2 = uint(*arg2)
+	var rows uint
+	var columns uint
 
-	return ret1, ret2
+	rows = (uint)(arg1)
+	columns = (uint)(arg2)
+
+	return rows, columns
 }
 
 // Resize: if you need to change a table’s size after it has been created,
@@ -448,42 +455,42 @@ func (t *TableChild) Widget() Widget {
 // LeftAttach gets the field inside the struct.
 func (t *TableChild) LeftAttach() uint16 {
 	var v uint16
-	v = uint16(t.native.left_attach)
+	v = (uint16)(t.native.left_attach)
 	return v
 }
 
 // RightAttach gets the field inside the struct.
 func (t *TableChild) RightAttach() uint16 {
 	var v uint16
-	v = uint16(t.native.right_attach)
+	v = (uint16)(t.native.right_attach)
 	return v
 }
 
 // TopAttach gets the field inside the struct.
 func (t *TableChild) TopAttach() uint16 {
 	var v uint16
-	v = uint16(t.native.top_attach)
+	v = (uint16)(t.native.top_attach)
 	return v
 }
 
 // BottomAttach gets the field inside the struct.
 func (t *TableChild) BottomAttach() uint16 {
 	var v uint16
-	v = uint16(t.native.bottom_attach)
+	v = (uint16)(t.native.bottom_attach)
 	return v
 }
 
 // Xpadding gets the field inside the struct.
 func (t *TableChild) Xpadding() uint16 {
 	var v uint16
-	v = uint16(t.native.xpadding)
+	v = (uint16)(t.native.xpadding)
 	return v
 }
 
 // Ypadding gets the field inside the struct.
 func (t *TableChild) Ypadding() uint16 {
 	var v uint16
-	v = uint16(t.native.ypadding)
+	v = (uint16)(t.native.ypadding)
 	return v
 }
 
@@ -514,20 +521,20 @@ func (t *TableRowCol) Native() unsafe.Pointer {
 // Requisition gets the field inside the struct.
 func (t *TableRowCol) Requisition() uint16 {
 	var v uint16
-	v = uint16(t.native.requisition)
+	v = (uint16)(t.native.requisition)
 	return v
 }
 
 // Allocation gets the field inside the struct.
 func (t *TableRowCol) Allocation() uint16 {
 	var v uint16
-	v = uint16(t.native.allocation)
+	v = (uint16)(t.native.allocation)
 	return v
 }
 
 // Spacing gets the field inside the struct.
 func (t *TableRowCol) Spacing() uint16 {
 	var v uint16
-	v = uint16(t.native.spacing)
+	v = (uint16)(t.native.spacing)
 	return v
 }

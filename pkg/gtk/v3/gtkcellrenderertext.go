@@ -68,13 +68,14 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 // NewCellRendererText constructs a class CellRendererText.
 func NewCellRendererText() CellRendererText {
 	var cret C.GtkCellRendererText
-	var goret CellRendererText
 
 	cret = C.gtk_cell_renderer_text_new()
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererText)
+	var cellRendererText CellRendererText
 
-	return goret
+	cellRendererText = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererText)
+
+	return cellRendererText
 }
 
 // SetFixedHeightFromFont sets the height of a renderer to explicitly be

@@ -44,7 +44,7 @@ func (t *ThreadPool) Native() unsafe.Pointer {
 // UserData gets the field inside the struct.
 func (t *ThreadPool) UserData() interface{} {
 	var v interface{}
-	v = interface{}(t.native.user_data)
+	v = (interface{})(t.native.user_data)
 	return v
 }
 
@@ -92,13 +92,14 @@ func (p *ThreadPool) MaxThreads() int {
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_thread_pool_get_max_threads(arg0)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // NumThreads returns the number of threads currently running in @pool.
@@ -108,13 +109,14 @@ func (p *ThreadPool) NumThreads() uint {
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_thread_pool_get_num_threads(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // MoveToFront moves the item to the front of the queue of unprocessed items, so
@@ -127,15 +129,16 @@ func (p *ThreadPool) MoveToFront(data interface{}) bool {
 	arg1 = C.gpointer(data)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_thread_pool_move_to_front(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Push inserts @data into the list of tasks to be executed by @pool.
@@ -158,9 +161,10 @@ func (p *ThreadPool) Push(data interface{}) error {
 	arg1 = C.gpointer(data)
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_thread_pool_push(arg0, arg1, &cerr)
+	C.g_thread_pool_push(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -193,9 +197,10 @@ func (p *ThreadPool) SetMaxThreads(maxThreads int) error {
 	arg1 = C.gint(maxThreads)
 
 	var cerr *C.GError
-	var goerr error
 
-	C.g_thread_pool_set_max_threads(arg0, arg1, &cerr)
+	C.g_thread_pool_set_max_threads(arg0, arg1, cerr)
+
+	var goerr error
 
 	goerr = gerror.Take(unsafe.Pointer(cerr))
 
@@ -215,7 +220,7 @@ func (p *ThreadPool) SetSortFunction() {
 
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
-	C.g_thread_pool_set_sort_function(arg0, arg1, arg2)
+	C.g_thread_pool_set_sort_function(arg0)
 }
 
 // Unprocessed returns the number of tasks still unprocessed in @pool.
@@ -225,11 +230,12 @@ func (p *ThreadPool) Unprocessed() uint {
 	arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_thread_pool_unprocessed(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }

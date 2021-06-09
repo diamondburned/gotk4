@@ -70,13 +70,14 @@ func (q *Queue) Copy() *Queue {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret *C.GQueue
-	var goret *Queue
 
 	cret = C.g_queue_copy(arg0)
 
-	goret = WrapQueue(unsafe.Pointer(cret))
+	var ret *Queue
 
-	return goret
+	ret = WrapQueue(unsafe.Pointer(cret))
+
+	return ret
 }
 
 // DeleteLink removes @link_ from @queue and frees it.
@@ -101,13 +102,14 @@ func (q *Queue) Find(data interface{}) *List {
 	arg1 = C.gpointer(data)
 
 	var cret *C.GList
-	var goret *List
 
 	cret = C.g_queue_find(arg0, arg1)
 
-	goret = WrapList(unsafe.Pointer(cret))
+	var list *List
 
-	return goret
+	list = WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // Foreach calls @func for each element in the queue passing @user_data to the
@@ -120,7 +122,7 @@ func (q *Queue) Foreach() {
 
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_foreach(arg0, arg1, arg2)
+	C.g_queue_foreach(arg0)
 }
 
 // Free frees the memory allocated for the #GQueue. Only call this function if
@@ -144,13 +146,14 @@ func (q *Queue) Length() uint {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_queue_get_length(arg0)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Index returns the position of the first element in @queue which contains
@@ -163,13 +166,14 @@ func (q *Queue) Index(data interface{}) int {
 	arg1 = C.gpointer(data)
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_queue_index(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // Init: a statically-allocated #GQueue must be initialized with this function
@@ -252,7 +256,7 @@ func (q *Queue) InsertSorted() {
 
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_insert_sorted(arg0, arg1, arg2, arg3)
+	C.g_queue_insert_sorted(arg0)
 }
 
 // IsEmpty returns true if the queue is empty.
@@ -262,15 +266,16 @@ func (q *Queue) IsEmpty() bool {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_queue_is_empty(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // LinkIndex returns the position of @link_ in @queue.
@@ -282,13 +287,14 @@ func (q *Queue) LinkIndex(link_ *List) int {
 	arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
 	var cret C.gint
-	var goret int
 
 	cret = C.g_queue_link_index(arg0, arg1)
 
-	goret = int(cret)
+	var gint int
 
-	return goret
+	gint = (int)(cret)
+
+	return gint
 }
 
 // PeekHead returns the first element of the queue.
@@ -298,13 +304,14 @@ func (q *Queue) PeekHead() interface{} {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_queue_peek_head(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PeekHeadLink returns the first link in @queue.
@@ -314,13 +321,14 @@ func (q *Queue) PeekHeadLink() *List {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret *C.GList
-	var goret *List
 
 	cret = C.g_queue_peek_head_link(arg0)
 
-	goret = WrapList(unsafe.Pointer(cret))
+	var list *List
 
-	return goret
+	list = WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // PeekNth returns the @n'th element of @queue.
@@ -332,13 +340,14 @@ func (q *Queue) PeekNth(n uint) interface{} {
 	arg1 = C.guint(n)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_queue_peek_nth(arg0, arg1)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PeekNthLink returns the link at the given position
@@ -350,13 +359,14 @@ func (q *Queue) PeekNthLink(n uint) *List {
 	arg1 = C.guint(n)
 
 	var cret *C.GList
-	var goret *List
 
 	cret = C.g_queue_peek_nth_link(arg0, arg1)
 
-	goret = WrapList(unsafe.Pointer(cret))
+	var list *List
 
-	return goret
+	list = WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // PeekTail returns the last element of the queue.
@@ -366,13 +376,14 @@ func (q *Queue) PeekTail() interface{} {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_queue_peek_tail(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PeekTailLink returns the last link in @queue.
@@ -382,13 +393,14 @@ func (q *Queue) PeekTailLink() *List {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret *C.GList
-	var goret *List
 
 	cret = C.g_queue_peek_tail_link(arg0)
 
-	goret = WrapList(unsafe.Pointer(cret))
+	var list *List
 
-	return goret
+	list = WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // PopHead removes the first element of the queue and returns its data.
@@ -398,13 +410,14 @@ func (q *Queue) PopHead() interface{} {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_queue_pop_head(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PopHeadLink removes and returns the first element of the queue.
@@ -414,13 +427,14 @@ func (q *Queue) PopHeadLink() *List {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret *C.GList
-	var goret *List
 
 	cret = C.g_queue_pop_head_link(arg0)
 
-	goret = WrapList(unsafe.Pointer(cret))
+	var list *List
 
-	return goret
+	list = WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // PopNth removes the @n'th element of @queue and returns its data.
@@ -432,13 +446,14 @@ func (q *Queue) PopNth(n uint) interface{} {
 	arg1 = C.guint(n)
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_queue_pop_nth(arg0, arg1)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PopNthLink removes and returns the link at the given position.
@@ -450,13 +465,14 @@ func (q *Queue) PopNthLink(n uint) *List {
 	arg1 = C.guint(n)
 
 	var cret *C.GList
-	var goret *List
 
 	cret = C.g_queue_pop_nth_link(arg0, arg1)
 
-	goret = WrapList(unsafe.Pointer(cret))
+	var list *List
 
-	return goret
+	list = WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // PopTail removes the last element of the queue and returns its data.
@@ -466,13 +482,14 @@ func (q *Queue) PopTail() interface{} {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_queue_pop_tail(arg0)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // PopTailLink removes and returns the last element of the queue.
@@ -482,13 +499,14 @@ func (q *Queue) PopTailLink() *List {
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
 	var cret *C.GList
-	var goret *List
 
 	cret = C.g_queue_pop_tail_link(arg0)
 
-	goret = WrapList(unsafe.Pointer(cret))
+	var list *List
 
-	return goret
+	list = WrapList(unsafe.Pointer(cret))
+
+	return list
 }
 
 // PushHead adds a new element at the head of the queue.
@@ -570,15 +588,16 @@ func (q *Queue) Remove(data interface{}) bool {
 	arg1 = C.gpointer(data)
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_queue_remove(arg0, arg1)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // RemoveAll: remove all elements whose data equals @data from @queue.
@@ -590,13 +609,14 @@ func (q *Queue) RemoveAll(data interface{}) uint {
 	arg1 = C.gpointer(data)
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_queue_remove_all(arg0, arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // Reverse reverses the order of the items in @queue.
@@ -614,7 +634,7 @@ func (q *Queue) Sort() {
 
 	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_sort(arg0, arg1, arg2)
+	C.g_queue_sort(arg0)
 }
 
 // Unlink unlinks @link_ so that it will no longer be part of @queue. The link

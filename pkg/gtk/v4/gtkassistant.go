@@ -15,13 +15,10 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-// AssistantPageFunc: type of callback used to calculate the next page in a
-// `GtkAssistant`.
-//
-// It’s called both for computing the next page when the user presses the
-// “forward” button and for handling the behavior of the “last” button.
-//
-// See [method@Gtk.Assistant.set_forward_page_func].
+// AssistantPageFunc: a function used by gtk_assistant_set_forward_page_func()
+// to know which is the next page given a current one. It’s called both for
+// computing the next page when the user presses the “forward” button and for
+// handling the behavior of the “last” button.
 type AssistantPageFunc func() (gint int)
 
 //export gotk4_AssistantPageFunc
@@ -32,7 +29,7 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 	}
 
 	fn := v.(AssistantPageFunc)
-	fn(gint)
+	gint := fn()
 
 	cret = C.int(gint)
 }

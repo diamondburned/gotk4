@@ -22,13 +22,11 @@ func init() {
 	})
 }
 
-// OverlayLayout: `GtkOverlayLayout` is the layout manager used by `GtkOverlay`.
-//
-// It places widgets as overlays on top of the main child.
+// OverlayLayout: gtkOverlayLayout is the layout manager used by Overlay. It
+// places widgets as overlays on top of the main child.
 //
 // This is not a reusable layout manager, since it expects its widget to be a
-// `GtkOverlay`. It only listed here so that its layout properties get
-// documented.
+// Overlay. It only listed here so that its layout properties get documented.
 type OverlayLayout interface {
 	LayoutManager
 }
@@ -56,18 +54,17 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 
 // NewOverlayLayout constructs a class OverlayLayout.
 func NewOverlayLayout() OverlayLayout {
-	cret := new(C.GtkOverlayLayout)
-	var goret OverlayLayout
+	var cret C.GtkOverlayLayout
 
 	cret = C.gtk_overlay_layout_new()
 
-	goret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(OverlayLayout)
+	var overlayLayout OverlayLayout
 
-	return goret
+	overlayLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(OverlayLayout)
+
+	return overlayLayout
 }
 
-// OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
-// `GtkOverlayLayout`.
 type OverlayLayoutChild interface {
 	LayoutChild
 
@@ -109,15 +106,16 @@ func (c overlayLayoutChild) ClipOverlay() bool {
 	arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_overlay_layout_child_get_clip_overlay(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // Measure retrieves whether the child is measured.
@@ -127,15 +125,16 @@ func (c overlayLayoutChild) Measure() bool {
 	arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.gtk_overlay_layout_child_get_measure(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // SetClipOverlay sets whether to clip this child.

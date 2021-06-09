@@ -30,7 +30,7 @@ func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboo
 	}
 
 	fn := v.(RecentFilterFunc)
-	fn(ok)
+	ok := fn()
 
 	if ok {
 		cret = C.gboolean(1)
@@ -103,10 +103,12 @@ func (r *RecentFilterInfo) Applications() []string {
 			}
 		}
 
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(r.native.applications), int(length))
+
 		v = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(r.native.applications), i))
-			v[i] = C.GoString(src)
+			v = C.GoString(r.native.applications)
 		}
 	}
 	return v
@@ -124,10 +126,12 @@ func (r *RecentFilterInfo) Groups() []string {
 			}
 		}
 
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(r.native.groups), int(length))
+
 		v = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			src := (*C.gchar)(ptr.Add(unsafe.Pointer(r.native.groups), i))
-			v[i] = C.GoString(src)
+			v = C.GoString(r.native.groups)
 		}
 	}
 	return v
@@ -136,6 +140,6 @@ func (r *RecentFilterInfo) Groups() []string {
 // Age gets the field inside the struct.
 func (r *RecentFilterInfo) Age() int {
 	var v int
-	v = int(r.native.age)
+	v = (int)(r.native.age)
 	return v
 }

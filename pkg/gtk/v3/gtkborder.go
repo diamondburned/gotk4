@@ -46,17 +46,18 @@ func marshalBorder(p uintptr) (interface{}, error) {
 
 // NewBorder constructs a struct Border.
 func NewBorder() *Border {
-	cret := new(C.GtkBorder)
-	var goret *Border
+	var cret *C.GtkBorder
 
 	cret = C.gtk_border_new()
 
-	goret = WrapBorder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Border) {
+	var border *Border
+
+	border = WrapBorder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(border, func(v *Border) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return border
 }
 
 // Native returns the underlying C source pointer.
@@ -67,28 +68,28 @@ func (b *Border) Native() unsafe.Pointer {
 // Left gets the field inside the struct.
 func (b *Border) Left() int16 {
 	var v int16
-	v = int16(b.native.left)
+	v = (int16)(b.native.left)
 	return v
 }
 
 // Right gets the field inside the struct.
 func (b *Border) Right() int16 {
 	var v int16
-	v = int16(b.native.right)
+	v = (int16)(b.native.right)
 	return v
 }
 
 // Top gets the field inside the struct.
 func (b *Border) Top() int16 {
 	var v int16
-	v = int16(b.native.top)
+	v = (int16)(b.native.top)
 	return v
 }
 
 // Bottom gets the field inside the struct.
 func (b *Border) Bottom() int16 {
 	var v int16
-	v = int16(b.native.bottom)
+	v = (int16)(b.native.bottom)
 	return v
 }
 
@@ -98,17 +99,18 @@ func (b *Border) Copy() *Border {
 
 	arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
 
-	cret := new(C.GtkBorder)
-	var goret *Border
+	var cret *C.GtkBorder
 
 	cret = C.gtk_border_copy(arg0)
 
-	goret = WrapBorder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *Border) {
+	var border *Border
+
+	border = WrapBorder(unsafe.Pointer(cret))
+	runtime.SetFinalizer(border, func(v *Border) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return border
 }
 
 // Free frees a Border-struct.

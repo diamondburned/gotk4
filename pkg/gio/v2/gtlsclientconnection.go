@@ -101,7 +101,7 @@ type TLSClientConnection interface {
 	// using TLS 1.0 is no longer considered acceptable.
 	//
 	// Since GLib 2.64, this function does nothing.
-	SetUseSSL3(useSSL3 bool)
+	SetUseSSL3(useSsl3 bool)
 	// SetValidationFlags sets @conn's validation flags, to override the default
 	// set of checks performed when validating a server certificate. By default,
 	// G_TLS_CERTIFICATE_VALIDATE_ALL is used.
@@ -178,17 +178,18 @@ func (c tlsClientConnection) AcceptedCAS() *glib.List {
 
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	cret := new(C.GList)
-	var goret *glib.List
+	var cret *C.GList
 
 	cret = C.g_tls_client_connection_get_accepted_cas(arg0)
 
-	goret = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(goret, func(v *glib.List) {
+	var list *glib.List
+
+	list = glib.WrapList(unsafe.Pointer(cret))
+	runtime.SetFinalizer(list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return goret
+	return list
 }
 
 // ServerIdentity gets @conn's expected server identity
@@ -198,13 +199,14 @@ func (c tlsClientConnection) ServerIdentity() SocketConnectable {
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret *C.GSocketConnectable
-	var goret SocketConnectable
 
 	cret = C.g_tls_client_connection_get_server_identity(arg0)
 
-	goret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
+	var socketConnectable SocketConnectable
 
-	return goret
+	socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
+
+	return socketConnectable
 }
 
 // UseSSL3: SSL 3.0 is no longer supported. See
@@ -215,15 +217,16 @@ func (c tlsClientConnection) UseSSL3() bool {
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.gboolean
-	var goret bool
 
 	cret = C.g_tls_client_connection_get_use_ssl3(arg0)
 
+	var ok bool
+
 	if cret {
-		goret = true
+		ok = true
 	}
 
-	return goret
+	return ok
 }
 
 // ValidationFlags gets @conn's validation flags
@@ -233,13 +236,14 @@ func (c tlsClientConnection) ValidationFlags() TLSCertificateFlags {
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
 	var cret C.GTlsCertificateFlags
-	var goret TLSCertificateFlags
 
 	cret = C.g_tls_client_connection_get_validation_flags(arg0)
 
-	goret = TLSCertificateFlags(cret)
+	var tlsCertificateFlags TLSCertificateFlags
 
-	return goret
+	tlsCertificateFlags = TLSCertificateFlags(cret)
+
+	return tlsCertificateFlags
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used
@@ -265,12 +269,12 @@ func (c tlsClientConnection) SetServerIdentity(identity SocketConnectable) {
 // using TLS 1.0 is no longer considered acceptable.
 //
 // Since GLib 2.64, this function does nothing.
-func (c tlsClientConnection) SetUseSSL3(useSSL3 bool) {
+func (c tlsClientConnection) SetUseSSL3(useSsl3 bool) {
 	var arg0 *C.GTlsClientConnection
 	var arg1 C.gboolean
 
 	arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
-	if useSSL3 {
+	if useSsl3 {
 		arg1 = C.gboolean(1)
 	}
 

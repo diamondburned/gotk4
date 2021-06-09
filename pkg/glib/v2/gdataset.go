@@ -43,7 +43,7 @@ func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 	}
 
 	fn := v.(DuplicateFunc)
-	fn(gpointer)
+	gpointer := fn()
 
 	cret = C.gpointer(gpointer)
 }
@@ -68,7 +68,7 @@ func DatalistClear(datalist **Data) {
 // changes made during the g_datalist_foreach() call, other than skipping over
 // elements that are removed.
 func DatalistForeach() {
-	C.g_datalist_foreach(arg1, arg2, arg3)
+	C.g_datalist_foreach()
 }
 
 // DatalistGetData gets a data element, using its string identifier. This is
@@ -82,13 +82,14 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 	defer C.free(unsafe.Pointer(arg2))
 
 	var cret C.gpointer
-	var goret interface{}
 
 	cret = C.g_datalist_get_data(arg1, arg2)
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // DatalistGetFlags gets flags values packed in together with the datalist. See
@@ -99,13 +100,14 @@ func DatalistGetFlags(datalist **Data) uint {
 	arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
 	var cret C.guint
-	var goret uint
 
 	cret = C.g_datalist_get_flags(arg1)
 
-	goret = uint(cret)
+	var guint uint
 
-	return goret
+	guint = (uint)(cret)
+
+	return guint
 }
 
 // DatalistIDDupData: this is a variant of g_datalist_id_get_data() which
@@ -123,13 +125,14 @@ func DatalistGetFlags(datalist **Data) uint {
 // the same datalist and the same key.
 func DatalistIDDupData() interface{} {
 	var cret C.gpointer
-	var goret interface{}
 
-	cret = C.g_datalist_id_dup_data(arg1, arg2, arg3, arg4)
+	cret = C.g_datalist_id_dup_data()
 
-	goret = interface{}(cret)
+	var gpointer interface{}
 
-	return goret
+	gpointer = (interface{})(cret)
+
+	return gpointer
 }
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call
@@ -188,7 +191,7 @@ func DatasetDestroy(datasetLocation interface{}) {
 // changes made during the g_dataset_foreach() call, other than skipping over
 // elements that are removed.
 func DatasetForeach() {
-	C.g_dataset_foreach(arg1, arg2, arg3)
+	C.g_dataset_foreach()
 }
 
 // Data: the #GData struct is an opaque data structure to represent a [Keyed

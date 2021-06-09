@@ -16,7 +16,13 @@ changed where they don't have to be.
 
 ### Using Nix for development
 
-To use Nix for developing, simply run
+If you haven't installed [Nix][nix] yet, see the [Install Nix][install-nix]
+section of the Nix guides. The prerequisite is "any Linux distribution, macOS
+[or] Windows (via WSL)."
+
+[install-nix]: https://nixos.org/guides/install-nix.html
+
+Afterwards, to use Nix for developing, simply run
 
 ```sh
 nix-shell ./shell.nix
@@ -69,8 +75,7 @@ contributing to this project.
    (including GoLand). This ensures that no sections of the manually-written
    code are changed unnecessarily. It would be a given that all contributions
    should also be formatted using `goimports` (or `go fmt` if no imports were
-   changed).
-   	 1.1. As a sidenote, `goimports` is included in the Nix shell.
+   changed). As a sidenote, `goimports` is included in the Nix shell.
 2. `.gitignore` files should be avoided to not clutter the repository up.
    Developers using editors that produce scrap files should add them to
    their own `.git/info/exclude`.

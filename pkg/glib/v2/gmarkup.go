@@ -120,23 +120,23 @@ const (
 // carriage return. The character references in this range are not valid XML
 // 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup parser.
 func MarkupEscapeText(text string, length int) string {
-	var arg1 *C.gchar
-	var arg2 C.gssize
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
 
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gssize(length)
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_markup_escape_text(arg1, arg2)
+	cret = C.g_markup_escape_text(_arg1, _arg2)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // MarkupParseContext: a parse context is used to parse a stream of bytes that
@@ -173,19 +173,19 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 // This function reports an error if the document isn't complete, for example if
 // elements are still open.
 func (c *MarkupParseContext) EndParse() error {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_markup_parse_context_end_parse(arg0, cerr)
+	C.g_markup_parse_context_end_parse(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // Free frees a ParseContext.
@@ -193,11 +193,11 @@ func (c *MarkupParseContext) EndParse() error {
 // This function can't be called from inside one of the Parser functions or
 // while a subparser is pushed.
 func (c *MarkupParseContext) Free() {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	C.g_markup_parse_context_free(arg0)
+	C.g_markup_parse_context_free(_arg0)
 }
 
 // Element retrieves the name of the currently open element.
@@ -206,19 +206,19 @@ func (c *MarkupParseContext) Free() {
 // element_name as passed to those functions. For the parent elements, see
 // g_markup_parse_context_get_element_stack().
 func (c *MarkupParseContext) Element() string {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_markup_parse_context_get_element(arg0)
+	cret = C.g_markup_parse_context_get_element(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // ElementStack retrieves the element stack from the internal state of the
@@ -232,19 +232,19 @@ func (c *MarkupParseContext) Element() string {
 // handlers where g_markup_parse_context_get_element() would merely return the
 // name of the element that is being processed.
 func (c *MarkupParseContext) ElementStack() *SList {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSList
+	var _cret *C.GSList
 
-	cret = C.g_markup_parse_context_get_element_stack(arg0)
+	cret = C.g_markup_parse_context_get_element_stack(_arg0)
 
-	var sList *SList
+	var _sList *SList
 
-	sList = WrapSList(unsafe.Pointer(cret))
+	_sList = WrapSList(unsafe.Pointer(_cret))
 
-	return sList
+	return _sList
 }
 
 // Position retrieves the current line number and the number of the character on
@@ -252,22 +252,22 @@ func (c *MarkupParseContext) ElementStack() *SList {
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages."
 func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.gint
-	var arg2 C.gint
+	var _arg1 C.gint
+	var _arg2 C.gint
 
-	C.g_markup_parse_context_get_position(arg0, &arg1, &arg2)
+	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
-	var lineNumber int
-	var charNumber int
+	var _lineNumber int
+	var _charNumber int
 
-	lineNumber = (int)(arg1)
-	charNumber = (int)(arg2)
+	_lineNumber = (int)(_arg1)
+	_charNumber = (int)(_arg2)
 
-	return lineNumber, charNumber
+	return _lineNumber, _charNumber
 }
 
 // UserData returns the user_data associated with @context.
@@ -276,19 +276,19 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 // g_markup_parse_context_new() or to the most recent call of
 // g_markup_parse_context_push().
 func (c *MarkupParseContext) UserData() interface{} {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_markup_parse_context_get_user_data(arg0)
+	cret = C.g_markup_parse_context_get_user_data(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Parse: feed some data to the ParseContext.
@@ -301,24 +301,24 @@ func (c *MarkupParseContext) UserData() interface{} {
 // error is reported, no further data may be fed to the ParseContext; all errors
 // are fatal.
 func (c *MarkupParseContext) Parse(text string, textLen int) error {
-	var arg0 *C.GMarkupParseContext
-	var arg1 *C.gchar
-	var arg2 C.gssize
+	var _arg0 *C.GMarkupParseContext
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gssize(textLen)
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(textLen)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_markup_parse_context_parse(arg0, arg1, arg2, cerr)
+	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // Pop completes the process of a temporary sub-parser redirection.
@@ -334,47 +334,47 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
 func (c *MarkupParseContext) Pop() interface{} {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_markup_parse_context_pop(arg0)
+	cret = C.g_markup_parse_context_pop(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Ref increases the reference count of @context.
 func (c *MarkupParseContext) Ref() *MarkupParseContext {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GMarkupParseContext
+	var _cret *C.GMarkupParseContext
 
-	cret = C.g_markup_parse_context_ref(arg0)
+	cret = C.g_markup_parse_context_ref(_arg0)
 
-	var markupParseContext *MarkupParseContext
+	var _markupParseContext *MarkupParseContext
 
-	markupParseContext = WrapMarkupParseContext(unsafe.Pointer(cret))
-	runtime.SetFinalizer(markupParseContext, func(v *MarkupParseContext) {
+	_markupParseContext = WrapMarkupParseContext(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return markupParseContext
+	return _markupParseContext
 }
 
 // Unref decreases the reference count of @context. When its reference count
 // drops to 0, it is freed.
 func (c *MarkupParseContext) Unref() {
-	var arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext
 
-	arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	C.g_markup_parse_context_unref(arg0)
+	C.g_markup_parse_context_unref(_arg0)
 }

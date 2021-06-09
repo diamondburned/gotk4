@@ -261,14 +261,14 @@ type UIManager interface {
 	AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool)
 	// AddUiFromFile parses a file containing a [UI definition][XML-UI] and
 	// merges it with the current contents of @manager.
-	AddUiFromFile(filename *string) (guint uint, goerr error)
+	AddUiFromFile(filename *string) (uint, error)
 	// AddUiFromResource parses a resource file containing a [UI
 	// definition][XML-UI] and merges it with the current contents of @manager.
-	AddUiFromResource(resourcePath string) (guint uint, goerr error)
+	AddUiFromResource(resourcePath string) (uint, error)
 	// AddUiFromString parses a string containing a [UI definition][XML-UI] and
 	// merges it with the current contents of @manager. An enclosing <ui>
 	// element is added if it is missing.
-	AddUiFromString(buffer string, length int) (guint uint, goerr error)
+	AddUiFromString(buffer string, length int) (uint, error)
 	// EnsureUpdate makes sure that all pending updates to the UI have been
 	// completed.
 	//
@@ -362,15 +362,15 @@ func marshalUIManager(p uintptr) (interface{}, error) {
 
 // NewUIManager constructs a class UIManager.
 func NewUIManager() UIManager {
-	var cret C.GtkUIManager
+	var _cret C.GtkUIManager
 
 	cret = C.gtk_ui_manager_new()
 
-	var uiManager UIManager
+	var _uiManager UIManager
 
-	uiManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UIManager)
+	_uiManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UIManager)
 
-	return uiManager
+	return _uiManager
 }
 
 // AddUi adds a UI element to the current contents of @manager.
@@ -383,103 +383,103 @@ func NewUIManager() UIManager {
 // If @path points to a menuitem or toolitem, the new element will be
 // inserted before or after this item, depending on @top.
 func (m uiManager) AddUi(mergeId uint, path string, name string, action string, typ UIManagerItemType, top bool) {
-	var arg0 *C.GtkUIManager
-	var arg1 C.guint
-	var arg2 *C.gchar
-	var arg3 *C.gchar
-	var arg4 *C.gchar
-	var arg5 C.GtkUIManagerItemType
-	var arg6 C.gboolean
+	var _arg0 *C.GtkUIManager
+	var _arg1 C.guint
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
+	var _arg4 *C.gchar
+	var _arg5 C.GtkUIManagerItemType
+	var _arg6 C.gboolean
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(mergeId)
-	arg2 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(action))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (C.GtkUIManagerItemType)(typ)
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(mergeId)
+	_arg2 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(action))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (C.GtkUIManagerItemType)(typ)
 	if top {
-		arg6 = C.gboolean(1)
+		_arg6 = C.gboolean(1)
 	}
 
-	C.gtk_ui_manager_add_ui(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	C.gtk_ui_manager_add_ui(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // AddUiFromFile parses a file containing a [UI definition][XML-UI] and
 // merges it with the current contents of @manager.
-func (m uiManager) AddUiFromFile(filename *string) (guint uint, goerr error) {
-	var arg0 *C.GtkUIManager
-	var arg1 *C.gchar
+func (m uiManager) AddUiFromFile(filename *string) (uint, error) {
+	var _arg0 *C.GtkUIManager
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.guint
-	var cerr *C.GError
+	var _cret C.guint
+	var _cerr *C.GError
 
-	cret = C.gtk_ui_manager_add_ui_from_file(arg0, arg1, cerr)
+	cret = C.gtk_ui_manager_add_ui_from_file(_arg0, _arg1, _cerr)
 
-	var guint uint
-	var goerr error
+	var _guint uint
+	var _goerr error
 
-	guint = (uint)(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_guint = (uint)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return guint, goerr
+	return _guint, _goerr
 }
 
 // AddUiFromResource parses a resource file containing a [UI
 // definition][XML-UI] and merges it with the current contents of @manager.
-func (m uiManager) AddUiFromResource(resourcePath string) (guint uint, goerr error) {
-	var arg0 *C.GtkUIManager
-	var arg1 *C.gchar
+func (m uiManager) AddUiFromResource(resourcePath string) (uint, error) {
+	var _arg0 *C.GtkUIManager
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.gchar)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.guint
-	var cerr *C.GError
+	var _cret C.guint
+	var _cerr *C.GError
 
-	cret = C.gtk_ui_manager_add_ui_from_resource(arg0, arg1, cerr)
+	cret = C.gtk_ui_manager_add_ui_from_resource(_arg0, _arg1, _cerr)
 
-	var guint uint
-	var goerr error
+	var _guint uint
+	var _goerr error
 
-	guint = (uint)(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_guint = (uint)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return guint, goerr
+	return _guint, _goerr
 }
 
 // AddUiFromString parses a string containing a [UI definition][XML-UI] and
 // merges it with the current contents of @manager. An enclosing <ui>
 // element is added if it is missing.
-func (m uiManager) AddUiFromString(buffer string, length int) (guint uint, goerr error) {
-	var arg0 *C.GtkUIManager
-	var arg1 *C.gchar
-	var arg2 C.gssize
+func (m uiManager) AddUiFromString(buffer string, length int) (uint, error) {
+	var _arg0 *C.GtkUIManager
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.gchar)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gssize(length)
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
 
-	var cret C.guint
-	var cerr *C.GError
+	var _cret C.guint
+	var _cerr *C.GError
 
-	cret = C.gtk_ui_manager_add_ui_from_string(arg0, arg1, arg2, cerr)
+	cret = C.gtk_ui_manager_add_ui_from_string(_arg0, _arg1, _arg2, _cerr)
 
-	var guint uint
-	var goerr error
+	var _guint uint
+	var _goerr error
 
-	guint = (uint)(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_guint = (uint)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return guint, goerr
+	return _guint, _goerr
 }
 
 // EnsureUpdate makes sure that all pending updates to the UI have been
@@ -498,126 +498,126 @@ func (m uiManager) AddUiFromString(buffer string, length int) (guint uint, goerr
 //    gtk_ui_manager_ensure_update (merge);
 //    gtk_widget_show (window);
 func (m uiManager) EnsureUpdate() {
-	var arg0 *C.GtkUIManager
+	var _arg0 *C.GtkUIManager
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 
-	C.gtk_ui_manager_ensure_update(arg0)
+	C.gtk_ui_manager_ensure_update(_arg0)
 }
 
 // AccelGroup returns the AccelGroup associated with @manager.
 func (m uiManager) AccelGroup() AccelGroup {
-	var arg0 *C.GtkUIManager
+	var _arg0 *C.GtkUIManager
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkAccelGroup
+	var _cret *C.GtkAccelGroup
 
-	cret = C.gtk_ui_manager_get_accel_group(arg0)
+	cret = C.gtk_ui_manager_get_accel_group(_arg0)
 
-	var accelGroup AccelGroup
+	var _accelGroup AccelGroup
 
-	accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelGroup)
+	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
 
-	return accelGroup
+	return _accelGroup
 }
 
 // Action looks up an action by following a path. See
 // gtk_ui_manager_get_widget() for more information about paths.
 func (m uiManager) Action(path string) Action {
-	var arg0 *C.GtkUIManager
-	var arg1 *C.gchar
+	var _arg0 *C.GtkUIManager
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GtkAction
+	var _cret *C.GtkAction
 
-	cret = C.gtk_ui_manager_get_action(arg0, arg1)
+	cret = C.gtk_ui_manager_get_action(_arg0, _arg1)
 
-	var action Action
+	var _action Action
 
-	action = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
 
-	return action
+	return _action
 }
 
 // ActionGroups returns the list of action groups associated with @manager.
 func (m uiManager) ActionGroups() *glib.List {
-	var arg0 *C.GtkUIManager
+	var _arg0 *C.GtkUIManager
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gtk_ui_manager_get_action_groups(arg0)
+	cret = C.gtk_ui_manager_get_action_groups(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
+	_list = glib.WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // AddTearoffs returns whether menus generated by this UIManager will have
 // tearoff menu items.
 func (m uiManager) AddTearoffs() bool {
-	var arg0 *C.GtkUIManager
+	var _arg0 *C.GtkUIManager
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_ui_manager_get_add_tearoffs(arg0)
+	cret = C.gtk_ui_manager_get_add_tearoffs(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Toplevels obtains a list of all toplevel widgets of the requested types.
 func (m uiManager) Toplevels(types UIManagerItemType) *glib.SList {
-	var arg0 *C.GtkUIManager
-	var arg1 C.GtkUIManagerItemType
+	var _arg0 *C.GtkUIManager
+	var _arg1 C.GtkUIManagerItemType
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (C.GtkUIManagerItemType)(types)
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (C.GtkUIManagerItemType)(types)
 
-	var cret *C.GSList
+	var _cret *C.GSList
 
-	cret = C.gtk_ui_manager_get_toplevels(arg0, arg1)
+	cret = C.gtk_ui_manager_get_toplevels(_arg0, _arg1)
 
-	var sList *glib.SList
+	var _sList *glib.SList
 
-	sList = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(sList, func(v *glib.SList) {
+	_sList = glib.WrapSList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_sList, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return sList
+	return _sList
 }
 
 // Ui creates a [UI definition][XML-UI] of the merged UI.
 func (m uiManager) Ui() string {
-	var arg0 *C.GtkUIManager
+	var _arg0 *C.GtkUIManager
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_ui_manager_get_ui(arg0)
+	cret = C.gtk_ui_manager_get_ui(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Widget looks up a widget by following a path. The path consists of the
@@ -635,22 +635,22 @@ func (m uiManager) Ui() string {
 // function to some container or explicitly ref them, they will survive the
 // destruction of the ui manager.
 func (m uiManager) Widget(path string) Widget {
-	var arg0 *C.GtkUIManager
-	var arg1 *C.gchar
+	var _arg0 *C.GtkUIManager
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_ui_manager_get_widget(arg0, arg1)
+	cret = C.gtk_ui_manager_get_widget(_arg0, _arg1)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // InsertActionGroup inserts an action group into the list of action groups
@@ -660,56 +660,56 @@ func (m uiManager) Widget(path string) Widget {
 // If @pos is larger than the number of action groups in @manager, or
 // negative, @action_group will be inserted at the end of the internal list.
 func (m uiManager) InsertActionGroup(actionGroup ActionGroup, pos int) {
-	var arg0 *C.GtkUIManager
-	var arg1 *C.GtkActionGroup
-	var arg2 C.gint
+	var _arg0 *C.GtkUIManager
+	var _arg1 *C.GtkActionGroup
+	var _arg2 C.gint
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
-	arg2 = C.gint(pos)
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg2 = C.gint(pos)
 
-	C.gtk_ui_manager_insert_action_group(arg0, arg1, arg2)
+	C.gtk_ui_manager_insert_action_group(_arg0, _arg1, _arg2)
 }
 
 // NewMergeID returns an unused merge id, suitable for use with
 // gtk_ui_manager_add_ui().
 func (m uiManager) NewMergeID() uint {
-	var arg0 *C.GtkUIManager
+	var _arg0 *C.GtkUIManager
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_ui_manager_new_merge_id(arg0)
+	cret = C.gtk_ui_manager_new_merge_id(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // RemoveActionGroup removes an action group from the list of action groups
 // associated with @manager.
 func (m uiManager) RemoveActionGroup(actionGroup ActionGroup) {
-	var arg0 *C.GtkUIManager
-	var arg1 *C.GtkActionGroup
+	var _arg0 *C.GtkUIManager
+	var _arg1 *C.GtkActionGroup
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkActionGroup)(unsafe.Pointer(actionGroup.Native()))
 
-	C.gtk_ui_manager_remove_action_group(arg0, arg1)
+	C.gtk_ui_manager_remove_action_group(_arg0, _arg1)
 }
 
 // RemoveUi unmerges the part of @manager's content identified by @merge_id.
 func (m uiManager) RemoveUi(mergeId uint) {
-	var arg0 *C.GtkUIManager
-	var arg1 C.guint
+	var _arg0 *C.GtkUIManager
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(mergeId)
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(mergeId)
 
-	C.gtk_ui_manager_remove_ui(arg0, arg1)
+	C.gtk_ui_manager_remove_ui(_arg0, _arg1)
 }
 
 // SetAddTearoffs sets the “add_tearoffs” property, which controls whether
@@ -718,13 +718,13 @@ func (m uiManager) RemoveUi(mergeId uint) {
 // Note that this only affects regular menus. Generated popup menus never
 // have tearoff menu items.
 func (m uiManager) SetAddTearoffs(addTearoffs bool) {
-	var arg0 *C.GtkUIManager
-	var arg1 C.gboolean
+	var _arg0 *C.GtkUIManager
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkUIManager)(unsafe.Pointer(m.Native()))
 	if addTearoffs {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_ui_manager_set_add_tearoffs(arg0, arg1)
+	C.gtk_ui_manager_set_add_tearoffs(_arg0, _arg1)
 }

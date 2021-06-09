@@ -71,51 +71,51 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 
 // BaseStream gets the base stream for the filter stream.
 func (s filterOutputStream) BaseStream() OutputStream {
-	var arg0 *C.GFilterOutputStream
+	var _arg0 *C.GFilterOutputStream
 
-	arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GOutputStream
+	var _cret *C.GOutputStream
 
-	cret = C.g_filter_output_stream_get_base_stream(arg0)
+	cret = C.g_filter_output_stream_get_base_stream(_arg0)
 
-	var outputStream OutputStream
+	var _outputStream OutputStream
 
-	outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
+	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OutputStream)
 
-	return outputStream
+	return _outputStream
 }
 
 // CloseBaseStream returns whether the base stream will be closed when
 // @stream is closed.
 func (s filterOutputStream) CloseBaseStream() bool {
-	var arg0 *C.GFilterOutputStream
+	var _arg0 *C.GFilterOutputStream
 
-	arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_filter_output_stream_get_close_base_stream(arg0)
+	cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetCloseBaseStream sets whether the base stream will be closed when
 // @stream is closed.
 func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
-	var arg0 *C.GFilterOutputStream
-	var arg1 C.gboolean
+	var _arg0 *C.GFilterOutputStream
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 	if closeBase {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_filter_output_stream_set_close_base_stream(arg0, arg1)
+	C.g_filter_output_stream_set_close_base_stream(_arg0, _arg1)
 }

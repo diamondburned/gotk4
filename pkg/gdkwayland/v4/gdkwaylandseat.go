@@ -49,17 +49,17 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 
 // WlSeat returns the Wayland `wl_seat` of a Seat.
 func (s waylandSeat) WlSeat() *interface{} {
-	var arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var cret *C.wl_seat
+	var _cret *C.wl_seat
 
-	cret = C.gdk_wayland_seat_get_wl_seat(arg0)
+	cret = C.gdk_wayland_seat_get_wl_seat(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }

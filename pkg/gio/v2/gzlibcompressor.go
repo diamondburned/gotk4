@@ -74,38 +74,38 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 
 // NewZlibCompressor constructs a class ZlibCompressor.
 func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
-	var arg1 C.GZlibCompressorFormat
-	var arg2 C.int
+	var _arg1 C.GZlibCompressorFormat
+	var _arg2 C.int
 
-	arg1 = (C.GZlibCompressorFormat)(format)
-	arg2 = C.int(level)
+	_arg1 = (C.GZlibCompressorFormat)(format)
+	_arg2 = C.int(level)
 
-	var cret C.GZlibCompressor
+	var _cret C.GZlibCompressor
 
-	cret = C.g_zlib_compressor_new(arg1, arg2)
+	cret = C.g_zlib_compressor_new(_arg1, _arg2)
 
-	var zlibCompressor ZlibCompressor
+	var _zlibCompressor ZlibCompressor
 
-	zlibCompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibCompressor)
+	_zlibCompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ZlibCompressor)
 
-	return zlibCompressor
+	return _zlibCompressor
 }
 
 // FileInfo returns the Compressor:file-info property.
 func (c zlibCompressor) FileInfo() FileInfo {
-	var arg0 *C.GZlibCompressor
+	var _arg0 *C.GZlibCompressor
 
-	arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GFileInfo
+	var _cret *C.GFileInfo
 
-	cret = C.g_zlib_compressor_get_file_info(arg0)
+	cret = C.g_zlib_compressor_get_file_info(_arg0)
 
-	var fileInfo FileInfo
+	var _fileInfo FileInfo
 
-	fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
+	_fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileInfo)
 
-	return fileInfo
+	return _fileInfo
 }
 
 // SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
@@ -117,11 +117,11 @@ func (c zlibCompressor) FileInfo() FileInfo {
 // progress; it may only be called immediately after creation of
 // @compressor, or after resetting it with g_converter_reset().
 func (c zlibCompressor) SetFileInfo(fileInfo FileInfo) {
-	var arg0 *C.GZlibCompressor
-	var arg1 *C.GFileInfo
+	var _arg0 *C.GZlibCompressor
+	var _arg1 *C.GFileInfo
 
-	arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
+	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFileInfo)(unsafe.Pointer(fileInfo.Native()))
 
-	C.g_zlib_compressor_set_file_info(arg0, arg1)
+	C.g_zlib_compressor_set_file_info(_arg0, _arg1)
 }

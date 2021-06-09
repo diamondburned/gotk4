@@ -78,56 +78,56 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 
 // NewSocketAddressFromNative constructs a class SocketAddress.
 func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
-	var arg1 C.gpointer
-	var arg2 C.gsize
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
 
-	arg1 = C.gpointer(native)
-	arg2 = C.gsize(len)
+	_arg1 = C.gpointer(native)
+	_arg2 = C.gsize(len)
 
-	var cret C.GSocketAddress
+	var _cret C.GSocketAddress
 
-	cret = C.g_socket_address_new_from_native(arg1, arg2)
+	cret = C.g_socket_address_new_from_native(_arg1, _arg2)
 
-	var socketAddress SocketAddress
+	var _socketAddress SocketAddress
 
-	socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddress)
+	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
 
-	return socketAddress
+	return _socketAddress
 }
 
 // Family gets the socket family type of @address.
 func (a socketAddress) Family() SocketFamily {
-	var arg0 *C.GSocketAddress
+	var _arg0 *C.GSocketAddress
 
-	arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.GSocketFamily
+	var _cret C.GSocketFamily
 
-	cret = C.g_socket_address_get_family(arg0)
+	cret = C.g_socket_address_get_family(_arg0)
 
-	var socketFamily SocketFamily
+	var _socketFamily SocketFamily
 
-	socketFamily = SocketFamily(cret)
+	_socketFamily = SocketFamily(_cret)
 
-	return socketFamily
+	return _socketFamily
 }
 
 // NativeSize gets the size of @address's native struct sockaddr. You can
 // use this to allocate memory to pass to g_socket_address_to_native().
 func (a socketAddress) NativeSize() int {
-	var arg0 *C.GSocketAddress
+	var _arg0 *C.GSocketAddress
 
-	arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gssize
+	var _cret C.gssize
 
-	cret = C.g_socket_address_get_native_size(arg0)
+	cret = C.g_socket_address_get_native_size(_arg0)
 
-	var gssize int
+	var _gssize int
 
-	gssize = (int)(cret)
+	_gssize = (int)(_cret)
 
-	return gssize
+	return _gssize
 }
 
 // ToNative converts a Address to a native struct sockaddr, which can be
@@ -137,21 +137,21 @@ func (a socketAddress) NativeSize() int {
 // returned. If the address type is not known on the system then a
 // G_IO_ERROR_NOT_SUPPORTED error is returned.
 func (a socketAddress) ToNative(dest interface{}, destlen uint) error {
-	var arg0 *C.GSocketAddress
-	var arg1 C.gpointer
-	var arg2 C.gsize
+	var _arg0 *C.GSocketAddress
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
 
-	arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
-	arg1 = C.gpointer(dest)
-	arg2 = C.gsize(destlen)
+	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg1 = C.gpointer(dest)
+	_arg2 = C.gsize(destlen)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_socket_address_to_native(arg0, arg1, arg2, cerr)
+	C.g_socket_address_to_native(_arg0, _arg1, _arg2, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

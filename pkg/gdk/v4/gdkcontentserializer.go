@@ -34,17 +34,17 @@ func ContentSerializeAsync() {
 
 // ContentSerializeFinish finishes a content serialization operation.
 func ContentSerializeFinish(result gio.AsyncResult) error {
-	var arg1 *C.GAsyncResult
+	var _arg1 *C.GAsyncResult
 
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gdk_content_serialize_finish(arg1, cerr)
+	C.gdk_content_serialize_finish(_arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

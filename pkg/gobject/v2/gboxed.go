@@ -11,30 +11,30 @@ import "C"
 // BoxedCopy: provide a copy of a boxed structure @src_boxed which is of type
 // @boxed_type.
 func BoxedCopy(boxedType externglib.Type, srcBoxed interface{}) interface{} {
-	var arg1 C.GType
-	var arg2 C.gpointer
+	var _arg1 C.GType
+	var _arg2 C.gpointer
 
-	arg1 = C.GType(boxedType)
-	arg2 = C.gpointer(srcBoxed)
+	_arg1 = C.GType(boxedType)
+	_arg2 = C.gpointer(srcBoxed)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_boxed_copy(arg1, arg2)
+	cret = C.g_boxed_copy(_arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // BoxedFree: free the boxed structure @boxed which is of type @boxed_type.
 func BoxedFree(boxedType externglib.Type, boxed interface{}) {
-	var arg1 C.GType
-	var arg2 C.gpointer
+	var _arg1 C.GType
+	var _arg2 C.gpointer
 
-	arg1 = C.GType(boxedType)
-	arg2 = C.gpointer(boxed)
+	_arg1 = C.GType(boxedType)
+	_arg2 = C.gpointer(boxed)
 
-	C.g_boxed_free(arg1, arg2)
+	C.g_boxed_free(_arg1, _arg2)
 }

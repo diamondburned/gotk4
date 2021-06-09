@@ -68,37 +68,37 @@ func marshalDBusObjectProXY(p uintptr) (interface{}, error) {
 
 // NewDBusObjectProXY constructs a class DBusObjectProXY.
 func NewDBusObjectProXY(connection DBusConnection, objectPath string) DBusObjectProXY {
-	var arg1 *C.GDBusConnection
-	var arg2 *C.gchar
+	var _arg1 *C.GDBusConnection
+	var _arg2 *C.gchar
 
-	arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
-	arg2 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
+	_arg2 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GDBusObjectProxy
+	var _cret C.GDBusObjectProxy
 
-	cret = C.g_dbus_object_proxy_new(arg1, arg2)
+	cret = C.g_dbus_object_proxy_new(_arg1, _arg2)
 
-	var dBusObjectProxy DBusObjectProXY
+	var _dBusObjectProxy DBusObjectProXY
 
-	dBusObjectProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectProXY)
+	_dBusObjectProxy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectProXY)
 
-	return dBusObjectProxy
+	return _dBusObjectProxy
 }
 
 // Connection gets the connection that @proxy is for.
 func (p dBusObjectProXY) Connection() DBusConnection {
-	var arg0 *C.GDBusObjectProxy
+	var _arg0 *C.GDBusObjectProxy
 
-	arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GDBusObjectProxy)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GDBusConnection
+	var _cret *C.GDBusConnection
 
-	cret = C.g_dbus_object_proxy_get_connection(arg0)
+	cret = C.g_dbus_object_proxy_get_connection(_arg0)
 
-	var dBusConnection DBusConnection
+	var _dBusConnection DBusConnection
 
-	dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DBusConnection)
+	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
 
-	return dBusConnection
+	return _dBusConnection
 }

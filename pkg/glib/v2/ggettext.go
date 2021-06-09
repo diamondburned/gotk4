@@ -16,25 +16,25 @@ import "C"
 // information about how this functions differs from calling dcgettext()
 // directly.
 func Dcgettext(domain string, msgid string, category int) string {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 C.gint
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 C.gint
 
-	arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.gint(category)
+	_arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gint(category)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_dcgettext(arg1, arg2, arg3)
+	cret = C.g_dcgettext(_arg1, _arg2, _arg3)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Dgettext: this function is a wrapper of dgettext() which does not translate
@@ -69,23 +69,23 @@ func Dcgettext(domain string, msgid string, category int) string {
 // Applications should normally not use this function directly, but use the _()
 // macro for translations.
 func Dgettext(domain string, msgid string) string {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_dgettext(arg1, arg2)
+	cret = C.g_dgettext(_arg1, _arg2)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Dngettext: this function is a wrapper of dngettext() which does not translate
@@ -94,28 +94,28 @@ func Dgettext(domain string, msgid string) string {
 //
 // See g_dgettext() for details of how this differs from dngettext() proper.
 func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 *C.gchar
-	var arg4 C.gulong
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
+	var _arg4 C.gulong
 
-	arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.gchar)(C.CString(msgidPlural))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = C.gulong(n)
+	_arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(msgidPlural))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.gulong(n)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_dngettext(arg1, arg2, arg3, arg4)
+	cret = C.g_dngettext(_arg1, _arg2, _arg3, _arg4)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Dpgettext: this function is a variant of g_dgettext() which supports a
@@ -130,25 +130,25 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 // Applications should normally not use this function directly, but use the C_()
 // macro for translations with context.
 func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 C.gsize
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 C.gsize
 
-	arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(msgctxtid))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.gsize(msgidoffset)
+	_arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(msgctxtid))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.gsize(msgidoffset)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_dpgettext(arg1, arg2, arg3)
+	cret = C.g_dpgettext(_arg1, _arg2, _arg3)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Dpgettext2: this function is a variant of g_dgettext() which supports a
@@ -161,45 +161,45 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 // This function differs from C_() in that it is not a macro and thus you may
 // use non-string-literals as context and msgid arguments.
 func Dpgettext2(domain string, context string, msgid string) string {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 *C.gchar
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(context))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(context))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_dpgettext2(arg1, arg2, arg3)
+	cret = C.g_dpgettext2(_arg1, _arg2, _arg3)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // StripContext: an auxiliary function for gettext() support (see Q_()).
 func StripContext(msgid string, msgval string) string {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(msgid))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(msgval))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.gchar)(C.CString(msgid))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(msgval))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_strip_context(arg1, arg2)
+	cret = C.g_strip_context(_arg1, _arg2)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }

@@ -151,15 +151,15 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 
 // NewIconFactory constructs a class IconFactory.
 func NewIconFactory() IconFactory {
-	var cret C.GtkIconFactory
+	var _cret C.GtkIconFactory
 
 	cret = C.gtk_icon_factory_new()
 
-	var iconFactory IconFactory
+	var _iconFactory IconFactory
 
-	iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IconFactory)
+	_iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconFactory)
 
-	return iconFactory
+	return _iconFactory
 }
 
 // Add adds the given @icon_set to the icon factory, under the name
@@ -172,16 +172,16 @@ func NewIconFactory() IconFactory {
 // default icons. If an icon already existed in @factory for @stock_id, it
 // is unreferenced and replaced with the new @icon_set.
 func (f iconFactory) Add(stockId string, iconSet *IconSet) {
-	var arg0 *C.GtkIconFactory
-	var arg1 *C.gchar
-	var arg2 *C.GtkIconSet
+	var _arg0 *C.GtkIconFactory
+	var _arg1 *C.gchar
+	var _arg2 *C.GtkIconSet
 
-	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkIconSet)(unsafe.Pointer(iconSet.Native()))
 
-	C.gtk_icon_factory_add(arg0, arg1, arg2)
+	C.gtk_icon_factory_add(_arg0, _arg1, _arg2)
 }
 
 // AddDefault adds an icon factory to the list of icon factories searched by
@@ -191,11 +191,11 @@ func (f iconFactory) Add(stockId string, iconSet *IconSet) {
 // that comes with icons. The default icon factories can be overridden by
 // themes.
 func (f iconFactory) AddDefault() {
-	var arg0 *C.GtkIconFactory
+	var _arg0 *C.GtkIconFactory
 
-	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 
-	C.gtk_icon_factory_add_default(arg0)
+	C.gtk_icon_factory_add_default(_arg0)
 }
 
 // Lookup looks up @stock_id in the icon factory, returning an icon set if
@@ -204,31 +204,31 @@ func (f iconFactory) AddDefault() {
 // the icon, instead of using this function directly, so that themes are
 // taken into account.
 func (f iconFactory) Lookup(stockId string) *IconSet {
-	var arg0 *C.GtkIconFactory
-	var arg1 *C.gchar
+	var _arg0 *C.GtkIconFactory
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GtkIconSet
+	var _cret *C.GtkIconSet
 
-	cret = C.gtk_icon_factory_lookup(arg0, arg1)
+	cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
 
-	var iconSet *IconSet
+	var _iconSet *IconSet
 
-	iconSet = WrapIconSet(unsafe.Pointer(cret))
+	_iconSet = WrapIconSet(unsafe.Pointer(_cret))
 
-	return iconSet
+	return _iconSet
 }
 
 // RemoveDefault removes an icon factory from the list of default icon
 // factories. Not normally used; you might use it for a library that can be
 // unloaded or shut down.
 func (f iconFactory) RemoveDefault() {
-	var arg0 *C.GtkIconFactory
+	var _arg0 *C.GtkIconFactory
 
-	arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 
-	C.gtk_icon_factory_remove_default(arg0)
+	C.gtk_icon_factory_remove_default(_arg0)
 }

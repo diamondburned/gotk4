@@ -27,20 +27,20 @@ func Break() {
 //
 // See pango_tailor_break() for language-specific breaks.
 func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, attrsLen int) {
-	var arg1 *C.gchar
-	var arg2 C.int
-	var arg3 *C.PangoAnalysis
-	var arg4 *C.PangoLogAttr
-	var arg5 C.int
+	var _arg1 *C.gchar
+	var _arg2 C.int
+	var _arg3 *C.PangoAnalysis
+	var _arg4 *C.PangoLogAttr
+	var _arg5 C.int
 
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(length)
-	arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
-	arg4 = (*C.PangoLogAttr)(unsafe.Pointer(attrs.Native()))
-	arg5 = C.int(attrsLen)
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
+	_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(attrs.Native()))
+	_arg5 = C.int(attrsLen)
 
-	C.pango_default_break(arg1, arg2, arg3, arg4, arg5)
+	C.pango_default_break(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // FindParagraphBoundary locates a paragraph boundary in @text.
@@ -55,25 +55,25 @@ func DefaultBreak(text string, length int, analysis *Analysis, attrs *LogAttr, a
 // @next_paragraph_start are filled with the length of @text (an index one off
 // the end).
 func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int, nextParagraphStart int) {
-	var arg1 *C.gchar
-	var arg2 C.gint
+	var _arg1 *C.gchar
+	var _arg2 C.gint
 
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gint(length)
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(length)
 
-	var arg3 C.gint
-	var arg4 C.gint
+	var _arg3 C.gint
+	var _arg4 C.gint
 
-	C.pango_find_paragraph_boundary(arg1, arg2, &arg3, &arg4)
+	C.pango_find_paragraph_boundary(_arg1, _arg2, &_arg3, &_arg4)
 
-	var paragraphDelimiterIndex int
-	var nextParagraphStart int
+	var _paragraphDelimiterIndex int
+	var _nextParagraphStart int
 
-	paragraphDelimiterIndex = (int)(arg3)
-	nextParagraphStart = (int)(arg4)
+	_paragraphDelimiterIndex = (int)(_arg3)
+	_nextParagraphStart = (int)(_arg4)
 
-	return paragraphDelimiterIndex, nextParagraphStart
+	return _paragraphDelimiterIndex, _nextParagraphStart
 }
 
 // GetLogAttrs computes a `PangoLogAttr` for each character in @text.

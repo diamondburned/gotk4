@@ -102,21 +102,21 @@ func (h *Hook) Func() interface{} {
 // CompareIds compares the ids of two #GHook elements, returning a negative
 // value if the second id is greater than the first.
 func (n *Hook) CompareIds(sibling *Hook) int {
-	var arg0 *C.GHook
-	var arg1 *C.GHook
+	var _arg0 *C.GHook
+	var _arg1 *C.GHook
 
-	arg0 = (*C.GHook)(unsafe.Pointer(n.Native()))
-	arg1 = (*C.GHook)(unsafe.Pointer(sibling.Native()))
+	_arg0 = (*C.GHook)(unsafe.Pointer(n.Native()))
+	_arg1 = (*C.GHook)(unsafe.Pointer(sibling.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_hook_compare_ids(arg0, arg1)
+	cret = C.g_hook_compare_ids(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // HookList: the List struct represents a list of hook functions.
@@ -174,66 +174,66 @@ func (h *HookList) Dummy() [2]interface{} {
 
 // Clear removes all the #GHook elements from a List.
 func (h *HookList) Clear() {
-	var arg0 *C.GHookList
+	var _arg0 *C.GHookList
 
-	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 
-	C.g_hook_list_clear(arg0)
+	C.g_hook_list_clear(_arg0)
 }
 
 // Init initializes a List. This must be called before the List is used.
 func (h *HookList) Init(hookSize uint) {
-	var arg0 *C.GHookList
-	var arg1 C.guint
+	var _arg0 *C.GHookList
+	var _arg1 C.guint
 
-	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
-	arg1 = C.guint(hookSize)
+	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	_arg1 = C.guint(hookSize)
 
-	C.g_hook_list_init(arg0, arg1)
+	C.g_hook_list_init(_arg0, _arg1)
 }
 
 // Invoke calls all of the #GHook functions in a List.
 func (h *HookList) Invoke(mayRecurse bool) {
-	var arg0 *C.GHookList
-	var arg1 C.gboolean
+	var _arg0 *C.GHookList
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 	if mayRecurse {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_hook_list_invoke(arg0, arg1)
+	C.g_hook_list_invoke(_arg0, _arg1)
 }
 
 // InvokeCheck calls all of the #GHook functions in a List. Any function which
 // returns false is removed from the List.
 func (h *HookList) InvokeCheck(mayRecurse bool) {
-	var arg0 *C.GHookList
-	var arg1 C.gboolean
+	var _arg0 *C.GHookList
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 	if mayRecurse {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_hook_list_invoke_check(arg0, arg1)
+	C.g_hook_list_invoke_check(_arg0, _arg1)
 }
 
 // Marshal calls a function on each valid #GHook.
 func (h *HookList) Marshal() {
-	var arg0 *C.GHookList
+	var _arg0 *C.GHookList
 
-	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 
-	C.g_hook_list_marshal(arg0)
+	C.g_hook_list_marshal(_arg0)
 }
 
 // MarshalCheck calls a function on each valid #GHook and destroys it if the
 // function returns false.
 func (h *HookList) MarshalCheck() {
-	var arg0 *C.GHookList
+	var _arg0 *C.GHookList
 
-	arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 
-	C.g_hook_list_marshal_check(arg0)
+	C.g_hook_list_marshal_check(_arg0)
 }

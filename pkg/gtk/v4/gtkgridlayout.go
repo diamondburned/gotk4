@@ -105,130 +105,130 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 
 // NewGridLayout constructs a class GridLayout.
 func NewGridLayout() GridLayout {
-	var cret C.GtkGridLayout
+	var _cret C.GtkGridLayout
 
 	cret = C.gtk_grid_layout_new()
 
-	var gridLayout GridLayout
+	var _gridLayout GridLayout
 
-	gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GridLayout)
+	_gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GridLayout)
 
-	return gridLayout
+	return _gridLayout
 }
 
 // BaselineRow retrieves the row set with
 // gtk_grid_layout_set_baseline_row().
 func (g gridLayout) BaselineRow() int {
-	var arg0 *C.GtkGridLayout
+	var _arg0 *C.GtkGridLayout
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_grid_layout_get_baseline_row(arg0)
+	cret = C.gtk_grid_layout_get_baseline_row(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // ColumnHomogeneous checks whether all columns of @grid should have the
 // same width.
 func (g gridLayout) ColumnHomogeneous() bool {
-	var arg0 *C.GtkGridLayout
+	var _arg0 *C.GtkGridLayout
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_grid_layout_get_column_homogeneous(arg0)
+	cret = C.gtk_grid_layout_get_column_homogeneous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ColumnSpacing retrieves the spacing set with
 // gtk_grid_layout_set_column_spacing().
 func (g gridLayout) ColumnSpacing() uint {
-	var arg0 *C.GtkGridLayout
+	var _arg0 *C.GtkGridLayout
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_grid_layout_get_column_spacing(arg0)
+	cret = C.gtk_grid_layout_get_column_spacing(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // RowBaselinePosition returns the baseline position of @row as set by
 // gtk_grid_layout_set_row_baseline_position(), or the default value of
 // GTK_BASELINE_POSITION_CENTER.
 func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
-	var arg0 *C.GtkGridLayout
-	var arg1 C.int
+	var _arg0 *C.GtkGridLayout
+	var _arg1 C.int
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	arg1 = C.int(row)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(row)
 
-	var cret C.GtkBaselinePosition
+	var _cret C.GtkBaselinePosition
 
-	cret = C.gtk_grid_layout_get_row_baseline_position(arg0, arg1)
+	cret = C.gtk_grid_layout_get_row_baseline_position(_arg0, _arg1)
 
-	var baselinePosition BaselinePosition
+	var _baselinePosition BaselinePosition
 
-	baselinePosition = BaselinePosition(cret)
+	_baselinePosition = BaselinePosition(_cret)
 
-	return baselinePosition
+	return _baselinePosition
 }
 
 // RowHomogeneous checks whether all rows of @grid should have the same
 // height.
 func (g gridLayout) RowHomogeneous() bool {
-	var arg0 *C.GtkGridLayout
+	var _arg0 *C.GtkGridLayout
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_grid_layout_get_row_homogeneous(arg0)
+	cret = C.gtk_grid_layout_get_row_homogeneous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // RowSpacing retrieves the spacing set with
 // gtk_grid_layout_set_row_spacing().
 func (g gridLayout) RowSpacing() uint {
-	var arg0 *C.GtkGridLayout
+	var _arg0 *C.GtkGridLayout
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_grid_layout_get_row_spacing(arg0)
+	cret = C.gtk_grid_layout_get_row_spacing(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // SetBaselineRow sets which row defines the global baseline for the entire
@@ -238,79 +238,79 @@ func (g gridLayout) RowSpacing() uint {
 // those is global, meaning it will be the baseline in the parent of the
 // @grid.
 func (g gridLayout) SetBaselineRow(row int) {
-	var arg0 *C.GtkGridLayout
-	var arg1 C.int
+	var _arg0 *C.GtkGridLayout
+	var _arg1 C.int
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	arg1 = C.int(row)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(row)
 
-	C.gtk_grid_layout_set_baseline_row(arg0, arg1)
+	C.gtk_grid_layout_set_baseline_row(_arg0, _arg1)
 }
 
 // SetColumnHomogeneous sets whether all columns of @grid should have the
 // same width.
 func (g gridLayout) SetColumnHomogeneous(homogeneous bool) {
-	var arg0 *C.GtkGridLayout
-	var arg1 C.gboolean
+	var _arg0 *C.GtkGridLayout
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	if homogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_grid_layout_set_column_homogeneous(arg0, arg1)
+	C.gtk_grid_layout_set_column_homogeneous(_arg0, _arg1)
 }
 
 // SetColumnSpacing sets the amount of space to insert between consecutive
 // columns.
 func (g gridLayout) SetColumnSpacing(spacing uint) {
-	var arg0 *C.GtkGridLayout
-	var arg1 C.guint
+	var _arg0 *C.GtkGridLayout
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	arg1 = C.guint(spacing)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg1 = C.guint(spacing)
 
-	C.gtk_grid_layout_set_column_spacing(arg0, arg1)
+	C.gtk_grid_layout_set_column_spacing(_arg0, _arg1)
 }
 
 // SetRowBaselinePosition sets how the baseline should be positioned on @row
 // of the grid, in case that row is assigned more space than is requested.
 func (g gridLayout) SetRowBaselinePosition(row int, pos BaselinePosition) {
-	var arg0 *C.GtkGridLayout
-	var arg1 C.int
-	var arg2 C.GtkBaselinePosition
+	var _arg0 *C.GtkGridLayout
+	var _arg1 C.int
+	var _arg2 C.GtkBaselinePosition
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	arg1 = C.int(row)
-	arg2 = (C.GtkBaselinePosition)(pos)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(row)
+	_arg2 = (C.GtkBaselinePosition)(pos)
 
-	C.gtk_grid_layout_set_row_baseline_position(arg0, arg1, arg2)
+	C.gtk_grid_layout_set_row_baseline_position(_arg0, _arg1, _arg2)
 }
 
 // SetRowHomogeneous sets whether all rows of @grid should have the same
 // height.
 func (g gridLayout) SetRowHomogeneous(homogeneous bool) {
-	var arg0 *C.GtkGridLayout
-	var arg1 C.gboolean
+	var _arg0 *C.GtkGridLayout
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
 	if homogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_grid_layout_set_row_homogeneous(arg0, arg1)
+	C.gtk_grid_layout_set_row_homogeneous(_arg0, _arg1)
 }
 
 // SetRowSpacing sets the amount of space to insert between consecutive
 // rows.
 func (g gridLayout) SetRowSpacing(spacing uint) {
-	var arg0 *C.GtkGridLayout
-	var arg1 C.guint
+	var _arg0 *C.GtkGridLayout
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	arg1 = C.guint(spacing)
+	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
+	_arg1 = C.guint(spacing)
 
-	C.gtk_grid_layout_set_row_spacing(arg0, arg1)
+	C.gtk_grid_layout_set_row_spacing(_arg0, _arg1)
 }
 
 // GridLayoutChild: layout properties for children of GridLayout.
@@ -360,112 +360,112 @@ func marshalGridLayoutChild(p uintptr) (interface{}, error) {
 // Column retrieves the column number to which @child attaches its left
 // side.
 func (c gridLayoutChild) Column() int {
-	var arg0 *C.GtkGridLayoutChild
+	var _arg0 *C.GtkGridLayoutChild
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_column(arg0)
+	cret = C.gtk_grid_layout_child_get_column(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // ColumnSpan retrieves the number of columns that @child spans to.
 func (c gridLayoutChild) ColumnSpan() int {
-	var arg0 *C.GtkGridLayoutChild
+	var _arg0 *C.GtkGridLayoutChild
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_column_span(arg0)
+	cret = C.gtk_grid_layout_child_get_column_span(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Row retrieves the row number to which @child attaches its top side.
 func (c gridLayoutChild) Row() int {
-	var arg0 *C.GtkGridLayoutChild
+	var _arg0 *C.GtkGridLayoutChild
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_row(arg0)
+	cret = C.gtk_grid_layout_child_get_row(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // RowSpan retrieves the number of rows that @child spans to.
 func (c gridLayoutChild) RowSpan() int {
-	var arg0 *C.GtkGridLayoutChild
+	var _arg0 *C.GtkGridLayoutChild
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_row_span(arg0)
+	cret = C.gtk_grid_layout_child_get_row_span(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SetColumn sets the column number to attach the left side of @child.
 func (c gridLayoutChild) SetColumn(column int) {
-	var arg0 *C.GtkGridLayoutChild
-	var arg1 C.int
+	var _arg0 *C.GtkGridLayoutChild
+	var _arg1 C.int
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(column)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(column)
 
-	C.gtk_grid_layout_child_set_column(arg0, arg1)
+	C.gtk_grid_layout_child_set_column(_arg0, _arg1)
 }
 
 // SetColumnSpan sets the number of columns @child spans to.
 func (c gridLayoutChild) SetColumnSpan(span int) {
-	var arg0 *C.GtkGridLayoutChild
-	var arg1 C.int
+	var _arg0 *C.GtkGridLayoutChild
+	var _arg1 C.int
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(span)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(span)
 
-	C.gtk_grid_layout_child_set_column_span(arg0, arg1)
+	C.gtk_grid_layout_child_set_column_span(_arg0, _arg1)
 }
 
 // SetRow sets the row to place @child in.
 func (c gridLayoutChild) SetRow(row int) {
-	var arg0 *C.GtkGridLayoutChild
-	var arg1 C.int
+	var _arg0 *C.GtkGridLayoutChild
+	var _arg1 C.int
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(row)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(row)
 
-	C.gtk_grid_layout_child_set_row(arg0, arg1)
+	C.gtk_grid_layout_child_set_row(_arg0, _arg1)
 }
 
 // SetRowSpan sets the number of rows @child spans to.
 func (c gridLayoutChild) SetRowSpan(span int) {
-	var arg0 *C.GtkGridLayoutChild
-	var arg1 C.int
+	var _arg0 *C.GtkGridLayoutChild
+	var _arg1 C.int
 
-	arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(span)
+	_arg0 = (*C.GtkGridLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(span)
 
-	C.gtk_grid_layout_child_set_row_span(arg0, arg1)
+	C.gtk_grid_layout_child_set_row_span(_arg0, _arg1)
 }

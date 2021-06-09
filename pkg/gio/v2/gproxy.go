@@ -39,11 +39,11 @@ type ProXYOverrider interface {
 	// that is connected to the proxy server), this does the necessary handshake
 	// to connect to @proxy_address, and if required, wraps the OStream to
 	// handle proxy payload.
-	Connect(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (ioStream IOStream, goerr error)
+	Connect(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (IOStream, error)
 	// ConnectAsync asynchronous version of g_proxy_connect().
 	ConnectAsync()
 	// ConnectFinish: see g_proxy_connect().
-	ConnectFinish(result AsyncResult) (ioStream IOStream, goerr error)
+	ConnectFinish(result AsyncResult) (IOStream, error)
 	// SupportsHostname: some proxy protocols expect to be passed a hostname,
 	// which they will resolve to an IP address themselves. Others, like SOCKS4,
 	// do not allow this. This function will return false if @proxy is
@@ -89,60 +89,60 @@ func marshalProXY(p uintptr) (interface{}, error) {
 // that is connected to the proxy server), this does the necessary handshake
 // to connect to @proxy_address, and if required, wraps the OStream to
 // handle proxy payload.
-func (p proXY) Connect(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (ioStream IOStream, goerr error) {
-	var arg0 *C.GProxy
-	var arg1 *C.GIOStream
-	var arg2 *C.GProxyAddress
-	var arg3 *C.GCancellable
+func (p proXY) Connect(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable) (IOStream, error) {
+	var _arg0 *C.GProxy
+	var _arg1 *C.GIOStream
+	var _arg2 *C.GProxyAddress
+	var _arg3 *C.GCancellable
 
-	arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
-	arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
-	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(connection.Native()))
+	_arg2 = (*C.GProxyAddress)(unsafe.Pointer(proxyAddress.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GIOStream
-	var cerr *C.GError
+	var _cret *C.GIOStream
+	var _cerr *C.GError
 
-	cret = C.g_proxy_connect(arg0, arg1, arg2, arg3, cerr)
+	cret = C.g_proxy_connect(_arg0, _arg1, _arg2, _arg3, _cerr)
 
-	var ioStream IOStream
-	var goerr error
+	var _ioStream IOStream
+	var _goerr error
 
-	ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return ioStream, goerr
+	return _ioStream, _goerr
 }
 
 // ConnectAsync asynchronous version of g_proxy_connect().
 func (p proXY) ConnectAsync() {
-	var arg0 *C.GProxy
+	var _arg0 *C.GProxy
 
-	arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 
-	C.g_proxy_connect_async(arg0)
+	C.g_proxy_connect_async(_arg0)
 }
 
 // ConnectFinish: see g_proxy_connect().
-func (p proXY) ConnectFinish(result AsyncResult) (ioStream IOStream, goerr error) {
-	var arg0 *C.GProxy
-	var arg1 *C.GAsyncResult
+func (p proXY) ConnectFinish(result AsyncResult) (IOStream, error) {
+	var _arg0 *C.GProxy
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GIOStream
-	var cerr *C.GError
+	var _cret *C.GIOStream
+	var _cerr *C.GError
 
-	cret = C.g_proxy_connect_finish(arg0, arg1, cerr)
+	cret = C.g_proxy_connect_finish(_arg0, _arg1, _cerr)
 
-	var ioStream IOStream
-	var goerr error
+	var _ioStream IOStream
+	var _goerr error
 
-	ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return ioStream, goerr
+	return _ioStream, _goerr
 }
 
 // SupportsHostname: some proxy protocols expect to be passed a hostname,
@@ -153,19 +153,19 @@ func (p proXY) ConnectFinish(result AsyncResult) (ioStream IOStream, goerr error
 // containing the stringified IP address to g_proxy_connect() or
 // g_proxy_connect_async().
 func (p proXY) SupportsHostname() bool {
-	var arg0 *C.GProxy
+	var _arg0 *C.GProxy
 
-	arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_proxy_supports_hostname(arg0)
+	cret = C.g_proxy_supports_hostname(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

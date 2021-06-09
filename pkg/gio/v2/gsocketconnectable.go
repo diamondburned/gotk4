@@ -136,19 +136,19 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 
 // Enumerate creates a AddressEnumerator for @connectable.
 func (c socketConnectable) Enumerate() SocketAddressEnumerator {
-	var arg0 *C.GSocketConnectable
+	var _arg0 *C.GSocketConnectable
 
-	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSocketAddressEnumerator
+	var _cret *C.GSocketAddressEnumerator
 
-	cret = C.g_socket_connectable_enumerate(arg0)
+	cret = C.g_socket_connectable_enumerate(_arg0)
 
-	var socketAddressEnumerator SocketAddressEnumerator
+	var _socketAddressEnumerator SocketAddressEnumerator
 
-	socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
+	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddressEnumerator)
 
-	return socketAddressEnumerator
+	return _socketAddressEnumerator
 }
 
 // ProXYEnumerate creates a AddressEnumerator for @connectable that will
@@ -159,19 +159,19 @@ func (c socketConnectable) Enumerate() SocketAddressEnumerator {
 // g_socket_connectable_proxy_enumerate(), this will fall back to calling
 // g_socket_connectable_enumerate().
 func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
-	var arg0 *C.GSocketConnectable
+	var _arg0 *C.GSocketConnectable
 
-	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSocketAddressEnumerator
+	var _cret *C.GSocketAddressEnumerator
 
-	cret = C.g_socket_connectable_proxy_enumerate(arg0)
+	cret = C.g_socket_connectable_proxy_enumerate(_arg0)
 
-	var socketAddressEnumerator SocketAddressEnumerator
+	var _socketAddressEnumerator SocketAddressEnumerator
 
-	socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketAddressEnumerator)
+	_socketAddressEnumerator = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddressEnumerator)
 
-	return socketAddressEnumerator
+	return _socketAddressEnumerator
 }
 
 // String: format a Connectable as a string. This is a human-readable format
@@ -182,18 +182,18 @@ func (c socketConnectable) ProXYEnumerate() SocketAddressEnumerator {
 // If the Connectable implementation does not support string formatting, the
 // implementation’s type name will be returned as a fallback.
 func (c socketConnectable) String() string {
-	var arg0 *C.GSocketConnectable
+	var _arg0 *C.GSocketConnectable
 
-	arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_socket_connectable_to_string(arg0)
+	cret = C.g_socket_connectable_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

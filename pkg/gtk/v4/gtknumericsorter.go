@@ -68,54 +68,54 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 
 // NewNumericSorter constructs a class NumericSorter.
 func NewNumericSorter(expression Expression) NumericSorter {
-	var arg1 *C.GtkExpression
+	var _arg1 *C.GtkExpression
 
-	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	var cret C.GtkNumericSorter
+	var _cret C.GtkNumericSorter
 
-	cret = C.gtk_numeric_sorter_new(arg1)
+	cret = C.gtk_numeric_sorter_new(_arg1)
 
-	var numericSorter NumericSorter
+	var _numericSorter NumericSorter
 
-	numericSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NumericSorter)
+	_numericSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NumericSorter)
 
-	return numericSorter
+	return _numericSorter
 }
 
 // Expression gets the expression that is evaluated to obtain numbers from
 // items.
 func (s numericSorter) Expression() Expression {
-	var arg0 *C.GtkNumericSorter
+	var _arg0 *C.GtkNumericSorter
 
-	arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkExpression
+	var _cret *C.GtkExpression
 
-	cret = C.gtk_numeric_sorter_get_expression(arg0)
+	cret = C.gtk_numeric_sorter_get_expression(_arg0)
 
-	var expression Expression
+	var _expression Expression
 
-	expression = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
 
-	return expression
+	return _expression
 }
 
 // SortOrder gets whether this sorter will sort smaller numbers first.
 func (s numericSorter) SortOrder() SortType {
-	var arg0 *C.GtkNumericSorter
+	var _arg0 *C.GtkNumericSorter
 
-	arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkSortType
+	var _cret C.GtkSortType
 
-	cret = C.gtk_numeric_sorter_get_sort_order(arg0)
+	cret = C.gtk_numeric_sorter_get_sort_order(_arg0)
 
-	var sortType SortType
+	var _sortType SortType
 
-	sortType = SortType(cret)
+	_sortType = SortType(_cret)
 
-	return sortType
+	return _sortType
 }
 
 // SetExpression sets the expression that is evaluated to obtain numbers
@@ -127,22 +127,22 @@ func (s numericSorter) SortOrder() SortType {
 // The expression must have a return type that can be compared numerically,
 // such as TYPE_INT or TYPE_DOUBLE.
 func (s numericSorter) SetExpression(expression Expression) {
-	var arg0 *C.GtkNumericSorter
-	var arg1 *C.GtkExpression
+	var _arg0 *C.GtkNumericSorter
+	var _arg1 *C.GtkExpression
 
-	arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	C.gtk_numeric_sorter_set_expression(arg0, arg1)
+	C.gtk_numeric_sorter_set_expression(_arg0, _arg1)
 }
 
 // SetSortOrder sets whether to sort smaller numbers before larger ones.
 func (s numericSorter) SetSortOrder(sortOrder SortType) {
-	var arg0 *C.GtkNumericSorter
-	var arg1 C.GtkSortType
+	var _arg0 *C.GtkNumericSorter
+	var _arg1 C.GtkSortType
 
-	arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkSortType)(sortOrder)
+	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkSortType)(sortOrder)
 
-	C.gtk_numeric_sorter_set_sort_order(arg0, arg1)
+	C.gtk_numeric_sorter_set_sort_order(_arg0, _arg1)
 }

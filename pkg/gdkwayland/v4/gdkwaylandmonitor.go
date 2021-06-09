@@ -49,17 +49,17 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 
 // WlOutput returns the Wayland wl_output of a Monitor.
 func (m waylandMonitor) WlOutput() *interface{} {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret *C.wl_output
+	var _cret *C.wl_output
 
-	cret = C.gdk_wayland_monitor_get_wl_output(arg0)
+	cret = C.gdk_wayland_monitor_get_wl_output(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }

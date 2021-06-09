@@ -38,3 +38,8 @@ func (j *Joints) Join() string {
 
 	return strings.Join(j.strs, j.sep)
 }
+
+// Joints returns the list of joints.
+func (j *Joints) Joints() []string {
+	return j.strs
+}

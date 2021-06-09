@@ -98,19 +98,19 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 // Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
 // used to construct the @buildable.
 func (b buildable) BuildableID() string {
-	var arg0 *C.GtkBuildable
+	var _arg0 *C.GtkBuildable
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_buildable_get_buildable_id(arg0)
+	cret = C.gtk_buildable_get_buildable_id(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 type BuildableParseContext struct {
@@ -143,19 +143,19 @@ func (b *BuildableParseContext) Native() unsafe.Pointer {
 // element_name as passed to those functions. For the parent elements, see
 // gtk_buildable_parse_context_get_element_stack().
 func (c *BuildableParseContext) Element() string {
-	var arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext
 
-	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_buildable_parse_context_get_element(arg0)
+	cret = C.gtk_buildable_parse_context_get_element(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // ElementStack retrieves the element stack from the internal state of the
@@ -170,19 +170,19 @@ func (c *BuildableParseContext) Element() string {
 // handlers where gtk_buildable_parse_context_get_element() would merely return
 // the name of the element that is being processed.
 func (c *BuildableParseContext) ElementStack() []string {
-	var arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext
 
-	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GPtrArray
+	var _cret *C.GPtrArray
 
-	cret = C.gtk_buildable_parse_context_get_element_stack(arg0)
+	cret = C.gtk_buildable_parse_context_get_element_stack(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (*C.GPtrArray)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (*C.GPtrArray)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -190,15 +190,15 @@ func (c *BuildableParseContext) ElementStack() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
+			_utf8s = C.GoString(_cret)
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // Position retrieves the current line number and the number of the character on
@@ -206,22 +206,22 @@ func (c *BuildableParseContext) ElementStack() []string {
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages."
 func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
-	var arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext
 
-	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.int
-	var arg2 C.int
+	var _arg1 C.int
+	var _arg2 C.int
 
-	C.gtk_buildable_parse_context_get_position(arg0, &arg1, &arg2)
+	C.gtk_buildable_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
-	var lineNumber int
-	var charNumber int
+	var _lineNumber int
+	var _charNumber int
 
-	lineNumber = (int)(arg1)
-	charNumber = (int)(arg2)
+	_lineNumber = (int)(_arg1)
+	_charNumber = (int)(_arg2)
 
-	return lineNumber, charNumber
+	return _lineNumber, _charNumber
 }
 
 // Pop completes the process of a temporary sub-parser redirection.
@@ -237,17 +237,17 @@ func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
 func (c *BuildableParseContext) Pop() interface{} {
-	var arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext
 
-	arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.gtk_buildable_parse_context_pop(arg0)
+	cret = C.gtk_buildable_parse_context_pop(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }

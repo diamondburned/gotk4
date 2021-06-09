@@ -67,19 +67,19 @@ func (l *Language) Native() unsafe.Pointer {
 //
 // “` pango_language_get_sample_string (pango_language_from_string ("xx")) “`
 func (l *Language) SampleString() string {
-	var arg0 *C.PangoLanguage
+	var _arg0 *C.PangoLanguage
 
-	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.pango_language_get_sample_string(arg0)
+	cret = C.pango_language_get_sample_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Scripts determines the scripts used to to write @language.
@@ -104,28 +104,28 @@ func (l *Language) SampleString() string {
 // values are from the `GUnicodeScript` enumeration, which may have more values.
 // Callers need to handle unknown values.
 func (l *Language) Scripts() []Script {
-	var arg0 *C.PangoLanguage
+	var _arg0 *C.PangoLanguage
 
-	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
-	var cret *C.PangoScript
-	var arg1 *C.int
+	var _cret *C.PangoScript
+	var _arg1 *C.int
 
-	cret = C.pango_language_get_scripts(arg0)
+	cret = C.pango_language_get_scripts(_arg0)
 
-	var scripts []Script
+	var _scripts []Script
 
 	{
 		var src []C.PangoScript
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
 
-		scripts = make([]Script, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			scripts = Script(cret)
+		_scripts = make([]Script, _arg1)
+		for i := 0; i < uintptr(_arg1); i++ {
+			_scripts = Script(_cret)
 		}
 	}
 
-	return scripts
+	return _scripts
 }
 
 // IncludesScript determines if @script is one of the scripts used to write
@@ -139,23 +139,23 @@ func (l *Language) Scripts() []Script {
 //
 // This function uses [method@Pango.Language.get_scripts] internally.
 func (l *Language) IncludesScript(script Script) bool {
-	var arg0 *C.PangoLanguage
-	var arg1 C.PangoScript
+	var _arg0 *C.PangoLanguage
+	var _arg1 C.PangoScript
 
-	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
-	arg1 = (C.PangoScript)(script)
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg1 = (C.PangoScript)(script)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.pango_language_includes_script(arg0, arg1)
+	cret = C.pango_language_includes_script(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Matches checks if a language tag matches one of the elements in a list of
@@ -165,39 +165,39 @@ func (l *Language) IncludesScript(script Script) bool {
 // '*', the range is exactly the tag, or the range is a prefix of the tag, and
 // the character after it in the tag is '-'.
 func (l *Language) Matches(rangeList string) bool {
-	var arg0 *C.PangoLanguage
-	var arg1 *C.char
+	var _arg0 *C.PangoLanguage
+	var _arg1 *C.char
 
-	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
-	arg1 = (*C.char)(C.CString(rangeList))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.char)(C.CString(rangeList))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.pango_language_matches(arg0, arg1)
+	cret = C.pango_language_matches(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // String gets the RFC-3066 format string representing the given language tag.
 func (l *Language) String() string {
-	var arg0 *C.PangoLanguage
+	var _arg0 *C.PangoLanguage
 
-	arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.pango_language_to_string(arg0)
+	cret = C.pango_language_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }

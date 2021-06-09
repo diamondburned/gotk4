@@ -51,14 +51,14 @@ type ProXYResolverOverrider interface {
 	//
 	// `direct://` is used when no proxy is needed. Direct connection should not
 	// be attempted unless it is part of the returned array of proxies.
-	Lookup(uri string, cancellable Cancellable) (utf8s []string, goerr error)
+	Lookup(uri string, cancellable Cancellable) ([]string, error)
 	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 	// for more details.
 	LookupAsync()
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete. See
 	// g_proxy_resolver_lookup() for more details.
-	LookupFinish(result AsyncResult) (utf8s []string, goerr error)
+	LookupFinish(result AsyncResult) ([]string, error)
 }
 
 // ProXYResolver provides synchronous and asynchronous network proxy resolution.
@@ -98,21 +98,21 @@ func marshalProXYResolver(p uintptr) (interface{}, error) {
 // internally; g_proxy_resolver_get_default() will only return a proxy
 // resolver that returns true for this method.)
 func (r proXYResolver) IsSupported() bool {
-	var arg0 *C.GProxyResolver
+	var _arg0 *C.GProxyResolver
 
-	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_proxy_resolver_is_supported(arg0)
+	cret = C.g_proxy_resolver_is_supported(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Lookup looks into the system proxy configuration to determine what proxy,
@@ -127,27 +127,27 @@ func (r proXYResolver) IsSupported() bool {
 //
 // `direct://` is used when no proxy is needed. Direct connection should not
 // be attempted unless it is part of the returned array of proxies.
-func (r proXYResolver) Lookup(uri string, cancellable Cancellable) (utf8s []string, goerr error) {
-	var arg0 *C.GProxyResolver
-	var arg1 *C.gchar
-	var arg2 *C.GCancellable
+func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
+	var _arg0 *C.GProxyResolver
+	var _arg1 *C.gchar
+	var _arg2 *C.GCancellable
 
-	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret **C.gchar
-	var cerr *C.GError
+	var _cret **C.gchar
+	var _cerr *C.GError
 
-	cret = C.g_proxy_resolver_lookup(arg0, arg1, arg2, cerr)
+	cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, _cerr)
 
-	var utf8s []string
-	var goerr error
+	var _utf8s []string
+	var _goerr error
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -155,50 +155,50 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) (utf8s []stri
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return utf8s, goerr
+	return _utf8s, _goerr
 }
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 // for more details.
 func (r proXYResolver) LookupAsync() {
-	var arg0 *C.GProxyResolver
+	var _arg0 *C.GProxyResolver
 
-	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 
-	C.g_proxy_resolver_lookup_async(arg0)
+	C.g_proxy_resolver_lookup_async(_arg0)
 }
 
 // LookupFinish: call this function to obtain the array of proxy URIs when
 // g_proxy_resolver_lookup_async() is complete. See
 // g_proxy_resolver_lookup() for more details.
-func (r proXYResolver) LookupFinish(result AsyncResult) (utf8s []string, goerr error) {
-	var arg0 *C.GProxyResolver
-	var arg1 *C.GAsyncResult
+func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
+	var _arg0 *C.GProxyResolver
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret **C.gchar
-	var cerr *C.GError
+	var _cret **C.gchar
+	var _cerr *C.GError
 
-	cret = C.g_proxy_resolver_lookup_finish(arg0, arg1, cerr)
+	cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, _cerr)
 
-	var utf8s []string
-	var goerr error
+	var _utf8s []string
+	var _goerr error
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -206,15 +206,15 @@ func (r proXYResolver) LookupFinish(result AsyncResult) (utf8s []string, goerr e
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return utf8s, goerr
+	return _utf8s, _goerr
 }

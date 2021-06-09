@@ -77,73 +77,73 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 
 // NewEmblemedIcon constructs a class EmblemedIcon.
 func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
-	var arg1 *C.GIcon
-	var arg2 *C.GEmblem
+	var _arg1 *C.GIcon
+	var _arg2 *C.GEmblem
 
-	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
-	var cret C.GEmblemedIcon
+	var _cret C.GEmblemedIcon
 
-	cret = C.g_emblemed_icon_new(arg1, arg2)
+	cret = C.g_emblemed_icon_new(_arg1, _arg2)
 
-	var emblemedIcon EmblemedIcon
+	var _emblemedIcon EmblemedIcon
 
-	emblemedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EmblemedIcon)
+	_emblemedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EmblemedIcon)
 
-	return emblemedIcon
+	return _emblemedIcon
 }
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
 func (e emblemedIcon) AddEmblem(emblem Emblem) {
-	var arg0 *C.GEmblemedIcon
-	var arg1 *C.GEmblem
+	var _arg0 *C.GEmblemedIcon
+	var _arg1 *C.GEmblem
 
-	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
-	arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
 
-	C.g_emblemed_icon_add_emblem(arg0, arg1)
+	C.g_emblemed_icon_add_emblem(_arg0, _arg1)
 }
 
 // ClearEmblems removes all the emblems from @icon.
 func (e emblemedIcon) ClearEmblems() {
-	var arg0 *C.GEmblemedIcon
+	var _arg0 *C.GEmblemedIcon
 
-	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
-	C.g_emblemed_icon_clear_emblems(arg0)
+	C.g_emblemed_icon_clear_emblems(_arg0)
 }
 
 // Emblems gets the list of emblems for the @icon.
 func (e emblemedIcon) Emblems() *glib.List {
-	var arg0 *C.GEmblemedIcon
+	var _arg0 *C.GEmblemedIcon
 
-	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_emblemed_icon_get_emblems(arg0)
+	cret = C.g_emblemed_icon_get_emblems(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
+	_list = glib.WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // Icon gets the main icon for @emblemed.
 func (e emblemedIcon) Icon() Icon {
-	var arg0 *C.GEmblemedIcon
+	var _arg0 *C.GEmblemedIcon
 
-	arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
-	var cret *C.GIcon
+	var _cret *C.GIcon
 
-	cret = C.g_emblemed_icon_get_icon(arg0)
+	cret = C.g_emblemed_icon_get_icon(_arg0)
 
-	var icon Icon
+	var _icon Icon
 
-	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
 
-	return icon
+	return _icon
 }

@@ -60,35 +60,35 @@ func marshalLayoutChild(p uintptr) (interface{}, error) {
 
 // ChildWidget retrieves the Widget associated to the given @layout_child.
 func (l layoutChild) ChildWidget() Widget {
-	var arg0 *C.GtkLayoutChild
+	var _arg0 *C.GtkLayoutChild
 
-	arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_layout_child_get_child_widget(arg0)
+	cret = C.gtk_layout_child_get_child_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // LayoutManager retrieves the LayoutManager instance that created the given
 // @layout_child.
 func (l layoutChild) LayoutManager() LayoutManager {
-	var arg0 *C.GtkLayoutChild
+	var _arg0 *C.GtkLayoutChild
 
-	arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLayoutChild)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GtkLayoutManager
+	var _cret *C.GtkLayoutManager
 
-	cret = C.gtk_layout_child_get_layout_manager(arg0)
+	cret = C.gtk_layout_child_get_layout_manager(_arg0)
 
-	var layoutManager LayoutManager
+	var _layoutManager LayoutManager
 
-	layoutManager = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LayoutManager)
+	_layoutManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LayoutManager)
 
-	return layoutManager
+	return _layoutManager
 }

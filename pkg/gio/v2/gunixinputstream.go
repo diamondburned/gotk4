@@ -81,72 +81,72 @@ func marshalUnixInputStream(p uintptr) (interface{}, error) {
 
 // NewUnixInputStream constructs a class UnixInputStream.
 func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
-	var arg1 C.gint
-	var arg2 C.gboolean
+	var _arg1 C.gint
+	var _arg2 C.gboolean
 
-	arg1 = C.gint(fd)
+	_arg1 = C.gint(fd)
 	if closeFd {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	var cret C.GUnixInputStream
+	var _cret C.GUnixInputStream
 
-	cret = C.g_unix_input_stream_new(arg1, arg2)
+	cret = C.g_unix_input_stream_new(_arg1, _arg2)
 
-	var unixInputStream UnixInputStream
+	var _unixInputStream UnixInputStream
 
-	unixInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixInputStream)
+	_unixInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixInputStream)
 
-	return unixInputStream
+	return _unixInputStream
 }
 
 // CloseFd returns whether the file descriptor of @stream will be closed
 // when the stream is closed.
 func (s unixInputStream) CloseFd() bool {
-	var arg0 *C.GUnixInputStream
+	var _arg0 *C.GUnixInputStream
 
-	arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_unix_input_stream_get_close_fd(arg0)
+	cret = C.g_unix_input_stream_get_close_fd(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Fd: return the UNIX file descriptor that the stream reads from.
 func (s unixInputStream) Fd() int {
-	var arg0 *C.GUnixInputStream
+	var _arg0 *C.GUnixInputStream
 
-	arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_unix_input_stream_get_fd(arg0)
+	cret = C.g_unix_input_stream_get_fd(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SetCloseFd sets whether the file descriptor of @stream shall be closed
 // when the stream is closed.
 func (s unixInputStream) SetCloseFd(closeFd bool) {
-	var arg0 *C.GUnixInputStream
-	var arg1 C.gboolean
+	var _arg0 *C.GUnixInputStream
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GUnixInputStream)(unsafe.Pointer(s.Native()))
 	if closeFd {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_unix_input_stream_set_close_fd(arg0, arg1)
+	C.g_unix_input_stream_set_close_fd(_arg0, _arg1)
 }

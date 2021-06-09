@@ -81,51 +81,51 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 
 // NewThemedIcon constructs a class ThemedIcon.
 func NewThemedIcon(iconname string) ThemedIcon {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(iconname))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(iconname))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GThemedIcon
+	var _cret C.GThemedIcon
 
-	cret = C.g_themed_icon_new(arg1)
+	cret = C.g_themed_icon_new(_arg1)
 
-	var themedIcon ThemedIcon
+	var _themedIcon ThemedIcon
 
-	themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
 
-	return themedIcon
+	return _themedIcon
 }
 
 // NewThemedIconFromNames constructs a class ThemedIcon.
 func NewThemedIconFromNames() ThemedIcon {
-	var cret C.GThemedIcon
+	var _cret C.GThemedIcon
 
 	cret = C.g_themed_icon_new_from_names()
 
-	var themedIcon ThemedIcon
+	var _themedIcon ThemedIcon
 
-	themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
 
-	return themedIcon
+	return _themedIcon
 }
 
 // NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
 func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(iconname))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(iconname))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GThemedIcon
+	var _cret C.GThemedIcon
 
-	cret = C.g_themed_icon_new_with_default_fallbacks(arg1)
+	cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
 
-	var themedIcon ThemedIcon
+	var _themedIcon ThemedIcon
 
-	themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThemedIcon)
+	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
 
-	return themedIcon
+	return _themedIcon
 }
 
 // AppendName: append a name to the list of icons from within @icon.
@@ -133,31 +133,31 @@ func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
 func (i themedIcon) AppendName(iconname string) {
-	var arg0 *C.GThemedIcon
-	var arg1 *C.char
+	var _arg0 *C.GThemedIcon
+	var _arg1 *C.char
 
-	arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.char)(C.CString(iconname))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.char)(C.CString(iconname))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_themed_icon_append_name(arg0, arg1)
+	C.g_themed_icon_append_name(_arg0, _arg1)
 }
 
 // Names gets the names of icons from within @icon.
 func (i themedIcon) Names() []string {
-	var arg0 *C.GThemedIcon
+	var _arg0 *C.GThemedIcon
 
-	arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 
-	var cret **C.gchar
+	var _cret **C.gchar
 
-	cret = C.g_themed_icon_get_names(arg0)
+	cret = C.g_themed_icon_get_names(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -165,15 +165,15 @@ func (i themedIcon) Names() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
+			_utf8s = C.GoString(_cret)
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // PrependName: prepend a name to the list of icons from within @icon.
@@ -181,12 +181,12 @@ func (i themedIcon) Names() []string {
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
 func (i themedIcon) PrependName(iconname string) {
-	var arg0 *C.GThemedIcon
-	var arg1 *C.char
+	var _arg0 *C.GThemedIcon
+	var _arg1 *C.char
 
-	arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.char)(C.CString(iconname))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.char)(C.CString(iconname))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_themed_icon_prepend_name(arg0, arg1)
+	C.g_themed_icon_prepend_name(_arg0, _arg1)
 }

@@ -207,79 +207,79 @@ func marshalCellLayout(p uintptr) (interface{}, error) {
 // example if column 2 of the model contains strings, you could have the
 // “text” attribute of a CellRendererText get its values from column 2.
 func (c cellLayout) AddAttribute(cell CellRenderer, attribute string, column int) {
-	var arg0 *C.GtkCellLayout
-	var arg1 *C.GtkCellRenderer
-	var arg2 *C.char
-	var arg3 C.int
+	var _arg0 *C.GtkCellLayout
+	var _arg1 *C.GtkCellRenderer
+	var _arg2 *C.char
+	var _arg3 C.int
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	arg2 = (*C.char)(C.CString(attribute))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.int(column)
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg2 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.int(column)
 
-	C.gtk_cell_layout_add_attribute(arg0, arg1, arg2, arg3)
+	C.gtk_cell_layout_add_attribute(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Clear unsets all the mappings on all renderers on @cell_layout and
 // removes all renderers from @cell_layout.
 func (c cellLayout) Clear() {
-	var arg0 *C.GtkCellLayout
+	var _arg0 *C.GtkCellLayout
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 
-	C.gtk_cell_layout_clear(arg0)
+	C.gtk_cell_layout_clear(_arg0)
 }
 
 // ClearAttributes clears all existing attributes previously set with
 // gtk_cell_layout_set_attributes().
 func (c cellLayout) ClearAttributes(cell CellRenderer) {
-	var arg0 *C.GtkCellLayout
-	var arg1 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellLayout
+	var _arg1 *C.GtkCellRenderer
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 
-	C.gtk_cell_layout_clear_attributes(arg0, arg1)
+	C.gtk_cell_layout_clear_attributes(_arg0, _arg1)
 }
 
 // Area returns the underlying CellArea which might be @cell_layout if
 // called on a CellArea or might be nil if no CellArea is used by
 // @cell_layout.
 func (c cellLayout) Area() CellArea {
-	var arg0 *C.GtkCellLayout
+	var _arg0 *C.GtkCellLayout
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkCellArea
+	var _cret *C.GtkCellArea
 
-	cret = C.gtk_cell_layout_get_area(arg0)
+	cret = C.gtk_cell_layout_get_area(_arg0)
 
-	var cellArea CellArea
+	var _cellArea CellArea
 
-	cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellArea)
+	_cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellArea)
 
-	return cellArea
+	return _cellArea
 }
 
 // Cells returns the cell renderers which have been added to @cell_layout.
 func (c cellLayout) Cells() *glib.List {
-	var arg0 *C.GtkCellLayout
+	var _arg0 *C.GtkCellLayout
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gtk_cell_layout_get_cells(arg0)
+	cret = C.gtk_cell_layout_get_cells(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // PackEnd adds the @cell to the end of @cell_layout. If @expand is false,
@@ -288,17 +288,17 @@ func (c cellLayout) Cells() *glib.List {
 //
 // Note that reusing the same cell renderer is not supported.
 func (c cellLayout) PackEnd(cell CellRenderer, expand bool) {
-	var arg0 *C.GtkCellLayout
-	var arg1 *C.GtkCellRenderer
-	var arg2 C.gboolean
+	var _arg0 *C.GtkCellLayout
+	var _arg1 *C.GtkCellRenderer
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	C.gtk_cell_layout_pack_end(arg0, arg1, arg2)
+	C.gtk_cell_layout_pack_end(_arg0, _arg1, _arg2)
 }
 
 // PackStart packs the @cell into the beginning of @cell_layout. If @expand
@@ -307,17 +307,17 @@ func (c cellLayout) PackEnd(cell CellRenderer, expand bool) {
 //
 // Note that reusing the same cell renderer is not supported.
 func (c cellLayout) PackStart(cell CellRenderer, expand bool) {
-	var arg0 *C.GtkCellLayout
-	var arg1 *C.GtkCellRenderer
-	var arg2 C.gboolean
+	var _arg0 *C.GtkCellLayout
+	var _arg1 *C.GtkCellRenderer
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
 	if expand {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	C.gtk_cell_layout_pack_start(arg0, arg1, arg2)
+	C.gtk_cell_layout_pack_start(_arg0, _arg1, _arg2)
 }
 
 // Reorder re-inserts @cell at @position.
@@ -325,15 +325,15 @@ func (c cellLayout) PackStart(cell CellRenderer, expand bool) {
 // Note that @cell has already to be packed into @cell_layout for this to
 // function properly.
 func (c cellLayout) Reorder(cell CellRenderer, position int) {
-	var arg0 *C.GtkCellLayout
-	var arg1 *C.GtkCellRenderer
-	var arg2 C.int
+	var _arg0 *C.GtkCellLayout
+	var _arg1 *C.GtkCellRenderer
+	var _arg2 C.int
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
-	arg2 = C.int(position)
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(cell.Native()))
+	_arg2 = C.int(position)
 
-	C.gtk_cell_layout_reorder(arg0, arg1, arg2)
+	C.gtk_cell_layout_reorder(_arg0, _arg1, _arg2)
 }
 
 // SetCellDataFunc sets the CellLayoutDataFunc to use for @cell_layout.
@@ -344,9 +344,9 @@ func (c cellLayout) Reorder(cell CellRenderer, position int) {
 //
 // @func may be nil to remove a previously set function.
 func (c cellLayout) SetCellDataFunc() {
-	var arg0 *C.GtkCellLayout
+	var _arg0 *C.GtkCellLayout
 
-	arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellLayout)(unsafe.Pointer(c.Native()))
 
-	C.gtk_cell_layout_set_cell_data_func(arg0)
+	C.gtk_cell_layout_set_cell_data_func(_arg0)
 }

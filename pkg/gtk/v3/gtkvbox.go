@@ -80,21 +80,21 @@ func marshalVBox(p uintptr) (interface{}, error) {
 
 // NewVBox constructs a class VBox.
 func NewVBox(homogeneous bool, spacing int) VBox {
-	var arg1 C.gboolean
-	var arg2 C.gint
+	var _arg1 C.gboolean
+	var _arg2 C.gint
 
 	if homogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
-	arg2 = C.gint(spacing)
+	_arg2 = C.gint(spacing)
 
-	var cret C.GtkVBox
+	var _cret C.GtkVBox
 
-	cret = C.gtk_vbox_new(arg1, arg2)
+	cret = C.gtk_vbox_new(_arg1, _arg2)
 
-	var vBox VBox
+	var _vBox VBox
 
-	vBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VBox)
+	_vBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VBox)
 
-	return vBox
+	return _vBox
 }

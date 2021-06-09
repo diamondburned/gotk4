@@ -75,32 +75,32 @@ func marshalArrow(p uintptr) (interface{}, error) {
 
 // NewArrow constructs a class Arrow.
 func NewArrow(arrowType ArrowType, shadowType ShadowType) Arrow {
-	var arg1 C.GtkArrowType
-	var arg2 C.GtkShadowType
+	var _arg1 C.GtkArrowType
+	var _arg2 C.GtkShadowType
 
-	arg1 = (C.GtkArrowType)(arrowType)
-	arg2 = (C.GtkShadowType)(shadowType)
+	_arg1 = (C.GtkArrowType)(arrowType)
+	_arg2 = (C.GtkShadowType)(shadowType)
 
-	var cret C.GtkArrow
+	var _cret C.GtkArrow
 
-	cret = C.gtk_arrow_new(arg1, arg2)
+	cret = C.gtk_arrow_new(_arg1, _arg2)
 
-	var arrow Arrow
+	var _arrow Arrow
 
-	arrow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Arrow)
+	_arrow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Arrow)
 
-	return arrow
+	return _arrow
 }
 
 // Set sets the direction and style of the Arrow, @arrow.
 func (a arrow) Set(arrowType ArrowType, shadowType ShadowType) {
-	var arg0 *C.GtkArrow
-	var arg1 C.GtkArrowType
-	var arg2 C.GtkShadowType
+	var _arg0 *C.GtkArrow
+	var _arg1 C.GtkArrowType
+	var _arg2 C.GtkShadowType
 
-	arg0 = (*C.GtkArrow)(unsafe.Pointer(a.Native()))
-	arg1 = (C.GtkArrowType)(arrowType)
-	arg2 = (C.GtkShadowType)(shadowType)
+	_arg0 = (*C.GtkArrow)(unsafe.Pointer(a.Native()))
+	_arg1 = (C.GtkArrowType)(arrowType)
+	_arg2 = (C.GtkShadowType)(shadowType)
 
-	C.gtk_arrow_set(arg0, arg1, arg2)
+	C.gtk_arrow_set(_arg0, _arg1, _arg2)
 }

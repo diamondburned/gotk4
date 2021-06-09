@@ -82,48 +82,48 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 
 // DupObject gets the BusObject that @interface_ belongs to, if any.
 func (i dBusInterface) DupObject() DBusObject {
-	var arg0 *C.GDBusInterface
+	var _arg0 *C.GDBusInterface
 
-	arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GDBusObject
+	var _cret *C.GDBusObject
 
-	cret = C.g_dbus_interface_dup_object(arg0)
+	cret = C.g_dbus_interface_dup_object(_arg0)
 
-	var dBusObject DBusObject
+	var _dBusObject DBusObject
 
-	dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObject)
+	_dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObject)
 
-	return dBusObject
+	return _dBusObject
 }
 
 // Info gets D-Bus introspection information for the D-Bus interface
 // implemented by @interface_.
 func (i dBusInterface) Info() *DBusInterfaceInfo {
-	var arg0 *C.GDBusInterface
+	var _arg0 *C.GDBusInterface
 
-	arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GDBusInterfaceInfo
+	var _cret *C.GDBusInterfaceInfo
 
-	cret = C.g_dbus_interface_get_info(arg0)
+	cret = C.g_dbus_interface_get_info(_arg0)
 
-	var dBusInterfaceInfo *DBusInterfaceInfo
+	var _dBusInterfaceInfo *DBusInterfaceInfo
 
-	dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(cret))
+	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
 
-	return dBusInterfaceInfo
+	return _dBusInterfaceInfo
 }
 
 // SetObject sets the BusObject for @interface_ to @object.
 //
 // Note that @interface_ will hold a weak reference to @object.
 func (i dBusInterface) SetObject(object DBusObject) {
-	var arg0 *C.GDBusInterface
-	var arg1 *C.GDBusObject
+	var _arg0 *C.GDBusInterface
+	var _arg1 *C.GDBusObject
 
-	arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))
 
-	C.g_dbus_interface_set_object(arg0, arg1)
+	C.g_dbus_interface_set_object(_arg0, _arg1)
 }

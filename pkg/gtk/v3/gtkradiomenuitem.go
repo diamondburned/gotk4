@@ -105,134 +105,134 @@ func marshalRadioMenuItem(p uintptr) (interface{}, error) {
 
 // NewRadioMenuItem constructs a class RadioMenuItem.
 func NewRadioMenuItem(group *glib.SList) RadioMenuItem {
-	var arg1 *C.GSList
+	var _arg1 *C.GSList
 
-	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
 
-	var cret C.GtkRadioMenuItem
+	var _cret C.GtkRadioMenuItem
 
-	cret = C.gtk_radio_menu_item_new(arg1)
+	cret = C.gtk_radio_menu_item_new(_arg1)
 
-	var radioMenuItem RadioMenuItem
+	var _radioMenuItem RadioMenuItem
 
-	radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioMenuItem)
+	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioMenuItem)
 
-	return radioMenuItem
+	return _radioMenuItem
 }
 
 // NewRadioMenuItemFromWidget constructs a class RadioMenuItem.
 func NewRadioMenuItemFromWidget(group RadioMenuItem) RadioMenuItem {
-	var arg1 *C.GtkRadioMenuItem
+	var _arg1 *C.GtkRadioMenuItem
 
-	arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
 
-	var cret C.GtkRadioMenuItem
+	var _cret C.GtkRadioMenuItem
 
-	cret = C.gtk_radio_menu_item_new_from_widget(arg1)
+	cret = C.gtk_radio_menu_item_new_from_widget(_arg1)
 
-	var radioMenuItem RadioMenuItem
+	var _radioMenuItem RadioMenuItem
 
-	radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioMenuItem)
+	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioMenuItem)
 
-	return radioMenuItem
+	return _radioMenuItem
 }
 
 // NewRadioMenuItemWithLabel constructs a class RadioMenuItem.
 func NewRadioMenuItemWithLabel(group *glib.SList, label string) RadioMenuItem {
-	var arg1 *C.GSList
-	var arg2 *C.gchar
+	var _arg1 *C.GSList
+	var _arg2 *C.gchar
 
-	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GtkRadioMenuItem
+	var _cret C.GtkRadioMenuItem
 
-	cret = C.gtk_radio_menu_item_new_with_label(arg1, arg2)
+	cret = C.gtk_radio_menu_item_new_with_label(_arg1, _arg2)
 
-	var radioMenuItem RadioMenuItem
+	var _radioMenuItem RadioMenuItem
 
-	radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioMenuItem)
+	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioMenuItem)
 
-	return radioMenuItem
+	return _radioMenuItem
 }
 
 // NewRadioMenuItemWithLabelFromWidget constructs a class RadioMenuItem.
 func NewRadioMenuItemWithLabelFromWidget(group RadioMenuItem, label string) RadioMenuItem {
-	var arg1 *C.GtkRadioMenuItem
-	var arg2 *C.gchar
+	var _arg1 *C.GtkRadioMenuItem
+	var _arg2 *C.gchar
 
-	arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GtkRadioMenuItem
+	var _cret C.GtkRadioMenuItem
 
-	cret = C.gtk_radio_menu_item_new_with_label_from_widget(arg1, arg2)
+	cret = C.gtk_radio_menu_item_new_with_label_from_widget(_arg1, _arg2)
 
-	var radioMenuItem RadioMenuItem
+	var _radioMenuItem RadioMenuItem
 
-	radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioMenuItem)
+	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioMenuItem)
 
-	return radioMenuItem
+	return _radioMenuItem
 }
 
 // NewRadioMenuItemWithMnemonic constructs a class RadioMenuItem.
 func NewRadioMenuItemWithMnemonic(group *glib.SList, label string) RadioMenuItem {
-	var arg1 *C.GSList
-	var arg2 *C.gchar
+	var _arg1 *C.GSList
+	var _arg2 *C.gchar
 
-	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GtkRadioMenuItem
+	var _cret C.GtkRadioMenuItem
 
-	cret = C.gtk_radio_menu_item_new_with_mnemonic(arg1, arg2)
+	cret = C.gtk_radio_menu_item_new_with_mnemonic(_arg1, _arg2)
 
-	var radioMenuItem RadioMenuItem
+	var _radioMenuItem RadioMenuItem
 
-	radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioMenuItem)
+	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioMenuItem)
 
-	return radioMenuItem
+	return _radioMenuItem
 }
 
 // NewRadioMenuItemWithMnemonicFromWidget constructs a class RadioMenuItem.
 func NewRadioMenuItemWithMnemonicFromWidget(group RadioMenuItem, label string) RadioMenuItem {
-	var arg1 *C.GtkRadioMenuItem
-	var arg2 *C.gchar
+	var _arg1 *C.GtkRadioMenuItem
+	var _arg2 *C.gchar
 
-	arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(group.Native()))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GtkRadioMenuItem
+	var _cret C.GtkRadioMenuItem
 
-	cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(arg1, arg2)
+	cret = C.gtk_radio_menu_item_new_with_mnemonic_from_widget(_arg1, _arg2)
 
-	var radioMenuItem RadioMenuItem
+	var _radioMenuItem RadioMenuItem
 
-	radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RadioMenuItem)
+	_radioMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioMenuItem)
 
-	return radioMenuItem
+	return _radioMenuItem
 }
 
 // Group returns the group to which the radio menu item belongs, as a #GList
 // of RadioMenuItem. The list belongs to GTK+ and should not be freed.
 func (r radioMenuItem) Group() *glib.SList {
-	var arg0 *C.GtkRadioMenuItem
+	var _arg0 *C.GtkRadioMenuItem
 
-	arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GSList
+	var _cret *C.GSList
 
-	cret = C.gtk_radio_menu_item_get_group(arg0)
+	cret = C.gtk_radio_menu_item_get_group(_arg0)
 
-	var sList *glib.SList
+	var _sList *glib.SList
 
-	sList = glib.WrapSList(unsafe.Pointer(cret))
+	_sList = glib.WrapSList(unsafe.Pointer(_cret))
 
-	return sList
+	return _sList
 }
 
 // JoinGroup joins a RadioMenuItem object to the group of another
@@ -256,22 +256,22 @@ func (r radioMenuItem) Group() *glib.SList {
 //          last_item = radio_item;
 //        }
 func (r radioMenuItem) JoinGroup(groupSource RadioMenuItem) {
-	var arg0 *C.GtkRadioMenuItem
-	var arg1 *C.GtkRadioMenuItem
+	var _arg0 *C.GtkRadioMenuItem
+	var _arg1 *C.GtkRadioMenuItem
 
-	arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GtkRadioMenuItem)(unsafe.Pointer(groupSource.Native()))
 
-	C.gtk_radio_menu_item_join_group(arg0, arg1)
+	C.gtk_radio_menu_item_join_group(_arg0, _arg1)
 }
 
 // SetGroup sets the group of a radio menu item, or changes it.
 func (r radioMenuItem) SetGroup(group *glib.SList) {
-	var arg0 *C.GtkRadioMenuItem
-	var arg1 *C.GSList
+	var _arg0 *C.GtkRadioMenuItem
+	var _arg1 *C.GSList
 
-	arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkRadioMenuItem)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
 
-	C.gtk_radio_menu_item_set_group(arg0, arg1)
+	C.gtk_radio_menu_item_set_group(_arg0, _arg1)
 }

@@ -183,177 +183,177 @@ func marshalListView(p uintptr) (interface{}, error) {
 
 // NewListView constructs a class ListView.
 func NewListView(model SelectionModel, factory ListItemFactory) ListView {
-	var arg1 *C.GtkSelectionModel
-	var arg2 *C.GtkListItemFactory
+	var _arg1 *C.GtkSelectionModel
+	var _arg2 *C.GtkListItemFactory
 
-	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
-	var cret C.GtkListView
+	var _cret C.GtkListView
 
-	cret = C.gtk_list_view_new(arg1, arg2)
+	cret = C.gtk_list_view_new(_arg1, _arg2)
 
-	var listView ListView
+	var _listView ListView
 
-	listView = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListView)
+	_listView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListView)
 
-	return listView
+	return _listView
 }
 
 // EnableRubberband returns whether rows can be selected by dragging with
 // the mouse.
 func (s listView) EnableRubberband() bool {
-	var arg0 *C.GtkListView
+	var _arg0 *C.GtkListView
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_list_view_get_enable_rubberband(arg0)
+	cret = C.gtk_list_view_get_enable_rubberband(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Factory gets the factory that's currently used to populate list items.
 func (s listView) Factory() ListItemFactory {
-	var arg0 *C.GtkListView
+	var _arg0 *C.GtkListView
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkListItemFactory
+	var _cret *C.GtkListItemFactory
 
-	cret = C.gtk_list_view_get_factory(arg0)
+	cret = C.gtk_list_view_get_factory(_arg0)
 
-	var listItemFactory ListItemFactory
+	var _listItemFactory ListItemFactory
 
-	listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ListItemFactory)
+	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListItemFactory)
 
-	return listItemFactory
+	return _listItemFactory
 }
 
 // Model gets the model that's currently used to read the items displayed.
 func (s listView) Model() SelectionModel {
-	var arg0 *C.GtkListView
+	var _arg0 *C.GtkListView
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkSelectionModel
+	var _cret *C.GtkSelectionModel
 
-	cret = C.gtk_list_view_get_model(arg0)
+	cret = C.gtk_list_view_get_model(_arg0)
 
-	var selectionModel SelectionModel
+	var _selectionModel SelectionModel
 
-	selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
 
-	return selectionModel
+	return _selectionModel
 }
 
 // ShowSeparators returns whether the list box should show separators
 // between rows.
 func (s listView) ShowSeparators() bool {
-	var arg0 *C.GtkListView
+	var _arg0 *C.GtkListView
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_list_view_get_show_separators(arg0)
+	cret = C.gtk_list_view_get_show_separators(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SingleClickActivate returns whether rows will be activated on single
 // click and selected on hover.
 func (s listView) SingleClickActivate() bool {
-	var arg0 *C.GtkListView
+	var _arg0 *C.GtkListView
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_list_view_get_single_click_activate(arg0)
+	cret = C.gtk_list_view_get_single_click_activate(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetEnableRubberband sets whether selections can be changed by dragging
 // with the mouse.
 func (s listView) SetEnableRubberband(enableRubberband bool) {
-	var arg0 *C.GtkListView
-	var arg1 C.gboolean
+	var _arg0 *C.GtkListView
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	if enableRubberband {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_view_set_enable_rubberband(arg0, arg1)
+	C.gtk_list_view_set_enable_rubberband(_arg0, _arg1)
 }
 
 // SetFactory sets the ListItemFactory to use for populating list items.
 func (s listView) SetFactory(factory ListItemFactory) {
-	var arg0 *C.GtkListView
-	var arg1 *C.GtkListItemFactory
+	var _arg0 *C.GtkListView
+	var _arg1 *C.GtkListItemFactory
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
 
-	C.gtk_list_view_set_factory(arg0, arg1)
+	C.gtk_list_view_set_factory(_arg0, _arg1)
 }
 
 // SetModel sets the SelectionModel to use.
 func (s listView) SetModel(model SelectionModel) {
-	var arg0 *C.GtkListView
-	var arg1 *C.GtkSelectionModel
+	var _arg0 *C.GtkListView
+	var _arg1 *C.GtkSelectionModel
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_list_view_set_model(arg0, arg1)
+	C.gtk_list_view_set_model(_arg0, _arg1)
 }
 
 // SetShowSeparators sets whether the list box should show separators
 // between rows.
 func (s listView) SetShowSeparators(showSeparators bool) {
-	var arg0 *C.GtkListView
-	var arg1 C.gboolean
+	var _arg0 *C.GtkListView
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	if showSeparators {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_view_set_show_separators(arg0, arg1)
+	C.gtk_list_view_set_show_separators(_arg0, _arg1)
 }
 
 // SetSingleClickActivate sets whether rows should be activated on single
 // click and selected on hover.
 func (s listView) SetSingleClickActivate(singleClickActivate bool) {
-	var arg0 *C.GtkListView
-	var arg1 C.gboolean
+	var _arg0 *C.GtkListView
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
 	if singleClickActivate {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_list_view_set_single_click_activate(arg0, arg1)
+	C.gtk_list_view_set_single_click_activate(_arg0, _arg1)
 }

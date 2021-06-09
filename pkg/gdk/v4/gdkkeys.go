@@ -14,22 +14,22 @@ import "C"
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(symbol)
+	_arg1 = C.guint(symbol)
 
-	var arg2 C.guint
-	var arg3 C.guint
+	var _arg2 C.guint
+	var _arg3 C.guint
 
-	C.gdk_keyval_convert_case(arg1, &arg2, &arg3)
+	C.gdk_keyval_convert_case(_arg1, &_arg2, &_arg3)
 
-	var lower uint
-	var upper uint
+	var _lower uint
+	var _upper uint
 
-	lower = (uint)(arg2)
-	upper = (uint)(arg3)
+	_lower = (uint)(_arg2)
+	_upper = (uint)(_arg3)
 
-	return lower, upper
+	return _lower, _upper
 }
 
 // KeyvalFromName converts a key name to a key value.
@@ -37,58 +37,58 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 // The names are the same as those in the `gdk/gdkkeysyms.h` header file but
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(keyvalName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(keyvalName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_keyval_from_name(arg1)
+	cret = C.gdk_keyval_from_name(_arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // KeyvalIsLower returns true if the given key value is in lower case.
 func KeyvalIsLower(keyval uint) bool {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(keyval)
+	_arg1 = C.guint(keyval)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keyval_is_lower(arg1)
+	cret = C.gdk_keyval_is_lower(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // KeyvalIsUpper returns true if the given key value is in upper case.
 func KeyvalIsUpper(keyval uint) bool {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(keyval)
+	_arg1 = C.guint(keyval)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keyval_is_upper(arg1)
+	cret = C.gdk_keyval_is_upper(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // KeyvalName converts a key value into a symbolic name.
@@ -96,36 +96,36 @@ func KeyvalIsUpper(keyval uint) bool {
 // The names are the same as those in the `gdk/gdkkeysyms.h` header file but
 // without the leading “GDK_KEY_”.
 func KeyvalName(keyval uint) string {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(keyval)
+	_arg1 = C.guint(keyval)
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gdk_keyval_name(arg1)
+	cret = C.gdk_keyval_name(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // KeyvalToLower converts a key value to lower case, if applicable.
 func KeyvalToLower(keyval uint) uint {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(keyval)
+	_arg1 = C.guint(keyval)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_keyval_to_lower(arg1)
+	cret = C.gdk_keyval_to_lower(_arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // KeyvalToUnicode: convert from a GDK key symbol to the corresponding ISO10646
@@ -134,51 +134,51 @@ func KeyvalToLower(keyval uint) uint {
 // Note that the conversion does not take the current locale into consideration,
 // which might be expected for particular keyvals, such as GDK_KEY_KP_Decimal.
 func KeyvalToUnicode(keyval uint) uint32 {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(keyval)
+	_arg1 = C.guint(keyval)
 
-	var cret C.guint32
+	var _cret C.guint32
 
-	cret = C.gdk_keyval_to_unicode(arg1)
+	cret = C.gdk_keyval_to_unicode(_arg1)
 
-	var guint32 uint32
+	var _guint32 uint32
 
-	guint32 = (uint32)(cret)
+	_guint32 = (uint32)(_cret)
 
-	return guint32
+	return _guint32
 }
 
 // KeyvalToUpper converts a key value to upper case, if applicable.
 func KeyvalToUpper(keyval uint) uint {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(keyval)
+	_arg1 = C.guint(keyval)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_keyval_to_upper(arg1)
+	cret = C.gdk_keyval_to_upper(_arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint {
-	var arg1 C.guint32
+	var _arg1 C.guint32
 
-	arg1 = C.guint32(wc)
+	_arg1 = C.guint32(wc)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_unicode_to_keyval(arg1)
+	cret = C.gdk_unicode_to_keyval(_arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }

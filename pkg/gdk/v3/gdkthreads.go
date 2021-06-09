@@ -46,15 +46,15 @@ import "C"
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
 func ThreadsAddIdleFull() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gdk_threads_add_idle_full()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // ThreadsAddTimeoutFull sets a function to be called at regular intervals
@@ -99,15 +99,15 @@ func ThreadsAddIdleFull() uint {
 //       G_OBJECT_CLASS (parent_class)->finalize (object);
 //    }
 func ThreadsAddTimeoutFull() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gdk_threads_add_timeout_full()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // ThreadsAddTimeoutSecondsFull: a variant of gdk_threads_add_timeout_full()
@@ -115,15 +115,15 @@ func ThreadsAddTimeoutFull() uint {
 // why it is a good idea to use this function if you don’t need finer
 // granularity.
 func ThreadsAddTimeoutSecondsFull() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gdk_threads_add_timeout_seconds_full()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // ThreadsEnter: this function marks the beginning of a critical section in

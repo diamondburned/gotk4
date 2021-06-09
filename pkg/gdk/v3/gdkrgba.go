@@ -79,69 +79,69 @@ func (r *RGBA) Alpha() float64 {
 //
 // The result must be freed through gdk_rgba_free().
 func (r *RGBA) Copy() *RGBA {
-	var arg0 *C.GdkRGBA
+	var _arg0 *C.GdkRGBA
 
-	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GdkRGBA
+	var _cret *C.GdkRGBA
 
-	cret = C.gdk_rgba_copy(arg0)
+	cret = C.gdk_rgba_copy(_arg0)
 
-	var rgbA *RGBA
+	var _rgbA *RGBA
 
-	rgbA = WrapRGBA(unsafe.Pointer(cret))
-	runtime.SetFinalizer(rgbA, func(v *RGBA) {
+	_rgbA = WrapRGBA(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return rgbA
+	return _rgbA
 }
 
 // Equal compares two RGBA colors.
 func (p *RGBA) Equal(p2 RGBA) bool {
-	var arg0 C.gpointer
-	var arg1 C.gpointer
+	var _arg0 C.gpointer
+	var _arg1 C.gpointer
 
-	arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
-	arg1 = (C.gpointer)(unsafe.Pointer(p2.Native()))
+	_arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
+	_arg1 = (C.gpointer)(unsafe.Pointer(p2.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_rgba_equal(arg0, arg1)
+	cret = C.gdk_rgba_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Free frees a RGBA created with gdk_rgba_copy()
 func (r *RGBA) Free() {
-	var arg0 *C.GdkRGBA
+	var _arg0 *C.GdkRGBA
 
-	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	C.gdk_rgba_free(arg0)
+	C.gdk_rgba_free(_arg0)
 }
 
 // Hash: a hash function suitable for using for a hash table that stores RGBAs.
 func (p *RGBA) Hash() uint {
-	var arg0 C.gpointer
+	var _arg0 C.gpointer
 
-	arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
+	_arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_rgba_hash(arg0)
+	cret = C.gdk_rgba_hash(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Parse parses a textual representation of a color, filling in the @red,
@@ -158,24 +158,24 @@ func (p *RGBA) Hash() uint {
 // the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
 // floating point value in the range 0 to 1.
 func (r *RGBA) Parse(spec string) bool {
-	var arg0 *C.GdkRGBA
-	var arg1 *C.gchar
+	var _arg0 *C.GdkRGBA
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.gchar)(C.CString(spec))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(spec))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_rgba_parse(arg0, arg1)
+	cret = C.gdk_rgba_parse(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // String returns a textual specification of @rgba in the form `rgb(r,g,b)` or
@@ -191,18 +191,18 @@ func (r *RGBA) Parse(spec string) bool {
 // and “b” are represented as 8-bit integers. If this is a concern, you should
 // use a different representation.
 func (r *RGBA) String() string {
-	var arg0 *C.GdkRGBA
+	var _arg0 *C.GdkRGBA
 
-	arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_rgba_to_string(arg0)
+	cret = C.gdk_rgba_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

@@ -64,58 +64,58 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 
 // NewInvisible constructs a class Invisible.
 func NewInvisible() Invisible {
-	var cret C.GtkInvisible
+	var _cret C.GtkInvisible
 
 	cret = C.gtk_invisible_new()
 
-	var invisible Invisible
+	var _invisible Invisible
 
-	invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Invisible)
+	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Invisible)
 
-	return invisible
+	return _invisible
 }
 
 // NewInvisibleForScreen constructs a class Invisible.
 func NewInvisibleForScreen(screen gdk.Screen) Invisible {
-	var arg1 *C.GdkScreen
+	var _arg1 *C.GdkScreen
 
-	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
-	var cret C.GtkInvisible
+	var _cret C.GtkInvisible
 
-	cret = C.gtk_invisible_new_for_screen(arg1)
+	cret = C.gtk_invisible_new_for_screen(_arg1)
 
-	var invisible Invisible
+	var _invisible Invisible
 
-	invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Invisible)
+	_invisible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Invisible)
 
-	return invisible
+	return _invisible
 }
 
 // Screen returns the Screen object associated with @invisible
 func (i invisible) Screen() gdk.Screen {
-	var arg0 *C.GtkInvisible
+	var _arg0 *C.GtkInvisible
 
-	arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GdkScreen
+	var _cret *C.GdkScreen
 
-	cret = C.gtk_invisible_get_screen(arg0)
+	cret = C.gtk_invisible_get_screen(_arg0)
 
-	var screen gdk.Screen
+	var _screen gdk.Screen
 
-	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Screen)
 
-	return screen
+	return _screen
 }
 
 // SetScreen sets the Screen where the Invisible object will be displayed.
 func (i invisible) SetScreen(screen gdk.Screen) {
-	var arg0 *C.GtkInvisible
-	var arg1 *C.GdkScreen
+	var _arg0 *C.GtkInvisible
+	var _arg1 *C.GdkScreen
 
-	arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
-	C.gtk_invisible_set_screen(arg0, arg1)
+	C.gtk_invisible_set_screen(_arg0, _arg1)
 }

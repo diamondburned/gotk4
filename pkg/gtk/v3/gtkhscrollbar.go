@@ -63,17 +63,17 @@ func marshalHScrollbar(p uintptr) (interface{}, error) {
 
 // NewHScrollbar constructs a class HScrollbar.
 func NewHScrollbar(adjustment Adjustment) HScrollbar {
-	var arg1 *C.GtkAdjustment
+	var _arg1 *C.GtkAdjustment
 
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	var cret C.GtkHScrollbar
+	var _cret C.GtkHScrollbar
 
-	cret = C.gtk_hscrollbar_new(arg1)
+	cret = C.gtk_hscrollbar_new(_arg1)
 
-	var hScrollbar HScrollbar
+	var _hScrollbar HScrollbar
 
-	hScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScrollbar)
+	_hScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HScrollbar)
 
-	return hScrollbar
+	return _hScrollbar
 }

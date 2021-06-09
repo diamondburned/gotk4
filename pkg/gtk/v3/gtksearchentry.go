@@ -82,13 +82,13 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 
 // NewSearchEntry constructs a class SearchEntry.
 func NewSearchEntry() SearchEntry {
-	var cret C.GtkSearchEntry
+	var _cret C.GtkSearchEntry
 
 	cret = C.gtk_search_entry_new()
 
-	var searchEntry SearchEntry
+	var _searchEntry SearchEntry
 
-	searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchEntry)
+	_searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchEntry)
 
-	return searchEntry
+	return _searchEntry
 }

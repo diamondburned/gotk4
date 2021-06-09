@@ -14,22 +14,22 @@ import "C"
 // This function is intended for GTK+ modules that want to adjust their debug
 // output based on GTK+ debug flags.
 func GetDebugFlags() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gtk_get_debug_flags()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // SetDebugFlags sets the GTK+ debug flags.
 func SetDebugFlags(flags uint) {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(flags)
+	_arg1 = C.guint(flags)
 
-	C.gtk_set_debug_flags(arg1)
+	C.gtk_set_debug_flags(_arg1)
 }

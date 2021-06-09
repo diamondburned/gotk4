@@ -54,28 +54,28 @@ func marshalOrientable(p uintptr) (interface{}, error) {
 
 // Orientation retrieves the orientation of the @orientable.
 func (o orientable) Orientation() Orientation {
-	var arg0 *C.GtkOrientable
+	var _arg0 *C.GtkOrientable
 
-	arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
 
-	var cret C.GtkOrientation
+	var _cret C.GtkOrientation
 
-	cret = C.gtk_orientable_get_orientation(arg0)
+	cret = C.gtk_orientable_get_orientation(_arg0)
 
-	var orientation Orientation
+	var _orientation Orientation
 
-	orientation = Orientation(cret)
+	_orientation = Orientation(_cret)
 
-	return orientation
+	return _orientation
 }
 
 // SetOrientation sets the orientation of the @orientable.
 func (o orientable) SetOrientation(orientation Orientation) {
-	var arg0 *C.GtkOrientable
-	var arg1 C.GtkOrientation
+	var _arg0 *C.GtkOrientable
+	var _arg1 C.GtkOrientation
 
-	arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
-	arg1 = (C.GtkOrientation)(orientation)
+	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
+	_arg1 = (C.GtkOrientation)(orientation)
 
-	C.gtk_orientable_set_orientation(arg0, arg1)
+	C.gtk_orientable_set_orientation(_arg0, _arg1)
 }

@@ -102,74 +102,74 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 
 // NewCSSProvider constructs a class CSSProvider.
 func NewCSSProvider() CSSProvider {
-	var cret C.GtkCssProvider
+	var _cret C.GtkCssProvider
 
 	cret = C.gtk_css_provider_new()
 
-	var cssProvider CSSProvider
+	var _cssProvider CSSProvider
 
-	cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CSSProvider)
+	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CSSProvider)
 
-	return cssProvider
+	return _cssProvider
 }
 
 // LoadFromData loads @data into @css_provider, and by doing so clears any
 // previously loaded information.
 func (c cssProvider) LoadFromData() error {
-	var arg0 *C.GtkCssProvider
+	var _arg0 *C.GtkCssProvider
 
-	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_css_provider_load_from_data(arg0, cerr)
+	C.gtk_css_provider_load_from_data(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // LoadFromFile loads the data contained in @file into @css_provider, making
 // it clear any previously loaded information.
 func (c cssProvider) LoadFromFile(file gio.File) error {
-	var arg0 *C.GtkCssProvider
-	var arg1 *C.GFile
+	var _arg0 *C.GtkCssProvider
+	var _arg1 *C.GFile
 
-	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_css_provider_load_from_file(arg0, arg1, cerr)
+	C.gtk_css_provider_load_from_file(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // LoadFromPath loads the data contained in @path into @css_provider, making
 // it clear any previously loaded information.
 func (c cssProvider) LoadFromPath(path string) error {
-	var arg0 *C.GtkCssProvider
-	var arg1 *C.gchar
+	var _arg0 *C.GtkCssProvider
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_css_provider_load_from_path(arg0, arg1, cerr)
+	C.gtk_css_provider_load_from_path(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // LoadFromResource loads the data contained in the resource at
@@ -179,14 +179,14 @@ func (c cssProvider) LoadFromPath(path string) error {
 // To track errors while loading CSS, connect to the
 // CssProvider::parsing-error signal.
 func (c cssProvider) LoadFromResource(resourcePath string) {
-	var arg0 *C.GtkCssProvider
-	var arg1 *C.gchar
+	var _arg0 *C.GtkCssProvider
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.gchar)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_css_provider_load_from_resource(arg0, arg1)
+	C.gtk_css_provider_load_from_resource(_arg0, _arg1)
 }
 
 // String converts the @provider into a string representation in CSS format.
@@ -195,18 +195,18 @@ func (c cssProvider) LoadFromResource(resourcePath string) {
 // function on a new provider created with gtk_css_provider_new() will
 // basically create a duplicate of this @provider.
 func (p cssProvider) String() string {
-	var arg0 *C.GtkCssProvider
+	var _arg0 *C.GtkCssProvider
 
-	arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_css_provider_to_string(arg0)
+	cret = C.gtk_css_provider_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

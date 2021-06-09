@@ -100,28 +100,28 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 
 // NewMemoryOutputStream constructs a class MemoryOutputStream.
 func NewMemoryOutputStream() MemoryOutputStream {
-	var cret C.GMemoryOutputStream
+	var _cret C.GMemoryOutputStream
 
 	cret = C.g_memory_output_stream_new()
 
-	var memoryOutputStream MemoryOutputStream
+	var _memoryOutputStream MemoryOutputStream
 
-	memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryOutputStream)
+	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryOutputStream)
 
-	return memoryOutputStream
+	return _memoryOutputStream
 }
 
 // NewMemoryOutputStreamResizable constructs a class MemoryOutputStream.
 func NewMemoryOutputStreamResizable() MemoryOutputStream {
-	var cret C.GMemoryOutputStream
+	var _cret C.GMemoryOutputStream
 
 	cret = C.g_memory_output_stream_new_resizable()
 
-	var memoryOutputStream MemoryOutputStream
+	var _memoryOutputStream MemoryOutputStream
 
-	memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryOutputStream)
+	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryOutputStream)
 
-	return memoryOutputStream
+	return _memoryOutputStream
 }
 
 // Data gets any loaded data from the @ostream.
@@ -129,37 +129,37 @@ func NewMemoryOutputStreamResizable() MemoryOutputStream {
 // Note that the returned pointer may become invalid on the next write or
 // truncate operation on the stream.
 func (o memoryOutputStream) Data() interface{} {
-	var arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream
 
-	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_memory_output_stream_get_data(arg0)
+	cret = C.g_memory_output_stream_get_data(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // DataSize returns the number of bytes from the start up to including the
 // last byte written in the stream that has not been truncated away.
 func (o memoryOutputStream) DataSize() uint {
-	var arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream
 
-	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gsize
+	var _cret C.gsize
 
-	cret = C.g_memory_output_stream_get_data_size(arg0)
+	cret = C.g_memory_output_stream_get_data_size(_arg0)
 
-	var gsize uint
+	var _gsize uint
 
-	gsize = (uint)(cret)
+	_gsize = (uint)(_cret)
 
-	return gsize
+	return _gsize
 }
 
 // Size gets the size of the currently allocated data area (available from
@@ -177,19 +177,19 @@ func (o memoryOutputStream) DataSize() uint {
 // In any case, if you want the number of bytes currently written to the
 // stream, use g_memory_output_stream_get_data_size().
 func (o memoryOutputStream) Size() uint {
-	var arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream
 
-	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gsize
+	var _cret C.gsize
 
-	cret = C.g_memory_output_stream_get_size(arg0)
+	cret = C.g_memory_output_stream_get_size(_arg0)
 
-	var gsize uint
+	var _gsize uint
 
-	gsize = (uint)(cret)
+	_gsize = (uint)(_cret)
 
-	return gsize
+	return _gsize
 }
 
 // StealData gets any loaded data from the @ostream. Ownership of the data
@@ -199,17 +199,17 @@ func (o memoryOutputStream) Size() uint {
 //
 // @ostream must be closed before calling this function.
 func (o memoryOutputStream) StealData() interface{} {
-	var arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream
 
-	arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_memory_output_stream_steal_data(arg0)
+	cret = C.g_memory_output_stream_steal_data(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }

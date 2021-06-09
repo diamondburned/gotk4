@@ -134,156 +134,156 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 
 // NewCalendar constructs a class Calendar.
 func NewCalendar() Calendar {
-	var cret C.GtkCalendar
+	var _cret C.GtkCalendar
 
 	cret = C.gtk_calendar_new()
 
-	var calendar Calendar
+	var _calendar Calendar
 
-	calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Calendar)
+	_calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Calendar)
 
-	return calendar
+	return _calendar
 }
 
 // ClearMarks: remove all visual markers.
 func (c calendar) ClearMarks() {
-	var arg0 *C.GtkCalendar
+	var _arg0 *C.GtkCalendar
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	C.gtk_calendar_clear_marks(arg0)
+	C.gtk_calendar_clear_marks(_arg0)
 }
 
 // Date obtains the selected date from a Calendar.
 func (c calendar) Date() (year uint, month uint, day uint) {
-	var arg0 *C.GtkCalendar
+	var _arg0 *C.GtkCalendar
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 C.guint
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 C.guint
 
-	C.gtk_calendar_get_date(arg0, &arg1, &arg2, &arg3)
+	C.gtk_calendar_get_date(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var year uint
-	var month uint
-	var day uint
+	var _year uint
+	var _month uint
+	var _day uint
 
-	year = (uint)(arg1)
-	month = (uint)(arg2)
-	day = (uint)(arg3)
+	_year = (uint)(_arg1)
+	_month = (uint)(_arg2)
+	_day = (uint)(_arg3)
 
-	return year, month, day
+	return _year, _month, _day
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
 func (c calendar) DayIsMarked(day uint) bool {
-	var arg0 *C.GtkCalendar
-	var arg1 C.guint
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = C.guint(day)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = C.guint(day)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_calendar_get_day_is_marked(arg0, arg1)
+	cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // DetailHeightRows queries the height of detail cells, in rows. See
 // Calendar:detail-width-chars.
 func (c calendar) DetailHeightRows() int {
-	var arg0 *C.GtkCalendar
+	var _arg0 *C.GtkCalendar
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_calendar_get_detail_height_rows(arg0)
+	cret = C.gtk_calendar_get_detail_height_rows(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // DetailWidthChars queries the width of detail cells, in characters. See
 // Calendar:detail-width-chars.
 func (c calendar) DetailWidthChars() int {
-	var arg0 *C.GtkCalendar
+	var _arg0 *C.GtkCalendar
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_calendar_get_detail_width_chars(arg0)
+	cret = C.gtk_calendar_get_detail_width_chars(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // DisplayOptions returns the current display options of @calendar.
 func (c calendar) DisplayOptions() CalendarDisplayOptions {
-	var arg0 *C.GtkCalendar
+	var _arg0 *C.GtkCalendar
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	var cret C.GtkCalendarDisplayOptions
+	var _cret C.GtkCalendarDisplayOptions
 
-	cret = C.gtk_calendar_get_display_options(arg0)
+	cret = C.gtk_calendar_get_display_options(_arg0)
 
-	var calendarDisplayOptions CalendarDisplayOptions
+	var _calendarDisplayOptions CalendarDisplayOptions
 
-	calendarDisplayOptions = CalendarDisplayOptions(cret)
+	_calendarDisplayOptions = CalendarDisplayOptions(_cret)
 
-	return calendarDisplayOptions
+	return _calendarDisplayOptions
 }
 
 // MarkDay places a visual marker on a particular day.
 func (c calendar) MarkDay(day uint) {
-	var arg0 *C.GtkCalendar
-	var arg1 C.guint
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = C.guint(day)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = C.guint(day)
 
-	C.gtk_calendar_mark_day(arg0, arg1)
+	C.gtk_calendar_mark_day(_arg0, _arg1)
 }
 
 // SelectDay selects a day from the current month.
 func (c calendar) SelectDay(day uint) {
-	var arg0 *C.GtkCalendar
-	var arg1 C.guint
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = C.guint(day)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = C.guint(day)
 
-	C.gtk_calendar_select_day(arg0, arg1)
+	C.gtk_calendar_select_day(_arg0, _arg1)
 }
 
 // SelectMonth shifts the calendar to a different month.
 func (c calendar) SelectMonth(month uint, year uint) {
-	var arg0 *C.GtkCalendar
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = C.guint(month)
-	arg2 = C.guint(year)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = C.guint(month)
+	_arg2 = C.guint(year)
 
-	C.gtk_calendar_select_month(arg0, arg1, arg2)
+	C.gtk_calendar_select_month(_arg0, _arg1, _arg2)
 }
 
 // SetDetailFunc installs a function which provides Pango markup with detail
@@ -296,56 +296,56 @@ func (c calendar) SelectMonth(month uint, year uint) {
 // The size of the details area can be restricted by setting the
 // Calendar:detail-width-chars and Calendar:detail-height-rows properties.
 func (c calendar) SetDetailFunc() {
-	var arg0 *C.GtkCalendar
+	var _arg0 *C.GtkCalendar
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
-	C.gtk_calendar_set_detail_func(arg0)
+	C.gtk_calendar_set_detail_func(_arg0)
 }
 
 // SetDetailHeightRows updates the height of detail cells. See
 // Calendar:detail-height-rows.
 func (c calendar) SetDetailHeightRows(rows int) {
-	var arg0 *C.GtkCalendar
-	var arg1 C.gint
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = C.gint(rows)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gint(rows)
 
-	C.gtk_calendar_set_detail_height_rows(arg0, arg1)
+	C.gtk_calendar_set_detail_height_rows(_arg0, _arg1)
 }
 
 // SetDetailWidthChars updates the width of detail cells. See
 // Calendar:detail-width-chars.
 func (c calendar) SetDetailWidthChars(chars int) {
-	var arg0 *C.GtkCalendar
-	var arg1 C.gint
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = C.gint(chars)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gint(chars)
 
-	C.gtk_calendar_set_detail_width_chars(arg0, arg1)
+	C.gtk_calendar_set_detail_width_chars(_arg0, _arg1)
 }
 
 // SetDisplayOptions sets display options (whether to display the heading
 // and the month headings).
 func (c calendar) SetDisplayOptions(flags CalendarDisplayOptions) {
-	var arg0 *C.GtkCalendar
-	var arg1 C.GtkCalendarDisplayOptions
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.GtkCalendarDisplayOptions
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = (C.GtkCalendarDisplayOptions)(flags)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.GtkCalendarDisplayOptions)(flags)
 
-	C.gtk_calendar_set_display_options(arg0, arg1)
+	C.gtk_calendar_set_display_options(_arg0, _arg1)
 }
 
 // UnmarkDay removes the visual marker from a particular day.
 func (c calendar) UnmarkDay(day uint) {
-	var arg0 *C.GtkCalendar
-	var arg1 C.guint
+	var _arg0 *C.GtkCalendar
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
-	arg1 = C.guint(day)
+	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
+	_arg1 = C.guint(day)
 
-	C.gtk_calendar_unmark_day(arg0, arg1)
+	C.gtk_calendar_unmark_day(_arg0, _arg1)
 }

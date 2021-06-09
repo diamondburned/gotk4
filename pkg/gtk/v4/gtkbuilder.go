@@ -336,7 +336,7 @@ type Builder interface {
 	//
 	// Upon errors false will be returned and @error will be assigned a #GError
 	// from the K_BUILDER_ERROR domain.
-	ValueFromString(pspec gobject.ParamSpec, string string) (value *externglib.Value, goerr error)
+	ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error)
 	// ValueFromStringType: like gtk_builder_value_from_string(), this function
 	// demarshals a value from a string, but takes a #GType instead of Spec.
 	// This function calls g_value_init() on the @value argument, so it need not
@@ -344,7 +344,7 @@ type Builder interface {
 	//
 	// Upon errors false will be returned and @error will be assigned a #GError
 	// from the K_BUILDER_ERROR domain.
-	ValueFromStringType(typ externglib.Type, string string) (value *externglib.Value, goerr error)
+	ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error)
 }
 
 // builder implements the Builder interface.
@@ -370,71 +370,71 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 
 // NewBuilder constructs a class Builder.
 func NewBuilder() Builder {
-	var cret C.GtkBuilder
+	var _cret C.GtkBuilder
 
 	cret = C.gtk_builder_new()
 
-	var builder Builder
+	var _builder Builder
 
-	builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
 
-	return builder
+	return _builder
 }
 
 // NewBuilderFromFile constructs a class Builder.
 func NewBuilderFromFile(filename string) Builder {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkBuilder
+	var _cret C.GtkBuilder
 
-	cret = C.gtk_builder_new_from_file(arg1)
+	cret = C.gtk_builder_new_from_file(_arg1)
 
-	var builder Builder
+	var _builder Builder
 
-	builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
 
-	return builder
+	return _builder
 }
 
 // NewBuilderFromResource constructs a class Builder.
 func NewBuilderFromResource(resourcePath string) Builder {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkBuilder
+	var _cret C.GtkBuilder
 
-	cret = C.gtk_builder_new_from_resource(arg1)
+	cret = C.gtk_builder_new_from_resource(_arg1)
 
-	var builder Builder
+	var _builder Builder
 
-	builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
 
-	return builder
+	return _builder
 }
 
 // NewBuilderFromString constructs a class Builder.
 func NewBuilderFromString(string string, length int) Builder {
-	var arg1 *C.char
-	var arg2 C.gssize
+	var _arg1 *C.char
+	var _arg2 C.gssize
 
-	arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gssize(length)
+	_arg1 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
 
-	var cret C.GtkBuilder
+	var _cret C.GtkBuilder
 
-	cret = C.gtk_builder_new_from_string(arg1, arg2)
+	cret = C.gtk_builder_new_from_string(_arg1, _arg2)
 
-	var builder Builder
+	var _builder Builder
 
-	builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Builder)
+	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
 
-	return builder
+	return _builder
 }
 
 // AddFromFile parses a file containing a [GtkBuilder UI
@@ -456,22 +456,22 @@ func NewBuilderFromString(string string, length int) Builder {
 // reported failure. The only reasonable thing to do when an error is
 // detected is to call g_error().
 func (b builder) AddFromFile(filename string) error {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_builder_add_from_file(arg0, arg1, cerr)
+	C.gtk_builder_add_from_file(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // AddFromResource parses a resource file containing a [GtkBuilder UI
@@ -490,22 +490,22 @@ func (b builder) AddFromFile(filename string) error {
 // The only reasonable thing to do when an error is detected is to call
 // g_error().
 func (b builder) AddFromResource(resourcePath string) error {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_builder_add_from_resource(arg0, arg1, cerr)
+	C.gtk_builder_add_from_resource(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // AddFromString parses a string containing a [GtkBuilder UI
@@ -524,24 +524,24 @@ func (b builder) AddFromResource(resourcePath string) error {
 // The only reasonable thing to do when an error is detected is to call
 // g_error().
 func (b builder) AddFromString(buffer string, length int) error {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
-	var arg2 C.gssize
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
+	var _arg2 C.gssize
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gssize(length)
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_builder_add_from_string(arg0, arg1, arg2, cerr)
+	C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // AddObjectsFromFile parses a file containing a [GtkBuilder UI
@@ -555,35 +555,35 @@ func (b builder) AddFromString(buffer string, length int) error {
 // child (for instance a TreeView that depends on its TreeModel), you have
 // to explicitly list all of them in @object_ids.
 func (b builder) AddObjectsFromFile(filename string, objectIds []string) error {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
-	var arg2 **C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
+	var _arg2 **C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (**C.char)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.char)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	{
 		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg2), int(len(objectIds)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(objectIds)))
 
 		for i := range objectIds {
-			arg2 = (*C.gchar)(C.CString(objectIds))
-			defer C.free(unsafe.Pointer(arg2))
+			_arg2 = (*C.gchar)(C.CString(objectIds))
+			defer C.free(unsafe.Pointer(_arg2))
 		}
 	}
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_builder_add_objects_from_file(arg0, arg1, arg2, cerr)
+	C.gtk_builder_add_objects_from_file(_arg0, _arg1, _arg2, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // AddObjectsFromResource parses a resource file containing a [GtkBuilder UI
@@ -597,35 +597,35 @@ func (b builder) AddObjectsFromFile(filename string, objectIds []string) error {
 // child (for instance a TreeView that depends on its TreeModel), you have
 // to explicitly list all of them in @object_ids.
 func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string) error {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
-	var arg2 **C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
+	var _arg2 **C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (**C.char)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.char)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	{
 		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg2), int(len(objectIds)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(objectIds)))
 
 		for i := range objectIds {
-			arg2 = (*C.gchar)(C.CString(objectIds))
-			defer C.free(unsafe.Pointer(arg2))
+			_arg2 = (*C.gchar)(C.CString(objectIds))
+			defer C.free(unsafe.Pointer(_arg2))
 		}
 	}
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_builder_add_objects_from_resource(arg0, arg1, arg2, cerr)
+	C.gtk_builder_add_objects_from_resource(_arg0, _arg1, _arg2, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // AddObjectsFromString parses a string containing a [GtkBuilder UI
@@ -639,52 +639,52 @@ func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string)
 // child (for instance a TreeView that depends on its TreeModel), you have
 // to explicitly list all of them in @object_ids.
 func (b builder) AddObjectsFromString(buffer string, length int, objectIds []string) error {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
-	var arg2 C.gssize
-	var arg3 **C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
+	var _arg2 C.gssize
+	var _arg3 **C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gssize(length)
-	arg3 = (**C.char)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(length)
+	_arg3 = (**C.char)(C.malloc((len(objectIds) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	{
 		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg3), int(len(objectIds)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg3), int(len(objectIds)))
 
 		for i := range objectIds {
-			arg3 = (*C.gchar)(C.CString(objectIds))
-			defer C.free(unsafe.Pointer(arg3))
+			_arg3 = (*C.gchar)(C.CString(objectIds))
+			defer C.free(unsafe.Pointer(_arg3))
 		}
 	}
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_builder_add_objects_from_string(arg0, arg1, arg2, arg3, cerr)
+	C.gtk_builder_add_objects_from_string(_arg0, _arg1, _arg2, _arg3, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // ExposeObject: add @object to the @builder object pool so it can be
 // referenced just like any other object built by builder.
 func (b builder) ExposeObject(name string, object gextras.Objector) {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
-	var arg2 *C.GObject
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
+	var _arg2 *C.GObject
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	C.gtk_builder_expose_object(arg0, arg1, arg2)
+	C.gtk_builder_expose_object(_arg0, _arg1, _arg2)
 }
 
 // ExtendWithTemplate: main private entry point for building composite
@@ -693,147 +693,147 @@ func (b builder) ExposeObject(name string, object gextras.Objector) {
 // This is exported purely to let gtk-builder-tool validate templates,
 // applications have no need to call this function.
 func (b builder) ExtendWithTemplate(object gextras.Objector, templateType externglib.Type, buffer string, length int) error {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.GObject
-	var arg2 C.GType
-	var arg3 *C.char
-	var arg4 C.gssize
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.GObject
+	var _arg2 C.GType
+	var _arg3 *C.char
+	var _arg4 C.gssize
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	arg2 = C.GType(templateType)
-	arg3 = (*C.char)(C.CString(buffer))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = C.gssize(length)
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = C.GType(templateType)
+	_arg3 = (*C.char)(C.CString(buffer))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.gssize(length)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_builder_extend_with_template(arg0, arg1, arg2, arg3, arg4, cerr)
+	C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // CurrentObject gets the current object set via
 // gtk_builder_set_current_object().
 func (b builder) CurrentObject() gextras.Objector {
-	var arg0 *C.GtkBuilder
+	var _arg0 *C.GtkBuilder
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.gtk_builder_get_current_object(arg0)
+	cret = C.gtk_builder_get_current_object(_arg0)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // Object gets the object named @name. Note that this function does not
 // increment the reference count of the returned object.
 func (b builder) Object(name string) gextras.Objector {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.gtk_builder_get_object(arg0, arg1)
+	cret = C.gtk_builder_get_object(_arg0, _arg1)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // Objects gets all objects that have been constructed by @builder. Note
 // that this function does not increment the reference counts of the
 // returned objects.
 func (b builder) Objects() *glib.SList {
-	var arg0 *C.GtkBuilder
+	var _arg0 *C.GtkBuilder
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GSList
+	var _cret *C.GSList
 
-	cret = C.gtk_builder_get_objects(arg0)
+	cret = C.gtk_builder_get_objects(_arg0)
 
-	var sList *glib.SList
+	var _sList *glib.SList
 
-	sList = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(sList, func(v *glib.SList) {
+	_sList = glib.WrapSList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_sList, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return sList
+	return _sList
 }
 
 // Scope gets the scope in use that was set via gtk_builder_set_scope().
 //
 // See the BuilderScope documentation for details.
 func (b builder) Scope() BuilderScope {
-	var arg0 *C.GtkBuilder
+	var _arg0 *C.GtkBuilder
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GtkBuilderScope
+	var _cret *C.GtkBuilderScope
 
-	cret = C.gtk_builder_get_scope(arg0)
+	cret = C.gtk_builder_get_scope(_arg0)
 
-	var builderScope BuilderScope
+	var _builderScope BuilderScope
 
-	builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(BuilderScope)
+	_builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(BuilderScope)
 
-	return builderScope
+	return _builderScope
 }
 
 // TranslationDomain gets the translation domain of @builder.
 func (b builder) TranslationDomain() string {
-	var arg0 *C.GtkBuilder
+	var _arg0 *C.GtkBuilder
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_builder_get_translation_domain(arg0)
+	cret = C.gtk_builder_get_translation_domain(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // TypeFromName looks up a type by name, using the virtual function that
 // Builder has for that purpose. This is mainly used when implementing the
 // Buildable interface on a type.
 func (b builder) TypeFromName(typeName string) externglib.Type {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(typeName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(typeName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.gtk_builder_get_type_from_name(arg0, arg1)
+	cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // SetCurrentObject sets the current object for the @builder. The current
@@ -845,13 +845,13 @@ func (b builder) TypeFromName(typeName string) externglib.Type {
 // widget the template is inited for. For functions like
 // gtk_builder_new_from_resource(), the current object will be nil.
 func (b builder) SetCurrentObject(currentObject gextras.Objector) {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.GObject
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.GObject
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(currentObject.Native()))
 
-	C.gtk_builder_set_current_object(arg0, arg1)
+	C.gtk_builder_set_current_object(_arg0, _arg1)
 }
 
 // SetScope sets the scope the builder should operate in.
@@ -860,26 +860,26 @@ func (b builder) SetCurrentObject(currentObject gextras.Objector) {
 //
 // See the BuilderScope documentation for details.
 func (b builder) SetScope(scope BuilderScope) {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.GtkBuilderScope
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.GtkBuilderScope
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
 
-	C.gtk_builder_set_scope(arg0, arg1)
+	C.gtk_builder_set_scope(_arg0, _arg1)
 }
 
 // SetTranslationDomain sets the translation domain of @builder. See
 // Builder:translation-domain.
 func (b builder) SetTranslationDomain(domain string) {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.char
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.char)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.char)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_builder_set_translation_domain(arg0, arg1)
+	C.gtk_builder_set_translation_domain(_arg0, _arg1)
 }
 
 // ValueFromString: this function demarshals a value from a string. This
@@ -892,28 +892,28 @@ func (b builder) SetTranslationDomain(domain string) {
 //
 // Upon errors false will be returned and @error will be assigned a #GError
 // from the K_BUILDER_ERROR domain.
-func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (value *externglib.Value, goerr error) {
-	var arg0 *C.GtkBuilder
-	var arg1 *C.GParamSpec
-	var arg2 *C.char
+func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (*externglib.Value, error) {
+	var _arg0 *C.GtkBuilder
+	var _arg1 *C.GParamSpec
+	var _arg2 *C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var arg3 C.GValue
-	var cerr *C.GError
+	var _arg3 C.GValue
+	var _cerr *C.GError
 
-	C.gtk_builder_value_from_string(arg0, arg1, arg2, &arg3, cerr)
+	C.gtk_builder_value_from_string(_arg0, _arg1, _arg2, &_arg3, _cerr)
 
-	var value *externglib.Value
-	var goerr error
+	var _value *externglib.Value
+	var _goerr error
 
-	value = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return value, goerr
+	return _value, _goerr
 }
 
 // ValueFromStringType: like gtk_builder_value_from_string(), this function
@@ -923,26 +923,26 @@ func (b builder) ValueFromString(pspec gobject.ParamSpec, string string) (value 
 //
 // Upon errors false will be returned and @error will be assigned a #GError
 // from the K_BUILDER_ERROR domain.
-func (b builder) ValueFromStringType(typ externglib.Type, string string) (value *externglib.Value, goerr error) {
-	var arg0 *C.GtkBuilder
-	var arg1 C.GType
-	var arg2 *C.char
+func (b builder) ValueFromStringType(typ externglib.Type, string string) (*externglib.Value, error) {
+	var _arg0 *C.GtkBuilder
+	var _arg1 C.GType
+	var _arg2 *C.char
 
-	arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-	arg1 = C.GType(typ)
-	arg2 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = C.GType(typ)
+	_arg2 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var arg3 C.GValue
-	var cerr *C.GError
+	var _arg3 C.GValue
+	var _cerr *C.GError
 
-	C.gtk_builder_value_from_string_type(arg0, arg1, arg2, &arg3, cerr)
+	C.gtk_builder_value_from_string_type(_arg0, _arg1, _arg2, &_arg3, _cerr)
 
-	var value *externglib.Value
-	var goerr error
+	var _value *externglib.Value
+	var _goerr error
 
-	value = externglib.ValueFromNative(unsafe.Pointer(arg3))
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return value, goerr
+	return _value, _goerr
 }

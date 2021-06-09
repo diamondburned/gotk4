@@ -132,11 +132,11 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // characters to glyphs. This will allow applications to have
 // application-specific encodings for various fonts.
 func (f fontMap) AddDecoderFindFunc() {
-	var arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_add_decoder_find_func(arg0)
+	C.pango_fc_font_map_add_decoder_find_func(_arg0)
 }
 
 // CacheClear: clear all cached information and fontsets for this font map.
@@ -145,11 +145,11 @@ func (f fontMap) AddDecoderFindFunc() {
 // default_substitute() virtual function of the font map, or if fontconfig
 // has been reinitialized to new configuration.
 func (f fontMap) CacheClear() {
-	var arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_cache_clear(arg0)
+	C.pango_fc_font_map_cache_clear(_arg0)
 }
 
 // ConfigChanged informs font map that the fontconfig configuration (i.e.,
@@ -159,11 +159,11 @@ func (f fontMap) CacheClear() {
 // that list of fonts, etc will be regenerated using the updated
 // configuration.
 func (f fontMap) ConfigChanged() {
-	var arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_config_changed(arg0)
+	C.pango_fc_font_map_config_changed(_arg0)
 }
 
 // CreateContext creates a new context for this fontmap.
@@ -173,19 +173,19 @@ func (f fontMap) ConfigChanged() {
 // information needed for correct operation on the `PangoContext` after
 // calling this function.
 func (f fontMap) CreateContext() pango.Context {
-	var arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
-	cret = C.pango_fc_font_map_create_context(arg0)
+	cret = C.pango_fc_font_map_create_context(_arg0)
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final
@@ -195,11 +195,11 @@ func (f fontMap) CreateContext() pango.Context {
 // This function can be used to do things like set hinting and antialiasing
 // options.
 func (f fontMap) SetDefaultSubstitute() {
-	var arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_set_default_substitute(arg0)
+	C.pango_fc_font_map_set_default_substitute(_arg0)
 }
 
 // Shutdown clears all cached information for the fontmap and marks all
@@ -211,11 +211,11 @@ func (f fontMap) SetDefaultSubstitute() {
 // system for the font map exits. This function is only intended to be
 // called only for backend implementations deriving from `PangoFcFontMap`.
 func (f fontMap) Shutdown() {
-	var arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_shutdown(arg0)
+	C.pango_fc_font_map_shutdown(_arg0)
 }
 
 // SubstituteChanged: call this function any time the results of the default
@@ -225,9 +225,9 @@ func (f fontMap) Shutdown() {
 // That is, if your substitution function will return different results for
 // the same input pattern, you must call this function.
 func (f fontMap) SubstituteChanged() {
-	var arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap
 
-	arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_map_substitute_changed(arg0)
+	C.pango_fc_font_map_substitute_changed(_arg0)
 }

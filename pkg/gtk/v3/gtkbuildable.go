@@ -101,18 +101,18 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 // AddChild adds a child to @buildable. @type is an optional string
 // describing how the child should be added.
 func (b buildable) AddChild(builder Builder, child gextras.Objector, typ string) {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.GtkBuilder
-	var arg2 *C.GObject
-	var arg3 *C.gchar
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.GtkBuilder
+	var _arg2 *C.GObject
+	var _arg3 *C.gchar
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	arg3 = (*C.gchar)(C.CString(typ))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	_arg3 = (*C.gchar)(C.CString(typ))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.gtk_buildable_add_child(arg0, arg1, arg2, arg3)
+	C.gtk_buildable_add_child(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ConstructChild constructs a child of @buildable with the name @name.
@@ -120,85 +120,85 @@ func (b buildable) AddChild(builder Builder, child gextras.Objector, typ string)
 // Builder calls this function if a “constructor” has been specified in the
 // UI definition.
 func (b buildable) ConstructChild(builder Builder, name string) gextras.Objector {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.GtkBuilder
-	var arg2 *C.gchar
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.GtkBuilder
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.gtk_buildable_construct_child(arg0, arg1, arg2)
+	cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // CustomFinished: this is similar to gtk_buildable_parser_finished() but is
 // called once for each custom tag handled by the @buildable.
 func (b buildable) CustomFinished(builder Builder, child gextras.Objector, tagname string, data interface{}) {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.GtkBuilder
-	var arg2 *C.GObject
-	var arg3 *C.gchar
-	var arg4 C.gpointer
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.GtkBuilder
+	var _arg2 *C.GObject
+	var _arg3 *C.gchar
+	var _arg4 C.gpointer
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	arg3 = (*C.gchar)(C.CString(tagname))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = C.gpointer(data)
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	_arg3 = (*C.gchar)(C.CString(tagname))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.gpointer(data)
 
-	C.gtk_buildable_custom_finished(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_buildable_custom_finished(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // CustomTagEnd: this is called at the end of each custom element handled by
 // the buildable.
 func (b buildable) CustomTagEnd(builder Builder, child gextras.Objector, tagname string, data *interface{}) {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.GtkBuilder
-	var arg2 *C.GObject
-	var arg3 *C.gchar
-	var arg4 *C.gpointer
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.GtkBuilder
+	var _arg2 *C.GObject
+	var _arg3 *C.gchar
+	var _arg4 *C.gpointer
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
-	arg3 = (*C.gchar)(C.CString(tagname))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = *C.gpointer(data)
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(child.Native()))
+	_arg3 = (*C.gchar)(C.CString(tagname))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = *C.gpointer(data)
 
-	C.gtk_buildable_custom_tag_end(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_buildable_custom_tag_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // InternalChild: get the internal child called @childname of the @buildable
 // object.
 func (b buildable) InternalChild(builder Builder, childname string) gextras.Objector {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.GtkBuilder
-	var arg2 *C.gchar
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.GtkBuilder
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	arg2 = (*C.gchar)(C.CString(childname))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg2 = (*C.gchar)(C.CString(childname))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.gtk_buildable_get_internal_child(arg0, arg1, arg2)
+	cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // Name gets the name of the @buildable object.
@@ -206,19 +206,19 @@ func (b buildable) InternalChild(builder Builder, childname string) gextras.Obje
 // Builder sets the name based on the [GtkBuilder UI definition][BUILDER-UI]
 // used to construct the @buildable.
 func (b buildable) Name() string {
-	var arg0 *C.GtkBuildable
+	var _arg0 *C.GtkBuildable
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_buildable_get_name(arg0)
+	cret = C.gtk_buildable_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // ParserFinished: called when the builder finishes the parsing of a
@@ -226,40 +226,40 @@ func (b buildable) Name() string {
 // once for each time gtk_builder_add_from_file() or
 // gtk_builder_add_from_string() is called on a builder.
 func (b buildable) ParserFinished(builder Builder) {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.GtkBuilder
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.GtkBuilder
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
 
-	C.gtk_buildable_parser_finished(arg0, arg1)
+	C.gtk_buildable_parser_finished(_arg0, _arg1)
 }
 
 // SetBuildableProperty sets the property name @name to @value on the
 // @buildable object.
 func (b buildable) SetBuildableProperty(builder Builder, name string, value **externglib.Value) {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.GtkBuilder
-	var arg2 *C.gchar
-	var arg3 *C.GValue
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.GtkBuilder
+	var _arg2 *C.gchar
+	var _arg3 *C.GValue
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.GValue)(value.GValue)
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkBuilder)(unsafe.Pointer(builder.Native()))
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GValue)(value.GValue)
 
-	C.gtk_buildable_set_buildable_property(arg0, arg1, arg2, arg3)
+	C.gtk_buildable_set_buildable_property(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetName sets the name of the @buildable object.
 func (b buildable) SetName(name string) {
-	var arg0 *C.GtkBuildable
-	var arg1 *C.gchar
+	var _arg0 *C.GtkBuildable
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_buildable_set_name(arg0, arg1)
+	C.gtk_buildable_set_name(_arg0, _arg1)
 }

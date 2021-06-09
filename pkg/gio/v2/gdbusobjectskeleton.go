@@ -89,20 +89,20 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 
 // NewDBusObjectSkeleton constructs a class DBusObjectSkeleton.
 func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GDBusObjectSkeleton
+	var _cret C.GDBusObjectSkeleton
 
-	cret = C.g_dbus_object_skeleton_new(arg1)
+	cret = C.g_dbus_object_skeleton_new(_arg1)
 
-	var dBusObjectSkeleton DBusObjectSkeleton
+	var _dBusObjectSkeleton DBusObjectSkeleton
 
-	dBusObjectSkeleton = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusObjectSkeleton)
+	_dBusObjectSkeleton = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectSkeleton)
 
-	return dBusObjectSkeleton
+	return _dBusObjectSkeleton
 }
 
 // AddInterface adds @interface_ to @object.
@@ -113,35 +113,35 @@ func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
 // Note that @object takes its own reference on @interface_ and holds it
 // until removed.
 func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
-	var arg0 *C.GDBusObjectSkeleton
-	var arg1 *C.GDBusInterfaceSkeleton
+	var _arg0 *C.GDBusObjectSkeleton
+	var _arg1 *C.GDBusInterfaceSkeleton
 
-	arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
-	C.g_dbus_object_skeleton_add_interface(arg0, arg1)
+	C.g_dbus_object_skeleton_add_interface(_arg0, _arg1)
 }
 
 // Flush: this method simply calls g_dbus_interface_skeleton_flush() on all
 // interfaces belonging to @object. See that method for when flushing is
 // useful.
 func (o dBusObjectSkeleton) Flush() {
-	var arg0 *C.GDBusObjectSkeleton
+	var _arg0 *C.GDBusObjectSkeleton
 
-	arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 
-	C.g_dbus_object_skeleton_flush(arg0)
+	C.g_dbus_object_skeleton_flush(_arg0)
 }
 
 // RemoveInterface removes @interface_ from @object.
 func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
-	var arg0 *C.GDBusObjectSkeleton
-	var arg1 *C.GDBusInterfaceSkeleton
+	var _arg0 *C.GDBusObjectSkeleton
+	var _arg1 *C.GDBusInterfaceSkeleton
 
-	arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
 
-	C.g_dbus_object_skeleton_remove_interface(arg0, arg1)
+	C.g_dbus_object_skeleton_remove_interface(_arg0, _arg1)
 }
 
 // RemoveInterfaceByName removes the BusInterface with @interface_name from
@@ -150,24 +150,24 @@ func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
 // If no D-Bus interface of the given interface exists, this function does
 // nothing.
 func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
-	var arg0 *C.GDBusObjectSkeleton
-	var arg1 *C.gchar
+	var _arg0 *C.GDBusObjectSkeleton
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.gchar)(C.CString(interfaceName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.gchar)(C.CString(interfaceName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_dbus_object_skeleton_remove_interface_by_name(arg0, arg1)
+	C.g_dbus_object_skeleton_remove_interface_by_name(_arg0, _arg1)
 }
 
 // SetObjectPath sets the object path for @object.
 func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
-	var arg0 *C.GDBusObjectSkeleton
-	var arg1 *C.gchar
+	var _arg0 *C.GDBusObjectSkeleton
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.gchar)(C.CString(objectPath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_dbus_object_skeleton_set_object_path(arg0, arg1)
+	C.g_dbus_object_skeleton_set_object_path(_arg0, _arg1)
 }

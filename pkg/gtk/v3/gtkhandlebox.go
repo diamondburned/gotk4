@@ -105,112 +105,112 @@ func marshalHandleBox(p uintptr) (interface{}, error) {
 
 // NewHandleBox constructs a class HandleBox.
 func NewHandleBox() HandleBox {
-	var cret C.GtkHandleBox
+	var _cret C.GtkHandleBox
 
 	cret = C.gtk_handle_box_new()
 
-	var handleBox HandleBox
+	var _handleBox HandleBox
 
-	handleBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HandleBox)
+	_handleBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HandleBox)
 
-	return handleBox
+	return _handleBox
 }
 
 // ChildDetached: whether the handlebox’s child is currently detached.
 func (h handleBox) ChildDetached() bool {
-	var arg0 *C.GtkHandleBox
+	var _arg0 *C.GtkHandleBox
 
-	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_handle_box_get_child_detached(arg0)
+	cret = C.gtk_handle_box_get_child_detached(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // HandlePosition gets the handle position of the handle box. See
 // gtk_handle_box_set_handle_position().
 func (h handleBox) HandlePosition() PositionType {
-	var arg0 *C.GtkHandleBox
+	var _arg0 *C.GtkHandleBox
 
-	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
-	var cret C.GtkPositionType
+	var _cret C.GtkPositionType
 
-	cret = C.gtk_handle_box_get_handle_position(arg0)
+	cret = C.gtk_handle_box_get_handle_position(_arg0)
 
-	var positionType PositionType
+	var _positionType PositionType
 
-	positionType = PositionType(cret)
+	_positionType = PositionType(_cret)
 
-	return positionType
+	return _positionType
 }
 
 // ShadowType gets the type of shadow drawn around the handle box. See
 // gtk_handle_box_set_shadow_type().
 func (h handleBox) ShadowType() ShadowType {
-	var arg0 *C.GtkHandleBox
+	var _arg0 *C.GtkHandleBox
 
-	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
-	var cret C.GtkShadowType
+	var _cret C.GtkShadowType
 
-	cret = C.gtk_handle_box_get_shadow_type(arg0)
+	cret = C.gtk_handle_box_get_shadow_type(_arg0)
 
-	var shadowType ShadowType
+	var _shadowType ShadowType
 
-	shadowType = ShadowType(cret)
+	_shadowType = ShadowType(_cret)
 
-	return shadowType
+	return _shadowType
 }
 
 // SnapEdge gets the edge used for determining reattachment of the handle
 // box. See gtk_handle_box_set_snap_edge().
 func (h handleBox) SnapEdge() PositionType {
-	var arg0 *C.GtkHandleBox
+	var _arg0 *C.GtkHandleBox
 
-	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
-	var cret C.GtkPositionType
+	var _cret C.GtkPositionType
 
-	cret = C.gtk_handle_box_get_snap_edge(arg0)
+	cret = C.gtk_handle_box_get_snap_edge(_arg0)
 
-	var positionType PositionType
+	var _positionType PositionType
 
-	positionType = PositionType(cret)
+	_positionType = PositionType(_cret)
 
-	return positionType
+	return _positionType
 }
 
 // SetHandlePosition sets the side of the handlebox where the handle is
 // drawn.
 func (h handleBox) SetHandlePosition(position PositionType) {
-	var arg0 *C.GtkHandleBox
-	var arg1 C.GtkPositionType
+	var _arg0 *C.GtkHandleBox
+	var _arg1 C.GtkPositionType
 
-	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
-	arg1 = (C.GtkPositionType)(position)
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg1 = (C.GtkPositionType)(position)
 
-	C.gtk_handle_box_set_handle_position(arg0, arg1)
+	C.gtk_handle_box_set_handle_position(_arg0, _arg1)
 }
 
 // SetShadowType sets the type of shadow to be drawn around the border of
 // the handle box.
 func (h handleBox) SetShadowType(typ ShadowType) {
-	var arg0 *C.GtkHandleBox
-	var arg1 C.GtkShadowType
+	var _arg0 *C.GtkHandleBox
+	var _arg1 C.GtkShadowType
 
-	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
-	arg1 = (C.GtkShadowType)(typ)
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg1 = (C.GtkShadowType)(typ)
 
-	C.gtk_handle_box_set_shadow_type(arg0, arg1)
+	C.gtk_handle_box_set_shadow_type(_arg0, _arg1)
 }
 
 // SetSnapEdge sets the snap edge of a handlebox. The snap edge is the edge
@@ -224,11 +224,11 @@ func (h handleBox) SetShadowType(typ ShadowType) {
 // GTK_POS_LEFT, then the snap edge will be GTK_POS_TOP, otherwise it will
 // be GTK_POS_LEFT.
 func (h handleBox) SetSnapEdge(edge PositionType) {
-	var arg0 *C.GtkHandleBox
-	var arg1 C.GtkPositionType
+	var _arg0 *C.GtkHandleBox
+	var _arg1 C.GtkPositionType
 
-	arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
-	arg1 = (C.GtkPositionType)(edge)
+	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
+	_arg1 = (C.GtkPositionType)(edge)
 
-	C.gtk_handle_box_set_snap_edge(arg0, arg1)
+	C.gtk_handle_box_set_snap_edge(_arg0, _arg1)
 }

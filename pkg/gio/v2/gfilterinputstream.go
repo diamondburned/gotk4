@@ -71,51 +71,51 @@ func marshalFilterInputStream(p uintptr) (interface{}, error) {
 
 // BaseStream gets the base stream for the filter stream.
 func (s filterInputStream) BaseStream() InputStream {
-	var arg0 *C.GFilterInputStream
+	var _arg0 *C.GFilterInputStream
 
-	arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GInputStream
+	var _cret *C.GInputStream
 
-	cret = C.g_filter_input_stream_get_base_stream(arg0)
+	cret = C.g_filter_input_stream_get_base_stream(_arg0)
 
-	var inputStream InputStream
+	var _inputStream InputStream
 
-	inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InputStream)
 
-	return inputStream
+	return _inputStream
 }
 
 // CloseBaseStream returns whether the base stream will be closed when
 // @stream is closed.
 func (s filterInputStream) CloseBaseStream() bool {
-	var arg0 *C.GFilterInputStream
+	var _arg0 *C.GFilterInputStream
 
-	arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_filter_input_stream_get_close_base_stream(arg0)
+	cret = C.g_filter_input_stream_get_close_base_stream(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetCloseBaseStream sets whether the base stream will be closed when
 // @stream is closed.
 func (s filterInputStream) SetCloseBaseStream(closeBase bool) {
-	var arg0 *C.GFilterInputStream
-	var arg1 C.gboolean
+	var _arg0 *C.GFilterInputStream
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFilterInputStream)(unsafe.Pointer(s.Native()))
 	if closeBase {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_filter_input_stream_set_close_base_stream(arg0, arg1)
+	C.g_filter_input_stream_set_close_base_stream(_arg0, _arg1)
 }

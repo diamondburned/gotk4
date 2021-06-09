@@ -154,15 +154,15 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 
 // NewFlowBoxChild constructs a class FlowBoxChild.
 func NewFlowBoxChild() FlowBoxChild {
-	var cret C.GtkFlowBoxChild
+	var _cret C.GtkFlowBoxChild
 
 	cret = C.gtk_flow_box_child_new()
 
-	var flowBoxChild FlowBoxChild
+	var _flowBoxChild FlowBoxChild
 
-	flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FlowBoxChild)
+	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
 
-	return flowBoxChild
+	return _flowBoxChild
 }
 
 // Changed marks @child as changed, causing any state that depends on this
@@ -181,74 +181,74 @@ func NewFlowBoxChild() FlowBoxChild {
 // gtk_flow_box_invalidate_sort() on any model change, but that is more
 // expensive.
 func (c flowBoxChild) Changed() {
-	var arg0 *C.GtkFlowBoxChild
+	var _arg0 *C.GtkFlowBoxChild
 
-	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	C.gtk_flow_box_child_changed(arg0)
+	C.gtk_flow_box_child_changed(_arg0)
 }
 
 // Child gets the child widget of @self.
 func (s flowBoxChild) Child() Widget {
-	var arg0 *C.GtkFlowBoxChild
+	var _arg0 *C.GtkFlowBoxChild
 
-	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_flow_box_child_get_child(arg0)
+	cret = C.gtk_flow_box_child_get_child(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // Index gets the current index of the @child in its FlowBox container.
 func (c flowBoxChild) Index() int {
-	var arg0 *C.GtkFlowBoxChild
+	var _arg0 *C.GtkFlowBoxChild
 
-	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_flow_box_child_get_index(arg0)
+	cret = C.gtk_flow_box_child_get_index(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // IsSelected returns whether the @child is currently selected in its
 // FlowBox container.
 func (c flowBoxChild) IsSelected() bool {
-	var arg0 *C.GtkFlowBoxChild
+	var _arg0 *C.GtkFlowBoxChild
 
-	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_flow_box_child_is_selected(arg0)
+	cret = C.gtk_flow_box_child_is_selected(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetChild sets the child widget of @self.
 func (s flowBoxChild) SetChild(child Widget) {
-	var arg0 *C.GtkFlowBoxChild
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkFlowBoxChild
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_flow_box_child_set_child(arg0, arg1)
+	C.gtk_flow_box_child_set_child(_arg0, _arg1)
 }

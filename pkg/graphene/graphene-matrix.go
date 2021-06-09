@@ -46,18 +46,18 @@ func marshalMatrix(p uintptr) (interface{}, error) {
 
 // NewMatrixAlloc constructs a struct Matrix.
 func NewMatrixAlloc() *Matrix {
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
 	cret = C.graphene_matrix_alloc()
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
-	runtime.SetFinalizer(matrix, func(v *Matrix) {
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_matrix, func(v *Matrix) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return matrix
+	return _matrix
 }
 
 // Native returns the underlying C source pointer.
@@ -74,64 +74,64 @@ func (m *Matrix) Native() unsafe.Pointer {
 // Gems II", edited by Jim Arvo, and available online
 // (http://tog.acm.org/resources/GraphicsGems/gemsii/unmatrix.c).
 func (m *Matrix) Decompose() (translate Vec3, scale Vec3, rotate Quaternion, shear Vec3, perspective Vec4, ok bool) {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var translate Vec3
-	var scale Vec3
-	var rotate Quaternion
-	var shear Vec3
-	var perspective Vec4
-	var cret C._Bool
+	var _translate Vec3
+	var _scale Vec3
+	var _rotate Quaternion
+	var _shear Vec3
+	var _perspective Vec4
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_decompose(arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&translate)), (*C.graphene_vec3_t)(unsafe.Pointer(&scale)), (*C.graphene_quaternion_t)(unsafe.Pointer(&rotate)), (*C.graphene_vec3_t)(unsafe.Pointer(&shear)), (*C.graphene_vec4_t)(unsafe.Pointer(&perspective)))
+	cret = C.graphene_matrix_decompose(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_translate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_scale)), (*C.graphene_quaternion_t)(unsafe.Pointer(&_rotate)), (*C.graphene_vec3_t)(unsafe.Pointer(&_shear)), (*C.graphene_vec4_t)(unsafe.Pointer(&_perspective)))
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return translate, scale, rotate, shear, perspective, ok
+	return _translate, _scale, _rotate, _shear, _perspective, _ok
 }
 
 // Determinant computes the determinant of the given matrix.
 func (m *Matrix) Determinant() float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_determinant(arg0)
+	cret = C.graphene_matrix_determinant(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // Equal checks whether the two given #graphene_matrix_t matrices are equal.
 func (a *Matrix) Equal(b *Matrix) bool {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_equal(arg0, arg1)
+	cret = C.graphene_matrix_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // EqualFast checks whether the two given #graphene_matrix_t matrices are
@@ -155,170 +155,170 @@ func (a *Matrix) Equal(b *Matrix) bool {
 //          // matrices are not equal
 //      }
 func (a *Matrix) EqualFast(b *Matrix) bool {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_equal_fast(arg0, arg1)
+	cret = C.graphene_matrix_equal_fast(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Free frees the resources allocated by graphene_matrix_alloc().
 func (m *Matrix) Free() {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	C.graphene_matrix_free(arg0)
+	C.graphene_matrix_free(_arg0)
 }
 
 // Row retrieves the given row vector at @index_ inside a matrix.
 func (m *Matrix) Row(index_ uint) Vec4 {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.uint
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.uint
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.uint(index_)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.uint(index_)
 
-	var res Vec4
+	var _res Vec4
 
-	C.graphene_matrix_get_row(arg0, arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_get_row(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Value retrieves the value at the given @row and @col index.
 func (m *Matrix) Value(row uint, col uint) float32 {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.uint
-	var arg2 C.uint
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.uint
+	var _arg2 C.uint
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.uint(row)
-	arg2 = C.uint(col)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.uint(row)
+	_arg2 = C.uint(col)
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_get_value(arg0, arg1, arg2)
+	cret = C.graphene_matrix_get_value(_arg0, _arg1, _arg2)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // XScale retrieves the scaling factor on the X axis in @m.
 func (m *Matrix) XScale() float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_get_x_scale(arg0)
+	cret = C.graphene_matrix_get_x_scale(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // XTranslation retrieves the translation component on the X axis from @m.
 func (m *Matrix) XTranslation() float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_get_x_translation(arg0)
+	cret = C.graphene_matrix_get_x_translation(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // YScale retrieves the scaling factor on the Y axis in @m.
 func (m *Matrix) YScale() float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_get_y_scale(arg0)
+	cret = C.graphene_matrix_get_y_scale(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // YTranslation retrieves the translation component on the Y axis from @m.
 func (m *Matrix) YTranslation() float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_get_y_translation(arg0)
+	cret = C.graphene_matrix_get_y_translation(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // ZScale retrieves the scaling factor on the Z axis in @m.
 func (m *Matrix) ZScale() float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_get_z_scale(arg0)
+	cret = C.graphene_matrix_get_z_scale(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // ZTranslation retrieves the translation component on the Z axis from @m.
 func (m *Matrix) ZTranslation() float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_matrix_get_z_translation(arg0)
+	cret = C.graphene_matrix_get_z_translation(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // InitFrom2D initializes a #graphene_matrix_t from the values of an affine
@@ -333,98 +333,98 @@ func (m *Matrix) ZTranslation() float32 {
 // This function can be used to convert between an affine matrix type from other
 // libraries and a #graphene_matrix_t.
 func (m *Matrix) InitFrom2D(xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.double
-	var arg2 C.double
-	var arg3 C.double
-	var arg4 C.double
-	var arg5 C.double
-	var arg6 C.double
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.double
+	var _arg2 C.double
+	var _arg3 C.double
+	var _arg4 C.double
+	var _arg5 C.double
+	var _arg6 C.double
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.double(xx)
-	arg2 = C.double(yx)
-	arg3 = C.double(xy)
-	arg4 = C.double(yy)
-	arg5 = C.double(x0)
-	arg6 = C.double(y0)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.double(xx)
+	_arg2 = C.double(yx)
+	_arg3 = C.double(xy)
+	_arg4 = C.double(yy)
+	_arg5 = C.double(x0)
+	_arg6 = C.double(y0)
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_from_2d(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.graphene_matrix_init_from_2d(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitFromFloat initializes a #graphene_matrix_t with the given array of
 // floating point values.
 func (m *Matrix) InitFromFloat(v [16]float32) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.float)(unsafe.Pointer(&v))
-	defer runtime.KeepAlive(&arg1)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.float)(unsafe.Pointer(&v))
+	defer runtime.KeepAlive(&_arg1)
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_from_float(arg0, arg1)
+	cret = C.graphene_matrix_init_from_float(_arg0, _arg1)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitFromMatrix initializes a #graphene_matrix_t using the values of the given
 // matrix.
 func (m *Matrix) InitFromMatrix(src *Matrix) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(src.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(src.Native()))
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_from_matrix(arg0, arg1)
+	cret = C.graphene_matrix_init_from_matrix(_arg0, _arg1)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitFromVec4 initializes a #graphene_matrix_t with the given four row
 // vectors.
 func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_vec4_t
-	var arg2 *C.graphene_vec4_t
-	var arg3 *C.graphene_vec4_t
-	var arg4 *C.graphene_vec4_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_vec4_t
+	var _arg2 *C.graphene_vec4_t
+	var _arg3 *C.graphene_vec4_t
+	var _arg4 *C.graphene_vec4_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v0.Native()))
-	arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(v1.Native()))
-	arg3 = (*C.graphene_vec4_t)(unsafe.Pointer(v2.Native()))
-	arg4 = (*C.graphene_vec4_t)(unsafe.Pointer(v3.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v0.Native()))
+	_arg2 = (*C.graphene_vec4_t)(unsafe.Pointer(v1.Native()))
+	_arg3 = (*C.graphene_vec4_t)(unsafe.Pointer(v2.Native()))
+	_arg4 = (*C.graphene_vec4_t)(unsafe.Pointer(v3.Native()))
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_from_vec4(arg0, arg1, arg2, arg3, arg4)
+	cret = C.graphene_matrix_init_from_vec4(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitFrustum initializes a #graphene_matrix_t compatible with
@@ -432,48 +432,48 @@ func (m *Matrix) InitFromVec4(v0 *Vec4, v1 *Vec4, v2 *Vec4, v3 *Vec4) *Matrix {
 //
 // See also: graphene_frustum_init_from_matrix()
 func (m *Matrix) InitFrustum(left float32, right float32, bottom float32, top float32, zNear float32, zFar float32) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 C.float
-	var arg3 C.float
-	var arg4 C.float
-	var arg5 C.float
-	var arg6 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 C.float
+	var _arg3 C.float
+	var _arg4 C.float
+	var _arg5 C.float
+	var _arg6 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(left)
-	arg2 = C.float(right)
-	arg3 = C.float(bottom)
-	arg4 = C.float(top)
-	arg5 = C.float(zNear)
-	arg6 = C.float(zFar)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(left)
+	_arg2 = C.float(right)
+	_arg3 = C.float(bottom)
+	_arg4 = C.float(top)
+	_arg5 = C.float(zNear)
+	_arg6 = C.float(zFar)
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_frustum(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.graphene_matrix_init_frustum(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitIdentity initializes a #graphene_matrix_t with the identity matrix.
 func (m *Matrix) InitIdentity() *Matrix {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_identity(arg0)
+	cret = C.graphene_matrix_init_identity(_arg0)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitLookAt initializes a #graphene_matrix_t so that it positions the "camera"
@@ -491,167 +491,167 @@ func (m *Matrix) InitIdentity() *Matrix {
 // Typically you would then apply the camera projection transform to get from
 // view to screen coordinates.
 func (m *Matrix) InitLookAt(eye *Vec3, center *Vec3, up *Vec3) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_vec3_t
-	var arg2 *C.graphene_vec3_t
-	var arg3 *C.graphene_vec3_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_vec3_t
+	var _arg2 *C.graphene_vec3_t
+	var _arg3 *C.graphene_vec3_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(eye.Native()))
-	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(center.Native()))
-	arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(up.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(eye.Native()))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(center.Native()))
+	_arg3 = (*C.graphene_vec3_t)(unsafe.Pointer(up.Native()))
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_look_at(arg0, arg1, arg2, arg3)
+	cret = C.graphene_matrix_init_look_at(_arg0, _arg1, _arg2, _arg3)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitOrtho initializes a #graphene_matrix_t with an orthographic projection.
 func (m *Matrix) InitOrtho(left float32, right float32, top float32, bottom float32, zNear float32, zFar float32) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 C.float
-	var arg3 C.float
-	var arg4 C.float
-	var arg5 C.float
-	var arg6 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 C.float
+	var _arg3 C.float
+	var _arg4 C.float
+	var _arg5 C.float
+	var _arg6 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(left)
-	arg2 = C.float(right)
-	arg3 = C.float(top)
-	arg4 = C.float(bottom)
-	arg5 = C.float(zNear)
-	arg6 = C.float(zFar)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(left)
+	_arg2 = C.float(right)
+	_arg3 = C.float(top)
+	_arg4 = C.float(bottom)
+	_arg5 = C.float(zNear)
+	_arg6 = C.float(zFar)
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_ortho(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.graphene_matrix_init_ortho(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitPerspective initializes a #graphene_matrix_t with a perspective
 // projection.
 func (m *Matrix) InitPerspective(fovy float32, aspect float32, zNear float32, zFar float32) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 C.float
-	var arg3 C.float
-	var arg4 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 C.float
+	var _arg3 C.float
+	var _arg4 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(fovy)
-	arg2 = C.float(aspect)
-	arg3 = C.float(zNear)
-	arg4 = C.float(zFar)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(fovy)
+	_arg2 = C.float(aspect)
+	_arg3 = C.float(zNear)
+	_arg4 = C.float(zFar)
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_perspective(arg0, arg1, arg2, arg3, arg4)
+	cret = C.graphene_matrix_init_perspective(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitRotate initializes @m to represent a rotation of @angle degrees on the
 // axis represented by the @axis vector.
 func (m *Matrix) InitRotate(angle float32, axis *Vec3) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 *C.graphene_vec3_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 *C.graphene_vec3_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(angle)
-	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(angle)
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_rotate(arg0, arg1, arg2)
+	cret = C.graphene_matrix_init_rotate(_arg0, _arg1, _arg2)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitScale initializes a #graphene_matrix_t with the given scaling factors.
 func (m *Matrix) InitScale(x float32, y float32, z float32) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 C.float
-	var arg3 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 C.float
+	var _arg3 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(x)
-	arg2 = C.float(y)
-	arg3 = C.float(z)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(x)
+	_arg2 = C.float(y)
+	_arg3 = C.float(z)
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_scale(arg0, arg1, arg2, arg3)
+	cret = C.graphene_matrix_init_scale(_arg0, _arg1, _arg2, _arg3)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitSkew initializes a #graphene_matrix_t with a skew transformation with the
 // given factors.
 func (m *Matrix) InitSkew(xSkew float32, ySkew float32) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(xSkew)
-	arg2 = C.float(ySkew)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(xSkew)
+	_arg2 = C.float(ySkew)
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_skew(arg0, arg1, arg2)
+	cret = C.graphene_matrix_init_skew(_arg0, _arg1, _arg2)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // InitTranslate initializes a #graphene_matrix_t with a translation to the
 // given coordinates.
 func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	var cret *C.graphene_matrix_t
+	var _cret *C.graphene_matrix_t
 
-	cret = C.graphene_matrix_init_translate(arg0, arg1)
+	cret = C.graphene_matrix_init_translate(_arg0, _arg1)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // Interpolate: linearly interpolates the two given #graphene_matrix_t by
@@ -661,118 +661,118 @@ func (m *Matrix) InitTranslate(p *Point3D) *Matrix {
 // interpolation cannot be performed, and this function will return an identity
 // matrix.
 func (a *Matrix) Interpolate(b *Matrix, factor float64) Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_matrix_t
-	var arg2 C.double
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_matrix_t
+	var _arg2 C.double
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
-	arg2 = C.double(factor)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
+	_arg2 = C.double(factor)
 
-	var res Matrix
+	var _res Matrix
 
-	C.graphene_matrix_interpolate(arg0, arg1, arg2, (*C.graphene_matrix_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_interpolate(_arg0, _arg1, _arg2, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Inverse inverts the given matrix.
-func (m *Matrix) Inverse() (res Matrix, ok bool) {
-	var arg0 *C.graphene_matrix_t
+func (m *Matrix) Inverse() (Matrix, bool) {
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var res Matrix
-	var cret C._Bool
+	var _res Matrix
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_inverse(arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&res)))
+	cret = C.graphene_matrix_inverse(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return res, ok
+	return _res, _ok
 }
 
 // Is2D checks whether the given #graphene_matrix_t is compatible with an a 2D
 // affine transformation matrix.
 func (m *Matrix) Is2D() bool {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_is_2d(arg0)
+	cret = C.graphene_matrix_is_2d(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsBackfaceVisible checks whether a #graphene_matrix_t has a visible back
 // face.
 func (m *Matrix) IsBackfaceVisible() bool {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_is_backface_visible(arg0)
+	cret = C.graphene_matrix_is_backface_visible(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsIdentity checks whether the given #graphene_matrix_t is the identity
 // matrix.
 func (m *Matrix) IsIdentity() bool {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_is_identity(arg0)
+	cret = C.graphene_matrix_is_identity(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsSingular checks whether a matrix is singular.
 func (m *Matrix) IsSingular() bool {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_is_singular(arg0)
+	cret = C.graphene_matrix_is_singular(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Multiply multiplies two #graphene_matrix_t.
@@ -780,69 +780,69 @@ func (m *Matrix) IsSingular() bool {
 // Matrix multiplication is not commutative in general; the order of the factors
 // matters. The product of this multiplication is (@a × @b)
 func (a *Matrix) Multiply(b *Matrix) Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
 
-	var res Matrix
+	var _res Matrix
 
-	C.graphene_matrix_multiply(arg0, arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_multiply(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Near compares the two given #graphene_matrix_t matrices and checks whether
 // their values are within the given @epsilon of each other.
 func (a *Matrix) Near(b *Matrix, epsilon float32) bool {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_matrix_t
-	var arg2 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_matrix_t
+	var _arg2 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
-	arg2 = C.float(epsilon)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(b.Native()))
+	_arg2 = C.float(epsilon)
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_near(arg0, arg1, arg2)
+	cret = C.graphene_matrix_near(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Normalize normalizes the given #graphene_matrix_t.
 func (m *Matrix) Normalize() Matrix {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var res Matrix
+	var _res Matrix
 
-	C.graphene_matrix_normalize(arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_normalize(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Perspective applies a perspective of @depth to the matrix.
 func (m *Matrix) Perspective(depth float32) Matrix {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(depth)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(depth)
 
-	var res Matrix
+	var _res Matrix
 
-	C.graphene_matrix_perspective(arg0, arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_perspective(_arg0, _arg1, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Print prints the contents of a matrix to the standard error stream.
@@ -850,26 +850,26 @@ func (m *Matrix) Perspective(depth float32) Matrix {
 // This function is only useful for debugging; there are no guarantees made on
 // the format of the output.
 func (m *Matrix) Print() {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	C.graphene_matrix_print(arg0)
+	C.graphene_matrix_print(_arg0)
 }
 
 // ProjectPoint projects a #graphene_point_t using the matrix @m.
 func (m *Matrix) ProjectPoint(p *Point) Point {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_point_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_point_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	var res Point
+	var _res Point
 
-	C.graphene_matrix_project_point(arg0, arg1, (*C.graphene_point_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_project_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // ProjectRect projects all corners of a #graphene_rect_t using the given
@@ -877,17 +877,17 @@ func (m *Matrix) ProjectPoint(p *Point) Point {
 //
 // See also: graphene_matrix_project_point()
 func (m *Matrix) ProjectRect(r *Rect) Quad {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_rect_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_rect_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var res Quad
+	var _res Quad
 
-	C.graphene_matrix_project_rect(arg0, arg1, (*C.graphene_quad_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_project_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // ProjectRectBounds projects a #graphene_rect_t using the given matrix.
@@ -895,17 +895,17 @@ func (m *Matrix) ProjectRect(r *Rect) Quad {
 // The resulting rectangle is the axis aligned bounding rectangle capable of
 // fully containing the projected rectangle.
 func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_rect_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_rect_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var res Rect
+	var _res Rect
 
-	C.graphene_matrix_project_rect_bounds(arg0, arg1, (*C.graphene_rect_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_project_rect_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Rotate adds a rotation transformation to @m, using the given @angle and @axis
@@ -914,27 +914,27 @@ func (m *Matrix) ProjectRectBounds(r *Rect) Rect {
 // This is the equivalent of calling graphene_matrix_init_rotate() and then
 // multiplying the matrix @m with the rotation matrix.
 func (m *Matrix) Rotate(angle float32, axis *Vec3) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 *C.graphene_vec3_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 *C.graphene_vec3_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(angle)
-	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(angle)
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(axis.Native()))
 
-	C.graphene_matrix_rotate(arg0, arg1, arg2)
+	C.graphene_matrix_rotate(_arg0, _arg1, _arg2)
 }
 
 // RotateEuler adds a rotation transformation to @m, using the given
 // #graphene_euler_t.
 func (m *Matrix) RotateEuler(e *Euler) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_euler_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_euler_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_euler_t)(unsafe.Pointer(e.Native()))
 
-	C.graphene_matrix_rotate_euler(arg0, arg1)
+	C.graphene_matrix_rotate_euler(_arg0, _arg1)
 }
 
 // RotateQuaternion adds a rotation transformation to @m, using the given
@@ -943,13 +943,13 @@ func (m *Matrix) RotateEuler(e *Euler) {
 // This is the equivalent of calling graphene_quaternion_to_matrix() and then
 // multiplying @m with the rotation matrix.
 func (m *Matrix) RotateQuaternion(q *Quaternion) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_quaternion_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	C.graphene_matrix_rotate_quaternion(arg0, arg1)
+	C.graphene_matrix_rotate_quaternion(_arg0, _arg1)
 }
 
 // RotateX adds a rotation transformation around the X axis to @m, using the
@@ -957,13 +957,13 @@ func (m *Matrix) RotateQuaternion(q *Quaternion) {
 //
 // See also: graphene_matrix_rotate()
 func (m *Matrix) RotateX(angle float32) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(angle)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(angle)
 
-	C.graphene_matrix_rotate_x(arg0, arg1)
+	C.graphene_matrix_rotate_x(_arg0, _arg1)
 }
 
 // RotateY adds a rotation transformation around the Y axis to @m, using the
@@ -971,13 +971,13 @@ func (m *Matrix) RotateX(angle float32) {
 //
 // See also: graphene_matrix_rotate()
 func (m *Matrix) RotateY(angle float32) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(angle)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(angle)
 
-	C.graphene_matrix_rotate_y(arg0, arg1)
+	C.graphene_matrix_rotate_y(_arg0, _arg1)
 }
 
 // RotateZ adds a rotation transformation around the Z axis to @m, using the
@@ -985,13 +985,13 @@ func (m *Matrix) RotateY(angle float32) {
 //
 // See also: graphene_matrix_rotate()
 func (m *Matrix) RotateZ(angle float32) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(angle)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(angle)
 
-	C.graphene_matrix_rotate_z(arg0, arg1)
+	C.graphene_matrix_rotate_z(_arg0, _arg1)
 }
 
 // Scale adds a scaling transformation to @m, using the three given factors.
@@ -999,50 +999,50 @@ func (m *Matrix) RotateZ(angle float32) {
 // This is the equivalent of calling graphene_matrix_init_scale() and then
 // multiplying the matrix @m with the scale matrix.
 func (m *Matrix) Scale(factorX float32, factorY float32, factorZ float32) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
-	var arg2 C.float
-	var arg3 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
+	var _arg2 C.float
+	var _arg3 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(factorX)
-	arg2 = C.float(factorY)
-	arg3 = C.float(factorZ)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(factorX)
+	_arg2 = C.float(factorY)
+	_arg3 = C.float(factorZ)
 
-	C.graphene_matrix_scale(arg0, arg1, arg2, arg3)
+	C.graphene_matrix_scale(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SkewXY adds a skew of @factor on the X and Y axis to the given matrix.
 func (m *Matrix) SkewXY(factor float32) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(factor)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(factor)
 
-	C.graphene_matrix_skew_xy(arg0, arg1)
+	C.graphene_matrix_skew_xy(_arg0, _arg1)
 }
 
 // SkewXZ adds a skew of @factor on the X and Z axis to the given matrix.
 func (m *Matrix) SkewXZ(factor float32) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(factor)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(factor)
 
-	C.graphene_matrix_skew_xz(arg0, arg1)
+	C.graphene_matrix_skew_xz(_arg0, _arg1)
 }
 
 // SkewYZ adds a skew of @factor on the Y and Z axis to the given matrix.
 func (m *Matrix) SkewYZ(factor float32) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 C.float
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = C.float(factor)
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = C.float(factor)
 
-	C.graphene_matrix_skew_yz(arg0, arg1)
+	C.graphene_matrix_skew_yz(_arg0, _arg1)
 }
 
 // To2D converts a #graphene_matrix_t to an affine transformation matrix, if the
@@ -1057,56 +1057,56 @@ func (m *Matrix) SkewYZ(factor float32) {
 // This function can be used to convert between a #graphene_matrix_t and an
 // affine matrix type from other libraries.
 func (m *Matrix) To2D() (xx float64, yx float64, xy float64, yy float64, x0 float64, y0 float64, ok bool) {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.double
-	var arg2 C.double
-	var arg3 C.double
-	var arg4 C.double
-	var arg5 C.double
-	var arg6 C.double
-	var cret C._Bool
+	var _arg1 C.double
+	var _arg2 C.double
+	var _arg3 C.double
+	var _arg4 C.double
+	var _arg5 C.double
+	var _arg6 C.double
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_to_2d(arg0, &arg1, &arg2, &arg3, &arg4, &arg5, &arg6)
+	cret = C.graphene_matrix_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
-	var xx float64
-	var yx float64
-	var xy float64
-	var yy float64
-	var x0 float64
-	var y0 float64
-	var ok bool
+	var _xx float64
+	var _yx float64
+	var _xy float64
+	var _yy float64
+	var _x0 float64
+	var _y0 float64
+	var _ok bool
 
-	xx = (float64)(arg1)
-	yx = (float64)(arg2)
-	xy = (float64)(arg3)
-	yy = (float64)(arg4)
-	x0 = (float64)(arg5)
-	y0 = (float64)(arg6)
-	if cret {
-		ok = true
+	_xx = (float64)(_arg1)
+	_yx = (float64)(_arg2)
+	_xy = (float64)(_arg3)
+	_yy = (float64)(_arg4)
+	_x0 = (float64)(_arg5)
+	_y0 = (float64)(_arg6)
+	if _cret {
+		_ok = true
 	}
 
-	return xx, yx, xy, yy, x0, y0, ok
+	return _xx, _yx, _xy, _yy, _x0, _y0, _ok
 }
 
 // ToFloat converts a #graphene_matrix_t to an array of floating point values.
 func (m *Matrix) ToFloat() [16]float32 {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var arg1 [16]C.float
+	var _arg1 [16]C.float
 
-	C.graphene_matrix_to_float(arg0, &arg1[0])
+	C.graphene_matrix_to_float(_arg0, &_arg1[0])
 
-	var v [16]float32
+	var _v [16]float32
 
-	v = *(*[16]float32)(unsafe.Pointer(arg1))
+	_v = *(*[16]float32)(unsafe.Pointer(_arg1))
 
-	return v
+	return _v
 }
 
 // TransformBounds transforms each corner of a #graphene_rect_t using the given
@@ -1117,17 +1117,17 @@ func (m *Matrix) ToFloat() [16]float32 {
 //
 // See also: graphene_matrix_transform_point()
 func (m *Matrix) TransformBounds(r *Rect) Rect {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_rect_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_rect_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var res Rect
+	var _res Rect
 
-	C.graphene_matrix_transform_bounds(arg0, arg1, (*C.graphene_rect_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_bounds(_arg0, _arg1, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformBox transforms the vertices of a #graphene_box_t using the given
@@ -1136,17 +1136,17 @@ func (m *Matrix) TransformBounds(r *Rect) Rect {
 // The result is the axis aligned bounding box containing the transformed
 // vertices.
 func (m *Matrix) TransformBox(b *Box) Box {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_box_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_box_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	var res Box
+	var _res Box
 
-	C.graphene_matrix_transform_box(arg0, arg1, (*C.graphene_box_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_box(_arg0, _arg1, (*C.graphene_box_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformPoint transforms the given #graphene_point_t using the matrix @m.
@@ -1157,17 +1157,17 @@ func (m *Matrix) TransformBox(b *Box) Box {
 //
 // See also: graphene_simd4x4f_point3_mul()
 func (m *Matrix) TransformPoint(p *Point) Point {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_point_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_point_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	var res Point
+	var _res Point
 
-	C.graphene_matrix_transform_point(arg0, arg1, (*C.graphene_point_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_point(_arg0, _arg1, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformPoint3D transforms the given #graphene_point3d_t using the matrix
@@ -1179,32 +1179,32 @@ func (m *Matrix) TransformPoint(p *Point) Point {
 //
 // See also: graphene_simd4x4f_point3_mul()
 func (m *Matrix) TransformPoint3D(p *Point3D) Point3D {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	var res Point3D
+	var _res Point3D
 
-	C.graphene_matrix_transform_point3d(arg0, arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_point3d(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformRay: transform a #graphene_ray_t using the given matrix @m.
 func (m *Matrix) TransformRay(r *Ray) Ray {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_ray_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_ray_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
-	var res Ray
+	var _res Ray
 
-	C.graphene_matrix_transform_ray(arg0, arg1, (*C.graphene_ray_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_ray(_arg0, _arg1, (*C.graphene_ray_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformRect transforms each corner of a #graphene_rect_t using the given
@@ -1214,33 +1214,33 @@ func (m *Matrix) TransformRay(r *Ray) Ray {
 //
 // See also: graphene_matrix_transform_point()
 func (m *Matrix) TransformRect(r *Rect) Quad {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_rect_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_rect_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
 
-	var res Quad
+	var _res Quad
 
-	C.graphene_matrix_transform_rect(arg0, arg1, (*C.graphene_quad_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_rect(_arg0, _arg1, (*C.graphene_quad_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformSphere transforms a #graphene_sphere_t using the given matrix @m.
 // The result is the bounding sphere containing the transformed sphere.
 func (m *Matrix) TransformSphere(s *Sphere) Sphere {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_sphere_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var res Sphere
+	var _res Sphere
 
-	C.graphene_matrix_transform_sphere(arg0, arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_sphere(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformVec3 transforms the given #graphene_vec3_t using the matrix @m.
@@ -1251,34 +1251,34 @@ func (m *Matrix) TransformSphere(s *Sphere) Sphere {
 //
 // See also: graphene_simd4x4f_vec3_mul()
 func (m *Matrix) TransformVec3(v *Vec3) Vec3 {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_vec3_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_vec3_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(v.Native()))
 
-	var res Vec3
+	var _res Vec3
 
-	C.graphene_matrix_transform_vec3(arg0, arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_vec3(_arg0, _arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // TransformVec4 transforms the given #graphene_vec4_t using the matrix @m.
 //
 // See also: graphene_simd4x4f_vec4_mul()
 func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_vec4_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_vec4_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_vec4_t)(unsafe.Pointer(v.Native()))
 
-	var res Vec4
+	var _res Vec4
 
-	C.graphene_matrix_transform_vec4(arg0, arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transform_vec4(_arg0, _arg1, (*C.graphene_vec4_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Translate adds a translation transformation to @m using the coordinates of
@@ -1287,86 +1287,86 @@ func (m *Matrix) TransformVec4(v *Vec4) Vec4 {
 // This is the equivalent of calling graphene_matrix_init_translate() and then
 // multiplying @m with the translation matrix.
 func (m *Matrix) Translate(pos *Point3D) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(pos.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(pos.Native()))
 
-	C.graphene_matrix_translate(arg0, arg1)
+	C.graphene_matrix_translate(_arg0, _arg1)
 }
 
 // Transpose transposes the given matrix.
 func (m *Matrix) Transpose() Matrix {
-	var arg0 *C.graphene_matrix_t
+	var _arg0 *C.graphene_matrix_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
 
-	var res Matrix
+	var _res Matrix
 
-	C.graphene_matrix_transpose(arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_transpose(_arg0, (*C.graphene_matrix_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // UnprojectPoint3D unprojects the given @point using the @projection matrix and
 // a @modelview matrix.
 func (p *Matrix) UnprojectPoint3D(modelview *Matrix, point *Point3D) Point3D {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_matrix_t
-	var arg2 *C.graphene_point3d_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_matrix_t
+	var _arg2 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(modelview.Native()))
-	arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(modelview.Native()))
+	_arg2 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	var res Point3D
+	var _res Point3D
 
-	C.graphene_matrix_unproject_point3d(arg0, arg1, arg2, (*C.graphene_point3d_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_unproject_point3d(_arg0, _arg1, _arg2, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // UntransformBounds undoes the transformation on the corners of a
 // #graphene_rect_t using the given matrix, within the given axis aligned
 // rectangular @bounds.
 func (m *Matrix) UntransformBounds(r *Rect, bounds *Rect) Rect {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_rect_t
-	var arg2 *C.graphene_rect_t
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_rect_t
+	var _arg2 *C.graphene_rect_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-	arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
+	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 
-	var res Rect
+	var _res Rect
 
-	C.graphene_matrix_untransform_bounds(arg0, arg1, arg2, (*C.graphene_rect_t)(unsafe.Pointer(&res)))
+	C.graphene_matrix_untransform_bounds(_arg0, _arg1, _arg2, (*C.graphene_rect_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // UntransformPoint undoes the transformation of a #graphene_point_t using the
 // given matrix, within the given axis aligned rectangular @bounds.
-func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (res Point, ok bool) {
-	var arg0 *C.graphene_matrix_t
-	var arg1 *C.graphene_point_t
-	var arg2 *C.graphene_rect_t
+func (m *Matrix) UntransformPoint(p *Point, bounds *Rect) (Point, bool) {
+	var _arg0 *C.graphene_matrix_t
+	var _arg1 *C.graphene_point_t
+	var _arg2 *C.graphene_rect_t
 
-	arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
-	arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
+	_arg0 = (*C.graphene_matrix_t)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
+	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 
-	var res Point
-	var cret C._Bool
+	var _res Point
+	var _cret C._Bool
 
-	cret = C.graphene_matrix_untransform_point(arg0, arg1, arg2, (*C.graphene_point_t)(unsafe.Pointer(&res)))
+	cret = C.graphene_matrix_untransform_point(_arg0, _arg1, _arg2, (*C.graphene_point_t)(unsafe.Pointer(&_res)))
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return res, ok
+	return _res, _ok
 }

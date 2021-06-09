@@ -62,44 +62,44 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 
 // NewGestureLongPress constructs a class GestureLongPress.
 func NewGestureLongPress() GestureLongPress {
-	var cret C.GtkGestureLongPress
+	var _cret C.GtkGestureLongPress
 
 	cret = C.gtk_gesture_long_press_new()
 
-	var gestureLongPress GestureLongPress
+	var _gestureLongPress GestureLongPress
 
-	gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureLongPress)
+	_gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureLongPress)
 
-	return gestureLongPress
+	return _gestureLongPress
 }
 
 // DelayFactor returns the delay factor as set by
 // gtk_gesture_long_press_set_delay_factor().
 func (g gestureLongPress) DelayFactor() float64 {
-	var arg0 *C.GtkGestureLongPress
+	var _arg0 *C.GtkGestureLongPress
 
-	arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
 
-	var cret C.double
+	var _cret C.double
 
-	cret = C.gtk_gesture_long_press_get_delay_factor(arg0)
+	cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // SetDelayFactor applies the given delay factor. The default long press
 // time will be multiplied by this value. Valid values are in the range
 // [0.5..2.0].
 func (g gestureLongPress) SetDelayFactor(delayFactor float64) {
-	var arg0 *C.GtkGestureLongPress
-	var arg1 C.double
+	var _arg0 *C.GtkGestureLongPress
+	var _arg1 C.double
 
-	arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
-	arg1 = C.double(delayFactor)
+	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
+	_arg1 = C.double(delayFactor)
 
-	C.gtk_gesture_long_press_set_delay_factor(arg0, arg1)
+	C.gtk_gesture_long_press_set_delay_factor(_arg0, _arg1)
 }

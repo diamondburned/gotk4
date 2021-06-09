@@ -90,69 +90,69 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 
 // NewUnixSocketAddress constructs a class UnixSocketAddress.
 func NewUnixSocketAddress(path string) UnixSocketAddress {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GUnixSocketAddress
+	var _cret C.GUnixSocketAddress
 
-	cret = C.g_unix_socket_address_new(arg1)
+	cret = C.g_unix_socket_address_new(_arg1)
 
-	var unixSocketAddress UnixSocketAddress
+	var _unixSocketAddress UnixSocketAddress
 
-	unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
 
-	return unixSocketAddress
+	return _unixSocketAddress
 }
 
 // NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
 func NewUnixSocketAddressAbstract() UnixSocketAddress {
-	var cret C.GUnixSocketAddress
+	var _cret C.GUnixSocketAddress
 
 	cret = C.g_unix_socket_address_new_abstract()
 
-	var unixSocketAddress UnixSocketAddress
+	var _unixSocketAddress UnixSocketAddress
 
-	unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixSocketAddress)
+	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
 
-	return unixSocketAddress
+	return _unixSocketAddress
 }
 
 // AddressType gets @address's type.
 func (a unixSocketAddress) AddressType() UnixSocketAddressType {
-	var arg0 *C.GUnixSocketAddress
+	var _arg0 *C.GUnixSocketAddress
 
-	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.GUnixSocketAddressType
+	var _cret C.GUnixSocketAddressType
 
-	cret = C.g_unix_socket_address_get_address_type(arg0)
+	cret = C.g_unix_socket_address_get_address_type(_arg0)
 
-	var unixSocketAddressType UnixSocketAddressType
+	var _unixSocketAddressType UnixSocketAddressType
 
-	unixSocketAddressType = UnixSocketAddressType(cret)
+	_unixSocketAddressType = UnixSocketAddressType(_cret)
 
-	return unixSocketAddressType
+	return _unixSocketAddressType
 }
 
 // IsAbstract tests if @address is abstract.
 func (a unixSocketAddress) IsAbstract() bool {
-	var arg0 *C.GUnixSocketAddress
+	var _arg0 *C.GUnixSocketAddress
 
-	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_unix_socket_address_get_is_abstract(arg0)
+	cret = C.g_unix_socket_address_get_is_abstract(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Path gets @address's path, or for abstract sockets the "name".
@@ -162,36 +162,36 @@ func (a unixSocketAddress) IsAbstract() bool {
 // g_unix_socket_address_get_path_len() to get the true length of this
 // string.
 func (a unixSocketAddress) Path() string {
-	var arg0 *C.GUnixSocketAddress
+	var _arg0 *C.GUnixSocketAddress
 
-	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_unix_socket_address_get_path(arg0)
+	cret = C.g_unix_socket_address_get_path(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // PathLen gets the length of @address's path.
 //
 // For details, see g_unix_socket_address_get_path().
 func (a unixSocketAddress) PathLen() uint {
-	var arg0 *C.GUnixSocketAddress
+	var _arg0 *C.GUnixSocketAddress
 
-	arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gsize
+	var _cret C.gsize
 
-	cret = C.g_unix_socket_address_get_path_len(arg0)
+	cret = C.g_unix_socket_address_get_path_len(_arg0)
 
-	var gsize uint
+	var _gsize uint
 
-	gsize = (uint)(cret)
+	_gsize = (uint)(_cret)
 
-	return gsize
+	return _gsize
 }

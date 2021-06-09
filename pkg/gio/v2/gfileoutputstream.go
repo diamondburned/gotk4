@@ -68,7 +68,7 @@ type FileOutputStream interface {
 	// triggering the cancellable object from another thread. If the operation
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, goerr error)
+	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_output_stream_query_info_finish().
@@ -78,7 +78,7 @@ type FileOutputStream interface {
 	QueryInfoAsync()
 	// QueryInfoFinish finalizes the asynchronous query started by
 	// g_file_output_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, goerr error)
+	QueryInfoFinish(result AsyncResult) (FileInfo, error)
 }
 
 // fileOutputStream implements the FileOutputStream interface.
@@ -108,20 +108,20 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 // be called after the stream has been written and closed, as the etag can
 // change while writing.
 func (s fileOutputStream) Etag() string {
-	var arg0 *C.GFileOutputStream
+	var _arg0 *C.GFileOutputStream
 
-	arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_file_output_stream_get_etag(arg0)
+	cret = C.g_file_output_stream_get_etag(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // QueryInfo queries a file output stream for the given @attributes. This
@@ -140,28 +140,28 @@ func (s fileOutputStream) Etag() string {
 // triggering the cancellable object from another thread. If the operation
 // was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
 // be returned.
-func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) (fileInfo FileInfo, goerr error) {
-	var arg0 *C.GFileOutputStream
-	var arg1 *C.char
-	var arg2 *C.GCancellable
+func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
+	var _arg0 *C.GFileOutputStream
+	var _arg1 *C.char
+	var _arg2 *C.GCancellable
 
-	arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(attributes))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GFileInfo
-	var cerr *C.GError
+	var _cret *C.GFileInfo
+	var _cerr *C.GError
 
-	cret = C.g_file_output_stream_query_info(arg0, arg1, arg2, cerr)
+	cret = C.g_file_output_stream_query_info(_arg0, _arg1, _arg2, _cerr)
 
-	var fileInfo FileInfo
-	var goerr error
+	var _fileInfo FileInfo
+	var _goerr error
 
-	fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return fileInfo, goerr
+	return _fileInfo, _goerr
 }
 
 // QueryInfoAsync: asynchronously queries the @stream for a Info. When
@@ -171,32 +171,32 @@ func (s fileOutputStream) QueryInfo(attributes string, cancellable Cancellable) 
 // For the synchronous version of this function, see
 // g_file_output_stream_query_info().
 func (s fileOutputStream) QueryInfoAsync() {
-	var arg0 *C.GFileOutputStream
+	var _arg0 *C.GFileOutputStream
 
-	arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_file_output_stream_query_info_async(arg0)
+	C.g_file_output_stream_query_info_async(_arg0)
 }
 
 // QueryInfoFinish finalizes the asynchronous query started by
 // g_file_output_stream_query_info_async().
-func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (fileInfo FileInfo, goerr error) {
-	var arg0 *C.GFileOutputStream
-	var arg1 *C.GAsyncResult
+func (s fileOutputStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
+	var _arg0 *C.GFileOutputStream
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GFileInfo
-	var cerr *C.GError
+	var _cret *C.GFileInfo
+	var _cerr *C.GError
 
-	cret = C.g_file_output_stream_query_info_finish(arg0, arg1, cerr)
+	cret = C.g_file_output_stream_query_info_finish(_arg0, _arg1, _cerr)
 
-	var fileInfo FileInfo
-	var goerr error
+	var _fileInfo FileInfo
+	var _goerr error
 
-	fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileInfo)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return fileInfo, goerr
+	return _fileInfo, _goerr
 }

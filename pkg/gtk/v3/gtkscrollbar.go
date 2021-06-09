@@ -94,19 +94,19 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 
 // NewScrollbar constructs a class Scrollbar.
 func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
-	var arg1 C.GtkOrientation
-	var arg2 *C.GtkAdjustment
+	var _arg1 C.GtkOrientation
+	var _arg2 *C.GtkAdjustment
 
-	arg1 = (C.GtkOrientation)(orientation)
-	arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (C.GtkOrientation)(orientation)
+	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	var cret C.GtkScrollbar
+	var _cret C.GtkScrollbar
 
-	cret = C.gtk_scrollbar_new(arg1, arg2)
+	cret = C.gtk_scrollbar_new(_arg1, _arg2)
 
-	var scrollbar Scrollbar
+	var _scrollbar Scrollbar
 
-	scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Scrollbar)
+	_scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scrollbar)
 
-	return scrollbar
+	return _scrollbar
 }

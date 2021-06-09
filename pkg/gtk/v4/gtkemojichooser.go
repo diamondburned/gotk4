@@ -85,13 +85,13 @@ func marshalEmojiChooser(p uintptr) (interface{}, error) {
 
 // NewEmojiChooser constructs a class EmojiChooser.
 func NewEmojiChooser() EmojiChooser {
-	var cret C.GtkEmojiChooser
+	var _cret C.GtkEmojiChooser
 
 	cret = C.gtk_emoji_chooser_new()
 
-	var emojiChooser EmojiChooser
+	var _emojiChooser EmojiChooser
 
-	emojiChooser = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EmojiChooser)
+	_emojiChooser = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EmojiChooser)
 
-	return emojiChooser
+	return _emojiChooser
 }

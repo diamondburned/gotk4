@@ -162,58 +162,58 @@ func marshalAsyncResult(p uintptr) (interface{}, error) {
 
 // SourceObject gets the source object from a Result.
 func (r asyncResult) SourceObject() gextras.Objector {
-	var arg0 *C.GAsyncResult
+	var _arg0 *C.GAsyncResult
 
-	arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.g_async_result_get_source_object(arg0)
+	cret = C.g_async_result_get_source_object(_arg0)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // UserData gets the user data from a Result.
 func (r asyncResult) UserData() interface{} {
-	var arg0 *C.GAsyncResult
+	var _arg0 *C.GAsyncResult
 
-	arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_async_result_get_user_data(arg0)
+	cret = C.g_async_result_get_user_data(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // IsTagged checks if @res has the given @source_tag (generally a function
 // pointer indicating the function @res was created by).
 func (r asyncResult) IsTagged(sourceTag interface{}) bool {
-	var arg0 *C.GAsyncResult
-	var arg1 C.gpointer
+	var _arg0 *C.GAsyncResult
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
-	arg1 = C.gpointer(sourceTag)
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg1 = C.gpointer(sourceTag)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_async_result_is_tagged(arg0, arg1)
+	cret = C.g_async_result_is_tagged(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // LegacyPropagateError: if @res is a AsyncResult, this is equivalent to
@@ -225,17 +225,17 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 // new code; Result errors that are set by virtual methods should also be
 // extracted by virtual methods, to enable subclasses to chain up correctly.
 func (r asyncResult) LegacyPropagateError() error {
-	var arg0 *C.GAsyncResult
+	var _arg0 *C.GAsyncResult
 
-	arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GAsyncResult)(unsafe.Pointer(r.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_async_result_legacy_propagate_error(arg0, cerr)
+	C.g_async_result_legacy_propagate_error(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

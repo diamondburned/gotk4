@@ -97,57 +97,57 @@ func marshalPixbufLoader(p uintptr) (interface{}, error) {
 
 // NewPixbufLoader constructs a class PixbufLoader.
 func NewPixbufLoader() PixbufLoader {
-	var cret C.GdkPixbufLoader
+	var _cret C.GdkPixbufLoader
 
 	cret = C.gdk_pixbuf_loader_new()
 
-	var pixbufLoader PixbufLoader
+	var _pixbufLoader PixbufLoader
 
-	pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufLoader)
+	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufLoader)
 
-	return pixbufLoader
+	return _pixbufLoader
 }
 
 // NewPixbufLoaderWithMIMEType constructs a class PixbufLoader.
-func NewPixbufLoaderWithMIMEType(mimeType string) (pixbufLoader PixbufLoader, goerr error) {
-	var arg1 *C.char
+func NewPixbufLoaderWithMIMEType(mimeType string) (PixbufLoader, error) {
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(mimeType))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(mimeType))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GdkPixbufLoader
-	var cerr *C.GError
+	var _cret C.GdkPixbufLoader
+	var _cerr *C.GError
 
-	cret = C.gdk_pixbuf_loader_new_with_mime_type(arg1, cerr)
+	cret = C.gdk_pixbuf_loader_new_with_mime_type(_arg1, _cerr)
 
-	var pixbufLoader PixbufLoader
-	var goerr error
+	var _pixbufLoader PixbufLoader
+	var _goerr error
 
-	pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufLoader)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufLoader)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return pixbufLoader, goerr
+	return _pixbufLoader, _goerr
 }
 
 // NewPixbufLoaderWithType constructs a class PixbufLoader.
-func NewPixbufLoaderWithType(imageType string) (pixbufLoader PixbufLoader, goerr error) {
-	var arg1 *C.char
+func NewPixbufLoaderWithType(imageType string) (PixbufLoader, error) {
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(imageType))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(imageType))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GdkPixbufLoader
-	var cerr *C.GError
+	var _cret C.GdkPixbufLoader
+	var _cerr *C.GError
 
-	cret = C.gdk_pixbuf_loader_new_with_type(arg1, cerr)
+	cret = C.gdk_pixbuf_loader_new_with_type(_arg1, _cerr)
 
-	var pixbufLoader PixbufLoader
-	var goerr error
+	var _pixbufLoader PixbufLoader
+	var _goerr error
 
-	pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufLoader)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_pixbufLoader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufLoader)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return pixbufLoader, goerr
+	return _pixbufLoader, _goerr
 }
 
 // Close informs a pixbuf loader that no further writes with
@@ -162,19 +162,19 @@ func NewPixbufLoaderWithType(imageType string) (pixbufLoader PixbufLoader, goerr
 // Remember that this does not unref the loader, so if you plan not to use
 // it anymore, please g_object_unref() it.
 func (l pixbufLoader) Close() error {
-	var arg0 *C.GdkPixbufLoader
+	var _arg0 *C.GdkPixbufLoader
 
-	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gdk_pixbuf_loader_close(arg0, cerr)
+	C.gdk_pixbuf_loader_close(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // Animation queries the PixbufAnimation that a pixbuf loader is currently
@@ -183,37 +183,37 @@ func (l pixbufLoader) Close() error {
 // doesn't have enough bytes yet (hasn't emitted the "area-prepared" signal)
 // this function will return nil.
 func (l pixbufLoader) Animation() PixbufAnimation {
-	var arg0 *C.GdkPixbufLoader
+	var _arg0 *C.GdkPixbufLoader
 
-	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GdkPixbufAnimation
+	var _cret *C.GdkPixbufAnimation
 
-	cret = C.gdk_pixbuf_loader_get_animation(arg0)
+	cret = C.gdk_pixbuf_loader_get_animation(_arg0)
 
-	var pixbufAnimation PixbufAnimation
+	var _pixbufAnimation PixbufAnimation
 
-	pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PixbufAnimation)
+	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
 
-	return pixbufAnimation
+	return _pixbufAnimation
 }
 
 // Format obtains the available information about the format of the
 // currently loading image file.
 func (l pixbufLoader) Format() *PixbufFormat {
-	var arg0 *C.GdkPixbufLoader
+	var _arg0 *C.GdkPixbufLoader
 
-	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GdkPixbufFormat
+	var _cret *C.GdkPixbufFormat
 
-	cret = C.gdk_pixbuf_loader_get_format(arg0)
+	cret = C.gdk_pixbuf_loader_get_format(_arg0)
 
-	var pixbufFormat *PixbufFormat
+	var _pixbufFormat *PixbufFormat
 
-	pixbufFormat = WrapPixbufFormat(unsafe.Pointer(cret))
+	_pixbufFormat = WrapPixbufFormat(unsafe.Pointer(_cret))
 
-	return pixbufFormat
+	return _pixbufFormat
 }
 
 // Pixbuf queries the Pixbuf that a pixbuf loader is currently creating. In
@@ -227,19 +227,19 @@ func (l pixbufLoader) Format() *PixbufFormat {
 // Additionally, if the loader is an animation, it will return the "static
 // image" of the animation (see gdk_pixbuf_animation_get_static_image()).
 func (l pixbufLoader) Pixbuf() Pixbuf {
-	var arg0 *C.GdkPixbufLoader
+	var _arg0 *C.GdkPixbufLoader
 
-	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gdk_pixbuf_loader_get_pixbuf(arg0)
+	cret = C.gdk_pixbuf_loader_get_pixbuf(_arg0)
 
-	var pixbuf Pixbuf
+	var _pixbuf Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // SetSize causes the image to be scaled while it is loaded. The desired
@@ -250,15 +250,15 @@ func (l pixbufLoader) Pixbuf() Pixbuf {
 // Attempts to set the desired image size are ignored after the emission of
 // the ::size-prepared signal.
 func (l pixbufLoader) SetSize(width int, height int) {
-	var arg0 *C.GdkPixbufLoader
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GdkPixbufLoader
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
-	arg1 = C.int(width)
-	arg2 = C.int(height)
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	C.gdk_pixbuf_loader_set_size(arg0, arg1, arg2)
+	C.gdk_pixbuf_loader_set_size(_arg0, _arg1, _arg2)
 }
 
 // Write: this will cause a pixbuf loader to parse the next @count bytes of
@@ -267,17 +267,17 @@ func (l pixbufLoader) SetSize(width int, height int) {
 // closed, and will not accept further writes. If false is returned, @error
 // will be set to an error from the K_PIXBUF_ERROR or FILE_ERROR domains.
 func (l pixbufLoader) Write() error {
-	var arg0 *C.GdkPixbufLoader
+	var _arg0 *C.GdkPixbufLoader
 
-	arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gdk_pixbuf_loader_write(arg0, cerr)
+	C.gdk_pixbuf_loader_write(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

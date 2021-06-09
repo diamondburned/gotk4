@@ -79,15 +79,15 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 
 // NewFixedLayout constructs a class FixedLayout.
 func NewFixedLayout() FixedLayout {
-	var cret C.GtkFixedLayout
+	var _cret C.GtkFixedLayout
 
 	cret = C.gtk_fixed_layout_new()
 
-	var fixedLayout FixedLayout
+	var _fixedLayout FixedLayout
 
-	fixedLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FixedLayout)
+	_fixedLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FixedLayout)
 
-	return fixedLayout
+	return _fixedLayout
 }
 
 type FixedLayoutChild interface {
@@ -122,28 +122,28 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 
 // Transform retrieves the transformation of the child of a FixedLayout.
 func (c fixedLayoutChild) Transform() *gsk.Transform {
-	var arg0 *C.GtkFixedLayoutChild
+	var _arg0 *C.GtkFixedLayoutChild
 
-	arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GskTransform
+	var _cret *C.GskTransform
 
-	cret = C.gtk_fixed_layout_child_get_transform(arg0)
+	cret = C.gtk_fixed_layout_child_get_transform(_arg0)
 
-	var transform *gsk.Transform
+	var _transform *gsk.Transform
 
-	transform = gsk.WrapTransform(unsafe.Pointer(cret))
+	_transform = gsk.WrapTransform(unsafe.Pointer(_cret))
 
-	return transform
+	return _transform
 }
 
 // SetTransform sets the transformation of the child of a FixedLayout.
 func (c fixedLayoutChild) SetTransform(transform *gsk.Transform) {
-	var arg0 *C.GtkFixedLayoutChild
-	var arg1 *C.GskTransform
+	var _arg0 *C.GtkFixedLayoutChild
+	var _arg1 *C.GskTransform
 
-	arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
+	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
 
-	C.gtk_fixed_layout_child_set_transform(arg0, arg1)
+	C.gtk_fixed_layout_child_set_transform(_arg0, _arg1)
 }

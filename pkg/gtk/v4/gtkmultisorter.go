@@ -67,27 +67,27 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 
 // NewMultiSorter constructs a class MultiSorter.
 func NewMultiSorter() MultiSorter {
-	var cret C.GtkMultiSorter
+	var _cret C.GtkMultiSorter
 
 	cret = C.gtk_multi_sorter_new()
 
-	var multiSorter MultiSorter
+	var _multiSorter MultiSorter
 
-	multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSorter)
+	_multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MultiSorter)
 
-	return multiSorter
+	return _multiSorter
 }
 
 // Append: add @sorter to @self to use for sorting at the end. @self will
 // consult all existing sorters before it will sort with the given @sorter.
 func (s multiSorter) Append(sorter Sorter) {
-	var arg0 *C.GtkMultiSorter
-	var arg1 *C.GtkSorter
+	var _arg0 *C.GtkMultiSorter
+	var _arg1 *C.GtkSorter
 
-	arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
 
-	C.gtk_multi_sorter_append(arg0, arg1)
+	C.gtk_multi_sorter_append(_arg0, _arg1)
 }
 
 // Remove removes the sorter at the given @position from the list of sorter
@@ -95,11 +95,11 @@ func (s multiSorter) Append(sorter Sorter) {
 //
 // If @position is larger than the number of sorters, nothing happens.
 func (s multiSorter) Remove(position uint) {
-	var arg0 *C.GtkMultiSorter
-	var arg1 C.guint
+	var _arg0 *C.GtkMultiSorter
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(position)
 
-	C.gtk_multi_sorter_remove(arg0, arg1)
+	C.gtk_multi_sorter_remove(_arg0, _arg1)
 }

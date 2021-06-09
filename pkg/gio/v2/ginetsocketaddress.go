@@ -74,109 +74,109 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 
 // NewInetSocketAddress constructs a class InetSocketAddress.
 func NewInetSocketAddress(address InetAddress, port uint16) InetSocketAddress {
-	var arg1 *C.GInetAddress
-	var arg2 C.guint16
+	var _arg1 *C.GInetAddress
+	var _arg2 C.guint16
 
-	arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
-	arg2 = C.guint16(port)
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
+	_arg2 = C.guint16(port)
 
-	var cret C.GInetSocketAddress
+	var _cret C.GInetSocketAddress
 
-	cret = C.g_inet_socket_address_new(arg1, arg2)
+	cret = C.g_inet_socket_address_new(_arg1, _arg2)
 
-	var inetSocketAddress InetSocketAddress
+	var _inetSocketAddress InetSocketAddress
 
-	inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
+	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetSocketAddress)
 
-	return inetSocketAddress
+	return _inetSocketAddress
 }
 
 // NewInetSocketAddressFromString constructs a class InetSocketAddress.
 func NewInetSocketAddressFromString(address string, port uint) InetSocketAddress {
-	var arg1 *C.char
-	var arg2 C.guint
+	var _arg1 *C.char
+	var _arg2 C.guint
 
-	arg1 = (*C.char)(C.CString(address))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.guint(port)
+	_arg1 = (*C.char)(C.CString(address))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(port)
 
-	var cret C.GInetSocketAddress
+	var _cret C.GInetSocketAddress
 
-	cret = C.g_inet_socket_address_new_from_string(arg1, arg2)
+	cret = C.g_inet_socket_address_new_from_string(_arg1, _arg2)
 
-	var inetSocketAddress InetSocketAddress
+	var _inetSocketAddress InetSocketAddress
 
-	inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetSocketAddress)
+	_inetSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetSocketAddress)
 
-	return inetSocketAddress
+	return _inetSocketAddress
 }
 
 // Address gets @address's Address.
 func (a inetSocketAddress) Address() InetAddress {
-	var arg0 *C.GInetSocketAddress
+	var _arg0 *C.GInetSocketAddress
 
-	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GInetAddress
+	var _cret *C.GInetAddress
 
-	cret = C.g_inet_socket_address_get_address(arg0)
+	cret = C.g_inet_socket_address_get_address(_arg0)
 
-	var inetAddress InetAddress
+	var _inetAddress InetAddress
 
-	inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InetAddress)
+	_inetAddress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InetAddress)
 
-	return inetAddress
+	return _inetAddress
 }
 
 // Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 // IPv6 address.
 func (a inetSocketAddress) Flowinfo() uint32 {
-	var arg0 *C.GInetSocketAddress
+	var _arg0 *C.GInetSocketAddress
 
-	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.guint32
+	var _cret C.guint32
 
-	cret = C.g_inet_socket_address_get_flowinfo(arg0)
+	cret = C.g_inet_socket_address_get_flowinfo(_arg0)
 
-	var guint32 uint32
+	var _guint32 uint32
 
-	guint32 = (uint32)(cret)
+	_guint32 = (uint32)(_cret)
 
-	return guint32
+	return _guint32
 }
 
 // Port gets @address's port.
 func (a inetSocketAddress) Port() uint16 {
-	var arg0 *C.GInetSocketAddress
+	var _arg0 *C.GInetSocketAddress
 
-	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.guint16
+	var _cret C.guint16
 
-	cret = C.g_inet_socket_address_get_port(arg0)
+	cret = C.g_inet_socket_address_get_port(_arg0)
 
-	var guint16 uint16
+	var _guint16 uint16
 
-	guint16 = (uint16)(cret)
+	_guint16 = (uint16)(_cret)
 
-	return guint16
+	return _guint16
 }
 
 // ScopeID gets the `sin6_scope_id` field from @address, which must be an
 // IPv6 address.
 func (a inetSocketAddress) ScopeID() uint32 {
-	var arg0 *C.GInetSocketAddress
+	var _arg0 *C.GInetSocketAddress
 
-	arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.guint32
+	var _cret C.guint32
 
-	cret = C.g_inet_socket_address_get_scope_id(arg0)
+	cret = C.g_inet_socket_address_get_scope_id(_arg0)
 
-	var guint32 uint32
+	var _guint32 uint32
 
-	guint32 = (uint32)(cret)
+	_guint32 = (uint32)(_cret)
 
-	return guint32
+	return _guint32
 }

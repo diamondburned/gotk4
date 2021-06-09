@@ -61,13 +61,13 @@ func marshalVSeparator(p uintptr) (interface{}, error) {
 
 // NewVSeparator constructs a class VSeparator.
 func NewVSeparator() VSeparator {
-	var cret C.GtkVSeparator
+	var _cret C.GtkVSeparator
 
 	cret = C.gtk_vseparator_new()
 
-	var vSeparator VSeparator
+	var _vSeparator VSeparator
 
-	vSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VSeparator)
+	_vSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VSeparator)
 
-	return vSeparator
+	return _vSeparator
 }

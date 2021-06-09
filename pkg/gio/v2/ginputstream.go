@@ -97,7 +97,7 @@ type InputStream interface {
 	// read before the error was encountered. This functionality is only
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read_async().
-	ReadAllFinish(result AsyncResult) (bytesRead uint, goerr error)
+	ReadAllFinish(result AsyncResult) (uint, error)
 	// ReadBytesAsync: request an asynchronous read of @count bytes from the
 	// stream into a new #GBytes. When the operation is finished @callback will
 	// be called. You can then call g_input_stream_read_bytes_finish() to get
@@ -120,7 +120,7 @@ type InputStream interface {
 	// Default priority is G_PRIORITY_DEFAULT.
 	ReadBytesAsync()
 	// ReadFinish finishes an asynchronous stream read operation.
-	ReadFinish(result AsyncResult) (gssize int, goerr error)
+	ReadFinish(result AsyncResult) (int, error)
 	// SetPending sets @stream to have actions pending. If the pending flag is
 	// already set or @stream is closed, it will return false and set @error.
 	SetPending() error
@@ -139,7 +139,7 @@ type InputStream interface {
 	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 	// operation was partially finished when the operation was cancelled the
 	// partial result will be returned, without an error.
-	Skip(count uint, cancellable Cancellable) (gssize int, goerr error)
+	Skip(count uint, cancellable Cancellable) (int, error)
 	// SkipAsync: request an asynchronous skip of @count bytes from the stream.
 	// When the operation is finished @callback will be called. You can then
 	// call g_input_stream_skip_finish() to get the result of the operation.
@@ -165,7 +165,7 @@ type InputStream interface {
 	// However, if you override one, you must override all.
 	SkipAsync()
 	// SkipFinish finishes a stream skip operation.
-	SkipFinish(result AsyncResult) (gssize int, goerr error)
+	SkipFinish(result AsyncResult) (int, error)
 }
 
 // inputStream implements the InputStream interface.
@@ -191,11 +191,11 @@ func marshalInputStream(p uintptr) (interface{}, error) {
 
 // ClearPending clears the pending flag on @stream.
 func (s inputStream) ClearPending() {
-	var arg0 *C.GInputStream
+	var _arg0 *C.GInputStream
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_input_stream_clear_pending(arg0)
+	C.g_input_stream_clear_pending(_arg0)
 }
 
 // Close closes the stream, releasing resources related to it.
@@ -223,21 +223,21 @@ func (s inputStream) ClearPending() {
 // Cancelling a close will still leave the stream closed, but some streams
 // can use a faster close that doesn't block to e.g. check errors.
 func (s inputStream) Close(cancellable Cancellable) error {
-	var arg0 *C.GInputStream
-	var arg1 *C.GCancellable
+	var _arg0 *C.GInputStream
+	var _arg1 *C.GCancellable
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_input_stream_close(arg0, arg1, cerr)
+	C.g_input_stream_close(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // CloseAsync requests an asynchronous closes of the stream, releasing
@@ -251,69 +251,69 @@ func (s inputStream) Close(cancellable Cancellable) error {
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
 func (s inputStream) CloseAsync() {
-	var arg0 *C.GInputStream
+	var _arg0 *C.GInputStream
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_input_stream_close_async(arg0)
+	C.g_input_stream_close_async(_arg0)
 }
 
 // CloseFinish finishes closing a stream asynchronously, started from
 // g_input_stream_close_async().
 func (s inputStream) CloseFinish(result AsyncResult) error {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
+	var _arg0 *C.GInputStream
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_input_stream_close_finish(arg0, arg1, cerr)
+	C.g_input_stream_close_finish(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // HasPending checks if an input stream has pending actions.
 func (s inputStream) HasPending() bool {
-	var arg0 *C.GInputStream
+	var _arg0 *C.GInputStream
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_input_stream_has_pending(arg0)
+	cret = C.g_input_stream_has_pending(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsClosed checks if an input stream is closed.
 func (s inputStream) IsClosed() bool {
-	var arg0 *C.GInputStream
+	var _arg0 *C.GInputStream
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_input_stream_is_closed(arg0)
+	cret = C.g_input_stream_is_closed(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ReadAllFinish finishes an asynchronous stream read operation started with
@@ -325,25 +325,25 @@ func (s inputStream) IsClosed() bool {
 // read before the error was encountered. This functionality is only
 // available from C. If you need it from another language then you must
 // write your own loop around g_input_stream_read_async().
-func (s inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, goerr error) {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
+func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
+	var _arg0 *C.GInputStream
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var arg2 C.gsize
-	var cerr *C.GError
+	var _arg2 C.gsize
+	var _cerr *C.GError
 
-	C.g_input_stream_read_all_finish(arg0, arg1, &arg2, cerr)
+	C.g_input_stream_read_all_finish(_arg0, _arg1, &_arg2, _cerr)
 
-	var bytesRead uint
-	var goerr error
+	var _bytesRead uint
+	var _goerr error
 
-	bytesRead = (uint)(arg2)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_bytesRead = (uint)(_arg2)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return bytesRead, goerr
+	return _bytesRead, _goerr
 }
 
 // ReadBytesAsync: request an asynchronous read of @count bytes from the
@@ -367,51 +367,51 @@ func (s inputStream) ReadAllFinish(result AsyncResult) (bytesRead uint, goerr er
 // will be executed before an outstanding request with lower priority.
 // Default priority is G_PRIORITY_DEFAULT.
 func (s inputStream) ReadBytesAsync() {
-	var arg0 *C.GInputStream
+	var _arg0 *C.GInputStream
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_input_stream_read_bytes_async(arg0)
+	C.g_input_stream_read_bytes_async(_arg0)
 }
 
 // ReadFinish finishes an asynchronous stream read operation.
-func (s inputStream) ReadFinish(result AsyncResult) (gssize int, goerr error) {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
+func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
+	var _arg0 *C.GInputStream
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret C.gssize
-	var cerr *C.GError
+	var _cret C.gssize
+	var _cerr *C.GError
 
-	cret = C.g_input_stream_read_finish(arg0, arg1, cerr)
+	cret = C.g_input_stream_read_finish(_arg0, _arg1, _cerr)
 
-	var gssize int
-	var goerr error
+	var _gssize int
+	var _goerr error
 
-	gssize = (int)(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return gssize, goerr
+	return _gssize, _goerr
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
 func (s inputStream) SetPending() error {
-	var arg0 *C.GInputStream
+	var _arg0 *C.GInputStream
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_input_stream_set_pending(arg0, cerr)
+	C.g_input_stream_set_pending(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // Skip tries to skip @count bytes from the stream. Will block during the
@@ -429,27 +429,27 @@ func (s inputStream) SetPending() error {
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
 // operation was partially finished when the operation was cancelled the
 // partial result will be returned, without an error.
-func (s inputStream) Skip(count uint, cancellable Cancellable) (gssize int, goerr error) {
-	var arg0 *C.GInputStream
-	var arg1 C.gsize
-	var arg2 *C.GCancellable
+func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GInputStream
+	var _arg1 C.gsize
+	var _arg2 *C.GCancellable
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = C.gsize(count)
-	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gsize(count)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.gssize
-	var cerr *C.GError
+	var _cret C.gssize
+	var _cerr *C.GError
 
-	cret = C.g_input_stream_skip(arg0, arg1, arg2, cerr)
+	cret = C.g_input_stream_skip(_arg0, _arg1, _arg2, _cerr)
 
-	var gssize int
-	var goerr error
+	var _gssize int
+	var _goerr error
 
-	gssize = (int)(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return gssize, goerr
+	return _gssize, _goerr
 }
 
 // SkipAsync: request an asynchronous skip of @count bytes from the stream.
@@ -476,31 +476,31 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (gssize int, goer
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one, you must override all.
 func (s inputStream) SkipAsync() {
-	var arg0 *C.GInputStream
+	var _arg0 *C.GInputStream
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
 
-	C.g_input_stream_skip_async(arg0)
+	C.g_input_stream_skip_async(_arg0)
 }
 
 // SkipFinish finishes a stream skip operation.
-func (s inputStream) SkipFinish(result AsyncResult) (gssize int, goerr error) {
-	var arg0 *C.GInputStream
-	var arg1 *C.GAsyncResult
+func (s inputStream) SkipFinish(result AsyncResult) (int, error) {
+	var _arg0 *C.GInputStream
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret C.gssize
-	var cerr *C.GError
+	var _cret C.gssize
+	var _cerr *C.GError
 
-	cret = C.g_input_stream_skip_finish(arg0, arg1, cerr)
+	cret = C.g_input_stream_skip_finish(_arg0, _arg1, _cerr)
 
-	var gssize int
-	var goerr error
+	var _gssize int
+	var _goerr error
 
-	gssize = (int)(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return gssize, goerr
+	return _gssize, _goerr
 }

@@ -80,159 +80,159 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 
 // NewCenterLayout constructs a class CenterLayout.
 func NewCenterLayout() CenterLayout {
-	var cret C.GtkCenterLayout
+	var _cret C.GtkCenterLayout
 
 	cret = C.gtk_center_layout_new()
 
-	var centerLayout CenterLayout
+	var _centerLayout CenterLayout
 
-	centerLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CenterLayout)
+	_centerLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CenterLayout)
 
-	return centerLayout
+	return _centerLayout
 }
 
 // BaselinePosition returns the baseline position of the layout.
 func (s centerLayout) BaselinePosition() BaselinePosition {
-	var arg0 *C.GtkCenterLayout
+	var _arg0 *C.GtkCenterLayout
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkBaselinePosition
+	var _cret C.GtkBaselinePosition
 
-	cret = C.gtk_center_layout_get_baseline_position(arg0)
+	cret = C.gtk_center_layout_get_baseline_position(_arg0)
 
-	var baselinePosition BaselinePosition
+	var _baselinePosition BaselinePosition
 
-	baselinePosition = BaselinePosition(cret)
+	_baselinePosition = BaselinePosition(_cret)
 
-	return baselinePosition
+	return _baselinePosition
 }
 
 // CenterWidget returns the center widget of the layout.
 func (s centerLayout) CenterWidget() Widget {
-	var arg0 *C.GtkCenterLayout
+	var _arg0 *C.GtkCenterLayout
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_center_layout_get_center_widget(arg0)
+	cret = C.gtk_center_layout_get_center_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // EndWidget returns the end widget of the layout.
 func (s centerLayout) EndWidget() Widget {
-	var arg0 *C.GtkCenterLayout
+	var _arg0 *C.GtkCenterLayout
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_center_layout_get_end_widget(arg0)
+	cret = C.gtk_center_layout_get_end_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // Orientation gets the current orienration of the layout manager.
 func (s centerLayout) Orientation() Orientation {
-	var arg0 *C.GtkCenterLayout
+	var _arg0 *C.GtkCenterLayout
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkOrientation
+	var _cret C.GtkOrientation
 
-	cret = C.gtk_center_layout_get_orientation(arg0)
+	cret = C.gtk_center_layout_get_orientation(_arg0)
 
-	var orientation Orientation
+	var _orientation Orientation
 
-	orientation = Orientation(cret)
+	_orientation = Orientation(_cret)
 
-	return orientation
+	return _orientation
 }
 
 // StartWidget returns the start widget fo the layout.
 func (s centerLayout) StartWidget() Widget {
-	var arg0 *C.GtkCenterLayout
+	var _arg0 *C.GtkCenterLayout
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_center_layout_get_start_widget(arg0)
+	cret = C.gtk_center_layout_get_start_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SetBaselinePosition sets the new baseline position of @self
 func (s centerLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
-	var arg0 *C.GtkCenterLayout
-	var arg1 C.GtkBaselinePosition
+	var _arg0 *C.GtkCenterLayout
+	var _arg1 C.GtkBaselinePosition
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkBaselinePosition)(baselinePosition)
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkBaselinePosition)(baselinePosition)
 
-	C.gtk_center_layout_set_baseline_position(arg0, arg1)
+	C.gtk_center_layout_set_baseline_position(_arg0, _arg1)
 }
 
 // SetCenterWidget sets the new center widget of @self.
 //
 // To remove the existing center widget, pass nil.
 func (s centerLayout) SetCenterWidget(widget Widget) {
-	var arg0 *C.GtkCenterLayout
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterLayout
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_center_layout_set_center_widget(arg0, arg1)
+	C.gtk_center_layout_set_center_widget(_arg0, _arg1)
 }
 
 // SetEndWidget sets the new end widget of @self.
 //
 // To remove the existing center widget, pass nil.
 func (s centerLayout) SetEndWidget(widget Widget) {
-	var arg0 *C.GtkCenterLayout
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterLayout
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_center_layout_set_end_widget(arg0, arg1)
+	C.gtk_center_layout_set_end_widget(_arg0, _arg1)
 }
 
 // SetOrientation sets the orientation of @self.
 func (s centerLayout) SetOrientation(orientation Orientation) {
-	var arg0 *C.GtkCenterLayout
-	var arg1 C.GtkOrientation
+	var _arg0 *C.GtkCenterLayout
+	var _arg1 C.GtkOrientation
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkOrientation)(orientation)
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkOrientation)(orientation)
 
-	C.gtk_center_layout_set_orientation(arg0, arg1)
+	C.gtk_center_layout_set_orientation(_arg0, _arg1)
 }
 
 // SetStartWidget sets the new start widget of @self.
 //
 // To remove the existing start widget, pass nil.
 func (s centerLayout) SetStartWidget(widget Widget) {
-	var arg0 *C.GtkCenterLayout
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterLayout
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_center_layout_set_start_widget(arg0, arg1)
+	C.gtk_center_layout_set_start_widget(_arg0, _arg1)
 }

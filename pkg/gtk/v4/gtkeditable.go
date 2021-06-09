@@ -304,11 +304,11 @@ func marshalEditable(p uintptr) (interface{}, error) {
 // DeleteSelection deletes the currently selected text of the editable. This
 // call doesn’t do anything if there is no selected text.
 func (e editable) DeleteSelection() {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	C.gtk_editable_delete_selection(arg0)
+	C.gtk_editable_delete_selection(_arg0)
 }
 
 // DeleteText deletes a sequence of characters. The characters that are
@@ -318,15 +318,15 @@ func (e editable) DeleteSelection() {
 //
 // Note that the positions are specified in characters, not bytes.
 func (e editable) DeleteText(startPos int, endPos int) {
-	var arg0 *C.GtkEditable
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GtkEditable
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = C.int(startPos)
-	arg2 = C.int(endPos)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(startPos)
+	_arg2 = C.int(endPos)
 
-	C.gtk_editable_delete_text(arg0, arg1, arg2)
+	C.gtk_editable_delete_text(_arg0, _arg1, _arg2)
 }
 
 // FinishDelegate undoes the setup done by gtk_editable_init_delegate().
@@ -334,28 +334,28 @@ func (e editable) DeleteText(startPos int, endPos int) {
 // This is a helper function that should be called from dispose, before
 // removing the delegate object.
 func (e editable) FinishDelegate() {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	C.gtk_editable_finish_delegate(arg0)
+	C.gtk_editable_finish_delegate(_arg0)
 }
 
 // Alignment gets the value set by gtk_editable_set_alignment().
 func (e editable) Alignment() float32 {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.gtk_editable_get_alignment(arg0)
+	cret = C.gtk_editable_get_alignment(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // Chars retrieves a sequence of characters. The characters that are
@@ -365,99 +365,99 @@ func (e editable) Alignment() float32 {
 //
 // Note that positions are specified in characters, not bytes.
 func (e editable) Chars(startPos int, endPos int) string {
-	var arg0 *C.GtkEditable
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GtkEditable
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = C.int(startPos)
-	arg2 = C.int(endPos)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(startPos)
+	_arg2 = C.int(endPos)
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_editable_get_chars(arg0, arg1, arg2)
+	cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Delegate gets the Editable that @editable is delegating its
 // implementation to. Typically, the delegate is a Text widget.
 func (e editable) Delegate() Editable {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret *C.GtkEditable
+	var _cret *C.GtkEditable
 
-	cret = C.gtk_editable_get_delegate(arg0)
+	cret = C.gtk_editable_get_delegate(_arg0)
 
-	var ret Editable
+	var _ret Editable
 
-	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Editable)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Editable)
 
-	return ret
+	return _ret
 }
 
 // Editable retrieves whether @editable is editable. See
 // gtk_editable_set_editable().
 func (e editable) Editable() bool {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_editable(arg0)
+	cret = C.gtk_editable_get_editable(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // EnableUndo gets if undo/redo actions are enabled for @editable
 func (e editable) EnableUndo() bool {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_enable_undo(arg0)
+	cret = C.gtk_editable_get_enable_undo(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // MaxWidthChars retrieves the desired maximum width of @editable, in
 // characters. See gtk_editable_set_max_width_chars().
 func (e editable) MaxWidthChars() int {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_editable_get_max_width_chars(arg0)
+	cret = C.gtk_editable_get_max_width_chars(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Position retrieves the current position of the cursor relative to the
@@ -465,19 +465,19 @@ func (e editable) MaxWidthChars() int {
 //
 // Note that this position is in characters, not in bytes.
 func (e editable) Position() int {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_editable_get_position(arg0)
+	cret = C.gtk_editable_get_position(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SelectionBounds retrieves the selection bound of the editable.
@@ -488,62 +488,62 @@ func (e editable) Position() int {
 //
 // Note that positions are specified in characters, not bytes.
 func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var arg1 C.int
-	var arg2 C.int
-	var cret C.gboolean
+	var _arg1 C.int
+	var _arg2 C.int
+	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_selection_bounds(arg0, &arg1, &arg2)
+	cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
-	var startPos int
-	var endPos int
-	var ok bool
+	var _startPos int
+	var _endPos int
+	var _ok bool
 
-	startPos = (int)(arg1)
-	endPos = (int)(arg2)
-	if cret {
-		ok = true
+	_startPos = (int)(_arg1)
+	_endPos = (int)(_arg2)
+	if _cret {
+		_ok = true
 	}
 
-	return startPos, endPos, ok
+	return _startPos, _endPos, _ok
 }
 
 // Text retrieves the contents of @editable. The returned string is owned by
 // GTK and must not be modified or freed.
 func (e editable) Text() string {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_editable_get_text(arg0)
+	cret = C.gtk_editable_get_text(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // WidthChars gets the value set by gtk_editable_set_width_chars().
 func (e editable) WidthChars() int {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_editable_get_width_chars(arg0)
+	cret = C.gtk_editable_get_width_chars(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // InitDelegate sets up a delegate for Editable, assuming that the
@@ -553,11 +553,11 @@ func (e editable) WidthChars() int {
 // This is a helper function that should be called in instance init, after
 // creating the delegate object.
 func (e editable) InitDelegate() {
-	var arg0 *C.GtkEditable
+	var _arg0 *C.GtkEditable
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
-	C.gtk_editable_init_delegate(arg0)
+	C.gtk_editable_init_delegate(_arg0)
 }
 
 // InsertText inserts @length bytes of @text into the contents of the
@@ -566,18 +566,18 @@ func (e editable) InitDelegate() {
 // Note that the position is in characters, not in bytes. The function
 // updates @position to point after the newly inserted text.
 func (e editable) InsertText(text string, length int, position *int) {
-	var arg0 *C.GtkEditable
-	var arg1 *C.char
-	var arg2 C.int
-	var arg3 *C.int
+	var _arg0 *C.GtkEditable
+	var _arg1 *C.char
+	var _arg2 C.int
+	var _arg3 *C.int
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(length)
-	arg3 = *C.int(position)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = *C.int(position)
 
-	C.gtk_editable_insert_text(arg0, arg1, arg2, arg3)
+	C.gtk_editable_insert_text(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SelectRegion selects a region of text.
@@ -589,15 +589,15 @@ func (e editable) InsertText(text string, length int, position *int) {
 //
 // Note that positions are specified in characters, not bytes.
 func (e editable) SelectRegion(startPos int, endPos int) {
-	var arg0 *C.GtkEditable
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GtkEditable
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = C.int(startPos)
-	arg2 = C.int(endPos)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(startPos)
+	_arg2 = C.int(endPos)
 
-	C.gtk_editable_select_region(arg0, arg1, arg2)
+	C.gtk_editable_select_region(_arg0, _arg1, _arg2)
 }
 
 // SetAlignment sets the alignment for the contents of the editable.
@@ -605,27 +605,27 @@ func (e editable) SelectRegion(startPos int, endPos int) {
 // This controls the horizontal positioning of the contents when the
 // displayed text is shorter than the width of the editable.
 func (e editable) SetAlignment(xalign float32) {
-	var arg0 *C.GtkEditable
-	var arg1 C.float
+	var _arg0 *C.GtkEditable
+	var _arg1 C.float
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = C.float(xalign)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = C.float(xalign)
 
-	C.gtk_editable_set_alignment(arg0, arg1)
+	C.gtk_editable_set_alignment(_arg0, _arg1)
 }
 
 // SetEditable determines if the user can edit the text in the editable
 // widget or not.
 func (e editable) SetEditable(isEditable bool) {
-	var arg0 *C.GtkEditable
-	var arg1 C.gboolean
+	var _arg0 *C.GtkEditable
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 	if isEditable {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_editable_set_editable(arg0, arg1)
+	C.gtk_editable_set_editable(_arg0, _arg1)
 }
 
 // SetEnableUndo: if enabled, changes to @editable will be saved for
@@ -635,27 +635,27 @@ func (e editable) SetEditable(isEditable bool) {
 // secure memory. As such, undo is forcefully disabled when Text:visibility
 // is set to false.
 func (e editable) SetEnableUndo(enableUndo bool) {
-	var arg0 *C.GtkEditable
-	var arg1 C.gboolean
+	var _arg0 *C.GtkEditable
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 	if enableUndo {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_editable_set_enable_undo(arg0, arg1)
+	C.gtk_editable_set_enable_undo(_arg0, _arg1)
 }
 
 // SetMaxWidthChars sets the desired maximum width in characters of
 // @editable.
 func (e editable) SetMaxWidthChars(nChars int) {
-	var arg0 *C.GtkEditable
-	var arg1 C.int
+	var _arg0 *C.GtkEditable
+	var _arg1 C.int
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = C.int(nChars)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(nChars)
 
-	C.gtk_editable_set_max_width_chars(arg0, arg1)
+	C.gtk_editable_set_max_width_chars(_arg0, _arg1)
 }
 
 // SetPosition sets the cursor position in the editable to the given value.
@@ -666,26 +666,26 @@ func (e editable) SetMaxWidthChars(nChars int) {
 // indicates that the position should be set after the last character of the
 // editable. Note that @position is in characters, not in bytes.
 func (e editable) SetPosition(position int) {
-	var arg0 *C.GtkEditable
-	var arg1 C.int
+	var _arg0 *C.GtkEditable
+	var _arg1 C.int
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = C.int(position)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(position)
 
-	C.gtk_editable_set_position(arg0, arg1)
+	C.gtk_editable_set_position(_arg0, _arg1)
 }
 
 // SetText sets the text in the editable to the given value, replacing the
 // current contents.
 func (e editable) SetText(text string) {
-	var arg0 *C.GtkEditable
-	var arg1 *C.char
+	var _arg0 *C.GtkEditable
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_editable_set_text(arg0, arg1)
+	C.gtk_editable_set_text(_arg0, _arg1)
 }
 
 // SetWidthChars changes the size request of the editable to be about the
@@ -695,11 +695,11 @@ func (e editable) SetText(text string) {
 // how you pack the widget into containers. If @n_chars is -1, the size
 // reverts to the default size.
 func (e editable) SetWidthChars(nChars int) {
-	var arg0 *C.GtkEditable
-	var arg1 C.int
+	var _arg0 *C.GtkEditable
+	var _arg1 C.int
 
-	arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	arg1 = C.int(nChars)
+	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
+	_arg1 = C.int(nChars)
 
-	C.gtk_editable_set_width_chars(arg0, arg1)
+	C.gtk_editable_set_width_chars(_arg0, _arg1)
 }

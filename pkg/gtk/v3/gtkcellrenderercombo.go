@@ -62,13 +62,13 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 
 // NewCellRendererCombo constructs a class CellRendererCombo.
 func NewCellRendererCombo() CellRendererCombo {
-	var cret C.GtkCellRendererCombo
+	var _cret C.GtkCellRendererCombo
 
 	cret = C.gtk_cell_renderer_combo_new()
 
-	var cellRendererCombo CellRendererCombo
+	var _cellRendererCombo CellRendererCombo
 
-	cellRendererCombo = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererCombo)
+	_cellRendererCombo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererCombo)
 
-	return cellRendererCombo
+	return _cellRendererCombo
 }

@@ -62,19 +62,19 @@ func marshalNativeSocketAddress(p uintptr) (interface{}, error) {
 
 // NewNativeSocketAddress constructs a class NativeSocketAddress.
 func NewNativeSocketAddress(native interface{}, len uint) NativeSocketAddress {
-	var arg1 C.gpointer
-	var arg2 C.gsize
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
 
-	arg1 = C.gpointer(native)
-	arg2 = C.gsize(len)
+	_arg1 = C.gpointer(native)
+	_arg2 = C.gsize(len)
 
-	var cret C.GNativeSocketAddress
+	var _cret C.GNativeSocketAddress
 
-	cret = C.g_native_socket_address_new(arg1, arg2)
+	cret = C.g_native_socket_address_new(_arg1, _arg2)
 
-	var nativeSocketAddress NativeSocketAddress
+	var _nativeSocketAddress NativeSocketAddress
 
-	nativeSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NativeSocketAddress)
+	_nativeSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NativeSocketAddress)
 
-	return nativeSocketAddress
+	return _nativeSocketAddress
 }

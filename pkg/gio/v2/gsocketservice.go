@@ -108,36 +108,36 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 
 // NewSocketService constructs a class SocketService.
 func NewSocketService() SocketService {
-	var cret C.GSocketService
+	var _cret C.GSocketService
 
 	cret = C.g_socket_service_new()
 
-	var socketService SocketService
+	var _socketService SocketService
 
-	socketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SocketService)
+	_socketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketService)
 
-	return socketService
+	return _socketService
 }
 
 // IsActive: check whether the service is active or not. An active service
 // will accept new clients that connect, while a non-active service will let
 // connecting clients queue up until the service is started.
 func (s socketService) IsActive() bool {
-	var arg0 *C.GSocketService
+	var _arg0 *C.GSocketService
 
-	arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_socket_service_is_active(arg0)
+	cret = C.g_socket_service_is_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Start restarts the service, i.e. start accepting connections from the
@@ -147,11 +147,11 @@ func (s socketService) IsActive() bool {
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
 func (s socketService) Start() {
-	var arg0 *C.GSocketService
+	var _arg0 *C.GSocketService
 
-	arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 
-	C.g_socket_service_start(arg0)
+	C.g_socket_service_start(_arg0)
 }
 
 // Stop stops the service, i.e. stops accepting connections from the added
@@ -170,9 +170,9 @@ func (s socketService) Start() {
 // socket service will start accepting connections immediately when a new
 // socket is added.
 func (s socketService) Stop() {
-	var arg0 *C.GSocketService
+	var _arg0 *C.GSocketService
 
-	arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 
-	C.g_socket_service_stop(arg0)
+	C.g_socket_service_stop(_arg0)
 }

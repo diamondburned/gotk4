@@ -111,13 +111,13 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 
 // NewBuilderCScope constructs a class BuilderCScope.
 func NewBuilderCScope() BuilderCScope {
-	var cret C.GtkBuilderCScope
+	var _cret C.GtkBuilderCScope
 
 	cret = C.gtk_builder_cscope_new()
 
-	var builderCScope BuilderCScope
+	var _builderCScope BuilderCScope
 
-	builderCScope = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderCScope)
+	_builderCScope = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BuilderCScope)
 
-	return builderCScope
+	return _builderCScope
 }

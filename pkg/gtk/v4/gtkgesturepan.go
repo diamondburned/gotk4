@@ -66,46 +66,46 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 
 // NewGesturePan constructs a class GesturePan.
 func NewGesturePan(orientation Orientation) GesturePan {
-	var arg1 C.GtkOrientation
+	var _arg1 C.GtkOrientation
 
-	arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = (C.GtkOrientation)(orientation)
 
-	var cret C.GtkGesturePan
+	var _cret C.GtkGesturePan
 
-	cret = C.gtk_gesture_pan_new(arg1)
+	cret = C.gtk_gesture_pan_new(_arg1)
 
-	var gesturePan GesturePan
+	var _gesturePan GesturePan
 
-	gesturePan = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GesturePan)
+	_gesturePan = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GesturePan)
 
-	return gesturePan
+	return _gesturePan
 }
 
 // Orientation returns the orientation of the pan gestures that this
 // @gesture expects.
 func (g gesturePan) Orientation() Orientation {
-	var arg0 *C.GtkGesturePan
+	var _arg0 *C.GtkGesturePan
 
-	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 
-	var cret C.GtkOrientation
+	var _cret C.GtkOrientation
 
-	cret = C.gtk_gesture_pan_get_orientation(arg0)
+	cret = C.gtk_gesture_pan_get_orientation(_arg0)
 
-	var orientation Orientation
+	var _orientation Orientation
 
-	orientation = Orientation(cret)
+	_orientation = Orientation(_cret)
 
-	return orientation
+	return _orientation
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.
 func (g gesturePan) SetOrientation(orientation Orientation) {
-	var arg0 *C.GtkGesturePan
-	var arg1 C.GtkOrientation
+	var _arg0 *C.GtkGesturePan
+	var _arg1 C.GtkOrientation
 
-	arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
-	arg1 = (C.GtkOrientation)(orientation)
+	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
+	_arg1 = (C.GtkOrientation)(orientation)
 
-	C.gtk_gesture_pan_set_orientation(arg0, arg1)
+	C.gtk_gesture_pan_set_orientation(_arg0, _arg1)
 }

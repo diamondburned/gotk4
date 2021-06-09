@@ -103,19 +103,19 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 
 // Image gets the dialog’s image.
 func (d messageDialog) Image() Widget {
-	var arg0 *C.GtkMessageDialog
+	var _arg0 *C.GtkMessageDialog
 
-	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_message_dialog_get_image(arg0)
+	cret = C.gtk_message_dialog_get_image(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // MessageArea returns the message area of the dialog. This is the box where
@@ -124,41 +124,41 @@ func (d messageDialog) Image() Widget {
 // gtk_dialog_get_content_area() for the corresponding function in the
 // parent Dialog.
 func (m messageDialog) MessageArea() Widget {
-	var arg0 *C.GtkMessageDialog
+	var _arg0 *C.GtkMessageDialog
 
-	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_message_dialog_get_message_area(arg0)
+	cret = C.gtk_message_dialog_get_message_area(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SetImage sets the dialog’s image to @image.
 func (d messageDialog) SetImage(image Widget) {
-	var arg0 *C.GtkMessageDialog
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkMessageDialog
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
 
-	C.gtk_message_dialog_set_image(arg0, arg1)
+	C.gtk_message_dialog_set_image(_arg0, _arg1)
 }
 
 // SetMarkup sets the text of the message dialog to be @str, which is marked
 // up with the [Pango text markup language][PangoMarkupFormat].
 func (m messageDialog) SetMarkup(str string) {
-	var arg0 *C.GtkMessageDialog
-	var arg1 *C.gchar
+	var _arg0 *C.GtkMessageDialog
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_message_dialog_set_markup(arg0, arg1)
+	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }

@@ -208,21 +208,21 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 //
 // This call never blocks.
 func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
-	var arg0 *C.GDatagramBased
-	var arg1 C.GIOCondition
+	var _arg0 *C.GDatagramBased
+	var _arg1 C.GIOCondition
 
-	arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
-	arg1 = (C.GIOCondition)(condition)
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GIOCondition)(condition)
 
-	var cret C.GIOCondition
+	var _cret C.GIOCondition
 
-	cret = C.g_datagram_based_condition_check(arg0, arg1)
+	cret = C.g_datagram_based_condition_check(_arg0, _arg1)
 
-	var ioCondition glib.IOCondition
+	var _ioCondition glib.IOCondition
 
-	ioCondition = glib.IOCondition(cret)
+	_ioCondition = glib.IOCondition(_cret)
 
-	return ioCondition
+	return _ioCondition
 }
 
 // ConditionWait waits for up to @timeout microseconds for condition to
@@ -233,25 +233,25 @@ func (d datagramBased) ConditionCheck(condition glib.IOCondition) glib.IOConditi
 // is reached before the condition is met, then false is returned and @error
 // is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
-	var arg0 *C.GDatagramBased
-	var arg1 C.GIOCondition
-	var arg2 C.gint64
-	var arg3 *C.GCancellable
+	var _arg0 *C.GDatagramBased
+	var _arg1 C.GIOCondition
+	var _arg2 C.gint64
+	var _arg3 *C.GCancellable
 
-	arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
-	arg1 = (C.GIOCondition)(condition)
-	arg2 = C.gint64(timeout)
-	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GIOCondition)(condition)
+	_arg2 = C.gint64(timeout)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_datagram_based_condition_wait(arg0, arg1, arg2, arg3, cerr)
+	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // CreateSource creates a #GSource that can be attached to a Context to
@@ -269,24 +269,24 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 // change). You can check for this in the callback using
 // g_cancellable_is_cancelled().
 func (d datagramBased) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source {
-	var arg0 *C.GDatagramBased
-	var arg1 C.GIOCondition
-	var arg2 *C.GCancellable
+	var _arg0 *C.GDatagramBased
+	var _arg1 C.GIOCondition
+	var _arg2 *C.GCancellable
 
-	arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
-	arg1 = (C.GIOCondition)(condition)
-	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GIOCondition)(condition)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GSource
+	var _cret *C.GSource
 
-	cret = C.g_datagram_based_create_source(arg0, arg1, arg2)
+	cret = C.g_datagram_based_create_source(_arg0, _arg1, _arg2)
 
-	var source *glib.Source
+	var _source *glib.Source
 
-	source = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(source, func(v *glib.Source) {
+	_source = glib.WrapSource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return source
+	return _source
 }

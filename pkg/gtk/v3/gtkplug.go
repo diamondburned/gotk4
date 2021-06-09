@@ -75,36 +75,36 @@ func marshalPlug(p uintptr) (interface{}, error) {
 
 // Embedded determines whether the plug is embedded in a socket.
 func (p plug) Embedded() bool {
-	var arg0 *C.GtkPlug
+	var _arg0 *C.GtkPlug
 
-	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_plug_get_embedded(arg0)
+	cret = C.gtk_plug_get_embedded(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SocketWindow retrieves the socket the plug is embedded in.
 func (p plug) SocketWindow() gdk.Window {
-	var arg0 *C.GtkPlug
+	var _arg0 *C.GtkPlug
 
-	arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gtk_plug_get_socket_window(arg0)
+	cret = C.gtk_plug_get_socket_window(_arg0)
 
-	var window gdk.Window
+	var _window gdk.Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
 
-	return window
+	return _window
 }

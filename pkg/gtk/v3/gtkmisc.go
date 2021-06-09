@@ -77,67 +77,67 @@ func marshalMisc(p uintptr) (interface{}, error) {
 // Alignment gets the X and Y alignment of the widget within its allocation.
 // See gtk_misc_set_alignment().
 func (m misc) Alignment() (xalign float32, yalign float32) {
-	var arg0 *C.GtkMisc
+	var _arg0 *C.GtkMisc
 
-	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.gfloat
-	var arg2 C.gfloat
+	var _arg1 C.gfloat
+	var _arg2 C.gfloat
 
-	C.gtk_misc_get_alignment(arg0, &arg1, &arg2)
+	C.gtk_misc_get_alignment(_arg0, &_arg1, &_arg2)
 
-	var xalign float32
-	var yalign float32
+	var _xalign float32
+	var _yalign float32
 
-	xalign = (float32)(arg1)
-	yalign = (float32)(arg2)
+	_xalign = (float32)(_arg1)
+	_yalign = (float32)(_arg2)
 
-	return xalign, yalign
+	return _xalign, _yalign
 }
 
 // Padding gets the padding in the X and Y directions of the widget. See
 // gtk_misc_set_padding().
 func (m misc) Padding() (xpad int, ypad int) {
-	var arg0 *C.GtkMisc
+	var _arg0 *C.GtkMisc
 
-	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
 
-	var arg1 C.gint
-	var arg2 C.gint
+	var _arg1 C.gint
+	var _arg2 C.gint
 
-	C.gtk_misc_get_padding(arg0, &arg1, &arg2)
+	C.gtk_misc_get_padding(_arg0, &_arg1, &_arg2)
 
-	var xpad int
-	var ypad int
+	var _xpad int
+	var _ypad int
 
-	xpad = (int)(arg1)
-	ypad = (int)(arg2)
+	_xpad = (int)(_arg1)
+	_ypad = (int)(_arg2)
 
-	return xpad, ypad
+	return _xpad, _ypad
 }
 
 // SetAlignment sets the alignment of the widget.
 func (m misc) SetAlignment(xalign float32, yalign float32) {
-	var arg0 *C.GtkMisc
-	var arg1 C.gfloat
-	var arg2 C.gfloat
+	var _arg0 *C.GtkMisc
+	var _arg1 C.gfloat
+	var _arg2 C.gfloat
 
-	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
-	arg1 = C.gfloat(xalign)
-	arg2 = C.gfloat(yalign)
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gfloat(xalign)
+	_arg2 = C.gfloat(yalign)
 
-	C.gtk_misc_set_alignment(arg0, arg1, arg2)
+	C.gtk_misc_set_alignment(_arg0, _arg1, _arg2)
 }
 
 // SetPadding sets the amount of space to add around the widget.
 func (m misc) SetPadding(xpad int, ypad int) {
-	var arg0 *C.GtkMisc
-	var arg1 C.gint
-	var arg2 C.gint
+	var _arg0 *C.GtkMisc
+	var _arg1 C.gint
+	var _arg2 C.gint
 
-	arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
-	arg1 = C.gint(xpad)
-	arg2 = C.gint(ypad)
+	_arg0 = (*C.GtkMisc)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(xpad)
+	_arg2 = C.gint(ypad)
 
-	C.gtk_misc_set_padding(arg0, arg1, arg2)
+	C.gtk_misc_set_padding(_arg0, _arg1, _arg2)
 }

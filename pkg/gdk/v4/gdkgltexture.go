@@ -60,9 +60,9 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 // The texture contents are still available via the gdk_texture_download()
 // function, after this function has been called.
 func (s glTexture) Release() {
-	var arg0 *C.GdkGLTexture
+	var _arg0 *C.GdkGLTexture
 
-	arg0 = (*C.GdkGLTexture)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(s.Native()))
 
-	C.gdk_gl_texture_release(arg0)
+	C.gdk_gl_texture_release(_arg0)
 }

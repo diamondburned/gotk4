@@ -68,34 +68,34 @@ func marshalFileIcon(p uintptr) (interface{}, error) {
 
 // NewFileIcon constructs a class FileIcon.
 func NewFileIcon(file File) FileIcon {
-	var arg1 *C.GFile
+	var _arg1 *C.GFile
 
-	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var cret C.GFileIcon
+	var _cret C.GFileIcon
 
-	cret = C.g_file_icon_new(arg1)
+	cret = C.g_file_icon_new(_arg1)
 
-	var fileIcon FileIcon
+	var _fileIcon FileIcon
 
-	fileIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileIcon)
+	_fileIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileIcon)
 
-	return fileIcon
+	return _fileIcon
 }
 
 // File gets the #GFile associated with the given @icon.
 func (i fileIcon) File() File {
-	var arg0 *C.GFileIcon
+	var _arg0 *C.GFileIcon
 
-	arg0 = (*C.GFileIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GFileIcon)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GFile
+	var _cret *C.GFile
 
-	cret = C.g_file_icon_get_file(arg0)
+	cret = C.g_file_icon_get_file(_arg0)
 
-	var file File
+	var _file File
 
-	file = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(File)
 
-	return file
+	return _file
 }

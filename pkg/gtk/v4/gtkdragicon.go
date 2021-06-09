@@ -78,28 +78,28 @@ func marshalDragIcon(p uintptr) (interface{}, error) {
 
 // Child gets the widget currently used as drag icon.
 func (s dragIcon) Child() Widget {
-	var arg0 *C.GtkDragIcon
+	var _arg0 *C.GtkDragIcon
 
-	arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_drag_icon_get_child(arg0)
+	cret = C.gtk_drag_icon_get_child(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SetChild sets the widget to display as the drag icon.
 func (s dragIcon) SetChild(child Widget) {
-	var arg0 *C.GtkDragIcon
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkDragIcon
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkDragIcon)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_drag_icon_set_child(arg0, arg1)
+	C.gtk_drag_icon_set_child(_arg0, _arg1)
 }

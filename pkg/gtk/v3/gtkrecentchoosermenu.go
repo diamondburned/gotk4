@@ -86,52 +86,52 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 
 // NewRecentChooserMenu constructs a class RecentChooserMenu.
 func NewRecentChooserMenu() RecentChooserMenu {
-	var cret C.GtkRecentChooserMenu
+	var _cret C.GtkRecentChooserMenu
 
 	cret = C.gtk_recent_chooser_menu_new()
 
-	var recentChooserMenu RecentChooserMenu
+	var _recentChooserMenu RecentChooserMenu
 
-	recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
+	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserMenu)
 
-	return recentChooserMenu
+	return _recentChooserMenu
 }
 
 // NewRecentChooserMenuForManager constructs a class RecentChooserMenu.
 func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
-	var arg1 *C.GtkRecentManager
+	var _arg1 *C.GtkRecentManager
 
-	arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
-	var cret C.GtkRecentChooserMenu
+	var _cret C.GtkRecentChooserMenu
 
-	cret = C.gtk_recent_chooser_menu_new_for_manager(arg1)
+	cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
 
-	var recentChooserMenu RecentChooserMenu
+	var _recentChooserMenu RecentChooserMenu
 
-	recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserMenu)
+	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserMenu)
 
-	return recentChooserMenu
+	return _recentChooserMenu
 }
 
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
 func (m recentChooserMenu) ShowNumbers() bool {
-	var arg0 *C.GtkRecentChooserMenu
+	var _arg0 *C.GtkRecentChooserMenu
 
-	arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_menu_get_show_numbers(arg0)
+	cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetShowNumbers sets whether a number should be added to the items of
@@ -139,13 +139,13 @@ func (m recentChooserMenu) ShowNumbers() bool {
 // to be used inside ten menu item’s label. Only the first the items get a
 // number to avoid clashes.
 func (m recentChooserMenu) SetShowNumbers(showNumbers bool) {
-	var arg0 *C.GtkRecentChooserMenu
-	var arg1 C.gboolean
+	var _arg0 *C.GtkRecentChooserMenu
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkRecentChooserMenu)(unsafe.Pointer(m.Native()))
 	if showNumbers {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_recent_chooser_menu_set_show_numbers(arg0, arg1)
+	C.gtk_recent_chooser_menu_set_show_numbers(_arg0, _arg1)
 }

@@ -104,31 +104,31 @@ func marshalSocket(p uintptr) (interface{}, error) {
 
 // NewSocket constructs a class Socket.
 func NewSocket() Socket {
-	var cret C.GtkSocket
+	var _cret C.GtkSocket
 
 	cret = C.gtk_socket_new()
 
-	var socket Socket
+	var _socket Socket
 
-	socket = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Socket)
+	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Socket)
 
-	return socket
+	return _socket
 }
 
 // PlugWindow retrieves the window of the plug. Use this to check if the
 // plug has been created inside of the socket.
 func (s socket) PlugWindow() gdk.Window {
-	var arg0 *C.GtkSocket
+	var _arg0 *C.GtkSocket
 
-	arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gtk_socket_get_plug_window(arg0)
+	cret = C.gtk_socket_get_plug_window(_arg0)
 
-	var window gdk.Window
+	var _window gdk.Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
 
-	return window
+	return _window
 }

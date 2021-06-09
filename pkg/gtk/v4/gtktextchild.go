@@ -63,15 +63,15 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 
 // NewTextChildAnchor constructs a class TextChildAnchor.
 func NewTextChildAnchor() TextChildAnchor {
-	var cret C.GtkTextChildAnchor
+	var _cret C.GtkTextChildAnchor
 
 	cret = C.gtk_text_child_anchor_new()
 
-	var textChildAnchor TextChildAnchor
+	var _textChildAnchor TextChildAnchor
 
-	textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
 
-	return textChildAnchor
+	return _textChildAnchor
 }
 
 // Deleted determines whether a child anchor has been deleted from the
@@ -80,47 +80,47 @@ func NewTextChildAnchor() TextChildAnchor {
 // g_object_ref()) if you plan to use this function — otherwise all deleted
 // child anchors will also be finalized.
 func (a textChildAnchor) Deleted() bool {
-	var arg0 *C.GtkTextChildAnchor
+	var _arg0 *C.GtkTextChildAnchor
 
-	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_text_child_anchor_get_deleted(arg0)
+	cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Widgets gets a list of all widgets anchored at this child anchor.
 //
 // The order in which the widgets are returned is not defined.
 func (a textChildAnchor) Widgets() []Widget {
-	var arg0 *C.GtkTextChildAnchor
+	var _arg0 *C.GtkTextChildAnchor
 
-	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	var cret **C.GtkWidget
-	var arg1 *C.guint
+	var _cret **C.GtkWidget
+	var _arg1 *C.guint
 
-	cret = C.gtk_text_child_anchor_get_widgets(arg0)
+	cret = C.gtk_text_child_anchor_get_widgets(_arg0)
 
-	var widgets []Widget
+	var _widgets []Widget
 
 	{
 		var src []*C.GtkWidget
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
 
-		widgets = make([]Widget, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			widgets = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+		_widgets = make([]Widget, _arg1)
+		for i := 0; i < uintptr(_arg1); i++ {
+			_widgets = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 		}
 	}
 
-	return widgets
+	return _widgets
 }

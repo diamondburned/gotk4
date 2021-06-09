@@ -24,81 +24,81 @@ func init() {
 // return true and return in @angle the relative angle from @event1 to @event2.
 // The rotation direction for positive angles is from the positive X axis
 // towards the positive Y axis.
-func EventsGetAngle(event1 Event, event2 Event) (angle float64, ok bool) {
-	var arg1 *C.GdkEvent
-	var arg2 *C.GdkEvent
+func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
+	var _arg1 *C.GdkEvent
+	var _arg2 *C.GdkEvent
 
-	arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
-	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var arg3 C.double
-	var cret C.gboolean
+	var _arg3 C.double
+	var _cret C.gboolean
 
-	cret = C.gdk_events_get_angle(arg1, arg2, &arg3)
+	cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
 
-	var angle float64
-	var ok bool
+	var _angle float64
+	var _ok bool
 
-	angle = (float64)(arg3)
-	if cret {
-		ok = true
+	_angle = (float64)(_arg3)
+	if _cret {
+		_ok = true
 	}
 
-	return angle, ok
+	return _angle, _ok
 }
 
 // EventsGetCenter: if both events contain X/Y information, the center of both
 // coordinates will be returned in @x and @y.
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
-	var arg1 *C.GdkEvent
-	var arg2 *C.GdkEvent
+	var _arg1 *C.GdkEvent
+	var _arg2 *C.GdkEvent
 
-	arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
-	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var arg3 C.double
-	var arg4 C.double
-	var cret C.gboolean
+	var _arg3 C.double
+	var _arg4 C.double
+	var _cret C.gboolean
 
-	cret = C.gdk_events_get_center(arg1, arg2, &arg3, &arg4)
+	cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
 
-	var x float64
-	var y float64
-	var ok bool
+	var _x float64
+	var _y float64
+	var _ok bool
 
-	x = (float64)(arg3)
-	y = (float64)(arg4)
-	if cret {
-		ok = true
+	_x = (float64)(_arg3)
+	_y = (float64)(_arg4)
+	if _cret {
+		_ok = true
 	}
 
-	return x, y, ok
+	return _x, _y, _ok
 }
 
 // EventsGetDistance: if both events have X/Y information, the distance between
 // both coordinates (as in a straight line going from @event1 to @event2) will
 // be returned.
-func EventsGetDistance(event1 Event, event2 Event) (distance float64, ok bool) {
-	var arg1 *C.GdkEvent
-	var arg2 *C.GdkEvent
+func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
+	var _arg1 *C.GdkEvent
+	var _arg2 *C.GdkEvent
 
-	arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
-	arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
+	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var arg3 C.double
-	var cret C.gboolean
+	var _arg3 C.double
+	var _cret C.gboolean
 
-	cret = C.gdk_events_get_distance(arg1, arg2, &arg3)
+	cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
 
-	var distance float64
-	var ok bool
+	var _distance float64
+	var _ok bool
 
-	distance = (float64)(arg3)
-	if cret {
-		ok = true
+	_distance = (float64)(_arg3)
+	if _cret {
+		_ok = true
 	}
 
-	return distance, ok
+	return _distance, _ok
 }
 
 // EventSequence: gdkEventSequence is an opaque type representing a sequence of

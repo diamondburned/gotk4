@@ -64,71 +64,71 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 
 // NewGestureDrag constructs a class GestureDrag.
 func NewGestureDrag(widget Widget) GestureDrag {
-	var arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.GtkGestureDrag
+	var _cret C.GtkGestureDrag
 
-	cret = C.gtk_gesture_drag_new(arg1)
+	cret = C.gtk_gesture_drag_new(_arg1)
 
-	var gestureDrag GestureDrag
+	var _gestureDrag GestureDrag
 
-	gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureDrag)
+	_gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureDrag)
 
-	return gestureDrag
+	return _gestureDrag
 }
 
 // Offset: if the @gesture is active, this function returns true and fills
 // in @x and @y with the coordinates of the current point, as an offset to
 // the starting drag point.
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
-	var arg0 *C.GtkGestureDrag
+	var _arg0 *C.GtkGestureDrag
 
-	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	var arg1 C.gdouble
-	var arg2 C.gdouble
-	var cret C.gboolean
+	var _arg1 C.gdouble
+	var _arg2 C.gdouble
+	var _cret C.gboolean
 
-	cret = C.gtk_gesture_drag_get_offset(arg0, &arg1, &arg2)
+	cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
-	var x float64
-	var y float64
-	var ok bool
+	var _x float64
+	var _y float64
+	var _ok bool
 
-	x = (float64)(arg1)
-	y = (float64)(arg2)
-	if cret {
-		ok = true
+	_x = (float64)(_arg1)
+	_y = (float64)(_arg2)
+	if _cret {
+		_ok = true
 	}
 
-	return x, y, ok
+	return _x, _y, _ok
 }
 
 // StartPoint: if the @gesture is active, this function returns true and
 // fills in @x and @y with the drag start coordinates, in window-relative
 // coordinates.
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
-	var arg0 *C.GtkGestureDrag
+	var _arg0 *C.GtkGestureDrag
 
-	arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	var arg1 C.gdouble
-	var arg2 C.gdouble
-	var cret C.gboolean
+	var _arg1 C.gdouble
+	var _arg2 C.gdouble
+	var _cret C.gboolean
 
-	cret = C.gtk_gesture_drag_get_start_point(arg0, &arg1, &arg2)
+	cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 
-	var x float64
-	var y float64
-	var ok bool
+	var _x float64
+	var _y float64
+	var _ok bool
 
-	x = (float64)(arg1)
-	y = (float64)(arg2)
-	if cret {
-		ok = true
+	_x = (float64)(_arg1)
+	_y = (float64)(_arg2)
+	if _cret {
+		_ok = true
 	}
 
-	return x, y, ok
+	return _x, _y, _ok
 }

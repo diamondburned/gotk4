@@ -112,30 +112,30 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 // gtk_dialog_get_content_area() for the corresponding function in the
 // parent Dialog.
 func (m messageDialog) MessageArea() Widget {
-	var arg0 *C.GtkMessageDialog
+	var _arg0 *C.GtkMessageDialog
 
-	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_message_dialog_get_message_area(arg0)
+	cret = C.gtk_message_dialog_get_message_area(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SetMarkup sets the text of the message dialog to be @str, which is marked
 // up with the [Pango text markup language][PangoMarkupFormat].
 func (m messageDialog) SetMarkup(str string) {
-	var arg0 *C.GtkMessageDialog
-	var arg1 *C.char
+	var _arg0 *C.GtkMessageDialog
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_message_dialog_set_markup(arg0, arg1)
+	C.gtk_message_dialog_set_markup(_arg0, _arg1)
 }

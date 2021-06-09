@@ -71,70 +71,70 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 
 // NewEmblem constructs a class Emblem.
 func NewEmblem(icon Icon) Emblem {
-	var arg1 *C.GIcon
+	var _arg1 *C.GIcon
 
-	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
-	var cret C.GEmblem
+	var _cret C.GEmblem
 
-	cret = C.g_emblem_new(arg1)
+	cret = C.g_emblem_new(_arg1)
 
-	var emblem Emblem
+	var _emblem Emblem
 
-	emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+	_emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Emblem)
 
-	return emblem
+	return _emblem
 }
 
 // NewEmblemWithOrigin constructs a class Emblem.
 func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
-	var arg1 *C.GIcon
-	var arg2 C.GEmblemOrigin
+	var _arg1 *C.GIcon
+	var _arg2 C.GEmblemOrigin
 
-	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	arg2 = (C.GEmblemOrigin)(origin)
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg2 = (C.GEmblemOrigin)(origin)
 
-	var cret C.GEmblem
+	var _cret C.GEmblem
 
-	cret = C.g_emblem_new_with_origin(arg1, arg2)
+	cret = C.g_emblem_new_with_origin(_arg1, _arg2)
 
-	var emblem Emblem
+	var _emblem Emblem
 
-	emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Emblem)
+	_emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Emblem)
 
-	return emblem
+	return _emblem
 }
 
 // Icon gives back the icon from @emblem.
 func (e emblem) Icon() Icon {
-	var arg0 *C.GEmblem
+	var _arg0 *C.GEmblem
 
-	arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
-	var cret *C.GIcon
+	var _cret *C.GIcon
 
-	cret = C.g_emblem_get_icon(arg0)
+	cret = C.g_emblem_get_icon(_arg0)
 
-	var icon Icon
+	var _icon Icon
 
-	icon = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Icon)
+	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
 
-	return icon
+	return _icon
 }
 
 // Origin gets the origin of the emblem.
 func (e emblem) Origin() EmblemOrigin {
-	var arg0 *C.GEmblem
+	var _arg0 *C.GEmblem
 
-	arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
 
-	var cret C.GEmblemOrigin
+	var _cret C.GEmblemOrigin
 
-	cret = C.g_emblem_get_origin(arg0)
+	cret = C.g_emblem_get_origin(_arg0)
 
-	var emblemOrigin EmblemOrigin
+	var _emblemOrigin EmblemOrigin
 
-	emblemOrigin = EmblemOrigin(cret)
+	_emblemOrigin = EmblemOrigin(_cret)
 
-	return emblemOrigin
+	return _emblemOrigin
 }

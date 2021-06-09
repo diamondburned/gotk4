@@ -117,7 +117,7 @@ type Popover interface {
 	// PointingTo: if a rectangle to point to has been set, this function will
 	// return true and fill in @rect with such rectangle, otherwise it will
 	// return false and fill in @rect with the attached widget coordinates.
-	PointingTo() (rect gdk.Rectangle, ok bool)
+	PointingTo() (gdk.Rectangle, bool)
 	// Position returns the preferred position of @popover.
 	Position() PositionType
 	// Popdown pops @popover down.This is different than a gtk_widget_hide()
@@ -204,203 +204,203 @@ func marshalPopover(p uintptr) (interface{}, error) {
 
 // NewPopover constructs a class Popover.
 func NewPopover() Popover {
-	var cret C.GtkPopover
+	var _cret C.GtkPopover
 
 	cret = C.gtk_popover_new()
 
-	var popover Popover
+	var _popover Popover
 
-	popover = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Popover)
+	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Popover)
 
-	return popover
+	return _popover
 }
 
 // Autohide returns whether the popover is modal.
 //
 // See gtk_popover_set_autohide() for the implications of this.
 func (p popover) Autohide() bool {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_autohide(arg0)
+	cret = C.gtk_popover_get_autohide(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // CascadePopdown returns whether the popover will close after a modal child
 // is closed.
 func (p popover) CascadePopdown() bool {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_cascade_popdown(arg0)
+	cret = C.gtk_popover_get_cascade_popdown(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Child gets the child widget of @popover.
 func (p popover) Child() Widget {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_popover_get_child(arg0)
+	cret = C.gtk_popover_get_child(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // HasArrow gets whether this popover is showing an arrow pointing at the
 // widget that it is relative to.
 func (p popover) HasArrow() bool {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_has_arrow(arg0)
+	cret = C.gtk_popover_get_has_arrow(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // MnemonicsVisible gets the value of the Popover:mnemonics-visible
 // property.
 func (p popover) MnemonicsVisible() bool {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_mnemonics_visible(arg0)
+	cret = C.gtk_popover_get_mnemonics_visible(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Offset gets the offset previous set with gtk_popover_set_offset().
 func (p popover) Offset() (xOffset int, yOffset int) {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var arg1 C.int
-	var arg2 C.int
+	var _arg1 C.int
+	var _arg2 C.int
 
-	C.gtk_popover_get_offset(arg0, &arg1, &arg2)
+	C.gtk_popover_get_offset(_arg0, &_arg1, &_arg2)
 
-	var xOffset int
-	var yOffset int
+	var _xOffset int
+	var _yOffset int
 
-	xOffset = (int)(arg1)
-	yOffset = (int)(arg2)
+	_xOffset = (int)(_arg1)
+	_yOffset = (int)(_arg2)
 
-	return xOffset, yOffset
+	return _xOffset, _yOffset
 }
 
 // PointingTo: if a rectangle to point to has been set, this function will
 // return true and fill in @rect with such rectangle, otherwise it will
 // return false and fill in @rect with the attached widget coordinates.
-func (p popover) PointingTo() (rect gdk.Rectangle, ok bool) {
-	var arg0 *C.GtkPopover
+func (p popover) PointingTo() (gdk.Rectangle, bool) {
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var rect gdk.Rectangle
-	var cret C.gboolean
+	var _rect gdk.Rectangle
+	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_pointing_to(arg0, (*C.GdkRectangle)(unsafe.Pointer(&rect)))
+	cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return rect, ok
+	return _rect, _ok
 }
 
 // Position returns the preferred position of @popover.
 func (p popover) Position() PositionType {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var cret C.GtkPositionType
+	var _cret C.GtkPositionType
 
-	cret = C.gtk_popover_get_position(arg0)
+	cret = C.gtk_popover_get_position(_arg0)
 
-	var positionType PositionType
+	var _positionType PositionType
 
-	positionType = PositionType(cret)
+	_positionType = PositionType(_cret)
 
-	return positionType
+	return _positionType
 }
 
 // Popdown pops @popover down.This is different than a gtk_widget_hide()
 // call in that it shows the popover with a transition. If you want to hide
 // the popover without a transition, use gtk_widget_hide().
 func (p popover) Popdown() {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	C.gtk_popover_popdown(arg0)
+	C.gtk_popover_popdown(_arg0)
 }
 
 // Popup pops @popover up. This is different than a gtk_widget_show() call
 // in that it shows the popover with a transition. If you want to show the
 // popover without a transition, use gtk_widget_show().
 func (p popover) Popup() {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	C.gtk_popover_popup(arg0)
+	C.gtk_popover_popup(_arg0)
 }
 
 // Present presents the popover to the user.
 func (p popover) Present() {
-	var arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	C.gtk_popover_present(arg0)
+	C.gtk_popover_present(_arg0)
 }
 
 // SetAutohide sets whether @popover is modal.
@@ -412,80 +412,80 @@ func (p popover) Present() {
 // Called this function on an already showing popup with a new autohide
 // value different from the current one, will cause the popup to be hidden.
 func (p popover) SetAutohide(autohide bool) {
-	var arg0 *C.GtkPopover
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPopover
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if autohide {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_popover_set_autohide(arg0, arg1)
+	C.gtk_popover_set_autohide(_arg0, _arg1)
 }
 
 // SetCascadePopdown: if @cascade_popdown is UE, the popover will be closed
 // when a child modal popover is closed. If LSE, @popover will stay visible.
 func (p popover) SetCascadePopdown(cascadePopdown bool) {
-	var arg0 *C.GtkPopover
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPopover
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if cascadePopdown {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_popover_set_cascade_popdown(arg0, arg1)
+	C.gtk_popover_set_cascade_popdown(_arg0, _arg1)
 }
 
 // SetChild sets the child widget of @popover.
 func (p popover) SetChild(child Widget) {
-	var arg0 *C.GtkPopover
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkPopover
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_popover_set_child(arg0, arg1)
+	C.gtk_popover_set_child(_arg0, _arg1)
 }
 
 // SetDefaultWidget: the default widget is the widget that’s activated when
 // the user presses Enter in a dialog (for example). This function sets or
 // unsets the default widget for a Popover.
 func (p popover) SetDefaultWidget(widget Widget) {
-	var arg0 *C.GtkPopover
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkPopover
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_popover_set_default_widget(arg0, arg1)
+	C.gtk_popover_set_default_widget(_arg0, _arg1)
 }
 
 // SetHasArrow sets whether this popover should draw an arrow pointing at
 // the widget it is relative to.
 func (p popover) SetHasArrow(hasArrow bool) {
-	var arg0 *C.GtkPopover
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPopover
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if hasArrow {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_popover_set_has_arrow(arg0, arg1)
+	C.gtk_popover_set_has_arrow(_arg0, _arg1)
 }
 
 // SetMnemonicsVisible sets the Popover:mnemonics-visible property.
 func (p popover) SetMnemonicsVisible(mnemonicsVisible bool) {
-	var arg0 *C.GtkPopover
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPopover
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if mnemonicsVisible {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_popover_set_mnemonics_visible(arg0, arg1)
+	C.gtk_popover_set_mnemonics_visible(_arg0, _arg1)
 }
 
 // SetOffset sets the offset to use when calculating the position of the
@@ -494,27 +494,27 @@ func (p popover) SetMnemonicsVisible(mnemonicsVisible bool) {
 // These values are used when preparing the PopupLayout for positioning the
 // popover.
 func (p popover) SetOffset(xOffset int, yOffset int) {
-	var arg0 *C.GtkPopover
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GtkPopover
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	arg1 = C.int(xOffset)
-	arg2 = C.int(yOffset)
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = C.int(xOffset)
+	_arg2 = C.int(yOffset)
 
-	C.gtk_popover_set_offset(arg0, arg1, arg2)
+	C.gtk_popover_set_offset(_arg0, _arg1, _arg2)
 }
 
 // SetPointingTo sets the rectangle that @popover will point to, in the
 // coordinate space of the @popover parent.
 func (p popover) SetPointingTo(rect *gdk.Rectangle) {
-	var arg0 *C.GtkPopover
-	var arg1 *C.GdkRectangle
+	var _arg0 *C.GtkPopover
+	var _arg1 *C.GdkRectangle
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
 
-	C.gtk_popover_set_pointing_to(arg0, arg1)
+	C.gtk_popover_set_pointing_to(_arg0, _arg1)
 }
 
 // SetPosition sets the preferred position for @popover to appear. If the
@@ -524,11 +524,11 @@ func (p popover) SetPointingTo(rect *gdk.Rectangle) {
 // space (eg. if close to the window edges), the Popover may choose to
 // appear on the opposite side
 func (p popover) SetPosition(position PositionType) {
-	var arg0 *C.GtkPopover
-	var arg1 C.GtkPositionType
+	var _arg0 *C.GtkPopover
+	var _arg1 C.GtkPositionType
 
-	arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-	arg1 = (C.GtkPositionType)(position)
+	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
+	_arg1 = (C.GtkPositionType)(position)
 
-	C.gtk_popover_set_position(arg0, arg1)
+	C.gtk_popover_set_position(_arg0, _arg1)
 }

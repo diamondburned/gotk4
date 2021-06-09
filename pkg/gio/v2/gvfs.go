@@ -124,22 +124,22 @@ func marshalVFS(p uintptr) (interface{}, error) {
 
 // FileForPath gets a #GFile for @path.
 func (v vfS) FileForPath(path string) File {
-	var arg0 *C.GVfs
-	var arg1 *C.char
+	var _arg0 *C.GVfs
+	var _arg1 *C.char
 
-	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GFile
+	var _cret *C.GFile
 
-	cret = C.g_vfs_get_file_for_path(arg0, arg1)
+	cret = C.g_vfs_get_file_for_path(_arg0, _arg1)
 
-	var file File
+	var _file File
 
-	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
 
-	return file
+	return _file
 }
 
 // FileForURI gets a #GFile for @uri.
@@ -148,39 +148,39 @@ func (v vfS) FileForPath(path string) File {
 // I/O operation if the URI is malformed or if the URI scheme is not
 // supported.
 func (v vfS) FileForURI(uri string) File {
-	var arg0 *C.GVfs
-	var arg1 *C.char
+	var _arg0 *C.GVfs
+	var _arg1 *C.char
 
-	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GFile
+	var _cret *C.GFile
 
-	cret = C.g_vfs_get_file_for_uri(arg0, arg1)
+	cret = C.g_vfs_get_file_for_uri(_arg0, _arg1)
 
-	var file File
+	var _file File
 
-	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
 
-	return file
+	return _file
 }
 
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
 func (v vfS) SupportedURISchemes() []string {
-	var arg0 *C.GVfs
+	var _arg0 *C.GVfs
 
-	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
-	var cret **C.gchar
+	var _cret **C.gchar
 
-	cret = C.g_vfs_get_supported_uri_schemes(arg0)
+	cret = C.g_vfs_get_supported_uri_schemes(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -188,56 +188,56 @@ func (v vfS) SupportedURISchemes() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
+			_utf8s = C.GoString(_cret)
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // IsActive checks if the VFS is active.
 func (v vfS) IsActive() bool {
-	var arg0 *C.GVfs
+	var _arg0 *C.GVfs
 
-	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_vfs_is_active(arg0)
+	cret = C.g_vfs_is_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ParseName: this operation never fails, but the returned object might not
 // support any I/O operations if the @parse_name cannot be parsed by the
 // #GVfs module.
 func (v vfS) ParseName(parseName string) File {
-	var arg0 *C.GVfs
-	var arg1 *C.char
+	var _arg0 *C.GVfs
+	var _arg1 *C.char
 
-	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(parseName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(parseName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GFile
+	var _cret *C.GFile
 
-	cret = C.g_vfs_parse_name(arg0, arg1)
+	cret = C.g_vfs_parse_name(_arg0, _arg1)
 
-	var file File
+	var _file File
 
-	file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(File)
+	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
 
-	return file
+	return _file
 }
 
 // RegisterURIScheme registers @uri_func and @parse_name_func as the #GFile
@@ -262,42 +262,42 @@ func (v vfS) ParseName(parseName string) File {
 // It's an error to call this function twice with the same scheme. To
 // unregister a custom URI scheme, use g_vfs_unregister_uri_scheme().
 func (v vfS) RegisterURIScheme() bool {
-	var arg0 *C.GVfs
+	var _arg0 *C.GVfs
 
-	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_vfs_register_uri_scheme(arg0)
+	cret = C.g_vfs_register_uri_scheme(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // UnregisterURIScheme unregisters the URI handler for @scheme previously
 // registered with g_vfs_register_uri_scheme().
 func (v vfS) UnregisterURIScheme(scheme string) bool {
-	var arg0 *C.GVfs
-	var arg1 *C.char
+	var _arg0 *C.GVfs
+	var _arg1 *C.char
 
-	arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(scheme))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(scheme))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_vfs_unregister_uri_scheme(arg0, arg1)
+	cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

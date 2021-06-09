@@ -79,21 +79,21 @@ func marshalFont(p uintptr) (interface{}, error) {
 // If you only want to determine whether the font has the glyph, use
 // [method@PangoFc.Font.has_char].
 func (f font) Glyph(wc uint32) uint {
-	var arg0 *C.PangoFcFont
-	var arg1 C.gunichar
+	var _arg0 *C.PangoFcFont
+	var _arg1 C.gunichar
 
-	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-	arg1 = C.gunichar(wc)
+	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+	_arg1 = C.gunichar(wc)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.pango_fc_font_get_glyph(arg0, arg1)
+	cret = C.pango_fc_font_get_glyph(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Languages returns the languages that are supported by @font.
@@ -103,40 +103,40 @@ func (f font) Glyph(wc uint32) uint {
 // The returned array is only valid as long as the font and its fontmap are
 // valid.
 func (f font) Languages() **pango.Language {
-	var arg0 *C.PangoFcFont
+	var _arg0 *C.PangoFcFont
 
-	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 
-	var cret **C.PangoLanguage
+	var _cret **C.PangoLanguage
 
-	cret = C.pango_fc_font_get_languages(arg0)
+	cret = C.pango_fc_font_get_languages(_arg0)
 
-	var language **pango.Language
+	var _language **pango.Language
 
-	language = pango.WrapLanguage(unsafe.Pointer(cret))
+	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
 
-	return language
+	return _language
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
 func (f font) HasChar(wc uint32) bool {
-	var arg0 *C.PangoFcFont
-	var arg1 C.gunichar
+	var _arg0 *C.PangoFcFont
+	var _arg1 C.gunichar
 
-	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-	arg1 = C.gunichar(wc)
+	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+	_arg1 = C.gunichar(wc)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.pango_fc_font_has_char(arg0, arg1)
+	cret = C.pango_fc_font_has_char(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // KernGlyphs: this function used to adjust each adjacent pair of glyphs in
@@ -144,21 +144,21 @@ func (f font) HasChar(wc uint32) bool {
 //
 // Since 1.44, it does nothing.
 func (f font) KernGlyphs(glyphs *pango.GlyphString) {
-	var arg0 *C.PangoFcFont
-	var arg1 *C.PangoGlyphString
+	var _arg0 *C.PangoFcFont
+	var _arg1 *C.PangoGlyphString
 
-	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
+	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
 
-	C.pango_fc_font_kern_glyphs(arg0, arg1)
+	C.pango_fc_font_kern_glyphs(_arg0, _arg1)
 }
 
 // UnlockFace releases a font previously obtained with
 // [method@PangoFc.Font.lock_face].
 func (f font) UnlockFace() {
-	var arg0 *C.PangoFcFont
+	var _arg0 *C.PangoFcFont
 
-	arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 
-	C.pango_fc_font_unlock_face(arg0)
+	C.pango_fc_font_unlock_face(_arg0)
 }

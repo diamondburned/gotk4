@@ -106,23 +106,23 @@ func marshalPadController(p uintptr) (interface{}, error) {
 
 // NewPadController constructs a class PadController.
 func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadController {
-	var arg1 *C.GtkWindow
-	var arg2 *C.GActionGroup
-	var arg3 *C.GdkDevice
+	var _arg1 *C.GtkWindow
+	var _arg2 *C.GActionGroup
+	var _arg3 *C.GdkDevice
 
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
-	arg3 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (*C.GActionGroup)(unsafe.Pointer(group.Native()))
+	_arg3 = (*C.GdkDevice)(unsafe.Pointer(pad.Native()))
 
-	var cret C.GtkPadController
+	var _cret C.GtkPadController
 
-	cret = C.gtk_pad_controller_new(arg1, arg2, arg3)
+	cret = C.gtk_pad_controller_new(_arg1, _arg2, _arg3)
 
-	var padController PadController
+	var _padController PadController
 
-	padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PadController)
+	_padController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PadController)
 
-	return padController
+	return _padController
 }
 
 // SetAction adds an individual action to @controller. This action will only
@@ -134,34 +134,34 @@ func NewPadController(window Window, group gio.ActionGroup, pad gdk.Device) PadC
 // internationalization rules apply. Some windowing systems may be able to
 // use those for user feedback.
 func (c padController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
-	var arg0 *C.GtkPadController
-	var arg1 C.GtkPadActionType
-	var arg2 C.gint
-	var arg3 C.gint
-	var arg4 *C.gchar
-	var arg5 *C.gchar
+	var _arg0 *C.GtkPadController
+	var _arg1 C.GtkPadActionType
+	var _arg2 C.gint
+	var _arg3 C.gint
+	var _arg4 *C.gchar
+	var _arg5 *C.gchar
 
-	arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
-	arg1 = (C.GtkPadActionType)(typ)
-	arg2 = C.gint(index)
-	arg3 = C.gint(mode)
-	arg4 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg5))
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.GtkPadActionType)(typ)
+	_arg2 = C.gint(index)
+	_arg3 = C.gint(mode)
+	_arg4 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg5))
 
-	C.gtk_pad_controller_set_action(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_pad_controller_set_action(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // SetActionEntries: this is a convenience function to add a group of action
 // entries on @controller. See PadActionEntry and
 // gtk_pad_controller_set_action().
 func (c padController) SetActionEntries() {
-	var arg0 *C.GtkPadController
+	var _arg0 *C.GtkPadController
 
-	arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
 
-	C.gtk_pad_controller_set_action_entries(arg0)
+	C.gtk_pad_controller_set_action_entries(_arg0)
 }
 
 // PadActionEntry: struct defining a pad action entry.

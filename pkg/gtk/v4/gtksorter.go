@@ -99,13 +99,13 @@ func marshalSorter(p uintptr) (interface{}, error) {
 // This function is intended for implementors of Sorter subclasses and
 // should not be called from other functions.
 func (s sorter) Changed(change SorterChange) {
-	var arg0 *C.GtkSorter
-	var arg1 C.GtkSorterChange
+	var _arg0 *C.GtkSorter
+	var _arg1 C.GtkSorterChange
 
-	arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkSorterChange)(change)
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkSorterChange)(change)
 
-	C.gtk_sorter_changed(arg0, arg1)
+	C.gtk_sorter_changed(_arg0, _arg1)
 }
 
 // Compare compares two given items according to the sort order implemented
@@ -118,23 +118,23 @@ func (s sorter) Changed(change SorterChange) {
 // The sorter may signal it conforms to additional constraints via the
 // return value of gtk_sorter_get_order().
 func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
-	var arg0 *C.GtkSorter
-	var arg1 C.gpointer
-	var arg2 C.gpointer
+	var _arg0 *C.GtkSorter
+	var _arg1 C.gpointer
+	var _arg2 C.gpointer
 
-	arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(item1.Native()))
-	arg2 = (*C.GObject)(unsafe.Pointer(item2.Native()))
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(item1.Native()))
+	_arg2 = (*C.GObject)(unsafe.Pointer(item2.Native()))
 
-	var cret C.GtkOrdering
+	var _cret C.GtkOrdering
 
-	cret = C.gtk_sorter_compare(arg0, arg1, arg2)
+	cret = C.gtk_sorter_compare(_arg0, _arg1, _arg2)
 
-	var ordering Ordering
+	var _ordering Ordering
 
-	ordering = Ordering(cret)
+	_ordering = Ordering(_cret)
 
-	return ordering
+	return _ordering
 }
 
 // Order gets the order that @self conforms to. See SorterOrder for details
@@ -142,17 +142,17 @@ func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
 //
 // This function is intended to allow optimizations.
 func (s sorter) Order() SorterOrder {
-	var arg0 *C.GtkSorter
+	var _arg0 *C.GtkSorter
 
-	arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkSorterOrder
+	var _cret C.GtkSorterOrder
 
-	cret = C.gtk_sorter_get_order(arg0)
+	cret = C.gtk_sorter_get_order(_arg0)
 
-	var sorterOrder SorterOrder
+	var _sorterOrder SorterOrder
 
-	sorterOrder = SorterOrder(cret)
+	_sorterOrder = SorterOrder(_cret)
 
-	return sorterOrder
+	return _sorterOrder
 }

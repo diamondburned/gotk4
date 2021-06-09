@@ -94,58 +94,58 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 
 // NewLinkButton constructs a class LinkButton.
 func NewLinkButton(uri string) LinkButton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkLinkButton
+	var _cret C.GtkLinkButton
 
-	cret = C.gtk_link_button_new(arg1)
+	cret = C.gtk_link_button_new(_arg1)
 
-	var linkButton LinkButton
+	var _linkButton LinkButton
 
-	linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
 
-	return linkButton
+	return _linkButton
 }
 
 // NewLinkButtonWithLabel constructs a class LinkButton.
 func NewLinkButtonWithLabel(uri string, label string) LinkButton {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GtkLinkButton
+	var _cret C.GtkLinkButton
 
-	cret = C.gtk_link_button_new_with_label(arg1, arg2)
+	cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
 
-	var linkButton LinkButton
+	var _linkButton LinkButton
 
-	linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LinkButton)
+	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
 
-	return linkButton
+	return _linkButton
 }
 
 // URI retrieves the URI set using gtk_link_button_set_uri().
 func (l linkButton) URI() string {
-	var arg0 *C.GtkLinkButton
+	var _arg0 *C.GtkLinkButton
 
-	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_link_button_get_uri(arg0)
+	cret = C.gtk_link_button_get_uri(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Visited retrieves the “visited” state of the URI where the LinkButton
@@ -154,46 +154,46 @@ func (l linkButton) URI() string {
 //
 // The state may also be changed using gtk_link_button_set_visited().
 func (l linkButton) Visited() bool {
-	var arg0 *C.GtkLinkButton
+	var _arg0 *C.GtkLinkButton
 
-	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_link_button_get_visited(arg0)
+	cret = C.gtk_link_button_get_visited(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 // this unsets the “visited” state of the button.
 func (l linkButton) SetURI(uri string) {
-	var arg0 *C.GtkLinkButton
-	var arg1 *C.gchar
+	var _arg0 *C.GtkLinkButton
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
-	arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_link_button_set_uri(arg0, arg1)
+	C.gtk_link_button_set_uri(_arg0, _arg1)
 }
 
 // SetVisited sets the “visited” state of the URI where the LinkButton
 // points. See gtk_link_button_get_visited() for more details.
 func (l linkButton) SetVisited(visited bool) {
-	var arg0 *C.GtkLinkButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkLinkButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 	if visited {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_link_button_set_visited(arg0, arg1)
+	C.gtk_link_button_set_visited(_arg0, _arg1)
 }

@@ -137,18 +137,18 @@ func marshalItem(p uintptr) (interface{}, error) {
 
 // NewItem constructs a struct Item.
 func NewItem() *Item {
-	var cret *C.PangoItem
+	var _cret *C.PangoItem
 
 	cret = C.pango_item_new()
 
-	var item *Item
+	var _item *Item
 
-	item = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(item, func(v *Item) {
+	_item = WrapItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return item
+	return _item
 }
 
 // Native returns the underlying C source pointer.
@@ -195,42 +195,42 @@ func (i *Item) Analysis() Analysis {
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
 func (i *Item) ApplyAttrs(iter *AttrIterator) {
-	var arg0 *C.PangoItem
-	var arg1 *C.PangoAttrIterator
+	var _arg0 *C.PangoItem
+	var _arg1 *C.PangoAttrIterator
 
-	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter.Native()))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter.Native()))
 
-	C.pango_item_apply_attrs(arg0, arg1)
+	C.pango_item_apply_attrs(_arg0, _arg1)
 }
 
 // Copy: copy an existing `PangoItem` structure.
 func (i *Item) Copy() *Item {
-	var arg0 *C.PangoItem
+	var _arg0 *C.PangoItem
 
-	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
-	var cret *C.PangoItem
+	var _cret *C.PangoItem
 
-	cret = C.pango_item_copy(arg0)
+	cret = C.pango_item_copy(_arg0)
 
-	var ret *Item
+	var _ret *Item
 
-	ret = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret, func(v *Item) {
+	_ret = WrapItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ret
+	return _ret
 }
 
 // Free: free a `PangoItem` and all associated memory.
 func (i *Item) Free() {
-	var arg0 *C.PangoItem
+	var _arg0 *C.PangoItem
 
-	arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
-	C.pango_item_free(arg0)
+	C.pango_item_free(_arg0)
 }
 
 // Split modifies @orig to cover only the text after @split_index, and returns a
@@ -244,24 +244,24 @@ func (i *Item) Free() {
 // generate the item isn't available, so `pango_item_split()` can't count the
 // char length of the split items itself.
 func (o *Item) Split(splitIndex int, splitOffset int) *Item {
-	var arg0 *C.PangoItem
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.PangoItem
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.PangoItem)(unsafe.Pointer(o.Native()))
-	arg1 = C.int(splitIndex)
-	arg2 = C.int(splitOffset)
+	_arg0 = (*C.PangoItem)(unsafe.Pointer(o.Native()))
+	_arg1 = C.int(splitIndex)
+	_arg2 = C.int(splitOffset)
 
-	var cret *C.PangoItem
+	var _cret *C.PangoItem
 
-	cret = C.pango_item_split(arg0, arg1, arg2)
+	cret = C.pango_item_split(_arg0, _arg1, _arg2)
 
-	var item *Item
+	var _item *Item
 
-	item = WrapItem(unsafe.Pointer(cret))
-	runtime.SetFinalizer(item, func(v *Item) {
+	_item = WrapItem(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_item, func(v *Item) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return item
+	return _item
 }

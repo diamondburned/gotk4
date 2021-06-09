@@ -126,73 +126,73 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 
 // NewWindowControls constructs a class WindowControls.
 func NewWindowControls(side PackType) WindowControls {
-	var arg1 C.GtkPackType
+	var _arg1 C.GtkPackType
 
-	arg1 = (C.GtkPackType)(side)
+	_arg1 = (C.GtkPackType)(side)
 
-	var cret C.GtkWindowControls
+	var _cret C.GtkWindowControls
 
-	cret = C.gtk_window_controls_new(arg1)
+	cret = C.gtk_window_controls_new(_arg1)
 
-	var windowControls WindowControls
+	var _windowControls WindowControls
 
-	windowControls = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(WindowControls)
+	_windowControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(WindowControls)
 
-	return windowControls
+	return _windowControls
 }
 
 // DecorationLayout gets the decoration layout set with
 // gtk_window_controls_set_decoration_layout().
 func (s windowControls) DecorationLayout() string {
-	var arg0 *C.GtkWindowControls
+	var _arg0 *C.GtkWindowControls
 
-	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_window_controls_get_decoration_layout(arg0)
+	cret = C.gtk_window_controls_get_decoration_layout(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Empty gets whether the widget has any window buttons.
 func (s windowControls) Empty() bool {
-	var arg0 *C.GtkWindowControls
+	var _arg0 *C.GtkWindowControls
 
-	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_window_controls_get_empty(arg0)
+	cret = C.gtk_window_controls_get_empty(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Side gets the side set with gtk_window_controls_set_side().
 func (s windowControls) Side() PackType {
-	var arg0 *C.GtkWindowControls
+	var _arg0 *C.GtkWindowControls
 
-	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkPackType
+	var _cret C.GtkPackType
 
-	cret = C.gtk_window_controls_get_side(arg0)
+	cret = C.gtk_window_controls_get_side(_arg0)
 
-	var packType PackType
+	var _packType PackType
 
-	packType = PackType(cret)
+	_packType = PackType(_cret)
 
-	return packType
+	return _packType
 }
 
 // SetDecorationLayout sets the decoration layout for the title buttons,
@@ -209,14 +209,14 @@ func (s windowControls) Side() PackType {
 // If WindowControls:side value is @GTK_PACK_START, @self will display the
 // part before the colon, otherwise after that.
 func (s windowControls) SetDecorationLayout(layout string) {
-	var arg0 *C.GtkWindowControls
-	var arg1 *C.char
+	var _arg0 *C.GtkWindowControls
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(layout))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(layout))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_window_controls_set_decoration_layout(arg0, arg1)
+	C.gtk_window_controls_set_decoration_layout(_arg0, _arg1)
 }
 
 // SetSide sets the side for @self, determining which part of decoration
@@ -224,11 +224,11 @@ func (s windowControls) SetDecorationLayout(layout string) {
 //
 // See gtk_window_controls_set_decoration_layout()
 func (s windowControls) SetSide(side PackType) {
-	var arg0 *C.GtkWindowControls
-	var arg1 C.GtkPackType
+	var _arg0 *C.GtkWindowControls
+	var _arg1 C.GtkPackType
 
-	arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkPackType)(side)
+	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkPackType)(side)
 
-	C.gtk_window_controls_set_side(arg0, arg1)
+	C.gtk_window_controls_set_side(_arg0, _arg1)
 }

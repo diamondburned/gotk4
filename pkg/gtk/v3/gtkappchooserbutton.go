@@ -118,20 +118,20 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 
 // NewAppChooserButton constructs a class AppChooserButton.
 func NewAppChooserButton(contentType string) AppChooserButton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(contentType))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkAppChooserButton
+	var _cret C.GtkAppChooserButton
 
-	cret = C.gtk_app_chooser_button_new(arg1)
+	cret = C.gtk_app_chooser_button_new(_arg1)
 
-	var appChooserButton AppChooserButton
+	var _appChooserButton AppChooserButton
 
-	appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AppChooserButton)
+	_appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserButton)
 
-	return appChooserButton
+	return _appChooserButton
 }
 
 // AppendCustomItem appends a custom item to the list of applications that
@@ -141,86 +141,86 @@ func NewAppChooserButton(contentType string) AppChooserButton {
 // activation of a particular custom item in the list. See also
 // gtk_app_chooser_button_append_separator().
 func (s appChooserButton) AppendCustomItem(name string, label string, icon gio.Icon) {
-	var arg0 *C.GtkAppChooserButton
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 *C.GIcon
+	var _arg0 *C.GtkAppChooserButton
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.GIcon
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
-	C.gtk_app_chooser_button_append_custom_item(arg0, arg1, arg2, arg3)
+	C.gtk_app_chooser_button_append_custom_item(_arg0, _arg1, _arg2, _arg3)
 }
 
 // AppendSeparator appends a separator to the list of applications that is
 // shown in the popup.
 func (s appChooserButton) AppendSeparator() {
-	var arg0 *C.GtkAppChooserButton
+	var _arg0 *C.GtkAppChooserButton
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
-	C.gtk_app_chooser_button_append_separator(arg0)
+	C.gtk_app_chooser_button_append_separator(_arg0)
 }
 
 // Heading returns the text to display at the top of the dialog.
 func (s appChooserButton) Heading() string {
-	var arg0 *C.GtkAppChooserButton
+	var _arg0 *C.GtkAppChooserButton
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_app_chooser_button_get_heading(arg0)
+	cret = C.gtk_app_chooser_button_get_heading(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // ShowDefaultItem returns the current value of the
 // AppChooserButton:show-default-item property.
 func (s appChooserButton) ShowDefaultItem() bool {
-	var arg0 *C.GtkAppChooserButton
+	var _arg0 *C.GtkAppChooserButton
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_button_get_show_default_item(arg0)
+	cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ShowDialogItem returns the current value of the
 // AppChooserButton:show-dialog-item property.
 func (s appChooserButton) ShowDialogItem() bool {
-	var arg0 *C.GtkAppChooserButton
+	var _arg0 *C.GtkAppChooserButton
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_button_get_show_dialog_item(arg0)
+	cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetActiveCustomItem selects a custom item previously added with
@@ -229,53 +229,53 @@ func (s appChooserButton) ShowDialogItem() bool {
 // Use gtk_app_chooser_refresh() to bring the selection to its initial
 // state.
 func (s appChooserButton) SetActiveCustomItem(name string) {
-	var arg0 *C.GtkAppChooserButton
-	var arg1 *C.gchar
+	var _arg0 *C.GtkAppChooserButton
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_app_chooser_button_set_active_custom_item(arg0, arg1)
+	C.gtk_app_chooser_button_set_active_custom_item(_arg0, _arg1)
 }
 
 // SetHeading sets the text to display at the top of the dialog. If the
 // heading is not set, the dialog displays a default text.
 func (s appChooserButton) SetHeading(heading string) {
-	var arg0 *C.GtkAppChooserButton
-	var arg1 *C.gchar
+	var _arg0 *C.GtkAppChooserButton
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(heading))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(heading))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_app_chooser_button_set_heading(arg0, arg1)
+	C.gtk_app_chooser_button_set_heading(_arg0, _arg1)
 }
 
 // SetShowDefaultItem sets whether the dropdown menu of this button should
 // show the default application for the given content type at top.
 func (s appChooserButton) SetShowDefaultItem(setting bool) {
-	var arg0 *C.GtkAppChooserButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkAppChooserButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 	if setting {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_app_chooser_button_set_show_default_item(arg0, arg1)
+	C.gtk_app_chooser_button_set_show_default_item(_arg0, _arg1)
 }
 
 // SetShowDialogItem sets whether the dropdown menu of this button should
 // show an entry to trigger a AppChooserDialog.
 func (s appChooserButton) SetShowDialogItem(setting bool) {
-	var arg0 *C.GtkAppChooserButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkAppChooserButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkAppChooserButton)(unsafe.Pointer(s.Native()))
 	if setting {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_app_chooser_button_set_show_dialog_item(arg0, arg1)
+	C.gtk_app_chooser_button_set_show_dialog_item(_arg0, _arg1)
 }

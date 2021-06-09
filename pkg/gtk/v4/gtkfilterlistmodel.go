@@ -104,75 +104,75 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 
 // NewFilterListModel constructs a class FilterListModel.
 func NewFilterListModel(model gio.ListModel, filter Filter) FilterListModel {
-	var arg1 *C.GListModel
-	var arg2 *C.GtkFilter
+	var _arg1 *C.GListModel
+	var _arg2 *C.GtkFilter
 
-	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
-	var cret C.GtkFilterListModel
+	var _cret C.GtkFilterListModel
 
-	cret = C.gtk_filter_list_model_new(arg1, arg2)
+	cret = C.gtk_filter_list_model_new(_arg1, _arg2)
 
-	var filterListModel FilterListModel
+	var _filterListModel FilterListModel
 
-	filterListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilterListModel)
+	_filterListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FilterListModel)
 
-	return filterListModel
+	return _filterListModel
 }
 
 // Filter gets the Filter currently set on @self.
 func (s filterListModel) Filter() Filter {
-	var arg0 *C.GtkFilterListModel
+	var _arg0 *C.GtkFilterListModel
 
-	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkFilter
+	var _cret *C.GtkFilter
 
-	cret = C.gtk_filter_list_model_get_filter(arg0)
+	cret = C.gtk_filter_list_model_get_filter(_arg0)
 
-	var filter Filter
+	var _filter Filter
 
-	filter = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Filter)
+	_filter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Filter)
 
-	return filter
+	return _filter
 }
 
 // Incremental returns whether incremental filtering was enabled via
 // gtk_filter_list_model_set_incremental().
 func (s filterListModel) Incremental() bool {
-	var arg0 *C.GtkFilterListModel
+	var _arg0 *C.GtkFilterListModel
 
-	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_filter_list_model_get_incremental(arg0)
+	cret = C.gtk_filter_list_model_get_incremental(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Model gets the model currently filtered or nil if none.
 func (s filterListModel) Model() gio.ListModel {
-	var arg0 *C.GtkFilterListModel
+	var _arg0 *C.GtkFilterListModel
 
-	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
+	var _cret *C.GListModel
 
-	cret = C.gtk_filter_list_model_get_model(arg0)
+	cret = C.gtk_filter_list_model_get_model(_arg0)
 
-	var listModel gio.ListModel
+	var _listModel gio.ListModel
 
-	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
 
-	return listModel
+	return _listModel
 }
 
 // Pending returns the number of items that have not been filtered yet.
@@ -189,30 +189,30 @@ func (s filterListModel) Model() gio.ListModel {
 // If no filter operation is ongoing - in particular when
 // FilterListModel:incremental is false - this function returns 0.
 func (s filterListModel) Pending() uint {
-	var arg0 *C.GtkFilterListModel
+	var _arg0 *C.GtkFilterListModel
 
-	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_filter_list_model_get_pending(arg0)
+	cret = C.gtk_filter_list_model_get_pending(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // SetFilter sets the filter used to filter items.
 func (s filterListModel) SetFilter(filter Filter) {
-	var arg0 *C.GtkFilterListModel
-	var arg1 *C.GtkFilter
+	var _arg0 *C.GtkFilterListModel
+	var _arg1 *C.GtkFilter
 
-	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
-	C.gtk_filter_list_model_set_filter(arg0, arg1)
+	C.gtk_filter_list_model_set_filter(_arg0, _arg1)
 }
 
 // SetIncremental: when incremental filtering is enabled, the
@@ -230,15 +230,15 @@ func (s filterListModel) SetFilter(filter Filter) {
 // See gtk_filter_list_model_get_pending() for progress information about an
 // ongoing incremental filtering operation.
 func (s filterListModel) SetIncremental(incremental bool) {
-	var arg0 *C.GtkFilterListModel
-	var arg1 C.gboolean
+	var _arg0 *C.GtkFilterListModel
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 	if incremental {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_filter_list_model_set_incremental(arg0, arg1)
+	C.gtk_filter_list_model_set_incremental(_arg0, _arg1)
 }
 
 // SetModel sets the model to be filtered.
@@ -247,11 +247,11 @@ func (s filterListModel) SetIncremental(incremental bool) {
 // type of @self. It assumes that the caller knows what they are doing and
 // have set up an appropriate filter to ensure that item types match.
 func (s filterListModel) SetModel(model gio.ListModel) {
-	var arg0 *C.GtkFilterListModel
-	var arg1 *C.GListModel
+	var _arg0 *C.GtkFilterListModel
+	var _arg1 *C.GListModel
 
-	arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_filter_list_model_set_model(arg0, arg1)
+	C.gtk_filter_list_model_set_model(_arg0, _arg1)
 }

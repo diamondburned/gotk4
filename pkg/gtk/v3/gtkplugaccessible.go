@@ -50,18 +50,18 @@ func marshalPlugAccessible(p uintptr) (interface{}, error) {
 }
 
 func (p plugAccessible) ID() string {
-	var arg0 *C.GtkPlugAccessible
+	var _arg0 *C.GtkPlugAccessible
 
-	arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_plug_accessible_get_id(arg0)
+	cret = C.gtk_plug_accessible_get_id(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

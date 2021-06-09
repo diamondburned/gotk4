@@ -67,74 +67,74 @@ func marshalNative(p uintptr) (interface{}, error) {
 
 // Renderer returns the renderer that is used for this Native.
 func (s native) Renderer() gsk.Renderer {
-	var arg0 *C.GtkNative
+	var _arg0 *C.GtkNative
 
-	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GskRenderer
+	var _cret *C.GskRenderer
 
-	cret = C.gtk_native_get_renderer(arg0)
+	cret = C.gtk_native_get_renderer(_arg0)
 
-	var renderer gsk.Renderer
+	var _renderer gsk.Renderer
 
-	renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gsk.Renderer)
+	_renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gsk.Renderer)
 
-	return renderer
+	return _renderer
 }
 
 // Surface returns the surface of this Native.
 func (s native) Surface() gdk.Surface {
-	var arg0 *C.GtkNative
+	var _arg0 *C.GtkNative
 
-	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkSurface
+	var _cret *C.GdkSurface
 
-	cret = C.gtk_native_get_surface(arg0)
+	cret = C.gtk_native_get_surface(_arg0)
 
-	var surface gdk.Surface
+	var _surface gdk.Surface
 
-	surface = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
 
-	return surface
+	return _surface
 }
 
 // SurfaceTransform retrieves the surface transform of @self. This is the
 // translation from @self's surface coordinates into @self's widget
 // coordinates.
 func (s native) SurfaceTransform() (x float64, y float64) {
-	var arg0 *C.GtkNative
+	var _arg0 *C.GtkNative
 
-	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	var arg1 C.double
-	var arg2 C.double
+	var _arg1 C.double
+	var _arg2 C.double
 
-	C.gtk_native_get_surface_transform(arg0, &arg1, &arg2)
+	C.gtk_native_get_surface_transform(_arg0, &_arg1, &_arg2)
 
-	var x float64
-	var y float64
+	var _x float64
+	var _y float64
 
-	x = (float64)(arg1)
-	y = (float64)(arg2)
+	_x = (float64)(_arg1)
+	_y = (float64)(_arg2)
 
-	return x, y
+	return _x, _y
 }
 
 // Realize realizes a Native.
 func (s native) Realize() {
-	var arg0 *C.GtkNative
+	var _arg0 *C.GtkNative
 
-	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	C.gtk_native_realize(arg0)
+	C.gtk_native_realize(_arg0)
 }
 
 // Unrealize unrealizes a Native.
 func (s native) Unrealize() {
-	var arg0 *C.GtkNative
+	var _arg0 *C.GtkNative
 
-	arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	C.gtk_native_unrealize(arg0)
+	C.gtk_native_unrealize(_arg0)
 }

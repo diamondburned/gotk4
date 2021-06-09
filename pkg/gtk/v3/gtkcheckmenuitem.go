@@ -99,137 +99,137 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 
 // NewCheckMenuItem constructs a class CheckMenuItem.
 func NewCheckMenuItem() CheckMenuItem {
-	var cret C.GtkCheckMenuItem
+	var _cret C.GtkCheckMenuItem
 
 	cret = C.gtk_check_menu_item_new()
 
-	var checkMenuItem CheckMenuItem
+	var _checkMenuItem CheckMenuItem
 
-	checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
 
-	return checkMenuItem
+	return _checkMenuItem
 }
 
 // NewCheckMenuItemWithLabel constructs a class CheckMenuItem.
 func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkCheckMenuItem
+	var _cret C.GtkCheckMenuItem
 
-	cret = C.gtk_check_menu_item_new_with_label(arg1)
+	cret = C.gtk_check_menu_item_new_with_label(_arg1)
 
-	var checkMenuItem CheckMenuItem
+	var _checkMenuItem CheckMenuItem
 
-	checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
 
-	return checkMenuItem
+	return _checkMenuItem
 }
 
 // NewCheckMenuItemWithMnemonic constructs a class CheckMenuItem.
 func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkCheckMenuItem
+	var _cret C.GtkCheckMenuItem
 
-	cret = C.gtk_check_menu_item_new_with_mnemonic(arg1)
+	cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
 
-	var checkMenuItem CheckMenuItem
+	var _checkMenuItem CheckMenuItem
 
-	checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckMenuItem)
+	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
 
-	return checkMenuItem
+	return _checkMenuItem
 }
 
 // Active returns whether the check menu item is active. See
 // gtk_check_menu_item_set_active ().
 func (c checkMenuItem) Active() bool {
-	var arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem
 
-	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_check_menu_item_get_active(arg0)
+	cret = C.gtk_check_menu_item_get_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
 func (c checkMenuItem) DrawAsRadio() bool {
-	var arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem
 
-	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_check_menu_item_get_draw_as_radio(arg0)
+	cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Inconsistent retrieves the value set by
 // gtk_check_menu_item_set_inconsistent().
 func (c checkMenuItem) Inconsistent() bool {
-	var arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem
 
-	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_check_menu_item_get_inconsistent(arg0)
+	cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetActive sets the active state of the menu item’s check box.
 func (c checkMenuItem) SetActive(isActive bool) {
-	var arg0 *C.GtkCheckMenuItem
-	var arg1 C.gboolean
+	var _arg0 *C.GtkCheckMenuItem
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if isActive {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_check_menu_item_set_active(arg0, arg1)
+	C.gtk_check_menu_item_set_active(_arg0, _arg1)
 }
 
 // SetDrawAsRadio sets whether @check_menu_item is drawn like a
 // RadioMenuItem
 func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
-	var arg0 *C.GtkCheckMenuItem
-	var arg1 C.gboolean
+	var _arg0 *C.GtkCheckMenuItem
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if drawAsRadio {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_check_menu_item_set_draw_as_radio(arg0, arg1)
+	C.gtk_check_menu_item_set_draw_as_radio(_arg0, _arg1)
 }
 
 // SetInconsistent: if the user has selected a range of elements (such as
@@ -241,22 +241,22 @@ func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 // manually, gtk_check_menu_item_set_inconsistent() only affects visual
 // appearance, it doesn’t affect the semantics of the widget.
 func (c checkMenuItem) SetInconsistent(setting bool) {
-	var arg0 *C.GtkCheckMenuItem
-	var arg1 C.gboolean
+	var _arg0 *C.GtkCheckMenuItem
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if setting {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_check_menu_item_set_inconsistent(arg0, arg1)
+	C.gtk_check_menu_item_set_inconsistent(_arg0, _arg1)
 }
 
 // Toggled emits the CheckMenuItem::toggled signal.
 func (c checkMenuItem) Toggled() {
-	var arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem
 
-	arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
-	C.gtk_check_menu_item_toggled(arg0)
+	C.gtk_check_menu_item_toggled(_arg0)
 }

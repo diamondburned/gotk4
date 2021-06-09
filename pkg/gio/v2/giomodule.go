@@ -33,23 +33,23 @@ import "C"
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectory(dirname *string) *glib.List {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(dirname))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(dirname))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_io_modules_load_all_in_directory(arg1)
+	cret = C.g_io_modules_load_all_in_directory(_arg1)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // IOModulesLoadAllInDirectoryWithScope loads all the modules in the specified
@@ -59,25 +59,25 @@ func IOModulesLoadAllInDirectory(dirname *string) *glib.List {
 // gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
 // delayed/lazy loading of modules.
 func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) *glib.List {
-	var arg1 *C.gchar
-	var arg2 *C.GIOModuleScope
+	var _arg1 *C.gchar
+	var _arg2 *C.GIOModuleScope
 
-	arg1 = (*C.gchar)(C.CString(dirname))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
+	_arg1 = (*C.gchar)(C.CString(dirname))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_io_modules_load_all_in_directory_with_scope(arg1, arg2)
+	cret = C.g_io_modules_load_all_in_directory_with_scope(_arg1, _arg2)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
@@ -91,12 +91,12 @@ func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope)
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectory(dirname *string) {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(dirname))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(dirname))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_io_modules_scan_all_in_directory(arg1)
+	C.g_io_modules_scan_all_in_directory(_arg1)
 }
 
 // IOModulesScanAllInDirectoryWithScope scans all the modules in the specified
@@ -111,14 +111,14 @@ func IOModulesScanAllInDirectory(dirname *string) {
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) {
-	var arg1 *C.gchar
-	var arg2 *C.GIOModuleScope
+	var _arg1 *C.gchar
+	var _arg2 *C.GIOModuleScope
 
-	arg1 = (*C.gchar)(C.CString(dirname))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
+	_arg1 = (*C.gchar)(C.CString(dirname))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
 
-	C.g_io_modules_scan_all_in_directory_with_scope(arg1, arg2)
+	C.g_io_modules_scan_all_in_directory_with_scope(_arg1, _arg2)
 }
 
 // IOModuleScope represents a scope for loading IO modules. A scope can be used
@@ -154,21 +154,21 @@ func (i *IOModuleScope) Native() unsafe.Pointer {
 // scope is used with g_io_modules_scan_all_in_directory_with_scope() or
 // g_io_modules_load_all_in_directory_with_scope().
 func (s *IOModuleScope) Block(basename string) {
-	var arg0 *C.GIOModuleScope
-	var arg1 *C.gchar
+	var _arg0 *C.GIOModuleScope
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(basename))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(basename))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_io_module_scope_block(arg0, arg1)
+	C.g_io_module_scope_block(_arg0, _arg1)
 }
 
 // Free: free a module scope.
 func (s *IOModuleScope) Free() {
-	var arg0 *C.GIOModuleScope
+	var _arg0 *C.GIOModuleScope
 
-	arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))
 
-	C.g_io_module_scope_free(arg0)
+	C.g_io_module_scope_free(_arg0)
 }

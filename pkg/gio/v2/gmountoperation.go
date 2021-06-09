@@ -124,298 +124,298 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 
 // NewMountOperation constructs a class MountOperation.
 func NewMountOperation() MountOperation {
-	var cret C.GMountOperation
+	var _cret C.GMountOperation
 
 	cret = C.g_mount_operation_new()
 
-	var mountOperation MountOperation
+	var _mountOperation MountOperation
 
-	mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MountOperation)
 
-	return mountOperation
+	return _mountOperation
 }
 
 // Anonymous: check to see whether the mount operation is being used for an
 // anonymous user.
 func (o mountOperation) Anonymous() bool {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_mount_operation_get_anonymous(arg0)
+	cret = C.g_mount_operation_get_anonymous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Choice gets a choice from the mount operation.
 func (o mountOperation) Choice() int {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.g_mount_operation_get_choice(arg0)
+	cret = C.g_mount_operation_get_choice(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Domain gets the domain of the mount operation.
 func (o mountOperation) Domain() string {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_mount_operation_get_domain(arg0)
+	cret = C.g_mount_operation_get_domain(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // IsTcryptHiddenVolume: check to see whether the mount operation is being
 // used for a TCRYPT hidden volume.
 func (o mountOperation) IsTcryptHiddenVolume() bool {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(arg0)
+	cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsTcryptSystemVolume: check to see whether the mount operation is being
 // used for a TCRYPT system volume.
 func (o mountOperation) IsTcryptSystemVolume() bool {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_mount_operation_get_is_tcrypt_system_volume(arg0)
+	cret = C.g_mount_operation_get_is_tcrypt_system_volume(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Password gets a password from the mount operation.
 func (o mountOperation) Password() string {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_mount_operation_get_password(arg0)
+	cret = C.g_mount_operation_get_password(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // PasswordSave gets the state of saving passwords for the mount operation.
 func (o mountOperation) PasswordSave() PasswordSave {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.GPasswordSave
+	var _cret C.GPasswordSave
 
-	cret = C.g_mount_operation_get_password_save(arg0)
+	cret = C.g_mount_operation_get_password_save(_arg0)
 
-	var passwordSave PasswordSave
+	var _passwordSave PasswordSave
 
-	passwordSave = PasswordSave(cret)
+	_passwordSave = PasswordSave(_cret)
 
-	return passwordSave
+	return _passwordSave
 }
 
 // Pim gets a PIM from the mount operation.
 func (o mountOperation) Pim() uint {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_mount_operation_get_pim(arg0)
+	cret = C.g_mount_operation_get_pim(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Username: get the user name from the mount operation.
 func (o mountOperation) Username() string {
-	var arg0 *C.GMountOperation
+	var _arg0 *C.GMountOperation
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_mount_operation_get_username(arg0)
+	cret = C.g_mount_operation_get_username(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Reply emits the Operation::reply signal.
 func (o mountOperation) Reply(result MountOperationResult) {
-	var arg0 *C.GMountOperation
-	var arg1 C.GMountOperationResult
+	var _arg0 *C.GMountOperation
+	var _arg1 C.GMountOperationResult
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (C.GMountOperationResult)(result)
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (C.GMountOperationResult)(result)
 
-	C.g_mount_operation_reply(arg0, arg1)
+	C.g_mount_operation_reply(_arg0, _arg1)
 }
 
 // SetAnonymous sets the mount operation to use an anonymous user if
 // @anonymous is true.
 func (o mountOperation) SetAnonymous(anonymous bool) {
-	var arg0 *C.GMountOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GMountOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if anonymous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_mount_operation_set_anonymous(arg0, arg1)
+	C.g_mount_operation_set_anonymous(_arg0, _arg1)
 }
 
 // SetChoice sets a default choice for the mount operation.
 func (o mountOperation) SetChoice(choice int) {
-	var arg0 *C.GMountOperation
-	var arg1 C.int
+	var _arg0 *C.GMountOperation
+	var _arg1 C.int
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = C.int(choice)
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = C.int(choice)
 
-	C.g_mount_operation_set_choice(arg0, arg1)
+	C.g_mount_operation_set_choice(_arg0, _arg1)
 }
 
 // SetDomain sets the mount operation's domain.
 func (o mountOperation) SetDomain(domain string) {
-	var arg0 *C.GMountOperation
-	var arg1 *C.char
+	var _arg0 *C.GMountOperation
+	var _arg1 *C.char
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.char)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.char)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_mount_operation_set_domain(arg0, arg1)
+	C.g_mount_operation_set_domain(_arg0, _arg1)
 }
 
 // SetIsTcryptHiddenVolume sets the mount operation to use a hidden volume
 // if @hidden_volume is true.
 func (o mountOperation) SetIsTcryptHiddenVolume(hiddenVolume bool) {
-	var arg0 *C.GMountOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GMountOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if hiddenVolume {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_mount_operation_set_is_tcrypt_hidden_volume(arg0, arg1)
+	C.g_mount_operation_set_is_tcrypt_hidden_volume(_arg0, _arg1)
 }
 
 // SetIsTcryptSystemVolume sets the mount operation to use a system volume
 // if @system_volume is true.
 func (o mountOperation) SetIsTcryptSystemVolume(systemVolume bool) {
-	var arg0 *C.GMountOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GMountOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
 	if systemVolume {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_mount_operation_set_is_tcrypt_system_volume(arg0, arg1)
+	C.g_mount_operation_set_is_tcrypt_system_volume(_arg0, _arg1)
 }
 
 // SetPassword sets the mount operation's password to @password.
 func (o mountOperation) SetPassword(password string) {
-	var arg0 *C.GMountOperation
-	var arg1 *C.char
+	var _arg0 *C.GMountOperation
+	var _arg1 *C.char
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.char)(C.CString(password))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.char)(C.CString(password))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_mount_operation_set_password(arg0, arg1)
+	C.g_mount_operation_set_password(_arg0, _arg1)
 }
 
 // SetPasswordSave sets the state of saving passwords for the mount
 // operation.
 func (o mountOperation) SetPasswordSave(save PasswordSave) {
-	var arg0 *C.GMountOperation
-	var arg1 C.GPasswordSave
+	var _arg0 *C.GMountOperation
+	var _arg1 C.GPasswordSave
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (C.GPasswordSave)(save)
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (C.GPasswordSave)(save)
 
-	C.g_mount_operation_set_password_save(arg0, arg1)
+	C.g_mount_operation_set_password_save(_arg0, _arg1)
 }
 
 // SetPim sets the mount operation's PIM to @pim.
 func (o mountOperation) SetPim(pim uint) {
-	var arg0 *C.GMountOperation
-	var arg1 C.guint
+	var _arg0 *C.GMountOperation
+	var _arg1 C.guint
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = C.guint(pim)
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = C.guint(pim)
 
-	C.g_mount_operation_set_pim(arg0, arg1)
+	C.g_mount_operation_set_pim(_arg0, _arg1)
 }
 
 // SetUsername sets the user name within @op to @username.
 func (o mountOperation) SetUsername(username string) {
-	var arg0 *C.GMountOperation
-	var arg1 *C.char
+	var _arg0 *C.GMountOperation
+	var _arg1 *C.char
 
-	arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.char)(C.CString(username))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.char)(C.CString(username))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_mount_operation_set_username(arg0, arg1)
+	C.g_mount_operation_set_username(_arg0, _arg1)
 }

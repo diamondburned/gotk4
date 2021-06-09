@@ -88,27 +88,27 @@ const (
 // PixbufFromPixdata converts a Pixdata to a Pixbuf. If @copy_pixels is true or
 // if the pixel data is run-length-encoded, the pixel data is copied into
 // newly-allocated memory; otherwise it is reused.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (pixbuf gdkpixbuf.Pixbuf, goerr error) {
-	var arg1 *C.GdkPixdata
-	var arg2 C.gboolean
+func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
+	var _arg1 *C.GdkPixdata
+	var _arg2 C.gboolean
 
-	arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata.Native()))
+	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata.Native()))
 	if copyPixels {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	var cret *C.GdkPixbuf
-	var cerr *C.GError
+	var _cret *C.GdkPixbuf
+	var _cerr *C.GError
 
-	cret = C.gdk_pixbuf_from_pixdata(arg1, arg2, cerr)
+	cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, _cerr)
 
-	var pixbuf gdkpixbuf.Pixbuf
-	var goerr error
+	var _pixbuf gdkpixbuf.Pixbuf
+	var _goerr error
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return pixbuf, goerr
+	return _pixbuf, _goerr
 }
 
 // Pixdata: a Pixdata contains pixbuf information in a form suitable for
@@ -183,48 +183,48 @@ func (p *Pixdata) Height() uint32 {
 // data is run-length encoded into newly-allocated memory and a pointer to that
 // memory is returned.
 func (p *Pixdata) FromPixbuf(pixbuf gdkpixbuf.Pixbuf, useRle bool) interface{} {
-	var arg0 *C.GdkPixdata
-	var arg1 *C.GdkPixbuf
-	var arg2 C.gboolean
+	var _arg0 *C.GdkPixdata
+	var _arg1 *C.GdkPixbuf
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 	if useRle {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.gdk_pixdata_from_pixbuf(arg0, arg1, arg2)
+	cret = C.gdk_pixdata_from_pixbuf(_arg0, _arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Serialize serializes a Pixdata structure into a byte stream. The byte stream
 // consists of a straightforward writeout of the Pixdata fields in network byte
 // order, plus the @pixel_data bytes the structure points to.
 func (p *Pixdata) Serialize() []byte {
-	var arg0 *C.GdkPixdata
+	var _arg0 *C.GdkPixdata
 
-	arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
 
-	var cret *C.guint8
-	var arg1 *C.guint
+	var _cret *C.guint8
+	var _arg1 *C.guint
 
-	cret = C.gdk_pixdata_serialize(arg0)
+	cret = C.gdk_pixdata_serialize(_arg0)
 
-	var guint8s []byte
+	var _guint8s []byte
 
-	ptr.SetSlice(unsafe.Pointer(&guint8s), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&guint8s, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg1))
+	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return guint8s
+	return _guint8s
 }
 
 // ToCsource generates C source code suitable for compiling images directly into
@@ -234,25 +234,25 @@ func (p *Pixdata) Serialize() []byte {
 // [gdk-pixbuf-csource][gdk-pixbuf-csource], which offers a command line
 // interface to this function.
 func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String {
-	var arg0 *C.GdkPixdata
-	var arg1 *C.gchar
-	var arg2 C.GdkPixdataDumpType
+	var _arg0 *C.GdkPixdata
+	var _arg1 *C.gchar
+	var _arg2 C.GdkPixdataDumpType
 
-	arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GdkPixdataDumpType)(dumpType)
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GdkPixdataDumpType)(dumpType)
 
-	var cret *C.GString
+	var _cret *C.GString
 
-	cret = C.gdk_pixdata_to_csource(arg0, arg1, arg2)
+	cret = C.gdk_pixdata_to_csource(_arg0, _arg1, _arg2)
 
-	var string *glib.String
+	var _string *glib.String
 
-	string = glib.WrapString(unsafe.Pointer(cret))
-	runtime.SetFinalizer(string, func(v *glib.String) {
+	_string = glib.WrapString(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_string, func(v *glib.String) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return string
+	return _string
 }

@@ -121,51 +121,51 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 
 // NewMapListModel constructs a class MapListModel.
 func NewMapListModel() MapListModel {
-	var cret C.GtkMapListModel
+	var _cret C.GtkMapListModel
 
 	cret = C.gtk_map_list_model_new()
 
-	var mapListModel MapListModel
+	var _mapListModel MapListModel
 
-	mapListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MapListModel)
+	_mapListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MapListModel)
 
-	return mapListModel
+	return _mapListModel
 }
 
 // Model gets the model that is currently being mapped or nil if none.
 func (s mapListModel) Model() gio.ListModel {
-	var arg0 *C.GtkMapListModel
+	var _arg0 *C.GtkMapListModel
 
-	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
+	var _cret *C.GListModel
 
-	cret = C.gtk_map_list_model_get_model(arg0)
+	cret = C.gtk_map_list_model_get_model(_arg0)
 
-	var listModel gio.ListModel
+	var _listModel gio.ListModel
 
-	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
 
-	return listModel
+	return _listModel
 }
 
 // HasMap checks if a map function is currently set on @self
 func (s mapListModel) HasMap() bool {
-	var arg0 *C.GtkMapListModel
+	var _arg0 *C.GtkMapListModel
 
-	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_map_list_model_has_map(arg0)
+	cret = C.gtk_map_list_model_has_map(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetMapFunc sets the function used to map items. The function will be
@@ -179,11 +179,11 @@ func (s mapListModel) HasMap() bool {
 // @self. It assumes that the caller knows what they are doing and the map
 // function returns items of the appropriate type.
 func (s mapListModel) SetMapFunc() {
-	var arg0 *C.GtkMapListModel
+	var _arg0 *C.GtkMapListModel
 
-	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
-	C.gtk_map_list_model_set_map_func(arg0)
+	C.gtk_map_list_model_set_map_func(_arg0)
 }
 
 // SetModel sets the model to be mapped.
@@ -192,11 +192,11 @@ func (s mapListModel) SetMapFunc() {
 // expected by the map function. It assumes that the caller knows what they
 // are doing and have set up an appropriate map function.
 func (s mapListModel) SetModel(model gio.ListModel) {
-	var arg0 *C.GtkMapListModel
-	var arg1 *C.GListModel
+	var _arg0 *C.GtkMapListModel
+	var _arg1 *C.GListModel
 
-	arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_map_list_model_set_model(arg0, arg1)
+	C.gtk_map_list_model_set_model(_arg0, _arg1)
 }

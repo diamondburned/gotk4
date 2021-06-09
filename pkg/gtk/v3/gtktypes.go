@@ -66,38 +66,38 @@ func marshalIconSet(p uintptr) (interface{}, error) {
 
 // NewIconSet constructs a struct IconSet.
 func NewIconSet() *IconSet {
-	var cret *C.GtkIconSet
+	var _cret *C.GtkIconSet
 
 	cret = C.gtk_icon_set_new()
 
-	var iconSet *IconSet
+	var _iconSet *IconSet
 
-	iconSet = WrapIconSet(unsafe.Pointer(cret))
-	runtime.SetFinalizer(iconSet, func(v *IconSet) {
+	_iconSet = WrapIconSet(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return iconSet
+	return _iconSet
 }
 
 // NewIconSetFromPixbuf constructs a struct IconSet.
 func NewIconSetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) *IconSet {
-	var arg1 *C.GdkPixbuf
+	var _arg1 *C.GdkPixbuf
 
-	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	var cret *C.GtkIconSet
+	var _cret *C.GtkIconSet
 
-	cret = C.gtk_icon_set_new_from_pixbuf(arg1)
+	cret = C.gtk_icon_set_new_from_pixbuf(_arg1)
 
-	var iconSet *IconSet
+	var _iconSet *IconSet
 
-	iconSet = WrapIconSet(unsafe.Pointer(cret))
-	runtime.SetFinalizer(iconSet, func(v *IconSet) {
+	_iconSet = WrapIconSet(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return iconSet
+	return _iconSet
 }
 
 // Native returns the underlying C source pointer.
@@ -129,65 +129,65 @@ func (i *IconSet) Native() unsafe.Pointer {
 // gtk_icon_set_new_from_pixbuf() creates a new icon set with a default icon
 // source based on the given pixbuf.
 func (i *IconSet) AddSource(source *IconSource) {
-	var arg0 *C.GtkIconSet
-	var arg1 *C.GtkIconSource
+	var _arg0 *C.GtkIconSet
+	var _arg1 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GtkIconSource)(unsafe.Pointer(source.Native()))
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkIconSource)(unsafe.Pointer(source.Native()))
 
-	C.gtk_icon_set_add_source(arg0, arg1)
+	C.gtk_icon_set_add_source(_arg0, _arg1)
 }
 
 // Copy copies @icon_set by value.
 func (i *IconSet) Copy() *IconSet {
-	var arg0 *C.GtkIconSet
+	var _arg0 *C.GtkIconSet
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GtkIconSet
+	var _cret *C.GtkIconSet
 
-	cret = C.gtk_icon_set_copy(arg0)
+	cret = C.gtk_icon_set_copy(_arg0)
 
-	var iconSet *IconSet
+	var _iconSet *IconSet
 
-	iconSet = WrapIconSet(unsafe.Pointer(cret))
-	runtime.SetFinalizer(iconSet, func(v *IconSet) {
+	_iconSet = WrapIconSet(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return iconSet
+	return _iconSet
 }
 
 // Sizes obtains a list of icon sizes this icon set can render. The returned
 // array must be freed with g_free().
 func (i *IconSet) Sizes() {
-	var arg0 *C.GtkIconSet
+	var _arg0 *C.GtkIconSet
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
 
-	C.gtk_icon_set_get_sizes(arg0)
+	C.gtk_icon_set_get_sizes(_arg0)
 
 	return
 }
 
 // Ref increments the reference count on @icon_set.
 func (i *IconSet) Ref() *IconSet {
-	var arg0 *C.GtkIconSet
+	var _arg0 *C.GtkIconSet
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GtkIconSet
+	var _cret *C.GtkIconSet
 
-	cret = C.gtk_icon_set_ref(arg0)
+	cret = C.gtk_icon_set_ref(_arg0)
 
-	var iconSet *IconSet
+	var _iconSet *IconSet
 
-	iconSet = WrapIconSet(unsafe.Pointer(cret))
-	runtime.SetFinalizer(iconSet, func(v *IconSet) {
+	_iconSet = WrapIconSet(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSet, func(v *IconSet) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return iconSet
+	return _iconSet
 }
 
 // RenderIcon renders an icon using gtk_style_render_icon(). In most cases,
@@ -196,32 +196,32 @@ func (i *IconSet) Ref() *IconSet {
 // nil; if the icon can’t be rendered (perhaps because an image file fails to
 // load), a default "missing image" icon will be returned instead.
 func (i *IconSet) RenderIcon(style Style, direction TextDirection, state StateType, size int, widget Widget, detail string) gdkpixbuf.Pixbuf {
-	var arg0 *C.GtkIconSet
-	var arg1 *C.GtkStyle
-	var arg2 C.GtkTextDirection
-	var arg3 C.GtkStateType
-	var arg4 C.GtkIconSize
-	var arg5 *C.GtkWidget
-	var arg6 *C.gchar
+	var _arg0 *C.GtkIconSet
+	var _arg1 *C.GtkStyle
+	var _arg2 C.GtkTextDirection
+	var _arg3 C.GtkStateType
+	var _arg4 C.GtkIconSize
+	var _arg5 *C.GtkWidget
+	var _arg6 *C.gchar
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
-	arg2 = (C.GtkTextDirection)(direction)
-	arg3 = (C.GtkStateType)(state)
-	arg4 = C.GtkIconSize(size)
-	arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg6 = (*C.gchar)(C.CString(detail))
-	defer C.free(unsafe.Pointer(arg6))
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
+	_arg2 = (C.GtkTextDirection)(direction)
+	_arg3 = (C.GtkStateType)(state)
+	_arg4 = C.GtkIconSize(size)
+	_arg5 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg6 = (*C.gchar)(C.CString(detail))
+	defer C.free(unsafe.Pointer(_arg6))
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gtk_icon_set_render_icon(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.gtk_icon_set_render_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // RenderIconPixbuf renders an icon using gtk_render_icon_pixbuf(). In most
@@ -231,23 +231,23 @@ func (i *IconSet) RenderIcon(style Style, direction TextDirection, state StateTy
 // image file fails to load), a default "missing image" icon will be returned
 // instead.
 func (i *IconSet) RenderIconPixbuf(context StyleContext, size int) gdkpixbuf.Pixbuf {
-	var arg0 *C.GtkIconSet
-	var arg1 *C.GtkStyleContext
-	var arg2 C.GtkIconSize
+	var _arg0 *C.GtkIconSet
+	var _arg1 *C.GtkStyleContext
+	var _arg2 C.GtkIconSize
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	arg2 = C.GtkIconSize(size)
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg2 = C.GtkIconSize(size)
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gtk_icon_set_render_icon_pixbuf(arg0, arg1, arg2)
+	cret = C.gtk_icon_set_render_icon_pixbuf(_arg0, _arg1, _arg2)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // RenderIconSurface renders an icon using gtk_render_icon_pixbuf() and converts
@@ -257,40 +257,40 @@ func (i *IconSet) RenderIconPixbuf(context StyleContext, size int) gdkpixbuf.Pix
 // because an image file fails to load), a default "missing image" icon will be
 // returned instead.
 func (i *IconSet) RenderIconSurface(context StyleContext, size int, scale int, forWindow gdk.Window) *cairo.Surface {
-	var arg0 *C.GtkIconSet
-	var arg1 *C.GtkStyleContext
-	var arg2 C.GtkIconSize
-	var arg3 C.int
-	var arg4 *C.GdkWindow
+	var _arg0 *C.GtkIconSet
+	var _arg1 *C.GtkStyleContext
+	var _arg2 C.GtkIconSize
+	var _arg3 C.int
+	var _arg4 *C.GdkWindow
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	arg2 = C.GtkIconSize(size)
-	arg3 = C.int(scale)
-	arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg2 = C.GtkIconSize(size)
+	_arg3 = C.int(scale)
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
 
-	var cret *C.cairo_surface_t
+	var _cret *C.cairo_surface_t
 
-	cret = C.gtk_icon_set_render_icon_surface(arg0, arg1, arg2, arg3, arg4)
+	cret = C.gtk_icon_set_render_icon_surface(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var surface *cairo.Surface
+	var _surface *cairo.Surface
 
-	surface = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(surface, func(v *cairo.Surface) {
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return surface
+	return _surface
 }
 
 // Unref decrements the reference count on @icon_set, and frees memory if the
 // reference count reaches 0.
 func (i *IconSet) Unref() {
-	var arg0 *C.GtkIconSet
+	var _arg0 *C.GtkIconSet
 
-	arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkIconSet)(unsafe.Pointer(i.Native()))
 
-	C.gtk_icon_set_unref(arg0)
+	C.gtk_icon_set_unref(_arg0)
 }
 
 type IconSource struct {
@@ -314,18 +314,18 @@ func marshalIconSource(p uintptr) (interface{}, error) {
 
 // NewIconSource constructs a struct IconSource.
 func NewIconSource() *IconSource {
-	var cret *C.GtkIconSource
+	var _cret *C.GtkIconSource
 
 	cret = C.gtk_icon_source_new()
 
-	var iconSource *IconSource
+	var _iconSource *IconSource
 
-	iconSource = WrapIconSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(iconSource, func(v *IconSource) {
+	_iconSource = WrapIconSource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return iconSource
+	return _iconSource
 }
 
 // Native returns the underlying C source pointer.
@@ -335,108 +335,108 @@ func (i *IconSource) Native() unsafe.Pointer {
 
 // Copy creates a copy of @source; mostly useful for language bindings.
 func (s *IconSource) Copy() *IconSource {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkIconSource
+	var _cret *C.GtkIconSource
 
-	cret = C.gtk_icon_source_copy(arg0)
+	cret = C.gtk_icon_source_copy(_arg0)
 
-	var iconSource *IconSource
+	var _iconSource *IconSource
 
-	iconSource = WrapIconSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(iconSource, func(v *IconSource) {
+	_iconSource = WrapIconSource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_iconSource, func(v *IconSource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return iconSource
+	return _iconSource
 }
 
 // Free frees a dynamically-allocated icon source, along with its filename,
 // size, and pixbuf fields if those are not nil.
 func (s *IconSource) Free() {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	C.gtk_icon_source_free(arg0)
+	C.gtk_icon_source_free(_arg0)
 }
 
 // Direction obtains the text direction this icon source applies to. The return
 // value is only useful/meaningful if the text direction is not wildcarded.
 func (s *IconSource) Direction() TextDirection {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkTextDirection
+	var _cret C.GtkTextDirection
 
-	cret = C.gtk_icon_source_get_direction(arg0)
+	cret = C.gtk_icon_source_get_direction(_arg0)
 
-	var textDirection TextDirection
+	var _textDirection TextDirection
 
-	textDirection = TextDirection(cret)
+	_textDirection = TextDirection(_cret)
 
-	return textDirection
+	return _textDirection
 }
 
 // DirectionWildcarded gets the value set by
 // gtk_icon_source_set_direction_wildcarded().
 func (s *IconSource) DirectionWildcarded() bool {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_icon_source_get_direction_wildcarded(arg0)
+	cret = C.gtk_icon_source_get_direction_wildcarded(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Filename retrieves the source filename, or nil if none is set. The filename
 // is not a copy, and should not be modified or expected to persist beyond the
 // lifetime of the icon source.
 func (s *IconSource) Filename() *string {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_icon_source_get_filename(arg0)
+	cret = C.gtk_icon_source_get_filename(_arg0)
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // IconName retrieves the source icon name, or nil if none is set. The icon_name
 // is not a copy, and should not be modified or expected to persist beyond the
 // lifetime of the icon source.
 func (s *IconSource) IconName() string {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_icon_source_get_icon_name(arg0)
+	cret = C.gtk_icon_source_get_icon_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Pixbuf retrieves the source pixbuf, or nil if none is set. In addition, if a
@@ -445,93 +445,93 @@ func (s *IconSource) IconName() string {
 // GtkIconSource passed to the Style render_icon() virtual function. The
 // reference count on the pixbuf is not incremented.
 func (s *IconSource) Pixbuf() gdkpixbuf.Pixbuf {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gtk_icon_source_get_pixbuf(arg0)
+	cret = C.gtk_icon_source_get_pixbuf(_arg0)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // Size obtains the icon size this source applies to. The return value is only
 // useful/meaningful if the icon size is not wildcarded.
 func (s *IconSource) Size() int {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkIconSize
+	var _cret C.GtkIconSize
 
-	cret = C.gtk_icon_source_get_size(arg0)
+	cret = C.gtk_icon_source_get_size(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SizeWildcarded gets the value set by gtk_icon_source_set_size_wildcarded().
 func (s *IconSource) SizeWildcarded() bool {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_icon_source_get_size_wildcarded(arg0)
+	cret = C.gtk_icon_source_get_size_wildcarded(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // State obtains the widget state this icon source applies to. The return value
 // is only useful/meaningful if the widget state is not wildcarded.
 func (s *IconSource) State() StateType {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkStateType
+	var _cret C.GtkStateType
 
-	cret = C.gtk_icon_source_get_state(arg0)
+	cret = C.gtk_icon_source_get_state(_arg0)
 
-	var stateType StateType
+	var _stateType StateType
 
-	stateType = StateType(cret)
+	_stateType = StateType(_cret)
 
-	return stateType
+	return _stateType
 }
 
 // StateWildcarded gets the value set by gtk_icon_source_set_state_wildcarded().
 func (s *IconSource) StateWildcarded() bool {
-	var arg0 *C.GtkIconSource
+	var _arg0 *C.GtkIconSource
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_icon_source_get_state_wildcarded(arg0)
+	cret = C.gtk_icon_source_get_state_wildcarded(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetDirection sets the text direction this icon source is intended to be used
@@ -542,13 +542,13 @@ func (s *IconSource) StateWildcarded() bool {
 // gtk_icon_source_set_direction_wildcarded() to un-wildcard it in addition to
 // calling this function.
 func (s *IconSource) SetDirection(direction TextDirection) {
-	var arg0 *C.GtkIconSource
-	var arg1 C.GtkTextDirection
+	var _arg0 *C.GtkIconSource
+	var _arg1 C.GtkTextDirection
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkTextDirection)(direction)
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkTextDirection)(direction)
 
-	C.gtk_icon_source_set_direction(arg0, arg1)
+	C.gtk_icon_source_set_direction(_arg0, _arg1)
 }
 
 // SetDirectionWildcarded: if the text direction is wildcarded, this source can
@@ -560,53 +560,53 @@ func (s *IconSource) SetDirection(direction TextDirection) {
 // IconSet prefers non-wildcarded sources (exact matches) over wildcarded
 // sources, and will use an exact match when possible.
 func (s *IconSource) SetDirectionWildcarded(setting bool) {
-	var arg0 *C.GtkIconSource
-	var arg1 C.gboolean
+	var _arg0 *C.GtkIconSource
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 	if setting {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_icon_source_set_direction_wildcarded(arg0, arg1)
+	C.gtk_icon_source_set_direction_wildcarded(_arg0, _arg1)
 }
 
 // SetFilename sets the name of an image file to use as a base image when
 // creating icon variants for IconSet. The filename must be absolute.
 func (s *IconSource) SetFilename(filename *string) {
-	var arg0 *C.GtkIconSource
-	var arg1 *C.gchar
+	var _arg0 *C.GtkIconSource
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_icon_source_set_filename(arg0, arg1)
+	C.gtk_icon_source_set_filename(_arg0, _arg1)
 }
 
 // SetIconName sets the name of an icon to look up in the current icon theme to
 // use as a base image when creating icon variants for IconSet.
 func (s *IconSource) SetIconName(iconName string) {
-	var arg0 *C.GtkIconSource
-	var arg1 *C.gchar
+	var _arg0 *C.GtkIconSource
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(iconName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_icon_source_set_icon_name(arg0, arg1)
+	C.gtk_icon_source_set_icon_name(_arg0, _arg1)
 }
 
 // SetPixbuf sets a pixbuf to use as a base image when creating icon variants
 // for IconSet.
 func (s *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
-	var arg0 *C.GtkIconSource
-	var arg1 *C.GdkPixbuf
+	var _arg0 *C.GtkIconSource
+	var _arg1 *C.GdkPixbuf
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	C.gtk_icon_source_set_pixbuf(arg0, arg1)
+	C.gtk_icon_source_set_pixbuf(_arg0, _arg1)
 }
 
 // SetSize sets the icon size this icon source is intended to be used with.
@@ -616,13 +616,13 @@ func (s *IconSource) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 // gtk_icon_source_set_size_wildcarded() to un-wildcard it in addition to
 // calling this function.
 func (s *IconSource) SetSize(size int) {
-	var arg0 *C.GtkIconSource
-	var arg1 C.GtkIconSize
+	var _arg0 *C.GtkIconSource
+	var _arg1 C.GtkIconSize
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
-	arg1 = C.GtkIconSize(size)
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg1 = C.GtkIconSize(size)
 
-	C.gtk_icon_source_set_size(arg0, arg1)
+	C.gtk_icon_source_set_size(_arg0, _arg1)
 }
 
 // SetSizeWildcarded: if the icon size is wildcarded, this source can be used as
@@ -637,15 +637,15 @@ func (s *IconSource) SetSize(size int) {
 // appropriate icon at a given size, but will not change the size of source
 // images that match exactly.
 func (s *IconSource) SetSizeWildcarded(setting bool) {
-	var arg0 *C.GtkIconSource
-	var arg1 C.gboolean
+	var _arg0 *C.GtkIconSource
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 	if setting {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_icon_source_set_size_wildcarded(arg0, arg1)
+	C.gtk_icon_source_set_size_wildcarded(_arg0, _arg1)
 }
 
 // SetState sets the widget state this icon source is intended to be used with.
@@ -655,13 +655,13 @@ func (s *IconSource) SetSizeWildcarded(setting bool) {
 // gtk_icon_source_set_state_wildcarded() to un-wildcard it in addition to
 // calling this function.
 func (s *IconSource) SetState(state StateType) {
-	var arg0 *C.GtkIconSource
-	var arg1 C.GtkStateType
+	var _arg0 *C.GtkIconSource
+	var _arg1 C.GtkStateType
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkStateType)(state)
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkStateType)(state)
 
-	C.gtk_icon_source_set_state(arg0, arg1)
+	C.gtk_icon_source_set_state(_arg0, _arg1)
 }
 
 // SetStateWildcarded: if the widget state is wildcarded, this source can be
@@ -677,15 +677,15 @@ func (s *IconSource) SetState(state StateType) {
 // appropriate icon for a given state, for example lightening an image on
 // prelight, but will not modify source images that match exactly.
 func (s *IconSource) SetStateWildcarded(setting bool) {
-	var arg0 *C.GtkIconSource
-	var arg1 C.gboolean
+	var _arg0 *C.GtkIconSource
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkIconSource)(unsafe.Pointer(s.Native()))
 	if setting {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_icon_source_set_state_wildcarded(arg0, arg1)
+	C.gtk_icon_source_set_state_wildcarded(_arg0, _arg1)
 }
 
 type SelectionData struct {
@@ -714,232 +714,232 @@ func (s *SelectionData) Native() unsafe.Pointer {
 
 // Copy makes a copy of a SelectionData-struct and its data.
 func (d *SelectionData) Copy() *SelectionData {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GtkSelectionData
+	var _cret *C.GtkSelectionData
 
-	cret = C.gtk_selection_data_copy(arg0)
+	cret = C.gtk_selection_data_copy(_arg0)
 
-	var selectionData *SelectionData
+	var _selectionData *SelectionData
 
-	selectionData = WrapSelectionData(unsafe.Pointer(cret))
-	runtime.SetFinalizer(selectionData, func(v *SelectionData) {
+	_selectionData = WrapSelectionData(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_selectionData, func(v *SelectionData) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return selectionData
+	return _selectionData
 }
 
 // Free frees a SelectionData-struct returned from gtk_selection_data_copy().
 func (d *SelectionData) Free() {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(d.Native()))
 
-	C.gtk_selection_data_free(arg0)
+	C.gtk_selection_data_free(_arg0)
 }
 
 // DataType retrieves the data type of the selection.
 func (s *SelectionData) DataType() gdk.Atom {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.GdkAtom
+	var _cret C.GdkAtom
 
-	cret = C.gtk_selection_data_get_data_type(arg0)
+	cret = C.gtk_selection_data_get_data_type(_arg0)
 
-	var atom gdk.Atom
+	var _atom gdk.Atom
 
-	atom = *gdk.WrapAtom(unsafe.Pointer(&cret))
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
 
-	return atom
+	return _atom
 }
 
 // DataWithLength retrieves the raw data of the selection along with its length.
 func (s *SelectionData) DataWithLength() []byte {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret *C.guchar
-	var arg1 *C.gint
+	var _cret *C.guchar
+	var _arg1 *C.gint
 
-	cret = C.gtk_selection_data_get_data_with_length(arg0)
+	cret = C.gtk_selection_data_get_data_with_length(_arg0)
 
-	var guint8s []byte
+	var _guint8s []byte
 
 	{
 		var src []C.guchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
 
-		guint8s = make([]byte, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			guint8s = (byte)(cret)
+		_guint8s = make([]byte, _arg1)
+		for i := 0; i < uintptr(_arg1); i++ {
+			_guint8s = (byte)(_cret)
 		}
 	}
 
-	return guint8s
+	return _guint8s
 }
 
 // Display retrieves the display of the selection.
 func (s *SelectionData) Display() gdk.Display {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gtk_selection_data_get_display(arg0)
+	cret = C.gtk_selection_data_get_display(_arg0)
 
-	var display gdk.Display
+	var _display gdk.Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
 
-	return display
+	return _display
 }
 
 // Format retrieves the format of the selection.
 func (s *SelectionData) Format() int {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_selection_data_get_format(arg0)
+	cret = C.gtk_selection_data_get_format(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Length retrieves the length of the raw data of the selection.
 func (s *SelectionData) Length() int {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_selection_data_get_length(arg0)
+	cret = C.gtk_selection_data_get_length(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Pixbuf gets the contents of the selection data as a Pixbuf.
 func (s *SelectionData) Pixbuf() gdkpixbuf.Pixbuf {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gtk_selection_data_get_pixbuf(arg0)
+	cret = C.gtk_selection_data_get_pixbuf(_arg0)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // Selection retrieves the selection Atom of the selection data.
 func (s *SelectionData) Selection() gdk.Atom {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.GdkAtom
+	var _cret C.GdkAtom
 
-	cret = C.gtk_selection_data_get_selection(arg0)
+	cret = C.gtk_selection_data_get_selection(_arg0)
 
-	var atom gdk.Atom
+	var _atom gdk.Atom
 
-	atom = *gdk.WrapAtom(unsafe.Pointer(&cret))
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
 
-	return atom
+	return _atom
 }
 
 // Target retrieves the target of the selection.
 func (s *SelectionData) Target() gdk.Atom {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.GdkAtom
+	var _cret C.GdkAtom
 
-	cret = C.gtk_selection_data_get_target(arg0)
+	cret = C.gtk_selection_data_get_target(_arg0)
 
-	var atom gdk.Atom
+	var _atom gdk.Atom
 
-	atom = *gdk.WrapAtom(unsafe.Pointer(&cret))
+	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
 
-	return atom
+	return _atom
 }
 
 // Targets gets the contents of @selection_data as an array of targets. This can
 // be used to interpret the results of getting the standard TARGETS target that
 // is always supplied for any selection.
 func (s *SelectionData) Targets() bool {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_get_targets(arg0)
+	cret = C.gtk_selection_data_get_targets(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Text gets the contents of the selection data as a UTF-8 string.
 func (s *SelectionData) Text() string {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret *C.guchar
+	var _cret *C.guchar
 
-	cret = C.gtk_selection_data_get_text(arg0)
+	cret = C.gtk_selection_data_get_text(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Uris gets the contents of the selection data as array of URIs.
 func (s *SelectionData) Uris() []string {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret **C.gchar
+	var _cret **C.gchar
 
-	cret = C.gtk_selection_data_get_uris(arg0)
+	cret = C.gtk_selection_data_get_uris(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -947,194 +947,194 @@ func (s *SelectionData) Uris() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // Set stores new data into a SelectionData object. Should only be called from a
 // selection handler callback. Zero-terminates the stored data.
 func (s *SelectionData) Set() {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	C.gtk_selection_data_set(arg0)
+	C.gtk_selection_data_set(_arg0)
 }
 
 // SetPixbuf sets the contents of the selection from a Pixbuf The pixbuf is
 // converted to the form determined by @selection_data->target.
 func (s *SelectionData) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) bool {
-	var arg0 *C.GtkSelectionData
-	var arg1 *C.GdkPixbuf
+	var _arg0 *C.GtkSelectionData
+	var _arg1 *C.GdkPixbuf
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_set_pixbuf(arg0, arg1)
+	cret = C.gtk_selection_data_set_pixbuf(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetText sets the contents of the selection from a UTF-8 encoded string. The
 // string is converted to the form determined by @selection_data->target.
 func (s *SelectionData) SetText(str string, len int) bool {
-	var arg0 *C.GtkSelectionData
-	var arg1 *C.gchar
-	var arg2 C.gint
+	var _arg0 *C.GtkSelectionData
+	var _arg1 *C.gchar
+	var _arg2 C.gint
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gint(len)
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(len)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_set_text(arg0, arg1, arg2)
+	cret = C.gtk_selection_data_set_text(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetUris sets the contents of the selection from a list of URIs. The string is
 // converted to the form determined by @selection_data->target.
 func (s *SelectionData) SetUris(uris []string) bool {
-	var arg0 *C.GtkSelectionData
-	var arg1 **C.gchar
+	var _arg0 *C.GtkSelectionData
+	var _arg1 **C.gchar
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
-	arg1 = (**C.gchar)(C.malloc((len(uris) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg1 = (**C.gchar)(C.malloc((len(uris) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	{
 		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(uris)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(uris)))
 
 		for i := range uris {
-			arg1 = (*C.gchar)(C.CString(uris))
-			defer C.free(unsafe.Pointer(arg1))
+			_arg1 = (*C.gchar)(C.CString(uris))
+			defer C.free(unsafe.Pointer(_arg1))
 		}
 	}
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_set_uris(arg0, arg1)
+	cret = C.gtk_selection_data_set_uris(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TargetsIncludeImage: given a SelectionData object holding a list of targets,
 // determines if any of the targets in @targets can be used to provide a Pixbuf.
 func (s *SelectionData) TargetsIncludeImage(writable bool) bool {
-	var arg0 *C.GtkSelectionData
-	var arg1 C.gboolean
+	var _arg0 *C.GtkSelectionData
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 	if writable {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_targets_include_image(arg0, arg1)
+	cret = C.gtk_selection_data_targets_include_image(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TargetsIncludeRichText: given a SelectionData object holding a list of
 // targets, determines if any of the targets in @targets can be used to provide
 // rich text.
 func (s *SelectionData) TargetsIncludeRichText(buffer TextBuffer) bool {
-	var arg0 *C.GtkSelectionData
-	var arg1 *C.GtkTextBuffer
+	var _arg0 *C.GtkSelectionData
+	var _arg1 *C.GtkTextBuffer
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_targets_include_rich_text(arg0, arg1)
+	cret = C.gtk_selection_data_targets_include_rich_text(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TargetsIncludeText: given a SelectionData object holding a list of targets,
 // determines if any of the targets in @targets can be used to provide text.
 func (s *SelectionData) TargetsIncludeText() bool {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_targets_include_text(arg0)
+	cret = C.gtk_selection_data_targets_include_text(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TargetsIncludeURI: given a SelectionData object holding a list of targets,
 // determines if any of the targets in @targets can be used to provide a list or
 // URIs.
 func (s *SelectionData) TargetsIncludeURI() bool {
-	var arg0 *C.GtkSelectionData
+	var _arg0 *C.GtkSelectionData
 
-	arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionData)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_data_targets_include_uri(arg0)
+	cret = C.gtk_selection_data_targets_include_uri(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // WidgetPath: gtkWidgetPath is a boxed type that represents a widget hierarchy
@@ -1187,18 +1187,18 @@ func marshalWidgetPath(p uintptr) (interface{}, error) {
 
 // NewWidgetPath constructs a struct WidgetPath.
 func NewWidgetPath() *WidgetPath {
-	var cret *C.GtkWidgetPath
+	var _cret *C.GtkWidgetPath
 
 	cret = C.gtk_widget_path_new()
 
-	var widgetPath *WidgetPath
+	var _widgetPath *WidgetPath
 
-	widgetPath = WrapWidgetPath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(widgetPath, func(v *WidgetPath) {
+	_widgetPath = WrapWidgetPath(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return widgetPath
+	return _widgetPath
 }
 
 // Native returns the underlying C source pointer.
@@ -1211,41 +1211,41 @@ func (w *WidgetPath) Native() unsafe.Pointer {
 // @widget to the given @path. This includes setting the name or adding the
 // style classes from @widget.
 func (p *WidgetPath) AppendForWidget(widget Widget) int {
-	var arg0 *C.GtkWidgetPath
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_widget_path_append_for_widget(arg0, arg1)
+	cret = C.gtk_widget_path_append_for_widget(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // AppendType appends a widget type to the widget hierarchy represented by
 // @path.
 func (p *WidgetPath) AppendType(typ externglib.Type) int {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.GType
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.GType
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(typ)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_widget_path_append_type(arg0, arg1)
+	cret = C.gtk_widget_path_append_type(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // AppendWithSiblings appends a widget type with all its siblings to the widget
@@ -1256,130 +1256,130 @@ func (p *WidgetPath) AppendType(typ externglib.Type) int {
 // sure to call gtk_widget_reset_style() on all involved widgets when the
 // @siblings path changes.
 func (p *WidgetPath) AppendWithSiblings(siblings *WidgetPath, siblingIndex uint) int {
-	var arg0 *C.GtkWidgetPath
-	var arg1 *C.GtkWidgetPath
-	var arg2 C.guint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 *C.GtkWidgetPath
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(siblings.Native()))
-	arg2 = C.guint(siblingIndex)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(siblings.Native()))
+	_arg2 = C.guint(siblingIndex)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_widget_path_append_with_siblings(arg0, arg1, arg2)
+	cret = C.gtk_widget_path_append_with_siblings(_arg0, _arg1, _arg2)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Copy returns a copy of @path
 func (p *WidgetPath) Copy() *WidgetPath {
-	var arg0 *C.GtkWidgetPath
+	var _arg0 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GtkWidgetPath
+	var _cret *C.GtkWidgetPath
 
-	cret = C.gtk_widget_path_copy(arg0)
+	cret = C.gtk_widget_path_copy(_arg0)
 
-	var widgetPath *WidgetPath
+	var _widgetPath *WidgetPath
 
-	widgetPath = WrapWidgetPath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(widgetPath, func(v *WidgetPath) {
+	_widgetPath = WrapWidgetPath(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return widgetPath
+	return _widgetPath
 }
 
 // Free decrements the reference count on @path, freeing the structure if the
 // reference count reaches 0.
 func (p *WidgetPath) Free() {
-	var arg0 *C.GtkWidgetPath
+	var _arg0 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
 
-	C.gtk_widget_path_free(arg0)
+	C.gtk_widget_path_free(_arg0)
 }
 
 // ObjectType returns the topmost object type, that is, the object type this
 // path is representing.
 func (p *WidgetPath) ObjectType() externglib.Type {
-	var arg0 *C.GtkWidgetPath
+	var _arg0 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.gtk_widget_path_get_object_type(arg0)
+	cret = C.gtk_widget_path_get_object_type(_arg0)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // HasParent returns true if any of the parents of the widget represented in
 // @path is of type @type, or any subtype of it.
 func (p *WidgetPath) HasParent(typ externglib.Type) bool {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.GType
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.GType
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(typ)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_widget_path_has_parent(arg0, arg1)
+	cret = C.gtk_widget_path_has_parent(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsType returns true if the widget type represented by this path is @type, or
 // a subtype of it.
 func (p *WidgetPath) IsType(typ externglib.Type) bool {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.GType
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.GType
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(typ)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_widget_path_is_type(arg0, arg1)
+	cret = C.gtk_widget_path_is_type(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IterAddClass adds the class @name to the widget at position @pos in the
 // hierarchy defined in @path. See gtk_style_context_add_class().
 func (p *WidgetPath) IterAddClass(pos int, name string) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_widget_path_iter_add_class(arg0, arg1, arg2)
+	C.gtk_widget_path_iter_add_class(_arg0, _arg1, _arg2)
 }
 
 // IterAddRegion adds the region @name to the widget at position @pos in the
@@ -1388,102 +1388,102 @@ func (p *WidgetPath) IterAddClass(pos int, name string) {
 // Region names must only contain lowercase letters and “-”, starting always
 // with a lowercase letter.
 func (p *WidgetPath) IterAddRegion(pos int, name string, flags RegionFlags) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
-	var arg3 C.GtkRegionFlags
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
+	var _arg3 C.GtkRegionFlags
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GtkRegionFlags)(flags)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (C.GtkRegionFlags)(flags)
 
-	C.gtk_widget_path_iter_add_region(arg0, arg1, arg2, arg3)
+	C.gtk_widget_path_iter_add_region(_arg0, _arg1, _arg2, _arg3)
 }
 
 // IterClearClasses removes all classes from the widget at position @pos in the
 // hierarchy defined in @path.
 func (p *WidgetPath) IterClearClasses(pos int) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	C.gtk_widget_path_iter_clear_classes(arg0, arg1)
+	C.gtk_widget_path_iter_clear_classes(_arg0, _arg1)
 }
 
 // IterClearRegions removes all regions from the widget at position @pos in the
 // hierarchy defined in @path.
 func (p *WidgetPath) IterClearRegions(pos int) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	C.gtk_widget_path_iter_clear_regions(arg0, arg1)
+	C.gtk_widget_path_iter_clear_regions(_arg0, _arg1)
 }
 
 // IterGetName returns the name corresponding to the widget found at the
 // position @pos in the widget hierarchy defined by @path
 func (p *WidgetPath) IterGetName(pos int) string {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_widget_path_iter_get_name(arg0, arg1)
+	cret = C.gtk_widget_path_iter_get_name(_arg0, _arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // IterGetObjectName returns the object name that is at position @pos in the
 // widget hierarchy defined in @path.
 func (p *WidgetPath) IterGetObjectName(pos int) string {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_widget_path_iter_get_object_name(arg0, arg1)
+	cret = C.gtk_widget_path_iter_get_object_name(_arg0, _arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // IterGetObjectType returns the object #GType that is at position @pos in the
 // widget hierarchy defined in @path.
 func (p *WidgetPath) IterGetObjectType(pos int) externglib.Type {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.gtk_widget_path_iter_get_object_type(arg0, arg1)
+	cret = C.gtk_widget_path_iter_get_object_type(_arg0, _arg1)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // IterGetSiblingIndex returns the index into the list of siblings for the
@@ -1491,230 +1491,230 @@ func (p *WidgetPath) IterGetObjectType(pos int) externglib.Type {
 // function would return nil because the element at @pos has no siblings, this
 // function will return 0.
 func (p *WidgetPath) IterGetSiblingIndex(pos int) uint {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_widget_path_iter_get_sibling_index(arg0, arg1)
+	cret = C.gtk_widget_path_iter_get_sibling_index(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // IterGetSiblings returns the list of siblings for the element at @pos. If the
 // element was not added with siblings, nil is returned.
 func (p *WidgetPath) IterGetSiblings(pos int) *WidgetPath {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret *C.GtkWidgetPath
+	var _cret *C.GtkWidgetPath
 
-	cret = C.gtk_widget_path_iter_get_siblings(arg0, arg1)
+	cret = C.gtk_widget_path_iter_get_siblings(_arg0, _arg1)
 
-	var widgetPath *WidgetPath
+	var _widgetPath *WidgetPath
 
-	widgetPath = WrapWidgetPath(unsafe.Pointer(cret))
+	_widgetPath = WrapWidgetPath(unsafe.Pointer(_cret))
 
-	return widgetPath
+	return _widgetPath
 }
 
 // IterGetState returns the state flags corresponding to the widget found at the
 // position @pos in the widget hierarchy defined by @path
 func (p *WidgetPath) IterGetState(pos int) StateFlags {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret C.GtkStateFlags
+	var _cret C.GtkStateFlags
 
-	cret = C.gtk_widget_path_iter_get_state(arg0, arg1)
+	cret = C.gtk_widget_path_iter_get_state(_arg0, _arg1)
 
-	var stateFlags StateFlags
+	var _stateFlags StateFlags
 
-	stateFlags = StateFlags(cret)
+	_stateFlags = StateFlags(_cret)
 
-	return stateFlags
+	return _stateFlags
 }
 
 // IterHasClass returns true if the widget at position @pos has the class @name
 // defined, false otherwise.
 func (p *WidgetPath) IterHasClass(pos int, name string) bool {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_widget_path_iter_has_class(arg0, arg1, arg2)
+	cret = C.gtk_widget_path_iter_has_class(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IterHasName returns true if the widget at position @pos has the name @name,
 // false otherwise.
 func (p *WidgetPath) IterHasName(pos int, name string) bool {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_widget_path_iter_has_name(arg0, arg1, arg2)
+	cret = C.gtk_widget_path_iter_has_name(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IterHasRegion returns true if the widget at position @pos has the class @name
 // defined, false otherwise.
-func (p *WidgetPath) IterHasRegion(pos int, name string) (flags RegionFlags, ok bool) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
+func (p *WidgetPath) IterHasRegion(pos int, name string) (RegionFlags, bool) {
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var arg3 C.GtkRegionFlags
-	var cret C.gboolean
+	var _arg3 C.GtkRegionFlags
+	var _cret C.gboolean
 
-	cret = C.gtk_widget_path_iter_has_region(arg0, arg1, arg2, &arg3)
+	cret = C.gtk_widget_path_iter_has_region(_arg0, _arg1, _arg2, &_arg3)
 
-	var flags RegionFlags
-	var ok bool
+	var _flags RegionFlags
+	var _ok bool
 
-	flags = RegionFlags(arg3)
-	if cret {
-		ok = true
+	_flags = RegionFlags(_arg3)
+	if _cret {
+		_ok = true
 	}
 
-	return flags, ok
+	return _flags, _ok
 }
 
 // IterListClasses returns a list with all the class names defined for the
 // widget at position @pos in the hierarchy defined in @path.
 func (p *WidgetPath) IterListClasses(pos int) *glib.SList {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret *C.GSList
+	var _cret *C.GSList
 
-	cret = C.gtk_widget_path_iter_list_classes(arg0, arg1)
+	cret = C.gtk_widget_path_iter_list_classes(_arg0, _arg1)
 
-	var sList *glib.SList
+	var _sList *glib.SList
 
-	sList = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(sList, func(v *glib.SList) {
+	_sList = glib.WrapSList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_sList, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return sList
+	return _sList
 }
 
 // IterListRegions returns a list with all the region names defined for the
 // widget at position @pos in the hierarchy defined in @path.
 func (p *WidgetPath) IterListRegions(pos int) *glib.SList {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
 
-	var cret *C.GSList
+	var _cret *C.GSList
 
-	cret = C.gtk_widget_path_iter_list_regions(arg0, arg1)
+	cret = C.gtk_widget_path_iter_list_regions(_arg0, _arg1)
 
-	var sList *glib.SList
+	var _sList *glib.SList
 
-	sList = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(sList, func(v *glib.SList) {
+	_sList = glib.WrapSList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_sList, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return sList
+	return _sList
 }
 
 // IterRemoveClass removes the class @name from the widget at position @pos in
 // the hierarchy defined in @path.
 func (p *WidgetPath) IterRemoveClass(pos int, name string) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_widget_path_iter_remove_class(arg0, arg1, arg2)
+	C.gtk_widget_path_iter_remove_class(_arg0, _arg1, _arg2)
 }
 
 // IterRemoveRegion removes the region @name from the widget at position @pos in
 // the hierarchy defined in @path.
 func (p *WidgetPath) IterRemoveRegion(pos int, name string) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_widget_path_iter_remove_region(arg0, arg1, arg2)
+	C.gtk_widget_path_iter_remove_region(_arg0, _arg1, _arg2)
 }
 
 // IterSetName sets the widget name for the widget found at position @pos in the
 // widget hierarchy defined by @path.
 func (p *WidgetPath) IterSetName(pos int, name string) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.gchar
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_widget_path_iter_set_name(arg0, arg1, arg2)
+	C.gtk_widget_path_iter_set_name(_arg0, _arg1, _arg2)
 }
 
 // IterSetObjectName sets the object name for a given position in the widget
@@ -1722,30 +1722,30 @@ func (p *WidgetPath) IterSetName(pos int, name string) {
 //
 // When set, the object name overrides the object type when matching CSS.
 func (p *WidgetPath) IterSetObjectName(pos int, name string) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 *C.char
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 *C.char
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_widget_path_iter_set_object_name(arg0, arg1, arg2)
+	C.gtk_widget_path_iter_set_object_name(_arg0, _arg1, _arg2)
 }
 
 // IterSetObjectType sets the object type for a given position in the widget
 // hierarchy defined by @path.
 func (p *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 C.GType
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 C.GType
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = C.GType(typ)
 
-	C.gtk_widget_path_iter_set_object_type(arg0, arg1, arg2)
+	C.gtk_widget_path_iter_set_object_type(_arg0, _arg1, _arg2)
 }
 
 // IterSetState sets the widget name for the widget found at position @pos in
@@ -1758,65 +1758,65 @@ func (p *WidgetPath) IterSetObjectType(pos int, typ externglib.Type) {
 //
 //    gtk_widget_path_iter_set_state (path, pos, gtk_widget_path_iter_get_state (path, pos) & ~flag);
 func (p *WidgetPath) IterSetState(pos int, state StateFlags) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.gint
-	var arg2 C.GtkStateFlags
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.gint
+	var _arg2 C.GtkStateFlags
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pos)
-	arg2 = (C.GtkStateFlags)(state)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pos)
+	_arg2 = (C.GtkStateFlags)(state)
 
-	C.gtk_widget_path_iter_set_state(arg0, arg1, arg2)
+	C.gtk_widget_path_iter_set_state(_arg0, _arg1, _arg2)
 }
 
 // Length returns the number of Widget #GTypes between the represented widget
 // and its topmost container.
 func (p *WidgetPath) Length() int {
-	var arg0 *C.GtkWidgetPath
+	var _arg0 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_widget_path_length(arg0)
+	cret = C.gtk_widget_path_length(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // PrependType prepends a widget type to the widget hierachy represented by
 // @path.
 func (p *WidgetPath) PrependType(typ externglib.Type) {
-	var arg0 *C.GtkWidgetPath
-	var arg1 C.GType
+	var _arg0 *C.GtkWidgetPath
+	var _arg1 C.GType
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
-	arg1 = C.GType(typ)
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(typ)
 
-	C.gtk_widget_path_prepend_type(arg0, arg1)
+	C.gtk_widget_path_prepend_type(_arg0, _arg1)
 }
 
 // Ref increments the reference count on @path.
 func (p *WidgetPath) Ref() *WidgetPath {
-	var arg0 *C.GtkWidgetPath
+	var _arg0 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GtkWidgetPath
+	var _cret *C.GtkWidgetPath
 
-	cret = C.gtk_widget_path_ref(arg0)
+	cret = C.gtk_widget_path_ref(_arg0)
 
-	var widgetPath *WidgetPath
+	var _widgetPath *WidgetPath
 
-	widgetPath = WrapWidgetPath(unsafe.Pointer(cret))
-	runtime.SetFinalizer(widgetPath, func(v *WidgetPath) {
+	_widgetPath = WrapWidgetPath(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_widgetPath, func(v *WidgetPath) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return widgetPath
+	return _widgetPath
 }
 
 // String dumps the widget path into a string representation. It tries to match
@@ -1826,28 +1826,28 @@ func (p *WidgetPath) Ref() *WidgetPath {
 // The main use of this code is for debugging purposes, so that you can
 // g_print() the path or dump it in a gdb session.
 func (p *WidgetPath) String() string {
-	var arg0 *C.GtkWidgetPath
+	var _arg0 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_widget_path_to_string(arg0)
+	cret = C.gtk_widget_path_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Unref decrements the reference count on @path, freeing the structure if the
 // reference count reaches 0.
 func (p *WidgetPath) Unref() {
-	var arg0 *C.GtkWidgetPath
+	var _arg0 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkWidgetPath)(unsafe.Pointer(p.Native()))
 
-	C.gtk_widget_path_unref(arg0)
+	C.gtk_widget_path_unref(_arg0)
 }

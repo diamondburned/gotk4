@@ -116,30 +116,30 @@ func marshalStringList(p uintptr) (interface{}, error) {
 
 // NewStringList constructs a class StringList.
 func NewStringList(strings []string) StringList {
-	var arg1 **C.char
+	var _arg1 **C.char
 
-	arg1 = (**C.char)(C.malloc((len(strings) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (**C.char)(C.malloc((len(strings) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	{
 		var out []*C.char
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(strings)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(strings)))
 
 		for i := range strings {
-			arg1 = (*C.char)(C.CString(strings))
-			defer C.free(unsafe.Pointer(arg1))
+			_arg1 = (*C.char)(C.CString(strings))
+			defer C.free(unsafe.Pointer(_arg1))
 		}
 	}
 
-	var cret C.GtkStringList
+	var _cret C.GtkStringList
 
-	cret = C.gtk_string_list_new(arg1)
+	cret = C.gtk_string_list_new(_arg1)
 
-	var stringList StringList
+	var _stringList StringList
 
-	stringList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringList)
+	_stringList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringList)
 
-	return stringList
+	return _stringList
 }
 
 // Append appends @string to @self.
@@ -147,14 +147,14 @@ func NewStringList(strings []string) StringList {
 // The @string will be copied. See gtk_string_list_take() for a way to avoid
 // that.
 func (s stringList) Append(string string) {
-	var arg0 *C.GtkStringList
-	var arg1 *C.char
+	var _arg0 *C.GtkStringList
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_string_list_append(arg0, arg1)
+	C.gtk_string_list_append(_arg0, _arg1)
 }
 
 // String gets the string that is at @position in @self. If @self does not
@@ -163,33 +163,33 @@ func (s stringList) Append(string string) {
 // This function returns the const char *. To get the object wrapping it,
 // use g_list_model_get_item().
 func (s stringList) String(position uint) string {
-	var arg0 *C.GtkStringList
-	var arg1 C.guint
+	var _arg0 *C.GtkStringList
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(position)
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_string_list_get_string(arg0, arg1)
+	cret = C.gtk_string_list_get_string(_arg0, _arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Remove removes the string at @position from @self. @position must be
 // smaller than the current length of the list.
 func (s stringList) Remove(position uint) {
-	var arg0 *C.GtkStringList
-	var arg1 C.guint
+	var _arg0 *C.GtkStringList
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(position)
 
-	C.gtk_string_list_remove(arg0, arg1)
+	C.gtk_string_list_remove(_arg0, _arg1)
 }
 
 // Splice changes @self by removing @n_removals strings and adding
@@ -205,28 +205,28 @@ func (s stringList) Remove(position uint) {
 // @n_removals must be less than or equal to the length of the list at the
 // time this function is called).
 func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
-	var arg0 *C.GtkStringList
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 **C.char
+	var _arg0 *C.GtkStringList
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 **C.char
 
-	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(position)
-	arg2 = C.guint(nRemovals)
-	arg3 = (**C.char)(C.malloc((len(additions) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nRemovals)
+	_arg3 = (**C.char)(C.malloc((len(additions) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg3))
 
 	{
 		var out []*C.char
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg3), int(len(additions)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg3), int(len(additions)))
 
 		for i := range additions {
-			arg3 = (*C.char)(C.CString(additions))
-			defer C.free(unsafe.Pointer(arg3))
+			_arg3 = (*C.char)(C.CString(additions))
+			defer C.free(unsafe.Pointer(_arg3))
 		}
 	}
 
-	C.gtk_string_list_splice(arg0, arg1, arg2, arg3)
+	C.gtk_string_list_splice(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Take adds @string to self at the end, and takes ownership of it.
@@ -236,13 +236,13 @@ func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
 //
 //    gtk_string_list_take (self, g_strdup_print ("d dollars", lots));
 func (s stringList) Take(string string) {
-	var arg0 *C.GtkStringList
-	var arg1 *C.char
+	var _arg0 *C.GtkStringList
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(string))
+	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(string))
 
-	C.gtk_string_list_take(arg0, arg1)
+	C.gtk_string_list_take(_arg0, _arg1)
 }
 
 type StringObject interface {
@@ -275,35 +275,35 @@ func marshalStringObject(p uintptr) (interface{}, error) {
 
 // NewStringObject constructs a class StringObject.
 func NewStringObject(string string) StringObject {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkStringObject
+	var _cret C.GtkStringObject
 
-	cret = C.gtk_string_object_new(arg1)
+	cret = C.gtk_string_object_new(_arg1)
 
-	var stringObject StringObject
+	var _stringObject StringObject
 
-	stringObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringObject)
+	_stringObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringObject)
 
-	return stringObject
+	return _stringObject
 }
 
 // String returns the string contained in a StringObject.
 func (s stringObject) String() string {
-	var arg0 *C.GtkStringObject
+	var _arg0 *C.GtkStringObject
 
-	arg0 = (*C.GtkStringObject)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringObject)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_string_object_get_string(arg0)
+	cret = C.gtk_string_object_get_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }

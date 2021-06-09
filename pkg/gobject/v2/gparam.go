@@ -70,62 +70,62 @@ const (
 // See also g_value_type_transformable(), g_value_transform() and
 // g_param_value_validate().
 func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue **externglib.Value, strictValidation bool) bool {
-	var arg1 *C.GParamSpec
-	var arg2 *C.GValue
-	var arg3 *C.GValue
-	var arg4 C.gboolean
+	var _arg1 *C.GParamSpec
+	var _arg2 *C.GValue
+	var _arg3 *C.GValue
+	var _arg4 C.gboolean
 
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = (*C.GValue)(srcValue.GValue)
-	arg3 = (*C.GValue)(destValue.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.GValue)(srcValue.GValue)
+	_arg3 = (*C.GValue)(destValue.GValue)
 	if strictValidation {
-		arg4 = C.gboolean(1)
+		_arg4 = C.gboolean(1)
 	}
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_param_value_convert(arg1, arg2, arg3, arg4)
+	cret = C.g_param_value_convert(_arg1, _arg2, _arg3, _arg4)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ParamValueDefaults checks whether @value contains the default value as
 // specified in @pspec.
 func ParamValueDefaults(pspec ParamSpec, value **externglib.Value) bool {
-	var arg1 *C.GParamSpec
-	var arg2 *C.GValue
+	var _arg1 *C.GParamSpec
+	var _arg2 *C.GValue
 
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = (*C.GValue)(value.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.GValue)(value.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_param_value_defaults(arg1, arg2)
+	cret = C.g_param_value_defaults(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ParamValueSetDefault sets @value to its default value as specified in @pspec.
 func ParamValueSetDefault(pspec ParamSpec, value **externglib.Value) {
-	var arg1 *C.GParamSpec
-	var arg2 *C.GValue
+	var _arg1 *C.GParamSpec
+	var _arg2 *C.GValue
 
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = (*C.GValue)(value.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.GValue)(value.GValue)
 
-	C.g_param_value_set_default(arg1, arg2)
+	C.g_param_value_set_default(_arg1, _arg2)
 }
 
 // ParamValueValidate ensures that the contents of @value comply with the
@@ -134,46 +134,46 @@ func ParamValueSetDefault(pspec ParamSpec, value **externglib.Value) {
 // +42. If @value contains an integer outside of this range, it is modified
 // accordingly, so the resulting value will fit into the range -42 .. +42.
 func ParamValueValidate(pspec ParamSpec, value **externglib.Value) bool {
-	var arg1 *C.GParamSpec
-	var arg2 *C.GValue
+	var _arg1 *C.GParamSpec
+	var _arg2 *C.GValue
 
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = (*C.GValue)(value.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.GValue)(value.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_param_value_validate(arg1, arg2)
+	cret = C.g_param_value_validate(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ParamValuesCmp compares @value1 with @value2 according to @pspec, and return
 // -1, 0 or +1, if @value1 is found to be less than, equal to or greater than
 // @value2, respectively.
 func ParamValuesCmp(pspec ParamSpec, value1 **externglib.Value, value2 **externglib.Value) int {
-	var arg1 *C.GParamSpec
-	var arg2 *C.GValue
-	var arg3 *C.GValue
+	var _arg1 *C.GParamSpec
+	var _arg2 *C.GValue
+	var _arg3 *C.GValue
 
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = (*C.GValue)(value1.GValue)
-	arg3 = (*C.GValue)(value2.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.GValue)(value1.GValue)
+	_arg3 = (*C.GValue)(value2.GValue)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_param_values_cmp(arg1, arg2, arg3)
+	cret = C.g_param_values_cmp(_arg1, _arg2, _arg3)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // ParamSpecPool: a SpecPool maintains a collection of Specs which can be
@@ -206,102 +206,102 @@ func (p *ParamSpecPool) Native() unsafe.Pointer {
 
 // Insert inserts a Spec in the pool.
 func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
-	var arg0 *C.GParamSpecPool
-	var arg1 *C.GParamSpec
-	var arg2 C.GType
+	var _arg0 *C.GParamSpecPool
+	var _arg1 *C.GParamSpec
+	var _arg2 C.GType
 
-	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = C.GType(ownerType)
+	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = C.GType(ownerType)
 
-	C.g_param_spec_pool_insert(arg0, arg1, arg2)
+	C.g_param_spec_pool_insert(_arg0, _arg1, _arg2)
 }
 
 // List gets an array of all Specs owned by @owner_type in the pool.
 func (p *ParamSpecPool) List(ownerType externglib.Type) []ParamSpec {
-	var arg0 *C.GParamSpecPool
-	var arg1 C.GType
+	var _arg0 *C.GParamSpecPool
+	var _arg1 C.GType
 
-	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	arg1 = C.GType(ownerType)
+	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(ownerType)
 
-	var cret **C.GParamSpec
-	var arg2 *C.guint
+	var _cret **C.GParamSpec
+	var _arg2 *C.guint
 
-	cret = C.g_param_spec_pool_list(arg0, arg1)
+	cret = C.g_param_spec_pool_list(_arg0, _arg1)
 
-	var paramSpecs []ParamSpec
+	var _paramSpecs []ParamSpec
 
 	{
 		var src []*C.GParamSpec
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg2))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg2))
 
-		paramSpecs = make([]ParamSpec, arg2)
-		for i := 0; i < uintptr(arg2); i++ {
-			paramSpecs = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+		_paramSpecs = make([]ParamSpec, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_paramSpecs = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
 		}
 	}
 
-	return paramSpecs
+	return _paramSpecs
 }
 
 // ListOwned gets an #GList of all Specs owned by @owner_type in the pool.
 func (p *ParamSpecPool) ListOwned(ownerType externglib.Type) *glib.List {
-	var arg0 *C.GParamSpecPool
-	var arg1 C.GType
+	var _arg0 *C.GParamSpecPool
+	var _arg1 C.GType
 
-	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	arg1 = C.GType(ownerType)
+	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(ownerType)
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_param_spec_pool_list_owned(arg0, arg1)
+	cret = C.g_param_spec_pool_list_owned(_arg0, _arg1)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // Lookup looks up a Spec in the pool.
 func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walkAncestors bool) ParamSpec {
-	var arg0 *C.GParamSpecPool
-	var arg1 *C.gchar
-	var arg2 C.GType
-	var arg3 C.gboolean
+	var _arg0 *C.GParamSpecPool
+	var _arg1 *C.gchar
+	var _arg2 C.GType
+	var _arg3 C.gboolean
 
-	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.gchar)(C.CString(paramName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.GType(ownerType)
+	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(paramName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.GType(ownerType)
 	if walkAncestors {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
 
-	var cret *C.GParamSpec
+	var _cret *C.GParamSpec
 
-	cret = C.g_param_spec_pool_lookup(arg0, arg1, arg2, arg3)
+	cret = C.g_param_spec_pool_lookup(_arg0, _arg1, _arg2, _arg3)
 
-	var paramSpec ParamSpec
+	var _paramSpec ParamSpec
 
-	paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
 
-	return paramSpec
+	return _paramSpec
 }
 
 // Remove removes a Spec from the pool.
 func (p *ParamSpecPool) Remove(pspec ParamSpec) {
-	var arg0 *C.GParamSpecPool
-	var arg1 *C.GParamSpec
+	var _arg0 *C.GParamSpecPool
+	var _arg1 *C.GParamSpec
 
-	arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
-	C.g_param_spec_pool_remove(arg0, arg1)
+	C.g_param_spec_pool_remove(_arg0, _arg1)
 }
 
 // Parameter: the GParameter struct is an auxiliary structure used to hand

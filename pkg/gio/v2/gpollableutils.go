@@ -29,22 +29,22 @@ import "C"
 // g_source_add_child_source() to add other sources to it to cause it to
 // trigger.
 func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
-	var arg1 *C.GObject
+	var _arg1 *C.GObject
 
-	arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
 
-	var cret *C.GSource
+	var _cret *C.GSource
 
-	cret = C.g_pollable_source_new(arg1)
+	cret = C.g_pollable_source_new(_arg1)
 
-	var source *glib.Source
+	var _source *glib.Source
 
-	source = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(source, func(v *glib.Source) {
+	_source = glib.WrapSource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return source
+	return _source
 }
 
 // PollableSourceNewFull: utility method for InputStream and OutputStream
@@ -52,24 +52,24 @@ func NewPollableSource(pollableStream gextras.Objector) *glib.Source {
 // also attaching @child_source (with a dummy callback), and @cancellable, if
 // they are non-nil.
 func PollableSourceNewFull(pollableStream gextras.Objector, childSource *glib.Source, cancellable Cancellable) *glib.Source {
-	var arg1 C.gpointer
-	var arg2 *C.GSource
-	var arg3 *C.GCancellable
+	var _arg1 C.gpointer
+	var _arg2 *C.GSource
+	var _arg3 *C.GCancellable
 
-	arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
-	arg2 = (*C.GSource)(unsafe.Pointer(childSource.Native()))
-	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(pollableStream.Native()))
+	_arg2 = (*C.GSource)(unsafe.Pointer(childSource.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GSource
+	var _cret *C.GSource
 
-	cret = C.g_pollable_source_new_full(arg1, arg2, arg3)
+	cret = C.g_pollable_source_new_full(_arg1, _arg2, _arg3)
 
-	var source *glib.Source
+	var _source *glib.Source
 
-	source = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(source, func(v *glib.Source) {
+	_source = glib.WrapSource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return source
+	return _source
 }

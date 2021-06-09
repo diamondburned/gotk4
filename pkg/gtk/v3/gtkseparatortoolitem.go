@@ -78,48 +78,48 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 
 // NewSeparatorToolItem constructs a class SeparatorToolItem.
 func NewSeparatorToolItem() SeparatorToolItem {
-	var cret C.GtkSeparatorToolItem
+	var _cret C.GtkSeparatorToolItem
 
 	cret = C.gtk_separator_tool_item_new()
 
-	var separatorToolItem SeparatorToolItem
+	var _separatorToolItem SeparatorToolItem
 
-	separatorToolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SeparatorToolItem)
+	_separatorToolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SeparatorToolItem)
 
-	return separatorToolItem
+	return _separatorToolItem
 }
 
 // Draw returns whether @item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
 func (i separatorToolItem) Draw() bool {
-	var arg0 *C.GtkSeparatorToolItem
+	var _arg0 *C.GtkSeparatorToolItem
 
-	arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_separator_tool_item_get_draw(arg0)
+	cret = C.gtk_separator_tool_item_get_draw(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetDraw: whether @item is drawn as a vertical line, or just blank.
 // Setting this to false along with gtk_tool_item_set_expand() is useful to
 // create an item that forces following items to the end of the toolbar.
 func (i separatorToolItem) SetDraw(draw bool) {
-	var arg0 *C.GtkSeparatorToolItem
-	var arg1 C.gboolean
+	var _arg0 *C.GtkSeparatorToolItem
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 	if draw {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_separator_tool_item_set_draw(arg0, arg1)
+	C.gtk_separator_tool_item_set_draw(_arg0, _arg1)
 }

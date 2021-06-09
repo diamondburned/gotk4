@@ -53,7 +53,7 @@ type ListStore interface {
 	//
 	// If you need to compare the two items with a custom comparison function,
 	// use g_list_store_find_with_equal_func() with a custom Func instead.
-	Find(item gextras.Objector) (position uint, ok bool)
+	Find(item gextras.Objector) (uint, bool)
 	// Insert inserts @item into @store at @position. @item must be of type
 	// Store:item-type or derived from it. @position must be smaller than the
 	// length of the list, or equal to it to append.
@@ -123,19 +123,19 @@ func marshalListStore(p uintptr) (interface{}, error) {
 
 // NewListStore constructs a class ListStore.
 func NewListStore(itemType externglib.Type) ListStore {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(itemType)
+	_arg1 = C.GType(itemType)
 
-	var cret C.GListStore
+	var _cret C.GListStore
 
-	cret = C.g_list_store_new(arg1)
+	cret = C.g_list_store_new(_arg1)
 
-	var listStore ListStore
+	var _listStore ListStore
 
-	listStore = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ListStore)
+	_listStore = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ListStore)
 
-	return listStore
+	return _listStore
 }
 
 // Append appends @item to @store. @item must be of type Store:item-type.
@@ -145,13 +145,13 @@ func NewListStore(itemType externglib.Type) ListStore {
 // Use g_list_store_splice() to append multiple items at the same time
 // efficiently.
 func (s listStore) Append(item gextras.Objector) {
-	var arg0 *C.GListStore
-	var arg1 C.gpointer
+	var _arg0 *C.GListStore
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	C.g_list_store_append(arg0, arg1)
+	C.g_list_store_append(_arg0, _arg1)
 }
 
 // Find looks up the given @item in the list store by looping over the items
@@ -160,27 +160,27 @@ func (s listStore) Append(item gextras.Objector) {
 //
 // If you need to compare the two items with a custom comparison function,
 // use g_list_store_find_with_equal_func() with a custom Func instead.
-func (s listStore) Find(item gextras.Objector) (position uint, ok bool) {
-	var arg0 *C.GListStore
-	var arg1 C.gpointer
+func (s listStore) Find(item gextras.Objector) (uint, bool) {
+	var _arg0 *C.GListStore
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	var arg2 C.guint
-	var cret C.gboolean
+	var _arg2 C.guint
+	var _cret C.gboolean
 
-	cret = C.g_list_store_find(arg0, arg1, &arg2)
+	cret = C.g_list_store_find(_arg0, _arg1, &_arg2)
 
-	var position uint
-	var ok bool
+	var _position uint
+	var _ok bool
 
-	position = (uint)(arg2)
-	if cret {
-		ok = true
+	_position = (uint)(_arg2)
+	if _cret {
+		_ok = true
 	}
 
-	return position, ok
+	return _position, _ok
 }
 
 // Insert inserts @item into @store at @position. @item must be of type
@@ -192,15 +192,15 @@ func (s listStore) Find(item gextras.Objector) (position uint, ok bool) {
 // Use g_list_store_splice() to insert multiple items at the same time
 // efficiently.
 func (s listStore) Insert(position uint, item gextras.Objector) {
-	var arg0 *C.GListStore
-	var arg1 C.guint
-	var arg2 C.gpointer
+	var _arg0 *C.GListStore
+	var _arg1 C.guint
+	var _arg2 C.gpointer
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(position)
-	arg2 = (*C.GObject)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(position)
+	_arg2 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	C.g_list_store_insert(arg0, arg1, arg2)
+	C.g_list_store_insert(_arg0, _arg1, _arg2)
 }
 
 // InsertSorted inserts @item into @store at a position to be determined by
@@ -212,19 +212,19 @@ func (s listStore) Insert(position uint, item gextras.Objector) {
 //
 // This function takes a ref on @item.
 func (s listStore) InsertSorted() uint {
-	var arg0 *C.GListStore
+	var _arg0 *C.GListStore
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_list_store_insert_sorted(arg0)
+	cret = C.g_list_store_insert_sorted(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Remove removes the item from @store that is at @position. @position must
@@ -233,31 +233,31 @@ func (s listStore) InsertSorted() uint {
 // Use g_list_store_splice() to remove multiple items at the same time
 // efficiently.
 func (s listStore) Remove(position uint) {
-	var arg0 *C.GListStore
-	var arg1 C.guint
+	var _arg0 *C.GListStore
+	var _arg1 C.guint
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(position)
 
-	C.g_list_store_remove(arg0, arg1)
+	C.g_list_store_remove(_arg0, _arg1)
 }
 
 // RemoveAll removes all items from @store.
 func (s listStore) RemoveAll() {
-	var arg0 *C.GListStore
+	var _arg0 *C.GListStore
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
-	C.g_list_store_remove_all(arg0)
+	C.g_list_store_remove_all(_arg0)
 }
 
 // Sort: sort the items in @store according to @compare_func.
 func (s listStore) Sort() {
-	var arg0 *C.GListStore
+	var _arg0 *C.GListStore
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
-	C.g_list_store_sort(arg0)
+	C.g_list_store_sort(_arg0)
 }
 
 // Splice changes @store by removing @n_removals items and adding
@@ -274,9 +274,9 @@ func (s listStore) Sort() {
 // @n_removals must be less than or equal to the length of the list at the
 // time this function is called).
 func (s listStore) Splice() {
-	var arg0 *C.GListStore
+	var _arg0 *C.GListStore
 
-	arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GListStore)(unsafe.Pointer(s.Native()))
 
-	C.g_list_store_splice(arg0)
+	C.g_list_store_splice(_arg0)
 }

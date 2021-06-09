@@ -73,20 +73,20 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 
 // EditingDone emits the CellEditable::editing-done signal.
 func (c cellEditable) EditingDone() {
-	var arg0 *C.GtkCellEditable
+	var _arg0 *C.GtkCellEditable
 
-	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 
-	C.gtk_cell_editable_editing_done(arg0)
+	C.gtk_cell_editable_editing_done(_arg0)
 }
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
 func (c cellEditable) RemoveWidget() {
-	var arg0 *C.GtkCellEditable
+	var _arg0 *C.GtkCellEditable
 
-	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 
-	C.gtk_cell_editable_remove_widget(arg0)
+	C.gtk_cell_editable_remove_widget(_arg0)
 }
 
 // StartEditing begins editing on a @cell_editable.
@@ -102,11 +102,11 @@ func (c cellEditable) RemoveWidget() {
 // its lifetime is temporary and does not persist across other edits and/or
 // cells.
 func (c cellEditable) StartEditing(event gdk.Event) {
-	var arg0 *C.GtkCellEditable
-	var arg1 *C.GdkEvent
+	var _arg0 *C.GtkCellEditable
+	var _arg1 *C.GdkEvent
 
-	arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
+	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))
 
-	C.gtk_cell_editable_start_editing(arg0, arg1)
+	C.gtk_cell_editable_start_editing(_arg0, _arg1)
 }

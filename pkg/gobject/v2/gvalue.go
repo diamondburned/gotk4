@@ -53,13 +53,13 @@ func (v *Value) Native() unsafe.Pointer {
 
 // Copy copies the value of @src_value into @dest_value.
 func (s *Value) Copy(destValue **externglib.Value) {
-	var arg0 *C.GValue
-	var arg1 *C.GValue
+	var _arg0 *C.GValue
+	var _arg1 *C.GValue
 
-	arg0 = (*C.GValue)(s.GValue)
-	arg1 = (*C.GValue)(destValue.GValue)
+	_arg0 = (*C.GValue)(s.GValue)
+	_arg1 = (*C.GValue)(destValue.GValue)
 
-	C.g_value_copy(arg0, arg1)
+	C.g_value_copy(_arg0, _arg1)
 }
 
 // DupBoxed: get the contents of a G_TYPE_BOXED derived #GValue. Upon getting,
@@ -67,151 +67,151 @@ func (s *Value) Copy(destValue **externglib.Value) {
 // g_boxed_free(), e.g. like: g_boxed_free (G_VALUE_TYPE (@value),
 // return_value);
 func (v *Value) DupBoxed() interface{} {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_value_dup_boxed(arg0)
+	cret = C.g_value_dup_boxed(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // DupObject: get the contents of a G_TYPE_OBJECT derived #GValue, increasing
 // its reference count. If the contents of the #GValue are nil, then nil will be
 // returned.
 func (v *Value) DupObject() gextras.Objector {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_value_dup_object(arg0)
+	cret = C.g_value_dup_object(_arg0)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // DupParam: get the contents of a G_TYPE_PARAM #GValue, increasing its
 // reference count.
 func (v *Value) DupParam() ParamSpec {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret *C.GParamSpec
+	var _cret *C.GParamSpec
 
-	cret = C.g_value_dup_param(arg0)
+	cret = C.g_value_dup_param(_arg0)
 
-	var paramSpec ParamSpec
+	var _paramSpec ParamSpec
 
-	paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
 
-	return paramSpec
+	return _paramSpec
 }
 
 // DupString: get a copy the contents of a G_TYPE_STRING #GValue.
 func (v *Value) DupString() string {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_value_dup_string(arg0)
+	cret = C.g_value_dup_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // DupVariant: get the contents of a variant #GValue, increasing its refcount.
 // The returned #GVariant is never floating.
 func (v *Value) DupVariant() *glib.Variant {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.g_value_dup_variant(arg0)
+	cret = C.g_value_dup_variant(_arg0)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(variant, func(v *glib.Variant) {
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return variant
+	return _variant
 }
 
 // FitsPointer determines if @value will fit inside the size of a pointer value.
 // This is an internal function introduced mainly for C marshallers.
 func (v *Value) FitsPointer() bool {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_value_fits_pointer(arg0)
+	cret = C.g_value_fits_pointer(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Boolean: get the contents of a G_TYPE_BOOLEAN #GValue.
 func (v *Value) Boolean() bool {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_value_get_boolean(arg0)
+	cret = C.g_value_get_boolean(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Boxed: get the contents of a G_TYPE_BOXED derived #GValue.
 func (v *Value) Boxed() interface{} {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_value_get_boxed(arg0)
+	cret = C.g_value_get_boxed(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Char: do not use this function; it is broken on platforms where the char type
@@ -219,344 +219,344 @@ func (v *Value) Boxed() interface{} {
 //
 // Get the contents of a G_TYPE_CHAR #GValue.
 func (v *Value) Char() byte {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gchar
+	var _cret C.gchar
 
-	cret = C.g_value_get_char(arg0)
+	cret = C.g_value_get_char(_arg0)
 
-	var gchar byte
+	var _gchar byte
 
-	gchar = (byte)(cret)
+	_gchar = (byte)(_cret)
 
-	return gchar
+	return _gchar
 }
 
 // Double: get the contents of a G_TYPE_DOUBLE #GValue.
 func (v *Value) Double() float64 {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gdouble
+	var _cret C.gdouble
 
-	cret = C.g_value_get_double(arg0)
+	cret = C.g_value_get_double(_arg0)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // Enum: get the contents of a G_TYPE_ENUM #GValue.
 func (v *Value) Enum() int {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_value_get_enum(arg0)
+	cret = C.g_value_get_enum(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Flags: get the contents of a G_TYPE_FLAGS #GValue.
 func (v *Value) Flags() uint {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_value_get_flags(arg0)
+	cret = C.g_value_get_flags(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Float: get the contents of a G_TYPE_FLOAT #GValue.
 func (v *Value) Float() float32 {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gfloat
+	var _cret C.gfloat
 
-	cret = C.g_value_get_float(arg0)
+	cret = C.g_value_get_float(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // GType: get the contents of a G_TYPE_GTYPE #GValue.
 func (v *Value) GType() externglib.Type {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_value_get_gtype(arg0)
+	cret = C.g_value_get_gtype(_arg0)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // Int: get the contents of a G_TYPE_INT #GValue.
 func (v *Value) Int() int {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_value_get_int(arg0)
+	cret = C.g_value_get_int(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Int64: get the contents of a G_TYPE_INT64 #GValue.
 func (v *Value) Int64() int64 {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gint64
+	var _cret C.gint64
 
-	cret = C.g_value_get_int64(arg0)
+	cret = C.g_value_get_int64(_arg0)
 
-	var gint64 int64
+	var _gint64 int64
 
-	gint64 = (int64)(cret)
+	_gint64 = (int64)(_cret)
 
-	return gint64
+	return _gint64
 }
 
 // Long: get the contents of a G_TYPE_LONG #GValue.
 func (v *Value) Long() int32 {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.glong
+	var _cret C.glong
 
-	cret = C.g_value_get_long(arg0)
+	cret = C.g_value_get_long(_arg0)
 
-	var glong int32
+	var _glong int32
 
-	glong = (int32)(cret)
+	_glong = (int32)(_cret)
 
-	return glong
+	return _glong
 }
 
 // Object: get the contents of a G_TYPE_OBJECT derived #GValue.
 func (v *Value) Object() gextras.Objector {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_value_get_object(arg0)
+	cret = C.g_value_get_object(_arg0)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // Param: get the contents of a G_TYPE_PARAM #GValue.
 func (v *Value) Param() ParamSpec {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret *C.GParamSpec
+	var _cret *C.GParamSpec
 
-	cret = C.g_value_get_param(arg0)
+	cret = C.g_value_get_param(_arg0)
 
-	var paramSpec ParamSpec
+	var _paramSpec ParamSpec
 
-	paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ParamSpec)
+	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
 
-	return paramSpec
+	return _paramSpec
 }
 
 // Pointer: get the contents of a pointer #GValue.
 func (v *Value) Pointer() interface{} {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_value_get_pointer(arg0)
+	cret = C.g_value_get_pointer(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Schar: get the contents of a G_TYPE_CHAR #GValue.
 func (v *Value) Schar() int8 {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gint8
+	var _cret C.gint8
 
-	cret = C.g_value_get_schar(arg0)
+	cret = C.g_value_get_schar(_arg0)
 
-	var gint8 int8
+	var _gint8 int8
 
-	gint8 = (int8)(cret)
+	_gint8 = (int8)(_cret)
 
-	return gint8
+	return _gint8
 }
 
 // String: get the contents of a G_TYPE_STRING #GValue.
 func (v *Value) String() string {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_value_get_string(arg0)
+	cret = C.g_value_get_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Uchar: get the contents of a G_TYPE_UCHAR #GValue.
 func (v *Value) Uchar() byte {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.guchar
+	var _cret C.guchar
 
-	cret = C.g_value_get_uchar(arg0)
+	cret = C.g_value_get_uchar(_arg0)
 
-	var guint8 byte
+	var _guint8 byte
 
-	guint8 = (byte)(cret)
+	_guint8 = (byte)(_cret)
 
-	return guint8
+	return _guint8
 }
 
 // Uint: get the contents of a G_TYPE_UINT #GValue.
 func (v *Value) Uint() uint {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_value_get_uint(arg0)
+	cret = C.g_value_get_uint(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Uint64: get the contents of a G_TYPE_UINT64 #GValue.
 func (v *Value) Uint64() uint64 {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.guint64
+	var _cret C.guint64
 
-	cret = C.g_value_get_uint64(arg0)
+	cret = C.g_value_get_uint64(_arg0)
 
-	var guint64 uint64
+	var _guint64 uint64
 
-	guint64 = (uint64)(cret)
+	_guint64 = (uint64)(_cret)
 
-	return guint64
+	return _guint64
 }
 
 // Ulong: get the contents of a G_TYPE_ULONG #GValue.
 func (v *Value) Ulong() uint32 {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gulong
+	var _cret C.gulong
 
-	cret = C.g_value_get_ulong(arg0)
+	cret = C.g_value_get_ulong(_arg0)
 
-	var gulong uint32
+	var _gulong uint32
 
-	gulong = (uint32)(cret)
+	_gulong = (uint32)(_cret)
 
-	return gulong
+	return _gulong
 }
 
 // Variant: get the contents of a variant #GValue.
 func (v *Value) Variant() *glib.Variant {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.g_value_get_variant(arg0)
+	cret = C.g_value_get_variant(_arg0)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
 
-	return variant
+	return _variant
 }
 
 // Init initializes @value with the default value of @type.
 func (v *Value) Init(gType externglib.Type) **externglib.Value {
-	var arg0 *C.GValue
-	var arg1 C.GType
+	var _arg0 *C.GValue
+	var _arg1 C.GType
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.GType(gType)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.GType(gType)
 
-	var cret *C.GValue
+	var _cret *C.GValue
 
-	cret = C.g_value_init(arg0, arg1)
+	cret = C.g_value_init(_arg0, _arg1)
 
-	var ret **externglib.Value
+	var _ret **externglib.Value
 
-	ret = externglib.ValueFromNative(unsafe.Pointer(cret))
+	_ret = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
-	return ret
+	return _ret
 }
 
 // InitFromInstance initializes and sets @value from an instantiatable type via
@@ -566,214 +566,214 @@ func (v *Value) Init(gType externglib.Type) **externglib.Value {
 // wish to set the @value's type to a different GType (such as a parent class
 // GType), you need to manually call g_value_init() and g_value_set_instance().
 func (v *Value) InitFromInstance(instance TypeInstance) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (C.gpointer)(unsafe.Pointer(instance.Native()))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (C.gpointer)(unsafe.Pointer(instance.Native()))
 
-	C.g_value_init_from_instance(arg0, arg1)
+	C.g_value_init_from_instance(_arg0, _arg1)
 }
 
 // PeekPointer returns the value contents as pointer. This function asserts that
 // g_value_fits_pointer() returned true for the passed in value. This is an
 // internal function introduced mainly for C marshallers.
 func (v *Value) PeekPointer() interface{} {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_value_peek_pointer(arg0)
+	cret = C.g_value_peek_pointer(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Reset clears the current value in @value and resets it to the default value
 // (as if the value had just been initialized).
 func (v *Value) Reset() **externglib.Value {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	var cret *C.GValue
+	var _cret *C.GValue
 
-	cret = C.g_value_reset(arg0)
+	cret = C.g_value_reset(_arg0)
 
-	var ret **externglib.Value
+	var _ret **externglib.Value
 
-	ret = externglib.ValueFromNative(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret, func(v *externglib.Value) {
+	_ret = externglib.ValueFromNative(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *externglib.Value) {
 		C.g_value_unset((*C.GValue)(v.GValue))
 	})
 
-	return ret
+	return _ret
 }
 
 // SetBoolean: set the contents of a G_TYPE_BOOLEAN #GValue to @v_boolean.
 func (v *Value) SetBoolean(vBoolean bool) {
-	var arg0 *C.GValue
-	var arg1 C.gboolean
+	var _arg0 *C.GValue
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 	if vBoolean {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_value_set_boolean(arg0, arg1)
+	C.g_value_set_boolean(_arg0, _arg1)
 }
 
 // SetBoxed: set the contents of a G_TYPE_BOXED derived #GValue to @v_boxed.
 func (v *Value) SetBoxed(vBoxed interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(vBoxed)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(vBoxed)
 
-	C.g_value_set_boxed(arg0, arg1)
+	C.g_value_set_boxed(_arg0, _arg1)
 }
 
 // SetBoxedTakeOwnership: this is an internal function introduced mainly for C
 // marshallers.
 func (v *Value) SetBoxedTakeOwnership(vBoxed interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(vBoxed)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(vBoxed)
 
-	C.g_value_set_boxed_take_ownership(arg0, arg1)
+	C.g_value_set_boxed_take_ownership(_arg0, _arg1)
 }
 
 // SetChar: set the contents of a G_TYPE_CHAR #GValue to @v_char.
 func (v *Value) SetChar(vChar byte) {
-	var arg0 *C.GValue
-	var arg1 C.gchar
+	var _arg0 *C.GValue
+	var _arg1 C.gchar
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gchar(vChar)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gchar(vChar)
 
-	C.g_value_set_char(arg0, arg1)
+	C.g_value_set_char(_arg0, _arg1)
 }
 
 // SetDouble: set the contents of a G_TYPE_DOUBLE #GValue to @v_double.
 func (v *Value) SetDouble(vDouble float64) {
-	var arg0 *C.GValue
-	var arg1 C.gdouble
+	var _arg0 *C.GValue
+	var _arg1 C.gdouble
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gdouble(vDouble)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gdouble(vDouble)
 
-	C.g_value_set_double(arg0, arg1)
+	C.g_value_set_double(_arg0, _arg1)
 }
 
 // SetEnum: set the contents of a G_TYPE_ENUM #GValue to @v_enum.
 func (v *Value) SetEnum(vEnum int) {
-	var arg0 *C.GValue
-	var arg1 C.gint
+	var _arg0 *C.GValue
+	var _arg1 C.gint
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gint(vEnum)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gint(vEnum)
 
-	C.g_value_set_enum(arg0, arg1)
+	C.g_value_set_enum(_arg0, _arg1)
 }
 
 // SetFlags: set the contents of a G_TYPE_FLAGS #GValue to @v_flags.
 func (v *Value) SetFlags(vFlags uint) {
-	var arg0 *C.GValue
-	var arg1 C.guint
+	var _arg0 *C.GValue
+	var _arg1 C.guint
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.guint(vFlags)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.guint(vFlags)
 
-	C.g_value_set_flags(arg0, arg1)
+	C.g_value_set_flags(_arg0, _arg1)
 }
 
 // SetFloat: set the contents of a G_TYPE_FLOAT #GValue to @v_float.
 func (v *Value) SetFloat(vFloat float32) {
-	var arg0 *C.GValue
-	var arg1 C.gfloat
+	var _arg0 *C.GValue
+	var _arg1 C.gfloat
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gfloat(vFloat)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gfloat(vFloat)
 
-	C.g_value_set_float(arg0, arg1)
+	C.g_value_set_float(_arg0, _arg1)
 }
 
 // SetGType: set the contents of a G_TYPE_GTYPE #GValue to @v_gtype.
 func (v *Value) SetGType(vGtype externglib.Type) {
-	var arg0 *C.GValue
-	var arg1 C.GType
+	var _arg0 *C.GValue
+	var _arg1 C.GType
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.GType(vGtype)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.GType(vGtype)
 
-	C.g_value_set_gtype(arg0, arg1)
+	C.g_value_set_gtype(_arg0, _arg1)
 }
 
 // SetInstance sets @value from an instantiatable type via the value_table's
 // collect_value() function.
 func (v *Value) SetInstance(instance interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(instance)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(instance)
 
-	C.g_value_set_instance(arg0, arg1)
+	C.g_value_set_instance(_arg0, _arg1)
 }
 
 // SetInt: set the contents of a G_TYPE_INT #GValue to @v_int.
 func (v *Value) SetInt(vInt int) {
-	var arg0 *C.GValue
-	var arg1 C.gint
+	var _arg0 *C.GValue
+	var _arg1 C.gint
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gint(vInt)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gint(vInt)
 
-	C.g_value_set_int(arg0, arg1)
+	C.g_value_set_int(_arg0, _arg1)
 }
 
 // SetInt64: set the contents of a G_TYPE_INT64 #GValue to @v_int64.
 func (v *Value) SetInt64(vInt64 int64) {
-	var arg0 *C.GValue
-	var arg1 C.gint64
+	var _arg0 *C.GValue
+	var _arg1 C.gint64
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gint64(vInt64)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gint64(vInt64)
 
-	C.g_value_set_int64(arg0, arg1)
+	C.g_value_set_int64(_arg0, _arg1)
 }
 
 // SetInternedString: set the contents of a G_TYPE_STRING #GValue to @v_string.
 // The string is assumed to be static and interned (canonical, for example from
 // g_intern_string()), and is thus not duplicated when setting the #GValue.
 func (v *Value) SetInternedString(vString string) {
-	var arg0 *C.GValue
-	var arg1 *C.gchar
+	var _arg0 *C.GValue
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.gchar)(C.CString(vString))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.gchar)(C.CString(vString))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_value_set_interned_string(arg0, arg1)
+	C.g_value_set_interned_string(_arg0, _arg1)
 }
 
 // SetLong: set the contents of a G_TYPE_LONG #GValue to @v_long.
 func (v *Value) SetLong(vLong int32) {
-	var arg0 *C.GValue
-	var arg1 C.glong
+	var _arg0 *C.GValue
+	var _arg1 C.glong
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.glong(vLong)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.glong(vLong)
 
-	C.g_value_set_long(arg0, arg1)
+	C.g_value_set_long(_arg0, _arg1)
 }
 
 // SetObject: set the contents of a G_TYPE_OBJECT derived #GValue to @v_object.
@@ -787,83 +787,83 @@ func (v *Value) SetLong(vLong int32) {
 // own, or one it has taken) to ensure that the object won't be destroyed while
 // the #GValue still exists).
 func (v *Value) SetObject(vObject gextras.Objector) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.GObject)(unsafe.Pointer(vObject.Native()))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.GObject)(unsafe.Pointer(vObject.Native()))
 
-	C.g_value_set_object(arg0, arg1)
+	C.g_value_set_object(_arg0, _arg1)
 }
 
 // SetObjectTakeOwnership: this is an internal function introduced mainly for C
 // marshallers.
 func (v *Value) SetObjectTakeOwnership(vObject interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(vObject)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(vObject)
 
-	C.g_value_set_object_take_ownership(arg0, arg1)
+	C.g_value_set_object_take_ownership(_arg0, _arg1)
 }
 
 // SetParam: set the contents of a G_TYPE_PARAM #GValue to @param.
 func (v *Value) SetParam(param ParamSpec) {
-	var arg0 *C.GValue
-	var arg1 *C.GParamSpec
+	var _arg0 *C.GValue
+	var _arg1 *C.GParamSpec
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
 
-	C.g_value_set_param(arg0, arg1)
+	C.g_value_set_param(_arg0, _arg1)
 }
 
 // SetParamTakeOwnership: this is an internal function introduced mainly for C
 // marshallers.
 func (v *Value) SetParamTakeOwnership(param ParamSpec) {
-	var arg0 *C.GValue
-	var arg1 *C.GParamSpec
+	var _arg0 *C.GValue
+	var _arg1 *C.GParamSpec
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
 
-	C.g_value_set_param_take_ownership(arg0, arg1)
+	C.g_value_set_param_take_ownership(_arg0, _arg1)
 }
 
 // SetPointer: set the contents of a pointer #GValue to @v_pointer.
 func (v *Value) SetPointer(vPointer interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(vPointer)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(vPointer)
 
-	C.g_value_set_pointer(arg0, arg1)
+	C.g_value_set_pointer(_arg0, _arg1)
 }
 
 // SetSchar: set the contents of a G_TYPE_CHAR #GValue to @v_char.
 func (v *Value) SetSchar(vChar int8) {
-	var arg0 *C.GValue
-	var arg1 C.gint8
+	var _arg0 *C.GValue
+	var _arg1 C.gint8
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gint8(vChar)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gint8(vChar)
 
-	C.g_value_set_schar(arg0, arg1)
+	C.g_value_set_schar(_arg0, _arg1)
 }
 
 // SetStaticBoxed: set the contents of a G_TYPE_BOXED derived #GValue to
 // @v_boxed. The boxed value is assumed to be static, and is thus not duplicated
 // when setting the #GValue.
 func (v *Value) SetStaticBoxed(vBoxed interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(vBoxed)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(vBoxed)
 
-	C.g_value_set_static_boxed(arg0, arg1)
+	C.g_value_set_static_boxed(_arg0, _arg1)
 }
 
 // SetStaticString: set the contents of a G_TYPE_STRING #GValue to @v_string.
@@ -873,108 +873,108 @@ func (v *Value) SetStaticBoxed(vBoxed interface{}) {
 // If the the string is a canonical string, using g_value_set_interned_string()
 // is more appropriate.
 func (v *Value) SetStaticString(vString string) {
-	var arg0 *C.GValue
-	var arg1 *C.gchar
+	var _arg0 *C.GValue
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.gchar)(C.CString(vString))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.gchar)(C.CString(vString))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_value_set_static_string(arg0, arg1)
+	C.g_value_set_static_string(_arg0, _arg1)
 }
 
 // SetString: set the contents of a G_TYPE_STRING #GValue to @v_string.
 func (v *Value) SetString(vString string) {
-	var arg0 *C.GValue
-	var arg1 *C.gchar
+	var _arg0 *C.GValue
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.gchar)(C.CString(vString))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.gchar)(C.CString(vString))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_value_set_string(arg0, arg1)
+	C.g_value_set_string(_arg0, _arg1)
 }
 
 // SetStringTakeOwnership: this is an internal function introduced mainly for C
 // marshallers.
 func (v *Value) SetStringTakeOwnership(vString string) {
-	var arg0 *C.GValue
-	var arg1 *C.gchar
+	var _arg0 *C.GValue
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.gchar)(C.CString(vString))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.gchar)(C.CString(vString))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_value_set_string_take_ownership(arg0, arg1)
+	C.g_value_set_string_take_ownership(_arg0, _arg1)
 }
 
 // SetUchar: set the contents of a G_TYPE_UCHAR #GValue to @v_uchar.
 func (v *Value) SetUchar(vUchar byte) {
-	var arg0 *C.GValue
-	var arg1 C.guchar
+	var _arg0 *C.GValue
+	var _arg1 C.guchar
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.guchar(vUchar)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.guchar(vUchar)
 
-	C.g_value_set_uchar(arg0, arg1)
+	C.g_value_set_uchar(_arg0, _arg1)
 }
 
 // SetUint: set the contents of a G_TYPE_UINT #GValue to @v_uint.
 func (v *Value) SetUint(vUint uint) {
-	var arg0 *C.GValue
-	var arg1 C.guint
+	var _arg0 *C.GValue
+	var _arg1 C.guint
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.guint(vUint)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.guint(vUint)
 
-	C.g_value_set_uint(arg0, arg1)
+	C.g_value_set_uint(_arg0, _arg1)
 }
 
 // SetUint64: set the contents of a G_TYPE_UINT64 #GValue to @v_uint64.
 func (v *Value) SetUint64(vUint64 uint64) {
-	var arg0 *C.GValue
-	var arg1 C.guint64
+	var _arg0 *C.GValue
+	var _arg1 C.guint64
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.guint64(vUint64)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.guint64(vUint64)
 
-	C.g_value_set_uint64(arg0, arg1)
+	C.g_value_set_uint64(_arg0, _arg1)
 }
 
 // SetUlong: set the contents of a G_TYPE_ULONG #GValue to @v_ulong.
 func (v *Value) SetUlong(vUlong uint32) {
-	var arg0 *C.GValue
-	var arg1 C.gulong
+	var _arg0 *C.GValue
+	var _arg1 C.gulong
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gulong(vUlong)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gulong(vUlong)
 
-	C.g_value_set_ulong(arg0, arg1)
+	C.g_value_set_ulong(_arg0, _arg1)
 }
 
 // SetVariant: set the contents of a variant #GValue to @variant. If the variant
 // is floating, it is consumed.
 func (v *Value) SetVariant(variant *glib.Variant) {
-	var arg0 *C.GValue
-	var arg1 *C.GVariant
+	var _arg0 *C.GValue
+	var _arg1 *C.GVariant
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	C.g_value_set_variant(arg0, arg1)
+	C.g_value_set_variant(_arg0, _arg1)
 }
 
 // TakeBoxed sets the contents of a G_TYPE_BOXED derived #GValue to @v_boxed and
 // takes over the ownership of the caller’s reference to @v_boxed; the caller
 // doesn’t have to unref it any more.
 func (v *Value) TakeBoxed(vBoxed interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(vBoxed)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(vBoxed)
 
-	C.g_value_take_boxed(arg0, arg1)
+	C.g_value_take_boxed(_arg0, _arg1)
 }
 
 // TakeObject sets the contents of a G_TYPE_OBJECT derived #GValue to @v_object
@@ -985,38 +985,38 @@ func (v *Value) TakeBoxed(vBoxed interface{}) {
 // If you want the #GValue to hold its own reference to @v_object, use
 // g_value_set_object() instead.
 func (v *Value) TakeObject(vObject interface{}) {
-	var arg0 *C.GValue
-	var arg1 C.gpointer
+	var _arg0 *C.GValue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = C.gpointer(vObject)
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = C.gpointer(vObject)
 
-	C.g_value_take_object(arg0, arg1)
+	C.g_value_take_object(_arg0, _arg1)
 }
 
 // TakeParam sets the contents of a G_TYPE_PARAM #GValue to @param and takes
 // over the ownership of the caller’s reference to @param; the caller doesn’t
 // have to unref it any more.
 func (v *Value) TakeParam(param ParamSpec) {
-	var arg0 *C.GValue
-	var arg1 *C.GParamSpec
+	var _arg0 *C.GValue
+	var _arg1 *C.GParamSpec
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.GParamSpec)(unsafe.Pointer(param.Native()))
 
-	C.g_value_take_param(arg0, arg1)
+	C.g_value_take_param(_arg0, _arg1)
 }
 
 // TakeString sets the contents of a G_TYPE_STRING #GValue to @v_string.
 func (v *Value) TakeString(vString string) {
-	var arg0 *C.GValue
-	var arg1 *C.gchar
+	var _arg0 *C.GValue
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.gchar)(C.CString(vString))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.gchar)(C.CString(vString))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_value_take_string(arg0, arg1)
+	C.g_value_take_string(_arg0, _arg1)
 }
 
 // TakeVariant: set the contents of a variant #GValue to @variant, and takes
@@ -1032,13 +1032,13 @@ func (v *Value) TakeString(vString string) {
 //
 // This is an internal function introduced mainly for C marshallers.
 func (v *Value) TakeVariant(variant *glib.Variant) {
-	var arg0 *C.GValue
-	var arg1 *C.GVariant
+	var _arg0 *C.GValue
+	var _arg1 *C.GVariant
 
-	arg0 = (*C.GValue)(v.GValue)
-	arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
+	_arg0 = (*C.GValue)(v.GValue)
+	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
 
-	C.g_value_take_variant(arg0, arg1)
+	C.g_value_take_variant(_arg0, _arg1)
 }
 
 // Transform tries to cast the contents of @src_value into a type appropriate to
@@ -1048,32 +1048,32 @@ func (v *Value) TakeVariant(variant *glib.Variant) {
 // seemingly arbitrary results and shouldn't be relied upon for production code
 // (such as rcfile value or object property serialization).
 func (s *Value) Transform(destValue **externglib.Value) bool {
-	var arg0 *C.GValue
-	var arg1 *C.GValue
+	var _arg0 *C.GValue
+	var _arg1 *C.GValue
 
-	arg0 = (*C.GValue)(s.GValue)
-	arg1 = (*C.GValue)(destValue.GValue)
+	_arg0 = (*C.GValue)(s.GValue)
+	_arg1 = (*C.GValue)(destValue.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_value_transform(arg0, arg1)
+	cret = C.g_value_transform(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Unset clears the current value in @value (if any) and "unsets" the type, this
 // releases all resources associated with this GValue. An unset value is the
 // same as an uninitialized (zero-filled) #GValue structure.
 func (v *Value) Unset() {
-	var arg0 *C.GValue
+	var _arg0 *C.GValue
 
-	arg0 = (*C.GValue)(v.GValue)
+	_arg0 = (*C.GValue)(v.GValue)
 
-	C.g_value_unset(arg0)
+	C.g_value_unset(_arg0)
 }

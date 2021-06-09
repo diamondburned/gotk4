@@ -76,32 +76,32 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 
 // NewStackSidebar constructs a class StackSidebar.
 func NewStackSidebar() StackSidebar {
-	var cret C.GtkStackSidebar
+	var _cret C.GtkStackSidebar
 
 	cret = C.gtk_stack_sidebar_new()
 
-	var stackSidebar StackSidebar
+	var _stackSidebar StackSidebar
 
-	stackSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSidebar)
+	_stackSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackSidebar)
 
-	return stackSidebar
+	return _stackSidebar
 }
 
 // Stack retrieves the stack. See gtk_stack_sidebar_set_stack().
 func (s stackSidebar) Stack() Stack {
-	var arg0 *C.GtkStackSidebar
+	var _arg0 *C.GtkStackSidebar
 
-	arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkStack
+	var _cret *C.GtkStack
 
-	cret = C.gtk_stack_sidebar_get_stack(arg0)
+	cret = C.gtk_stack_sidebar_get_stack(_arg0)
 
-	var stack Stack
+	var _stack Stack
 
-	stack = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
 
-	return stack
+	return _stack
 }
 
 // SetStack: set the Stack associated with this StackSidebar.
@@ -109,11 +109,11 @@ func (s stackSidebar) Stack() Stack {
 // The sidebar widget will automatically update according to the order
 // (packing) and items within the given Stack.
 func (s stackSidebar) SetStack(stack Stack) {
-	var arg0 *C.GtkStackSidebar
-	var arg1 *C.GtkStack
+	var _arg0 *C.GtkStackSidebar
+	var _arg1 *C.GtkStack
 
-	arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
-	C.gtk_stack_sidebar_set_stack(arg0, arg1)
+	C.gtk_stack_sidebar_set_stack(_arg0, _arg1)
 }

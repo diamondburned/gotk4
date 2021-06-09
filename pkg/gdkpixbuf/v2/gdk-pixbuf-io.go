@@ -48,68 +48,68 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 
 // Copy creates a copy of @format
 func (f *PixbufFormat) Copy() *PixbufFormat {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret *C.GdkPixbufFormat
+	var _cret *C.GdkPixbufFormat
 
-	cret = C.gdk_pixbuf_format_copy(arg0)
+	cret = C.gdk_pixbuf_format_copy(_arg0)
 
-	var pixbufFormat *PixbufFormat
+	var _pixbufFormat *PixbufFormat
 
-	pixbufFormat = WrapPixbufFormat(unsafe.Pointer(cret))
-	runtime.SetFinalizer(pixbufFormat, func(v *PixbufFormat) {
+	_pixbufFormat = WrapPixbufFormat(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_pixbufFormat, func(v *PixbufFormat) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return pixbufFormat
+	return _pixbufFormat
 }
 
 // Free frees the resources allocated when copying a PixbufFormat using
 // gdk_pixbuf_format_copy()
 func (f *PixbufFormat) Free() {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	C.gdk_pixbuf_format_free(arg0)
+	C.gdk_pixbuf_format_free(_arg0)
 }
 
 // Description returns a description of the format.
 func (f *PixbufFormat) Description() string {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_pixbuf_format_get_description(arg0)
+	cret = C.gdk_pixbuf_format_get_description(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Extensions returns the filename extensions typically used for files in the
 // given format.
 func (f *PixbufFormat) Extensions() []string {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret **C.gchar
+	var _cret **C.gchar
 
-	cret = C.gdk_pixbuf_format_get_extensions(arg0)
+	cret = C.gdk_pixbuf_format_get_extensions(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -117,16 +117,16 @@ func (f *PixbufFormat) Extensions() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // License returns information about the license of the image loader for the
@@ -135,37 +135,37 @@ func (f *PixbufFormat) Extensions() []string {
 // license. This string should be freed with g_free() when it's no longer
 // needed.
 func (f *PixbufFormat) License() string {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_pixbuf_format_get_license(arg0)
+	cret = C.gdk_pixbuf_format_get_license(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // MIMETypes returns the mime types supported by the format.
 func (f *PixbufFormat) MIMETypes() []string {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret **C.gchar
+	var _cret **C.gchar
 
-	cret = C.gdk_pixbuf_format_get_mime_types(arg0)
+	cret = C.gdk_pixbuf_format_get_mime_types(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -173,78 +173,78 @@ func (f *PixbufFormat) MIMETypes() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // Name returns the name of the format.
 func (f *PixbufFormat) Name() string {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_pixbuf_format_get_name(arg0)
+	cret = C.gdk_pixbuf_format_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // IsDisabled returns whether this image format is disabled. See
 // gdk_pixbuf_format_set_disabled().
 func (f *PixbufFormat) IsDisabled() bool {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_disabled(arg0)
+	cret = C.gdk_pixbuf_format_is_disabled(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsSaveOptionSupported returns true if the save option specified by
 // @option_key is supported when saving a pixbuf using the module implementing
 // @format. See gdk_pixbuf_save() for more information about option keys.
 func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
-	var arg0 *C.GdkPixbufFormat
-	var arg1 *C.gchar
+	var _arg0 *C.GdkPixbufFormat
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.gchar)(C.CString(optionKey))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.gchar)(C.CString(optionKey))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_save_option_supported(arg0, arg1)
+	cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsScalable returns whether this image format is scalable. If a file is in a
@@ -252,40 +252,40 @@ func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 // loading it at the default size and scaling the resulting pixbuf to the
 // desired size.
 func (f *PixbufFormat) IsScalable() bool {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_scalable(arg0)
+	cret = C.gdk_pixbuf_format_is_scalable(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsWritable returns whether pixbufs can be saved in the given format.
 func (f *PixbufFormat) IsWritable() bool {
-	var arg0 *C.GdkPixbufFormat
+	var _arg0 *C.GdkPixbufFormat
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_writable(arg0)
+	cret = C.gdk_pixbuf_format_is_writable(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetDisabled disables or enables an image format. If a format is disabled,
@@ -293,13 +293,13 @@ func (f *PixbufFormat) IsWritable() bool {
 // Applications can use this to avoid using image loaders with an inappropriate
 // license, see gdk_pixbuf_format_get_license().
 func (f *PixbufFormat) SetDisabled(disabled bool) {
-	var arg0 *C.GdkPixbufFormat
-	var arg1 C.gboolean
+	var _arg0 *C.GdkPixbufFormat
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
 	if disabled {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gdk_pixbuf_format_set_disabled(arg0, arg1)
+	C.gdk_pixbuf_format_set_disabled(_arg0, _arg1)
 }

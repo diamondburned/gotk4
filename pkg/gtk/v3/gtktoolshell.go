@@ -99,152 +99,152 @@ func marshalToolShell(p uintptr) (interface{}, error) {
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_ellipsize_mode() instead.
 func (s toolShell) EllipsizeMode() pango.EllipsizeMode {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.PangoEllipsizeMode
+	var _cret C.PangoEllipsizeMode
 
-	cret = C.gtk_tool_shell_get_ellipsize_mode(arg0)
+	cret = C.gtk_tool_shell_get_ellipsize_mode(_arg0)
 
-	var ellipsizeMode pango.EllipsizeMode
+	var _ellipsizeMode pango.EllipsizeMode
 
-	ellipsizeMode = pango.EllipsizeMode(cret)
+	_ellipsizeMode = pango.EllipsizeMode(_cret)
 
-	return ellipsizeMode
+	return _ellipsizeMode
 }
 
 // IconSize retrieves the icon size for the tool shell. Tool items must not
 // call this function directly, but rely on gtk_tool_item_get_icon_size()
 // instead.
 func (s toolShell) IconSize() int {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkIconSize
+	var _cret C.GtkIconSize
 
-	cret = C.gtk_tool_shell_get_icon_size(arg0)
+	cret = C.gtk_tool_shell_get_icon_size(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Orientation retrieves the current orientation for the tool shell. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_orientation() instead.
 func (s toolShell) Orientation() Orientation {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkOrientation
+	var _cret C.GtkOrientation
 
-	cret = C.gtk_tool_shell_get_orientation(arg0)
+	cret = C.gtk_tool_shell_get_orientation(_arg0)
 
-	var orientation Orientation
+	var _orientation Orientation
 
-	orientation = Orientation(cret)
+	_orientation = Orientation(_cret)
 
-	return orientation
+	return _orientation
 }
 
 // ReliefStyle returns the relief style of buttons on @shell. Tool items
 // must not call this function directly, but rely on
 // gtk_tool_item_get_relief_style() instead.
 func (s toolShell) ReliefStyle() ReliefStyle {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkReliefStyle
+	var _cret C.GtkReliefStyle
 
-	cret = C.gtk_tool_shell_get_relief_style(arg0)
+	cret = C.gtk_tool_shell_get_relief_style(_arg0)
 
-	var reliefStyle ReliefStyle
+	var _reliefStyle ReliefStyle
 
-	reliefStyle = ReliefStyle(cret)
+	_reliefStyle = ReliefStyle(_cret)
 
-	return reliefStyle
+	return _reliefStyle
 }
 
 // Style retrieves whether the tool shell has text, icons, or both. Tool
 // items must not call this function directly, but rely on
 // gtk_tool_item_get_toolbar_style() instead.
 func (s toolShell) Style() ToolbarStyle {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkToolbarStyle
+	var _cret C.GtkToolbarStyle
 
-	cret = C.gtk_tool_shell_get_style(arg0)
+	cret = C.gtk_tool_shell_get_style(_arg0)
 
-	var toolbarStyle ToolbarStyle
+	var _toolbarStyle ToolbarStyle
 
-	toolbarStyle = ToolbarStyle(cret)
+	_toolbarStyle = ToolbarStyle(_cret)
 
-	return toolbarStyle
+	return _toolbarStyle
 }
 
 // TextAlignment retrieves the current text alignment for the tool shell.
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_alignment() instead.
 func (s toolShell) TextAlignment() float32 {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.gfloat
+	var _cret C.gfloat
 
-	cret = C.gtk_tool_shell_get_text_alignment(arg0)
+	cret = C.gtk_tool_shell_get_text_alignment(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // TextOrientation retrieves the current text orientation for the tool
 // shell. Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_orientation() instead.
 func (s toolShell) TextOrientation() Orientation {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkOrientation
+	var _cret C.GtkOrientation
 
-	cret = C.gtk_tool_shell_get_text_orientation(arg0)
+	cret = C.gtk_tool_shell_get_text_orientation(_arg0)
 
-	var orientation Orientation
+	var _orientation Orientation
 
-	orientation = Orientation(cret)
+	_orientation = Orientation(_cret)
 
-	return orientation
+	return _orientation
 }
 
 // TextSizeGroup retrieves the current text size group for the tool shell.
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_size_group() instead.
 func (s toolShell) TextSizeGroup() SizeGroup {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkSizeGroup
+	var _cret *C.GtkSizeGroup
 
-	cret = C.gtk_tool_shell_get_text_size_group(arg0)
+	cret = C.gtk_tool_shell_get_text_size_group(_arg0)
 
-	var sizeGroup SizeGroup
+	var _sizeGroup SizeGroup
 
-	sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SizeGroup)
+	_sizeGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SizeGroup)
 
-	return sizeGroup
+	return _sizeGroup
 }
 
 // RebuildMenu: calling this function signals the tool shell that the
@@ -255,9 +255,9 @@ func (s toolShell) TextSizeGroup() SizeGroup {
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_rebuild_menu() instead.
 func (s toolShell) RebuildMenu() {
-	var arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell
 
-	arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tool_shell_rebuild_menu(arg0)
+	C.gtk_tool_shell_rebuild_menu(_arg0)
 }

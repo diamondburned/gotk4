@@ -246,14 +246,14 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionAdded(actionName string) {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_action_group_action_added(arg0, arg1)
+	C.g_action_group_action_added(_arg0, _arg1)
 }
 
 // ActionEnabledChanged emits the Group::action-enabled-changed signal on
@@ -261,32 +261,32 @@ func (a actionGroup) ActionAdded(actionName string) {
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionEnabledChanged(actionName string, enabled bool) {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
-	var arg2 C.gboolean
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 	if enabled {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	C.g_action_group_action_enabled_changed(arg0, arg1, arg2)
+	C.g_action_group_action_enabled_changed(_arg0, _arg1, _arg2)
 }
 
 // ActionRemoved emits the Group::action-removed signal on @action_group.
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionRemoved(actionName string) {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_action_group_action_removed(arg0, arg1)
+	C.g_action_group_action_removed(_arg0, _arg1)
 }
 
 // ActionStateChanged emits the Group::action-state-changed signal on
@@ -294,16 +294,16 @@ func (a actionGroup) ActionRemoved(actionName string) {
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
-	var arg2 *C.GVariant
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
+	var _arg2 *C.GVariant
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GVariant)(unsafe.Pointer(state.Native()))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(state.Native()))
 
-	C.g_action_group_action_state_changed(arg0, arg1, arg2)
+	C.g_action_group_action_state_changed(_arg0, _arg1, _arg2)
 }
 
 // ActivateAction: activate the named action within @action_group.
@@ -313,16 +313,16 @@ func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) 
 // parameters then @parameter must be nil. See
 // g_action_group_get_action_parameter_type().
 func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
-	var arg2 *C.GVariant
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
+	var _arg2 *C.GVariant
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
 
-	C.g_action_group_activate_action(arg0, arg1, arg2)
+	C.g_action_group_activate_action(_arg0, _arg1, _arg2)
 }
 
 // ChangeActionState: request for the state of the named action within
@@ -337,16 +337,16 @@ func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) 
 //
 // If the @value GVariant is floating, it is consumed.
 func (a actionGroup) ChangeActionState(actionName string, value *glib.Variant) {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
-	var arg2 *C.GVariant
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
+	var _arg2 *C.GVariant
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
-	C.g_action_group_change_action_state(arg0, arg1, arg2)
+	C.g_action_group_change_action_state(_arg0, _arg1, _arg2)
 }
 
 // ActionEnabled checks if the named action within @action_group is
@@ -355,24 +355,24 @@ func (a actionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 // An action must be enabled in order to be activated or in order to have
 // its state changed from outside callers.
 func (a actionGroup) ActionEnabled(actionName string) bool {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_action_group_get_action_enabled(arg0, arg1)
+	cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ActionParameterType queries the type of the parameter that must be given
@@ -389,22 +389,22 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 // possible for an action to be removed and for a new action to be added
 // with the same name but a different parameter type.
 func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GVariantType
+	var _cret *C.GVariantType
 
-	cret = C.g_action_group_get_action_parameter_type(arg0, arg1)
+	cret = C.g_action_group_get_action_parameter_type(_arg0, _arg1)
 
-	var variantType *glib.VariantType
+	var _variantType *glib.VariantType
 
-	variantType = glib.WrapVariantType(unsafe.Pointer(cret))
+	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
 
-	return variantType
+	return _variantType
 }
 
 // ActionState queries the current state of the named action within
@@ -417,25 +417,25 @@ func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
 func (a actionGroup) ActionState(actionName string) *glib.Variant {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.g_action_group_get_action_state(arg0, arg1)
+	cret = C.g_action_group_get_action_state(_arg0, _arg1)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(variant, func(v *glib.Variant) {
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return variant
+	return _variant
 }
 
 // ActionStateHint requests a hint about the valid range of values for the
@@ -457,25 +457,25 @@ func (a actionGroup) ActionState(actionName string) *glib.Variant {
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
 func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.g_action_group_get_action_state_hint(arg0, arg1)
+	cret = C.g_action_group_get_action_state_hint(_arg0, _arg1)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(variant, func(v *glib.Variant) {
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return variant
+	return _variant
 }
 
 // ActionStateType queries the type of the state of the named action within
@@ -494,44 +494,44 @@ func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
 // possible for an action to be removed and for a new action to be added
 // with the same name but a different state type.
 func (a actionGroup) ActionStateType(actionName string) *glib.VariantType {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GVariantType
+	var _cret *C.GVariantType
 
-	cret = C.g_action_group_get_action_state_type(arg0, arg1)
+	cret = C.g_action_group_get_action_state_type(_arg0, _arg1)
 
-	var variantType *glib.VariantType
+	var _variantType *glib.VariantType
 
-	variantType = glib.WrapVariantType(unsafe.Pointer(cret))
+	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
 
-	return variantType
+	return _variantType
 }
 
 // HasAction checks if the named action exists within @action_group.
 func (a actionGroup) HasAction(actionName string) bool {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_action_group_has_action(arg0, arg1)
+	cret = C.g_action_group_has_action(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ListActions lists the actions contained within @action_group.
@@ -539,19 +539,19 @@ func (a actionGroup) HasAction(actionName string) bool {
 // The caller is responsible for freeing the list with g_strfreev() when it
 // is no longer required.
 func (a actionGroup) ListActions() []string {
-	var arg0 *C.GActionGroup
+	var _arg0 *C.GActionGroup
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 
-	var cret **C.gchar
+	var _cret **C.gchar
 
-	cret = C.g_action_group_list_actions(arg0)
+	cret = C.g_action_group_list_actions(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -559,16 +559,16 @@ func (a actionGroup) ListActions() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // QueryAction queries all aspects of the named action within an
@@ -599,33 +599,33 @@ func (a actionGroup) ListActions() []string {
 // action doesn't exist, false is returned and the fields may or may not
 // have been modified.
 func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	var arg0 *C.GActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var arg2 C.gboolean
-	var parameterType *glib.VariantType
-	var stateType *glib.VariantType
-	var stateHint *glib.Variant
-	var state *glib.Variant
-	var cret C.gboolean
+	var _arg2 C.gboolean
+	var _parameterType *glib.VariantType
+	var _stateType *glib.VariantType
+	var _stateHint *glib.Variant
+	var _state *glib.Variant
+	var _cret C.gboolean
 
-	cret = C.g_action_group_query_action(arg0, arg1, &arg2, (**C.GVariantType)(unsafe.Pointer(&parameterType)), (**C.GVariantType)(unsafe.Pointer(&stateType)), (**C.GVariant)(unsafe.Pointer(&stateHint)), (**C.GVariant)(unsafe.Pointer(&state)))
+	cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, (**C.GVariantType)(unsafe.Pointer(&_parameterType)), (**C.GVariantType)(unsafe.Pointer(&_stateType)), (**C.GVariant)(unsafe.Pointer(&_stateHint)), (**C.GVariant)(unsafe.Pointer(&_state)))
 
-	var enabled bool
+	var _enabled bool
 
-	var ok bool
+	var _ok bool
 
-	if arg2 {
-		enabled = true
+	if _arg2 {
+		_enabled = true
 	}
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return enabled, parameterType, stateType, stateHint, state, ok
+	return _enabled, _parameterType, _stateType, _stateHint, _state, _ok
 }

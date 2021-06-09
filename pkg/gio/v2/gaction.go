@@ -171,13 +171,13 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 // If the @parameter GVariant is floating, it is consumed.
 func (a action) Activate(parameter *glib.Variant) {
-	var arg0 *C.GAction
-	var arg1 *C.GVariant
+	var _arg0 *C.GAction
+	var _arg1 *C.GVariant
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
 
-	C.g_action_activate(arg0, arg1)
+	C.g_action_activate(_arg0, _arg1)
 }
 
 // ChangeState: request for the state of @action to be changed to @value.
@@ -191,13 +191,13 @@ func (a action) Activate(parameter *glib.Variant) {
 //
 // If the @value GVariant is floating, it is consumed.
 func (a action) ChangeState(value *glib.Variant) {
-	var arg0 *C.GAction
-	var arg1 *C.GVariant
+	var _arg0 *C.GAction
+	var _arg1 *C.GVariant
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
-	C.g_action_change_state(arg0, arg1)
+	C.g_action_change_state(_arg0, _arg1)
 }
 
 // Enabled checks if @action is currently enabled.
@@ -205,38 +205,38 @@ func (a action) ChangeState(value *glib.Variant) {
 // An action must be enabled in order to be activated or in order to have
 // its state changed from outside callers.
 func (a action) Enabled() bool {
-	var arg0 *C.GAction
+	var _arg0 *C.GAction
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_action_get_enabled(arg0)
+	cret = C.g_action_get_enabled(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Name queries the name of @action.
 func (a action) Name() string {
-	var arg0 *C.GAction
+	var _arg0 *C.GAction
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_action_get_name(arg0)
+	cret = C.g_action_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // ParameterType queries the type of the parameter that must be given when
@@ -248,19 +248,19 @@ func (a action) Name() string {
 // In the case that this function returns nil, you must not give any
 // #GVariant, but nil instead.
 func (a action) ParameterType() *glib.VariantType {
-	var arg0 *C.GAction
+	var _arg0 *C.GAction
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GVariantType
+	var _cret *C.GVariantType
 
-	cret = C.g_action_get_parameter_type(arg0)
+	cret = C.g_action_get_parameter_type(_arg0)
 
-	var variantType *glib.VariantType
+	var _variantType *glib.VariantType
 
-	variantType = glib.WrapVariantType(unsafe.Pointer(cret))
+	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
 
-	return variantType
+	return _variantType
 }
 
 // State queries the current state of @action.
@@ -272,22 +272,22 @@ func (a action) ParameterType() *glib.VariantType {
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
 func (a action) State() *glib.Variant {
-	var arg0 *C.GAction
+	var _arg0 *C.GAction
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.g_action_get_state(arg0)
+	cret = C.g_action_get_state(_arg0)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(variant, func(v *glib.Variant) {
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return variant
+	return _variant
 }
 
 // StateHint requests a hint about the valid range of values for the state
@@ -309,22 +309,22 @@ func (a action) State() *glib.Variant {
 // The return value (if non-nil) should be freed with g_variant_unref() when
 // it is no longer required.
 func (a action) StateHint() *glib.Variant {
-	var arg0 *C.GAction
+	var _arg0 *C.GAction
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.g_action_get_state_hint(arg0)
+	cret = C.g_action_get_state_hint(_arg0)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(variant, func(v *glib.Variant) {
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return variant
+	return _variant
 }
 
 // StateType queries the type of the state of @action.
@@ -339,17 +339,17 @@ func (a action) StateHint() *glib.Variant {
 // then this function will return nil. In that case, g_action_get_state()
 // will return nil and you must not call g_action_change_state().
 func (a action) StateType() *glib.VariantType {
-	var arg0 *C.GAction
+	var _arg0 *C.GAction
 
-	arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GVariantType
+	var _cret *C.GVariantType
 
-	cret = C.g_action_get_state_type(arg0)
+	cret = C.g_action_get_state_type(_arg0)
 
-	var variantType *glib.VariantType
+	var _variantType *glib.VariantType
 
-	variantType = glib.WrapVariantType(unsafe.Pointer(cret))
+	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
 
-	return variantType
+	return _variantType
 }

@@ -57,53 +57,53 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 
 // NewEventControllerMotion constructs a class EventControllerMotion.
 func NewEventControllerMotion() EventControllerMotion {
-	var cret C.GtkEventControllerMotion
+	var _cret C.GtkEventControllerMotion
 
 	cret = C.gtk_event_controller_motion_new()
 
-	var eventControllerMotion EventControllerMotion
+	var _eventControllerMotion EventControllerMotion
 
-	eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerMotion)
+	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerMotion)
 
-	return eventControllerMotion
+	return _eventControllerMotion
 }
 
 // ContainsPointer returns the value of the
 // GtkEventControllerMotion:contains-pointer property.
 func (s eventControllerMotion) ContainsPointer() bool {
-	var arg0 *C.GtkEventControllerMotion
+	var _arg0 *C.GtkEventControllerMotion
 
-	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_motion_contains_pointer(arg0)
+	cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsPointer returns the value of the GtkEventControllerMotion:is-pointer
 // property.
 func (s eventControllerMotion) IsPointer() bool {
-	var arg0 *C.GtkEventControllerMotion
+	var _arg0 *C.GtkEventControllerMotion
 
-	arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerMotion)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_motion_is_pointer(arg0)
+	cret = C.gtk_event_controller_motion_is_pointer(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

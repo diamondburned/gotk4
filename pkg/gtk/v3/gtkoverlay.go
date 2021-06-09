@@ -104,15 +104,15 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 
 // NewOverlay constructs a class Overlay.
 func NewOverlay() Overlay {
-	var cret C.GtkOverlay
+	var _cret C.GtkOverlay
 
 	cret = C.gtk_overlay_new()
 
-	var overlay Overlay
+	var _overlay Overlay
 
-	overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Overlay)
+	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Overlay)
 
-	return overlay
+	return _overlay
 }
 
 // AddOverlay adds @widget to @overlay.
@@ -123,35 +123,35 @@ func NewOverlay() Overlay {
 // The position at which @widget is placed is determined from its
 // Widget:halign and Widget:valign properties.
 func (o overlay) AddOverlay(widget Widget) {
-	var arg0 *C.GtkOverlay
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkOverlay
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_overlay_add_overlay(arg0, arg1)
+	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
 
 // OverlayPassThrough: convenience function to get the value of the
 // Overlay:pass-through child property for @widget.
 func (o overlay) OverlayPassThrough(widget Widget) bool {
-	var arg0 *C.GtkOverlay
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkOverlay
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_overlay_get_overlay_pass_through(arg0, arg1)
+	cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ReorderOverlay moves @child to a new @index in the list of @overlay
@@ -162,29 +162,29 @@ func (o overlay) OverlayPassThrough(widget Widget) bool {
 // children are drawn if they overlap. The first child is drawn at the
 // bottom. It also affects the default focus chain order.
 func (o overlay) ReorderOverlay(child Widget, index_ int) {
-	var arg0 *C.GtkOverlay
-	var arg1 *C.GtkWidget
-	var arg2 C.int
+	var _arg0 *C.GtkOverlay
+	var _arg1 *C.GtkWidget
+	var _arg2 C.int
 
-	arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = C.int(index_)
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = C.int(index_)
 
-	C.gtk_overlay_reorder_overlay(arg0, arg1, arg2)
+	C.gtk_overlay_reorder_overlay(_arg0, _arg1, _arg2)
 }
 
 // SetOverlayPassThrough: convenience function to set the value of the
 // Overlay:pass-through child property for @widget.
 func (o overlay) SetOverlayPassThrough(widget Widget, passThrough bool) {
-	var arg0 *C.GtkOverlay
-	var arg1 *C.GtkWidget
-	var arg2 C.gboolean
+	var _arg0 *C.GtkOverlay
+	var _arg1 *C.GtkWidget
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	if passThrough {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	C.gtk_overlay_set_overlay_pass_through(arg0, arg1, arg2)
+	C.gtk_overlay_set_overlay_pass_through(_arg0, _arg1, _arg2)
 }

@@ -17,16 +17,16 @@ import "C"
 // ShowURI: this function launches the default application for showing a given
 // uri, or shows an error dialog if that fails.
 func ShowURI(parent Window, uri string, timestamp uint32) {
-	var arg1 *C.GtkWindow
-	var arg2 *C.char
-	var arg3 C.guint32
+	var _arg1 *C.GtkWindow
+	var _arg2 *C.char
+	var _arg3 C.guint32
 
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	arg2 = (*C.char)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.guint32(timestamp)
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
 
-	C.gtk_show_uri(arg1, arg2, arg3)
+	C.gtk_show_uri(_arg1, _arg2, _arg3)
 }
 
 // ShowURIFull: this function launches the default application for showing a
@@ -44,19 +44,19 @@ func ShowURIFull() {
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
 // the operation.
 func ShowURIFullFinish(parent Window, result gio.AsyncResult) error {
-	var arg1 *C.GtkWindow
-	var arg2 *C.GAsyncResult
+	var _arg1 *C.GtkWindow
+	var _arg2 *C.GAsyncResult
 
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_show_uri_full_finish(arg1, arg2, cerr)
+	C.gtk_show_uri_full_finish(_arg1, _arg2, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

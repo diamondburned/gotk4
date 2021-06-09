@@ -63,40 +63,40 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 
 // NewGestureSwipe constructs a class GestureSwipe.
 func NewGestureSwipe() GestureSwipe {
-	var cret C.GtkGestureSwipe
+	var _cret C.GtkGestureSwipe
 
 	cret = C.gtk_gesture_swipe_new()
 
-	var gestureSwipe GestureSwipe
+	var _gestureSwipe GestureSwipe
 
-	gestureSwipe = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureSwipe)
+	_gestureSwipe = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureSwipe)
 
-	return gestureSwipe
+	return _gestureSwipe
 }
 
 // Velocity: if the gesture is recognized, this function returns true and
 // fill in @velocity_x and @velocity_y with the recorded velocity, as per
 // the last event(s) processed.
 func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
-	var arg0 *C.GtkGestureSwipe
+	var _arg0 *C.GtkGestureSwipe
 
-	arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
 
-	var arg1 C.double
-	var arg2 C.double
-	var cret C.gboolean
+	var _arg1 C.double
+	var _arg2 C.double
+	var _cret C.gboolean
 
-	cret = C.gtk_gesture_swipe_get_velocity(arg0, &arg1, &arg2)
+	cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 
-	var velocityX float64
-	var velocityY float64
-	var ok bool
+	var _velocityX float64
+	var _velocityY float64
+	var _ok bool
 
-	velocityX = (float64)(arg1)
-	velocityY = (float64)(arg2)
-	if cret {
-		ok = true
+	_velocityX = (float64)(_arg1)
+	_velocityY = (float64)(_arg2)
+	if _cret {
+		_ok = true
 	}
 
-	return velocityX, velocityY, ok
+	return _velocityX, _velocityY, _ok
 }

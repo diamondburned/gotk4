@@ -28,21 +28,21 @@ func ContentDeserializeAsync() {
 
 // ContentDeserializeFinish finishes a content deserialization operation.
 func ContentDeserializeFinish(result gio.AsyncResult, value **externglib.Value) error {
-	var arg1 *C.GAsyncResult
-	var arg2 *C.GValue
+	var _arg1 *C.GAsyncResult
+	var _arg2 *C.GValue
 
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-	arg2 = (*C.GValue)(value.GValue)
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg2 = (*C.GValue)(value.GValue)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gdk_content_deserialize_finish(arg1, arg2, cerr)
+	C.gdk_content_deserialize_finish(_arg1, _arg2, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // ContentRegisterDeserializer registers a function to create objects of a given

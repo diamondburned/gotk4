@@ -73,21 +73,21 @@ func marshalTcpConnection(p uintptr) (interface{}, error) {
 // GracefulDisconnect checks if graceful disconnects are used. See
 // g_tcp_connection_set_graceful_disconnect().
 func (c tcpConnection) GracefulDisconnect() bool {
-	var arg0 *C.GTcpConnection
+	var _arg0 *C.GTcpConnection
 
-	arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_tcp_connection_get_graceful_disconnect(arg0)
+	cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetGracefulDisconnect: this enables graceful disconnects on close. A
@@ -101,13 +101,13 @@ func (c tcpConnection) GracefulDisconnect() bool {
 // other side and for it to acknowledge this by closing the socket, which
 // may take a while. For this reason it is disabled by default.
 func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
-	var arg0 *C.GTcpConnection
-	var arg1 C.gboolean
+	var _arg0 *C.GTcpConnection
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
 	if gracefulDisconnect {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_tcp_connection_set_graceful_disconnect(arg0, arg1)
+	C.g_tcp_connection_set_graceful_disconnect(_arg0, _arg1)
 }

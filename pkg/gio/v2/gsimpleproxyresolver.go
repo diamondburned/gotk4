@@ -93,14 +93,14 @@ func marshalSimpleProXYResolver(p uintptr) (interface{}, error) {
 // If @default_proxy starts with "socks://", ProxyResolver will treat it as
 // referring to all three of the socks5, socks4a, and socks4 proxy types.
 func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
-	var arg0 *C.GSimpleProxyResolver
-	var arg1 *C.gchar
+	var _arg0 *C.GSimpleProxyResolver
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.gchar)(C.CString(defaultProxy))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(defaultProxy))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_simple_proxy_resolver_set_default_proxy(arg0, arg1)
+	C.g_simple_proxy_resolver_set_default_proxy(_arg0, _arg1)
 }
 
 // SetIgnoreHosts sets the list of ignored hosts.
@@ -108,14 +108,14 @@ func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
 // See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
 // argument is interpreted.
 func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
-	var arg0 *C.GSimpleProxyResolver
-	var arg1 **C.gchar
+	var _arg0 *C.GSimpleProxyResolver
+	var _arg1 **C.gchar
 
-	arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
-	arg1 = (**C.gchar)(C.CString(ignoreHosts))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (**C.gchar)(C.CString(ignoreHosts))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_simple_proxy_resolver_set_ignore_hosts(arg0, arg1)
+	C.g_simple_proxy_resolver_set_ignore_hosts(_arg0, _arg1)
 }
 
 // SetURIProXY adds a URI-scheme-specific proxy to @resolver; URIs whose
@@ -126,15 +126,15 @@ func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
 // ProxyResolver will treat it as referring to all three of the socks5,
 // socks4a, and socks4 proxy types.
 func (r simpleProXYResolver) SetURIProXY(uriScheme string, proxy string) {
-	var arg0 *C.GSimpleProxyResolver
-	var arg1 *C.gchar
-	var arg2 *C.gchar
+	var _arg0 *C.GSimpleProxyResolver
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.gchar)(C.CString(uriScheme))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(proxy))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(uriScheme))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(proxy))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.g_simple_proxy_resolver_set_uri_proxy(arg0, arg1, arg2)
+	C.g_simple_proxy_resolver_set_uri_proxy(_arg0, _arg1, _arg2)
 }

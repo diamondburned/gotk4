@@ -59,67 +59,67 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 
 // NewPixbufSimpleAnim constructs a class PixbufSimpleAnim.
 func NewPixbufSimpleAnim(width int, height int, rate float32) PixbufSimpleAnim {
-	var arg1 C.gint
-	var arg2 C.gint
-	var arg3 C.gfloat
+	var _arg1 C.gint
+	var _arg2 C.gint
+	var _arg3 C.gfloat
 
-	arg1 = C.gint(width)
-	arg2 = C.gint(height)
-	arg3 = C.gfloat(rate)
+	_arg1 = C.gint(width)
+	_arg2 = C.gint(height)
+	_arg3 = C.gfloat(rate)
 
-	var cret C.GdkPixbufSimpleAnim
+	var _cret C.GdkPixbufSimpleAnim
 
-	cret = C.gdk_pixbuf_simple_anim_new(arg1, arg2, arg3)
+	cret = C.gdk_pixbuf_simple_anim_new(_arg1, _arg2, _arg3)
 
-	var pixbufSimpleAnim PixbufSimpleAnim
+	var _pixbufSimpleAnim PixbufSimpleAnim
 
-	pixbufSimpleAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PixbufSimpleAnim)
+	_pixbufSimpleAnim = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufSimpleAnim)
 
-	return pixbufSimpleAnim
+	return _pixbufSimpleAnim
 }
 
 // AddFrame adds a new frame to @animation. The @pixbuf must have the
 // dimensions specified when the animation was constructed.
 func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
-	var arg0 *C.GdkPixbufSimpleAnim
-	var arg1 *C.GdkPixbuf
+	var _arg0 *C.GdkPixbufSimpleAnim
+	var _arg1 *C.GdkPixbuf
 
-	arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	C.gdk_pixbuf_simple_anim_add_frame(arg0, arg1)
+	C.gdk_pixbuf_simple_anim_add_frame(_arg0, _arg1)
 }
 
 // Loop gets whether @animation should loop indefinitely when it reaches the
 // end.
 func (a pixbufSimpleAnim) Loop() bool {
-	var arg0 *C.GdkPixbufSimpleAnim
+	var _arg0 *C.GdkPixbufSimpleAnim
 
-	arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_simple_anim_get_loop(arg0)
+	cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetLoop sets whether @animation should loop indefinitely when it reaches
 // the end.
 func (a pixbufSimpleAnim) SetLoop(loop bool) {
-	var arg0 *C.GdkPixbufSimpleAnim
-	var arg1 C.gboolean
+	var _arg0 *C.GdkPixbufSimpleAnim
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 	if loop {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gdk_pixbuf_simple_anim_set_loop(arg0, arg1)
+	C.gdk_pixbuf_simple_anim_set_loop(_arg0, _arg1)
 }

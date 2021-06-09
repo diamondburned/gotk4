@@ -95,45 +95,45 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 
 // NewLockButton constructs a class LockButton.
 func NewLockButton(permission gio.Permission) LockButton {
-	var arg1 *C.GPermission
+	var _arg1 *C.GPermission
 
-	arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
-	var cret C.GtkLockButton
+	var _cret C.GtkLockButton
 
-	cret = C.gtk_lock_button_new(arg1)
+	cret = C.gtk_lock_button_new(_arg1)
 
-	var lockButton LockButton
+	var _lockButton LockButton
 
-	lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(LockButton)
+	_lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LockButton)
 
-	return lockButton
+	return _lockButton
 }
 
 // Permission obtains the #GPermission object that controls @button.
 func (b lockButton) Permission() gio.Permission {
-	var arg0 *C.GtkLockButton
+	var _arg0 *C.GtkLockButton
 
-	arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GPermission
+	var _cret *C.GPermission
 
-	cret = C.gtk_lock_button_get_permission(arg0)
+	cret = C.gtk_lock_button_get_permission(_arg0)
 
-	var permission gio.Permission
+	var _permission gio.Permission
 
-	permission = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Permission)
+	_permission = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Permission)
 
-	return permission
+	return _permission
 }
 
 // SetPermission sets the #GPermission object that controls @button.
 func (b lockButton) SetPermission(permission gio.Permission) {
-	var arg0 *C.GtkLockButton
-	var arg1 *C.GPermission
+	var _arg0 *C.GtkLockButton
+	var _arg1 *C.GPermission
 
-	arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
+	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
 
-	C.gtk_lock_button_set_permission(arg0, arg1)
+	C.gtk_lock_button_set_permission(_arg0, _arg1)
 }

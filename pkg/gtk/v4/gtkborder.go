@@ -44,18 +44,18 @@ func marshalBorder(p uintptr) (interface{}, error) {
 
 // NewBorder constructs a struct Border.
 func NewBorder() *Border {
-	var cret *C.GtkBorder
+	var _cret *C.GtkBorder
 
 	cret = C.gtk_border_new()
 
-	var border *Border
+	var _border *Border
 
-	border = WrapBorder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(border, func(v *Border) {
+	_border = WrapBorder(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_border, func(v *Border) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return border
+	return _border
 }
 
 // Native returns the underlying C source pointer.
@@ -93,29 +93,29 @@ func (b *Border) Bottom() int16 {
 
 // Copy copies a Border-struct.
 func (b *Border) Copy() *Border {
-	var arg0 *C.GtkBorder
+	var _arg0 *C.GtkBorder
 
-	arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GtkBorder
+	var _cret *C.GtkBorder
 
-	cret = C.gtk_border_copy(arg0)
+	cret = C.gtk_border_copy(_arg0)
 
-	var border *Border
+	var _border *Border
 
-	border = WrapBorder(unsafe.Pointer(cret))
-	runtime.SetFinalizer(border, func(v *Border) {
+	_border = WrapBorder(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_border, func(v *Border) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return border
+	return _border
 }
 
 // Free frees a Border-struct.
 func (b *Border) Free() {
-	var arg0 *C.GtkBorder
+	var _arg0 *C.GtkBorder
 
-	arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
 
-	C.gtk_border_free(arg0)
+	C.gtk_border_free(_arg0)
 }

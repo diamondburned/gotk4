@@ -23,27 +23,27 @@ import "C"
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
-	var arg1 *C.cairo_surface_t
-	var arg2 C.gint
-	var arg3 C.gint
-	var arg4 C.gint
-	var arg5 C.gint
+	var _arg1 *C.cairo_surface_t
+	var _arg2 C.gint
+	var _arg3 C.gint
+	var _arg4 C.gint
+	var _arg5 C.gint
 
-	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	arg2 = C.gint(srcX)
-	arg3 = C.gint(srcY)
-	arg4 = C.gint(width)
-	arg5 = C.gint(height)
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg2 = C.gint(srcX)
+	_arg3 = C.gint(srcY)
+	_arg4 = C.gint(width)
+	_arg5 = C.gint(height)
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gdk_pixbuf_get_from_surface(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // PixbufGetFromWindow transfers image data from a Window and converts it to an
@@ -73,25 +73,25 @@ func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int,
 // (In short, there are several ways this function can fail, and if it fails it
 // returns nil; so check the return value.)
 func PixbufGetFromWindow(window Window, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
-	var arg1 *C.GdkWindow
-	var arg2 C.gint
-	var arg3 C.gint
-	var arg4 C.gint
-	var arg5 C.gint
+	var _arg1 *C.GdkWindow
+	var _arg2 C.gint
+	var _arg3 C.gint
+	var _arg4 C.gint
+	var _arg5 C.gint
 
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	arg2 = C.gint(srcX)
-	arg3 = C.gint(srcY)
-	arg4 = C.gint(width)
-	arg5 = C.gint(height)
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = C.gint(srcX)
+	_arg3 = C.gint(srcY)
+	_arg4 = C.gint(width)
+	_arg5 = C.gint(height)
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gdk_pixbuf_get_from_window(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gdk_pixbuf_get_from_window(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }

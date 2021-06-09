@@ -51,23 +51,23 @@ func gotk4_PageSetupDoneFunc(arg0 *C.GtkPageSetup, arg1 C.gpointer) {
 // Note that this function may use a recursive mainloop to show the page setup
 // dialog. See gtk_print_run_page_setup_dialog_async() if this is a problem.
 func PrintRunPageSetupDialog(parent Window, pageSetup PageSetup, settings PrintSettings) PageSetup {
-	var arg1 *C.GtkWindow
-	var arg2 *C.GtkPageSetup
-	var arg3 *C.GtkPrintSettings
+	var _arg1 *C.GtkWindow
+	var _arg2 *C.GtkPageSetup
+	var _arg3 *C.GtkPrintSettings
 
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-	arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
+	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
 
-	var cret *C.GtkPageSetup
+	var _cret *C.GtkPageSetup
 
-	cret = C.gtk_print_run_page_setup_dialog(arg1, arg2, arg3)
+	cret = C.gtk_print_run_page_setup_dialog(_arg1, _arg2, _arg3)
 
-	var pageSetup PageSetup
+	var _pageSetup PageSetup
 
-	pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
 
-	return pageSetup
+	return _pageSetup
 }
 
 // PrintRunPageSetupDialogAsync runs a page setup dialog, letting the user
@@ -256,7 +256,7 @@ type PrintOperation interface {
 	//
 	// Note that gtk_print_operation_run() can only be called once on a given
 	// PrintOperation.
-	Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, goerr error)
+	Run(action PrintOperationAction, parent Window) (PrintOperationResult, error)
 	// SetAllowAsync sets whether the gtk_print_operation_run() may return
 	// before the print operation is completed. Note that some platforms may not
 	// allow asynchronous operation.
@@ -374,15 +374,15 @@ func marshalPrintOperation(p uintptr) (interface{}, error) {
 
 // NewPrintOperation constructs a class PrintOperation.
 func NewPrintOperation() PrintOperation {
-	var cret C.GtkPrintOperation
+	var _cret C.GtkPrintOperation
 
 	cret = C.gtk_print_operation_new()
 
-	var printOperation PrintOperation
+	var _printOperation PrintOperation
 
-	printOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(PrintOperation)
+	_printOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintOperation)
 
-	return printOperation
+	return _printOperation
 }
 
 // Cancel cancels a running print operation. This function may be called
@@ -390,11 +390,11 @@ func NewPrintOperation() PrintOperation {
 // PrintOperation::draw-page signal handler to stop the currently running
 // print operation.
 func (o printOperation) Cancel() {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	C.gtk_print_operation_cancel(arg0)
+	C.gtk_print_operation_cancel(_arg0)
 }
 
 // DrawPageFinish: signalize that drawing of particular page is complete.
@@ -404,49 +404,49 @@ func (o printOperation) Cancel() {
 // then this function has to be called by application. In another case it is
 // called by the library itself.
 func (o printOperation) DrawPageFinish() {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	C.gtk_print_operation_draw_page_finish(arg0)
+	C.gtk_print_operation_draw_page_finish(_arg0)
 }
 
 // DefaultPageSetup returns the default page setup, see
 // gtk_print_operation_set_default_page_setup().
 func (o printOperation) DefaultPageSetup() PageSetup {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GtkPageSetup
+	var _cret *C.GtkPageSetup
 
-	cret = C.gtk_print_operation_get_default_page_setup(arg0)
+	cret = C.gtk_print_operation_get_default_page_setup(_arg0)
 
-	var pageSetup PageSetup
+	var _pageSetup PageSetup
 
-	pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PageSetup)
+	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
 
-	return pageSetup
+	return _pageSetup
 }
 
 // EmbedPageSetup gets the value of PrintOperation:embed-page-setup
 // property.
 func (o printOperation) EmbedPageSetup() bool {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_print_operation_get_embed_page_setup(arg0)
+	cret = C.gtk_print_operation_get_embed_page_setup(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Error: call this when the result of a print operation is
@@ -454,38 +454,38 @@ func (o printOperation) EmbedPageSetup() bool {
 // gtk_print_operation_run(), or in the PrintOperation::done signal handler.
 // The returned #GError will contain more details on what went wrong.
 func (o printOperation) Error() error {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_print_operation_get_error(arg0, cerr)
+	C.gtk_print_operation_get_error(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // HasSelection gets the value of PrintOperation:has-selection property.
 func (o printOperation) HasSelection() bool {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_print_operation_get_has_selection(arg0)
+	cret = C.gtk_print_operation_get_has_selection(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // NPagesToPrint returns the number of pages that will be printed.
@@ -498,19 +498,19 @@ func (o printOperation) HasSelection() bool {
 // GTK_PRINT_STATUS_GENERATING_DATA. This is typically used to track the
 // progress of print operation.
 func (o printOperation) NPagesToPrint() int {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_print_operation_get_n_pages_to_print(arg0)
+	cret = C.gtk_print_operation_get_n_pages_to_print(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // PrintSettings returns the current print settings.
@@ -519,37 +519,37 @@ func (o printOperation) NPagesToPrint() int {
 // gtk_print_operation_set_print_settings() or gtk_print_operation_run()
 // have been called.
 func (o printOperation) PrintSettings() PrintSettings {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GtkPrintSettings
+	var _cret *C.GtkPrintSettings
 
-	cret = C.gtk_print_operation_get_print_settings(arg0)
+	cret = C.gtk_print_operation_get_print_settings(_arg0)
 
-	var printSettings PrintSettings
+	var _printSettings PrintSettings
 
-	printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PrintSettings)
+	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintSettings)
 
-	return printSettings
+	return _printSettings
 }
 
 // Status returns the status of the print operation. Also see
 // gtk_print_operation_get_status_string().
 func (o printOperation) Status() PrintStatus {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.GtkPrintStatus
+	var _cret C.GtkPrintStatus
 
-	cret = C.gtk_print_operation_get_status(arg0)
+	cret = C.gtk_print_operation_get_status(_arg0)
 
-	var printStatus PrintStatus
+	var _printStatus PrintStatus
 
-	printStatus = PrintStatus(cret)
+	_printStatus = PrintStatus(_cret)
 
-	return printStatus
+	return _printStatus
 }
 
 // StatusString returns a string representation of the status of the print
@@ -559,39 +559,39 @@ func (o printOperation) Status() PrintStatus {
 // Use gtk_print_operation_get_status() to obtain a status value that is
 // suitable for programmatic use.
 func (o printOperation) StatusString() string {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_print_operation_get_status_string(arg0)
+	cret = C.gtk_print_operation_get_status_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // SupportSelection gets the value of PrintOperation:support-selection
 // property.
 func (o printOperation) SupportSelection() bool {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_print_operation_get_support_selection(arg0)
+	cret = C.gtk_print_operation_get_support_selection(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsFinished: a convenience function to find out if the print operation is
@@ -602,21 +602,21 @@ func (o printOperation) SupportSelection() bool {
 // a non-finished state even after done has been called, as the operation
 // status then tracks the print job status on the printer.
 func (o printOperation) IsFinished() bool {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_print_operation_is_finished(arg0)
+	cret = C.gtk_print_operation_is_finished(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Run runs the print operation, by first letting the user modify print
@@ -672,42 +672,42 @@ func (o printOperation) IsFinished() bool {
 //
 // Note that gtk_print_operation_run() can only be called once on a given
 // PrintOperation.
-func (o printOperation) Run(action PrintOperationAction, parent Window) (printOperationResult PrintOperationResult, goerr error) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.GtkPrintOperationAction
-	var arg2 *C.GtkWindow
+func (o printOperation) Run(action PrintOperationAction, parent Window) (PrintOperationResult, error) {
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.GtkPrintOperationAction
+	var _arg2 *C.GtkWindow
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (C.GtkPrintOperationAction)(action)
-	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (C.GtkPrintOperationAction)(action)
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	var cret C.GtkPrintOperationResult
-	var cerr *C.GError
+	var _cret C.GtkPrintOperationResult
+	var _cerr *C.GError
 
-	cret = C.gtk_print_operation_run(arg0, arg1, arg2, cerr)
+	cret = C.gtk_print_operation_run(_arg0, _arg1, _arg2, _cerr)
 
-	var printOperationResult PrintOperationResult
-	var goerr error
+	var _printOperationResult PrintOperationResult
+	var _goerr error
 
-	printOperationResult = PrintOperationResult(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_printOperationResult = PrintOperationResult(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return printOperationResult, goerr
+	return _printOperationResult, _goerr
 }
 
 // SetAllowAsync sets whether the gtk_print_operation_run() may return
 // before the print operation is completed. Note that some platforms may not
 // allow asynchronous operation.
 func (o printOperation) SetAllowAsync(allowAsync bool) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if allowAsync {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_operation_set_allow_async(arg0, arg1)
+	C.gtk_print_operation_set_allow_async(_arg0, _arg1)
 }
 
 // SetCurrentPage sets the current page.
@@ -717,25 +717,25 @@ func (o printOperation) SetAllowAsync(allowAsync bool) {
 //
 // Note that this only makes sense for pre-paginated documents.
 func (o printOperation) SetCurrentPage(currentPage int) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gint
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = C.gint(currentPage)
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = C.gint(currentPage)
 
-	C.gtk_print_operation_set_current_page(arg0, arg1)
+	C.gtk_print_operation_set_current_page(_arg0, _arg1)
 }
 
 // SetCustomTabLabel sets the label for the tab holding custom widgets.
 func (o printOperation) SetCustomTabLabel(label string) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 *C.gchar
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_print_operation_set_custom_tab_label(arg0, arg1)
+	C.gtk_print_operation_set_custom_tab_label(_arg0, _arg1)
 }
 
 // SetDefaultPageSetup makes @default_page_setup the default page setup for
@@ -745,13 +745,13 @@ func (o printOperation) SetCustomTabLabel(label string) {
 // overridden on a per-page basis by connecting to the
 // PrintOperation::request-page-setup signal.
 func (o printOperation) SetDefaultPageSetup(defaultPageSetup PageSetup) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 *C.GtkPageSetup
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 *C.GtkPageSetup
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GtkPageSetup)(unsafe.Pointer(defaultPageSetup.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkPageSetup)(unsafe.Pointer(defaultPageSetup.Native()))
 
-	C.gtk_print_operation_set_default_page_setup(arg0, arg1)
+	C.gtk_print_operation_set_default_page_setup(_arg0, _arg1)
 }
 
 // SetDeferDrawing sets up the PrintOperation to wait for calling of
@@ -760,26 +760,26 @@ func (o printOperation) SetDefaultPageSetup(defaultPageSetup PageSetup) {
 //
 // This function must be called in the callback of “draw-page” signal.
 func (o printOperation) SetDeferDrawing() {
-	var arg0 *C.GtkPrintOperation
+	var _arg0 *C.GtkPrintOperation
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 
-	C.gtk_print_operation_set_defer_drawing(arg0)
+	C.gtk_print_operation_set_defer_drawing(_arg0)
 }
 
 // SetEmbedPageSetup: embed page size combo box and orientation combo box
 // into page setup page. Selected page setup is stored as default page setup
 // in PrintOperation.
 func (o printOperation) SetEmbedPageSetup(embed bool) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if embed {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_operation_set_embed_page_setup(arg0, arg1)
+	C.gtk_print_operation_set_embed_page_setup(_arg0, _arg1)
 }
 
 // SetExportFilename sets up the PrintOperation to generate a file instead
@@ -791,14 +791,14 @@ func (o printOperation) SetEmbedPageSetup(embed bool) {
 // user pick the “Print to PDF” item from the list of printers in the print
 // dialog.
 func (o printOperation) SetExportFilename(filename *string) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 *C.gchar
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_print_operation_set_export_filename(arg0, arg1)
+	C.gtk_print_operation_set_export_filename(_arg0, _arg1)
 }
 
 // SetHasSelection sets whether there is a selection to print.
@@ -807,15 +807,15 @@ func (o printOperation) SetExportFilename(filename *string) {
 // by gtk_print_operation_set_n_pages() in a callback of
 // PrintOperation::begin-print.
 func (o printOperation) SetHasSelection(hasSelection bool) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if hasSelection {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_operation_set_has_selection(arg0, arg1)
+	C.gtk_print_operation_set_has_selection(_arg0, _arg1)
 }
 
 // SetJobName sets the name of the print job. The name is used to identify
@@ -824,14 +824,14 @@ func (o printOperation) SetHasSelection(hasSelection bool) {
 // If you don’t set a job name, GTK+ picks a default one by numbering
 // successive print jobs.
 func (o printOperation) SetJobName(jobName string) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 *C.gchar
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.gchar)(C.CString(jobName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.gchar)(C.CString(jobName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_print_operation_set_job_name(arg0, arg1)
+	C.gtk_print_operation_set_job_name(_arg0, _arg1)
 }
 
 // SetNPages sets the number of pages in the document.
@@ -844,54 +844,54 @@ func (o printOperation) SetJobName(jobName string) {
 // are 0-based, i.e. if the user chooses to print all pages, the last
 // ::draw-page signal will be for page @n_pages - 1.
 func (o printOperation) SetNPages(nPages int) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gint
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = C.gint(nPages)
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = C.gint(nPages)
 
-	C.gtk_print_operation_set_n_pages(arg0, arg1)
+	C.gtk_print_operation_set_n_pages(_arg0, _arg1)
 }
 
 // SetPrintSettings sets the print settings for @op. This is typically used
 // to re-establish print settings from a previous print operation, see
 // gtk_print_operation_run().
 func (o printOperation) SetPrintSettings(printSettings PrintSettings) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 *C.GtkPrintSettings
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkPrintSettings)(unsafe.Pointer(printSettings.Native()))
 
-	C.gtk_print_operation_set_print_settings(arg0, arg1)
+	C.gtk_print_operation_set_print_settings(_arg0, _arg1)
 }
 
 // SetShowProgress: if @show_progress is true, the print operation will show
 // a progress dialog during the print operation.
 func (o printOperation) SetShowProgress(showProgress bool) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if showProgress {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_operation_set_show_progress(arg0, arg1)
+	C.gtk_print_operation_set_show_progress(_arg0, _arg1)
 }
 
 // SetSupportSelection sets whether selection is supported by
 // PrintOperation.
 func (o printOperation) SetSupportSelection(supportSelection bool) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if supportSelection {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_operation_set_support_selection(arg0, arg1)
+	C.gtk_print_operation_set_support_selection(_arg0, _arg1)
 }
 
 // SetTrackPrintStatus: if track_status is true, the print operation will
@@ -903,27 +903,27 @@ func (o printOperation) SetSupportSelection(supportSelection bool) {
 // This function is often implemented using some form of polling, so it
 // should not be enabled unless needed.
 func (o printOperation) SetTrackPrintStatus(trackStatus bool) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if trackStatus {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_operation_set_track_print_status(arg0, arg1)
+	C.gtk_print_operation_set_track_print_status(_arg0, _arg1)
 }
 
 // SetUnit sets up the transformation for the cairo context obtained from
 // PrintContext in such a way that distances are measured in units of @unit.
 func (o printOperation) SetUnit(unit Unit) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.GtkUnit
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.GtkUnit
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (C.GtkUnit)(unit)
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (C.GtkUnit)(unit)
 
-	C.gtk_print_operation_set_unit(arg0, arg1)
+	C.gtk_print_operation_set_unit(_arg0, _arg1)
 }
 
 // SetUseFullPage: if @full_page is true, the transformation for the cairo
@@ -933,13 +933,13 @@ func (o printOperation) SetUnit(unit Unit) {
 // origin is at the top left corner of the imageable area (i.e. inside the
 // margins).
 func (o printOperation) SetUseFullPage(fullPage bool) {
-	var arg0 *C.GtkPrintOperation
-	var arg1 C.gboolean
+	var _arg0 *C.GtkPrintOperation
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkPrintOperation)(unsafe.Pointer(o.Native()))
 	if fullPage {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_print_operation_set_use_full_page(arg0, arg1)
+	C.gtk_print_operation_set_use_full_page(_arg0, _arg1)
 }

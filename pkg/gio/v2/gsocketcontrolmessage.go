@@ -90,55 +90,55 @@ func marshalSocketControlMessage(p uintptr) (interface{}, error) {
 // Level returns the "level" (i.e. the originating protocol) of the control
 // message. This is often SOL_SOCKET.
 func (m socketControlMessage) Level() int {
-	var arg0 *C.GSocketControlMessage
+	var _arg0 *C.GSocketControlMessage
 
-	arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.g_socket_control_message_get_level(arg0)
+	cret = C.g_socket_control_message_get_level(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // MsgType returns the protocol specific type of the control message. For
 // instance, for UNIX fd passing this would be SCM_RIGHTS.
 func (m socketControlMessage) MsgType() int {
-	var arg0 *C.GSocketControlMessage
+	var _arg0 *C.GSocketControlMessage
 
-	arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.g_socket_control_message_get_msg_type(arg0)
+	cret = C.g_socket_control_message_get_msg_type(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Size returns the space required for the control message, not including
 // headers or alignment.
 func (m socketControlMessage) Size() uint {
-	var arg0 *C.GSocketControlMessage
+	var _arg0 *C.GSocketControlMessage
 
-	arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
 
-	var cret C.gsize
+	var _cret C.gsize
 
-	cret = C.g_socket_control_message_get_size(arg0)
+	cret = C.g_socket_control_message_get_size(_arg0)
 
-	var gsize uint
+	var _gsize uint
 
-	gsize = (uint)(cret)
+	_gsize = (uint)(_cret)
 
-	return gsize
+	return _gsize
 }
 
 // Serialize converts the data in the message to bytes placed in the
@@ -147,11 +147,11 @@ func (m socketControlMessage) Size() uint {
 // @data is guaranteed to have enough space to fit the size returned by
 // g_socket_control_message_get_size() on this object.
 func (m socketControlMessage) Serialize(data interface{}) {
-	var arg0 *C.GSocketControlMessage
-	var arg1 C.gpointer
+	var _arg0 *C.GSocketControlMessage
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
-	arg1 = C.gpointer(data)
+	_arg0 = (*C.GSocketControlMessage)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gpointer(data)
 
-	C.g_socket_control_message_serialize(arg0, arg1)
+	C.g_socket_control_message_serialize(_arg0, _arg1)
 }

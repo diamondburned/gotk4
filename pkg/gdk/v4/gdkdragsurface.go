@@ -50,23 +50,23 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 
 // Present: present @drag_surface.
 func (d dragSurface) Present(width int, height int) bool {
-	var arg0 *C.GdkDragSurface
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GdkDragSurface
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GdkDragSurface)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(width)
-	arg2 = C.int(height)
+	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_drag_surface_present(arg0, arg1, arg2)
+	cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

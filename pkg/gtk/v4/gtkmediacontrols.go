@@ -64,45 +64,45 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 
 // NewMediaControls constructs a class MediaControls.
 func NewMediaControls(stream MediaStream) MediaControls {
-	var arg1 *C.GtkMediaStream
+	var _arg1 *C.GtkMediaStream
 
-	arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
-	var cret C.GtkMediaControls
+	var _cret C.GtkMediaControls
 
-	cret = C.gtk_media_controls_new(arg1)
+	cret = C.gtk_media_controls_new(_arg1)
 
-	var mediaControls MediaControls
+	var _mediaControls MediaControls
 
-	mediaControls = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaControls)
+	_mediaControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaControls)
 
-	return mediaControls
+	return _mediaControls
 }
 
 // MediaStream gets the media stream managed by @controls or nil if none.
 func (c mediaControls) MediaStream() MediaStream {
-	var arg0 *C.GtkMediaControls
+	var _arg0 *C.GtkMediaControls
 
-	arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkMediaStream
+	var _cret *C.GtkMediaStream
 
-	cret = C.gtk_media_controls_get_media_stream(arg0)
+	cret = C.gtk_media_controls_get_media_stream(_arg0)
 
-	var mediaStream MediaStream
+	var _mediaStream MediaStream
 
-	mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MediaStream)
+	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaStream)
 
-	return mediaStream
+	return _mediaStream
 }
 
 // SetMediaStream sets the stream that is controlled by @controls.
 func (c mediaControls) SetMediaStream(stream MediaStream) {
-	var arg0 *C.GtkMediaControls
-	var arg1 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaControls
+	var _arg1 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
+	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
 
-	C.gtk_media_controls_set_media_stream(arg0, arg1)
+	C.gtk_media_controls_set_media_stream(_arg0, _arg1)
 }

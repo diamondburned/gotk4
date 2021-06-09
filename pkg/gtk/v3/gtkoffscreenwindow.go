@@ -80,51 +80,51 @@ func marshalOffscreenWindow(p uintptr) (interface{}, error) {
 
 // NewOffscreenWindow constructs a class OffscreenWindow.
 func NewOffscreenWindow() OffscreenWindow {
-	var cret C.GtkOffscreenWindow
+	var _cret C.GtkOffscreenWindow
 
 	cret = C.gtk_offscreen_window_new()
 
-	var offscreenWindow OffscreenWindow
+	var _offscreenWindow OffscreenWindow
 
-	offscreenWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OffscreenWindow)
+	_offscreenWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OffscreenWindow)
 
-	return offscreenWindow
+	return _offscreenWindow
 }
 
 // Pixbuf retrieves a snapshot of the contained widget in the form of a
 // Pixbuf. This is a new pixbuf with a reference count of 1, and the
 // application should unreference it once it is no longer needed.
 func (o offscreenWindow) Pixbuf() gdkpixbuf.Pixbuf {
-	var arg0 *C.GtkOffscreenWindow
+	var _arg0 *C.GtkOffscreenWindow
 
-	arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gtk_offscreen_window_get_pixbuf(arg0)
+	cret = C.gtk_offscreen_window_get_pixbuf(_arg0)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // Surface retrieves a snapshot of the contained widget in the form of a
 // #cairo_surface_t. If you need to keep this around over window resizes
 // then you should add a reference to it.
 func (o offscreenWindow) Surface() *cairo.Surface {
-	var arg0 *C.GtkOffscreenWindow
+	var _arg0 *C.GtkOffscreenWindow
 
-	arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkOffscreenWindow)(unsafe.Pointer(o.Native()))
 
-	var cret *C.cairo_surface_t
+	var _cret *C.cairo_surface_t
 
-	cret = C.gtk_offscreen_window_get_surface(arg0)
+	cret = C.gtk_offscreen_window_get_surface(_arg0)
 
-	var surface *cairo.Surface
+	var _surface *cairo.Surface
 
-	surface = cairo.WrapSurface(unsafe.Pointer(cret))
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
 
-	return surface
+	return _surface
 }

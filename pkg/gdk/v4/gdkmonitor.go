@@ -94,68 +94,68 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 
 // Connector gets the name of the monitor's connector, if available.
 func (m monitor) Connector() string {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gdk_monitor_get_connector(arg0)
+	cret = C.gdk_monitor_get_connector(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Display gets the display that this monitor belongs to.
 func (m monitor) Display() Display {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_monitor_get_display(arg0)
+	cret = C.gdk_monitor_get_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // Geometry retrieves the size and position of an individual monitor within
 // the display coordinate space. The returned geometry is in ”application
 // pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
 func (m monitor) Geometry() Rectangle {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var geometry Rectangle
+	var _geometry Rectangle
 
-	C.gdk_monitor_get_geometry(arg0, (*C.GdkRectangle)(unsafe.Pointer(&geometry)))
+	C.gdk_monitor_get_geometry(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_geometry)))
 
-	return geometry
+	return _geometry
 }
 
 // HeightMm gets the height in millimeters of the monitor.
 func (m monitor) HeightMm() int {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gdk_monitor_get_height_mm(arg0)
+	cret = C.gdk_monitor_get_height_mm(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Manufacturer gets the name or PNP ID of the monitor's manufacturer, if
@@ -165,36 +165,36 @@ func (m monitor) HeightMm() int {
 //
 // PNP ID registry is located at https://uefi.org/pnp_id_list
 func (m monitor) Manufacturer() string {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gdk_monitor_get_manufacturer(arg0)
+	cret = C.gdk_monitor_get_manufacturer(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Model gets the string identifying the monitor model, if available.
 func (m monitor) Model() string {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gdk_monitor_get_model(arg0)
+	cret = C.gdk_monitor_get_model(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // RefreshRate gets the refresh rate of the monitor, if available.
@@ -202,19 +202,19 @@ func (m monitor) Model() string {
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
 // 60000.
 func (m monitor) RefreshRate() int {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gdk_monitor_get_refresh_rate(arg0)
+	cret = C.gdk_monitor_get_refresh_rate(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // ScaleFactor gets the internal scale factor that maps from monitor
@@ -225,73 +225,73 @@ func (m monitor) RefreshRate() int {
 // monitor, but most of the time you’re drawing to a surface where it is
 // better to use gdk_surface_get_scale_factor() instead.
 func (m monitor) ScaleFactor() int {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gdk_monitor_get_scale_factor(arg0)
+	cret = C.gdk_monitor_get_scale_factor(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SubpixelLayout gets information about the layout of red, green and blue
 // primaries for each pixel in this monitor, if available.
 func (m monitor) SubpixelLayout() SubpixelLayout {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.GdkSubpixelLayout
+	var _cret C.GdkSubpixelLayout
 
-	cret = C.gdk_monitor_get_subpixel_layout(arg0)
+	cret = C.gdk_monitor_get_subpixel_layout(_arg0)
 
-	var subpixelLayout SubpixelLayout
+	var _subpixelLayout SubpixelLayout
 
-	subpixelLayout = SubpixelLayout(cret)
+	_subpixelLayout = SubpixelLayout(_cret)
 
-	return subpixelLayout
+	return _subpixelLayout
 }
 
 // WidthMm gets the width in millimeters of the monitor.
 func (m monitor) WidthMm() int {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gdk_monitor_get_width_mm(arg0)
+	cret = C.gdk_monitor_get_width_mm(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // IsValid returns true if the @monitor object corresponds to a physical
 // monitor. The @monitor becomes invalid when the physical monitor is
 // unplugged or removed.
 func (m monitor) IsValid() bool {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_monitor_is_valid(arg0)
+	cret = C.gdk_monitor_is_valid(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

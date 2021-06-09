@@ -73,9 +73,9 @@ func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gp
 // function passed to g_bus_own_name() is called, in order to avoid memory leaks
 // through callbacks queued on the Context after it’s stopped being iterated.
 func BusUnownName(ownerId uint) {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(ownerId)
+	_arg1 = C.guint(ownerId)
 
-	C.g_bus_unown_name(arg1)
+	C.g_bus_unown_name(_arg1)
 }

@@ -19,21 +19,21 @@ import "C"
 // must be binary compatible with the version
 // @required_major.required_minor.@required_micro (same major version.)
 func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 C.guint
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 C.guint
 
-	arg1 = C.guint(requiredMajor)
-	arg2 = C.guint(requiredMinor)
-	arg3 = C.guint(requiredMicro)
+	_arg1 = C.guint(requiredMajor)
+	_arg2 = C.guint(requiredMinor)
+	_arg3 = C.guint(requiredMicro)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.glib_check_version(arg1, arg2, arg3)
+	cret = C.glib_check_version(_arg1, _arg2, _arg3)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }

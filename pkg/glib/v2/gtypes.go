@@ -112,13 +112,13 @@ func (t *TimeVal) TvUsec() int32 {
 // Add adds the given number of microseconds to @time_. @microseconds can also
 // be negative to decrease the value of @time_.
 func (t *TimeVal) Add(microseconds int32) {
-	var arg0 *C.GTimeVal
-	var arg1 C.glong
+	var _arg0 *C.GTimeVal
+	var _arg1 C.glong
 
-	arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
-	arg1 = C.glong(microseconds)
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
+	_arg1 = C.glong(microseconds)
 
-	C.g_time_val_add(arg0, arg1)
+	C.g_time_val_add(_arg0, _arg1)
 }
 
 // ToISO8601 converts @time_ into an RFC 3339 encoded string, relative to the
@@ -153,18 +153,18 @@ func (t *TimeVal) Add(microseconds int32) {
 // The return value of g_time_val_to_iso8601() has been nullable since GLib
 // 2.54; before then, GLib would crash under the same conditions.
 func (t *TimeVal) ToISO8601() string {
-	var arg0 *C.GTimeVal
+	var _arg0 *C.GTimeVal
 
-	arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_time_val_to_iso8601(arg0)
+	cret = C.g_time_val_to_iso8601(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

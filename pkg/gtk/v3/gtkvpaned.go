@@ -61,13 +61,13 @@ func marshalVPaned(p uintptr) (interface{}, error) {
 
 // NewVPaned constructs a class VPaned.
 func NewVPaned() VPaned {
-	var cret C.GtkVPaned
+	var _cret C.GtkVPaned
 
 	cret = C.gtk_vpaned_new()
 
-	var vPaned VPaned
+	var _vPaned VPaned
 
-	vPaned = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VPaned)
+	_vPaned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VPaned)
 
-	return vPaned
+	return _vPaned
 }

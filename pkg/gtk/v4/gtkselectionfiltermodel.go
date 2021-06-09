@@ -63,36 +63,36 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 
 // NewSelectionFilterModel constructs a class SelectionFilterModel.
 func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
-	var arg1 *C.GtkSelectionModel
+	var _arg1 *C.GtkSelectionModel
 
-	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
-	var cret C.GtkSelectionFilterModel
+	var _cret C.GtkSelectionFilterModel
 
-	cret = C.gtk_selection_filter_model_new(arg1)
+	cret = C.gtk_selection_filter_model_new(_arg1)
 
-	var selectionFilterModel SelectionFilterModel
+	var _selectionFilterModel SelectionFilterModel
 
-	selectionFilterModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(SelectionFilterModel)
+	_selectionFilterModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SelectionFilterModel)
 
-	return selectionFilterModel
+	return _selectionFilterModel
 }
 
 // Model gets the model currently filtered or nil if none.
 func (s selectionFilterModel) Model() SelectionModel {
-	var arg0 *C.GtkSelectionFilterModel
+	var _arg0 *C.GtkSelectionFilterModel
 
-	arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkSelectionModel
+	var _cret *C.GtkSelectionModel
 
-	cret = C.gtk_selection_filter_model_get_model(arg0)
+	cret = C.gtk_selection_filter_model_get_model(_arg0)
 
-	var selectionModel SelectionModel
+	var _selectionModel SelectionModel
 
-	selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SelectionModel)
+	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
 
-	return selectionModel
+	return _selectionModel
 }
 
 // SetModel sets the model to be filtered.
@@ -101,11 +101,11 @@ func (s selectionFilterModel) Model() SelectionModel {
 // type of @self. It assumes that the caller knows what they are doing and
 // have set up an appropriate filter to ensure that item types match.
 func (s selectionFilterModel) SetModel(model SelectionModel) {
-	var arg0 *C.GtkSelectionFilterModel
-	var arg1 *C.GtkSelectionModel
+	var _arg0 *C.GtkSelectionFilterModel
+	var _arg1 *C.GtkSelectionModel
 
-	arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_selection_filter_model_set_model(arg0, arg1)
+	C.gtk_selection_filter_model_set_model(_arg0, _arg1)
 }

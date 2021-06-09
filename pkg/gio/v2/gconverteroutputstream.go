@@ -68,36 +68,36 @@ func marshalConverterOutputStream(p uintptr) (interface{}, error) {
 
 // NewConverterOutputStream constructs a class ConverterOutputStream.
 func NewConverterOutputStream(baseStream OutputStream, converter Converter) ConverterOutputStream {
-	var arg1 *C.GOutputStream
-	var arg2 *C.GConverter
+	var _arg1 *C.GOutputStream
+	var _arg2 *C.GConverter
 
-	arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-	arg2 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
+	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
+	_arg2 = (*C.GConverter)(unsafe.Pointer(converter.Native()))
 
-	var cret C.GConverterOutputStream
+	var _cret C.GConverterOutputStream
 
-	cret = C.g_converter_output_stream_new(arg1, arg2)
+	cret = C.g_converter_output_stream_new(_arg1, _arg2)
 
-	var converterOutputStream ConverterOutputStream
+	var _converterOutputStream ConverterOutputStream
 
-	converterOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConverterOutputStream)
+	_converterOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConverterOutputStream)
 
-	return converterOutputStream
+	return _converterOutputStream
 }
 
 // Converter gets the #GConverter that is used by @converter_stream.
 func (c converterOutputStream) Converter() Converter {
-	var arg0 *C.GConverterOutputStream
+	var _arg0 *C.GConverterOutputStream
 
-	arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GConverterOutputStream)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GConverter
+	var _cret *C.GConverter
 
-	cret = C.g_converter_output_stream_get_converter(arg0)
+	cret = C.g_converter_output_stream_get_converter(_arg0)
 
-	var converter Converter
+	var _converter Converter
 
-	converter = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Converter)
+	_converter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Converter)
 
-	return converter
+	return _converter
 }

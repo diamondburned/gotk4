@@ -82,157 +82,157 @@ func marshalProXYAddress(p uintptr) (interface{}, error) {
 
 // NewProXYAddress constructs a class ProXYAddress.
 func NewProXYAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProXYAddress {
-	var arg1 *C.GInetAddress
-	var arg2 C.guint16
-	var arg3 *C.gchar
-	var arg4 *C.gchar
-	var arg5 C.guint16
-	var arg6 *C.gchar
-	var arg7 *C.gchar
+	var _arg1 *C.GInetAddress
+	var _arg2 C.guint16
+	var _arg3 *C.gchar
+	var _arg4 *C.gchar
+	var _arg5 C.guint16
+	var _arg6 *C.gchar
+	var _arg7 *C.gchar
 
-	arg1 = (*C.GInetAddress)(unsafe.Pointer(inetaddr.Native()))
-	arg2 = C.guint16(port)
-	arg3 = (*C.gchar)(C.CString(protocol))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(destHostname))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = C.guint16(destPort)
-	arg6 = (*C.gchar)(C.CString(username))
-	defer C.free(unsafe.Pointer(arg6))
-	arg7 = (*C.gchar)(C.CString(password))
-	defer C.free(unsafe.Pointer(arg7))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(inetaddr.Native()))
+	_arg2 = C.guint16(port)
+	_arg3 = (*C.gchar)(C.CString(protocol))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(destHostname))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = C.guint16(destPort)
+	_arg6 = (*C.gchar)(C.CString(username))
+	defer C.free(unsafe.Pointer(_arg6))
+	_arg7 = (*C.gchar)(C.CString(password))
+	defer C.free(unsafe.Pointer(_arg7))
 
-	var cret C.GProxyAddress
+	var _cret C.GProxyAddress
 
-	cret = C.g_proxy_address_new(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
-	var proxyAddress ProXYAddress
+	var _proxyAddress ProXYAddress
 
-	proxyAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ProXYAddress)
+	_proxyAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ProXYAddress)
 
-	return proxyAddress
+	return _proxyAddress
 }
 
 // DestinationHostname gets @proxy's destination hostname; that is, the name
 // of the host that will be connected to via the proxy, not the name of the
 // proxy itself.
 func (p proXYAddress) DestinationHostname() string {
-	var arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress
 
-	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_destination_hostname(arg0)
+	cret = C.g_proxy_address_get_destination_hostname(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // DestinationPort gets @proxy's destination port; that is, the port on the
 // destination host that will be connected to via the proxy, not the port
 // number of the proxy itself.
 func (p proXYAddress) DestinationPort() uint16 {
-	var arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress
 
-	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var cret C.guint16
+	var _cret C.guint16
 
-	cret = C.g_proxy_address_get_destination_port(arg0)
+	cret = C.g_proxy_address_get_destination_port(_arg0)
 
-	var guint16 uint16
+	var _guint16 uint16
 
-	guint16 = (uint16)(cret)
+	_guint16 = (uint16)(_cret)
 
-	return guint16
+	return _guint16
 }
 
 // DestinationProtocol gets the protocol that is being spoken to the
 // destination server; eg, "http" or "ftp".
 func (p proXYAddress) DestinationProtocol() string {
-	var arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress
 
-	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_destination_protocol(arg0)
+	cret = C.g_proxy_address_get_destination_protocol(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Password gets @proxy's password.
 func (p proXYAddress) Password() string {
-	var arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress
 
-	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_password(arg0)
+	cret = C.g_proxy_address_get_password(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Protocol gets @proxy's protocol. eg, "socks" or "http"
 func (p proXYAddress) Protocol() string {
-	var arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress
 
-	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_protocol(arg0)
+	cret = C.g_proxy_address_get_protocol(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // URI gets the proxy URI that @proxy was constructed from.
 func (p proXYAddress) URI() string {
-	var arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress
 
-	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_uri(arg0)
+	cret = C.g_proxy_address_get_uri(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Username gets @proxy's username.
 func (p proXYAddress) Username() string {
-	var arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress
 
-	arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_username(arg0)
+	cret = C.g_proxy_address_get_username(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }

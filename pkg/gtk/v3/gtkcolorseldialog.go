@@ -57,36 +57,36 @@ func marshalColorSelectionDialog(p uintptr) (interface{}, error) {
 
 // NewColorSelectionDialog constructs a class ColorSelectionDialog.
 func NewColorSelectionDialog(title string) ColorSelectionDialog {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(title))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkColorSelectionDialog
+	var _cret C.GtkColorSelectionDialog
 
-	cret = C.gtk_color_selection_dialog_new(arg1)
+	cret = C.gtk_color_selection_dialog_new(_arg1)
 
-	var colorSelectionDialog ColorSelectionDialog
+	var _colorSelectionDialog ColorSelectionDialog
 
-	colorSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ColorSelectionDialog)
+	_colorSelectionDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorSelectionDialog)
 
-	return colorSelectionDialog
+	return _colorSelectionDialog
 }
 
 // ColorSelection retrieves the ColorSelection widget embedded in the
 // dialog.
 func (c colorSelectionDialog) ColorSelection() Widget {
-	var arg0 *C.GtkColorSelectionDialog
+	var _arg0 *C.GtkColorSelectionDialog
 
-	arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorSelectionDialog)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_color_selection_dialog_get_color_selection(arg0)
+	cret = C.gtk_color_selection_dialog_get_color_selection(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }

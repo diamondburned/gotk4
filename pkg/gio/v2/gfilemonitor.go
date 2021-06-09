@@ -81,21 +81,21 @@ func marshalFileMonitor(p uintptr) (interface{}, error) {
 
 // Cancel cancels a file monitor.
 func (m fileMonitor) Cancel() bool {
-	var arg0 *C.GFileMonitor
+	var _arg0 *C.GFileMonitor
 
-	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_file_monitor_cancel(arg0)
+	cret = C.g_file_monitor_cancel(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // EmitEvent emits the Monitor::changed signal if a change has taken place.
@@ -105,46 +105,46 @@ func (m fileMonitor) Cancel() bool {
 // [thread-default main context][g-main-context-push-thread-default] of the
 // thread that the monitor was created in.
 func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
-	var arg0 *C.GFileMonitor
-	var arg1 *C.GFile
-	var arg2 *C.GFile
-	var arg3 C.GFileMonitorEvent
+	var _arg0 *C.GFileMonitor
+	var _arg1 *C.GFile
+	var _arg2 *C.GFile
+	var _arg3 C.GFileMonitorEvent
 
-	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GFile)(unsafe.Pointer(child.Native()))
-	arg2 = (*C.GFile)(unsafe.Pointer(otherFile.Native()))
-	arg3 = (C.GFileMonitorEvent)(eventType)
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.GFile)(unsafe.Pointer(otherFile.Native()))
+	_arg3 = (C.GFileMonitorEvent)(eventType)
 
-	C.g_file_monitor_emit_event(arg0, arg1, arg2, arg3)
+	C.g_file_monitor_emit_event(_arg0, _arg1, _arg2, _arg3)
 }
 
 // IsCancelled returns whether the monitor is canceled.
 func (m fileMonitor) IsCancelled() bool {
-	var arg0 *C.GFileMonitor
+	var _arg0 *C.GFileMonitor
 
-	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_file_monitor_is_cancelled(arg0)
+	cret = C.g_file_monitor_is_cancelled(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetRateLimit sets the rate limit to which the @monitor will report
 // consecutive change events to the same file.
 func (m fileMonitor) SetRateLimit(limitMsecs int) {
-	var arg0 *C.GFileMonitor
-	var arg1 C.gint
+	var _arg0 *C.GFileMonitor
+	var _arg1 C.gint
 
-	arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
-	arg1 = C.gint(limitMsecs)
+	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(limitMsecs)
 
-	C.g_file_monitor_set_rate_limit(arg0, arg1)
+	C.g_file_monitor_set_rate_limit(_arg0, _arg1)
 }

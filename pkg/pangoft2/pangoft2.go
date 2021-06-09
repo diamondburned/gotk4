@@ -26,42 +26,42 @@ func init() {
 // FontGetCoverage gets the Coverage for a `PangoFT2Font`. Use
 // pango_font_get_coverage() instead.
 func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
-	var arg1 *C.PangoFont
-	var arg2 *C.PangoLanguage
+	var _arg1 *C.PangoFont
+	var _arg2 *C.PangoLanguage
 
-	arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
-	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	var cret *C.PangoCoverage
+	var _cret *C.PangoCoverage
 
-	cret = C.pango_ft2_font_get_coverage(arg1, arg2)
+	cret = C.pango_ft2_font_get_coverage(_arg1, _arg2)
 
-	var coverage pango.Coverage
+	var _coverage pango.Coverage
 
-	coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Coverage)
+	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Coverage)
 
-	return coverage
+	return _coverage
 }
 
 // GetContext retrieves a `PangoContext` for the default PangoFT2 fontmap (see
 // pango_ft2_font_map_for_display()) and sets the resolution for the default
 // fontmap to @dpi_x by @dpi_y.
 func GetContext(dpiX float64, dpiY float64) pango.Context {
-	var arg1 C.double
-	var arg2 C.double
+	var _arg1 C.double
+	var _arg2 C.double
 
-	arg1 = C.double(dpiX)
-	arg2 = C.double(dpiY)
+	_arg1 = C.double(dpiX)
+	_arg2 = C.double(dpiY)
 
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
-	cret = C.pango_ft2_get_context(arg1, arg2)
+	cret = C.pango_ft2_get_context(_arg1, _arg2)
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // ShutdownDisplay: free the global fontmap. (See
@@ -120,32 +120,32 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 
 // NewFontMap constructs a class FontMap.
 func NewFontMap() FontMap {
-	var cret C.PangoFT2FontMap
+	var _cret C.PangoFT2FontMap
 
 	cret = C.pango_ft2_font_map_new()
 
-	var fontMap FontMap
+	var _fontMap FontMap
 
-	fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FontMap)
+	_fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FontMap)
 
-	return fontMap
+	return _fontMap
 }
 
 // CreateContext: create a `PangoContext` for the given fontmap.
 func (f fontMap) CreateContext() pango.Context {
-	var arg0 *C.PangoFT2FontMap
+	var _arg0 *C.PangoFT2FontMap
 
-	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
-	cret = C.pango_ft2_font_map_create_context(arg0)
+	cret = C.pango_ft2_font_map_create_context(_arg0)
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // SetDefaultSubstitute sets a function that will be called to do final
@@ -155,25 +155,25 @@ func (f fontMap) CreateContext() pango.Context {
 // This function can be used to do things like set hinting and antialiasing
 // options.
 func (f fontMap) SetDefaultSubstitute() {
-	var arg0 *C.PangoFT2FontMap
+	var _arg0 *C.PangoFT2FontMap
 
-	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_ft2_font_map_set_default_substitute(arg0)
+	C.pango_ft2_font_map_set_default_substitute(_arg0)
 }
 
 // SetResolution sets the horizontal and vertical resolutions for the
 // fontmap.
 func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
-	var arg0 *C.PangoFT2FontMap
-	var arg1 C.double
-	var arg2 C.double
+	var _arg0 *C.PangoFT2FontMap
+	var _arg1 C.double
+	var _arg2 C.double
 
-	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
-	arg1 = C.double(dpiX)
-	arg2 = C.double(dpiY)
+	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
+	_arg1 = C.double(dpiX)
+	_arg2 = C.double(dpiY)
 
-	C.pango_ft2_font_map_set_resolution(arg0, arg1, arg2)
+	C.pango_ft2_font_map_set_resolution(_arg0, _arg1, _arg2)
 }
 
 // SubstituteChanged: call this function any time the results of the default
@@ -183,9 +183,9 @@ func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
 // That is, if your substitution function will return different results for
 // the same input pattern, you must call this function.
 func (f fontMap) SubstituteChanged() {
-	var arg0 *C.PangoFT2FontMap
+	var _arg0 *C.PangoFT2FontMap
 
-	arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_ft2_font_map_substitute_changed(arg0)
+	C.pango_ft2_font_map_substitute_changed(_arg0)
 }

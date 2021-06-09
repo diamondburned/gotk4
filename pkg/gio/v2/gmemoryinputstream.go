@@ -68,13 +68,13 @@ func marshalMemoryInputStream(p uintptr) (interface{}, error) {
 
 // NewMemoryInputStream constructs a class MemoryInputStream.
 func NewMemoryInputStream() MemoryInputStream {
-	var cret C.GMemoryInputStream
+	var _cret C.GMemoryInputStream
 
 	cret = C.g_memory_input_stream_new()
 
-	var memoryInputStream MemoryInputStream
+	var _memoryInputStream MemoryInputStream
 
-	memoryInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MemoryInputStream)
+	_memoryInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryInputStream)
 
-	return memoryInputStream
+	return _memoryInputStream
 }

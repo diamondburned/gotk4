@@ -24,28 +24,28 @@ import "C"
 // the clip region. The clip region is mainly useful for highlightling parts of
 // text, such as when text is selected.
 func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges *int, nRanges int) *cairo.Region {
-	var arg1 *C.PangoLayout
-	var arg2 C.int
-	var arg3 C.int
-	var arg4 *C.int
-	var arg5 C.int
+	var _arg1 *C.PangoLayout
+	var _arg2 C.int
+	var _arg3 C.int
+	var _arg4 *C.int
+	var _arg5 C.int
 
-	arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	arg2 = C.int(xOrigin)
-	arg3 = C.int(yOrigin)
-	arg4 = *C.int(indexRanges)
-	arg5 = C.int(nRanges)
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg2 = C.int(xOrigin)
+	_arg3 = C.int(yOrigin)
+	_arg4 = *C.int(indexRanges)
+	_arg5 = C.int(nRanges)
 
-	var cret *C.cairo_region_t
+	var _cret *C.cairo_region_t
 
-	cret = C.gdk_pango_layout_get_clip_region(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gdk_pango_layout_get_clip_region(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var region *cairo.Region
+	var _region *cairo.Region
 
-	region = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(region, func(v *cairo.Region) {
+	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return region
+	return _region
 }

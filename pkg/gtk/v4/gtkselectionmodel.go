@@ -158,22 +158,22 @@ func marshalSelectionModel(p uintptr) (interface{}, error) {
 // interested in a few consider
 // gtk_selection_model_get_selection_in_range().
 func (m selectionModel) Selection() *Bitset {
-	var arg0 *C.GtkSelectionModel
+	var _arg0 *C.GtkSelectionModel
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkBitset
+	var _cret *C.GtkBitset
 
-	cret = C.gtk_selection_model_get_selection(arg0)
+	cret = C.gtk_selection_model_get_selection(_arg0)
 
-	var bitset *Bitset
+	var _bitset *Bitset
 
-	bitset = WrapBitset(unsafe.Pointer(cret))
-	runtime.SetFinalizer(bitset, func(v *Bitset) {
+	_bitset = WrapBitset(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return bitset
+	return _bitset
 }
 
 // SelectionInRange gets a set containing a set where the values in the
@@ -185,133 +185,133 @@ func (m selectionModel) Selection() *Bitset {
 // common use case is in response to the SelectionModel::selection-changed
 // signal.
 func (m selectionModel) SelectionInRange(position uint, nItems uint) *Bitset {
-	var arg0 *C.GtkSelectionModel
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(position)
-	arg2 = C.guint(nItems)
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 
-	var cret *C.GtkBitset
+	var _cret *C.GtkBitset
 
-	cret = C.gtk_selection_model_get_selection_in_range(arg0, arg1, arg2)
+	cret = C.gtk_selection_model_get_selection_in_range(_arg0, _arg1, _arg2)
 
-	var bitset *Bitset
+	var _bitset *Bitset
 
-	bitset = WrapBitset(unsafe.Pointer(cret))
-	runtime.SetFinalizer(bitset, func(v *Bitset) {
+	_bitset = WrapBitset(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_bitset, func(v *Bitset) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return bitset
+	return _bitset
 }
 
 // IsSelected checks if the given item is selected.
 func (m selectionModel) IsSelected(position uint) bool {
-	var arg0 *C.GtkSelectionModel
-	var arg1 C.guint
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(position)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_is_selected(arg0, arg1)
+	cret = C.gtk_selection_model_is_selected(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectAll requests to select all items in the model.
 func (m selectionModel) SelectAll() bool {
-	var arg0 *C.GtkSelectionModel
+	var _arg0 *C.GtkSelectionModel
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_select_all(arg0)
+	cret = C.gtk_selection_model_select_all(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectItem requests to select an item in the model.
 func (m selectionModel) SelectItem(position uint, unselectRest bool) bool {
-	var arg0 *C.GtkSelectionModel
-	var arg1 C.guint
-	var arg2 C.gboolean
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 C.guint
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(position)
 	if unselectRest {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_select_item(arg0, arg1, arg2)
+	cret = C.gtk_selection_model_select_item(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectRange requests to select a range of items in the model.
 func (m selectionModel) SelectRange(position uint, nItems uint, unselectRest bool) bool {
-	var arg0 *C.GtkSelectionModel
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 C.gboolean
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 C.gboolean
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(position)
-	arg2 = C.guint(nItems)
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 	if unselectRest {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_select_range(arg0, arg1, arg2, arg3)
+	cret = C.gtk_selection_model_select_range(_arg0, _arg1, _arg2, _arg3)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectionChanged: helper function for implementations of SelectionModel.
 // Call this when a the selection changes to emit the
 // SelectionModel::selection-changed signal.
 func (m selectionModel) SelectionChanged(position uint, nItems uint) {
-	var arg0 *C.GtkSelectionModel
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(position)
-	arg2 = C.guint(nItems)
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 
-	C.gtk_selection_model_selection_changed(arg0, arg1, arg2)
+	C.gtk_selection_model_selection_changed(_arg0, _arg1, _arg2)
 }
 
 // SetSelection: this is the most advanced selection updating method that
@@ -341,86 +341,86 @@ func (m selectionModel) SelectionChanged(position uint, nItems uint) {
 // @mask and @selected must not be modified. They may refer to the same
 // bitset, which would mean that every item in the set should be selected.
 func (m selectionModel) SetSelection(selected *Bitset, mask *Bitset) bool {
-	var arg0 *C.GtkSelectionModel
-	var arg1 *C.GtkBitset
-	var arg2 *C.GtkBitset
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 *C.GtkBitset
+	var _arg2 *C.GtkBitset
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkBitset)(unsafe.Pointer(selected.Native()))
-	arg2 = (*C.GtkBitset)(unsafe.Pointer(mask.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkBitset)(unsafe.Pointer(selected.Native()))
+	_arg2 = (*C.GtkBitset)(unsafe.Pointer(mask.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_set_selection(arg0, arg1, arg2)
+	cret = C.gtk_selection_model_set_selection(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // UnselectAll requests to unselect all items in the model.
 func (m selectionModel) UnselectAll() bool {
-	var arg0 *C.GtkSelectionModel
+	var _arg0 *C.GtkSelectionModel
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_unselect_all(arg0)
+	cret = C.gtk_selection_model_unselect_all(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // UnselectItem requests to unselect an item in the model.
 func (m selectionModel) UnselectItem(position uint) bool {
-	var arg0 *C.GtkSelectionModel
-	var arg1 C.guint
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(position)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_unselect_item(arg0, arg1)
+	cret = C.gtk_selection_model_unselect_item(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // UnselectRange requests to unselect a range of items in the model.
 func (m selectionModel) UnselectRange(position uint, nItems uint) bool {
-	var arg0 *C.GtkSelectionModel
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkSelectionModel
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
-	arg1 = C.guint(position)
-	arg2 = C.guint(nItems)
+	_arg0 = (*C.GtkSelectionModel)(unsafe.Pointer(m.Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(nItems)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_model_unselect_range(arg0, arg1, arg2)
+	cret = C.gtk_selection_model_unselect_range(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

@@ -50,7 +50,7 @@ type TreeSortableOverrider interface {
 	// column and the order. It returns true unless the @sort_column_id is
 	// GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
 	// GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-	SortColumnID() (sortColumnId int, order SortType, ok bool)
+	SortColumnID() (int, SortType, bool)
 	// HasDefaultSortFunc returns true if the model has a default sort function.
 	// This is used primarily by GtkTreeViewColumns in order to determine if a
 	// model can go back to the default state, or not.
@@ -117,49 +117,49 @@ func marshalTreeSortable(p uintptr) (interface{}, error) {
 // column and the order. It returns true unless the @sort_column_id is
 // GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or
 // GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
-func (s treeSortable) SortColumnID() (sortColumnId int, order SortType, ok bool) {
-	var arg0 *C.GtkTreeSortable
+func (s treeSortable) SortColumnID() (int, SortType, bool) {
+	var _arg0 *C.GtkTreeSortable
 
-	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
-	var arg1 C.int
-	var arg2 C.GtkSortType
-	var cret C.gboolean
+	var _arg1 C.int
+	var _arg2 C.GtkSortType
+	var _cret C.gboolean
 
-	cret = C.gtk_tree_sortable_get_sort_column_id(arg0, &arg1, &arg2)
+	cret = C.gtk_tree_sortable_get_sort_column_id(_arg0, &_arg1, &_arg2)
 
-	var sortColumnId int
-	var order SortType
-	var ok bool
+	var _sortColumnId int
+	var _order SortType
+	var _ok bool
 
-	sortColumnId = (int)(arg1)
-	order = SortType(arg2)
-	if cret {
-		ok = true
+	_sortColumnId = (int)(_arg1)
+	_order = SortType(_arg2)
+	if _cret {
+		_ok = true
 	}
 
-	return sortColumnId, order, ok
+	return _sortColumnId, _order, _ok
 }
 
 // HasDefaultSortFunc returns true if the model has a default sort function.
 // This is used primarily by GtkTreeViewColumns in order to determine if a
 // model can go back to the default state, or not.
 func (s treeSortable) HasDefaultSortFunc() bool {
-	var arg0 *C.GtkTreeSortable
+	var _arg0 *C.GtkTreeSortable
 
-	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_tree_sortable_has_default_sort_func(arg0)
+	cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetDefaultSortFunc sets the default comparison function used when sorting
@@ -172,11 +172,11 @@ func (s treeSortable) HasDefaultSortFunc() bool {
 // default state. In this case, when the current sort column id of @sortable
 // is GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, the model will be unsorted.
 func (s treeSortable) SetDefaultSortFunc() {
-	var arg0 *C.GtkTreeSortable
+	var _arg0 *C.GtkTreeSortable
 
-	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_sortable_set_default_sort_func(arg0)
+	C.gtk_tree_sortable_set_default_sort_func(_arg0)
 }
 
 // SetSortColumnID sets the current sort column to be @sort_column_id. The
@@ -189,34 +189,34 @@ func (s treeSortable) SetDefaultSortFunc() {
 //
 // - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
 func (s treeSortable) SetSortColumnID(sortColumnId int, order SortType) {
-	var arg0 *C.GtkTreeSortable
-	var arg1 C.int
-	var arg2 C.GtkSortType
+	var _arg0 *C.GtkTreeSortable
+	var _arg1 C.int
+	var _arg2 C.GtkSortType
 
-	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
-	arg1 = C.int(sortColumnId)
-	arg2 = (C.GtkSortType)(order)
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(sortColumnId)
+	_arg2 = (C.GtkSortType)(order)
 
-	C.gtk_tree_sortable_set_sort_column_id(arg0, arg1, arg2)
+	C.gtk_tree_sortable_set_sort_column_id(_arg0, _arg1, _arg2)
 }
 
 // SetSortFunc sets the comparison function used when sorting to be
 // @sort_func. If the current sort column id of @sortable is the same as
 // @sort_column_id, then the model will sort using this function.
 func (s treeSortable) SetSortFunc() {
-	var arg0 *C.GtkTreeSortable
+	var _arg0 *C.GtkTreeSortable
 
-	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_sortable_set_sort_func(arg0)
+	C.gtk_tree_sortable_set_sort_func(_arg0)
 }
 
 // SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 // @sortable.
 func (s treeSortable) SortColumnChanged() {
-	var arg0 *C.GtkTreeSortable
+	var _arg0 *C.GtkTreeSortable
 
-	arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
-	C.gtk_tree_sortable_sort_column_changed(arg0)
+	C.gtk_tree_sortable_sort_column_changed(_arg0)
 }

@@ -62,68 +62,68 @@ func gotk4_FilterFunc(arg0 *C.GdkXEvent, arg1 *C.GdkEvent, arg2 C.gpointer) C.Gd
 
 // EventsPending checks if any events are ready to be processed for any display.
 func EventsPending() bool {
-	var cret C.gboolean
+	var _cret C.gboolean
 
 	cret = C.gdk_events_pending()
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // GetShowEvents gets whether event debugging output is enabled.
 func GetShowEvents() bool {
-	var cret C.gboolean
+	var _cret C.gboolean
 
 	cret = C.gdk_get_show_events()
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetShowEvents sets whether a trace of received events is output. Note that
 // GTK+ must be compiled with debugging (that is, configured using the
 // `--enable-debug` option) to use this option.
 func SetShowEvents(showEvents bool) {
-	var arg1 C.gboolean
+	var _arg1 C.gboolean
 
 	if showEvents {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gdk_set_show_events(arg1)
+	C.gdk_set_show_events(_arg1)
 }
 
 // SettingGet obtains a desktop-wide setting, such as the double-click time, for
 // the default screen. See gdk_screen_get_setting().
 func SettingGet(name string, value **externglib.Value) bool {
-	var arg1 *C.gchar
-	var arg2 *C.GValue
+	var _arg1 *C.gchar
+	var _arg2 *C.GValue
 
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GValue)(value.GValue)
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(value.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_setting_get(arg1, arg2)
+	cret = C.gdk_setting_get(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // EventAny contains the fields which are common to all event structs. Any event

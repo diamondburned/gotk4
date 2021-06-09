@@ -31,21 +31,21 @@ import "C"
 // `/run/bus-for-3A0`, which could be used in a D-Bus address like
 // `unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0`.
 func DBusAddressEscapeValue(string string) string {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_dbus_address_escape_value(arg1)
+	cret = C.g_dbus_address_escape_value(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // DBusAddressGetForBusSync: synchronously looks up the D-Bus address for the
@@ -54,26 +54,26 @@ func DBusAddressEscapeValue(string string) string {
 //
 // The returned address will be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (utf8 string, goerr error) {
-	var arg1 C.GBusType
-	var arg2 *C.GCancellable
+func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string, error) {
+	var _arg1 C.GBusType
+	var _arg2 *C.GCancellable
 
-	arg1 = (C.GBusType)(busType)
-	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (C.GBusType)(busType)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.gchar
-	var cerr *C.GError
+	var _cret *C.gchar
+	var _cerr *C.GError
 
-	cret = C.g_dbus_address_get_for_bus_sync(arg1, arg2, cerr)
+	cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, _cerr)
 
-	var utf8 string
-	var goerr error
+	var _utf8 string
+	var _goerr error
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return utf8, goerr
+	return _utf8, _goerr
 }
 
 // DBusAddressGetStream: asynchronously connects to an endpoint specified by
@@ -93,27 +93,27 @@ func DBusAddressGetStream() {
 
 // DBusAddressGetStreamFinish finishes an operation started with
 // g_dbus_address_get_stream().
-func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStream, goerr error) {
-	var arg1 *C.GAsyncResult
+func DBusAddressGetStreamFinish(res AsyncResult) (string, IOStream, error) {
+	var _arg1 *C.GAsyncResult
 
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var arg2 *C.gchar
-	var cret *C.GIOStream
-	var cerr *C.GError
+	var _arg2 *C.gchar
+	var _cret *C.GIOStream
+	var _cerr *C.GError
 
-	cret = C.g_dbus_address_get_stream_finish(arg1, &arg2, cerr)
+	cret = C.g_dbus_address_get_stream_finish(_arg1, &_arg2, _cerr)
 
-	var outGuid string
-	var ioStream IOStream
-	var goerr error
+	var _outGuid string
+	var _ioStream IOStream
+	var _goerr error
 
-	outGuid = C.GoString(arg2)
-	defer C.free(unsafe.Pointer(arg2))
-	ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_outGuid = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return outGuid, ioStream, goerr
+	return _outGuid, _ioStream, _goerr
 }
 
 // DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
@@ -124,30 +124,30 @@ func DBusAddressGetStreamFinish(res AsyncResult) (outGuid string, ioStream IOStr
 //
 // This is a synchronous failable function. See g_dbus_address_get_stream() for
 // the asynchronous version.
-func DBusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid string, ioStream IOStream, goerr error) {
-	var arg1 *C.gchar
-	var arg3 *C.GCancellable
+func DBusAddressGetStreamSync(address string, cancellable Cancellable) (string, IOStream, error) {
+	var _arg1 *C.gchar
+	var _arg3 *C.GCancellable
 
-	arg1 = (*C.gchar)(C.CString(address))
-	defer C.free(unsafe.Pointer(arg1))
-	arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (*C.gchar)(C.CString(address))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var arg2 *C.gchar
-	var cret *C.GIOStream
-	var cerr *C.GError
+	var _arg2 *C.gchar
+	var _cret *C.GIOStream
+	var _cerr *C.GError
 
-	cret = C.g_dbus_address_get_stream_sync(arg1, arg3, &arg2, cerr)
+	cret = C.g_dbus_address_get_stream_sync(_arg1, _arg3, &_arg2, _cerr)
 
-	var outGuid string
-	var ioStream IOStream
-	var goerr error
+	var _outGuid string
+	var _ioStream IOStream
+	var _goerr error
 
-	outGuid = C.GoString(arg2)
-	defer C.free(unsafe.Pointer(arg2))
-	ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IOStream)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_outGuid = C.GoString(_arg2)
+	defer C.free(unsafe.Pointer(_arg2))
+	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return outGuid, ioStream, goerr
+	return _outGuid, _ioStream, _goerr
 }
 
 // DBusIsAddress checks if @string is a D-Bus address
@@ -156,22 +156,22 @@ func DBusAddressGetStreamSync(address string, cancellable Cancellable) (outGuid 
 // This doesn't check if @string is actually supported by BusServer or
 // BusConnection - use g_dbus_is_supported_address() to do more checks.
 func DBusIsAddress(string string) bool {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_dbus_is_address(arg1)
+	cret = C.g_dbus_is_address(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // DBusIsSupportedAddress: like g_dbus_is_address() but also checks if the
@@ -179,18 +179,18 @@ func DBusIsAddress(string string) bool {
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DBusIsSupportedAddress(string string) error {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_dbus_is_supported_address(arg1, cerr)
+	C.g_dbus_is_supported_address(_arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

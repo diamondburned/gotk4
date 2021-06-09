@@ -64,13 +64,13 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 
 // NewVolumeButton constructs a class VolumeButton.
 func NewVolumeButton() VolumeButton {
-	var cret C.GtkVolumeButton
+	var _cret C.GtkVolumeButton
 
 	cret = C.gtk_volume_button_new()
 
-	var volumeButton VolumeButton
+	var _volumeButton VolumeButton
 
-	volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VolumeButton)
+	_volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VolumeButton)
 
-	return volumeButton
+	return _volumeButton
 }

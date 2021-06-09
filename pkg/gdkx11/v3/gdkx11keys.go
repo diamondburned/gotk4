@@ -59,21 +59,21 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 // event. This is only needed for code processing raw X events, since
 // EventKey directly includes an is_modifier field.
 func (k x11Keymap) GroupForState(state uint) int {
-	var arg0 *C.GdkKeymap
-	var arg1 C.guint
+	var _arg0 *C.GdkKeymap
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = C.guint(state)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(state)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_x11_keymap_get_group_for_state(arg0, arg1)
+	cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // KeyIsModifier determines whether a particular key code represents a key
@@ -82,21 +82,21 @@ func (k x11Keymap) GroupForState(state uint) int {
 // direct effect itself. This is only needed for code processing raw X
 // events, since EventKey directly includes an is_modifier field.
 func (k x11Keymap) KeyIsModifier(keycode uint) bool {
-	var arg0 *C.GdkKeymap
-	var arg1 C.guint
+	var _arg0 *C.GdkKeymap
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = C.guint(keycode)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(keycode)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_x11_keymap_key_is_modifier(arg0, arg1)
+	cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

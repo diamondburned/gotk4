@@ -75,33 +75,33 @@ func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 //
 // This function must be called to finish a custom print preview.
 func (p printOperationPreview) EndPreview() {
-	var arg0 *C.GtkPrintOperationPreview
+	var _arg0 *C.GtkPrintOperationPreview
 
-	arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
 
-	C.gtk_print_operation_preview_end_preview(arg0)
+	C.gtk_print_operation_preview_end_preview(_arg0)
 }
 
 // IsSelected returns whether the given page is included in the set of pages
 // that have been selected for printing.
 func (p printOperationPreview) IsSelected(pageNr int) bool {
-	var arg0 *C.GtkPrintOperationPreview
-	var arg1 C.gint
+	var _arg0 *C.GtkPrintOperationPreview
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pageNr)
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pageNr)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_print_operation_preview_is_selected(arg0, arg1)
+	cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // RenderPage renders a page to the preview, using the print context that
@@ -113,11 +113,11 @@ func (p printOperationPreview) IsSelected(pageNr int) bool {
 // Note that this function requires a suitable cairo context to be
 // associated with the print context.
 func (p printOperationPreview) RenderPage(pageNr int) {
-	var arg0 *C.GtkPrintOperationPreview
-	var arg1 C.gint
+	var _arg0 *C.GtkPrintOperationPreview
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(pageNr)
+	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(pageNr)
 
-	C.gtk_print_operation_preview_render_page(arg0, arg1)
+	C.gtk_print_operation_preview_render_page(_arg0, _arg1)
 }

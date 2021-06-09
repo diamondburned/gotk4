@@ -55,13 +55,13 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 
 // NewCellRendererAccel constructs a class CellRendererAccel.
 func NewCellRendererAccel() CellRendererAccel {
-	var cret C.GtkCellRendererAccel
+	var _cret C.GtkCellRendererAccel
 
 	cret = C.gtk_cell_renderer_accel_new()
 
-	var cellRendererAccel CellRendererAccel
+	var _cellRendererAccel CellRendererAccel
 
-	cellRendererAccel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererAccel)
+	_cellRendererAccel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererAccel)
 
-	return cellRendererAccel
+	return _cellRendererAccel
 }

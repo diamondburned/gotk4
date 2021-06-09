@@ -79,69 +79,69 @@ func (c *Color) Blue() uint16 {
 //
 // The result must be freed using gdk_color_free().
 func (c *Color) Copy() *Color {
-	var arg0 *C.GdkColor
+	var _arg0 *C.GdkColor
 
-	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkColor
+	var _cret *C.GdkColor
 
-	cret = C.gdk_color_copy(arg0)
+	cret = C.gdk_color_copy(_arg0)
 
-	var ret *Color
+	var _ret *Color
 
-	ret = WrapColor(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret, func(v *Color) {
+	_ret = WrapColor(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Color) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ret
+	return _ret
 }
 
 // Equal compares two colors.
 func (c *Color) Equal(colorb *Color) bool {
-	var arg0 *C.GdkColor
-	var arg1 *C.GdkColor
+	var _arg0 *C.GdkColor
+	var _arg1 *C.GdkColor
 
-	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkColor)(unsafe.Pointer(colorb.Native()))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkColor)(unsafe.Pointer(colorb.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_color_equal(arg0, arg1)
+	cret = C.gdk_color_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Free frees a Color created with gdk_color_copy().
 func (c *Color) Free() {
-	var arg0 *C.GdkColor
+	var _arg0 *C.GdkColor
 
-	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	C.gdk_color_free(arg0)
+	C.gdk_color_free(_arg0)
 }
 
 // Hash: a hash function suitable for using for a hash table that stores Colors.
 func (c *Color) Hash() uint {
-	var arg0 *C.GdkColor
+	var _arg0 *C.GdkColor
 
-	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_color_hash(arg0)
+	cret = C.gdk_color_hash(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // String returns a textual specification of @color in the hexadecimal form
@@ -150,18 +150,18 @@ func (c *Color) Hash() uint {
 //
 // The returned string can be parsed by gdk_color_parse().
 func (c *Color) String() string {
-	var arg0 *C.GdkColor
+	var _arg0 *C.GdkColor
 
-	arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_color_to_string(arg0)
+	cret = C.gdk_color_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

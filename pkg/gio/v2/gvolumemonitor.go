@@ -94,42 +94,42 @@ func marshalVolumeMonitor(p uintptr) (interface{}, error) {
 // The returned list should be freed with g_list_free(), after its elements
 // have been unreffed with g_object_unref().
 func (v volumeMonitor) ConnectedDrives() *glib.List {
-	var arg0 *C.GVolumeMonitor
+	var _arg0 *C.GVolumeMonitor
 
-	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_volume_monitor_get_connected_drives(arg0)
+	cret = C.g_volume_monitor_get_connected_drives(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // MountForUUID finds a #GMount object by its UUID (see g_mount_get_uuid())
 func (v volumeMonitor) MountForUUID(uuid string) Mount {
-	var arg0 *C.GVolumeMonitor
-	var arg1 *C.char
+	var _arg0 *C.GVolumeMonitor
+	var _arg1 *C.char
 
-	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(uuid))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(uuid))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GMount
+	var _cret *C.GMount
 
-	cret = C.g_volume_monitor_get_mount_for_uuid(arg0, arg1)
+	cret = C.g_volume_monitor_get_mount_for_uuid(_arg0, _arg1)
 
-	var mount Mount
+	var _mount Mount
 
-	mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Mount)
+	_mount = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Mount)
 
-	return mount
+	return _mount
 }
 
 // Mounts gets a list of the mounts on the system.
@@ -137,43 +137,43 @@ func (v volumeMonitor) MountForUUID(uuid string) Mount {
 // The returned list should be freed with g_list_free(), after its elements
 // have been unreffed with g_object_unref().
 func (v volumeMonitor) Mounts() *glib.List {
-	var arg0 *C.GVolumeMonitor
+	var _arg0 *C.GVolumeMonitor
 
-	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_volume_monitor_get_mounts(arg0)
+	cret = C.g_volume_monitor_get_mounts(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // VolumeForUUID finds a #GVolume object by its UUID (see
 // g_volume_get_uuid())
 func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
-	var arg0 *C.GVolumeMonitor
-	var arg1 *C.char
+	var _arg0 *C.GVolumeMonitor
+	var _arg1 *C.char
 
-	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.char)(C.CString(uuid))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.char)(C.CString(uuid))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GVolume
+	var _cret *C.GVolume
 
-	cret = C.g_volume_monitor_get_volume_for_uuid(arg0, arg1)
+	cret = C.g_volume_monitor_get_volume_for_uuid(_arg0, _arg1)
 
-	var volume Volume
+	var _volume Volume
 
-	volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Volume)
+	_volume = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Volume)
 
-	return volume
+	return _volume
 }
 
 // Volumes gets a list of the volumes on the system.
@@ -181,20 +181,20 @@ func (v volumeMonitor) VolumeForUUID(uuid string) Volume {
 // The returned list should be freed with g_list_free(), after its elements
 // have been unreffed with g_object_unref().
 func (v volumeMonitor) Volumes() *glib.List {
-	var arg0 *C.GVolumeMonitor
+	var _arg0 *C.GVolumeMonitor
 
-	arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GVolumeMonitor)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_volume_monitor_get_volumes(arg0)
+	cret = C.g_volume_monitor_get_volumes(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }

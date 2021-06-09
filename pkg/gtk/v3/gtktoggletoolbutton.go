@@ -76,66 +76,66 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 
 // NewToggleToolButton constructs a class ToggleToolButton.
 func NewToggleToolButton() ToggleToolButton {
-	var cret C.GtkToggleToolButton
+	var _cret C.GtkToggleToolButton
 
 	cret = C.gtk_toggle_tool_button_new()
 
-	var toggleToolButton ToggleToolButton
+	var _toggleToolButton ToggleToolButton
 
-	toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleToolButton)
 
-	return toggleToolButton
+	return _toggleToolButton
 }
 
 // NewToggleToolButtonFromStock constructs a class ToggleToolButton.
 func NewToggleToolButtonFromStock(stockId string) ToggleToolButton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkToggleToolButton
+	var _cret C.GtkToggleToolButton
 
-	cret = C.gtk_toggle_tool_button_new_from_stock(arg1)
+	cret = C.gtk_toggle_tool_button_new_from_stock(_arg1)
 
-	var toggleToolButton ToggleToolButton
+	var _toggleToolButton ToggleToolButton
 
-	toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleToolButton)
+	_toggleToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleToolButton)
 
-	return toggleToolButton
+	return _toggleToolButton
 }
 
 // Active queries a ToggleToolButton and returns its current state. Returns
 // true if the toggle button is pressed in and false if it is raised.
 func (b toggleToolButton) Active() bool {
-	var arg0 *C.GtkToggleToolButton
+	var _arg0 *C.GtkToggleToolButton
 
-	arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_toggle_tool_button_get_active(arg0)
+	cret = C.gtk_toggle_tool_button_get_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetActive sets the status of the toggle tool button. Set to true if you
 // want the GtkToggleButton to be “pressed in”, and false to raise it. This
 // action causes the toggled signal to be emitted.
 func (b toggleToolButton) SetActive(isActive bool) {
-	var arg0 *C.GtkToggleToolButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkToggleToolButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
 	if isActive {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_tool_button_set_active(arg0, arg1)
+	C.gtk_toggle_tool_button_set_active(_arg0, _arg1)
 }

@@ -95,45 +95,45 @@ func marshalFixed(p uintptr) (interface{}, error) {
 
 // NewFixed constructs a class Fixed.
 func NewFixed() Fixed {
-	var cret C.GtkFixed
+	var _cret C.GtkFixed
 
 	cret = C.gtk_fixed_new()
 
-	var fixed Fixed
+	var _fixed Fixed
 
-	fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Fixed)
+	_fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Fixed)
 
-	return fixed
+	return _fixed
 }
 
 // Move moves a child of a Fixed container to the given position.
 func (f fixed) Move(widget Widget, x int, y int) {
-	var arg0 *C.GtkFixed
-	var arg1 *C.GtkWidget
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg0 *C.GtkFixed
+	var _arg1 *C.GtkWidget
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg2 = C.gint(x)
-	arg3 = C.gint(y)
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
-	C.gtk_fixed_move(arg0, arg1, arg2, arg3)
+	C.gtk_fixed_move(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Put adds a widget to a Fixed container at the given position.
 func (f fixed) Put(widget Widget, x int, y int) {
-	var arg0 *C.GtkFixed
-	var arg1 *C.GtkWidget
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg0 *C.GtkFixed
+	var _arg1 *C.GtkWidget
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg2 = C.gint(x)
-	arg3 = C.gint(y)
+	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
-	C.gtk_fixed_put(arg0, arg1, arg2, arg3)
+	C.gtk_fixed_put(_arg0, _arg1, _arg2, _arg3)
 }
 
 type FixedChild struct {

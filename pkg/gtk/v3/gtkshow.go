@@ -24,24 +24,24 @@ import "C"
 // information for helpers to parent their dialog properly, when run from
 // sandboxed applications for example.
 func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
-	var arg1 *C.GdkScreen
-	var arg2 *C.gchar
-	var arg3 C.guint32
+	var _arg1 *C.GdkScreen
+	var _arg2 *C.gchar
+	var _arg3 C.guint32
 
-	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	arg2 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.guint32(timestamp)
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg2 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_show_uri(arg1, arg2, arg3, cerr)
+	C.gtk_show_uri(_arg1, _arg2, _arg3, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // ShowURIOnWindow: this is a convenience function for launching the default
@@ -57,22 +57,22 @@ func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
 func ShowURIOnWindow(parent Window, uri string, timestamp uint32) error {
-	var arg1 *C.GtkWindow
-	var arg2 *C.char
-	var arg3 C.guint32
+	var _arg1 *C.GtkWindow
+	var _arg2 *C.char
+	var _arg3 C.guint32
 
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	arg2 = (*C.char)(C.CString(uri))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.guint32(timestamp)
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gtk_show_uri_on_window(arg1, arg2, arg3, cerr)
+	C.gtk_show_uri_on_window(_arg1, _arg2, _arg3, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

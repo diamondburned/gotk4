@@ -23,59 +23,59 @@ type RefString byte
 
 // RefStringAcquire acquires a reference on a string.
 func RefStringAcquire(str string) string {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_ref_string_acquire(arg1)
+	cret = C.g_ref_string_acquire(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // RefStringLength retrieves the length of @str.
 func RefStringLength(str string) uint {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gsize
+	var _cret C.gsize
 
-	cret = C.g_ref_string_length(arg1)
+	cret = C.g_ref_string_length(_arg1)
 
-	var gsize uint
+	var _gsize uint
 
-	gsize = (uint)(cret)
+	_gsize = (uint)(_cret)
 
-	return gsize
+	return _gsize
 }
 
 // NewRefString creates a new reference counted string and copies the contents
 // of @str into it.
 func NewRefString(str string) string {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_ref_string_new(arg1)
+	cret = C.g_ref_string_new(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // RefStringNewIntern creates a new reference counted string and copies the
@@ -85,21 +85,21 @@ func NewRefString(str string) string {
 // contents of @str, it will return a new reference, instead of creating a new
 // string.
 func RefStringNewIntern(str string) string {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_ref_string_new_intern(arg1)
+	cret = C.g_ref_string_new_intern(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // RefStringNewLen creates a new reference counted string and copies the
@@ -108,32 +108,32 @@ func RefStringNewIntern(str string) string {
 // Since this function does not stop at nul bytes, it is the caller's
 // responsibility to ensure that @str has at least @len addressable bytes.
 func RefStringNewLen(str string, len int) string {
-	var arg1 *C.char
-	var arg2 C.gssize
+	var _arg1 *C.char
+	var _arg2 C.gssize
 
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gssize(len)
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(len)
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_ref_string_new_len(arg1, arg2)
+	cret = C.g_ref_string_new_len(_arg1, _arg2)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // RefStringRelease releases a reference on a string; if it was the last
 // reference, the resources allocated by the string are freed as well.
 func RefStringRelease(str string) {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_ref_string_release(arg1)
+	C.g_ref_string_release(_arg1)
 }

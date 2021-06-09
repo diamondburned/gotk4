@@ -73,89 +73,89 @@ func marshalMenuBar(p uintptr) (interface{}, error) {
 
 // NewMenuBar constructs a class MenuBar.
 func NewMenuBar() MenuBar {
-	var cret C.GtkMenuBar
+	var _cret C.GtkMenuBar
 
 	cret = C.gtk_menu_bar_new()
 
-	var menuBar MenuBar
+	var _menuBar MenuBar
 
-	menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuBar)
+	_menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuBar)
 
-	return menuBar
+	return _menuBar
 }
 
 // NewMenuBarFromModel constructs a class MenuBar.
 func NewMenuBarFromModel(model gio.MenuModel) MenuBar {
-	var arg1 *C.GMenuModel
+	var _arg1 *C.GMenuModel
 
-	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
 
-	var cret C.GtkMenuBar
+	var _cret C.GtkMenuBar
 
-	cret = C.gtk_menu_bar_new_from_model(arg1)
+	cret = C.gtk_menu_bar_new_from_model(_arg1)
 
-	var menuBar MenuBar
+	var _menuBar MenuBar
 
-	menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(MenuBar)
+	_menuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuBar)
 
-	return menuBar
+	return _menuBar
 }
 
 // ChildPackDirection retrieves the current child pack direction of the
 // menubar. See gtk_menu_bar_set_child_pack_direction().
 func (m menuBar) ChildPackDirection() PackDirection {
-	var arg0 *C.GtkMenuBar
+	var _arg0 *C.GtkMenuBar
 
-	arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 
-	var cret C.GtkPackDirection
+	var _cret C.GtkPackDirection
 
-	cret = C.gtk_menu_bar_get_child_pack_direction(arg0)
+	cret = C.gtk_menu_bar_get_child_pack_direction(_arg0)
 
-	var packDirection PackDirection
+	var _packDirection PackDirection
 
-	packDirection = PackDirection(cret)
+	_packDirection = PackDirection(_cret)
 
-	return packDirection
+	return _packDirection
 }
 
 // PackDirection retrieves the current pack direction of the menubar. See
 // gtk_menu_bar_set_pack_direction().
 func (m menuBar) PackDirection() PackDirection {
-	var arg0 *C.GtkMenuBar
+	var _arg0 *C.GtkMenuBar
 
-	arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 
-	var cret C.GtkPackDirection
+	var _cret C.GtkPackDirection
 
-	cret = C.gtk_menu_bar_get_pack_direction(arg0)
+	cret = C.gtk_menu_bar_get_pack_direction(_arg0)
 
-	var packDirection PackDirection
+	var _packDirection PackDirection
 
-	packDirection = PackDirection(cret)
+	_packDirection = PackDirection(_cret)
 
-	return packDirection
+	return _packDirection
 }
 
 // SetChildPackDirection sets how widgets should be packed inside the
 // children of a menubar.
 func (m menuBar) SetChildPackDirection(childPackDir PackDirection) {
-	var arg0 *C.GtkMenuBar
-	var arg1 C.GtkPackDirection
+	var _arg0 *C.GtkMenuBar
+	var _arg1 C.GtkPackDirection
 
-	arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
-	arg1 = (C.GtkPackDirection)(childPackDir)
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
+	_arg1 = (C.GtkPackDirection)(childPackDir)
 
-	C.gtk_menu_bar_set_child_pack_direction(arg0, arg1)
+	C.gtk_menu_bar_set_child_pack_direction(_arg0, _arg1)
 }
 
 // SetPackDirection sets how items should be packed inside a menubar.
 func (m menuBar) SetPackDirection(packDir PackDirection) {
-	var arg0 *C.GtkMenuBar
-	var arg1 C.GtkPackDirection
+	var _arg0 *C.GtkMenuBar
+	var _arg1 C.GtkPackDirection
 
-	arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
-	arg1 = (C.GtkPackDirection)(packDir)
+	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
+	_arg1 = (C.GtkPackDirection)(packDir)
 
-	C.gtk_menu_bar_set_pack_direction(arg0, arg1)
+	C.gtk_menu_bar_set_pack_direction(_arg0, _arg1)
 }

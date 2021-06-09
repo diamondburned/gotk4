@@ -92,13 +92,13 @@ func marshalActionMap(p uintptr) (interface{}, error) {
 //
 // The action map takes its own reference on @action.
 func (a actionMap) AddAction(action Action) {
-	var arg0 *C.GActionMap
-	var arg1 *C.GAction
+	var _arg0 *C.GActionMap
+	var _arg1 *C.GAction
 
-	arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
-	C.g_action_map_add_action(arg0, arg1)
+	C.g_action_map_add_action(_arg0, _arg1)
 }
 
 // LookupAction looks up the action with the name @action_name in
@@ -106,34 +106,34 @@ func (a actionMap) AddAction(action Action) {
 //
 // If no such action exists, returns nil.
 func (a actionMap) LookupAction(actionName string) Action {
-	var arg0 *C.GActionMap
-	var arg1 *C.gchar
+	var _arg0 *C.GActionMap
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GAction
+	var _cret *C.GAction
 
-	cret = C.g_action_map_lookup_action(arg0, arg1)
+	cret = C.g_action_map_lookup_action(_arg0, _arg1)
 
-	var action Action
+	var _action Action
 
-	action = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
 
-	return action
+	return _action
 }
 
 // RemoveAction removes the named action from the action map.
 //
 // If no action of this name is in the map then nothing happens.
 func (a actionMap) RemoveAction(actionName string) {
-	var arg0 *C.GActionMap
-	var arg1 *C.gchar
+	var _arg0 *C.GActionMap
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_action_map_remove_action(arg0, arg1)
+	C.g_action_map_remove_action(_arg0, _arg1)
 }

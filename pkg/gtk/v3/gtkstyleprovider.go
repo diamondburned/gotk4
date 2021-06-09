@@ -35,7 +35,7 @@ type StyleProviderOverrider interface {
 	Style(path *WidgetPath) StyleProperties
 	// StyleProperty looks up a widget style property as defined by @provider
 	// for the widget represented by @path.
-	StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (value *externglib.Value, ok bool)
+	StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (*externglib.Value, bool)
 }
 
 // StyleProvider: gtkStyleProvider is an interface used to provide style
@@ -70,68 +70,68 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 // IconFactory returns the IconFactory defined to be in use for @path, or
 // nil if none is defined.
 func (p styleProvider) IconFactory(path *WidgetPath) IconFactory {
-	var arg0 *C.GtkStyleProvider
-	var arg1 *C.GtkWidgetPath
+	var _arg0 *C.GtkStyleProvider
+	var _arg1 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
-	var cret *C.GtkIconFactory
+	var _cret *C.GtkIconFactory
 
-	cret = C.gtk_style_provider_get_icon_factory(arg0, arg1)
+	cret = C.gtk_style_provider_get_icon_factory(_arg0, _arg1)
 
-	var iconFactory IconFactory
+	var _iconFactory IconFactory
 
-	iconFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IconFactory)
+	_iconFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconFactory)
 
-	return iconFactory
+	return _iconFactory
 }
 
 // Style returns the style settings affecting a widget defined by @path, or
 // nil if @provider doesn’t contemplate styling @path.
 func (p styleProvider) Style(path *WidgetPath) StyleProperties {
-	var arg0 *C.GtkStyleProvider
-	var arg1 *C.GtkWidgetPath
+	var _arg0 *C.GtkStyleProvider
+	var _arg1 *C.GtkWidgetPath
 
-	arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 
-	var cret *C.GtkStyleProperties
+	var _cret *C.GtkStyleProperties
 
-	cret = C.gtk_style_provider_get_style(arg0, arg1)
+	cret = C.gtk_style_provider_get_style(_arg0, _arg1)
 
-	var styleProperties StyleProperties
+	var _styleProperties StyleProperties
 
-	styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StyleProperties)
+	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StyleProperties)
 
-	return styleProperties
+	return _styleProperties
 }
 
 // StyleProperty looks up a widget style property as defined by @provider
 // for the widget represented by @path.
-func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (value *externglib.Value, ok bool) {
-	var arg0 *C.GtkStyleProvider
-	var arg1 *C.GtkWidgetPath
-	var arg2 C.GtkStateFlags
-	var arg3 *C.GParamSpec
+func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (*externglib.Value, bool) {
+	var _arg0 *C.GtkStyleProvider
+	var _arg1 *C.GtkWidgetPath
+	var _arg2 C.GtkStateFlags
+	var _arg3 *C.GParamSpec
 
-	arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
-	arg2 = (C.GtkStateFlags)(state)
-	arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
+	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
+	_arg2 = (C.GtkStateFlags)(state)
+	_arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
-	var arg4 C.GValue
-	var cret C.gboolean
+	var _arg4 C.GValue
+	var _cret C.gboolean
 
-	cret = C.gtk_style_provider_get_style_property(arg0, arg1, arg2, arg3, &arg4)
+	cret = C.gtk_style_provider_get_style_property(_arg0, _arg1, _arg2, _arg3, &_arg4)
 
-	var value *externglib.Value
-	var ok bool
+	var _value *externglib.Value
+	var _ok bool
 
-	value = externglib.ValueFromNative(unsafe.Pointer(arg4))
-	if cret {
-		ok = true
+	_value = externglib.ValueFromNative(unsafe.Pointer(_arg4))
+	if _cret {
+		_ok = true
 	}
 
-	return value, ok
+	return _value, _ok
 }

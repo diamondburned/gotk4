@@ -173,11 +173,11 @@ func marshalIOStream(p uintptr) (interface{}, error) {
 
 // ClearPending clears the pending flag on @stream.
 func (s ioStream) ClearPending() {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	C.g_io_stream_clear_pending(arg0)
+	C.g_io_stream_clear_pending(_arg0)
 }
 
 // Close closes the stream, releasing resources related to it. This will
@@ -214,21 +214,21 @@ func (s ioStream) ClearPending() {
 // The default implementation of this method just calls close on the
 // individual input/output streams.
 func (s ioStream) Close(cancellable Cancellable) error {
-	var arg0 *C.GIOStream
-	var arg1 *C.GCancellable
+	var _arg0 *C.GIOStream
+	var _arg1 *C.GCancellable
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_io_stream_close(arg0, arg1, cerr)
+	C.g_io_stream_close(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // CloseAsync requests an asynchronous close of the stream, releasing
@@ -242,122 +242,122 @@ func (s ioStream) Close(cancellable Cancellable) error {
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
 func (s ioStream) CloseAsync() {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	C.g_io_stream_close_async(arg0)
+	C.g_io_stream_close_async(_arg0)
 }
 
 // CloseFinish closes a stream.
 func (s ioStream) CloseFinish(result AsyncResult) error {
-	var arg0 *C.GIOStream
-	var arg1 *C.GAsyncResult
+	var _arg0 *C.GIOStream
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_io_stream_close_finish(arg0, arg1, cerr)
+	C.g_io_stream_close_finish(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // InputStream gets the input stream for this object. This is used for
 // reading.
 func (s ioStream) InputStream() InputStream {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GInputStream
+	var _cret *C.GInputStream
 
-	cret = C.g_io_stream_get_input_stream(arg0)
+	cret = C.g_io_stream_get_input_stream(_arg0)
 
-	var inputStream InputStream
+	var _inputStream InputStream
 
-	inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(InputStream)
+	_inputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InputStream)
 
-	return inputStream
+	return _inputStream
 }
 
 // OutputStream gets the output stream for this object. This is used for
 // writing.
 func (s ioStream) OutputStream() OutputStream {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GOutputStream
+	var _cret *C.GOutputStream
 
-	cret = C.g_io_stream_get_output_stream(arg0)
+	cret = C.g_io_stream_get_output_stream(_arg0)
 
-	var outputStream OutputStream
+	var _outputStream OutputStream
 
-	outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(OutputStream)
+	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OutputStream)
 
-	return outputStream
+	return _outputStream
 }
 
 // HasPending checks if a stream has pending actions.
 func (s ioStream) HasPending() bool {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_io_stream_has_pending(arg0)
+	cret = C.g_io_stream_has_pending(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsClosed checks if a stream is closed.
 func (s ioStream) IsClosed() bool {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_io_stream_is_closed(arg0)
+	cret = C.g_io_stream_is_closed(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetPending sets @stream to have actions pending. If the pending flag is
 // already set or @stream is closed, it will return false and set @error.
 func (s ioStream) SetPending() error {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_io_stream_set_pending(arg0, cerr)
+	C.g_io_stream_set_pending(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // SpliceAsync: asynchronously splice the output stream of @stream1 to the
@@ -367,9 +367,9 @@ func (s ioStream) SetPending() error {
 // When the operation is finished @callback will be called. You can then
 // call g_io_stream_splice_finish() to get the result of the operation.
 func (s ioStream) SpliceAsync() {
-	var arg0 *C.GIOStream
+	var _arg0 *C.GIOStream
 
-	arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GIOStream)(unsafe.Pointer(s.Native()))
 
-	C.g_io_stream_splice_async(arg0)
+	C.g_io_stream_splice_async(_arg0)
 }

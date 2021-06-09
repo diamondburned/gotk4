@@ -64,11 +64,11 @@ func marshalBindingFlags(p uintptr) (interface{}, error) {
 // A macro is also included that allows this function to be used without pointer
 // casts.
 func ClearObject(objectPtr gextras.Objector) {
-	var arg1 **C.GObject
+	var _arg1 **C.GObject
 
-	arg1 = (*C.GObject)(unsafe.Pointer(objectPtr.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(objectPtr.Native()))
 
-	C.g_clear_object(arg1)
+	C.g_clear_object(_arg1)
 }
 
 // TypePlugin: the GObject type system supports dynamic loading of types. The
@@ -153,39 +153,39 @@ func marshalTypePlugin(p uintptr) (interface{}, error) {
 // the PluginClass of @plugin. There should be no need to use this function
 // outside of the GObject type system itself.
 func (p typePlugin) CompleteInterfaceInfo(instanceType externglib.Type, interfaceType externglib.Type, info *InterfaceInfo) {
-	var arg0 *C.GTypePlugin
-	var arg1 C.GType
-	var arg2 C.GType
-	var arg3 *C.GInterfaceInfo
+	var _arg0 *C.GTypePlugin
+	var _arg1 C.GType
+	var _arg2 C.GType
+	var _arg3 *C.GInterfaceInfo
 
-	arg0 = (*C.GTypePlugin)(unsafe.Pointer(p.Native()))
-	arg1 = C.GType(instanceType)
-	arg2 = C.GType(interfaceType)
-	arg3 = (*C.GInterfaceInfo)(unsafe.Pointer(info.Native()))
+	_arg0 = (*C.GTypePlugin)(unsafe.Pointer(p.Native()))
+	_arg1 = C.GType(instanceType)
+	_arg2 = C.GType(interfaceType)
+	_arg3 = (*C.GInterfaceInfo)(unsafe.Pointer(info.Native()))
 
-	C.g_type_plugin_complete_interface_info(arg0, arg1, arg2, arg3)
+	C.g_type_plugin_complete_interface_info(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Unuse calls the @unuse_plugin function from the PluginClass of @plugin.
 // There should be no need to use this function outside of the GObject type
 // system itself.
 func (p typePlugin) Unuse() {
-	var arg0 *C.GTypePlugin
+	var _arg0 *C.GTypePlugin
 
-	arg0 = (*C.GTypePlugin)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTypePlugin)(unsafe.Pointer(p.Native()))
 
-	C.g_type_plugin_unuse(arg0)
+	C.g_type_plugin_unuse(_arg0)
 }
 
 // Use calls the @use_plugin function from the PluginClass of @plugin. There
 // should be no need to use this function outside of the GObject type system
 // itself.
 func (p typePlugin) Use() {
-	var arg0 *C.GTypePlugin
+	var _arg0 *C.GTypePlugin
 
-	arg0 = (*C.GTypePlugin)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GTypePlugin)(unsafe.Pointer(p.Native()))
 
-	C.g_type_plugin_use(arg0)
+	C.g_type_plugin_use(_arg0)
 }
 
 // Binding is the representation of a binding between a property on a #GObject
@@ -279,89 +279,89 @@ func marshalBinding(p uintptr) (interface{}, error) {
 
 // Flags retrieves the flags passed when constructing the #GBinding.
 func (b binding) Flags() BindingFlags {
-	var arg0 *C.GBinding
+	var _arg0 *C.GBinding
 
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
-	var cret C.GBindingFlags
+	var _cret C.GBindingFlags
 
-	cret = C.g_binding_get_flags(arg0)
+	cret = C.g_binding_get_flags(_arg0)
 
-	var bindingFlags BindingFlags
+	var _bindingFlags BindingFlags
 
-	bindingFlags = BindingFlags(cret)
+	_bindingFlags = BindingFlags(_cret)
 
-	return bindingFlags
+	return _bindingFlags
 }
 
 // Source retrieves the #GObject instance used as the source of the binding.
 func (b binding) Source() gextras.Objector {
-	var arg0 *C.GBinding
+	var _arg0 *C.GBinding
 
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.g_binding_get_source(arg0)
+	cret = C.g_binding_get_source(_arg0)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // SourceProperty retrieves the name of the property of #GBinding:source
 // used as the source of the binding.
 func (b binding) SourceProperty() string {
-	var arg0 *C.GBinding
+	var _arg0 *C.GBinding
 
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_binding_get_source_property(arg0)
+	cret = C.g_binding_get_source_property(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Target retrieves the #GObject instance used as the target of the binding.
 func (b binding) Target() gextras.Objector {
-	var arg0 *C.GBinding
+	var _arg0 *C.GBinding
 
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.g_binding_get_target(arg0)
+	cret = C.g_binding_get_target(_arg0)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // TargetProperty retrieves the name of the property of #GBinding:target
 // used as the target of the binding.
 func (b binding) TargetProperty() string {
-	var arg0 *C.GBinding
+	var _arg0 *C.GBinding
 
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_binding_get_target_property(arg0)
+	cret = C.g_binding_get_target_property(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Unbind: explicitly releases the binding between the source and the target
@@ -371,11 +371,11 @@ func (b binding) TargetProperty() string {
 // @binding instance; if you want to hold on to the #GBinding instance after
 // calling g_binding_unbind(), you will need to hold a reference to it.
 func (b binding) Unbind() {
-	var arg0 *C.GBinding
+	var _arg0 *C.GBinding
 
-	arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
 
-	C.g_binding_unbind(arg0)
+	C.g_binding_unbind(_arg0)
 }
 
 // InitiallyUnowned: all the fields in the GInitiallyUnowned structure are
@@ -493,11 +493,11 @@ func (w *WeakRef) Native() unsafe.Pointer {
 // You should only call this on a Ref that previously had g_weak_ref_init()
 // called on it.
 func (w *WeakRef) Clear() {
-	var arg0 *C.GWeakRef
+	var _arg0 *C.GWeakRef
 
-	arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
 
-	C.g_weak_ref_clear(arg0)
+	C.g_weak_ref_clear(_arg0)
 }
 
 // Get: if @weak_ref is not empty, atomically acquire a strong reference to the
@@ -510,19 +510,19 @@ func (w *WeakRef) Clear() {
 // The caller should release the resulting reference in the usual way, by using
 // g_object_unref().
 func (w *WeakRef) Get() gextras.Objector {
-	var arg0 *C.GWeakRef
+	var _arg0 *C.GWeakRef
 
-	arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_weak_ref_get(arg0)
+	cret = C.g_weak_ref_get(_arg0)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // Init: initialise a non-statically-allocated Ref.
@@ -534,24 +534,24 @@ func (w *WeakRef) Get() gextras.Objector {
 // is not necessary to use this function for a Ref in static storage because it
 // will already be properly initialised. Just use g_weak_ref_set() directly.
 func (w *WeakRef) Init(object gextras.Objector) {
-	var arg0 *C.GWeakRef
-	var arg1 C.gpointer
+	var _arg0 *C.GWeakRef
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	C.g_weak_ref_init(arg0, arg1)
+	C.g_weak_ref_init(_arg0, _arg1)
 }
 
 // Set: change the object to which @weak_ref points, or set it to nil.
 //
 // You must own a strong reference on @object while calling this function.
 func (w *WeakRef) Set(object gextras.Objector) {
-	var arg0 *C.GWeakRef
-	var arg1 C.gpointer
+	var _arg0 *C.GWeakRef
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GWeakRef)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	C.g_weak_ref_set(arg0, arg1)
+	C.g_weak_ref_set(_arg0, _arg1)
 }

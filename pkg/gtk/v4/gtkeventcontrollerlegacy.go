@@ -51,13 +51,13 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 
 // NewEventControllerLegacy constructs a class EventControllerLegacy.
 func NewEventControllerLegacy() EventControllerLegacy {
-	var cret C.GtkEventControllerLegacy
+	var _cret C.GtkEventControllerLegacy
 
 	cret = C.gtk_event_controller_legacy_new()
 
-	var eventControllerLegacy EventControllerLegacy
+	var _eventControllerLegacy EventControllerLegacy
 
-	eventControllerLegacy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerLegacy)
+	_eventControllerLegacy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerLegacy)
 
-	return eventControllerLegacy
+	return _eventControllerLegacy
 }

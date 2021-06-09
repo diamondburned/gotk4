@@ -56,32 +56,32 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 
 // NewGestureRotate constructs a class GestureRotate.
 func NewGestureRotate() GestureRotate {
-	var cret C.GtkGestureRotate
+	var _cret C.GtkGestureRotate
 
 	cret = C.gtk_gesture_rotate_new()
 
-	var gestureRotate GestureRotate
+	var _gestureRotate GestureRotate
 
-	gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(GestureRotate)
+	_gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureRotate)
 
-	return gestureRotate
+	return _gestureRotate
 }
 
 // AngleDelta: if @gesture is active, this function returns the angle
 // difference in radians since the gesture was first recognized. If @gesture
 // is not active, 0 is returned.
 func (g gestureRotate) AngleDelta() float64 {
-	var arg0 *C.GtkGestureRotate
+	var _arg0 *C.GtkGestureRotate
 
-	arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
 
-	var cret C.double
+	var _cret C.double
 
-	cret = C.gtk_gesture_rotate_get_angle_delta(arg0)
+	cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }

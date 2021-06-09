@@ -93,41 +93,41 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 
 // NewContentProviderForValue constructs a class ContentProvider.
 func NewContentProviderForValue(value **externglib.Value) ContentProvider {
-	var arg1 *C.GValue
+	var _arg1 *C.GValue
 
-	arg1 = (*C.GValue)(value.GValue)
+	_arg1 = (*C.GValue)(value.GValue)
 
-	var cret C.GdkContentProvider
+	var _cret C.GdkContentProvider
 
-	cret = C.gdk_content_provider_new_for_value(arg1)
+	cret = C.gdk_content_provider_new_for_value(_arg1)
 
-	var contentProvider ContentProvider
+	var _contentProvider ContentProvider
 
-	contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
 
-	return contentProvider
+	return _contentProvider
 }
 
 // NewContentProviderUnion constructs a class ContentProvider.
 func NewContentProviderUnion() ContentProvider {
-	var cret C.GdkContentProvider
+	var _cret C.GdkContentProvider
 
 	cret = C.gdk_content_provider_new_union()
 
-	var contentProvider ContentProvider
+	var _contentProvider ContentProvider
 
-	contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContentProvider)
+	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
 
-	return contentProvider
+	return _contentProvider
 }
 
 // ContentChanged emits the ContentProvider::content-changed signal.
 func (p contentProvider) ContentChanged() {
-	var arg0 *C.GdkContentProvider
+	var _arg0 *C.GdkContentProvider
 
-	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
-	C.gdk_content_provider_content_changed(arg0)
+	C.gdk_content_provider_content_changed(_arg0)
 }
 
 // Value gets the contents of @provider stored in @value.
@@ -138,42 +138,42 @@ func (p contentProvider) ContentChanged() {
 // #GType is not supported, this operation can fail and
 // IO_ERROR_NOT_SUPPORTED will be reported.
 func (p contentProvider) Value(value **externglib.Value) error {
-	var arg0 *C.GdkContentProvider
-	var arg1 *C.GValue
+	var _arg0 *C.GdkContentProvider
+	var _arg1 *C.GValue
 
-	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GValue)(value.GValue)
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GValue)(value.GValue)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gdk_content_provider_get_value(arg0, arg1, cerr)
+	C.gdk_content_provider_get_value(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // RefFormats gets the formats that the provider can provide its current
 // contents in.
 func (p contentProvider) RefFormats() *ContentFormats {
-	var arg0 *C.GdkContentProvider
+	var _arg0 *C.GdkContentProvider
 
-	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GdkContentFormats
+	var _cret *C.GdkContentFormats
 
-	cret = C.gdk_content_provider_ref_formats(arg0)
+	cret = C.gdk_content_provider_ref_formats(_arg0)
 
-	var contentFormats *ContentFormats
+	var _contentFormats *ContentFormats
 
-	contentFormats = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(contentFormats, func(v *ContentFormats) {
+	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return contentFormats
+	return _contentFormats
 }
 
 // RefStorableFormats gets the formats that the provider suggests other
@@ -182,22 +182,22 @@ func (p contentProvider) RefFormats() *ContentFormats {
 //
 // This can be assumed to be a subset of gdk_content_provider_ref_formats().
 func (p contentProvider) RefStorableFormats() *ContentFormats {
-	var arg0 *C.GdkContentProvider
+	var _arg0 *C.GdkContentProvider
 
-	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
-	var cret *C.GdkContentFormats
+	var _cret *C.GdkContentFormats
 
-	cret = C.gdk_content_provider_ref_storable_formats(arg0)
+	cret = C.gdk_content_provider_ref_storable_formats(_arg0)
 
-	var contentFormats *ContentFormats
+	var _contentFormats *ContentFormats
 
-	contentFormats = WrapContentFormats(unsafe.Pointer(cret))
-	runtime.SetFinalizer(contentFormats, func(v *ContentFormats) {
+	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return contentFormats
+	return _contentFormats
 }
 
 // WriteMIMETypeAsync: asynchronously writes the contents of @provider to
@@ -212,29 +212,29 @@ func (p contentProvider) RefStorableFormats() *ContentFormats {
 //
 // The given @stream will not be closed.
 func (p contentProvider) WriteMIMETypeAsync() {
-	var arg0 *C.GdkContentProvider
+	var _arg0 *C.GdkContentProvider
 
-	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
-	C.gdk_content_provider_write_mime_type_async(arg0)
+	C.gdk_content_provider_write_mime_type_async(_arg0)
 }
 
 // WriteMIMETypeFinish finishes an asynchronous write operation started with
 // gdk_content_provider_write_mime_type_async().
 func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
-	var arg0 *C.GdkContentProvider
-	var arg1 *C.GAsyncResult
+	var _arg0 *C.GdkContentProvider
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gdk_content_provider_write_mime_type_finish(arg0, arg1, cerr)
+	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

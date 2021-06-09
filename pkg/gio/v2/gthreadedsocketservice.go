@@ -71,17 +71,17 @@ func marshalThreadedSocketService(p uintptr) (interface{}, error) {
 
 // NewThreadedSocketService constructs a class ThreadedSocketService.
 func NewThreadedSocketService(maxThreads int) ThreadedSocketService {
-	var arg1 C.int
+	var _arg1 C.int
 
-	arg1 = C.int(maxThreads)
+	_arg1 = C.int(maxThreads)
 
-	var cret C.GThreadedSocketService
+	var _cret C.GThreadedSocketService
 
-	cret = C.g_threaded_socket_service_new(arg1)
+	cret = C.g_threaded_socket_service_new(_arg1)
 
-	var threadedSocketService ThreadedSocketService
+	var _threadedSocketService ThreadedSocketService
 
-	threadedSocketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ThreadedSocketService)
+	_threadedSocketService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThreadedSocketService)
 
-	return threadedSocketService
+	return _threadedSocketService
 }

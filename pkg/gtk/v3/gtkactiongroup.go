@@ -173,20 +173,20 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 
 // NewActionGroup constructs a class ActionGroup.
 func NewActionGroup(name string) ActionGroup {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkActionGroup
+	var _cret C.GtkActionGroup
 
-	cret = C.gtk_action_group_new(arg1)
+	cret = C.gtk_action_group_new(_arg1)
 
-	var actionGroup ActionGroup
+	var _actionGroup ActionGroup
 
-	actionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ActionGroup)
+	_actionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ActionGroup)
 
-	return actionGroup
+	return _actionGroup
 }
 
 // AddAction adds an action object to the action group. Note that this
@@ -196,13 +196,13 @@ func NewActionGroup(name string) ActionGroup {
 // yourself with gtk_action_set_accel_path(), or use
 // `gtk_action_group_add_action_with_accel (..., NULL)`.
 func (a actionGroup) AddAction(action Action) {
-	var arg0 *C.GtkActionGroup
-	var arg1 *C.GtkAction
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.GtkAction
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
-	C.gtk_action_group_add_action(arg0, arg1)
+	C.gtk_action_group_add_action(_arg0, _arg1)
 }
 
 // AddActionWithAccel adds an action object to the action group and sets up
@@ -213,16 +213,16 @@ func (a actionGroup) AddAction(action Action) {
 //
 // Accel paths are set to `<Actions>/group-name/action-name`.
 func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
-	var arg0 *C.GtkActionGroup
-	var arg1 *C.GtkAction
-	var arg2 *C.gchar
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.GtkAction
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
-	arg2 = (*C.gchar)(C.CString(accelerator))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg2 = (*C.gchar)(C.CString(accelerator))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_action_group_add_action_with_accel(arg0, arg1, arg2)
+	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
 }
 
 // AddRadioActions: this is a convenience routine to create a group of radio
@@ -232,75 +232,75 @@ func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 // @on_change callback and the accel paths of the actions are set to
 // `<Actions>/group-name/action-name`.
 func (a actionGroup) AddRadioActions() {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_group_add_radio_actions(arg0)
+	C.gtk_action_group_add_radio_actions(_arg0)
 }
 
 // AddRadioActionsFull: this variant of gtk_action_group_add_radio_actions()
 // adds a Notify callback for @user_data.
 func (a actionGroup) AddRadioActionsFull() {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_group_add_radio_actions_full(arg0)
+	C.gtk_action_group_add_radio_actions_full(_arg0)
 }
 
 // AccelGroup gets the accelerator group.
 func (a actionGroup) AccelGroup() AccelGroup {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GtkAccelGroup
+	var _cret *C.GtkAccelGroup
 
-	cret = C.gtk_action_group_get_accel_group(arg0)
+	cret = C.gtk_action_group_get_accel_group(_arg0)
 
-	var accelGroup AccelGroup
+	var _accelGroup AccelGroup
 
-	accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AccelGroup)
+	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
 
-	return accelGroup
+	return _accelGroup
 }
 
 // Action looks up an action in the action group by name.
 func (a actionGroup) Action(actionName string) Action {
-	var arg0 *C.GtkActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GtkAction
+	var _cret *C.GtkAction
 
-	cret = C.gtk_action_group_get_action(arg0, arg1)
+	cret = C.gtk_action_group_get_action(_arg0, _arg1)
 
-	var action Action
+	var _action Action
 
-	action = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Action)
+	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
 
-	return action
+	return _action
 }
 
 // Name gets the name of the action group.
 func (a actionGroup) Name() string {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_action_group_get_name(arg0)
+	cret = C.gtk_action_group_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Sensitive returns true if the group is sensitive. The constituent actions
@@ -308,98 +308,98 @@ func (a actionGroup) Name() string {
 // are sensitive (see gtk_action_get_sensitive()) and their group is
 // sensitive.
 func (a actionGroup) Sensitive() bool {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_action_group_get_sensitive(arg0)
+	cret = C.gtk_action_group_get_sensitive(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Visible returns true if the group is visible. The constituent actions can
 // only be logically visible (see gtk_action_is_visible()) if they are
 // visible (see gtk_action_get_visible()) and their group is visible.
 func (a actionGroup) Visible() bool {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_action_group_get_visible(arg0)
+	cret = C.gtk_action_group_get_visible(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ListActions lists the actions in the action group.
 func (a actionGroup) ListActions() *glib.List {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gtk_action_group_list_actions(arg0)
+	cret = C.gtk_action_group_list_actions(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // RemoveAction removes an action object from the action group.
 func (a actionGroup) RemoveAction(action Action) {
-	var arg0 *C.GtkActionGroup
-	var arg1 *C.GtkAction
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.GtkAction
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
 
-	C.gtk_action_group_remove_action(arg0, arg1)
+	C.gtk_action_group_remove_action(_arg0, _arg1)
 }
 
 // SetAccelGroup sets the accelerator group to be used by every action in
 // this group.
 func (a actionGroup) SetAccelGroup(accelGroup AccelGroup) {
-	var arg0 *C.GtkActionGroup
-	var arg1 *C.GtkAccelGroup
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.GtkAccelGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
 
-	C.gtk_action_group_set_accel_group(arg0, arg1)
+	C.gtk_action_group_set_accel_group(_arg0, _arg1)
 }
 
 // SetSensitive changes the sensitivity of @action_group
 func (a actionGroup) SetSensitive(sensitive bool) {
-	var arg0 *C.GtkActionGroup
-	var arg1 C.gboolean
+	var _arg0 *C.GtkActionGroup
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	if sensitive {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_action_group_set_sensitive(arg0, arg1)
+	C.gtk_action_group_set_sensitive(_arg0, _arg1)
 }
 
 // SetTranslateFunc sets a function to be used for translating the @label
@@ -408,11 +408,11 @@ func (a actionGroup) SetSensitive(sensitive bool) {
 // If you’re using gettext(), it is enough to set the translation domain
 // with gtk_action_group_set_translation_domain().
 func (a actionGroup) SetTranslateFunc() {
-	var arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	C.gtk_action_group_set_translate_func(arg0)
+	C.gtk_action_group_set_translate_func(_arg0)
 }
 
 // SetTranslationDomain sets the translation domain and uses g_dgettext()
@@ -422,49 +422,49 @@ func (a actionGroup) SetTranslateFunc() {
 // If you’re not using gettext() for localization, see
 // gtk_action_group_set_translate_func().
 func (a actionGroup) SetTranslationDomain(domain string) {
-	var arg0 *C.GtkActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_action_group_set_translation_domain(arg0, arg1)
+	C.gtk_action_group_set_translation_domain(_arg0, _arg1)
 }
 
 // SetVisible changes the visible of @action_group.
 func (a actionGroup) SetVisible(visible bool) {
-	var arg0 *C.GtkActionGroup
-	var arg1 C.gboolean
+	var _arg0 *C.GtkActionGroup
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	if visible {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_action_group_set_visible(arg0, arg1)
+	C.gtk_action_group_set_visible(_arg0, _arg1)
 }
 
 // TranslateString translates a string using the function set with
 // gtk_action_group_set_translate_func(). This is mainly intended for
 // language bindings.
 func (a actionGroup) TranslateString(string string) string {
-	var arg0 *C.GtkActionGroup
-	var arg1 *C.gchar
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_action_group_translate_string(arg0, arg1)
+	cret = C.gtk_action_group_translate_string(_arg0, _arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // ActionEntry structs are used with gtk_action_group_add_actions() to construct

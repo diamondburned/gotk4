@@ -62,80 +62,80 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 
 // NewBoolFilter constructs a class BoolFilter.
 func NewBoolFilter(expression Expression) BoolFilter {
-	var arg1 *C.GtkExpression
+	var _arg1 *C.GtkExpression
 
-	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	var cret C.GtkBoolFilter
+	var _cret C.GtkBoolFilter
 
-	cret = C.gtk_bool_filter_new(arg1)
+	cret = C.gtk_bool_filter_new(_arg1)
 
-	var boolFilter BoolFilter
+	var _boolFilter BoolFilter
 
-	boolFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoolFilter)
+	_boolFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BoolFilter)
 
-	return boolFilter
+	return _boolFilter
 }
 
 // Expression gets the expression that the filter uses to evaluate if an
 // item should be filtered.
 func (s boolFilter) Expression() Expression {
-	var arg0 *C.GtkBoolFilter
+	var _arg0 *C.GtkBoolFilter
 
-	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkExpression
+	var _cret *C.GtkExpression
 
-	cret = C.gtk_bool_filter_get_expression(arg0)
+	cret = C.gtk_bool_filter_get_expression(_arg0)
 
-	var expression Expression
+	var _expression Expression
 
-	expression = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
 
-	return expression
+	return _expression
 }
 
 // Invert returns whether the filter inverts the expression.
 func (s boolFilter) Invert() bool {
-	var arg0 *C.GtkBoolFilter
+	var _arg0 *C.GtkBoolFilter
 
-	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_bool_filter_get_invert(arg0)
+	cret = C.gtk_bool_filter_get_invert(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetExpression sets the expression that the filter uses to check if items
 // should be filtered. The expression must have a value type of
 // TYPE_BOOLEAN.
 func (s boolFilter) SetExpression(expression Expression) {
-	var arg0 *C.GtkBoolFilter
-	var arg1 *C.GtkExpression
+	var _arg0 *C.GtkBoolFilter
+	var _arg1 *C.GtkExpression
 
-	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	C.gtk_bool_filter_set_expression(arg0, arg1)
+	C.gtk_bool_filter_set_expression(_arg0, _arg1)
 }
 
 // SetInvert sets whether the filter should invert the expression.
 func (s boolFilter) SetInvert(invert bool) {
-	var arg0 *C.GtkBoolFilter
-	var arg1 C.gboolean
+	var _arg0 *C.GtkBoolFilter
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 	if invert {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_bool_filter_set_invert(arg0, arg1)
+	C.gtk_bool_filter_set_invert(_arg0, _arg1)
 }

@@ -93,15 +93,15 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 
 // NewSearchBar constructs a class SearchBar.
 func NewSearchBar() SearchBar {
-	var cret C.GtkSearchBar
+	var _cret C.GtkSearchBar
 
 	cret = C.gtk_search_bar_new()
 
-	var searchBar SearchBar
+	var _searchBar SearchBar
 
-	searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SearchBar)
+	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchBar)
 
-	return searchBar
+	return _searchBar
 }
 
 // ConnectEntry connects the Entry widget passed as the one to be used in
@@ -109,77 +109,77 @@ func NewSearchBar() SearchBar {
 // is only required if the entry isn’t the direct child of the search bar
 // (as in our main example).
 func (b searchBar) ConnectEntry(entry Entry) {
-	var arg0 *C.GtkSearchBar
-	var arg1 *C.GtkEntry
+	var _arg0 *C.GtkSearchBar
+	var _arg1 *C.GtkEntry
 
-	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkEntry)(unsafe.Pointer(entry.Native()))
 
-	C.gtk_search_bar_connect_entry(arg0, arg1)
+	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }
 
 // SearchMode returns whether the search mode is on or off.
 func (b searchBar) SearchMode() bool {
-	var arg0 *C.GtkSearchBar
+	var _arg0 *C.GtkSearchBar
 
-	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_search_bar_get_search_mode(arg0)
+	cret = C.gtk_search_bar_get_search_mode(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ShowCloseButton returns whether the close button is shown.
 func (b searchBar) ShowCloseButton() bool {
-	var arg0 *C.GtkSearchBar
+	var _arg0 *C.GtkSearchBar
 
-	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_search_bar_get_show_close_button(arg0)
+	cret = C.gtk_search_bar_get_show_close_button(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetSearchMode switches the search mode on or off.
 func (b searchBar) SetSearchMode(searchMode bool) {
-	var arg0 *C.GtkSearchBar
-	var arg1 C.gboolean
+	var _arg0 *C.GtkSearchBar
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 	if searchMode {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_search_bar_set_search_mode(arg0, arg1)
+	C.gtk_search_bar_set_search_mode(_arg0, _arg1)
 }
 
 // SetShowCloseButton shows or hides the close button. Applications that
 // already have a “search” toggle button should not show a close button in
 // their search bar, as it duplicates the role of the toggle button.
 func (b searchBar) SetShowCloseButton(visible bool) {
-	var arg0 *C.GtkSearchBar
-	var arg1 C.gboolean
+	var _arg0 *C.GtkSearchBar
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
 	if visible {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_search_bar_set_show_close_button(arg0, arg1)
+	C.gtk_search_bar_set_show_close_button(_arg0, _arg1)
 }

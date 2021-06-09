@@ -67,68 +67,68 @@ func marshalWaylandDevice(p uintptr) (interface{}, error) {
 // This is most notably implemented for devices of type GDK_SOURCE_PEN,
 // GDK_SOURCE_TABLET_PAD.
 func (d waylandDevice) NodePath() string {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gdk_wayland_device_get_node_path(arg0)
+	cret = C.gdk_wayland_device_get_node_path(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // WlKeyboard returns the Wayland wl_keyboard of a Device.
 func (d waylandDevice) WlKeyboard() *interface{} {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_keyboard
+	var _cret *C.wl_keyboard
 
-	cret = C.gdk_wayland_device_get_wl_keyboard(arg0)
+	cret = C.gdk_wayland_device_get_wl_keyboard(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // WlPointer returns the Wayland wl_pointer of a Device.
 func (d waylandDevice) WlPointer() *interface{} {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_pointer
+	var _cret *C.wl_pointer
 
-	cret = C.gdk_wayland_device_get_wl_pointer(arg0)
+	cret = C.gdk_wayland_device_get_wl_pointer(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // WlSeat returns the Wayland wl_seat of a Device.
 func (d waylandDevice) WlSeat() *interface{} {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_seat
+	var _cret *C.wl_seat
 
-	cret = C.gdk_wayland_device_get_wl_seat(arg0)
+	cret = C.gdk_wayland_device_get_wl_seat(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }

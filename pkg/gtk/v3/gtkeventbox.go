@@ -103,55 +103,55 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 
 // NewEventBox constructs a class EventBox.
 func NewEventBox() EventBox {
-	var cret C.GtkEventBox
+	var _cret C.GtkEventBox
 
 	cret = C.gtk_event_box_new()
 
-	var eventBox EventBox
+	var _eventBox EventBox
 
-	eventBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EventBox)
+	_eventBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EventBox)
 
-	return eventBox
+	return _eventBox
 }
 
 // AboveChild returns whether the event box window is above or below the
 // windows of its child. See gtk_event_box_set_above_child() for details.
 func (e eventBox) AboveChild() bool {
-	var arg0 *C.GtkEventBox
+	var _arg0 *C.GtkEventBox
 
-	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_event_box_get_above_child(arg0)
+	cret = C.gtk_event_box_get_above_child(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // VisibleWindow returns whether the event box has a visible window. See
 // gtk_event_box_set_visible_window() for details.
 func (e eventBox) VisibleWindow() bool {
-	var arg0 *C.GtkEventBox
+	var _arg0 *C.GtkEventBox
 
-	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_event_box_get_visible_window(arg0)
+	cret = C.gtk_event_box_get_visible_window(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetAboveChild: set whether the event box window is positioned above the
@@ -162,15 +162,15 @@ func (e eventBox) VisibleWindow() bool {
 //
 // The default is to keep the window below the child.
 func (e eventBox) SetAboveChild(aboveChild bool) {
-	var arg0 *C.GtkEventBox
-	var arg1 C.gboolean
+	var _arg0 *C.GtkEventBox
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if aboveChild {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_event_box_set_above_child(arg0, arg1)
+	C.gtk_event_box_set_above_child(_arg0, _arg1)
 }
 
 // SetVisibleWindow: set whether the event box uses a visible or invisible
@@ -205,13 +205,13 @@ func (e eventBox) SetAboveChild(aboveChild bool) {
 // the event box window is actually the ancestor of the descendant windows,
 // not just at the same place on the screen.
 func (e eventBox) SetVisibleWindow(visibleWindow bool) {
-	var arg0 *C.GtkEventBox
-	var arg1 C.gboolean
+	var _arg0 *C.GtkEventBox
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if visibleWindow {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_event_box_set_visible_window(arg0, arg1)
+	C.gtk_event_box_set_visible_window(_arg0, _arg1)
 }

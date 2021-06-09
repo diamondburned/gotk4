@@ -155,19 +155,19 @@ func marshalListModel(p uintptr) (interface{}, error) {
 //
 // The item type of a Model can not change during the life of the model.
 func (l listModel) ItemType() externglib.Type {
-	var arg0 *C.GListModel
+	var _arg0 *C.GListModel
 
-	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_list_model_get_item_type(arg0)
+	cret = C.g_list_model_get_item_type(_arg0)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // NItems gets the number of items in @list.
@@ -176,19 +176,19 @@ func (l listModel) ItemType() externglib.Type {
 // efficient than iterating the list with increasing values for @position
 // until g_list_model_get_item() returns nil.
 func (l listModel) NItems() uint {
-	var arg0 *C.GListModel
+	var _arg0 *C.GListModel
 
-	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_list_model_get_n_items(arg0)
+	cret = C.g_list_model_get_n_items(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Object: get the item at @position. If @position is greater than the
@@ -197,21 +197,21 @@ func (l listModel) NItems() uint {
 // nil is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
 func (l listModel) Object(position uint) gextras.Objector {
-	var arg0 *C.GListModel
-	var arg1 C.guint
+	var _arg0 *C.GListModel
+	var _arg1 C.guint
 
-	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg1 = C.guint(position)
 
-	var cret *C.GObject
+	var _cret *C.GObject
 
-	cret = C.g_list_model_get_object(arg0, arg1)
+	cret = C.g_list_model_get_object(_arg0, _arg1)
 
-	var object gextras.Objector
+	var _object gextras.Objector
 
-	object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gextras.Objector)
+	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
-	return object
+	return _object
 }
 
 // ItemsChanged emits the Model::items-changed signal on @list.
@@ -234,15 +234,15 @@ func (l listModel) Object(position uint) gextras.Objector {
 // and without calling other code, will continue to view the same contents
 // of the model.
 func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
-	var arg0 *C.GListModel
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 C.guint
+	var _arg0 *C.GListModel
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 C.guint
 
-	arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
-	arg1 = C.guint(position)
-	arg2 = C.guint(removed)
-	arg3 = C.guint(added)
+	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
+	_arg1 = C.guint(position)
+	_arg2 = C.guint(removed)
+	_arg3 = C.guint(added)
 
-	C.g_list_model_items_changed(arg0, arg1, arg2, arg3)
+	C.g_list_model_items_changed(_arg0, _arg1, _arg2, _arg3)
 }

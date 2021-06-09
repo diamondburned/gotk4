@@ -54,12 +54,12 @@ import "C"
 // GLib Applications (glib-running.html)) and calling g_on_error_stack_trace()
 // instead.
 func OnErrorQuery(prgName string) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(prgName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(prgName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_on_error_query(arg1)
+	C.g_on_error_query(_arg1)
 }
 
 // OnErrorStackTrace invokes gdb, which attaches to the current process and
@@ -75,10 +75,10 @@ func OnErrorQuery(prgName string) {
 // to attach and handle that exception (see Running GLib Applications
 // (glib-running.html)).
 func OnErrorStackTrace(prgName string) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(prgName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(prgName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_on_error_stack_trace(arg1)
+	C.g_on_error_stack_trace(_arg1)
 }

@@ -130,33 +130,29 @@ func (cg *callableGenerator) renderBlock() bool {
 
 			inputValues = append(inputValues, GoValueProp{
 				ValueProp: NewValuePropParam(
-					FirstLetter(cg.Parameters.InstanceParameter.Name), "arg0", nil,
-					cg.Parameters.InstanceParameter.ParameterAttrs,
+					FirstLetter(cg.Parameters.InstanceParameter.Name),
+					"_arg0",
+					nil, cg.Parameters.InstanceParameter.ParameterAttrs,
 				),
 			})
 		}
 
 		for i, param := range cg.Parameters.Parameters {
 			if param.Direction != "out" {
-				out := fmt.Sprintf("arg%d", i+1)
-				// params.Add(out)
-
 				inputValues = append(inputValues, GoValueProp{
 					ValueProp: NewValuePropParam(
-						SnakeToGo(false, param.Name), out, &i,
-						param.ParameterAttrs,
+						SnakeToGo(false, param.Name),
+						fmt.Sprintf("_arg%d", i+1),
+						&i, param.ParameterAttrs,
 					),
 				})
 			} else {
-				in := fmt.Sprintf("arg%d", i+1)
-				// params.Add(in)
-
-				out := SnakeToGo(false, param.Name)
-				// returns.Add(out)
-				// returnSigs = append(returnSigs, SnakeToGo(false, param.Name))
-
 				outputValues = append(outputValues, CValueProp{
-					ValueProp: NewValuePropParam(in, out, &i, param.ParameterAttrs),
+					ValueProp: NewValuePropParam(
+						fmt.Sprintf("_arg%d", i+1),
+						"_"+SnakeToGo(false, param.Name),
+						&i, param.ParameterAttrs,
+					),
 				})
 			}
 		}
@@ -173,14 +169,14 @@ func (cg *callableGenerator) renderBlock() bool {
 			hasReturn = true
 
 			outputValues = append(outputValues, CValueProp{
-				ValueProp: NewValuePropReturn("cret", returnName, *cg.ReturnValue),
+				ValueProp: NewValuePropReturn("_cret", "_"+returnName, *cg.ReturnValue),
 			})
 		}
 	}
 
 	if cg.Throws {
 		outputValues = append(outputValues, CValueProp{
-			ValueProp: NewThrowValue("cerr", "goerr"),
+			ValueProp: NewThrowValue("_cerr", "_goerr"),
 		})
 	}
 
@@ -228,12 +224,16 @@ func (cg *callableGenerator) renderBlock() bool {
 			callParams.Add(converted.InCall)
 		}
 
-		// The return variable is not declared in the signature if there's only
-		// 1 output, so we only declare it then.
-		goFnRets.Addf("%s %s", converted.OutName, converted.OutType)
+		// decoOut is the name that's used solely for documentation purposes. It
+		// is not used internally at all, and so it doesn't have the underscore.
+		decoOut := strings.TrimPrefix(converted.OutName, "_")
+		goFnRets.Addf("%s %s", decoOut, converted.OutType)
 
 		cg.pen.Line(secReturnDecl, converted.InDeclare)
-		// Go outputs should be redeclared.
+
+		// Go outputs should be redeclared. The return variable is not declared
+		// in the signature if there's only 1 output, so we only declare it
+		// then.
 		cg.pen.Line(secOutputDecl, converted.OutDeclare)
 		// Conversions follow right after declaring all outputs.
 		cg.pen.Line(secOutputConv, converted.Conversion)
@@ -251,20 +251,42 @@ func (cg *callableGenerator) renderBlock() bool {
 	}
 
 	cg.Block = cg.pen.String()
+	cg.Tail = "(" + goFnArgs.Join() + ") " + formatReturnSig(goFnRets)
+
 	cg.pen.Reset()
+	return true
+}
 
-	cg.Tail = "(" + goFnArgs.Join() + ")"
-
-	switch goFnRets.Len() {
-	case 0:
-	// ok
-	case 1:
-		cg.Tail += " " + strings.SplitN(goFnRets.Join(), " ", 2)[1] // type only
-	default:
-		cg.Tail += " (" + goFnRets.Join() + ")"
+func formatReturnSig(joints pen.Joints) string {
+	if joints.Len() == 0 {
+		return ""
 	}
 
-	return true
+	types := make(map[string]struct{}, joints.Len())
+	parts := joints.Joints()
+
+	for _, joint := range parts {
+		typ := strings.SplitN(joint, " ", 2)[1]
+
+		_, ok := types[typ]
+		if ok {
+			// Duplicate type.
+			goto dupeType
+		}
+
+		types[typ] = struct{}{}
+	}
+
+	// No duplicate type, so only keep the types.
+	for i, joint := range parts {
+		parts[i] = strings.SplitN(joint, " ", 2)[1]
+	}
+
+dupeType:
+	if joints.Len() == 1 {
+		return joints.Join()
+	}
+	return "(" + joints.Join() + ")"
 }
 
 func returnName(attrs gir.CallableAttrs) string {

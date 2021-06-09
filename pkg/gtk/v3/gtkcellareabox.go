@@ -90,32 +90,32 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 
 // NewCellAreaBox constructs a class CellAreaBox.
 func NewCellAreaBox() CellAreaBox {
-	var cret C.GtkCellAreaBox
+	var _cret C.GtkCellAreaBox
 
 	cret = C.gtk_cell_area_box_new()
 
-	var cellAreaBox CellAreaBox
+	var _cellAreaBox CellAreaBox
 
-	cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellAreaBox)
+	_cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellAreaBox)
 
-	return cellAreaBox
+	return _cellAreaBox
 }
 
 // Spacing gets the spacing added between cell renderers.
 func (b cellAreaBox) Spacing() int {
-	var arg0 *C.GtkCellAreaBox
+	var _arg0 *C.GtkCellAreaBox
 
-	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_cell_area_box_get_spacing(arg0)
+	cret = C.gtk_cell_area_box_get_spacing(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // PackEnd adds @renderer to @box, packed with reference to the end of @box.
@@ -123,25 +123,25 @@ func (b cellAreaBox) Spacing() int {
 // The @renderer is packed after (away from end of) any other CellRenderer
 // packed with reference to the end of @box.
 func (b cellAreaBox) PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool) {
-	var arg0 *C.GtkCellAreaBox
-	var arg1 *C.GtkCellRenderer
-	var arg2 C.gboolean
-	var arg3 C.gboolean
-	var arg4 C.gboolean
+	var _arg0 *C.GtkCellAreaBox
+	var _arg1 *C.GtkCellRenderer
+	var _arg2 C.gboolean
+	var _arg3 C.gboolean
+	var _arg4 C.gboolean
 
-	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 	if align {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
 	if fixed {
-		arg4 = C.gboolean(1)
+		_arg4 = C.gboolean(1)
 	}
 
-	C.gtk_cell_area_box_pack_end(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_cell_area_box_pack_end(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // PackStart adds @renderer to @box, packed with reference to the start of
@@ -150,34 +150,34 @@ func (b cellAreaBox) PackEnd(renderer CellRenderer, expand bool, align bool, fix
 // The @renderer is packed after any other CellRenderer packed with
 // reference to the start of @box.
 func (b cellAreaBox) PackStart(renderer CellRenderer, expand bool, align bool, fixed bool) {
-	var arg0 *C.GtkCellAreaBox
-	var arg1 *C.GtkCellRenderer
-	var arg2 C.gboolean
-	var arg3 C.gboolean
-	var arg4 C.gboolean
+	var _arg0 *C.GtkCellAreaBox
+	var _arg1 *C.GtkCellRenderer
+	var _arg2 C.gboolean
+	var _arg3 C.gboolean
+	var _arg4 C.gboolean
 
-	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
-	arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	if expand {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 	if align {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
 	if fixed {
-		arg4 = C.gboolean(1)
+		_arg4 = C.gboolean(1)
 	}
 
-	C.gtk_cell_area_box_pack_start(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_cell_area_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetSpacing sets the spacing to add between cell renderers in @box.
 func (b cellAreaBox) SetSpacing(spacing int) {
-	var arg0 *C.GtkCellAreaBox
-	var arg1 C.gint
+	var _arg0 *C.GtkCellAreaBox
+	var _arg1 C.gint
 
-	arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
-	arg1 = C.gint(spacing)
+	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
+	_arg1 = C.gint(spacing)
 
-	C.gtk_cell_area_box_set_spacing(arg0, arg1)
+	C.gtk_cell_area_box_set_spacing(_arg0, _arg1)
 }

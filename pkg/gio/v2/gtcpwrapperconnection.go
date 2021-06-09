@@ -65,36 +65,36 @@ func marshalTcpWrapperConnection(p uintptr) (interface{}, error) {
 
 // NewTcpWrapperConnection constructs a class TcpWrapperConnection.
 func NewTcpWrapperConnection(baseIoStream IOStream, socket Socket) TcpWrapperConnection {
-	var arg1 *C.GIOStream
-	var arg2 *C.GSocket
+	var _arg1 *C.GIOStream
+	var _arg2 *C.GSocket
 
-	arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
-	arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
+	_arg1 = (*C.GIOStream)(unsafe.Pointer(baseIoStream.Native()))
+	_arg2 = (*C.GSocket)(unsafe.Pointer(socket.Native()))
 
-	var cret C.GTcpWrapperConnection
+	var _cret C.GTcpWrapperConnection
 
-	cret = C.g_tcp_wrapper_connection_new(arg1, arg2)
+	cret = C.g_tcp_wrapper_connection_new(_arg1, _arg2)
 
-	var tcpWrapperConnection TcpWrapperConnection
+	var _tcpWrapperConnection TcpWrapperConnection
 
-	tcpWrapperConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TcpWrapperConnection)
+	_tcpWrapperConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TcpWrapperConnection)
 
-	return tcpWrapperConnection
+	return _tcpWrapperConnection
 }
 
 // BaseIOStream gets @conn's base OStream
 func (c tcpWrapperConnection) BaseIOStream() IOStream {
-	var arg0 *C.GTcpWrapperConnection
+	var _arg0 *C.GTcpWrapperConnection
 
-	arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GTcpWrapperConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GIOStream
+	var _cret *C.GIOStream
 
-	cret = C.g_tcp_wrapper_connection_get_base_io_stream(arg0)
+	cret = C.g_tcp_wrapper_connection_get_base_io_stream(_arg0)
 
-	var ioStream IOStream
+	var _ioStream IOStream
 
-	ioStream = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(IOStream)
+	_ioStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IOStream)
 
-	return ioStream
+	return _ioStream
 }

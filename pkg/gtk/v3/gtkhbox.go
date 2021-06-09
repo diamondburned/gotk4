@@ -73,21 +73,21 @@ func marshalHBox(p uintptr) (interface{}, error) {
 
 // NewHBox constructs a class HBox.
 func NewHBox(homogeneous bool, spacing int) HBox {
-	var arg1 C.gboolean
-	var arg2 C.gint
+	var _arg1 C.gboolean
+	var _arg2 C.gint
 
 	if homogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
-	arg2 = C.gint(spacing)
+	_arg2 = C.gint(spacing)
 
-	var cret C.GtkHBox
+	var _cret C.GtkHBox
 
-	cret = C.gtk_hbox_new(arg1, arg2)
+	cret = C.gtk_hbox_new(_arg1, _arg2)
 
-	var hBox HBox
+	var _hBox HBox
 
-	hBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HBox)
+	_hBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HBox)
 
-	return hBox
+	return _hBox
 }

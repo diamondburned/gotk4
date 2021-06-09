@@ -76,45 +76,45 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 
 // NewWidgetPaintable constructs a class WidgetPaintable.
 func NewWidgetPaintable(widget Widget) WidgetPaintable {
-	var arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.GtkWidgetPaintable
+	var _cret C.GtkWidgetPaintable
 
-	cret = C.gtk_widget_paintable_new(arg1)
+	cret = C.gtk_widget_paintable_new(_arg1)
 
-	var widgetPaintable WidgetPaintable
+	var _widgetPaintable WidgetPaintable
 
-	widgetPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WidgetPaintable)
+	_widgetPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(WidgetPaintable)
 
-	return widgetPaintable
+	return _widgetPaintable
 }
 
 // Widget returns the widget that is observed or nil if none.
 func (s widgetPaintable) Widget() Widget {
-	var arg0 *C.GtkWidgetPaintable
+	var _arg0 *C.GtkWidgetPaintable
 
-	arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_widget_paintable_get_widget(arg0)
+	cret = C.gtk_widget_paintable_get_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SetWidget sets the widget that should be observed.
 func (s widgetPaintable) SetWidget(widget Widget) {
-	var arg0 *C.GtkWidgetPaintable
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkWidgetPaintable
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_widget_paintable_set_widget(arg0, arg1)
+	C.gtk_widget_paintable_set_widget(_arg0, _arg1)
 }

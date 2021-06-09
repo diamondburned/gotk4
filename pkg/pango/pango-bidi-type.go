@@ -14,22 +14,22 @@ import "C"
 // FindBaseDir searches a string the first character that has a strong
 // direction, according to the Unicode bidirectional algorithm.
 func FindBaseDir(text string, length int) Direction {
-	var arg1 *C.gchar
-	var arg2 C.gint
+	var _arg1 *C.gchar
+	var _arg2 C.gint
 
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gint(length)
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(length)
 
-	var cret C.PangoDirection
+	var _cret C.PangoDirection
 
-	cret = C.pango_find_base_dir(arg1, arg2)
+	cret = C.pango_find_base_dir(_arg1, _arg2)
 
-	var direction Direction
+	var _direction Direction
 
-	direction = Direction(cret)
+	_direction = Direction(_cret)
 
-	return direction
+	return _direction
 }
 
 // GetMirrorChar returns the mirrored character of a Unicode character.
@@ -39,23 +39,23 @@ func FindBaseDir(text string, length int) Direction {
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
 func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
-	var arg1 C.gunichar
-	var arg2 *C.gunichar
+	var _arg1 C.gunichar
+	var _arg2 *C.gunichar
 
-	arg1 = C.gunichar(ch)
-	arg2 = *C.gunichar(mirroredCh)
+	_arg1 = C.gunichar(ch)
+	_arg2 = *C.gunichar(mirroredCh)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.pango_get_mirror_char(arg1, arg2)
+	cret = C.pango_get_mirror_char(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // UnicharDirection determines the inherent direction of a character.
@@ -68,17 +68,17 @@ func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
 // type of a character is needed, [type_func@Pango.BidiType.for_unichar] can be
 // used instead.
 func UnicharDirection(ch uint32) Direction {
-	var arg1 C.gunichar
+	var _arg1 C.gunichar
 
-	arg1 = C.gunichar(ch)
+	_arg1 = C.gunichar(ch)
 
-	var cret C.PangoDirection
+	var _cret C.PangoDirection
 
-	cret = C.pango_unichar_direction(arg1)
+	cret = C.pango_unichar_direction(_arg1)
 
-	var direction Direction
+	var _direction Direction
 
-	direction = Direction(cret)
+	_direction = Direction(_cret)
 
-	return direction
+	return _direction
 }

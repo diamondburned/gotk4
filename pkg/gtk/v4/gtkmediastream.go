@@ -220,11 +220,11 @@ func marshalMediaStream(p uintptr) (interface{}, error) {
 // Ended pauses the media stream and marks it as ended. This is a hint only,
 // calls to GtkMediaStream.play() may still happen.
 func (s mediaStream) Ended() {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	C.gtk_media_stream_ended(arg0)
+	C.gtk_media_stream_ended(_arg0)
 }
 
 // Gerror sets @self into an error state. This will pause the stream (you
@@ -239,50 +239,50 @@ func (s mediaStream) Ended() {
 // To unset an error, the stream must be reset via a call to
 // gtk_media_stream_unprepared().
 func (s mediaStream) Gerror(err *error) {
-	var arg0 *C.GtkMediaStream
-	var arg1 *C.GError
+	var _arg0 *C.GtkMediaStream
+	var _arg1 *C.GError
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
 
-	C.gtk_media_stream_gerror(arg0, arg1)
+	C.gtk_media_stream_gerror(_arg0, _arg1)
 }
 
 // Duration gets the duration of the stream. If the duration is not known, 0
 // will be returned.
 func (s mediaStream) Duration() int64 {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint64
+	var _cret C.gint64
 
-	cret = C.gtk_media_stream_get_duration(arg0)
+	cret = C.gtk_media_stream_get_duration(_arg0)
 
-	var gint64 int64
+	var _gint64 int64
 
-	gint64 = (int64)(cret)
+	_gint64 = (int64)(_cret)
 
-	return gint64
+	return _gint64
 }
 
 // GetEnded returns whether the streams playback is finished.
 func (s mediaStream) GetEnded() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_ended(arg0)
+	cret = C.gtk_media_stream_get_ended(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Error: if the stream is in an error state, returns the #GError explaining
@@ -297,171 +297,171 @@ func (s mediaStream) GetEnded() bool {
 // implementations may provide options. For example, a MediaFile will unset
 // errors when a new source is set with ie gtk_media_file_set_file().
 func (s mediaStream) Error() *error {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GError
+	var _cret *C.GError
 
-	cret = C.gtk_media_stream_get_error(arg0)
+	cret = C.gtk_media_stream_get_error(_arg0)
 
-	var err *error
+	var _err *error
 
-	err = gerror.Take(unsafe.Pointer(cret))
+	_err = gerror.Take(unsafe.Pointer(_cret))
 
-	return err
+	return _err
 }
 
 // Loop returns whether the stream is set to loop. See
 // gtk_media_stream_set_loop() for details.
 func (s mediaStream) Loop() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_loop(arg0)
+	cret = C.gtk_media_stream_get_loop(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Muted returns whether the audio for the stream is muted. See
 // gtk_media_stream_set_muted() for details.
 func (s mediaStream) Muted() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_muted(arg0)
+	cret = C.gtk_media_stream_get_muted(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Playing: return whether the stream is currently playing.
 func (s mediaStream) Playing() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_playing(arg0)
+	cret = C.gtk_media_stream_get_playing(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Timestamp returns the current presentation timestamp in microseconds.
 func (s mediaStream) Timestamp() int64 {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint64
+	var _cret C.gint64
 
-	cret = C.gtk_media_stream_get_timestamp(arg0)
+	cret = C.gtk_media_stream_get_timestamp(_arg0)
 
-	var gint64 int64
+	var _gint64 int64
 
-	gint64 = (int64)(cret)
+	_gint64 = (int64)(_cret)
 
-	return gint64
+	return _gint64
 }
 
 // Volume returns the volume of the audio for the stream. See
 // gtk_media_stream_set_volume() for details.
 func (s mediaStream) Volume() float64 {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.double
+	var _cret C.double
 
-	cret = C.gtk_media_stream_get_volume(arg0)
+	cret = C.gtk_media_stream_get_volume(_arg0)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // HasAudio returns whether the stream has audio.
 func (s mediaStream) HasAudio() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_has_audio(arg0)
+	cret = C.gtk_media_stream_has_audio(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // HasVideo returns whether the stream has video.
 func (s mediaStream) HasVideo() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_has_video(arg0)
+	cret = C.gtk_media_stream_has_video(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsPrepared returns whether the stream has finished initializing and
 // existence of audio and video is known.
 func (s mediaStream) IsPrepared() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_is_prepared(arg0)
+	cret = C.gtk_media_stream_is_prepared(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsSeekable checks if a stream may be seekable.
@@ -474,60 +474,60 @@ func (s mediaStream) IsPrepared() bool {
 // It is allowed to call gtk_media_stream_seek() on a non-seekable stream,
 // though it will not do anything.
 func (s mediaStream) IsSeekable() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_is_seekable(arg0)
+	cret = C.gtk_media_stream_is_seekable(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsSeeking checks if there is currently a seek operation going on.
 func (s mediaStream) IsSeeking() bool {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_is_seeking(arg0)
+	cret = C.gtk_media_stream_is_seeking(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Pause pauses playback of the stream. If the stream is not playing, do
 // nothing.
 func (s mediaStream) Pause() {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	C.gtk_media_stream_pause(arg0)
+	C.gtk_media_stream_pause(_arg0)
 }
 
 // Play starts playing the stream. If the stream is in error or already
 // playing, do nothing.
 func (s mediaStream) Play() {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	C.gtk_media_stream_play(arg0)
+	C.gtk_media_stream_play(_arg0)
 }
 
 // Prepared: called by MediaStream implementations to advertise the stream
@@ -541,25 +541,25 @@ func (s mediaStream) Play() {
 // This function may not be called again until the stream has been reset via
 // gtk_media_stream_unprepared().
 func (s mediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, duration int64) {
-	var arg0 *C.GtkMediaStream
-	var arg1 C.gboolean
-	var arg2 C.gboolean
-	var arg3 C.gboolean
-	var arg4 C.gint64
+	var _arg0 *C.GtkMediaStream
+	var _arg1 C.gboolean
+	var _arg2 C.gboolean
+	var _arg3 C.gboolean
+	var _arg4 C.gint64
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if hasAudio {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 	if hasVideo {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 	if seekable {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
-	arg4 = C.gint64(duration)
+	_arg4 = C.gint64(duration)
 
-	C.gtk_media_stream_prepared(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_media_stream_prepared(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // Realize: called by users to attach the media stream to a Surface they
@@ -577,13 +577,13 @@ func (s mediaStream) Prepared(hasAudio bool, hasVideo bool, seekable bool, durat
 //
 // It is not required to call this function to make a media stream work.
 func (s mediaStream) Realize(surface gdk.Surface) {
-	var arg0 *C.GtkMediaStream
-	var arg1 *C.GdkSurface
+	var _arg0 *C.GtkMediaStream
+	var _arg1 *C.GdkSurface
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	C.gtk_media_stream_realize(arg0, arg1)
+	C.gtk_media_stream_realize(_arg0, _arg1)
 }
 
 // Seek: start a seek operation on @self to @timestamp. If @timestamp is out
@@ -595,13 +595,13 @@ func (s mediaStream) Realize(surface gdk.Surface) {
 // When calling gtk_media_stream_seek() during an ongoing seek operation,
 // the new seek will override any pending seek.
 func (s mediaStream) Seek(timestamp int64) {
-	var arg0 *C.GtkMediaStream
-	var arg1 C.gint64
+	var _arg0 *C.GtkMediaStream
+	var _arg1 C.gint64
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint64(timestamp)
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint64(timestamp)
 
-	C.gtk_media_stream_seek(arg0, arg1)
+	C.gtk_media_stream_seek(_arg0, _arg1)
 }
 
 // SeekFailed ends a seek operation started via GtkMediaStream.seek() as a
@@ -610,11 +610,11 @@ func (s mediaStream) Seek(timestamp int64) {
 //
 // See gtk_media_stream_seek_success() for the other way of ending a seek.
 func (s mediaStream) SeekFailed() {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	C.gtk_media_stream_seek_failed(arg0)
+	C.gtk_media_stream_seek_failed(_arg0)
 }
 
 // SeekSuccess ends a seek operation started via GtkMediaStream.seek()
@@ -623,11 +623,11 @@ func (s mediaStream) SeekFailed() {
 //
 // See gtk_media_stream_seek_failed() for the other way of ending a seek.
 func (s mediaStream) SeekSuccess() {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	C.gtk_media_stream_seek_success(arg0)
+	C.gtk_media_stream_seek_success(_arg0)
 }
 
 // SetLoop sets whether the stream should loop, ie restart playback from the
@@ -636,15 +636,15 @@ func (s mediaStream) SeekSuccess() {
 // Not all streams may support looping, in particular non-seekable streams.
 // Those streams will ignore the loop setting and just end.
 func (s mediaStream) SetLoop(loop bool) {
-	var arg0 *C.GtkMediaStream
-	var arg1 C.gboolean
+	var _arg0 *C.GtkMediaStream
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if loop {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_media_stream_set_loop(arg0, arg1)
+	C.gtk_media_stream_set_loop(_arg0, _arg1)
 }
 
 // SetMuted sets whether the audio stream should be muted. Muting a stream
@@ -655,28 +655,28 @@ func (s mediaStream) SetLoop(loop bool) {
 // If the stream has no audio, calling this function will still work but it
 // will not have an audible effect.
 func (s mediaStream) SetMuted(muted bool) {
-	var arg0 *C.GtkMediaStream
-	var arg1 C.gboolean
+	var _arg0 *C.GtkMediaStream
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if muted {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_media_stream_set_muted(arg0, arg1)
+	C.gtk_media_stream_set_muted(_arg0, _arg1)
 }
 
 // SetPlaying starts or pauses playback of the stream.
 func (s mediaStream) SetPlaying(playing bool) {
-	var arg0 *C.GtkMediaStream
-	var arg1 C.gboolean
+	var _arg0 *C.GtkMediaStream
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 	if playing {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_media_stream_set_playing(arg0, arg1)
+	C.gtk_media_stream_set_playing(_arg0, _arg1)
 }
 
 // SetVolume sets the volume of the audio stream. This function call will
@@ -690,13 +690,13 @@ func (s mediaStream) SetPlaying(playing bool) {
 // work but it will not have an immediate audible effect. When the stream is
 // unmuted, the new volume setting will take effect.
 func (s mediaStream) SetVolume(volume float64) {
-	var arg0 *C.GtkMediaStream
-	var arg1 C.double
+	var _arg0 *C.GtkMediaStream
+	var _arg1 C.double
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	arg1 = C.double(volume)
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.double(volume)
 
-	C.gtk_media_stream_set_volume(arg0, arg1)
+	C.gtk_media_stream_set_volume(_arg0, _arg1)
 }
 
 // Unprepared resets a given media stream implementation.
@@ -704,34 +704,34 @@ func (s mediaStream) SetVolume(volume float64) {
 //
 // This function will also reset any error state the stream was in.
 func (s mediaStream) Unprepared() {
-	var arg0 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaStream
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
 
-	C.gtk_media_stream_unprepared(arg0)
+	C.gtk_media_stream_unprepared(_arg0)
 }
 
 // Unrealize undoes a previous call to gtk_media_stream_realize() and causes
 // the stream to release all resources it had allocated from @surface.
 func (s mediaStream) Unrealize(surface gdk.Surface) {
-	var arg0 *C.GtkMediaStream
-	var arg1 *C.GdkSurface
+	var _arg0 *C.GtkMediaStream
+	var _arg1 *C.GdkSurface
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	C.gtk_media_stream_unrealize(arg0, arg1)
+	C.gtk_media_stream_unrealize(_arg0, _arg1)
 }
 
 // Update: media stream implementations should regularly call this function
 // to update the timestamp reported by the stream. It is up to
 // implementations to call this at the frequency they deem appropriate.
 func (s mediaStream) Update(timestamp int64) {
-	var arg0 *C.GtkMediaStream
-	var arg1 C.gint64
+	var _arg0 *C.GtkMediaStream
+	var _arg1 C.gint64
 
-	arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint64(timestamp)
+	_arg0 = (*C.GtkMediaStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint64(timestamp)
 
-	C.gtk_media_stream_update(arg0, arg1)
+	C.gtk_media_stream_update(_arg0, _arg1)
 }

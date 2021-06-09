@@ -90,89 +90,89 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 
 // NewConstraintGuide constructs a class ConstraintGuide.
 func NewConstraintGuide() ConstraintGuide {
-	var cret C.GtkConstraintGuide
+	var _cret C.GtkConstraintGuide
 
 	cret = C.gtk_constraint_guide_new()
 
-	var constraintGuide ConstraintGuide
+	var _constraintGuide ConstraintGuide
 
-	constraintGuide = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ConstraintGuide)
+	_constraintGuide = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConstraintGuide)
 
-	return constraintGuide
+	return _constraintGuide
 }
 
 // MaxSize gets the maximum size of @guide.
 func (g constraintGuide) MaxSize(width *int, height *int) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 *C.int
-	var arg2 *C.int
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 *C.int
+	var _arg2 *C.int
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = *C.int(width)
-	arg2 = *C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = *C.int(width)
+	_arg2 = *C.int(height)
 
-	C.gtk_constraint_guide_get_max_size(arg0, arg1, arg2)
+	C.gtk_constraint_guide_get_max_size(_arg0, _arg1, _arg2)
 }
 
 // MinSize gets the minimum size of @guide.
 func (g constraintGuide) MinSize(width *int, height *int) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 *C.int
-	var arg2 *C.int
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 *C.int
+	var _arg2 *C.int
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = *C.int(width)
-	arg2 = *C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = *C.int(width)
+	_arg2 = *C.int(height)
 
-	C.gtk_constraint_guide_get_min_size(arg0, arg1, arg2)
+	C.gtk_constraint_guide_get_min_size(_arg0, _arg1, _arg2)
 }
 
 // Name retrieves the name set using gtk_constraint_guide_set_name().
 func (g constraintGuide) Name() string {
-	var arg0 *C.GtkConstraintGuide
+	var _arg0 *C.GtkConstraintGuide
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_constraint_guide_get_name(arg0)
+	cret = C.gtk_constraint_guide_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // NatSize gets the natural size of @guide.
 func (g constraintGuide) NatSize(width *int, height *int) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 *C.int
-	var arg2 *C.int
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 *C.int
+	var _arg2 *C.int
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = *C.int(width)
-	arg2 = *C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = *C.int(width)
+	_arg2 = *C.int(height)
 
-	C.gtk_constraint_guide_get_nat_size(arg0, arg1, arg2)
+	C.gtk_constraint_guide_get_nat_size(_arg0, _arg1, _arg2)
 }
 
 // Strength retrieves the strength set using
 // gtk_constraint_guide_set_strength().
 func (g constraintGuide) Strength() ConstraintStrength {
-	var arg0 *C.GtkConstraintGuide
+	var _arg0 *C.GtkConstraintGuide
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
 
-	var cret C.GtkConstraintStrength
+	var _cret C.GtkConstraintStrength
 
-	cret = C.gtk_constraint_guide_get_strength(arg0)
+	cret = C.gtk_constraint_guide_get_strength(_arg0)
 
-	var constraintStrength ConstraintStrength
+	var _constraintStrength ConstraintStrength
 
-	constraintStrength = ConstraintStrength(cret)
+	_constraintStrength = ConstraintStrength(_cret)
 
-	return constraintStrength
+	return _constraintStrength
 }
 
 // SetMaxSize sets the maximum size of @guide.
@@ -180,15 +180,15 @@ func (g constraintGuide) Strength() ConstraintStrength {
 // If @guide is attached to a ConstraintLayout, the constraints will be
 // updated to reflect the new size.
 func (g constraintGuide) SetMaxSize(width int, height int) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = C.int(width)
-	arg2 = C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	C.gtk_constraint_guide_set_max_size(arg0, arg1, arg2)
+	C.gtk_constraint_guide_set_max_size(_arg0, _arg1, _arg2)
 }
 
 // SetMinSize sets the minimum size of @guide.
@@ -196,29 +196,29 @@ func (g constraintGuide) SetMaxSize(width int, height int) {
 // If @guide is attached to a ConstraintLayout, the constraints will be
 // updated to reflect the new size.
 func (g constraintGuide) SetMinSize(width int, height int) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = C.int(width)
-	arg2 = C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	C.gtk_constraint_guide_set_min_size(arg0, arg1, arg2)
+	C.gtk_constraint_guide_set_min_size(_arg0, _arg1, _arg2)
 }
 
 // SetName sets a name for the given ConstraintGuide.
 //
 // The name is useful for debugging purposes.
 func (g constraintGuide) SetName(name string) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 *C.char
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_constraint_guide_set_name(arg0, arg1)
+	C.gtk_constraint_guide_set_name(_arg0, _arg1)
 }
 
 // SetNatSize sets the natural size of @guide.
@@ -226,25 +226,25 @@ func (g constraintGuide) SetName(name string) {
 // If @guide is attached to a ConstraintLayout, the constraints will be
 // updated to reflect the new size.
 func (g constraintGuide) SetNatSize(width int, height int) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = C.int(width)
-	arg2 = C.int(height)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	C.gtk_constraint_guide_set_nat_size(arg0, arg1, arg2)
+	C.gtk_constraint_guide_set_nat_size(_arg0, _arg1, _arg2)
 }
 
 // SetStrength sets the strength of the constraint on the natural size of
 // the given ConstraintGuide.
 func (g constraintGuide) SetStrength(strength ConstraintStrength) {
-	var arg0 *C.GtkConstraintGuide
-	var arg1 C.GtkConstraintStrength
+	var _arg0 *C.GtkConstraintGuide
+	var _arg1 C.GtkConstraintStrength
 
-	arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-	arg1 = (C.GtkConstraintStrength)(strength)
+	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
+	_arg1 = (C.GtkConstraintStrength)(strength)
 
-	C.gtk_constraint_guide_set_strength(arg0, arg1)
+	C.gtk_constraint_guide_set_strength(_arg0, _arg1)
 }

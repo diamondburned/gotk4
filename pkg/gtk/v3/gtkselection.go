@@ -31,17 +31,17 @@ func init() {
 // SelectionAddTarget appends a specified target to the list of supported
 // targets for a given widget and selection.
 func SelectionAddTarget(widget Widget, selection gdk.Atom, target gdk.Atom, info uint) {
-	var arg1 *C.GtkWidget
-	var arg2 C.GdkAtom
-	var arg3 C.GdkAtom
-	var arg4 C.guint
+	var _arg1 *C.GtkWidget
+	var _arg2 C.GdkAtom
+	var _arg3 C.GdkAtom
+	var _arg4 C.guint
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	arg4 = C.guint(info)
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg4 = C.guint(info)
 
-	C.gtk_selection_add_target(arg1, arg2, arg3, arg4)
+	C.gtk_selection_add_target(_arg1, _arg2, _arg3, _arg4)
 }
 
 // SelectionAddTargets prepends a table of targets to the list of supported
@@ -53,100 +53,100 @@ func SelectionAddTargets() {
 // SelectionClearTargets: remove all targets registered for the given selection
 // for the widget.
 func SelectionClearTargets(widget Widget, selection gdk.Atom) {
-	var arg1 *C.GtkWidget
-	var arg2 C.GdkAtom
+	var _arg1 *C.GtkWidget
+	var _arg2 C.GdkAtom
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
-	C.gtk_selection_clear_targets(arg1, arg2)
+	C.gtk_selection_clear_targets(_arg1, _arg2)
 }
 
 // SelectionConvert requests the contents of a selection. When received, a
 // “selection-received” signal will be generated.
 func SelectionConvert(widget Widget, selection gdk.Atom, target gdk.Atom, time_ uint32) bool {
-	var arg1 *C.GtkWidget
-	var arg2 C.GdkAtom
-	var arg3 C.GdkAtom
-	var arg4 C.guint32
+	var _arg1 *C.GtkWidget
+	var _arg2 C.GdkAtom
+	var _arg3 C.GdkAtom
+	var _arg4 C.guint32
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	arg4 = C.guint32(time_)
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg4 = C.guint32(time_)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_convert(arg1, arg2, arg3, arg4)
+	cret = C.gtk_selection_convert(_arg1, _arg2, _arg3, _arg4)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectionOwnerSet claims ownership of a given selection for a particular
 // widget, or, if @widget is nil, release ownership of the selection.
 func SelectionOwnerSet(widget Widget, selection gdk.Atom, time_ uint32) bool {
-	var arg1 *C.GtkWidget
-	var arg2 C.GdkAtom
-	var arg3 C.guint32
+	var _arg1 *C.GtkWidget
+	var _arg2 C.GdkAtom
+	var _arg3 C.guint32
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg3 = C.guint32(time_)
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = C.guint32(time_)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_owner_set(arg1, arg2, arg3)
+	cret = C.gtk_selection_owner_set(_arg1, _arg2, _arg3)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectionOwnerSetForDisplay: claim ownership of a given selection for a
 // particular widget, or, if @widget is nil, release ownership of the selection.
 func SelectionOwnerSetForDisplay(display gdk.Display, widget Widget, selection gdk.Atom, time_ uint32) bool {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.GtkWidget
-	var arg3 C.GdkAtom
-	var arg4 C.guint32
+	var _arg1 *C.GdkDisplay
+	var _arg2 *C.GtkWidget
+	var _arg3 C.GdkAtom
+	var _arg4 C.guint32
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg4 = C.guint32(time_)
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg4 = C.guint32(time_)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_selection_owner_set_for_display(arg1, arg2, arg3, arg4)
+	cret = C.gtk_selection_owner_set_for_display(_arg1, _arg2, _arg3, _arg4)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectionRemoveAll removes all handlers and unsets ownership of all
 // selections for a widget. Called when widget is being destroyed. This function
 // will not generally be called by applications.
 func SelectionRemoveAll(widget Widget) {
-	var arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_selection_remove_all(arg1)
+	C.gtk_selection_remove_all(_arg1)
 }
 
 // TargetTableFree: this function frees a target table as returned by
@@ -160,55 +160,55 @@ func TargetTableFree() {
 // allocated and should be freed using gtk_target_table_free() when no longer
 // needed.
 func TargetTableNewFromList(list *TargetList) []TargetEntry {
-	var arg1 *C.GtkTargetList
+	var _arg1 *C.GtkTargetList
 
-	arg1 = (*C.GtkTargetList)(unsafe.Pointer(list.Native()))
+	_arg1 = (*C.GtkTargetList)(unsafe.Pointer(list.Native()))
 
-	var cret *C.GtkTargetEntry
-	var arg2 *C.gint
+	var _cret *C.GtkTargetEntry
+	var _arg2 *C.gint
 
-	cret = C.gtk_target_table_new_from_list(arg1)
+	cret = C.gtk_target_table_new_from_list(_arg1)
 
-	var targetEntrys []TargetEntry
+	var _targetEntrys []TargetEntry
 
-	ptr.SetSlice(unsafe.Pointer(&targetEntrys), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&targetEntrys, func(v *[]TargetEntry) {
+	ptr.SetSlice(unsafe.Pointer(&_targetEntrys), unsafe.Pointer(_cret), int(_arg2))
+	runtime.SetFinalizer(&_targetEntrys, func(v *[]TargetEntry) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return targetEntrys
+	return _targetEntrys
 }
 
 // TargetsIncludeText determines if any of the targets in @targets can be used
 // to provide text.
 func TargetsIncludeText() bool {
-	var cret C.gboolean
+	var _cret C.gboolean
 
 	cret = C.gtk_targets_include_text()
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TargetsIncludeURI determines if any of the targets in @targets can be used to
 // provide an uri list.
 func TargetsIncludeURI() bool {
-	var cret C.gboolean
+	var _cret C.gboolean
 
 	cret = C.gtk_targets_include_uri()
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TargetEntry: a TargetEntry represents a single type of data than can be
@@ -235,27 +235,27 @@ func marshalTargetEntry(p uintptr) (interface{}, error) {
 
 // NewTargetEntry constructs a struct TargetEntry.
 func NewTargetEntry(target string, flags uint, info uint) *TargetEntry {
-	var arg1 *C.gchar
-	var arg2 C.guint
-	var arg3 C.guint
+	var _arg1 *C.gchar
+	var _arg2 C.guint
+	var _arg3 C.guint
 
-	arg1 = (*C.gchar)(C.CString(target))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.guint(flags)
-	arg3 = C.guint(info)
+	_arg1 = (*C.gchar)(C.CString(target))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(flags)
+	_arg3 = C.guint(info)
 
-	var cret *C.GtkTargetEntry
+	var _cret *C.GtkTargetEntry
 
-	cret = C.gtk_target_entry_new(arg1, arg2, arg3)
+	cret = C.gtk_target_entry_new(_arg1, _arg2, _arg3)
 
-	var targetEntry *TargetEntry
+	var _targetEntry *TargetEntry
 
-	targetEntry = WrapTargetEntry(unsafe.Pointer(cret))
-	runtime.SetFinalizer(targetEntry, func(v *TargetEntry) {
+	_targetEntry = WrapTargetEntry(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return targetEntry
+	return _targetEntry
 }
 
 // Native returns the underlying C source pointer.
@@ -286,32 +286,32 @@ func (t *TargetEntry) Info() uint {
 
 // Copy makes a copy of a TargetEntry and its data.
 func (d *TargetEntry) Copy() *TargetEntry {
-	var arg0 *C.GtkTargetEntry
+	var _arg0 *C.GtkTargetEntry
 
-	arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GtkTargetEntry
+	var _cret *C.GtkTargetEntry
 
-	cret = C.gtk_target_entry_copy(arg0)
+	cret = C.gtk_target_entry_copy(_arg0)
 
-	var targetEntry *TargetEntry
+	var _targetEntry *TargetEntry
 
-	targetEntry = WrapTargetEntry(unsafe.Pointer(cret))
-	runtime.SetFinalizer(targetEntry, func(v *TargetEntry) {
+	_targetEntry = WrapTargetEntry(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetEntry, func(v *TargetEntry) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return targetEntry
+	return _targetEntry
 }
 
 // Free frees a TargetEntry returned from gtk_target_entry_new() or
 // gtk_target_entry_copy().
 func (d *TargetEntry) Free() {
-	var arg0 *C.GtkTargetEntry
+	var _arg0 *C.GtkTargetEntry
 
-	arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkTargetEntry)(unsafe.Pointer(d.Native()))
 
-	C.gtk_target_entry_free(arg0)
+	C.gtk_target_entry_free(_arg0)
 }
 
 // TargetList: a TargetList-struct is a reference counted list of TargetPair and
@@ -337,18 +337,18 @@ func marshalTargetList(p uintptr) (interface{}, error) {
 
 // NewTargetList constructs a struct TargetList.
 func NewTargetList() *TargetList {
-	var cret *C.GtkTargetList
+	var _cret *C.GtkTargetList
 
 	cret = C.gtk_target_list_new()
 
-	var targetList *TargetList
+	var _targetList *TargetList
 
-	targetList = WrapTargetList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(targetList, func(v *TargetList) {
+	_targetList = WrapTargetList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return targetList
+	return _targetList
 }
 
 // Native returns the underlying C source pointer.
@@ -358,33 +358,33 @@ func (t *TargetList) Native() unsafe.Pointer {
 
 // Add appends another target to a TargetList.
 func (l *TargetList) Add(target gdk.Atom, flags uint, info uint) {
-	var arg0 *C.GtkTargetList
-	var arg1 C.GdkAtom
-	var arg2 C.guint
-	var arg3 C.guint
+	var _arg0 *C.GtkTargetList
+	var _arg1 C.GdkAtom
+	var _arg2 C.guint
+	var _arg3 C.guint
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	arg2 = C.guint(flags)
-	arg3 = C.guint(info)
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg2 = C.guint(flags)
+	_arg3 = C.guint(info)
 
-	C.gtk_target_list_add(arg0, arg1, arg2, arg3)
+	C.gtk_target_list_add(_arg0, _arg1, _arg2, _arg3)
 }
 
 // AddImageTargets appends the image targets supported by SelectionData to the
 // target list. All targets are added with the same @info.
 func (l *TargetList) AddImageTargets(info uint, writable bool) {
-	var arg0 *C.GtkTargetList
-	var arg1 C.guint
-	var arg2 C.gboolean
+	var _arg0 *C.GtkTargetList
+	var _arg1 C.guint
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	arg1 = C.guint(info)
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg1 = C.guint(info)
 	if writable {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	C.gtk_target_list_add_image_targets(arg0, arg1, arg2)
+	C.gtk_target_list_add_image_targets(_arg0, _arg1, _arg2)
 }
 
 // AddRichTextTargets appends the rich text targets registered with
@@ -392,117 +392,117 @@ func (l *TargetList) AddImageTargets(info uint, writable bool) {
 // gtk_text_buffer_register_deserialize_format() to the target list. All targets
 // are added with the same @info.
 func (l *TargetList) AddRichTextTargets(info uint, deserializable bool, buffer TextBuffer) {
-	var arg0 *C.GtkTargetList
-	var arg1 C.guint
-	var arg2 C.gboolean
-	var arg3 *C.GtkTextBuffer
+	var _arg0 *C.GtkTargetList
+	var _arg1 C.guint
+	var _arg2 C.gboolean
+	var _arg3 *C.GtkTextBuffer
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	arg1 = C.guint(info)
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg1 = C.guint(info)
 	if deserializable {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
-	arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg3 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
-	C.gtk_target_list_add_rich_text_targets(arg0, arg1, arg2, arg3)
+	C.gtk_target_list_add_rich_text_targets(_arg0, _arg1, _arg2, _arg3)
 }
 
 // AddTable prepends a table of TargetEntry to a target list.
 func (l *TargetList) AddTable() {
-	var arg0 *C.GtkTargetList
+	var _arg0 *C.GtkTargetList
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
 
-	C.gtk_target_list_add_table(arg0)
+	C.gtk_target_list_add_table(_arg0)
 }
 
 // AddTextTargets appends the text targets supported by SelectionData to the
 // target list. All targets are added with the same @info.
 func (l *TargetList) AddTextTargets(info uint) {
-	var arg0 *C.GtkTargetList
-	var arg1 C.guint
+	var _arg0 *C.GtkTargetList
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	arg1 = C.guint(info)
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg1 = C.guint(info)
 
-	C.gtk_target_list_add_text_targets(arg0, arg1)
+	C.gtk_target_list_add_text_targets(_arg0, _arg1)
 }
 
 // AddURITargets appends the URI targets supported by SelectionData to the
 // target list. All targets are added with the same @info.
 func (l *TargetList) AddURITargets(info uint) {
-	var arg0 *C.GtkTargetList
-	var arg1 C.guint
+	var _arg0 *C.GtkTargetList
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	arg1 = C.guint(info)
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg1 = C.guint(info)
 
-	C.gtk_target_list_add_uri_targets(arg0, arg1)
+	C.gtk_target_list_add_uri_targets(_arg0, _arg1)
 }
 
 // Find looks up a given target in a TargetList.
-func (l *TargetList) Find(target gdk.Atom) (info uint, ok bool) {
-	var arg0 *C.GtkTargetList
-	var arg1 C.GdkAtom
+func (l *TargetList) Find(target gdk.Atom) (uint, bool) {
+	var _arg0 *C.GtkTargetList
+	var _arg1 C.GdkAtom
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
-	var arg2 C.guint
-	var cret C.gboolean
+	var _arg2 C.guint
+	var _cret C.gboolean
 
-	cret = C.gtk_target_list_find(arg0, arg1, &arg2)
+	cret = C.gtk_target_list_find(_arg0, _arg1, &_arg2)
 
-	var info uint
-	var ok bool
+	var _info uint
+	var _ok bool
 
-	info = (uint)(arg2)
-	if cret {
-		ok = true
+	_info = (uint)(_arg2)
+	if _cret {
+		_ok = true
 	}
 
-	return info, ok
+	return _info, _ok
 }
 
 // Ref increases the reference count of a TargetList by one.
 func (l *TargetList) Ref() *TargetList {
-	var arg0 *C.GtkTargetList
+	var _arg0 *C.GtkTargetList
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
 
-	var cret *C.GtkTargetList
+	var _cret *C.GtkTargetList
 
-	cret = C.gtk_target_list_ref(arg0)
+	cret = C.gtk_target_list_ref(_arg0)
 
-	var targetList *TargetList
+	var _targetList *TargetList
 
-	targetList = WrapTargetList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(targetList, func(v *TargetList) {
+	_targetList = WrapTargetList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_targetList, func(v *TargetList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return targetList
+	return _targetList
 }
 
 // Remove removes a target from a target list.
 func (l *TargetList) Remove(target gdk.Atom) {
-	var arg0 *C.GtkTargetList
-	var arg1 C.GdkAtom
+	var _arg0 *C.GtkTargetList
+	var _arg1 C.GdkAtom
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
-	arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
-	C.gtk_target_list_remove(arg0, arg1)
+	C.gtk_target_list_remove(_arg0, _arg1)
 }
 
 // Unref decreases the reference count of a TargetList by one. If the resulting
 // reference count is zero, frees the list.
 func (l *TargetList) Unref() {
-	var arg0 *C.GtkTargetList
+	var _arg0 *C.GtkTargetList
 
-	arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
+	_arg0 = (*C.GtkTargetList)(unsafe.Pointer(l.Native()))
 
-	C.gtk_target_list_unref(arg0)
+	C.gtk_target_list_unref(_arg0)
 }
 
 // TargetPair: a TargetPair is used to represent the same information as a table

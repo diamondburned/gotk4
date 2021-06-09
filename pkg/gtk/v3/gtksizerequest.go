@@ -21,23 +21,23 @@ import "C"
 // GtkRequestedSize struct. If all sizes reach their natural size then the
 // remaining space is returned.
 func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *RequestedSize) int {
-	var arg1 C.gint
-	var arg2 C.guint
-	var arg3 *C.GtkRequestedSize
+	var _arg1 C.gint
+	var _arg2 C.guint
+	var _arg3 *C.GtkRequestedSize
 
-	arg1 = C.gint(extraSpace)
-	arg2 = C.guint(nRequestedSizes)
-	arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes.Native()))
+	_arg1 = C.gint(extraSpace)
+	_arg2 = C.guint(nRequestedSizes)
+	_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(sizes.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_distribute_natural_allocation(arg1, arg2, arg3)
+	cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // RequestedSize represents a request of a screen object in a given orientation.

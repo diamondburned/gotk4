@@ -32,21 +32,21 @@ const (
 // must be freed with g_free(). The quoting style used is undefined (single or
 // double quotes may be used).
 func ShellQuote(unquotedString *string) *string {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(unquotedString))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(unquotedString))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_shell_quote(arg1)
+	cret = C.g_shell_quote(_arg1)
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_filename = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return filename
+	return _filename
 }
 
 // ShellUnquote unquotes a string as the shell (/bin/sh) would. Only handles
@@ -67,23 +67,23 @@ func ShellQuote(unquotedString *string) *string {
 // ' in the quoted text, you have to do something like 'foo'\”bar'. Double
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
-func ShellUnquote(quotedString *string) (filename *string, goerr error) {
-	var arg1 *C.gchar
+func ShellUnquote(quotedString *string) (*string, error) {
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(quotedString))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(quotedString))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.gchar
-	var cerr *C.GError
+	var _cret *C.gchar
+	var _cerr *C.GError
 
-	cret = C.g_shell_unquote(arg1, cerr)
+	cret = C.g_shell_unquote(_arg1, _cerr)
 
-	var filename *string
-	var goerr error
+	var _filename *string
+	var _goerr error
 
-	filename = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_filename = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return filename, goerr
+	return _filename, _goerr
 }

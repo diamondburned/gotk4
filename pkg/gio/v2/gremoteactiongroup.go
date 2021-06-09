@@ -109,18 +109,18 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 // @platform_data must be non-nil and must have the type
 // G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
 func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
-	var arg0 *C.GRemoteActionGroup
-	var arg1 *C.gchar
-	var arg2 *C.GVariant
-	var arg3 *C.GVariant
+	var _arg0 *C.GRemoteActionGroup
+	var _arg1 *C.gchar
+	var _arg2 *C.GVariant
+	var _arg3 *C.GVariant
 
-	arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
-	arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
+	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
 
-	C.g_remote_action_group_activate_action_full(arg0, arg1, arg2, arg3)
+	C.g_remote_action_group_activate_action_full(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ChangeActionStateFull changes the state of a remote action.
@@ -133,16 +133,16 @@ func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib
 // @platform_data must be non-nil and must have the type
 // G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
 func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
-	var arg0 *C.GRemoteActionGroup
-	var arg1 *C.gchar
-	var arg2 *C.GVariant
-	var arg3 *C.GVariant
+	var _arg0 *C.GRemoteActionGroup
+	var _arg1 *C.gchar
+	var _arg2 *C.GVariant
+	var _arg3 *C.GVariant
 
-	arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
-	arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
+	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
+	_arg3 = (*C.GVariant)(unsafe.Pointer(platformData.Native()))
 
-	C.g_remote_action_group_change_action_state_full(arg0, arg1, arg2, arg3)
+	C.g_remote_action_group_change_action_state_full(_arg0, _arg1, _arg2, _arg3)
 }

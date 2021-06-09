@@ -92,13 +92,13 @@ func marshalFilter(p uintptr) (interface{}, error) {
 // This function is intended for implementors of Filter subclasses and
 // should not be called from other functions.
 func (s filter) Changed(change FilterChange) {
-	var arg0 *C.GtkFilter
-	var arg1 C.GtkFilterChange
+	var _arg0 *C.GtkFilter
+	var _arg1 C.GtkFilterChange
 
-	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkFilterChange)(change)
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkFilterChange)(change)
 
-	C.gtk_filter_changed(arg0, arg1)
+	C.gtk_filter_changed(_arg0, _arg1)
 }
 
 // Strictness gets the known strictness of @filters. If the strictness is
@@ -109,38 +109,38 @@ func (s filter) Changed(change FilterChange) {
 // This function is meant purely for optimization purposes, filters can
 // choose to omit implementing it, but FilterListModel uses it.
 func (s filter) Strictness() FilterMatch {
-	var arg0 *C.GtkFilter
+	var _arg0 *C.GtkFilter
 
-	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkFilterMatch
+	var _cret C.GtkFilterMatch
 
-	cret = C.gtk_filter_get_strictness(arg0)
+	cret = C.gtk_filter_get_strictness(_arg0)
 
-	var filterMatch FilterMatch
+	var _filterMatch FilterMatch
 
-	filterMatch = FilterMatch(cret)
+	_filterMatch = FilterMatch(_cret)
 
-	return filterMatch
+	return _filterMatch
 }
 
 // Match checks if the given @item is matched by the filter or not.
 func (s filter) Match(item gextras.Objector) bool {
-	var arg0 *C.GtkFilter
-	var arg1 C.gpointer
+	var _arg0 *C.GtkFilter
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
+	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_filter_match(arg0, arg1)
+	cret = C.gtk_filter_match(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

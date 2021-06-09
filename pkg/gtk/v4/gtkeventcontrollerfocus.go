@@ -57,53 +57,53 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 
 // NewEventControllerFocus constructs a class EventControllerFocus.
 func NewEventControllerFocus() EventControllerFocus {
-	var cret C.GtkEventControllerFocus
+	var _cret C.GtkEventControllerFocus
 
 	cret = C.gtk_event_controller_focus_new()
 
-	var eventControllerFocus EventControllerFocus
+	var _eventControllerFocus EventControllerFocus
 
-	eventControllerFocus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EventControllerFocus)
+	_eventControllerFocus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerFocus)
 
-	return eventControllerFocus
+	return _eventControllerFocus
 }
 
 // ContainsFocus returns the value of the
 // GtkEventControllerFocus:contains-focus property.
 func (s eventControllerFocus) ContainsFocus() bool {
-	var arg0 *C.GtkEventControllerFocus
+	var _arg0 *C.GtkEventControllerFocus
 
-	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_focus_contains_focus(arg0)
+	cret = C.gtk_event_controller_focus_contains_focus(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsFocus returns the value of the GtkEventControllerFocus:is-focus
 // property.
 func (s eventControllerFocus) IsFocus() bool {
-	var arg0 *C.GtkEventControllerFocus
+	var _arg0 *C.GtkEventControllerFocus
 
-	arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_focus_is_focus(arg0)
+	cret = C.gtk_event_controller_focus_is_focus(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

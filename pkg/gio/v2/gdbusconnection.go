@@ -280,23 +280,23 @@ func BusGet() {
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, goerr error) {
-	var arg1 *C.GAsyncResult
+func BusGetFinish(res AsyncResult) (DBusConnection, error) {
+	var _arg1 *C.GAsyncResult
 
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var cret *C.GDBusConnection
-	var cerr *C.GError
+	var _cret *C.GDBusConnection
+	var _cerr *C.GError
 
-	cret = C.g_bus_get_finish(arg1, cerr)
+	cret = C.g_bus_get_finish(_arg1, _cerr)
 
-	var dBusConnection DBusConnection
-	var goerr error
+	var _dBusConnection DBusConnection
+	var _goerr error
 
-	dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return dBusConnection, goerr
+	return _dBusConnection, _goerr
 }
 
 // BusGetSync: synchronously connects to the message bus specified by @bus_type.
@@ -314,25 +314,25 @@ func BusGetFinish(res AsyncResult) (dBusConnection DBusConnection, goerr error) 
 //
 // Note that the returned BusConnection object will (usually) have the
 // BusConnection:exit-on-close property set to true.
-func BusGetSync(busType BusType, cancellable Cancellable) (dBusConnection DBusConnection, goerr error) {
-	var arg1 C.GBusType
-	var arg2 *C.GCancellable
+func BusGetSync(busType BusType, cancellable Cancellable) (DBusConnection, error) {
+	var _arg1 C.GBusType
+	var _arg2 *C.GCancellable
 
-	arg1 = (C.GBusType)(busType)
-	arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg1 = (C.GBusType)(busType)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GDBusConnection
-	var cerr *C.GError
+	var _cret *C.GDBusConnection
+	var _cerr *C.GError
 
-	cret = C.g_bus_get_sync(arg1, arg2, cerr)
+	cret = C.g_bus_get_sync(_arg1, _arg2, _cerr)
 
-	var dBusConnection DBusConnection
-	var goerr error
+	var _dBusConnection DBusConnection
+	var _goerr error
 
-	dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(DBusConnection)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return dBusConnection, goerr
+	return _dBusConnection, _goerr
 }
 
 // DBusInterfaceVTable: virtual table for handling properties and method calls

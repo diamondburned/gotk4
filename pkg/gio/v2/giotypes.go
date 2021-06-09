@@ -272,23 +272,23 @@ func marshalFileAttributeMatcher(p uintptr) (interface{}, error) {
 
 // NewFileAttributeMatcher constructs a struct FileAttributeMatcher.
 func NewFileAttributeMatcher(attributes string) *FileAttributeMatcher {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(attributes))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GFileAttributeMatcher
+	var _cret *C.GFileAttributeMatcher
 
-	cret = C.g_file_attribute_matcher_new(arg1)
+	cret = C.g_file_attribute_matcher_new(_arg1)
 
-	var fileAttributeMatcher *FileAttributeMatcher
+	var _fileAttributeMatcher *FileAttributeMatcher
 
-	fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(cret))
-	runtime.SetFinalizer(fileAttributeMatcher, func(v *FileAttributeMatcher) {
+	_fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return fileAttributeMatcher
+	return _fileAttributeMatcher
 }
 
 // Native returns the underlying C source pointer.
@@ -303,108 +303,108 @@ func (f *FileAttributeMatcher) Native() unsafe.Pointer {
 //
 // TODO: this is awkwardly worded.
 func (m *FileAttributeMatcher) EnumerateNamespace(ns string) bool {
-	var arg0 *C.GFileAttributeMatcher
-	var arg1 *C.char
+	var _arg0 *C.GFileAttributeMatcher
+	var _arg1 *C.char
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.char)(C.CString(ns))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(ns))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_file_attribute_matcher_enumerate_namespace(arg0, arg1)
+	cret = C.g_file_attribute_matcher_enumerate_namespace(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // EnumerateNext gets the next matched attribute from a AttributeMatcher.
 func (m *FileAttributeMatcher) EnumerateNext() string {
-	var arg0 *C.GFileAttributeMatcher
+	var _arg0 *C.GFileAttributeMatcher
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_file_attribute_matcher_enumerate_next(arg0)
+	cret = C.g_file_attribute_matcher_enumerate_next(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Matches checks if an attribute will be matched by an attribute matcher. If
 // the matcher was created with the "*" matching string, this function will
 // always return true.
 func (m *FileAttributeMatcher) Matches(attribute string) bool {
-	var arg0 *C.GFileAttributeMatcher
-	var arg1 *C.char
+	var _arg0 *C.GFileAttributeMatcher
+	var _arg1 *C.char
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.char)(C.CString(attribute))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_file_attribute_matcher_matches(arg0, arg1)
+	cret = C.g_file_attribute_matcher_matches(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // MatchesOnly checks if a attribute matcher only matches a given attribute.
 // Always returns false if "*" was used when creating the matcher.
 func (m *FileAttributeMatcher) MatchesOnly(attribute string) bool {
-	var arg0 *C.GFileAttributeMatcher
-	var arg1 *C.char
+	var _arg0 *C.GFileAttributeMatcher
+	var _arg1 *C.char
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.char)(C.CString(attribute))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.char)(C.CString(attribute))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_file_attribute_matcher_matches_only(arg0, arg1)
+	cret = C.g_file_attribute_matcher_matches_only(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Ref references a file attribute matcher.
 func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
-	var arg0 *C.GFileAttributeMatcher
+	var _arg0 *C.GFileAttributeMatcher
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GFileAttributeMatcher
+	var _cret *C.GFileAttributeMatcher
 
-	cret = C.g_file_attribute_matcher_ref(arg0)
+	cret = C.g_file_attribute_matcher_ref(_arg0)
 
-	var fileAttributeMatcher *FileAttributeMatcher
+	var _fileAttributeMatcher *FileAttributeMatcher
 
-	fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(cret))
-	runtime.SetFinalizer(fileAttributeMatcher, func(v *FileAttributeMatcher) {
+	_fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return fileAttributeMatcher
+	return _fileAttributeMatcher
 }
 
 // Subtract subtracts all attributes of @subtract from @matcher and returns a
@@ -415,24 +415,24 @@ func (m *FileAttributeMatcher) Ref() *FileAttributeMatcher {
 // when the matcher matches everything. This is a limitation of the current
 // implementation, but may be fixed in the future.
 func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAttributeMatcher {
-	var arg0 *C.GFileAttributeMatcher
-	var arg1 *C.GFileAttributeMatcher
+	var _arg0 *C.GFileAttributeMatcher
+	var _arg1 *C.GFileAttributeMatcher
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(subtract.Native()))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GFileAttributeMatcher)(unsafe.Pointer(subtract.Native()))
 
-	var cret *C.GFileAttributeMatcher
+	var _cret *C.GFileAttributeMatcher
 
-	cret = C.g_file_attribute_matcher_subtract(arg0, arg1)
+	cret = C.g_file_attribute_matcher_subtract(_arg0, _arg1)
 
-	var fileAttributeMatcher *FileAttributeMatcher
+	var _fileAttributeMatcher *FileAttributeMatcher
 
-	fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(cret))
-	runtime.SetFinalizer(fileAttributeMatcher, func(v *FileAttributeMatcher) {
+	_fileAttributeMatcher = WrapFileAttributeMatcher(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fileAttributeMatcher, func(v *FileAttributeMatcher) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return fileAttributeMatcher
+	return _fileAttributeMatcher
 }
 
 // String prints what the matcher is matching against. The format will be equal
@@ -440,30 +440,30 @@ func (m *FileAttributeMatcher) Subtract(subtract *FileAttributeMatcher) *FileAtt
 // might not be identical, as the matcher may decide to use a different order or
 // omit needless parts.
 func (m *FileAttributeMatcher) String() string {
-	var arg0 *C.GFileAttributeMatcher
+	var _arg0 *C.GFileAttributeMatcher
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_file_attribute_matcher_to_string(arg0)
+	cret = C.g_file_attribute_matcher_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Unref unreferences @matcher. If the reference count falls below 1, the
 // @matcher is automatically freed.
 func (m *FileAttributeMatcher) Unref() {
-	var arg0 *C.GFileAttributeMatcher
+	var _arg0 *C.GFileAttributeMatcher
 
-	arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GFileAttributeMatcher)(unsafe.Pointer(m.Native()))
 
-	C.g_file_attribute_matcher_unref(arg0)
+	C.g_file_attribute_matcher_unref(_arg0)
 }
 
 // IOExtension is an opaque data structure and can only be accessed using the
@@ -497,53 +497,53 @@ func (i *IOExtension) Native() unsafe.Pointer {
 // Note that the same type may be registered as extension for multiple extension
 // points, under different names.
 func (e *IOExtension) Name() string {
-	var arg0 *C.GIOExtension
+	var _arg0 *C.GIOExtension
 
-	arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_io_extension_get_name(arg0)
+	cret = C.g_io_extension_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Priority gets the priority with which @extension was registered.
 func (e *IOExtension) Priority() int {
-	var arg0 *C.GIOExtension
+	var _arg0 *C.GIOExtension
 
-	arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_io_extension_get_priority(arg0)
+	cret = C.g_io_extension_get_priority(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Type gets the type associated with @extension.
 func (e *IOExtension) Type() externglib.Type {
-	var arg0 *C.GIOExtension
+	var _arg0 *C.GIOExtension
 
-	arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GIOExtension)(unsafe.Pointer(e.Native()))
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_io_extension_get_type(arg0)
+	cret = C.g_io_extension_get_type(_arg0)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // IOExtensionPoint is an opaque data structure and can only be accessed using
@@ -574,69 +574,69 @@ func (i *IOExtensionPoint) Native() unsafe.Pointer {
 
 // ExtensionByName finds a OExtension for an extension point by name.
 func (e *IOExtensionPoint) ExtensionByName(name string) *IOExtension {
-	var arg0 *C.GIOExtensionPoint
-	var arg1 *C.char
+	var _arg0 *C.GIOExtensionPoint
+	var _arg1 *C.char
 
-	arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GIOExtension
+	var _cret *C.GIOExtension
 
-	cret = C.g_io_extension_point_get_extension_by_name(arg0, arg1)
+	cret = C.g_io_extension_point_get_extension_by_name(_arg0, _arg1)
 
-	var ioExtension *IOExtension
+	var _ioExtension *IOExtension
 
-	ioExtension = WrapIOExtension(unsafe.Pointer(cret))
+	_ioExtension = WrapIOExtension(unsafe.Pointer(_cret))
 
-	return ioExtension
+	return _ioExtension
 }
 
 // Extensions gets a list of all extensions that implement this extension point.
 // The list is sorted by priority, beginning with the highest priority.
 func (e *IOExtensionPoint) Extensions() *glib.List {
-	var arg0 *C.GIOExtensionPoint
+	var _arg0 *C.GIOExtensionPoint
 
-	arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_io_extension_point_get_extensions(arg0)
+	cret = C.g_io_extension_point_get_extensions(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
+	_list = glib.WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // RequiredType gets the required type for @extension_point.
 func (e *IOExtensionPoint) RequiredType() externglib.Type {
-	var arg0 *C.GIOExtensionPoint
+	var _arg0 *C.GIOExtensionPoint
 
-	arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
+	_arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_io_extension_point_get_required_type(arg0)
+	cret = C.g_io_extension_point_get_required_type(_arg0)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // SetRequiredType sets the required type for @extension_point to @type. All
 // implementations must henceforth have this type.
 func (e *IOExtensionPoint) SetRequiredType(typ externglib.Type) {
-	var arg0 *C.GIOExtensionPoint
-	var arg1 C.GType
+	var _arg0 *C.GIOExtensionPoint
+	var _arg1 C.GType
 
-	arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
-	arg1 = C.GType(typ)
+	_arg0 = (*C.GIOExtensionPoint)(unsafe.Pointer(e.Native()))
+	_arg1 = C.GType(typ)
 
-	C.g_io_extension_point_set_required_type(arg0, arg1)
+	C.g_io_extension_point_set_required_type(_arg0, _arg1)
 }
 
 // IOSchedulerJob: opaque class for defining and scheduling IO jobs.
@@ -668,21 +668,21 @@ func (i *IOSchedulerJob) Native() unsafe.Pointer {
 // thread that the job was started from, waiting for the result (and thus
 // blocking the I/O job).
 func (j *IOSchedulerJob) SendToMainloop() bool {
-	var arg0 *C.GIOSchedulerJob
+	var _arg0 *C.GIOSchedulerJob
 
-	arg0 = (*C.GIOSchedulerJob)(unsafe.Pointer(j.Native()))
+	_arg0 = (*C.GIOSchedulerJob)(unsafe.Pointer(j.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_io_scheduler_job_send_to_mainloop(arg0)
+	cret = C.g_io_scheduler_job_send_to_mainloop(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SendToMainloopAsync: used from an I/O job to send a callback to be run
@@ -695,11 +695,11 @@ func (j *IOSchedulerJob) SendToMainloop() bool {
 // called, either by passing nil as @notify to g_io_scheduler_push_job() or by
 // using refcounting for @user_data.
 func (j *IOSchedulerJob) SendToMainloopAsync() {
-	var arg0 *C.GIOSchedulerJob
+	var _arg0 *C.GIOSchedulerJob
 
-	arg0 = (*C.GIOSchedulerJob)(unsafe.Pointer(j.Native()))
+	_arg0 = (*C.GIOSchedulerJob)(unsafe.Pointer(j.Native()))
 
-	C.g_io_scheduler_job_send_to_mainloop_async(arg0)
+	C.g_io_scheduler_job_send_to_mainloop_async(_arg0)
 }
 
 type IOStreamAdapter struct {
@@ -1127,27 +1127,27 @@ func (r *Resource) Native() unsafe.Pointer {
 // G_RESOURCE_ERROR_NOT_FOUND will be returned.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) (utf8s []string, goerr error) {
-	var arg0 *C.GResource
-	var arg1 *C.char
-	var arg2 C.GResourceLookupFlags
+func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
+	var _arg0 *C.GResource
+	var _arg1 *C.char
+	var _arg2 C.GResourceLookupFlags
 
-	arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var cret **C.char
-	var cerr *C.GError
+	var _cret **C.char
+	var _cerr *C.GError
 
-	cret = C.g_resource_enumerate_children(arg0, arg1, arg2, cerr)
+	cret = C.g_resource_enumerate_children(_arg0, _arg1, _arg2, _cerr)
 
-	var utf8s []string
-	var goerr error
+	var _utf8s []string
+	var _goerr error
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -1155,108 +1155,108 @@ func (r *Resource) EnumerateChildren(path string, lookupFlags ResourceLookupFlag
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return utf8s, goerr
+	return _utf8s, _goerr
 }
 
 // Info looks for a file at the specified @path in the resource and if found
 // returns information about it.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, goerr error) {
-	var arg0 *C.GResource
-	var arg1 *C.char
-	var arg2 C.GResourceLookupFlags
+func (r *Resource) Info(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
+	var _arg0 *C.GResource
+	var _arg1 *C.char
+	var _arg2 C.GResourceLookupFlags
 
-	arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var arg3 C.gsize
-	var arg4 C.guint32
-	var cerr *C.GError
+	var _arg3 C.gsize
+	var _arg4 C.guint32
+	var _cerr *C.GError
 
-	C.g_resource_get_info(arg0, arg1, arg2, &arg3, &arg4, cerr)
+	C.g_resource_get_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, _cerr)
 
-	var size uint
-	var flags uint32
-	var goerr error
+	var _size uint
+	var _flags uint32
+	var _goerr error
 
-	size = (uint)(arg3)
-	flags = (uint32)(arg4)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_size = (uint)(_arg3)
+	_flags = (uint32)(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return size, flags, goerr
+	return _size, _flags, _goerr
 }
 
 // OpenStream looks for a file at the specified @path in the resource and
 // returns a Stream that lets you read the data.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (inputStream InputStream, goerr error) {
-	var arg0 *C.GResource
-	var arg1 *C.char
-	var arg2 C.GResourceLookupFlags
+func (r *Resource) OpenStream(path string, lookupFlags ResourceLookupFlags) (InputStream, error) {
+	var _arg0 *C.GResource
+	var _arg1 *C.char
+	var _arg2 C.GResourceLookupFlags
 
-	arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var cret *C.GInputStream
-	var cerr *C.GError
+	var _cret *C.GInputStream
+	var _cerr *C.GError
 
-	cret = C.g_resource_open_stream(arg0, arg1, arg2, cerr)
+	cret = C.g_resource_open_stream(_arg0, _arg1, _arg2, _cerr)
 
-	var inputStream InputStream
-	var goerr error
+	var _inputStream InputStream
+	var _goerr error
 
-	inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return inputStream, goerr
+	return _inputStream, _goerr
 }
 
 // Ref: atomically increments the reference count of @resource by one. This
 // function is MT-safe and may be called from any thread.
 func (r *Resource) Ref() *Resource {
-	var arg0 *C.GResource
+	var _arg0 *C.GResource
 
-	arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GResource
+	var _cret *C.GResource
 
-	cret = C.g_resource_ref(arg0)
+	cret = C.g_resource_ref(_arg0)
 
-	var ret *Resource
+	var _ret *Resource
 
-	ret = WrapResource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ret, func(v *Resource) {
+	_ret = WrapResource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ret, func(v *Resource) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ret
+	return _ret
 }
 
 // Unref: atomically decrements the reference count of @resource by one. If the
 // reference count drops to 0, all memory allocated by the resource is released.
 // This function is MT-safe and may be called from any thread.
 func (r *Resource) Unref() {
-	var arg0 *C.GResource
+	var _arg0 *C.GResource
 
-	arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GResource)(unsafe.Pointer(r.Native()))
 
-	C.g_resource_unref(arg0)
+	C.g_resource_unref(_arg0)
 }
 
 // SrvTarget: SRV (service) records are used by some network protocols to
@@ -1292,29 +1292,29 @@ func marshalSrvTarget(p uintptr) (interface{}, error) {
 
 // NewSrvTarget constructs a struct SrvTarget.
 func NewSrvTarget(hostname string, port uint16, priority uint16, weight uint16) *SrvTarget {
-	var arg1 *C.gchar
-	var arg2 C.guint16
-	var arg3 C.guint16
-	var arg4 C.guint16
+	var _arg1 *C.gchar
+	var _arg2 C.guint16
+	var _arg3 C.guint16
+	var _arg4 C.guint16
 
-	arg1 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.guint16(port)
-	arg3 = C.guint16(priority)
-	arg4 = C.guint16(weight)
+	_arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(port)
+	_arg3 = C.guint16(priority)
+	_arg4 = C.guint16(weight)
 
-	var cret *C.GSrvTarget
+	var _cret *C.GSrvTarget
 
-	cret = C.g_srv_target_new(arg1, arg2, arg3, arg4)
+	cret = C.g_srv_target_new(_arg1, _arg2, _arg3, _arg4)
 
-	var srvTarget *SrvTarget
+	var _srvTarget *SrvTarget
 
-	srvTarget = WrapSrvTarget(unsafe.Pointer(cret))
-	runtime.SetFinalizer(srvTarget, func(v *SrvTarget) {
+	_srvTarget = WrapSrvTarget(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return srvTarget
+	return _srvTarget
 }
 
 // Native returns the underlying C source pointer.
@@ -1324,31 +1324,31 @@ func (s *SrvTarget) Native() unsafe.Pointer {
 
 // Copy copies @target
 func (t *SrvTarget) Copy() *SrvTarget {
-	var arg0 *C.GSrvTarget
+	var _arg0 *C.GSrvTarget
 
-	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
-	var cret *C.GSrvTarget
+	var _cret *C.GSrvTarget
 
-	cret = C.g_srv_target_copy(arg0)
+	cret = C.g_srv_target_copy(_arg0)
 
-	var srvTarget *SrvTarget
+	var _srvTarget *SrvTarget
 
-	srvTarget = WrapSrvTarget(unsafe.Pointer(cret))
-	runtime.SetFinalizer(srvTarget, func(v *SrvTarget) {
+	_srvTarget = WrapSrvTarget(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_srvTarget, func(v *SrvTarget) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return srvTarget
+	return _srvTarget
 }
 
 // Free frees @target
 func (t *SrvTarget) Free() {
-	var arg0 *C.GSrvTarget
+	var _arg0 *C.GSrvTarget
 
-	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
-	C.g_srv_target_free(arg0)
+	C.g_srv_target_free(_arg0)
 }
 
 // Hostname gets @target's hostname (in ASCII form; if you are going to present
@@ -1356,70 +1356,70 @@ func (t *SrvTarget) Free() {
 // contains encoded Unicode segments, and use g_hostname_to_unicode() to convert
 // it if it does.)
 func (t *SrvTarget) Hostname() string {
-	var arg0 *C.GSrvTarget
+	var _arg0 *C.GSrvTarget
 
-	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_srv_target_get_hostname(arg0)
+	cret = C.g_srv_target_get_hostname(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Port gets @target's port
 func (t *SrvTarget) Port() uint16 {
-	var arg0 *C.GSrvTarget
+	var _arg0 *C.GSrvTarget
 
-	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint16
+	var _cret C.guint16
 
-	cret = C.g_srv_target_get_port(arg0)
+	cret = C.g_srv_target_get_port(_arg0)
 
-	var guint16 uint16
+	var _guint16 uint16
 
-	guint16 = (uint16)(cret)
+	_guint16 = (uint16)(_cret)
 
-	return guint16
+	return _guint16
 }
 
 // Priority gets @target's priority. You should not need to look at this;
 // #GResolver already sorts the targets according to the algorithm in RFC 2782.
 func (t *SrvTarget) Priority() uint16 {
-	var arg0 *C.GSrvTarget
+	var _arg0 *C.GSrvTarget
 
-	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint16
+	var _cret C.guint16
 
-	cret = C.g_srv_target_get_priority(arg0)
+	cret = C.g_srv_target_get_priority(_arg0)
 
-	var guint16 uint16
+	var _guint16 uint16
 
-	guint16 = (uint16)(cret)
+	_guint16 = (uint16)(_cret)
 
-	return guint16
+	return _guint16
 }
 
 // Weight gets @target's weight. You should not need to look at this; #GResolver
 // already sorts the targets according to the algorithm in RFC 2782.
 func (t *SrvTarget) Weight() uint16 {
-	var arg0 *C.GSrvTarget
+	var _arg0 *C.GSrvTarget
 
-	arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GSrvTarget)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint16
+	var _cret C.guint16
 
-	cret = C.g_srv_target_get_weight(arg0)
+	cret = C.g_srv_target_get_weight(_arg0)
 
-	var guint16 uint16
+	var _guint16 uint16
 
-	guint16 = (uint16)(cret)
+	_guint16 = (uint16)(_cret)
 
-	return guint16
+	return _guint16
 }

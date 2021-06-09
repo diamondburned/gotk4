@@ -160,19 +160,19 @@ func marshalInitable(p uintptr) (interface{}, error) {
 // the result of g_object_new(), regardless of whether it is in fact a new
 // instance.
 func (i initable) Init(cancellable Cancellable) error {
-	var arg0 *C.GInitable
-	var arg1 *C.GCancellable
+	var _arg0 *C.GInitable
+	var _arg1 *C.GCancellable
 
-	arg0 = (*C.GInitable)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GInitable)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_initable_init(arg0, arg1, cerr)
+	C.g_initable_init(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }

@@ -30,15 +30,15 @@ import "C"
 // if you want to keep a context around and track changes to the screen’s font
 // rendering settings.
 func PangoContextGet() pango.Context {
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
 	cret = C.gdk_pango_context_get()
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // PangoContextGetForDisplay creates a Context for @display.
@@ -55,19 +55,19 @@ func PangoContextGet() pango.Context {
 // want to keep a context around and track changes to the font rendering
 // settings.
 func PangoContextGetForDisplay(display Display) pango.Context {
-	var arg1 *C.GdkDisplay
+	var _arg1 *C.GdkDisplay
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
-	cret = C.gdk_pango_context_get_for_display(arg1)
+	cret = C.gdk_pango_context_get_for_display(_arg1)
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // PangoContextGetForScreen creates a Context for @screen.
@@ -84,19 +84,19 @@ func PangoContextGetForDisplay(display Display) pango.Context {
 // to keep a context around and track changes to the screen’s font rendering
 // settings.
 func PangoContextGetForScreen(screen Screen) pango.Context {
-	var arg1 *C.GdkScreen
+	var _arg1 *C.GdkScreen
 
-	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
-	cret = C.gdk_pango_context_get_for_screen(arg1)
+	cret = C.gdk_pango_context_get_for_screen(_arg1)
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // PangoLayoutGetClipRegion obtains a clip region which contains the areas where
@@ -109,28 +109,28 @@ func PangoContextGetForScreen(screen Screen) pango.Context {
 // the clip region. The clip region is mainly useful for highlightling parts of
 // text, such as when text is selected.
 func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges *int, nRanges int) *cairo.Region {
-	var arg1 *C.PangoLayout
-	var arg2 C.gint
-	var arg3 C.gint
-	var arg4 *C.gint
-	var arg5 C.gint
+	var _arg1 *C.PangoLayout
+	var _arg2 C.gint
+	var _arg3 C.gint
+	var _arg4 *C.gint
+	var _arg5 C.gint
 
-	arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	arg2 = C.gint(xOrigin)
-	arg3 = C.gint(yOrigin)
-	arg4 = *C.gint(indexRanges)
-	arg5 = C.gint(nRanges)
+	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg2 = C.gint(xOrigin)
+	_arg3 = C.gint(yOrigin)
+	_arg4 = *C.gint(indexRanges)
+	_arg5 = C.gint(nRanges)
 
-	var cret *C.cairo_region_t
+	var _cret *C.cairo_region_t
 
-	cret = C.gdk_pango_layout_get_clip_region(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gdk_pango_layout_get_clip_region(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var region *cairo.Region
+	var _region *cairo.Region
 
-	region = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(region, func(v *cairo.Region) {
+	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return region
+	return _region
 }

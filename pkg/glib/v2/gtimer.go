@@ -18,11 +18,11 @@ import "C"
 // macro). g_usleep() may have limited precision, depending on hardware and
 // operating system; don't rely on the exact length of the sleep.
 func Usleep(microseconds uint32) {
-	var arg1 C.gulong
+	var _arg1 C.gulong
 
-	arg1 = C.gulong(microseconds)
+	_arg1 = C.gulong(microseconds)
 
-	C.g_usleep(arg1)
+	C.g_usleep(_arg1)
 }
 
 // Timer: opaque datatype that records a start time.
@@ -53,20 +53,20 @@ func (t *Timer) Native() unsafe.Pointer {
 // Continue resumes a timer that has previously been stopped with
 // g_timer_stop(). g_timer_stop() must be called before using this function.
 func (t *Timer) Continue() {
-	var arg0 *C.GTimer
+	var _arg0 *C.GTimer
 
-	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
-	C.g_timer_continue(arg0)
+	C.g_timer_continue(_arg0)
 }
 
 // Destroy destroys a timer, freeing associated resources.
 func (t *Timer) Destroy() {
-	var arg0 *C.GTimer
+	var _arg0 *C.GTimer
 
-	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
-	C.g_timer_destroy(arg0)
+	C.g_timer_destroy(_arg0)
 }
 
 // Elapsed: if @timer has been started but not stopped, obtains the time since
@@ -75,51 +75,51 @@ func (t *Timer) Destroy() {
 // is the number of seconds elapsed, including any fractional part. The
 // @microseconds out parameter is essentially useless.
 func (t *Timer) Elapsed(microseconds *uint32) float64 {
-	var arg0 *C.GTimer
-	var arg1 *C.gulong
+	var _arg0 *C.GTimer
+	var _arg1 *C.gulong
 
-	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
-	arg1 = *C.gulong(microseconds)
+	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
+	_arg1 = *C.gulong(microseconds)
 
-	var cret C.gdouble
+	var _cret C.gdouble
 
-	cret = C.g_timer_elapsed(arg0, arg1)
+	cret = C.g_timer_elapsed(_arg0, _arg1)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // IsActive exposes whether the timer is currently active.
 func (t *Timer) IsActive() bool {
-	var arg0 *C.GTimer
+	var _arg0 *C.GTimer
 
-	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_timer_is_active(arg0)
+	cret = C.g_timer_is_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Reset: this function is useless; it's fine to call g_timer_start() on an
 // already-started timer to reset the start time, so g_timer_reset() serves no
 // purpose.
 func (t *Timer) Reset() {
-	var arg0 *C.GTimer
+	var _arg0 *C.GTimer
 
-	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
-	C.g_timer_reset(arg0)
+	C.g_timer_reset(_arg0)
 }
 
 // Start marks a start time, so that future calls to g_timer_elapsed() will
@@ -127,19 +127,19 @@ func (t *Timer) Reset() {
 // marks the start time, so no need to call g_timer_start() immediately after
 // creating the timer.
 func (t *Timer) Start() {
-	var arg0 *C.GTimer
+	var _arg0 *C.GTimer
 
-	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
-	C.g_timer_start(arg0)
+	C.g_timer_start(_arg0)
 }
 
 // Stop marks an end time, so calls to g_timer_elapsed() will return the
 // difference between this end time and the start time.
 func (t *Timer) Stop() {
-	var arg0 *C.GTimer
+	var _arg0 *C.GTimer
 
-	arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
-	C.g_timer_stop(arg0)
+	C.g_timer_stop(_arg0)
 }

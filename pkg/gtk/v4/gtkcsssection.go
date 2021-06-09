@@ -48,26 +48,26 @@ func marshalCSSSection(p uintptr) (interface{}, error) {
 
 // NewCSSSection constructs a struct CSSSection.
 func NewCSSSection(file gio.File, start *CSSLocation, end *CSSLocation) *CSSSection {
-	var arg1 *C.GFile
-	var arg2 *C.GtkCssLocation
-	var arg3 *C.GtkCssLocation
+	var _arg1 *C.GFile
+	var _arg2 *C.GtkCssLocation
+	var _arg3 *C.GtkCssLocation
 
-	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	arg2 = (*C.GtkCssLocation)(unsafe.Pointer(start.Native()))
-	arg3 = (*C.GtkCssLocation)(unsafe.Pointer(end.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg2 = (*C.GtkCssLocation)(unsafe.Pointer(start.Native()))
+	_arg3 = (*C.GtkCssLocation)(unsafe.Pointer(end.Native()))
 
-	var cret *C.GtkCssSection
+	var _cret *C.GtkCssSection
 
-	cret = C.gtk_css_section_new(arg1, arg2, arg3)
+	cret = C.gtk_css_section_new(_arg1, _arg2, _arg3)
 
-	var cssSection *CSSSection
+	var _cssSection *CSSSection
 
-	cssSection = WrapCSSSection(unsafe.Pointer(cret))
-	runtime.SetFinalizer(cssSection, func(v *CSSSection) {
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return cssSection
+	return _cssSection
 }
 
 // Native returns the underlying C source pointer.
@@ -77,38 +77,38 @@ func (c *CSSSection) Native() unsafe.Pointer {
 
 // EndLocation returns the location in the CSS document where this section ends.
 func (s *CSSSection) EndLocation() *CSSLocation {
-	var arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkCssLocation
+	var _cret *C.GtkCssLocation
 
-	cret = C.gtk_css_section_get_end_location(arg0)
+	cret = C.gtk_css_section_get_end_location(_arg0)
 
-	var cssLocation *CSSLocation
+	var _cssLocation *CSSLocation
 
-	cssLocation = WrapCSSLocation(unsafe.Pointer(cret))
+	_cssLocation = WrapCSSLocation(unsafe.Pointer(_cret))
 
-	return cssLocation
+	return _cssLocation
 }
 
 // File gets the file that @section was parsed from. If no such file exists, for
 // example because the CSS was loaded via @gtk_css_provider_load_from_data(),
 // then nil is returned.
 func (s *CSSSection) File() gio.File {
-	var arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GFile
+	var _cret *C.GFile
 
-	cret = C.gtk_css_section_get_file(arg0)
+	cret = C.gtk_css_section_get_file(_arg0)
 
-	var file gio.File
+	var _file gio.File
 
-	file = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.File)
+	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
 
-	return file
+	return _file
 }
 
 // Parent gets the parent section for the given @section. The parent section is
@@ -118,97 +118,97 @@ func (s *CSSSection) File() gio.File {
 // a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
 // from a different file.
 func (s *CSSSection) Parent() *CSSSection {
-	var arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkCssSection
+	var _cret *C.GtkCssSection
 
-	cret = C.gtk_css_section_get_parent(arg0)
+	cret = C.gtk_css_section_get_parent(_arg0)
 
-	var cssSection *CSSSection
+	var _cssSection *CSSSection
 
-	cssSection = WrapCSSSection(unsafe.Pointer(cret))
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
 
-	return cssSection
+	return _cssSection
 }
 
 // StartLocation returns the location in the CSS document where this section
 // starts.
 func (s *CSSSection) StartLocation() *CSSLocation {
-	var arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkCssLocation
+	var _cret *C.GtkCssLocation
 
-	cret = C.gtk_css_section_get_start_location(arg0)
+	cret = C.gtk_css_section_get_start_location(_arg0)
 
-	var cssLocation *CSSLocation
+	var _cssLocation *CSSLocation
 
-	cssLocation = WrapCSSLocation(unsafe.Pointer(cret))
+	_cssLocation = WrapCSSLocation(unsafe.Pointer(_cret))
 
-	return cssLocation
+	return _cssLocation
 }
 
 // Print prints the @section into @string in a human-readable form. This is a
 // form like `gtk.css:32:1-23` to denote line 32, characters 1 to 23 in the file
 // gtk.css.
 func (s *CSSSection) Print(string *glib.String) {
-	var arg0 *C.GtkCssSection
-	var arg1 *C.GString
+	var _arg0 *C.GtkCssSection
+	var _arg1 *C.GString
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
 
-	C.gtk_css_section_print(arg0, arg1)
+	C.gtk_css_section_print(_arg0, _arg1)
 }
 
 // Ref increments the reference count on @section.
 func (s *CSSSection) Ref() *CSSSection {
-	var arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkCssSection
+	var _cret *C.GtkCssSection
 
-	cret = C.gtk_css_section_ref(arg0)
+	cret = C.gtk_css_section_ref(_arg0)
 
-	var cssSection *CSSSection
+	var _cssSection *CSSSection
 
-	cssSection = WrapCSSSection(unsafe.Pointer(cret))
-	runtime.SetFinalizer(cssSection, func(v *CSSSection) {
+	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return cssSection
+	return _cssSection
 }
 
 // String prints the section into a human-readable text form using
 // gtk_css_section_print().
 func (s *CSSSection) String() string {
-	var arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_css_section_to_string(arg0)
+	cret = C.gtk_css_section_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Unref decrements the reference count on @section, freeing the structure if
 // the reference count reaches 0.
 func (s *CSSSection) Unref() {
-	var arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection
 
-	arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	C.gtk_css_section_unref(arg0)
+	C.gtk_css_section_unref(_arg0)
 }

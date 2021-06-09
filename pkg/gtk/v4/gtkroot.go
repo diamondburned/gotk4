@@ -73,19 +73,19 @@ func marshalRoot(p uintptr) (interface{}, error) {
 
 // Display returns the display that this GtkRoot is on.
 func (s root) Display() gdk.Display {
-	var arg0 *C.GtkRoot
+	var _arg0 *C.GtkRoot
 
-	arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gtk_root_get_display(arg0)
+	cret = C.gtk_root_get_display(_arg0)
 
-	var display gdk.Display
+	var _display gdk.Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
 
-	return display
+	return _display
 }
 
 // Focus retrieves the current focused widget within the root.
@@ -94,19 +94,19 @@ func (s root) Display() gdk.Display {
 // active; if the root is not focused then `gtk_widget_has_focus (widget)`
 // will be false for the widget.
 func (s root) Focus() Widget {
-	var arg0 *C.GtkRoot
+	var _arg0 *C.GtkRoot
 
-	arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_root_get_focus(arg0)
+	cret = C.gtk_root_get_focus(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SetFocus: if @focus is not the current focus widget, and is focusable,
@@ -116,11 +116,11 @@ func (s root) Focus() Widget {
 // To set the focus to a particular widget in the root, it is usually more
 // convenient to use gtk_widget_grab_focus() instead of this function.
 func (s root) SetFocus(focus Widget) {
-	var arg0 *C.GtkRoot
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkRoot
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
+	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))
 
-	C.gtk_root_set_focus(arg0, arg1)
+	C.gtk_root_set_focus(_arg0, _arg1)
 }

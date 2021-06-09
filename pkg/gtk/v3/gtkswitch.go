@@ -87,66 +87,66 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 
 // NewSwitch constructs a class Switch.
 func NewSwitch() Switch {
-	var cret C.GtkSwitch
+	var _cret C.GtkSwitch
 
 	cret = C.gtk_switch_new()
 
-	var _switch Switch
+	var __switch Switch
 
-	_switch = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Switch)
+	__switch = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Switch)
 
-	return _switch
+	return __switch
 }
 
 // Active gets whether the Switch is in its “on” or “off” state.
 func (s _switch) Active() bool {
-	var arg0 *C.GtkSwitch
+	var _arg0 *C.GtkSwitch
 
-	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_switch_get_active(arg0)
+	cret = C.gtk_switch_get_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // State gets the underlying state of the Switch.
 func (s _switch) State() bool {
-	var arg0 *C.GtkSwitch
+	var _arg0 *C.GtkSwitch
 
-	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_switch_get_state(arg0)
+	cret = C.gtk_switch_get_state(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetActive changes the state of @sw to the desired one.
 func (s _switch) SetActive(isActive bool) {
-	var arg0 *C.GtkSwitch
-	var arg1 C.gboolean
+	var _arg0 *C.GtkSwitch
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if isActive {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_switch_set_active(arg0, arg1)
+	C.gtk_switch_set_active(_arg0, _arg1)
 }
 
 // SetState sets the underlying state of the Switch.
@@ -157,13 +157,13 @@ func (s _switch) SetActive(isActive bool) {
 //
 // See Switch::state-set for details.
 func (s _switch) SetState(state bool) {
-	var arg0 *C.GtkSwitch
-	var arg1 C.gboolean
+	var _arg0 *C.GtkSwitch
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if state {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_switch_set_state(arg0, arg1)
+	C.gtk_switch_set_state(_arg0, _arg1)
 }

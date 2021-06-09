@@ -194,15 +194,15 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 
 // NewCancellable constructs a class Cancellable.
 func NewCancellable() Cancellable {
-	var cret C.GCancellable
+	var _cret C.GCancellable
 
 	cret = C.g_cancellable_new()
 
-	var cancellable Cancellable
+	var _cancellable Cancellable
 
-	cancellable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cancellable)
+	_cancellable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cancellable)
 
-	return cancellable
+	return _cancellable
 }
 
 // Cancel: will set @cancellable to cancelled, and will emit the
@@ -223,11 +223,11 @@ func NewCancellable() Cancellable {
 // operation's ReadyCallback will not be invoked until the application
 // returns to the main loop.
 func (c cancellable) Cancel() {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_cancel(arg0)
+	C.g_cancellable_cancel(_arg0)
 }
 
 // Connect: convenience function to connect to the #GCancellable::cancelled
@@ -248,19 +248,19 @@ func (c cancellable) Cancel() {
 // versions which now makes it easier to write cleanup code that
 // unconditionally invokes e.g. g_cancellable_cancel().
 func (c cancellable) Connect() uint32 {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var cret C.gulong
+	var _cret C.gulong
 
-	cret = C.g_cancellable_connect(arg0)
+	cret = C.g_cancellable_connect(_arg0)
 
-	var gulong uint32
+	var _gulong uint32
 
-	gulong = (uint32)(cret)
+	_gulong = (uint32)(_cret)
 
-	return gulong
+	return _gulong
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -275,13 +275,13 @@ func (c cancellable) Connect() uint32 {
 //
 // If @cancellable is nil or @handler_id is `0` this function does nothing.
 func (c cancellable) Disconnect(handlerId uint32) {
-	var arg0 *C.GCancellable
-	var arg1 C.gulong
+	var _arg0 *C.GCancellable
+	var _arg1 C.gulong
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-	arg1 = C.gulong(handlerId)
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gulong(handlerId)
 
-	C.g_cancellable_disconnect(arg0, arg1)
+	C.g_cancellable_disconnect(_arg0, _arg1)
 }
 
 // Fd gets the file descriptor for a cancellable job. This can be used to
@@ -298,38 +298,38 @@ func (c cancellable) Disconnect(handlerId uint32) {
 //
 // See also g_cancellable_make_pollfd().
 func (c cancellable) Fd() int {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.g_cancellable_get_fd(arg0)
+	cret = C.g_cancellable_get_fd(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // IsCancelled checks if a cancellable job has been cancelled.
 func (c cancellable) IsCancelled() bool {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_cancellable_is_cancelled(arg0)
+	cret = C.g_cancellable_is_cancelled(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // MakePollfd creates a FD corresponding to @cancellable; this can be passed
@@ -350,33 +350,33 @@ func (c cancellable) IsCancelled() bool {
 // readable status. Reading to unset the readable status is done with
 // g_cancellable_reset().
 func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
-	var arg0 *C.GCancellable
-	var arg1 *C.GPollFD
+	var _arg0 *C.GCancellable
+	var _arg1 *C.GPollFD
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_cancellable_make_pollfd(arg0, arg1)
+	cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // PopCurrent pops @cancellable off the cancellable stack (verifying that
 // @cancellable is on the top of the stack).
 func (c cancellable) PopCurrent() {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_pop_current(arg0)
+	C.g_cancellable_pop_current(_arg0)
 }
 
 // PushCurrent pushes @cancellable onto the cancellable stack. The current
@@ -388,11 +388,11 @@ func (c cancellable) PopCurrent() {
 // This is typically called automatically by e.g. #GFile operations, so you
 // rarely have to call this yourself.
 func (c cancellable) PushCurrent() {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_push_current(arg0)
+	C.g_cancellable_push_current(_arg0)
 }
 
 // ReleaseFd releases a resources previously allocated by
@@ -405,11 +405,11 @@ func (c cancellable) PushCurrent() {
 // This can cause the application to run out of file descriptors when many
 // #GCancellables are used at the same time.
 func (c cancellable) ReleaseFd() {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_release_fd(arg0)
+	C.g_cancellable_release_fd(_arg0)
 }
 
 // Reset resets @cancellable to its uncancelled state.
@@ -424,29 +424,29 @@ func (c cancellable) ReleaseFd() {
 // outstanding async operations. You should create a fresh cancellable for
 // further async operations.
 func (c cancellable) Reset() {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	C.g_cancellable_reset(arg0)
+	C.g_cancellable_reset(_arg0)
 }
 
 // SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
 func (c cancellable) SetErrorIfCancelled() error {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_cancellable_set_error_if_cancelled(arg0, cerr)
+	C.g_cancellable_set_error_if_cancelled(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // NewSource creates a source that triggers if @cancellable is cancelled and
@@ -459,20 +459,20 @@ func (c cancellable) SetErrorIfCancelled() error {
 //
 // The new #GSource will hold a reference to the #GCancellable.
 func (c cancellable) NewSource() *glib.Source {
-	var arg0 *C.GCancellable
+	var _arg0 *C.GCancellable
 
-	arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSource
+	var _cret *C.GSource
 
-	cret = C.g_cancellable_source_new(arg0)
+	cret = C.g_cancellable_source_new(_arg0)
 
-	var source *glib.Source
+	var _source *glib.Source
 
-	source = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(source, func(v *glib.Source) {
+	_source = glib.WrapSource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return source
+	return _source
 }

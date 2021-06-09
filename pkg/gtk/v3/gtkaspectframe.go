@@ -66,47 +66,47 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 
 // NewAspectFrame constructs a class AspectFrame.
 func NewAspectFrame(label string, xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
-	var arg1 *C.gchar
-	var arg2 C.gfloat
-	var arg3 C.gfloat
-	var arg4 C.gfloat
-	var arg5 C.gboolean
+	var _arg1 *C.gchar
+	var _arg2 C.gfloat
+	var _arg3 C.gfloat
+	var _arg4 C.gfloat
+	var _arg5 C.gboolean
 
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gfloat(xalign)
-	arg3 = C.gfloat(yalign)
-	arg4 = C.gfloat(ratio)
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gfloat(xalign)
+	_arg3 = C.gfloat(yalign)
+	_arg4 = C.gfloat(ratio)
 	if obeyChild {
-		arg5 = C.gboolean(1)
+		_arg5 = C.gboolean(1)
 	}
 
-	var cret C.GtkAspectFrame
+	var _cret C.GtkAspectFrame
 
-	cret = C.gtk_aspect_frame_new(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var aspectFrame AspectFrame
+	var _aspectFrame AspectFrame
 
-	aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(AspectFrame)
+	_aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AspectFrame)
 
-	return aspectFrame
+	return _aspectFrame
 }
 
 // Set: set parameters for an existing AspectFrame.
 func (a aspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChild bool) {
-	var arg0 *C.GtkAspectFrame
-	var arg1 C.gfloat
-	var arg2 C.gfloat
-	var arg3 C.gfloat
-	var arg4 C.gboolean
+	var _arg0 *C.GtkAspectFrame
+	var _arg1 C.gfloat
+	var _arg2 C.gfloat
+	var _arg3 C.gfloat
+	var _arg4 C.gboolean
 
-	arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(a.Native()))
-	arg1 = C.gfloat(xalign)
-	arg2 = C.gfloat(yalign)
-	arg3 = C.gfloat(ratio)
+	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(a.Native()))
+	_arg1 = C.gfloat(xalign)
+	_arg2 = C.gfloat(yalign)
+	_arg3 = C.gfloat(ratio)
 	if obeyChild {
-		arg4 = C.gboolean(1)
+		_arg4 = C.gboolean(1)
 	}
 
-	C.gtk_aspect_frame_set(arg0, arg1, arg2, arg3, arg4)
+	C.gtk_aspect_frame_set(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

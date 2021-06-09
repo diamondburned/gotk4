@@ -104,15 +104,15 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 
 // NewTextTagTable constructs a class TextTagTable.
 func NewTextTagTable() TextTagTable {
-	var cret C.GtkTextTagTable
+	var _cret C.GtkTextTagTable
 
 	cret = C.gtk_text_tag_table_new()
 
-	var textTagTable TextTagTable
+	var _textTagTable TextTagTable
 
-	textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextTagTable)
+	_textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextTagTable)
 
-	return textTagTable
+	return _textTagTable
 }
 
 // Add: add a tag to the table. The tag is assigned the highest priority in
@@ -121,71 +121,71 @@ func NewTextTagTable() TextTagTable {
 // @tag must not be in a tag table already, and may not have the same name
 // as an already-added tag.
 func (t textTagTable) Add(tag TextTag) bool {
-	var arg0 *C.GtkTextTagTable
-	var arg1 *C.GtkTextTag
+	var _arg0 *C.GtkTextTagTable
+	var _arg1 *C.GtkTextTag
 
-	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_text_tag_table_add(arg0, arg1)
+	cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Foreach calls @func on each tag in @table, with user data @data. Note
 // that the table may not be modified while iterating over it (you can’t
 // add/remove tags).
 func (t textTagTable) Foreach() {
-	var arg0 *C.GtkTextTagTable
+	var _arg0 *C.GtkTextTagTable
 
-	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
-	C.gtk_text_tag_table_foreach(arg0)
+	C.gtk_text_tag_table_foreach(_arg0)
 }
 
 // Size returns the size of the table (number of tags)
 func (t textTagTable) Size() int {
-	var arg0 *C.GtkTextTagTable
+	var _arg0 *C.GtkTextTagTable
 
-	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gtk_text_tag_table_get_size(arg0)
+	cret = C.gtk_text_tag_table_get_size(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Lookup: look up a named tag.
 func (t textTagTable) Lookup(name string) TextTag {
-	var arg0 *C.GtkTextTagTable
-	var arg1 *C.gchar
+	var _arg0 *C.GtkTextTagTable
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GtkTextTag
+	var _cret *C.GtkTextTag
 
-	cret = C.gtk_text_tag_table_lookup(arg0, arg1)
+	cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)
 
-	var textTag TextTag
+	var _textTag TextTag
 
-	textTag = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TextTag)
+	_textTag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextTag)
 
-	return textTag
+	return _textTag
 }
 
 // Remove: remove a tag from the table. If a TextBuffer has @table as its
@@ -193,11 +193,11 @@ func (t textTagTable) Lookup(name string) TextTag {
 // the tag is removed, so the tag will end up destroyed if you don’t have a
 // reference to it.
 func (t textTagTable) Remove(tag TextTag) {
-	var arg0 *C.GtkTextTagTable
-	var arg1 *C.GtkTextTag
+	var _arg0 *C.GtkTextTagTable
+	var _arg1 *C.GtkTextTag
 
-	arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
+	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
-	C.gtk_text_tag_table_remove(arg0, arg1)
+	C.gtk_text_tag_table_remove(_arg0, _arg1)
 }

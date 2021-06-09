@@ -169,28 +169,28 @@ func marshalMenuShell(p uintptr) (interface{}, error) {
 
 // ActivateItem activates the menu item within the menu shell.
 func (m menuShell) ActivateItem(menuItem Widget, forceDeactivate bool) {
-	var arg0 *C.GtkMenuShell
-	var arg1 *C.GtkWidget
-	var arg2 C.gboolean
+	var _arg0 *C.GtkMenuShell
+	var _arg1 *C.GtkWidget
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 	if forceDeactivate {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	C.gtk_menu_shell_activate_item(arg0, arg1, arg2)
+	C.gtk_menu_shell_activate_item(_arg0, _arg1, _arg2)
 }
 
 // Append adds a new MenuItem to the end of the menu shell's item list.
 func (m menuShell) Append(child MenuItem) {
-	var arg0 *C.GtkMenuShell
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuShell
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_menu_shell_append(arg0, arg1)
+	C.gtk_menu_shell_append(_arg0, _arg1)
 }
 
 // BindModel establishes a binding between a MenuShell and a Model.
@@ -224,50 +224,50 @@ func (m menuShell) Append(child MenuItem) {
 // directly passing the Model to gtk_application_set_app_menu() or
 // gtk_application_set_menubar().
 func (m menuShell) BindModel(model gio.MenuModel, actionNamespace string, withSeparators bool) {
-	var arg0 *C.GtkMenuShell
-	var arg1 *C.GMenuModel
-	var arg2 *C.gchar
-	var arg3 C.gboolean
+	var _arg0 *C.GtkMenuShell
+	var _arg1 *C.GMenuModel
+	var _arg2 *C.gchar
+	var _arg3 C.gboolean
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-	arg2 = (*C.gchar)(C.CString(actionNamespace))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
+	_arg2 = (*C.gchar)(C.CString(actionNamespace))
+	defer C.free(unsafe.Pointer(_arg2))
 	if withSeparators {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
 
-	C.gtk_menu_shell_bind_model(arg0, arg1, arg2, arg3)
+	C.gtk_menu_shell_bind_model(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Cancel cancels the selection within the menu shell.
 func (m menuShell) Cancel() {
-	var arg0 *C.GtkMenuShell
+	var _arg0 *C.GtkMenuShell
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_shell_cancel(arg0)
+	C.gtk_menu_shell_cancel(_arg0)
 }
 
 // Deactivate deactivates the menu shell.
 //
 // Typically this results in the menu shell being erased from the screen.
 func (m menuShell) Deactivate() {
-	var arg0 *C.GtkMenuShell
+	var _arg0 *C.GtkMenuShell
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_shell_deactivate(arg0)
+	C.gtk_menu_shell_deactivate(_arg0)
 }
 
 // Deselect deselects the currently selected item from the menu shell, if
 // any.
 func (m menuShell) Deselect() {
-	var arg0 *C.GtkMenuShell
+	var _arg0 *C.GtkMenuShell
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
-	C.gtk_menu_shell_deselect(arg0)
+	C.gtk_menu_shell_deselect(_arg0)
 }
 
 // ParentShell gets the parent menu shell.
@@ -275,107 +275,107 @@ func (m menuShell) Deselect() {
 // The parent menu shell of a submenu is the Menu or MenuBar from which it
 // was opened up.
 func (m menuShell) ParentShell() Widget {
-	var arg0 *C.GtkMenuShell
+	var _arg0 *C.GtkMenuShell
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_menu_shell_get_parent_shell(arg0)
+	cret = C.gtk_menu_shell_get_parent_shell(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SelectedItem gets the currently selected item.
 func (m menuShell) SelectedItem() Widget {
-	var arg0 *C.GtkMenuShell
+	var _arg0 *C.GtkMenuShell
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_menu_shell_get_selected_item(arg0)
+	cret = C.gtk_menu_shell_get_selected_item(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // TakeFocus returns true if the menu shell will take the keyboard focus on
 // popup.
 func (m menuShell) TakeFocus() bool {
-	var arg0 *C.GtkMenuShell
+	var _arg0 *C.GtkMenuShell
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_menu_shell_get_take_focus(arg0)
+	cret = C.gtk_menu_shell_get_take_focus(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Insert adds a new MenuItem to the menu shell’s item list at the position
 // indicated by @position.
 func (m menuShell) Insert(child Widget, position int) {
-	var arg0 *C.GtkMenuShell
-	var arg1 *C.GtkWidget
-	var arg2 C.gint
+	var _arg0 *C.GtkMenuShell
+	var _arg1 *C.GtkWidget
+	var _arg2 C.gint
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = C.gint(position)
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = C.gint(position)
 
-	C.gtk_menu_shell_insert(arg0, arg1, arg2)
+	C.gtk_menu_shell_insert(_arg0, _arg1, _arg2)
 }
 
 // Prepend adds a new MenuItem to the beginning of the menu shell's item
 // list.
 func (m menuShell) Prepend(child Widget) {
-	var arg0 *C.GtkMenuShell
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuShell
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_menu_shell_prepend(arg0, arg1)
+	C.gtk_menu_shell_prepend(_arg0, _arg1)
 }
 
 // SelectFirst: select the first visible or selectable child of the menu
 // shell; don’t select tearoff items unless the only item is a tearoff item.
 func (m menuShell) SelectFirst(searchSensitive bool) {
-	var arg0 *C.GtkMenuShell
-	var arg1 C.gboolean
+	var _arg0 *C.GtkMenuShell
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	if searchSensitive {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_menu_shell_select_first(arg0, arg1)
+	C.gtk_menu_shell_select_first(_arg0, _arg1)
 }
 
 // SelectItem selects the menu item from the menu shell.
 func (m menuShell) SelectItem(menuItem Widget) {
-	var arg0 *C.GtkMenuShell
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuShell
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menuItem.Native()))
 
-	C.gtk_menu_shell_select_item(arg0, arg1)
+	C.gtk_menu_shell_select_item(_arg0, _arg1)
 }
 
 // SetTakeFocus: if @take_focus is true (the default) the menu shell will
@@ -403,13 +403,13 @@ func (m menuShell) SelectItem(menuItem Widget) {
 //
 // See also gdk_keyboard_grab()
 func (m menuShell) SetTakeFocus(takeFocus bool) {
-	var arg0 *C.GtkMenuShell
-	var arg1 C.gboolean
+	var _arg0 *C.GtkMenuShell
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
 	if takeFocus {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_menu_shell_set_take_focus(arg0, arg1)
+	C.gtk_menu_shell_set_take_focus(_arg0, _arg1)
 }

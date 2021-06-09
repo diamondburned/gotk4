@@ -71,57 +71,57 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 
 // RGBA gets the currently-selected color.
 func (c colorChooser) RGBA() gdk.RGBA {
-	var arg0 *C.GtkColorChooser
+	var _arg0 *C.GtkColorChooser
 
-	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
-	var color gdk.RGBA
+	var _color gdk.RGBA
 
-	C.gtk_color_chooser_get_rgba(arg0, (*C.GdkRGBA)(unsafe.Pointer(&color)))
+	C.gtk_color_chooser_get_rgba(_arg0, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
-	return color
+	return _color
 }
 
 // UseAlpha returns whether the color chooser shows the alpha channel.
 func (c colorChooser) UseAlpha() bool {
-	var arg0 *C.GtkColorChooser
+	var _arg0 *C.GtkColorChooser
 
-	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_color_chooser_get_use_alpha(arg0)
+	cret = C.gtk_color_chooser_get_use_alpha(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetRGBA sets the color.
 func (c colorChooser) SetRGBA(color *gdk.RGBA) {
-	var arg0 *C.GtkColorChooser
-	var arg1 *C.GdkRGBA
+	var _arg0 *C.GtkColorChooser
+	var _arg1 *C.GdkRGBA
 
-	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
 
-	C.gtk_color_chooser_set_rgba(arg0, arg1)
+	C.gtk_color_chooser_set_rgba(_arg0, _arg1)
 }
 
 // SetUseAlpha sets whether or not the color chooser should use the alpha
 // channel.
 func (c colorChooser) SetUseAlpha(useAlpha bool) {
-	var arg0 *C.GtkColorChooser
-	var arg1 C.gboolean
+	var _arg0 *C.GtkColorChooser
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	if useAlpha {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_color_chooser_set_use_alpha(arg0, arg1)
+	C.gtk_color_chooser_set_use_alpha(_arg0, _arg1)
 }

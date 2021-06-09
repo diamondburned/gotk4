@@ -182,19 +182,19 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 // error message string; it may be translated and/or change in future versions
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) error {
-	var arg1 C.gint
+	var _arg1 C.gint
 
-	arg1 = C.gint(exitStatus)
+	_arg1 = C.gint(exitStatus)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_spawn_check_exit_status(arg1, cerr)
+	C.g_spawn_check_exit_status(_arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // SpawnCommandLineAsync: a simple version of g_spawn_async() that parses a
@@ -207,20 +207,20 @@ func SpawnCheckExitStatus(exitStatus int) error {
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
 func SpawnCommandLineAsync(commandLine *string) error {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(commandLine))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_spawn_command_line_async(arg1, cerr)
+	C.g_spawn_command_line_async(_arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // SpawnCommandLineSync: a simple version of g_spawn_sync() with little-used
@@ -244,26 +244,26 @@ func SpawnCommandLineAsync(commandLine *string) error {
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
 func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(commandLine))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var arg2 *C.gchar
-	var arg3 *C.gchar
-	var arg4 C.gint
-	var cerr *C.GError
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
+	var _arg4 C.gint
+	var _cerr *C.GError
 
-	C.g_spawn_command_line_sync(arg1, &arg2, &arg3, &arg4, cerr)
+	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, _cerr)
 
-	var standardOutput []byte
-	var standardError []byte
-	var exitStatus int
-	var goerr error
+	var _standardOutput []byte
+	var _standardError []byte
+	var _exitStatus int
+	var _goerr error
 
 	{
 		var length int
-		for p := arg2; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := _arg2; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -271,16 +271,16 @@ func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardE
 		}
 
 		var src []C.guint8
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(arg2), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg2), int(length))
 
-		standardOutput = make([]byte, length)
+		_standardOutput = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
-			standardOutput = (byte)(arg2)
+			_standardOutput = (byte)(_arg2)
 		}
 	}
 	{
 		var length int
-		for p := arg3; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := _arg3; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -288,15 +288,15 @@ func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardE
 		}
 
 		var src []C.guint8
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(arg3), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg3), int(length))
 
-		standardError = make([]byte, length)
+		_standardError = make([]byte, length)
 		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
-			standardError = (byte)(arg3)
+			_standardError = (byte)(_arg3)
 		}
 	}
-	exitStatus = (int)(arg4)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_exitStatus = (int)(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return standardOutput, standardError, exitStatus, goerr
+	return _standardOutput, _standardError, _exitStatus, _goerr
 }

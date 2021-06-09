@@ -76,19 +76,19 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 
 // WlSurface returns the Wayland surface of a Surface.
 func (s waylandSurface) WlSurface() *interface{} {
-	var arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface
 
-	arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var cret *C.wl_surface
+	var _cret *C.wl_surface
 
-	cret = C.gdk_wayland_surface_get_wl_surface(arg0)
+	cret = C.gdk_wayland_surface_get_wl_surface(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 type WaylandToplevel interface {
@@ -172,33 +172,33 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
 func (t waylandToplevel) ExportHandle() bool {
-	var arg0 *C.GdkToplevel
+	var _arg0 *C.GdkToplevel
 
-	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_wayland_toplevel_export_handle(arg0)
+	cret = C.gdk_wayland_toplevel_export_handle(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetApplicationID sets the application id on a Toplevel.
 func (t waylandToplevel) SetApplicationID(applicationId string) {
-	var arg0 *C.GdkToplevel
-	var arg1 *C.char
+	var _arg0 *C.GdkToplevel
+	var _arg1 *C.char
 
-	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.char)(C.CString(applicationId))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.char)(C.CString(applicationId))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_wayland_toplevel_set_application_id(arg0, arg1)
+	C.gdk_wayland_toplevel_set_application_id(_arg0, _arg1)
 }
 
 // SetTransientForExported marks @toplevel as transient for the surface to
@@ -209,24 +209,24 @@ func (t waylandToplevel) SetApplicationID(applicationId string) {
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
 func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
-	var arg0 *C.GdkToplevel
-	var arg1 *C.char
+	var _arg0 *C.GdkToplevel
+	var _arg1 *C.char
 
-	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.char)(C.CString(parentHandleStr))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.char)(C.CString(parentHandleStr))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_wayland_toplevel_set_transient_for_exported(arg0, arg1)
+	cret = C.gdk_wayland_toplevel_set_transient_for_exported(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // UnexportHandle destroys the handle that was obtained with
@@ -238,9 +238,9 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
 func (t waylandToplevel) UnexportHandle() {
-	var arg0 *C.GdkToplevel
+	var _arg0 *C.GdkToplevel
 
-	arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 
-	C.gdk_wayland_toplevel_unexport_handle(arg0)
+	C.gdk_wayland_toplevel_unexport_handle(_arg0)
 }

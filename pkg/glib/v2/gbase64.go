@@ -18,51 +18,51 @@ import "C"
 // Note that the returned binary data is not necessarily zero-terminated, so it
 // should not be used as a character string.
 func Base64Decode(text string) []byte {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.guchar
-	var arg2 *C.gsize
+	var _cret *C.guchar
+	var _arg2 *C.gsize
 
-	cret = C.g_base64_decode(arg1)
+	cret = C.g_base64_decode(_arg1)
 
-	var guint8s []byte
+	var _guint8s []byte
 
-	ptr.SetSlice(unsafe.Pointer(&guint8s), unsafe.Pointer(cret), int(arg2))
-	runtime.SetFinalizer(&guint8s, func(v *[]byte) {
+	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg2))
+	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return guint8s
+	return _guint8s
 }
 
 // Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
 // data by overwriting the input data.
 func Base64DecodeInplace() *byte {
-	var cret *C.guchar
+	var _cret *C.guchar
 
 	cret = C.g_base64_decode_inplace()
 
-	var guint8 *byte
+	var _guint8 *byte
 
-	guint8 = (*byte)(cret)
+	_guint8 = (*byte)(_cret)
 
-	return guint8
+	return _guint8
 }
 
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
 func Base64Encode() string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_base64_encode()
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

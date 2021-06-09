@@ -70,78 +70,78 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 
 // NewShortcutLabel constructs a class ShortcutLabel.
 func NewShortcutLabel(accelerator string) ShortcutLabel {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(accelerator))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(accelerator))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkShortcutLabel
+	var _cret C.GtkShortcutLabel
 
-	cret = C.gtk_shortcut_label_new(arg1)
+	cret = C.gtk_shortcut_label_new(_arg1)
 
-	var shortcutLabel ShortcutLabel
+	var _shortcutLabel ShortcutLabel
 
-	shortcutLabel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ShortcutLabel)
+	_shortcutLabel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutLabel)
 
-	return shortcutLabel
+	return _shortcutLabel
 }
 
 // Accelerator retrieves the current accelerator of @self.
 func (s shortcutLabel) Accelerator() string {
-	var arg0 *C.GtkShortcutLabel
+	var _arg0 *C.GtkShortcutLabel
 
-	arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_shortcut_label_get_accelerator(arg0)
+	cret = C.gtk_shortcut_label_get_accelerator(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // DisabledText retrieves the text that is displayed when no accelerator is
 // set.
 func (s shortcutLabel) DisabledText() string {
-	var arg0 *C.GtkShortcutLabel
+	var _arg0 *C.GtkShortcutLabel
 
-	arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_shortcut_label_get_disabled_text(arg0)
+	cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // SetAccelerator sets the accelerator to be displayed by @self.
 func (s shortcutLabel) SetAccelerator(accelerator string) {
-	var arg0 *C.GtkShortcutLabel
-	var arg1 *C.char
+	var _arg0 *C.GtkShortcutLabel
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(accelerator))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(accelerator))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_shortcut_label_set_accelerator(arg0, arg1)
+	C.gtk_shortcut_label_set_accelerator(_arg0, _arg1)
 }
 
 // SetDisabledText sets the text to be displayed by @self when no
 // accelerator is set.
 func (s shortcutLabel) SetDisabledText(disabledText string) {
-	var arg0 *C.GtkShortcutLabel
-	var arg1 *C.char
+	var _arg0 *C.GtkShortcutLabel
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(disabledText))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(disabledText))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_shortcut_label_set_disabled_text(arg0, arg1)
+	C.gtk_shortcut_label_set_disabled_text(_arg0, _arg1)
 }

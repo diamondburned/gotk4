@@ -58,18 +58,18 @@ func marshalRay(p uintptr) (interface{}, error) {
 
 // NewRayAlloc constructs a struct Ray.
 func NewRayAlloc() *Ray {
-	var cret *C.graphene_ray_t
+	var _cret *C.graphene_ray_t
 
 	cret = C.graphene_ray_alloc()
 
-	var ray *Ray
+	var _ray *Ray
 
-	ray = WrapRay(unsafe.Pointer(cret))
-	runtime.SetFinalizer(ray, func(v *Ray) {
+	_ray = WrapRay(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_ray, func(v *Ray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return ray
+	return _ray
 }
 
 // Native returns the underlying C source pointer.
@@ -79,61 +79,61 @@ func (r *Ray) Native() unsafe.Pointer {
 
 // Equal checks whether the two given #graphene_ray_t are equal.
 func (a *Ray) Equal(b *Ray) bool {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_ray_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.graphene_ray_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.graphene_ray_t)(unsafe.Pointer(b.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_ray_equal(arg0, arg1)
+	cret = C.graphene_ray_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Free frees the resources allocated by graphene_ray_alloc().
 func (r *Ray) Free() {
-	var arg0 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
-	C.graphene_ray_free(arg0)
+	C.graphene_ray_free(_arg0)
 }
 
 // ClosestPointToPoint computes the point on the given #graphene_ray_t that is
 // closest to the given point @p.
 func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	var res Point3D
+	var _res Point3D
 
-	C.graphene_ray_get_closest_point_to_point(arg0, arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&res)))
+	C.graphene_ray_get_closest_point_to_point(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }
 
 // Direction retrieves the direction of the given #graphene_ray_t.
 func (r *Ray) Direction() Vec3 {
-	var arg0 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
-	var direction Vec3
+	var _direction Vec3
 
-	C.graphene_ray_get_direction(arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&direction)))
+	C.graphene_ray_get_direction(_arg0, (*C.graphene_vec3_t)(unsafe.Pointer(&_direction)))
 
-	return direction
+	return _direction
 }
 
 // DistanceToPlane computes the distance of the origin of the given
@@ -141,21 +141,21 @@ func (r *Ray) Direction() Vec3 {
 //
 // If the ray does not intersect the plane, this function returns `INFINITY`.
 func (r *Ray) DistanceToPlane(p *Plane) float32 {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_plane_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_plane_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_ray_get_distance_to_plane(arg0, arg1)
+	cret = C.graphene_ray_get_distance_to_plane(_arg0, _arg1)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // DistanceToPoint computes the distance of the closest approach between the
@@ -164,182 +164,182 @@ func (r *Ray) DistanceToPlane(p *Plane) float32 {
 // The closest approach to a ray from a point is the distance between the point
 // and the projection of the point on the ray itself.
 func (r *Ray) DistanceToPoint(p *Point3D) float32 {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_ray_get_distance_to_point(arg0, arg1)
+	cret = C.graphene_ray_get_distance_to_point(_arg0, _arg1)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // Origin retrieves the origin of the given #graphene_ray_t.
 func (r *Ray) Origin() Point3D {
-	var arg0 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
-	var origin Point3D
+	var _origin Point3D
 
-	C.graphene_ray_get_origin(arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&origin)))
+	C.graphene_ray_get_origin(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_origin)))
 
-	return origin
+	return _origin
 }
 
 // PositionAt retrieves the coordinates of a point at the distance @t along the
 // given #graphene_ray_t.
 func (r *Ray) PositionAt(t float32) Point3D {
-	var arg0 *C.graphene_ray_t
-	var arg1 C.float
+	var _arg0 *C.graphene_ray_t
+	var _arg1 C.float
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = C.float(t)
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = C.float(t)
 
-	var position Point3D
+	var _position Point3D
 
-	C.graphene_ray_get_position_at(arg0, arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&position)))
+	C.graphene_ray_get_position_at(_arg0, _arg1, (*C.graphene_point3d_t)(unsafe.Pointer(&_position)))
 
-	return position
+	return _position
 }
 
 // Init initializes the given #graphene_ray_t using the given @origin and
 // @direction values.
 func (r *Ray) Init(origin *Point3D, direction *Vec3) *Ray {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_point3d_t
-	var arg2 *C.graphene_vec3_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_point3d_t
+	var _arg2 *C.graphene_vec3_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(origin.Native()))
-	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(direction.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(origin.Native()))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(direction.Native()))
 
-	var cret *C.graphene_ray_t
+	var _cret *C.graphene_ray_t
 
-	cret = C.graphene_ray_init(arg0, arg1, arg2)
+	cret = C.graphene_ray_init(_arg0, _arg1, _arg2)
 
-	var ray *Ray
+	var _ray *Ray
 
-	ray = WrapRay(unsafe.Pointer(cret))
+	_ray = WrapRay(unsafe.Pointer(_cret))
 
-	return ray
+	return _ray
 }
 
 // InitFromRay initializes the given #graphene_ray_t using the origin and
 // direction values of another #graphene_ray_t.
 func (r *Ray) InitFromRay(src *Ray) *Ray {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_ray_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_ray_t)(unsafe.Pointer(src.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_ray_t)(unsafe.Pointer(src.Native()))
 
-	var cret *C.graphene_ray_t
+	var _cret *C.graphene_ray_t
 
-	cret = C.graphene_ray_init_from_ray(arg0, arg1)
+	cret = C.graphene_ray_init_from_ray(_arg0, _arg1)
 
-	var ray *Ray
+	var _ray *Ray
 
-	ray = WrapRay(unsafe.Pointer(cret))
+	_ray = WrapRay(unsafe.Pointer(_cret))
 
-	return ray
+	return _ray
 }
 
 // InitFromVec3 initializes the given #graphene_ray_t using the given vectors.
 func (r *Ray) InitFromVec3(origin *Vec3, direction *Vec3) *Ray {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_vec3_t
-	var arg2 *C.graphene_vec3_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_vec3_t
+	var _arg2 *C.graphene_vec3_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(origin.Native()))
-	arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(direction.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_vec3_t)(unsafe.Pointer(origin.Native()))
+	_arg2 = (*C.graphene_vec3_t)(unsafe.Pointer(direction.Native()))
 
-	var cret *C.graphene_ray_t
+	var _cret *C.graphene_ray_t
 
-	cret = C.graphene_ray_init_from_vec3(arg0, arg1, arg2)
+	cret = C.graphene_ray_init_from_vec3(_arg0, _arg1, _arg2)
 
-	var ray *Ray
+	var _ray *Ray
 
-	ray = WrapRay(unsafe.Pointer(cret))
+	_ray = WrapRay(unsafe.Pointer(_cret))
 
-	return ray
+	return _ray
 }
 
 // IntersectBox intersects the given #graphene_ray_t @r with the given
 // #graphene_box_t @b.
-func (r *Ray) IntersectBox(b *Box) (tOut float32, rayIntersectionKind RayIntersectionKind) {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_box_t
+func (r *Ray) IntersectBox(b *Box) (float32, RayIntersectionKind) {
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_box_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	var arg2 C.float
-	var cret C.graphene_ray_intersection_kind_t
+	var _arg2 C.float
+	var _cret C.graphene_ray_intersection_kind_t
 
-	cret = C.graphene_ray_intersect_box(arg0, arg1, &arg2)
+	cret = C.graphene_ray_intersect_box(_arg0, _arg1, &_arg2)
 
-	var tOut float32
-	var rayIntersectionKind RayIntersectionKind
+	var _tOut float32
+	var _rayIntersectionKind RayIntersectionKind
 
-	tOut = (float32)(arg2)
-	rayIntersectionKind = RayIntersectionKind(cret)
+	_tOut = (float32)(_arg2)
+	_rayIntersectionKind = RayIntersectionKind(_cret)
 
-	return tOut, rayIntersectionKind
+	return _tOut, _rayIntersectionKind
 }
 
 // IntersectSphere intersects the given #graphene_ray_t @r with the given
 // #graphene_sphere_t @s.
-func (r *Ray) IntersectSphere(s *Sphere) (tOut float32, rayIntersectionKind RayIntersectionKind) {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_sphere_t
+func (r *Ray) IntersectSphere(s *Sphere) (float32, RayIntersectionKind) {
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var arg2 C.float
-	var cret C.graphene_ray_intersection_kind_t
+	var _arg2 C.float
+	var _cret C.graphene_ray_intersection_kind_t
 
-	cret = C.graphene_ray_intersect_sphere(arg0, arg1, &arg2)
+	cret = C.graphene_ray_intersect_sphere(_arg0, _arg1, &_arg2)
 
-	var tOut float32
-	var rayIntersectionKind RayIntersectionKind
+	var _tOut float32
+	var _rayIntersectionKind RayIntersectionKind
 
-	tOut = (float32)(arg2)
-	rayIntersectionKind = RayIntersectionKind(cret)
+	_tOut = (float32)(_arg2)
+	_rayIntersectionKind = RayIntersectionKind(_cret)
 
-	return tOut, rayIntersectionKind
+	return _tOut, _rayIntersectionKind
 }
 
 // IntersectTriangle intersects the given #graphene_ray_t @r with the given
 // #graphene_triangle_t @t.
-func (r *Ray) IntersectTriangle(t *Triangle) (tOut float32, rayIntersectionKind RayIntersectionKind) {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_triangle_t
+func (r *Ray) IntersectTriangle(t *Triangle) (float32, RayIntersectionKind) {
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_triangle_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var arg2 C.float
-	var cret C.graphene_ray_intersection_kind_t
+	var _arg2 C.float
+	var _cret C.graphene_ray_intersection_kind_t
 
-	cret = C.graphene_ray_intersect_triangle(arg0, arg1, &arg2)
+	cret = C.graphene_ray_intersect_triangle(_arg0, _arg1, &_arg2)
 
-	var tOut float32
-	var rayIntersectionKind RayIntersectionKind
+	var _tOut float32
+	var _rayIntersectionKind RayIntersectionKind
 
-	tOut = (float32)(arg2)
-	rayIntersectionKind = RayIntersectionKind(cret)
+	_tOut = (float32)(_arg2)
+	_rayIntersectionKind = RayIntersectionKind(_cret)
 
-	return tOut, rayIntersectionKind
+	return _tOut, _rayIntersectionKind
 }
 
 // IntersectsBox checks whether the given #graphene_ray_t @r intersects the
@@ -347,23 +347,23 @@ func (r *Ray) IntersectTriangle(t *Triangle) (tOut float32, rayIntersectionKind 
 //
 // See also: graphene_ray_intersect_box()
 func (r *Ray) IntersectsBox(b *Box) bool {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_box_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_box_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_ray_intersects_box(arg0, arg1)
+	cret = C.graphene_ray_intersects_box(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IntersectsSphere checks if the given #graphene_ray_t @r intersects the given
@@ -371,23 +371,23 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 //
 // See also: graphene_ray_intersect_sphere()
 func (r *Ray) IntersectsSphere(s *Sphere) bool {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_sphere_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_ray_intersects_sphere(arg0, arg1)
+	cret = C.graphene_ray_intersects_sphere(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IntersectsTriangle checks whether the given #graphene_ray_t @r intersects the
@@ -395,21 +395,21 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 //
 // See also: graphene_ray_intersect_triangle()
 func (r *Ray) IntersectsTriangle(t *Triangle) bool {
-	var arg0 *C.graphene_ray_t
-	var arg1 *C.graphene_triangle_t
+	var _arg0 *C.graphene_ray_t
+	var _arg1 *C.graphene_triangle_t
 
-	arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_ray_intersects_triangle(arg0, arg1)
+	cret = C.graphene_ray_intersects_triangle(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

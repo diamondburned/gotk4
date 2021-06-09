@@ -32,25 +32,25 @@ import "C"
 // terminated list of strings which should be released with g_strfreev().
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (utf8s []string, goerr error) {
-	var arg1 *C.char
-	var arg2 C.GResourceLookupFlags
+func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
+	var _arg1 *C.char
+	var _arg2 C.GResourceLookupFlags
 
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var cret **C.char
-	var cerr *C.GError
+	var _cret **C.char
+	var _cerr *C.GError
 
-	cret = C.g_resources_enumerate_children(arg1, arg2, cerr)
+	cret = C.g_resources_enumerate_children(_arg1, _arg2, _cerr)
 
-	var utf8s []string
-	var goerr error
+	var _utf8s []string
+	var _goerr error
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -58,46 +58,46 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) (u
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return utf8s, goerr
+	return _utf8s, _goerr
 }
 
 // ResourcesGetInfo looks for a file at the specified @path in the set of
 // globally registered resources and if found returns information about it.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, flags uint32, goerr error) {
-	var arg1 *C.char
-	var arg2 C.GResourceLookupFlags
+func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
+	var _arg1 *C.char
+	var _arg2 C.GResourceLookupFlags
 
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var arg3 C.gsize
-	var arg4 C.guint32
-	var cerr *C.GError
+	var _arg3 C.gsize
+	var _arg4 C.guint32
+	var _cerr *C.GError
 
-	C.g_resources_get_info(arg1, arg2, &arg3, &arg4, cerr)
+	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, _cerr)
 
-	var size uint
-	var flags uint32
-	var goerr error
+	var _size uint
+	var _flags uint32
+	var _goerr error
 
-	size = (uint)(arg3)
-	flags = (uint32)(arg4)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_size = (uint)(_arg3)
+	_flags = (uint32)(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return size, flags, goerr
+	return _size, _flags, _goerr
 }
 
 // ResourcesOpenStream looks for a file at the specified @path in the set of
@@ -105,47 +105,47 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (size uint, 
 // data.
 //
 // @lookup_flags controls the behaviour of the lookup.
-func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (inputStream InputStream, goerr error) {
-	var arg1 *C.char
-	var arg2 C.GResourceLookupFlags
+func ResourcesOpenStream(path string, lookupFlags ResourceLookupFlags) (InputStream, error) {
+	var _arg1 *C.char
+	var _arg2 C.GResourceLookupFlags
 
-	arg1 = (*C.char)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GResourceLookupFlags)(lookupFlags)
+	_arg1 = (*C.char)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var cret *C.GInputStream
-	var cerr *C.GError
+	var _cret *C.GInputStream
+	var _cerr *C.GError
 
-	cret = C.g_resources_open_stream(arg1, arg2, cerr)
+	cret = C.g_resources_open_stream(_arg1, _arg2, _cerr)
 
-	var inputStream InputStream
-	var goerr error
+	var _inputStream InputStream
+	var _goerr error
 
-	inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InputStream)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return inputStream, goerr
+	return _inputStream, _goerr
 }
 
 // ResourcesRegister registers the resource with the process-global set of
 // resources. Once a resource is registered the files in it can be accessed with
 // the global resource lookup functions like g_resources_lookup_data().
 func ResourcesRegister(resource *Resource) {
-	var arg1 *C.GResource
+	var _arg1 *C.GResource
 
-	arg1 = (*C.GResource)(unsafe.Pointer(resource.Native()))
+	_arg1 = (*C.GResource)(unsafe.Pointer(resource.Native()))
 
-	C.g_resources_register(arg1)
+	C.g_resources_register(_arg1)
 }
 
 // ResourcesUnregister unregisters the resource from the process-global set of
 // resources.
 func ResourcesUnregister(resource *Resource) {
-	var arg1 *C.GResource
+	var _arg1 *C.GResource
 
-	arg1 = (*C.GResource)(unsafe.Pointer(resource.Native()))
+	_arg1 = (*C.GResource)(unsafe.Pointer(resource.Native()))
 
-	C.g_resources_unregister(arg1)
+	C.g_resources_unregister(_arg1)
 }
 
 // StaticResource is an opaque data structure and can only be accessed using the
@@ -180,11 +180,11 @@ func (s *StaticResource) Native() unsafe.Pointer {
 // [glib-compile-resources][glib-compile-resources] and is not typically used by
 // other code.
 func (s *StaticResource) Fini() {
-	var arg0 *C.GStaticResource
+	var _arg0 *C.GStaticResource
 
-	arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
 
-	C.g_static_resource_fini(arg0)
+	C.g_static_resource_fini(_arg0)
 }
 
 // Resource gets the GResource that was registered by a call to
@@ -194,19 +194,19 @@ func (s *StaticResource) Fini() {
 // [glib-compile-resources][glib-compile-resources] and is not typically used by
 // other code.
 func (s *StaticResource) Resource() *Resource {
-	var arg0 *C.GStaticResource
+	var _arg0 *C.GStaticResource
 
-	arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GResource
+	var _cret *C.GResource
 
-	cret = C.g_static_resource_get_resource(arg0)
+	cret = C.g_static_resource_get_resource(_arg0)
 
-	var resource *Resource
+	var _resource *Resource
 
-	resource = WrapResource(unsafe.Pointer(cret))
+	_resource = WrapResource(unsafe.Pointer(_cret))
 
-	return resource
+	return _resource
 }
 
 // Init initializes a GResource from static data using a GStaticResource.
@@ -215,9 +215,9 @@ func (s *StaticResource) Resource() *Resource {
 // [glib-compile-resources][glib-compile-resources] and is not typically used by
 // other code.
 func (s *StaticResource) Init() {
-	var arg0 *C.GStaticResource
+	var _arg0 *C.GStaticResource
 
-	arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
 
-	C.g_static_resource_init(arg0)
+	C.g_static_resource_init(_arg0)
 }

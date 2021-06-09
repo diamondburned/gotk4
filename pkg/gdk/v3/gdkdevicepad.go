@@ -74,78 +74,78 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 // FeatureGroup returns the group the given @feature and @idx belong to, or
 // -1 if feature/index do not exist in @pad.
 func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
-	var arg0 *C.GdkDevicePad
-	var arg1 C.GdkDevicePadFeature
-	var arg2 C.gint
+	var _arg0 *C.GdkDevicePad
+	var _arg1 C.GdkDevicePadFeature
+	var _arg2 C.gint
 
-	arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	arg1 = (C.GdkDevicePadFeature)(feature)
-	arg2 = C.gint(featureIdx)
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
+	_arg1 = (C.GdkDevicePadFeature)(feature)
+	_arg2 = C.gint(featureIdx)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_device_pad_get_feature_group(arg0, arg1, arg2)
+	cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // GroupNModes returns the number of modes that @group may have.
 func (p devicePad) GroupNModes(groupIdx int) int {
-	var arg0 *C.GdkDevicePad
-	var arg1 C.gint
+	var _arg0 *C.GdkDevicePad
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	arg1 = C.gint(groupIdx)
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
+	_arg1 = C.gint(groupIdx)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_device_pad_get_group_n_modes(arg0, arg1)
+	cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // NFeatures returns the number of features a tablet pad has.
 func (p devicePad) NFeatures(feature DevicePadFeature) int {
-	var arg0 *C.GdkDevicePad
-	var arg1 C.GdkDevicePadFeature
+	var _arg0 *C.GdkDevicePad
+	var _arg1 C.GdkDevicePadFeature
 
-	arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
-	arg1 = (C.GdkDevicePadFeature)(feature)
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
+	_arg1 = (C.GdkDevicePadFeature)(feature)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_device_pad_get_n_features(arg0, arg1)
+	cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // NGroups returns the number of groups this pad device has. Pads have at
 // least one group. A pad group is a subcollection of buttons/strip/rings
 // that is affected collectively by a same current mode.
 func (p devicePad) NGroups() int {
-	var arg0 *C.GdkDevicePad
+	var _arg0 *C.GdkDevicePad
 
-	arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_device_pad_get_n_groups(arg0)
+	cret = C.gdk_device_pad_get_n_groups(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }

@@ -931,103 +931,103 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 
 // NewCoverage constructs a class Coverage.
 func NewCoverage() Coverage {
-	var cret C.PangoCoverage
+	var _cret C.PangoCoverage
 
 	cret = C.pango_coverage_new()
 
-	var coverage Coverage
+	var _coverage Coverage
 
-	coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
 
-	return coverage
+	return _coverage
 }
 
 // Copy: copy an existing `PangoCoverage`.
 func (c coverage) Copy() Coverage {
-	var arg0 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage
 
-	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoCoverage
+	var _cret *C.PangoCoverage
 
-	cret = C.pango_coverage_copy(arg0)
+	cret = C.pango_coverage_copy(_arg0)
 
-	var ret Coverage
+	var _ret Coverage
 
-	ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
 
-	return ret
+	return _ret
 }
 
 // Get: determine whether a particular index is covered by @coverage.
 func (c coverage) Get(index_ int) CoverageLevel {
-	var arg0 *C.PangoCoverage
-	var arg1 C.int
+	var _arg0 *C.PangoCoverage
+	var _arg1 C.int
 
-	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(index_)
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(index_)
 
-	var cret C.PangoCoverageLevel
+	var _cret C.PangoCoverageLevel
 
-	cret = C.pango_coverage_get(arg0, arg1)
+	cret = C.pango_coverage_get(_arg0, _arg1)
 
-	var coverageLevel CoverageLevel
+	var _coverageLevel CoverageLevel
 
-	coverageLevel = CoverageLevel(cret)
+	_coverageLevel = CoverageLevel(_cret)
 
-	return coverageLevel
+	return _coverageLevel
 }
 
 // Max: set the coverage for each index in @coverage to be the max (better)
 // value of the current coverage for the index and the coverage for the
 // corresponding index in @other.
 func (c coverage) Max(other Coverage) {
-	var arg0 *C.PangoCoverage
-	var arg1 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage
+	var _arg1 *C.PangoCoverage
 
-	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
 
-	C.pango_coverage_max(arg0, arg1)
+	C.pango_coverage_max(_arg0, _arg1)
 }
 
 // Ref: increase the reference count on the `PangoCoverage` by one.
 func (c coverage) Ref() Coverage {
-	var arg0 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage
 
-	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoCoverage
+	var _cret *C.PangoCoverage
 
-	cret = C.pango_coverage_ref(arg0)
+	cret = C.pango_coverage_ref(_arg0)
 
-	var ret Coverage
+	var _ret Coverage
 
-	ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Coverage)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Coverage)
 
-	return ret
+	return _ret
 }
 
 // Set: modify a particular index within @coverage
 func (c coverage) Set(index_ int, level CoverageLevel) {
-	var arg0 *C.PangoCoverage
-	var arg1 C.int
-	var arg2 C.PangoCoverageLevel
+	var _arg0 *C.PangoCoverage
+	var _arg1 C.int
+	var _arg2 C.PangoCoverageLevel
 
-	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(index_)
-	arg2 = (C.PangoCoverageLevel)(level)
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(index_)
+	_arg2 = (C.PangoCoverageLevel)(level)
 
-	C.pango_coverage_set(arg0, arg1, arg2)
+	C.pango_coverage_set(_arg0, _arg1, _arg2)
 }
 
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 func (c coverage) ToBytes() {
-	var arg0 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage
 
-	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	C.pango_coverage_to_bytes(arg0)
+	C.pango_coverage_to_bytes(_arg0)
 
 	return
 }
@@ -1036,9 +1036,9 @@ func (c coverage) ToBytes() {
 //
 // If the result is zero, free the coverage and all associated memory.
 func (c coverage) Unref() {
-	var arg0 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage
 
-	arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
-	C.pango_coverage_unref(arg0)
+	C.pango_coverage_unref(_arg0)
 }

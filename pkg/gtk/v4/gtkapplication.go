@@ -253,22 +253,22 @@ func marshalApplication(p uintptr) (interface{}, error) {
 
 // NewApplication constructs a class Application.
 func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
-	var arg1 *C.char
-	var arg2 C.GApplicationFlags
+	var _arg1 *C.char
+	var _arg2 C.GApplicationFlags
 
-	arg1 = (*C.char)(C.CString(applicationId))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GApplicationFlags)(flags)
+	_arg1 = (*C.char)(C.CString(applicationId))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GApplicationFlags)(flags)
 
-	var cret C.GtkApplication
+	var _cret C.GtkApplication
 
-	cret = C.gtk_application_new(arg1, arg2)
+	cret = C.gtk_application_new(_arg1, _arg2)
 
-	var application Application
+	var _application Application
 
-	application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Application)
+	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Application)
 
-	return application
+	return _application
 }
 
 // AddWindow adds a window to @application.
@@ -286,34 +286,34 @@ func NewApplication(applicationId string, flags gio.ApplicationFlags) Applicatio
 //
 // GTK+ will keep the @application running as long as it has any windows.
 func (a application) AddWindow(window Window) {
-	var arg0 *C.GtkApplication
-	var arg1 *C.GtkWindow
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.GtkWindow
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_application_add_window(arg0, arg1)
+	C.gtk_application_add_window(_arg0, _arg1)
 }
 
 // AccelsForAction gets the accelerators that are currently associated with
 // the given action.
 func (a application) AccelsForAction(detailedActionName string) []string {
-	var arg0 *C.GtkApplication
-	var arg1 *C.char
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.char)(C.CString(detailedActionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(detailedActionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret **C.char
+	var _cret **C.char
 
-	cret = C.gtk_application_get_accels_for_action(arg0, arg1)
+	cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -321,16 +321,16 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // ActionsForAccel returns the list of actions (possibly empty) that @accel
@@ -349,22 +349,22 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 // It is a programmer error to pass an invalid accelerator string. If you
 // are unsure, check it with gtk_accelerator_parse() first.
 func (a application) ActionsForAccel(accel string) []string {
-	var arg0 *C.GtkApplication
-	var arg1 *C.char
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.char)(C.CString(accel))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(accel))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret **C.char
+	var _cret **C.char
 
-	cret = C.gtk_application_get_actions_for_accel(arg0, arg1)
+	cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -372,16 +372,16 @@ func (a application) ActionsForAccel(accel string) []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // ActiveWindow gets the “active” window for the application.
@@ -391,58 +391,58 @@ func (a application) ActionsForAccel(accel string) []string {
 // application has it — this is just the most recently-focused window within
 // this application.
 func (a application) ActiveWindow() Window {
-	var arg0 *C.GtkApplication
+	var _arg0 *C.GtkApplication
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GtkWindow
+	var _cret *C.GtkWindow
 
-	cret = C.gtk_application_get_active_window(arg0)
+	cret = C.gtk_application_get_active_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // MenuByID gets a menu from automatically loaded resources. See [Automatic
 // resources][automatic-resources] for more information.
 func (a application) MenuByID(id string) gio.Menu {
-	var arg0 *C.GtkApplication
-	var arg1 *C.char
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.char)(C.CString(id))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(id))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GMenu
+	var _cret *C.GMenu
 
-	cret = C.gtk_application_get_menu_by_id(arg0, arg1)
+	cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
 
-	var menu gio.Menu
+	var _menu gio.Menu
 
-	menu = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.Menu)
+	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Menu)
 
-	return menu
+	return _menu
 }
 
 // Menubar returns the menu model that has been set with
 // gtk_application_set_menubar().
 func (a application) Menubar() gio.MenuModel {
-	var arg0 *C.GtkApplication
+	var _arg0 *C.GtkApplication
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GMenuModel
+	var _cret *C.GMenuModel
 
-	cret = C.gtk_application_get_menubar(arg0)
+	cret = C.gtk_application_get_menubar(_arg0)
 
-	var menuModel gio.MenuModel
+	var _menuModel gio.MenuModel
 
-	menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.MenuModel)
+	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
 
-	return menuModel
+	return _menuModel
 }
 
 // WindowByID returns the ApplicationWindow with the given ID.
@@ -450,21 +450,21 @@ func (a application) Menubar() gio.MenuModel {
 // The ID of a ApplicationWindow can be retrieved with
 // gtk_application_window_get_id().
 func (a application) WindowByID(id uint) Window {
-	var arg0 *C.GtkApplication
-	var arg1 C.guint
+	var _arg0 *C.GtkApplication
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = C.guint(id)
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = C.guint(id)
 
-	var cret *C.GtkWindow
+	var _cret *C.GtkWindow
 
-	cret = C.gtk_application_get_window_by_id(arg0, arg1)
+	cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // Windows gets a list of the Windows associated with @application.
@@ -476,19 +476,19 @@ func (a application) WindowByID(id uint) Window {
 // The list that is returned should not be modified in any way. It will only
 // remain valid until the next focus change or window creation or deletion.
 func (a application) Windows() *glib.List {
-	var arg0 *C.GtkApplication
+	var _arg0 *C.GtkApplication
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gtk_application_get_windows(arg0)
+	cret = C.gtk_application_get_windows(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
+	_list = glib.WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // Inhibit: inform the session manager that certain types of actions should
@@ -513,44 +513,44 @@ func (a application) Windows() *glib.List {
 // If @window is given, the session manager may point the user to this
 // window to find out more about why the action is inhibited.
 func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint {
-	var arg0 *C.GtkApplication
-	var arg1 *C.GtkWindow
-	var arg2 C.GtkApplicationInhibitFlags
-	var arg3 *C.char
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.GtkWindow
+	var _arg2 C.GtkApplicationInhibitFlags
+	var _arg3 *C.char
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
-	arg2 = (C.GtkApplicationInhibitFlags)(flags)
-	arg3 = (*C.char)(C.CString(reason))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (C.GtkApplicationInhibitFlags)(flags)
+	_arg3 = (*C.char)(C.CString(reason))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_application_inhibit(arg0, arg1, arg2, arg3)
+	cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // ListActionDescriptions lists the detailed action names which have
 // associated accelerators. See gtk_application_set_accels_for_action().
 func (a application) ListActionDescriptions() []string {
-	var arg0 *C.GtkApplication
+	var _arg0 *C.GtkApplication
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
-	var cret **C.char
+	var _cret **C.char
 
-	cret = C.gtk_application_list_action_descriptions(arg0)
+	cret = C.gtk_application_list_action_descriptions(_arg0)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -558,16 +558,16 @@ func (a application) ListActionDescriptions() []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // RemoveWindow: remove a window from @application.
@@ -577,13 +577,13 @@ func (a application) ListActionDescriptions() []string {
 //
 // The application may stop running as a result of a call to this function.
 func (a application) RemoveWindow(window Window) {
-	var arg0 *C.GtkApplication
-	var arg1 *C.GtkWindow
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.GtkWindow
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_application_remove_window(arg0, arg1)
+	C.gtk_application_remove_window(_arg0, _arg1)
 }
 
 // SetAccelsForAction sets zero or more keyboard accelerators that will
@@ -596,27 +596,27 @@ func (a application) RemoveWindow(window Window) {
 // For the @detailed_action_name, see g_action_parse_detailed_name() and
 // g_action_print_detailed_name().
 func (a application) SetAccelsForAction(detailedActionName string, accels []string) {
-	var arg0 *C.GtkApplication
-	var arg1 *C.char
-	var arg2 **C.char
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.char
+	var _arg2 **C.char
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.char)(C.CString(detailedActionName))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (**C.char)(C.malloc((len(accels) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(detailedActionName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.char)(C.malloc((len(accels) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg2))
 
 	{
 		var out []*C.char
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg2), int(len(accels)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(accels)))
 
 		for i := range accels {
-			arg2 = (*C.char)(C.CString(accels))
-			defer C.free(unsafe.Pointer(arg2))
+			_arg2 = (*C.char)(C.CString(accels))
+			defer C.free(unsafe.Pointer(_arg2))
 		}
 	}
 
-	C.gtk_application_set_accels_for_action(arg0, arg1, arg2)
+	C.gtk_application_set_accels_for_action(_arg0, _arg1, _arg2)
 }
 
 // SetMenubar sets or unsets the menubar for windows of @application.
@@ -638,24 +638,24 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 // Use the base Map interface to add actions, to respond to the user
 // selecting these menu items.
 func (a application) SetMenubar(menubar gio.MenuModel) {
-	var arg0 *C.GtkApplication
-	var arg1 *C.GMenuModel
+	var _arg0 *C.GtkApplication
+	var _arg1 *C.GMenuModel
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
 
-	C.gtk_application_set_menubar(arg0, arg1)
+	C.gtk_application_set_menubar(_arg0, _arg1)
 }
 
 // Uninhibit removes an inhibitor that has been established with
 // gtk_application_inhibit(). Inhibitors are also cleared when the
 // application exits.
 func (a application) Uninhibit(cookie uint) {
-	var arg0 *C.GtkApplication
-	var arg1 C.guint
+	var _arg0 *C.GtkApplication
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	arg1 = C.guint(cookie)
+	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = C.guint(cookie)
 
-	C.gtk_application_uninhibit(arg0, arg1)
+	C.gtk_application_uninhibit(_arg0, _arg1)
 }

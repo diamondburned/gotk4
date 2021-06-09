@@ -24,15 +24,15 @@ func init() {
 // ClearError: if @err or *@err is nil, does nothing. Otherwise, calls
 // g_error_free() on *@err and sets *@err to nil.
 func ClearError() error {
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_clear_error(cerr)
+	C.g_clear_error(_cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // PropagateError: if @dest is nil, free @src; otherwise, moves @src into
@@ -44,19 +44,19 @@ func ClearError() error {
 // the same GError*, you need to set it to nil after calling this function on
 // it.
 func PropagateError(src *error) *error {
-	var arg2 *C.GError
+	var _arg2 *C.GError
 
-	arg2 = (*C.GError)(gerror.New(unsafe.Pointer(src)))
+	_arg2 = (*C.GError)(gerror.New(unsafe.Pointer(src)))
 
-	var arg1 *C.GError
+	var _arg1 *C.GError
 
-	C.g_propagate_error(arg2, &arg1)
+	C.g_propagate_error(_arg2, &_arg1)
 
-	var dest *error
+	var _dest *error
 
-	dest = gerror.Take(unsafe.Pointer(arg1))
+	_dest = gerror.Take(unsafe.Pointer(_arg1))
 
-	return dest
+	return _dest
 }
 
 // Error: the `GError` structure contains information about an error that has
@@ -101,28 +101,28 @@ func (e *Error) Message() string {
 
 // Copy makes a copy of @error.
 func (e *Error) Copy() *error {
-	var arg0 *C.GError
+	var _arg0 *C.GError
 
-	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
-	defer C.g_error_free(arg0)
+	_arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
+	defer C.g_error_free(_arg0)
 
-	var cret *C.GError
+	var _cret *C.GError
 
-	cret = C.g_error_copy(arg0)
+	cret = C.g_error_copy(_arg0)
 
-	var err *error
+	var _err *error
 
-	err = gerror.Take(unsafe.Pointer(cret))
+	_err = gerror.Take(unsafe.Pointer(_cret))
 
-	return err
+	return _err
 }
 
 // Free frees a #GError and associated resources.
 func (e *Error) Free() {
-	var arg0 *C.GError
+	var _arg0 *C.GError
 
-	arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
-	defer C.g_error_free(arg0)
+	_arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
+	defer C.g_error_free(_arg0)
 
-	C.g_error_free(arg0)
+	C.g_error_free(_arg0)
 }

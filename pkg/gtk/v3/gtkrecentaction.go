@@ -72,78 +72,78 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 
 // NewRecentAction constructs a class RecentAction.
 func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 *C.gchar
-	var arg4 *C.gchar
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
+	var _arg4 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.gchar)(C.CString(tooltip))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(arg4))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(tooltip))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg4))
 
-	var cret C.GtkRecentAction
+	var _cret C.GtkRecentAction
 
-	cret = C.gtk_recent_action_new(arg1, arg2, arg3, arg4)
+	cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
 
-	var recentAction RecentAction
+	var _recentAction RecentAction
 
-	recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
 
-	return recentAction
+	return _recentAction
 }
 
 // NewRecentActionForManager constructs a class RecentAction.
 func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) RecentAction {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 *C.gchar
-	var arg4 *C.gchar
-	var arg5 *C.GtkRecentManager
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
+	var _arg4 *C.gchar
+	var _arg5 *C.GtkRecentManager
 
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.gchar)(C.CString(tooltip))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(tooltip))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(stockId))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
-	var cret C.GtkRecentAction
+	var _cret C.GtkRecentAction
 
-	cret = C.gtk_recent_action_new_for_manager(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var recentAction RecentAction
+	var _recentAction RecentAction
 
-	recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(RecentAction)
+	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
 
-	return recentAction
+	return _recentAction
 }
 
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
 func (a recentAction) ShowNumbers() bool {
-	var arg0 *C.GtkRecentAction
+	var _arg0 *C.GtkRecentAction
 
-	arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_recent_action_get_show_numbers(arg0)
+	cret = C.gtk_recent_action_get_show_numbers(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetShowNumbers sets whether a number should be added to the items shown
@@ -151,13 +151,13 @@ func (a recentAction) ShowNumbers() bool {
 // unique character for a mnemonic to be used inside the menu item's label.
 // Only the first ten items get a number to avoid clashes.
 func (a recentAction) SetShowNumbers(showNumbers bool) {
-	var arg0 *C.GtkRecentAction
-	var arg1 C.gboolean
+	var _arg0 *C.GtkRecentAction
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 	if showNumbers {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_recent_action_set_show_numbers(arg0, arg1)
+	C.gtk_recent_action_set_show_numbers(_arg0, _arg1)
 }

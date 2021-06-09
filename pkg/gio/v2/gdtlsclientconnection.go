@@ -92,56 +92,56 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 // Each item in the list is a Array which contains the complete subject DN
 // of the certificate authority.
 func (c dtlsClientConnection) AcceptedCAS() *glib.List {
-	var arg0 *C.GDtlsClientConnection
+	var _arg0 *C.GDtlsClientConnection
 
-	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_dtls_client_connection_get_accepted_cas(arg0)
+	cret = C.g_dtls_client_connection_get_accepted_cas(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // ServerIdentity gets @conn's expected server identity
 func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
-	var arg0 *C.GDtlsClientConnection
+	var _arg0 *C.GDtlsClientConnection
 
-	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GSocketConnectable
+	var _cret *C.GSocketConnectable
 
-	cret = C.g_dtls_client_connection_get_server_identity(arg0)
+	cret = C.g_dtls_client_connection_get_server_identity(_arg0)
 
-	var socketConnectable SocketConnectable
+	var _socketConnectable SocketConnectable
 
-	socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(SocketConnectable)
+	_socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SocketConnectable)
 
-	return socketConnectable
+	return _socketConnectable
 }
 
 // ValidationFlags gets @conn's validation flags
 func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
-	var arg0 *C.GDtlsClientConnection
+	var _arg0 *C.GDtlsClientConnection
 
-	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	var cret C.GTlsCertificateFlags
+	var _cret C.GTlsCertificateFlags
 
-	cret = C.g_dtls_client_connection_get_validation_flags(arg0)
+	cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
 
-	var tlsCertificateFlags TLSCertificateFlags
+	var _tlsCertificateFlags TLSCertificateFlags
 
-	tlsCertificateFlags = TLSCertificateFlags(cret)
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
 
-	return tlsCertificateFlags
+	return _tlsCertificateFlags
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used
@@ -149,24 +149,24 @@ func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
 // also to let @conn know what name to look for in the certificate when
 // performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 func (c dtlsClientConnection) SetServerIdentity(identity SocketConnectable) {
-	var arg0 *C.GDtlsClientConnection
-	var arg1 *C.GSocketConnectable
+	var _arg0 *C.GDtlsClientConnection
+	var _arg1 *C.GSocketConnectable
 
-	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
 
-	C.g_dtls_client_connection_set_server_identity(arg0, arg1)
+	C.g_dtls_client_connection_set_server_identity(_arg0, _arg1)
 }
 
 // SetValidationFlags sets @conn's validation flags, to override the default
 // set of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
 func (c dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
-	var arg0 *C.GDtlsClientConnection
-	var arg1 C.GTlsCertificateFlags
+	var _arg0 *C.GDtlsClientConnection
+	var _arg1 C.GTlsCertificateFlags
 
-	arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-	arg1 = (C.GTlsCertificateFlags)(flags)
+	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.GTlsCertificateFlags)(flags)
 
-	C.g_dtls_client_connection_set_validation_flags(arg0, arg1)
+	C.g_dtls_client_connection_set_validation_flags(_arg0, _arg1)
 }

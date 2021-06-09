@@ -80,93 +80,93 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 
 // NewWindowGroup constructs a class WindowGroup.
 func NewWindowGroup() WindowGroup {
-	var cret C.GtkWindowGroup
+	var _cret C.GtkWindowGroup
 
 	cret = C.gtk_window_group_new()
 
-	var windowGroup WindowGroup
+	var _windowGroup WindowGroup
 
-	windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(WindowGroup)
+	_windowGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(WindowGroup)
 
-	return windowGroup
+	return _windowGroup
 }
 
 // AddWindow adds a window to a WindowGroup.
 func (w windowGroup) AddWindow(window Window) {
-	var arg0 *C.GtkWindowGroup
-	var arg1 *C.GtkWindow
+	var _arg0 *C.GtkWindowGroup
+	var _arg1 *C.GtkWindow
 
-	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_window_group_add_window(arg0, arg1)
+	C.gtk_window_group_add_window(_arg0, _arg1)
 }
 
 // CurrentDeviceGrab returns the current grab widget for @device, or nil if
 // none.
 func (w windowGroup) CurrentDeviceGrab(device gdk.Device) Widget {
-	var arg0 *C.GtkWindowGroup
-	var arg1 *C.GdkDevice
+	var _arg0 *C.GtkWindowGroup
+	var _arg1 *C.GdkDevice
 
-	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
-	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_window_group_get_current_device_grab(arg0, arg1)
+	cret = C.gtk_window_group_get_current_device_grab(_arg0, _arg1)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // CurrentGrab gets the current grab widget of the given group, see
 // gtk_grab_add().
 func (w windowGroup) CurrentGrab() Widget {
-	var arg0 *C.GtkWindowGroup
+	var _arg0 *C.GtkWindowGroup
 
-	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_window_group_get_current_grab(arg0)
+	cret = C.gtk_window_group_get_current_grab(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // ListWindows returns a list of the Windows that belong to @window_group.
 func (w windowGroup) ListWindows() *glib.List {
-	var arg0 *C.GtkWindowGroup
+	var _arg0 *C.GtkWindowGroup
 
-	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gtk_window_group_list_windows(arg0)
+	cret = C.gtk_window_group_list_windows(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // RemoveWindow removes a window from a WindowGroup.
 func (w windowGroup) RemoveWindow(window Window) {
-	var arg0 *C.GtkWindowGroup
-	var arg1 *C.GtkWindow
+	var _arg0 *C.GtkWindowGroup
+	var _arg1 *C.GtkWindow
 
-	arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
 
-	C.gtk_window_group_remove_window(arg0, arg1)
+	C.gtk_window_group_remove_window(_arg0, _arg1)
 }

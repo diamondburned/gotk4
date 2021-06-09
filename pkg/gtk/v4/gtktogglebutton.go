@@ -134,71 +134,71 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 
 // NewToggleButton constructs a class ToggleButton.
 func NewToggleButton() ToggleButton {
-	var cret C.GtkToggleButton
+	var _cret C.GtkToggleButton
 
 	cret = C.gtk_toggle_button_new()
 
-	var toggleButton ToggleButton
+	var _toggleButton ToggleButton
 
-	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
 
-	return toggleButton
+	return _toggleButton
 }
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
 func NewToggleButtonWithLabel(label string) ToggleButton {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkToggleButton
+	var _cret C.GtkToggleButton
 
-	cret = C.gtk_toggle_button_new_with_label(arg1)
+	cret = C.gtk_toggle_button_new_with_label(_arg1)
 
-	var toggleButton ToggleButton
+	var _toggleButton ToggleButton
 
-	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
 
-	return toggleButton
+	return _toggleButton
 }
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
 func NewToggleButtonWithMnemonic(label string) ToggleButton {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkToggleButton
+	var _cret C.GtkToggleButton
 
-	cret = C.gtk_toggle_button_new_with_mnemonic(arg1)
+	cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
-	var toggleButton ToggleButton
+	var _toggleButton ToggleButton
 
-	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
 
-	return toggleButton
+	return _toggleButton
 }
 
 // Active queries a ToggleButton and returns its current state. Returns true
 // if the toggle button is pressed in and false if it is raised.
 func (t toggleButton) Active() bool {
-	var arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_toggle_button_get_active(arg0)
+	cret = C.gtk_toggle_button_get_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetActive sets the status of the toggle button. Set to true if you want
@@ -207,15 +207,15 @@ func (t toggleButton) Active() bool {
 // If the status of the button changes, this action causes the
 // ToggleButton::toggled signal to be emitted.
 func (t toggleButton) SetActive(isActive bool) {
-	var arg0 *C.GtkToggleButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if isActive {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_button_set_active(arg0, arg1)
+	C.gtk_toggle_button_set_active(_arg0, _arg1)
 }
 
 // SetGroup adds @self to the group of @group. In a group of multiple toggle
@@ -225,21 +225,21 @@ func (t toggleButton) SetActive(isActive bool) {
 // using the same action with parameter type and state type 's' for all
 // buttons in the group, and giving each button its own target value.
 func (t toggleButton) SetGroup(group ToggleButton) {
-	var arg0 *C.GtkToggleButton
-	var arg1 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton
+	var _arg1 *C.GtkToggleButton
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
 
-	C.gtk_toggle_button_set_group(arg0, arg1)
+	C.gtk_toggle_button_set_group(_arg0, _arg1)
 }
 
 // Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 // is no good reason for an application ever to call this function.
 func (t toggleButton) Toggled() {
-	var arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	C.gtk_toggle_button_toggled(arg0)
+	C.gtk_toggle_button_toggled(_arg0)
 }

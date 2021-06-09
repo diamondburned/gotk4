@@ -57,50 +57,50 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 
 // NewContainerCellAccessible constructs a class ContainerCellAccessible.
 func NewContainerCellAccessible() ContainerCellAccessible {
-	var cret C.GtkContainerCellAccessible
+	var _cret C.GtkContainerCellAccessible
 
 	cret = C.gtk_container_cell_accessible_new()
 
-	var containerCellAccessible ContainerCellAccessible
+	var _containerCellAccessible ContainerCellAccessible
 
-	containerCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ContainerCellAccessible)
+	_containerCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContainerCellAccessible)
 
-	return containerCellAccessible
+	return _containerCellAccessible
 }
 
 func (c containerCellAccessible) AddChild(child CellAccessible) {
-	var arg0 *C.GtkContainerCellAccessible
-	var arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkContainerCellAccessible
+	var _arg1 *C.GtkCellAccessible
 
-	arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
-	C.gtk_container_cell_accessible_add_child(arg0, arg1)
+	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
 }
 
 // Children: get a list of children.
 func (c containerCellAccessible) Children() *glib.List {
-	var arg0 *C.GtkContainerCellAccessible
+	var _arg0 *C.GtkContainerCellAccessible
 
-	arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gtk_container_cell_accessible_get_children(arg0)
+	cret = C.gtk_container_cell_accessible_get_children(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
+	_list = glib.WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 func (c containerCellAccessible) RemoveChild(child CellAccessible) {
-	var arg0 *C.GtkContainerCellAccessible
-	var arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkContainerCellAccessible
+	var _arg1 *C.GtkCellAccessible
 
-	arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
-	C.gtk_container_cell_accessible_remove_child(arg0, arg1)
+	C.gtk_container_cell_accessible_remove_child(_arg0, _arg1)
 }

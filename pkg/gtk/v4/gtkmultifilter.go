@@ -57,15 +57,15 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 
 // NewAnyFilter constructs a class AnyFilter.
 func NewAnyFilter() AnyFilter {
-	var cret C.GtkAnyFilter
+	var _cret C.GtkAnyFilter
 
 	cret = C.gtk_any_filter_new()
 
-	var anyFilter AnyFilter
+	var _anyFilter AnyFilter
 
-	anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AnyFilter)
+	_anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AnyFilter)
 
-	return anyFilter
+	return _anyFilter
 }
 
 type EveryFilter interface {
@@ -101,15 +101,15 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 
 // NewEveryFilter constructs a class EveryFilter.
 func NewEveryFilter() EveryFilter {
-	var cret C.GtkEveryFilter
+	var _cret C.GtkEveryFilter
 
 	cret = C.gtk_every_filter_new()
 
-	var everyFilter EveryFilter
+	var _everyFilter EveryFilter
 
-	everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(EveryFilter)
+	_everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EveryFilter)
 
-	return everyFilter
+	return _everyFilter
 }
 
 // MultiFilter: gtkMultiFilter is the base type that implements support for
@@ -160,24 +160,24 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 
 // Append adds a @filter to @self to use for matching.
 func (s multiFilter) Append(filter Filter) {
-	var arg0 *C.GtkMultiFilter
-	var arg1 *C.GtkFilter
+	var _arg0 *C.GtkMultiFilter
+	var _arg1 *C.GtkFilter
 
-	arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
 
-	C.gtk_multi_filter_append(arg0, arg1)
+	C.gtk_multi_filter_append(_arg0, _arg1)
 }
 
 // Remove removes the filter at the given @position from the list of filters
 // used by @self. If @position is larger than the number of filters, nothing
 // happens and the function returns.
 func (s multiFilter) Remove(position uint) {
-	var arg0 *C.GtkMultiFilter
-	var arg1 C.guint
+	var _arg0 *C.GtkMultiFilter
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(position)
+	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(position)
 
-	C.gtk_multi_filter_remove(arg0, arg1)
+	C.gtk_multi_filter_remove(_arg0, _arg1)
 }

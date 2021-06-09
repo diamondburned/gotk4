@@ -82,41 +82,41 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 
 // NewStackSwitcher constructs a class StackSwitcher.
 func NewStackSwitcher() StackSwitcher {
-	var cret C.GtkStackSwitcher
+	var _cret C.GtkStackSwitcher
 
 	cret = C.gtk_stack_switcher_new()
 
-	var stackSwitcher StackSwitcher
+	var _stackSwitcher StackSwitcher
 
-	stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(StackSwitcher)
+	_stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackSwitcher)
 
-	return stackSwitcher
+	return _stackSwitcher
 }
 
 // Stack retrieves the stack. See gtk_stack_switcher_set_stack().
 func (s stackSwitcher) Stack() Stack {
-	var arg0 *C.GtkStackSwitcher
+	var _arg0 *C.GtkStackSwitcher
 
-	arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkStack
+	var _cret *C.GtkStack
 
-	cret = C.gtk_stack_switcher_get_stack(arg0)
+	cret = C.gtk_stack_switcher_get_stack(_arg0)
 
-	var stack Stack
+	var _stack Stack
 
-	stack = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
 
-	return stack
+	return _stack
 }
 
 // SetStack sets the stack to control.
 func (s stackSwitcher) SetStack(stack Stack) {
-	var arg0 *C.GtkStackSwitcher
-	var arg1 *C.GtkStack
+	var _arg0 *C.GtkStackSwitcher
+	var _arg1 *C.GtkStack
 
-	arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
+	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))
 
-	C.gtk_stack_switcher_set_stack(arg0, arg1)
+	C.gtk_stack_switcher_set_stack(_arg0, _arg1)
 }

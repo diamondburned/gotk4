@@ -69,19 +69,19 @@ func marshalZlibDecompressor(p uintptr) (interface{}, error) {
 
 // NewZlibDecompressor constructs a class ZlibDecompressor.
 func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
-	var arg1 C.GZlibCompressorFormat
+	var _arg1 C.GZlibCompressorFormat
 
-	arg1 = (C.GZlibCompressorFormat)(format)
+	_arg1 = (C.GZlibCompressorFormat)(format)
 
-	var cret C.GZlibDecompressor
+	var _cret C.GZlibDecompressor
 
-	cret = C.g_zlib_decompressor_new(arg1)
+	cret = C.g_zlib_decompressor_new(_arg1)
 
-	var zlibDecompressor ZlibDecompressor
+	var _zlibDecompressor ZlibDecompressor
 
-	zlibDecompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(ZlibDecompressor)
+	_zlibDecompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ZlibDecompressor)
 
-	return zlibDecompressor
+	return _zlibDecompressor
 }
 
 // FileInfo retrieves the Info constructed from the GZIP header data of
@@ -90,17 +90,17 @@ func NewZlibDecompressor(format ZlibCompressorFormat) ZlibDecompressor {
 // header data was not fully processed yet, or it not present in the data
 // stream at all.
 func (d zlibDecompressor) FileInfo() FileInfo {
-	var arg0 *C.GZlibDecompressor
+	var _arg0 *C.GZlibDecompressor
 
-	arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GZlibDecompressor)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GFileInfo
+	var _cret *C.GFileInfo
 
-	cret = C.g_zlib_decompressor_get_file_info(arg0)
+	cret = C.g_zlib_decompressor_get_file_info(_arg0)
 
-	var fileInfo FileInfo
+	var _fileInfo FileInfo
 
-	fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FileInfo)
+	_fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileInfo)
 
-	return fileInfo
+	return _fileInfo
 }

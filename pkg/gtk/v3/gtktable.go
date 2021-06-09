@@ -137,25 +137,25 @@ func marshalTable(p uintptr) (interface{}, error) {
 
 // NewTable constructs a class Table.
 func NewTable(rows uint, columns uint, homogeneous bool) Table {
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 C.gboolean
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 C.gboolean
 
-	arg1 = C.guint(rows)
-	arg2 = C.guint(columns)
+	_arg1 = C.guint(rows)
+	_arg2 = C.guint(columns)
 	if homogeneous {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
 
-	var cret C.GtkTable
+	var _cret C.GtkTable
 
-	cret = C.gtk_table_new(arg1, arg2, arg3)
+	cret = C.gtk_table_new(_arg1, _arg2, _arg3)
 
-	var table Table
+	var _table Table
 
-	table = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Table)
+	_table = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Table)
 
-	return table
+	return _table
 }
 
 // Attach adds a widget to a table. The number of “cells” that a widget will
@@ -175,29 +175,29 @@ func NewTable(rows uint, columns uint, homogeneous bool) Table {
 // If you want to make the button span the entire bottom row, use
 // @left_attach == 0 and @right_attach = 2 instead.
 func (t table) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint, xoptions AttachOptions, yoptions AttachOptions, xpadding uint, ypadding uint) {
-	var arg0 *C.GtkTable
-	var arg1 *C.GtkWidget
-	var arg2 C.guint
-	var arg3 C.guint
-	var arg4 C.guint
-	var arg5 C.guint
-	var arg6 C.GtkAttachOptions
-	var arg7 C.GtkAttachOptions
-	var arg8 C.guint
-	var arg9 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 *C.GtkWidget
+	var _arg2 C.guint
+	var _arg3 C.guint
+	var _arg4 C.guint
+	var _arg5 C.guint
+	var _arg6 C.GtkAttachOptions
+	var _arg7 C.GtkAttachOptions
+	var _arg8 C.guint
+	var _arg9 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = C.guint(leftAttach)
-	arg3 = C.guint(rightAttach)
-	arg4 = C.guint(topAttach)
-	arg5 = C.guint(bottomAttach)
-	arg6 = (C.GtkAttachOptions)(xoptions)
-	arg7 = (C.GtkAttachOptions)(yoptions)
-	arg8 = C.guint(xpadding)
-	arg9 = C.guint(ypadding)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = C.guint(leftAttach)
+	_arg3 = C.guint(rightAttach)
+	_arg4 = C.guint(topAttach)
+	_arg5 = C.guint(bottomAttach)
+	_arg6 = (C.GtkAttachOptions)(xoptions)
+	_arg7 = (C.GtkAttachOptions)(yoptions)
+	_arg8 = C.guint(xpadding)
+	_arg9 = C.guint(ypadding)
 
-	C.gtk_table_attach(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+	C.gtk_table_attach(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
 
 // AttachDefaults as there are many options associated with
@@ -206,219 +206,219 @@ func (t table) Attach(child Widget, leftAttach uint, rightAttach uint, topAttach
 // expansion options. The values used for the AttachOptions are `GTK_EXPAND
 // | GTK_FILL`, and the padding is set to 0.
 func (t table) AttachDefaults(widget Widget, leftAttach uint, rightAttach uint, topAttach uint, bottomAttach uint) {
-	var arg0 *C.GtkTable
-	var arg1 *C.GtkWidget
-	var arg2 C.guint
-	var arg3 C.guint
-	var arg4 C.guint
-	var arg5 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 *C.GtkWidget
+	var _arg2 C.guint
+	var _arg3 C.guint
+	var _arg4 C.guint
+	var _arg5 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	arg2 = C.guint(leftAttach)
-	arg3 = C.guint(rightAttach)
-	arg4 = C.guint(topAttach)
-	arg5 = C.guint(bottomAttach)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg2 = C.guint(leftAttach)
+	_arg3 = C.guint(rightAttach)
+	_arg4 = C.guint(topAttach)
+	_arg5 = C.guint(bottomAttach)
 
-	C.gtk_table_attach_defaults(arg0, arg1, arg2, arg3, arg4, arg5)
+	C.gtk_table_attach_defaults(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // ColSpacing gets the amount of space between column @col, and column @col
 // + 1. See gtk_table_set_col_spacing().
 func (t table) ColSpacing(column uint) uint {
-	var arg0 *C.GtkTable
-	var arg1 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = C.guint(column)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = C.guint(column)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_table_get_col_spacing(arg0, arg1)
+	cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // DefaultColSpacing gets the default column spacing for the table. This is
 // the spacing that will be used for newly added columns. (See
 // gtk_table_set_col_spacings())
 func (t table) DefaultColSpacing() uint {
-	var arg0 *C.GtkTable
+	var _arg0 *C.GtkTable
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_table_get_default_col_spacing(arg0)
+	cret = C.gtk_table_get_default_col_spacing(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // DefaultRowSpacing gets the default row spacing for the table. This is the
 // spacing that will be used for newly added rows. (See
 // gtk_table_set_row_spacings())
 func (t table) DefaultRowSpacing() uint {
-	var arg0 *C.GtkTable
+	var _arg0 *C.GtkTable
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_table_get_default_row_spacing(arg0)
+	cret = C.gtk_table_get_default_row_spacing(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Homogeneous returns whether the table cells are all constrained to the
 // same width and height. (See gtk_table_set_homogeneous ())
 func (t table) Homogeneous() bool {
-	var arg0 *C.GtkTable
+	var _arg0 *C.GtkTable
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_table_get_homogeneous(arg0)
+	cret = C.gtk_table_get_homogeneous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // RowSpacing gets the amount of space between row @row, and row @row + 1.
 // See gtk_table_set_row_spacing().
 func (t table) RowSpacing(row uint) uint {
-	var arg0 *C.GtkTable
-	var arg1 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = C.guint(row)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = C.guint(row)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_table_get_row_spacing(arg0, arg1)
+	cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Size gets the number of rows and columns in the table.
 func (t table) Size() (rows uint, columns uint) {
-	var arg0 *C.GtkTable
+	var _arg0 *C.GtkTable
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	C.gtk_table_get_size(arg0, &arg1, &arg2)
+	C.gtk_table_get_size(_arg0, &_arg1, &_arg2)
 
-	var rows uint
-	var columns uint
+	var _rows uint
+	var _columns uint
 
-	rows = (uint)(arg1)
-	columns = (uint)(arg2)
+	_rows = (uint)(_arg1)
+	_columns = (uint)(_arg2)
 
-	return rows, columns
+	return _rows, _columns
 }
 
 // Resize: if you need to change a table’s size after it has been created,
 // this function allows you to do so.
 func (t table) Resize(rows uint, columns uint) {
-	var arg0 *C.GtkTable
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = C.guint(rows)
-	arg2 = C.guint(columns)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = C.guint(rows)
+	_arg2 = C.guint(columns)
 
-	C.gtk_table_resize(arg0, arg1, arg2)
+	C.gtk_table_resize(_arg0, _arg1, _arg2)
 }
 
 // SetColSpacing alters the amount of space between a given table column and
 // the following column.
 func (t table) SetColSpacing(column uint, spacing uint) {
-	var arg0 *C.GtkTable
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = C.guint(column)
-	arg2 = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = C.guint(column)
+	_arg2 = C.guint(spacing)
 
-	C.gtk_table_set_col_spacing(arg0, arg1, arg2)
+	C.gtk_table_set_col_spacing(_arg0, _arg1, _arg2)
 }
 
 // SetColSpacings sets the space between every column in @table equal to
 // @spacing.
 func (t table) SetColSpacings(spacing uint) {
-	var arg0 *C.GtkTable
-	var arg1 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = C.guint(spacing)
 
-	C.gtk_table_set_col_spacings(arg0, arg1)
+	C.gtk_table_set_col_spacings(_arg0, _arg1)
 }
 
 // SetHomogeneous changes the homogenous property of table cells, ie.
 // whether all cells are an equal size or not.
 func (t table) SetHomogeneous(homogeneous bool) {
-	var arg0 *C.GtkTable
-	var arg1 C.gboolean
+	var _arg0 *C.GtkTable
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
 	if homogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_table_set_homogeneous(arg0, arg1)
+	C.gtk_table_set_homogeneous(_arg0, _arg1)
 }
 
 // SetRowSpacing changes the space between a given table row and the
 // subsequent row.
 func (t table) SetRowSpacing(row uint, spacing uint) {
-	var arg0 *C.GtkTable
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = C.guint(row)
-	arg2 = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = C.guint(row)
+	_arg2 = C.guint(spacing)
 
-	C.gtk_table_set_row_spacing(arg0, arg1, arg2)
+	C.gtk_table_set_row_spacing(_arg0, _arg1, _arg2)
 }
 
 // SetRowSpacings sets the space between every row in @table equal to
 // @spacing.
 func (t table) SetRowSpacings(spacing uint) {
-	var arg0 *C.GtkTable
-	var arg1 C.guint
+	var _arg0 *C.GtkTable
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
-	arg1 = C.guint(spacing)
+	_arg0 = (*C.GtkTable)(unsafe.Pointer(t.Native()))
+	_arg1 = C.guint(spacing)
 
-	C.gtk_table_set_row_spacings(arg0, arg1)
+	C.gtk_table_set_row_spacings(_arg0, _arg1)
 }
 
 type TableChild struct {

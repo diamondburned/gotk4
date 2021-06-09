@@ -68,30 +68,30 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 
 // NewRecentChooserWidget constructs a class RecentChooserWidget.
 func NewRecentChooserWidget() RecentChooserWidget {
-	var cret C.GtkRecentChooserWidget
+	var _cret C.GtkRecentChooserWidget
 
 	cret = C.gtk_recent_chooser_widget_new()
 
-	var recentChooserWidget RecentChooserWidget
+	var _recentChooserWidget RecentChooserWidget
 
-	recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserWidget)
+	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserWidget)
 
-	return recentChooserWidget
+	return _recentChooserWidget
 }
 
 // NewRecentChooserWidgetForManager constructs a class RecentChooserWidget.
 func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget {
-	var arg1 *C.GtkRecentManager
+	var _arg1 *C.GtkRecentManager
 
-	arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
+	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
 
-	var cret C.GtkRecentChooserWidget
+	var _cret C.GtkRecentChooserWidget
 
-	cret = C.gtk_recent_chooser_widget_new_for_manager(arg1)
+	cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
 
-	var recentChooserWidget RecentChooserWidget
+	var _recentChooserWidget RecentChooserWidget
 
-	recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(RecentChooserWidget)
+	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserWidget)
 
-	return recentChooserWidget
+	return _recentChooserWidget
 }

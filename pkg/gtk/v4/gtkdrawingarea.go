@@ -185,51 +185,51 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 
 // NewDrawingArea constructs a class DrawingArea.
 func NewDrawingArea() DrawingArea {
-	var cret C.GtkDrawingArea
+	var _cret C.GtkDrawingArea
 
 	cret = C.gtk_drawing_area_new()
 
-	var drawingArea DrawingArea
+	var _drawingArea DrawingArea
 
-	drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DrawingArea)
+	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DrawingArea)
 
-	return drawingArea
+	return _drawingArea
 }
 
 // ContentHeight retrieves the value previously set via
 // gtk_drawing_area_set_content_height().
 func (s drawingArea) ContentHeight() int {
-	var arg0 *C.GtkDrawingArea
+	var _arg0 *C.GtkDrawingArea
 
-	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_drawing_area_get_content_height(arg0)
+	cret = C.gtk_drawing_area_get_content_height(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // ContentWidth retrieves the value previously set via
 // gtk_drawing_area_set_content_width().
 func (s drawingArea) ContentWidth() int {
-	var arg0 *C.GtkDrawingArea
+	var _arg0 *C.GtkDrawingArea
 
-	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_drawing_area_get_content_width(arg0)
+	cret = C.gtk_drawing_area_get_content_width(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SetContentHeight sets the desired height of the contents of the drawing
@@ -240,13 +240,13 @@ func (s drawingArea) ContentWidth() int {
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
 func (s drawingArea) SetContentHeight(height int) {
-	var arg0 *C.GtkDrawingArea
-	var arg1 C.int
+	var _arg0 *C.GtkDrawingArea
+	var _arg1 C.int
 
-	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
-	arg1 = C.int(height)
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(height)
 
-	C.gtk_drawing_area_set_content_height(arg0, arg1)
+	C.gtk_drawing_area_set_content_height(_arg0, _arg1)
 }
 
 // SetContentWidth sets the desired width of the contents of the drawing
@@ -257,13 +257,13 @@ func (s drawingArea) SetContentHeight(height int) {
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
 func (s drawingArea) SetContentWidth(width int) {
-	var arg0 *C.GtkDrawingArea
-	var arg1 C.int
+	var _arg0 *C.GtkDrawingArea
+	var _arg1 C.int
 
-	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
-	arg1 = C.int(width)
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(width)
 
-	C.gtk_drawing_area_set_content_width(arg0, arg1)
+	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
 }
 
 // SetDrawFunc: setting a draw function is the main thing you want to do
@@ -279,9 +279,9 @@ func (s drawingArea) SetContentWidth(width int) {
 // If what you are drawing does change, call gtk_widget_queue_draw() on the
 // drawing area. This will cause a redraw and will call @draw_func again.
 func (s drawingArea) SetDrawFunc() {
-	var arg0 *C.GtkDrawingArea
+	var _arg0 *C.GtkDrawingArea
 
-	arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	C.gtk_drawing_area_set_draw_func(arg0)
+	C.gtk_drawing_area_set_draw_func(_arg0)
 }

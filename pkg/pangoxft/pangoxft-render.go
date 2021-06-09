@@ -52,11 +52,11 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 
 // SetDefaultColor sets the default foreground color for a Renderer.
 func (x renderer) SetDefaultColor(defaultColor *pango.Color) {
-	var arg0 *C.PangoXftRenderer
-	var arg1 *C.PangoColor
+	var _arg0 *C.PangoXftRenderer
+	var _arg1 *C.PangoColor
 
-	arg0 = (*C.PangoXftRenderer)(unsafe.Pointer(x.Native()))
-	arg1 = (*C.PangoColor)(unsafe.Pointer(defaultColor.Native()))
+	_arg0 = (*C.PangoXftRenderer)(unsafe.Pointer(x.Native()))
+	_arg1 = (*C.PangoColor)(unsafe.Pointer(defaultColor.Native()))
 
-	C.pango_xft_renderer_set_default_color(arg0, arg1)
+	C.pango_xft_renderer_set_default_color(_arg0, _arg1)
 }

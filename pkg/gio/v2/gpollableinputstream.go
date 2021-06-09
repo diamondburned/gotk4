@@ -71,7 +71,7 @@ type PollableInputStreamOverrider interface {
 	// @cancellable has already been cancelled when you call, which may happen
 	// if you call this method after a source triggers due to having been
 	// cancelled.
-	ReadNonblocking() (gssize int, goerr error)
+	ReadNonblocking() (int, error)
 }
 
 // PollableInputStream is implemented by Streams that can be polled for
@@ -111,21 +111,21 @@ func marshalPollableInputStream(p uintptr) (interface{}, error) {
 // For any given stream, the value returned by this method is constant; a
 // stream cannot switch from pollable to non-pollable or vice versa.
 func (s pollableInputStream) CanPoll() bool {
-	var arg0 *C.GPollableInputStream
+	var _arg0 *C.GPollableInputStream
 
-	arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_pollable_input_stream_can_poll(arg0)
+	cret = C.g_pollable_input_stream_can_poll(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // CreateSource creates a #GSource that triggers when @stream can be read,
@@ -137,24 +137,24 @@ func (s pollableInputStream) CanPoll() bool {
 // you should use g_pollable_input_stream_read_nonblocking() rather than
 // g_input_stream_read() from the callback.
 func (s pollableInputStream) CreateSource(cancellable Cancellable) *glib.Source {
-	var arg0 *C.GPollableInputStream
-	var arg1 *C.GCancellable
+	var _arg0 *C.GPollableInputStream
+	var _arg1 *C.GCancellable
 
-	arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GSource
+	var _cret *C.GSource
 
-	cret = C.g_pollable_input_stream_create_source(arg0, arg1)
+	cret = C.g_pollable_input_stream_create_source(_arg0, _arg1)
 
-	var source *glib.Source
+	var _source *glib.Source
 
-	source = glib.WrapSource(unsafe.Pointer(cret))
-	runtime.SetFinalizer(source, func(v *glib.Source) {
+	_source = glib.WrapSource(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_source, func(v *glib.Source) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return source
+	return _source
 }
 
 // IsReadable checks if @stream can be read.
@@ -165,19 +165,19 @@ func (s pollableInputStream) CreateSource(cancellable Cancellable) *glib.Source 
 // you should always use g_pollable_input_stream_read_nonblocking(), which
 // will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 func (s pollableInputStream) IsReadable() bool {
-	var arg0 *C.GPollableInputStream
+	var _arg0 *C.GPollableInputStream
 
-	arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GPollableInputStream)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_pollable_input_stream_is_readable(arg0)
+	cret = C.g_pollable_input_stream_is_readable(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

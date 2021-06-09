@@ -103,266 +103,266 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 
 // NewInetAddressAny constructs a class InetAddress.
 func NewInetAddressAny(family SocketFamily) InetAddress {
-	var arg1 C.GSocketFamily
+	var _arg1 C.GSocketFamily
 
-	arg1 = (C.GSocketFamily)(family)
+	_arg1 = (C.GSocketFamily)(family)
 
-	var cret C.GInetAddress
+	var _cret C.GInetAddress
 
-	cret = C.g_inet_address_new_any(arg1)
+	cret = C.g_inet_address_new_any(_arg1)
 
-	var inetAddress InetAddress
+	var _inetAddress InetAddress
 
-	inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddress)
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
 
-	return inetAddress
+	return _inetAddress
 }
 
 // NewInetAddressFromString constructs a class InetAddress.
 func NewInetAddressFromString(string string) InetAddress {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GInetAddress
+	var _cret C.GInetAddress
 
-	cret = C.g_inet_address_new_from_string(arg1)
+	cret = C.g_inet_address_new_from_string(_arg1)
 
-	var inetAddress InetAddress
+	var _inetAddress InetAddress
 
-	inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddress)
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
 
-	return inetAddress
+	return _inetAddress
 }
 
 // NewInetAddressLoopback constructs a class InetAddress.
 func NewInetAddressLoopback(family SocketFamily) InetAddress {
-	var arg1 C.GSocketFamily
+	var _arg1 C.GSocketFamily
 
-	arg1 = (C.GSocketFamily)(family)
+	_arg1 = (C.GSocketFamily)(family)
 
-	var cret C.GInetAddress
+	var _cret C.GInetAddress
 
-	cret = C.g_inet_address_new_loopback(arg1)
+	cret = C.g_inet_address_new_loopback(_arg1)
 
-	var inetAddress InetAddress
+	var _inetAddress InetAddress
 
-	inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(InetAddress)
+	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
 
-	return inetAddress
+	return _inetAddress
 }
 
 // Equal checks if two Address instances are equal, e.g. the same address.
 func (a inetAddress) Equal(otherAddress InetAddress) bool {
-	var arg0 *C.GInetAddress
-	var arg1 *C.GInetAddress
+	var _arg0 *C.GInetAddress
+	var _arg1 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GInetAddress)(unsafe.Pointer(otherAddress.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GInetAddress)(unsafe.Pointer(otherAddress.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_equal(arg0, arg1)
+	cret = C.g_inet_address_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Family gets @address's family
 func (a inetAddress) Family() SocketFamily {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.GSocketFamily
+	var _cret C.GSocketFamily
 
-	cret = C.g_inet_address_get_family(arg0)
+	cret = C.g_inet_address_get_family(_arg0)
 
-	var socketFamily SocketFamily
+	var _socketFamily SocketFamily
 
-	socketFamily = SocketFamily(cret)
+	_socketFamily = SocketFamily(_cret)
 
-	return socketFamily
+	return _socketFamily
 }
 
 // IsAny tests whether @address is the "any" address for its family.
 func (a inetAddress) IsAny() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_any(arg0)
+	cret = C.g_inet_address_get_is_any(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsLinkLocal tests whether @address is a link-local address (that is, if
 // it identifies a host on a local network that is not connected to the
 // Internet).
 func (a inetAddress) IsLinkLocal() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_link_local(arg0)
+	cret = C.g_inet_address_get_is_link_local(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsLoopback tests whether @address is the loopback address for its family.
 func (a inetAddress) IsLoopback() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_loopback(arg0)
+	cret = C.g_inet_address_get_is_loopback(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsMcGlobal tests whether @address is a global multicast address.
 func (a inetAddress) IsMcGlobal() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_global(arg0)
+	cret = C.g_inet_address_get_is_mc_global(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsMcLinkLocal tests whether @address is a link-local multicast address.
 func (a inetAddress) IsMcLinkLocal() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_link_local(arg0)
+	cret = C.g_inet_address_get_is_mc_link_local(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsMcNodeLocal tests whether @address is a node-local multicast address.
 func (a inetAddress) IsMcNodeLocal() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_node_local(arg0)
+	cret = C.g_inet_address_get_is_mc_node_local(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsMcOrgLocal tests whether @address is an organization-local multicast
 // address.
 func (a inetAddress) IsMcOrgLocal() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_org_local(arg0)
+	cret = C.g_inet_address_get_is_mc_org_local(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsMcSiteLocal tests whether @address is a site-local multicast address.
 func (a inetAddress) IsMcSiteLocal() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_site_local(arg0)
+	cret = C.g_inet_address_get_is_mc_site_local(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsMulticast tests whether @address is a multicast address.
 func (a inetAddress) IsMulticast() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_multicast(arg0)
+	cret = C.g_inet_address_get_is_multicast(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsSiteLocal tests whether @address is a site-local address such as
@@ -370,72 +370,72 @@ func (a inetAddress) IsMulticast() bool {
 // can not be reached directly from the Internet, but which may have
 // outgoing Internet connectivity via a NAT or firewall).
 func (a inetAddress) IsSiteLocal() bool {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_site_local(arg0)
+	cret = C.g_inet_address_get_is_site_local(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // NativeSize gets the size of the native raw binary address for @address.
 // This is the size of the data that you get from g_inet_address_to_bytes().
 func (a inetAddress) NativeSize() uint {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.gsize
+	var _cret C.gsize
 
-	cret = C.g_inet_address_get_native_size(arg0)
+	cret = C.g_inet_address_get_native_size(_arg0)
 
-	var gsize uint
+	var _gsize uint
 
-	gsize = (uint)(cret)
+	_gsize = (uint)(_cret)
 
-	return gsize
+	return _gsize
 }
 
 // ToBytes gets the raw binary address data from @address.
 func (a inetAddress) ToBytes() *byte {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret *C.guint8
+	var _cret *C.guint8
 
-	cret = C.g_inet_address_to_bytes(arg0)
+	cret = C.g_inet_address_to_bytes(_arg0)
 
-	var guint8 *byte
+	var _guint8 *byte
 
-	guint8 = (*byte)(cret)
+	_guint8 = (*byte)(_cret)
 
-	return guint8
+	return _guint8
 }
 
 // String converts @address to string form.
 func (a inetAddress) String() string {
-	var arg0 *C.GInetAddress
+	var _arg0 *C.GInetAddress
 
-	arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_inet_address_to_string(arg0)
+	cret = C.g_inet_address_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

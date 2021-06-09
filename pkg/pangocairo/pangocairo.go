@@ -46,37 +46,37 @@ func gotk4_ShapeRendererFunc(arg0 *C.cairo_t, arg1 *C.PangoAttrShape, arg2 C.gbo
 // This function does not report options that are derived from the target
 // surface by [func@update_context].
 func ContextGetFontOptions(context pango.Context) *cairo.FontOptions {
-	var arg1 *C.PangoContext
+	var _arg1 *C.PangoContext
 
-	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
-	var cret *C.cairo_font_options_t
+	var _cret *C.cairo_font_options_t
 
-	cret = C.pango_cairo_context_get_font_options(arg1)
+	cret = C.pango_cairo_context_get_font_options(_arg1)
 
-	var fontOptions *cairo.FontOptions
+	var _fontOptions *cairo.FontOptions
 
-	fontOptions = cairo.WrapFontOptions(unsafe.Pointer(cret))
+	_fontOptions = cairo.WrapFontOptions(unsafe.Pointer(_cret))
 
-	return fontOptions
+	return _fontOptions
 }
 
 // ContextGetResolution gets the resolution for the context. See
 // [func@PangoCairo.context_set_resolution]
 func ContextGetResolution(context pango.Context) float64 {
-	var arg1 *C.PangoContext
+	var _arg1 *C.PangoContext
 
-	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
-	var cret C.double
+	var _cret C.double
 
-	cret = C.pango_cairo_context_get_resolution(arg1)
+	cret = C.pango_cairo_context_get_resolution(_arg1)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // ContextSetFontOptions sets the font options used when rendering text with
@@ -85,13 +85,13 @@ func ContextGetResolution(context pango.Context) float64 {
 // These options override any options that [func@update_context] derives from
 // the target surface.
 func ContextSetFontOptions(context pango.Context, options *cairo.FontOptions) {
-	var arg1 *C.PangoContext
-	var arg2 *C.cairo_font_options_t
+	var _arg1 *C.PangoContext
+	var _arg2 *C.cairo_font_options_t
 
-	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	arg2 = (*C.cairo_font_options_t)(unsafe.Pointer(options.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.cairo_font_options_t)(unsafe.Pointer(options.Native()))
 
-	C.pango_cairo_context_set_font_options(arg1, arg2)
+	C.pango_cairo_context_set_font_options(_arg1, _arg2)
 }
 
 // ContextSetResolution sets the resolution for the context.
@@ -100,13 +100,13 @@ func ContextSetFontOptions(context pango.Context, options *cairo.FontOptions) {
 // and Cairo units. The default value is 96, meaning that a 10 point font will
 // be 13 units high. (10 * 96. / 72. = 13.3).
 func ContextSetResolution(context pango.Context, dpi float64) {
-	var arg1 *C.PangoContext
-	var arg2 C.double
+	var _arg1 *C.PangoContext
+	var _arg2 C.double
 
-	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	arg2 = C.double(dpi)
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = C.double(dpi)
 
-	C.pango_cairo_context_set_resolution(arg1, arg2)
+	C.pango_cairo_context_set_resolution(_arg1, _arg2)
 }
 
 // ContextSetShapeRenderer sets callback function for context to use for
@@ -128,19 +128,19 @@ func ContextSetShapeRenderer() {
 // for use with @cr and do not need to access `PangoContext` directly, you can
 // use [func@create_layout] instead.
 func CreateContext(cr *cairo.Context) pango.Context {
-	var arg1 *C.cairo_t
+	var _arg1 *C.cairo_t
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
-	cret = C.pango_cairo_create_context(arg1)
+	cret = C.pango_cairo_create_context(_arg1)
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // CreateLayout creates a layout object set up to match the current
@@ -156,19 +156,19 @@ func CreateContext(cr *cairo.Context) pango.Context {
 // each layout. This might matter in an application that was laying out large
 // amounts of text.
 func CreateLayout(cr *cairo.Context) pango.Layout {
-	var arg1 *C.cairo_t
+	var _arg1 *C.cairo_t
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
-	var cret *C.PangoLayout
+	var _cret *C.PangoLayout
 
-	cret = C.pango_cairo_create_layout(arg1)
+	cret = C.pango_cairo_create_layout(_arg1)
 
-	var layout pango.Layout
+	var _layout pango.Layout
 
-	layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(pango.Layout)
+	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
 
-	return layout
+	return _layout
 }
 
 // ErrorUnderlinePath: add a squiggly line to the current path in the specified
@@ -178,19 +178,19 @@ func CreateLayout(cr *cairo.Context) pango.Layout {
 // The width of the underline is rounded to an integer number of up/down
 // segments and the resulting rectangle is centered in the original rectangle.
 func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, height float64) {
-	var arg1 *C.cairo_t
-	var arg2 C.double
-	var arg3 C.double
-	var arg4 C.double
-	var arg5 C.double
+	var _arg1 *C.cairo_t
+	var _arg2 C.double
+	var _arg3 C.double
+	var _arg4 C.double
+	var _arg5 C.double
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = C.double(x)
-	arg3 = C.double(y)
-	arg4 = C.double(width)
-	arg5 = C.double(height)
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
 
-	C.pango_cairo_error_underline_path(arg1, arg2, arg3, arg4, arg5)
+	C.pango_cairo_error_underline_path(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // GlyphStringPath adds the glyphs in @glyphs to the current path in the
@@ -199,15 +199,15 @@ func ErrorUnderlinePath(cr *cairo.Context, x float64, y float64, width float64, 
 // The origin of the glyphs (the left edge of the baseline) will be at the
 // current point of the cairo context.
 func GlyphStringPath(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphString) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoFont
-	var arg3 *C.PangoGlyphString
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoFont
+	var _arg3 *C.PangoGlyphString
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
-	arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
 
-	C.pango_cairo_glyph_string_path(arg1, arg2, arg3)
+	C.pango_cairo_glyph_string_path(_arg1, _arg2, _arg3)
 }
 
 // LayoutLinePath adds the text in `PangoLayoutLine` to the current path in the
@@ -216,13 +216,13 @@ func GlyphStringPath(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphStri
 // The origin of the glyphs (the left edge of the line) will be at the current
 // point of the cairo context.
 func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoLayoutLine
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoLayoutLine
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
 
-	C.pango_cairo_layout_line_path(arg1, arg2)
+	C.pango_cairo_layout_line_path(_arg1, _arg2)
 }
 
 // LayoutPath adds the text in a `PangoLayout` to the current path in the
@@ -231,13 +231,13 @@ func LayoutLinePath(cr *cairo.Context, line *pango.LayoutLine) {
 // The top-left corner of the `PangoLayout` will be at the current point of the
 // cairo context.
 func LayoutPath(cr *cairo.Context, layout pango.Layout) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoLayout
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoLayout
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.pango_cairo_layout_path(arg1, arg2)
+	C.pango_cairo_layout_path(_arg1, _arg2)
 }
 
 // ShowErrorUnderline: draw a squiggly line in the specified cairo context that
@@ -247,19 +247,19 @@ func LayoutPath(cr *cairo.Context, layout pango.Layout) {
 // The width of the underline is rounded to an integer number of up/down
 // segments and the resulting rectangle is centered in the original rectangle.
 func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, height float64) {
-	var arg1 *C.cairo_t
-	var arg2 C.double
-	var arg3 C.double
-	var arg4 C.double
-	var arg5 C.double
+	var _arg1 *C.cairo_t
+	var _arg2 C.double
+	var _arg3 C.double
+	var _arg4 C.double
+	var _arg5 C.double
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = C.double(x)
-	arg3 = C.double(y)
-	arg4 = C.double(width)
-	arg5 = C.double(height)
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = C.double(x)
+	_arg3 = C.double(y)
+	_arg4 = C.double(width)
+	_arg5 = C.double(height)
 
-	C.pango_cairo_show_error_underline(arg1, arg2, arg3, arg4, arg5)
+	C.pango_cairo_show_error_underline(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // ShowGlyphItem draws the glyphs in @glyph_item in the specified cairo context,
@@ -274,16 +274,16 @@ func ShowErrorUnderline(cr *cairo.Context, x float64, y float64, width float64, 
 // Note that @text is the start of the text for layout, which is then indexed by
 // `glyph_item->item->offset`.
 func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
-	var arg1 *C.cairo_t
-	var arg2 *C.char
-	var arg3 *C.PangoGlyphItem
+	var _arg1 *C.cairo_t
+	var _arg2 *C.char
+	var _arg3 *C.PangoGlyphItem
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.PangoGlyphItem)(unsafe.Pointer(glyphItem.Native()))
 
-	C.pango_cairo_show_glyph_item(arg1, arg2, arg3)
+	C.pango_cairo_show_glyph_item(_arg1, _arg2, _arg3)
 }
 
 // ShowGlyphString draws the glyphs in @glyphs in the specified cairo context.
@@ -291,15 +291,15 @@ func ShowGlyphItem(cr *cairo.Context, text string, glyphItem *pango.GlyphItem) {
 // The origin of the glyphs (the left edge of the baseline) will be drawn at the
 // current point of the cairo context.
 func ShowGlyphString(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphString) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoFont
-	var arg3 *C.PangoGlyphString
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoFont
+	var _arg3 *C.PangoGlyphString
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
-	arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
+	_arg3 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
 
-	C.pango_cairo_show_glyph_string(arg1, arg2, arg3)
+	C.pango_cairo_show_glyph_string(_arg1, _arg2, _arg3)
 }
 
 // ShowLayout draws a `PangoLayout` in the specified cairo context.
@@ -307,13 +307,13 @@ func ShowGlyphString(cr *cairo.Context, font pango.Font, glyphs *pango.GlyphStri
 // The top-left corner of the `PangoLayout` will be drawn at the current point
 // of the cairo context.
 func ShowLayout(cr *cairo.Context, layout pango.Layout) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoLayout
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoLayout
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.pango_cairo_show_layout(arg1, arg2)
+	C.pango_cairo_show_layout(_arg1, _arg2)
 }
 
 // ShowLayoutLine draws a `PangoLayoutLine` in the specified cairo context.
@@ -321,13 +321,13 @@ func ShowLayout(cr *cairo.Context, layout pango.Layout) {
 // The origin of the glyphs (the left edge of the line) will be drawn at the
 // current point of the cairo context.
 func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoLayoutLine
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoLayoutLine
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoLayoutLine)(unsafe.Pointer(line.Native()))
 
-	C.pango_cairo_show_layout_line(arg1, arg2)
+	C.pango_cairo_show_layout_line(_arg1, _arg2)
 }
 
 // UpdateContext updates a `PangoContext` previously created for use with Cairo
@@ -336,26 +336,26 @@ func ShowLayoutLine(cr *cairo.Context, line *pango.LayoutLine) {
 // If any layouts have been created for the context, it's necessary to call
 // [method@Pango.Layout.context_changed] on those layouts.
 func UpdateContext(cr *cairo.Context, context pango.Context) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoContext
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoContext
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
 
-	C.pango_cairo_update_context(arg1, arg2)
+	C.pango_cairo_update_context(_arg1, _arg2)
 }
 
 // UpdateLayout updates the private `PangoContext` of a `PangoLayout` created
 // with [func@create_layout] to match the current transformation and target
 // surface of a Cairo context.
 func UpdateLayout(cr *cairo.Context, layout pango.Layout) {
-	var arg1 *C.cairo_t
-	var arg2 *C.PangoLayout
+	var _arg1 *C.cairo_t
+	var _arg2 *C.PangoLayout
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
 
-	C.pango_cairo_update_layout(arg1, arg2)
+	C.pango_cairo_update_layout(_arg1, _arg2)
 }
 
 // Font: `PangoCairoFont` is an interface exported by fonts for use with Cairo.
@@ -394,19 +394,19 @@ func marshalFont(p uintptr) (interface{}, error) {
 // ScaledFont gets the `cairo_scaled_font_t` used by @font. The scaled font
 // can be referenced and kept using cairo_scaled_font_reference().
 func (f font) ScaledFont() *cairo.ScaledFont {
-	var arg0 *C.PangoCairoFont
+	var _arg0 *C.PangoCairoFont
 
-	arg0 = (*C.PangoCairoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFont)(unsafe.Pointer(f.Native()))
 
-	var cret *C.cairo_scaled_font_t
+	var _cret *C.cairo_scaled_font_t
 
-	cret = C.pango_cairo_font_get_scaled_font(arg0)
+	cret = C.pango_cairo_font_get_scaled_font(_arg0)
 
-	var scaledFont *cairo.ScaledFont
+	var _scaledFont *cairo.ScaledFont
 
-	scaledFont = cairo.WrapScaledFont(unsafe.Pointer(cret))
+	_scaledFont = cairo.WrapScaledFont(unsafe.Pointer(_cret))
 
-	return scaledFont
+	return _scaledFont
 }
 
 // FontMap: `PangoCairoFontMap` is an interface exported by font maps for use
@@ -471,55 +471,55 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 
 // CreateContext: create a `PangoContext` for the given fontmap.
 func (f fontMap) CreateContext() pango.Context {
-	var arg0 *C.PangoCairoFontMap
+	var _arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
-	var cret *C.PangoContext
+	var _cret *C.PangoContext
 
-	cret = C.pango_cairo_font_map_create_context(arg0)
+	cret = C.pango_cairo_font_map_create_context(_arg0)
 
-	var context pango.Context
+	var _context pango.Context
 
-	context = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(pango.Context)
+	_context = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Context)
 
-	return context
+	return _context
 }
 
 // FontType gets the type of Cairo font backend that @fontmap uses.
 func (f fontMap) FontType() cairo.FontType {
-	var arg0 *C.PangoCairoFontMap
+	var _arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
-	var cret C.cairo_font_type_t
+	var _cret C.cairo_font_type_t
 
-	cret = C.pango_cairo_font_map_get_font_type(arg0)
+	cret = C.pango_cairo_font_map_get_font_type(_arg0)
 
-	var fontType cairo.FontType
+	var _fontType cairo.FontType
 
-	fontType = cairo.FontType(cret)
+	_fontType = cairo.FontType(_cret)
 
-	return fontType
+	return _fontType
 }
 
 // Resolution gets the resolution for the fontmap.
 //
 // See [method@PangoCairo.FontMap.set_resolution].
 func (f fontMap) Resolution() float64 {
-	var arg0 *C.PangoCairoFontMap
+	var _arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
-	var cret C.double
+	var _cret C.double
 
-	cret = C.pango_cairo_font_map_get_resolution(arg0)
+	cret = C.pango_cairo_font_map_get_resolution(_arg0)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // SetDefault sets a default `PangoCairoFontMap` to use with Cairo.
@@ -537,11 +537,11 @@ func (f fontMap) Resolution() float64 {
 // released and a new default font map to be created on demand, using
 // [type_func@PangoCairo.FontMap.new].
 func (f fontMap) SetDefault() {
-	var arg0 *C.PangoCairoFontMap
+	var _arg0 *C.PangoCairoFontMap
 
-	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
 
-	C.pango_cairo_font_map_set_default(arg0)
+	C.pango_cairo_font_map_set_default(_arg0)
 }
 
 // SetResolution sets the resolution for the fontmap.
@@ -550,11 +550,11 @@ func (f fontMap) SetDefault() {
 // `PangoFontDescription` and Cairo units. The default value is 96, meaning
 // that a 10 point font will be 13 units high. (10 * 96. / 72. = 13.3).
 func (f fontMap) SetResolution(dpi float64) {
-	var arg0 *C.PangoCairoFontMap
-	var arg1 C.double
+	var _arg0 *C.PangoCairoFontMap
+	var _arg1 C.double
 
-	arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
-	arg1 = C.double(dpi)
+	_arg0 = (*C.PangoCairoFontMap)(unsafe.Pointer(f.Native()))
+	_arg1 = C.double(dpi)
 
-	C.pango_cairo_font_map_set_resolution(arg0, arg1)
+	C.pango_cairo_font_map_set_resolution(_arg0, _arg1)
 }

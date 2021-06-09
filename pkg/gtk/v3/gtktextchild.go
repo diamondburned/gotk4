@@ -65,15 +65,15 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 
 // NewTextChildAnchor constructs a class TextChildAnchor.
 func NewTextChildAnchor() TextChildAnchor {
-	var cret C.GtkTextChildAnchor
+	var _cret C.GtkTextChildAnchor
 
 	cret = C.gtk_text_child_anchor_new()
 
-	var textChildAnchor TextChildAnchor
+	var _textChildAnchor TextChildAnchor
 
-	textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TextChildAnchor)
+	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
 
-	return textChildAnchor
+	return _textChildAnchor
 }
 
 // Deleted determines whether a child anchor has been deleted from the
@@ -82,40 +82,40 @@ func NewTextChildAnchor() TextChildAnchor {
 // g_object_ref()) if you plan to use this function — otherwise all deleted
 // child anchors will also be finalized.
 func (a textChildAnchor) Deleted() bool {
-	var arg0 *C.GtkTextChildAnchor
+	var _arg0 *C.GtkTextChildAnchor
 
-	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_text_child_anchor_get_deleted(arg0)
+	cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Widgets gets a list of all widgets anchored at this child anchor. The
 // returned list should be freed with g_list_free().
 func (a textChildAnchor) Widgets() *glib.List {
-	var arg0 *C.GtkTextChildAnchor
+	var _arg0 *C.GtkTextChildAnchor
 
-	arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gtk_text_child_anchor_get_widgets(arg0)
+	cret = C.gtk_text_child_anchor_get_widgets(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }

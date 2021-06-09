@@ -63,17 +63,17 @@ func marshalVScrollbar(p uintptr) (interface{}, error) {
 
 // NewVScrollbar constructs a class VScrollbar.
 func NewVScrollbar(adjustment Adjustment) VScrollbar {
-	var arg1 *C.GtkAdjustment
+	var _arg1 *C.GtkAdjustment
 
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	var cret C.GtkVScrollbar
+	var _cret C.GtkVScrollbar
 
-	cret = C.gtk_vscrollbar_new(arg1)
+	cret = C.gtk_vscrollbar_new(_arg1)
 
-	var vScrollbar VScrollbar
+	var _vScrollbar VScrollbar
 
-	vScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(VScrollbar)
+	_vScrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VScrollbar)
 
-	return vScrollbar
+	return _vScrollbar
 }

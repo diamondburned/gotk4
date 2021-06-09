@@ -13,25 +13,25 @@ import (
 import "C"
 
 func StrvGetType() externglib.Type {
-	var cret C.GType
+	var _cret C.GType
 
 	cret = C.g_strv_get_type()
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 func VariantGetGType() externglib.Type {
-	var cret C.GType
+	var _cret C.GType
 
 	cret = C.g_variant_get_gtype()
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }

@@ -103,32 +103,32 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 
 // NewUnixFDMessage constructs a class UnixFDMessage.
 func NewUnixFDMessage() UnixFDMessage {
-	var cret C.GUnixFDMessage
+	var _cret C.GUnixFDMessage
 
 	cret = C.g_unix_fd_message_new()
 
-	var unixFDMessage UnixFDMessage
+	var _unixFDMessage UnixFDMessage
 
-	unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
 
-	return unixFDMessage
+	return _unixFDMessage
 }
 
 // NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
 func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
-	var arg1 *C.GUnixFDList
+	var _arg1 *C.GUnixFDList
 
-	arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
+	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
 
-	var cret C.GUnixFDMessage
+	var _cret C.GUnixFDMessage
 
-	cret = C.g_unix_fd_message_new_with_fd_list(arg1)
+	cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
 
-	var unixFDMessage UnixFDMessage
+	var _unixFDMessage UnixFDMessage
 
-	unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixFDMessage)
+	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
 
-	return unixFDMessage
+	return _unixFDMessage
 }
 
 // AppendFd adds a file descriptor to @message.
@@ -140,40 +140,40 @@ func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
 // A possible cause of failure is exceeding the per-process or system-wide
 // file descriptor limit.
 func (m unixFDMessage) AppendFd(fd int) error {
-	var arg0 *C.GUnixFDMessage
-	var arg1 C.gint
+	var _arg0 *C.GUnixFDMessage
+	var _arg1 C.gint
 
-	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
-	arg1 = C.gint(fd)
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg1 = C.gint(fd)
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.g_unix_fd_message_append_fd(arg0, arg1, cerr)
+	C.g_unix_fd_message_append_fd(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // FdList gets the FDList contained in @message. This function does not
 // return a reference to the caller, but the returned list is valid for the
 // lifetime of @message.
 func (m unixFDMessage) FdList() UnixFDList {
-	var arg0 *C.GUnixFDMessage
+	var _arg0 *C.GUnixFDMessage
 
-	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GUnixFDList
+	var _cret *C.GUnixFDList
 
-	cret = C.g_unix_fd_message_get_fd_list(arg0)
+	cret = C.g_unix_fd_message_get_fd_list(_arg0)
 
-	var unixFDList UnixFDList
+	var _unixFDList UnixFDList
 
-	unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(UnixFDList)
+	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(UnixFDList)
 
-	return unixFDList
+	return _unixFDList
 }
 
 // StealFds returns the array of file descriptors that is contained in this
@@ -192,21 +192,21 @@ func (m unixFDMessage) FdList() UnixFDList {
 // This function never returns nil. In case there are no file descriptors
 // contained in @message, an empty array is returned.
 func (m unixFDMessage) StealFds() []int {
-	var arg0 *C.GUnixFDMessage
+	var _arg0 *C.GUnixFDMessage
 
-	arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
-	var cret *C.gint
-	var arg1 *C.gint
+	var _cret *C.gint
+	var _arg1 *C.gint
 
-	cret = C.g_unix_fd_message_steal_fds(arg0)
+	cret = C.g_unix_fd_message_steal_fds(_arg0)
 
-	var gints []int
+	var _gints []int
 
-	ptr.SetSlice(unsafe.Pointer(&gints), unsafe.Pointer(cret), int(arg1))
-	runtime.SetFinalizer(&gints, func(v *[]int) {
+	ptr.SetSlice(unsafe.Pointer(&_gints), unsafe.Pointer(_cret), int(_arg1))
+	runtime.SetFinalizer(&_gints, func(v *[]int) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 
-	return gints
+	return _gints
 }

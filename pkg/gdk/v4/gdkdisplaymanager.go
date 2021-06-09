@@ -39,10 +39,10 @@ import "C"
 // This call must happen prior to gdk_display_open(), gtk_init(), or
 // gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string) {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(backends))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(backends))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_set_allowed_backends(arg1)
+	C.gdk_set_allowed_backends(_arg1)
 }

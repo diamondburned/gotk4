@@ -70,47 +70,47 @@ func marshalUnixCredentialsMessage(p uintptr) (interface{}, error) {
 
 // NewUnixCredentialsMessage constructs a class UnixCredentialsMessage.
 func NewUnixCredentialsMessage() UnixCredentialsMessage {
-	var cret C.GUnixCredentialsMessage
+	var _cret C.GUnixCredentialsMessage
 
 	cret = C.g_unix_credentials_message_new()
 
-	var unixCredentialsMessage UnixCredentialsMessage
+	var _unixCredentialsMessage UnixCredentialsMessage
 
-	unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixCredentialsMessage)
 
-	return unixCredentialsMessage
+	return _unixCredentialsMessage
 }
 
 // NewUnixCredentialsMessageWithCredentials constructs a class UnixCredentialsMessage.
 func NewUnixCredentialsMessageWithCredentials(credentials Credentials) UnixCredentialsMessage {
-	var arg1 *C.GCredentials
+	var _arg1 *C.GCredentials
 
-	arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
+	_arg1 = (*C.GCredentials)(unsafe.Pointer(credentials.Native()))
 
-	var cret C.GUnixCredentialsMessage
+	var _cret C.GUnixCredentialsMessage
 
-	cret = C.g_unix_credentials_message_new_with_credentials(arg1)
+	cret = C.g_unix_credentials_message_new_with_credentials(_arg1)
 
-	var unixCredentialsMessage UnixCredentialsMessage
+	var _unixCredentialsMessage UnixCredentialsMessage
 
-	unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(UnixCredentialsMessage)
+	_unixCredentialsMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixCredentialsMessage)
 
-	return unixCredentialsMessage
+	return _unixCredentialsMessage
 }
 
 // Credentials gets the credentials stored in @message.
 func (m unixCredentialsMessage) Credentials() Credentials {
-	var arg0 *C.GUnixCredentialsMessage
+	var _arg0 *C.GUnixCredentialsMessage
 
-	arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GUnixCredentialsMessage)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GCredentials
+	var _cret *C.GCredentials
 
-	cret = C.g_unix_credentials_message_get_credentials(arg0)
+	cret = C.g_unix_credentials_message_get_credentials(_arg0)
 
-	var credentials Credentials
+	var _credentials Credentials
 
-	credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Credentials)
+	_credentials = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Credentials)
 
-	return credentials
+	return _credentials
 }

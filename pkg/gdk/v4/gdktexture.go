@@ -67,91 +67,91 @@ func marshalTexture(p uintptr) (interface{}, error) {
 
 // NewTextureForPixbuf constructs a class Texture.
 func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
-	var arg1 *C.GdkPixbuf
+	var _arg1 *C.GdkPixbuf
 
-	arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
 
-	var cret C.GdkTexture
+	var _cret C.GdkTexture
 
-	cret = C.gdk_texture_new_for_pixbuf(arg1)
+	cret = C.gdk_texture_new_for_pixbuf(_arg1)
 
-	var texture Texture
+	var _texture Texture
 
-	texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
 
-	return texture
+	return _texture
 }
 
 // NewTextureFromFile constructs a class Texture.
-func NewTextureFromFile(file gio.File) (texture Texture, goerr error) {
-	var arg1 *C.GFile
+func NewTextureFromFile(file gio.File) (Texture, error) {
+	var _arg1 *C.GFile
 
-	arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
+	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var cret C.GdkTexture
-	var cerr *C.GError
+	var _cret C.GdkTexture
+	var _cerr *C.GError
 
-	cret = C.gdk_texture_new_from_file(arg1, cerr)
+	cret = C.gdk_texture_new_from_file(_arg1, _cerr)
 
-	var texture Texture
-	var goerr error
+	var _texture Texture
+	var _goerr error
 
-	texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return texture, goerr
+	return _texture, _goerr
 }
 
 // NewTextureFromResource constructs a class Texture.
 func NewTextureFromResource(resourcePath string) Texture {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GdkTexture
+	var _cret C.GdkTexture
 
-	cret = C.gdk_texture_new_from_resource(arg1)
+	cret = C.gdk_texture_new_from_resource(_arg1)
 
-	var texture Texture
+	var _texture Texture
 
-	texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Texture)
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
 
-	return texture
+	return _texture
 }
 
 // Height returns the height of the @texture, in pixels.
 func (t texture) Height() int {
-	var arg0 *C.GdkTexture
+	var _arg0 *C.GdkTexture
 
-	arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gdk_texture_get_height(arg0)
+	cret = C.gdk_texture_get_height(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Width returns the width of @texture, in pixels.
 func (t texture) Width() int {
-	var arg0 *C.GdkTexture
+	var _arg0 *C.GdkTexture
 
-	arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gdk_texture_get_width(arg0)
+	cret = C.gdk_texture_get_width(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SaveToPng: store the given @texture to the @filename as a PNG file.
@@ -161,22 +161,22 @@ func (t texture) Width() int {
 // a #GFile or other location, you might want to look into using the
 // gdk-pixbuf library.
 func (t texture) SaveToPng(filename string) bool {
-	var arg0 *C.GdkTexture
-	var arg1 *C.char
+	var _arg0 *C.GdkTexture
+	var _arg1 *C.char
 
-	arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
-	arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.char)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_texture_save_to_png(arg0, arg1)
+	cret = C.gdk_texture_save_to_png(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }

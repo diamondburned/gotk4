@@ -85,76 +85,76 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 
 // NewRendererForSurface constructs a class Renderer.
 func NewRendererForSurface(surface gdk.Surface) Renderer {
-	var arg1 *C.GdkSurface
+	var _arg1 *C.GdkSurface
 
-	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	var cret C.GskRenderer
+	var _cret C.GskRenderer
 
-	cret = C.gsk_renderer_new_for_surface(arg1)
+	cret = C.gsk_renderer_new_for_surface(_arg1)
 
-	var renderer Renderer
+	var _renderer Renderer
 
-	renderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Renderer)
+	_renderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Renderer)
 
-	return renderer
+	return _renderer
 }
 
 // Surface retrieves the Surface set using gsk_renderer_realize(). If the
 // renderer has not been realized yet, nil will be returned.
 func (r renderer) Surface() gdk.Surface {
-	var arg0 *C.GskRenderer
+	var _arg0 *C.GskRenderer
 
-	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
-	var cret *C.GdkSurface
+	var _cret *C.GdkSurface
 
-	cret = C.gsk_renderer_get_surface(arg0)
+	cret = C.gsk_renderer_get_surface(_arg0)
 
-	var surface gdk.Surface
+	var _surface gdk.Surface
 
-	surface = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Surface)
+	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
 
-	return surface
+	return _surface
 }
 
 // IsRealized checks whether the @renderer is realized or not.
 func (r renderer) IsRealized() bool {
-	var arg0 *C.GskRenderer
+	var _arg0 *C.GskRenderer
 
-	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gsk_renderer_is_realized(arg0)
+	cret = C.gsk_renderer_is_realized(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Realize creates the resources needed by the @renderer to render the scene
 // graph.
 func (r renderer) Realize(surface gdk.Surface) error {
-	var arg0 *C.GskRenderer
-	var arg1 *C.GdkSurface
+	var _arg0 *C.GskRenderer
+	var _arg1 *C.GdkSurface
 
-	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gsk_renderer_realize(arg0, arg1, cerr)
+	C.gsk_renderer_realize(_arg0, _arg1, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // Render renders the scene graph, described by a tree of RenderNode
@@ -168,15 +168,15 @@ func (r renderer) Realize(surface gdk.Surface) error {
 // The @renderer will acquire a reference on the RenderNode tree while the
 // rendering is in progress.
 func (r renderer) Render(root RenderNode, region *cairo.Region) {
-	var arg0 *C.GskRenderer
-	var arg1 *C.GskRenderNode
-	var arg2 *C.cairo_region_t
+	var _arg0 *C.GskRenderer
+	var _arg1 *C.GskRenderNode
+	var _arg2 *C.cairo_region_t
 
-	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
+	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
-	C.gsk_renderer_render(arg0, arg1, arg2)
+	C.gsk_renderer_render(_arg0, _arg1, _arg2)
 }
 
 // RenderTexture renders the scene graph, described by a tree of RenderNode
@@ -188,30 +188,30 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 // If you want to apply any transformations to @root, you should put it into
 // a transform node and pass that node instead.
 func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
-	var arg0 *C.GskRenderer
-	var arg1 *C.GskRenderNode
-	var arg2 *C.graphene_rect_t
+	var _arg0 *C.GskRenderer
+	var _arg1 *C.GskRenderNode
+	var _arg2 *C.graphene_rect_t
 
-	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
+	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
 
-	var cret *C.GdkTexture
+	var _cret *C.GdkTexture
 
-	cret = C.gsk_renderer_render_texture(arg0, arg1, arg2)
+	cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
 
-	var texture gdk.Texture
+	var _texture gdk.Texture
 
-	texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdk.Texture)
+	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Texture)
 
-	return texture
+	return _texture
 }
 
 // Unrealize releases all the resources created by gsk_renderer_realize().
 func (r renderer) Unrealize() {
-	var arg0 *C.GskRenderer
+	var _arg0 *C.GskRenderer
 
-	arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
-	C.gsk_renderer_unrealize(arg0)
+	C.gsk_renderer_unrealize(_arg0)
 }

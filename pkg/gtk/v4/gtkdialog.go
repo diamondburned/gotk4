@@ -209,15 +209,15 @@ func marshalDialog(p uintptr) (interface{}, error) {
 
 // NewDialog constructs a class Dialog.
 func NewDialog() Dialog {
-	var cret C.GtkDialog
+	var _cret C.GtkDialog
 
 	cret = C.gtk_dialog_new()
 
-	var dialog Dialog
+	var _dialog Dialog
 
-	dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Dialog)
+	_dialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Dialog)
 
-	return dialog
+	return _dialog
 }
 
 // AddActionWidget adds an activatable widget to the action area of a
@@ -227,15 +227,15 @@ func NewDialog() Dialog {
 // non-activatable widget, simply pack it into the @action_area field of the
 // Dialog struct.
 func (d dialog) AddActionWidget(child Widget, responseId int) {
-	var arg0 *C.GtkDialog
-	var arg1 *C.GtkWidget
-	var arg2 C.int
+	var _arg0 *C.GtkDialog
+	var _arg1 *C.GtkWidget
+	var _arg2 C.int
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = C.int(responseId)
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = C.int(responseId)
 
-	C.gtk_dialog_add_action_widget(arg0, arg1, arg2)
+	C.gtk_dialog_add_action_widget(_arg0, _arg1, _arg2)
 }
 
 // AddButton adds a button with the given text and sets things up so that
@@ -243,140 +243,140 @@ func (d dialog) AddActionWidget(child Widget, responseId int) {
 // @response_id. The button is appended to the end of the dialog’s action
 // area. The button widget is returned, but usually you don’t need it.
 func (d dialog) AddButton(buttonText string, responseId int) Widget {
-	var arg0 *C.GtkDialog
-	var arg1 *C.char
-	var arg2 C.int
+	var _arg0 *C.GtkDialog
+	var _arg1 *C.char
+	var _arg2 C.int
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.char)(C.CString(buttonText))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(responseId)
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.char)(C.CString(buttonText))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(responseId)
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_dialog_add_button(arg0, arg1, arg2)
+	cret = C.gtk_dialog_add_button(_arg0, _arg1, _arg2)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // ContentArea returns the content area of @dialog.
 func (d dialog) ContentArea() Box {
-	var arg0 *C.GtkDialog
+	var _arg0 *C.GtkDialog
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_dialog_get_content_area(arg0)
+	cret = C.gtk_dialog_get_content_area(_arg0)
 
-	var box Box
+	var _box Box
 
-	box = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
 
-	return box
+	return _box
 }
 
 // HeaderBar returns the header bar of @dialog. Note that the headerbar is
 // only used by the dialog if the Dialog:use-header-bar property is true.
 func (d dialog) HeaderBar() HeaderBar {
-	var arg0 *C.GtkDialog
+	var _arg0 *C.GtkDialog
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_dialog_get_header_bar(arg0)
+	cret = C.gtk_dialog_get_header_bar(_arg0)
 
-	var headerBar HeaderBar
+	var _headerBar HeaderBar
 
-	headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HeaderBar)
+	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HeaderBar)
 
-	return headerBar
+	return _headerBar
 }
 
 // ResponseForWidget gets the response id of a widget in the action area of
 // a dialog.
 func (d dialog) ResponseForWidget(widget Widget) int {
-	var arg0 *C.GtkDialog
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkDialog
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gtk_dialog_get_response_for_widget(arg0, arg1)
+	cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // WidgetForResponse gets the widget button that uses the given response ID
 // in the action area of a dialog.
 func (d dialog) WidgetForResponse(responseId int) Widget {
-	var arg0 *C.GtkDialog
-	var arg1 C.int
+	var _arg0 *C.GtkDialog
+	var _arg1 C.int
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseId)
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(responseId)
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_dialog_get_widget_for_response(arg0, arg1)
+	cret = C.gtk_dialog_get_widget_for_response(_arg0, _arg1)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // Response emits the Dialog::response signal with the given response ID.
 //
 // Used to indicate that the user has responded to the dialog in some way.
 func (d dialog) Response(responseId int) {
-	var arg0 *C.GtkDialog
-	var arg1 C.int
+	var _arg0 *C.GtkDialog
+	var _arg1 C.int
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseId)
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(responseId)
 
-	C.gtk_dialog_response(arg0, arg1)
+	C.gtk_dialog_response(_arg0, _arg1)
 }
 
 // SetDefaultResponse sets the last widget in the dialog’s action area with
 // the given @response_id as the default widget for the dialog. Pressing
 // “Enter” normally activates the default widget.
 func (d dialog) SetDefaultResponse(responseId int) {
-	var arg0 *C.GtkDialog
-	var arg1 C.int
+	var _arg0 *C.GtkDialog
+	var _arg1 C.int
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseId)
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(responseId)
 
-	C.gtk_dialog_set_default_response(arg0, arg1)
+	C.gtk_dialog_set_default_response(_arg0, _arg1)
 }
 
 // SetResponseSensitive calls `gtk_widget_set_sensitive (widget, @setting)`
 // for each widget in the dialog’s action area with the given @response_id.
 // A convenient way to sensitize/desensitize dialog buttons.
 func (d dialog) SetResponseSensitive(responseId int, setting bool) {
-	var arg0 *C.GtkDialog
-	var arg1 C.int
-	var arg2 C.gboolean
+	var _arg0 *C.GtkDialog
+	var _arg1 C.int
+	var _arg2 C.gboolean
 
-	arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(responseId)
+	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(responseId)
 	if setting {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
 
-	C.gtk_dialog_set_response_sensitive(arg0, arg1, arg2)
+	C.gtk_dialog_set_response_sensitive(_arg0, _arg1, _arg2)
 }

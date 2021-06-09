@@ -60,15 +60,15 @@ func marshalCustomSorter(p uintptr) (interface{}, error) {
 
 // NewCustomSorter constructs a class CustomSorter.
 func NewCustomSorter() CustomSorter {
-	var cret C.GtkCustomSorter
+	var _cret C.GtkCustomSorter
 
 	cret = C.gtk_custom_sorter_new()
 
-	var customSorter CustomSorter
+	var _customSorter CustomSorter
 
-	customSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomSorter)
+	_customSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CustomSorter)
 
-	return customSorter
+	return _customSorter
 }
 
 // SetSortFunc sets (or unsets) the function used for sorting items.
@@ -80,9 +80,9 @@ func NewCustomSorter() CustomSorter {
 //
 // If a previous function was set, its @user_destroy will be called now.
 func (s customSorter) SetSortFunc() {
-	var arg0 *C.GtkCustomSorter
+	var _arg0 *C.GtkCustomSorter
 
-	arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCustomSorter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_custom_sorter_set_sort_func(arg0)
+	C.gtk_custom_sorter_set_sort_func(_arg0)
 }

@@ -70,25 +70,25 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 
 // NewIMContextSimple constructs a class IMContextSimple.
 func NewIMContextSimple() IMContextSimple {
-	var cret C.GtkIMContextSimple
+	var _cret C.GtkIMContextSimple
 
 	cret = C.gtk_im_context_simple_new()
 
-	var imContextSimple IMContextSimple
+	var _imContextSimple IMContextSimple
 
-	imContextSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMContextSimple)
+	_imContextSimple = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IMContextSimple)
 
-	return imContextSimple
+	return _imContextSimple
 }
 
 // AddComposeFile adds an additional table from the X11 compose file.
 func (c imContextSimple) AddComposeFile(composeFile string) {
-	var arg0 *C.GtkIMContextSimple
-	var arg1 *C.gchar
+	var _arg0 *C.GtkIMContextSimple
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.gchar)(C.CString(composeFile))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.gchar)(C.CString(composeFile))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_im_context_simple_add_compose_file(arg0, arg1)
+	C.gtk_im_context_simple_add_compose_file(_arg0, _arg1)
 }

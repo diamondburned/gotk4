@@ -69,17 +69,17 @@ func marshalFileDescriptorBased(p uintptr) (interface{}, error) {
 
 // Fd gets the underlying file descriptor.
 func (f fileDescriptorBased) Fd() int {
-	var arg0 *C.GFileDescriptorBased
+	var _arg0 *C.GFileDescriptorBased
 
-	arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(f.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.g_file_descriptor_based_get_fd(arg0)
+	cret = C.g_file_descriptor_based_get_fd(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }

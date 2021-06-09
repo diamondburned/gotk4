@@ -118,38 +118,38 @@ func marshalActionable(p uintptr) (interface{}, error) {
 //
 // See gtk_actionable_set_action_name() for more information.
 func (a actionable) ActionName() string {
-	var arg0 *C.GtkActionable
+	var _arg0 *C.GtkActionable
 
-	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_actionable_get_action_name(arg0)
+	cret = C.gtk_actionable_get_action_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // ActionTargetValue gets the current target value of @actionable.
 //
 // See gtk_actionable_set_action_target_value() for more information.
 func (a actionable) ActionTargetValue() *glib.Variant {
-	var arg0 *C.GtkActionable
+	var _arg0 *C.GtkActionable
 
-	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.gtk_actionable_get_action_target_value(arg0)
+	cret = C.gtk_actionable_get_action_target_value(_arg0)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
 
-	return variant
+	return _variant
 }
 
 // SetActionName specifies the name of the action with which this widget
@@ -164,14 +164,14 @@ func (a actionable) ActionTargetValue() *glib.Variant {
 // This is the same form used for actions in the #GMenu associated with the
 // window.
 func (a actionable) SetActionName(actionName string) {
-	var arg0 *C.GtkActionable
-	var arg1 *C.char
+	var _arg0 *C.GtkActionable
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.char)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(actionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_actionable_set_action_name(arg0, arg1)
+	C.gtk_actionable_set_action_name(_arg0, _arg1)
 }
 
 // SetActionTargetValue sets the target value of an actionable widget.
@@ -192,13 +192,13 @@ func (a actionable) SetActionName(actionName string) {
 // the target value of the button, the button will now be rendered as active
 // (and the other buttons, with different targets, rendered inactive).
 func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
-	var arg0 *C.GtkActionable
-	var arg1 *C.GVariant
+	var _arg0 *C.GtkActionable
+	var _arg1 *C.GVariant
 
-	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
 
-	C.gtk_actionable_set_action_target_value(arg0, arg1)
+	C.gtk_actionable_set_action_target_value(_arg0, _arg1)
 }
 
 // SetDetailedActionName sets the action-name and associated string target
@@ -212,12 +212,12 @@ func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
 // the form `"action::target"` where `action` is the action name and
 // `target` is the string to use as the target.)
 func (a actionable) SetDetailedActionName(detailedActionName string) {
-	var arg0 *C.GtkActionable
-	var arg1 *C.char
+	var _arg0 *C.GtkActionable
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.char)(C.CString(detailedActionName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.char)(C.CString(detailedActionName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_actionable_set_detailed_action_name(arg0, arg1)
+	C.gtk_actionable_set_detailed_action_name(_arg0, _arg1)
 }

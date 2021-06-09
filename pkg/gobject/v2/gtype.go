@@ -78,222 +78,222 @@ const (
 // type is registered. The private structure can be retrieved using the
 // G_TYPE_CLASS_GET_PRIVATE() macro.
 func TypeAddClassPrivate(classType externglib.Type, privateSize uint) {
-	var arg1 C.GType
-	var arg2 C.gsize
+	var _arg1 C.GType
+	var _arg2 C.gsize
 
-	arg1 = C.GType(classType)
-	arg2 = C.gsize(privateSize)
+	_arg1 = C.GType(classType)
+	_arg2 = C.gsize(privateSize)
 
-	C.g_type_add_class_private(arg1, arg2)
+	C.g_type_add_class_private(_arg1, _arg2)
 }
 
 func TypeAddInstancePrivate(classType externglib.Type, privateSize uint) int {
-	var arg1 C.GType
-	var arg2 C.gsize
+	var _arg1 C.GType
+	var _arg2 C.gsize
 
-	arg1 = C.GType(classType)
-	arg2 = C.gsize(privateSize)
+	_arg1 = C.GType(classType)
+	_arg2 = C.gsize(privateSize)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_type_add_instance_private(arg1, arg2)
+	cret = C.g_type_add_instance_private(_arg1, _arg2)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // TypeAddInterfaceDynamic adds @interface_type to the dynamic
 // @instantiable_type. The information contained in the Plugin structure pointed
 // to by @plugin is used to manage the relationship.
 func TypeAddInterfaceDynamic(instanceType externglib.Type, interfaceType externglib.Type, plugin TypePlugin) {
-	var arg1 C.GType
-	var arg2 C.GType
-	var arg3 *C.GTypePlugin
+	var _arg1 C.GType
+	var _arg2 C.GType
+	var _arg3 *C.GTypePlugin
 
-	arg1 = C.GType(instanceType)
-	arg2 = C.GType(interfaceType)
-	arg3 = (*C.GTypePlugin)(unsafe.Pointer(plugin.Native()))
+	_arg1 = C.GType(instanceType)
+	_arg2 = C.GType(interfaceType)
+	_arg3 = (*C.GTypePlugin)(unsafe.Pointer(plugin.Native()))
 
-	C.g_type_add_interface_dynamic(arg1, arg2, arg3)
+	C.g_type_add_interface_dynamic(_arg1, _arg2, _arg3)
 }
 
 // TypeAddInterfaceStatic adds @interface_type to the static @instantiable_type.
 // The information contained in the Info structure pointed to by @info is used
 // to manage the relationship.
 func TypeAddInterfaceStatic(instanceType externglib.Type, interfaceType externglib.Type, info *InterfaceInfo) {
-	var arg1 C.GType
-	var arg2 C.GType
-	var arg3 *C.GInterfaceInfo
+	var _arg1 C.GType
+	var _arg2 C.GType
+	var _arg3 *C.GInterfaceInfo
 
-	arg1 = C.GType(instanceType)
-	arg2 = C.GType(interfaceType)
-	arg3 = (*C.GInterfaceInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = C.GType(instanceType)
+	_arg2 = C.GType(interfaceType)
+	_arg3 = (*C.GInterfaceInfo)(unsafe.Pointer(info.Native()))
 
-	C.g_type_add_interface_static(arg1, arg2, arg3)
+	C.g_type_add_interface_static(_arg1, _arg2, _arg3)
 }
 
 // TypeCheckInstance: private helper function to aid implementation of the
 // G_TYPE_CHECK_INSTANCE() macro.
 func TypeCheckInstance(instance *TypeInstance) bool {
-	var arg1 *C.GTypeInstance
+	var _arg1 *C.GTypeInstance
 
-	arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
+	_arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_check_instance(arg1)
+	cret = C.g_type_check_instance(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 func TypeCheckInstanceCast(instance *TypeInstance, ifaceType externglib.Type) *TypeInstance {
-	var arg1 *C.GTypeInstance
-	var arg2 C.GType
+	var _arg1 *C.GTypeInstance
+	var _arg2 C.GType
 
-	arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
-	arg2 = C.GType(ifaceType)
+	_arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
+	_arg2 = C.GType(ifaceType)
 
-	var cret *C.GTypeInstance
+	var _cret *C.GTypeInstance
 
-	cret = C.g_type_check_instance_cast(arg1, arg2)
+	cret = C.g_type_check_instance_cast(_arg1, _arg2)
 
-	var typeInstance *TypeInstance
+	var _typeInstance *TypeInstance
 
-	typeInstance = WrapTypeInstance(unsafe.Pointer(cret))
+	_typeInstance = WrapTypeInstance(unsafe.Pointer(_cret))
 
-	return typeInstance
+	return _typeInstance
 }
 
 func TypeCheckInstanceIsA(instance *TypeInstance, ifaceType externglib.Type) bool {
-	var arg1 *C.GTypeInstance
-	var arg2 C.GType
+	var _arg1 *C.GTypeInstance
+	var _arg2 C.GType
 
-	arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
-	arg2 = C.GType(ifaceType)
+	_arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
+	_arg2 = C.GType(ifaceType)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_check_instance_is_a(arg1, arg2)
+	cret = C.g_type_check_instance_is_a(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 func TypeCheckInstanceIsFundamentallyA(instance *TypeInstance, fundamentalType externglib.Type) bool {
-	var arg1 *C.GTypeInstance
-	var arg2 C.GType
+	var _arg1 *C.GTypeInstance
+	var _arg2 C.GType
 
-	arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
-	arg2 = C.GType(fundamentalType)
+	_arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
+	_arg2 = C.GType(fundamentalType)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_check_instance_is_fundamentally_a(arg1, arg2)
+	cret = C.g_type_check_instance_is_fundamentally_a(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 func TypeCheckIsValueType(typ externglib.Type) bool {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_check_is_value_type(arg1)
+	cret = C.g_type_check_is_value_type(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 func TypeCheckValue(value **externglib.Value) bool {
-	var arg1 *C.GValue
+	var _arg1 *C.GValue
 
-	arg1 = (*C.GValue)(value.GValue)
+	_arg1 = (*C.GValue)(value.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_check_value(arg1)
+	cret = C.g_type_check_value(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 func TypeCheckValueHolds(value **externglib.Value, typ externglib.Type) bool {
-	var arg1 *C.GValue
-	var arg2 C.GType
+	var _arg1 *C.GValue
+	var _arg2 C.GType
 
-	arg1 = (*C.GValue)(value.GValue)
-	arg2 = C.GType(typ)
+	_arg1 = (*C.GValue)(value.GValue)
+	_arg2 = C.GType(typ)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_check_value_holds(arg1, arg2)
+	cret = C.g_type_check_value_holds(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TypeChildren: return a newly allocated and 0-terminated array of type IDs,
 // listing the child types of @type.
 func TypeChildren(typ externglib.Type) []externglib.Type {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret *C.GType
-	var arg2 *C.guint
+	var _cret *C.GType
+	var _arg2 *C.guint
 
-	cret = C.g_type_children(arg1)
+	cret = C.g_type_children(_arg1)
 
-	var gTypes []externglib.Type
+	var _gTypes []externglib.Type
 
 	{
 		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg2))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg2))
 
-		gTypes = make([]externglib.Type, arg2)
-		for i := 0; i < uintptr(arg2); i++ {
-			gTypes = externglib.Type(cret)
+		_gTypes = make([]externglib.Type, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_gTypes = externglib.Type(_cret)
 		}
 	}
 
-	return gTypes
+	return _gTypes
 }
 
 // TypeCreateInstance creates and initializes an instance of @type if @type is
@@ -312,37 +312,37 @@ func TypeChildren(typ externglib.Type) []externglib.Type {
 // type. Also language bindings should not use this function, but g_object_new()
 // instead.
 func TypeCreateInstance(typ externglib.Type) *TypeInstance {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret *C.GTypeInstance
+	var _cret *C.GTypeInstance
 
-	cret = C.g_type_create_instance(arg1)
+	cret = C.g_type_create_instance(_arg1)
 
-	var typeInstance *TypeInstance
+	var _typeInstance *TypeInstance
 
-	typeInstance = WrapTypeInstance(unsafe.Pointer(cret))
+	_typeInstance = WrapTypeInstance(unsafe.Pointer(_cret))
 
-	return typeInstance
+	return _typeInstance
 }
 
 // TypeDepth returns the length of the ancestry of the passed in type. This
 // includes the type itself, so that e.g. a fundamental type has depth 1.
 func TypeDepth(typ externglib.Type) uint {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_type_depth(arg1)
+	cret = C.g_type_depth(_arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // TypeEnsure ensures that the indicated @type has been registered with the type
@@ -357,11 +357,11 @@ func TypeDepth(typ externglib.Type) uint {
 // out by the compiler. Using g_type_ensure() guarantees that the type's
 // _get_type() method is called.
 func TypeEnsure(typ externglib.Type) {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	C.g_type_ensure(arg1)
+	C.g_type_ensure(_arg1)
 }
 
 // TypeFreeInstance frees an instance of a type, returning it to the instance
@@ -370,49 +370,49 @@ func TypeEnsure(typ externglib.Type) {
 // Like g_type_create_instance(), this function is reserved for implementors of
 // fundamental types.
 func TypeFreeInstance(instance *TypeInstance) {
-	var arg1 *C.GTypeInstance
+	var _arg1 *C.GTypeInstance
 
-	arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
+	_arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
 
-	C.g_type_free_instance(arg1)
+	C.g_type_free_instance(_arg1)
 }
 
 // TypeFromName: look up the type ID from a given type name, returning 0 if no
 // type has been registered under this name (this is the preferred method to
 // find out by name whether a specific type has been registered yet).
 func TypeFromName(name string) externglib.Type {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_type_from_name(arg1)
+	cret = C.g_type_from_name(_arg1)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // TypeFundamental: internal function, used to extract the fundamental type ID
 // portion. Use G_TYPE_FUNDAMENTAL() instead.
 func TypeFundamental(typeId externglib.Type) externglib.Type {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typeId)
+	_arg1 = C.GType(typeId)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_type_fundamental(arg1)
+	cret = C.g_type_fundamental(_arg1)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // TypeFundamentalNext returns the next free fundamental type id which can be
@@ -420,15 +420,15 @@ func TypeFundamental(typeId externglib.Type) externglib.Type {
 // The returned type ID represents the highest currently registered fundamental
 // type identifier.
 func TypeFundamentalNext() externglib.Type {
-	var cret C.GType
+	var _cret C.GType
 
 	cret = C.g_type_fundamental_next()
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // TypeGetInstanceCount returns the number of instances allocated of the
@@ -436,36 +436,36 @@ func TypeFundamentalNext() externglib.Type {
 // support and the instance_count debug flag is set (by setting the
 // GOBJECT_DEBUG variable to include instance-count).
 func TypeGetInstanceCount(typ externglib.Type) int {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.g_type_get_instance_count(arg1)
+	cret = C.g_type_get_instance_count(_arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // TypeGetPlugin returns the Plugin structure for @type.
 func TypeGetPlugin(typ externglib.Type) TypePlugin {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret *C.GTypePlugin
+	var _cret *C.GTypePlugin
 
-	cret = C.g_type_get_plugin(arg1)
+	cret = C.g_type_get_plugin(_arg1)
 
-	var typePlugin TypePlugin
+	var _typePlugin TypePlugin
 
-	typePlugin = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(TypePlugin)
+	_typePlugin = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TypePlugin)
 
-	return typePlugin
+	return _typePlugin
 }
 
 // TypeGetTypeRegistrationSerial returns an opaque serial number that represents
@@ -474,15 +474,15 @@ func TypeGetPlugin(typ externglib.Type) TypePlugin {
 // (such as g_type_from_name()) and know if the cache is still valid at a later
 // time by comparing the current serial with the one at the type lookup.
 func TypeGetTypeRegistrationSerial() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.g_type_get_type_registration_serial()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // TypeInit: this function used to initialise the type system. Since GLib 2.36,
@@ -498,61 +498,61 @@ func TypeInit() {
 // If you need to enable debugging features, use the GOBJECT_DEBUG environment
 // variable.
 func TypeInitWithDebugFlags(debugFlags TypeDebugFlags) {
-	var arg1 C.GTypeDebugFlags
+	var _arg1 C.GTypeDebugFlags
 
-	arg1 = (C.GTypeDebugFlags)(debugFlags)
+	_arg1 = (C.GTypeDebugFlags)(debugFlags)
 
-	C.g_type_init_with_debug_flags(arg1)
+	C.g_type_init_with_debug_flags(_arg1)
 }
 
 // TypeInterfaces: return a newly allocated and 0-terminated array of type IDs,
 // listing the interface types that @type conforms to.
 func TypeInterfaces(typ externglib.Type) []externglib.Type {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret *C.GType
-	var arg2 *C.guint
+	var _cret *C.GType
+	var _arg2 *C.guint
 
-	cret = C.g_type_interfaces(arg1)
+	cret = C.g_type_interfaces(_arg1)
 
-	var gTypes []externglib.Type
+	var _gTypes []externglib.Type
 
 	{
 		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg2))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg2))
 
-		gTypes = make([]externglib.Type, arg2)
-		for i := 0; i < uintptr(arg2); i++ {
-			gTypes = externglib.Type(cret)
+		_gTypes = make([]externglib.Type, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_gTypes = externglib.Type(_cret)
 		}
 	}
 
-	return gTypes
+	return _gTypes
 }
 
 // TypeIsA: if @is_a_type is a derivable type, check whether @type is a
 // descendant of @is_a_type. If @is_a_type is an interface, check whether @type
 // conforms to it.
 func TypeIsA(typ externglib.Type, isAType externglib.Type) bool {
-	var arg1 C.GType
-	var arg2 C.GType
+	var _arg1 C.GType
+	var _arg2 C.GType
 
-	arg1 = C.GType(typ)
-	arg2 = C.GType(isAType)
+	_arg1 = C.GType(typ)
+	_arg2 = C.GType(isAType)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_is_a(arg1, arg2)
+	cret = C.g_type_is_a(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TypeName: get the unique name that is assigned to a type ID. Note that this
@@ -561,35 +561,35 @@ func TypeIsA(typ externglib.Type, isAType externglib.Type) bool {
 // registered type ID, but randomized type IDs should not be passed in and will
 // most likely lead to a crash.
 func TypeName(typ externglib.Type) string {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_type_name(arg1)
+	cret = C.g_type_name(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 func TypeNameFromInstance(instance *TypeInstance) string {
-	var arg1 *C.GTypeInstance
+	var _arg1 *C.GTypeInstance
 
-	arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
+	_arg1 = (*C.GTypeInstance)(unsafe.Pointer(instance.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_type_name_from_instance(arg1)
+	cret = C.g_type_name_from_instance(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // TypeNextBase: given a @leaf_type and a @root_type which is contained in its
@@ -599,39 +599,39 @@ func TypeNameFromInstance(instance *TypeInstance) string {
 // leaf type, this function can be used to determine the types and order in
 // which the leaf type is descended from the root type.
 func TypeNextBase(leafType externglib.Type, rootType externglib.Type) externglib.Type {
-	var arg1 C.GType
-	var arg2 C.GType
+	var _arg1 C.GType
+	var _arg2 C.GType
 
-	arg1 = C.GType(leafType)
-	arg2 = C.GType(rootType)
+	_arg1 = C.GType(leafType)
+	_arg2 = C.GType(rootType)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_type_next_base(arg1, arg2)
+	cret = C.g_type_next_base(_arg1, _arg2)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // TypeParent: return the direct parent type of the passed in type. If the
 // passed in type has no parent, i.e. is a fundamental type, 0 is returned.
 func TypeParent(typ externglib.Type) externglib.Type {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_type_parent(arg1)
+	cret = C.g_type_parent(_arg1)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // TypeQuery queries the type system for information about a specific type. This
@@ -640,15 +640,15 @@ func TypeParent(typ externglib.Type) externglib.Type {
 // is 0. All members filled into the Query structure should be considered
 // constant and have to be left untouched.
 func TypeQuery(typ externglib.Type) TypeQuery {
-	var arg1 C.GType
+	var _arg1 C.GType
 
-	arg1 = C.GType(typ)
+	_arg1 = C.GType(typ)
 
-	var query TypeQuery
+	var _query TypeQuery
 
-	C.g_type_query(arg1, (*C.GTypeQuery)(unsafe.Pointer(&query)))
+	C.g_type_query(_arg1, (*C.GTypeQuery)(unsafe.Pointer(&_query)))
 
-	return query
+	return _query
 }
 
 // TypeRegisterDynamic registers @type_name as the name of a new dynamic type
@@ -657,26 +657,26 @@ func TypeQuery(typ externglib.Type) TypeQuery {
 // instances (if not abstract). The value of @flags determines the nature (e.g.
 // abstract or not) of the type.
 func TypeRegisterDynamic(parentType externglib.Type, typeName string, plugin TypePlugin, flags TypeFlags) externglib.Type {
-	var arg1 C.GType
-	var arg2 *C.gchar
-	var arg3 *C.GTypePlugin
-	var arg4 C.GTypeFlags
+	var _arg1 C.GType
+	var _arg2 *C.gchar
+	var _arg3 *C.GTypePlugin
+	var _arg4 C.GTypeFlags
 
-	arg1 = C.GType(parentType)
-	arg2 = (*C.gchar)(C.CString(typeName))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.GTypePlugin)(unsafe.Pointer(plugin.Native()))
-	arg4 = (C.GTypeFlags)(flags)
+	_arg1 = C.GType(parentType)
+	_arg2 = (*C.gchar)(C.CString(typeName))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GTypePlugin)(unsafe.Pointer(plugin.Native()))
+	_arg4 = (C.GTypeFlags)(flags)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_type_register_dynamic(arg1, arg2, arg3, arg4)
+	cret = C.g_type_register_dynamic(_arg1, _arg2, _arg3, _arg4)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // TypeRegisterFundamental registers @type_id as the predefined identifier and
@@ -687,28 +687,28 @@ func TypeRegisterDynamic(parentType externglib.Type, typeName string, plugin Typ
 // @finfo to manage the type and its instances. The value of @flags determines
 // additional characteristics of the fundamental type.
 func TypeRegisterFundamental(typeId externglib.Type, typeName string, info *TypeInfo, finfo *TypeFundamentalInfo, flags TypeFlags) externglib.Type {
-	var arg1 C.GType
-	var arg2 *C.gchar
-	var arg3 *C.GTypeInfo
-	var arg4 *C.GTypeFundamentalInfo
-	var arg5 C.GTypeFlags
+	var _arg1 C.GType
+	var _arg2 *C.gchar
+	var _arg3 *C.GTypeInfo
+	var _arg4 *C.GTypeFundamentalInfo
+	var _arg5 C.GTypeFlags
 
-	arg1 = C.GType(typeId)
-	arg2 = (*C.gchar)(C.CString(typeName))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.GTypeInfo)(unsafe.Pointer(info.Native()))
-	arg4 = (*C.GTypeFundamentalInfo)(unsafe.Pointer(finfo.Native()))
-	arg5 = (C.GTypeFlags)(flags)
+	_arg1 = C.GType(typeId)
+	_arg2 = (*C.gchar)(C.CString(typeName))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GTypeInfo)(unsafe.Pointer(info.Native()))
+	_arg4 = (*C.GTypeFundamentalInfo)(unsafe.Pointer(finfo.Native()))
+	_arg5 = (C.GTypeFlags)(flags)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_type_register_fundamental(arg1, arg2, arg3, arg4, arg5)
+	cret = C.g_type_register_fundamental(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // TypeRegisterStatic registers @type_name as the name of a new static type
@@ -717,46 +717,46 @@ func TypeRegisterFundamental(typeId externglib.Type, typeName string, info *Type
 // (if not abstract). The value of @flags determines the nature (e.g. abstract
 // or not) of the type.
 func TypeRegisterStatic(parentType externglib.Type, typeName string, info *TypeInfo, flags TypeFlags) externglib.Type {
-	var arg1 C.GType
-	var arg2 *C.gchar
-	var arg3 *C.GTypeInfo
-	var arg4 C.GTypeFlags
+	var _arg1 C.GType
+	var _arg2 *C.gchar
+	var _arg3 *C.GTypeInfo
+	var _arg4 C.GTypeFlags
 
-	arg1 = C.GType(parentType)
-	arg2 = (*C.gchar)(C.CString(typeName))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.GTypeInfo)(unsafe.Pointer(info.Native()))
-	arg4 = (C.GTypeFlags)(flags)
+	_arg1 = C.GType(parentType)
+	_arg2 = (*C.gchar)(C.CString(typeName))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GTypeInfo)(unsafe.Pointer(info.Native()))
+	_arg4 = (C.GTypeFlags)(flags)
 
-	var cret C.GType
+	var _cret C.GType
 
-	cret = C.g_type_register_static(arg1, arg2, arg3, arg4)
+	cret = C.g_type_register_static(_arg1, _arg2, _arg3, _arg4)
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 func TypeTestFlags(typ externglib.Type, flags uint) bool {
-	var arg1 C.GType
-	var arg2 C.guint
+	var _arg1 C.GType
+	var _arg2 C.guint
 
-	arg1 = C.GType(typ)
-	arg2 = C.guint(flags)
+	_arg1 = C.GType(typ)
+	_arg2 = C.guint(flags)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_type_test_flags(arg1, arg2)
+	cret = C.g_type_test_flags(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // InterfaceInfo: a structure that provides information to the type system which
@@ -912,21 +912,21 @@ func (t *TypeInstance) Native() unsafe.Pointer {
 }
 
 func (i *TypeInstance) Private(privateType externglib.Type) interface{} {
-	var arg0 *C.GTypeInstance
-	var arg1 C.GType
+	var _arg0 *C.GTypeInstance
+	var _arg1 C.GType
 
-	arg0 = (*C.GTypeInstance)(unsafe.Pointer(i.Native()))
-	arg1 = C.GType(privateType)
+	_arg0 = (*C.GTypeInstance)(unsafe.Pointer(i.Native()))
+	_arg1 = C.GType(privateType)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_type_instance_get_private(arg0, arg1)
+	cret = C.g_type_instance_get_private(_arg0, _arg1)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // TypeQuery: a structure holding information for a specific type. It is filled

@@ -75,49 +75,49 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 
 // NewCheckButton constructs a class CheckButton.
 func NewCheckButton() CheckButton {
-	var cret C.GtkCheckButton
+	var _cret C.GtkCheckButton
 
 	cret = C.gtk_check_button_new()
 
-	var checkButton CheckButton
+	var _checkButton CheckButton
 
-	checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
 
-	return checkButton
+	return _checkButton
 }
 
 // NewCheckButtonWithLabel constructs a class CheckButton.
 func NewCheckButtonWithLabel(label string) CheckButton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkCheckButton
+	var _cret C.GtkCheckButton
 
-	cret = C.gtk_check_button_new_with_label(arg1)
+	cret = C.gtk_check_button_new_with_label(_arg1)
 
-	var checkButton CheckButton
+	var _checkButton CheckButton
 
-	checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
 
-	return checkButton
+	return _checkButton
 }
 
 // NewCheckButtonWithMnemonic constructs a class CheckButton.
 func NewCheckButtonWithMnemonic(label string) CheckButton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkCheckButton
+	var _cret C.GtkCheckButton
 
-	cret = C.gtk_check_button_new_with_mnemonic(arg1)
+	cret = C.gtk_check_button_new_with_mnemonic(_arg1)
 
-	var checkButton CheckButton
+	var _checkButton CheckButton
 
-	checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CheckButton)
+	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
 
-	return checkButton
+	return _checkButton
 }

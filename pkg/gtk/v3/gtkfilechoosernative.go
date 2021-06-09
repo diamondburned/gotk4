@@ -230,64 +230,64 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 
 // NewFileChooserNative constructs a class FileChooserNative.
 func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative {
-	var arg1 *C.gchar
-	var arg2 *C.GtkWindow
-	var arg3 C.GtkFileChooserAction
-	var arg4 *C.gchar
-	var arg5 *C.gchar
+	var _arg1 *C.gchar
+	var _arg2 *C.GtkWindow
+	var _arg3 C.GtkFileChooserAction
+	var _arg4 *C.gchar
+	var _arg5 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(title))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	arg3 = (C.GtkFileChooserAction)(action)
-	arg4 = (*C.gchar)(C.CString(acceptLabel))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (*C.gchar)(C.CString(cancelLabel))
-	defer C.free(unsafe.Pointer(arg5))
+	_arg1 = (*C.gchar)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg3 = (C.GtkFileChooserAction)(action)
+	_arg4 = (*C.gchar)(C.CString(acceptLabel))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(C.CString(cancelLabel))
+	defer C.free(unsafe.Pointer(_arg5))
 
-	var cret C.GtkFileChooserNative
+	var _cret C.GtkFileChooserNative
 
-	cret = C.gtk_file_chooser_native_new(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var fileChooserNative FileChooserNative
+	var _fileChooserNative FileChooserNative
 
-	fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FileChooserNative)
+	_fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileChooserNative)
 
-	return fileChooserNative
+	return _fileChooserNative
 }
 
 // AcceptLabel retrieves the custom label text for the accept button.
 func (s fileChooserNative) AcceptLabel() string {
-	var arg0 *C.GtkFileChooserNative
+	var _arg0 *C.GtkFileChooserNative
 
-	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_file_chooser_native_get_accept_label(arg0)
+	cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // CancelLabel retrieves the custom label text for the cancel button.
 func (s fileChooserNative) CancelLabel() string {
-	var arg0 *C.GtkFileChooserNative
+	var _arg0 *C.GtkFileChooserNative
 
-	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_file_chooser_native_get_cancel_label(arg0)
+	cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // SetAcceptLabel sets the custom label text for the accept button.
@@ -298,14 +298,14 @@ func (s fileChooserNative) CancelLabel() string {
 // keyboard accelerator called a mnemonic. Pressing Alt and that key
 // activates the button.
 func (s fileChooserNative) SetAcceptLabel(acceptLabel string) {
-	var arg0 *C.GtkFileChooserNative
-	var arg1 *C.char
+	var _arg0 *C.GtkFileChooserNative
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(acceptLabel))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(acceptLabel))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_file_chooser_native_set_accept_label(arg0, arg1)
+	C.gtk_file_chooser_native_set_accept_label(_arg0, _arg1)
 }
 
 // SetCancelLabel sets the custom label text for the cancel button.
@@ -316,12 +316,12 @@ func (s fileChooserNative) SetAcceptLabel(acceptLabel string) {
 // keyboard accelerator called a mnemonic. Pressing Alt and that key
 // activates the button.
 func (s fileChooserNative) SetCancelLabel(cancelLabel string) {
-	var arg0 *C.GtkFileChooserNative
-	var arg1 *C.char
+	var _arg0 *C.GtkFileChooserNative
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.char)(C.CString(cancelLabel))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(cancelLabel))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_file_chooser_native_set_cancel_label(arg0, arg1)
+	C.gtk_file_chooser_native_set_cancel_label(_arg0, _arg1)
 }

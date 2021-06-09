@@ -91,48 +91,48 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 
 // NewEditableLabel constructs a class EditableLabel.
 func NewEditableLabel(str string) EditableLabel {
-	var arg1 *C.char
+	var _arg1 *C.char
 
-	arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.char)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkEditableLabel
+	var _cret C.GtkEditableLabel
 
-	cret = C.gtk_editable_label_new(arg1)
+	cret = C.gtk_editable_label_new(_arg1)
 
-	var editableLabel EditableLabel
+	var _editableLabel EditableLabel
 
-	editableLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(EditableLabel)
+	_editableLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EditableLabel)
 
-	return editableLabel
+	return _editableLabel
 }
 
 // Editing returns whether the label is currently in “editing mode”.
 func (s editableLabel) Editing() bool {
-	var arg0 *C.GtkEditableLabel
+	var _arg0 *C.GtkEditableLabel
 
-	arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_editable_label_get_editing(arg0)
+	cret = C.gtk_editable_label_get_editing(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // StartEditing switches the label into “editing mode”.
 func (s editableLabel) StartEditing() {
-	var arg0 *C.GtkEditableLabel
+	var _arg0 *C.GtkEditableLabel
 
-	arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
-	C.gtk_editable_label_start_editing(arg0)
+	C.gtk_editable_label_start_editing(_arg0)
 }
 
 // StopEditing switches the label out of “editing mode”. If @commit is true,
@@ -140,13 +140,13 @@ func (s editableLabel) StartEditing() {
 // the resulting text is discarded and the label will keep its previous
 // Editable:text property value.
 func (s editableLabel) StopEditing(commit bool) {
-	var arg0 *C.GtkEditableLabel
-	var arg1 C.gboolean
+	var _arg0 *C.GtkEditableLabel
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 	if commit {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_editable_label_stop_editing(arg0, arg1)
+	C.gtk_editable_label_stop_editing(_arg0, _arg1)
 }

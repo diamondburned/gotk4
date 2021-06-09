@@ -69,21 +69,21 @@ const (
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the 0th bit, set @nth_bit to -1.
 func BitNthLsf(mask uint32, nthBit int) int {
-	var arg1 C.gulong
-	var arg2 C.gint
+	var _arg1 C.gulong
+	var _arg2 C.gint
 
-	arg1 = C.gulong(mask)
-	arg2 = C.gint(nthBit)
+	_arg1 = C.gulong(mask)
+	_arg2 = C.gint(nthBit)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_bit_nth_lsf(arg1, arg2)
+	cret = C.g_bit_nth_lsf(_arg1, _arg2)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // BitNthMsf: find the position of the first bit set in @mask, searching from
@@ -91,39 +91,39 @@ func BitNthLsf(mask uint32, nthBit int) int {
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the last bit, set @nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
 func BitNthMsf(mask uint32, nthBit int) int {
-	var arg1 C.gulong
-	var arg2 C.gint
+	var _arg1 C.gulong
+	var _arg2 C.gint
 
-	arg1 = C.gulong(mask)
-	arg2 = C.gint(nthBit)
+	_arg1 = C.gulong(mask)
+	_arg2 = C.gint(nthBit)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_bit_nth_msf(arg1, arg2)
+	cret = C.g_bit_nth_msf(_arg1, _arg2)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // BitStorage gets the number of bits used to hold @number, e.g. if @number is
 // 4, 3 bits are needed.
 func BitStorage(number uint32) uint {
-	var arg1 C.gulong
+	var _arg1 C.gulong
 
-	arg1 = C.gulong(number)
+	_arg1 = C.gulong(number)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_bit_storage(arg1)
+	cret = C.g_bit_storage(_arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // FindProgramInPath locates the first executable named @program in the user's
@@ -141,21 +141,21 @@ func BitStorage(number uint32) uint {
 // the `PATH` environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
 func FindProgramInPath(program *string) *string {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(program))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(program))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_find_program_in_path(arg1)
+	cret = C.g_find_program_in_path(_arg1)
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_filename = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return filename
+	return _filename
 }
 
 // FormatSize formats a size (for example the size of a file) into a human
@@ -172,20 +172,20 @@ func FindProgramInPath(program *string) *string {
 // See g_format_size_full() for more options about how the size might be
 // formatted.
 func FormatSize(size uint64) string {
-	var arg1 C.guint64
+	var _arg1 C.guint64
 
-	arg1 = C.guint64(size)
+	_arg1 = C.guint64(size)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_format_size(arg1)
+	cret = C.g_format_size(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // FormatSizeForDisplay formats a size (for example the size of a file) into a
@@ -197,20 +197,20 @@ func FormatSize(size uint64) string {
 //
 // This string should be freed with g_free() when not needed any longer.
 func FormatSizeForDisplay(size int64) string {
-	var arg1 C.goffset
+	var _arg1 C.goffset
 
-	arg1 = C.goffset(size)
+	_arg1 = C.goffset(size)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_format_size_for_display(arg1)
+	cret = C.g_format_size_for_display(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // FormatSizeFull formats a size.
@@ -218,22 +218,22 @@ func FormatSizeForDisplay(size int64) string {
 // This function is similar to g_format_size() but allows for flags that modify
 // the output. See SizeFlags.
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
-	var arg1 C.guint64
-	var arg2 C.GFormatSizeFlags
+	var _arg1 C.guint64
+	var _arg2 C.GFormatSizeFlags
 
-	arg1 = C.guint64(size)
-	arg2 = (C.GFormatSizeFlags)(flags)
+	_arg1 = C.guint64(size)
+	_arg2 = (C.GFormatSizeFlags)(flags)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_format_size_full(arg1, arg2)
+	cret = C.g_format_size_full(_arg1, _arg2)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // GetApplicationName gets a human-readable name for the application, as set by
@@ -243,15 +243,15 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 // the result of g_get_prgname() (which may be nil if g_set_prgname() has also
 // not been called).
 func GetApplicationName() string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_application_name()
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // GetHomeDir gets the current user's home directory.
@@ -275,15 +275,15 @@ func GetApplicationName() string {
 // the `HOME` environment variable yourself or unset it before calling any
 // functions in GLib.
 func GetHomeDir() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_home_dir()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetHostName: return a name for the machine.
@@ -299,15 +299,15 @@ func GetHomeDir() *string {
 //
 // The encoding of the returned string is UTF-8.
 func GetHostName() string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_host_name()
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // GetOsInfo: get information about the operating system.
@@ -319,21 +319,21 @@ func GetHostName() string {
 // may be useful. No key is guaranteed to be provided, so the caller should
 // always check if the result is nil.
 func GetOsInfo(keyName string) string {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(keyName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(keyName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_get_os_info(arg1)
+	cret = C.g_get_os_info(_arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // GetPrgname gets the name of the program. This name should not be localized,
@@ -344,15 +344,15 @@ func GetOsInfo(keyName string) string {
 // called by gtk_init() and the Application::startup handler. The program name
 // is found by taking the last component of @argv[0].
 func GetPrgname() string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_prgname()
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // GetRealName gets the real name of the user. This usually comes from the
@@ -360,15 +360,15 @@ func GetPrgname() string {
 // system-defined. (On Windows, it is, however, always UTF-8.) If the real user
 // name cannot be determined, the string "Unknown" is returned.
 func GetRealName() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_real_name()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetSystemConfigDirs returns an ordered list of base directories in which to
@@ -388,15 +388,15 @@ func GetRealName() *string {
 // the CSIDL_COMMON_APPDATA folder. This information will not roam and is
 // available to anyone using the computer.
 func GetSystemConfigDirs() []*string {
-	var cret **C.gchar
+	var _cret **C.gchar
 
 	cret = C.g_get_system_config_dirs()
 
-	var filenames []*string
+	var _filenames []*string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -404,15 +404,15 @@ func GetSystemConfigDirs() []*string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		filenames = make([]*string, length)
+		_filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			filenames = C.GoString(cret)
+			_filenames = C.GoString(_cret)
 		}
 	}
 
-	return filenames
+	return _filenames
 }
 
 // GetSystemDataDirs returns an ordered list of base directories in which to
@@ -444,15 +444,15 @@ func GetSystemConfigDirs() []*string {
 // Note that on Windows the returned list can vary depending on where this
 // function is called.
 func GetSystemDataDirs() []*string {
-	var cret **C.gchar
+	var _cret **C.gchar
 
 	cret = C.g_get_system_data_dirs()
 
-	var filenames []*string
+	var _filenames []*string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -460,15 +460,15 @@ func GetSystemDataDirs() []*string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		filenames = make([]*string, length)
+		_filenames = make([]*string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			filenames = C.GoString(cret)
+			_filenames = C.GoString(_cret)
 		}
 	}
 
-	return filenames
+	return _filenames
 }
 
 // GetTmpDir gets the directory to use for temporary files.
@@ -483,15 +483,15 @@ func GetSystemDataDirs() []*string {
 // The encoding of the returned string is system-defined. On Windows, it is
 // always UTF-8. The return value is never nil or the empty string.
 func GetTmpDir() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_tmp_dir()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetUserCacheDir returns a base directory in which to store non-essential,
@@ -509,15 +509,15 @@ func GetTmpDir() *string {
 // Files`. See the documentation for `CSIDL_INTERNET_CACHE`
 // (https://msdn.microsoft.com/en-us/library/windows/desktop/bb76249428v=vs.8529.aspx#csidl_internet_cache).
 func GetUserCacheDir() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_user_cache_dir()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetUserConfigDir returns a base directory in which to store user-specific
@@ -536,15 +536,15 @@ func GetUserCacheDir() *string {
 // Note that in this case on Windows it will be the same as what
 // g_get_user_data_dir() returns.
 func GetUserConfigDir() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_user_config_dir()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetUserDataDir returns a base directory in which to access application data
@@ -563,15 +563,15 @@ func GetUserConfigDir() *string {
 // Note that in this case on Windows it will be the same as what
 // g_get_user_config_dir() returns.
 func GetUserDataDir() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_user_data_dir()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetUserName gets the user name of the current user. The encoding of the
@@ -579,15 +579,15 @@ func GetUserDataDir() *string {
 // name encoding, or something else, and there is no guarantee that it is even
 // consistent on a machine. On Windows, it is always UTF-8.
 func GetUserName() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_user_name()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetUserRuntimeDir returns a directory that is unique to the current user on
@@ -599,15 +599,15 @@ func GetUserName() *string {
 // case that this variable is not set, we return the value of
 // g_get_user_cache_dir(), after verifying that it exists.
 func GetUserRuntimeDir() *string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.g_get_user_runtime_dir()
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // GetUserSpecialDir returns the full path of a special directory using its
@@ -621,28 +621,28 @@ func GetUserRuntimeDir() *string {
 // special directory without requiring the session to restart; GLib will not
 // reflect any change once the special directories are loaded.
 func GetUserSpecialDir(directory UserDirectory) *string {
-	var arg1 C.GUserDirectory
+	var _arg1 C.GUserDirectory
 
-	arg1 = (C.GUserDirectory)(directory)
+	_arg1 = (C.GUserDirectory)(directory)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_get_user_special_dir(arg1)
+	cret = C.g_get_user_special_dir(_arg1)
 
-	var filename *string
+	var _filename *string
 
-	filename = C.GoString(cret)
+	_filename = C.GoString(_cret)
 
-	return filename
+	return _filename
 }
 
 // NullifyPointer: set the pointer at the specified location to nil.
 func NullifyPointer(nullifyLocation *interface{}) {
-	var arg1 *C.gpointer
+	var _arg1 *C.gpointer
 
-	arg1 = *C.gpointer(nullifyLocation)
+	_arg1 = *C.gpointer(nullifyLocation)
 
-	C.g_nullify_pointer(arg1)
+	C.g_nullify_pointer(_arg1)
 }
 
 // ParseDebugString parses a string containing debugging options into a guint
@@ -656,15 +656,15 @@ func NullifyPointer(nullifyLocation *interface{}) {
 // If @string is equal to "help", all the available keys in @keys are printed
 // out to standard error.
 func ParseDebugString() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.g_parse_debug_string()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // ReloadUserSpecialDirsCache resets the cache used for
@@ -690,12 +690,12 @@ func ReloadUserSpecialDirsCache() {
 // The application name will be used in contexts such as error messages, or when
 // displaying an application's name in the task list.
 func SetApplicationName(applicationName string) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(applicationName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(applicationName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_set_application_name(arg1)
+	C.g_set_application_name(_arg1)
 }
 
 // SetPrgname sets the name of the program. This name should not be localized,
@@ -708,12 +708,12 @@ func SetApplicationName(applicationName string) {
 //
 // Note that for thread-safety reasons this function can only be called once.
 func SetPrgname(prgname string) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(prgname))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(prgname))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.g_set_prgname(arg1)
+	C.g_set_prgname(_arg1)
 }
 
 // DebugKey associates a string with a bit flag. Used in g_parse_debug_string().

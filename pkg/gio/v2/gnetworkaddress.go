@@ -77,89 +77,89 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 
 // NewNetworkAddress constructs a class NetworkAddress.
 func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
-	var arg1 *C.gchar
-	var arg2 C.guint16
+	var _arg1 *C.gchar
+	var _arg2 C.guint16
 
-	arg1 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.guint16(port)
+	_arg1 = (*C.gchar)(C.CString(hostname))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint16(port)
 
-	var cret C.GNetworkAddress
+	var _cret C.GNetworkAddress
 
-	cret = C.g_network_address_new(arg1, arg2)
+	cret = C.g_network_address_new(_arg1, _arg2)
 
-	var networkAddress NetworkAddress
+	var _networkAddress NetworkAddress
 
-	networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
 
-	return networkAddress
+	return _networkAddress
 }
 
 // NewNetworkAddressLoopback constructs a class NetworkAddress.
 func NewNetworkAddressLoopback(port uint16) NetworkAddress {
-	var arg1 C.guint16
+	var _arg1 C.guint16
 
-	arg1 = C.guint16(port)
+	_arg1 = C.guint16(port)
 
-	var cret C.GNetworkAddress
+	var _cret C.GNetworkAddress
 
-	cret = C.g_network_address_new_loopback(arg1)
+	cret = C.g_network_address_new_loopback(_arg1)
 
-	var networkAddress NetworkAddress
+	var _networkAddress NetworkAddress
 
-	networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(NetworkAddress)
+	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
 
-	return networkAddress
+	return _networkAddress
 }
 
 // Hostname gets @addr's hostname. This might be either UTF-8 or
 // ASCII-encoded, depending on what @addr was created with.
 func (a networkAddress) Hostname() string {
-	var arg0 *C.GNetworkAddress
+	var _arg0 *C.GNetworkAddress
 
-	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_network_address_get_hostname(arg0)
+	cret = C.g_network_address_get_hostname(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Port gets @addr's port number
 func (a networkAddress) Port() uint16 {
-	var arg0 *C.GNetworkAddress
+	var _arg0 *C.GNetworkAddress
 
-	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
-	var cret C.guint16
+	var _cret C.guint16
 
-	cret = C.g_network_address_get_port(arg0)
+	cret = C.g_network_address_get_port(_arg0)
 
-	var guint16 uint16
+	var _guint16 uint16
 
-	guint16 = (uint16)(cret)
+	_guint16 = (uint16)(_cret)
 
-	return guint16
+	return _guint16
 }
 
 // Scheme gets @addr's scheme
 func (a networkAddress) Scheme() string {
-	var arg0 *C.GNetworkAddress
+	var _arg0 *C.GNetworkAddress
 
-	arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_network_address_get_scheme(arg0)
+	cret = C.g_network_address_get_scheme(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }

@@ -156,110 +156,110 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 
 // NewToggleButton constructs a class ToggleButton.
 func NewToggleButton() ToggleButton {
-	var cret C.GtkToggleButton
+	var _cret C.GtkToggleButton
 
 	cret = C.gtk_toggle_button_new()
 
-	var toggleButton ToggleButton
+	var _toggleButton ToggleButton
 
-	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
 
-	return toggleButton
+	return _toggleButton
 }
 
 // NewToggleButtonWithLabel constructs a class ToggleButton.
 func NewToggleButtonWithLabel(label string) ToggleButton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkToggleButton
+	var _cret C.GtkToggleButton
 
-	cret = C.gtk_toggle_button_new_with_label(arg1)
+	cret = C.gtk_toggle_button_new_with_label(_arg1)
 
-	var toggleButton ToggleButton
+	var _toggleButton ToggleButton
 
-	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
 
-	return toggleButton
+	return _toggleButton
 }
 
 // NewToggleButtonWithMnemonic constructs a class ToggleButton.
 func NewToggleButtonWithMnemonic(label string) ToggleButton {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(label))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.GtkToggleButton
+	var _cret C.GtkToggleButton
 
-	cret = C.gtk_toggle_button_new_with_mnemonic(arg1)
+	cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
 
-	var toggleButton ToggleButton
+	var _toggleButton ToggleButton
 
-	toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ToggleButton)
+	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
 
-	return toggleButton
+	return _toggleButton
 }
 
 // Active queries a ToggleButton and returns its current state. Returns true
 // if the toggle button is pressed in and false if it is raised.
 func (t toggleButton) Active() bool {
-	var arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_toggle_button_get_active(arg0)
+	cret = C.gtk_toggle_button_get_active(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
 func (t toggleButton) Inconsistent() bool {
-	var arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_toggle_button_get_inconsistent(arg0)
+	cret = C.gtk_toggle_button_get_inconsistent(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Mode retrieves whether the button is displayed as a separate indicator
 // and label. See gtk_toggle_button_set_mode().
 func (t toggleButton) Mode() bool {
-	var arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_toggle_button_get_mode(arg0)
+	cret = C.gtk_toggle_button_get_mode(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetActive sets the status of the toggle button. Set to true if you want
@@ -267,15 +267,15 @@ func (t toggleButton) Mode() bool {
 // action causes the ToggleButton::toggled signal and the Button::clicked
 // signal to be emitted.
 func (t toggleButton) SetActive(isActive bool) {
-	var arg0 *C.GtkToggleButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if isActive {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_button_set_active(arg0, arg1)
+	C.gtk_toggle_button_set_active(_arg0, _arg1)
 }
 
 // SetInconsistent: if the user has selected a range of elements (such as
@@ -287,15 +287,15 @@ func (t toggleButton) SetActive(isActive bool) {
 // manually, gtk_toggle_button_set_inconsistent() only affects visual
 // appearance, it doesn’t affect the semantics of the button.
 func (t toggleButton) SetInconsistent(setting bool) {
-	var arg0 *C.GtkToggleButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if setting {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_button_set_inconsistent(arg0, arg1)
+	C.gtk_toggle_button_set_inconsistent(_arg0, _arg1)
 }
 
 // SetMode sets whether the button is displayed as a separate indicator and
@@ -309,23 +309,23 @@ func (t toggleButton) SetInconsistent(setting bool) {
 // RadioButton that derive from ToggleButton, not instances of ToggleButton
 // itself.
 func (t toggleButton) SetMode(drawIndicator bool) {
-	var arg0 *C.GtkToggleButton
-	var arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if drawIndicator {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_toggle_button_set_mode(arg0, arg1)
+	C.gtk_toggle_button_set_mode(_arg0, _arg1)
 }
 
 // Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 // is no good reason for an application ever to call this function.
 func (t toggleButton) Toggled() {
-	var arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton
 
-	arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	C.gtk_toggle_button_toggled(arg0)
+	C.gtk_toggle_button_toggled(_arg0)
 }

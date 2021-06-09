@@ -43,22 +43,22 @@ func marshalValueArray(p uintptr) (interface{}, error) {
 
 // NewValueArray constructs a struct ValueArray.
 func NewValueArray(nPrealloced uint) *ValueArray {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(nPrealloced)
+	_arg1 = C.guint(nPrealloced)
 
-	var cret *C.GValueArray
+	var _cret *C.GValueArray
 
-	cret = C.g_value_array_new(arg1)
+	cret = C.g_value_array_new(_arg1)
 
-	var valueArray *ValueArray
+	var _valueArray *ValueArray
 
-	valueArray = WrapValueArray(unsafe.Pointer(cret))
-	runtime.SetFinalizer(valueArray, func(v *ValueArray) {
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_valueArray, func(v *ValueArray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return valueArray
+	return _valueArray
 }
 
 // Native returns the underlying C source pointer.
@@ -83,130 +83,130 @@ func (v *ValueArray) Values() **externglib.Value {
 // Append: insert a copy of @value as last element of @value_array. If @value is
 // nil, an uninitialized value is appended.
 func (v *ValueArray) Append(value **externglib.Value) *ValueArray {
-	var arg0 *C.GValueArray
-	var arg1 *C.GValue
+	var _arg0 *C.GValueArray
+	var _arg1 *C.GValue
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.GValue)(value.GValue)
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GValue)(value.GValue)
 
-	var cret *C.GValueArray
+	var _cret *C.GValueArray
 
-	cret = C.g_value_array_append(arg0, arg1)
+	cret = C.g_value_array_append(_arg0, _arg1)
 
-	var valueArray *ValueArray
+	var _valueArray *ValueArray
 
-	valueArray = WrapValueArray(unsafe.Pointer(cret))
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
 
-	return valueArray
+	return _valueArray
 }
 
 // Copy: construct an exact copy of a Array by duplicating all its contents.
 func (v *ValueArray) Copy() *ValueArray {
-	var arg0 *C.GValueArray
+	var _arg0 *C.GValueArray
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GValueArray
+	var _cret *C.GValueArray
 
-	cret = C.g_value_array_copy(arg0)
+	cret = C.g_value_array_copy(_arg0)
 
-	var valueArray *ValueArray
+	var _valueArray *ValueArray
 
-	valueArray = WrapValueArray(unsafe.Pointer(cret))
-	runtime.SetFinalizer(valueArray, func(v *ValueArray) {
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_valueArray, func(v *ValueArray) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return valueArray
+	return _valueArray
 }
 
 // Free: free a Array including its contents.
 func (v *ValueArray) Free() {
-	var arg0 *C.GValueArray
+	var _arg0 *C.GValueArray
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
 
-	C.g_value_array_free(arg0)
+	C.g_value_array_free(_arg0)
 }
 
 // Nth: return a pointer to the value at @index_ containd in @value_array.
 func (v *ValueArray) Nth(index_ uint) **externglib.Value {
-	var arg0 *C.GValueArray
-	var arg1 C.guint
+	var _arg0 *C.GValueArray
+	var _arg1 C.guint
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	arg1 = C.guint(index_)
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = C.guint(index_)
 
-	var cret *C.GValue
+	var _cret *C.GValue
 
-	cret = C.g_value_array_get_nth(arg0, arg1)
+	cret = C.g_value_array_get_nth(_arg0, _arg1)
 
-	var value **externglib.Value
+	var _value **externglib.Value
 
-	value = externglib.ValueFromNative(unsafe.Pointer(cret))
+	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
-	return value
+	return _value
 }
 
 // Insert: insert a copy of @value at specified position into @value_array. If
 // @value is nil, an uninitialized value is inserted.
 func (v *ValueArray) Insert(index_ uint, value **externglib.Value) *ValueArray {
-	var arg0 *C.GValueArray
-	var arg1 C.guint
-	var arg2 *C.GValue
+	var _arg0 *C.GValueArray
+	var _arg1 C.guint
+	var _arg2 *C.GValue
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	arg1 = C.guint(index_)
-	arg2 = (*C.GValue)(value.GValue)
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = (*C.GValue)(value.GValue)
 
-	var cret *C.GValueArray
+	var _cret *C.GValueArray
 
-	cret = C.g_value_array_insert(arg0, arg1, arg2)
+	cret = C.g_value_array_insert(_arg0, _arg1, _arg2)
 
-	var valueArray *ValueArray
+	var _valueArray *ValueArray
 
-	valueArray = WrapValueArray(unsafe.Pointer(cret))
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
 
-	return valueArray
+	return _valueArray
 }
 
 // Prepend: insert a copy of @value as first element of @value_array. If @value
 // is nil, an uninitialized value is prepended.
 func (v *ValueArray) Prepend(value **externglib.Value) *ValueArray {
-	var arg0 *C.GValueArray
-	var arg1 *C.GValue
+	var _arg0 *C.GValueArray
+	var _arg1 *C.GValue
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	arg1 = (*C.GValue)(value.GValue)
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = (*C.GValue)(value.GValue)
 
-	var cret *C.GValueArray
+	var _cret *C.GValueArray
 
-	cret = C.g_value_array_prepend(arg0, arg1)
+	cret = C.g_value_array_prepend(_arg0, _arg1)
 
-	var valueArray *ValueArray
+	var _valueArray *ValueArray
 
-	valueArray = WrapValueArray(unsafe.Pointer(cret))
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
 
-	return valueArray
+	return _valueArray
 }
 
 // Remove: remove the value at position @index_ from @value_array.
 func (v *ValueArray) Remove(index_ uint) *ValueArray {
-	var arg0 *C.GValueArray
-	var arg1 C.guint
+	var _arg0 *C.GValueArray
+	var _arg1 C.guint
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	arg1 = C.guint(index_)
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg1 = C.guint(index_)
 
-	var cret *C.GValueArray
+	var _cret *C.GValueArray
 
-	cret = C.g_value_array_remove(arg0, arg1)
+	cret = C.g_value_array_remove(_arg0, _arg1)
 
-	var valueArray *ValueArray
+	var _valueArray *ValueArray
 
-	valueArray = WrapValueArray(unsafe.Pointer(cret))
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
 
-	return valueArray
+	return _valueArray
 }
 
 // SortWithData: sort @value_array using @compare_func to compare the elements
@@ -215,17 +215,17 @@ func (v *ValueArray) Remove(index_ uint) *ValueArray {
 // The current implementation uses the same sorting algorithm as standard C
 // qsort() function.
 func (v *ValueArray) SortWithData() *ValueArray {
-	var arg0 *C.GValueArray
+	var _arg0 *C.GValueArray
 
-	arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GValueArray
+	var _cret *C.GValueArray
 
-	cret = C.g_value_array_sort_with_data(arg0)
+	cret = C.g_value_array_sort_with_data(_arg0)
 
-	var valueArray *ValueArray
+	var _valueArray *ValueArray
 
-	valueArray = WrapValueArray(unsafe.Pointer(cret))
+	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
 
-	return valueArray
+	return _valueArray
 }

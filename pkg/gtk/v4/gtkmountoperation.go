@@ -66,95 +66,95 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 
 // NewMountOperation constructs a class MountOperation.
 func NewMountOperation(parent Window) MountOperation {
-	var arg1 *C.GtkWindow
+	var _arg1 *C.GtkWindow
 
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	var cret C.GtkMountOperation
+	var _cret C.GtkMountOperation
 
-	cret = C.gtk_mount_operation_new(arg1)
+	cret = C.gtk_mount_operation_new(_arg1)
 
-	var mountOperation MountOperation
+	var _mountOperation MountOperation
 
-	mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MountOperation)
+	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MountOperation)
 
-	return mountOperation
+	return _mountOperation
 }
 
 // Display gets the display on which windows of the MountOperation will be
 // shown.
 func (o mountOperation) Display() gdk.Display {
-	var arg0 *C.GtkMountOperation
+	var _arg0 *C.GtkMountOperation
 
-	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gtk_mount_operation_get_display(arg0)
+	cret = C.gtk_mount_operation_get_display(_arg0)
 
-	var display gdk.Display
+	var _display gdk.Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gdk.Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
 
-	return display
+	return _display
 }
 
 // Parent gets the transient parent used by the MountOperation
 func (o mountOperation) Parent() Window {
-	var arg0 *C.GtkMountOperation
+	var _arg0 *C.GtkMountOperation
 
-	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret *C.GtkWindow
+	var _cret *C.GtkWindow
 
-	cret = C.gtk_mount_operation_get_parent(arg0)
+	cret = C.gtk_mount_operation_get_parent(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // IsShowing returns whether the MountOperation is currently displaying a
 // window.
 func (o mountOperation) IsShowing() bool {
-	var arg0 *C.GtkMountOperation
+	var _arg0 *C.GtkMountOperation
 
-	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_mount_operation_is_showing(arg0)
+	cret = C.gtk_mount_operation_is_showing(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetDisplay sets the display to show windows of the MountOperation on.
 func (o mountOperation) SetDisplay(display gdk.Display) {
-	var arg0 *C.GtkMountOperation
-	var arg1 *C.GdkDisplay
+	var _arg0 *C.GtkMountOperation
+	var _arg1 *C.GdkDisplay
 
-	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	C.gtk_mount_operation_set_display(arg0, arg1)
+	C.gtk_mount_operation_set_display(_arg0, _arg1)
 }
 
 // SetParent sets the transient parent for windows shown by the
 // MountOperation.
 func (o mountOperation) SetParent(parent Window) {
-	var arg0 *C.GtkMountOperation
-	var arg1 *C.GtkWindow
+	var _arg0 *C.GtkMountOperation
+	var _arg1 *C.GtkWindow
 
-	arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
-	arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	C.gtk_mount_operation_set_parent(arg0, arg1)
+	C.gtk_mount_operation_set_parent(_arg0, _arg1)
 }

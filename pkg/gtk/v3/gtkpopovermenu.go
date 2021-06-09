@@ -130,15 +130,15 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 
 // NewPopoverMenu constructs a class PopoverMenu.
 func NewPopoverMenu() PopoverMenu {
-	var cret C.GtkPopoverMenu
+	var _cret C.GtkPopoverMenu
 
 	cret = C.gtk_popover_menu_new()
 
-	var popoverMenu PopoverMenu
+	var _popoverMenu PopoverMenu
 
-	popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(PopoverMenu)
+	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
 
-	return popoverMenu
+	return _popoverMenu
 }
 
 // OpenSubmenu opens a submenu of the @popover. The @name must be one of the
@@ -149,12 +149,12 @@ func NewPopoverMenu() PopoverMenu {
 // ModelButton:menu-name property is set, so this function is only needed
 // when you are using other kinds of widgets to initiate menu changes.
 func (p popoverMenu) OpenSubmenu(name string) {
-	var arg0 *C.GtkPopoverMenu
-	var arg1 *C.gchar
+	var _arg0 *C.GtkPopoverMenu
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_popover_menu_open_submenu(arg0, arg1)
+	C.gtk_popover_menu_open_submenu(_arg0, _arg1)
 }

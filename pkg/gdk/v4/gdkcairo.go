@@ -31,49 +31,49 @@ import "C"
 //
 // Calling this may change the current GL context.
 func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
-	var arg1 *C.cairo_t
-	var arg2 *C.GdkSurface
-	var arg3 C.int
-	var arg4 C.int
-	var arg5 C.int
-	var arg6 C.int
-	var arg7 C.int
-	var arg8 C.int
-	var arg9 C.int
+	var _arg1 *C.cairo_t
+	var _arg2 *C.GdkSurface
+	var _arg3 C.int
+	var _arg4 C.int
+	var _arg5 C.int
+	var _arg6 C.int
+	var _arg7 C.int
+	var _arg8 C.int
+	var _arg9 C.int
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-	arg3 = C.int(source)
-	arg4 = C.int(sourceType)
-	arg5 = C.int(bufferScale)
-	arg6 = C.int(x)
-	arg7 = C.int(y)
-	arg8 = C.int(width)
-	arg9 = C.int(height)
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
+	_arg3 = C.int(source)
+	_arg4 = C.int(sourceType)
+	_arg5 = C.int(bufferScale)
+	_arg6 = C.int(x)
+	_arg7 = C.int(y)
+	_arg8 = C.int(width)
+	_arg9 = C.int(height)
 
-	C.gdk_cairo_draw_from_gl(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)
+	C.gdk_cairo_draw_from_gl(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9)
 }
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
-	var arg1 *C.cairo_t
-	var arg2 *C.GdkRectangle
+	var _arg1 *C.cairo_t
+	var _arg2 *C.GdkRectangle
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle.Native()))
 
-	C.gdk_cairo_rectangle(arg1, arg2)
+	C.gdk_cairo_rectangle(_arg1, _arg2)
 }
 
 // CairoRegion adds the given region to the current path of @cr.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
-	var arg1 *C.cairo_t
-	var arg2 *C.cairo_region_t
+	var _arg1 *C.cairo_t
+	var _arg2 *C.cairo_region_t
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
-	C.gdk_cairo_region(arg1, arg2)
+	C.gdk_cairo_region(_arg1, _arg2)
 }
 
 // CairoRegionCreateFromSurface creates region that describes covers the area
@@ -82,22 +82,22 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 // This function takes into account device offsets that might be set with
 // cairo_surface_set_device_offset().
 func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
-	var arg1 *C.cairo_surface_t
+	var _arg1 *C.cairo_surface_t
 
-	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
 
-	var cret *C.cairo_region_t
+	var _cret *C.cairo_region_t
 
-	cret = C.gdk_cairo_region_create_from_surface(arg1)
+	cret = C.gdk_cairo_region_create_from_surface(_arg1)
 
-	var region *cairo.Region
+	var _region *cairo.Region
 
-	region = cairo.WrapRegion(unsafe.Pointer(cret))
-	runtime.SetFinalizer(region, func(v *cairo.Region) {
+	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_region, func(v *cairo.Region) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return region
+	return _region
 }
 
 // CairoSetSourcePixbuf sets the given pixbuf as the source pattern for @cr.
@@ -105,26 +105,26 @@ func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
-	var arg1 *C.cairo_t
-	var arg2 *C.GdkPixbuf
-	var arg3 C.double
-	var arg4 C.double
+	var _arg1 *C.cairo_t
+	var _arg2 *C.GdkPixbuf
+	var _arg3 C.double
+	var _arg4 C.double
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	arg3 = C.double(pixbufX)
-	arg4 = C.double(pixbufY)
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg3 = C.double(pixbufX)
+	_arg4 = C.double(pixbufY)
 
-	C.gdk_cairo_set_source_pixbuf(arg1, arg2, arg3, arg4)
+	C.gdk_cairo_set_source_pixbuf(_arg1, _arg2, _arg3, _arg4)
 }
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
-	var arg1 *C.cairo_t
-	var arg2 *C.GdkRGBA
+	var _arg1 *C.cairo_t
+	var _arg2 *C.GdkRGBA
 
-	arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
-	arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
+	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
+	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
 
-	C.gdk_cairo_set_source_rgba(arg1, arg2)
+	C.gdk_cairo_set_source_rgba(_arg1, _arg2)
 }

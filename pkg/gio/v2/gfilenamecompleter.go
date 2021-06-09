@@ -70,56 +70,56 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 
 // NewFilenameCompleter constructs a class FilenameCompleter.
 func NewFilenameCompleter() FilenameCompleter {
-	var cret C.GFilenameCompleter
+	var _cret C.GFilenameCompleter
 
 	cret = C.g_filename_completer_new()
 
-	var filenameCompleter FilenameCompleter
+	var _filenameCompleter FilenameCompleter
 
-	filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(FilenameCompleter)
+	_filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FilenameCompleter)
 
-	return filenameCompleter
+	return _filenameCompleter
 }
 
 // CompletionSuffix obtains a completion for @initial_text from @completer.
 func (c filenameCompleter) CompletionSuffix(initialText string) string {
-	var arg0 *C.GFilenameCompleter
-	var arg1 *C.char
+	var _arg0 *C.GFilenameCompleter
+	var _arg1 *C.char
 
-	arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(initialText))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(initialText))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.g_filename_completer_get_completion_suffix(arg0, arg1)
+	cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // Completions gets an array of completion strings for a given initial text.
 func (c filenameCompleter) Completions(initialText string) []string {
-	var arg0 *C.GFilenameCompleter
-	var arg1 *C.char
+	var _arg0 *C.GFilenameCompleter
+	var _arg1 *C.char
 
-	arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(initialText))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(initialText))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret **C.char
+	var _cret **C.char
 
-	cret = C.g_filename_completer_get_completions(arg0, arg1)
+	cret = C.g_filename_completer_get_completions(_arg0, _arg1)
 
-	var utf8s []string
+	var _utf8s []string
 
 	{
 		var length int
-		for p := cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+		for p := _cret; *p != 0; p = (**C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -127,28 +127,28 @@ func (c filenameCompleter) Completions(initialText string) []string {
 		}
 
 		var src []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(length))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
-		utf8s = make([]string, length)
+		_utf8s = make([]string, length)
 		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
-			utf8s = C.GoString(cret)
-			defer C.free(unsafe.Pointer(cret))
+			_utf8s = C.GoString(_cret)
+			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
-	return utf8s
+	return _utf8s
 }
 
 // SetDirsOnly: if @dirs_only is true, @completer will only complete
 // directory names, and not file names.
 func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
-	var arg0 *C.GFilenameCompleter
-	var arg1 C.gboolean
+	var _arg0 *C.GFilenameCompleter
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
 	if dirsOnly {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.g_filename_completer_set_dirs_only(arg0, arg1)
+	C.g_filename_completer_set_dirs_only(_arg0, _arg1)
 }

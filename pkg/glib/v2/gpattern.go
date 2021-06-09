@@ -29,29 +29,29 @@ import "C"
 // any multibyte characters. GLib offers the g_utf8_strreverse() function to
 // reverse UTF-8 encoded strings.
 func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringReversed string) bool {
-	var arg1 *C.GPatternSpec
-	var arg2 C.guint
-	var arg3 *C.gchar
-	var arg4 *C.gchar
+	var _arg1 *C.GPatternSpec
+	var _arg2 C.guint
+	var _arg3 *C.gchar
+	var _arg4 *C.gchar
 
-	arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = C.guint(stringLength)
-	arg3 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = (*C.gchar)(C.CString(stringReversed))
-	defer C.free(unsafe.Pointer(arg4))
+	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = C.guint(stringLength)
+	_arg3 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(stringReversed))
+	defer C.free(unsafe.Pointer(_arg4))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_pattern_match(arg1, arg2, arg3, arg4)
+	cret = C.g_pattern_match(_arg1, _arg2, _arg3, _arg4)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // PatternMatchSimple matches a string against a pattern given as a string. If
@@ -59,49 +59,49 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 // pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
 func PatternMatchSimple(pattern string, string string) bool {
-	var arg1 *C.gchar
-	var arg2 *C.gchar
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(pattern))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.gchar)(C.CString(pattern))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_pattern_match_simple(arg1, arg2)
+	cret = C.g_pattern_match_simple(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // PatternMatchString matches a string against a compiled pattern. If the string
 // is to be matched against more than one pattern, consider using
 // g_pattern_match() instead while supplying the reversed string.
 func PatternMatchString(pspec *PatternSpec, string string) bool {
-	var arg1 *C.GPatternSpec
-	var arg2 *C.gchar
+	var _arg1 *C.GPatternSpec
+	var _arg2 *C.gchar
 
-	arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
-	arg2 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
+	_arg2 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_pattern_match_string(arg1, arg2)
+	cret = C.g_pattern_match_string(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // PatternSpec: a GPatternSpec struct is the 'compiled' form of a pattern. This
@@ -133,30 +133,30 @@ func (p *PatternSpec) Native() unsafe.Pointer {
 // Equal compares two compiled pattern specs and returns whether they will match
 // the same set of strings.
 func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
-	var arg0 *C.GPatternSpec
-	var arg1 *C.GPatternSpec
+	var _arg0 *C.GPatternSpec
+	var _arg1 *C.GPatternSpec
 
-	arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))
-	arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec2.Native()))
+	_arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec2.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_pattern_spec_equal(arg0, arg1)
+	cret = C.g_pattern_spec_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Free frees the memory allocated for the Spec.
 func (p *PatternSpec) Free() {
-	var arg0 *C.GPatternSpec
+	var _arg0 *C.GPatternSpec
 
-	arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))
+	_arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))
 
-	C.g_pattern_spec_free(arg0)
+	C.g_pattern_spec_free(_arg0)
 }

@@ -77,65 +77,65 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 
 // NewActionBar constructs a class ActionBar.
 func NewActionBar() ActionBar {
-	var cret C.GtkActionBar
+	var _cret C.GtkActionBar
 
 	cret = C.gtk_action_bar_new()
 
-	var actionBar ActionBar
+	var _actionBar ActionBar
 
-	actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(ActionBar)
+	_actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ActionBar)
 
-	return actionBar
+	return _actionBar
 }
 
 // CenterWidget retrieves the center bar widget of the bar.
 func (a actionBar) CenterWidget() Widget {
-	var arg0 *C.GtkActionBar
+	var _arg0 *C.GtkActionBar
 
-	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_action_bar_get_center_widget(arg0)
+	cret = C.gtk_action_bar_get_center_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // PackEnd adds @child to @action_bar, packed with reference to the end of
 // the @action_bar.
 func (a actionBar) PackEnd(child Widget) {
-	var arg0 *C.GtkActionBar
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkActionBar
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_action_bar_pack_end(arg0, arg1)
+	C.gtk_action_bar_pack_end(_arg0, _arg1)
 }
 
 // PackStart adds @child to @action_bar, packed with reference to the start
 // of the @action_bar.
 func (a actionBar) PackStart(child Widget) {
-	var arg0 *C.GtkActionBar
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkActionBar
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_action_bar_pack_start(arg0, arg1)
+	C.gtk_action_bar_pack_start(_arg0, _arg1)
 }
 
 // SetCenterWidget sets the center widget for the ActionBar.
 func (a actionBar) SetCenterWidget(centerWidget Widget) {
-	var arg0 *C.GtkActionBar
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkActionBar
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
+	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))
 
-	C.gtk_action_bar_set_center_widget(arg0, arg1)
+	C.gtk_action_bar_set_center_widget(_arg0, _arg1)
 }

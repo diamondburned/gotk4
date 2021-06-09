@@ -73,91 +73,91 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 // StartupNotificationID gets the startup notification ID for a Wayland
 // display, or nil if no ID has been defined.
 func (d waylandDisplay) StartupNotificationID() string {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gdk_wayland_display_get_startup_notification_id(arg0)
+	cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // WlCompositor returns the Wayland global singleton compositor of a
 // Display.
 func (d waylandDisplay) WlCompositor() *interface{} {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_compositor
+	var _cret *C.wl_compositor
 
-	cret = C.gdk_wayland_display_get_wl_compositor(arg0)
+	cret = C.gdk_wayland_display_get_wl_compositor(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // WlDisplay returns the Wayland wl_display of a Display.
 func (d waylandDisplay) WlDisplay() *interface{} {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.wl_display
+	var _cret *C.wl_display
 
-	cret = C.gdk_wayland_display_get_wl_display(arg0)
+	cret = C.gdk_wayland_display_get_wl_display(_arg0)
 
-	var gpointer *interface{}
+	var _gpointer *interface{}
 
-	gpointer = (*interface{})(cret)
+	_gpointer = (*interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // QueryRegistry returns true if the the interface was found in the display
 // `wl_registry.global` handler.
 func (d waylandDisplay) QueryRegistry(global string) bool {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.char
+	var _arg0 *C.GdkDisplay
+	var _arg1 *C.char
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.char)(C.CString(global))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.char)(C.CString(global))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_wayland_display_query_registry(arg0, arg1)
+	cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetCursorTheme sets the cursor theme for the given @display.
 func (d waylandDisplay) SetCursorTheme(name string, size int) {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.char
-	var arg2 C.int
+	var _arg0 *C.GdkDisplay
+	var _arg1 *C.char
+	var _arg2 C.int
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.int(size)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.char)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(size)
 
-	C.gdk_wayland_display_set_cursor_theme(arg0, arg1, arg2)
+	C.gdk_wayland_display_set_cursor_theme(_arg0, _arg1, _arg2)
 }
 
 // SetStartupNotificationID sets the startup notification ID for a display.
@@ -170,12 +170,12 @@ func (d waylandDisplay) SetCursorTheme(name string, size int) {
 // complete (for example, when opening a window or when calling
 // gdk_display_notify_startup_complete()).
 func (d waylandDisplay) SetStartupNotificationID(startupId string) {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.char
+	var _arg0 *C.GdkDisplay
+	var _arg1 *C.char
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.char)(C.CString(startupId))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.char)(C.CString(startupId))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_wayland_display_set_startup_notification_id(arg0, arg1)
+	C.gdk_wayland_display_set_startup_notification_id(_arg0, _arg1)
 }

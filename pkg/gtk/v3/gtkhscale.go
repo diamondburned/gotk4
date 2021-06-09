@@ -63,38 +63,38 @@ func marshalHScale(p uintptr) (interface{}, error) {
 
 // NewHScale constructs a class HScale.
 func NewHScale(adjustment Adjustment) HScale {
-	var arg1 *C.GtkAdjustment
+	var _arg1 *C.GtkAdjustment
 
-	arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
+	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
-	var cret C.GtkHScale
+	var _cret C.GtkHScale
 
-	cret = C.gtk_hscale_new(arg1)
+	cret = C.gtk_hscale_new(_arg1)
 
-	var hScale HScale
+	var _hScale HScale
 
-	hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
+	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HScale)
 
-	return hScale
+	return _hScale
 }
 
 // NewHScaleWithRange constructs a class HScale.
 func NewHScaleWithRange(min float64, max float64, step float64) HScale {
-	var arg1 C.gdouble
-	var arg2 C.gdouble
-	var arg3 C.gdouble
+	var _arg1 C.gdouble
+	var _arg2 C.gdouble
+	var _arg3 C.gdouble
 
-	arg1 = C.gdouble(min)
-	arg2 = C.gdouble(max)
-	arg3 = C.gdouble(step)
+	_arg1 = C.gdouble(min)
+	_arg2 = C.gdouble(max)
+	_arg3 = C.gdouble(step)
 
-	var cret C.GtkHScale
+	var _cret C.GtkHScale
 
-	cret = C.gtk_hscale_new_with_range(arg1, arg2, arg3)
+	cret = C.gtk_hscale_new_with_range(_arg1, _arg2, _arg3)
 
-	var hScale HScale
+	var _hScale HScale
 
-	hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HScale)
+	_hScale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HScale)
 
-	return hScale
+	return _hScale
 }

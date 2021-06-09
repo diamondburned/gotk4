@@ -15,15 +15,15 @@ import (
 import "C"
 
 func ToplevelSizeGetType() externglib.Type {
-	var cret C.GType
+	var _cret C.GType
 
 	cret = C.gdk_toplevel_size_get_type()
 
-	var gType externglib.Type
+	var _gType externglib.Type
 
-	gType = externglib.Type(cret)
+	_gType = externglib.Type(_cret)
 
-	return gType
+	return _gType
 }
 
 // ToplevelSize: the GdkToplevelSIze struct contains information that may be
@@ -61,22 +61,22 @@ func (t *ToplevelSize) Native() unsafe.Pointer {
 // window is being presented on, or something else that limits the way a
 // toplevel can be presented.
 func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
-	var arg0 *C.GdkToplevelSize
+	var _arg0 *C.GdkToplevelSize
 
-	arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
 
-	var arg1 C.int
-	var arg2 C.int
+	var _arg1 C.int
+	var _arg2 C.int
 
-	C.gdk_toplevel_size_get_bounds(arg0, &arg1, &arg2)
+	C.gdk_toplevel_size_get_bounds(_arg0, &_arg1, &_arg2)
 
-	var boundsWidth int
-	var boundsHeight int
+	var _boundsWidth int
+	var _boundsHeight int
 
-	boundsWidth = (int)(arg1)
-	boundsHeight = (int)(arg2)
+	_boundsWidth = (int)(_arg1)
+	_boundsHeight = (int)(_arg2)
 
-	return boundsWidth, boundsHeight
+	return _boundsWidth, _boundsHeight
 }
 
 // SetMinSize: the minimum size corresponds to the limitations the toplevel can
@@ -87,34 +87,34 @@ func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
 // The minimum size should be within the bounds (see
 // gdk_toplevel_size_get_bounds()).
 func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
-	var arg0 *C.GdkToplevelSize
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GdkToplevelSize
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	arg1 = C.int(minWidth)
-	arg2 = C.int(minHeight)
+	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(minWidth)
+	_arg2 = C.int(minHeight)
 
-	C.gdk_toplevel_size_set_min_size(arg0, arg1, arg2)
+	C.gdk_toplevel_size_set_min_size(_arg0, _arg1, _arg2)
 }
 
 // SetShadowWidth: the shadow width corresponds to the part of the computed
 // surface size that would consist of the shadow margin surrounding the window,
 // would there be any.
 func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) {
-	var arg0 *C.GdkToplevelSize
-	var arg1 C.int
-	var arg2 C.int
-	var arg3 C.int
-	var arg4 C.int
+	var _arg0 *C.GdkToplevelSize
+	var _arg1 C.int
+	var _arg2 C.int
+	var _arg3 C.int
+	var _arg4 C.int
 
-	arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	arg1 = C.int(left)
-	arg2 = C.int(right)
-	arg3 = C.int(top)
-	arg4 = C.int(bottom)
+	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(left)
+	_arg2 = C.int(right)
+	_arg3 = C.int(top)
+	_arg4 = C.int(bottom)
 
-	C.gdk_toplevel_size_set_shadow_width(arg0, arg1, arg2, arg3, arg4)
+	C.gdk_toplevel_size_set_shadow_width(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetSize sets the size the toplevel prefers to be resized to. The size should
@@ -122,13 +122,13 @@ func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) 
 // should be considered as a hint, and should not be assumed to be respected by
 // the windowing system, or backend.
 func (s *ToplevelSize) SetSize(width int, height int) {
-	var arg0 *C.GdkToplevelSize
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GdkToplevelSize
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
-	arg1 = C.int(width)
-	arg2 = C.int(height)
+	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(width)
+	_arg2 = C.int(height)
 
-	C.gdk_toplevel_size_set_size(arg0, arg1, arg2)
+	C.gdk_toplevel_size_set_size(_arg0, _arg1, _arg2)
 }

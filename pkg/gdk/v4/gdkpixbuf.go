@@ -22,44 +22,44 @@ import "C"
 // This function will create an RGB pixbuf with 8 bits per channel. The pixbuf
 // will contain an alpha channel if the @surface contains one.
 func PixbufGetFromSurface(surface *cairo.Surface, srcX int, srcY int, width int, height int) gdkpixbuf.Pixbuf {
-	var arg1 *C.cairo_surface_t
-	var arg2 C.int
-	var arg3 C.int
-	var arg4 C.int
-	var arg5 C.int
+	var _arg1 *C.cairo_surface_t
+	var _arg2 C.int
+	var _arg3 C.int
+	var _arg4 C.int
+	var _arg5 C.int
 
-	arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	arg2 = C.int(srcX)
-	arg3 = C.int(srcY)
-	arg4 = C.int(width)
-	arg5 = C.int(height)
+	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg2 = C.int(srcX)
+	_arg3 = C.int(srcY)
+	_arg4 = C.int(width)
+	_arg5 = C.int(height)
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gdk_pixbuf_get_from_surface(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gdk_pixbuf_get_from_surface(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // PixbufGetFromTexture creates a new pixbuf from @texture. This should
 // generally not be used in newly written code as later stages will almost
 // certainly convert the pixbuf back into a texture to draw it on screen.
 func PixbufGetFromTexture(texture Texture) gdkpixbuf.Pixbuf {
-	var arg1 *C.GdkTexture
+	var _arg1 *C.GdkTexture
 
-	arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
+	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gdk_pixbuf_get_from_texture(arg1)
+	cret = C.gdk_pixbuf_get_from_texture(_arg1)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }

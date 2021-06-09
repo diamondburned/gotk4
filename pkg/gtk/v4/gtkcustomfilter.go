@@ -81,15 +81,15 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 
 // NewCustomFilter constructs a class CustomFilter.
 func NewCustomFilter() CustomFilter {
-	var cret C.GtkCustomFilter
+	var _cret C.GtkCustomFilter
 
 	cret = C.gtk_custom_filter_new()
 
-	var customFilter CustomFilter
+	var _customFilter CustomFilter
 
-	customFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(CustomFilter)
+	_customFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CustomFilter)
 
-	return customFilter
+	return _customFilter
 }
 
 // SetFilterFunc sets (or unsets) the function used for filtering items.
@@ -101,9 +101,9 @@ func NewCustomFilter() CustomFilter {
 //
 // If a previous function was set, its @user_destroy will be called now.
 func (s customFilter) SetFilterFunc() {
-	var arg0 *C.GtkCustomFilter
+	var _arg0 *C.GtkCustomFilter
 
-	arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(s.Native()))
 
-	C.gtk_custom_filter_set_filter_func(arg0)
+	C.gtk_custom_filter_set_filter_func(_arg0)
 }

@@ -135,23 +135,23 @@ func marshalIcon(p uintptr) (interface{}, error) {
 
 // Equal checks if two icons are equal.
 func (i icon) Equal(icon2 Icon) bool {
-	var arg0 *C.GIcon
-	var arg1 *C.GIcon
+	var _arg0 *C.GIcon
+	var _arg1 *C.GIcon
 
-	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
-	arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_icon_equal(arg0, arg1)
+	cret = C.g_icon_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Serialize serializes a #GIcon into a #GVariant. An equivalent #GIcon can
@@ -161,22 +161,22 @@ func (i icon) Equal(icon2 Icon) bool {
 // machine, (as opposed to over the network), and within the same file
 // system namespace.
 func (i icon) Serialize() *glib.Variant {
-	var arg0 *C.GIcon
+	var _arg0 *C.GIcon
 
-	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
-	var cret *C.GVariant
+	var _cret *C.GVariant
 
-	cret = C.g_icon_serialize(arg0)
+	cret = C.g_icon_serialize(_arg0)
 
-	var variant *glib.Variant
+	var _variant *glib.Variant
 
-	variant = glib.WrapVariant(unsafe.Pointer(cret))
-	runtime.SetFinalizer(variant, func(v *glib.Variant) {
+	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return variant
+	return _variant
 }
 
 // String generates a textual representation of @icon that can be used for
@@ -195,18 +195,18 @@ func (i icon) Serialize() *glib.Variant {
 // - If @icon is a Icon with exactly one name and no fallbacks, the encoding
 // is simply the name (such as `network-server`).
 func (i icon) String() string {
-	var arg0 *C.GIcon
+	var _arg0 *C.GIcon
 
-	arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
+	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_icon_to_string(arg0)
+	cret = C.g_icon_to_string(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }

@@ -35,33 +35,33 @@ func init() {
 // range covering the position just after @start_index + @length. (i.e. if
 // itemizing in a loop, just keep passing in the same @cached_iter).
 func Itemize(context Context, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List {
-	var arg1 *C.PangoContext
-	var arg2 *C.char
-	var arg3 C.int
-	var arg4 C.int
-	var arg5 *C.PangoAttrList
-	var arg6 *C.PangoAttrIterator
+	var _arg1 *C.PangoContext
+	var _arg2 *C.char
+	var _arg3 C.int
+	var _arg4 C.int
+	var _arg5 *C.PangoAttrList
+	var _arg6 *C.PangoAttrIterator
 
-	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	arg2 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.int(startIndex)
-	arg4 = C.int(length)
-	arg5 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
-	arg6 = (*C.PangoAttrIterator)(unsafe.Pointer(cachedIter.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.int(startIndex)
+	_arg4 = C.int(length)
+	_arg5 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
+	_arg6 = (*C.PangoAttrIterator)(unsafe.Pointer(cachedIter.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.pango_itemize(arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.pango_itemize(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // ItemizeWithBaseDir: like `pango_itemize()`, but with an explicitly specified
@@ -71,35 +71,35 @@ func Itemize(context Context, text string, startIndex int, length int, attrs *At
 // [method@Pango.Context.set_base_dir]). [func@itemize] gets the base direction
 // from the `PangoContext`.
 func ItemizeWithBaseDir(context Context, baseDir Direction, text string, startIndex int, length int, attrs *AttrList, cachedIter *AttrIterator) *glib.List {
-	var arg1 *C.PangoContext
-	var arg2 C.PangoDirection
-	var arg3 *C.char
-	var arg4 C.int
-	var arg5 C.int
-	var arg6 *C.PangoAttrList
-	var arg7 *C.PangoAttrIterator
+	var _arg1 *C.PangoContext
+	var _arg2 C.PangoDirection
+	var _arg3 *C.char
+	var _arg4 C.int
+	var _arg5 C.int
+	var _arg6 *C.PangoAttrList
+	var _arg7 *C.PangoAttrIterator
 
-	arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
-	arg2 = (C.PangoDirection)(baseDir)
-	arg3 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = C.int(startIndex)
-	arg5 = C.int(length)
-	arg6 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
-	arg7 = (*C.PangoAttrIterator)(unsafe.Pointer(cachedIter.Native()))
+	_arg1 = (*C.PangoContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (C.PangoDirection)(baseDir)
+	_arg3 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.int(startIndex)
+	_arg5 = C.int(length)
+	_arg6 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
+	_arg7 = (*C.PangoAttrIterator)(unsafe.Pointer(cachedIter.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.pango_itemize_with_base_dir(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	cret = C.pango_itemize_with_base_dir(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // Context: a `PangoContext` stores global information used to control the
@@ -265,15 +265,15 @@ func marshalContext(p uintptr) (interface{}, error) {
 
 // NewContext constructs a class Context.
 func NewContext() Context {
-	var cret C.PangoContext
+	var _cret C.PangoContext
 
 	cret = C.pango_context_new()
 
-	var context Context
+	var _context Context
 
-	context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Context)
+	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Context)
 
-	return context
+	return _context
 }
 
 // Changed forces a change in the context, which will cause any
@@ -283,83 +283,83 @@ func NewContext() Context {
 // something applications won't do. Backends should call this function if
 // they have attached extra data to the context and such data is changed.
 func (c context) Changed() {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	C.pango_context_changed(arg0)
+	C.pango_context_changed(_arg0)
 }
 
 // BaseDir retrieves the base direction for the context.
 //
 // See [method@Pango.Context.set_base_dir].
 func (c context) BaseDir() Direction {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.PangoDirection
+	var _cret C.PangoDirection
 
-	cret = C.pango_context_get_base_dir(arg0)
+	cret = C.pango_context_get_base_dir(_arg0)
 
-	var direction Direction
+	var _direction Direction
 
-	direction = Direction(cret)
+	_direction = Direction(_cret)
 
-	return direction
+	return _direction
 }
 
 // BaseGravity retrieves the base gravity for the context.
 //
 // See [method@Pango.Context.set_base_gravity].
 func (c context) BaseGravity() Gravity {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.PangoGravity
+	var _cret C.PangoGravity
 
-	cret = C.pango_context_get_base_gravity(arg0)
+	cret = C.pango_context_get_base_gravity(_arg0)
 
-	var gravity Gravity
+	var _gravity Gravity
 
-	gravity = Gravity(cret)
+	_gravity = Gravity(_cret)
 
-	return gravity
+	return _gravity
 }
 
 // FontDescription: retrieve the default font description for the context.
 func (c context) FontDescription() *FontDescription {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoFontDescription
+	var _cret *C.PangoFontDescription
 
-	cret = C.pango_context_get_font_description(arg0)
+	cret = C.pango_context_get_font_description(_arg0)
 
-	var fontDescription *FontDescription
+	var _fontDescription *FontDescription
 
-	fontDescription = WrapFontDescription(unsafe.Pointer(cret))
+	_fontDescription = WrapFontDescription(unsafe.Pointer(_cret))
 
-	return fontDescription
+	return _fontDescription
 }
 
 // FontMap gets the `PangoFontMap` used to look up fonts for this context.
 func (c context) FontMap() FontMap {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoFontMap
+	var _cret *C.PangoFontMap
 
-	cret = C.pango_context_get_font_map(arg0)
+	cret = C.pango_context_get_font_map(_arg0)
 
-	var fontMap FontMap
+	var _fontMap FontMap
 
-	fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontMap)
+	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontMap)
 
-	return fontMap
+	return _fontMap
 }
 
 // Gravity retrieves the gravity for the context.
@@ -369,58 +369,58 @@ func (c context) FontMap() FontMap {
 // [type_func@Pango.Gravity.get_for_matrix] is used to return the gravity
 // from the current context matrix.
 func (c context) Gravity() Gravity {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.PangoGravity
+	var _cret C.PangoGravity
 
-	cret = C.pango_context_get_gravity(arg0)
+	cret = C.pango_context_get_gravity(_arg0)
 
-	var gravity Gravity
+	var _gravity Gravity
 
-	gravity = Gravity(cret)
+	_gravity = Gravity(_cret)
 
-	return gravity
+	return _gravity
 }
 
 // GravityHint retrieves the gravity hint for the context.
 //
 // See [method@Pango.Context.set_gravity_hint] for details.
 func (c context) GravityHint() GravityHint {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.PangoGravityHint
+	var _cret C.PangoGravityHint
 
-	cret = C.pango_context_get_gravity_hint(arg0)
+	cret = C.pango_context_get_gravity_hint(_arg0)
 
-	var gravityHint GravityHint
+	var _gravityHint GravityHint
 
-	gravityHint = GravityHint(cret)
+	_gravityHint = GravityHint(_cret)
 
-	return gravityHint
+	return _gravityHint
 }
 
 // Language retrieves the global language tag for the context.
 func (c context) Language() *Language {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoLanguage
+	var _cret *C.PangoLanguage
 
-	cret = C.pango_context_get_language(arg0)
+	cret = C.pango_context_get_language(_arg0)
 
-	var language *Language
+	var _language *Language
 
-	language = WrapLanguage(unsafe.Pointer(cret))
-	runtime.SetFinalizer(language, func(v *Language) {
+	_language = WrapLanguage(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_language, func(v *Language) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return language
+	return _language
 }
 
 // Matrix gets the transformation matrix that will be applied when rendering
@@ -428,19 +428,19 @@ func (c context) Language() *Language {
 //
 // See [method@Pango.Context.set_matrix].
 func (c context) Matrix() *Matrix {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.PangoMatrix
+	var _cret *C.PangoMatrix
 
-	cret = C.pango_context_get_matrix(arg0)
+	cret = C.pango_context_get_matrix(_arg0)
 
-	var matrix *Matrix
+	var _matrix *Matrix
 
-	matrix = WrapMatrix(unsafe.Pointer(cret))
+	_matrix = WrapMatrix(unsafe.Pointer(_cret))
 
-	return matrix
+	return _matrix
 }
 
 // Metrics: get overall metric information for a particular font
@@ -456,46 +456,46 @@ func (c context) Matrix() *Matrix {
 // render the string, then the returned fonts would be a composite of the
 // metrics for the fonts loaded for the individual families.
 func (c context) Metrics(desc *FontDescription, language *Language) *FontMetrics {
-	var arg0 *C.PangoContext
-	var arg1 *C.PangoFontDescription
-	var arg2 *C.PangoLanguage
+	var _arg0 *C.PangoContext
+	var _arg1 *C.PangoFontDescription
+	var _arg2 *C.PangoLanguage
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
-	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
+	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	var cret *C.PangoFontMetrics
+	var _cret *C.PangoFontMetrics
 
-	cret = C.pango_context_get_metrics(arg0, arg1, arg2)
+	cret = C.pango_context_get_metrics(_arg0, _arg1, _arg2)
 
-	var fontMetrics *FontMetrics
+	var _fontMetrics *FontMetrics
 
-	fontMetrics = WrapFontMetrics(unsafe.Pointer(cret))
-	runtime.SetFinalizer(fontMetrics, func(v *FontMetrics) {
+	_fontMetrics = WrapFontMetrics(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_fontMetrics, func(v *FontMetrics) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return fontMetrics
+	return _fontMetrics
 }
 
 // RoundGlyphPositions returns whether font rendering with this context
 // should round glyph positions and widths.
 func (c context) RoundGlyphPositions() bool {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.pango_context_get_round_glyph_positions(arg0)
+	cret = C.pango_context_get_round_glyph_positions(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Serial returns the current serial number of @context.
@@ -511,28 +511,28 @@ func (c context) RoundGlyphPositions() bool {
 // is only useful when implementing objects that need update when their
 // `PangoContext` changes, like `PangoLayout`.
 func (c context) Serial() uint {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.pango_context_get_serial(arg0)
+	cret = C.pango_context_get_serial(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // ListFamilies: list all families for a context.
 func (c context) ListFamilies() {
-	var arg0 *C.PangoContext
+	var _arg0 *C.PangoContext
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	C.pango_context_list_families(arg0)
+	C.pango_context_list_families(_arg0)
 
 	return
 }
@@ -540,43 +540,43 @@ func (c context) ListFamilies() {
 // LoadFont loads the font in one of the fontmaps in the context that is the
 // closest match for @desc.
 func (c context) LoadFont(desc *FontDescription) Font {
-	var arg0 *C.PangoContext
-	var arg1 *C.PangoFontDescription
+	var _arg0 *C.PangoContext
+	var _arg1 *C.PangoFontDescription
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 
-	var cret *C.PangoFont
+	var _cret *C.PangoFont
 
-	cret = C.pango_context_load_font(arg0, arg1)
+	cret = C.pango_context_load_font(_arg0, _arg1)
 
-	var font Font
+	var _font Font
 
-	font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Font)
+	_font = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Font)
 
-	return font
+	return _font
 }
 
 // LoadFontset: load a set of fonts in the context that can be used to
 // render a font matching @desc.
 func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset {
-	var arg0 *C.PangoContext
-	var arg1 *C.PangoFontDescription
-	var arg2 *C.PangoLanguage
+	var _arg0 *C.PangoContext
+	var _arg1 *C.PangoFontDescription
+	var _arg2 *C.PangoLanguage
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
-	arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
+	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	var cret *C.PangoFontset
+	var _cret *C.PangoFontset
 
-	cret = C.pango_context_load_fontset(arg0, arg1, arg2)
+	cret = C.pango_context_load_fontset(_arg0, _arg1, _arg2)
 
-	var fontset Fontset
+	var _fontset Fontset
 
-	fontset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Fontset)
+	_fontset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Fontset)
 
-	return fontset
+	return _fontset
 }
 
 // SetBaseDir sets the base direction for the context.
@@ -588,37 +588,37 @@ func (c context) LoadFontset(desc *FontDescription, language *Language) Fontset 
 // PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL is used only for
 // paragraphs that do not contain any strong characters themselves.
 func (c context) SetBaseDir(direction Direction) {
-	var arg0 *C.PangoContext
-	var arg1 C.PangoDirection
+	var _arg0 *C.PangoContext
+	var _arg1 C.PangoDirection
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (C.PangoDirection)(direction)
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.PangoDirection)(direction)
 
-	C.pango_context_set_base_dir(arg0, arg1)
+	C.pango_context_set_base_dir(_arg0, _arg1)
 }
 
 // SetBaseGravity sets the base gravity for the context.
 //
 // The base gravity is used in laying vertical text out.
 func (c context) SetBaseGravity(gravity Gravity) {
-	var arg0 *C.PangoContext
-	var arg1 C.PangoGravity
+	var _arg0 *C.PangoContext
+	var _arg1 C.PangoGravity
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (C.PangoGravity)(gravity)
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.PangoGravity)(gravity)
 
-	C.pango_context_set_base_gravity(arg0, arg1)
+	C.pango_context_set_base_gravity(_arg0, _arg1)
 }
 
 // SetFontDescription: set the default font description for the context
 func (c context) SetFontDescription(desc *FontDescription) {
-	var arg0 *C.PangoContext
-	var arg1 *C.PangoFontDescription
+	var _arg0 *C.PangoContext
+	var _arg1 *C.PangoFontDescription
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
 
-	C.pango_context_set_font_description(arg0, arg1)
+	C.pango_context_set_font_description(_arg0, _arg1)
 }
 
 // SetFontMap sets the font map to be searched when fonts are looked-up in
@@ -628,13 +628,13 @@ func (c context) SetFontDescription(desc *FontDescription) {
 // obtained via one of the recommended methods should already have a
 // suitable font map.
 func (c context) SetFontMap(fontMap FontMap) {
-	var arg0 *C.PangoContext
-	var arg1 *C.PangoFontMap
+	var _arg0 *C.PangoContext
+	var _arg1 *C.PangoFontMap
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
 
-	C.pango_context_set_font_map(arg0, arg1)
+	C.pango_context_set_font_map(_arg0, _arg1)
 }
 
 // SetGravityHint sets the gravity hint for the context.
@@ -644,13 +644,13 @@ func (c context) SetFontMap(fontMap FontMap) {
 // [method@Pango.Context.get_gravity] is set to PANGO_GRAVITY_EAST or
 // PANGO_GRAVITY_WEST.
 func (c context) SetGravityHint(hint GravityHint) {
-	var arg0 *C.PangoContext
-	var arg1 C.PangoGravityHint
+	var _arg0 *C.PangoContext
+	var _arg1 C.PangoGravityHint
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (C.PangoGravityHint)(hint)
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.PangoGravityHint)(hint)
 
-	C.pango_context_set_gravity_hint(arg0, arg1)
+	C.pango_context_set_gravity_hint(_arg0, _arg1)
 }
 
 // SetLanguage sets the global language tag for the context.
@@ -658,13 +658,13 @@ func (c context) SetGravityHint(hint GravityHint) {
 // The default language for the locale of the running process can be found
 // using [type_func@Pango.Language.get_default].
 func (c context) SetLanguage(language *Language) {
-	var arg0 *C.PangoContext
-	var arg1 *C.PangoLanguage
+	var _arg0 *C.PangoContext
+	var _arg1 *C.PangoLanguage
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	C.pango_context_set_language(arg0, arg1)
+	C.pango_context_set_language(_arg0, _arg1)
 }
 
 // SetMatrix sets the transformation matrix that will be applied when
@@ -676,13 +676,13 @@ func (c context) SetLanguage(language *Language) {
 // they may change slightly for different matrices, depending on how the
 // text is fit to the pixel grid.
 func (c context) SetMatrix(matrix *Matrix) {
-	var arg0 *C.PangoContext
-	var arg1 *C.PangoMatrix
+	var _arg0 *C.PangoContext
+	var _arg1 *C.PangoMatrix
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix.Native()))
 
-	C.pango_context_set_matrix(arg0, arg1)
+	C.pango_context_set_matrix(_arg0, _arg1)
 }
 
 // SetRoundGlyphPositions sets whether font rendering with this context
@@ -695,13 +695,13 @@ func (c context) SetMatrix(matrix *Matrix) {
 // The default value is to round glyph positions, to remain compatible with
 // previous Pango behavior.
 func (c context) SetRoundGlyphPositions(roundPositions bool) {
-	var arg0 *C.PangoContext
-	var arg1 C.gboolean
+	var _arg0 *C.PangoContext
+	var _arg1 C.gboolean
 
-	arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	if roundPositions {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.pango_context_set_round_glyph_positions(arg0, arg1)
+	C.pango_context_set_round_glyph_positions(_arg0, _arg1)
 }

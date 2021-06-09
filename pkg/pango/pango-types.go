@@ -34,13 +34,13 @@ type Glyph uint32
 // touching-but-not-overlapping after rounding to device units, pass them in as
 // @nearest.
 func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
-	var arg1 *C.PangoRectangle
-	var arg2 *C.PangoRectangle
+	var _arg1 *C.PangoRectangle
+	var _arg2 *C.PangoRectangle
 
-	arg1 = (*C.PangoRectangle)(unsafe.Pointer(inclusive.Native()))
-	arg2 = (*C.PangoRectangle)(unsafe.Pointer(nearest.Native()))
+	_arg1 = (*C.PangoRectangle)(unsafe.Pointer(inclusive.Native()))
+	_arg2 = (*C.PangoRectangle)(unsafe.Pointer(nearest.Native()))
 
-	C.pango_extents_to_pixels(arg1, arg2)
+	C.pango_extents_to_pixels(_arg1, _arg2)
 }
 
 // UnitsFromDouble converts a floating-point number to Pango units.
@@ -48,38 +48,38 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 // The conversion is done by multiplying @d by PANGO_SCALE and rounding the
 // result to nearest integer.
 func UnitsFromDouble(d float64) int {
-	var arg1 C.double
+	var _arg1 C.double
 
-	arg1 = C.double(d)
+	_arg1 = C.double(d)
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.pango_units_from_double(arg1)
+	cret = C.pango_units_from_double(_arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // UnitsToDouble converts a number in Pango units to floating-point.
 //
 // The conversion is done by dividing @i by PANGO_SCALE.
 func UnitsToDouble(i int) float64 {
-	var arg1 C.int
+	var _arg1 C.int
 
-	arg1 = C.int(i)
+	_arg1 = C.int(i)
 
-	var cret C.double
+	var _cret C.double
 
-	cret = C.pango_units_to_double(arg1)
+	cret = C.pango_units_to_double(_arg1)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // Rectangle: the `PangoRectangle` structure represents a rectangle.

@@ -15,19 +15,19 @@ import "C"
 
 // X11DeviceManagerLookup returns the Device that wraps the given device ID.
 func X11DeviceManagerLookup(deviceManager X11DeviceManagerXI2, deviceId int) X11DeviceXI2 {
-	var arg1 *C.GdkX11DeviceManagerXI2
-	var arg2 C.int
+	var _arg1 *C.GdkX11DeviceManagerXI2
+	var _arg2 C.int
 
-	arg1 = (*C.GdkX11DeviceManagerXI2)(unsafe.Pointer(deviceManager.Native()))
-	arg2 = C.int(deviceId)
+	_arg1 = (*C.GdkX11DeviceManagerXI2)(unsafe.Pointer(deviceManager.Native()))
+	_arg2 = C.int(deviceId)
 
-	var cret *C.GdkDevice
+	var _cret *C.GdkDevice
 
-	cret = C.gdk_x11_device_manager_lookup(arg1, arg2)
+	cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
 
-	var x11DeviceXI2 X11DeviceXI2
+	var _x11DeviceXI2 X11DeviceXI2
 
-	x11DeviceXI2 = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(X11DeviceXI2)
+	_x11DeviceXI2 = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(X11DeviceXI2)
 
-	return x11DeviceXI2
+	return _x11DeviceXI2
 }

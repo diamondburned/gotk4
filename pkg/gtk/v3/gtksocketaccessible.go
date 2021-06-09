@@ -50,12 +50,12 @@ func marshalSocketAccessible(p uintptr) (interface{}, error) {
 }
 
 func (s socketAccessible) Embed(path string) {
-	var arg0 *C.GtkSocketAccessible
-	var arg1 *C.gchar
+	var _arg0 *C.GtkSocketAccessible
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(path))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_socket_accessible_embed(arg0, arg1)
+	C.gtk_socket_accessible_embed(_arg0, _arg1)
 }

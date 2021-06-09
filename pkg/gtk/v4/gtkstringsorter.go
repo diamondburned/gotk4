@@ -67,56 +67,56 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 
 // NewStringSorter constructs a class StringSorter.
 func NewStringSorter(expression Expression) StringSorter {
-	var arg1 *C.GtkExpression
+	var _arg1 *C.GtkExpression
 
-	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	var cret C.GtkStringSorter
+	var _cret C.GtkStringSorter
 
-	cret = C.gtk_string_sorter_new(arg1)
+	cret = C.gtk_string_sorter_new(_arg1)
 
-	var stringSorter StringSorter
+	var _stringSorter StringSorter
 
-	stringSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(StringSorter)
+	_stringSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringSorter)
 
-	return stringSorter
+	return _stringSorter
 }
 
 // Expression gets the expression that is evaluated to obtain strings from
 // items.
 func (s stringSorter) Expression() Expression {
-	var arg0 *C.GtkStringSorter
+	var _arg0 *C.GtkStringSorter
 
-	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkExpression
+	var _cret *C.GtkExpression
 
-	cret = C.gtk_string_sorter_get_expression(arg0)
+	cret = C.gtk_string_sorter_get_expression(_arg0)
 
-	var expression Expression
+	var _expression Expression
 
-	expression = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Expression)
+	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
 
-	return expression
+	return _expression
 }
 
 // IgnoreCase gets whether the sorter ignores case differences.
 func (s stringSorter) IgnoreCase() bool {
-	var arg0 *C.GtkStringSorter
+	var _arg0 *C.GtkStringSorter
 
-	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_string_sorter_get_ignore_case(arg0)
+	cret = C.gtk_string_sorter_get_ignore_case(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetExpression sets the expression that is evaluated to obtain strings
@@ -124,24 +124,24 @@ func (s stringSorter) IgnoreCase() bool {
 //
 // The expression must have the type G_TYPE_STRING.
 func (s stringSorter) SetExpression(expression Expression) {
-	var arg0 *C.GtkStringSorter
-	var arg1 *C.GtkExpression
+	var _arg0 *C.GtkStringSorter
+	var _arg1 *C.GtkExpression
 
-	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
 
-	C.gtk_string_sorter_set_expression(arg0, arg1)
+	C.gtk_string_sorter_set_expression(_arg0, _arg1)
 }
 
 // SetIgnoreCase sets whether the sorter will ignore case differences.
 func (s stringSorter) SetIgnoreCase(ignoreCase bool) {
-	var arg0 *C.GtkStringSorter
-	var arg1 C.gboolean
+	var _arg0 *C.GtkStringSorter
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 	if ignoreCase {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_string_sorter_set_ignore_case(arg0, arg1)
+	C.gtk_string_sorter_set_ignore_case(_arg0, _arg1)
 }

@@ -21,47 +21,47 @@ import "C"
 // BindingsActivate: find a key binding matching @keyval and @modifiers and
 // activate the binding on @object.
 func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.ModifierType) bool {
-	var arg1 *C.GObject
-	var arg2 C.guint
-	var arg3 C.GdkModifierType
+	var _arg1 *C.GObject
+	var _arg2 C.guint
+	var _arg3 C.GdkModifierType
 
-	arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	arg2 = C.guint(keyval)
-	arg3 = (C.GdkModifierType)(modifiers)
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = C.guint(keyval)
+	_arg3 = (C.GdkModifierType)(modifiers)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_bindings_activate(arg1, arg2, arg3)
+	cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // BindingsActivateEvent looks up key bindings for @object to find one matching
 // @event, and if one was found, activate it.
 func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
-	var arg1 *C.GObject
-	var arg2 *C.GdkEventKey
+	var _arg1 *C.GObject
+	var _arg2 *C.GdkEventKey
 
-	arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
-	arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_bindings_activate_event(arg1, arg2)
+	cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // BindingArg: a BindingArg holds the data associated with an argument for a key
@@ -246,27 +246,27 @@ func (b *BindingSet) Current() *BindingEntry {
 // Activate: find a key binding matching @keyval and @modifiers within
 // @binding_set and activate the binding on @object.
 func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
-	var arg0 *C.GtkBindingSet
-	var arg1 C.guint
-	var arg2 C.GdkModifierType
-	var arg3 *C.GObject
+	var _arg0 *C.GtkBindingSet
+	var _arg1 C.guint
+	var _arg2 C.GdkModifierType
+	var _arg3 *C.GObject
 
-	arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
-	arg1 = C.guint(keyval)
-	arg2 = (C.GdkModifierType)(modifiers)
-	arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
+	_arg1 = C.guint(keyval)
+	_arg2 = (C.GdkModifierType)(modifiers)
+	_arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_binding_set_activate(arg0, arg1, arg2, arg3)
+	cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // AddPath: this function was used internally by the GtkRC parsing mechanism to
@@ -274,18 +274,18 @@ func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object ge
 //
 // In GTK+ 3, these match patterns are unused.
 func (b *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
-	var arg0 *C.GtkBindingSet
-	var arg1 C.GtkPathType
-	var arg2 *C.gchar
-	var arg3 C.GtkPathPriorityType
+	var _arg0 *C.GtkBindingSet
+	var _arg1 C.GtkPathType
+	var _arg2 *C.gchar
+	var _arg3 C.GtkPathPriorityType
 
-	arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
-	arg1 = (C.GtkPathType)(pathType)
-	arg2 = (*C.gchar)(C.CString(pathPattern))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (C.GtkPathPriorityType)(priority)
+	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
+	_arg1 = (C.GtkPathType)(pathType)
+	_arg2 = (*C.gchar)(C.CString(pathPattern))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (C.GtkPathPriorityType)(priority)
 
-	C.gtk_binding_set_add_path(arg0, arg1, arg2, arg3)
+	C.gtk_binding_set_add_path(_arg0, _arg1, _arg2, _arg3)
 }
 
 // BindingSignal: a GtkBindingSignal stores the necessary information to

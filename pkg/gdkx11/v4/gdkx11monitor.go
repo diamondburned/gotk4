@@ -57,13 +57,13 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 // ”application pixels”, not in ”device pixels” (see
 // gdk_monitor_get_scale_factor()).
 func (m x11Monitor) Workarea() gdk.Rectangle {
-	var arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor
 
-	arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var workarea gdk.Rectangle
+	var _workarea gdk.Rectangle
 
-	C.gdk_x11_monitor_get_workarea(arg0, (*C.GdkRectangle)(unsafe.Pointer(&workarea)))
+	C.gdk_x11_monitor_get_workarea(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_workarea)))
 
-	return workarea
+	return _workarea
 }

@@ -56,32 +56,32 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 
 // NewIMMulticontext constructs a class IMMulticontext.
 func NewIMMulticontext() IMMulticontext {
-	var cret C.GtkIMMulticontext
+	var _cret C.GtkIMMulticontext
 
 	cret = C.gtk_im_multicontext_new()
 
-	var imMulticontext IMMulticontext
+	var _imMulticontext IMMulticontext
 
-	imMulticontext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(IMMulticontext)
+	_imMulticontext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IMMulticontext)
 
-	return imMulticontext
+	return _imMulticontext
 }
 
 // ContextID gets the id of the currently active delegate of the @context.
 func (c imMulticontext) ContextID() string {
-	var arg0 *C.GtkIMMulticontext
+	var _arg0 *C.GtkIMMulticontext
 
-	arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_im_multicontext_get_context_id(arg0)
+	cret = C.gtk_im_multicontext_get_context_id(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // SetContextID sets the context id for @context.
@@ -89,12 +89,12 @@ func (c imMulticontext) ContextID() string {
 // This causes the currently active delegate of @context to be replaced by
 // the delegate corresponding to the new context id.
 func (c imMulticontext) SetContextID(contextId string) {
-	var arg0 *C.GtkIMMulticontext
-	var arg1 *C.char
+	var _arg0 *C.GtkIMMulticontext
+	var _arg1 *C.char
 
-	arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(contextId))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(contextId))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_im_multicontext_set_context_id(arg0, arg1)
+	C.gtk_im_multicontext_set_context_id(_arg0, _arg1)
 }

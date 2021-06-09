@@ -16,11 +16,11 @@ import "C"
 // AddOptionEntriesLibgtkOnly appends gdk option entries to the passed in option
 // group. This is not public API and must not be used by applications.
 func AddOptionEntriesLibgtkOnly(group *glib.OptionGroup) {
-	var arg1 *C.GOptionGroup
+	var _arg1 *C.GOptionGroup
 
-	arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
+	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
-	C.gdk_add_option_entries_libgtk_only(arg1)
+	C.gdk_add_option_entries_libgtk_only(_arg1)
 }
 
 // Beep emits a short beep on the default display.
@@ -49,15 +49,15 @@ func DisableMultidevice() {
 // Prior to GDK 3.0, this function would not automatically sync for you, so you
 // had to gdk_flush() if your last call to Xlib was not a blocking round trip.
 func ErrorTrapPop() int {
-	var cret C.gint
+	var _cret C.gint
 
 	cret = C.gdk_error_trap_pop()
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // ErrorTrapPopIgnored removes an error trap pushed with gdk_error_trap_push(),
@@ -106,30 +106,30 @@ func Flush() {
 // GetDisplay gets the name of the display, which usually comes from the
 // `DISPLAY` environment variable or the `--display` command line option.
 func GetDisplay() string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.gdk_get_display()
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // GetDisplayArgName gets the display name specified in the command line
 // arguments passed to gdk_init() or gdk_parse_args(), if any.
 func GetDisplayArgName() string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.gdk_get_display_arg_name()
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // GetProgramClass gets the program class. Unless the program class has
@@ -137,15 +137,15 @@ func GetDisplayArgName() string {
 // commandline option, the default value is the program name (determined with
 // g_get_prgname()) with the first character converted to uppercase.
 func GetProgramClass() string {
-	var cret *C.gchar
+	var _cret *C.gchar
 
 	cret = C.gdk_get_program_class()
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // KeyboardGrab grabs the keyboard so that all events are passed to this
@@ -156,35 +156,35 @@ func GetProgramClass() string {
 // up when the grab ends, you should handle the EventGrabBroken events that are
 // emitted when the grab ends unvoluntarily.
 func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
-	var arg1 *C.GdkWindow
-	var arg2 C.gboolean
-	var arg3 C.guint32
+	var _arg1 *C.GdkWindow
+	var _arg2 C.gboolean
+	var _arg3 C.guint32
 
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	if ownerEvents {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
-	arg3 = C.guint32(time_)
+	_arg3 = C.guint32(time_)
 
-	var cret C.GdkGrabStatus
+	var _cret C.GdkGrabStatus
 
-	cret = C.gdk_keyboard_grab(arg1, arg2, arg3)
+	cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
 
-	var grabStatus GrabStatus
+	var _grabStatus GrabStatus
 
-	grabStatus = GrabStatus(cret)
+	_grabStatus = GrabStatus(_cret)
 
-	return grabStatus
+	return _grabStatus
 }
 
 // KeyboardUngrab ungrabs the keyboard on the default display, if it is grabbed
 // by this application.
 func KeyboardUngrab(time_ uint32) {
-	var arg1 C.guint32
+	var _arg1 C.guint32
 
-	arg1 = C.guint32(time_)
+	_arg1 = C.guint32(time_)
 
-	C.gdk_keyboard_ungrab(arg1)
+	C.gdk_keyboard_ungrab(_arg1)
 }
 
 // NotifyStartupComplete indicates to the GUI environment that the application
@@ -205,12 +205,12 @@ func NotifyStartupComplete() {
 // startup-notification identifier unless
 // gtk_window_set_auto_startup_notification() is called to disable that feature.
 func NotifyStartupCompleteWithID(startupId string) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(startupId))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(startupId))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_notify_startup_complete_with_id(arg1)
+	C.gdk_notify_startup_complete_with_id(_arg1)
 }
 
 // PointerGrab grabs the pointer (usually a mouse) so that all events are passed
@@ -234,31 +234,31 @@ func NotifyStartupCompleteWithID(startupId string) {
 // up when the grab ends, you should handle the EventGrabBroken events that are
 // emitted when the grab ends unvoluntarily.
 func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo Window, cursor Cursor, time_ uint32) GrabStatus {
-	var arg1 *C.GdkWindow
-	var arg2 C.gboolean
-	var arg3 C.GdkEventMask
-	var arg4 *C.GdkWindow
-	var arg5 *C.GdkCursor
-	var arg6 C.guint32
+	var _arg1 *C.GdkWindow
+	var _arg2 C.gboolean
+	var _arg3 C.GdkEventMask
+	var _arg4 *C.GdkWindow
+	var _arg5 *C.GdkCursor
+	var _arg6 C.guint32
 
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	if ownerEvents {
-		arg2 = C.gboolean(1)
+		_arg2 = C.gboolean(1)
 	}
-	arg3 = (C.GdkEventMask)(eventMask)
-	arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
-	arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-	arg6 = C.guint32(time_)
+	_arg3 = (C.GdkEventMask)(eventMask)
+	_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
+	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg6 = C.guint32(time_)
 
-	var cret C.GdkGrabStatus
+	var _cret C.GdkGrabStatus
 
-	cret = C.gdk_pointer_grab(arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var grabStatus GrabStatus
+	var _grabStatus GrabStatus
 
-	grabStatus = GrabStatus(cret)
+	_grabStatus = GrabStatus(_cret)
 
-	return grabStatus
+	return _grabStatus
 }
 
 // PointerIsGrabbed returns true if the pointer on the default display is
@@ -267,27 +267,27 @@ func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo
 // Note that this does not take the inmplicit pointer grab on button presses
 // into account.
 func PointerIsGrabbed() bool {
-	var cret C.gboolean
+	var _cret C.gboolean
 
 	cret = C.gdk_pointer_is_grabbed()
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // PointerUngrab ungrabs the pointer on the default display, if it is grabbed by
 // this application.
 func PointerUngrab(time_ uint32) {
-	var arg1 C.guint32
+	var _arg1 C.guint32
 
-	arg1 = C.guint32(time_)
+	_arg1 = C.guint32(time_)
 
-	C.gdk_pointer_ungrab(arg1)
+	C.gdk_pointer_ungrab(_arg1)
 }
 
 // PreParseLibgtkOnly: prepare for parsing command line arguments for GDK. This
@@ -320,12 +320,12 @@ func PreParseLibgtkOnly() {
 // This call must happen prior to gdk_display_open(), gtk_init(),
 // gtk_init_with_args() or gtk_init_check() in order to take effect.
 func SetAllowedBackends(backends string) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(backends))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(backends))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_set_allowed_backends(arg1)
+	C.gdk_set_allowed_backends(_arg1)
 }
 
 // SetDoubleClickTime: set the double click time for the default display. See
@@ -333,11 +333,11 @@ func SetAllowedBackends(backends string) {
 // gdk_display_set_double_click_distance(). Applications should not set this, it
 // is a global user-configured setting.
 func SetDoubleClickTime(msec uint) {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(msec)
+	_arg1 = C.guint(msec)
 
-	C.gdk_set_double_click_time(arg1)
+	C.gdk_set_double_click_time(_arg1)
 }
 
 // SetProgramClass sets the program class. The X11 backend uses the program
@@ -347,10 +347,10 @@ func SetDoubleClickTime(msec uint) {
 // The program class can still be overridden with the --class command line
 // option.
 func SetProgramClass(programClass string) {
-	var arg1 *C.gchar
+	var _arg1 *C.gchar
 
-	arg1 = (*C.gchar)(C.CString(programClass))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg1 = (*C.gchar)(C.CString(programClass))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_set_program_class(arg1)
+	C.gdk_set_program_class(_arg1)
 }

@@ -15,34 +15,34 @@ import "C"
 
 // SelectionConvert retrieves the contents of a selection in a given form.
 func SelectionConvert(requestor Window, selection Atom, target Atom, time_ uint32) {
-	var arg1 *C.GdkWindow
-	var arg2 C.GdkAtom
-	var arg3 C.GdkAtom
-	var arg4 C.guint32
+	var _arg1 *C.GdkWindow
+	var _arg2 C.GdkAtom
+	var _arg3 C.GdkAtom
+	var _arg4 C.guint32
 
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	arg4 = C.guint32(time_)
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg4 = C.guint32(time_)
 
-	C.gdk_selection_convert(arg1, arg2, arg3, arg4)
+	C.gdk_selection_convert(_arg1, _arg2, _arg3, _arg4)
 }
 
 // SelectionOwnerGet determines the owner of the given selection.
 func SelectionOwnerGet(selection Atom) Window {
-	var arg1 C.GdkAtom
+	var _arg1 C.GdkAtom
 
-	arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_selection_owner_get(arg1)
+	cret = C.gdk_selection_owner_get(_arg1)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // SelectionOwnerGetForDisplay: determine the owner of the given selection.
@@ -51,78 +51,78 @@ func SelectionOwnerGet(selection Atom) Window {
 // window was previously created for that window, but a new foreign window will
 // never be created by this call.
 func SelectionOwnerGetForDisplay(display Display, selection Atom) Window {
-	var arg1 *C.GdkDisplay
-	var arg2 C.GdkAtom
+	var _arg1 *C.GdkDisplay
+	var _arg2 C.GdkAtom
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_selection_owner_get_for_display(arg1, arg2)
+	cret = C.gdk_selection_owner_get_for_display(_arg1, _arg2)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // SelectionOwnerSet sets the owner of the given selection.
 func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent bool) bool {
-	var arg1 *C.GdkWindow
-	var arg2 C.GdkAtom
-	var arg3 C.guint32
-	var arg4 C.gboolean
+	var _arg1 *C.GdkWindow
+	var _arg2 C.GdkAtom
+	var _arg3 C.guint32
+	var _arg4 C.gboolean
 
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg3 = C.guint32(time_)
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = C.guint32(time_)
 	if sendEvent {
-		arg4 = C.gboolean(1)
+		_arg4 = C.gboolean(1)
 	}
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_selection_owner_set(arg1, arg2, arg3, arg4)
+	cret = C.gdk_selection_owner_set(_arg1, _arg2, _arg3, _arg4)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectionOwnerSetForDisplay sets the Window @owner as the current owner of
 // the selection @selection.
 func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, time_ uint32, sendEvent bool) bool {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.GdkWindow
-	var arg3 C.GdkAtom
-	var arg4 C.guint32
-	var arg5 C.gboolean
+	var _arg1 *C.GdkDisplay
+	var _arg2 *C.GdkWindow
+	var _arg3 C.GdkAtom
+	var _arg4 C.guint32
+	var _arg5 C.gboolean
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
-	arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg4 = C.guint32(time_)
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(owner.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg4 = C.guint32(time_)
 	if sendEvent {
-		arg5 = C.gboolean(1)
+		_arg5 = C.gboolean(1)
 	}
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_selection_owner_set_for_display(arg1, arg2, arg3, arg4, arg5)
+	cret = C.gdk_selection_owner_set_for_display(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SelectionPropertyGet retrieves selection data that was stored by the
@@ -130,59 +130,59 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 // function will not be used by applications, who should use the Clipboard API
 // instead.
 func SelectionPropertyGet(requestor Window, data **byte, propType *Atom, propFormat *int) int {
-	var arg1 *C.GdkWindow
-	var arg2 **C.guchar
-	var arg3 *C.GdkAtom
-	var arg4 *C.gint
+	var _arg1 *C.GdkWindow
+	var _arg2 **C.guchar
+	var _arg3 *C.GdkAtom
+	var _arg4 *C.gint
 
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	arg2 = **C.guchar(data)
-	arg3 = (*C.GdkAtom)(unsafe.Pointer(propType.Native()))
-	arg4 = *C.gint(propFormat)
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
+	_arg2 = **C.guchar(data)
+	_arg3 = (*C.GdkAtom)(unsafe.Pointer(propType.Native()))
+	_arg4 = *C.gint(propFormat)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_selection_property_get(arg1, arg2, arg3, arg4)
+	cret = C.gdk_selection_property_get(_arg1, _arg2, _arg3, _arg4)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // SelectionSendNotify sends a response to SelectionRequest event.
 func SelectionSendNotify(requestor Window, selection Atom, target Atom, property Atom, time_ uint32) {
-	var arg1 *C.GdkWindow
-	var arg2 C.GdkAtom
-	var arg3 C.GdkAtom
-	var arg4 C.GdkAtom
-	var arg5 C.guint32
+	var _arg1 *C.GdkWindow
+	var _arg2 C.GdkAtom
+	var _arg3 C.GdkAtom
+	var _arg4 C.GdkAtom
+	var _arg5 C.guint32
 
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	arg4 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	arg5 = C.guint32(time_)
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg4 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg5 = C.guint32(time_)
 
-	C.gdk_selection_send_notify(arg1, arg2, arg3, arg4, arg5)
+	C.gdk_selection_send_notify(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // SelectionSendNotifyForDisplay: send a response to SelectionRequest event.
 func SelectionSendNotifyForDisplay(display Display, requestor Window, selection Atom, target Atom, property Atom, time_ uint32) {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.GdkWindow
-	var arg3 C.GdkAtom
-	var arg4 C.GdkAtom
-	var arg5 C.GdkAtom
-	var arg6 C.guint32
+	var _arg1 *C.GdkDisplay
+	var _arg2 *C.GdkWindow
+	var _arg3 C.GdkAtom
+	var _arg4 C.GdkAtom
+	var _arg5 C.GdkAtom
+	var _arg6 C.guint32
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
-	arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-	arg4 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
-	arg5 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
-	arg6 = C.guint32(time_)
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GdkWindow)(unsafe.Pointer(requestor.Native()))
+	_arg3 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg4 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
+	_arg5 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
+	_arg6 = C.guint32(time_)
 
-	C.gdk_selection_send_notify_for_display(arg1, arg2, arg3, arg4, arg5, arg6)
+	C.gdk_selection_send_notify_for_display(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }

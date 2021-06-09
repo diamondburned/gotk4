@@ -62,13 +62,13 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 
 // NewCellRendererPixbuf constructs a class CellRendererPixbuf.
 func NewCellRendererPixbuf() CellRendererPixbuf {
-	var cret C.GtkCellRendererPixbuf
+	var _cret C.GtkCellRendererPixbuf
 
 	cret = C.gtk_cell_renderer_pixbuf_new()
 
-	var cellRendererPixbuf CellRendererPixbuf
+	var _cellRendererPixbuf CellRendererPixbuf
 
-	cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererPixbuf)
+	_cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererPixbuf)
 
-	return cellRendererPixbuf
+	return _cellRendererPixbuf
 }

@@ -71,47 +71,47 @@ func marshalEventController(p uintptr) (interface{}, error) {
 // PropagationPhase gets the propagation phase at which @controller handles
 // events.
 func (c eventController) PropagationPhase() PropagationPhase {
-	var arg0 *C.GtkEventController
+	var _arg0 *C.GtkEventController
 
-	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
-	var cret C.GtkPropagationPhase
+	var _cret C.GtkPropagationPhase
 
-	cret = C.gtk_event_controller_get_propagation_phase(arg0)
+	cret = C.gtk_event_controller_get_propagation_phase(_arg0)
 
-	var propagationPhase PropagationPhase
+	var _propagationPhase PropagationPhase
 
-	propagationPhase = PropagationPhase(cret)
+	_propagationPhase = PropagationPhase(_cret)
 
-	return propagationPhase
+	return _propagationPhase
 }
 
 // Widget returns the Widget this controller relates to.
 func (c eventController) Widget() Widget {
-	var arg0 *C.GtkEventController
+	var _arg0 *C.GtkEventController
 
-	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_event_controller_get_widget(arg0)
+	cret = C.gtk_event_controller_get_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // Reset resets the @controller to a clean state. Every interaction the
 // controller did through EventController::handle-event will be dropped at
 // this point.
 func (c eventController) Reset() {
-	var arg0 *C.GtkEventController
+	var _arg0 *C.GtkEventController
 
-	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
-	C.gtk_event_controller_reset(arg0)
+	C.gtk_event_controller_reset(_arg0)
 }
 
 // SetPropagationPhase sets the propagation phase at which a controller
@@ -121,11 +121,11 @@ func (c eventController) Reset() {
 // performed, but other additional gesture maintenance will. In that phase,
 // the events can be managed by calling gtk_event_controller_handle_event().
 func (c eventController) SetPropagationPhase(phase PropagationPhase) {
-	var arg0 *C.GtkEventController
-	var arg1 C.GtkPropagationPhase
+	var _arg0 *C.GtkEventController
+	var _arg1 C.GtkPropagationPhase
 
-	arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
-	arg1 = (C.GtkPropagationPhase)(phase)
+	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
+	_arg1 = (C.GtkPropagationPhase)(phase)
 
-	C.gtk_event_controller_set_propagation_phase(arg0, arg1)
+	C.gtk_event_controller_set_propagation_phase(_arg0, _arg1)
 }

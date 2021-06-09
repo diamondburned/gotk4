@@ -60,13 +60,13 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 
 // NewCellRendererSpinner constructs a class CellRendererSpinner.
 func NewCellRendererSpinner() CellRendererSpinner {
-	var cret C.GtkCellRendererSpinner
+	var _cret C.GtkCellRendererSpinner
 
 	cret = C.gtk_cell_renderer_spinner_new()
 
-	var cellRendererSpinner CellRendererSpinner
+	var _cellRendererSpinner CellRendererSpinner
 
-	cellRendererSpinner = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CellRendererSpinner)
+	_cellRendererSpinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererSpinner)
 
-	return cellRendererSpinner
+	return _cellRendererSpinner
 }

@@ -83,73 +83,73 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 
 // NewBoxLayout constructs a class BoxLayout.
 func NewBoxLayout(orientation Orientation) BoxLayout {
-	var arg1 C.GtkOrientation
+	var _arg1 C.GtkOrientation
 
-	arg1 = (C.GtkOrientation)(orientation)
+	_arg1 = (C.GtkOrientation)(orientation)
 
-	var cret C.GtkBoxLayout
+	var _cret C.GtkBoxLayout
 
-	cret = C.gtk_box_layout_new(arg1)
+	cret = C.gtk_box_layout_new(_arg1)
 
-	var boxLayout BoxLayout
+	var _boxLayout BoxLayout
 
-	boxLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BoxLayout)
+	_boxLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BoxLayout)
 
-	return boxLayout
+	return _boxLayout
 }
 
 // BaselinePosition gets the value set by
 // gtk_box_layout_set_baseline_position().
 func (b boxLayout) BaselinePosition() BaselinePosition {
-	var arg0 *C.GtkBoxLayout
+	var _arg0 *C.GtkBoxLayout
 
-	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
-	var cret C.GtkBaselinePosition
+	var _cret C.GtkBaselinePosition
 
-	cret = C.gtk_box_layout_get_baseline_position(arg0)
+	cret = C.gtk_box_layout_get_baseline_position(_arg0)
 
-	var baselinePosition BaselinePosition
+	var _baselinePosition BaselinePosition
 
-	baselinePosition = BaselinePosition(cret)
+	_baselinePosition = BaselinePosition(_cret)
 
-	return baselinePosition
+	return _baselinePosition
 }
 
 // Homogeneous returns whether the layout is set to be homogeneous.
 func (b boxLayout) Homogeneous() bool {
-	var arg0 *C.GtkBoxLayout
+	var _arg0 *C.GtkBoxLayout
 
-	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_box_layout_get_homogeneous(arg0)
+	cret = C.gtk_box_layout_get_homogeneous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Spacing returns the space that @box_layout puts between children.
 func (b boxLayout) Spacing() uint {
-	var arg0 *C.GtkBoxLayout
+	var _arg0 *C.GtkBoxLayout
 
-	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_box_layout_get_spacing(arg0)
+	cret = C.gtk_box_layout_get_spacing(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // SetBaselinePosition sets the baseline position of a box layout.
@@ -160,36 +160,36 @@ func (b boxLayout) Spacing() uint {
 // @position is used to allocate the baseline within the extra space
 // available.
 func (b boxLayout) SetBaselinePosition(position BaselinePosition) {
-	var arg0 *C.GtkBoxLayout
-	var arg1 C.GtkBaselinePosition
+	var _arg0 *C.GtkBoxLayout
+	var _arg1 C.GtkBaselinePosition
 
-	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-	arg1 = (C.GtkBaselinePosition)(position)
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg1 = (C.GtkBaselinePosition)(position)
 
-	C.gtk_box_layout_set_baseline_position(arg0, arg1)
+	C.gtk_box_layout_set_baseline_position(_arg0, _arg1)
 }
 
 // SetHomogeneous sets whether the box layout will allocate the same size to
 // all children.
 func (b boxLayout) SetHomogeneous(homogeneous bool) {
-	var arg0 *C.GtkBoxLayout
-	var arg1 C.gboolean
+	var _arg0 *C.GtkBoxLayout
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 	if homogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_box_layout_set_homogeneous(arg0, arg1)
+	C.gtk_box_layout_set_homogeneous(_arg0, _arg1)
 }
 
 // SetSpacing sets how much spacing to put between children.
 func (b boxLayout) SetSpacing(spacing uint) {
-	var arg0 *C.GtkBoxLayout
-	var arg1 C.guint
+	var _arg0 *C.GtkBoxLayout
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-	arg1 = C.guint(spacing)
+	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
+	_arg1 = C.guint(spacing)
 
-	C.gtk_box_layout_set_spacing(arg0, arg1)
+	C.gtk_box_layout_set_spacing(_arg0, _arg1)
 }

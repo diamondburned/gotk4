@@ -63,46 +63,46 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 
 // NewMultiSelection constructs a class MultiSelection.
 func NewMultiSelection(model gio.ListModel) MultiSelection {
-	var arg1 *C.GListModel
+	var _arg1 *C.GListModel
 
-	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	var cret C.GtkMultiSelection
+	var _cret C.GtkMultiSelection
 
-	cret = C.gtk_multi_selection_new(arg1)
+	cret = C.gtk_multi_selection_new(_arg1)
 
-	var multiSelection MultiSelection
+	var _multiSelection MultiSelection
 
-	multiSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(MultiSelection)
+	_multiSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MultiSelection)
 
-	return multiSelection
+	return _multiSelection
 }
 
 // Model returns the underlying model of @self.
 func (s multiSelection) Model() gio.ListModel {
-	var arg0 *C.GtkMultiSelection
+	var _arg0 *C.GtkMultiSelection
 
-	arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GListModel
+	var _cret *C.GListModel
 
-	cret = C.gtk_multi_selection_get_model(arg0)
+	cret = C.gtk_multi_selection_get_model(_arg0)
 
-	var listModel gio.ListModel
+	var _listModel gio.ListModel
 
-	listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(gio.ListModel)
+	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
 
-	return listModel
+	return _listModel
 }
 
 // SetModel sets the model that @self should wrap. If @model is nil, @self
 // will be empty.
 func (s multiSelection) SetModel(model gio.ListModel) {
-	var arg0 *C.GtkMultiSelection
-	var arg1 *C.GListModel
+	var _arg0 *C.GtkMultiSelection
+	var _arg1 *C.GListModel
 
-	arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
+	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
 
-	C.gtk_multi_selection_set_model(arg0, arg1)
+	C.gtk_multi_selection_set_model(_arg0, _arg1)
 }

@@ -116,23 +116,23 @@ func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize,
 }
 
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
-	var arg1 *C.char
-	var arg2 *C.char
-	var arg3 C.int
-	var arg4 *C.char
-	var arg5 *C.char
+	var _arg1 *C.char
+	var _arg2 *C.char
+	var _arg3 C.int
+	var _arg4 *C.char
+	var _arg5 *C.char
 
-	arg1 = (*C.char)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.char)(C.CString(file))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.int(line)
-	arg4 = (*C.char)(C.CString(prettyFunction))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (*C.char)(C.CString(expression))
-	defer C.free(unsafe.Pointer(arg5))
+	_arg1 = (*C.char)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(file))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.int(line)
+	_arg4 = (*C.char)(C.CString(prettyFunction))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.char)(C.CString(expression))
+	defer C.free(unsafe.Pointer(_arg5))
 
-	C.g_assert_warning(arg1, arg2, arg3, arg4, arg5)
+	C.g_assert_warning(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // LogDefaultHandler: the default log handler set up by GLib;
@@ -159,19 +159,19 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData interface{}) {
-	var arg1 *C.gchar
-	var arg2 C.GLogLevelFlags
-	var arg3 *C.gchar
-	var arg4 C.gpointer
+	var _arg1 *C.gchar
+	var _arg2 C.GLogLevelFlags
+	var _arg3 *C.gchar
+	var _arg4 C.gpointer
 
-	arg1 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GLogLevelFlags)(logLevel)
-	arg3 = (*C.gchar)(C.CString(message))
-	defer C.free(unsafe.Pointer(arg3))
-	arg4 = C.gpointer(unusedData)
+	_arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GLogLevelFlags)(logLevel)
+	_arg3 = (*C.gchar)(C.CString(message))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = C.gpointer(unusedData)
 
-	C.g_log_default_handler(arg1, arg2, arg3, arg4)
+	C.g_log_default_handler(_arg1, _arg2, _arg3, _arg4)
 }
 
 // LogRemoveHandler removes the log handler.
@@ -179,14 +179,14 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogRemoveHandler(logDomain string, handlerId uint) {
-	var arg1 *C.gchar
-	var arg2 C.guint
+	var _arg1 *C.gchar
+	var _arg2 C.guint
 
-	arg1 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.guint(handlerId)
+	_arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.guint(handlerId)
 
-	C.g_log_remove_handler(arg1, arg2)
+	C.g_log_remove_handler(_arg1, _arg2)
 }
 
 // LogSetAlwaysFatal sets the message levels which are always fatal, in any log
@@ -206,19 +206,19 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 // otherwise it is up to the writer function to determine which log messages are
 // fatal. See [Using Structured Logging][using-structured-logging].
 func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
-	var arg1 C.GLogLevelFlags
+	var _arg1 C.GLogLevelFlags
 
-	arg1 = (C.GLogLevelFlags)(fatalMask)
+	_arg1 = (C.GLogLevelFlags)(fatalMask)
 
-	var cret C.GLogLevelFlags
+	var _cret C.GLogLevelFlags
 
-	cret = C.g_log_set_always_fatal(arg1)
+	cret = C.g_log_set_always_fatal(_arg1)
 
-	var logLevelFlags LogLevelFlags
+	var _logLevelFlags LogLevelFlags
 
-	logLevelFlags = LogLevelFlags(cret)
+	_logLevelFlags = LogLevelFlags(_cret)
 
-	return logLevelFlags
+	return _logLevelFlags
 }
 
 // LogSetFatalMask sets the log levels which are fatal in the given domain.
@@ -235,22 +235,22 @@ func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
 // G_LOG_LEVEL_INFO or G_LOG_LEVEL_DEBUG as fatal except inside of test
 // programs.
 func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
-	var arg1 *C.gchar
-	var arg2 C.GLogLevelFlags
+	var _arg1 *C.gchar
+	var _arg2 C.GLogLevelFlags
 
-	arg1 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GLogLevelFlags)(fatalMask)
+	_arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GLogLevelFlags)(fatalMask)
 
-	var cret C.GLogLevelFlags
+	var _cret C.GLogLevelFlags
 
-	cret = C.g_log_set_fatal_mask(arg1, arg2)
+	cret = C.g_log_set_fatal_mask(_arg1, _arg2)
 
-	var logLevelFlags LogLevelFlags
+	var _logLevelFlags LogLevelFlags
 
-	logLevelFlags = LogLevelFlags(cret)
+	_logLevelFlags = LogLevelFlags(_cret)
 
-	return logLevelFlags
+	return _logLevelFlags
 }
 
 // LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
@@ -259,15 +259,15 @@ func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogSetHandlerFull() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.g_log_set_handler_full()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // LogSetWriterFunc: set a writer function which will be called to format and
@@ -314,16 +314,16 @@ func LogStructuredArray() {
 // For more details on its usage and about the parameters, see
 // g_log_structured().
 func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
-	var arg1 *C.gchar
-	var arg2 C.GLogLevelFlags
-	var arg3 *C.GVariant
+	var _arg1 *C.gchar
+	var _arg2 C.GLogLevelFlags
+	var _arg3 *C.GVariant
 
-	arg1 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GLogLevelFlags)(logLevel)
-	arg3 = (*C.GVariant)(unsafe.Pointer(fields.Native()))
+	_arg1 = (*C.gchar)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GLogLevelFlags)(logLevel)
+	_arg3 = (*C.GVariant)(unsafe.Pointer(fields.Native()))
 
-	C.g_log_variant(arg1, arg2, arg3)
+	C.g_log_variant(_arg1, _arg2, _arg3)
 }
 
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a
@@ -335,81 +335,81 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 //
 //    is_journald = g_log_writer_is_journald (fileno (stderr));
 func LogWriterIsJournald(outputFd int) bool {
-	var arg1 C.gint
+	var _arg1 C.gint
 
-	arg1 = C.gint(outputFd)
+	_arg1 = C.gint(outputFd)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_log_writer_is_journald(arg1)
+	cret = C.g_log_writer_is_journald(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // LogWriterSupportsColor: check whether the given @output_fd file descriptor
 // supports ANSI color escape sequences. If so, they can safely be used when
 // formatting log messages.
 func LogWriterSupportsColor(outputFd int) bool {
-	var arg1 C.gint
+	var _arg1 C.gint
 
-	arg1 = C.gint(outputFd)
+	_arg1 = C.gint(outputFd)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_log_writer_supports_color(arg1)
+	cret = C.g_log_writer_supports_color(_arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ReturnIfFailWarning: internal function used to print messages from the public
 // g_return_if_fail() and g_return_val_if_fail() macros.
 func ReturnIfFailWarning(logDomain string, prettyFunction string, expression string) {
-	var arg1 *C.char
-	var arg2 *C.char
-	var arg3 *C.char
+	var _arg1 *C.char
+	var _arg2 *C.char
+	var _arg3 *C.char
 
-	arg1 = (*C.char)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.char)(C.CString(prettyFunction))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.char)(C.CString(expression))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg1 = (*C.char)(C.CString(logDomain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(prettyFunction))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.char)(C.CString(expression))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.g_return_if_fail_warning(arg1, arg2, arg3)
+	C.g_return_if_fail_warning(_arg1, _arg2, _arg3)
 }
 
 // WarnMessage: internal function used to print messages from the public
 // g_warn_if_reached() and g_warn_if_fail() macros.
 func WarnMessage(domain string, file string, line int, fn string, warnexpr string) {
-	var arg1 *C.char
-	var arg2 *C.char
-	var arg3 C.int
-	var arg4 *C.char
-	var arg5 *C.char
+	var _arg1 *C.char
+	var _arg2 *C.char
+	var _arg3 C.int
+	var _arg4 *C.char
+	var _arg5 *C.char
 
-	arg1 = (*C.char)(C.CString(domain))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.char)(C.CString(file))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = C.int(line)
-	arg4 = (*C.char)(C.CString(fn))
-	defer C.free(unsafe.Pointer(arg4))
-	arg5 = (*C.char)(C.CString(warnexpr))
-	defer C.free(unsafe.Pointer(arg5))
+	_arg1 = (*C.char)(C.CString(domain))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.char)(C.CString(file))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.int(line)
+	_arg4 = (*C.char)(C.CString(fn))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.char)(C.CString(warnexpr))
+	defer C.free(unsafe.Pointer(_arg5))
 
-	C.g_warn_message(arg1, arg2, arg3, arg4, arg5)
+	C.g_warn_message(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // LogField: structure representing a single field in a structured log entry.

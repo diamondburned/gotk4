@@ -43,18 +43,18 @@ func marshalSphere(p uintptr) (interface{}, error) {
 
 // NewSphereAlloc constructs a struct Sphere.
 func NewSphereAlloc() *Sphere {
-	var cret *C.graphene_sphere_t
+	var _cret *C.graphene_sphere_t
 
 	cret = C.graphene_sphere_alloc()
 
-	var sphere *Sphere
+	var _sphere *Sphere
 
-	sphere = WrapSphere(unsafe.Pointer(cret))
-	runtime.SetFinalizer(sphere, func(v *Sphere) {
+	_sphere = WrapSphere(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_sphere, func(v *Sphere) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return sphere
+	return _sphere
 }
 
 // Native returns the underlying C source pointer.
@@ -65,172 +65,172 @@ func (s *Sphere) Native() unsafe.Pointer {
 // ContainsPoint checks whether the given @point is contained in the volume of a
 // #graphene_sphere_t.
 func (s *Sphere) ContainsPoint(point *Point3D) bool {
-	var arg0 *C.graphene_sphere_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_sphere_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_sphere_contains_point(arg0, arg1)
+	cret = C.graphene_sphere_contains_point(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Distance computes the distance of the given @point from the surface of a
 // #graphene_sphere_t.
 func (s *Sphere) Distance(point *Point3D) float32 {
-	var arg0 *C.graphene_sphere_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_sphere_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_sphere_distance(arg0, arg1)
+	cret = C.graphene_sphere_distance(_arg0, _arg1)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // Equal checks whether two #graphene_sphere_t are equal.
 func (a *Sphere) Equal(b *Sphere) bool {
-	var arg0 *C.graphene_sphere_t
-	var arg1 *C.graphene_sphere_t
+	var _arg0 *C.graphene_sphere_t
+	var _arg1 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(a.Native()))
-	arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(b.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(b.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_sphere_equal(arg0, arg1)
+	cret = C.graphene_sphere_equal(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Free frees the resources allocated by graphene_sphere_alloc().
 func (s *Sphere) Free() {
-	var arg0 *C.graphene_sphere_t
+	var _arg0 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	C.graphene_sphere_free(arg0)
+	C.graphene_sphere_free(_arg0)
 }
 
 // BoundingBox computes the bounding box capable of containing the given
 // #graphene_sphere_t.
 func (s *Sphere) BoundingBox() Box {
-	var arg0 *C.graphene_sphere_t
+	var _arg0 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var box Box
+	var _box Box
 
-	C.graphene_sphere_get_bounding_box(arg0, (*C.graphene_box_t)(unsafe.Pointer(&box)))
+	C.graphene_sphere_get_bounding_box(_arg0, (*C.graphene_box_t)(unsafe.Pointer(&_box)))
 
-	return box
+	return _box
 }
 
 // Center retrieves the coordinates of the center of a #graphene_sphere_t.
 func (s *Sphere) Center() Point3D {
-	var arg0 *C.graphene_sphere_t
+	var _arg0 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var center Point3D
+	var _center Point3D
 
-	C.graphene_sphere_get_center(arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&center)))
+	C.graphene_sphere_get_center(_arg0, (*C.graphene_point3d_t)(unsafe.Pointer(&_center)))
 
-	return center
+	return _center
 }
 
 // Radius retrieves the radius of a #graphene_sphere_t.
 func (s *Sphere) Radius() float32 {
-	var arg0 *C.graphene_sphere_t
+	var _arg0 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var cret C.float
+	var _cret C.float
 
-	cret = C.graphene_sphere_get_radius(arg0)
+	cret = C.graphene_sphere_get_radius(_arg0)
 
-	var gfloat float32
+	var _gfloat float32
 
-	gfloat = (float32)(cret)
+	_gfloat = (float32)(_cret)
 
-	return gfloat
+	return _gfloat
 }
 
 // Init initializes the given #graphene_sphere_t with the given @center and
 // @radius.
 func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
-	var arg0 *C.graphene_sphere_t
-	var arg1 *C.graphene_point3d_t
-	var arg2 C.float
+	var _arg0 *C.graphene_sphere_t
+	var _arg1 *C.graphene_point3d_t
+	var _arg2 C.float
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(center.Native()))
-	arg2 = C.float(radius)
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(center.Native()))
+	_arg2 = C.float(radius)
 
-	var cret *C.graphene_sphere_t
+	var _cret *C.graphene_sphere_t
 
-	cret = C.graphene_sphere_init(arg0, arg1, arg2)
+	cret = C.graphene_sphere_init(_arg0, _arg1, _arg2)
 
-	var sphere *Sphere
+	var _sphere *Sphere
 
-	sphere = WrapSphere(unsafe.Pointer(cret))
+	_sphere = WrapSphere(unsafe.Pointer(_cret))
 
-	return sphere
+	return _sphere
 }
 
 // IsEmpty checks whether the sphere has a zero radius.
 func (s *Sphere) IsEmpty() bool {
-	var arg0 *C.graphene_sphere_t
+	var _arg0 *C.graphene_sphere_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var cret C._Bool
+	var _cret C._Bool
 
-	cret = C.graphene_sphere_is_empty(arg0)
+	cret = C.graphene_sphere_is_empty(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Translate translates the center of the given #graphene_sphere_t using the
 // @point coordinates as the delta of the translation.
 func (s *Sphere) Translate(point *Point3D) Sphere {
-	var arg0 *C.graphene_sphere_t
-	var arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_sphere_t
+	var _arg1 *C.graphene_point3d_t
 
-	arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
+	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	var res Sphere
+	var _res Sphere
 
-	C.graphene_sphere_translate(arg0, arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&res)))
+	C.graphene_sphere_translate(_arg0, _arg1, (*C.graphene_sphere_t)(unsafe.Pointer(&_res)))
 
-	return res
+	return _res
 }

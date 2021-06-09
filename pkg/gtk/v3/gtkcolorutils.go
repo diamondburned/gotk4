@@ -14,27 +14,27 @@ import "C"
 // Input values must be in the [0.0, 1.0] range; output values will be in the
 // same range.
 func RGBToHSV(r float64, g float64, b float64) (h float64, s float64, v float64) {
-	var arg1 C.gdouble
-	var arg2 C.gdouble
-	var arg3 C.gdouble
+	var _arg1 C.gdouble
+	var _arg2 C.gdouble
+	var _arg3 C.gdouble
 
-	arg1 = C.gdouble(r)
-	arg2 = C.gdouble(g)
-	arg3 = C.gdouble(b)
+	_arg1 = C.gdouble(r)
+	_arg2 = C.gdouble(g)
+	_arg3 = C.gdouble(b)
 
-	var arg4 C.gdouble
-	var arg5 C.gdouble
-	var arg6 C.gdouble
+	var _arg4 C.gdouble
+	var _arg5 C.gdouble
+	var _arg6 C.gdouble
 
-	C.gtk_rgb_to_hsv(arg1, arg2, arg3, &arg4, &arg5, &arg6)
+	C.gtk_rgb_to_hsv(_arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6)
 
-	var h float64
-	var s float64
-	var v float64
+	var _h float64
+	var _s float64
+	var _v float64
 
-	h = (float64)(arg4)
-	s = (float64)(arg5)
-	v = (float64)(arg6)
+	_h = (float64)(_arg4)
+	_s = (float64)(_arg5)
+	_v = (float64)(_arg6)
 
-	return h, s, v
+	return _h, _s, _v
 }

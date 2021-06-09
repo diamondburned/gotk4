@@ -108,53 +108,53 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 
 // NewStatusbar constructs a class Statusbar.
 func NewStatusbar() Statusbar {
-	var cret C.GtkStatusbar
+	var _cret C.GtkStatusbar
 
 	cret = C.gtk_statusbar_new()
 
-	var statusbar Statusbar
+	var _statusbar Statusbar
 
-	statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Statusbar)
+	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Statusbar)
 
-	return statusbar
+	return _statusbar
 }
 
 // ContextID returns a new context identifier, given a description of the
 // actual context. Note that the description is not shown in the UI.
 func (s statusbar) ContextID(contextDescription string) uint {
-	var arg0 *C.GtkStatusbar
-	var arg1 *C.gchar
+	var _arg0 *C.GtkStatusbar
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(contextDescription))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(contextDescription))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_statusbar_get_context_id(arg0, arg1)
+	cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // MessageArea retrieves the box containing the label widget.
 func (s statusbar) MessageArea() Box {
-	var arg0 *C.GtkStatusbar
+	var _arg0 *C.GtkStatusbar
 
-	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_statusbar_get_message_area(arg0)
+	cret = C.gtk_statusbar_get_message_area(_arg0)
 
-	var box Box
+	var _box Box
 
-	box = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Box)
+	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
 
-	return box
+	return _box
 }
 
 // Pop removes the first message in the Statusbar’s stack with the given
@@ -163,59 +163,59 @@ func (s statusbar) MessageArea() Box {
 // Note that this may not change the displayed message, if the message at
 // the top of the stack has a different context id.
 func (s statusbar) Pop(contextId uint) {
-	var arg0 *C.GtkStatusbar
-	var arg1 C.guint
+	var _arg0 *C.GtkStatusbar
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextId)
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(contextId)
 
-	C.gtk_statusbar_pop(arg0, arg1)
+	C.gtk_statusbar_pop(_arg0, _arg1)
 }
 
 // Push pushes a new message onto a statusbar’s stack.
 func (s statusbar) Push(contextId uint, text string) uint {
-	var arg0 *C.GtkStatusbar
-	var arg1 C.guint
-	var arg2 *C.gchar
+	var _arg0 *C.GtkStatusbar
+	var _arg1 C.guint
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextId)
-	arg2 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(contextId)
+	_arg2 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_statusbar_push(arg0, arg1, arg2)
+	cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Remove forces the removal of a message from a statusbar’s stack. The
 // exact @context_id and @message_id must be specified.
 func (s statusbar) Remove(contextId uint, messageId uint) {
-	var arg0 *C.GtkStatusbar
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg0 *C.GtkStatusbar
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextId)
-	arg2 = C.guint(messageId)
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(contextId)
+	_arg2 = C.guint(messageId)
 
-	C.gtk_statusbar_remove(arg0, arg1, arg2)
+	C.gtk_statusbar_remove(_arg0, _arg1, _arg2)
 }
 
 // RemoveAll forces the removal of all messages from a statusbar's stack
 // with the exact @context_id.
 func (s statusbar) RemoveAll(contextId uint) {
-	var arg0 *C.GtkStatusbar
-	var arg1 C.guint
+	var _arg0 *C.GtkStatusbar
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(contextId)
+	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(contextId)
 
-	C.gtk_statusbar_remove_all(arg0, arg1)
+	C.gtk_statusbar_remove_all(_arg0, _arg1)
 }

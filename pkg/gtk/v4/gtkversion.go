@@ -26,53 +26,53 @@ import "C"
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK.
 func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 C.guint
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 C.guint
 
-	arg1 = C.guint(requiredMajor)
-	arg2 = C.guint(requiredMinor)
-	arg3 = C.guint(requiredMicro)
+	_arg1 = C.guint(requiredMajor)
+	_arg2 = C.guint(requiredMinor)
+	_arg3 = C.guint(requiredMicro)
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_check_version(arg1, arg2, arg3)
+	cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // GetBinaryAge returns the binary age as passed to `libtool` when building the
 // GTK library the process is running against. If `libtool` means nothing to
 // you, don't worry about it.
 func GetBinaryAge() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gtk_get_binary_age()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // GetInterfaceAge returns the interface age as passed to `libtool` when
 // building the GTK library the process is running against. If `libtool` means
 // nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gtk_get_interface_age()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // GetMajorVersion returns the major version number of the GTK library. (e.g. in
@@ -83,15 +83,15 @@ func GetInterfaceAge() uint {
 // represents the major version of the GTK headers you have included when
 // compiling your code.
 func GetMajorVersion() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gtk_get_major_version()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // GetMicroVersion returns the micro version number of the GTK library. (e.g. in
@@ -102,15 +102,15 @@ func GetMajorVersion() uint {
 // represents the micro version of the GTK headers you have included when
 // compiling your code.
 func GetMicroVersion() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gtk_get_micro_version()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // GetMinorVersion returns the minor version number of the GTK library. (e.g. in
@@ -121,13 +121,13 @@ func GetMicroVersion() uint {
 // represents the minor version of the GTK headers you have included when
 // compiling your code.
 func GetMinorVersion() uint {
-	var cret C.guint
+	var _cret C.guint
 
 	cret = C.gtk_get_minor_version()
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }

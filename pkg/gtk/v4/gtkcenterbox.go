@@ -118,84 +118,84 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 
 // NewCenterBox constructs a class CenterBox.
 func NewCenterBox() CenterBox {
-	var cret C.GtkCenterBox
+	var _cret C.GtkCenterBox
 
 	cret = C.gtk_center_box_new()
 
-	var centerBox CenterBox
+	var _centerBox CenterBox
 
-	centerBox = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(CenterBox)
+	_centerBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CenterBox)
 
-	return centerBox
+	return _centerBox
 }
 
 // BaselinePosition gets the value set by
 // gtk_center_box_set_baseline_position().
 func (s centerBox) BaselinePosition() BaselinePosition {
-	var arg0 *C.GtkCenterBox
+	var _arg0 *C.GtkCenterBox
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkBaselinePosition
+	var _cret C.GtkBaselinePosition
 
-	cret = C.gtk_center_box_get_baseline_position(arg0)
+	cret = C.gtk_center_box_get_baseline_position(_arg0)
 
-	var baselinePosition BaselinePosition
+	var _baselinePosition BaselinePosition
 
-	baselinePosition = BaselinePosition(cret)
+	_baselinePosition = BaselinePosition(_cret)
 
-	return baselinePosition
+	return _baselinePosition
 }
 
 // CenterWidget gets the center widget, or nil if there is none.
 func (s centerBox) CenterWidget() Widget {
-	var arg0 *C.GtkCenterBox
+	var _arg0 *C.GtkCenterBox
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_center_box_get_center_widget(arg0)
+	cret = C.gtk_center_box_get_center_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // EndWidget gets the end widget, or nil if there is none.
 func (s centerBox) EndWidget() Widget {
-	var arg0 *C.GtkCenterBox
+	var _arg0 *C.GtkCenterBox
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_center_box_get_end_widget(arg0)
+	cret = C.gtk_center_box_get_end_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // StartWidget gets the start widget, or nil if there is none.
 func (s centerBox) StartWidget() Widget {
-	var arg0 *C.GtkCenterBox
+	var _arg0 *C.GtkCenterBox
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_center_box_get_start_widget(arg0)
+	cret = C.gtk_center_box_get_start_widget(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // SetBaselinePosition sets the baseline position of a center box.
@@ -205,47 +205,47 @@ func (s centerBox) StartWidget() Widget {
 // baseline is not allocated by the parent then @position is used to
 // allocate the baseline wrt. the extra space available.
 func (s centerBox) SetBaselinePosition(position BaselinePosition) {
-	var arg0 *C.GtkCenterBox
-	var arg1 C.GtkBaselinePosition
+	var _arg0 *C.GtkCenterBox
+	var _arg1 C.GtkBaselinePosition
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkBaselinePosition)(position)
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkBaselinePosition)(position)
 
-	C.gtk_center_box_set_baseline_position(arg0, arg1)
+	C.gtk_center_box_set_baseline_position(_arg0, _arg1)
 }
 
 // SetCenterWidget sets the center widget. To remove the existing center
 // widget, pas nil.
 func (s centerBox) SetCenterWidget(child Widget) {
-	var arg0 *C.GtkCenterBox
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterBox
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_center_box_set_center_widget(arg0, arg1)
+	C.gtk_center_box_set_center_widget(_arg0, _arg1)
 }
 
 // SetEndWidget sets the end widget. To remove the existing end widget, pass
 // nil.
 func (s centerBox) SetEndWidget(child Widget) {
-	var arg0 *C.GtkCenterBox
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterBox
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_center_box_set_end_widget(arg0, arg1)
+	C.gtk_center_box_set_end_widget(_arg0, _arg1)
 }
 
 // SetStartWidget sets the start widget. To remove the existing start
 // widget, pass nil.
 func (s centerBox) SetStartWidget(child Widget) {
-	var arg0 *C.GtkCenterBox
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterBox
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_center_box_set_start_widget(arg0, arg1)
+	C.gtk_center_box_set_start_widget(_arg0, _arg1)
 }

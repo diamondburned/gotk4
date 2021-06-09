@@ -72,9 +72,9 @@ func marshalConverter(p uintptr) (interface{}, error) {
 // it was just created. If the converter has any internal state that would
 // produce output then that output is lost.
 func (c converter) Reset() {
-	var arg0 *C.GConverter
+	var _arg0 *C.GConverter
 
-	arg0 = (*C.GConverter)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GConverter)(unsafe.Pointer(c.Native()))
 
-	C.g_converter_reset(arg0)
+	C.g_converter_reset(_arg0)
 }

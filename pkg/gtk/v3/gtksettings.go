@@ -98,76 +98,76 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // application-specific value for a setting. After this call, the setting
 // will again follow the session-wide value for this setting.
 func (s settings) ResetProperty(name string) {
-	var arg0 *C.GtkSettings
-	var arg1 *C.gchar
+	var _arg0 *C.GtkSettings
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_settings_reset_property(arg0, arg1)
+	C.gtk_settings_reset_property(_arg0, _arg1)
 }
 
 func (s settings) SetDoubleProperty(name string, vDouble float64, origin string) {
-	var arg0 *C.GtkSettings
-	var arg1 *C.gchar
-	var arg2 C.gdouble
-	var arg3 *C.gchar
+	var _arg0 *C.GtkSettings
+	var _arg1 *C.gchar
+	var _arg2 C.gdouble
+	var _arg3 *C.gchar
 
-	arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.gdouble(vDouble)
-	arg3 = (*C.gchar)(C.CString(origin))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gdouble(vDouble)
+	_arg3 = (*C.gchar)(C.CString(origin))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.gtk_settings_set_double_property(arg0, arg1, arg2, arg3)
+	C.gtk_settings_set_double_property(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (s settings) SetLongProperty(name string, vLong int32, origin string) {
-	var arg0 *C.GtkSettings
-	var arg1 *C.gchar
-	var arg2 C.glong
-	var arg3 *C.gchar
+	var _arg0 *C.GtkSettings
+	var _arg1 *C.gchar
+	var _arg2 C.glong
+	var _arg3 *C.gchar
 
-	arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = C.glong(vLong)
-	arg3 = (*C.gchar)(C.CString(origin))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.glong(vLong)
+	_arg3 = (*C.gchar)(C.CString(origin))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.gtk_settings_set_long_property(arg0, arg1, arg2, arg3)
+	C.gtk_settings_set_long_property(_arg0, _arg1, _arg2, _arg3)
 }
 
 func (s settings) SetPropertyValue(name string, svalue *SettingsValue) {
-	var arg0 *C.GtkSettings
-	var arg1 *C.gchar
-	var arg2 *C.GtkSettingsValue
+	var _arg0 *C.GtkSettings
+	var _arg1 *C.gchar
+	var _arg2 *C.GtkSettingsValue
 
-	arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkSettingsValue)(unsafe.Pointer(svalue.Native()))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkSettingsValue)(unsafe.Pointer(svalue.Native()))
 
-	C.gtk_settings_set_property_value(arg0, arg1, arg2)
+	C.gtk_settings_set_property_value(_arg0, _arg1, _arg2)
 }
 
 func (s settings) SetStringProperty(name string, vString string, origin string) {
-	var arg0 *C.GtkSettings
-	var arg1 *C.gchar
-	var arg2 *C.gchar
-	var arg3 *C.gchar
+	var _arg0 *C.GtkSettings
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
 
-	arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.gchar)(C.CString(vString))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.gchar)(C.CString(origin))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(vString))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(origin))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.gtk_settings_set_string_property(arg0, arg1, arg2, arg3)
+	C.gtk_settings_set_string_property(_arg0, _arg1, _arg2, _arg3)
 }
 
 type SettingsValue struct {

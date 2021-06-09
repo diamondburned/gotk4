@@ -163,241 +163,241 @@ func marshalStack(p uintptr) (interface{}, error) {
 
 // NewStack constructs a class Stack.
 func NewStack() Stack {
-	var cret C.GtkStack
+	var _cret C.GtkStack
 
 	cret = C.gtk_stack_new()
 
-	var stack Stack
+	var _stack Stack
 
-	stack = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Stack)
+	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
 
-	return stack
+	return _stack
 }
 
 // AddNamed adds a child to @stack. The child is identified by the @name.
 func (s stack) AddNamed(child Widget, name string) {
-	var arg0 *C.GtkStack
-	var arg1 *C.GtkWidget
-	var arg2 *C.gchar
+	var _arg0 *C.GtkStack
+	var _arg1 *C.GtkWidget
+	var _arg2 *C.gchar
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	C.gtk_stack_add_named(arg0, arg1, arg2)
+	C.gtk_stack_add_named(_arg0, _arg1, _arg2)
 }
 
 // AddTitled adds a child to @stack. The child is identified by the @name.
 // The @title will be used by StackSwitcher to represent @child in a tab
 // bar, so it should be short.
 func (s stack) AddTitled(child Widget, name string, title string) {
-	var arg0 *C.GtkStack
-	var arg1 *C.GtkWidget
-	var arg2 *C.gchar
-	var arg3 *C.gchar
+	var _arg0 *C.GtkStack
+	var _arg1 *C.GtkWidget
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.gchar)(C.CString(title))
-	defer C.free(unsafe.Pointer(arg3))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.gtk_stack_add_titled(arg0, arg1, arg2, arg3)
+	C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ChildByName finds the child of the Stack with the name given as the
 // argument. Returns nil if there is no child with this name.
 func (s stack) ChildByName(name string) Widget {
-	var arg0 *C.GtkStack
-	var arg1 *C.gchar
+	var _arg0 *C.GtkStack
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_stack_get_child_by_name(arg0, arg1)
+	cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // Hhomogeneous gets whether @stack is horizontally homogeneous. See
 // gtk_stack_set_hhomogeneous().
 func (s stack) Hhomogeneous() bool {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_hhomogeneous(arg0)
+	cret = C.gtk_stack_get_hhomogeneous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Homogeneous gets whether @stack is homogeneous. See
 // gtk_stack_set_homogeneous().
 func (s stack) Homogeneous() bool {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_homogeneous(arg0)
+	cret = C.gtk_stack_get_homogeneous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // InterpolateSize returns wether the Stack is set up to interpolate between
 // the sizes of children on page switch.
 func (s stack) InterpolateSize() bool {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_interpolate_size(arg0)
+	cret = C.gtk_stack_get_interpolate_size(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
 // transitions between pages in @stack will take.
 func (s stack) TransitionDuration() uint {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gtk_stack_get_transition_duration(arg0)
+	cret = C.gtk_stack_get_transition_duration(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // TransitionRunning returns whether the @stack is currently in a transition
 // from one page to another.
 func (s stack) TransitionRunning() bool {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_transition_running(arg0)
+	cret = C.gtk_stack_get_transition_running(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TransitionType gets the type of animation that will be used for
 // transitions between pages in @stack.
 func (s stack) TransitionType() StackTransitionType {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret C.GtkStackTransitionType
+	var _cret C.GtkStackTransitionType
 
-	cret = C.gtk_stack_get_transition_type(arg0)
+	cret = C.gtk_stack_get_transition_type(_arg0)
 
-	var stackTransitionType StackTransitionType
+	var _stackTransitionType StackTransitionType
 
-	stackTransitionType = StackTransitionType(cret)
+	_stackTransitionType = StackTransitionType(_cret)
 
-	return stackTransitionType
+	return _stackTransitionType
 }
 
 // Vhomogeneous gets whether @stack is vertically homogeneous. See
 // gtk_stack_set_vhomogeneous().
 func (s stack) Vhomogeneous() bool {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_vhomogeneous(arg0)
+	cret = C.gtk_stack_get_vhomogeneous(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // VisibleChild gets the currently visible child of @stack, or nil if there
 // are no visible children.
 func (s stack) VisibleChild() Widget {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkWidget
+	var _cret *C.GtkWidget
 
-	cret = C.gtk_stack_get_visible_child(arg0)
+	cret = C.gtk_stack_get_visible_child(_arg0)
 
-	var widget Widget
+	var _widget Widget
 
-	widget = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Widget)
+	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
 
-	return widget
+	return _widget
 }
 
 // VisibleChildName returns the name of the currently visible child of
 // @stack, or nil if there is no visible child.
 func (s stack) VisibleChildName() string {
-	var arg0 *C.GtkStack
+	var _arg0 *C.GtkStack
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gtk_stack_get_visible_child_name(arg0)
+	cret = C.gtk_stack_get_visible_child_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // SetHhomogeneous sets the Stack to be horizontally homogeneous or not. If
@@ -405,15 +405,15 @@ func (s stack) VisibleChildName() string {
 // children. If it isn't, the stack may change width when a different child
 // becomes visible.
 func (s stack) SetHhomogeneous(hhomogeneous bool) {
-	var arg0 *C.GtkStack
-	var arg1 C.gboolean
+	var _arg0 *C.GtkStack
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if hhomogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_stack_set_hhomogeneous(arg0, arg1)
+	C.gtk_stack_set_hhomogeneous(_arg0, _arg1)
 }
 
 // SetHomogeneous sets the Stack to be homogeneous or not. If it is
@@ -424,15 +424,15 @@ func (s stack) SetHhomogeneous(hhomogeneous bool) {
 // Since 3.16, homogeneity can be controlled separately for horizontal and
 // vertical size, with the Stack:hhomogeneous and Stack:vhomogeneous.
 func (s stack) SetHomogeneous(homogeneous bool) {
-	var arg0 *C.GtkStack
-	var arg1 C.gboolean
+	var _arg0 *C.GtkStack
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if homogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_stack_set_homogeneous(arg0, arg1)
+	C.gtk_stack_set_homogeneous(_arg0, _arg1)
 }
 
 // SetInterpolateSize sets whether or not @stack will interpolate its size
@@ -441,27 +441,27 @@ func (s stack) SetHomogeneous(homogeneous bool) {
 // and the one it'll take after changing the visible child, according to the
 // set transition duration.
 func (s stack) SetInterpolateSize(interpolateSize bool) {
-	var arg0 *C.GtkStack
-	var arg1 C.gboolean
+	var _arg0 *C.GtkStack
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if interpolateSize {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_stack_set_interpolate_size(arg0, arg1)
+	C.gtk_stack_set_interpolate_size(_arg0, _arg1)
 }
 
 // SetTransitionDuration sets the duration that transitions between pages in
 // @stack will take.
 func (s stack) SetTransitionDuration(duration uint) {
-	var arg0 *C.GtkStack
-	var arg1 C.guint
+	var _arg0 *C.GtkStack
+	var _arg1 C.guint
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = C.guint(duration)
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(duration)
 
-	C.gtk_stack_set_transition_duration(arg0, arg1)
+	C.gtk_stack_set_transition_duration(_arg0, _arg1)
 }
 
 // SetTransitionType sets the type of animation that will be used for
@@ -472,13 +472,13 @@ func (s stack) SetTransitionDuration(duration uint) {
 // possible to change the animation based on the page that is about to
 // become current.
 func (s stack) SetTransitionType(transition StackTransitionType) {
-	var arg0 *C.GtkStack
-	var arg1 C.GtkStackTransitionType
+	var _arg0 *C.GtkStack
+	var _arg1 C.GtkStackTransitionType
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GtkStackTransitionType)(transition)
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GtkStackTransitionType)(transition)
 
-	C.gtk_stack_set_transition_type(arg0, arg1)
+	C.gtk_stack_set_transition_type(_arg0, _arg1)
 }
 
 // SetVhomogeneous sets the Stack to be vertically homogeneous or not. If it
@@ -486,15 +486,15 @@ func (s stack) SetTransitionType(transition StackTransitionType) {
 // children. If it isn't, the stack may change height when a different child
 // becomes visible.
 func (s stack) SetVhomogeneous(vhomogeneous bool) {
-	var arg0 *C.GtkStack
-	var arg1 C.gboolean
+	var _arg0 *C.GtkStack
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
 	if vhomogeneous {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gtk_stack_set_vhomogeneous(arg0, arg1)
+	C.gtk_stack_set_vhomogeneous(_arg0, _arg1)
 }
 
 // SetVisibleChild makes @child the visible child of @stack.
@@ -506,13 +506,13 @@ func (s stack) SetVhomogeneous(vhomogeneous bool) {
 // Note that the @child widget has to be visible itself (see
 // gtk_widget_show()) in order to become the visible child of @stack.
 func (s stack) SetVisibleChild(child Widget) {
-	var arg0 *C.GtkStack
-	var arg1 *C.GtkWidget
+	var _arg0 *C.GtkStack
+	var _arg1 *C.GtkWidget
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
-	C.gtk_stack_set_visible_child(arg0, arg1)
+	C.gtk_stack_set_visible_child(_arg0, _arg1)
 }
 
 // SetVisibleChildFull makes the child with the given name visible.
@@ -520,16 +520,16 @@ func (s stack) SetVisibleChild(child Widget) {
 // Note that the child widget has to be visible itself (see
 // gtk_widget_show()) in order to become the visible child of @stack.
 func (s stack) SetVisibleChildFull(name string, transition StackTransitionType) {
-	var arg0 *C.GtkStack
-	var arg1 *C.gchar
-	var arg2 C.GtkStackTransitionType
+	var _arg0 *C.GtkStack
+	var _arg1 *C.gchar
+	var _arg2 C.GtkStackTransitionType
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (C.GtkStackTransitionType)(transition)
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (C.GtkStackTransitionType)(transition)
 
-	C.gtk_stack_set_visible_child_full(arg0, arg1, arg2)
+	C.gtk_stack_set_visible_child_full(_arg0, _arg1, _arg2)
 }
 
 // SetVisibleChildName makes the child with the given name visible.
@@ -541,12 +541,12 @@ func (s stack) SetVisibleChildFull(name string, transition StackTransitionType) 
 // Note that the child widget has to be visible itself (see
 // gtk_widget_show()) in order to become the visible child of @stack.
 func (s stack) SetVisibleChildName(name string) {
-	var arg0 *C.GtkStack
-	var arg1 *C.gchar
+	var _arg0 *C.GtkStack
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_stack_set_visible_child_name(arg0, arg1)
+	C.gtk_stack_set_visible_child_name(_arg0, _arg1)
 }

@@ -93,97 +93,97 @@ func marshalRuleset(p uintptr) (interface{}, error) {
 
 // NewRuleset constructs a class Ruleset.
 func NewRuleset(info Info) Ruleset {
-	var arg1 *C.PangoOTInfo
+	var _arg1 *C.PangoOTInfo
 
-	arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
+	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
 
-	var cret C.PangoOTRuleset
+	var _cret C.PangoOTRuleset
 
-	cret = C.pango_ot_ruleset_new(arg1)
+	cret = C.pango_ot_ruleset_new(_arg1)
 
-	var ruleset Ruleset
+	var _ruleset Ruleset
 
-	ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
+	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
 
-	return ruleset
+	return _ruleset
 }
 
 // NewRulesetFor constructs a class Ruleset.
 func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Ruleset {
-	var arg1 *C.PangoOTInfo
-	var arg2 C.PangoScript
-	var arg3 *C.PangoLanguage
+	var _arg1 *C.PangoOTInfo
+	var _arg2 C.PangoScript
+	var _arg3 *C.PangoLanguage
 
-	arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
-	arg2 = (C.PangoScript)(script)
-	arg3 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
+	_arg2 = (C.PangoScript)(script)
+	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
 
-	var cret C.PangoOTRuleset
+	var _cret C.PangoOTRuleset
 
-	cret = C.pango_ot_ruleset_new_for(arg1, arg2, arg3)
+	cret = C.pango_ot_ruleset_new_for(_arg1, _arg2, _arg3)
 
-	var ruleset Ruleset
+	var _ruleset Ruleset
 
-	ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
+	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
 
-	return ruleset
+	return _ruleset
 }
 
 // NewRulesetFromDescription constructs a class Ruleset.
 func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
-	var arg1 *C.PangoOTInfo
-	var arg2 *C.PangoOTRulesetDescription
+	var _arg1 *C.PangoOTInfo
+	var _arg2 *C.PangoOTRulesetDescription
 
-	arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
-	arg2 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc.Native()))
+	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
+	_arg2 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc.Native()))
 
-	var cret C.PangoOTRuleset
+	var _cret C.PangoOTRuleset
 
-	cret = C.pango_ot_ruleset_new_from_description(arg1, arg2)
+	cret = C.pango_ot_ruleset_new_from_description(_arg1, _arg2)
 
-	var ruleset Ruleset
+	var _ruleset Ruleset
 
-	ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Ruleset)
+	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
 
-	return ruleset
+	return _ruleset
 }
 
 // AddFeature adds a feature to the ruleset.
 func (r ruleset) AddFeature(tableType TableType, featureIndex uint, propertyBit uint32) {
-	var arg0 *C.PangoOTRuleset
-	var arg1 C.PangoOTTableType
-	var arg2 C.guint
-	var arg3 C.gulong
+	var _arg0 *C.PangoOTRuleset
+	var _arg1 C.PangoOTTableType
+	var _arg2 C.guint
+	var _arg3 C.gulong
 
-	arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
-	arg1 = (C.PangoOTTableType)(tableType)
-	arg2 = C.guint(featureIndex)
-	arg3 = C.gulong(propertyBit)
+	_arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
+	_arg1 = (C.PangoOTTableType)(tableType)
+	_arg2 = C.guint(featureIndex)
+	_arg3 = C.gulong(propertyBit)
 
-	C.pango_ot_ruleset_add_feature(arg0, arg1, arg2, arg3)
+	C.pango_ot_ruleset_add_feature(_arg0, _arg1, _arg2, _arg3)
 }
 
 // FeatureCount gets the number of GSUB and GPOS features in the ruleset.
 func (r ruleset) FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint uint) {
-	var arg0 *C.PangoOTRuleset
+	var _arg0 *C.PangoOTRuleset
 
-	arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
+	_arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
 
-	var arg1 C.guint
-	var arg2 C.guint
-	var cret C.guint
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _cret C.guint
 
-	cret = C.pango_ot_ruleset_get_feature_count(arg0, &arg1, &arg2)
+	cret = C.pango_ot_ruleset_get_feature_count(_arg0, &_arg1, &_arg2)
 
-	var nGsubFeatures uint
-	var nGposFeatures uint
-	var guint uint
+	var _nGsubFeatures uint
+	var _nGposFeatures uint
+	var _guint uint
 
-	nGsubFeatures = (uint)(arg1)
-	nGposFeatures = (uint)(arg2)
-	guint = (uint)(cret)
+	_nGsubFeatures = (uint)(_arg1)
+	_nGposFeatures = (uint)(_arg2)
+	_guint = (uint)(_cret)
 
-	return nGsubFeatures, nGposFeatures, guint
+	return _nGsubFeatures, _nGposFeatures, _guint
 }
 
 // MaybeAddFeatures: this is a convenience function that for each feature in
@@ -191,47 +191,47 @@ func (r ruleset) FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint u
 // feature tag using PANGO_OT_TAG_MAKE() and calls
 // pango_ot_ruleset_maybe_add_feature() on it.
 func (r ruleset) MaybeAddFeatures(tableType TableType, features *FeatureMap, nFeatures uint) uint {
-	var arg0 *C.PangoOTRuleset
-	var arg1 C.PangoOTTableType
-	var arg2 *C.PangoOTFeatureMap
-	var arg3 C.guint
+	var _arg0 *C.PangoOTRuleset
+	var _arg1 C.PangoOTTableType
+	var _arg2 *C.PangoOTFeatureMap
+	var _arg3 C.guint
 
-	arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
-	arg1 = (C.PangoOTTableType)(tableType)
-	arg2 = (*C.PangoOTFeatureMap)(unsafe.Pointer(features.Native()))
-	arg3 = C.guint(nFeatures)
+	_arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
+	_arg1 = (C.PangoOTTableType)(tableType)
+	_arg2 = (*C.PangoOTFeatureMap)(unsafe.Pointer(features.Native()))
+	_arg3 = C.guint(nFeatures)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.pango_ot_ruleset_maybe_add_features(arg0, arg1, arg2, arg3)
+	cret = C.pango_ot_ruleset_maybe_add_features(_arg0, _arg1, _arg2, _arg3)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Position performs the OpenType GPOS positioning on @buffer using the
 // features in @ruleset
 func (r ruleset) Position(buffer *Buffer) {
-	var arg0 *C.PangoOTRuleset
-	var arg1 *C.PangoOTBuffer
+	var _arg0 *C.PangoOTRuleset
+	var _arg1 *C.PangoOTBuffer
 
-	arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.PangoOTBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.PangoOTBuffer)(unsafe.Pointer(buffer.Native()))
 
-	C.pango_ot_ruleset_position(arg0, arg1)
+	C.pango_ot_ruleset_position(_arg0, _arg1)
 }
 
 // Substitute performs the OpenType GSUB substitution on @buffer using the
 // features in @ruleset
 func (r ruleset) Substitute(buffer *Buffer) {
-	var arg0 *C.PangoOTRuleset
-	var arg1 *C.PangoOTBuffer
+	var _arg0 *C.PangoOTRuleset
+	var _arg1 *C.PangoOTBuffer
 
-	arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
-	arg1 = (*C.PangoOTBuffer)(unsafe.Pointer(buffer.Native()))
+	_arg0 = (*C.PangoOTRuleset)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.PangoOTBuffer)(unsafe.Pointer(buffer.Native()))
 
-	C.pango_ot_ruleset_substitute(arg0, arg1)
+	C.pango_ot_ruleset_substitute(_arg0, _arg1)
 }

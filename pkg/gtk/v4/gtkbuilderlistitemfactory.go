@@ -74,55 +74,55 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 
 // NewBuilderListItemFactoryFromResource constructs a class BuilderListItemFactory.
 func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) BuilderListItemFactory {
-	var arg1 *C.GtkBuilderScope
-	var arg2 *C.char
+	var _arg1 *C.GtkBuilderScope
+	var _arg2 *C.char
 
-	arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
-	arg2 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
+	_arg2 = (*C.char)(C.CString(resourcePath))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GtkBuilderListItemFactory
+	var _cret C.GtkBuilderListItemFactory
 
-	cret = C.gtk_builder_list_item_factory_new_from_resource(arg1, arg2)
+	cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
 
-	var builderListItemFactory BuilderListItemFactory
+	var _builderListItemFactory BuilderListItemFactory
 
-	builderListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(BuilderListItemFactory)
+	_builderListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BuilderListItemFactory)
 
-	return builderListItemFactory
+	return _builderListItemFactory
 }
 
 // Resource: if the data references a resource, gets the path of that
 // resource.
 func (s builderListItemFactory) Resource() string {
-	var arg0 *C.GtkBuilderListItemFactory
+	var _arg0 *C.GtkBuilderListItemFactory
 
-	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
-	var cret *C.char
+	var _cret *C.char
 
-	cret = C.gtk_builder_list_item_factory_get_resource(arg0)
+	cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Scope gets the scope used when constructing listitems.
 func (s builderListItemFactory) Scope() BuilderScope {
-	var arg0 *C.GtkBuilderListItemFactory
+	var _arg0 *C.GtkBuilderListItemFactory
 
-	arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GtkBuilderScope
+	var _cret *C.GtkBuilderScope
 
-	cret = C.gtk_builder_list_item_factory_get_scope(arg0)
+	cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
 
-	var builderScope BuilderScope
+	var _builderScope BuilderScope
 
-	builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(BuilderScope)
+	_builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(BuilderScope)
 
-	return builderScope
+	return _builderScope
 }

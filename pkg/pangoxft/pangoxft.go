@@ -78,44 +78,44 @@ func marshalFont(p uintptr) (interface{}, error) {
 //
 // Use pango_fc_font_get_glyph() instead.
 func (f font) Glyph(wc uint32) uint {
-	var arg0 *C.PangoFont
-	var arg1 C.gunichar
+	var _arg0 *C.PangoFont
+	var _arg1 C.gunichar
 
-	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-	arg1 = C.gunichar(wc)
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg1 = C.gunichar(wc)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.pango_xft_font_get_glyph(arg0, arg1)
+	cret = C.pango_xft_font_get_glyph(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
 //
 // Use pango_fc_font_has_char() instead.
 func (f font) HasChar(wc uint32) bool {
-	var arg0 *C.PangoFont
-	var arg1 C.gunichar
+	var _arg0 *C.PangoFont
+	var _arg1 C.gunichar
 
-	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
-	arg1 = C.gunichar(wc)
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg1 = C.gunichar(wc)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.pango_xft_font_has_char(arg0, arg1)
+	cret = C.pango_xft_font_has_char(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // UnlockFace releases a font previously obtained with
@@ -123,11 +123,11 @@ func (f font) HasChar(wc uint32) bool {
 //
 // Use pango_fc_font_unlock_face() instead.
 func (f font) UnlockFace() {
-	var arg0 *C.PangoFont
+	var _arg0 *C.PangoFont
 
-	arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
+	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 
-	C.pango_xft_font_unlock_face(arg0)
+	C.pango_xft_font_unlock_face(_arg0)
 }
 
 // FontMap is an implementation of FcFontMap suitable for the Xft library as the

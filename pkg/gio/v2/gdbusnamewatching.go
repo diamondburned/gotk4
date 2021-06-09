@@ -63,9 +63,9 @@ func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 
 // memory leaks through callbacks queued on the Context after it’s stopped being
 // iterated.
 func BusUnwatchName(watcherId uint) {
-	var arg1 C.guint
+	var _arg1 C.guint
 
-	arg1 = C.guint(watcherId)
+	_arg1 = C.guint(watcherId)
 
-	C.g_bus_unwatch_name(arg1)
+	C.g_bus_unwatch_name(_arg1)
 }

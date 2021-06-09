@@ -21,9 +21,9 @@ import "C"
 // and @closure_marshal fields of the Funcs structure must have been filled in
 // with pointers to appropriate functions.
 func SourceSetDummyCallback(source *glib.Source) {
-	var arg1 *C.GSource
+	var _arg1 *C.GSource
 
-	arg1 = (*C.GSource)(unsafe.Pointer(source.Native()))
+	_arg1 = (*C.GSource)(unsafe.Pointer(source.Native()))
 
-	C.g_source_set_dummy_callback(arg1)
+	C.g_source_set_dummy_callback(_arg1)
 }

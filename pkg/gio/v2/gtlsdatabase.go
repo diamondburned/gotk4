@@ -69,7 +69,7 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_for_handle_async() to perform the
 	// lookup operation asynchronously.
-	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, goerr error)
+	LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
 	// LookupCertificateForHandleAsync: asynchronously look up a certificate by
 	// its handle in the database. See
 	// g_tls_database_lookup_certificate_for_handle() for more information.
@@ -80,7 +80,7 @@ type TLSDatabase interface {
 	//
 	// If the handle is no longer valid, or does not point to a certificate in
 	// this database, then nil will be returned.
-	LookupCertificateForHandleFinish(result AsyncResult) (tlsCertificate TLSCertificate, goerr error)
+	LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error)
 	// LookupCertificateIssuer: look up the issuer of @certificate in the
 	// database.
 	//
@@ -90,7 +90,7 @@ type TLSDatabase interface {
 	// This function can block, use
 	// g_tls_database_lookup_certificate_issuer_async() to perform the lookup
 	// operation asynchronously.
-	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, goerr error)
+	LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error)
 	// LookupCertificateIssuerAsync: asynchronously look up the issuer of
 	// @certificate in the database. See
 	// g_tls_database_lookup_certificate_issuer() for more information.
@@ -98,14 +98,14 @@ type TLSDatabase interface {
 	// LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 	// operation. See g_tls_database_lookup_certificate_issuer() for more
 	// information.
-	LookupCertificateIssuerFinish(result AsyncResult) (tlsCertificate TLSCertificate, goerr error)
+	LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error)
 	// LookupCertificatesIssuedBy: look up certificates issued by this issuer in
 	// the database.
 	//
 	// This function can block, use
 	// g_tls_database_lookup_certificates_issued_by_async() to perform the
 	// lookup operation asynchronously.
-	LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (list *glib.List, goerr error)
+	LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (*glib.List, error)
 	// LookupCertificatesIssuedByAsync: asynchronously look up certificates
 	// issued by this issuer in the database. See
 	// g_tls_database_lookup_certificates_issued_by() for more information.
@@ -117,7 +117,7 @@ type TLSDatabase interface {
 	// LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
 	// certificates. See g_tls_database_lookup_certificates_issued_by() for more
 	// information.
-	LookupCertificatesIssuedByFinish(result AsyncResult) (list *glib.List, goerr error)
+	LookupCertificatesIssuedByFinish(result AsyncResult) (*glib.List, error)
 	// VerifyChain determines the validity of a certificate chain after looking
 	// up and adding any missing certificates to the chain.
 	//
@@ -154,7 +154,7 @@ type TLSDatabase interface {
 	//
 	// This function can block, use g_tls_database_verify_chain_async() to
 	// perform the verification operation asynchronously.
-	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (tlsCertificateFlags TLSCertificateFlags, goerr error)
+	VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error)
 	// VerifyChainAsync: asynchronously determines the validity of a certificate
 	// chain after looking up and adding any missing certificates to the chain.
 	// See g_tls_database_verify_chain() for more information.
@@ -169,7 +169,7 @@ type TLSDatabase interface {
 	// then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
 	// will be set accordingly. @error is not set when @chain is successfully
 	// analyzed but found to be invalid.
-	VerifyChainFinish(result AsyncResult) (tlsCertificateFlags TLSCertificateFlags, goerr error)
+	VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error)
 }
 
 // tlsDatabase implements the TLSDatabase interface.
@@ -202,22 +202,22 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 // and between applications. If a certificate is modified in the database,
 // then it is not guaranteed that this handle will continue to point to it.
 func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GTlsCertificate
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GTlsCertificate
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.g_tls_database_create_certificate_handle(arg0, arg1)
+	cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // LookupCertificateForHandle: look up a certificate by its handle.
@@ -233,43 +233,43 @@ func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string 
 // This function can block, use
 // g_tls_database_lookup_certificate_for_handle_async() to perform the
 // lookup operation asynchronously.
-func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.gchar
-	var arg2 *C.GTlsInteraction
-	var arg3 C.GTlsDatabaseLookupFlags
-	var arg4 *C.GCancellable
+func (s tlsDatabase) LookupCertificateForHandle(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.gchar
+	var _arg2 *C.GTlsInteraction
+	var _arg3 C.GTlsDatabaseLookupFlags
+	var _arg4 *C.GCancellable
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(handle))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	arg3 = (C.GTlsDatabaseLookupFlags)(flags)
-	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(handle))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg3 = (C.GTlsDatabaseLookupFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GTlsCertificate
-	var cerr *C.GError
+	var _cret *C.GTlsCertificate
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_lookup_certificate_for_handle(arg0, arg1, arg2, arg3, arg4, cerr)
+	cret = C.g_tls_database_lookup_certificate_for_handle(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
 
-	var tlsCertificate TLSCertificate
-	var goerr error
+	var _tlsCertificate TLSCertificate
+	var _goerr error
 
-	tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return tlsCertificate, goerr
+	return _tlsCertificate, _goerr
 }
 
 // LookupCertificateForHandleAsync: asynchronously look up a certificate by
 // its handle in the database. See
 // g_tls_database_lookup_certificate_for_handle() for more information.
 func (s tlsDatabase) LookupCertificateForHandleAsync() {
-	var arg0 *C.GTlsDatabase
+	var _arg0 *C.GTlsDatabase
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 
-	C.g_tls_database_lookup_certificate_for_handle_async(arg0)
+	C.g_tls_database_lookup_certificate_for_handle_async(_arg0)
 }
 
 // LookupCertificateForHandleFinish: finish an asynchronous lookup of a
@@ -278,25 +278,25 @@ func (s tlsDatabase) LookupCertificateForHandleAsync() {
 //
 // If the handle is no longer valid, or does not point to a certificate in
 // this database, then nil will be returned.
-func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (tlsCertificate TLSCertificate, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
+func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (TLSCertificate, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GTlsCertificate
-	var cerr *C.GError
+	var _cret *C.GTlsCertificate
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_lookup_certificate_for_handle_finish(arg0, arg1, cerr)
+	cret = C.g_tls_database_lookup_certificate_for_handle_finish(_arg0, _arg1, _cerr)
 
-	var tlsCertificate TLSCertificate
-	var goerr error
+	var _tlsCertificate TLSCertificate
+	var _goerr error
 
-	tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return tlsCertificate, goerr
+	return _tlsCertificate, _goerr
 }
 
 // LookupCertificateIssuer: look up the issuer of @certificate in the
@@ -308,66 +308,66 @@ func (s tlsDatabase) LookupCertificateForHandleFinish(result AsyncResult) (tlsCe
 // This function can block, use
 // g_tls_database_lookup_certificate_issuer_async() to perform the lookup
 // operation asynchronously.
-func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (tlsCertificate TLSCertificate, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GTlsCertificate
-	var arg2 *C.GTlsInteraction
-	var arg3 C.GTlsDatabaseLookupFlags
-	var arg4 *C.GCancellable
+func (s tlsDatabase) LookupCertificateIssuer(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (TLSCertificate, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GTlsCertificate
+	var _arg2 *C.GTlsInteraction
+	var _arg3 C.GTlsDatabaseLookupFlags
+	var _arg4 *C.GCancellable
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
-	arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	arg3 = (C.GTlsDatabaseLookupFlags)(flags)
-	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
+	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg3 = (C.GTlsDatabaseLookupFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GTlsCertificate
-	var cerr *C.GError
+	var _cret *C.GTlsCertificate
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_lookup_certificate_issuer(arg0, arg1, arg2, arg3, arg4, cerr)
+	cret = C.g_tls_database_lookup_certificate_issuer(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
 
-	var tlsCertificate TLSCertificate
-	var goerr error
+	var _tlsCertificate TLSCertificate
+	var _goerr error
 
-	tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return tlsCertificate, goerr
+	return _tlsCertificate, _goerr
 }
 
 // LookupCertificateIssuerAsync: asynchronously look up the issuer of
 // @certificate in the database. See
 // g_tls_database_lookup_certificate_issuer() for more information.
 func (s tlsDatabase) LookupCertificateIssuerAsync() {
-	var arg0 *C.GTlsDatabase
+	var _arg0 *C.GTlsDatabase
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 
-	C.g_tls_database_lookup_certificate_issuer_async(arg0)
+	C.g_tls_database_lookup_certificate_issuer_async(_arg0)
 }
 
 // LookupCertificateIssuerFinish: finish an asynchronous lookup issuer
 // operation. See g_tls_database_lookup_certificate_issuer() for more
 // information.
-func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (tlsCertificate TLSCertificate, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
+func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (TLSCertificate, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GTlsCertificate
-	var cerr *C.GError
+	var _cret *C.GTlsCertificate
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_lookup_certificate_issuer_finish(arg0, arg1, cerr)
+	cret = C.g_tls_database_lookup_certificate_issuer_finish(_arg0, _arg1, _cerr)
 
-	var tlsCertificate TLSCertificate
-	var goerr error
+	var _tlsCertificate TLSCertificate
+	var _goerr error
 
-	tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(TLSCertificate)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_tlsCertificate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSCertificate)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return tlsCertificate, goerr
+	return _tlsCertificate, _goerr
 }
 
 // LookupCertificatesIssuedBy: look up certificates issued by this issuer in
@@ -376,44 +376,44 @@ func (s tlsDatabase) LookupCertificateIssuerFinish(result AsyncResult) (tlsCerti
 // This function can block, use
 // g_tls_database_lookup_certificates_issued_by_async() to perform the
 // lookup operation asynchronously.
-func (s tlsDatabase) LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (list *glib.List, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GByteArray
-	var arg2 *C.GTlsInteraction
-	var arg3 C.GTlsDatabaseLookupFlags
-	var arg4 *C.GCancellable
+func (s tlsDatabase) LookupCertificatesIssuedBy(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable) (*glib.List, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GByteArray
+	var _arg2 *C.GTlsInteraction
+	var _arg3 C.GTlsDatabaseLookupFlags
+	var _arg4 *C.GCancellable
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GByteArray)(C.malloc((len(issuerRawDn) + 1) * C.sizeof_guint8))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GByteArray)(C.malloc((len(issuerRawDn) + 1) * C.sizeof_guint8))
+	defer C.free(unsafe.Pointer(_arg1))
 
 	{
 		var out []C.guint8
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(arg1), int(len(issuerRawDn)))
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(issuerRawDn)))
 
 		for i := range issuerRawDn {
-			arg1 = C.guint8(issuerRawDn)
+			_arg1 = C.guint8(issuerRawDn)
 		}
 	}
-	arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	arg3 = (C.GTlsDatabaseLookupFlags)(flags)
-	arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg3 = (C.GTlsDatabaseLookupFlags)(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret *C.GList
-	var cerr *C.GError
+	var _cret *C.GList
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_lookup_certificates_issued_by(arg0, arg1, arg2, arg3, arg4, cerr)
+	cret = C.g_tls_database_lookup_certificates_issued_by(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
 
-	var list *glib.List
-	var goerr error
+	var _list *glib.List
+	var _goerr error
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return list, goerr
+	return _list, _goerr
 }
 
 // LookupCertificatesIssuedByAsync: asynchronously look up certificates
@@ -424,38 +424,38 @@ func (s tlsDatabase) LookupCertificatesIssuedBy(issuerRawDn []byte, interaction 
 // the duration of of this asynchronous operation. The byte array should not
 // be modified during this time.
 func (s tlsDatabase) LookupCertificatesIssuedByAsync() {
-	var arg0 *C.GTlsDatabase
+	var _arg0 *C.GTlsDatabase
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 
-	C.g_tls_database_lookup_certificates_issued_by_async(arg0)
+	C.g_tls_database_lookup_certificates_issued_by_async(_arg0)
 }
 
 // LookupCertificatesIssuedByFinish: finish an asynchronous lookup of
 // certificates. See g_tls_database_lookup_certificates_issued_by() for more
 // information.
-func (s tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) (list *glib.List, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
+func (s tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) (*glib.List, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret *C.GList
-	var cerr *C.GError
+	var _cret *C.GList
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_lookup_certificates_issued_by_finish(arg0, arg1, cerr)
+	cret = C.g_tls_database_lookup_certificates_issued_by_finish(_arg0, _arg1, _cerr)
 
-	var list *glib.List
-	var goerr error
+	var _list *glib.List
+	var _goerr error
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return list, goerr
+	return _list, _goerr
 }
 
 // VerifyChain determines the validity of a certificate chain after looking
@@ -494,47 +494,47 @@ func (s tlsDatabase) LookupCertificatesIssuedByFinish(result AsyncResult) (list 
 //
 // This function can block, use g_tls_database_verify_chain_async() to
 // perform the verification operation asynchronously.
-func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (tlsCertificateFlags TLSCertificateFlags, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GTlsCertificate
-	var arg2 *C.gchar
-	var arg3 *C.GSocketConnectable
-	var arg4 *C.GTlsInteraction
-	var arg5 C.GTlsDatabaseVerifyFlags
-	var arg6 *C.GCancellable
+func (s tlsDatabase) VerifyChain(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable) (TLSCertificateFlags, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GTlsCertificate
+	var _arg2 *C.gchar
+	var _arg3 *C.GSocketConnectable
+	var _arg4 *C.GTlsInteraction
+	var _arg5 C.GTlsDatabaseVerifyFlags
+	var _arg6 *C.GCancellable
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GTlsCertificate)(unsafe.Pointer(chain.Native()))
-	arg2 = (*C.gchar)(C.CString(purpose))
-	defer C.free(unsafe.Pointer(arg2))
-	arg3 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
-	arg4 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
-	arg5 = (C.GTlsDatabaseVerifyFlags)(flags)
-	arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(chain.Native()))
+	_arg2 = (*C.gchar)(C.CString(purpose))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
+	_arg4 = (*C.GTlsInteraction)(unsafe.Pointer(interaction.Native()))
+	_arg5 = (C.GTlsDatabaseVerifyFlags)(flags)
+	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var cret C.GTlsCertificateFlags
-	var cerr *C.GError
+	var _cret C.GTlsCertificateFlags
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_verify_chain(arg0, arg1, arg2, arg3, arg4, arg5, arg6, cerr)
+	cret = C.g_tls_database_verify_chain(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _cerr)
 
-	var tlsCertificateFlags TLSCertificateFlags
-	var goerr error
+	var _tlsCertificateFlags TLSCertificateFlags
+	var _goerr error
 
-	tlsCertificateFlags = TLSCertificateFlags(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return tlsCertificateFlags, goerr
+	return _tlsCertificateFlags, _goerr
 }
 
 // VerifyChainAsync: asynchronously determines the validity of a certificate
 // chain after looking up and adding any missing certificates to the chain.
 // See g_tls_database_verify_chain() for more information.
 func (s tlsDatabase) VerifyChainAsync() {
-	var arg0 *C.GTlsDatabase
+	var _arg0 *C.GTlsDatabase
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 
-	C.g_tls_database_verify_chain_async(arg0)
+	C.g_tls_database_verify_chain_async(_arg0)
 }
 
 // VerifyChainFinish: finish an asynchronous verify chain operation. See
@@ -547,23 +547,23 @@ func (s tlsDatabase) VerifyChainAsync() {
 // then the return value will be G_TLS_CERTIFICATE_GENERIC_ERROR and @error
 // will be set accordingly. @error is not set when @chain is successfully
 // analyzed but found to be invalid.
-func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (tlsCertificateFlags TLSCertificateFlags, goerr error) {
-	var arg0 *C.GTlsDatabase
-	var arg1 *C.GAsyncResult
+func (s tlsDatabase) VerifyChainFinish(result AsyncResult) (TLSCertificateFlags, error) {
+	var _arg0 *C.GTlsDatabase
+	var _arg1 *C.GAsyncResult
 
-	arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
+	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var cret C.GTlsCertificateFlags
-	var cerr *C.GError
+	var _cret C.GTlsCertificateFlags
+	var _cerr *C.GError
 
-	cret = C.g_tls_database_verify_chain_finish(arg0, arg1, cerr)
+	cret = C.g_tls_database_verify_chain_finish(_arg0, _arg1, _cerr)
 
-	var tlsCertificateFlags TLSCertificateFlags
-	var goerr error
+	var _tlsCertificateFlags TLSCertificateFlags
+	var _goerr error
 
-	tlsCertificateFlags = TLSCertificateFlags(cret)
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_tlsCertificateFlags = TLSCertificateFlags(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return tlsCertificateFlags, goerr
+	return _tlsCertificateFlags, _goerr
 }

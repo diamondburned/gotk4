@@ -18,24 +18,24 @@ import "C"
 // TestListAllTypes: return the type ids that have been registered after calling
 // gtk_test_register_all_types().
 func TestListAllTypes() []externglib.Type {
-	var cret *C.GType
-	var arg1 *C.guint
+	var _cret *C.GType
+	var _arg1 *C.guint
 
 	cret = C.gtk_test_list_all_types()
 
-	var gTypes []externglib.Type
+	var _gTypes []externglib.Type
 
 	{
 		var src []C.GType
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(cret), int(arg1))
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
 
-		gTypes = make([]externglib.Type, arg1)
-		for i := 0; i < uintptr(arg1); i++ {
-			gTypes = externglib.Type(cret)
+		_gTypes = make([]externglib.Type, _arg1)
+		for i := 0; i < uintptr(_arg1); i++ {
+			_gTypes = externglib.Type(_cret)
 		}
 	}
 
-	return gTypes
+	return _gTypes
 }
 
 // TestRegisterAllTypes: force registration of all core GTK object types.
@@ -53,9 +53,9 @@ func TestRegisterAllTypes() {
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.
 func TestWidgetWaitForDraw(widget Widget) {
-	var arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget
 
-	arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	C.gtk_test_widget_wait_for_draw(arg1)
+	C.gtk_test_widget_wait_for_draw(_arg1)
 }

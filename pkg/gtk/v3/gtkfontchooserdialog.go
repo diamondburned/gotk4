@@ -64,20 +64,20 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 
 // NewFontChooserDialog constructs a class FontChooserDialog.
 func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
-	var arg1 *C.gchar
-	var arg2 *C.GtkWindow
+	var _arg1 *C.gchar
+	var _arg2 *C.GtkWindow
 
-	arg1 = (*C.gchar)(C.CString(title))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg1 = (*C.gchar)(C.CString(title))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 
-	var cret C.GtkFontChooserDialog
+	var _cret C.GtkFontChooserDialog
 
-	cret = C.gtk_font_chooser_dialog_new(arg1, arg2)
+	cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
 
-	var fontChooserDialog FontChooserDialog
+	var _fontChooserDialog FontChooserDialog
 
-	fontChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(FontChooserDialog)
+	_fontChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontChooserDialog)
 
-	return fontChooserDialog
+	return _fontChooserDialog
 }

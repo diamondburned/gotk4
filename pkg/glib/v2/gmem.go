@@ -12,88 +12,88 @@ import "C"
 // If @mem is nil it simply returns, so there is no need to check @mem against
 // nil before calling this function.
 func Free(mem interface{}) {
-	var arg1 C.gpointer
+	var _arg1 C.gpointer
 
-	arg1 = C.gpointer(mem)
+	_arg1 = C.gpointer(mem)
 
-	C.g_free(arg1)
+	C.g_free(_arg1)
 }
 
 // Malloc allocates @n_bytes bytes of memory. If @n_bytes is 0 it returns nil.
 func Malloc(nBytes uint) interface{} {
-	var arg1 C.gsize
+	var _arg1 C.gsize
 
-	arg1 = C.gsize(nBytes)
+	_arg1 = C.gsize(nBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_malloc(arg1)
+	cret = C.g_malloc(_arg1)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Malloc0 allocates @n_bytes bytes of memory, initialized to 0's. If @n_bytes
 // is 0 it returns nil.
 func Malloc0(nBytes uint) interface{} {
-	var arg1 C.gsize
+	var _arg1 C.gsize
 
-	arg1 = C.gsize(nBytes)
+	_arg1 = C.gsize(nBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_malloc0(arg1)
+	cret = C.g_malloc0(_arg1)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // Malloc0N: this function is similar to g_malloc0(), allocating (@n_blocks *
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg1 C.gsize
-	var arg2 C.gsize
+	var _arg1 C.gsize
+	var _arg2 C.gsize
 
-	arg1 = C.gsize(nBlocks)
-	arg2 = C.gsize(nBlockBytes)
+	_arg1 = C.gsize(nBlocks)
+	_arg2 = C.gsize(nBlockBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_malloc0_n(arg1, arg2)
+	cret = C.g_malloc0_n(_arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // MallocN: this function is similar to g_malloc(), allocating (@n_blocks *
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg1 C.gsize
-	var arg2 C.gsize
+	var _arg1 C.gsize
+	var _arg2 C.gsize
 
-	arg1 = C.gsize(nBlocks)
-	arg2 = C.gsize(nBlockBytes)
+	_arg1 = C.gsize(nBlocks)
+	_arg2 = C.gsize(nBlockBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_malloc_n(arg1, arg2)
+	cret = C.g_malloc_n(_arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // MemIsSystemMalloc checks whether the allocator used by g_malloc() is the
@@ -102,17 +102,17 @@ func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
 // This function is useful for avoiding an extra copy of allocated memory
 // returned by a non-GLib-based API.
 func MemIsSystemMalloc() bool {
-	var cret C.gboolean
+	var _cret C.gboolean
 
 	cret = C.g_mem_is_system_malloc()
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // MemProfile: GLib used to support some tools for memory profiling, but this no
@@ -128,122 +128,122 @@ func MemProfile() {
 // zero-length. @n_bytes may be 0, in which case nil will be returned and @mem
 // will be freed unless it is nil.
 func Realloc(mem interface{}, nBytes uint) interface{} {
-	var arg1 C.gpointer
-	var arg2 C.gsize
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
 
-	arg1 = C.gpointer(mem)
-	arg2 = C.gsize(nBytes)
+	_arg1 = C.gpointer(mem)
+	_arg2 = C.gsize(nBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_realloc(arg1, arg2)
+	cret = C.g_realloc(_arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // ReallocN: this function is similar to g_realloc(), allocating (@n_blocks *
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
-	var arg1 C.gpointer
-	var arg2 C.gsize
-	var arg3 C.gsize
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
+	var _arg3 C.gsize
 
-	arg1 = C.gpointer(mem)
-	arg2 = C.gsize(nBlocks)
-	arg3 = C.gsize(nBlockBytes)
+	_arg1 = C.gpointer(mem)
+	_arg2 = C.gsize(nBlocks)
+	_arg3 = C.gsize(nBlockBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_realloc_n(arg1, arg2, arg3)
+	cret = C.g_realloc_n(_arg1, _arg2, _arg3)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // TryMalloc attempts to allocate @n_bytes, and returns nil on failure. Contrast
 // with g_malloc(), which aborts the program on failure.
 func TryMalloc(nBytes uint) interface{} {
-	var arg1 C.gsize
+	var _arg1 C.gsize
 
-	arg1 = C.gsize(nBytes)
+	_arg1 = C.gsize(nBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_try_malloc(arg1)
+	cret = C.g_try_malloc(_arg1)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // TryMalloc0 attempts to allocate @n_bytes, initialized to 0's, and returns nil
 // on failure. Contrast with g_malloc0(), which aborts the program on failure.
 func TryMalloc0(nBytes uint) interface{} {
-	var arg1 C.gsize
+	var _arg1 C.gsize
 
-	arg1 = C.gsize(nBytes)
+	_arg1 = C.gsize(nBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_try_malloc0(arg1)
+	cret = C.g_try_malloc0(_arg1)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // TryMalloc0N: this function is similar to g_try_malloc0(), allocating
 // (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
 // overflow during multiplication.
 func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg1 C.gsize
-	var arg2 C.gsize
+	var _arg1 C.gsize
+	var _arg2 C.gsize
 
-	arg1 = C.gsize(nBlocks)
-	arg2 = C.gsize(nBlockBytes)
+	_arg1 = C.gsize(nBlocks)
+	_arg2 = C.gsize(nBlockBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_try_malloc0_n(arg1, arg2)
+	cret = C.g_try_malloc0_n(_arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // TryMallocN: this function is similar to g_try_malloc(), allocating (@n_blocks
 // * @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
-	var arg1 C.gsize
-	var arg2 C.gsize
+	var _arg1 C.gsize
+	var _arg2 C.gsize
 
-	arg1 = C.gsize(nBlocks)
-	arg2 = C.gsize(nBlockBytes)
+	_arg1 = C.gsize(nBlocks)
+	_arg2 = C.gsize(nBlockBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_try_malloc_n(arg1, arg2)
+	cret = C.g_try_malloc_n(_arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // TryRealloc attempts to realloc @mem to a new size, @n_bytes, and returns nil
@@ -251,42 +251,42 @@ func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
 //
 // If @mem is nil, behaves the same as g_try_malloc().
 func TryRealloc(mem interface{}, nBytes uint) interface{} {
-	var arg1 C.gpointer
-	var arg2 C.gsize
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
 
-	arg1 = C.gpointer(mem)
-	arg2 = C.gsize(nBytes)
+	_arg1 = C.gpointer(mem)
+	_arg2 = C.gsize(nBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_try_realloc(arg1, arg2)
+	cret = C.g_try_realloc(_arg1, _arg2)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // TryReallocN: this function is similar to g_try_realloc(), allocating
 // (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
 // overflow during multiplication.
 func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
-	var arg1 C.gpointer
-	var arg2 C.gsize
-	var arg3 C.gsize
+	var _arg1 C.gpointer
+	var _arg2 C.gsize
+	var _arg3 C.gsize
 
-	arg1 = C.gpointer(mem)
-	arg2 = C.gsize(nBlocks)
-	arg3 = C.gsize(nBlockBytes)
+	_arg1 = C.gpointer(mem)
+	_arg2 = C.gsize(nBlocks)
+	_arg3 = C.gsize(nBlockBytes)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_try_realloc_n(arg1, arg2, arg3)
+	cret = C.g_try_realloc_n(_arg1, _arg2, _arg3)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }

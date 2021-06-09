@@ -1817,15 +1817,15 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 
 // NewAppLaunchContext constructs a class AppLaunchContext.
 func NewAppLaunchContext() AppLaunchContext {
-	var cret C.GdkAppLaunchContext
+	var _cret C.GdkAppLaunchContext
 
 	cret = C.gdk_app_launch_context_new()
 
-	var appLaunchContext AppLaunchContext
+	var _appLaunchContext AppLaunchContext
 
-	appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppLaunchContext)
+	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppLaunchContext)
 
-	return appLaunchContext
+	return _appLaunchContext
 }
 
 // SetDesktop sets the workspace on which applications will be launched when
@@ -1837,25 +1837,25 @@ func NewAppLaunchContext() AppLaunchContext {
 // the window manager to pick one, typically it will be the current
 // workspace.
 func (c appLaunchContext) SetDesktop(desktop int) {
-	var arg0 *C.GdkAppLaunchContext
-	var arg1 C.gint
+	var _arg0 *C.GdkAppLaunchContext
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	arg1 = C.gint(desktop)
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gint(desktop)
 
-	C.gdk_app_launch_context_set_desktop(arg0, arg1)
+	C.gdk_app_launch_context_set_desktop(_arg0, _arg1)
 }
 
 // SetDisplay sets the display on which applications will be launched when
 // using this context. See also gdk_app_launch_context_set_screen().
 func (c appLaunchContext) SetDisplay(display Display) {
-	var arg0 *C.GdkAppLaunchContext
-	var arg1 *C.GdkDisplay
+	var _arg0 *C.GdkAppLaunchContext
+	var _arg1 *C.GdkDisplay
 
-	arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	C.gdk_app_launch_context_set_display(arg0, arg1)
+	C.gdk_app_launch_context_set_display(_arg0, _arg1)
 }
 
 // SetIcon sets the icon for applications that are launched with this
@@ -1866,13 +1866,13 @@ func (c appLaunchContext) SetDisplay(display Display) {
 //
 // See also gdk_app_launch_context_set_icon_name().
 func (c appLaunchContext) SetIcon(icon gio.Icon) {
-	var arg0 *C.GdkAppLaunchContext
-	var arg1 *C.GIcon
+	var _arg0 *C.GdkAppLaunchContext
+	var _arg1 *C.GIcon
 
-	arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
 
-	C.gdk_app_launch_context_set_icon(arg0, arg1)
+	C.gdk_app_launch_context_set_icon(_arg0, _arg1)
 }
 
 // SetIconName sets the icon for applications that are launched with this
@@ -1884,14 +1884,14 @@ func (c appLaunchContext) SetIcon(icon gio.Icon) {
 // file that is passed to launched application or from the Info for the
 // launched application itself.
 func (c appLaunchContext) SetIconName(iconName string) {
-	var arg0 *C.GdkAppLaunchContext
-	var arg1 *C.char
+	var _arg0 *C.GdkAppLaunchContext
+	var _arg1 *C.char
 
-	arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.char)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.char)(C.CString(iconName))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_app_launch_context_set_icon_name(arg0, arg1)
+	C.gdk_app_launch_context_set_icon_name(_arg0, _arg1)
 }
 
 // SetScreen sets the screen on which applications will be launched when
@@ -1901,13 +1901,13 @@ func (c appLaunchContext) SetIconName(iconName string) {
 // neither @screen or @display are set, the default screen and display are
 // used.
 func (c appLaunchContext) SetScreen(screen Screen) {
-	var arg0 *C.GdkAppLaunchContext
-	var arg1 *C.GdkScreen
+	var _arg0 *C.GdkAppLaunchContext
+	var _arg1 *C.GdkScreen
 
-	arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
-	C.gdk_app_launch_context_set_screen(arg0, arg1)
+	C.gdk_app_launch_context_set_screen(_arg0, _arg1)
 }
 
 // SetTimestamp sets the timestamp of @context. The timestamp should ideally
@@ -1917,13 +1917,13 @@ func (c appLaunchContext) SetScreen(screen Screen) {
 // newly launched application when the user is busy typing in another
 // window. This is also known as 'focus stealing prevention'.
 func (c appLaunchContext) SetTimestamp(timestamp uint32) {
-	var arg0 *C.GdkAppLaunchContext
-	var arg1 C.guint32
+	var _arg0 *C.GdkAppLaunchContext
+	var _arg1 C.guint32
 
-	arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
-	arg1 = C.guint32(timestamp)
+	_arg0 = (*C.GdkAppLaunchContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.guint32(timestamp)
 
-	C.gdk_app_launch_context_set_timestamp(arg0, arg1)
+	C.gdk_app_launch_context_set_timestamp(_arg0, _arg1)
 }
 
 // Cursor: a Cursor represents a cursor. Its contents are private.
@@ -1977,138 +1977,138 @@ func marshalCursor(p uintptr) (interface{}, error) {
 
 // NewCursor constructs a class Cursor.
 func NewCursor(cursorType CursorType) Cursor {
-	var arg1 C.GdkCursorType
+	var _arg1 C.GdkCursorType
 
-	arg1 = (C.GdkCursorType)(cursorType)
+	_arg1 = (C.GdkCursorType)(cursorType)
 
-	var cret C.GdkCursor
+	var _cret C.GdkCursor
 
-	cret = C.gdk_cursor_new(arg1)
+	cret = C.gdk_cursor_new(_arg1)
 
-	var cursor Cursor
+	var _cursor Cursor
 
-	cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
 
-	return cursor
+	return _cursor
 }
 
 // NewCursorForDisplay constructs a class Cursor.
 func NewCursorForDisplay(display Display, cursorType CursorType) Cursor {
-	var arg1 *C.GdkDisplay
-	var arg2 C.GdkCursorType
+	var _arg1 *C.GdkDisplay
+	var _arg2 C.GdkCursorType
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (C.GdkCursorType)(cursorType)
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (C.GdkCursorType)(cursorType)
 
-	var cret C.GdkCursor
+	var _cret C.GdkCursor
 
-	cret = C.gdk_cursor_new_for_display(arg1, arg2)
+	cret = C.gdk_cursor_new_for_display(_arg1, _arg2)
 
-	var cursor Cursor
+	var _cursor Cursor
 
-	cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
 
-	return cursor
+	return _cursor
 }
 
 // NewCursorFromName constructs a class Cursor.
 func NewCursorFromName(display Display, name string) Cursor {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.gchar
+	var _arg1 *C.GdkDisplay
+	var _arg2 *C.gchar
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg2))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg2))
 
-	var cret C.GdkCursor
+	var _cret C.GdkCursor
 
-	cret = C.gdk_cursor_new_from_name(arg1, arg2)
+	cret = C.gdk_cursor_new_from_name(_arg1, _arg2)
 
-	var cursor Cursor
+	var _cursor Cursor
 
-	cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
 
-	return cursor
+	return _cursor
 }
 
 // NewCursorFromPixbuf constructs a class Cursor.
 func NewCursorFromPixbuf(display Display, pixbuf gdkpixbuf.Pixbuf, x int, y int) Cursor {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.GdkPixbuf
-	var arg3 C.gint
-	var arg4 C.gint
+	var _arg1 *C.GdkDisplay
+	var _arg2 *C.GdkPixbuf
+	var _arg3 C.gint
+	var _arg4 C.gint
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-	arg3 = C.gint(x)
-	arg4 = C.gint(y)
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
+	_arg3 = C.gint(x)
+	_arg4 = C.gint(y)
 
-	var cret C.GdkCursor
+	var _cret C.GdkCursor
 
-	cret = C.gdk_cursor_new_from_pixbuf(arg1, arg2, arg3, arg4)
+	cret = C.gdk_cursor_new_from_pixbuf(_arg1, _arg2, _arg3, _arg4)
 
-	var cursor Cursor
+	var _cursor Cursor
 
-	cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
 
-	return cursor
+	return _cursor
 }
 
 // NewCursorFromSurface constructs a class Cursor.
 func NewCursorFromSurface(display Display, surface *cairo.Surface, x float64, y float64) Cursor {
-	var arg1 *C.GdkDisplay
-	var arg2 *C.cairo_surface_t
-	var arg3 C.gdouble
-	var arg4 C.gdouble
+	var _arg1 *C.GdkDisplay
+	var _arg2 *C.cairo_surface_t
+	var _arg3 C.gdouble
+	var _arg4 C.gdouble
 
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-	arg3 = C.gdouble(x)
-	arg4 = C.gdouble(y)
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
+	_arg3 = C.gdouble(x)
+	_arg4 = C.gdouble(y)
 
-	var cret C.GdkCursor
+	var _cret C.GdkCursor
 
-	cret = C.gdk_cursor_new_from_surface(arg1, arg2, arg3, arg4)
+	cret = C.gdk_cursor_new_from_surface(_arg1, _arg2, _arg3, _arg4)
 
-	var cursor Cursor
+	var _cursor Cursor
 
-	cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	_cursor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
 
-	return cursor
+	return _cursor
 }
 
 // CursorType returns the cursor type for this cursor.
 func (c cursor) CursorType() CursorType {
-	var arg0 *C.GdkCursor
+	var _arg0 *C.GdkCursor
 
-	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
-	var cret C.GdkCursorType
+	var _cret C.GdkCursorType
 
-	cret = C.gdk_cursor_get_cursor_type(arg0)
+	cret = C.gdk_cursor_get_cursor_type(_arg0)
 
-	var cursorType CursorType
+	var _cursorType CursorType
 
-	cursorType = CursorType(cret)
+	_cursorType = CursorType(_cret)
 
-	return cursorType
+	return _cursorType
 }
 
 // Display returns the display on which the Cursor is defined.
 func (c cursor) Display() Display {
-	var arg0 *C.GdkCursor
+	var _arg0 *C.GdkCursor
 
-	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_cursor_get_display(arg0)
+	cret = C.gdk_cursor_get_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // Image returns a Pixbuf with the image used to display the cursor.
@@ -2117,19 +2117,19 @@ func (c cursor) Display() Display {
 // the cursor, GDK may not be able to obtain the image data. In this case,
 // nil is returned.
 func (c cursor) Image() gdkpixbuf.Pixbuf {
-	var arg0 *C.GdkCursor
+	var _arg0 *C.GdkCursor
 
-	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkPixbuf
+	var _cret *C.GdkPixbuf
 
-	cret = C.gdk_cursor_get_image(arg0)
+	cret = C.gdk_cursor_get_image(_arg0)
 
-	var pixbuf gdkpixbuf.Pixbuf
+	var _pixbuf gdkpixbuf.Pixbuf
 
-	pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(gdkpixbuf.Pixbuf)
+	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
 
-	return pixbuf
+	return _pixbuf
 }
 
 // Surface returns a cairo image surface with the image used to display the
@@ -2139,55 +2139,55 @@ func (c cursor) Image() gdkpixbuf.Pixbuf {
 // the cursor, GDK may not be able to obtain the image data. In this case,
 // nil is returned.
 func (c cursor) Surface() (xHot float64, yHot float64, surface *cairo.Surface) {
-	var arg0 *C.GdkCursor
+	var _arg0 *C.GdkCursor
 
-	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.gdouble
-	var arg2 C.gdouble
-	var cret *C.cairo_surface_t
+	var _arg1 C.gdouble
+	var _arg2 C.gdouble
+	var _cret *C.cairo_surface_t
 
-	cret = C.gdk_cursor_get_surface(arg0, &arg1, &arg2)
+	cret = C.gdk_cursor_get_surface(_arg0, &_arg1, &_arg2)
 
-	var xHot float64
-	var yHot float64
-	var surface *cairo.Surface
+	var _xHot float64
+	var _yHot float64
+	var _surface *cairo.Surface
 
-	xHot = (float64)(arg1)
-	yHot = (float64)(arg2)
-	surface = cairo.WrapSurface(unsafe.Pointer(cret))
-	runtime.SetFinalizer(surface, func(v *cairo.Surface) {
+	_xHot = (float64)(_arg1)
+	_yHot = (float64)(_arg2)
+	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return xHot, yHot, surface
+	return _xHot, _yHot, _surface
 }
 
 // Ref adds a reference to @cursor.
 func (c cursor) Ref() Cursor {
-	var arg0 *C.GdkCursor
+	var _arg0 *C.GdkCursor
 
-	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkCursor
+	var _cret *C.GdkCursor
 
-	cret = C.gdk_cursor_ref(arg0)
+	cret = C.gdk_cursor_ref(_arg0)
 
-	var ret Cursor
+	var _ret Cursor
 
-	ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Cursor)
+	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cursor)
 
-	return ret
+	return _ret
 }
 
 // Unref removes a reference from @cursor, deallocating the cursor if no
 // references remain.
 func (c cursor) Unref() {
-	var arg0 *C.GdkCursor
+	var _arg0 *C.GdkCursor
 
-	arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkCursor)(unsafe.Pointer(c.Native()))
 
-	C.gdk_cursor_unref(arg0)
+	C.gdk_cursor_unref(_arg0)
 }
 
 // Device: the Device object represents a single input device, such as a
@@ -2231,7 +2231,7 @@ type Device interface {
 	History(window Window, start uint32, stop uint32) bool
 	// Key: if @index_ has a valid keyval, this function will return true and
 	// fill in @keyval and @modifiers with the keyval settings.
-	Key(index_ uint) (keyval uint, modifiers ModifierType, ok bool)
+	Key(index_ uint) (uint, ModifierType, bool)
 	// LastEventWindow gets information about which window the given pointer
 	// device is in, based on events that have been received so far from the
 	// display server. If another application has a pointer grab, or this
@@ -2395,109 +2395,109 @@ func marshalDevice(p uintptr) (interface{}, error) {
 // If @device is of type GDK_DEVICE_TYPE_FLOATING, nil will be returned, as
 // there is no associated device.
 func (d device) AssociatedDevice() Device {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkDevice
+	var _cret *C.GdkDevice
 
-	cret = C.gdk_device_get_associated_device(arg0)
+	cret = C.gdk_device_get_associated_device(_arg0)
 
-	var ret Device
+	var _ret Device
 
-	ret = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
 
-	return ret
+	return _ret
 }
 
 // Axes returns the axes currently available on the device.
 func (d device) Axes() AxisFlags {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret C.GdkAxisFlags
+	var _cret C.GdkAxisFlags
 
-	cret = C.gdk_device_get_axes(arg0)
+	cret = C.gdk_device_get_axes(_arg0)
 
-	var axisFlags AxisFlags
+	var _axisFlags AxisFlags
 
-	axisFlags = AxisFlags(cret)
+	_axisFlags = AxisFlags(_cret)
 
-	return axisFlags
+	return _axisFlags
 }
 
 // AxisUse returns the axis use for @index_.
 func (d device) AxisUse(index_ uint) AxisUse {
-	var arg0 *C.GdkDevice
-	var arg1 C.guint
+	var _arg0 *C.GdkDevice
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint(index_)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(index_)
 
-	var cret C.GdkAxisUse
+	var _cret C.GdkAxisUse
 
-	cret = C.gdk_device_get_axis_use(arg0, arg1)
+	cret = C.gdk_device_get_axis_use(_arg0, _arg1)
 
-	var axisUse AxisUse
+	var _axisUse AxisUse
 
-	axisUse = AxisUse(cret)
+	_axisUse = AxisUse(_cret)
 
-	return axisUse
+	return _axisUse
 }
 
 // DeviceType returns the device type for @device.
 func (d device) DeviceType() DeviceType {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret C.GdkDeviceType
+	var _cret C.GdkDeviceType
 
-	cret = C.gdk_device_get_device_type(arg0)
+	cret = C.gdk_device_get_device_type(_arg0)
 
-	var deviceType DeviceType
+	var _deviceType DeviceType
 
-	deviceType = DeviceType(cret)
+	_deviceType = DeviceType(_cret)
 
-	return deviceType
+	return _deviceType
 }
 
 // Display returns the Display to which @device pertains.
 func (d device) Display() Display {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_device_get_display(arg0)
+	cret = C.gdk_device_get_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // HasCursor determines whether the pointer follows device motion. This is
 // not meaningful for keyboard devices, which don't have a pointer.
 func (d device) HasCursor() bool {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_device_get_has_cursor(arg0)
+	cret = C.gdk_device_get_has_cursor(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // History obtains the motion history for a pointer device; given a starting
@@ -2510,55 +2510,55 @@ func (d device) HasCursor() bool {
 // Note that there is also gdk_window_set_event_compression() to get more
 // motion events delivered directly, independent of the windowing system.
 func (d device) History(window Window, start uint32, stop uint32) bool {
-	var arg0 *C.GdkDevice
-	var arg1 *C.GdkWindow
-	var arg2 C.guint32
-	var arg3 C.guint32
+	var _arg0 *C.GdkDevice
+	var _arg1 *C.GdkWindow
+	var _arg2 C.guint32
+	var _arg3 C.guint32
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	arg2 = C.guint32(start)
-	arg3 = C.guint32(stop)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = C.guint32(start)
+	_arg3 = C.guint32(stop)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_device_get_history(arg0, arg1, arg2, arg3)
+	cret = C.gdk_device_get_history(_arg0, _arg1, _arg2, _arg3)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Key: if @index_ has a valid keyval, this function will return true and
 // fill in @keyval and @modifiers with the keyval settings.
-func (d device) Key(index_ uint) (keyval uint, modifiers ModifierType, ok bool) {
-	var arg0 *C.GdkDevice
-	var arg1 C.guint
+func (d device) Key(index_ uint) (uint, ModifierType, bool) {
+	var _arg0 *C.GdkDevice
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint(index_)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(index_)
 
-	var arg2 C.guint
-	var arg3 C.GdkModifierType
-	var cret C.gboolean
+	var _arg2 C.guint
+	var _arg3 C.GdkModifierType
+	var _cret C.gboolean
 
-	cret = C.gdk_device_get_key(arg0, arg1, &arg2, &arg3)
+	cret = C.gdk_device_get_key(_arg0, _arg1, &_arg2, &_arg3)
 
-	var keyval uint
-	var modifiers ModifierType
-	var ok bool
+	var _keyval uint
+	var _modifiers ModifierType
+	var _ok bool
 
-	keyval = (uint)(arg2)
-	modifiers = ModifierType(arg3)
-	if cret {
-		ok = true
+	_keyval = (uint)(_arg2)
+	_modifiers = ModifierType(_arg3)
+	if _cret {
+		_ok = true
 	}
 
-	return keyval, modifiers, ok
+	return _keyval, _modifiers, _ok
 }
 
 // LastEventWindow gets information about which window the given pointer
@@ -2567,87 +2567,87 @@ func (d device) Key(index_ uint) (keyval uint, modifiers ModifierType, ok bool) 
 // application has a grab with owner_events = false, nil may be returned
 // even if the pointer is physically over one of this application's windows.
 func (d device) LastEventWindow() Window {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_device_get_last_event_window(arg0)
+	cret = C.gdk_device_get_last_event_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // Mode determines the mode of the device.
 func (d device) Mode() InputMode {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret C.GdkInputMode
+	var _cret C.GdkInputMode
 
-	cret = C.gdk_device_get_mode(arg0)
+	cret = C.gdk_device_get_mode(_arg0)
 
-	var inputMode InputMode
+	var _inputMode InputMode
 
-	inputMode = InputMode(cret)
+	_inputMode = InputMode(_cret)
 
-	return inputMode
+	return _inputMode
 }
 
 // NAxes returns the number of axes the device currently has.
 func (d device) NAxes() int {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_device_get_n_axes(arg0)
+	cret = C.gdk_device_get_n_axes(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // NKeys returns the number of keys the device currently has.
 func (d device) NKeys() int {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_device_get_n_keys(arg0)
+	cret = C.gdk_device_get_n_keys(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Name determines the name of the device.
 func (d device) Name() string {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_device_get_name(arg0)
+	cret = C.gdk_device_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Position gets the current location of @device. As a slave device
@@ -2655,25 +2655,25 @@ func (d device) Name() string {
 // called on devices of type GDK_DEVICE_TYPE_SLAVE, unless there is an
 // ongoing grab on them, see gdk_device_grab().
 func (d device) Position() (screen Screen, x int, y int) {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var arg1 **C.GdkScreen
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg1 **C.GdkScreen
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	C.gdk_device_get_position(arg0, arg1, &arg2, &arg3)
+	C.gdk_device_get_position(_arg0, _arg1, &_arg2, &_arg3)
 
-	var screen Screen
-	var x int
-	var y int
+	var _screen Screen
+	var _x int
+	var _y int
 
-	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
-	x = (int)(arg2)
-	y = (int)(arg3)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(Screen)
+	_x = (int)(_arg2)
+	_y = (int)(_arg3)
 
-	return screen, x, y
+	return _screen, _x, _y
 }
 
 // PositionDouble gets the current location of @device in double precision.
@@ -2681,25 +2681,25 @@ func (d device) Position() (screen Screen, x int, y int) {
 // function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
 // unless there is an ongoing grab on them. See gdk_device_grab().
 func (d device) PositionDouble() (screen Screen, x float64, y float64) {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var arg1 **C.GdkScreen
-	var arg2 C.gdouble
-	var arg3 C.gdouble
+	var _arg1 **C.GdkScreen
+	var _arg2 C.gdouble
+	var _arg3 C.gdouble
 
-	C.gdk_device_get_position_double(arg0, arg1, &arg2, &arg3)
+	C.gdk_device_get_position_double(_arg0, _arg1, &_arg2, &_arg3)
 
-	var screen Screen
-	var x float64
-	var y float64
+	var _screen Screen
+	var _x float64
+	var _y float64
 
-	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
-	x = (float64)(arg2)
-	y = (float64)(arg3)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(Screen)
+	_x = (float64)(_arg2)
+	_y = (float64)(_arg3)
 
-	return screen, x, y
+	return _screen, _x, _y
 }
 
 // ProductID returns the product ID of this device, or nil if this
@@ -2707,53 +2707,53 @@ func (d device) PositionDouble() (screen Screen, x float64, y float64) {
 // and is thus constant for it. See gdk_device_get_vendor_id() for more
 // information.
 func (d device) ProductID() string {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_device_get_product_id(arg0)
+	cret = C.gdk_device_get_product_id(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Seat returns the Seat the device belongs to.
 func (d device) Seat() Seat {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkSeat
+	var _cret *C.GdkSeat
 
-	cret = C.gdk_device_get_seat(arg0)
+	cret = C.gdk_device_get_seat(_arg0)
 
-	var seat Seat
+	var _seat Seat
 
-	seat = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Seat)
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
 
-	return seat
+	return _seat
 }
 
 // Source determines the type of the device.
 func (d device) Source() InputSource {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret C.GdkInputSource
+	var _cret C.GdkInputSource
 
-	cret = C.gdk_device_get_source(arg0)
+	cret = C.gdk_device_get_source(_arg0)
 
-	var inputSource InputSource
+	var _inputSource InputSource
 
-	inputSource = InputSource(cret)
+	_inputSource = InputSource(_cret)
 
-	return inputSource
+	return _inputSource
 }
 
 // VendorID returns the vendor ID of this device, or nil if this information
@@ -2781,19 +2781,19 @@ func (d device) Source() InputSource {
 //       return settings;
 //     }
 func (d device) VendorID() string {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_device_get_vendor_id(arg0)
+	cret = C.gdk_device_get_vendor_id(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // WindowAtPosition obtains the window underneath @device, returning the
@@ -2805,25 +2805,25 @@ func (d device) VendorID() string {
 // function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
 // unless there is an ongoing grab on them, see gdk_device_grab().
 func (d device) WindowAtPosition() (winX int, winY int, window Window) {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var arg1 C.gint
-	var arg2 C.gint
-	var cret *C.GdkWindow
+	var _arg1 C.gint
+	var _arg2 C.gint
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_device_get_window_at_position(arg0, &arg1, &arg2)
+	cret = C.gdk_device_get_window_at_position(_arg0, &_arg1, &_arg2)
 
-	var winX int
-	var winY int
-	var window Window
+	var _winX int
+	var _winY int
+	var _window Window
 
-	winX = (int)(arg1)
-	winY = (int)(arg2)
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_winX = (int)(_arg1)
+	_winY = (int)(_arg2)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return winX, winY, window
+	return _winX, _winY, _window
 }
 
 // WindowAtPositionDouble obtains the window underneath @device, returning
@@ -2835,25 +2835,25 @@ func (d device) WindowAtPosition() (winX int, winY int, window Window) {
 // function may not be called on devices of type GDK_DEVICE_TYPE_SLAVE,
 // unless there is an ongoing grab on them, see gdk_device_grab().
 func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Window) {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var arg1 C.gdouble
-	var arg2 C.gdouble
-	var cret *C.GdkWindow
+	var _arg1 C.gdouble
+	var _arg2 C.gdouble
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_device_get_window_at_position_double(arg0, &arg1, &arg2)
+	cret = C.gdk_device_get_window_at_position_double(_arg0, &_arg1, &_arg2)
 
-	var winX float64
-	var winY float64
-	var window Window
+	var _winX float64
+	var _winY float64
+	var _window Window
 
-	winX = (float64)(arg1)
-	winY = (float64)(arg2)
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_winX = (float64)(_arg1)
+	_winY = (float64)(_arg2)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return winX, winY, window
+	return _winX, _winY, _window
 }
 
 // Grab grabs the device so that all events coming from this device are
@@ -2878,105 +2878,105 @@ func (d device) WindowAtPositionDouble() (winX float64, winY float64, window Win
 // cleaned up when the grab ends, you should handle the EventGrabBroken
 // events that are emitted when the grab ends unvoluntarily.
 func (d device) Grab(window Window, grabOwnership GrabOwnership, ownerEvents bool, eventMask EventMask, cursor Cursor, time_ uint32) GrabStatus {
-	var arg0 *C.GdkDevice
-	var arg1 *C.GdkWindow
-	var arg2 C.GdkGrabOwnership
-	var arg3 C.gboolean
-	var arg4 C.GdkEventMask
-	var arg5 *C.GdkCursor
-	var arg6 C.guint32
+	var _arg0 *C.GdkDevice
+	var _arg1 *C.GdkWindow
+	var _arg2 C.GdkGrabOwnership
+	var _arg3 C.gboolean
+	var _arg4 C.GdkEventMask
+	var _arg5 *C.GdkCursor
+	var _arg6 C.guint32
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	arg2 = (C.GdkGrabOwnership)(grabOwnership)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg2 = (C.GdkGrabOwnership)(grabOwnership)
 	if ownerEvents {
-		arg3 = C.gboolean(1)
+		_arg3 = C.gboolean(1)
 	}
-	arg4 = (C.GdkEventMask)(eventMask)
-	arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-	arg6 = C.guint32(time_)
+	_arg4 = (C.GdkEventMask)(eventMask)
+	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
+	_arg6 = C.guint32(time_)
 
-	var cret C.GdkGrabStatus
+	var _cret C.GdkGrabStatus
 
-	cret = C.gdk_device_grab(arg0, arg1, arg2, arg3, arg4, arg5, arg6)
+	cret = C.gdk_device_grab(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var grabStatus GrabStatus
+	var _grabStatus GrabStatus
 
-	grabStatus = GrabStatus(cret)
+	_grabStatus = GrabStatus(_cret)
 
-	return grabStatus
+	return _grabStatus
 }
 
 // ListAxes returns a #GList of Atoms, containing the labels for the axes
 // that @device currently has.
 func (d device) ListAxes() *glib.List {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_device_list_axes(arg0)
+	cret = C.gdk_device_list_axes(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // ListSlaveDevices: if the device if of type GDK_DEVICE_TYPE_MASTER, it
 // will return the list of slave devices attached to it, otherwise it will
 // return nil
 func (d device) ListSlaveDevices() *glib.List {
-	var arg0 *C.GdkDevice
+	var _arg0 *C.GdkDevice
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_device_list_slave_devices(arg0)
+	cret = C.gdk_device_list_slave_devices(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // SetAxisUse specifies how an axis of a device is used.
 func (d device) SetAxisUse(index_ uint, use AxisUse) {
-	var arg0 *C.GdkDevice
-	var arg1 C.guint
-	var arg2 C.GdkAxisUse
+	var _arg0 *C.GdkDevice
+	var _arg1 C.guint
+	var _arg2 C.GdkAxisUse
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint(index_)
-	arg2 = (C.GdkAxisUse)(use)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = (C.GdkAxisUse)(use)
 
-	C.gdk_device_set_axis_use(arg0, arg1, arg2)
+	C.gdk_device_set_axis_use(_arg0, _arg1, _arg2)
 }
 
 // SetKey specifies the X key event to generate when a macro button of a
 // device is pressed.
 func (d device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
-	var arg0 *C.GdkDevice
-	var arg1 C.guint
-	var arg2 C.guint
-	var arg3 C.GdkModifierType
+	var _arg0 *C.GdkDevice
+	var _arg1 C.guint
+	var _arg2 C.guint
+	var _arg3 C.GdkModifierType
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint(index_)
-	arg2 = C.guint(keyval)
-	arg3 = (C.GdkModifierType)(modifiers)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(index_)
+	_arg2 = C.guint(keyval)
+	_arg3 = (C.GdkModifierType)(modifiers)
 
-	C.gdk_device_set_key(arg0, arg1, arg2, arg3)
+	C.gdk_device_set_key(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SetMode sets a the mode of an input device. The mode controls if the
@@ -2987,34 +2987,34 @@ func (d device) SetKey(index_ uint, keyval uint, modifiers ModifierType) {
 // slaves connected to these) drive the pointer cursor, which is not limited
 // by the input mode.
 func (d device) SetMode(mode InputMode) bool {
-	var arg0 *C.GdkDevice
-	var arg1 C.GdkInputMode
+	var _arg0 *C.GdkDevice
+	var _arg1 C.GdkInputMode
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = (C.GdkInputMode)(mode)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GdkInputMode)(mode)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_device_set_mode(arg0, arg1)
+	cret = C.gdk_device_set_mode(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Ungrab: release any grab on @device.
 func (d device) Ungrab(time_ uint32) {
-	var arg0 *C.GdkDevice
-	var arg1 C.guint32
+	var _arg0 *C.GdkDevice
+	var _arg1 C.guint32
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint32(time_)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint32(time_)
 
-	C.gdk_device_ungrab(arg0, arg1)
+	C.gdk_device_ungrab(_arg0, _arg1)
 }
 
 // Warp warps @device in @display to the point @x,@y on the screen @screen,
@@ -3027,17 +3027,17 @@ func (d device) Ungrab(time_ uint32) {
 // This function was added to cover some rare use cases like keyboard
 // navigation support for the color picker in the ColorSelectionDialog.
 func (d device) Warp(screen Screen, x int, y int) {
-	var arg0 *C.GdkDevice
-	var arg1 *C.GdkScreen
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg0 *C.GdkDevice
+	var _arg1 *C.GdkScreen
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	arg2 = C.gint(x)
-	arg3 = C.gint(y)
+	_arg0 = (*C.GdkDevice)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
-	C.gdk_device_warp(arg0, arg1, arg2, arg3)
+	C.gdk_device_warp(_arg0, _arg1, _arg2, _arg3)
 }
 
 // DeviceManager: in addition to a single pointer and keyboard for user
@@ -3193,59 +3193,59 @@ func marshalDeviceManager(p uintptr) (interface{}, error) {
 // by a Event and there aren’t other means to get a meaningful Device to
 // operate on.
 func (d deviceManager) ClientPointer() Device {
-	var arg0 *C.GdkDeviceManager
+	var _arg0 *C.GdkDeviceManager
 
-	arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkDevice
+	var _cret *C.GdkDevice
 
-	cret = C.gdk_device_manager_get_client_pointer(arg0)
+	cret = C.gdk_device_manager_get_client_pointer(_arg0)
 
-	var device Device
+	var _device Device
 
-	device = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
 
-	return device
+	return _device
 }
 
 // Display gets the Display associated to @device_manager.
 func (d deviceManager) Display() Display {
-	var arg0 *C.GdkDeviceManager
+	var _arg0 *C.GdkDeviceManager
 
-	arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_device_manager_get_display(arg0)
+	cret = C.gdk_device_manager_get_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // ListDevices returns the list of devices of type @type currently attached
 // to @device_manager.
 func (d deviceManager) ListDevices(typ DeviceType) *glib.List {
-	var arg0 *C.GdkDeviceManager
-	var arg1 C.GdkDeviceType
+	var _arg0 *C.GdkDeviceManager
+	var _arg1 C.GdkDeviceType
 
-	arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
-	arg1 = (C.GdkDeviceType)(typ)
+	_arg0 = (*C.GdkDeviceManager)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GdkDeviceType)(typ)
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_device_manager_list_devices(arg0, arg1)
+	cret = C.gdk_device_manager_list_devices(_arg0, _arg1)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 type DeviceTool interface {
@@ -3299,54 +3299,54 @@ func marshalDeviceTool(p uintptr) (interface{}, error) {
 // multiple devices with the same DeviceToolType, but having different
 // hardware identificators.
 func (t deviceTool) HardwareID() uint64 {
-	var arg0 *C.GdkDeviceTool
+	var _arg0 *C.GdkDeviceTool
 
-	arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint64
+	var _cret C.guint64
 
-	cret = C.gdk_device_tool_get_hardware_id(arg0)
+	cret = C.gdk_device_tool_get_hardware_id(_arg0)
 
-	var guint64 uint64
+	var _guint64 uint64
 
-	guint64 = (uint64)(cret)
+	_guint64 = (uint64)(_cret)
 
-	return guint64
+	return _guint64
 }
 
 // Serial gets the serial of this tool, this value can be used to identify a
 // physical tool (eg. a tablet pen) across program executions.
 func (t deviceTool) Serial() uint64 {
-	var arg0 *C.GdkDeviceTool
+	var _arg0 *C.GdkDeviceTool
 
-	arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
 
-	var cret C.guint64
+	var _cret C.guint64
 
-	cret = C.gdk_device_tool_get_serial(arg0)
+	cret = C.gdk_device_tool_get_serial(_arg0)
 
-	var guint64 uint64
+	var _guint64 uint64
 
-	guint64 = (uint64)(cret)
+	_guint64 = (uint64)(_cret)
 
-	return guint64
+	return _guint64
 }
 
 // ToolType gets the DeviceToolType of the tool.
 func (t deviceTool) ToolType() DeviceToolType {
-	var arg0 *C.GdkDeviceTool
+	var _arg0 *C.GdkDeviceTool
 
-	arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
+	_arg0 = (*C.GdkDeviceTool)(unsafe.Pointer(t.Native()))
 
-	var cret C.GdkDeviceToolType
+	var _cret C.GdkDeviceToolType
 
-	cret = C.gdk_device_tool_get_tool_type(arg0)
+	cret = C.gdk_device_tool_get_tool_type(_arg0)
 
-	var deviceToolType DeviceToolType
+	var _deviceToolType DeviceToolType
 
-	deviceToolType = DeviceToolType(cret)
+	_deviceToolType = DeviceToolType(_cret)
 
-	return deviceToolType
+	return _deviceToolType
 }
 
 // Display objects purpose are two fold:
@@ -3554,43 +3554,43 @@ func marshalDisplay(p uintptr) (interface{}, error) {
 
 // Beep emits a short beep on @display
 func (d display) Beep() {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_display_beep(arg0)
+	C.gdk_display_beep(_arg0)
 }
 
 // Close closes the connection to the windowing system for the given
 // display, and cleans up associated resources.
 func (d display) Close() {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_display_close(arg0)
+	C.gdk_display_close(_arg0)
 }
 
 // DeviceIsGrabbed returns true if there is an ongoing grab on @device for
 // @display.
 func (d display) DeviceIsGrabbed(device Device) bool {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.GdkDevice
+	var _arg0 *C.GdkDisplay
+	var _arg1 *C.GdkDevice
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_device_is_grabbed(arg0, arg1)
+	cret = C.gdk_display_device_is_grabbed(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Flush flushes any requests queued for the windowing system; this happens
@@ -3604,198 +3604,198 @@ func (d display) DeviceIsGrabbed(device Device) bool {
 // This is most useful for X11. On windowing systems where requests are
 // handled synchronously, this function will do nothing.
 func (d display) Flush() {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_display_flush(arg0)
+	C.gdk_display_flush(_arg0)
 }
 
 // AppLaunchContext returns a AppLaunchContext suitable for launching
 // applications on the given display.
 func (d display) AppLaunchContext() AppLaunchContext {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkAppLaunchContext
+	var _cret *C.GdkAppLaunchContext
 
-	cret = C.gdk_display_get_app_launch_context(arg0)
+	cret = C.gdk_display_get_app_launch_context(_arg0)
 
-	var appLaunchContext AppLaunchContext
+	var _appLaunchContext AppLaunchContext
 
-	appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(AppLaunchContext)
+	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppLaunchContext)
 
-	return appLaunchContext
+	return _appLaunchContext
 }
 
 // DefaultCursorSize returns the default size to use for cursors on
 // @display.
 func (d display) DefaultCursorSize() uint {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_display_get_default_cursor_size(arg0)
+	cret = C.gdk_display_get_default_cursor_size(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // DefaultGroup returns the default group leader window for all toplevel
 // windows on @display. This window is implicitly created by GDK. See
 // gdk_window_set_group().
 func (d display) DefaultGroup() Window {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_display_get_default_group(arg0)
+	cret = C.gdk_display_get_default_group(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // DefaultScreen: get the default Screen for @display.
 func (d display) DefaultScreen() Screen {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkScreen
+	var _cret *C.GdkScreen
 
-	cret = C.gdk_display_get_default_screen(arg0)
+	cret = C.gdk_display_get_default_screen(_arg0)
 
-	var screen Screen
+	var _screen Screen
 
-	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
 
-	return screen
+	return _screen
 }
 
 // DefaultSeat returns the default Seat for this display.
 func (d display) DefaultSeat() Seat {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkSeat
+	var _cret *C.GdkSeat
 
-	cret = C.gdk_display_get_default_seat(arg0)
+	cret = C.gdk_display_get_default_seat(_arg0)
 
-	var seat Seat
+	var _seat Seat
 
-	seat = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Seat)
+	_seat = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Seat)
 
-	return seat
+	return _seat
 }
 
 // DeviceManager returns the DeviceManager associated to @display.
 func (d display) DeviceManager() DeviceManager {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkDeviceManager
+	var _cret *C.GdkDeviceManager
 
-	cret = C.gdk_display_get_device_manager(arg0)
+	cret = C.gdk_display_get_device_manager(_arg0)
 
-	var deviceManager DeviceManager
+	var _deviceManager DeviceManager
 
-	deviceManager = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(DeviceManager)
+	_deviceManager = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DeviceManager)
 
-	return deviceManager
+	return _deviceManager
 }
 
 // MaximalCursorSize gets the maximal size to use for cursors on @display.
 func (d display) MaximalCursorSize() (width uint, height uint) {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var arg1 C.guint
-	var arg2 C.guint
+	var _arg1 C.guint
+	var _arg2 C.guint
 
-	C.gdk_display_get_maximal_cursor_size(arg0, &arg1, &arg2)
+	C.gdk_display_get_maximal_cursor_size(_arg0, &_arg1, &_arg2)
 
-	var width uint
-	var height uint
+	var _width uint
+	var _height uint
 
-	width = (uint)(arg1)
-	height = (uint)(arg2)
+	_width = (uint)(_arg1)
+	_height = (uint)(_arg2)
 
-	return width, height
+	return _width, _height
 }
 
 // Monitor gets a monitor associated with this display.
 func (d display) Monitor(monitorNum int) Monitor {
-	var arg0 *C.GdkDisplay
-	var arg1 C.int
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.int
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(monitorNum)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(monitorNum)
 
-	var cret *C.GdkMonitor
+	var _cret *C.GdkMonitor
 
-	cret = C.gdk_display_get_monitor(arg0, arg1)
+	cret = C.gdk_display_get_monitor(_arg0, _arg1)
 
-	var monitor Monitor
+	var _monitor Monitor
 
-	monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
 
-	return monitor
+	return _monitor
 }
 
 // MonitorAtPoint gets the monitor in which the point (@x, @y) is located,
 // or a nearby monitor if the point is not in any monitor.
 func (d display) MonitorAtPoint(x int, y int) Monitor {
-	var arg0 *C.GdkDisplay
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = C.int(x)
-	arg2 = C.int(y)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.int(x)
+	_arg2 = C.int(y)
 
-	var cret *C.GdkMonitor
+	var _cret *C.GdkMonitor
 
-	cret = C.gdk_display_get_monitor_at_point(arg0, arg1, arg2)
+	cret = C.gdk_display_get_monitor_at_point(_arg0, _arg1, _arg2)
 
-	var monitor Monitor
+	var _monitor Monitor
 
-	monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
 
-	return monitor
+	return _monitor
 }
 
 // MonitorAtWindow gets the monitor in which the largest area of @window
 // resides, or a monitor close to @window if it is outside of all monitors.
 func (d display) MonitorAtWindow(window Window) Monitor {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.GdkWindow
+	var _arg0 *C.GdkDisplay
+	var _arg1 *C.GdkWindow
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	var cret *C.GdkMonitor
+	var _cret *C.GdkMonitor
 
-	cret = C.gdk_display_get_monitor_at_window(arg0, arg1)
+	cret = C.gdk_display_get_monitor_at_window(_arg0, _arg1)
 
-	var monitor Monitor
+	var _monitor Monitor
 
-	monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
 
-	return monitor
+	return _monitor
 }
 
 // NMonitors gets the number of monitors that belong to @display.
@@ -3803,80 +3803,80 @@ func (d display) MonitorAtWindow(window Window) Monitor {
 // The returned number is valid until the next emission of the
 // Display::monitor-added or Display::monitor-removed signal.
 func (d display) NMonitors() int {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.int
+	var _cret C.int
 
-	cret = C.gdk_display_get_n_monitors(arg0)
+	cret = C.gdk_display_get_n_monitors(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // NScreens gets the number of screen managed by the @display.
 func (d display) NScreens() int {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_display_get_n_screens(arg0)
+	cret = C.gdk_display_get_n_screens(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Name gets the name of the display.
 func (d display) Name() string {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_display_get_name(arg0)
+	cret = C.gdk_display_get_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
+	_utf8 = C.GoString(_cret)
 
-	return utf8
+	return _utf8
 }
 
 // Pointer gets the current location of the pointer and the current modifier
 // mask for a given display.
 func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var arg1 **C.GdkScreen
-	var arg2 C.gint
-	var arg3 C.gint
-	var arg4 C.GdkModifierType
+	var _arg1 **C.GdkScreen
+	var _arg2 C.gint
+	var _arg3 C.gint
+	var _arg4 C.GdkModifierType
 
-	C.gdk_display_get_pointer(arg0, arg1, &arg2, &arg3, &arg4)
+	C.gdk_display_get_pointer(_arg0, _arg1, &_arg2, &_arg3, &_arg4)
 
-	var screen Screen
-	var x int
-	var y int
-	var mask ModifierType
+	var _screen Screen
+	var _x int
+	var _y int
+	var _mask ModifierType
 
-	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(arg1.Native()))).(Screen)
-	x = (int)(arg2)
-	y = (int)(arg3)
-	mask = ModifierType(arg4)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(Screen)
+	_x = (int)(_arg2)
+	_y = (int)(_arg3)
+	_mask = ModifierType(_arg4)
 
-	return screen, x, y, mask
+	return _screen, _x, _y, _mask
 }
 
 // PrimaryMonitor gets the primary monitor for the display.
@@ -3886,38 +3886,38 @@ func (d display) Pointer() (screen Screen, x int, y int, mask ModifierType) {
 // manager to place the windows, specialized desktop applications such as
 // panels should place themselves on the primary monitor.
 func (d display) PrimaryMonitor() Monitor {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GdkMonitor
+	var _cret *C.GdkMonitor
 
-	cret = C.gdk_display_get_primary_monitor(arg0)
+	cret = C.gdk_display_get_primary_monitor(_arg0)
 
-	var monitor Monitor
+	var _monitor Monitor
 
-	monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Monitor)
+	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Monitor)
 
-	return monitor
+	return _monitor
 }
 
 // Screen returns a screen object for one of the screens of the display.
 func (d display) Screen(screenNum int) Screen {
-	var arg0 *C.GdkDisplay
-	var arg1 C.gint
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = C.gint(screenNum)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.gint(screenNum)
 
-	var cret *C.GdkScreen
+	var _cret *C.GdkScreen
 
-	cret = C.gdk_display_get_screen(arg0, arg1)
+	cret = C.gdk_display_get_screen(_arg0, _arg1)
 
-	var screen Screen
+	var _screen Screen
 
-	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
 
-	return screen
+	return _screen
 }
 
 // WindowAtPointer obtains the window underneath the mouse pointer,
@@ -3925,113 +3925,113 @@ func (d display) Screen(screenNum int) Screen {
 // for @screen. Returns nil if the window under the mouse pointer is not
 // known to GDK (for example, belongs to another application).
 func (d display) WindowAtPointer() (winX int, winY int, window Window) {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var arg1 C.gint
-	var arg2 C.gint
-	var cret *C.GdkWindow
+	var _arg1 C.gint
+	var _arg2 C.gint
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_display_get_window_at_pointer(arg0, &arg1, &arg2)
+	cret = C.gdk_display_get_window_at_pointer(_arg0, &_arg1, &_arg2)
 
-	var winX int
-	var winY int
-	var window Window
+	var _winX int
+	var _winY int
+	var _window Window
 
-	winX = (int)(arg1)
-	winY = (int)(arg2)
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_winX = (int)(_arg1)
+	_winY = (int)(_arg2)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return winX, winY, window
+	return _winX, _winY, _window
 }
 
 // HasPending returns whether the display has events that are waiting to be
 // processed.
 func (d display) HasPending() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_has_pending(arg0)
+	cret = C.gdk_display_has_pending(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // IsClosed finds out if the display has been closed.
 func (d display) IsClosed() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_is_closed(arg0)
+	cret = C.gdk_display_is_closed(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // KeyboardUngrab: release any keyboard grab
 func (d display) KeyboardUngrab(time_ uint32) {
-	var arg0 *C.GdkDisplay
-	var arg1 C.guint32
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.guint32
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint32(time_)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint32(time_)
 
-	C.gdk_display_keyboard_ungrab(arg0, arg1)
+	C.gdk_display_keyboard_ungrab(_arg0, _arg1)
 }
 
 // ListDevices returns the list of available input devices attached to
 // @display. The list is statically allocated and should not be freed.
 func (d display) ListDevices() *glib.List {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_display_list_devices(arg0)
+	cret = C.gdk_display_list_devices(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
+	_list = glib.WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // ListSeats returns the list of seats known to @display.
 func (d display) ListSeats() *glib.List {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_display_list_seats(arg0)
+	cret = C.gdk_display_list_seats(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // NotifyStartupComplete indicates to the GUI environment that the
@@ -4042,66 +4042,66 @@ func (d display) ListSeats() *glib.List {
 // gtk_window_set_auto_startup_notification() is called to disable that
 // feature.
 func (d display) NotifyStartupComplete(startupId string) {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.gchar
+	var _arg0 *C.GdkDisplay
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.gchar)(C.CString(startupId))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.gchar)(C.CString(startupId))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gdk_display_notify_startup_complete(arg0, arg1)
+	C.gdk_display_notify_startup_complete(_arg0, _arg1)
 }
 
 // PointerIsGrabbed: test if the pointer is grabbed.
 func (d display) PointerIsGrabbed() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_pointer_is_grabbed(arg0)
+	cret = C.gdk_display_pointer_is_grabbed(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // PointerUngrab: release any pointer grab.
 func (d display) PointerUngrab(time_ uint32) {
-	var arg0 *C.GdkDisplay
-	var arg1 C.guint32
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.guint32
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint32(time_)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint32(time_)
 
-	C.gdk_display_pointer_ungrab(arg0, arg1)
+	C.gdk_display_pointer_ungrab(_arg0, _arg1)
 }
 
 // RequestSelectionNotification: request EventOwnerChange events for
 // ownership changes of the selection named by the given atom.
 func (d display) RequestSelectionNotification(selection Atom) bool {
-	var arg0 *C.GdkDisplay
-	var arg1 C.GdkAtom
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.GdkAtom
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_request_selection_notification(arg0, arg1)
+	cret = C.gdk_display_request_selection_notification(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetDoubleClickDistance sets the double click distance (two clicks within
@@ -4109,13 +4109,13 @@ func (d display) RequestSelectionNotification(selection Atom) bool {
 // event). See also gdk_display_set_double_click_time(). Applications should
 // not set this, it is a global user-configured setting.
 func (d display) SetDoubleClickDistance(distance uint) {
-	var arg0 *C.GdkDisplay
-	var arg1 C.guint
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint(distance)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(distance)
 
-	C.gdk_display_set_double_click_distance(arg0, arg1)
+	C.gdk_display_set_double_click_distance(_arg0, _arg1)
 }
 
 // SetDoubleClickTime sets the double click time (two clicks within this
@@ -4123,13 +4123,13 @@ func (d display) SetDoubleClickDistance(distance uint) {
 // event). Applications should not set this, it is a global user-configured
 // setting.
 func (d display) SetDoubleClickTime(msec uint) {
-	var arg0 *C.GdkDisplay
-	var arg1 C.guint
+	var _arg0 *C.GdkDisplay
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = C.guint(msec)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = C.guint(msec)
 
-	C.gdk_display_set_double_click_time(arg0, arg1)
+	C.gdk_display_set_double_click_time(_arg0, _arg1)
 }
 
 // StoreClipboard issues a request to the clipboard manager to store the
@@ -4137,11 +4137,11 @@ func (d display) SetDoubleClickTime(msec uint) {
 // the FreeDesktop Clipboard Specification
 // (http://www.freedesktop.org/Standards/clipboard-manager-spec).
 func (d display) StoreClipboard() {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_display_store_clipboard(arg0)
+	C.gdk_display_store_clipboard(_arg0)
 }
 
 // SupportsClipboardPersistence returns whether the speicifed display
@@ -4149,21 +4149,21 @@ func (d display) StoreClipboard() {
 // clipboard data after an application has quit. On X11 this checks if a
 // clipboard daemon is running.
 func (d display) SupportsClipboardPersistence() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_supports_clipboard_persistence(arg0)
+	cret = C.gdk_display_supports_clipboard_persistence(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SupportsComposite returns true if gdk_window_set_composited() can be used
@@ -4172,123 +4172,123 @@ func (d display) SupportsClipboardPersistence() bool {
 // Currently this only works on X11 with XComposite and XDamage extensions
 // available.
 func (d display) SupportsComposite() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_supports_composite(arg0)
+	cret = C.gdk_display_supports_composite(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SupportsCursorAlpha returns true if cursors can use an 8bit alpha channel
 // on @display. Otherwise, cursors are restricted to bilevel alpha (i.e. a
 // mask).
 func (d display) SupportsCursorAlpha() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_supports_cursor_alpha(arg0)
+	cret = C.gdk_display_supports_cursor_alpha(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SupportsCursorColor returns true if multicolored cursors are supported on
 // @display. Otherwise, cursors have only a forground and a background
 // color.
 func (d display) SupportsCursorColor() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_supports_cursor_color(arg0)
+	cret = C.gdk_display_supports_cursor_color(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SupportsInputShapes returns true if gdk_window_input_shape_combine_mask()
 // can be used to modify the input shape of windows on @display.
 func (d display) SupportsInputShapes() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_supports_input_shapes(arg0)
+	cret = C.gdk_display_supports_input_shapes(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SupportsSelectionNotification returns whether EventOwnerChange events
 // will be sent when the owner of a selection changes.
 func (d display) SupportsSelectionNotification() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_supports_selection_notification(arg0)
+	cret = C.gdk_display_supports_selection_notification(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SupportsShapes returns true if gdk_window_shape_combine_mask() can be
 // used to create shaped windows on @display.
 func (d display) SupportsShapes() bool {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_display_supports_shapes(arg0)
+	cret = C.gdk_display_supports_shapes(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Sync flushes any requests queued for the windowing system and waits until
@@ -4301,11 +4301,11 @@ func (d display) SupportsShapes() bool {
 // This is most useful for X11. On windowing systems where requests are
 // handled synchronously, this function will do nothing.
 func (d display) Sync() {
-	var arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	C.gdk_display_sync(arg0)
+	C.gdk_display_sync(_arg0)
 }
 
 // WarpPointer warps the pointer of @display to the point @x,@y on the
@@ -4318,17 +4318,17 @@ func (d display) Sync() {
 // This function was added to cover some rare use cases like keyboard
 // navigation support for the color picker in the ColorSelectionDialog.
 func (d display) WarpPointer(screen Screen, x int, y int) {
-	var arg0 *C.GdkDisplay
-	var arg1 *C.GdkScreen
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg0 *C.GdkDisplay
+	var _arg1 *C.GdkScreen
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-	arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	arg2 = C.gint(x)
-	arg3 = C.gint(y)
+	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
+	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
+	_arg2 = C.gint(x)
+	_arg3 = C.gint(y)
 
-	C.gdk_display_warp_pointer(arg0, arg1, arg2, arg3)
+	C.gdk_display_warp_pointer(_arg0, _arg1, _arg2, _arg3)
 }
 
 // DisplayManager: the purpose of the DisplayManager singleton object is to
@@ -4402,70 +4402,70 @@ func marshalDisplayManager(p uintptr) (interface{}, error) {
 
 // DefaultDisplay gets the default Display.
 func (m displayManager) DefaultDisplay() Display {
-	var arg0 *C.GdkDisplayManager
+	var _arg0 *C.GdkDisplayManager
 
-	arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_display_manager_get_default_display(arg0)
+	cret = C.gdk_display_manager_get_default_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // ListDisplays: list all currently open displays.
 func (m displayManager) ListDisplays() *glib.SList {
-	var arg0 *C.GdkDisplayManager
+	var _arg0 *C.GdkDisplayManager
 
-	arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
 
-	var cret *C.GSList
+	var _cret *C.GSList
 
-	cret = C.gdk_display_manager_list_displays(arg0)
+	cret = C.gdk_display_manager_list_displays(_arg0)
 
-	var sList *glib.SList
+	var _sList *glib.SList
 
-	sList = glib.WrapSList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(sList, func(v *glib.SList) {
+	_sList = glib.WrapSList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_sList, func(v *glib.SList) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return sList
+	return _sList
 }
 
 // OpenDisplay opens a display.
 func (m displayManager) OpenDisplay(name string) Display {
-	var arg0 *C.GdkDisplayManager
-	var arg1 *C.gchar
+	var _arg0 *C.GdkDisplayManager
+	var _arg1 *C.gchar
 
-	arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_display_manager_open_display(arg0, arg1)
+	cret = C.gdk_display_manager_open_display(_arg0, _arg1)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // SetDefaultDisplay sets @display as the default display.
 func (m displayManager) SetDefaultDisplay(display Display) {
-	var arg0 *C.GdkDisplayManager
-	var arg1 *C.GdkDisplay
+	var _arg0 *C.GdkDisplayManager
+	var _arg1 *C.GdkDisplay
 
-	arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
-	arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
+	_arg0 = (*C.GdkDisplayManager)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	C.gdk_display_manager_set_default_display(arg0, arg1)
+	C.gdk_display_manager_set_default_display(_arg0, _arg1)
 }
 
 type DragContext interface {
@@ -4543,53 +4543,53 @@ func marshalDragContext(p uintptr) (interface{}, error) {
 // Actions determines the bitmask of actions proposed by the source if
 // gdk_drag_context_get_suggested_action() returns GDK_ACTION_ASK.
 func (c dragContext) Actions() DragAction {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.GdkDragAction
+	var _cret C.GdkDragAction
 
-	cret = C.gdk_drag_context_get_actions(arg0)
+	cret = C.gdk_drag_context_get_actions(_arg0)
 
-	var dragAction DragAction
+	var _dragAction DragAction
 
-	dragAction = DragAction(cret)
+	_dragAction = DragAction(_cret)
 
-	return dragAction
+	return _dragAction
 }
 
 // DestWindow returns the destination window for the DND operation.
 func (c dragContext) DestWindow() Window {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_drag_context_get_dest_window(arg0)
+	cret = C.gdk_drag_context_get_dest_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // Device returns the Device associated to the drag context.
 func (c dragContext) Device() Device {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkDevice
+	var _cret *C.GdkDevice
 
-	cret = C.gdk_drag_context_get_device(arg0)
+	cret = C.gdk_drag_context_get_device(_arg0)
 
-	var device Device
+	var _device Device
 
-	device = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
 
-	return device
+	return _device
 }
 
 // DragWindow returns the window on which the drag icon should be rendered
@@ -4598,104 +4598,104 @@ func (c dragContext) Device() Device {
 // accordance with the ongoing drag operation. The window is owned by
 // @context and will be destroyed when the drag operation is over.
 func (c dragContext) DragWindow() Window {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_drag_context_get_drag_window(arg0)
+	cret = C.gdk_drag_context_get_drag_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // Protocol returns the drag protocol that is used by this context.
 func (c dragContext) Protocol() DragProtocol {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.GdkDragProtocol
+	var _cret C.GdkDragProtocol
 
-	cret = C.gdk_drag_context_get_protocol(arg0)
+	cret = C.gdk_drag_context_get_protocol(_arg0)
 
-	var dragProtocol DragProtocol
+	var _dragProtocol DragProtocol
 
-	dragProtocol = DragProtocol(cret)
+	_dragProtocol = DragProtocol(_cret)
 
-	return dragProtocol
+	return _dragProtocol
 }
 
 // SelectedAction determines the action chosen by the drag destination.
 func (c dragContext) SelectedAction() DragAction {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.GdkDragAction
+	var _cret C.GdkDragAction
 
-	cret = C.gdk_drag_context_get_selected_action(arg0)
+	cret = C.gdk_drag_context_get_selected_action(_arg0)
 
-	var dragAction DragAction
+	var _dragAction DragAction
 
-	dragAction = DragAction(cret)
+	_dragAction = DragAction(_cret)
 
-	return dragAction
+	return _dragAction
 }
 
 // SourceWindow returns the Window where the DND operation started.
 func (c dragContext) SourceWindow() Window {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_drag_context_get_source_window(arg0)
+	cret = C.gdk_drag_context_get_source_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // SuggestedAction determines the suggested drag action of the context.
 func (c dragContext) SuggestedAction() DragAction {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.GdkDragAction
+	var _cret C.GdkDragAction
 
-	cret = C.gdk_drag_context_get_suggested_action(arg0)
+	cret = C.gdk_drag_context_get_suggested_action(_arg0)
 
-	var dragAction DragAction
+	var _dragAction DragAction
 
-	dragAction = DragAction(cret)
+	_dragAction = DragAction(_cret)
 
-	return dragAction
+	return _dragAction
 }
 
 // ListTargets retrieves the list of targets of the context.
 func (c dragContext) ListTargets() *glib.List {
-	var arg0 *C.GdkDragContext
+	var _arg0 *C.GdkDragContext
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_drag_context_list_targets(arg0)
+	cret = C.gdk_drag_context_list_targets(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
+	_list = glib.WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // ManageDnd requests the drag and drop operation to be managed by @context.
@@ -4714,52 +4714,52 @@ func (c dragContext) ListTargets() *glib.List {
 // doesn't happen over an accepting destination, or is cancelled through
 // other means.
 func (c dragContext) ManageDnd(ipcWindow Window, actions DragAction) bool {
-	var arg0 *C.GdkDragContext
-	var arg1 *C.GdkWindow
-	var arg2 C.GdkDragAction
+	var _arg0 *C.GdkDragContext
+	var _arg1 *C.GdkWindow
+	var _arg2 C.GdkDragAction
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(ipcWindow.Native()))
-	arg2 = (C.GdkDragAction)(actions)
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(ipcWindow.Native()))
+	_arg2 = (C.GdkDragAction)(actions)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_drag_context_manage_dnd(arg0, arg1, arg2)
+	cret = C.gdk_drag_context_manage_dnd(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SetDevice associates a Device to @context, so all Drag and Drop events
 // for @context are emitted as if they came from this device.
 func (c dragContext) SetDevice(device Device) {
-	var arg0 *C.GdkDragContext
-	var arg1 *C.GdkDevice
+	var _arg0 *C.GdkDragContext
+	var _arg1 *C.GdkDevice
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-	arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	C.gdk_drag_context_set_device(arg0, arg1)
+	C.gdk_drag_context_set_device(_arg0, _arg1)
 }
 
 // SetHotspot sets the position of the drag window that will be kept under
 // the cursor hotspot. Initially, the hotspot is at the top left corner of
 // the drag window.
 func (c dragContext) SetHotspot(hotX int, hotY int) {
-	var arg0 *C.GdkDragContext
-	var arg1 C.gint
-	var arg2 C.gint
+	var _arg0 *C.GdkDragContext
+	var _arg1 C.gint
+	var _arg2 C.gint
 
-	arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
-	arg1 = C.gint(hotX)
-	arg2 = C.gint(hotY)
+	_arg0 = (*C.GdkDragContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.gint(hotX)
+	_arg2 = C.gint(hotY)
 
-	C.gdk_drag_context_set_hotspot(arg0, arg1, arg2)
+	C.gdk_drag_context_set_hotspot(_arg0, _arg1, _arg2)
 }
 
 // GLContext is an object representing the platform-specific OpenGL drawing
@@ -4920,155 +4920,155 @@ func marshalGLContext(p uintptr) (interface{}, error) {
 // DebugEnabled retrieves the value set using
 // gdk_gl_context_set_debug_enabled().
 func (c glContext) DebugEnabled() bool {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_gl_context_get_debug_enabled(arg0)
+	cret = C.gdk_gl_context_get_debug_enabled(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Display retrieves the Display the @context is created for
 func (c glContext) Display() Display {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_gl_context_get_display(arg0)
+	cret = C.gdk_gl_context_get_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // ForwardCompatible retrieves the value set using
 // gdk_gl_context_set_forward_compatible().
 func (c glContext) ForwardCompatible() bool {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_gl_context_get_forward_compatible(arg0)
+	cret = C.gdk_gl_context_get_forward_compatible(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // RequiredVersion retrieves the major and minor version requested by
 // calling gdk_gl_context_set_required_version().
 func (c glContext) RequiredVersion() (major int, minor int) {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.int
-	var arg2 C.int
+	var _arg1 C.int
+	var _arg2 C.int
 
-	C.gdk_gl_context_get_required_version(arg0, &arg1, &arg2)
+	C.gdk_gl_context_get_required_version(_arg0, &_arg1, &_arg2)
 
-	var major int
-	var minor int
+	var _major int
+	var _minor int
 
-	major = (int)(arg1)
-	minor = (int)(arg2)
+	_major = (int)(_arg1)
+	_minor = (int)(_arg2)
 
-	return major, minor
+	return _major, _minor
 }
 
 // SharedContext retrieves the GLContext that this @context share data with.
 func (c glContext) SharedContext() GLContext {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkGLContext
+	var _cret *C.GdkGLContext
 
-	cret = C.gdk_gl_context_get_shared_context(arg0)
+	cret = C.gdk_gl_context_get_shared_context(_arg0)
 
-	var glContext GLContext
+	var _glContext GLContext
 
-	glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(GLContext)
+	_glContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(GLContext)
 
-	return glContext
+	return _glContext
 }
 
 // UseES checks whether the @context is using an OpenGL or OpenGL ES
 // profile.
 func (c glContext) UseES() bool {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_gl_context_get_use_es(arg0)
+	cret = C.gdk_gl_context_get_use_es(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Version retrieves the OpenGL version of the @context.
 //
 // The @context must be realized prior to calling this function.
 func (c glContext) Version() (major int, minor int) {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var arg1 C.int
-	var arg2 C.int
+	var _arg1 C.int
+	var _arg2 C.int
 
-	C.gdk_gl_context_get_version(arg0, &arg1, &arg2)
+	C.gdk_gl_context_get_version(_arg0, &_arg1, &_arg2)
 
-	var major int
-	var minor int
+	var _major int
+	var _minor int
 
-	major = (int)(arg1)
-	minor = (int)(arg2)
+	_major = (int)(_arg1)
+	_minor = (int)(_arg2)
 
-	return major, minor
+	return _major, _minor
 }
 
 // Window retrieves the Window used by the @context.
 func (c glContext) Window() Window {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_gl_context_get_window(arg0)
+	cret = C.gdk_gl_context_get_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // IsLegacy: whether the GLContext is in legacy mode or not.
@@ -5088,49 +5088,49 @@ func (c glContext) Window() Window {
 // OpenGL API to use, or whether to do extension discovery, or what kind of
 // shader programs to load.
 func (c glContext) IsLegacy() bool {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_gl_context_is_legacy(arg0)
+	cret = C.gdk_gl_context_is_legacy(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // MakeCurrent makes the @context the current one.
 func (c glContext) MakeCurrent() {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	C.gdk_gl_context_make_current(arg0)
+	C.gdk_gl_context_make_current(_arg0)
 }
 
 // Realize realizes the given GLContext.
 //
 // It is safe to call this function on a realized GLContext.
 func (c glContext) Realize() error {
-	var arg0 *C.GdkGLContext
+	var _arg0 *C.GdkGLContext
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 
-	var cerr *C.GError
+	var _cerr *C.GError
 
-	C.gdk_gl_context_realize(arg0, cerr)
+	C.gdk_gl_context_realize(_arg0, _cerr)
 
-	var goerr error
+	var _goerr error
 
-	goerr = gerror.Take(unsafe.Pointer(cerr))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return goerr
+	return _goerr
 }
 
 // SetDebugEnabled sets whether the GLContext should perform extra
@@ -5140,15 +5140,15 @@ func (c glContext) Realize() error {
 // The GLContext must not be realized or made current prior to calling this
 // function.
 func (c glContext) SetDebugEnabled(enabled bool) {
-	var arg0 *C.GdkGLContext
-	var arg1 C.gboolean
+	var _arg0 *C.GdkGLContext
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 	if enabled {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gdk_gl_context_set_debug_enabled(arg0, arg1)
+	C.gdk_gl_context_set_debug_enabled(_arg0, _arg1)
 }
 
 // SetForwardCompatible sets whether the GLContext should be forward
@@ -5162,15 +5162,15 @@ func (c glContext) SetDebugEnabled(enabled bool) {
 // The GLContext must not be realized or made current prior to calling this
 // function.
 func (c glContext) SetForwardCompatible(compatible bool) {
-	var arg0 *C.GdkGLContext
-	var arg1 C.gboolean
+	var _arg0 *C.GdkGLContext
+	var _arg1 C.gboolean
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
 	if compatible {
-		arg1 = C.gboolean(1)
+		_arg1 = C.gboolean(1)
 	}
 
-	C.gdk_gl_context_set_forward_compatible(arg0, arg1)
+	C.gdk_gl_context_set_forward_compatible(_arg0, _arg1)
 }
 
 // SetRequiredVersion sets the major and minor version of OpenGL to request.
@@ -5180,15 +5180,15 @@ func (c glContext) SetForwardCompatible(compatible bool) {
 // The GLContext must not be realized or made current prior to calling this
 // function.
 func (c glContext) SetRequiredVersion(major int, minor int) {
-	var arg0 *C.GdkGLContext
-	var arg1 C.int
-	var arg2 C.int
+	var _arg0 *C.GdkGLContext
+	var _arg1 C.int
+	var _arg2 C.int
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(major)
-	arg2 = C.int(minor)
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(major)
+	_arg2 = C.int(minor)
 
-	C.gdk_gl_context_set_required_version(arg0, arg1, arg2)
+	C.gdk_gl_context_set_required_version(_arg0, _arg1, _arg2)
 }
 
 // SetUseES requests that GDK create a OpenGL ES context instead of an
@@ -5204,13 +5204,13 @@ func (c glContext) SetRequiredVersion(major int, minor int) {
 // calling gdk_gl_context_realize() to decide whether to use the OpenGL or
 // OpenGL ES API, extensions, or shaders.
 func (c glContext) SetUseES(useEs int) {
-	var arg0 *C.GdkGLContext
-	var arg1 C.int
+	var _arg0 *C.GdkGLContext
+	var _arg1 C.int
 
-	arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
-	arg1 = C.int(useEs)
+	_arg0 = (*C.GdkGLContext)(unsafe.Pointer(c.Native()))
+	_arg1 = C.int(useEs)
 
-	C.gdk_gl_context_set_use_es(arg0, arg1)
+	C.gdk_gl_context_set_use_es(_arg0, _arg1)
 }
 
 // Keymap: a Keymap defines the translation from keyboard state (including a
@@ -5346,49 +5346,49 @@ func marshalKeymap(p uintptr) (interface{}, error) {
 //
 // This function is useful when matching key events against accelerators.
 func (k keymap) AddVirtualModifiers(state *ModifierType) {
-	var arg0 *C.GdkKeymap
-	var arg1 *C.GdkModifierType
+	var _arg0 *C.GdkKeymap
+	var _arg1 *C.GdkModifierType
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = (*C.GdkModifierType)(state)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.GdkModifierType)(state)
 
-	C.gdk_keymap_add_virtual_modifiers(arg0, arg1)
+	C.gdk_keymap_add_virtual_modifiers(_arg0, _arg1)
 }
 
 // CapsLockState returns whether the Caps Lock modifer is locked.
 func (k keymap) CapsLockState() bool {
-	var arg0 *C.GdkKeymap
+	var _arg0 *C.GdkKeymap
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_get_caps_lock_state(arg0)
+	cret = C.gdk_keymap_get_caps_lock_state(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // Direction returns the direction of effective layout of the keymap.
 func (k keymap) Direction() pango.Direction {
-	var arg0 *C.GdkKeymap
+	var _arg0 *C.GdkKeymap
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
-	var cret C.PangoDirection
+	var _cret C.PangoDirection
 
-	cret = C.gdk_keymap_get_direction(arg0)
+	cret = C.gdk_keymap_get_direction(_arg0)
 
-	var direction pango.Direction
+	var _direction pango.Direction
 
-	direction = pango.Direction(cret)
+	_direction = pango.Direction(_cret)
 
-	return direction
+	return _direction
 }
 
 // EntriesForKeycode returns the keyvals bound to @hardware_keycode. The Nth
@@ -5397,23 +5397,23 @@ func (k keymap) Direction() pango.Direction {
 // keyval from this list of entries is selected by considering the effective
 // keyboard group and level. See gdk_keymap_translate_keyboard_state().
 func (k keymap) EntriesForKeycode(hardwareKeycode uint) bool {
-	var arg0 *C.GdkKeymap
-	var arg1 C.guint
+	var _arg0 *C.GdkKeymap
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = C.guint(hardwareKeycode)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(hardwareKeycode)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_get_entries_for_keycode(arg0, arg1)
+	cret = C.gdk_keymap_get_entries_for_keycode(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // EntriesForKeyval obtains a list of keycode/group/level combinations that
@@ -5426,23 +5426,23 @@ func (k keymap) EntriesForKeycode(hardwareKeycode uint) bool {
 // that indicates the active keyboard group. The level is computed from the
 // modifier mask. The returned array should be freed with g_free().
 func (k keymap) EntriesForKeyval(keyval uint) bool {
-	var arg0 *C.GdkKeymap
-	var arg1 C.guint
+	var _arg0 *C.GdkKeymap
+	var _arg1 C.guint
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = C.guint(keyval)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(keyval)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_get_entries_for_keyval(arg0, arg1)
+	cret = C.gdk_keymap_get_entries_for_keyval(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ModifierMask returns the modifier mask the @keymap’s windowing system
@@ -5455,96 +5455,96 @@ func (k keymap) EntriesForKeyval(keyval uint) bool {
 // gdk_keymap_add_virtual_modifiers() in order to contain the expected
 // result.
 func (k keymap) ModifierMask(intent ModifierIntent) ModifierType {
-	var arg0 *C.GdkKeymap
-	var arg1 C.GdkModifierIntent
+	var _arg0 *C.GdkKeymap
+	var _arg1 C.GdkModifierIntent
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = (C.GdkModifierIntent)(intent)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = (C.GdkModifierIntent)(intent)
 
-	var cret C.GdkModifierType
+	var _cret C.GdkModifierType
 
-	cret = C.gdk_keymap_get_modifier_mask(arg0, arg1)
+	cret = C.gdk_keymap_get_modifier_mask(_arg0, _arg1)
 
-	var modifierType ModifierType
+	var _modifierType ModifierType
 
-	modifierType = ModifierType(cret)
+	_modifierType = ModifierType(_cret)
 
-	return modifierType
+	return _modifierType
 }
 
 // ModifierState returns the current modifier state.
 func (k keymap) ModifierState() uint {
-	var arg0 *C.GdkKeymap
+	var _arg0 *C.GdkKeymap
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_keymap_get_modifier_state(arg0)
+	cret = C.gdk_keymap_get_modifier_state(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // NumLockState returns whether the Num Lock modifer is locked.
 func (k keymap) NumLockState() bool {
-	var arg0 *C.GdkKeymap
+	var _arg0 *C.GdkKeymap
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_get_num_lock_state(arg0)
+	cret = C.gdk_keymap_get_num_lock_state(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ScrollLockState returns whether the Scroll Lock modifer is locked.
 func (k keymap) ScrollLockState() bool {
-	var arg0 *C.GdkKeymap
+	var _arg0 *C.GdkKeymap
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_get_scroll_lock_state(arg0)
+	cret = C.gdk_keymap_get_scroll_lock_state(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // HaveBidiLayouts determines if keyboard layouts for both right-to-left and
 // left-to-right languages are in use.
 func (k keymap) HaveBidiLayouts() bool {
-	var arg0 *C.GdkKeymap
+	var _arg0 *C.GdkKeymap
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_have_bidi_layouts(arg0)
+	cret = C.gdk_keymap_have_bidi_layouts(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // LookupKey looks up the keyval mapped to a keycode/group/level triplet. If
@@ -5553,21 +5553,21 @@ func (k keymap) HaveBidiLayouts() bool {
 // the effective group/level may not be the same as the current keyboard
 // state.
 func (k keymap) LookupKey(key *KeymapKey) uint {
-	var arg0 *C.GdkKeymap
-	var arg1 *C.GdkKeymapKey
+	var _arg0 *C.GdkKeymap
+	var _arg1 *C.GdkKeymapKey
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(key.Native()))
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.GdkKeymapKey)(unsafe.Pointer(key.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.gdk_keymap_lookup_key(arg0, arg1)
+	cret = C.gdk_keymap_lookup_key(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // MapVirtualModifiers maps the virtual modifiers (i.e. Super, Hyper and
@@ -5576,23 +5576,23 @@ func (k keymap) LookupKey(key *KeymapKey) uint {
 //
 // This function is useful when matching key events against accelerators.
 func (k keymap) MapVirtualModifiers(state *ModifierType) bool {
-	var arg0 *C.GdkKeymap
-	var arg1 *C.GdkModifierType
+	var _arg0 *C.GdkKeymap
+	var _arg1 *C.GdkModifierType
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = (*C.GdkModifierType)(state)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.GdkModifierType)(state)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_map_virtual_modifiers(arg0, arg1)
+	cret = C.gdk_keymap_map_virtual_modifiers(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // TranslateKeyboardState translates the contents of a EventKey into a
@@ -5625,39 +5625,39 @@ func (k keymap) MapVirtualModifiers(state *ModifierType) bool {
 // store them with consumed modifiers removed. Store `<Control>plus`, not
 // `<Control><Shift>plus`,
 func (k keymap) TranslateKeyboardState(hardwareKeycode uint, state ModifierType, group int) (keyval uint, effectiveGroup int, level int, consumedModifiers ModifierType, ok bool) {
-	var arg0 *C.GdkKeymap
-	var arg1 C.guint
-	var arg2 C.GdkModifierType
-	var arg3 C.gint
+	var _arg0 *C.GdkKeymap
+	var _arg1 C.guint
+	var _arg2 C.GdkModifierType
+	var _arg3 C.gint
 
-	arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
-	arg1 = C.guint(hardwareKeycode)
-	arg2 = (C.GdkModifierType)(state)
-	arg3 = C.gint(group)
+	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
+	_arg1 = C.guint(hardwareKeycode)
+	_arg2 = (C.GdkModifierType)(state)
+	_arg3 = C.gint(group)
 
-	var arg4 C.guint
-	var arg5 C.gint
-	var arg6 C.gint
-	var arg7 C.GdkModifierType
-	var cret C.gboolean
+	var _arg4 C.guint
+	var _arg5 C.gint
+	var _arg6 C.gint
+	var _arg7 C.GdkModifierType
+	var _cret C.gboolean
 
-	cret = C.gdk_keymap_translate_keyboard_state(arg0, arg1, arg2, arg3, &arg4, &arg5, &arg6, &arg7)
+	cret = C.gdk_keymap_translate_keyboard_state(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 
-	var keyval uint
-	var effectiveGroup int
-	var level int
-	var consumedModifiers ModifierType
-	var ok bool
+	var _keyval uint
+	var _effectiveGroup int
+	var _level int
+	var _consumedModifiers ModifierType
+	var _ok bool
 
-	keyval = (uint)(arg4)
-	effectiveGroup = (int)(arg5)
-	level = (int)(arg6)
-	consumedModifiers = ModifierType(arg7)
-	if cret {
-		ok = true
+	_keyval = (uint)(_arg4)
+	_effectiveGroup = (int)(_arg5)
+	_level = (int)(_arg6)
+	_consumedModifiers = ModifierType(_arg7)
+	if _cret {
+		_ok = true
 	}
 
-	return keyval, effectiveGroup, level, consumedModifiers, ok
+	return _keyval, _effectiveGroup, _level, _consumedModifiers, _ok
 }
 
 // Screen objects are the GDK representation of the screen on which windows can
@@ -5890,73 +5890,73 @@ func marshalScreen(p uintptr) (interface{}, error) {
 // The returned window should be unrefed using g_object_unref() when no
 // longer needed.
 func (s screen) ActiveWindow() Window {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_screen_get_active_window(arg0)
+	cret = C.gdk_screen_get_active_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // Display gets the display to which the @screen belongs.
 func (s screen) Display() Display {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_screen_get_display(arg0)
+	cret = C.gdk_screen_get_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // FontOptions gets any options previously set with
 // gdk_screen_set_font_options().
 func (s screen) FontOptions() *cairo.FontOptions {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.cairo_font_options_t
+	var _cret *C.cairo_font_options_t
 
-	cret = C.gdk_screen_get_font_options(arg0)
+	cret = C.gdk_screen_get_font_options(_arg0)
 
-	var fontOptions *cairo.FontOptions
+	var _fontOptions *cairo.FontOptions
 
-	fontOptions = cairo.WrapFontOptions(unsafe.Pointer(cret))
+	_fontOptions = cairo.WrapFontOptions(unsafe.Pointer(_cret))
 
-	return fontOptions
+	return _fontOptions
 }
 
 // Height gets the height of @screen in pixels. The returned size is in
 // ”application pixels”, not in ”device pixels” (see
 // gdk_screen_get_monitor_scale_factor()).
 func (s screen) Height() int {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_height(arg0)
+	cret = C.gdk_screen_get_height(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // HeightMm returns the height of @screen in millimeters.
@@ -5965,61 +5965,61 @@ func (s screen) Height() int {
 // monitors of different resolution. It is recommended to use the monitor
 // dimensions instead.
 func (s screen) HeightMm() int {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_height_mm(arg0)
+	cret = C.gdk_screen_get_height_mm(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // MonitorAtPoint returns the monitor number in which the point (@x,@y) is
 // located.
 func (s screen) MonitorAtPoint(x int, y int) int {
-	var arg0 *C.GdkScreen
-	var arg1 C.gint
-	var arg2 C.gint
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gint
+	var _arg2 C.gint
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint(x)
-	arg2 = C.gint(y)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(x)
+	_arg2 = C.gint(y)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_monitor_at_point(arg0, arg1, arg2)
+	cret = C.gdk_screen_get_monitor_at_point(_arg0, _arg1, _arg2)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // MonitorAtWindow returns the number of the monitor in which the largest
 // area of the bounding rectangle of @window resides.
 func (s screen) MonitorAtWindow(window Window) int {
-	var arg0 *C.GdkScreen
-	var arg1 *C.GdkWindow
+	var _arg0 *C.GdkScreen
+	var _arg1 *C.GdkWindow
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_monitor_at_window(arg0, arg1)
+	cret = C.gdk_screen_get_monitor_at_window(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // MonitorGeometry retrieves the Rectangle representing the size and
@@ -6033,58 +6033,58 @@ func (s screen) MonitorAtWindow(window Window) int {
 // Note that the size of the entire screen area can be retrieved via
 // gdk_screen_get_width() and gdk_screen_get_height().
 func (s screen) MonitorGeometry(monitorNum int) Rectangle {
-	var arg0 *C.GdkScreen
-	var arg1 C.gint
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
 
-	var dest Rectangle
+	var _dest Rectangle
 
-	C.gdk_screen_get_monitor_geometry(arg0, arg1, (*C.GdkRectangle)(unsafe.Pointer(&dest)))
+	C.gdk_screen_get_monitor_geometry(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
-	return dest
+	return _dest
 }
 
 // MonitorHeightMm gets the height in millimeters of the specified monitor.
 func (s screen) MonitorHeightMm(monitorNum int) int {
-	var arg0 *C.GdkScreen
-	var arg1 C.gint
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_monitor_height_mm(arg0, arg1)
+	cret = C.gdk_screen_get_monitor_height_mm(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // MonitorPlugName returns the output name of the specified monitor. Usually
 // something like VGA, DVI, or TV, not the actual product name of the
 // display device.
 func (s screen) MonitorPlugName(monitorNum int) string {
-	var arg0 *C.GdkScreen
-	var arg1 C.gint
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_screen_get_monitor_plug_name(arg0, arg1)
+	cret = C.gdk_screen_get_monitor_plug_name(_arg0, _arg1)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // MonitorScaleFactor returns the internal scale factor that maps from
@@ -6096,41 +6096,41 @@ func (s screen) MonitorPlugName(monitorNum int) string {
 // monitor, but most of the time you’re drawing to a window where it is
 // better to use gdk_window_get_scale_factor() instead.
 func (s screen) MonitorScaleFactor(monitorNum int) int {
-	var arg0 *C.GdkScreen
-	var arg1 C.gint
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_monitor_scale_factor(arg0, arg1)
+	cret = C.gdk_screen_get_monitor_scale_factor(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // MonitorWidthMm gets the width in millimeters of the specified monitor, if
 // available.
 func (s screen) MonitorWidthMm(monitorNum int) int {
-	var arg0 *C.GdkScreen
-	var arg1 C.gint
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_monitor_width_mm(arg0, arg1)
+	cret = C.gdk_screen_get_monitor_width_mm(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // MonitorWorkarea retrieves the Rectangle representing the size and
@@ -6149,52 +6149,52 @@ func (s screen) MonitorWidthMm(monitorNum int) int {
 // Monitor numbers start at 0. To obtain the number of monitors of @screen,
 // use gdk_screen_get_n_monitors().
 func (s screen) MonitorWorkarea(monitorNum int) Rectangle {
-	var arg0 *C.GdkScreen
-	var arg1 C.gint
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gint
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gint(monitorNum)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(monitorNum)
 
-	var dest Rectangle
+	var _dest Rectangle
 
-	C.gdk_screen_get_monitor_workarea(arg0, arg1, (*C.GdkRectangle)(unsafe.Pointer(&dest)))
+	C.gdk_screen_get_monitor_workarea(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
-	return dest
+	return _dest
 }
 
 // NMonitors returns the number of monitors which @screen consists of.
 func (s screen) NMonitors() int {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_n_monitors(arg0)
+	cret = C.gdk_screen_get_n_monitors(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Number gets the index of @screen among the screens in the display to
 // which it belongs. (See gdk_screen_get_display())
 func (s screen) Number() int {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_number(arg0)
+	cret = C.gdk_screen_get_number(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // PrimaryMonitor gets the primary monitor for @screen. The primary monitor
@@ -6206,37 +6206,37 @@ func (s screen) Number() int {
 // If no primary monitor is configured by the user, the return value will be
 // 0, defaulting to the first monitor.
 func (s screen) PrimaryMonitor() int {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_primary_monitor(arg0)
+	cret = C.gdk_screen_get_primary_monitor(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Resolution gets the resolution for font handling on the screen; see
 // gdk_screen_set_resolution() for full details.
 func (s screen) Resolution() float64 {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gdouble
+	var _cret C.gdouble
 
-	cret = C.gdk_screen_get_resolution(arg0)
+	cret = C.gdk_screen_get_resolution(_arg0)
 
-	var gdouble float64
+	var _gdouble float64
 
-	gdouble = (float64)(cret)
+	_gdouble = (float64)(_cret)
 
-	return gdouble
+	return _gdouble
 }
 
 // RGBAVisual gets a visual to use for creating windows with an alpha
@@ -6252,36 +6252,36 @@ func (s screen) Resolution() float64 {
 // For setting an overall opacity for a top-level window, see
 // gdk_window_set_opacity().
 func (s screen) RGBAVisual() Visual {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkVisual
+	var _cret *C.GdkVisual
 
-	cret = C.gdk_screen_get_rgba_visual(arg0)
+	cret = C.gdk_screen_get_rgba_visual(_arg0)
 
-	var visual Visual
+	var _visual Visual
 
-	visual = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Visual)
+	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Visual)
 
-	return visual
+	return _visual
 }
 
 // RootWindow gets the root window of @screen.
 func (s screen) RootWindow() Window {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkWindow
+	var _cret *C.GdkWindow
 
-	cret = C.gdk_screen_get_root_window(arg0)
+	cret = C.gdk_screen_get_root_window(_arg0)
 
-	var window Window
+	var _window Window
 
-	window = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Window)
+	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
 
-	return window
+	return _window
 }
 
 // Setting retrieves a desktop-wide setting such as double-click time for
@@ -6289,45 +6289,45 @@ func (s screen) RootWindow() Window {
 //
 // FIXME needs a list of valid settings here, or a link to more information.
 func (s screen) Setting(name string, value **externglib.Value) bool {
-	var arg0 *C.GdkScreen
-	var arg1 *C.gchar
-	var arg2 *C.GValue
+	var _arg0 *C.GdkScreen
+	var _arg1 *C.gchar
+	var _arg2 *C.GValue
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(arg1))
-	arg2 = (*C.GValue)(value.GValue)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(name))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GValue)(value.GValue)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_screen_get_setting(arg0, arg1, arg2)
+	cret = C.gdk_screen_get_setting(_arg0, _arg1, _arg2)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // SystemVisual: get the system’s default visual for @screen. This is the
 // visual for the root window of the display. The return value should not be
 // freed.
 func (s screen) SystemVisual() Visual {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkVisual
+	var _cret *C.GdkVisual
 
-	cret = C.gdk_screen_get_system_visual(arg0)
+	cret = C.gdk_screen_get_system_visual(_arg0)
 
-	var visual Visual
+	var _visual Visual
 
-	visual = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Visual)
+	_visual = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Visual)
 
-	return visual
+	return _visual
 }
 
 // ToplevelWindows obtains a list of all toplevel windows known to GDK on
@@ -6337,41 +6337,41 @@ func (s screen) SystemVisual() Visual {
 // The returned list should be freed with g_list_free(), but its elements
 // need not be freed.
 func (s screen) ToplevelWindows() *glib.List {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_screen_get_toplevel_windows(arg0)
+	cret = C.gdk_screen_get_toplevel_windows(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // Width gets the width of @screen in pixels. The returned size is in
 // ”application pixels”, not in ”device pixels” (see
 // gdk_screen_get_monitor_scale_factor()).
 func (s screen) Width() int {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_width(arg0)
+	cret = C.gdk_screen_get_width(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // WidthMm gets the width of @screen in millimeters.
@@ -6380,19 +6380,19 @@ func (s screen) Width() int {
 // monitors of different resolution. It is recommended to use the monitor
 // dimensions instead.
 func (s screen) WidthMm() int {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_screen_get_width_mm(arg0)
+	cret = C.gdk_screen_get_width_mm(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // WindowStack returns a #GList of Windows representing the current window
@@ -6411,22 +6411,22 @@ func (s screen) WidthMm() int {
 // it contains, so it should be freed using g_list_free() and its windows
 // unrefed using g_object_unref() when no longer needed.
 func (s screen) WindowStack() *glib.List {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_screen_get_window_stack(arg0)
+	cret = C.gdk_screen_get_window_stack(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // IsComposited returns whether windows with an RGBA visual can reasonably
@@ -6435,21 +6435,21 @@ func (s screen) WindowStack() *glib.List {
 // On X11 this function returns whether a compositing manager is compositing
 // @screen.
 func (s screen) IsComposited() bool {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.gdk_screen_is_composited(arg0)
+	cret = C.gdk_screen_is_composited(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // ListVisuals lists the available visuals for the specified @screen. A
@@ -6459,41 +6459,41 @@ func (s screen) IsComposited() bool {
 //
 // Call g_list_free() on the return value when you’re finished with it.
 func (s screen) ListVisuals() *glib.List {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_screen_list_visuals(arg0)
+	cret = C.gdk_screen_list_visuals(_arg0)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // MakeDisplayName determines the name to pass to gdk_display_open() to get
 // a Display with this screen as the default screen.
 func (s screen) MakeDisplayName() string {
-	var arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var cret *C.gchar
+	var _cret *C.gchar
 
-	cret = C.gdk_screen_make_display_name(arg0)
+	cret = C.gdk_screen_make_display_name(_arg0)
 
-	var utf8 string
+	var _utf8 string
 
-	utf8 = C.GoString(cret)
-	defer C.free(unsafe.Pointer(cret))
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
 
-	return utf8
+	return _utf8
 }
 
 // SetFontOptions sets the default font options for the screen. These
@@ -6501,13 +6501,13 @@ func (s screen) MakeDisplayName() string {
 // gdk_pango_context_get_for_screen(). Changing the default set of font
 // options does not affect contexts that have already been created.
 func (s screen) SetFontOptions(options *cairo.FontOptions) {
-	var arg0 *C.GdkScreen
-	var arg1 *C.cairo_font_options_t
+	var _arg0 *C.GdkScreen
+	var _arg1 *C.cairo_font_options_t
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options.Native()))
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.cairo_font_options_t)(unsafe.Pointer(options.Native()))
 
-	C.gdk_screen_set_font_options(arg0, arg1)
+	C.gdk_screen_set_font_options(_arg0, _arg1)
 }
 
 // SetResolution sets the resolution for font handling on the screen. This
@@ -6515,13 +6515,13 @@ func (s screen) SetFontOptions(options *cairo.FontOptions) {
 // units. The default value is 96, meaning that a 10 point font will be 13
 // units high. (10 * 96. / 72. = 13.3).
 func (s screen) SetResolution(dpi float64) {
-	var arg0 *C.GdkScreen
-	var arg1 C.gdouble
+	var _arg0 *C.GdkScreen
+	var _arg1 C.gdouble
 
-	arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
-	arg1 = C.gdouble(dpi)
+	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gdouble(dpi)
 
-	C.gdk_screen_set_resolution(arg0, arg1)
+	C.gdk_screen_set_resolution(_arg0, _arg1)
 }
 
 // Seat: the Seat object represents a collection of input devices that belong to
@@ -6592,92 +6592,92 @@ func marshalSeat(p uintptr) (interface{}, error) {
 
 // Capabilities returns the capabilities this Seat currently has.
 func (s seat) Capabilities() SeatCapabilities {
-	var arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var cret C.GdkSeatCapabilities
+	var _cret C.GdkSeatCapabilities
 
-	cret = C.gdk_seat_get_capabilities(arg0)
+	cret = C.gdk_seat_get_capabilities(_arg0)
 
-	var seatCapabilities SeatCapabilities
+	var _seatCapabilities SeatCapabilities
 
-	seatCapabilities = SeatCapabilities(cret)
+	_seatCapabilities = SeatCapabilities(_cret)
 
-	return seatCapabilities
+	return _seatCapabilities
 }
 
 // Display returns the Display this seat belongs to.
 func (s seat) Display() Display {
-	var arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkDisplay
+	var _cret *C.GdkDisplay
 
-	cret = C.gdk_seat_get_display(arg0)
+	cret = C.gdk_seat_get_display(_arg0)
 
-	var display Display
+	var _display Display
 
-	display = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Display)
+	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
 
-	return display
+	return _display
 }
 
 // Keyboard returns the master device that routes keyboard events.
 func (s seat) Keyboard() Device {
-	var arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkDevice
+	var _cret *C.GdkDevice
 
-	cret = C.gdk_seat_get_keyboard(arg0)
+	cret = C.gdk_seat_get_keyboard(_arg0)
 
-	var device Device
+	var _device Device
 
-	device = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
 
-	return device
+	return _device
 }
 
 // Pointer returns the master device that routes pointer events.
 func (s seat) Pointer() Device {
-	var arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var cret *C.GdkDevice
+	var _cret *C.GdkDevice
 
-	cret = C.gdk_seat_get_pointer(arg0)
+	cret = C.gdk_seat_get_pointer(_arg0)
 
-	var device Device
+	var _device Device
 
-	device = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Device)
+	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Device)
 
-	return device
+	return _device
 }
 
 // Slaves returns the slave devices that match the given capabilities.
 func (s seat) Slaves(capabilities SeatCapabilities) *glib.List {
-	var arg0 *C.GdkSeat
-	var arg1 C.GdkSeatCapabilities
+	var _arg0 *C.GdkSeat
+	var _arg1 C.GdkSeatCapabilities
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
-	arg1 = (C.GdkSeatCapabilities)(capabilities)
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg1 = (C.GdkSeatCapabilities)(capabilities)
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.gdk_seat_get_slaves(arg0, arg1)
+	cret = C.gdk_seat_get_slaves(_arg0, _arg1)
 
-	var list *glib.List
+	var _list *glib.List
 
-	list = glib.WrapList(unsafe.Pointer(cret))
-	runtime.SetFinalizer(list, func(v *glib.List) {
+	_list = glib.WrapList(unsafe.Pointer(_cret))
+	runtime.SetFinalizer(_list, func(v *glib.List) {
 		C.free(unsafe.Pointer(v.Native()))
 	})
 
-	return list
+	return _list
 }
 
 // Grab grabs the seat so that all events corresponding to the given
@@ -6706,28 +6706,28 @@ func (s seat) Slaves(capabilities SeatCapabilities) *glib.List {
 // cleaned up when the grab ends, you should handle the EventGrabBroken
 // events that are emitted when the grab ends unvoluntarily.
 func (s seat) Grab() GrabStatus {
-	var arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var cret C.GdkGrabStatus
+	var _cret C.GdkGrabStatus
 
-	cret = C.gdk_seat_grab(arg0)
+	cret = C.gdk_seat_grab(_arg0)
 
-	var grabStatus GrabStatus
+	var _grabStatus GrabStatus
 
-	grabStatus = GrabStatus(cret)
+	_grabStatus = GrabStatus(_cret)
 
-	return grabStatus
+	return _grabStatus
 }
 
 // Ungrab releases a grab added through gdk_seat_grab().
 func (s seat) Ungrab() {
-	var arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat
 
-	arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
+	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	C.gdk_seat_ungrab(arg0)
+	C.gdk_seat_ungrab(_arg0)
 }
 
 // Visual: a Visual contains information about a particular visual.
@@ -6805,19 +6805,19 @@ func marshalVisual(p uintptr) (interface{}, error) {
 //
 // Not all GDK backend provide a meaningful value for this function.
 func (v visual) BitsPerRGB() int {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_visual_get_bits_per_rgb(arg0)
+	cret = C.gdk_visual_get_bits_per_rgb(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // BluePixelDetails obtains values that are needed to calculate blue pixel
@@ -6827,25 +6827,25 @@ func (v visual) BitsPerRGB() int {
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
 func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var arg1 C.guint32
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg1 C.guint32
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	C.gdk_visual_get_blue_pixel_details(arg0, &arg1, &arg2, &arg3)
+	C.gdk_visual_get_blue_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var mask uint32
-	var shift int
-	var precision int
+	var _mask uint32
+	var _shift int
+	var _precision int
 
-	mask = (uint32)(arg1)
-	shift = (int)(arg2)
-	precision = (int)(arg3)
+	_mask = (uint32)(_arg1)
+	_shift = (int)(_arg2)
+	_precision = (int)(_arg3)
 
-	return mask, shift, precision
+	return _mask, _shift, _precision
 }
 
 // ByteOrder returns the byte order of this visual.
@@ -6854,55 +6854,55 @@ func (v visual) BluePixelDetails() (mask uint32, shift int, precision int) {
 // with XImages, and not all backends return meaningful information for
 // this.
 func (v visual) ByteOrder() ByteOrder {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var cret C.GdkByteOrder
+	var _cret C.GdkByteOrder
 
-	cret = C.gdk_visual_get_byte_order(arg0)
+	cret = C.gdk_visual_get_byte_order(_arg0)
 
-	var byteOrder ByteOrder
+	var _byteOrder ByteOrder
 
-	byteOrder = ByteOrder(cret)
+	_byteOrder = ByteOrder(_cret)
 
-	return byteOrder
+	return _byteOrder
 }
 
 // ColormapSize returns the size of a colormap for this visual.
 //
 // You have to use platform-specific APIs to manipulate colormaps.
 func (v visual) ColormapSize() int {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_visual_get_colormap_size(arg0)
+	cret = C.gdk_visual_get_colormap_size(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Depth returns the bit depth of this visual.
 func (v visual) Depth() int {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.gdk_visual_get_depth(arg0)
+	cret = C.gdk_visual_get_depth(_arg0)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // GreenPixelDetails obtains values that are needed to calculate green pixel
@@ -6912,25 +6912,25 @@ func (v visual) Depth() int {
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
 func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var arg1 C.guint32
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg1 C.guint32
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	C.gdk_visual_get_green_pixel_details(arg0, &arg1, &arg2, &arg3)
+	C.gdk_visual_get_green_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var mask uint32
-	var shift int
-	var precision int
+	var _mask uint32
+	var _shift int
+	var _precision int
 
-	mask = (uint32)(arg1)
-	shift = (int)(arg2)
-	precision = (int)(arg3)
+	_mask = (uint32)(_arg1)
+	_shift = (int)(_arg2)
+	_precision = (int)(_arg3)
 
-	return mask, shift, precision
+	return _mask, _shift, _precision
 }
 
 // RedPixelDetails obtains values that are needed to calculate red pixel
@@ -6940,58 +6940,58 @@ func (v visual) GreenPixelDetails() (mask uint32, shift int, precision int) {
 // "precision" refers to how much precision the pixel value contains for a
 // particular primary.
 func (v visual) RedPixelDetails() (mask uint32, shift int, precision int) {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var arg1 C.guint32
-	var arg2 C.gint
-	var arg3 C.gint
+	var _arg1 C.guint32
+	var _arg2 C.gint
+	var _arg3 C.gint
 
-	C.gdk_visual_get_red_pixel_details(arg0, &arg1, &arg2, &arg3)
+	C.gdk_visual_get_red_pixel_details(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var mask uint32
-	var shift int
-	var precision int
+	var _mask uint32
+	var _shift int
+	var _precision int
 
-	mask = (uint32)(arg1)
-	shift = (int)(arg2)
-	precision = (int)(arg3)
+	_mask = (uint32)(_arg1)
+	_shift = (int)(_arg2)
+	_precision = (int)(_arg3)
 
-	return mask, shift, precision
+	return _mask, _shift, _precision
 }
 
 // Screen gets the screen to which this visual belongs
 func (v visual) Screen() Screen {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var cret *C.GdkScreen
+	var _cret *C.GdkScreen
 
-	cret = C.gdk_visual_get_screen(arg0)
+	cret = C.gdk_visual_get_screen(_arg0)
 
-	var screen Screen
+	var _screen Screen
 
-	screen = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(Screen)
+	_screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Screen)
 
-	return screen
+	return _screen
 }
 
 // VisualType returns the type of visual this is (PseudoColor, TrueColor,
 // etc).
 func (v visual) VisualType() VisualType {
-	var arg0 *C.GdkVisual
+	var _arg0 *C.GdkVisual
 
-	arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
+	_arg0 = (*C.GdkVisual)(unsafe.Pointer(v.Native()))
 
-	var cret C.GdkVisualType
+	var _cret C.GdkVisualType
 
-	cret = C.gdk_visual_get_visual_type(arg0)
+	cret = C.gdk_visual_get_visual_type(_arg0)
 
-	var visualType VisualType
+	var _visualType VisualType
 
-	visualType = VisualType(cret)
+	_visualType = VisualType(_cret)
 
-	return visualType
+	return _visualType
 }

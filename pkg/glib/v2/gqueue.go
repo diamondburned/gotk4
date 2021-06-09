@@ -54,62 +54,62 @@ func (q *Queue) Tail() *List {
 // Clear removes all the elements in @queue. If queue elements contain
 // dynamically-allocated memory, they should be freed first.
 func (q *Queue) Clear() {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_clear(arg0)
+	C.g_queue_clear(_arg0)
 }
 
 // Copy copies a @queue. Note that is a shallow copy. If the elements in the
 // queue consist of pointers to data, the pointers are copied, but the actual
 // data is not.
 func (q *Queue) Copy() *Queue {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret *C.GQueue
+	var _cret *C.GQueue
 
-	cret = C.g_queue_copy(arg0)
+	cret = C.g_queue_copy(_arg0)
 
-	var ret *Queue
+	var _ret *Queue
 
-	ret = WrapQueue(unsafe.Pointer(cret))
+	_ret = WrapQueue(unsafe.Pointer(_cret))
 
-	return ret
+	return _ret
 }
 
 // DeleteLink removes @link_ from @queue and frees it.
 //
 // @link_ must be part of @queue.
 func (q *Queue) DeleteLink(link_ *List) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	C.g_queue_delete_link(arg0, arg1)
+	C.g_queue_delete_link(_arg0, _arg1)
 }
 
 // Find finds the first link in @queue which contains @data.
 func (q *Queue) Find(data interface{}) *List {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gpointer(data)
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_queue_find(arg0, arg1)
+	cret = C.g_queue_find(_arg0, _arg1)
 
-	var list *List
+	var _list *List
 
-	list = WrapList(unsafe.Pointer(cret))
+	_list = WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // Foreach calls @func for each element in the queue passing @user_data to the
@@ -118,11 +118,11 @@ func (q *Queue) Find(data interface{}) *List {
 // It is safe for @func to remove the element from @queue, but it must not
 // modify any part of the queue after that element.
 func (q *Queue) Foreach() {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_foreach(arg0)
+	C.g_queue_foreach(_arg0)
 }
 
 // Free frees the memory allocated for the #GQueue. Only call this function if
@@ -132,59 +132,59 @@ func (q *Queue) Foreach() {
 // If queue elements contain dynamically-allocated memory, you should either use
 // g_queue_free_full() or free them manually first.
 func (q *Queue) Free() {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_free(arg0)
+	C.g_queue_free(_arg0)
 }
 
 // Length returns the number of items in @queue.
 func (q *Queue) Length() uint {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_queue_get_length(arg0)
+	cret = C.g_queue_get_length(_arg0)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Index returns the position of the first element in @queue which contains
 // @data.
 func (q *Queue) Index(data interface{}) int {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gpointer(data)
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_queue_index(arg0, arg1)
+	cret = C.g_queue_index(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // Init: a statically-allocated #GQueue must be initialized with this function
 // before it can be used. Alternatively you can initialize it with QUEUE_INIT.
 // It is not necessary to initialize queues created with g_queue_new().
 func (q *Queue) Init() {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_init(arg0)
+	C.g_queue_init(_arg0)
 }
 
 // InsertAfter inserts @data into @queue after @sibling.
@@ -192,30 +192,30 @@ func (q *Queue) Init() {
 // @sibling must be part of @queue. Since GLib 2.44 a nil sibling pushes the
 // data at the head of the queue.
 func (q *Queue) InsertAfter(sibling *List, data interface{}) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
-	var arg2 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
+	var _arg2 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
-	arg2 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
+	_arg2 = C.gpointer(data)
 
-	C.g_queue_insert_after(arg0, arg1, arg2)
+	C.g_queue_insert_after(_arg0, _arg1, _arg2)
 }
 
 // InsertAfterLink inserts @link_ into @queue after @sibling.
 //
 // @sibling must be part of @queue.
 func (q *Queue) InsertAfterLink(sibling *List, link_ *List) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
-	var arg2 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
+	var _arg2 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
-	arg2 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
+	_arg2 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	C.g_queue_insert_after_link(arg0, arg1, arg2)
+	C.g_queue_insert_after_link(_arg0, _arg1, _arg2)
 }
 
 // InsertBefore inserts @data into @queue before @sibling.
@@ -223,418 +223,418 @@ func (q *Queue) InsertAfterLink(sibling *List, link_ *List) {
 // @sibling must be part of @queue. Since GLib 2.44 a nil sibling pushes the
 // data at the tail of the queue.
 func (q *Queue) InsertBefore(sibling *List, data interface{}) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
-	var arg2 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
+	var _arg2 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
-	arg2 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
+	_arg2 = C.gpointer(data)
 
-	C.g_queue_insert_before(arg0, arg1, arg2)
+	C.g_queue_insert_before(_arg0, _arg1, _arg2)
 }
 
 // InsertBeforeLink inserts @link_ into @queue before @sibling.
 //
 // @sibling must be part of @queue.
 func (q *Queue) InsertBeforeLink(sibling *List, link_ *List) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
-	var arg2 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
+	var _arg2 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
-	arg2 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(sibling.Native()))
+	_arg2 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	C.g_queue_insert_before_link(arg0, arg1, arg2)
+	C.g_queue_insert_before_link(_arg0, _arg1, _arg2)
 }
 
 // InsertSorted inserts @data into @queue using @func to determine the new
 // position.
 func (q *Queue) InsertSorted() {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_insert_sorted(arg0)
+	C.g_queue_insert_sorted(_arg0)
 }
 
 // IsEmpty returns true if the queue is empty.
 func (q *Queue) IsEmpty() bool {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_queue_is_empty(arg0)
+	cret = C.g_queue_is_empty(_arg0)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // LinkIndex returns the position of @link_ in @queue.
 func (q *Queue) LinkIndex(link_ *List) int {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	var cret C.gint
+	var _cret C.gint
 
-	cret = C.g_queue_link_index(arg0, arg1)
+	cret = C.g_queue_link_index(_arg0, _arg1)
 
-	var gint int
+	var _gint int
 
-	gint = (int)(cret)
+	_gint = (int)(_cret)
 
-	return gint
+	return _gint
 }
 
 // PeekHead returns the first element of the queue.
 func (q *Queue) PeekHead() interface{} {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_queue_peek_head(arg0)
+	cret = C.g_queue_peek_head(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // PeekHeadLink returns the first link in @queue.
 func (q *Queue) PeekHeadLink() *List {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_queue_peek_head_link(arg0)
+	cret = C.g_queue_peek_head_link(_arg0)
 
-	var list *List
+	var _list *List
 
-	list = WrapList(unsafe.Pointer(cret))
+	_list = WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // PeekNth returns the @n'th element of @queue.
 func (q *Queue) PeekNth(n uint) interface{} {
-	var arg0 *C.GQueue
-	var arg1 C.guint
+	var _arg0 *C.GQueue
+	var _arg1 C.guint
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.guint(n)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.guint(n)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_queue_peek_nth(arg0, arg1)
+	cret = C.g_queue_peek_nth(_arg0, _arg1)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // PeekNthLink returns the link at the given position
 func (q *Queue) PeekNthLink(n uint) *List {
-	var arg0 *C.GQueue
-	var arg1 C.guint
+	var _arg0 *C.GQueue
+	var _arg1 C.guint
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.guint(n)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.guint(n)
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_queue_peek_nth_link(arg0, arg1)
+	cret = C.g_queue_peek_nth_link(_arg0, _arg1)
 
-	var list *List
+	var _list *List
 
-	list = WrapList(unsafe.Pointer(cret))
+	_list = WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // PeekTail returns the last element of the queue.
 func (q *Queue) PeekTail() interface{} {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_queue_peek_tail(arg0)
+	cret = C.g_queue_peek_tail(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // PeekTailLink returns the last link in @queue.
 func (q *Queue) PeekTailLink() *List {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_queue_peek_tail_link(arg0)
+	cret = C.g_queue_peek_tail_link(_arg0)
 
-	var list *List
+	var _list *List
 
-	list = WrapList(unsafe.Pointer(cret))
+	_list = WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // PopHead removes the first element of the queue and returns its data.
 func (q *Queue) PopHead() interface{} {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_queue_pop_head(arg0)
+	cret = C.g_queue_pop_head(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // PopHeadLink removes and returns the first element of the queue.
 func (q *Queue) PopHeadLink() *List {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_queue_pop_head_link(arg0)
+	cret = C.g_queue_pop_head_link(_arg0)
 
-	var list *List
+	var _list *List
 
-	list = WrapList(unsafe.Pointer(cret))
+	_list = WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // PopNth removes the @n'th element of @queue and returns its data.
 func (q *Queue) PopNth(n uint) interface{} {
-	var arg0 *C.GQueue
-	var arg1 C.guint
+	var _arg0 *C.GQueue
+	var _arg1 C.guint
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.guint(n)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.guint(n)
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_queue_pop_nth(arg0, arg1)
+	cret = C.g_queue_pop_nth(_arg0, _arg1)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // PopNthLink removes and returns the link at the given position.
 func (q *Queue) PopNthLink(n uint) *List {
-	var arg0 *C.GQueue
-	var arg1 C.guint
+	var _arg0 *C.GQueue
+	var _arg1 C.guint
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.guint(n)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.guint(n)
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_queue_pop_nth_link(arg0, arg1)
+	cret = C.g_queue_pop_nth_link(_arg0, _arg1)
 
-	var list *List
+	var _list *List
 
-	list = WrapList(unsafe.Pointer(cret))
+	_list = WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // PopTail removes the last element of the queue and returns its data.
 func (q *Queue) PopTail() interface{} {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret C.gpointer
+	var _cret C.gpointer
 
-	cret = C.g_queue_pop_tail(arg0)
+	cret = C.g_queue_pop_tail(_arg0)
 
-	var gpointer interface{}
+	var _gpointer interface{}
 
-	gpointer = (interface{})(cret)
+	_gpointer = (interface{})(_cret)
 
-	return gpointer
+	return _gpointer
 }
 
 // PopTailLink removes and returns the last element of the queue.
 func (q *Queue) PopTailLink() *List {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	var cret *C.GList
+	var _cret *C.GList
 
-	cret = C.g_queue_pop_tail_link(arg0)
+	cret = C.g_queue_pop_tail_link(_arg0)
 
-	var list *List
+	var _list *List
 
-	list = WrapList(unsafe.Pointer(cret))
+	_list = WrapList(unsafe.Pointer(_cret))
 
-	return list
+	return _list
 }
 
 // PushHead adds a new element at the head of the queue.
 func (q *Queue) PushHead(data interface{}) {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gpointer(data)
 
-	C.g_queue_push_head(arg0, arg1)
+	C.g_queue_push_head(_arg0, _arg1)
 }
 
 // PushHeadLink adds a new element at the head of the queue.
 func (q *Queue) PushHeadLink(link_ *List) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	C.g_queue_push_head_link(arg0, arg1)
+	C.g_queue_push_head_link(_arg0, _arg1)
 }
 
 // PushNth inserts a new element into @queue at the given position.
 func (q *Queue) PushNth(data interface{}, n int) {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
-	var arg2 C.gint
+	var _arg0 *C.GQueue
+	var _arg1 C.gpointer
+	var _arg2 C.gint
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gpointer(data)
-	arg2 = C.gint(n)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gpointer(data)
+	_arg2 = C.gint(n)
 
-	C.g_queue_push_nth(arg0, arg1, arg2)
+	C.g_queue_push_nth(_arg0, _arg1, _arg2)
 }
 
 // PushNthLink inserts @link into @queue at the given position.
 func (q *Queue) PushNthLink(n int, link_ *List) {
-	var arg0 *C.GQueue
-	var arg1 C.gint
-	var arg2 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 C.gint
+	var _arg2 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gint(n)
-	arg2 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gint(n)
+	_arg2 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	C.g_queue_push_nth_link(arg0, arg1, arg2)
+	C.g_queue_push_nth_link(_arg0, _arg1, _arg2)
 }
 
 // PushTail adds a new element at the tail of the queue.
 func (q *Queue) PushTail(data interface{}) {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gpointer(data)
 
-	C.g_queue_push_tail(arg0, arg1)
+	C.g_queue_push_tail(_arg0, _arg1)
 }
 
 // PushTailLink adds a new element at the tail of the queue.
 func (q *Queue) PushTailLink(link_ *List) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	C.g_queue_push_tail_link(arg0, arg1)
+	C.g_queue_push_tail_link(_arg0, _arg1)
 }
 
 // Remove removes the first element in @queue that contains @data.
 func (q *Queue) Remove(data interface{}) bool {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gpointer(data)
 
-	var cret C.gboolean
+	var _cret C.gboolean
 
-	cret = C.g_queue_remove(arg0, arg1)
+	cret = C.g_queue_remove(_arg0, _arg1)
 
-	var ok bool
+	var _ok bool
 
-	if cret {
-		ok = true
+	if _cret {
+		_ok = true
 	}
 
-	return ok
+	return _ok
 }
 
 // RemoveAll: remove all elements whose data equals @data from @queue.
 func (q *Queue) RemoveAll(data interface{}) uint {
-	var arg0 *C.GQueue
-	var arg1 C.gpointer
+	var _arg0 *C.GQueue
+	var _arg1 C.gpointer
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = C.gpointer(data)
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = C.gpointer(data)
 
-	var cret C.guint
+	var _cret C.guint
 
-	cret = C.g_queue_remove_all(arg0, arg1)
+	cret = C.g_queue_remove_all(_arg0, _arg1)
 
-	var guint uint
+	var _guint uint
 
-	guint = (uint)(cret)
+	_guint = (uint)(_cret)
 
-	return guint
+	return _guint
 }
 
 // Reverse reverses the order of the items in @queue.
 func (q *Queue) Reverse() {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_reverse(arg0)
+	C.g_queue_reverse(_arg0)
 }
 
 // Sort sorts @queue using @compare_func.
 func (q *Queue) Sort() {
-	var arg0 *C.GQueue
+	var _arg0 *C.GQueue
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
 
-	C.g_queue_sort(arg0)
+	C.g_queue_sort(_arg0)
 }
 
 // Unlink unlinks @link_ so that it will no longer be part of @queue. The link
@@ -642,11 +642,11 @@ func (q *Queue) Sort() {
 //
 // @link_ must be part of @queue.
 func (q *Queue) Unlink(link_ *List) {
-	var arg0 *C.GQueue
-	var arg1 *C.GList
+	var _arg0 *C.GQueue
+	var _arg1 *C.GList
 
-	arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
-	arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
+	_arg0 = (*C.GQueue)(unsafe.Pointer(q.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(link_.Native()))
 
-	C.g_queue_unlink(arg0, arg1)
+	C.g_queue_unlink(_arg0, _arg1)
 }

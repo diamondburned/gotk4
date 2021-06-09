@@ -66,13 +66,13 @@ func marshalHSeparator(p uintptr) (interface{}, error) {
 
 // NewHSeparator constructs a class HSeparator.
 func NewHSeparator() HSeparator {
-	var cret C.GtkHSeparator
+	var _cret C.GtkHSeparator
 
 	cret = C.gtk_hseparator_new()
 
-	var hSeparator HSeparator
+	var _hSeparator HSeparator
 
-	hSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(cret.Native()))).(HSeparator)
+	_hSeparator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HSeparator)
 
-	return hSeparator
+	return _hSeparator
 }

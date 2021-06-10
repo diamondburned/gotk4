@@ -3,12 +3,9 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -108,13 +105,6 @@ func init() {
 type ApplicationCommandLine interface {
 	gextras.Objector
 
-	// CreateFileForArg creates a #GFile corresponding to a filename that was
-	// given as part of the invocation of @cmdline.
-	//
-	// This differs from g_file_new_for_commandline_arg() in that it resolves
-	// relative pathnames using the current working directory of the invoking
-	// process rather than the local process.
-	CreateFileForArg(arg *string) File
 	// Arguments gets the list of arguments that was passed on the command line.
 	//
 	// The strings in the array may contain non-UTF-8 data on UNIX (such as
@@ -157,36 +147,6 @@ type ApplicationCommandLine interface {
 	ExitStatus() int
 	// IsRemote determines if @cmdline represents a remote invocation.
 	IsRemote() bool
-	// OptionsDict gets the options there were passed to
-	// g_application_command_line().
-	//
-	// If you did not override local_command_line() then these are the same
-	// options that were parsed according to the Entrys added to the application
-	// with g_application_add_main_option_entries() and possibly modified from
-	// your GApplication::handle-local-options handler.
-	//
-	// If no options were sent then an empty dictionary is returned so that you
-	// don't need to check for nil.
-	OptionsDict() *glib.VariantDict
-	// PlatformData gets the platform data associated with the invocation of
-	// @cmdline.
-	//
-	// This is a #GVariant dictionary containing information about the context
-	// in which the invocation occurred. It typically contains information like
-	// the current working directory and the startup notification ID.
-	//
-	// For local invocation, it will be nil.
-	PlatformData() *glib.Variant
-	// Stdin gets the stdin of the invoking process.
-	//
-	// The Stream can be used to read data passed to the standard input of the
-	// invoking process. This doesn't work on all platforms. Presently, it is
-	// only available on UNIX when using a D-Bus daemon capable of passing file
-	// descriptors. If stdin is not available then nil will be returned. In the
-	// future, support may be expanded to other platforms.
-	//
-	// You must only call this function once per commandline invocation.
-	Stdin() InputStream
 	// env gets the value of a particular environment variable of the command
 	// line invocation, as would be returned by g_getenv(). The strings may
 	// contain non-utf8 data.
@@ -244,31 +204,6 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 	return WrapApplicationCommandLine(obj), nil
 }
 
-// CreateFileForArg creates a #GFile corresponding to a filename that was
-// given as part of the invocation of @cmdline.
-//
-// This differs from g_file_new_for_commandline_arg() in that it resolves
-// relative pathnames using the current working directory of the invoking
-// process rather than the local process.
-func (c applicationCommandLine) CreateFileForArg(arg *string) File {
-	var _arg0 *C.GApplicationCommandLine
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.gchar)(C.CString(arg))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GFile
-
-	cret = C.g_application_command_line_create_file_for_arg(_arg0, _arg1)
-
-	var _file File
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(File)
-
-	return _file
-}
-
 // Arguments gets the list of arguments that was passed on the command line.
 //
 // The strings in the array may contain non-UTF-8 data on UNIX (such as
@@ -288,7 +223,7 @@ func (c applicationCommandLine) Arguments() []*string {
 	var _cret **C.gchar
 	var _arg1 *C.int
 
-	cret = C.g_application_command_line_get_arguments(_arg0)
+	_cret = C.g_application_command_line_get_arguments(_arg0, &_arg1)
 
 	var _filenames []*string
 
@@ -321,7 +256,7 @@ func (c applicationCommandLine) Cwd() *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_application_command_line_get_cwd(_arg0)
+	_cret = C.g_application_command_line_get_cwd(_arg0)
 
 	var _filename *string
 
@@ -352,7 +287,7 @@ func (c applicationCommandLine) Environ() []*string {
 
 	var _cret **C.gchar
 
-	cret = C.g_application_command_line_get_environ(_arg0)
+	_cret = C.g_application_command_line_get_environ(_arg0)
 
 	var _filenames []*string
 
@@ -369,7 +304,7 @@ func (c applicationCommandLine) Environ() []*string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_filenames = make([]*string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_filenames = C.GoString(_cret)
 		}
 	}
@@ -386,7 +321,7 @@ func (c applicationCommandLine) ExitStatus() int {
 
 	var _cret C.int
 
-	cret = C.g_application_command_line_get_exit_status(_arg0)
+	_cret = C.g_application_command_line_get_exit_status(_arg0)
 
 	var _gint int
 
@@ -403,7 +338,7 @@ func (c applicationCommandLine) IsRemote() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_application_command_line_get_is_remote(_arg0)
+	_cret = C.g_application_command_line_get_is_remote(_arg0)
 
 	var _ok bool
 
@@ -412,84 +347,6 @@ func (c applicationCommandLine) IsRemote() bool {
 	}
 
 	return _ok
-}
-
-// OptionsDict gets the options there were passed to
-// g_application_command_line().
-//
-// If you did not override local_command_line() then these are the same
-// options that were parsed according to the Entrys added to the application
-// with g_application_add_main_option_entries() and possibly modified from
-// your GApplication::handle-local-options handler.
-//
-// If no options were sent then an empty dictionary is returned so that you
-// don't need to check for nil.
-func (c applicationCommandLine) OptionsDict() *glib.VariantDict {
-	var _arg0 *C.GApplicationCommandLine
-
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GVariantDict
-
-	cret = C.g_application_command_line_get_options_dict(_arg0)
-
-	var _variantDict *glib.VariantDict
-
-	_variantDict = glib.WrapVariantDict(unsafe.Pointer(_cret))
-
-	return _variantDict
-}
-
-// PlatformData gets the platform data associated with the invocation of
-// @cmdline.
-//
-// This is a #GVariant dictionary containing information about the context
-// in which the invocation occurred. It typically contains information like
-// the current working directory and the startup notification ID.
-//
-// For local invocation, it will be nil.
-func (c applicationCommandLine) PlatformData() *glib.Variant {
-	var _arg0 *C.GApplicationCommandLine
-
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GVariant
-
-	cret = C.g_application_command_line_get_platform_data(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _variant
-}
-
-// Stdin gets the stdin of the invoking process.
-//
-// The Stream can be used to read data passed to the standard input of the
-// invoking process. This doesn't work on all platforms. Presently, it is
-// only available on UNIX when using a D-Bus daemon capable of passing file
-// descriptors. If stdin is not available then nil will be returned. In the
-// future, support may be expanded to other platforms.
-//
-// You must only call this function once per commandline invocation.
-func (c applicationCommandLine) Stdin() InputStream {
-	var _arg0 *C.GApplicationCommandLine
-
-	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GInputStream
-
-	cret = C.g_application_command_line_get_stdin(_arg0)
-
-	var _inputStream InputStream
-
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
-
-	return _inputStream
 }
 
 // env gets the value of a particular environment variable of the command
@@ -513,7 +370,7 @@ func (c applicationCommandLine) env(name *string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_application_command_line_getenv(_arg0, _arg1)
+	_cret = C.g_application_command_line_getenv(_arg0, _arg1)
 
 	var _utf8 string
 

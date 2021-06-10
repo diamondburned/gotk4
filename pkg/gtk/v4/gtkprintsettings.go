@@ -8,8 +8,6 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
@@ -19,7 +17,7 @@ import (
 // #include <gtk/gtk.h>
 import "C"
 
-type PrintSettingsFunc func()
+type PrintSettingsFunc func(key string, value string)
 
 //export gotk4_PrintSettingsFunc
 func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
@@ -28,8 +26,14 @@ func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
+	var key string
+	var value string
+
+	key = C.GoString(arg0)
+	value = C.GoString(arg1)
+
 	fn := v.(PrintSettingsFunc)
-	fn()
+	fn(key, value)
 }
 
 // PageRange: a range of pages to print.

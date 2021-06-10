@@ -3,13 +3,9 @@
 package gsk
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,10 +35,6 @@ func init() {
 type Renderer interface {
 	gextras.Objector
 
-	// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
-	//
-	// If the renderer has not been realized yet, nil will be returned.
-	Surface() gdk.Surface
 	// IsRealized checks whether the @renderer is realized or not.
 	IsRealized() bool
 	// Realize creates the resources needed by the @renderer to render the scene
@@ -59,15 +51,6 @@ type Renderer interface {
 	// The @renderer will acquire a reference on the `GskRenderNode` tree while
 	// the rendering is in progress.
 	Render(root RenderNode, region *cairo.Region)
-	// RenderTexture renders the scene graph, described by a tree of
-	// `GskRenderNode` instances, to a `GdkTexture`.
-	//
-	// The @renderer will acquire a reference on the `GskRenderNode` tree while
-	// the rendering is in progress.
-	//
-	// If you want to apply any transformations to @root, you should put it into
-	// a transform node and pass that node instead.
-	RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture
 	// Unrealize releases all the resources created by gsk_renderer_realize().
 	Unrealize()
 }
@@ -93,42 +76,6 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 	return WrapRenderer(obj), nil
 }
 
-// NewRendererForSurface constructs a class Renderer.
-func NewRendererForSurface(surface gdk.Surface) Renderer {
-	var _arg1 *C.GdkSurface
-
-	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
-
-	var _cret C.GskRenderer
-
-	cret = C.gsk_renderer_new_for_surface(_arg1)
-
-	var _renderer Renderer
-
-	_renderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Renderer)
-
-	return _renderer
-}
-
-// Surface retrieves the `GdkSurface` set using gsk_enderer_realize().
-//
-// If the renderer has not been realized yet, nil will be returned.
-func (r renderer) Surface() gdk.Surface {
-	var _arg0 *C.GskRenderer
-
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GdkSurface
-
-	cret = C.gsk_renderer_get_surface(_arg0)
-
-	var _surface gdk.Surface
-
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
-
-	return _surface
-}
-
 // IsRealized checks whether the @renderer is realized or not.
 func (r renderer) IsRealized() bool {
 	var _arg0 *C.GskRenderer
@@ -137,7 +84,7 @@ func (r renderer) IsRealized() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gsk_renderer_is_realized(_arg0)
+	_cret = C.gsk_renderer_is_realized(_arg0)
 
 	var _ok bool
 
@@ -188,34 +135,6 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gsk_renderer_render(_arg0, _arg1, _arg2)
-}
-
-// RenderTexture renders the scene graph, described by a tree of
-// `GskRenderNode` instances, to a `GdkTexture`.
-//
-// The @renderer will acquire a reference on the `GskRenderNode` tree while
-// the rendering is in progress.
-//
-// If you want to apply any transformations to @root, you should put it into
-// a transform node and pass that node instead.
-func (r renderer) RenderTexture(root RenderNode, viewport *graphene.Rect) gdk.Texture {
-	var _arg0 *C.GskRenderer
-	var _arg1 *C.GskRenderNode
-	var _arg2 *C.graphene_rect_t
-
-	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
-	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
-	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(viewport.Native()))
-
-	var _cret *C.GdkTexture
-
-	cret = C.gsk_renderer_render_texture(_arg0, _arg1, _arg2)
-
-	var _texture gdk.Texture
-
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Texture)
-
-	return _texture
 }
 
 // Unrealize releases all the resources created by gsk_renderer_realize().

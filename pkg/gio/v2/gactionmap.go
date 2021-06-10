@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,11 +40,6 @@ type ActionMapOverrider interface {
 	//
 	// The action map takes its own reference on @action.
 	AddAction(action Action)
-	// LookupAction looks up the action with the name @action_name in
-	// @action_map.
-	//
-	// If no such action exists, returns nil.
-	LookupAction(actionName string) Action
 	// RemoveAction removes the named action from the action map.
 	//
 	// If no action of this name is in the map then nothing happens.
@@ -99,29 +93,6 @@ func (a actionMap) AddAction(action Action) {
 	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_action_map_add_action(_arg0, _arg1)
-}
-
-// LookupAction looks up the action with the name @action_name in
-// @action_map.
-//
-// If no such action exists, returns nil.
-func (a actionMap) LookupAction(actionName string) Action {
-	var _arg0 *C.GActionMap
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GActionMap)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GAction
-
-	cret = C.g_action_map_lookup_action(_arg0, _arg1)
-
-	var _action Action
-
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
-
-	return _action
 }
 
 // RemoveAction removes the named action from the action map.

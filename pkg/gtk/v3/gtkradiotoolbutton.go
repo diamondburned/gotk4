@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -42,8 +39,6 @@ type RadioToolButton interface {
 	Activatable
 	Buildable
 
-	// Group returns the radio button group @button belongs to.
-	Group() *glib.SList
 	// SetGroup adds @button to @group, removing it from the group it belonged
 	// to before.
 	SetGroup(group *glib.SList)
@@ -74,97 +69,6 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRadioToolButton(obj), nil
-}
-
-// NewRadioToolButton constructs a class RadioToolButton.
-func NewRadioToolButton(group *glib.SList) RadioToolButton {
-	var _arg1 *C.GSList
-
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-
-	var _cret C.GtkRadioToolButton
-
-	cret = C.gtk_radio_tool_button_new(_arg1)
-
-	var _radioToolButton RadioToolButton
-
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
-
-	return _radioToolButton
-}
-
-// NewRadioToolButtonFromStock constructs a class RadioToolButton.
-func NewRadioToolButtonFromStock(group *glib.SList, stockId string) RadioToolButton {
-	var _arg1 *C.GSList
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-	_arg2 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioToolButton
-
-	cret = C.gtk_radio_tool_button_new_from_stock(_arg1, _arg2)
-
-	var _radioToolButton RadioToolButton
-
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
-
-	return _radioToolButton
-}
-
-// NewRadioToolButtonFromWidget constructs a class RadioToolButton.
-func NewRadioToolButtonFromWidget(group RadioToolButton) RadioToolButton {
-	var _arg1 *C.GtkRadioToolButton
-
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
-
-	var _cret C.GtkRadioToolButton
-
-	cret = C.gtk_radio_tool_button_new_from_widget(_arg1)
-
-	var _radioToolButton RadioToolButton
-
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
-
-	return _radioToolButton
-}
-
-// NewRadioToolButtonWithStockFromWidget constructs a class RadioToolButton.
-func NewRadioToolButtonWithStockFromWidget(group RadioToolButton, stockId string) RadioToolButton {
-	var _arg1 *C.GtkRadioToolButton
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.GtkRadioToolButton)(unsafe.Pointer(group.Native()))
-	_arg2 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioToolButton
-
-	cret = C.gtk_radio_tool_button_new_with_stock_from_widget(_arg1, _arg2)
-
-	var _radioToolButton RadioToolButton
-
-	_radioToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioToolButton)
-
-	return _radioToolButton
-}
-
-// Group returns the radio button group @button belongs to.
-func (b radioToolButton) Group() *glib.SList {
-	var _arg0 *C.GtkRadioToolButton
-
-	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_radio_tool_button_get_group(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-
-	return _sList
 }
 
 // SetGroup adds @button to @group, removing it from the group it belonged

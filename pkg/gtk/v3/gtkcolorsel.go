@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -115,19 +114,6 @@ func marshalColorSelection(p uintptr) (interface{}, error) {
 	return WrapColorSelection(obj), nil
 }
 
-// NewColorSelection constructs a class ColorSelection.
-func NewColorSelection() ColorSelection {
-	var _cret C.GtkColorSelection
-
-	cret = C.gtk_color_selection_new()
-
-	var _colorSelection ColorSelection
-
-	_colorSelection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorSelection)
-
-	return _colorSelection
-}
-
 // CurrentAlpha returns the current alpha value.
 func (c colorSelection) CurrentAlpha() uint16 {
 	var _arg0 *C.GtkColorSelection
@@ -136,7 +122,7 @@ func (c colorSelection) CurrentAlpha() uint16 {
 
 	var _cret C.guint16
 
-	cret = C.gtk_color_selection_get_current_alpha(_arg0)
+	_cret = C.gtk_color_selection_get_current_alpha(_arg0)
 
 	var _guint16 uint16
 
@@ -181,7 +167,7 @@ func (c colorSelection) HasOpacityControl() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_color_selection_get_has_opacity_control(_arg0)
+	_cret = C.gtk_color_selection_get_has_opacity_control(_arg0)
 
 	var _ok bool
 
@@ -200,7 +186,7 @@ func (c colorSelection) HasPalette() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_color_selection_get_has_palette(_arg0)
+	_cret = C.gtk_color_selection_get_has_palette(_arg0)
 
 	var _ok bool
 
@@ -219,7 +205,7 @@ func (c colorSelection) PreviousAlpha() uint16 {
 
 	var _cret C.guint16
 
-	cret = C.gtk_color_selection_get_previous_alpha(_arg0)
+	_cret = C.gtk_color_selection_get_previous_alpha(_arg0)
 
 	var _guint16 uint16
 
@@ -262,7 +248,7 @@ func (c colorSelection) IsAdjusting() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_color_selection_is_adjusting(_arg0)
+	_cret = C.gtk_color_selection_is_adjusting(_arg0)
 
 	var _ok bool
 

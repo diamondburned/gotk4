@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -91,19 +88,6 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return WrapSearchBar(obj), nil
 }
 
-// NewSearchBar constructs a class SearchBar.
-func NewSearchBar() SearchBar {
-	var _cret C.GtkSearchBar
-
-	cret = C.gtk_search_bar_new()
-
-	var _searchBar SearchBar
-
-	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchBar)
-
-	return _searchBar
-}
-
 // ConnectEntry connects the Entry widget passed as the one to be used in
 // this search bar. The entry should be a descendant of the search bar. This
 // is only required if the entry isn’t the direct child of the search bar
@@ -126,7 +110,7 @@ func (b searchBar) SearchMode() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_search_bar_get_search_mode(_arg0)
+	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 
 	var _ok bool
 
@@ -145,7 +129,7 @@ func (b searchBar) ShowCloseButton() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_search_bar_get_show_close_button(_arg0)
+	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 
 	var _ok bool
 

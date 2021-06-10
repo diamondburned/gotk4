@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -92,53 +91,6 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return WrapColorButton(obj), nil
 }
 
-// NewColorButton constructs a class ColorButton.
-func NewColorButton() ColorButton {
-	var _cret C.GtkColorButton
-
-	cret = C.gtk_color_button_new()
-
-	var _colorButton ColorButton
-
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
-
-	return _colorButton
-}
-
-// NewColorButtonWithColor constructs a class ColorButton.
-func NewColorButtonWithColor(color *gdk.Color) ColorButton {
-	var _arg1 *C.GdkColor
-
-	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
-
-	var _cret C.GtkColorButton
-
-	cret = C.gtk_color_button_new_with_color(_arg1)
-
-	var _colorButton ColorButton
-
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
-
-	return _colorButton
-}
-
-// NewColorButtonWithRGBA constructs a class ColorButton.
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
-	var _arg1 *C.GdkRGBA
-
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
-
-	var _cret C.GtkColorButton
-
-	cret = C.gtk_color_button_new_with_rgba(_arg1)
-
-	var _colorButton ColorButton
-
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
-
-	return _colorButton
-}
-
 // Alpha returns the current alpha value.
 func (b colorButton) Alpha() uint16 {
 	var _arg0 *C.GtkColorButton
@@ -147,7 +99,7 @@ func (b colorButton) Alpha() uint16 {
 
 	var _cret C.guint16
 
-	cret = C.gtk_color_button_get_alpha(_arg0)
+	_cret = C.gtk_color_button_get_alpha(_arg0)
 
 	var _guint16 uint16
 
@@ -190,7 +142,7 @@ func (b colorButton) Title() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_color_button_get_title(_arg0)
+	_cret = C.gtk_color_button_get_title(_arg0)
 
 	var _utf8 string
 
@@ -207,7 +159,7 @@ func (b colorButton) UseAlpha() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_color_button_get_use_alpha(_arg0)
+	_cret = C.gtk_color_button_get_use_alpha(_arg0)
 
 	var _ok bool
 

@@ -23,7 +23,7 @@ func init() {
 func X11GetDefaultScreen() int {
 	var _cret C.gint
 
-	cret = C.gdk_x11_get_default_screen()
+	_cret = C.gdk_x11_get_default_screen()
 
 	var _gint int
 
@@ -97,7 +97,7 @@ func (s x11Screen) CurrentDesktop() uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_screen_get_current_desktop(_arg0)
+	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
 
 	var _guint32 uint32
 
@@ -117,7 +117,7 @@ func (s x11Screen) NumberOfDesktops() uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
+	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
 
 	var _guint32 uint32
 
@@ -134,7 +134,7 @@ func (s x11Screen) ScreenNumber() int {
 
 	var _cret C.int
 
-	cret = C.gdk_x11_screen_get_screen_number(_arg0)
+	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 
 	var _gint int
 
@@ -151,7 +151,7 @@ func (s x11Screen) WindowManagerName() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
+	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
 
 	var _utf8 string
 
@@ -182,7 +182,7 @@ func (s x11Screen) SupportsNetWmHint(property gdk.Atom) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
+	_cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
 
 	var _ok bool
 

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,11 +25,6 @@ func init() {
 type NumericSorter interface {
 	Sorter
 
-	// Expression gets the expression that is evaluated to obtain numbers from
-	// items.
-	Expression() Expression
-	// SortOrder gets whether this sorter will sort smaller numbers first.
-	SortOrder() SortType
 	// SetExpression sets the expression that is evaluated to obtain numbers
 	// from items.
 	//
@@ -65,58 +57,6 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNumericSorter(obj), nil
-}
-
-// NewNumericSorter constructs a class NumericSorter.
-func NewNumericSorter(expression Expression) NumericSorter {
-	var _arg1 *C.GtkExpression
-
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkNumericSorter
-
-	cret = C.gtk_numeric_sorter_new(_arg1)
-
-	var _numericSorter NumericSorter
-
-	_numericSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NumericSorter)
-
-	return _numericSorter
-}
-
-// Expression gets the expression that is evaluated to obtain numbers from
-// items.
-func (s numericSorter) Expression() Expression {
-	var _arg0 *C.GtkNumericSorter
-
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression
-
-	cret = C.gtk_numeric_sorter_get_expression(_arg0)
-
-	var _expression Expression
-
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
-
-	return _expression
-}
-
-// SortOrder gets whether this sorter will sort smaller numbers first.
-func (s numericSorter) SortOrder() SortType {
-	var _arg0 *C.GtkNumericSorter
-
-	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSortType
-
-	cret = C.gtk_numeric_sorter_get_sort_order(_arg0)
-
-	var _sortType SortType
-
-	_sortType = SortType(_cret)
-
-	return _sortType
 }
 
 // SetExpression sets the expression that is evaluated to obtain numbers

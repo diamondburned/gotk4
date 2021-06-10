@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -65,19 +62,6 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 	return WrapGestureDrag(obj), nil
 }
 
-// NewGestureDrag constructs a class GestureDrag.
-func NewGestureDrag() GestureDrag {
-	var _cret C.GtkGestureDrag
-
-	cret = C.gtk_gesture_drag_new()
-
-	var _gestureDrag GestureDrag
-
-	_gestureDrag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureDrag)
-
-	return _gestureDrag
-}
-
 // Offset gets the offset from the start point.
 //
 // If the @gesture is active, this function returns true and fills in @x and
@@ -92,7 +76,7 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 	var _arg2 C.double
 	var _cret C.gboolean
 
-	cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
 	var _x float64
 	var _y float64
@@ -120,7 +104,7 @@ func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
 	var _arg2 C.double
 	var _cret C.gboolean
 
-	cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 
 	var _x float64
 	var _y float64

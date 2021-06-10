@@ -54,7 +54,7 @@ func UnitsFromDouble(d float64) int {
 
 	var _cret C.int
 
-	cret = C.pango_units_from_double(_arg1)
+	_cret = C.pango_units_from_double(_arg1)
 
 	var _gint int
 
@@ -73,7 +73,7 @@ func UnitsToDouble(i int) float64 {
 
 	var _cret C.double
 
-	cret = C.pango_units_to_double(_arg1)
+	_cret = C.pango_units_to_double(_arg1)
 
 	var _gdouble float64
 

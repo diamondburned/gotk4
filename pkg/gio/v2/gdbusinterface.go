@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,17 +31,6 @@ func init() {
 // DBusInterfaceOverrider contains methods that are overridable. This
 // interface is a subset of the interface DBusInterface.
 type DBusInterfaceOverrider interface {
-	// DupObject gets the BusObject that @interface_ belongs to, if any.
-	DupObject() DBusObject
-	// Info gets D-Bus introspection information for the D-Bus interface
-	// implemented by @interface_.
-	Info() *DBusInterfaceInfo
-	// Object gets the BusObject that @interface_ belongs to, if any.
-	//
-	// It is not safe to use the returned object if @interface_ or the returned
-	// object is being used from other threads. See
-	// g_dbus_interface_dup_object() for a thread-safe alternative.
-	Object() DBusObject
 	// SetObject sets the BusObject for @interface_ to @object.
 	//
 	// Note that @interface_ will hold a weak reference to @object.
@@ -78,41 +64,6 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusInterface(obj), nil
-}
-
-// DupObject gets the BusObject that @interface_ belongs to, if any.
-func (i dBusInterface) DupObject() DBusObject {
-	var _arg0 *C.GDBusInterface
-
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusObject
-
-	cret = C.g_dbus_interface_dup_object(_arg0)
-
-	var _dBusObject DBusObject
-
-	_dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObject)
-
-	return _dBusObject
-}
-
-// Info gets D-Bus introspection information for the D-Bus interface
-// implemented by @interface_.
-func (i dBusInterface) Info() *DBusInterfaceInfo {
-	var _arg0 *C.GDBusInterface
-
-	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GDBusInterfaceInfo
-
-	cret = C.g_dbus_interface_get_info(_arg0)
-
-	var _dBusInterfaceInfo *DBusInterfaceInfo
-
-	_dBusInterfaceInfo = WrapDBusInterfaceInfo(unsafe.Pointer(_cret))
-
-	return _dBusInterfaceInfo
 }
 
 // SetObject sets the BusObject for @interface_ to @object.

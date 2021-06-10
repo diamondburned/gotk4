@@ -135,7 +135,7 @@ type X11Display interface {
 	SetWindowScale(scale int)
 	// StringToCompoundText: convert a string from the encoding of the current
 	// locale into a form suitable for storing in a window property.
-	StringToCompoundText(str string) int
+	StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []*byte, gint int)
 	// TextPropertyToTextList: convert a text string from the encoding as it is
 	// stored in a property into an array of strings in the encoding of the
 	// current locale. (The elements of the array represent the nul-separated
@@ -145,7 +145,7 @@ type X11Display interface {
 	// gdk_x11_display_grab().
 	Ungrab()
 	// UTF8ToCompoundText converts from UTF-8 to compound text.
-	UTF8ToCompoundText(str string) bool
+	UTF8ToCompoundText(str string) (gdk.Atom, int, []*byte, bool)
 }
 
 // x11Display implements the X11Display interface.
@@ -185,7 +185,7 @@ func (d x11Display) ErrorTrapPop() int {
 
 	var _cret C.gint
 
-	cret = C.gdk_x11_display_error_trap_pop(_arg0)
+	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 
 	var _gint int
 
@@ -231,7 +231,7 @@ func (d x11Display) StartupNotificationID() string {
 
 	var _cret *C.gchar
 
-	cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
+	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
 
 	var _utf8 string
 
@@ -250,7 +250,7 @@ func (d x11Display) UserTime() uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_display_get_user_time(_arg0)
+	_cret = C.gdk_x11_display_get_user_time(_arg0)
 
 	var _guint32 uint32
 
@@ -338,7 +338,7 @@ func (d x11Display) SetWindowScale(scale int) {
 
 // StringToCompoundText: convert a string from the encoding of the current
 // locale into a form suitable for storing in a window property.
-func (d x11Display) StringToCompoundText(str string) int {
+func (d x11Display) StringToCompoundText(str string) (encoding gdk.Atom, format int, ctext []*byte, gint int) {
 	var _arg0 *C.GdkDisplay
 	var _arg1 *C.gchar
 
@@ -346,15 +346,26 @@ func (d x11Display) StringToCompoundText(str string) int {
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 
+	var _encoding gdk.Atom
+	var _arg3 C.gint
+	var _arg4 *C.guchar
+	var _arg5 *C.gint
 	var _cret C.gint
 
-	cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1)
+	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_encoding)), &_arg3, &_arg4, &_arg5)
 
+	var _format int
+	var _ctext []*byte
 	var _gint int
 
+	_format = (int)(_arg3)
+	ptr.SetSlice(unsafe.Pointer(&_ctext), unsafe.Pointer(_arg4), int(_arg5))
+	runtime.SetFinalizer(&_ctext, func(v *[]*byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 	_gint = (int)(_cret)
 
-	return _gint
+	return _encoding, _format, _ctext, _gint
 }
 
 // TextPropertyToTextList: convert a text string from the encoding as it is
@@ -379,7 +390,7 @@ func (d x11Display) TextPropertyToTextList(encoding gdk.Atom, format int, text *
 
 	var _cret C.gint
 
-	cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	_cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _gint int
 
@@ -399,7 +410,7 @@ func (d x11Display) Ungrab() {
 }
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
-func (d x11Display) UTF8ToCompoundText(str string) bool {
+func (d x11Display) UTF8ToCompoundText(str string) (gdk.Atom, int, []*byte, bool) {
 	var _arg0 *C.GdkDisplay
 	var _arg1 *C.gchar
 
@@ -407,15 +418,26 @@ func (d x11Display) UTF8ToCompoundText(str string) bool {
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 
+	var _encoding gdk.Atom
+	var _arg3 C.gint
+	var _arg4 *C.guchar
+	var _arg5 *C.gint
 	var _cret C.gboolean
 
-	cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1)
+	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_encoding)), &_arg3, &_arg4, &_arg5)
 
+	var _format int
+	var _ctext []*byte
 	var _ok bool
 
+	_format = (int)(_arg3)
+	ptr.SetSlice(unsafe.Pointer(&_ctext), unsafe.Pointer(_arg4), int(_arg5))
+	runtime.SetFinalizer(&_ctext, func(v *[]*byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 	if _cret {
 		_ok = true
 	}
 
-	return _ok
+	return _encoding, _format, _ctext, _ok
 }

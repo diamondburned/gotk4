@@ -7,10 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -84,33 +81,6 @@ const (
 	// PixdataTypeEncodingMask: mask for the encoding flags of the enum.
 	PixdataTypeEncodingMask PixdataType = 251658240
 )
-
-// PixbufFromPixdata converts a `GdkPixdata` to a `GdkPixbuf`.
-//
-// If `copy_pixels` is `TRUE` or if the pixel data is run-length-encoded, the
-// pixel data is copied into newly-allocated memory; otherwise it is reused.
-func PixbufFromPixdata(pixdata *Pixdata, copyPixels bool) (gdkpixbuf.Pixbuf, error) {
-	var _arg1 *C.GdkPixdata
-	var _arg2 C.gboolean
-
-	_arg1 = (*C.GdkPixdata)(unsafe.Pointer(pixdata.Native()))
-	if copyPixels {
-		_arg2 = C.gboolean(1)
-	}
-
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_from_pixdata(_arg1, _arg2, _cerr)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbuf, _goerr
-}
 
 // Pixdata: a pixel buffer suitable for serialization and streaming.
 //
@@ -187,6 +157,38 @@ func (p *Pixdata) Height() uint32 {
 	return v
 }
 
+// Deserialize deserializes (reconstruct) a Pixdata structure from a byte
+// stream.
+//
+// The byte stream consists of a straightforward writeout of the `GdkPixdata`
+// fields in network byte order, plus the `pixel_data` bytes the structure
+// points to.
+//
+// The `pixdata` contents are reconstructed byte by byte and are checked for
+// validity.
+//
+// This function may fail with `GDK_PIXBUF_ERROR_CORRUPT_IMAGE` or
+// `GDK_PIXBUF_ERROR_UNKNOWN_TYPE`.
+func (p *Pixdata) Deserialize(stream []byte) error {
+	var _arg0 *C.GdkPixdata
+	var _arg2 *C.guint8
+	var _arg1 C.guint
+
+	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
+	_arg1 = C.guint(len(stream))
+	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
+
+	var _cerr *C.GError
+
+	C.gdk_pixdata_deserialize(_arg0, _arg1, _arg2, _cerr)
+
+	var _goerr error
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
 // Serialize serializes a Pixdata structure into a byte stream. The byte stream
 // consists of a straightforward writeout of the Pixdata fields in network byte
 // order, plus the @pixel_data bytes the structure points to.
@@ -198,7 +200,7 @@ func (p *Pixdata) Serialize() []byte {
 	var _cret *C.guint8
 	var _arg1 *C.guint
 
-	cret = C.gdk_pixdata_serialize(_arg0)
+	_cret = C.gdk_pixdata_serialize(_arg0, &_arg1)
 
 	var _guint8s []byte
 
@@ -208,33 +210,4 @@ func (p *Pixdata) Serialize() []byte {
 	})
 
 	return _guint8s
-}
-
-// ToCsource generates C source code suitable for compiling images directly into
-// programs.
-//
-// GdkPixbuf ships with a program called `gdk-pixbuf-csource`, which offers a
-// command line interface to this function.
-func (p *Pixdata) ToCsource(name string, dumpType PixdataDumpType) *glib.String {
-	var _arg0 *C.GdkPixdata
-	var _arg1 *C.gchar
-	var _arg2 C.GdkPixdataDumpType
-
-	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GdkPixdataDumpType)(dumpType)
-
-	var _cret *C.GString
-
-	cret = C.gdk_pixdata_to_csource(_arg0, _arg1, _arg2)
-
-	var _string *glib.String
-
-	_string = glib.WrapString(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_string, func(v *glib.String) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _string
 }

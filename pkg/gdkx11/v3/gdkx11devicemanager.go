@@ -2,32 +2,7 @@
 
 package gdkx11
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-)
-
 // #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdkx.h>
 import "C"
-
-// X11DeviceManagerLookup returns the Device that wraps the given device ID.
-func X11DeviceManagerLookup(deviceManager X11DeviceManagerCore, deviceId int) X11DeviceCore {
-	var _arg1 *C.GdkDeviceManager
-	var _arg2 C.gint
-
-	_arg1 = (*C.GdkDeviceManager)(unsafe.Pointer(deviceManager.Native()))
-	_arg2 = C.gint(deviceId)
-
-	var _cret *C.GdkDevice
-
-	cret = C.gdk_x11_device_manager_lookup(_arg1, _arg2)
-
-	var _x11DeviceCore X11DeviceCore
-
-	_x11DeviceCore = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(X11DeviceCore)
-
-	return _x11DeviceCore
-}

@@ -131,7 +131,7 @@ func (b buildable) ConstructChild(builder Builder, name string) gextras.Objector
 
 	var _cret *C.GObject
 
-	cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
+	_cret = C.gtk_buildable_construct_child(_arg0, _arg1, _arg2)
 
 	var _object gextras.Objector
 
@@ -192,7 +192,7 @@ func (b buildable) InternalChild(builder Builder, childname string) gextras.Obje
 
 	var _cret *C.GObject
 
-	cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
+	_cret = C.gtk_buildable_get_internal_child(_arg0, _arg1, _arg2)
 
 	var _object gextras.Objector
 
@@ -212,7 +212,7 @@ func (b buildable) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_buildable_get_name(_arg0)
+	_cret = C.gtk_buildable_get_name(_arg0)
 
 	var _utf8 string
 

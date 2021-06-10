@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -80,27 +79,6 @@ func marshalBookmarkList(p uintptr) (interface{}, error) {
 	return WrapBookmarkList(obj), nil
 }
 
-// NewBookmarkList constructs a class BookmarkList.
-func NewBookmarkList(filename string, attributes string) BookmarkList {
-	var _arg1 *C.char
-	var _arg2 *C.char
-
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(attributes))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkBookmarkList
-
-	cret = C.gtk_bookmark_list_new(_arg1, _arg2)
-
-	var _bookmarkList BookmarkList
-
-	_bookmarkList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BookmarkList)
-
-	return _bookmarkList
-}
-
 // Attributes gets the attributes queried on the children.
 func (s bookmarkList) Attributes() string {
 	var _arg0 *C.GtkBookmarkList
@@ -109,7 +87,7 @@ func (s bookmarkList) Attributes() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_bookmark_list_get_attributes(_arg0)
+	_cret = C.gtk_bookmark_list_get_attributes(_arg0)
 
 	var _utf8 string
 
@@ -127,7 +105,7 @@ func (s bookmarkList) Filename() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_bookmark_list_get_filename(_arg0)
+	_cret = C.gtk_bookmark_list_get_filename(_arg0)
 
 	var _utf8 string
 
@@ -144,7 +122,7 @@ func (s bookmarkList) IOPriority() int {
 
 	var _cret C.int
 
-	cret = C.gtk_bookmark_list_get_io_priority(_arg0)
+	_cret = C.gtk_bookmark_list_get_io_priority(_arg0)
 
 	var _gint int
 
@@ -164,7 +142,7 @@ func (s bookmarkList) IsLoading() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_bookmark_list_is_loading(_arg0)
+	_cret = C.gtk_bookmark_list_is_loading(_arg0)
 
 	var _ok bool
 

@@ -3,12 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,7 +26,7 @@ func init() {
 // `GListModel`.
 //
 // This function is called for each item that gets added to the model.
-type FlowBoxCreateWidgetFunc func() (widget Widget)
+type FlowBoxCreateWidgetFunc func(item gextras.Objector) (widget Widget)
 
 //export gotk4_FlowBoxCreateWidgetFunc
 func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
@@ -37,64 +35,16 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 		panic(`callback not found`)
 	}
 
+	var item gextras.Objector
+
+	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
+
 	fn := v.(FlowBoxCreateWidgetFunc)
-	widget := fn()
+	widget := fn(item)
 
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-}
 
-// FlowBoxFilterFunc: a function that will be called whenever a child changes or
-// is added.
-//
-// It lets you control if the child should be visible or not.
-type FlowBoxFilterFunc func() (ok bool)
-
-//export gotk4_FlowBoxFilterFunc
-func gotk4_FlowBoxFilterFunc(arg0 *C.GtkFlowBoxChild, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(FlowBoxFilterFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}
-
-// FlowBoxForeachFunc: a function used by gtk_flow_box_selected_foreach().
-//
-// It will be called on every selected child of the @box.
-type FlowBoxForeachFunc func()
-
-//export gotk4_FlowBoxForeachFunc
-func gotk4_FlowBoxForeachFunc(arg0 *C.GtkFlowBox, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(FlowBoxForeachFunc)
-	fn()
-}
-
-// FlowBoxSortFunc: a function to compare two children to determine which should
-// come first.
-type FlowBoxSortFunc func() (gint int)
-
-//export gotk4_FlowBoxSortFunc
-func gotk4_FlowBoxSortFunc(arg0 *C.GtkFlowBoxChild, arg1 *C.GtkFlowBoxChild, arg2 C.gpointer) C.int {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(FlowBoxSortFunc)
-	gint := fn()
-
-	cret = C.int(gint)
+	return widget
 }
 
 // FlowBoxChild: `GtkFlowBoxChild` is the kind of widget that can be added to a
@@ -124,8 +74,6 @@ type FlowBoxChild interface {
 	// Another alternative is to call [method@Gtk.FlowBox.invalidate_sort] on
 	// any model change, but that is more expensive.
 	Changed()
-	// Child gets the child widget of @self.
-	Child() Widget
 	// Index gets the current index of the @child in its `GtkFlowBox` container.
 	Index() int
 	// IsSelected returns whether the @child is currently selected in its
@@ -162,19 +110,6 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 	return WrapFlowBoxChild(obj), nil
 }
 
-// NewFlowBoxChild constructs a class FlowBoxChild.
-func NewFlowBoxChild() FlowBoxChild {
-	var _cret C.GtkFlowBoxChild
-
-	cret = C.gtk_flow_box_child_new()
-
-	var _flowBoxChild FlowBoxChild
-
-	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
-
-	return _flowBoxChild
-}
-
 // Changed marks @child as changed, causing any state that depends on this
 // to be updated.
 //
@@ -201,23 +136,6 @@ func (c flowBoxChild) Changed() {
 	C.gtk_flow_box_child_changed(_arg0)
 }
 
-// Child gets the child widget of @self.
-func (s flowBoxChild) Child() Widget {
-	var _arg0 *C.GtkFlowBoxChild
-
-	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_flow_box_child_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Index gets the current index of the @child in its `GtkFlowBox` container.
 func (c flowBoxChild) Index() int {
 	var _arg0 *C.GtkFlowBoxChild
@@ -226,7 +144,7 @@ func (c flowBoxChild) Index() int {
 
 	var _cret C.int
 
-	cret = C.gtk_flow_box_child_get_index(_arg0)
+	_cret = C.gtk_flow_box_child_get_index(_arg0)
 
 	var _gint int
 
@@ -244,7 +162,7 @@ func (c flowBoxChild) IsSelected() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_flow_box_child_is_selected(_arg0)
+	_cret = C.gtk_flow_box_child_is_selected(_arg0)
 
 	var _ok bool
 

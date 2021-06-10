@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -21,54 +17,6 @@ func init() {
 		{T: externglib.Type(C.gtk_tree_drag_dest_get_type()), F: marshalTreeDragDest},
 		{T: externglib.Type(C.gtk_tree_drag_source_get_type()), F: marshalTreeDragSource},
 	})
-}
-
-// TreeCreateRowDragContent creates a content provider for dragging @path from
-// @tree_model.
-func TreeCreateRowDragContent(treeModel TreeModel, path *TreePath) gdk.ContentProvider {
-	var _arg1 *C.GtkTreeModel
-	var _arg2 *C.GtkTreePath
-
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
-	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GdkContentProvider
-
-	cret = C.gtk_tree_create_row_drag_content(_arg1, _arg2)
-
-	var _contentProvider gdk.ContentProvider
-
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
-
-	return _contentProvider
-}
-
-// TreeGetRowDragData obtains a @tree_model and @path from value of target type
-// GTK_TYPE_TREE_ROW_DATA.
-//
-// The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(value **externglib.Value) (TreeModel, *TreePath, bool) {
-	var _arg1 *C.GValue
-
-	_arg1 = (*C.GValue)(value.GValue)
-
-	var _arg2 **C.GtkTreeModel
-	var _path *TreePath
-	var _cret C.gboolean
-
-	cret = C.gtk_tree_get_row_drag_data(_arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)))
-
-	var _treeModel TreeModel
-
-	var _ok bool
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(TreeModel)
-
-	if _cret {
-		_ok = true
-	}
-
-	return _treeModel, _path, _ok
 }
 
 // TreeDragDestOverrider contains methods that are overridable. This
@@ -133,7 +81,7 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, value **externglib.Value)
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
+	_cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -160,7 +108,7 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, value **externglib.Val
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
+	_cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -180,10 +128,6 @@ type TreeDragSourceOverrider interface {
 	// model-specific reason. Should robustly handle a @path no longer found in
 	// the model!
 	DragDataDelete(path *TreePath) bool
-	// DragDataGet asks the TreeDragSource to return a ContentProvider
-	// representing the row at @path. Should robustly handle a @path no longer
-	// found in the model!
-	DragDataGet(path *TreePath) gdk.ContentProvider
 	// RowDraggable asks the TreeDragSource whether a particular row can be used
 	// as the source of a DND operation. If the source doesn’t implement this
 	// interface, the row is assumed draggable.
@@ -231,7 +175,7 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
+	_cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
 
 	var _ok bool
 
@@ -240,27 +184,6 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 	}
 
 	return _ok
-}
-
-// DragDataGet asks the TreeDragSource to return a ContentProvider
-// representing the row at @path. Should robustly handle a @path no longer
-// found in the model!
-func (d treeDragSource) DragDataGet(path *TreePath) gdk.ContentProvider {
-	var _arg0 *C.GtkTreeDragSource
-	var _arg1 *C.GtkTreePath
-
-	_arg0 = (*C.GtkTreeDragSource)(unsafe.Pointer(d.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GdkContentProvider
-
-	cret = C.gtk_tree_drag_source_drag_data_get(_arg0, _arg1)
-
-	var _contentProvider gdk.ContentProvider
-
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
-
-	return _contentProvider
 }
 
 // RowDraggable asks the TreeDragSource whether a particular row can be used
@@ -275,7 +198,7 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
+	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
 
 	var _ok bool
 

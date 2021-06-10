@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,39 +77,6 @@ func marshalProXYAddress(p uintptr) (interface{}, error) {
 	return WrapProXYAddress(obj), nil
 }
 
-// NewProXYAddress constructs a class ProXYAddress.
-func NewProXYAddress(inetaddr InetAddress, port uint16, protocol string, destHostname string, destPort uint16, username string, password string) ProXYAddress {
-	var _arg1 *C.GInetAddress
-	var _arg2 C.guint16
-	var _arg3 *C.gchar
-	var _arg4 *C.gchar
-	var _arg5 C.guint16
-	var _arg6 *C.gchar
-	var _arg7 *C.gchar
-
-	_arg1 = (*C.GInetAddress)(unsafe.Pointer(inetaddr.Native()))
-	_arg2 = C.guint16(port)
-	_arg3 = (*C.gchar)(C.CString(protocol))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(C.CString(destHostname))
-	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = C.guint16(destPort)
-	_arg6 = (*C.gchar)(C.CString(username))
-	defer C.free(unsafe.Pointer(_arg6))
-	_arg7 = (*C.gchar)(C.CString(password))
-	defer C.free(unsafe.Pointer(_arg7))
-
-	var _cret C.GProxyAddress
-
-	cret = C.g_proxy_address_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
-
-	var _proxyAddress ProXYAddress
-
-	_proxyAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ProXYAddress)
-
-	return _proxyAddress
-}
-
 // DestinationHostname gets @proxy's destination hostname; that is, the name
 // of the host that will be connected to via the proxy, not the name of the
 // proxy itself.
@@ -123,7 +87,7 @@ func (p proXYAddress) DestinationHostname() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_destination_hostname(_arg0)
+	_cret = C.g_proxy_address_get_destination_hostname(_arg0)
 
 	var _utf8 string
 
@@ -142,7 +106,7 @@ func (p proXYAddress) DestinationPort() uint16 {
 
 	var _cret C.guint16
 
-	cret = C.g_proxy_address_get_destination_port(_arg0)
+	_cret = C.g_proxy_address_get_destination_port(_arg0)
 
 	var _guint16 uint16
 
@@ -160,7 +124,7 @@ func (p proXYAddress) DestinationProtocol() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_destination_protocol(_arg0)
+	_cret = C.g_proxy_address_get_destination_protocol(_arg0)
 
 	var _utf8 string
 
@@ -177,7 +141,7 @@ func (p proXYAddress) Password() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_password(_arg0)
+	_cret = C.g_proxy_address_get_password(_arg0)
 
 	var _utf8 string
 
@@ -194,7 +158,7 @@ func (p proXYAddress) Protocol() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_protocol(_arg0)
+	_cret = C.g_proxy_address_get_protocol(_arg0)
 
 	var _utf8 string
 
@@ -211,7 +175,7 @@ func (p proXYAddress) URI() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_uri(_arg0)
+	_cret = C.g_proxy_address_get_uri(_arg0)
 
 	var _utf8 string
 
@@ -228,7 +192,7 @@ func (p proXYAddress) Username() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_proxy_address_get_username(_arg0)
+	_cret = C.g_proxy_address_get_username(_arg0)
 
 	var _utf8 string
 

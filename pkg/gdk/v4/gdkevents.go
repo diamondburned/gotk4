@@ -38,7 +38,7 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 	var _arg3 C.double
 	var _cret C.gboolean
 
-	cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
+	_cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
 
 	var _angle float64
 	var _ok bool
@@ -66,7 +66,7 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 	var _arg4 C.double
 	var _cret C.gboolean
 
-	cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
+	_cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
 
 	var _x float64
 	var _y float64
@@ -95,7 +95,7 @@ func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
 	var _arg3 C.double
 	var _cret C.gboolean
 
-	cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
+	_cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
 
 	var _distance float64
 	var _ok bool

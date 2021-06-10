@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,19 +59,6 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 	return WrapEventControllerFocus(obj), nil
 }
 
-// NewEventControllerFocus constructs a class EventControllerFocus.
-func NewEventControllerFocus() EventControllerFocus {
-	var _cret C.GtkEventControllerFocus
-
-	cret = C.gtk_event_controller_focus_new()
-
-	var _eventControllerFocus EventControllerFocus
-
-	_eventControllerFocus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerFocus)
-
-	return _eventControllerFocus
-}
-
 // ContainsFocus returns true if focus is within @self or one of its
 // children.
 func (s eventControllerFocus) ContainsFocus() bool {
@@ -84,7 +68,7 @@ func (s eventControllerFocus) ContainsFocus() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_focus_contains_focus(_arg0)
+	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
 
 	var _ok bool
 
@@ -104,7 +88,7 @@ func (s eventControllerFocus) IsFocus() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_focus_is_focus(_arg0)
+	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
 
 	var _ok bool
 

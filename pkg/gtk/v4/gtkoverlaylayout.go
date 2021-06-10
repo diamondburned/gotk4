@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,19 +51,6 @@ func marshalOverlayLayout(p uintptr) (interface{}, error) {
 	return WrapOverlayLayout(obj), nil
 }
 
-// NewOverlayLayout constructs a class OverlayLayout.
-func NewOverlayLayout() OverlayLayout {
-	var _cret C.GtkOverlayLayout
-
-	cret = C.gtk_overlay_layout_new()
-
-	var _overlayLayout OverlayLayout
-
-	_overlayLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(OverlayLayout)
-
-	return _overlayLayout
-}
-
 // OverlayLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkOverlayLayout`.
 type OverlayLayoutChild interface {
@@ -111,7 +95,7 @@ func (c overlayLayoutChild) ClipOverlay() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
+	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
 
 	var _ok bool
 
@@ -130,7 +114,7 @@ func (c overlayLayoutChild) Measure() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_overlay_layout_child_get_measure(_arg0)
+	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
 
 	var _ok bool
 

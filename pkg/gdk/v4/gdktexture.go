@@ -5,10 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -77,61 +73,6 @@ func marshalTexture(p uintptr) (interface{}, error) {
 	return WrapTexture(obj), nil
 }
 
-// NewTextureForPixbuf constructs a class Texture.
-func NewTextureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Texture {
-	var _arg1 *C.GdkPixbuf
-
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GdkTexture
-
-	cret = C.gdk_texture_new_for_pixbuf(_arg1)
-
-	var _texture Texture
-
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
-
-	return _texture
-}
-
-// NewTextureFromFile constructs a class Texture.
-func NewTextureFromFile(file gio.File) (Texture, error) {
-	var _arg1 *C.GFile
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GdkTexture
-	var _cerr *C.GError
-
-	cret = C.gdk_texture_new_from_file(_arg1, _cerr)
-
-	var _texture Texture
-	var _goerr error
-
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _texture, _goerr
-}
-
-// NewTextureFromResource constructs a class Texture.
-func NewTextureFromResource(resourcePath string) Texture {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkTexture
-
-	cret = C.gdk_texture_new_from_resource(_arg1)
-
-	var _texture Texture
-
-	_texture = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Texture)
-
-	return _texture
-}
-
 // Height returns the height of the @texture, in pixels.
 func (t texture) Height() int {
 	var _arg0 *C.GdkTexture
@@ -140,7 +81,7 @@ func (t texture) Height() int {
 
 	var _cret C.int
 
-	cret = C.gdk_texture_get_height(_arg0)
+	_cret = C.gdk_texture_get_height(_arg0)
 
 	var _gint int
 
@@ -157,7 +98,7 @@ func (t texture) Width() int {
 
 	var _cret C.int
 
-	cret = C.gdk_texture_get_width(_arg0)
+	_cret = C.gdk_texture_get_width(_arg0)
 
 	var _gint int
 
@@ -182,7 +123,7 @@ func (t texture) SaveToPng(filename string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_texture_save_to_png(_arg0, _arg1)
+	_cret = C.gdk_texture_save_to_png(_arg0, _arg1)
 
 	var _ok bool
 

@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -66,7 +67,7 @@ type Permission interface {
 	//
 	// This is the first half of the asynchronous version of
 	// g_permission_acquire().
-	AcquireAsync()
+	AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// AcquireFinish collects the result of attempting to acquire the permission
 	// represented by @permission.
 	//
@@ -112,7 +113,7 @@ type Permission interface {
 	//
 	// This is the first half of the asynchronous version of
 	// g_permission_release().
-	ReleaseAsync()
+	ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// ReleaseFinish collects the result of attempting to release the permission
 	// represented by @permission.
 	//
@@ -180,12 +181,18 @@ func (p permission) Acquire(cancellable Cancellable) error {
 //
 // This is the first half of the asynchronous version of
 // g_permission_acquire().
-func (p permission) AcquireAsync() {
+func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission
+	var _arg1 *C.GCancellable
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
 
-	C.g_permission_acquire_async(_arg0)
+	C.g_permission_acquire_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 // AcquireFinish collects the result of attempting to acquire the permission
@@ -221,7 +228,7 @@ func (p permission) Allowed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_permission_get_allowed(_arg0)
+	_cret = C.g_permission_get_allowed(_arg0)
 
 	var _ok bool
 
@@ -242,7 +249,7 @@ func (p permission) CanAcquire() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_permission_get_can_acquire(_arg0)
+	_cret = C.g_permission_get_can_acquire(_arg0)
 
 	var _ok bool
 
@@ -263,7 +270,7 @@ func (p permission) CanRelease() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_permission_get_can_release(_arg0)
+	_cret = C.g_permission_get_can_release(_arg0)
 
 	var _ok bool
 
@@ -337,12 +344,18 @@ func (p permission) Release(cancellable Cancellable) error {
 //
 // This is the first half of the asynchronous version of
 // g_permission_release().
-func (p permission) ReleaseAsync() {
+func (p permission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GPermission
+	var _arg1 *C.GCancellable
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
 
-	C.g_permission_release_async(_arg0)
+	C.g_permission_release_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ReleaseFinish collects the result of attempting to release the permission

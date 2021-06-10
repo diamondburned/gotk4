@@ -38,8 +38,6 @@ type CellAccessibleParentOverrider interface {
 
 	ChildIndex(cell CellAccessible) int
 
-	RendererState(cell CellAccessible) CellRendererState
-
 	GrabFocus(cell CellAccessible) bool
 }
 
@@ -143,31 +141,13 @@ func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
 
 	var _cret C.int
 
-	cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
+	_cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-func (p cellAccessibleParent) RendererState(cell CellAccessible) CellRendererState {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
-
-	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
-
-	var _cret C.GtkCellRendererState
-
-	cret = C.gtk_cell_accessible_parent_get_renderer_state(_arg0, _arg1)
-
-	var _cellRendererState CellRendererState
-
-	_cellRendererState = CellRendererState(_cret)
-
-	return _cellRendererState
 }
 
 func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
@@ -179,7 +159,7 @@ func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
+	_cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
 
 	var _ok bool
 

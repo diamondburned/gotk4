@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,8 +29,6 @@ type MediaControls interface {
 	Buildable
 	ConstraintTarget
 
-	// MediaStream gets the media stream managed by @controls or nil if none.
-	MediaStream() MediaStream
 	// SetMediaStream sets the stream that is controlled by @controls.
 	SetMediaStream(stream MediaStream)
 }
@@ -63,40 +58,6 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMediaControls(obj), nil
-}
-
-// NewMediaControls constructs a class MediaControls.
-func NewMediaControls(stream MediaStream) MediaControls {
-	var _arg1 *C.GtkMediaStream
-
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
-
-	var _cret C.GtkMediaControls
-
-	cret = C.gtk_media_controls_new(_arg1)
-
-	var _mediaControls MediaControls
-
-	_mediaControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaControls)
-
-	return _mediaControls
-}
-
-// MediaStream gets the media stream managed by @controls or nil if none.
-func (c mediaControls) MediaStream() MediaStream {
-	var _arg0 *C.GtkMediaControls
-
-	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkMediaStream
-
-	cret = C.gtk_media_controls_get_media_stream(_arg0)
-
-	var _mediaStream MediaStream
-
-	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaStream)
-
-	return _mediaStream
 }
 
 // SetMediaStream sets the stream that is controlled by @controls.

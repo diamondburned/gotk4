@@ -3,11 +3,8 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -66,7 +63,7 @@ func (s *CSSSection) EndLine() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_css_section_get_end_line(_arg0)
+	_cret = C.gtk_css_section_get_end_line(_arg0)
 
 	var _guint uint
 
@@ -88,71 +85,13 @@ func (s *CSSSection) EndPosition() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_css_section_get_end_position(_arg0)
+	_cret = C.gtk_css_section_get_end_position(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// File gets the file that @section was parsed from. If no such file exists, for
-// example because the CSS was loaded via @gtk_css_provider_load_from_data(),
-// then nil is returned.
-func (s *CSSSection) File() gio.File {
-	var _arg0 *C.GtkCssSection
-
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_css_section_get_file(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
-}
-
-// Parent gets the parent section for the given @section. The parent section is
-// the section that contains this @section. A special case are sections of type
-// K_CSS_SECTION_DOCUMENT. Their parent will either be nil if they are the
-// original CSS document that was loaded by gtk_css_provider_load_from_file() or
-// a section of type K_CSS_SECTION_IMPORT if it was loaded with an import rule
-// from a different file.
-func (s *CSSSection) Parent() *CSSSection {
-	var _arg0 *C.GtkCssSection
-
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkCssSection
-
-	cret = C.gtk_css_section_get_parent(_arg0)
-
-	var _cssSection *CSSSection
-
-	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
-
-	return _cssSection
-}
-
-// SectionType gets the type of information that @section describes.
-func (s *CSSSection) SectionType() CSSSectionType {
-	var _arg0 *C.GtkCssSection
-
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkCssSectionType
-
-	cret = C.gtk_css_section_get_section_type(_arg0)
-
-	var _cssSectionType CSSSectionType
-
-	_cssSectionType = CSSSectionType(_cret)
-
-	return _cssSectionType
 }
 
 // StartLine returns the line in the CSS document where this section starts. The
@@ -164,7 +103,7 @@ func (s *CSSSection) StartLine() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_css_section_get_start_line(_arg0)
+	_cret = C.gtk_css_section_get_start_line(_arg0)
 
 	var _guint uint
 
@@ -182,33 +121,13 @@ func (s *CSSSection) StartPosition() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_css_section_get_start_position(_arg0)
+	_cret = C.gtk_css_section_get_start_position(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// Ref increments the reference count on @section.
-func (s *CSSSection) Ref() *CSSSection {
-	var _arg0 *C.GtkCssSection
-
-	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkCssSection
-
-	cret = C.gtk_css_section_ref(_arg0)
-
-	var _cssSection *CSSSection
-
-	_cssSection = WrapCSSSection(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_cssSection, func(v *CSSSection) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _cssSection
 }
 
 // Unref decrements the reference count on @section, freeing the structure if

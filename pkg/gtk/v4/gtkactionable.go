@@ -26,8 +26,6 @@ func init() {
 type ActionableOverrider interface {
 	// ActionName gets the action name for @actionable.
 	ActionName() string
-	// ActionTargetValue gets the current target value of @actionable.
-	ActionTargetValue() *glib.Variant
 	// SetActionName specifies the name of the action with which this widget
 	// should be associated.
 	//
@@ -117,30 +115,13 @@ func (a actionable) ActionName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_actionable_get_action_name(_arg0)
+	_cret = C.gtk_actionable_get_action_name(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// ActionTargetValue gets the current target value of @actionable.
-func (a actionable) ActionTargetValue() *glib.Variant {
-	var _arg0 *C.GtkActionable
-
-	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GVariant
-
-	cret = C.gtk_actionable_get_action_target_value(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-
-	return _variant
 }
 
 // SetActionName specifies the name of the action with which this widget

@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -81,28 +80,6 @@ func (r *RGBA) Alpha() float32 {
 	return v
 }
 
-// Copy makes a copy of a `GdkRGBA`.
-//
-// The result must be freed through [method@Gdk.RGBA.free].
-func (r *RGBA) Copy() *RGBA {
-	var _arg0 *C.GdkRGBA
-
-	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GdkRGBA
-
-	cret = C.gdk_rgba_copy(_arg0)
-
-	var _rgbA *RGBA
-
-	_rgbA = WrapRGBA(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_rgbA, func(v *RGBA) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _rgbA
-}
-
 // Equal compares two `GdkRGBA` colors.
 func (p *RGBA) Equal(p2 RGBA) bool {
 	var _arg0 C.gpointer
@@ -113,7 +90,7 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_rgba_equal(_arg0, _arg1)
+	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -142,7 +119,7 @@ func (p *RGBA) Hash() uint {
 
 	var _cret C.guint
 
-	cret = C.gdk_rgba_hash(_arg0)
+	_cret = C.gdk_rgba_hash(_arg0)
 
 	var _guint uint
 
@@ -161,7 +138,7 @@ func (r *RGBA) IsClear() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_rgba_is_clear(_arg0)
+	_cret = C.gdk_rgba_is_clear(_arg0)
 
 	var _ok bool
 
@@ -183,7 +160,7 @@ func (r *RGBA) IsOpaque() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_rgba_is_opaque(_arg0)
+	_cret = C.gdk_rgba_is_opaque(_arg0)
 
 	var _ok bool
 
@@ -218,7 +195,7 @@ func (r *RGBA) Parse(spec string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_rgba_parse(_arg0, _arg1)
+	_cret = C.gdk_rgba_parse(_arg0, _arg1)
 
 	var _ok bool
 
@@ -248,7 +225,7 @@ func (r *RGBA) String() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_rgba_to_string(_arg0)
+	_cret = C.gdk_rgba_to_string(_arg0)
 
 	var _utf8 string
 

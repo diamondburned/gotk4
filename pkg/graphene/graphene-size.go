@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,22 +40,6 @@ func marshalSize(p uintptr) (interface{}, error) {
 	return WrapSize(unsafe.Pointer(b)), nil
 }
 
-// NewSizeAlloc constructs a struct Size.
-func NewSizeAlloc() *Size {
-	var _cret *C.graphene_size_t
-
-	cret = C.graphene_size_alloc()
-
-	var _size *Size
-
-	_size = WrapSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_size, func(v *Size) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _size
-}
-
 // Native returns the underlying C source pointer.
 func (s *Size) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
@@ -86,7 +69,7 @@ func (a *Size) Equal(b *Size) bool {
 
 	var _cret C._Bool
 
-	cret = C.graphene_size_equal(_arg0, _arg1)
+	_cret = C.graphene_size_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -104,47 +87,6 @@ func (s *Size) Free() {
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
 
 	C.graphene_size_free(_arg0)
-}
-
-// Init initializes a #graphene_size_t using the given @width and @height.
-func (s *Size) Init(width float32, height float32) *Size {
-	var _arg0 *C.graphene_size_t
-	var _arg1 C.float
-	var _arg2 C.float
-
-	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
-	_arg1 = C.float(width)
-	_arg2 = C.float(height)
-
-	var _cret *C.graphene_size_t
-
-	cret = C.graphene_size_init(_arg0, _arg1, _arg2)
-
-	var _size *Size
-
-	_size = WrapSize(unsafe.Pointer(_cret))
-
-	return _size
-}
-
-// InitFromSize initializes a #graphene_size_t using the width and height of the
-// given @src.
-func (s *Size) InitFromSize(src *Size) *Size {
-	var _arg0 *C.graphene_size_t
-	var _arg1 *C.graphene_size_t
-
-	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(src.Native()))
-
-	var _cret *C.graphene_size_t
-
-	cret = C.graphene_size_init_from_size(_arg0, _arg1)
-
-	var _size *Size
-
-	_size = WrapSize(unsafe.Pointer(_cret))
-
-	return _size
 }
 
 // Interpolate: linearly interpolates the two given #graphene_size_t using the

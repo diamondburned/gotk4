@@ -42,9 +42,6 @@ type ListItem interface {
 	// Activatable checks if a list item has been set to be activatable via
 	// gtk_list_item_set_activatable().
 	Activatable() bool
-	// Child gets the child previously set via gtk_list_item_set_child() or nil
-	// if none was set.
-	Child() Widget
 	// Item gets the model item that associated with @self.
 	//
 	// If @self is unbound, this function returns nil.
@@ -122,7 +119,7 @@ func (s listItem) Activatable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_item_get_activatable(_arg0)
+	_cret = C.gtk_list_item_get_activatable(_arg0)
 
 	var _ok bool
 
@@ -131,24 +128,6 @@ func (s listItem) Activatable() bool {
 	}
 
 	return _ok
-}
-
-// Child gets the child previously set via gtk_list_item_set_child() or nil
-// if none was set.
-func (s listItem) Child() Widget {
-	var _arg0 *C.GtkListItem
-
-	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_list_item_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // Item gets the model item that associated with @self.
@@ -161,7 +140,7 @@ func (s listItem) Item() gextras.Objector {
 
 	var _cret C.gpointer
 
-	cret = C.gtk_list_item_get_item(_arg0)
+	_cret = C.gtk_list_item_get_item(_arg0)
 
 	var _object gextras.Objector
 
@@ -180,7 +159,7 @@ func (s listItem) Position() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_list_item_get_position(_arg0)
+	_cret = C.gtk_list_item_get_position(_arg0)
 
 	var _guint uint
 
@@ -200,7 +179,7 @@ func (s listItem) Selectable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_item_get_selectable(_arg0)
+	_cret = C.gtk_list_item_get_selectable(_arg0)
 
 	var _ok bool
 
@@ -222,7 +201,7 @@ func (s listItem) Selected() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_item_get_selected(_arg0)
+	_cret = C.gtk_list_item_get_selected(_arg0)
 
 	var _ok bool
 

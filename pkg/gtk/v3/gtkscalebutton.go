@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -42,15 +41,6 @@ type ScaleButton interface {
 	Buildable
 	Orientable
 
-	// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
-	// See gtk_range_get_adjustment() for details.
-	Adjustment() Adjustment
-	// MinusButton retrieves the minus button of the ScaleButton.
-	MinusButton() Button
-	// PlusButton retrieves the plus button of the ScaleButton.
-	PlusButton() Button
-	// Popup retrieves the popup of the ScaleButton.
-	Popup() Widget
 	// Value gets the current value of the scale button.
 	Value() float64
 	// SetAdjustment sets the Adjustment to be used as a model for the
@@ -95,111 +85,6 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 	return WrapScaleButton(obj), nil
 }
 
-// NewScaleButton constructs a class ScaleButton.
-func NewScaleButton(size int, min float64, max float64, step float64, icons []string) ScaleButton {
-	var _arg1 C.GtkIconSize
-	var _arg2 C.gdouble
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
-	var _arg5 **C.gchar
-
-	_arg1 = C.GtkIconSize(size)
-	_arg2 = C.gdouble(min)
-	_arg3 = C.gdouble(max)
-	_arg4 = C.gdouble(step)
-	_arg5 = (**C.gchar)(C.malloc((len(icons) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg5))
-
-	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg5), int(len(icons)))
-
-		for i := range icons {
-			_arg5 = (*C.gchar)(C.CString(icons))
-			defer C.free(unsafe.Pointer(_arg5))
-		}
-	}
-
-	var _cret C.GtkScaleButton
-
-	cret = C.gtk_scale_button_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _scaleButton ScaleButton
-
-	_scaleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ScaleButton)
-
-	return _scaleButton
-}
-
-// Adjustment gets the Adjustment associated with the ScaleButton’s scale.
-// See gtk_range_get_adjustment() for details.
-func (b scaleButton) Adjustment() Adjustment {
-	var _arg0 *C.GtkScaleButton
-
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_scale_button_get_adjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
-// MinusButton retrieves the minus button of the ScaleButton.
-func (b scaleButton) MinusButton() Button {
-	var _arg0 *C.GtkScaleButton
-
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_scale_button_get_minus_button(_arg0)
-
-	var _ret Button
-
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _ret
-}
-
-// PlusButton retrieves the plus button of the ScaleButton.
-func (b scaleButton) PlusButton() Button {
-	var _arg0 *C.GtkScaleButton
-
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_scale_button_get_plus_button(_arg0)
-
-	var _ret Button
-
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _ret
-}
-
-// Popup retrieves the popup of the ScaleButton.
-func (b scaleButton) Popup() Widget {
-	var _arg0 *C.GtkScaleButton
-
-	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_scale_button_get_popup(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Value gets the current value of the scale button.
 func (b scaleButton) Value() float64 {
 	var _arg0 *C.GtkScaleButton
@@ -208,7 +93,7 @@ func (b scaleButton) Value() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_scale_button_get_value(_arg0)
+	_cret = C.gtk_scale_button_get_value(_arg0)
 
 	var _gdouble float64
 

@@ -27,7 +27,7 @@ func init() {
 //
 // If the filter matches the item, this function must return true. If the item
 // should be filtered out, false must be returned.
-type CustomFilterFunc func() (ok bool)
+type CustomFilterFunc func(item gextras.Objector) (ok bool)
 
 //export gotk4_CustomFilterFunc
 func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
@@ -36,28 +36,24 @@ func gotk4_CustomFilterFunc(arg0 C.gpointer, arg1 C.gpointer) C.gboolean {
 		panic(`callback not found`)
 	}
 
+	var item gextras.Objector
+
+	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
+
 	fn := v.(CustomFilterFunc)
-	ok := fn()
+	ok := fn(item)
 
 	if ok {
 		cret = C.gboolean(1)
 	}
+
+	return ok
 }
 
 // CustomFilter: `GtkCustomFilter` determines whether to include items with a
 // callback.
 type CustomFilter interface {
 	Filter
-
-	// SetFilterFunc sets the function used for filtering items.
-	//
-	// If @match_func is nil, the filter matches all items.
-	//
-	// If the filter func changes its filtering behavior, gtk_filter_changed()
-	// needs to be called.
-	//
-	// If a previous function was set, its @user_destroy will be called now.
-	SetFilterFunc()
 }
 
 // customFilter implements the CustomFilter interface.
@@ -79,33 +75,4 @@ func marshalCustomFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCustomFilter(obj), nil
-}
-
-// NewCustomFilter constructs a class CustomFilter.
-func NewCustomFilter() CustomFilter {
-	var _cret C.GtkCustomFilter
-
-	cret = C.gtk_custom_filter_new()
-
-	var _customFilter CustomFilter
-
-	_customFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CustomFilter)
-
-	return _customFilter
-}
-
-// SetFilterFunc sets the function used for filtering items.
-//
-// If @match_func is nil, the filter matches all items.
-//
-// If the filter func changes its filtering behavior, gtk_filter_changed()
-// needs to be called.
-//
-// If a previous function was set, its @user_destroy will be called now.
-func (s customFilter) SetFilterFunc() {
-	var _arg0 *C.GtkCustomFilter
-
-	_arg0 = (*C.GtkCustomFilter)(unsafe.Pointer(s.Native()))
-
-	C.gtk_custom_filter_set_filter_func(_arg0)
 }

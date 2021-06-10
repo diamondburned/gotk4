@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
@@ -174,7 +175,7 @@ func Basename(fileName *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_basename(_arg1)
+	_cret = C.g_basename(_arg1)
 
 	var _filename *string
 
@@ -204,7 +205,7 @@ func BuildFilenamev(args []*string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_build_filenamev(_arg1)
+	_cret = C.g_build_filenamev(_arg1)
 
 	var _filename *string
 
@@ -238,7 +239,7 @@ func BuildPathv(separator string, args []*string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_build_pathv(_arg1, _arg2)
+	_cret = C.g_build_pathv(_arg1, _arg2)
 
 	var _filename *string
 
@@ -275,7 +276,7 @@ func CanonicalizeFilename(filename *string, relativeTo *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_canonicalize_filename(_arg1, _arg2)
+	_cret = C.g_canonicalize_filename(_arg1, _arg2)
 
 	var _ret *string
 
@@ -283,30 +284,6 @@ func CanonicalizeFilename(filename *string, relativeTo *string) *string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _ret
-}
-
-// FileErrorFromErrno gets a Error constant based on the passed-in @err_no. For
-// example, if you pass in `EEXIST` this function returns FILE_ERROR_EXIST.
-// Unlike `errno` values, you can portably assume that all Error values will
-// exist.
-//
-// Normally a Error value goes into a #GError returned from a function that
-// manipulates files. So you would use g_file_error_from_errno() when
-// constructing a #GError.
-func FileErrorFromErrno(errNo int) FileError {
-	var _arg1 C.gint
-
-	_arg1 = C.gint(errNo)
-
-	var _cret C.GFileError
-
-	cret = C.g_file_error_from_errno(_arg1)
-
-	var _fileError FileError
-
-	_fileError = FileError(_cret)
-
-	return _fileError
 }
 
 // FileGetContents reads an entire file into allocated memory, with good error
@@ -319,21 +296,28 @@ func FileErrorFromErrno(errNo int) FileError {
 // false and sets @error. The error domain is FILE_ERROR. Possible error codes
 // are those in the Error enumeration. In the error case, @contents is set to
 // nil and @length is set to zero.
-func FileGetContents(filename *string) error {
+func FileGetContents(filename *string) ([]byte, error) {
 	var _arg1 *C.gchar
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
+	var _arg2 *C.gchar
+	var _arg3 *C.gsize
 	var _cerr *C.GError
 
-	C.g_file_get_contents(_arg1, _cerr)
+	C.g_file_get_contents(_arg1, &_arg2, &_arg3, _cerr)
 
+	var _contents []byte
 	var _goerr error
 
+	ptr.SetSlice(unsafe.Pointer(&_contents), unsafe.Pointer(_arg2), int(_arg3))
+	runtime.SetFinalizer(&_contents, func(v *[]byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return _goerr
+	return _contents, _goerr
 }
 
 // FileOpenTmp opens a file for writing in the preferred directory for temporary
@@ -360,7 +344,7 @@ func FileOpenTmp(tmpl *string) (*string, int, error) {
 	var _cret C.gint
 	var _cerr *C.GError
 
-	cret = C.g_file_open_tmp(_arg1, &_arg2, _cerr)
+	_cret = C.g_file_open_tmp(_arg1, &_arg2, _cerr)
 
 	var _nameUsed *string
 	var _gint int
@@ -386,7 +370,7 @@ func FileReadLink(filename *string) (*string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_file_read_link(_arg1, _cerr)
+	_cret = C.g_file_read_link(_arg1, _cerr)
 
 	var _ret *string
 	var _goerr error
@@ -402,10 +386,99 @@ func FileReadLink(filename *string) (*string, error) {
 // convenience wrapper around calling g_file_set_contents_full() with `flags`
 // set to `G_FILE_SET_CONTENTS_CONSISTENT | G_FILE_SET_CONTENTS_ONLY_EXISTING`
 // and `mode` set to `0666`.
-func FileSetContents() error {
+func FileSetContents(filename *string, contents []byte) error {
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 C.gssize
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.gssize(len(contents))
+	_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+
 	var _cerr *C.GError
 
-	C.g_file_set_contents(_cerr)
+	C.g_file_set_contents(_arg1, _arg2, _arg3, _cerr)
+
+	var _goerr error
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// FileSetContentsFull writes all of @contents to a file named @filename, with
+// good error checking. If a file called @filename already exists it will be
+// overwritten.
+//
+// @flags control the properties of the write operation: whether it’s atomic,
+// and what the tradeoff is between returning quickly or being resilient to
+// system crashes.
+//
+// As this function performs file I/O, it is recommended to not call it anywhere
+// where blocking would cause problems, such as in the main loop of a graphical
+// application. In particular, if @flags has any value other than
+// G_FILE_SET_CONTENTS_NONE then this function may call `fsync()`.
+//
+// If G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the operation is atomic
+// in the sense that it is first written to a temporary file which is then
+// renamed to the final name.
+//
+// Notes:
+//
+// - On UNIX, if @filename already exists hard links to @filename will break.
+// Also since the file is recreated, existing permissions, access control lists,
+// metadata etc. may be lost. If @filename is a symbolic link, the link itself
+// will be replaced, not the linked file.
+//
+// - On UNIX, if @filename already exists and is non-empty, and if the system
+// supports it (via a journalling filesystem or equivalent), and if
+// G_FILE_SET_CONTENTS_CONSISTENT is set in @flags, the `fsync()` call (or
+// equivalent) will be used to ensure atomic replacement: @filename will contain
+// either its old contents or @contents, even in the face of system power loss,
+// the disk being unsafely removed, etc.
+//
+// - On UNIX, if @filename does not already exist or is empty, there is a
+// possibility that system power loss etc. after calling this function will
+// leave @filename empty or full of NUL bytes, depending on the underlying
+// filesystem, unless G_FILE_SET_CONTENTS_DURABLE and
+// G_FILE_SET_CONTENTS_CONSISTENT are set in @flags.
+//
+// - On Windows renaming a file will not remove an existing file with the new
+// name, so on Windows there is a race condition between the existing file being
+// removed and the temporary file being renamed.
+//
+// - On Windows there is no way to remove a file that is open to some process,
+// or mapped into memory. Thus, this function will fail if @filename already
+// exists and is open.
+//
+// If the call was successful, it returns true. If the call was not successful,
+// it returns false and sets @error. The error domain is FILE_ERROR. Possible
+// error codes are those in the Error enumeration.
+//
+// Note that the name for the temporary file is constructed by appending up to 7
+// characters to @filename.
+//
+// If the file didn’t exist before and is created, it will be given the
+// permissions from @mode. Otherwise, the permissions of the existing file may
+// be changed to @mode depending on @flags, or they may remain unchanged.
+func FileSetContentsFull(filename *string, contents []byte, flags FileSetContentsFlags, mode int) error {
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 C.gssize
+	var _arg4 C.GFileSetContentsFlags
+	var _arg5 C.int
+
+	_arg1 = (*C.gchar)(C.CString(filename))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.gssize(len(contents))
+	_arg2 = (*C.gchar)(unsafe.Pointer(&contents[0]))
+	_arg4 = (C.GFileSetContentsFlags)(flags)
+	_arg5 = C.int(mode)
+
+	var _cerr *C.GError
+
+	C.g_file_set_contents_full(_arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
 
 	var _goerr error
 
@@ -462,7 +535,7 @@ func FileTest(filename *string, test FileTest) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_file_test(_arg1, _arg2)
+	_cret = C.g_file_test(_arg1, _arg2)
 
 	var _ok bool
 
@@ -485,7 +558,7 @@ func FileTest(filename *string, test FileTest) bool {
 func GetCurrentDir() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_current_dir()
+	_cret = C.g_get_current_dir()
 
 	var _filename *string
 
@@ -507,7 +580,7 @@ func MkdirWithParents(pathname *string, mode int) int {
 
 	var _cret C.gint
 
-	cret = C.g_mkdir_with_parents(_arg1, _arg2)
+	_cret = C.g_mkdir_with_parents(_arg1, _arg2)
 
 	var _gint int
 
@@ -536,7 +609,7 @@ func Mkdtemp(tmpl *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_mkdtemp(_arg1)
+	_cret = C.g_mkdtemp(_arg1)
 
 	var _filename *string
 
@@ -569,7 +642,7 @@ func MkdtempFull(tmpl *string, mode int) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_mkdtemp_full(_arg1, _arg2)
+	_cret = C.g_mkdtemp_full(_arg1, _arg2)
 
 	var _filename *string
 
@@ -596,7 +669,7 @@ func Mkstemp(tmpl *string) int {
 
 	var _cret C.gint
 
-	cret = C.g_mkstemp(_arg1)
+	_cret = C.g_mkstemp(_arg1)
 
 	var _gint int
 
@@ -627,7 +700,7 @@ func MkstempFull(tmpl *string, flags int, mode int) int {
 
 	var _cret C.gint
 
-	cret = C.g_mkstemp_full(_arg1, _arg2, _arg3)
+	_cret = C.g_mkstemp_full(_arg1, _arg2, _arg3)
 
 	var _gint int
 
@@ -650,7 +723,7 @@ func PathGetBasename(fileName *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_path_get_basename(_arg1)
+	_cret = C.g_path_get_basename(_arg1)
 
 	var _filename *string
 
@@ -674,7 +747,7 @@ func PathGetDirname(fileName *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_path_get_dirname(_arg1)
+	_cret = C.g_path_get_dirname(_arg1)
 
 	var _filename *string
 
@@ -714,7 +787,7 @@ func PathIsAbsolute(fileName *string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_path_is_absolute(_arg1)
+	_cret = C.g_path_is_absolute(_arg1)
 
 	var _ok bool
 
@@ -736,7 +809,7 @@ func PathSkipRoot(fileName *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_path_skip_root(_arg1)
+	_cret = C.g_path_skip_root(_arg1)
 
 	var _filename *string
 

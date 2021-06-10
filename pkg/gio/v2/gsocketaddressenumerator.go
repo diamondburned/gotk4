@@ -3,10 +3,7 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -47,30 +44,13 @@ func init() {
 type SocketAddressEnumerator interface {
 	gextras.Objector
 
-	// Next retrieves the next Address from @enumerator. Note that this may
-	// block for some amount of time. (Eg, a Address may need to do a DNS lookup
-	// before it can return an address.) Use
-	// g_socket_address_enumerator_next_async() if you need to avoid blocking.
-	//
-	// If @enumerator is expected to yield addresses, but for some reason is
-	// unable to (eg, because of a DNS error), then the first call to
-	// g_socket_address_enumerator_next() will return an appropriate error in
-	// *@error. However, if the first call to g_socket_address_enumerator_next()
-	// succeeds, then any further internal errors (other than @cancellable being
-	// triggered) will be ignored.
-	Next(cancellable Cancellable) (SocketAddress, error)
 	// NextAsync: asynchronously retrieves the next Address from @enumerator and
 	// then calls @callback, which must call
 	// g_socket_address_enumerator_next_finish() to get the result.
 	//
 	// It is an error to call this multiple times before the previous callback
 	// has finished.
-	NextAsync()
-	// NextFinish retrieves the result of a completed call to
-	// g_socket_address_enumerator_next_async(). See
-	// g_socket_address_enumerator_next() for more information about error
-	// handling.
-	NextFinish(result AsyncResult) (SocketAddress, error)
+	NextAsync(cancellable Cancellable, callback AsyncReadyCallback)
 }
 
 // socketAddressEnumerator implements the SocketAddressEnumerator interface.
@@ -94,73 +74,22 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 	return WrapSocketAddressEnumerator(obj), nil
 }
 
-// Next retrieves the next Address from @enumerator. Note that this may
-// block for some amount of time. (Eg, a Address may need to do a DNS lookup
-// before it can return an address.) Use
-// g_socket_address_enumerator_next_async() if you need to avoid blocking.
-//
-// If @enumerator is expected to yield addresses, but for some reason is
-// unable to (eg, because of a DNS error), then the first call to
-// g_socket_address_enumerator_next() will return an appropriate error in
-// *@error. However, if the first call to g_socket_address_enumerator_next()
-// succeeds, then any further internal errors (other than @cancellable being
-// triggered) will be ignored.
-func (e socketAddressEnumerator) Next(cancellable Cancellable) (SocketAddress, error) {
-	var _arg0 *C.GSocketAddressEnumerator
-	var _arg1 *C.GCancellable
-
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GSocketAddress
-	var _cerr *C.GError
-
-	cret = C.g_socket_address_enumerator_next(_arg0, _arg1, _cerr)
-
-	var _socketAddress SocketAddress
-	var _goerr error
-
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _socketAddress, _goerr
-}
-
 // NextAsync: asynchronously retrieves the next Address from @enumerator and
 // then calls @callback, which must call
 // g_socket_address_enumerator_next_finish() to get the result.
 //
 // It is an error to call this multiple times before the previous callback
 // has finished.
-func (e socketAddressEnumerator) NextAsync() {
+func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GSocketAddressEnumerator
+	var _arg1 *C.GCancellable
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
 
-	C.g_socket_address_enumerator_next_async(_arg0)
-}
-
-// NextFinish retrieves the result of a completed call to
-// g_socket_address_enumerator_next_async(). See
-// g_socket_address_enumerator_next() for more information about error
-// handling.
-func (e socketAddressEnumerator) NextFinish(result AsyncResult) (SocketAddress, error) {
-	var _arg0 *C.GSocketAddressEnumerator
-	var _arg1 *C.GAsyncResult
-
-	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GSocketAddress
-	var _cerr *C.GError
-
-	cret = C.g_socket_address_enumerator_next_finish(_arg0, _arg1, _cerr)
-
-	var _socketAddress SocketAddress
-	var _goerr error
-
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _socketAddress, _goerr
+	C.g_socket_address_enumerator_next_async(_arg0, _arg1, _arg2, _arg3)
 }

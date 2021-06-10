@@ -3,8 +3,9 @@
 package gdk
 
 import (
-	"runtime"
+	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -45,17 +46,6 @@ type ContentProvider interface {
 	// given `GType` is not supported, this operation can fail and
 	// IO_ERROR_NOT_SUPPORTED will be reported.
 	Value(value **externglib.Value) error
-	// RefFormats gets the formats that the provider can provide its current
-	// contents in.
-	RefFormats() *ContentFormats
-	// RefStorableFormats gets the formats that the provider suggests other
-	// applications to store the data in.
-	//
-	// An example of such an application would be a clipboard manager.
-	//
-	// This can be assumed to be a subset of
-	// [method@Gdk.ContentProvider.ref_formats].
-	RefStorableFormats() *ContentFormats
 	// WriteMIMETypeAsync: asynchronously writes the contents of @provider to
 	// @stream in the given @mime_type.
 	//
@@ -68,7 +58,7 @@ type ContentProvider interface {
 	// is not supported, IO_ERROR_NOT_SUPPORTED will be reported.
 	//
 	// The given @stream will not be closed.
-	WriteMIMETypeAsync()
+	WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// WriteMIMETypeFinish finishes an asynchronous write operation.
 	//
 	// See [method@Gdk.ContentProvider.write_mime_type_async].
@@ -94,36 +84,6 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapContentProvider(obj), nil
-}
-
-// NewContentProviderForValue constructs a class ContentProvider.
-func NewContentProviderForValue(value **externglib.Value) ContentProvider {
-	var _arg1 *C.GValue
-
-	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret C.GdkContentProvider
-
-	cret = C.gdk_content_provider_new_for_value(_arg1)
-
-	var _contentProvider ContentProvider
-
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
-
-	return _contentProvider
-}
-
-// NewContentProviderUnion constructs a class ContentProvider.
-func NewContentProviderUnion() ContentProvider {
-	var _cret C.GdkContentProvider
-
-	cret = C.gdk_content_provider_new_union()
-
-	var _contentProvider ContentProvider
-
-	_contentProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContentProvider)
-
-	return _contentProvider
 }
 
 // ContentChanged emits the ::content-changed signal.
@@ -160,53 +120,6 @@ func (p contentProvider) Value(value **externglib.Value) error {
 	return _goerr
 }
 
-// RefFormats gets the formats that the provider can provide its current
-// contents in.
-func (p contentProvider) RefFormats() *ContentFormats {
-	var _arg0 *C.GdkContentProvider
-
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_provider_ref_formats(_arg0)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
-// RefStorableFormats gets the formats that the provider suggests other
-// applications to store the data in.
-//
-// An example of such an application would be a clipboard manager.
-//
-// This can be assumed to be a subset of
-// [method@Gdk.ContentProvider.ref_formats].
-func (p contentProvider) RefStorableFormats() *ContentFormats {
-	var _arg0 *C.GdkContentProvider
-
-	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_provider_ref_storable_formats(_arg0)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
 // WriteMIMETypeAsync: asynchronously writes the contents of @provider to
 // @stream in the given @mime_type.
 //
@@ -219,12 +132,25 @@ func (p contentProvider) RefStorableFormats() *ContentFormats {
 // is not supported, IO_ERROR_NOT_SUPPORTED will be reported.
 //
 // The given @stream will not be closed.
-func (p contentProvider) WriteMIMETypeAsync() {
+func (p contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GdkContentProvider
+	var _arg1 *C.char
+	var _arg2 *C.GOutputStream
+	var _arg3 C.int
+	var _arg4 *C.GCancellable
+	var _arg5 C.GAsyncReadyCallback
+	var _arg6 C.gpointer
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
+	_arg1 = (*C.char)(C.CString(mimeType))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
 
-	C.gdk_content_provider_write_mime_type_async(_arg0)
+	C.gdk_content_provider_write_mime_type_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // WriteMIMETypeFinish finishes an asynchronous write operation.

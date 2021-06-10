@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,24 +66,6 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 	return WrapShortcutLabel(obj), nil
 }
 
-// NewShortcutLabel constructs a class ShortcutLabel.
-func NewShortcutLabel(accelerator string) ShortcutLabel {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(accelerator))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkShortcutLabel
-
-	cret = C.gtk_shortcut_label_new(_arg1)
-
-	var _shortcutLabel ShortcutLabel
-
-	_shortcutLabel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutLabel)
-
-	return _shortcutLabel
-}
-
 // Accelerator retrieves the current accelerator of @self.
 func (s shortcutLabel) Accelerator() string {
 	var _arg0 *C.GtkShortcutLabel
@@ -93,7 +74,7 @@ func (s shortcutLabel) Accelerator() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_shortcut_label_get_accelerator(_arg0)
+	_cret = C.gtk_shortcut_label_get_accelerator(_arg0)
 
 	var _utf8 string
 
@@ -111,7 +92,7 @@ func (s shortcutLabel) DisabledText() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
+	_cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
 
 	var _utf8 string
 

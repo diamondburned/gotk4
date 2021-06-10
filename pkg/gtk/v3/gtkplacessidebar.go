@@ -3,13 +3,8 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -79,23 +74,6 @@ type PlacesSidebar interface {
 	// LocalOnly returns the value previously set with
 	// gtk_places_sidebar_set_local_only().
 	LocalOnly() bool
-	// Location gets the currently selected location in the @sidebar. This can
-	// be nil when nothing is selected, for example, when
-	// gtk_places_sidebar_set_location() has been called with a location that is
-	// not among the sidebar’s list of places to show.
-	//
-	// You can use this function to get the selection in the @sidebar. Also, if
-	// you connect to the PlacesSidebar::populate-popup signal, you can use this
-	// function to get the location that is being referred to during the
-	// callbacks for your menu items.
-	Location() gio.File
-	// NthBookmark: this function queries the bookmarks added by the user to the
-	// places sidebar, and returns one of them. This function is used by
-	// FileChooser to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which
-	// activate the cooresponding bookmark.
-	NthBookmark(n int) gio.File
-	// OpenFlags gets the open flags.
-	OpenFlags() PlacesOpenFlags
 	// ShowConnectToServer returns the value previously set with
 	// gtk_places_sidebar_set_show_connect_to_server()
 	ShowConnectToServer() bool
@@ -117,8 +95,6 @@ type PlacesSidebar interface {
 	// ShowTrash returns the value previously set with
 	// gtk_places_sidebar_set_show_trash()
 	ShowTrash() bool
-	// ListShortcuts gets the list of shortcuts.
-	ListShortcuts() *glib.SList
 	// RemoveShortcut removes an application-specific shortcut that has been
 	// previously been inserted with gtk_places_sidebar_add_shortcut(). If the
 	// @location is not a shortcut in the sidebar, then nothing is done.
@@ -225,19 +201,6 @@ func marshalPlacesSidebar(p uintptr) (interface{}, error) {
 	return WrapPlacesSidebar(obj), nil
 }
 
-// NewPlacesSidebar constructs a class PlacesSidebar.
-func NewPlacesSidebar() PlacesSidebar {
-	var _cret C.GtkPlacesSidebar
-
-	cret = C.gtk_places_sidebar_new()
-
-	var _placesSidebar PlacesSidebar
-
-	_placesSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PlacesSidebar)
-
-	return _placesSidebar
-}
-
 // AddShortcut applications may want to present some folders in the places
 // sidebar if they could be immediately useful to users. For example, a
 // drawing program could add a “/usr/share/clipart” location when the
@@ -267,7 +230,7 @@ func (s placesSidebar) LocalOnly() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_local_only(_arg0)
+	_cret = C.gtk_places_sidebar_get_local_only(_arg0)
 
 	var _ok bool
 
@@ -276,70 +239,6 @@ func (s placesSidebar) LocalOnly() bool {
 	}
 
 	return _ok
-}
-
-// Location gets the currently selected location in the @sidebar. This can
-// be nil when nothing is selected, for example, when
-// gtk_places_sidebar_set_location() has been called with a location that is
-// not among the sidebar’s list of places to show.
-//
-// You can use this function to get the selection in the @sidebar. Also, if
-// you connect to the PlacesSidebar::populate-popup signal, you can use this
-// function to get the location that is being referred to during the
-// callbacks for your menu items.
-func (s placesSidebar) Location() gio.File {
-	var _arg0 *C.GtkPlacesSidebar
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_places_sidebar_get_location(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
-}
-
-// NthBookmark: this function queries the bookmarks added by the user to the
-// places sidebar, and returns one of them. This function is used by
-// FileChooser to implement the “Alt-1”, “Alt-2”, etc. shortcuts, which
-// activate the cooresponding bookmark.
-func (s placesSidebar) NthBookmark(n int) gio.File {
-	var _arg0 *C.GtkPlacesSidebar
-	var _arg1 C.gint
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-	_arg1 = C.gint(n)
-
-	var _cret *C.GFile
-
-	cret = C.gtk_places_sidebar_get_nth_bookmark(_arg0, _arg1)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
-}
-
-// OpenFlags gets the open flags.
-func (s placesSidebar) OpenFlags() PlacesOpenFlags {
-	var _arg0 *C.GtkPlacesSidebar
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPlacesOpenFlags
-
-	cret = C.gtk_places_sidebar_get_open_flags(_arg0)
-
-	var _placesOpenFlags PlacesOpenFlags
-
-	_placesOpenFlags = PlacesOpenFlags(_cret)
-
-	return _placesOpenFlags
 }
 
 // ShowConnectToServer returns the value previously set with
@@ -351,7 +250,7 @@ func (s placesSidebar) ShowConnectToServer() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
+	_cret = C.gtk_places_sidebar_get_show_connect_to_server(_arg0)
 
 	var _ok bool
 
@@ -371,7 +270,7 @@ func (s placesSidebar) ShowDesktop() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
+	_cret = C.gtk_places_sidebar_get_show_desktop(_arg0)
 
 	var _ok bool
 
@@ -391,7 +290,7 @@ func (s placesSidebar) ShowEnterLocation() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
+	_cret = C.gtk_places_sidebar_get_show_enter_location(_arg0)
 
 	var _ok bool
 
@@ -411,7 +310,7 @@ func (s placesSidebar) ShowOtherLocations() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
+	_cret = C.gtk_places_sidebar_get_show_other_locations(_arg0)
 
 	var _ok bool
 
@@ -431,7 +330,7 @@ func (s placesSidebar) ShowRecent() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_show_recent(_arg0)
+	_cret = C.gtk_places_sidebar_get_show_recent(_arg0)
 
 	var _ok bool
 
@@ -451,7 +350,7 @@ func (s placesSidebar) ShowStarredLocation() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
+	_cret = C.gtk_places_sidebar_get_show_starred_location(_arg0)
 
 	var _ok bool
 
@@ -471,7 +370,7 @@ func (s placesSidebar) ShowTrash() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_places_sidebar_get_show_trash(_arg0)
+	_cret = C.gtk_places_sidebar_get_show_trash(_arg0)
 
 	var _ok bool
 
@@ -480,26 +379,6 @@ func (s placesSidebar) ShowTrash() bool {
 	}
 
 	return _ok
-}
-
-// ListShortcuts gets the list of shortcuts.
-func (s placesSidebar) ListShortcuts() *glib.SList {
-	var _arg0 *C.GtkPlacesSidebar
-
-	_arg0 = (*C.GtkPlacesSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_places_sidebar_list_shortcuts(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sList, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _sList
 }
 
 // RemoveShortcut removes an application-specific shortcut that has been

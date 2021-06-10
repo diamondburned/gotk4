@@ -7,7 +7,6 @@ import (
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -187,8 +186,6 @@ type Task interface {
 	gextras.Objector
 	AsyncResult
 
-	// Cancellable gets @task's #GCancellable
-	Cancellable() Cancellable
 	// CheckCancellable gets @task's check-cancellable flag. See
 	// g_task_set_check_cancellable() for more details.
 	CheckCancellable() bool
@@ -196,14 +193,6 @@ type Task interface {
 	// true after the task’s callback is invoked, and will return false if
 	// called from inside the callback.
 	Completed() bool
-	// Context gets the Context that @task will return its result in (that is,
-	// the context that was the [thread-default main
-	// context][g-main-context-push-thread-default] at the point when @task was
-	// created).
-	//
-	// This will always return a non-nil value, even if the task's context is
-	// the default Context.
-	Context() *glib.MainContext
 	// Name gets @task’s name. See g_task_set_name().
 	Name() string
 	// Priority gets @task's priority
@@ -377,36 +366,6 @@ func marshalTask(p uintptr) (interface{}, error) {
 	return WrapTask(obj), nil
 }
 
-// NewTask constructs a class Task.
-func NewTask() Task {
-	var _cret C.GTask
-
-	cret = C.g_task_new()
-
-	var _task Task
-
-	_task = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Task)
-
-	return _task
-}
-
-// Cancellable gets @task's #GCancellable
-func (t task) Cancellable() Cancellable {
-	var _arg0 *C.GTask
-
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GCancellable
-
-	cret = C.g_task_get_cancellable(_arg0)
-
-	var _cancellable Cancellable
-
-	_cancellable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Cancellable)
-
-	return _cancellable
-}
-
 // CheckCancellable gets @task's check-cancellable flag. See
 // g_task_set_check_cancellable() for more details.
 func (t task) CheckCancellable() bool {
@@ -416,7 +375,7 @@ func (t task) CheckCancellable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_task_get_check_cancellable(_arg0)
+	_cret = C.g_task_get_check_cancellable(_arg0)
 
 	var _ok bool
 
@@ -437,7 +396,7 @@ func (t task) Completed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_task_get_completed(_arg0)
+	_cret = C.g_task_get_completed(_arg0)
 
 	var _ok bool
 
@@ -448,29 +407,6 @@ func (t task) Completed() bool {
 	return _ok
 }
 
-// Context gets the Context that @task will return its result in (that is,
-// the context that was the [thread-default main
-// context][g-main-context-push-thread-default] at the point when @task was
-// created).
-//
-// This will always return a non-nil value, even if the task's context is
-// the default Context.
-func (t task) Context() *glib.MainContext {
-	var _arg0 *C.GTask
-
-	_arg0 = (*C.GTask)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GMainContext
-
-	cret = C.g_task_get_context(_arg0)
-
-	var _mainContext *glib.MainContext
-
-	_mainContext = glib.WrapMainContext(unsafe.Pointer(_cret))
-
-	return _mainContext
-}
-
 // Name gets @task’s name. See g_task_set_name().
 func (t task) Name() string {
 	var _arg0 *C.GTask
@@ -479,7 +415,7 @@ func (t task) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_task_get_name(_arg0)
+	_cret = C.g_task_get_name(_arg0)
 
 	var _utf8 string
 
@@ -496,7 +432,7 @@ func (t task) Priority() int {
 
 	var _cret C.gint
 
-	cret = C.g_task_get_priority(_arg0)
+	_cret = C.g_task_get_priority(_arg0)
 
 	var _gint int
 
@@ -514,7 +450,7 @@ func (t task) ReturnOnCancel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_task_get_return_on_cancel(_arg0)
+	_cret = C.g_task_get_return_on_cancel(_arg0)
 
 	var _ok bool
 
@@ -534,7 +470,7 @@ func (t task) SourceObject() gextras.Objector {
 
 	var _cret C.gpointer
 
-	cret = C.g_task_get_source_object(_arg0)
+	_cret = C.g_task_get_source_object(_arg0)
 
 	var _object gextras.Objector
 
@@ -551,7 +487,7 @@ func (t task) SourceTag() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_task_get_source_tag(_arg0)
+	_cret = C.g_task_get_source_tag(_arg0)
 
 	var _gpointer interface{}
 
@@ -568,7 +504,7 @@ func (t task) TaskData() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_task_get_task_data(_arg0)
+	_cret = C.g_task_get_task_data(_arg0)
 
 	var _gpointer interface{}
 
@@ -585,7 +521,7 @@ func (t task) HadError() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_task_had_error(_arg0)
+	_cret = C.g_task_had_error(_arg0)
 
 	var _ok bool
 
@@ -634,7 +570,7 @@ func (t task) PropagateInt() (int, error) {
 	var _cret C.gssize
 	var _cerr *C.GError
 
-	cret = C.g_task_propagate_int(_arg0, _cerr)
+	_cret = C.g_task_propagate_int(_arg0, _cerr)
 
 	var _gssize int
 	var _goerr error
@@ -661,7 +597,7 @@ func (t task) PropagatePointer() (interface{}, error) {
 	var _cret C.gpointer
 	var _cerr *C.GError
 
-	cret = C.g_task_propagate_pointer(_arg0, _cerr)
+	_cret = C.g_task_propagate_pointer(_arg0, _cerr)
 
 	var _gpointer interface{}
 	var _goerr error
@@ -746,7 +682,7 @@ func (t task) ReturnErrorIfCancelled() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_task_return_error_if_cancelled(_arg0)
+	_cret = C.g_task_return_error_if_cancelled(_arg0)
 
 	var _ok bool
 
@@ -886,7 +822,7 @@ func (t task) SetReturnOnCancel(returnOnCancel bool) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_task_set_return_on_cancel(_arg0, _arg1)
+	_cret = C.g_task_set_return_on_cancel(_arg0, _arg1)
 
 	var _ok bool
 

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -154,55 +153,6 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 	return WrapCheckButton(obj), nil
 }
 
-// NewCheckButton constructs a class CheckButton.
-func NewCheckButton() CheckButton {
-	var _cret C.GtkCheckButton
-
-	cret = C.gtk_check_button_new()
-
-	var _checkButton CheckButton
-
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
-
-	return _checkButton
-}
-
-// NewCheckButtonWithLabel constructs a class CheckButton.
-func NewCheckButtonWithLabel(label string) CheckButton {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckButton
-
-	cret = C.gtk_check_button_new_with_label(_arg1)
-
-	var _checkButton CheckButton
-
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
-
-	return _checkButton
-}
-
-// NewCheckButtonWithMnemonic constructs a class CheckButton.
-func NewCheckButtonWithMnemonic(label string) CheckButton {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckButton
-
-	cret = C.gtk_check_button_new_with_mnemonic(_arg1)
-
-	var _checkButton CheckButton
-
-	_checkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckButton)
-
-	return _checkButton
-}
-
 // Active returns whether the check button is active.
 func (s checkButton) Active() bool {
 	var _arg0 *C.GtkCheckButton
@@ -211,7 +161,7 @@ func (s checkButton) Active() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_check_button_get_active(_arg0)
+	_cret = C.gtk_check_button_get_active(_arg0)
 
 	var _ok bool
 
@@ -231,7 +181,7 @@ func (c checkButton) Inconsistent() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_check_button_get_inconsistent(_arg0)
+	_cret = C.gtk_check_button_get_inconsistent(_arg0)
 
 	var _ok bool
 
@@ -250,7 +200,7 @@ func (s checkButton) Label() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_check_button_get_label(_arg0)
+	_cret = C.gtk_check_button_get_label(_arg0)
 
 	var _utf8 string
 
@@ -267,7 +217,7 @@ func (s checkButton) UseUnderline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_check_button_get_use_underline(_arg0)
+	_cret = C.gtk_check_button_get_use_underline(_arg0)
 
 	var _ok bool
 

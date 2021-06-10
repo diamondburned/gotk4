@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -101,19 +98,6 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 	return WrapEventBox(obj), nil
 }
 
-// NewEventBox constructs a class EventBox.
-func NewEventBox() EventBox {
-	var _cret C.GtkEventBox
-
-	cret = C.gtk_event_box_new()
-
-	var _eventBox EventBox
-
-	_eventBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EventBox)
-
-	return _eventBox
-}
-
 // AboveChild returns whether the event box window is above or below the
 // windows of its child. See gtk_event_box_set_above_child() for details.
 func (e eventBox) AboveChild() bool {
@@ -123,7 +107,7 @@ func (e eventBox) AboveChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_event_box_get_above_child(_arg0)
+	_cret = C.gtk_event_box_get_above_child(_arg0)
 
 	var _ok bool
 
@@ -143,7 +127,7 @@ func (e eventBox) VisibleWindow() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_event_box_get_visible_window(_arg0)
+	_cret = C.gtk_event_box_get_visible_window(_arg0)
 
 	var _ok bool
 

@@ -42,9 +42,6 @@ type Toplevel interface {
 	// In most cases, [method@Gtk.Window.present_with_time] should be used on a
 	// [class@Gtk.Window], rather than calling this function.
 	Focus(timestamp uint32)
-	// State gets the bitwise or of the currently active surface state flags,
-	// from the `GdkToplevelState` enumeration.
-	State() ToplevelState
 	// InhibitSystemShortcuts requests that the @toplevel inhibit the system
 	// shortcuts.
 	//
@@ -232,24 +229,6 @@ func (t toplevel) Focus(timestamp uint32) {
 	C.gdk_toplevel_focus(_arg0, _arg1)
 }
 
-// State gets the bitwise or of the currently active surface state flags,
-// from the `GdkToplevelState` enumeration.
-func (t toplevel) State() ToplevelState {
-	var _arg0 *C.GdkToplevel
-
-	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GdkToplevelState
-
-	cret = C.gdk_toplevel_get_state(_arg0)
-
-	var _toplevelState ToplevelState
-
-	_toplevelState = ToplevelState(_cret)
-
-	return _toplevelState
-}
-
 // InhibitSystemShortcuts requests that the @toplevel inhibit the system
 // shortcuts.
 //
@@ -292,7 +271,7 @@ func (t toplevel) Lower() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_toplevel_lower(_arg0)
+	_cret = C.gdk_toplevel_lower(_arg0)
 
 	var _ok bool
 
@@ -313,7 +292,7 @@ func (t toplevel) Minimize() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_toplevel_minimize(_arg0)
+	_cret = C.gdk_toplevel_minimize(_arg0)
 
 	var _ok bool
 
@@ -491,7 +470,7 @@ func (t toplevel) ShowWindowMenu(event Event) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
+	_cret = C.gdk_toplevel_show_window_menu(_arg0, _arg1)
 
 	var _ok bool
 
@@ -511,7 +490,7 @@ func (t toplevel) SupportsEdgeConstraints() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_toplevel_supports_edge_constraints(_arg0)
+	_cret = C.gdk_toplevel_supports_edge_constraints(_arg0)
 
 	var _ok bool
 

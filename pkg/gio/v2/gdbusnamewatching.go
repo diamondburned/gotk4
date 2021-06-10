@@ -2,10 +2,6 @@
 
 package gio
 
-import (
-	"github.com/diamondburned/gotk4/internal/box"
-)
-
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -20,39 +16,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// BusNameAppearedCallback: invoked when the name being watched is known to have
-// to have an owner.
-type BusNameAppearedCallback func()
-
-//export gotk4_BusNameAppearedCallback
-func gotk4_BusNameAppearedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 *C.gchar, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(BusNameAppearedCallback)
-	fn()
-}
-
-// BusNameVanishedCallback: invoked when the name being watched is known not to
-// have to have an owner.
-//
-// This is also invoked when the BusConnection on which the watch was
-// established has been closed. In that case, @connection will be nil.
-type BusNameVanishedCallback func()
-
-//export gotk4_BusNameVanishedCallback
-func gotk4_BusNameVanishedCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(BusNameVanishedCallback)
-	fn()
-}
 
 // BusUnwatchName stops watching a name.
 //

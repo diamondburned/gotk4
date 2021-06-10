@@ -4,10 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -17,25 +13,6 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// FileFilterFunc: the type of function that is used with custom filters, see
-// gtk_file_filter_add_custom().
-type FileFilterFunc func() (ok bool)
-
-//export gotk4_FileFilterFunc
-func gotk4_FileFilterFunc(arg0 *C.GtkFileFilterInfo, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(FileFilterFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}
 
 // FileFilterInfo: a FileFilterInfo-struct is used to pass information about the
 // tested file to gtk_file_filter_filter().
@@ -61,13 +38,6 @@ func marshalFileFilterInfo(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (f *FileFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&f.native)
-}
-
-// Contains gets the field inside the struct.
-func (f *FileFilterInfo) Contains() FileFilterFlags {
-	var v FileFilterFlags
-	v = FileFilterFlags(f.native.contains)
-	return v
 }
 
 // Filename gets the field inside the struct.

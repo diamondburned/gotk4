@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,8 +48,6 @@ type StyleProperties interface {
 	// with @value, g_value_unset() needs to be called to free any allocated
 	// memory.
 	Property(property string, state StateFlags) (*externglib.Value, bool)
-	// LookupColor returns the symbolic color that is mapped to @name.
-	LookupColor(name string) *SymbolicColor
 	// MapColor maps @color so it can be referenced by @name. See
 	// gtk_style_properties_lookup_color()
 	MapColor(name string, color *SymbolicColor)
@@ -87,19 +84,6 @@ func marshalStyleProperties(p uintptr) (interface{}, error) {
 	return WrapStyleProperties(obj), nil
 }
 
-// NewStyleProperties constructs a class StyleProperties.
-func NewStyleProperties() StyleProperties {
-	var _cret C.GtkStyleProperties
-
-	cret = C.gtk_style_properties_new()
-
-	var _styleProperties StyleProperties
-
-	_styleProperties = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StyleProperties)
-
-	return _styleProperties
-}
-
 // Clear clears all style information from @props.
 func (p styleProperties) Clear() {
 	var _arg0 *C.GtkStyleProperties
@@ -125,7 +109,7 @@ func (p styleProperties) Property(property string, state StateFlags) (*externgli
 	var _arg3 C.GValue
 	var _cret C.gboolean
 
-	cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
+	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
 
 	var _value *externglib.Value
 	var _ok bool
@@ -139,26 +123,6 @@ func (p styleProperties) Property(property string, state StateFlags) (*externgli
 	}
 
 	return _value, _ok
-}
-
-// LookupColor returns the symbolic color that is mapped to @name.
-func (p styleProperties) LookupColor(name string) *SymbolicColor {
-	var _arg0 *C.GtkStyleProperties
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_style_properties_lookup_color(_arg0, _arg1)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-
-	return _symbolicColor
 }
 
 // MapColor maps @color so it can be referenced by @name. See
@@ -256,62 +220,6 @@ func marshalGradient(p uintptr) (interface{}, error) {
 	return WrapGradient(unsafe.Pointer(b)), nil
 }
 
-// NewGradientLinear constructs a struct Gradient.
-func NewGradientLinear(x0 float64, y0 float64, x1 float64, y1 float64) *Gradient {
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
-
-	_arg1 = C.gdouble(x0)
-	_arg2 = C.gdouble(y0)
-	_arg3 = C.gdouble(x1)
-	_arg4 = C.gdouble(y1)
-
-	var _cret *C.GtkGradient
-
-	cret = C.gtk_gradient_new_linear(_arg1, _arg2, _arg3, _arg4)
-
-	var _gradient *Gradient
-
-	_gradient = WrapGradient(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_gradient, func(v *Gradient) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _gradient
-}
-
-// NewGradientRadial constructs a struct Gradient.
-func NewGradientRadial(x0 float64, y0 float64, radius0 float64, x1 float64, y1 float64, radius1 float64) *Gradient {
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
-	var _arg5 C.gdouble
-	var _arg6 C.gdouble
-
-	_arg1 = C.gdouble(x0)
-	_arg2 = C.gdouble(y0)
-	_arg3 = C.gdouble(radius0)
-	_arg4 = C.gdouble(x1)
-	_arg5 = C.gdouble(y1)
-	_arg6 = C.gdouble(radius1)
-
-	var _cret *C.GtkGradient
-
-	cret = C.gtk_gradient_new_radial(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
-	var _gradient *Gradient
-
-	_gradient = WrapGradient(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_gradient, func(v *Gradient) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _gradient
-}
-
 // Native returns the underlying C source pointer.
 func (g *Gradient) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
@@ -330,26 +238,6 @@ func (g *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 	C.gtk_gradient_add_color_stop(_arg0, _arg1, _arg2)
 }
 
-// Ref increases the reference count of @gradient.
-func (g *Gradient) Ref() *Gradient {
-	var _arg0 *C.GtkGradient
-
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g.Native()))
-
-	var _cret *C.GtkGradient
-
-	cret = C.gtk_gradient_ref(_arg0)
-
-	var _ret *Gradient
-
-	_ret = WrapGradient(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Gradient) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _ret
-}
-
 // Resolve: if @gradient is resolvable, @resolved_gradient will be filled in
 // with the resolved gradient as a cairo_pattern_t, and true will be returned.
 // Generally, if @gradient can’t be resolved, it is due to it being defined on
@@ -364,7 +252,7 @@ func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
 	var _resolvedGradient *cairo.Pattern
 	var _cret C.gboolean
 
-	cret = C.gtk_gradient_resolve(_arg0, _arg1, (**C.cairo_pattern_t)(unsafe.Pointer(&_resolvedGradient)))
+	_cret = C.gtk_gradient_resolve(_arg0, _arg1, (**C.cairo_pattern_t)(unsafe.Pointer(&_resolvedGradient)))
 
 	var _ok bool
 
@@ -373,27 +261,6 @@ func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
 	}
 
 	return _resolvedGradient, _ok
-}
-
-func (g *Gradient) ResolveForContext(context StyleContext) *cairo.Pattern {
-	var _arg0 *C.GtkGradient
-	var _arg1 *C.GtkStyleContext
-
-	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-
-	var _cret *C.cairo_pattern_t
-
-	cret = C.gtk_gradient_resolve_for_context(_arg0, _arg1)
-
-	var _pattern *cairo.Pattern
-
-	_pattern = cairo.WrapPattern(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_pattern, func(v *cairo.Pattern) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _pattern
 }
 
 // String creates a string representation for @gradient that is suitable for
@@ -405,7 +272,7 @@ func (g *Gradient) String() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_gradient_to_string(_arg0)
+	_cret = C.gtk_gradient_to_string(_arg0)
 
 	var _utf8 string
 
@@ -457,161 +324,9 @@ func marshalSymbolicColor(p uintptr) (interface{}, error) {
 	return WrapSymbolicColor(unsafe.Pointer(b)), nil
 }
 
-// NewSymbolicColorAlpha constructs a struct SymbolicColor.
-func NewSymbolicColorAlpha(color *SymbolicColor, factor float64) *SymbolicColor {
-	var _arg1 *C.GtkSymbolicColor
-	var _arg2 C.gdouble
-
-	_arg1 = (*C.GtkSymbolicColor)(unsafe.Pointer(color.Native()))
-	_arg2 = C.gdouble(factor)
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_symbolic_color_new_alpha(_arg1, _arg2)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _symbolicColor
-}
-
-// NewSymbolicColorLiteral constructs a struct SymbolicColor.
-func NewSymbolicColorLiteral(color *gdk.RGBA) *SymbolicColor {
-	var _arg1 *C.GdkRGBA
-
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_symbolic_color_new_literal(_arg1)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _symbolicColor
-}
-
-// NewSymbolicColorMix constructs a struct SymbolicColor.
-func NewSymbolicColorMix(color1 *SymbolicColor, color2 *SymbolicColor, factor float64) *SymbolicColor {
-	var _arg1 *C.GtkSymbolicColor
-	var _arg2 *C.GtkSymbolicColor
-	var _arg3 C.gdouble
-
-	_arg1 = (*C.GtkSymbolicColor)(unsafe.Pointer(color1.Native()))
-	_arg2 = (*C.GtkSymbolicColor)(unsafe.Pointer(color2.Native()))
-	_arg3 = C.gdouble(factor)
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_symbolic_color_new_mix(_arg1, _arg2, _arg3)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _symbolicColor
-}
-
-// NewSymbolicColorName constructs a struct SymbolicColor.
-func NewSymbolicColorName(name string) *SymbolicColor {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_symbolic_color_new_name(_arg1)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _symbolicColor
-}
-
-// NewSymbolicColorShade constructs a struct SymbolicColor.
-func NewSymbolicColorShade(color *SymbolicColor, factor float64) *SymbolicColor {
-	var _arg1 *C.GtkSymbolicColor
-	var _arg2 C.gdouble
-
-	_arg1 = (*C.GtkSymbolicColor)(unsafe.Pointer(color.Native()))
-	_arg2 = C.gdouble(factor)
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_symbolic_color_new_shade(_arg1, _arg2)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _symbolicColor
-}
-
-// NewSymbolicColorWin32 constructs a struct SymbolicColor.
-func NewSymbolicColorWin32(themeClass string, id int) *SymbolicColor {
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-
-	_arg1 = (*C.gchar)(C.CString(themeClass))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(id)
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_symbolic_color_new_win32(_arg1, _arg2)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _symbolicColor
-}
-
 // Native returns the underlying C source pointer.
 func (s *SymbolicColor) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// Ref increases the reference count of @color
-func (c *SymbolicColor) Ref() *SymbolicColor {
-	var _arg0 *C.GtkSymbolicColor
-
-	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkSymbolicColor
-
-	cret = C.gtk_symbolic_color_ref(_arg0)
-
-	var _symbolicColor *SymbolicColor
-
-	_symbolicColor = WrapSymbolicColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_symbolicColor, func(v *SymbolicColor) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _symbolicColor
 }
 
 // Resolve: if @color is resolvable, @resolved_color will be filled in with the
@@ -631,7 +346,7 @@ func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
 	var _resolvedColor gdk.RGBA
 	var _cret C.gboolean
 
-	cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_resolvedColor)))
+	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_resolvedColor)))
 
 	var _ok bool
 
@@ -654,7 +369,7 @@ func (c *SymbolicColor) String() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_symbolic_color_to_string(_arg0)
+	_cret = C.gtk_symbolic_color_to_string(_arg0)
 
 	var _utf8 string
 

@@ -18,7 +18,7 @@ func AtomicRefCountCompare(arc *int, val int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_atomic_ref_count_compare(_arg1, _arg2)
+	_cret = C.g_atomic_ref_count_compare(_arg1, _arg2)
 
 	var _ok bool
 
@@ -37,7 +37,7 @@ func AtomicRefCountDec(arc *int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_atomic_ref_count_dec(_arg1)
+	_cret = C.g_atomic_ref_count_dec(_arg1)
 
 	var _ok bool
 
@@ -76,7 +76,7 @@ func RefCountCompare(rc *int, val int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_ref_count_compare(_arg1, _arg2)
+	_cret = C.g_ref_count_compare(_arg1, _arg2)
 
 	var _ok bool
 
@@ -95,7 +95,7 @@ func RefCountDec(rc *int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_ref_count_dec(_arg1)
+	_cret = C.g_ref_count_dec(_arg1)
 
 	var _ok bool
 

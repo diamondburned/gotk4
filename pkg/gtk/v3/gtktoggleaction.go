@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -66,33 +63,6 @@ func marshalToggleAction(p uintptr) (interface{}, error) {
 	return WrapToggleAction(obj), nil
 }
 
-// NewToggleAction constructs a class ToggleAction.
-func NewToggleAction(name string, label string, tooltip string, stockId string) ToggleAction {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(tooltip))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg4))
-
-	var _cret C.GtkToggleAction
-
-	cret = C.gtk_toggle_action_new(_arg1, _arg2, _arg3, _arg4)
-
-	var _toggleAction ToggleAction
-
-	_toggleAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ToggleAction)
-
-	return _toggleAction
-}
-
 // Active returns the checked state of the toggle action.
 func (a toggleAction) Active() bool {
 	var _arg0 *C.GtkToggleAction
@@ -101,7 +71,7 @@ func (a toggleAction) Active() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_toggle_action_get_active(_arg0)
+	_cret = C.gtk_toggle_action_get_active(_arg0)
 
 	var _ok bool
 
@@ -121,7 +91,7 @@ func (a toggleAction) DrawAsRadio() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
+	_cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
 
 	var _ok bool
 

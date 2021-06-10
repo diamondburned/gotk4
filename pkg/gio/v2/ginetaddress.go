@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,8 +42,6 @@ type InetAddress interface {
 
 	// Equal checks if two Address instances are equal, e.g. the same address.
 	Equal(otherAddress InetAddress) bool
-	// Family gets @address's family
-	Family() SocketFamily
 	// IsAny tests whether @address is the "any" address for its family.
 	IsAny() bool
 	// IsLinkLocal tests whether @address is a link-local address (that is, if
@@ -101,58 +98,6 @@ func marshalInetAddress(p uintptr) (interface{}, error) {
 	return WrapInetAddress(obj), nil
 }
 
-// NewInetAddressAny constructs a class InetAddress.
-func NewInetAddressAny(family SocketFamily) InetAddress {
-	var _arg1 C.GSocketFamily
-
-	_arg1 = (C.GSocketFamily)(family)
-
-	var _cret C.GInetAddress
-
-	cret = C.g_inet_address_new_any(_arg1)
-
-	var _inetAddress InetAddress
-
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
-
-	return _inetAddress
-}
-
-// NewInetAddressFromString constructs a class InetAddress.
-func NewInetAddressFromString(string string) InetAddress {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GInetAddress
-
-	cret = C.g_inet_address_new_from_string(_arg1)
-
-	var _inetAddress InetAddress
-
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
-
-	return _inetAddress
-}
-
-// NewInetAddressLoopback constructs a class InetAddress.
-func NewInetAddressLoopback(family SocketFamily) InetAddress {
-	var _arg1 C.GSocketFamily
-
-	_arg1 = (C.GSocketFamily)(family)
-
-	var _cret C.GInetAddress
-
-	cret = C.g_inet_address_new_loopback(_arg1)
-
-	var _inetAddress InetAddress
-
-	_inetAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InetAddress)
-
-	return _inetAddress
-}
-
 // Equal checks if two Address instances are equal, e.g. the same address.
 func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	var _arg0 *C.GInetAddress
@@ -163,7 +108,7 @@ func (a inetAddress) Equal(otherAddress InetAddress) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_equal(_arg0, _arg1)
+	_cret = C.g_inet_address_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -174,23 +119,6 @@ func (a inetAddress) Equal(otherAddress InetAddress) bool {
 	return _ok
 }
 
-// Family gets @address's family
-func (a inetAddress) Family() SocketFamily {
-	var _arg0 *C.GInetAddress
-
-	_arg0 = (*C.GInetAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GSocketFamily
-
-	cret = C.g_inet_address_get_family(_arg0)
-
-	var _socketFamily SocketFamily
-
-	_socketFamily = SocketFamily(_cret)
-
-	return _socketFamily
-}
-
 // IsAny tests whether @address is the "any" address for its family.
 func (a inetAddress) IsAny() bool {
 	var _arg0 *C.GInetAddress
@@ -199,7 +127,7 @@ func (a inetAddress) IsAny() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_any(_arg0)
+	_cret = C.g_inet_address_get_is_any(_arg0)
 
 	var _ok bool
 
@@ -220,7 +148,7 @@ func (a inetAddress) IsLinkLocal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_link_local(_arg0)
+	_cret = C.g_inet_address_get_is_link_local(_arg0)
 
 	var _ok bool
 
@@ -239,7 +167,7 @@ func (a inetAddress) IsLoopback() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_loopback(_arg0)
+	_cret = C.g_inet_address_get_is_loopback(_arg0)
 
 	var _ok bool
 
@@ -258,7 +186,7 @@ func (a inetAddress) IsMcGlobal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_global(_arg0)
+	_cret = C.g_inet_address_get_is_mc_global(_arg0)
 
 	var _ok bool
 
@@ -277,7 +205,7 @@ func (a inetAddress) IsMcLinkLocal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_link_local(_arg0)
+	_cret = C.g_inet_address_get_is_mc_link_local(_arg0)
 
 	var _ok bool
 
@@ -296,7 +224,7 @@ func (a inetAddress) IsMcNodeLocal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_node_local(_arg0)
+	_cret = C.g_inet_address_get_is_mc_node_local(_arg0)
 
 	var _ok bool
 
@@ -316,7 +244,7 @@ func (a inetAddress) IsMcOrgLocal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_org_local(_arg0)
+	_cret = C.g_inet_address_get_is_mc_org_local(_arg0)
 
 	var _ok bool
 
@@ -335,7 +263,7 @@ func (a inetAddress) IsMcSiteLocal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_mc_site_local(_arg0)
+	_cret = C.g_inet_address_get_is_mc_site_local(_arg0)
 
 	var _ok bool
 
@@ -354,7 +282,7 @@ func (a inetAddress) IsMulticast() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_multicast(_arg0)
+	_cret = C.g_inet_address_get_is_multicast(_arg0)
 
 	var _ok bool
 
@@ -376,7 +304,7 @@ func (a inetAddress) IsSiteLocal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_inet_address_get_is_site_local(_arg0)
+	_cret = C.g_inet_address_get_is_site_local(_arg0)
 
 	var _ok bool
 
@@ -396,7 +324,7 @@ func (a inetAddress) NativeSize() uint {
 
 	var _cret C.gsize
 
-	cret = C.g_inet_address_get_native_size(_arg0)
+	_cret = C.g_inet_address_get_native_size(_arg0)
 
 	var _gsize uint
 
@@ -413,7 +341,7 @@ func (a inetAddress) ToBytes() *byte {
 
 	var _cret *C.guint8
 
-	cret = C.g_inet_address_to_bytes(_arg0)
+	_cret = C.g_inet_address_to_bytes(_arg0)
 
 	var _guint8 *byte
 
@@ -430,7 +358,7 @@ func (a inetAddress) String() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_inet_address_to_string(_arg0)
+	_cret = C.g_inet_address_to_string(_arg0)
 
 	var _utf8 string
 

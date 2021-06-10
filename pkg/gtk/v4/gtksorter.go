@@ -53,24 +53,6 @@ type Sorter interface {
 	// This function is intended for implementors of `GtkSorter` subclasses and
 	// should not be called from other functions.
 	Changed(change SorterChange)
-	// Compare compares two given items according to the sort order implemented
-	// by the sorter.
-	//
-	// Sorters implement a partial order:
-	//
-	// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-	// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-	// then a ≤ c
-	//
-	// The sorter may signal it conforms to additional constraints via the
-	// return value of [method@Gtk.Sorter.get_order].
-	Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering
-	// Order gets the order that @self conforms to.
-	//
-	// See [enum@Gtk.SorterOrder] for details of the possible return values.
-	//
-	// This function is intended to allow optimizations.
-	Order() SorterOrder
 }
 
 // sorter implements the Sorter interface.
@@ -114,56 +96,4 @@ func (s sorter) Changed(change SorterChange) {
 	_arg1 = (C.GtkSorterChange)(change)
 
 	C.gtk_sorter_changed(_arg0, _arg1)
-}
-
-// Compare compares two given items according to the sort order implemented
-// by the sorter.
-//
-// Sorters implement a partial order:
-//
-// * It is reflexive, ie a = a * It is antisymmetric, ie if a < b and b < a,
-// then a = b * It is transitive, ie given any 3 items with a ≤ b and b ≤ c,
-// then a ≤ c
-//
-// The sorter may signal it conforms to additional constraints via the
-// return value of [method@Gtk.Sorter.get_order].
-func (s sorter) Compare(item1 gextras.Objector, item2 gextras.Objector) Ordering {
-	var _arg0 *C.GtkSorter
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
-
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GObject)(unsafe.Pointer(item1.Native()))
-	_arg2 = (*C.GObject)(unsafe.Pointer(item2.Native()))
-
-	var _cret C.GtkOrdering
-
-	cret = C.gtk_sorter_compare(_arg0, _arg1, _arg2)
-
-	var _ordering Ordering
-
-	_ordering = Ordering(_cret)
-
-	return _ordering
-}
-
-// Order gets the order that @self conforms to.
-//
-// See [enum@Gtk.SorterOrder] for details of the possible return values.
-//
-// This function is intended to allow optimizations.
-func (s sorter) Order() SorterOrder {
-	var _arg0 *C.GtkSorter
-
-	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSorterOrder
-
-	cret = C.gtk_sorter_get_order(_arg0)
-
-	var _sorterOrder SorterOrder
-
-	_sorterOrder = SorterOrder(_cret)
-
-	return _sorterOrder
 }

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -59,19 +56,6 @@ func marshalAnyFilter(p uintptr) (interface{}, error) {
 	return WrapAnyFilter(obj), nil
 }
 
-// NewAnyFilter constructs a class AnyFilter.
-func NewAnyFilter() AnyFilter {
-	var _cret C.GtkAnyFilter
-
-	cret = C.gtk_any_filter_new()
-
-	var _anyFilter AnyFilter
-
-	_anyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AnyFilter)
-
-	return _anyFilter
-}
-
 // EveryFilter: `GtkEveryFilter` matches an item when each of its filters
 // matches.
 //
@@ -105,19 +89,6 @@ func marshalEveryFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEveryFilter(obj), nil
-}
-
-// NewEveryFilter constructs a class EveryFilter.
-func NewEveryFilter() EveryFilter {
-	var _cret C.GtkEveryFilter
-
-	cret = C.gtk_every_filter_new()
-
-	var _everyFilter EveryFilter
-
-	_everyFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EveryFilter)
-
-	return _everyFilter
 }
 
 // MultiFilter: `GtkMultiFilter` is the base class for filters that combine

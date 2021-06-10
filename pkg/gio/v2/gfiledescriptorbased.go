@@ -75,7 +75,7 @@ func (f fileDescriptorBased) Fd() int {
 
 	var _cret C.int
 
-	cret = C.g_file_descriptor_based_get_fd(_arg0)
+	_cret = C.g_file_descriptor_based_get_fd(_arg0)
 
 	var _gint int
 

@@ -4,8 +4,6 @@ package gio
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0

@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/ptr"
@@ -103,65 +102,6 @@ type ActionGroupOverrider interface {
 	// An action must be enabled in order to be activated or in order to have
 	// its state changed from outside callers.
 	ActionEnabled(actionName string) bool
-	// ActionParameterType queries the type of the parameter that must be given
-	// when activating the named action within @action_group.
-	//
-	// When activating the action using g_action_group_activate_action(), the
-	// #GVariant given to that function must be of the type returned by this
-	// function.
-	//
-	// In the case that this function returns nil, you must not give any
-	// #GVariant, but nil instead.
-	//
-	// The parameter type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different parameter type.
-	ActionParameterType(actionName string) *glib.VariantType
-	// ActionState queries the current state of the named action within
-	// @action_group.
-	//
-	// If the action is not stateful then nil will be returned. If the action is
-	// stateful then the type of the return value is the type given by
-	// g_action_group_get_action_state_type().
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	ActionState(actionName string) *glib.Variant
-	// ActionStateHint requests a hint about the valid range of values for the
-	// state of the named action within @action_group.
-	//
-	// If nil is returned it either means that the action is not stateful or
-	// that there is no hint about the valid range of values for the state of
-	// the action.
-	//
-	// If a #GVariant array is returned then each item in the array is a
-	// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-	// returned then the tuple specifies the inclusive lower and upper bound of
-	// valid values for the state.
-	//
-	// In any case, the information is merely a hint. It may be possible to have
-	// a state value outside of the hinted range and setting a value within the
-	// range may fail.
-	//
-	// The return value (if non-nil) should be freed with g_variant_unref() when
-	// it is no longer required.
-	ActionStateHint(actionName string) *glib.Variant
-	// ActionStateType queries the type of the state of the named action within
-	// @action_group.
-	//
-	// If the action is stateful then this function returns the Type of the
-	// state. All calls to g_action_group_change_action_state() must give a
-	// #GVariant of this type and g_action_group_get_action_state() will return
-	// a #GVariant of the same type.
-	//
-	// If the action is not stateful then this function will return nil. In that
-	// case, g_action_group_get_action_state() will return nil and you must not
-	// call g_action_group_change_action_state().
-	//
-	// The state type of a particular action will never change but it is
-	// possible for an action to be removed and for a new action to be added
-	// with the same name but a different state type.
-	ActionStateType(actionName string) *glib.VariantType
 	// HasAction checks if the named action exists within @action_group.
 	HasAction(actionName string) bool
 	// ListActions lists the actions contained within @action_group.
@@ -412,7 +352,7 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
+	_cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
 
 	var _ok bool
 
@@ -421,143 +361,6 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 	}
 
 	return _ok
-}
-
-// ActionParameterType queries the type of the parameter that must be given
-// when activating the named action within @action_group.
-//
-// When activating the action using g_action_group_activate_action(), the
-// #GVariant given to that function must be of the type returned by this
-// function.
-//
-// In the case that this function returns nil, you must not give any
-// #GVariant, but nil instead.
-//
-// The parameter type of a particular action will never change but it is
-// possible for an action to be removed and for a new action to be added
-// with the same name but a different parameter type.
-func (a actionGroup) ActionParameterType(actionName string) *glib.VariantType {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GVariantType
-
-	cret = C.g_action_group_get_action_parameter_type(_arg0, _arg1)
-
-	var _variantType *glib.VariantType
-
-	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
-
-	return _variantType
-}
-
-// ActionState queries the current state of the named action within
-// @action_group.
-//
-// If the action is not stateful then nil will be returned. If the action is
-// stateful then the type of the return value is the type given by
-// g_action_group_get_action_state_type().
-//
-// The return value (if non-nil) should be freed with g_variant_unref() when
-// it is no longer required.
-func (a actionGroup) ActionState(actionName string) *glib.Variant {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GVariant
-
-	cret = C.g_action_group_get_action_state(_arg0, _arg1)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _variant
-}
-
-// ActionStateHint requests a hint about the valid range of values for the
-// state of the named action within @action_group.
-//
-// If nil is returned it either means that the action is not stateful or
-// that there is no hint about the valid range of values for the state of
-// the action.
-//
-// If a #GVariant array is returned then each item in the array is a
-// possible value for the state. If a #GVariant pair (ie: two-tuple) is
-// returned then the tuple specifies the inclusive lower and upper bound of
-// valid values for the state.
-//
-// In any case, the information is merely a hint. It may be possible to have
-// a state value outside of the hinted range and setting a value within the
-// range may fail.
-//
-// The return value (if non-nil) should be freed with g_variant_unref() when
-// it is no longer required.
-func (a actionGroup) ActionStateHint(actionName string) *glib.Variant {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GVariant
-
-	cret = C.g_action_group_get_action_state_hint(_arg0, _arg1)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _variant
-}
-
-// ActionStateType queries the type of the state of the named action within
-// @action_group.
-//
-// If the action is stateful then this function returns the Type of the
-// state. All calls to g_action_group_change_action_state() must give a
-// #GVariant of this type and g_action_group_get_action_state() will return
-// a #GVariant of the same type.
-//
-// If the action is not stateful then this function will return nil. In that
-// case, g_action_group_get_action_state() will return nil and you must not
-// call g_action_group_change_action_state().
-//
-// The state type of a particular action will never change but it is
-// possible for an action to be removed and for a new action to be added
-// with the same name but a different state type.
-func (a actionGroup) ActionStateType(actionName string) *glib.VariantType {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GVariantType
-
-	cret = C.g_action_group_get_action_state_type(_arg0, _arg1)
-
-	var _variantType *glib.VariantType
-
-	_variantType = glib.WrapVariantType(unsafe.Pointer(_cret))
-
-	return _variantType
 }
 
 // HasAction checks if the named action exists within @action_group.
@@ -571,7 +374,7 @@ func (a actionGroup) HasAction(actionName string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_action_group_has_action(_arg0, _arg1)
+	_cret = C.g_action_group_has_action(_arg0, _arg1)
 
 	var _ok bool
 
@@ -593,7 +396,7 @@ func (a actionGroup) ListActions() []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_action_group_list_actions(_arg0)
+	_cret = C.g_action_group_list_actions(_arg0)
 
 	var _utf8s []string
 
@@ -610,7 +413,7 @@ func (a actionGroup) ListActions() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -661,7 +464,7 @@ func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType
 	var _state *glib.Variant
 	var _cret C.gboolean
 
-	cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, (**C.GVariantType)(unsafe.Pointer(&_parameterType)), (**C.GVariantType)(unsafe.Pointer(&_stateType)), (**C.GVariant)(unsafe.Pointer(&_stateHint)), (**C.GVariant)(unsafe.Pointer(&_state)))
+	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, (**C.GVariantType)(unsafe.Pointer(&_parameterType)), (**C.GVariantType)(unsafe.Pointer(&_stateType)), (**C.GVariant)(unsafe.Pointer(&_stateHint)), (**C.GVariant)(unsafe.Pointer(&_state)))
 
 	var _enabled bool
 

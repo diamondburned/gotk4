@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,19 +70,6 @@ func marshalHSV(p uintptr) (interface{}, error) {
 	return WrapHSV(obj), nil
 }
 
-// NewHSV constructs a class HSV.
-func NewHSV() HSV {
-	var _cret C.GtkHSV
-
-	cret = C.gtk_hsv_new()
-
-	var _hsV HSV
-
-	_hsV = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HSV)
-
-	return _hsV
-}
-
 // Color queries the current color in an HSV color selector. Returned values
 // will be in the [0.0, 1.0] range.
 func (h hsV) Color() (h float64, s float64, v float64) {
@@ -141,7 +125,7 @@ func (h hsV) IsAdjusting() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_hsv_is_adjusting(_arg0)
+	_cret = C.gtk_hsv_is_adjusting(_arg0)
 
 	var _ok bool
 

@@ -3,12 +3,9 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,18 +46,12 @@ type CellView interface {
 	CellLayout
 	Orientable
 
-	// DisplayedRow returns a TreePath referring to the currently displayed row.
-	// If no row is currently displayed, nil is returned.
-	DisplayedRow() *TreePath
 	// DrawSensitive gets whether @cell_view is configured to draw all of its
 	// cells in a sensitive state.
 	DrawSensitive() bool
 	// FitModel gets whether @cell_view is configured to request space to fit
 	// the entire TreeModel.
 	FitModel() bool
-	// Model returns the model for @cell_view. If no model is used nil is
-	// returned.
-	Model() TreeModel
 	// SizeOfRow sets @requisition to the size needed by @cell_view to display
 	// the model row pointed to by @path.
 	SizeOfRow(path *TreePath) (Requisition, bool)
@@ -119,112 +110,6 @@ func marshalCellView(p uintptr) (interface{}, error) {
 	return WrapCellView(obj), nil
 }
 
-// NewCellView constructs a class CellView.
-func NewCellView() CellView {
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new()
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithContext constructs a class CellView.
-func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
-	var _arg1 *C.GtkCellArea
-	var _arg2 *C.GtkCellAreaContext
-
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithMarkup constructs a class CellView.
-func NewCellViewWithMarkup(markup string) CellView {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(markup))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_markup(_arg1)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithPixbuf constructs a class CellView.
-func NewCellViewWithPixbuf(pixbuf gdkpixbuf.Pixbuf) CellView {
-	var _arg1 *C.GdkPixbuf
-
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_pixbuf(_arg1)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithText constructs a class CellView.
-func NewCellViewWithText(text string) CellView {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_text(_arg1)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// DisplayedRow returns a TreePath referring to the currently displayed row.
-// If no row is currently displayed, nil is returned.
-func (c cellView) DisplayedRow() *TreePath {
-	var _arg0 *C.GtkCellView
-
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_cell_view_get_displayed_row(_arg0)
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
-}
-
 // DrawSensitive gets whether @cell_view is configured to draw all of its
 // cells in a sensitive state.
 func (c cellView) DrawSensitive() bool {
@@ -234,7 +119,7 @@ func (c cellView) DrawSensitive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
+	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
 
 	var _ok bool
 
@@ -254,7 +139,7 @@ func (c cellView) FitModel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_view_get_fit_model(_arg0)
+	_cret = C.gtk_cell_view_get_fit_model(_arg0)
 
 	var _ok bool
 
@@ -263,24 +148,6 @@ func (c cellView) FitModel() bool {
 	}
 
 	return _ok
-}
-
-// Model returns the model for @cell_view. If no model is used nil is
-// returned.
-func (c cellView) Model() TreeModel {
-	var _arg0 *C.GtkCellView
-
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreeModel
-
-	cret = C.gtk_cell_view_get_model(_arg0)
-
-	var _treeModel TreeModel
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
-
-	return _treeModel
 }
 
 // SizeOfRow sets @requisition to the size needed by @cell_view to display
@@ -295,7 +162,7 @@ func (c cellView) SizeOfRow(path *TreePath) (Requisition, bool) {
 	var _requisition Requisition
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
+	_cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
 
 	var _ok bool
 

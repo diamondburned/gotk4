@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,8 +62,6 @@ type Statusbar interface {
 	// ContextID returns a new context identifier, given a description of the
 	// actual context. Note that the description is not shown in the UI.
 	ContextID(contextDescription string) uint
-	// MessageArea retrieves the box containing the label widget.
-	MessageArea() Box
 	// Pop removes the first message in the Statusbar’s stack with the given
 	// context id.
 	//
@@ -106,19 +103,6 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return WrapStatusbar(obj), nil
 }
 
-// NewStatusbar constructs a class Statusbar.
-func NewStatusbar() Statusbar {
-	var _cret C.GtkStatusbar
-
-	cret = C.gtk_statusbar_new()
-
-	var _statusbar Statusbar
-
-	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Statusbar)
-
-	return _statusbar
-}
-
 // ContextID returns a new context identifier, given a description of the
 // actual context. Note that the description is not shown in the UI.
 func (s statusbar) ContextID(contextDescription string) uint {
@@ -131,30 +115,13 @@ func (s statusbar) ContextID(contextDescription string) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
+	_cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// MessageArea retrieves the box containing the label widget.
-func (s statusbar) MessageArea() Box {
-	var _arg0 *C.GtkStatusbar
-
-	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_statusbar_get_message_area(_arg0)
-
-	var _box Box
-
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
-
-	return _box
 }
 
 // Pop removes the first message in the Statusbar’s stack with the given
@@ -185,7 +152,7 @@ func (s statusbar) Push(contextId uint, text string) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
+	_cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
 
 	var _guint uint
 

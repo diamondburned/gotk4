@@ -178,9 +178,10 @@ func (rg *recordGenerator) getters() []recordGetter {
 	}
 
 	recv := FirstLetter(rg.GoName)
-	fields := make([]CValueProp, len(rg.Fields))
+	fields := make([]ValueProp, 0, len(rg.Fields))
+	goNames := make([]string, 0, len(rg.Fields))
 
-	for i, field := range rg.Fields {
+	for _, field := range rg.Fields {
 		// For "Bits > 0", we can't safely do this in Go (and probably not CGo
 		// either?) so we're not doing it.
 		if field.Private || field.Bits > 0 || !field.Readable && !field.Writable {
@@ -195,19 +196,13 @@ func (rg *recordGenerator) getters() []recordGetter {
 			continue
 		}
 
-		fields[i] = CValueProp{
-			ValueProp: NewValuePropField(recv, "v", field),
-		}
+		fields = append(fields, NewValuePropField(recv, "v", field))
+		goNames = append(goNames, goName)
 	}
 
-	conversion := rg.fg.CGoConverter(rg.Name, fields)
-
-	for i, field := range fields {
-		if field.ValueProp.IsZero() {
-			continue
-		}
-
-		converted := conversion.Convert(i)
+	converter := rg.fg.CGoConverter(rg.Name, fields)
+	for i := range fields {
+		converted := converter.Convert(i)
 		if converted == nil {
 			continue
 		}
@@ -220,7 +215,7 @@ func (rg *recordGenerator) getters() []recordGetter {
 		b.Linef("return v")
 
 		getters = append(getters, recordGetter{
-			GoName: SnakeToGo(true, rg.Fields[i].Name),
+			GoName: goNames[i],
 			GoType: converted.OutType,
 			Block:  b.String(),
 		})

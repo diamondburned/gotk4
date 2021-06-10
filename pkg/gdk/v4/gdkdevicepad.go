@@ -88,7 +88,7 @@ func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 
 	var _cret C.int
 
-	cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
+	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
 
 	var _gint int
 
@@ -107,7 +107,7 @@ func (p devicePad) GroupNModes(groupIdx int) int {
 
 	var _cret C.int
 
-	cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
+	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
 
 	var _gint int
 
@@ -126,7 +126,7 @@ func (p devicePad) NFeatures(feature DevicePadFeature) int {
 
 	var _cret C.int
 
-	cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
+	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
 	var _gint int
 
@@ -146,7 +146,7 @@ func (p devicePad) NGroups() int {
 
 	var _cret C.int
 
-	cret = C.gdk_device_pad_get_n_groups(_arg0)
+	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 
 	var _gint int
 

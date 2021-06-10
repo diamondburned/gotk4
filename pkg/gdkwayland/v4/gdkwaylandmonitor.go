@@ -60,7 +60,7 @@ func (m waylandMonitor) WlOutput() *interface{} {
 
 	var _cret *C.wl_output
 
-	cret = C.gdk_wayland_monitor_get_wl_output(_arg0)
+	_cret = C.gdk_wayland_monitor_get_wl_output(_arg0)
 
 	var _gpointer *interface{}
 

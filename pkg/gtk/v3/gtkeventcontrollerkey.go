@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -33,8 +30,6 @@ type EventControllerKey interface {
 	Forward(widget Widget) bool
 
 	Group() uint
-	// ImContext gets the IM context of a key controller.
-	ImContext() IMContext
 
 	SetImContext(imContext IMContext)
 }
@@ -60,23 +55,6 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 	return WrapEventControllerKey(obj), nil
 }
 
-// NewEventControllerKey constructs a class EventControllerKey.
-func NewEventControllerKey(widget Widget) EventControllerKey {
-	var _arg1 *C.GtkWidget
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkEventControllerKey
-
-	cret = C.gtk_event_controller_key_new(_arg1)
-
-	var _eventControllerKey EventControllerKey
-
-	_eventControllerKey = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerKey)
-
-	return _eventControllerKey
-}
-
 func (c eventControllerKey) Forward(widget Widget) bool {
 	var _arg0 *C.GtkEventControllerKey
 	var _arg1 *C.GtkWidget
@@ -86,7 +64,7 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
+	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
 
 	var _ok bool
 
@@ -104,30 +82,13 @@ func (c eventControllerKey) Group() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_event_controller_key_get_group(_arg0)
+	_cret = C.gtk_event_controller_key_get_group(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// ImContext gets the IM context of a key controller.
-func (c eventControllerKey) ImContext() IMContext {
-	var _arg0 *C.GtkEventControllerKey
-
-	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkIMContext
-
-	cret = C.gtk_event_controller_key_get_im_context(_arg0)
-
-	var _imContext IMContext
-
-	_imContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IMContext)
-
-	return _imContext
 }
 
 func (c eventControllerKey) SetImContext(imContext IMContext) {

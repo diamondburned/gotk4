@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,11 +31,6 @@ func init() {
 // DBusObjectOverrider contains methods that are overridable. This
 // interface is a subset of the interface DBusObject.
 type DBusObjectOverrider interface {
-	// Interface gets the D-Bus interface with name @interface_name associated
-	// with @object, if any.
-	Interface(interfaceName string) DBusInterface
-	// Interfaces gets the D-Bus interfaces associated with @object.
-	Interfaces() *glib.List
 	// ObjectPath gets the object path for @object.
 	ObjectPath() string
 
@@ -78,47 +68,6 @@ func marshalDBusObject(p uintptr) (interface{}, error) {
 	return WrapDBusObject(obj), nil
 }
 
-// Interface gets the D-Bus interface with name @interface_name associated
-// with @object, if any.
-func (o dBusObject) Interface(interfaceName string) DBusInterface {
-	var _arg0 *C.GDBusObject
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
-	_arg1 = (*C.gchar)(C.CString(interfaceName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusInterface
-
-	cret = C.g_dbus_object_get_interface(_arg0, _arg1)
-
-	var _dBusInterface DBusInterface
-
-	_dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusInterface)
-
-	return _dBusInterface
-}
-
-// Interfaces gets the D-Bus interfaces associated with @object.
-func (o dBusObject) Interfaces() *glib.List {
-	var _arg0 *C.GDBusObject
-
-	_arg0 = (*C.GDBusObject)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GList
-
-	cret = C.g_dbus_object_get_interfaces(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
 // ObjectPath gets the object path for @object.
 func (o dBusObject) ObjectPath() string {
 	var _arg0 *C.GDBusObject
@@ -127,7 +76,7 @@ func (o dBusObject) ObjectPath() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dbus_object_get_object_path(_arg0)
+	_cret = C.g_dbus_object_get_object_path(_arg0)
 
 	var _utf8 string
 

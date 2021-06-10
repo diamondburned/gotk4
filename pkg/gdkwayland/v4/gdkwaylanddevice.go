@@ -80,7 +80,7 @@ func (d waylandDevice) NodePath() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_wayland_device_get_node_path(_arg0)
+	_cret = C.gdk_wayland_device_get_node_path(_arg0)
 
 	var _utf8 string
 
@@ -97,7 +97,7 @@ func (d waylandDevice) WlKeyboard() *interface{} {
 
 	var _cret *C.wl_keyboard
 
-	cret = C.gdk_wayland_device_get_wl_keyboard(_arg0)
+	_cret = C.gdk_wayland_device_get_wl_keyboard(_arg0)
 
 	var _gpointer *interface{}
 
@@ -114,7 +114,7 @@ func (d waylandDevice) WlPointer() *interface{} {
 
 	var _cret *C.wl_pointer
 
-	cret = C.gdk_wayland_device_get_wl_pointer(_arg0)
+	_cret = C.gdk_wayland_device_get_wl_pointer(_arg0)
 
 	var _gpointer *interface{}
 
@@ -131,7 +131,7 @@ func (d waylandDevice) WlSeat() *interface{} {
 
 	var _cret *C.wl_seat
 
-	cret = C.gdk_wayland_device_get_wl_seat(_arg0)
+	_cret = C.gdk_wayland_device_get_wl_seat(_arg0)
 
 	var _gpointer *interface{}
 

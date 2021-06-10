@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -62,19 +59,6 @@ func marshalEventControllerMotion(p uintptr) (interface{}, error) {
 	return WrapEventControllerMotion(obj), nil
 }
 
-// NewEventControllerMotion constructs a class EventControllerMotion.
-func NewEventControllerMotion() EventControllerMotion {
-	var _cret C.GtkEventControllerMotion
-
-	cret = C.gtk_event_controller_motion_new()
-
-	var _eventControllerMotion EventControllerMotion
-
-	_eventControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerMotion)
-
-	return _eventControllerMotion
-}
-
 // ContainsPointer returns if a pointer is within @self or one of its
 // children.
 func (s eventControllerMotion) ContainsPointer() bool {
@@ -84,7 +68,7 @@ func (s eventControllerMotion) ContainsPointer() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
+	_cret = C.gtk_event_controller_motion_contains_pointer(_arg0)
 
 	var _ok bool
 
@@ -104,7 +88,7 @@ func (s eventControllerMotion) IsPointer() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_event_controller_motion_is_pointer(_arg0)
+	_cret = C.gtk_event_controller_motion_is_pointer(_arg0)
 
 	var _ok bool
 

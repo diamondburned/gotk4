@@ -2,6 +2,10 @@
 
 package glib
 
+import (
+	"github.com/diamondburned/gotk4/internal/box"
+)
+
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib.h>
@@ -11,6 +15,18 @@ import "C"
 // comparison routine accepts a user data argument.
 //
 // This is guaranteed to be a stable sort since version 2.32.
-func QsortWithData() {
-	C.g_qsort_with_data()
+func QsortWithData(pbase interface{}, totalElems int, size uint, compareFunc CompareDataFunc) {
+	var _arg1 C.gpointer
+	var _arg2 C.gint
+	var _arg3 C.gsize
+	var _arg4 C.GCompareDataFunc
+	var _arg5 C.gpointer
+
+	_arg1 = C.gpointer(pbase)
+	_arg2 = C.gint(totalElems)
+	_arg3 = C.gsize(size)
+	_arg4 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	_arg5 = C.gpointer(box.Assign(compareFunc))
+
+	C.g_qsort_with_data(_arg1, _arg2, _arg3, _arg4, _arg5)
 }

@@ -2,51 +2,7 @@
 
 package gdk
 
-import (
-	"runtime"
-
-	"github.com/diamondburned/gotk4/pkg/cairo"
-	"github.com/diamondburned/gotk4/pkg/pango"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
-
-// PangoLayoutGetClipRegion obtains a clip region which contains the areas where
-// the given ranges of text would be drawn.
-//
-// @x_origin and @y_origin are the top left point to center the layout.
-// @index_ranges should contain ranges of bytes in the layout’s text.
-//
-// Note that the regions returned correspond to logical extents of the text
-// ranges, not ink extents. So the drawn layout may in fact touch areas out of
-// the clip region. The clip region is mainly useful for highlightling parts of
-// text, such as when text is selected.
-func PangoLayoutGetClipRegion(layout pango.Layout, xOrigin int, yOrigin int, indexRanges *int, nRanges int) *cairo.Region {
-	var _arg1 *C.PangoLayout
-	var _arg2 C.int
-	var _arg3 C.int
-	var _arg4 *C.int
-	var _arg5 C.int
-
-	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
-	_arg2 = C.int(xOrigin)
-	_arg3 = C.int(yOrigin)
-	_arg4 = *C.int(indexRanges)
-	_arg5 = C.int(nRanges)
-
-	var _cret *C.cairo_region_t
-
-	cret = C.gdk_pango_layout_get_clip_region(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _region *cairo.Region
-
-	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _region
-}

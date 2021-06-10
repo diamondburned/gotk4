@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -59,8 +56,6 @@ func init() {
 type EventControllerScroll interface {
 	EventController
 
-	// Flags gets the flags conditioning the scroll controller behavior.
-	Flags() EventControllerScrollFlags
 	// SetFlags sets the flags conditioning scroll controller behavior.
 	SetFlags(flags EventControllerScrollFlags)
 }
@@ -84,40 +79,6 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEventControllerScroll(obj), nil
-}
-
-// NewEventControllerScroll constructs a class EventControllerScroll.
-func NewEventControllerScroll(flags EventControllerScrollFlags) EventControllerScroll {
-	var _arg1 C.GtkEventControllerScrollFlags
-
-	_arg1 = (C.GtkEventControllerScrollFlags)(flags)
-
-	var _cret C.GtkEventControllerScroll
-
-	cret = C.gtk_event_controller_scroll_new(_arg1)
-
-	var _eventControllerScroll EventControllerScroll
-
-	_eventControllerScroll = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerScroll)
-
-	return _eventControllerScroll
-}
-
-// Flags gets the flags conditioning the scroll controller behavior.
-func (s eventControllerScroll) Flags() EventControllerScrollFlags {
-	var _arg0 *C.GtkEventControllerScroll
-
-	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkEventControllerScrollFlags
-
-	cret = C.gtk_event_controller_scroll_get_flags(_arg0)
-
-	var _eventControllerScrollFlags EventControllerScrollFlags
-
-	_eventControllerScrollFlags = EventControllerScrollFlags(_cret)
-
-	return _eventControllerScrollFlags
 }
 
 // SetFlags sets the flags conditioning scroll controller behavior.

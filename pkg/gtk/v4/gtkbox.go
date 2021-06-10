@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,8 +61,6 @@ type Box interface {
 
 	// Append adds @child as the last child to @box.
 	Append(child Widget)
-	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-	BaselinePosition() BaselinePosition
 	// Homogeneous returns whether the box is homogeneous (all children are the
 	// same size).
 	Homogeneous() bool
@@ -131,25 +126,6 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
-// NewBox constructs a class Box.
-func NewBox(orientation Orientation, spacing int) Box {
-	var _arg1 C.GtkOrientation
-	var _arg2 C.int
-
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = C.int(spacing)
-
-	var _cret C.GtkBox
-
-	cret = C.gtk_box_new(_arg1, _arg2)
-
-	var _box Box
-
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
-
-	return _box
-}
-
 // Append adds @child as the last child to @box.
 func (b box) Append(child Widget) {
 	var _arg0 *C.GtkBox
@@ -161,23 +137,6 @@ func (b box) Append(child Widget) {
 	C.gtk_box_append(_arg0, _arg1)
 }
 
-// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-func (b box) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBox
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkBaselinePosition
-
-	cret = C.gtk_box_get_baseline_position(_arg0)
-
-	var _baselinePosition BaselinePosition
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
-}
-
 // Homogeneous returns whether the box is homogeneous (all children are the
 // same size).
 func (b box) Homogeneous() bool {
@@ -187,7 +146,7 @@ func (b box) Homogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_box_get_homogeneous(_arg0)
+	_cret = C.gtk_box_get_homogeneous(_arg0)
 
 	var _ok bool
 
@@ -206,7 +165,7 @@ func (b box) Spacing() int {
 
 	var _cret C.int
 
-	cret = C.gtk_box_get_spacing(_arg0)
+	_cret = C.gtk_box_get_spacing(_arg0)
 
 	var _gint int
 

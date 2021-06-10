@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -77,26 +74,11 @@ func marshalFixedLayout(p uintptr) (interface{}, error) {
 	return WrapFixedLayout(obj), nil
 }
 
-// NewFixedLayout constructs a class FixedLayout.
-func NewFixedLayout() FixedLayout {
-	var _cret C.GtkFixedLayout
-
-	cret = C.gtk_fixed_layout_new()
-
-	var _fixedLayout FixedLayout
-
-	_fixedLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FixedLayout)
-
-	return _fixedLayout
-}
-
 // FixedLayoutChild: `GtkLayoutChild` subclass for children in a
 // `GtkFixedLayout`.
 type FixedLayoutChild interface {
 	LayoutChild
 
-	// Transform retrieves the transformation of the child.
-	Transform() *gsk.Transform
 	// SetTransform sets the transformation of the child of a `GtkFixedLayout`.
 	SetTransform(transform *gsk.Transform)
 }
@@ -120,23 +102,6 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFixedLayoutChild(obj), nil
-}
-
-// Transform retrieves the transformation of the child.
-func (c fixedLayoutChild) Transform() *gsk.Transform {
-	var _arg0 *C.GtkFixedLayoutChild
-
-	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GskTransform
-
-	cret = C.gtk_fixed_layout_child_get_transform(_arg0)
-
-	var _transform *gsk.Transform
-
-	_transform = gsk.WrapTransform(unsafe.Pointer(_cret))
-
-	return _transform
 }
 
 // SetTransform sets the transformation of the child of a `GtkFixedLayout`.

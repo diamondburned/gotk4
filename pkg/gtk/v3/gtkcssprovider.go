@@ -3,10 +3,10 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -55,7 +55,7 @@ type CSSProvider interface {
 
 	// LoadFromData loads @data into @css_provider, and by doing so clears any
 	// previously loaded information.
-	LoadFromData() error
+	LoadFromData(data []byte) error
 	// LoadFromFile loads the data contained in @file into @css_provider, making
 	// it clear any previously loaded information.
 	LoadFromFile(file gio.File) error
@@ -100,29 +100,20 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 	return WrapCSSProvider(obj), nil
 }
 
-// NewCSSProvider constructs a class CSSProvider.
-func NewCSSProvider() CSSProvider {
-	var _cret C.GtkCssProvider
-
-	cret = C.gtk_css_provider_new()
-
-	var _cssProvider CSSProvider
-
-	_cssProvider = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CSSProvider)
-
-	return _cssProvider
-}
-
 // LoadFromData loads @data into @css_provider, and by doing so clears any
 // previously loaded information.
-func (c cssProvider) LoadFromData() error {
+func (c cssProvider) LoadFromData(data []byte) error {
 	var _arg0 *C.GtkCssProvider
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
+	_arg2 = C.gssize(len(data))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
 
 	var _cerr *C.GError
 
-	C.gtk_css_provider_load_from_data(_arg0, _cerr)
+	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, _cerr)
 
 	var _goerr error
 
@@ -201,7 +192,7 @@ func (p cssProvider) String() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_css_provider_to_string(_arg0)
+	_cret = C.gtk_css_provider_to_string(_arg0)
 
 	var _utf8 string
 

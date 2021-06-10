@@ -224,7 +224,7 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
+	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -261,7 +261,7 @@ func (c imContext) FilterKey(press bool, surface gdk.Surface, device gdk.Device,
 
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_filter_key(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
+	_cret = C.gtk_im_context_filter_key(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 
 	var _ok bool
 
@@ -286,7 +286,7 @@ func (c imContext) FilterKeypress(event gdk.Event) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
+	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
 	var _ok bool
 
@@ -374,7 +374,7 @@ func (c imContext) Surrounding() (string, int, bool) {
 	var _arg2 C.int
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 
 	var _text string
 	var _cursorIndex int
@@ -415,7 +415,7 @@ func (c imContext) SurroundingWithSelection() (text string, cursorIndex int, anc
 	var _arg3 C.int
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_get_surrounding_with_selection(_arg0, &_arg1, &_arg2, &_arg3)
+	_cret = C.gtk_im_context_get_surrounding_with_selection(_arg0, &_arg1, &_arg2, &_arg3)
 
 	var _text string
 	var _cursorIndex int

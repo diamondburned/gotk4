@@ -28,7 +28,7 @@ func Dcgettext(domain string, msgid string, category int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dcgettext(_arg1, _arg2, _arg3)
+	_cret = C.g_dcgettext(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -79,7 +79,7 @@ func Dgettext(domain string, msgid string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dgettext(_arg1, _arg2)
+	_cret = C.g_dgettext(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -109,7 +109,7 @@ func Dngettext(domain string, msgid string, msgidPlural string, n uint32) string
 
 	var _cret *C.gchar
 
-	cret = C.g_dngettext(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.g_dngettext(_arg1, _arg2, _arg3, _arg4)
 
 	var _utf8 string
 
@@ -142,7 +142,7 @@ func Dpgettext(domain string, msgctxtid string, msgidoffset uint) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dpgettext(_arg1, _arg2, _arg3)
+	_cret = C.g_dpgettext(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -174,7 +174,7 @@ func Dpgettext2(domain string, context string, msgid string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dpgettext2(_arg1, _arg2, _arg3)
+	_cret = C.g_dpgettext2(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -195,7 +195,7 @@ func StripContext(msgid string, msgval string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strip_context(_arg1, _arg2)
+	_cret = C.g_strip_context(_arg1, _arg2)
 
 	var _utf8 string
 

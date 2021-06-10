@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -88,19 +85,6 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return WrapCellAreaBox(obj), nil
 }
 
-// NewCellAreaBox constructs a class CellAreaBox.
-func NewCellAreaBox() CellAreaBox {
-	var _cret C.GtkCellAreaBox
-
-	cret = C.gtk_cell_area_box_new()
-
-	var _cellAreaBox CellAreaBox
-
-	_cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellAreaBox)
-
-	return _cellAreaBox
-}
-
 // Spacing gets the spacing added between cell renderers.
 func (b cellAreaBox) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox
@@ -109,7 +93,7 @@ func (b cellAreaBox) Spacing() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_cell_area_box_get_spacing(_arg0)
+	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 
 	var _gint int
 

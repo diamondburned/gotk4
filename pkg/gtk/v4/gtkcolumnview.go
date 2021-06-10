@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -91,17 +87,9 @@ type ColumnView interface {
 
 	// AppendColumn appends the @column to the end of the columns in @self.
 	AppendColumn(column ColumnViewColumn)
-	// Columns gets the list of columns in this column view.
-	//
-	// This list is constant over the lifetime of @self and can be used to
-	// monitor changes to the columns of @self by connecting to the
-	// ::items-changed signal.
-	Columns() gio.ListModel
 	// EnableRubberband returns whether rows can be selected by dragging with
 	// the mouse.
 	EnableRubberband() bool
-	// Model gets the model that's currently used to read the items displayed.
-	Model() SelectionModel
 	// Reorderable returns whether columns are reorderable.
 	Reorderable() bool
 	// ShowColumnSeparators returns whether the list should show separators
@@ -113,22 +101,6 @@ type ColumnView interface {
 	// SingleClickActivate returns whether rows will be activated on single
 	// click and selected on hover.
 	SingleClickActivate() bool
-	// Sorter returns a special sorter that reflects the users sorting choices
-	// in the column view.
-	//
-	// To allow users to customizable sorting by clicking on column headers,
-	// this sorter needs to be set on the sort model underneath the model that
-	// is displayed by the view.
-	//
-	// See [method@Gtk.ColumnViewColumn.set_sorter] for setting up per-column
-	// sorting.
-	//
-	// Here is an example: “`c gtk_column_view_column_set_sorter (column,
-	// sorter); gtk_column_view_append_column (view, column); sorter =
-	// g_object_ref (gtk_column_view_get_sorter (view))); model =
-	// gtk_sort_list_model_new (store, sorter); selection = gtk_no_selection_new
-	// (model); gtk_column_view_set_model (view, selection); “`
-	Sorter() Sorter
 	// InsertColumn inserts a column at the given position in the columns of
 	// @self.
 	//
@@ -198,23 +170,6 @@ func marshalColumnView(p uintptr) (interface{}, error) {
 	return WrapColumnView(obj), nil
 }
 
-// NewColumnView constructs a class ColumnView.
-func NewColumnView(model SelectionModel) ColumnView {
-	var _arg1 *C.GtkSelectionModel
-
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkColumnView
-
-	cret = C.gtk_column_view_new(_arg1)
-
-	var _columnView ColumnView
-
-	_columnView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColumnView)
-
-	return _columnView
-}
-
 // AppendColumn appends the @column to the end of the columns in @self.
 func (s columnView) AppendColumn(column ColumnViewColumn) {
 	var _arg0 *C.GtkColumnView
@@ -226,27 +181,6 @@ func (s columnView) AppendColumn(column ColumnViewColumn) {
 	C.gtk_column_view_append_column(_arg0, _arg1)
 }
 
-// Columns gets the list of columns in this column view.
-//
-// This list is constant over the lifetime of @self and can be used to
-// monitor changes to the columns of @self by connecting to the
-// ::items-changed signal.
-func (s columnView) Columns() gio.ListModel {
-	var _arg0 *C.GtkColumnView
-
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_column_view_get_columns(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
-}
-
 // EnableRubberband returns whether rows can be selected by dragging with
 // the mouse.
 func (s columnView) EnableRubberband() bool {
@@ -256,7 +190,7 @@ func (s columnView) EnableRubberband() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_column_view_get_enable_rubberband(_arg0)
+	_cret = C.gtk_column_view_get_enable_rubberband(_arg0)
 
 	var _ok bool
 
@@ -267,23 +201,6 @@ func (s columnView) EnableRubberband() bool {
 	return _ok
 }
 
-// Model gets the model that's currently used to read the items displayed.
-func (s columnView) Model() SelectionModel {
-	var _arg0 *C.GtkColumnView
-
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel
-
-	cret = C.gtk_column_view_get_model(_arg0)
-
-	var _selectionModel SelectionModel
-
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
-
-	return _selectionModel
-}
-
 // Reorderable returns whether columns are reorderable.
 func (s columnView) Reorderable() bool {
 	var _arg0 *C.GtkColumnView
@@ -292,7 +209,7 @@ func (s columnView) Reorderable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_column_view_get_reorderable(_arg0)
+	_cret = C.gtk_column_view_get_reorderable(_arg0)
 
 	var _ok bool
 
@@ -312,7 +229,7 @@ func (s columnView) ShowColumnSeparators() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_column_view_get_show_column_separators(_arg0)
+	_cret = C.gtk_column_view_get_show_column_separators(_arg0)
 
 	var _ok bool
 
@@ -332,7 +249,7 @@ func (s columnView) ShowRowSeparators() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_column_view_get_show_row_separators(_arg0)
+	_cret = C.gtk_column_view_get_show_row_separators(_arg0)
 
 	var _ok bool
 
@@ -352,7 +269,7 @@ func (s columnView) SingleClickActivate() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_column_view_get_single_click_activate(_arg0)
+	_cret = C.gtk_column_view_get_single_click_activate(_arg0)
 
 	var _ok bool
 
@@ -361,37 +278,6 @@ func (s columnView) SingleClickActivate() bool {
 	}
 
 	return _ok
-}
-
-// Sorter returns a special sorter that reflects the users sorting choices
-// in the column view.
-//
-// To allow users to customizable sorting by clicking on column headers,
-// this sorter needs to be set on the sort model underneath the model that
-// is displayed by the view.
-//
-// See [method@Gtk.ColumnViewColumn.set_sorter] for setting up per-column
-// sorting.
-//
-// Here is an example: “`c gtk_column_view_column_set_sorter (column,
-// sorter); gtk_column_view_append_column (view, column); sorter =
-// g_object_ref (gtk_column_view_get_sorter (view))); model =
-// gtk_sort_list_model_new (store, sorter); selection = gtk_no_selection_new
-// (model); gtk_column_view_set_model (view, selection); “`
-func (s columnView) Sorter() Sorter {
-	var _arg0 *C.GtkColumnView
-
-	_arg0 = (*C.GtkColumnView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSorter
-
-	cret = C.gtk_column_view_get_sorter(_arg0)
-
-	var _sorter Sorter
-
-	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Sorter)
-
-	return _sorter
 }
 
 // InsertColumn inserts a column at the given position in the columns of

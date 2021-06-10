@@ -5,8 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -118,9 +116,6 @@ type Scale interface {
 	DrawValue() bool
 	// HasOrigin returns whether the scale has an origin.
 	HasOrigin() bool
-	// Layout gets the Layout used to display the scale. The returned object is
-	// owned by the scale so does not need to be freed by the caller.
-	Layout() pango.Layout
 	// LayoutOffsets obtains the coordinates where the scale will draw the
 	// Layout representing the text in the scale. Remember when using the Layout
 	// function you need to convert to and from pixels using PANGO_PIXELS() or
@@ -129,8 +124,6 @@ type Scale interface {
 	// If the Scale:draw-value property is false, the return values are
 	// undefined.
 	LayoutOffsets() (x int, y int)
-	// ValuePos gets the position in which the current value is displayed.
-	ValuePos() PositionType
 	// SetDigits sets the number of decimal places that are displayed in the
 	// value. Also causes the value of the adjustment to be rounded to this
 	// number of digits, so the retrieved value matches the displayed one, if
@@ -179,48 +172,6 @@ func marshalScale(p uintptr) (interface{}, error) {
 	return WrapScale(obj), nil
 }
 
-// NewScale constructs a class Scale.
-func NewScale(orientation Orientation, adjustment Adjustment) Scale {
-	var _arg1 C.GtkOrientation
-	var _arg2 *C.GtkAdjustment
-
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	var _cret C.GtkScale
-
-	cret = C.gtk_scale_new(_arg1, _arg2)
-
-	var _scale Scale
-
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scale)
-
-	return _scale
-}
-
-// NewScaleWithRange constructs a class Scale.
-func NewScaleWithRange(orientation Orientation, min float64, max float64, step float64) Scale {
-	var _arg1 C.GtkOrientation
-	var _arg2 C.gdouble
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
-
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = C.gdouble(min)
-	_arg3 = C.gdouble(max)
-	_arg4 = C.gdouble(step)
-
-	var _cret C.GtkScale
-
-	cret = C.gtk_scale_new_with_range(_arg1, _arg2, _arg3, _arg4)
-
-	var _scale Scale
-
-	_scale = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scale)
-
-	return _scale
-}
-
 // AddMark adds a mark at @value.
 //
 // A mark is indicated visually by drawing a tick mark next to the scale,
@@ -263,7 +214,7 @@ func (s scale) Digits() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_scale_get_digits(_arg0)
+	_cret = C.gtk_scale_get_digits(_arg0)
 
 	var _gint int
 
@@ -281,7 +232,7 @@ func (s scale) DrawValue() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_scale_get_draw_value(_arg0)
+	_cret = C.gtk_scale_get_draw_value(_arg0)
 
 	var _ok bool
 
@@ -300,7 +251,7 @@ func (s scale) HasOrigin() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_scale_get_has_origin(_arg0)
+	_cret = C.gtk_scale_get_has_origin(_arg0)
 
 	var _ok bool
 
@@ -309,24 +260,6 @@ func (s scale) HasOrigin() bool {
 	}
 
 	return _ok
-}
-
-// Layout gets the Layout used to display the scale. The returned object is
-// owned by the scale so does not need to be freed by the caller.
-func (s scale) Layout() pango.Layout {
-	var _arg0 *C.GtkScale
-
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.PangoLayout
-
-	cret = C.gtk_scale_get_layout(_arg0)
-
-	var _layout pango.Layout
-
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
-
-	return _layout
 }
 
 // LayoutOffsets obtains the coordinates where the scale will draw the
@@ -353,23 +286,6 @@ func (s scale) LayoutOffsets() (x int, y int) {
 	_y = (int)(_arg2)
 
 	return _x, _y
-}
-
-// ValuePos gets the position in which the current value is displayed.
-func (s scale) ValuePos() PositionType {
-	var _arg0 *C.GtkScale
-
-	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPositionType
-
-	cret = C.gtk_scale_get_value_pos(_arg0)
-
-	var _positionType PositionType
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
 }
 
 // SetDigits sets the number of decimal places that are displayed in the

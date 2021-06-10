@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -77,8 +74,6 @@ type SpinButton interface {
 	// adjustment, climb rate, and number of decimal places are updated
 	// accordingly.
 	Configure(adjustment Adjustment, climbRate float64, digits uint)
-	// Adjustment: get the adjustment associated with a SpinButton
-	Adjustment() Adjustment
 	// Digits fetches the precision of @spin_button. See
 	// gtk_spin_button_set_digits().
 	Digits() uint
@@ -94,9 +89,6 @@ type SpinButton interface {
 	// SnapToTicks returns whether the values are corrected to the nearest step.
 	// See gtk_spin_button_set_snap_to_ticks().
 	SnapToTicks() bool
-	// UpdatePolicy gets the update behavior of a spin button. See
-	// gtk_spin_button_set_update_policy().
-	UpdatePolicy() SpinButtonUpdatePolicy
 	// Value: get the value in the @spin_button.
 	Value() float64
 	// ValueAsInt: get the value @spin_button represented as an integer.
@@ -172,48 +164,6 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return WrapSpinButton(obj), nil
 }
 
-// NewSpinButton constructs a class SpinButton.
-func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinButton {
-	var _arg1 *C.GtkAdjustment
-	var _arg2 C.gdouble
-	var _arg3 C.guint
-
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-	_arg2 = C.gdouble(climbRate)
-	_arg3 = C.guint(digits)
-
-	var _cret C.GtkSpinButton
-
-	cret = C.gtk_spin_button_new(_arg1, _arg2, _arg3)
-
-	var _spinButton SpinButton
-
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SpinButton)
-
-	return _spinButton
-}
-
-// NewSpinButtonWithRange constructs a class SpinButton.
-func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
-	var _arg3 C.gdouble
-
-	_arg1 = C.gdouble(min)
-	_arg2 = C.gdouble(max)
-	_arg3 = C.gdouble(step)
-
-	var _cret C.GtkSpinButton
-
-	cret = C.gtk_spin_button_new_with_range(_arg1, _arg2, _arg3)
-
-	var _spinButton SpinButton
-
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SpinButton)
-
-	return _spinButton
-}
-
 // Configure changes the properties of an existing spin button. The
 // adjustment, climb rate, and number of decimal places are updated
 // accordingly.
@@ -231,23 +181,6 @@ func (s spinButton) Configure(adjustment Adjustment, climbRate float64, digits u
 	C.gtk_spin_button_configure(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Adjustment: get the adjustment associated with a SpinButton
-func (s spinButton) Adjustment() Adjustment {
-	var _arg0 *C.GtkSpinButton
-
-	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_spin_button_get_adjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
 // Digits fetches the precision of @spin_button. See
 // gtk_spin_button_set_digits().
 func (s spinButton) Digits() uint {
@@ -257,7 +190,7 @@ func (s spinButton) Digits() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_spin_button_get_digits(_arg0)
+	_cret = C.gtk_spin_button_get_digits(_arg0)
 
 	var _guint uint
 
@@ -296,7 +229,7 @@ func (s spinButton) Numeric() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_spin_button_get_numeric(_arg0)
+	_cret = C.gtk_spin_button_get_numeric(_arg0)
 
 	var _ok bool
 
@@ -337,7 +270,7 @@ func (s spinButton) SnapToTicks() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_spin_button_get_snap_to_ticks(_arg0)
+	_cret = C.gtk_spin_button_get_snap_to_ticks(_arg0)
 
 	var _ok bool
 
@@ -348,24 +281,6 @@ func (s spinButton) SnapToTicks() bool {
 	return _ok
 }
 
-// UpdatePolicy gets the update behavior of a spin button. See
-// gtk_spin_button_set_update_policy().
-func (s spinButton) UpdatePolicy() SpinButtonUpdatePolicy {
-	var _arg0 *C.GtkSpinButton
-
-	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSpinButtonUpdatePolicy
-
-	cret = C.gtk_spin_button_get_update_policy(_arg0)
-
-	var _spinButtonUpdatePolicy SpinButtonUpdatePolicy
-
-	_spinButtonUpdatePolicy = SpinButtonUpdatePolicy(_cret)
-
-	return _spinButtonUpdatePolicy
-}
-
 // Value: get the value in the @spin_button.
 func (s spinButton) Value() float64 {
 	var _arg0 *C.GtkSpinButton
@@ -374,7 +289,7 @@ func (s spinButton) Value() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_spin_button_get_value(_arg0)
+	_cret = C.gtk_spin_button_get_value(_arg0)
 
 	var _gdouble float64
 
@@ -391,7 +306,7 @@ func (s spinButton) ValueAsInt() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_spin_button_get_value_as_int(_arg0)
+	_cret = C.gtk_spin_button_get_value_as_int(_arg0)
 
 	var _gint int
 
@@ -410,7 +325,7 @@ func (s spinButton) Wrap() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_spin_button_get_wrap(_arg0)
+	_cret = C.gtk_spin_button_get_wrap(_arg0)
 
 	var _ok bool
 

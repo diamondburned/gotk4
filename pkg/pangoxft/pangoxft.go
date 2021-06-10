@@ -21,14 +21,6 @@ func init() {
 	})
 }
 
-// SetDefaultSubstitute sets a function that will be called to do final
-// configuration substitution on a Pattern before it is used to load the font.
-// This function can be used to do things like set hinting and antialiasing
-// options.
-func SetDefaultSubstitute() {
-	C.pango_xft_set_default_substitute()
-}
-
 // Font is an implementation of FcFont using the Xft library for rendering. It
 // is used in conjunction with XftFontMap.
 type Font interface {
@@ -86,7 +78,7 @@ func (f font) Glyph(wc uint32) uint {
 
 	var _cret C.guint
 
-	cret = C.pango_xft_font_get_glyph(_arg0, _arg1)
+	_cret = C.pango_xft_font_get_glyph(_arg0, _arg1)
 
 	var _guint uint
 
@@ -107,7 +99,7 @@ func (f font) HasChar(wc uint32) bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_xft_font_has_char(_arg0, _arg1)
+	_cret = C.pango_xft_font_has_char(_arg0, _arg1)
 
 	var _ok bool
 

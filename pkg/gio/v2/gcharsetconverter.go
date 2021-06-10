@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,30 +68,6 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 	return WrapCharsetConverter(obj), nil
 }
 
-// NewCharsetConverter constructs a class CharsetConverter.
-func NewCharsetConverter(toCharset string, fromCharset string) (CharsetConverter, error) {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(toCharset))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(fromCharset))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GCharsetConverter
-	var _cerr *C.GError
-
-	cret = C.g_charset_converter_new(_arg1, _arg2, _cerr)
-
-	var _charsetConverter CharsetConverter
-	var _goerr error
-
-	_charsetConverter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(CharsetConverter)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _charsetConverter, _goerr
-}
-
 // NumFallbacks gets the number of fallbacks that @converter has applied so
 // far.
 func (c charsetConverter) NumFallbacks() uint {
@@ -105,7 +77,7 @@ func (c charsetConverter) NumFallbacks() uint {
 
 	var _cret C.guint
 
-	cret = C.g_charset_converter_get_num_fallbacks(_arg0)
+	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 
 	var _guint uint
 
@@ -122,7 +94,7 @@ func (c charsetConverter) UseFallback() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_charset_converter_get_use_fallback(_arg0)
+	_cret = C.g_charset_converter_get_use_fallback(_arg0)
 
 	var _ok bool
 

@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
@@ -279,30 +278,13 @@ func (u *URI) AuthParams() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_auth_params(_arg0)
+	_cret = C.g_uri_get_auth_params(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Flags gets @uri's flags set upon construction.
-func (u *URI) Flags() URIFlags {
-	var _arg0 *C.GUri
-
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
-
-	var _cret C.GUriFlags
-
-	cret = C.g_uri_get_flags(_arg0)
-
-	var _uriFlags URIFlags
-
-	_uriFlags = URIFlags(_cret)
-
-	return _uriFlags
 }
 
 // Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
@@ -314,7 +296,7 @@ func (u *URI) Fragment() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_fragment(_arg0)
+	_cret = C.g_uri_get_fragment(_arg0)
 
 	var _utf8 string
 
@@ -339,7 +321,7 @@ func (u *URI) Host() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_host(_arg0)
+	_cret = C.g_uri_get_host(_arg0)
 
 	var _utf8 string
 
@@ -358,7 +340,7 @@ func (u *URI) Password() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_password(_arg0)
+	_cret = C.g_uri_get_password(_arg0)
 
 	var _utf8 string
 
@@ -376,7 +358,7 @@ func (u *URI) Path() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_path(_arg0)
+	_cret = C.g_uri_get_path(_arg0)
 
 	var _utf8 string
 
@@ -393,7 +375,7 @@ func (u *URI) Port() int {
 
 	var _cret C.gint
 
-	cret = C.g_uri_get_port(_arg0)
+	_cret = C.g_uri_get_port(_arg0)
 
 	var _gint int
 
@@ -414,7 +396,7 @@ func (u *URI) Query() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_query(_arg0)
+	_cret = C.g_uri_get_query(_arg0)
 
 	var _utf8 string
 
@@ -432,7 +414,7 @@ func (u *URI) Scheme() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_scheme(_arg0)
+	_cret = C.g_uri_get_scheme(_arg0)
 
 	var _utf8 string
 
@@ -452,7 +434,7 @@ func (u *URI) User() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_user(_arg0)
+	_cret = C.g_uri_get_user(_arg0)
 
 	var _utf8 string
 
@@ -470,64 +452,13 @@ func (u *URI) Userinfo() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_uri_get_userinfo(_arg0)
+	_cret = C.g_uri_get_userinfo(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// ParseRelative parses @uri_ref according to @flags and, if it is a [relative
-// URI][relative-absolute-uris], resolves it relative to @base_uri. If the
-// result is not a valid absolute URI, it will be discarded, and an error
-// returned.
-func (b *URI) ParseRelative(uriRef string, flags URIFlags) (*URI, error) {
-	var _arg0 *C.GUri
-	var _arg1 *C.gchar
-	var _arg2 C.GUriFlags
-
-	_arg0 = (*C.GUri)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(uriRef))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GUriFlags)(flags)
-
-	var _cret *C.GUri
-	var _cerr *C.GError
-
-	cret = C.g_uri_parse_relative(_arg0, _arg1, _arg2, _cerr)
-
-	var _uri *URI
-	var _goerr error
-
-	_uri = WrapURI(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_uri, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _uri, _goerr
-}
-
-// Ref increments the reference count of @uri by one.
-func (u *URI) Ref() *URI {
-	var _arg0 *C.GUri
-
-	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
-
-	var _cret *C.GUri
-
-	cret = C.g_uri_ref(_arg0)
-
-	var _ret *URI
-
-	_ret = WrapURI(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *URI) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _ret
 }
 
 // String returns a string representing @uri.
@@ -548,7 +479,7 @@ func (u *URI) String() string {
 
 	var _cret *C.char
 
-	cret = C.g_uri_to_string(_arg0)
+	_cret = C.g_uri_to_string(_arg0)
 
 	var _utf8 string
 
@@ -569,7 +500,7 @@ func (u *URI) ToStringPartial(flags URIHideFlags) string {
 
 	var _cret *C.char
 
-	cret = C.g_uri_to_string_partial(_arg0, _arg1)
+	_cret = C.g_uri_to_string_partial(_arg0, _arg1)
 
 	var _utf8 string
 

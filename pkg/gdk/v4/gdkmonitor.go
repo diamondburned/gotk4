@@ -5,7 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -32,8 +31,6 @@ type Monitor interface {
 
 	// Connector gets the name of the monitor's connector, if available.
 	Connector() string
-	// Display gets the display that this monitor belongs to.
-	Display() Display
 	// Geometry retrieves the size and position of the monitor within the
 	// display coordinate space.
 	//
@@ -66,9 +63,6 @@ type Monitor interface {
 	// monitor, but most of the time you’re drawing to a surface where it is
 	// better to use [method@Gdk.Surface.get_scale_factor] instead.
 	ScaleFactor() int
-	// SubpixelLayout gets information about the layout of red, green and blue
-	// primaries for pixels.
-	SubpixelLayout() SubpixelLayout
 	// WidthMm gets the width in millimeters of the monitor.
 	WidthMm() int
 	// IsValid returns true if the @monitor object corresponds to a physical
@@ -108,30 +102,13 @@ func (m monitor) Connector() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_monitor_get_connector(_arg0)
+	_cret = C.gdk_monitor_get_connector(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Display gets the display that this monitor belongs to.
-func (m monitor) Display() Display {
-	var _arg0 *C.GdkMonitor
-
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GdkDisplay
-
-	cret = C.gdk_monitor_get_display(_arg0)
-
-	var _display Display
-
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Display)
-
-	return _display
 }
 
 // Geometry retrieves the size and position of the monitor within the
@@ -159,7 +136,7 @@ func (m monitor) HeightMm() int {
 
 	var _cret C.int
 
-	cret = C.gdk_monitor_get_height_mm(_arg0)
+	_cret = C.gdk_monitor_get_height_mm(_arg0)
 
 	var _gint int
 
@@ -181,7 +158,7 @@ func (m monitor) Manufacturer() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_monitor_get_manufacturer(_arg0)
+	_cret = C.gdk_monitor_get_manufacturer(_arg0)
 
 	var _utf8 string
 
@@ -198,7 +175,7 @@ func (m monitor) Model() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_monitor_get_model(_arg0)
+	_cret = C.gdk_monitor_get_model(_arg0)
 
 	var _utf8 string
 
@@ -218,7 +195,7 @@ func (m monitor) RefreshRate() int {
 
 	var _cret C.int
 
-	cret = C.gdk_monitor_get_refresh_rate(_arg0)
+	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 
 	var _gint int
 
@@ -243,31 +220,13 @@ func (m monitor) ScaleFactor() int {
 
 	var _cret C.int
 
-	cret = C.gdk_monitor_get_scale_factor(_arg0)
+	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// SubpixelLayout gets information about the layout of red, green and blue
-// primaries for pixels.
-func (m monitor) SubpixelLayout() SubpixelLayout {
-	var _arg0 *C.GdkMonitor
-
-	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GdkSubpixelLayout
-
-	cret = C.gdk_monitor_get_subpixel_layout(_arg0)
-
-	var _subpixelLayout SubpixelLayout
-
-	_subpixelLayout = SubpixelLayout(_cret)
-
-	return _subpixelLayout
 }
 
 // WidthMm gets the width in millimeters of the monitor.
@@ -278,7 +237,7 @@ func (m monitor) WidthMm() int {
 
 	var _cret C.int
 
-	cret = C.gdk_monitor_get_width_mm(_arg0)
+	_cret = C.gdk_monitor_get_width_mm(_arg0)
 
 	var _gint int
 
@@ -299,7 +258,7 @@ func (m monitor) IsValid() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_monitor_is_valid(_arg0)
+	_cret = C.gdk_monitor_is_valid(_arg0)
 
 	var _ok bool
 

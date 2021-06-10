@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -125,17 +122,4 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDrawingArea(obj), nil
-}
-
-// NewDrawingArea constructs a class DrawingArea.
-func NewDrawingArea() DrawingArea {
-	var _cret C.GtkDrawingArea
-
-	cret = C.gtk_drawing_area_new()
-
-	var _drawingArea DrawingArea
-
-	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DrawingArea)
-
-	return _drawingArea
 }

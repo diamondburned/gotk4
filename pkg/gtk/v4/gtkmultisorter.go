@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -67,19 +64,6 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMultiSorter(obj), nil
-}
-
-// NewMultiSorter constructs a class MultiSorter.
-func NewMultiSorter() MultiSorter {
-	var _cret C.GtkMultiSorter
-
-	cret = C.gtk_multi_sorter_new()
-
-	var _multiSorter MultiSorter
-
-	_multiSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MultiSorter)
-
-	return _multiSorter
 }
 
 // Append: add @sorter to @self to use for sorting at the end.

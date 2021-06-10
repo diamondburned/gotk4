@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,24 +84,6 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDBusObjectSkeleton(obj), nil
-}
-
-// NewDBusObjectSkeleton constructs a class DBusObjectSkeleton.
-func NewDBusObjectSkeleton(objectPath string) DBusObjectSkeleton {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GDBusObjectSkeleton
-
-	cret = C.g_dbus_object_skeleton_new(_arg1)
-
-	var _dBusObjectSkeleton DBusObjectSkeleton
-
-	_dBusObjectSkeleton = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectSkeleton)
-
-	return _dBusObjectSkeleton
 }
 
 // AddInterface adds @interface_ to @object.

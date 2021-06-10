@@ -3,6 +3,7 @@
 package gio
 
 import (
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -57,7 +58,7 @@ type NetworkMonitorOverrider interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_network_monitor_can_reach_finish() to get the result of the
 	// operation.
-	CanReachAsync()
+	CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback)
 	// CanReachFinish finishes an async network connectivity test. See
 	// g_network_monitor_can_reach_async().
 	CanReachFinish(result AsyncResult) error
@@ -74,26 +75,6 @@ type NetworkMonitor interface {
 	Initable
 	NetworkMonitorOverrider
 
-	// Connectivity gets a more detailed networking state than
-	// g_network_monitor_get_network_available().
-	//
-	// If Monitor:network-available is false, then the connectivity state will
-	// be G_NETWORK_CONNECTIVITY_LOCAL.
-	//
-	// If Monitor:network-available is true, then the connectivity state will be
-	// G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
-	// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route, but
-	// appears to be unable to actually reach the full Internet), or
-	// G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
-	// portal" that requires some sort of login or acknowledgement before
-	// allowing full Internet access).
-	//
-	// Note that in the case of G_NETWORK_CONNECTIVITY_LIMITED and
-	// G_NETWORK_CONNECTIVITY_PORTAL, it is possible that some sites are
-	// reachable but others are not. In this case, applications can attempt to
-	// connect to remote servers, but should gracefully fall back to their
-	// "offline" behavior if the connection attempt fails.
-	Connectivity() NetworkConnectivity
 	// NetworkAvailable checks if the network is available. "Available" here
 	// means that the system has a default route available for at least one of
 	// IPv4 or IPv6. It does not necessarily imply that the public Internet is
@@ -169,12 +150,20 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 // When the operation is finished, @callback will be called. You can then
 // call g_network_monitor_can_reach_finish() to get the result of the
 // operation.
-func (m networkMonitor) CanReachAsync() {
+func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GNetworkMonitor
+	var _arg1 *C.GSocketConnectable
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
+	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	C.g_network_monitor_can_reach_async(_arg0)
+	C.g_network_monitor_can_reach_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // CanReachFinish finishes an async network connectivity test. See
@@ -197,41 +186,6 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 	return _goerr
 }
 
-// Connectivity gets a more detailed networking state than
-// g_network_monitor_get_network_available().
-//
-// If Monitor:network-available is false, then the connectivity state will
-// be G_NETWORK_CONNECTIVITY_LOCAL.
-//
-// If Monitor:network-available is true, then the connectivity state will be
-// G_NETWORK_CONNECTIVITY_FULL (if there is full Internet connectivity),
-// G_NETWORK_CONNECTIVITY_LIMITED (if the host has a default route, but
-// appears to be unable to actually reach the full Internet), or
-// G_NETWORK_CONNECTIVITY_PORTAL (if the host is trapped behind a "captive
-// portal" that requires some sort of login or acknowledgement before
-// allowing full Internet access).
-//
-// Note that in the case of G_NETWORK_CONNECTIVITY_LIMITED and
-// G_NETWORK_CONNECTIVITY_PORTAL, it is possible that some sites are
-// reachable but others are not. In this case, applications can attempt to
-// connect to remote servers, but should gracefully fall back to their
-// "offline" behavior if the connection attempt fails.
-func (m networkMonitor) Connectivity() NetworkConnectivity {
-	var _arg0 *C.GNetworkMonitor
-
-	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GNetworkConnectivity
-
-	cret = C.g_network_monitor_get_connectivity(_arg0)
-
-	var _networkConnectivity NetworkConnectivity
-
-	_networkConnectivity = NetworkConnectivity(_cret)
-
-	return _networkConnectivity
-}
-
 // NetworkAvailable checks if the network is available. "Available" here
 // means that the system has a default route available for at least one of
 // IPv4 or IPv6. It does not necessarily imply that the public Internet is
@@ -243,7 +197,7 @@ func (m networkMonitor) NetworkAvailable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_network_monitor_get_network_available(_arg0)
+	_cret = C.g_network_monitor_get_network_available(_arg0)
 
 	var _ok bool
 
@@ -263,7 +217,7 @@ func (m networkMonitor) NetworkMetered() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_network_monitor_get_network_metered(_arg0)
+	_cret = C.g_network_monitor_get_network_metered(_arg0)
 
 	var _ok bool
 

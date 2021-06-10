@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -85,9 +84,6 @@ type CellRenderer interface {
 	// PreferredWidthForHeight retreives a cell renderers’s minimum and natural
 	// width if it were rendered to @widget with the specified @height.
 	PreferredWidthForHeight(widget Widget, height int) (minimumWidth int, naturalWidth int)
-	// RequestMode gets whether the cell renderer prefers a height-for-width
-	// layout or a width-for-height layout.
-	RequestMode() SizeRequestMode
 	// Sensitive returns the cell renderer’s sensitivity.
 	Sensitive() bool
 	// Size obtains the width and height needed to render the cell. Used by view
@@ -98,9 +94,6 @@ type CellRenderer interface {
 	// Please note that the values set in @width and @height, as well as those
 	// in @x_offset and @y_offset are inclusive of the xpad and ypad properties.
 	Size(widget Widget, cellArea *gdk.Rectangle) (xOffset int, yOffset int, width int, height int)
-	// State translates the cell renderer state to StateFlags, based on the cell
-	// renderer and widget sensitivity, and the given CellRendererState.
-	State(widget Widget, cellState CellRendererState) StateFlags
 	// Visible returns the cell renderer’s visibility.
 	Visible() bool
 	// IsActivatable checks whether the cell renderer can do something when
@@ -125,10 +118,6 @@ type CellRenderer interface {
 	SetSensitive(sensitive bool)
 	// SetVisible sets the cell renderer’s visibility.
 	SetVisible(visible bool)
-	// StartEditing starts editing the contents of this @cell, through a new
-	// CellEditable widget created by the CellRendererClass.start_editing
-	// virtual function.
-	StartEditing(event *gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable
 	// StopEditing informs the cell renderer that the editing is stopped. If
 	// @canceled is true, the cell renderer will emit the
 	// CellRenderer::editing-canceled signal.
@@ -353,24 +342,6 @@ func (c cellRenderer) PreferredWidthForHeight(widget Widget, height int) (minimu
 	return _minimumWidth, _naturalWidth
 }
 
-// RequestMode gets whether the cell renderer prefers a height-for-width
-// layout or a width-for-height layout.
-func (c cellRenderer) RequestMode() SizeRequestMode {
-	var _arg0 *C.GtkCellRenderer
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkSizeRequestMode
-
-	cret = C.gtk_cell_renderer_get_request_mode(_arg0)
-
-	var _sizeRequestMode SizeRequestMode
-
-	_sizeRequestMode = SizeRequestMode(_cret)
-
-	return _sizeRequestMode
-}
-
 // Sensitive returns the cell renderer’s sensitivity.
 func (c cellRenderer) Sensitive() bool {
 	var _arg0 *C.GtkCellRenderer
@@ -379,7 +350,7 @@ func (c cellRenderer) Sensitive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_get_sensitive(_arg0)
+	_cret = C.gtk_cell_renderer_get_sensitive(_arg0)
 
 	var _ok bool
 
@@ -426,28 +397,6 @@ func (c cellRenderer) Size(widget Widget, cellArea *gdk.Rectangle) (xOffset int,
 	return _xOffset, _yOffset, _width, _height
 }
 
-// State translates the cell renderer state to StateFlags, based on the cell
-// renderer and widget sensitivity, and the given CellRendererState.
-func (c cellRenderer) State(widget Widget, cellState CellRendererState) StateFlags {
-	var _arg0 *C.GtkCellRenderer
-	var _arg1 *C.GtkWidget
-	var _arg2 C.GtkCellRendererState
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.GtkCellRendererState)(cellState)
-
-	var _cret C.GtkStateFlags
-
-	cret = C.gtk_cell_renderer_get_state(_arg0, _arg1, _arg2)
-
-	var _stateFlags StateFlags
-
-	_stateFlags = StateFlags(_cret)
-
-	return _stateFlags
-}
-
 // Visible returns the cell renderer’s visibility.
 func (c cellRenderer) Visible() bool {
 	var _arg0 *C.GtkCellRenderer
@@ -456,7 +405,7 @@ func (c cellRenderer) Visible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_get_visible(_arg0)
+	_cret = C.gtk_cell_renderer_get_visible(_arg0)
 
 	var _ok bool
 
@@ -476,7 +425,7 @@ func (c cellRenderer) IsActivatable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_is_activatable(_arg0)
+	_cret = C.gtk_cell_renderer_is_activatable(_arg0)
 
 	var _ok bool
 
@@ -576,38 +525,6 @@ func (c cellRenderer) SetVisible(visible bool) {
 	}
 
 	C.gtk_cell_renderer_set_visible(_arg0, _arg1)
-}
-
-// StartEditing starts editing the contents of this @cell, through a new
-// CellEditable widget created by the CellRendererClass.start_editing
-// virtual function.
-func (c cellRenderer) StartEditing(event *gdk.Event, widget Widget, path string, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState) CellEditable {
-	var _arg0 *C.GtkCellRenderer
-	var _arg1 *C.GdkEvent
-	var _arg2 *C.GtkWidget
-	var _arg3 *C.gchar
-	var _arg4 *C.GdkRectangle
-	var _arg5 *C.GdkRectangle
-	var _arg6 C.GtkCellRendererState
-
-	_arg0 = (*C.GtkCellRenderer)(unsafe.Pointer(c.Native()))
-	var _arg1 *C.GdkEvent // unsupported
-	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg3 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(backgroundArea.Native()))
-	_arg5 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
-	_arg6 = (C.GtkCellRendererState)(flags)
-
-	var _cret *C.GtkCellEditable
-
-	cret = C.gtk_cell_renderer_start_editing(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
-	var _cellEditable CellEditable
-
-	_cellEditable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellEditable)
-
-	return _cellEditable
 }
 
 // StopEditing informs the cell renderer that the editing is stopped. If

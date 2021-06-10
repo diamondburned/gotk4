@@ -54,7 +54,7 @@ func (a *Atom) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.gdk_atom_name(_arg0)
+	_cret = C.gdk_atom_name(_arg0)
 
 	var _utf8 string
 
@@ -167,7 +167,7 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_rectangle_equal(_arg0, _arg1)
+	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -193,7 +193,7 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _dest Rectangle
 	var _cret C.gboolean
 
-	cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
 	var _ok bool
 

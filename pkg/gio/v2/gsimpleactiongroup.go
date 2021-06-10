@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -45,10 +44,6 @@ type SimpleActionGroup interface {
 	//
 	// The action group takes its own reference on @action.
 	Insert(action Action)
-	// Lookup looks up the action with the name @action_name in the group.
-	//
-	// If no such action exists, returns nil.
-	Lookup(actionName string) Action
 	// Remove removes the named action from the action group.
 	//
 	// If no action of this name is in the group then nothing happens.
@@ -80,19 +75,6 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 	return WrapSimpleActionGroup(obj), nil
 }
 
-// NewSimpleActionGroup constructs a class SimpleActionGroup.
-func NewSimpleActionGroup() SimpleActionGroup {
-	var _cret C.GSimpleActionGroup
-
-	cret = C.g_simple_action_group_new()
-
-	var _simpleActionGroup SimpleActionGroup
-
-	_simpleActionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SimpleActionGroup)
-
-	return _simpleActionGroup
-}
-
 // Insert adds an action to the action group.
 //
 // If the action group already contains an action with the same name as
@@ -107,28 +89,6 @@ func (s simpleActionGroup) Insert(action Action) {
 	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
 
 	C.g_simple_action_group_insert(_arg0, _arg1)
-}
-
-// Lookup looks up the action with the name @action_name in the group.
-//
-// If no such action exists, returns nil.
-func (s simpleActionGroup) Lookup(actionName string) Action {
-	var _arg0 *C.GSimpleActionGroup
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GAction
-
-	cret = C.g_simple_action_group_lookup(_arg0, _arg1)
-
-	var _action Action
-
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
-
-	return _action
 }
 
 // Remove removes the named action from the action group.

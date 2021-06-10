@@ -5,7 +5,6 @@ package gobject
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -14,25 +13,3 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 import "C"
-
-// BindingTransformFunc: a function to be called to transform @from_value to
-// @to_value. If this is the @transform_to function of a binding, then
-// @from_value is the @source_property on the @source object, and @to_value is
-// the @target_property on the @target object. If this is the @transform_from
-// function of a G_BINDING_BIDIRECTIONAL binding, then those roles are reversed.
-type BindingTransformFunc func() (ok bool)
-
-//export gotk4_BindingTransformFunc
-func gotk4_BindingTransformFunc(arg0 *C.GBinding, arg1 *C.GValue, arg2 *C.GValue, arg3 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(BindingTransformFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}

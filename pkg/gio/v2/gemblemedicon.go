@@ -3,10 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,10 +42,6 @@ type EmblemedIcon interface {
 	AddEmblem(emblem Emblem)
 	// ClearEmblems removes all the emblems from @icon.
 	ClearEmblems()
-	// Emblems gets the list of emblems for the @icon.
-	Emblems() *glib.List
-	// Icon gets the main icon for @emblemed.
-	Icon() Icon
 }
 
 // emblemedIcon implements the EmblemedIcon interface.
@@ -75,25 +67,6 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 	return WrapEmblemedIcon(obj), nil
 }
 
-// NewEmblemedIcon constructs a class EmblemedIcon.
-func NewEmblemedIcon(icon Icon, emblem Emblem) EmblemedIcon {
-	var _arg1 *C.GIcon
-	var _arg2 *C.GEmblem
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
-
-	var _cret C.GEmblemedIcon
-
-	cret = C.g_emblemed_icon_new(_arg1, _arg2)
-
-	var _emblemedIcon EmblemedIcon
-
-	_emblemedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EmblemedIcon)
-
-	return _emblemedIcon
-}
-
 // AddEmblem adds @emblem to the #GList of #GEmblems.
 func (e emblemedIcon) AddEmblem(emblem Emblem) {
 	var _arg0 *C.GEmblemedIcon
@@ -112,38 +85,4 @@ func (e emblemedIcon) ClearEmblems() {
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 
 	C.g_emblemed_icon_clear_emblems(_arg0)
-}
-
-// Emblems gets the list of emblems for the @icon.
-func (e emblemedIcon) Emblems() *glib.List {
-	var _arg0 *C.GEmblemedIcon
-
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GList
-
-	cret = C.g_emblemed_icon_get_emblems(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-
-	return _list
-}
-
-// Icon gets the main icon for @emblemed.
-func (e emblemedIcon) Icon() Icon {
-	var _arg0 *C.GEmblemedIcon
-
-	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GIcon
-
-	cret = C.g_emblemed_icon_get_icon(_arg0)
-
-	var _icon Icon
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
-
-	return _icon
 }

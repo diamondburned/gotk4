@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -68,19 +65,6 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 	return WrapGestureLongPress(obj), nil
 }
 
-// NewGestureLongPress constructs a class GestureLongPress.
-func NewGestureLongPress() GestureLongPress {
-	var _cret C.GtkGestureLongPress
-
-	cret = C.gtk_gesture_long_press_new()
-
-	var _gestureLongPress GestureLongPress
-
-	_gestureLongPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureLongPress)
-
-	return _gestureLongPress
-}
-
 // DelayFactor returns the delay factor.
 func (g gestureLongPress) DelayFactor() float64 {
 	var _arg0 *C.GtkGestureLongPress
@@ -89,7 +73,7 @@ func (g gestureLongPress) DelayFactor() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
+	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
 
 	var _gdouble float64
 

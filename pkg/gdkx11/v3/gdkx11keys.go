@@ -67,7 +67,7 @@ func (k x11Keymap) GroupForState(state uint) int {
 
 	var _cret C.gint
 
-	cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
+	_cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
 
 	var _gint int
 
@@ -90,7 +90,7 @@ func (k x11Keymap) KeyIsModifier(keycode uint) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)
+	_cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)
 
 	var _ok bool
 

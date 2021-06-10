@@ -3,7 +3,6 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -108,26 +107,6 @@ func (m *Matrix) Concat(newMatrix *Matrix) {
 	C.pango_matrix_concat(_arg0, _arg1)
 }
 
-// Copy copies a `PangoMatrix`.
-func (m *Matrix) Copy() *Matrix {
-	var _arg0 *C.PangoMatrix
-
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.PangoMatrix
-
-	cret = C.pango_matrix_copy(_arg0)
-
-	var _ret *Matrix
-
-	_ret = WrapMatrix(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Matrix) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _ret
-}
-
 // Free: free a `PangoMatrix`.
 func (m *Matrix) Free() {
 	var _arg0 *C.PangoMatrix
@@ -150,7 +129,7 @@ func (m *Matrix) FontScaleFactor() float64 {
 
 	var _cret C.double
 
-	cret = C.pango_matrix_get_font_scale_factor(_arg0)
+	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
 	var _gdouble float64
 
@@ -212,90 +191,6 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 	_arg2 = C.double(scaleY)
 
 	C.pango_matrix_scale(_arg0, _arg1, _arg2)
-}
-
-// TransformDistance transforms the distance vector (@dx,@dy) by @matrix.
-//
-// This is similar to [method@Pango.Matrix.transform_point], except that the
-// translation components of the transformation are ignored. The calculation of
-// the returned vector is as follows:
-//
-// “` dx2 = dx1 * xx + dy1 * xy; dy2 = dx1 * yx + dy1 * yy; “`
-//
-// Affine transformations are position invariant, so the same vector always
-// transforms to the same vector. If (@x1,@y1) transforms to (@x2,@y2) then
-// (@x1+@dx1,@y1+@dy1) will transform to (@x1+@dx2,@y1+@dy2) for all values of
-// @x1 and @x2.
-func (m *Matrix) TransformDistance(dx *float64, dy *float64) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 *C.double
-	var _arg2 *C.double
-
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = *C.double(dx)
-	_arg2 = *C.double(dy)
-
-	C.pango_matrix_transform_distance(_arg0, _arg1, _arg2)
-}
-
-// TransformPixelRectangle: first transforms the @rect using @matrix, then
-// calculates the bounding box of the transformed rectangle.
-//
-// This function is useful for example when you want to draw a rotated
-// @PangoLayout to an image buffer, and want to know how large the image should
-// be and how much you should shift the layout when rendering.
-//
-// For better accuracy, you should use [method@Pango.Matrix.transform_rectangle]
-// on original rectangle in Pango units and convert to pixels afterward using
-// [func@extents_to_pixels]'s first argument.
-func (m *Matrix) TransformPixelRectangle(rect *Rectangle) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 *C.PangoRectangle
-
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.PangoRectangle)(unsafe.Pointer(rect.Native()))
-
-	C.pango_matrix_transform_pixel_rectangle(_arg0, _arg1)
-}
-
-// TransformPoint transforms the point (@x, @y) by @matrix.
-func (m *Matrix) TransformPoint(x *float64, y *float64) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 *C.double
-	var _arg2 *C.double
-
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = *C.double(x)
-	_arg2 = *C.double(y)
-
-	C.pango_matrix_transform_point(_arg0, _arg1, _arg2)
-}
-
-// TransformRectangle: first transforms @rect using @matrix, then calculates the
-// bounding box of the transformed rectangle.
-//
-// This function is useful for example when you want to draw a rotated
-// @PangoLayout to an image buffer, and want to know how large the image should
-// be and how much you should shift the layout when rendering.
-//
-// If you have a rectangle in device units (pixels), use
-// [method@Pango.Matrix.transform_pixel_rectangle].
-//
-// If you have the rectangle in Pango units and want to convert to transformed
-// pixel bounding box, it is more accurate to transform it first (using this
-// function) and pass the result to pango_extents_to_pixels(), first argument,
-// for an inclusive rounded rectangle. However, there are valid reasons that you
-// may want to convert to pixels first and then transform, for example when the
-// transformed coordinates may overflow in Pango units (large matrix translation
-// for example).
-func (m *Matrix) TransformRectangle(rect *Rectangle) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 *C.PangoRectangle
-
-	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.PangoRectangle)(unsafe.Pointer(rect.Native()))
-
-	C.pango_matrix_transform_rectangle(_arg0, _arg1)
 }
 
 // Translate changes the transformation represented by @matrix to be the

@@ -126,7 +126,7 @@ func (s seekable) CanSeek() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_seekable_can_seek(_arg0)
+	_cret = C.g_seekable_can_seek(_arg0)
 
 	var _ok bool
 
@@ -146,7 +146,7 @@ func (s seekable) CanTruncate() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_seekable_can_truncate(_arg0)
+	_cret = C.g_seekable_can_truncate(_arg0)
 
 	var _ok bool
 
@@ -201,7 +201,7 @@ func (s seekable) Tell() int64 {
 
 	var _cret C.goffset
 
-	cret = C.g_seekable_tell(_arg0)
+	_cret = C.g_seekable_tell(_arg0)
 
 	var _gint64 int64
 

@@ -21,7 +21,7 @@ func X11DeviceGetID(device X11DeviceCore) int {
 
 	var _cret C.gint
 
-	cret = C.gdk_x11_device_get_id(_arg1)
+	_cret = C.gdk_x11_device_get_id(_arg1)
 
 	var _gint int
 

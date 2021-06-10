@@ -78,7 +78,7 @@ func (c *StringChunk) Insert(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_string_chunk_insert(_arg0, _arg1)
+	_cret = C.g_string_chunk_insert(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -108,7 +108,7 @@ func (c *StringChunk) InsertConst(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_string_chunk_insert_const(_arg0, _arg1)
+	_cret = C.g_string_chunk_insert_const(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -138,7 +138,7 @@ func (c *StringChunk) InsertLen(string string, len int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_string_chunk_insert_len(_arg0, _arg1, _arg2)
+	_cret = C.g_string_chunk_insert_len(_arg0, _arg1, _arg2)
 
 	var _utf8 string
 

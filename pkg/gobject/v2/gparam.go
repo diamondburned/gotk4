@@ -3,12 +3,8 @@
 package gobject
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -84,7 +80,7 @@ func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue *
 
 	var _cret C.gboolean
 
-	cret = C.g_param_value_convert(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.g_param_value_convert(_arg1, _arg2, _arg3, _arg4)
 
 	var _ok bool
 
@@ -106,7 +102,7 @@ func ParamValueDefaults(pspec ParamSpec, value **externglib.Value) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_param_value_defaults(_arg1, _arg2)
+	_cret = C.g_param_value_defaults(_arg1, _arg2)
 
 	var _ok bool
 
@@ -142,7 +138,7 @@ func ParamValueValidate(pspec ParamSpec, value **externglib.Value) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_param_value_validate(_arg1, _arg2)
+	_cret = C.g_param_value_validate(_arg1, _arg2)
 
 	var _ok bool
 
@@ -167,7 +163,7 @@ func ParamValuesCmp(pspec ParamSpec, value1 **externglib.Value, value2 **externg
 
 	var _cret C.gint
 
-	cret = C.g_param_values_cmp(_arg1, _arg2, _arg3)
+	_cret = C.g_param_values_cmp(_arg1, _arg2, _arg3)
 
 	var _gint int
 
@@ -215,82 +211,6 @@ func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
 	_arg2 = C.GType(ownerType)
 
 	C.g_param_spec_pool_insert(_arg0, _arg1, _arg2)
-}
-
-// List gets an array of all Specs owned by @owner_type in the pool.
-func (p *ParamSpecPool) List(ownerType externglib.Type) []ParamSpec {
-	var _arg0 *C.GParamSpecPool
-	var _arg1 C.GType
-
-	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	_arg1 = C.GType(ownerType)
-
-	var _cret **C.GParamSpec
-	var _arg2 *C.guint
-
-	cret = C.g_param_spec_pool_list(_arg0, _arg1)
-
-	var _paramSpecs []ParamSpec
-
-	{
-		var src []*C.GParamSpec
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg2))
-
-		_paramSpecs = make([]ParamSpec, _arg2)
-		for i := 0; i < uintptr(_arg2); i++ {
-			_paramSpecs = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
-		}
-	}
-
-	return _paramSpecs
-}
-
-// ListOwned gets an #GList of all Specs owned by @owner_type in the pool.
-func (p *ParamSpecPool) ListOwned(ownerType externglib.Type) *glib.List {
-	var _arg0 *C.GParamSpecPool
-	var _arg1 C.GType
-
-	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	_arg1 = C.GType(ownerType)
-
-	var _cret *C.GList
-
-	cret = C.g_param_spec_pool_list_owned(_arg0, _arg1)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// Lookup looks up a Spec in the pool.
-func (p *ParamSpecPool) Lookup(paramName string, ownerType externglib.Type, walkAncestors bool) ParamSpec {
-	var _arg0 *C.GParamSpecPool
-	var _arg1 *C.gchar
-	var _arg2 C.GType
-	var _arg3 C.gboolean
-
-	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
-	_arg1 = (*C.gchar)(C.CString(paramName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.GType(ownerType)
-	if walkAncestors {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _cret *C.GParamSpec
-
-	cret = C.g_param_spec_pool_lookup(_arg0, _arg1, _arg2, _arg3)
-
-	var _paramSpec ParamSpec
-
-	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
-
-	return _paramSpec
 }
 
 // Remove removes a Spec from the pool.

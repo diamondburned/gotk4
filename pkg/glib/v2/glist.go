@@ -43,17 +43,3 @@ func (l *List) Data() interface{} {
 	v = (interface{})(l.native.data)
 	return v
 }
-
-// Next gets the field inside the struct.
-func (l *List) Next() *List {
-	var v *List
-	v = WrapList(unsafe.Pointer(l.native.next))
-	return v
-}
-
-// Prev gets the field inside the struct.
-func (l *List) Prev() *List {
-	var v *List
-	v = WrapList(unsafe.Pointer(l.native.prev))
-	return v
-}

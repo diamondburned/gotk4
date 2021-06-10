@@ -5,7 +5,6 @@ package gdkx11
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -59,24 +58,8 @@ type X11Display interface {
 	// gdk_x11_display_error_trap_pop_ignored()to lift a trap pushed with this
 	// function.
 	ErrorTrapPush()
-	// DefaultGroup returns the default group leader surface for all toplevel
-	// surfaces on @display. This surface is implicitly created by GDK. See
-	// gdk_x11_surface_set_group().
-	DefaultGroup() gdk.Surface
 	// GlxVersion retrieves the version of the GLX implementation.
 	GlxVersion() (major int, minor int, ok bool)
-	// PrimaryMonitor gets the primary monitor for the display.
-	//
-	// The primary monitor is considered the monitor where the “main desktop”
-	// lives. While normal application surfaces typically allow the window
-	// manager to place the surfaces, specialized desktop applications such as
-	// panels should place themselves on the primary monitor.
-	//
-	// If no monitor is the designated primary monitor, any monitor (usually the
-	// first) may be returned.
-	PrimaryMonitor() gdk.Monitor
-	// Screen retrieves the X11Screen of the @display.
-	Screen() X11Screen
 	// StartupNotificationID gets the startup notification ID for a display.
 	StartupNotificationID() string
 	// UserTime returns the timestamp of the last user interaction on @display.
@@ -123,7 +106,7 @@ type X11Display interface {
 	SetSurfaceScale(scale int)
 	// StringToCompoundText: convert a string from the encoding of the current
 	// locale into a form suitable for storing in a window property.
-	StringToCompoundText(str string) int
+	StringToCompoundText(str string) (encoding string, format int, ctext []*byte, gint int)
 	// TextPropertyToTextList: convert a text string from the encoding as it is
 	// stored in a property into an array of strings in the encoding of the
 	// current locale. (The elements of the array represent the nul-separated
@@ -133,7 +116,7 @@ type X11Display interface {
 	// gdk_x11_display_grab().
 	Ungrab()
 	// UTF8ToCompoundText converts from UTF-8 to compound text.
-	UTF8ToCompoundText(str string) bool
+	UTF8ToCompoundText(str string) (string, int, []*byte, bool)
 }
 
 // x11Display implements the X11Display interface.
@@ -171,7 +154,7 @@ func (d x11Display) ErrorTrapPop() int {
 
 	var _cret C.int
 
-	cret = C.gdk_x11_display_error_trap_pop(_arg0)
+	_cret = C.gdk_x11_display_error_trap_pop(_arg0)
 
 	var _gint int
 
@@ -205,25 +188,6 @@ func (d x11Display) ErrorTrapPush() {
 	C.gdk_x11_display_error_trap_push(_arg0)
 }
 
-// DefaultGroup returns the default group leader surface for all toplevel
-// surfaces on @display. This surface is implicitly created by GDK. See
-// gdk_x11_surface_set_group().
-func (d x11Display) DefaultGroup() gdk.Surface {
-	var _arg0 *C.GdkDisplay
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkSurface
-
-	cret = C.gdk_x11_display_get_default_group(_arg0)
-
-	var _surface gdk.Surface
-
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
-
-	return _surface
-}
-
 // GlxVersion retrieves the version of the GLX implementation.
 func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 	var _arg0 *C.GdkDisplay
@@ -234,7 +198,7 @@ func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 	var _arg2 C.int
 	var _cret C.gboolean
 
-	cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
+	_cret = C.gdk_x11_display_get_glx_version(_arg0, &_arg1, &_arg2)
 
 	var _major int
 	var _minor int
@@ -249,48 +213,6 @@ func (d x11Display) GlxVersion() (major int, minor int, ok bool) {
 	return _major, _minor, _ok
 }
 
-// PrimaryMonitor gets the primary monitor for the display.
-//
-// The primary monitor is considered the monitor where the “main desktop”
-// lives. While normal application surfaces typically allow the window
-// manager to place the surfaces, specialized desktop applications such as
-// panels should place themselves on the primary monitor.
-//
-// If no monitor is the designated primary monitor, any monitor (usually the
-// first) may be returned.
-func (d x11Display) PrimaryMonitor() gdk.Monitor {
-	var _arg0 *C.GdkDisplay
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkMonitor
-
-	cret = C.gdk_x11_display_get_primary_monitor(_arg0)
-
-	var _monitor gdk.Monitor
-
-	_monitor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Monitor)
-
-	return _monitor
-}
-
-// Screen retrieves the X11Screen of the @display.
-func (d x11Display) Screen() X11Screen {
-	var _arg0 *C.GdkDisplay
-
-	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GdkX11Screen
-
-	cret = C.gdk_x11_display_get_screen(_arg0)
-
-	var _x11Screen X11Screen
-
-	_x11Screen = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(X11Screen)
-
-	return _x11Screen
-}
-
 // StartupNotificationID gets the startup notification ID for a display.
 func (d x11Display) StartupNotificationID() string {
 	var _arg0 *C.GdkDisplay
@@ -299,7 +221,7 @@ func (d x11Display) StartupNotificationID() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
+	_cret = C.gdk_x11_display_get_startup_notification_id(_arg0)
 
 	var _utf8 string
 
@@ -318,7 +240,7 @@ func (d x11Display) UserTime() uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_display_get_user_time(_arg0)
+	_cret = C.gdk_x11_display_get_user_time(_arg0)
 
 	var _guint32 uint32
 
@@ -405,7 +327,7 @@ func (d x11Display) SetSurfaceScale(scale int) {
 
 // StringToCompoundText: convert a string from the encoding of the current
 // locale into a form suitable for storing in a window property.
-func (d x11Display) StringToCompoundText(str string) int {
+func (d x11Display) StringToCompoundText(str string) (encoding string, format int, ctext []*byte, gint int) {
 	var _arg0 *C.GdkDisplay
 	var _arg1 *C.char
 
@@ -413,15 +335,28 @@ func (d x11Display) StringToCompoundText(str string) int {
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 
+	var _arg2 **C.char
+	var _arg3 C.int
+	var _arg4 *C.guchar
+	var _arg5 *C.int
 	var _cret C.int
 
-	cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1)
+	_cret = C.gdk_x11_display_string_to_compound_text(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5)
 
+	var _encoding string
+	var _format int
+	var _ctext []*byte
 	var _gint int
 
+	_encoding = C.GoString(_arg2)
+	_format = (int)(_arg3)
+	ptr.SetSlice(unsafe.Pointer(&_ctext), unsafe.Pointer(_arg4), int(_arg5))
+	runtime.SetFinalizer(&_ctext, func(v *[]*byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 	_gint = (int)(_cret)
 
-	return _gint
+	return _encoding, _format, _ctext, _gint
 }
 
 // TextPropertyToTextList: convert a text string from the encoding as it is
@@ -447,7 +382,7 @@ func (d x11Display) TextPropertyToTextList(encoding string, format int, text *by
 
 	var _cret C.int
 
-	cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
+	_cret = C.gdk_x11_display_text_property_to_text_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _gint int
 
@@ -467,7 +402,7 @@ func (d x11Display) Ungrab() {
 }
 
 // UTF8ToCompoundText converts from UTF-8 to compound text.
-func (d x11Display) UTF8ToCompoundText(str string) bool {
+func (d x11Display) UTF8ToCompoundText(str string) (string, int, []*byte, bool) {
 	var _arg0 *C.GdkDisplay
 	var _arg1 *C.char
 
@@ -475,15 +410,28 @@ func (d x11Display) UTF8ToCompoundText(str string) bool {
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 
+	var _arg2 **C.char
+	var _arg3 C.int
+	var _arg4 *C.guchar
+	var _arg5 *C.int
 	var _cret C.gboolean
 
-	cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1)
+	_cret = C.gdk_x11_display_utf8_to_compound_text(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5)
 
+	var _encoding string
+	var _format int
+	var _ctext []*byte
 	var _ok bool
 
+	_encoding = C.GoString(_arg2)
+	_format = (int)(_arg3)
+	ptr.SetSlice(unsafe.Pointer(&_ctext), unsafe.Pointer(_arg4), int(_arg5))
+	runtime.SetFinalizer(&_ctext, func(v *[]*byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
 	if _cret {
 		_ok = true
 	}
 
-	return _ok
+	return _encoding, _format, _ctext, _ok
 }

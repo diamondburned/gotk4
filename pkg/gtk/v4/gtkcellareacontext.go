@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,16 +50,6 @@ type CellAreaContext interface {
 	// was recently reset with gtk_cell_area_context_reset(), the returned value
 	// will be -1.
 	Allocation() (width int, height int)
-	// Area fetches the CellArea this @context was created by.
-	//
-	// This is generally unneeded by layouting widgets; however, it is important
-	// for the context implementation itself to fetch information about the area
-	// it is being used for.
-	//
-	// For instance at CellAreaContextClass.allocate() time it’s important to
-	// know details about any cell spacing that the CellArea is configured with
-	// in order to compute a proper allocation.
-	Area() CellArea
 	// PreferredHeight gets the accumulative preferred height for all rows which
 	// have been requested with this context.
 	//
@@ -189,31 +176,6 @@ func (c cellAreaContext) Allocation() (width int, height int) {
 	_height = (int)(_arg2)
 
 	return _width, _height
-}
-
-// Area fetches the CellArea this @context was created by.
-//
-// This is generally unneeded by layouting widgets; however, it is important
-// for the context implementation itself to fetch information about the area
-// it is being used for.
-//
-// For instance at CellAreaContextClass.allocate() time it’s important to
-// know details about any cell spacing that the CellArea is configured with
-// in order to compute a proper allocation.
-func (c cellAreaContext) Area() CellArea {
-	var _arg0 *C.GtkCellAreaContext
-
-	_arg0 = (*C.GtkCellAreaContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkCellArea
-
-	cret = C.gtk_cell_area_context_get_area(_arg0)
-
-	var _cellArea CellArea
-
-	_cellArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellArea)
-
-	return _cellArea
 }
 
 // PreferredHeight gets the accumulative preferred height for all rows which

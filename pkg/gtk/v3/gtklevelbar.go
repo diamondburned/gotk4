@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,8 +73,6 @@ type LevelBar interface {
 	MaxValue() float64
 	// MinValue returns the value of the LevelBar:min-value property.
 	MinValue() float64
-	// Mode returns the value of the LevelBar:mode property.
-	Mode() LevelBarMode
 	// OffsetValue fetches the value specified for the offset marker @name in
 	// @self, returning true in case an offset named @name was found.
 	OffsetValue(name string) (float64, bool)
@@ -127,38 +124,6 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return WrapLevelBar(obj), nil
 }
 
-// NewLevelBar constructs a class LevelBar.
-func NewLevelBar() LevelBar {
-	var _cret C.GtkLevelBar
-
-	cret = C.gtk_level_bar_new()
-
-	var _levelBar LevelBar
-
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
-
-	return _levelBar
-}
-
-// NewLevelBarForInterval constructs a class LevelBar.
-func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
-
-	_arg1 = C.gdouble(minValue)
-	_arg2 = C.gdouble(maxValue)
-
-	var _cret C.GtkLevelBar
-
-	cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
-
-	var _levelBar LevelBar
-
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
-
-	return _levelBar
-}
-
 // AddOffsetValue adds a new offset marker on @self at the position
 // specified by @value. When the bar value is in the interval topped by
 // @value (or between @value and LevelBar:max-value in case the offset is
@@ -186,7 +151,7 @@ func (s levelBar) Inverted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_level_bar_get_inverted(_arg0)
+	_cret = C.gtk_level_bar_get_inverted(_arg0)
 
 	var _ok bool
 
@@ -205,7 +170,7 @@ func (s levelBar) MaxValue() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_level_bar_get_max_value(_arg0)
+	_cret = C.gtk_level_bar_get_max_value(_arg0)
 
 	var _gdouble float64
 
@@ -222,30 +187,13 @@ func (s levelBar) MinValue() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_level_bar_get_min_value(_arg0)
+	_cret = C.gtk_level_bar_get_min_value(_arg0)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// Mode returns the value of the LevelBar:mode property.
-func (s levelBar) Mode() LevelBarMode {
-	var _arg0 *C.GtkLevelBar
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkLevelBarMode
-
-	cret = C.gtk_level_bar_get_mode(_arg0)
-
-	var _levelBarMode LevelBarMode
-
-	_levelBarMode = LevelBarMode(_cret)
-
-	return _levelBarMode
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in
@@ -261,7 +209,7 @@ func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _arg2 C.gdouble
 	var _cret C.gboolean
 
-	cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
 
 	var _value float64
 	var _ok bool
@@ -282,7 +230,7 @@ func (s levelBar) Value() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_level_bar_get_value(_arg0)
+	_cret = C.gtk_level_bar_get_value(_arg0)
 
 	var _gdouble float64
 

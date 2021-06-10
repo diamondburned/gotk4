@@ -108,7 +108,7 @@ func (e *Error) Copy() *error {
 
 	var _cret *C.GError
 
-	cret = C.g_error_copy(_arg0)
+	_cret = C.g_error_copy(_arg0)
 
 	var _err *error
 

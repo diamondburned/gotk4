@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -41,8 +38,6 @@ type SortListModel interface {
 	//
 	// See [method@Gtk.SortListModel.set_incremental].
 	Incremental() bool
-	// Model gets the model currently sorted or nil if none.
-	Model() gio.ListModel
 	// Pending estimates progress of an ongoing sorting operation.
 	//
 	// The estimate is the number of items that would still need to be sorted to
@@ -58,8 +53,6 @@ type SortListModel interface {
 	// [property@Gtk.SortListModel:incremental] is false - this function returns
 	// 0.
 	Pending() uint
-	// Sorter gets the sorter that is used to sort @self.
-	Sorter() Sorter
 	// SetIncremental sets the sort model to do an incremental sort.
 	//
 	// When incremental sorting is enabled, the `GtkSortListModel` will not do a
@@ -108,25 +101,6 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 	return WrapSortListModel(obj), nil
 }
 
-// NewSortListModel constructs a class SortListModel.
-func NewSortListModel(model gio.ListModel, sorter Sorter) SortListModel {
-	var _arg1 *C.GListModel
-	var _arg2 *C.GtkSorter
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
-
-	var _cret C.GtkSortListModel
-
-	cret = C.gtk_sort_list_model_new(_arg1, _arg2)
-
-	var _sortListModel SortListModel
-
-	_sortListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SortListModel)
-
-	return _sortListModel
-}
-
 // Incremental returns whether incremental sorting is enabled.
 //
 // See [method@Gtk.SortListModel.set_incremental].
@@ -137,7 +111,7 @@ func (s sortListModel) Incremental() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_sort_list_model_get_incremental(_arg0)
+	_cret = C.gtk_sort_list_model_get_incremental(_arg0)
 
 	var _ok bool
 
@@ -146,23 +120,6 @@ func (s sortListModel) Incremental() bool {
 	}
 
 	return _ok
-}
-
-// Model gets the model currently sorted or nil if none.
-func (s sortListModel) Model() gio.ListModel {
-	var _arg0 *C.GtkSortListModel
-
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_sort_list_model_get_model(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // Pending estimates progress of an ongoing sorting operation.
@@ -186,30 +143,13 @@ func (s sortListModel) Pending() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_sort_list_model_get_pending(_arg0)
+	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// Sorter gets the sorter that is used to sort @self.
-func (s sortListModel) Sorter() Sorter {
-	var _arg0 *C.GtkSortListModel
-
-	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSorter
-
-	cret = C.gtk_sort_list_model_get_sorter(_arg0)
-
-	var _sorter Sorter
-
-	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Sorter)
-
-	return _sorter
 }
 
 // SetIncremental sets the sort model to do an incremental sort.

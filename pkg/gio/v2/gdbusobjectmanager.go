@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,15 +31,8 @@ func init() {
 // DBusObjectManagerOverrider contains methods that are overridable. This
 // interface is a subset of the interface DBusObjectManager.
 type DBusObjectManagerOverrider interface {
-	// Interface gets the interface proxy for @interface_name at @object_path,
-	// if any.
-	Interface(objectPath string, interfaceName string) DBusInterface
-	// Object gets the BusObjectProxy at @object_path, if any.
-	Object(objectPath string) DBusObject
 	// ObjectPath gets the object path that @manager is for.
 	ObjectPath() string
-	// Objects gets all BusObject objects known to @manager.
-	Objects() *glib.List
 
 	InterfaceAdded(object DBusObject, interface_ DBusInterface)
 
@@ -89,50 +77,6 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManager(obj), nil
 }
 
-// Interface gets the interface proxy for @interface_name at @object_path,
-// if any.
-func (m dBusObjectManager) Interface(objectPath string, interfaceName string) DBusInterface {
-	var _arg0 *C.GDBusObjectManager
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(interfaceName))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GDBusInterface
-
-	cret = C.g_dbus_object_manager_get_interface(_arg0, _arg1, _arg2)
-
-	var _dBusInterface DBusInterface
-
-	_dBusInterface = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusInterface)
-
-	return _dBusInterface
-}
-
-// Object gets the BusObjectProxy at @object_path, if any.
-func (m dBusObjectManager) Object(objectPath string) DBusObject {
-	var _arg0 *C.GDBusObjectManager
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GDBusObject
-
-	cret = C.g_dbus_object_manager_get_object(_arg0, _arg1)
-
-	var _dBusObject DBusObject
-
-	_dBusObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObject)
-
-	return _dBusObject
-}
-
 // ObjectPath gets the object path that @manager is for.
 func (m dBusObjectManager) ObjectPath() string {
 	var _arg0 *C.GDBusObjectManager
@@ -141,31 +85,11 @@ func (m dBusObjectManager) ObjectPath() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dbus_object_manager_get_object_path(_arg0)
+	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Objects gets all BusObject objects known to @manager.
-func (m dBusObjectManager) Objects() *glib.List {
-	var _arg0 *C.GDBusObjectManager
-
-	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GList
-
-	cret = C.g_dbus_object_manager_get_objects(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
 }

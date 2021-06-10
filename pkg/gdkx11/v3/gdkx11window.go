@@ -29,7 +29,7 @@ func X11GetServerTime(window X11Window) uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_get_server_time(_arg1)
+	_cret = C.gdk_x11_get_server_time(_arg1)
 
 	var _guint32 uint32
 
@@ -129,7 +129,7 @@ func (w x11Window) Desktop() uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_window_get_desktop(_arg0)
+	_cret = C.gdk_x11_window_get_desktop(_arg0)
 
 	var _guint32 uint32
 

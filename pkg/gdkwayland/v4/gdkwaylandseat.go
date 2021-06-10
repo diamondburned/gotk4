@@ -60,7 +60,7 @@ func (s waylandSeat) WlSeat() *interface{} {
 
 	var _cret *C.wl_seat
 
-	cret = C.gdk_wayland_seat_get_wl_seat(_arg0)
+	_cret = C.gdk_wayland_seat_get_wl_seat(_arg0)
 
 	var _gpointer *interface{}
 

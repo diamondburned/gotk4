@@ -2,13 +2,6 @@
 
 package gdk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-)
-
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -28,79 +21,6 @@ func DragAbort(context DragContext, time_ uint32) {
 	_arg2 = C.guint32(time_)
 
 	C.gdk_drag_abort(_arg1, _arg2)
-}
-
-// DragBegin starts a drag and creates a new drag context for it. This function
-// assumes that the drag is controlled by the client pointer device, use
-// gdk_drag_begin_for_device() to begin a drag with a different device.
-//
-// This function is called by the drag source.
-func DragBegin(window Window, targets *glib.List) DragContext {
-	var _arg1 *C.GdkWindow
-	var _arg2 *C.GList
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (*C.GList)(unsafe.Pointer(targets.Native()))
-
-	var _cret *C.GdkDragContext
-
-	cret = C.gdk_drag_begin(_arg1, _arg2)
-
-	var _dragContext DragContext
-
-	_dragContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DragContext)
-
-	return _dragContext
-}
-
-// DragBeginForDevice starts a drag and creates a new drag context for it.
-//
-// This function is called by the drag source.
-func DragBeginForDevice(window Window, device Device, targets *glib.List) DragContext {
-	var _arg1 *C.GdkWindow
-	var _arg2 *C.GdkDevice
-	var _arg3 *C.GList
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg3 = (*C.GList)(unsafe.Pointer(targets.Native()))
-
-	var _cret *C.GdkDragContext
-
-	cret = C.gdk_drag_begin_for_device(_arg1, _arg2, _arg3)
-
-	var _dragContext DragContext
-
-	_dragContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DragContext)
-
-	return _dragContext
-}
-
-// DragBeginFromPoint starts a drag and creates a new drag context for it.
-//
-// This function is called by the drag source.
-func DragBeginFromPoint(window Window, device Device, targets *glib.List, xRoot int, yRoot int) DragContext {
-	var _arg1 *C.GdkWindow
-	var _arg2 *C.GdkDevice
-	var _arg3 *C.GList
-	var _arg4 C.gint
-	var _arg5 C.gint
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
-	_arg3 = (*C.GList)(unsafe.Pointer(targets.Native()))
-	_arg4 = C.gint(xRoot)
-	_arg5 = C.gint(yRoot)
-
-	var _cret *C.GdkDragContext
-
-	cret = C.gdk_drag_begin_from_point(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _dragContext DragContext
-
-	_dragContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DragContext)
-
-	return _dragContext
 }
 
 // DragDrop drops on the current destination.
@@ -150,7 +70,7 @@ func DragDropSucceeded(context DragContext) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_drag_drop_succeeded(_arg1)
+	_cret = C.gdk_drag_drop_succeeded(_arg1)
 
 	var _ok bool
 
@@ -159,55 +79,6 @@ func DragDropSucceeded(context DragContext) bool {
 	}
 
 	return _ok
-}
-
-// DragFindWindowForScreen finds the destination window and DND protocol to use
-// at the given pointer position.
-//
-// This function is called by the drag source to obtain the @dest_window and
-// @protocol parameters for gdk_drag_motion().
-func DragFindWindowForScreen(context DragContext, dragWindow Window, screen Screen, xRoot int, yRoot int) (Window, DragProtocol) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.GdkWindow
-	var _arg3 *C.GdkScreen
-	var _arg4 C.gint
-	var _arg5 C.gint
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GdkWindow)(unsafe.Pointer(dragWindow.Native()))
-	_arg3 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
-	_arg4 = C.gint(xRoot)
-	_arg5 = C.gint(yRoot)
-
-	var _arg6 *C.GdkWindow
-	var _arg7 C.GdkDragProtocol
-
-	C.gdk_drag_find_window_for_screen(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7)
-
-	var _destWindow Window
-	var _protocol DragProtocol
-
-	_destWindow = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_arg6.Native()))).(Window)
-	_protocol = DragProtocol(_arg7)
-
-	return _destWindow, _protocol
-}
-
-// DragGetSelection returns the selection atom for the current source window.
-func DragGetSelection(context DragContext) Atom {
-	var _arg1 *C.GdkDragContext
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-
-	var _cret C.GdkAtom
-
-	cret = C.gdk_drag_get_selection(_arg1)
-
-	var _atom Atom
-
-	_atom = *WrapAtom(unsafe.Pointer(&_cret))
-
-	return _atom
 }
 
 // DragMotion updates the drag context when the pointer moves or the set of
@@ -238,7 +109,7 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 
 	var _cret C.gboolean
 
-	cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
+	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
 	var _ok bool
 

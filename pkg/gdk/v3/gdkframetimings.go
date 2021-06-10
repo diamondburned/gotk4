@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -66,7 +65,7 @@ func (t *FrameTimings) Complete() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_frame_timings_get_complete(_arg0)
+	_cret = C.gdk_frame_timings_get_complete(_arg0)
 
 	var _ok bool
 
@@ -86,7 +85,7 @@ func (t *FrameTimings) FrameCounter() int64 {
 
 	var _cret C.gint64
 
-	cret = C.gdk_frame_timings_get_frame_counter(_arg0)
+	_cret = C.gdk_frame_timings_get_frame_counter(_arg0)
 
 	var _gint64 int64
 
@@ -105,7 +104,7 @@ func (t *FrameTimings) FrameTime() int64 {
 
 	var _cret C.gint64
 
-	cret = C.gdk_frame_timings_get_frame_time(_arg0)
+	_cret = C.gdk_frame_timings_get_frame_time(_arg0)
 
 	var _gint64 int64
 
@@ -130,7 +129,7 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 
 	var _cret C.gint64
 
-	cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
+	_cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
 
 	var _gint64 int64
 
@@ -148,7 +147,7 @@ func (t *FrameTimings) PresentationTime() int64 {
 
 	var _cret C.gint64
 
-	cret = C.gdk_frame_timings_get_presentation_time(_arg0)
+	_cret = C.gdk_frame_timings_get_presentation_time(_arg0)
 
 	var _gint64 int64
 
@@ -167,33 +166,13 @@ func (t *FrameTimings) RefreshInterval() int64 {
 
 	var _cret C.gint64
 
-	cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
+	_cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
 
 	var _gint64 int64
 
 	_gint64 = (int64)(_cret)
 
 	return _gint64
-}
-
-// Ref increases the reference count of @timings.
-func (t *FrameTimings) Ref() *FrameTimings {
-	var _arg0 *C.GdkFrameTimings
-
-	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GdkFrameTimings
-
-	cret = C.gdk_frame_timings_ref(_arg0)
-
-	var _frameTimings *FrameTimings
-
-	_frameTimings = WrapFrameTimings(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_frameTimings, func(v *FrameTimings) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _frameTimings
 }
 
 // Unref decreases the reference count of @timings. If @timings is no longer

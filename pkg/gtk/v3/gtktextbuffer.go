@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -79,29 +78,6 @@ type TextBuffer interface {
 	BeginUserAction()
 	// CopyClipboard copies the currently-selected text to a clipboard.
 	CopyClipboard(clipboard Clipboard)
-	// CreateChildAnchor: this is a convenience function which simply creates a
-	// child anchor with gtk_text_child_anchor_new() and inserts it into the
-	// buffer with gtk_text_buffer_insert_child_anchor(). The new anchor is
-	// owned by the buffer; no reference count is returned to the caller of
-	// gtk_text_buffer_create_child_anchor().
-	CreateChildAnchor(iter *TextIter) TextChildAnchor
-	// CreateMark creates a mark at position @where. If @mark_name is nil, the
-	// mark is anonymous; otherwise, the mark can be retrieved by name using
-	// gtk_text_buffer_get_mark(). If a mark has left gravity, and text is
-	// inserted at the mark’s current location, the mark will be moved to the
-	// left of the newly-inserted text. If the mark has right gravity
-	// (@left_gravity = false), the mark will end up on the right of
-	// newly-inserted text. The standard left-to-right cursor is a mark with
-	// right gravity (when you type, the cursor stays on the right side of the
-	// text you’re typing).
-	//
-	// The caller of this function does not own a reference to the returned
-	// TextMark, so you can ignore the return value if you like. Marks are owned
-	// by the buffer and go away when the buffer does.
-	//
-	// Emits the TextBuffer::mark-set signal as notification of the mark's
-	// initial placement.
-	CreateMark(markName string, where *TextIter, leftGravity bool) TextMark
 	// CutClipboard copies the currently-selected text to a clipboard, then
 	// deletes said text if it’s editable.
 	CutClipboard(clipboard Clipboard, defaultEditable bool)
@@ -141,7 +117,7 @@ type TextBuffer interface {
 	// @formats to be used must be registered using
 	// gtk_text_buffer_register_deserialize_format() or
 	// gtk_text_buffer_register_deserialize_tagset() beforehand.
-	Deserialize() error
+	Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error
 	// DeserializeGetCanCreateTags: this functions returns the value set with
 	// gtk_text_buffer_deserialize_set_can_create_tags()
 	DeserializeGetCanCreateTags(format gdk.Atom) bool
@@ -175,17 +151,6 @@ type TextBuffer interface {
 	// of the buffer in string form to be this many bytes long. The character
 	// count is cached, so this function is very fast.
 	CharCount() int
-	// CopyTargetList: this function returns the list of targets this text
-	// buffer can provide for copying and as DND source. The targets in the list
-	// are added with @info values from the TextBufferTargetInfo enum, using
-	// gtk_target_list_add_rich_text_targets() and
-	// gtk_target_list_add_text_targets().
-	CopyTargetList() *TargetList
-	// DeserializeFormats: this function returns the rich text deserialize
-	// formats registered with @buffer using
-	// gtk_text_buffer_register_deserialize_format() or
-	// gtk_text_buffer_register_deserialize_tagset()
-	DeserializeFormats() []gdk.Atom
 	// EndIter initializes @iter with the “end iterator,” one past the last
 	// valid character in the text buffer. If dereferenced with
 	// gtk_text_iter_get_char(), the end iterator has a character value of 0.
@@ -196,10 +161,6 @@ type TextBuffer interface {
 	// HasSelection indicates whether the buffer has some text currently
 	// selected.
 	HasSelection() bool
-	// GetInsert returns the mark that represents the cursor (insertion point).
-	// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
-	// “insert”, but very slightly more efficient, and involves less typing.
-	GetInsert() TextMark
 	// IterAtChildAnchor obtains the location of @anchor within @buffer.
 	IterAtChildAnchor(anchor TextChildAnchor) TextIter
 	// IterAtLine initializes @iter to the start of the given line. If
@@ -237,41 +198,16 @@ type TextBuffer interface {
 	// LineCount obtains the number of lines in the buffer. This value is
 	// cached, so the function is very fast.
 	LineCount() int
-	// Mark returns the mark named @name in buffer @buffer, or nil if no such
-	// mark exists in the buffer.
-	Mark(name string) TextMark
 	// Modified indicates whether the buffer has been modified since the last
 	// call to gtk_text_buffer_set_modified() set the modification flag to
 	// false. Used for example to enable a “save” function in a text editor.
 	Modified() bool
-	// PasteTargetList: this function returns the list of targets this text
-	// buffer supports for pasting and as DND destination. The targets in the
-	// list are added with @info values from the TextBufferTargetInfo enum,
-	// using gtk_target_list_add_rich_text_targets() and
-	// gtk_target_list_add_text_targets().
-	PasteTargetList() *TargetList
-	// SelectionBound returns the mark that represents the selection bound.
-	// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
-	// “selection_bound”, but very slightly more efficient, and involves less
-	// typing.
-	//
-	// The currently-selected text in @buffer is the region between the
-	// “selection_bound” and “insert” marks. If “selection_bound” and “insert”
-	// are in the same place, then there is no current selection.
-	// gtk_text_buffer_get_selection_bounds() is another convenient function for
-	// handling the selection, if you just want to know whether there’s a
-	// selection and what its bounds are.
-	SelectionBound() TextMark
 	// SelectionBounds returns true if some text is selected; places the bounds
 	// of the selection in @start and @end (if the selection has length 0, then
 	// @start and @end are filled in with the same value). @start and @end will
 	// be in ascending order. If @start and @end are NULL, then they are not
 	// filled in, but the return value still indicates whether text is selected.
 	SelectionBounds() (start TextIter, end TextIter, ok bool)
-	// SerializeFormats: this function returns the rich text serialize formats
-	// registered with @buffer using gtk_text_buffer_register_serialize_format()
-	// or gtk_text_buffer_register_serialize_tagset()
-	SerializeFormats() []gdk.Atom
 	// Slice returns the text in the range [@start,@end). Excludes undisplayed
 	// text (text marked with tags that set the invisibility attribute) if
 	// @include_hidden_chars is false. The returned string includes a 0xFFFC
@@ -286,8 +222,6 @@ type TextBuffer interface {
 	// This is the same as using gtk_text_buffer_get_iter_at_offset() to get the
 	// iter at character offset 0.
 	StartIter() TextIter
-	// TagTable: get the TextTagTable associated with this buffer.
-	TagTable() TextTagTable
 	// Text returns the text in the range [@start,@end). Excludes undisplayed
 	// text (text marked with tags that set the invisibility attribute) if
 	// @include_hidden_chars is false. Does not include characters representing
@@ -382,36 +316,6 @@ type TextBuffer interface {
 	// since the temporarily-selected region will force stuff to be
 	// recalculated. This function moves them as a unit, which can be optimized.
 	PlaceCursor(where *TextIter)
-	// RegisterDeserializeFormat: this function registers a rich text
-	// deserialization @function along with its @mime_type with the passed
-	// @buffer.
-	RegisterDeserializeFormat() gdk.Atom
-	// RegisterDeserializeTagset: this function registers GTK+’s internal rich
-	// text serialization format with the passed @buffer. See
-	// gtk_text_buffer_register_serialize_tagset() for details.
-	RegisterDeserializeTagset(tagsetName string) gdk.Atom
-	// RegisterSerializeFormat: this function registers a rich text
-	// serialization @function along with its @mime_type with the passed
-	// @buffer.
-	RegisterSerializeFormat() gdk.Atom
-	// RegisterSerializeTagset: this function registers GTK+’s internal rich
-	// text serialization format with the passed @buffer. The internal format
-	// does not comply to any standard rich text format and only works between
-	// TextBuffer instances. It is capable of serializing all of a text buffer’s
-	// tags and embedded pixbufs.
-	//
-	// This function is just a wrapper around
-	// gtk_text_buffer_register_serialize_format(). The mime type used for
-	// registering is “application/x-gtk-text-buffer-rich-text”, or
-	// “application/x-gtk-text-buffer-rich-text;format=@tagset_name” if a
-	// @tagset_name was passed.
-	//
-	// The @tagset_name can be used to restrict the transfer of rich text to
-	// buffers with compatible sets of tags, in order to avoid unknown tags from
-	// being pasted. It is probably the common case to pass an identifier != nil
-	// here, since the nil tagset requires the receiving buffer to deal with
-	// with pasting of arbitrary tags.
-	RegisterSerializeTagset(tagsetName string) gdk.Atom
 	// RemoveAllTags removes all tags in the range between @start and @end. Be
 	// careful with this function; it could remove tags added in code unrelated
 	// to the code you’re currently writing. That is, using this function is
@@ -483,23 +387,6 @@ func marshalTextBuffer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTextBuffer(obj), nil
-}
-
-// NewTextBuffer constructs a class TextBuffer.
-func NewTextBuffer(table TextTagTable) TextBuffer {
-	var _arg1 *C.GtkTextTagTable
-
-	_arg1 = (*C.GtkTextTagTable)(unsafe.Pointer(table.Native()))
-
-	var _cret C.GtkTextBuffer
-
-	cret = C.gtk_text_buffer_new(_arg1)
-
-	var _textBuffer TextBuffer
-
-	_textBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextBuffer)
-
-	return _textBuffer
 }
 
 // AddMark adds the mark at position @where. The mark must not be added to
@@ -595,7 +482,7 @@ func (b textBuffer) Backspace(iter *TextIter, interactive bool, defaultEditable 
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_backspace(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_text_buffer_backspace(_arg0, _arg1, _arg2, _arg3)
 
 	var _ok bool
 
@@ -639,70 +526,6 @@ func (b textBuffer) CopyClipboard(clipboard Clipboard) {
 	_arg1 = (*C.GtkClipboard)(unsafe.Pointer(clipboard.Native()))
 
 	C.gtk_text_buffer_copy_clipboard(_arg0, _arg1)
-}
-
-// CreateChildAnchor: this is a convenience function which simply creates a
-// child anchor with gtk_text_child_anchor_new() and inserts it into the
-// buffer with gtk_text_buffer_insert_child_anchor(). The new anchor is
-// owned by the buffer; no reference count is returned to the caller of
-// gtk_text_buffer_create_child_anchor().
-func (b textBuffer) CreateChildAnchor(iter *TextIter) TextChildAnchor {
-	var _arg0 *C.GtkTextBuffer
-	var _arg1 *C.GtkTextIter
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
-
-	var _cret *C.GtkTextChildAnchor
-
-	cret = C.gtk_text_buffer_create_child_anchor(_arg0, _arg1)
-
-	var _textChildAnchor TextChildAnchor
-
-	_textChildAnchor = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
-
-	return _textChildAnchor
-}
-
-// CreateMark creates a mark at position @where. If @mark_name is nil, the
-// mark is anonymous; otherwise, the mark can be retrieved by name using
-// gtk_text_buffer_get_mark(). If a mark has left gravity, and text is
-// inserted at the mark’s current location, the mark will be moved to the
-// left of the newly-inserted text. If the mark has right gravity
-// (@left_gravity = false), the mark will end up on the right of
-// newly-inserted text. The standard left-to-right cursor is a mark with
-// right gravity (when you type, the cursor stays on the right side of the
-// text you’re typing).
-//
-// The caller of this function does not own a reference to the returned
-// TextMark, so you can ignore the return value if you like. Marks are owned
-// by the buffer and go away when the buffer does.
-//
-// Emits the TextBuffer::mark-set signal as notification of the mark's
-// initial placement.
-func (b textBuffer) CreateMark(markName string, where *TextIter, leftGravity bool) TextMark {
-	var _arg0 *C.GtkTextBuffer
-	var _arg1 *C.gchar
-	var _arg2 *C.GtkTextIter
-	var _arg3 C.gboolean
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(markName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkTextIter)(unsafe.Pointer(where.Native()))
-	if leftGravity {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _cret *C.GtkTextMark
-
-	cret = C.gtk_text_buffer_create_mark(_arg0, _arg1, _arg2, _arg3)
-
-	var _textMark TextMark
-
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
-
-	return _textMark
 }
 
 // CutClipboard copies the currently-selected text to a clipboard, then
@@ -759,7 +582,7 @@ func (b textBuffer) DeleteInteractive(startIter *TextIter, endIter *TextIter, de
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_delete_interactive(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_text_buffer_delete_interactive(_arg0, _arg1, _arg2, _arg3)
 
 	var _ok bool
 
@@ -820,7 +643,7 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_delete_selection(_arg0, _arg1, _arg2)
+	_cret = C.gtk_text_buffer_delete_selection(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -837,14 +660,24 @@ func (b textBuffer) DeleteSelection(interactive bool, defaultEditable bool) bool
 // @formats to be used must be registered using
 // gtk_text_buffer_register_deserialize_format() or
 // gtk_text_buffer_register_deserialize_tagset() beforehand.
-func (r textBuffer) Deserialize() error {
+func (r textBuffer) Deserialize(contentBuffer TextBuffer, format gdk.Atom, iter *TextIter, data []byte) error {
 	var _arg0 *C.GtkTextBuffer
+	var _arg1 *C.GtkTextBuffer
+	var _arg2 C.GdkAtom
+	var _arg3 *C.GtkTextIter
+	var _arg4 *C.guint8
+	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(contentBuffer.Native()))
+	_arg2 = (C.GdkAtom)(unsafe.Pointer(format.Native()))
+	_arg3 = (*C.GtkTextIter)(unsafe.Pointer(iter.Native()))
+	_arg5 = C.gsize(len(data))
+	_arg4 = (*C.guint8)(unsafe.Pointer(&data[0]))
 
 	var _cerr *C.GError
 
-	C.gtk_text_buffer_deserialize(_arg0, _cerr)
+	C.gtk_text_buffer_deserialize(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
 
 	var _goerr error
 
@@ -864,7 +697,7 @@ func (b textBuffer) DeserializeGetCanCreateTags(format gdk.Atom) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_deserialize_get_can_create_tags(_arg0, _arg1)
+	_cret = C.gtk_text_buffer_deserialize_get_can_create_tags(_arg0, _arg1)
 
 	var _ok bool
 
@@ -943,58 +776,13 @@ func (b textBuffer) CharCount() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_text_buffer_get_char_count(_arg0)
+	_cret = C.gtk_text_buffer_get_char_count(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// CopyTargetList: this function returns the list of targets this text
-// buffer can provide for copying and as DND source. The targets in the list
-// are added with @info values from the TextBufferTargetInfo enum, using
-// gtk_target_list_add_rich_text_targets() and
-// gtk_target_list_add_text_targets().
-func (b textBuffer) CopyTargetList() *TargetList {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkTargetList
-
-	cret = C.gtk_text_buffer_get_copy_target_list(_arg0)
-
-	var _targetList *TargetList
-
-	_targetList = WrapTargetList(unsafe.Pointer(_cret))
-
-	return _targetList
-}
-
-// DeserializeFormats: this function returns the rich text deserialize
-// formats registered with @buffer using
-// gtk_text_buffer_register_deserialize_format() or
-// gtk_text_buffer_register_deserialize_tagset()
-func (b textBuffer) DeserializeFormats() []gdk.Atom {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GdkAtom
-	var _arg1 *C.gint
-
-	cret = C.gtk_text_buffer_get_deserialize_formats(_arg0)
-
-	var _atoms []gdk.Atom
-
-	ptr.SetSlice(unsafe.Pointer(&_atoms), unsafe.Pointer(_cret), int(_arg1))
-	runtime.SetFinalizer(&_atoms, func(v *[]gdk.Atom) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
-
-	return _atoms
 }
 
 // EndIter initializes @iter with the “end iterator,” one past the last
@@ -1024,7 +812,7 @@ func (b textBuffer) HasSelection() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_get_has_selection(_arg0)
+	_cret = C.gtk_text_buffer_get_has_selection(_arg0)
 
 	var _ok bool
 
@@ -1033,25 +821,6 @@ func (b textBuffer) HasSelection() bool {
 	}
 
 	return _ok
-}
-
-// GetInsert returns the mark that represents the cursor (insertion point).
-// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
-// “insert”, but very slightly more efficient, and involves less typing.
-func (b textBuffer) GetInsert() TextMark {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkTextMark
-
-	cret = C.gtk_text_buffer_get_insert(_arg0)
-
-	var _textMark TextMark
-
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
-
-	return _textMark
 }
 
 // IterAtChildAnchor obtains the location of @anchor within @buffer.
@@ -1179,34 +948,13 @@ func (b textBuffer) LineCount() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_text_buffer_get_line_count(_arg0)
+	_cret = C.gtk_text_buffer_get_line_count(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Mark returns the mark named @name in buffer @buffer, or nil if no such
-// mark exists in the buffer.
-func (b textBuffer) Mark(name string) TextMark {
-	var _arg0 *C.GtkTextBuffer
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkTextMark
-
-	cret = C.gtk_text_buffer_get_mark(_arg0, _arg1)
-
-	var _textMark TextMark
-
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
-
-	return _textMark
 }
 
 // Modified indicates whether the buffer has been modified since the last
@@ -1219,7 +967,7 @@ func (b textBuffer) Modified() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_get_modified(_arg0)
+	_cret = C.gtk_text_buffer_get_modified(_arg0)
 
 	var _ok bool
 
@@ -1228,54 +976,6 @@ func (b textBuffer) Modified() bool {
 	}
 
 	return _ok
-}
-
-// PasteTargetList: this function returns the list of targets this text
-// buffer supports for pasting and as DND destination. The targets in the
-// list are added with @info values from the TextBufferTargetInfo enum,
-// using gtk_target_list_add_rich_text_targets() and
-// gtk_target_list_add_text_targets().
-func (b textBuffer) PasteTargetList() *TargetList {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkTargetList
-
-	cret = C.gtk_text_buffer_get_paste_target_list(_arg0)
-
-	var _targetList *TargetList
-
-	_targetList = WrapTargetList(unsafe.Pointer(_cret))
-
-	return _targetList
-}
-
-// SelectionBound returns the mark that represents the selection bound.
-// Equivalent to calling gtk_text_buffer_get_mark() to get the mark named
-// “selection_bound”, but very slightly more efficient, and involves less
-// typing.
-//
-// The currently-selected text in @buffer is the region between the
-// “selection_bound” and “insert” marks. If “selection_bound” and “insert”
-// are in the same place, then there is no current selection.
-// gtk_text_buffer_get_selection_bounds() is another convenient function for
-// handling the selection, if you just want to know whether there’s a
-// selection and what its bounds are.
-func (b textBuffer) SelectionBound() TextMark {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkTextMark
-
-	cret = C.gtk_text_buffer_get_selection_bound(_arg0)
-
-	var _textMark TextMark
-
-	_textMark = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextMark)
-
-	return _textMark
 }
 
 // SelectionBounds returns true if some text is selected; places the bounds
@@ -1292,7 +992,7 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 	var _end TextIter
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_get_selection_bounds(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_start)), (*C.GtkTextIter)(unsafe.Pointer(&_end)))
+	_cret = C.gtk_text_buffer_get_selection_bounds(_arg0, (*C.GtkTextIter)(unsafe.Pointer(&_start)), (*C.GtkTextIter)(unsafe.Pointer(&_end)))
 
 	var _ok bool
 
@@ -1301,29 +1001,6 @@ func (b textBuffer) SelectionBounds() (start TextIter, end TextIter, ok bool) {
 	}
 
 	return _start, _end, _ok
-}
-
-// SerializeFormats: this function returns the rich text serialize formats
-// registered with @buffer using gtk_text_buffer_register_serialize_format()
-// or gtk_text_buffer_register_serialize_tagset()
-func (b textBuffer) SerializeFormats() []gdk.Atom {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GdkAtom
-	var _arg1 *C.gint
-
-	cret = C.gtk_text_buffer_get_serialize_formats(_arg0)
-
-	var _atoms []gdk.Atom
-
-	ptr.SetSlice(unsafe.Pointer(&_atoms), unsafe.Pointer(_cret), int(_arg1))
-	runtime.SetFinalizer(&_atoms, func(v *[]gdk.Atom) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
-
-	return _atoms
 }
 
 // Slice returns the text in the range [@start,@end). Excludes undisplayed
@@ -1350,7 +1027,7 @@ func (b textBuffer) Slice(start *TextIter, end *TextIter, includeHiddenChars boo
 
 	var _cret *C.gchar
 
-	cret = C.gtk_text_buffer_get_slice(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_text_buffer_get_slice(_arg0, _arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -1375,23 +1052,6 @@ func (b textBuffer) StartIter() TextIter {
 	return _iter
 }
 
-// TagTable: get the TextTagTable associated with this buffer.
-func (b textBuffer) TagTable() TextTagTable {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkTextTagTable
-
-	cret = C.gtk_text_buffer_get_tag_table(_arg0)
-
-	var _textTagTable TextTagTable
-
-	_textTagTable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextTagTable)
-
-	return _textTagTable
-}
-
 // Text returns the text in the range [@start,@end). Excludes undisplayed
 // text (text marked with tags that set the invisibility attribute) if
 // @include_hidden_chars is false. Does not include characters representing
@@ -1413,7 +1073,7 @@ func (b textBuffer) Text(start *TextIter, end *TextIter, includeHiddenChars bool
 
 	var _cret *C.gchar
 
-	cret = C.gtk_text_buffer_get_text(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_text_buffer_get_text(_arg0, _arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -1507,7 +1167,7 @@ func (b textBuffer) InsertInteractive(iter *TextIter, text string, len int, defa
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_insert_interactive(_arg0, _arg1, _arg2, _arg3, _arg4)
+	_cret = C.gtk_text_buffer_insert_interactive(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _ok bool
 
@@ -1540,7 +1200,7 @@ func (b textBuffer) InsertInteractiveAtCursor(text string, len int, defaultEdita
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_insert_interactive_at_cursor(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_text_buffer_insert_interactive_at_cursor(_arg0, _arg1, _arg2, _arg3)
 
 	var _ok bool
 
@@ -1634,7 +1294,7 @@ func (b textBuffer) InsertRangeInteractive(iter *TextIter, start *TextIter, end 
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_buffer_insert_range_interactive(_arg0, _arg1, _arg2, _arg3, _arg4)
+	_cret = C.gtk_text_buffer_insert_range_interactive(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _ok bool
 
@@ -1711,102 +1371,6 @@ func (b textBuffer) PlaceCursor(where *TextIter) {
 	_arg1 = (*C.GtkTextIter)(unsafe.Pointer(where.Native()))
 
 	C.gtk_text_buffer_place_cursor(_arg0, _arg1)
-}
-
-// RegisterDeserializeFormat: this function registers a rich text
-// deserialization @function along with its @mime_type with the passed
-// @buffer.
-func (b textBuffer) RegisterDeserializeFormat() gdk.Atom {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GdkAtom
-
-	cret = C.gtk_text_buffer_register_deserialize_format(_arg0)
-
-	var _atom gdk.Atom
-
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
-
-	return _atom
-}
-
-// RegisterDeserializeTagset: this function registers GTK+’s internal rich
-// text serialization format with the passed @buffer. See
-// gtk_text_buffer_register_serialize_tagset() for details.
-func (b textBuffer) RegisterDeserializeTagset(tagsetName string) gdk.Atom {
-	var _arg0 *C.GtkTextBuffer
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(tagsetName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkAtom
-
-	cret = C.gtk_text_buffer_register_deserialize_tagset(_arg0, _arg1)
-
-	var _atom gdk.Atom
-
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
-
-	return _atom
-}
-
-// RegisterSerializeFormat: this function registers a rich text
-// serialization @function along with its @mime_type with the passed
-// @buffer.
-func (b textBuffer) RegisterSerializeFormat() gdk.Atom {
-	var _arg0 *C.GtkTextBuffer
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GdkAtom
-
-	cret = C.gtk_text_buffer_register_serialize_format(_arg0)
-
-	var _atom gdk.Atom
-
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
-
-	return _atom
-}
-
-// RegisterSerializeTagset: this function registers GTK+’s internal rich
-// text serialization format with the passed @buffer. The internal format
-// does not comply to any standard rich text format and only works between
-// TextBuffer instances. It is capable of serializing all of a text buffer’s
-// tags and embedded pixbufs.
-//
-// This function is just a wrapper around
-// gtk_text_buffer_register_serialize_format(). The mime type used for
-// registering is “application/x-gtk-text-buffer-rich-text”, or
-// “application/x-gtk-text-buffer-rich-text;format=@tagset_name” if a
-// @tagset_name was passed.
-//
-// The @tagset_name can be used to restrict the transfer of rich text to
-// buffers with compatible sets of tags, in order to avoid unknown tags from
-// being pasted. It is probably the common case to pass an identifier != nil
-// here, since the nil tagset requires the receiving buffer to deal with
-// with pasting of arbitrary tags.
-func (b textBuffer) RegisterSerializeTagset(tagsetName string) gdk.Atom {
-	var _arg0 *C.GtkTextBuffer
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkTextBuffer)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.gchar)(C.CString(tagsetName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkAtom
-
-	cret = C.gtk_text_buffer_register_serialize_tagset(_arg0, _arg1)
-
-	var _atom gdk.Atom
-
-	_atom = *gdk.WrapAtom(unsafe.Pointer(&_cret))
-
-	return _atom
 }
 
 // RemoveAllTags removes all tags in the range between @start and @end. Be
@@ -1912,7 +1476,7 @@ func (r textBuffer) Serialize(contentBuffer TextBuffer, format gdk.Atom, start *
 	var _cret *C.guint8
 	var _arg5 *C.gsize
 
-	cret = C.gtk_text_buffer_serialize(_arg0, _arg1, _arg2, _arg3, _arg4)
+	_cret = C.gtk_text_buffer_serialize(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5)
 
 	var _guint8s []byte
 

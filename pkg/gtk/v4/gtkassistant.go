@@ -6,8 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
 // #cgo pkg-config:
@@ -22,7 +20,7 @@ import "C"
 // “forward” button and for handling the behavior of the “last” button.
 //
 // See [method@Gtk.Assistant.set_forward_page_func].
-type AssistantPageFunc func() (gint int)
+type AssistantPageFunc func(currentPage int) (gint int)
 
 //export gotk4_AssistantPageFunc
 func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
@@ -31,8 +29,14 @@ func gotk4_AssistantPageFunc(arg0 C.int, arg1 C.gpointer) C.int {
 		panic(`callback not found`)
 	}
 
+	var currentPage int
+
+	currentPage = (int)(arg0)
+
 	fn := v.(AssistantPageFunc)
-	gint := fn()
+	gint := fn(currentPage)
 
 	cret = C.int(gint)
+
+	return gint
 }

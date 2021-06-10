@@ -37,8 +37,19 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 //
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
-func ShowURIFull() {
-	C.gtk_show_uri_full()
+func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Cancellable) {
+	var _arg1 *C.GtkWindow
+	var _arg2 *C.char
+	var _arg3 C.guint32
+	var _arg4 *C.GCancellable
+
+	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
+	_arg2 = (*C.char)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.guint32(timestamp)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	C.gtk_show_uri_full(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of

@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/ptr"
@@ -72,7 +71,7 @@ func (b *StrvBuilder) End() []string {
 
 	var _cret C.GStrv
 
-	cret = C.g_strv_builder_end(_arg0)
+	_cret = C.g_strv_builder_end(_arg0)
 
 	var _utf8s []string
 
@@ -89,34 +88,13 @@ func (b *StrvBuilder) End() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
 	return _utf8s
-}
-
-// Ref: atomically increments the reference count of @builder by one. This
-// function is thread-safe and may be called from any thread.
-func (b *StrvBuilder) Ref() *StrvBuilder {
-	var _arg0 *C.GStrvBuilder
-
-	_arg0 = (*C.GStrvBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GStrvBuilder
-
-	cret = C.g_strv_builder_ref(_arg0)
-
-	var _strvBuilder *StrvBuilder
-
-	_strvBuilder = WrapStrvBuilder(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_strvBuilder, func(v *StrvBuilder) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _strvBuilder
 }
 
 // Unref decreases the reference count on @builder.

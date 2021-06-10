@@ -87,7 +87,7 @@ func (d waylandDisplay) StartupNotificationID() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
+	_cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
 
 	var _utf8 string
 
@@ -104,7 +104,7 @@ func (d waylandDisplay) WlCompositor() *interface{} {
 
 	var _cret *C.wl_compositor
 
-	cret = C.gdk_wayland_display_get_wl_compositor(_arg0)
+	_cret = C.gdk_wayland_display_get_wl_compositor(_arg0)
 
 	var _gpointer *interface{}
 
@@ -121,7 +121,7 @@ func (d waylandDisplay) WlDisplay() *interface{} {
 
 	var _cret *C.wl_display
 
-	cret = C.gdk_wayland_display_get_wl_display(_arg0)
+	_cret = C.gdk_wayland_display_get_wl_display(_arg0)
 
 	var _gpointer *interface{}
 
@@ -142,7 +142,7 @@ func (d waylandDisplay) QueryRegistry(global string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
+	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
 
 	var _ok bool
 

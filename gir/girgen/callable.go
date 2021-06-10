@@ -116,44 +116,39 @@ func (cg *callableGenerator) renderBlock() bool {
 
 	var (
 		instanceParam bool
-		inputValues   []GoValueProp
-		outputValues  []CValueProp
+		inputValues   []ValueProp
+		outputValues  []ValueProp
 	)
 
 	if cg.Parameters != nil {
-		inputValues = make([]GoValueProp, 0, len(cg.Parameters.Parameters))
-		outputValues = make([]CValueProp, 0, len(cg.Parameters.Parameters)+2)
+		inputValues = make([]ValueProp, 0, len(cg.Parameters.Parameters))
+		outputValues = make([]ValueProp, 0, len(cg.Parameters.Parameters)+2)
 
 		if cg.Parameters.InstanceParameter != nil {
 			instanceParam = true
-			// params.Add("arg0")
-
-			inputValues = append(inputValues, GoValueProp{
-				ValueProp: NewValuePropParam(
-					FirstLetter(cg.Parameters.InstanceParameter.Name),
-					"_arg0",
-					nil, cg.Parameters.InstanceParameter.ParameterAttrs,
-				),
-			})
+			inputValues = append(inputValues, NewValuePropParam(
+				FirstLetter(cg.Parameters.InstanceParameter.Name),
+				"_arg0",
+				-1, cg.Parameters.InstanceParameter.ParameterAttrs,
+			))
 		}
 
 		for i, param := range cg.Parameters.Parameters {
-			if param.Direction != "out" {
-				inputValues = append(inputValues, GoValueProp{
-					ValueProp: NewValuePropParam(
-						SnakeToGo(false, param.Name),
-						fmt.Sprintf("_arg%d", i+1),
-						&i, param.ParameterAttrs,
-					),
-				})
-			} else {
-				outputValues = append(outputValues, CValueProp{
-					ValueProp: NewValuePropParam(
-						fmt.Sprintf("_arg%d", i+1),
-						"_"+SnakeToGo(false, param.Name),
-						&i, param.ParameterAttrs,
-					),
-				})
+			switch param.Direction {
+			case "inout": // TODO
+				return false
+			case "out":
+				outputValues = append(outputValues, NewValuePropParam(
+					fmt.Sprintf("_arg%d", i+1),
+					"_"+SnakeToGo(false, param.Name),
+					i, param.ParameterAttrs,
+				))
+			default:
+				inputValues = append(inputValues, NewValuePropParam(
+					SnakeToGo(false, param.Name),
+					fmt.Sprintf("_arg%d", i+1),
+					i, param.ParameterAttrs,
+				))
 			}
 		}
 	}
@@ -168,32 +163,34 @@ func (cg *callableGenerator) renderBlock() bool {
 		if !cg.Throws || returnName != "ok" {
 			hasReturn = true
 
-			outputValues = append(outputValues, CValueProp{
-				ValueProp: NewValuePropReturn("_cret", "_"+returnName, *cg.ReturnValue),
-			})
+			outputValues = append(outputValues, NewValuePropReturn(
+				"_cret", "_"+returnName, *cg.ReturnValue,
+			))
 		}
 	}
 
 	if cg.Throws {
-		outputValues = append(outputValues, CValueProp{
-			ValueProp: NewThrowValue("_cerr", "_goerr"),
-		})
+		outputValues = append(outputValues, NewThrowValue("_cerr", "_goerr"))
 	}
 
-	convertedInputs := cg.fg.GoCConverter(cg.Name, inputValues).ConvertAll()
+	goc := cg.fg.GoCConverter(cg.Name, inputValues)
+	cgo := cg.fg.CGoConverter(cg.Name, outputValues)
+
+	convertedInputs := goc.ConvertAll()
 	if convertedInputs == nil {
 		cg.fg.Logln(LogSkip, "callable (no Go->C conversion)", cFunctionSig(cg.CallableAttrs))
 		return false
 	}
 
-	convertedOutputs := cg.fg.CGoConverter(cg.Name, outputValues).ConvertAll()
+	convertedOutputs := cgo.ConvertAll()
 	if convertedOutputs == nil {
 		cg.fg.Logln(LogSkip, "callable (no C->Go conversion)", cFunctionSig(cg.CallableAttrs))
 		return false
 	}
 
-	// For C function calling.
-	callParams := pen.NewJoints(", ", len(convertedInputs)+len(convertedOutputs))
+	applySideEffects(cg.fg, convertedInputs)
+	applySideEffects(cg.fg, convertedOutputs)
+
 	// For Go variables after the return statement.
 	goReturns := pen.NewJoints(", ", 2)
 
@@ -201,9 +198,6 @@ func (cg *callableGenerator) renderBlock() bool {
 	goFnRets := pen.NewJoints(", ", len(convertedOutputs))
 
 	for i, converted := range convertedInputs {
-		converted.Apply(cg.fg)
-		callParams.Add(converted.OutCall)
-
 		// Skip the instance parameter if any.
 		if i != 0 || !instanceParam {
 			goFnArgs.Addf("%s %s", converted.InName, converted.InType)
@@ -217,32 +211,28 @@ func (cg *callableGenerator) renderBlock() bool {
 	}
 
 	for _, converted := range convertedOutputs {
-		converted.Apply(cg.fg)
-		goReturns.Add(converted.OutName)
-
-		if converted.ParameterIsOutput {
-			callParams.Add(converted.InCall)
-		}
-
 		// decoOut is the name that's used solely for documentation purposes. It
 		// is not used internally at all, and so it doesn't have the underscore.
 		decoOut := strings.TrimPrefix(converted.OutName, "_")
 		goFnRets.Addf("%s %s", decoOut, converted.OutType)
 
-		cg.pen.Line(secReturnDecl, converted.InDeclare)
+		goReturns.Add(converted.OutName)
 
-		// Go outputs should be redeclared. The return variable is not declared
-		// in the signature if there's only 1 output, so we only declare it
-		// then.
+		cg.pen.Line(secReturnDecl, converted.InDeclare)
+		// Go outputs should be redeclared.
 		cg.pen.Line(secOutputDecl, converted.OutDeclare)
 		// Conversions follow right after declaring all outputs.
 		cg.pen.Line(secOutputConv, converted.Conversion)
 	}
 
+	// For C function calling.
+	callParams := pen.NewJoints(", ", len(convertedInputs)+len(convertedOutputs))
+	AddCCallParam(&callParams, goc, cgo)
+
 	if !hasReturn {
 		cg.pen.Linef(secFnCall, "C.%s(%s)", cg.CIdentifier, callParams.Join())
 	} else {
-		cg.pen.Linef(secFnCall, "cret = C.%s(%s)", cg.CIdentifier, callParams.Join())
+		cg.pen.Linef(secFnCall, "_cret = C.%s(%s)", cg.CIdentifier, callParams.Join())
 		cg.pen.EmptyLine(secFnCall)
 	}
 
@@ -262,31 +252,40 @@ func formatReturnSig(joints pen.Joints) string {
 		return ""
 	}
 
-	types := make(map[string]struct{}, joints.Len())
 	parts := joints.Joints()
+	types := make([]string, len(parts))
 
-	for _, joint := range parts {
-		typ := strings.SplitN(joint, " ", 2)[1]
+	for i, part := range parts {
+		types[i] = extractTypeFromPair(part)
+	}
 
-		_, ok := types[typ]
-		if ok {
-			// Duplicate type.
-			goto dupeType
+	for i := range parts {
+		for j := range parts {
+			if i == j {
+				continue
+			}
+
+			if types[i] == types[j] {
+				goto dupeType
+			}
 		}
-
-		types[typ] = struct{}{}
 	}
 
 	// No duplicate type, so only keep the types.
-	for i, joint := range parts {
-		parts[i] = strings.SplitN(joint, " ", 2)[1]
-	}
+	joints.SetJoints(types)
 
 dupeType:
 	if joints.Len() == 1 {
 		return joints.Join()
 	}
+
 	return "(" + joints.Join() + ")"
+}
+
+// extractTypeFromPair returns the second word (which is the type) from the
+// name-type pair.
+func extractTypeFromPair(namePair string) string {
+	return namePair[strings.IndexByte(namePair, ' ')+1:]
 }
 
 func returnName(attrs gir.CallableAttrs) string {

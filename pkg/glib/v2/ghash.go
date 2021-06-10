@@ -26,7 +26,7 @@ func init() {
 // together with the @user_data parameter passed to
 // g_hash_table_foreach_remove(). It should return true if the key/value pair
 // should be removed from the Table.
-type HRFunc func() (ok bool)
+type HRFunc func(key interface{}, value interface{}) (ok bool)
 
 //export gotk4_HRFunc
 func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean {
@@ -35,12 +35,20 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean 
 		panic(`callback not found`)
 	}
 
+	var key interface{}
+	var value interface{}
+
+	key = (interface{})(arg0)
+	value = (interface{})(arg1)
+
 	fn := v.(HRFunc)
-	ok := fn()
+	ok := fn(key, value)
 
 	if ok {
 		cret = C.gboolean(1)
 	}
+
+	return ok
 }
 
 // DirectEqual compares two #gpointer arguments and returns true if they are
@@ -59,7 +67,7 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_direct_equal(_arg1, _arg2)
+	_cret = C.g_direct_equal(_arg1, _arg2)
 
 	var _ok bool
 
@@ -83,7 +91,7 @@ func DirectHash(v interface{}) uint {
 
 	var _cret C.guint
 
-	cret = C.g_direct_hash(_arg1)
+	_cret = C.g_direct_hash(_arg1)
 
 	var _guint uint
 
@@ -105,7 +113,7 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_double_equal(_arg1, _arg2)
+	_cret = C.g_double_equal(_arg1, _arg2)
 
 	var _ok bool
 
@@ -127,7 +135,7 @@ func DoubleHash(v interface{}) uint {
 
 	var _cret C.guint
 
-	cret = C.g_double_hash(_arg1)
+	_cret = C.g_double_hash(_arg1)
 
 	var _guint uint
 
@@ -149,7 +157,7 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_int64_equal(_arg1, _arg2)
+	_cret = C.g_int64_equal(_arg1, _arg2)
 
 	var _ok bool
 
@@ -171,7 +179,7 @@ func Int64Hash(v interface{}) uint {
 
 	var _cret C.guint
 
-	cret = C.g_int64_hash(_arg1)
+	_cret = C.g_int64_hash(_arg1)
 
 	var _guint uint
 
@@ -196,7 +204,7 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_int_equal(_arg1, _arg2)
+	_cret = C.g_int_equal(_arg1, _arg2)
 
 	var _ok bool
 
@@ -221,7 +229,7 @@ func IntHash(v interface{}) uint {
 
 	var _cret C.guint
 
-	cret = C.g_int_hash(_arg1)
+	_cret = C.g_int_hash(_arg1)
 
 	var _guint uint
 
@@ -246,7 +254,7 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_str_equal(_arg1, _arg2)
+	_cret = C.g_str_equal(_arg1, _arg2)
 
 	var _ok bool
 
@@ -276,7 +284,7 @@ func StrHash(v interface{}) uint {
 
 	var _cret C.guint
 
-	cret = C.g_str_hash(_arg1)
+	_cret = C.g_str_hash(_arg1)
 
 	var _guint uint
 
@@ -343,23 +351,6 @@ func (h *HashTableIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&h.native)
 }
 
-// HashTable returns the Table associated with @iter.
-func (i *HashTableIter) HashTable() *HashTable {
-	var _arg0 *C.GHashTableIter
-
-	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GHashTable
-
-	cret = C.g_hash_table_iter_get_hash_table(_arg0)
-
-	var _hashTable *HashTable
-
-	_hashTable = WrapHashTable(unsafe.Pointer(_cret))
-
-	return _hashTable
-}
-
 // Init initializes a key/value pair iterator and associates it with
 // @hash_table. Modifying the hash table after calling this function invalidates
 // the returned iterator.
@@ -397,7 +388,7 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 	var _arg2 C.gpointer
 	var _cret C.gboolean
 
-	cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
+	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
 
 	var _key interface{}
 	var _value interface{}

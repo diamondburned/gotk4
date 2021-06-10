@@ -3,7 +3,11 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,7 +84,7 @@ type InputStream interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one you must override all.
-	CloseAsync()
+	CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// CloseFinish finishes closing a stream asynchronously, started from
 	// g_input_stream_close_async().
 	CloseFinish(result AsyncResult) error
@@ -88,6 +92,61 @@ type InputStream interface {
 	HasPending() bool
 	// IsClosed checks if an input stream is closed.
 	IsClosed() bool
+	// Read tries to read @count bytes from the stream into the buffer starting
+	// at @buffer. Will block during this read.
+	//
+	// If count is zero returns zero and does nothing. A value of @count larger
+	// than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes read into the buffer is returned. It is
+	// not an error if this is not the same as the requested size, as it can
+	// happen e.g. near the end of a file. Zero is returned on end of file (or
+	// if @count is zero), but never otherwise.
+	//
+	// The returned @buffer is not a nul-terminated string, it can contain nul
+	// bytes at any position, and this function doesn't nul-terminate the
+	// @buffer.
+	//
+	// If @cancellable is not nil, then the operation can be cancelled by
+	// triggering the cancellable object from another thread. If the operation
+	// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+	// operation was partially finished when the operation was cancelled the
+	// partial result will be returned, without an error.
+	//
+	// On error -1 is returned and @error is set accordingly.
+	Read(cancellable Cancellable) ([]byte, int, error)
+	// ReadAll tries to read @count bytes from the stream into the buffer
+	// starting at @buffer. Will block during this read.
+	//
+	// This function is similar to g_input_stream_read(), except it tries to
+	// read as many bytes as requested, only stopping on an error or end of
+	// stream.
+	//
+	// On a successful read of @count bytes, or if we reached the end of the
+	// stream, true is returned, and @bytes_read is set to the number of bytes
+	// read into @buffer.
+	//
+	// If there is an error during the operation false is returned and @error is
+	// set to indicate the error status.
+	//
+	// As a special exception to the normal conventions for functions that use
+	// #GError, if this function returns false (and sets @error) then
+	// @bytes_read will be set to the number of bytes that were successfully
+	// read before the error was encountered. This functionality is only
+	// available from C. If you need it from another language then you must
+	// write your own loop around g_input_stream_read().
+	ReadAll(cancellable Cancellable) ([]byte, uint, error)
+	// ReadAllAsync: request an asynchronous read of @count bytes from the
+	// stream into the buffer starting at @buffer.
+	//
+	// This is the asynchronous equivalent of g_input_stream_read_all().
+	//
+	// Call g_input_stream_read_all_finish() to collect the result.
+	//
+	// Any outstanding I/O request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	ReadAllAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) []byte
 	// ReadAllFinish finishes an asynchronous stream read operation started with
 	// g_input_stream_read_all_async().
 	//
@@ -98,6 +157,31 @@ type InputStream interface {
 	// available from C. If you need it from another language then you must
 	// write your own loop around g_input_stream_read_async().
 	ReadAllFinish(result AsyncResult) (uint, error)
+	// ReadAsync: request an asynchronous read of @count bytes from the stream
+	// into the buffer starting at @buffer. When the operation is finished
+	// @callback will be called. You can then call g_input_stream_read_finish()
+	// to get the result of the operation.
+	//
+	// During an async request no other sync and async calls are allowed on
+	// @stream, and will result in G_IO_ERROR_PENDING errors.
+	//
+	// A value of @count larger than G_MAXSSIZE will cause a
+	// G_IO_ERROR_INVALID_ARGUMENT error.
+	//
+	// On success, the number of bytes read into the buffer will be passed to
+	// the callback. It is not an error if this is not the same as the requested
+	// size, as it can happen e.g. near the end of a file, but generally we try
+	// to read as many bytes as requested. Zero is returned on end of file (or
+	// if @count is zero), but never otherwise.
+	//
+	// Any outstanding i/o request with higher priority (lower numerical value)
+	// will be executed before an outstanding request with lower priority.
+	// Default priority is G_PRIORITY_DEFAULT.
+	//
+	// The asynchronous methods have a default fallback that uses threads to
+	// implement asynchronicity, so they are optional for inheriting classes.
+	// However, if you override one you must override all.
+	ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) []byte
 	// ReadBytesAsync: request an asynchronous read of @count bytes from the
 	// stream into a new #GBytes. When the operation is finished @callback will
 	// be called. You can then call g_input_stream_read_bytes_finish() to get
@@ -118,7 +202,7 @@ type InputStream interface {
 	// Any outstanding I/O request with higher priority (lower numerical value)
 	// will be executed before an outstanding request with lower priority.
 	// Default priority is G_PRIORITY_DEFAULT.
-	ReadBytesAsync()
+	ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadFinish finishes an asynchronous stream read operation.
 	ReadFinish(result AsyncResult) (int, error)
 	// SetPending sets @stream to have actions pending. If the pending flag is
@@ -163,7 +247,7 @@ type InputStream interface {
 	// The asynchronous methods have a default fallback that uses threads to
 	// implement asynchronicity, so they are optional for inheriting classes.
 	// However, if you override one, you must override all.
-	SkipAsync()
+	SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// SkipFinish finishes a stream skip operation.
 	SkipFinish(result AsyncResult) (int, error)
 }
@@ -250,12 +334,20 @@ func (s inputStream) Close(cancellable Cancellable) error {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one you must override all.
-func (s inputStream) CloseAsync() {
+func (s inputStream) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream
+	var _arg1 C.int
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	C.g_input_stream_close_async(_arg0)
+	C.g_input_stream_close_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // CloseFinish finishes closing a stream asynchronously, started from
@@ -286,7 +378,7 @@ func (s inputStream) HasPending() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_input_stream_has_pending(_arg0)
+	_cret = C.g_input_stream_has_pending(_arg0)
 
 	var _ok bool
 
@@ -305,7 +397,7 @@ func (s inputStream) IsClosed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_input_stream_is_closed(_arg0)
+	_cret = C.g_input_stream_is_closed(_arg0)
 
 	var _ok bool
 
@@ -314,6 +406,157 @@ func (s inputStream) IsClosed() bool {
 	}
 
 	return _ok
+}
+
+// Read tries to read @count bytes from the stream into the buffer starting
+// at @buffer. Will block during this read.
+//
+// If count is zero returns zero and does nothing. A value of @count larger
+// than G_MAXSSIZE will cause a G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer is returned. It is
+// not an error if this is not the same as the requested size, as it can
+// happen e.g. near the end of a file. Zero is returned on end of file (or
+// if @count is zero), but never otherwise.
+//
+// The returned @buffer is not a nul-terminated string, it can contain nul
+// bytes at any position, and this function doesn't nul-terminate the
+// @buffer.
+//
+// If @cancellable is not nil, then the operation can be cancelled by
+// triggering the cancellable object from another thread. If the operation
+// was cancelled, the error G_IO_ERROR_CANCELLED will be returned. If an
+// operation was partially finished when the operation was cancelled the
+// partial result will be returned, without an error.
+//
+// On error -1 is returned and @error is set accordingly.
+func (s inputStream) Read(cancellable Cancellable) ([]byte, int, error) {
+	var _arg0 *C.GInputStream
+	var _arg3 *C.GCancellable
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg1 C.void
+	var _arg2 C.gsize
+	var _cret C.gssize
+	var _cerr *C.GError
+
+	_cret = C.g_input_stream_read(_arg0, _arg3, &_arg1, &_arg2, _cerr)
+
+	var _buffer []byte
+	var _gssize int
+	var _goerr error
+
+	{
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_buffer = make([]byte, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_buffer = (byte)(_arg1)
+		}
+	}
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _buffer, _gssize, _goerr
+}
+
+// ReadAll tries to read @count bytes from the stream into the buffer
+// starting at @buffer. Will block during this read.
+//
+// This function is similar to g_input_stream_read(), except it tries to
+// read as many bytes as requested, only stopping on an error or end of
+// stream.
+//
+// On a successful read of @count bytes, or if we reached the end of the
+// stream, true is returned, and @bytes_read is set to the number of bytes
+// read into @buffer.
+//
+// If there is an error during the operation false is returned and @error is
+// set to indicate the error status.
+//
+// As a special exception to the normal conventions for functions that use
+// #GError, if this function returns false (and sets @error) then
+// @bytes_read will be set to the number of bytes that were successfully
+// read before the error was encountered. This functionality is only
+// available from C. If you need it from another language then you must
+// write your own loop around g_input_stream_read().
+func (s inputStream) ReadAll(cancellable Cancellable) ([]byte, uint, error) {
+	var _arg0 *C.GInputStream
+	var _arg4 *C.GCancellable
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg1 C.void
+	var _arg2 C.gsize
+	var _arg3 C.gsize
+	var _cerr *C.GError
+
+	C.g_input_stream_read_all(_arg0, _arg4, &_arg1, &_arg2, &_arg3, _cerr)
+
+	var _buffer []byte
+	var _bytesRead uint
+	var _goerr error
+
+	{
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_buffer = make([]byte, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_buffer = (byte)(_arg1)
+		}
+	}
+	_bytesRead = (uint)(_arg3)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _buffer, _bytesRead, _goerr
+}
+
+// ReadAllAsync: request an asynchronous read of @count bytes from the
+// stream into the buffer starting at @buffer.
+//
+// This is the asynchronous equivalent of g_input_stream_read_all().
+//
+// Call g_input_stream_read_all_finish() to collect the result.
+//
+// Any outstanding I/O request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority.
+// Default priority is G_PRIORITY_DEFAULT.
+func (s inputStream) ReadAllAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) []byte {
+	var _arg0 *C.GInputStream
+	var _arg3 C.int
+	var _arg4 *C.GCancellable
+	var _arg5 C.GAsyncReadyCallback
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	var _arg1 C.void
+	var _arg2 C.gsize
+
+	C.g_input_stream_read_all_async(_arg0, _arg3, _arg4, _arg5, _arg6, &_arg1, &_arg2)
+
+	var _buffer []byte
+
+	{
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_buffer = make([]byte, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_buffer = (byte)(_arg1)
+		}
+	}
+
+	return _buffer
 }
 
 // ReadAllFinish finishes an asynchronous stream read operation started with
@@ -346,6 +589,63 @@ func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
 	return _bytesRead, _goerr
 }
 
+// ReadAsync: request an asynchronous read of @count bytes from the stream
+// into the buffer starting at @buffer. When the operation is finished
+// @callback will be called. You can then call g_input_stream_read_finish()
+// to get the result of the operation.
+//
+// During an async request no other sync and async calls are allowed on
+// @stream, and will result in G_IO_ERROR_PENDING errors.
+//
+// A value of @count larger than G_MAXSSIZE will cause a
+// G_IO_ERROR_INVALID_ARGUMENT error.
+//
+// On success, the number of bytes read into the buffer will be passed to
+// the callback. It is not an error if this is not the same as the requested
+// size, as it can happen e.g. near the end of a file, but generally we try
+// to read as many bytes as requested. Zero is returned on end of file (or
+// if @count is zero), but never otherwise.
+//
+// Any outstanding i/o request with higher priority (lower numerical value)
+// will be executed before an outstanding request with lower priority.
+// Default priority is G_PRIORITY_DEFAULT.
+//
+// The asynchronous methods have a default fallback that uses threads to
+// implement asynchronicity, so they are optional for inheriting classes.
+// However, if you override one you must override all.
+func (s inputStream) ReadAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) []byte {
+	var _arg0 *C.GInputStream
+	var _arg3 C.int
+	var _arg4 *C.GCancellable
+	var _arg5 C.GAsyncReadyCallback
+	var _arg6 C.gpointer
+
+	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg3 = C.int(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
+
+	var _arg1 C.void
+	var _arg2 C.gsize
+
+	C.g_input_stream_read_async(_arg0, _arg3, _arg4, _arg5, _arg6, &_arg1, &_arg2)
+
+	var _buffer []byte
+
+	{
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_buffer = make([]byte, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_buffer = (byte)(_arg1)
+		}
+	}
+
+	return _buffer
+}
+
 // ReadBytesAsync: request an asynchronous read of @count bytes from the
 // stream into a new #GBytes. When the operation is finished @callback will
 // be called. You can then call g_input_stream_read_bytes_finish() to get
@@ -366,12 +666,22 @@ func (s inputStream) ReadAllFinish(result AsyncResult) (uint, error) {
 // Any outstanding I/O request with higher priority (lower numerical value)
 // will be executed before an outstanding request with lower priority.
 // Default priority is G_PRIORITY_DEFAULT.
-func (s inputStream) ReadBytesAsync() {
+func (s inputStream) ReadBytesAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream
+	var _arg1 C.gsize
+	var _arg2 C.int
+	var _arg3 *C.GCancellable
+	var _arg4 C.GAsyncReadyCallback
+	var _arg5 C.gpointer
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
 
-	C.g_input_stream_read_bytes_async(_arg0)
+	C.g_input_stream_read_bytes_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // ReadFinish finishes an asynchronous stream read operation.
@@ -385,7 +695,7 @@ func (s inputStream) ReadFinish(result AsyncResult) (int, error) {
 	var _cret C.gssize
 	var _cerr *C.GError
 
-	cret = C.g_input_stream_read_finish(_arg0, _arg1, _cerr)
+	_cret = C.g_input_stream_read_finish(_arg0, _arg1, _cerr)
 
 	var _gssize int
 	var _goerr error
@@ -441,7 +751,7 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
 	var _cret C.gssize
 	var _cerr *C.GError
 
-	cret = C.g_input_stream_skip(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_input_stream_skip(_arg0, _arg1, _arg2, _cerr)
 
 	var _gssize int
 	var _goerr error
@@ -475,12 +785,22 @@ func (s inputStream) Skip(count uint, cancellable Cancellable) (int, error) {
 // The asynchronous methods have a default fallback that uses threads to
 // implement asynchronicity, so they are optional for inheriting classes.
 // However, if you override one, you must override all.
-func (s inputStream) SkipAsync() {
+func (s inputStream) SkipAsync(count uint, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GInputStream
+	var _arg1 C.gsize
+	var _arg2 C.int
+	var _arg3 *C.GCancellable
+	var _arg4 C.GAsyncReadyCallback
+	var _arg5 C.gpointer
 
 	_arg0 = (*C.GInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gsize(count)
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
 
-	C.g_input_stream_skip_async(_arg0)
+	C.g_input_stream_skip_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // SkipFinish finishes a stream skip operation.
@@ -494,7 +814,7 @@ func (s inputStream) SkipFinish(result AsyncResult) (int, error) {
 	var _cret C.gssize
 	var _cerr *C.GError
 
-	cret = C.g_input_stream_skip_finish(_arg0, _arg1, _cerr)
+	_cret = C.g_input_stream_skip_finish(_arg0, _arg1, _cerr)
 
 	var _gssize int
 	var _goerr error

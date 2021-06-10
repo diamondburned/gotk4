@@ -5,8 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -39,10 +39,6 @@ type DataInputStream interface {
 	BufferedInputStream
 	Seekable
 
-	// ByteOrder gets the byte order for the data input stream.
-	ByteOrder() DataStreamByteOrder
-	// NewlineType gets the current newline type for the @stream.
-	NewlineType() DataStreamNewlineType
 	// ReadByte reads an unsigned 8-bit/1-byte value from @stream.
 	ReadByte(cancellable Cancellable) (byte, error)
 	// ReadInt16 reads a 16-bit/2-byte value from @stream.
@@ -86,7 +82,7 @@ type DataInputStream interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_data_input_stream_read_line_finish() to get the result of the
 	// operation.
-	ReadLineAsync()
+	ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadLineFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_line_async(). Note the warning about string
 	// encoding in g_data_input_stream_read_line() applies here as well.
@@ -153,7 +149,7 @@ type DataInputStream interface {
 	// with g_data_input_stream_read_until(). Both functions will be marked as
 	// deprecated in a future release. Use g_data_input_stream_read_upto_async()
 	// instead.
-	ReadUntilAsync()
+	ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadUntilFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_until_async().
 	ReadUntilFinish(result AsyncResult) (uint, string, error)
@@ -183,7 +179,7 @@ type DataInputStream interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_data_input_stream_read_upto_finish() to get the result of the
 	// operation.
-	ReadUptoAsync()
+	ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// ReadUptoFinish: finish an asynchronous call started by
 	// g_data_input_stream_read_upto_async().
 	//
@@ -228,57 +224,6 @@ func marshalDataInputStream(p uintptr) (interface{}, error) {
 	return WrapDataInputStream(obj), nil
 }
 
-// NewDataInputStream constructs a class DataInputStream.
-func NewDataInputStream(baseStream InputStream) DataInputStream {
-	var _arg1 *C.GInputStream
-
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(baseStream.Native()))
-
-	var _cret C.GDataInputStream
-
-	cret = C.g_data_input_stream_new(_arg1)
-
-	var _dataInputStream DataInputStream
-
-	_dataInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DataInputStream)
-
-	return _dataInputStream
-}
-
-// ByteOrder gets the byte order for the data input stream.
-func (s dataInputStream) ByteOrder() DataStreamByteOrder {
-	var _arg0 *C.GDataInputStream
-
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GDataStreamByteOrder
-
-	cret = C.g_data_input_stream_get_byte_order(_arg0)
-
-	var _dataStreamByteOrder DataStreamByteOrder
-
-	_dataStreamByteOrder = DataStreamByteOrder(_cret)
-
-	return _dataStreamByteOrder
-}
-
-// NewlineType gets the current newline type for the @stream.
-func (s dataInputStream) NewlineType() DataStreamNewlineType {
-	var _arg0 *C.GDataInputStream
-
-	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GDataStreamNewlineType
-
-	cret = C.g_data_input_stream_get_newline_type(_arg0)
-
-	var _dataStreamNewlineType DataStreamNewlineType
-
-	_dataStreamNewlineType = DataStreamNewlineType(_cret)
-
-	return _dataStreamNewlineType
-}
-
 // ReadByte reads an unsigned 8-bit/1-byte value from @stream.
 func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
 	var _arg0 *C.GDataInputStream
@@ -290,7 +235,7 @@ func (s dataInputStream) ReadByte(cancellable Cancellable) (byte, error) {
 	var _cret C.guchar
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_byte(_arg0, _arg1, _cerr)
+	_cret = C.g_data_input_stream_read_byte(_arg0, _arg1, _cerr)
 
 	var _guint8 byte
 	var _goerr error
@@ -316,7 +261,7 @@ func (s dataInputStream) ReadInt16(cancellable Cancellable) (int16, error) {
 	var _cret C.gint16
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_int16(_arg0, _arg1, _cerr)
+	_cret = C.g_data_input_stream_read_int16(_arg0, _arg1, _cerr)
 
 	var _gint16 int16
 	var _goerr error
@@ -346,7 +291,7 @@ func (s dataInputStream) ReadInt32(cancellable Cancellable) (int32, error) {
 	var _cret C.gint32
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_int32(_arg0, _arg1, _cerr)
+	_cret = C.g_data_input_stream_read_int32(_arg0, _arg1, _cerr)
 
 	var _gint32 int32
 	var _goerr error
@@ -376,7 +321,7 @@ func (s dataInputStream) ReadInt64(cancellable Cancellable) (int64, error) {
 	var _cret C.gint64
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_int64(_arg0, _arg1, _cerr)
+	_cret = C.g_data_input_stream_read_int64(_arg0, _arg1, _cerr)
 
 	var _gint64 int64
 	var _goerr error
@@ -405,7 +350,7 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_line(_arg0, _arg2, &_arg1, _cerr)
+	_cret = C.g_data_input_stream_read_line(_arg0, _arg2, &_arg1, _cerr)
 
 	var _length uint
 	var _guint8s []byte
@@ -414,7 +359,7 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 	_length = (uint)(_arg1)
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.char)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := _cret; *p != 0; p = (*C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -425,7 +370,7 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_guint8s = make([]byte, length)
-		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
+		for i := range src {
 			_guint8s = (byte)(_cret)
 		}
 	}
@@ -441,12 +386,20 @@ func (s dataInputStream) ReadLine(cancellable Cancellable) (uint, []byte, error)
 // When the operation is finished, @callback will be called. You can then
 // call g_data_input_stream_read_line_finish() to get the result of the
 // operation.
-func (s dataInputStream) ReadLineAsync() {
+func (s dataInputStream) ReadLineAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream
+	var _arg1 C.gint
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = C.gint(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	C.g_data_input_stream_read_line_async(_arg0)
+	C.g_data_input_stream_read_line_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // ReadLineFinish: finish an asynchronous call started by
@@ -463,7 +416,7 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_line_finish(_arg0, _arg1, &_arg2, _cerr)
+	_cret = C.g_data_input_stream_read_line_finish(_arg0, _arg1, &_arg2, _cerr)
 
 	var _length uint
 	var _guint8s []byte
@@ -472,7 +425,7 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 	_length = (uint)(_arg2)
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.char)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := _cret; *p != 0; p = (*C.char)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -483,7 +436,7 @@ func (s dataInputStream) ReadLineFinish(result AsyncResult) (uint, []byte, error
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_guint8s = make([]byte, length)
-		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
+		for i := range src {
 			_guint8s = (byte)(_cret)
 		}
 	}
@@ -505,7 +458,7 @@ func (s dataInputStream) ReadLineFinishUTF8(result AsyncResult) (uint, string, e
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_line_finish_utf8(_arg0, _arg1, &_arg2, _cerr)
+	_cret = C.g_data_input_stream_read_line_finish_utf8(_arg0, _arg1, &_arg2, _cerr)
 
 	var _length uint
 	var _utf8 string
@@ -535,7 +488,7 @@ func (s dataInputStream) ReadLineUTF8(cancellable Cancellable) (uint, string, er
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_line_utf8(_arg0, _arg2, &_arg1, _cerr)
+	_cret = C.g_data_input_stream_read_line_utf8(_arg0, _arg2, &_arg1, _cerr)
 
 	var _length uint
 	var _utf8 string
@@ -564,7 +517,7 @@ func (s dataInputStream) ReadUint16(cancellable Cancellable) (uint16, error) {
 	var _cret C.guint16
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_uint16(_arg0, _arg1, _cerr)
+	_cret = C.g_data_input_stream_read_uint16(_arg0, _arg1, _cerr)
 
 	var _guint16 uint16
 	var _goerr error
@@ -594,7 +547,7 @@ func (s dataInputStream) ReadUint32(cancellable Cancellable) (uint32, error) {
 	var _cret C.guint32
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_uint32(_arg0, _arg1, _cerr)
+	_cret = C.g_data_input_stream_read_uint32(_arg0, _arg1, _cerr)
 
 	var _guint32 uint32
 	var _goerr error
@@ -623,7 +576,7 @@ func (s dataInputStream) ReadUint64(cancellable Cancellable) (uint64, error) {
 	var _cret C.guint64
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_uint64(_arg0, _arg1, _cerr)
+	_cret = C.g_data_input_stream_read_uint64(_arg0, _arg1, _cerr)
 
 	var _guint64 uint64
 	var _goerr error
@@ -659,7 +612,7 @@ func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (u
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_until(_arg0, _arg1, _arg3, &_arg2, _cerr)
+	_cret = C.g_data_input_stream_read_until(_arg0, _arg1, _arg3, &_arg2, _cerr)
 
 	var _length uint
 	var _utf8 string
@@ -689,12 +642,23 @@ func (s dataInputStream) ReadUntil(stopChars string, cancellable Cancellable) (u
 // with g_data_input_stream_read_until(). Both functions will be marked as
 // deprecated in a future release. Use g_data_input_stream_read_upto_async()
 // instead.
-func (s dataInputStream) ReadUntilAsync() {
+func (s dataInputStream) ReadUntilAsync(stopChars string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream
+	var _arg1 *C.gchar
+	var _arg2 C.gint
+	var _arg3 *C.GCancellable
+	var _arg4 C.GAsyncReadyCallback
+	var _arg5 C.gpointer
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(stopChars))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gint(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
 
-	C.g_data_input_stream_read_until_async(_arg0)
+	C.g_data_input_stream_read_until_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // ReadUntilFinish: finish an asynchronous call started by
@@ -710,7 +674,7 @@ func (s dataInputStream) ReadUntilFinish(result AsyncResult) (uint, string, erro
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_until_finish(_arg0, _arg1, &_arg2, _cerr)
+	_cret = C.g_data_input_stream_read_until_finish(_arg0, _arg1, &_arg2, _cerr)
 
 	var _length uint
 	var _utf8 string
@@ -751,7 +715,7 @@ func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellabl
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_upto(_arg0, _arg1, _arg2, _arg4, &_arg3, _cerr)
+	_cret = C.g_data_input_stream_read_upto(_arg0, _arg1, _arg2, _arg4, &_arg3, _cerr)
 
 	var _length uint
 	var _utf8 string
@@ -779,12 +743,25 @@ func (s dataInputStream) ReadUpto(stopChars string, stopCharsLen int, cancellabl
 // When the operation is finished, @callback will be called. You can then
 // call g_data_input_stream_read_upto_finish() to get the result of the
 // operation.
-func (s dataInputStream) ReadUptoAsync() {
+func (s dataInputStream) ReadUptoAsync(stopChars string, stopCharsLen int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GDataInputStream
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
+	var _arg3 C.gint
+	var _arg4 *C.GCancellable
+	var _arg5 C.GAsyncReadyCallback
+	var _arg6 C.gpointer
 
 	_arg0 = (*C.GDataInputStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.gchar)(C.CString(stopChars))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.gssize(stopCharsLen)
+	_arg3 = C.gint(ioPriority)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg5 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg6 = C.gpointer(box.Assign(callback))
 
-	C.g_data_input_stream_read_upto_async(_arg0)
+	C.g_data_input_stream_read_upto_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // ReadUptoFinish: finish an asynchronous call started by
@@ -806,7 +783,7 @@ func (s dataInputStream) ReadUptoFinish(result AsyncResult) (uint, string, error
 	var _cret *C.char
 	var _cerr *C.GError
 
-	cret = C.g_data_input_stream_read_upto_finish(_arg0, _arg1, &_arg2, _cerr)
+	_cret = C.g_data_input_stream_read_upto_finish(_arg0, _arg1, &_arg2, _cerr)
 
 	var _length uint
 	var _utf8 string

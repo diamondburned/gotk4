@@ -34,13 +34,6 @@ type Font interface {
 	// If you only want to determine whether the font has the glyph, use
 	// [method@PangoFc.Font.has_char].
 	Glyph(wc uint32) uint
-	// Languages returns the languages that are supported by @font.
-	//
-	// This corresponds to the FC_LANG member of the FcPattern.
-	//
-	// The returned array is only valid as long as the font and its fontmap are
-	// valid.
-	Languages() **pango.Language
 	// HasChar determines whether @font has a glyph for the codepoint @wc.
 	HasChar(wc uint32) bool
 	// KernGlyphs: this function used to adjust each adjacent pair of glyphs in
@@ -87,35 +80,13 @@ func (f font) Glyph(wc uint32) uint {
 
 	var _cret C.guint
 
-	cret = C.pango_fc_font_get_glyph(_arg0, _arg1)
+	_cret = C.pango_fc_font_get_glyph(_arg0, _arg1)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// Languages returns the languages that are supported by @font.
-//
-// This corresponds to the FC_LANG member of the FcPattern.
-//
-// The returned array is only valid as long as the font and its fontmap are
-// valid.
-func (f font) Languages() **pango.Language {
-	var _arg0 *C.PangoFcFont
-
-	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
-
-	var _cret **C.PangoLanguage
-
-	cret = C.pango_fc_font_get_languages(_arg0)
-
-	var _language **pango.Language
-
-	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
-
-	return _language
 }
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
@@ -128,7 +99,7 @@ func (f font) HasChar(wc uint32) bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_fc_font_has_char(_arg0, _arg1)
+	_cret = C.pango_fc_font_has_char(_arg0, _arg1)
 
 	var _ok bool
 

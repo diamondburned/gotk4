@@ -14,26 +14,10 @@ import (
 // #include <glib.h>
 import "C"
 
-// DataForeachFunc specifies the type of function passed to g_dataset_foreach().
-// It is called with each #GQuark id and associated data element, together with
-// the @user_data parameter supplied to g_dataset_foreach().
-type DataForeachFunc func()
-
-//export gotk4_DataForeachFunc
-func gotk4_DataForeachFunc(arg0 C.GQuark, arg1 C.gpointer, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(DataForeachFunc)
-	fn()
-}
-
 // DuplicateFunc: the type of functions that are used to 'duplicate' an object.
 // What this means depends on the context, it could just be incrementing the
 // reference count, if @data is a ref-counted object.
-type DuplicateFunc func() (gpointer interface{})
+type DuplicateFunc func(data interface{}) (gpointer interface{})
 
 //export gotk4_DuplicateFunc
 func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
@@ -42,10 +26,16 @@ func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 		panic(`callback not found`)
 	}
 
+	var data interface{}
+
+	data = (interface{})(arg0)
+
 	fn := v.(DuplicateFunc)
-	gpointer := fn()
+	gpointer := fn(data)
 
 	cret = C.gpointer(gpointer)
+
+	return gpointer
 }
 
 // DatalistClear frees all the data elements of the datalist. The data elements'
@@ -67,8 +57,16 @@ func DatalistClear(datalist **Data) {
 // @func can make changes to @datalist, but the iteration will not reflect
 // changes made during the g_datalist_foreach() call, other than skipping over
 // elements that are removed.
-func DatalistForeach() {
-	C.g_datalist_foreach()
+func DatalistForeach(datalist **Data, fn DataForeachFunc) {
+	var _arg1 **C.GData
+	var _arg2 C.GDataForeachFunc
+	var _arg3 C.gpointer
+
+	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
+	_arg3 = C.gpointer(box.Assign(fn))
+
+	C.g_datalist_foreach(_arg1, _arg2, _arg3)
 }
 
 // DatalistGetData gets a data element, using its string identifier. This is
@@ -83,7 +81,7 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_datalist_get_data(_arg1, _arg2)
+	_cret = C.g_datalist_get_data(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -101,38 +99,13 @@ func DatalistGetFlags(datalist **Data) uint {
 
 	var _cret C.guint
 
-	cret = C.g_datalist_get_flags(_arg1)
+	_cret = C.g_datalist_get_flags(_arg1)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// DatalistIDDupData: this is a variant of g_datalist_id_get_data() which
-// returns a 'duplicate' of the value. @dup_func defines the meaning of
-// 'duplicate' in this context, it could e.g. take a reference on a ref-counted
-// object.
-//
-// If the @key_id is not set in the datalist then @dup_func will be called with
-// a nil argument.
-//
-// Note that @dup_func is called while the datalist is locked, so it is not
-// allowed to read or modify the datalist.
-//
-// This function can be useful to avoid races when multiple threads are using
-// the same datalist and the same key.
-func DatalistIDDupData() interface{} {
-	var _cret C.gpointer
-
-	cret = C.g_datalist_id_dup_data()
-
-	var _gpointer interface{}
-
-	_gpointer = (interface{})(_cret)
-
-	return _gpointer
 }
 
 // DatalistInit resets the datalist to nil. It does not free any memory or call
@@ -190,8 +163,16 @@ func DatasetDestroy(datasetLocation interface{}) {
 // @func can make changes to the dataset, but the iteration will not reflect
 // changes made during the g_dataset_foreach() call, other than skipping over
 // elements that are removed.
-func DatasetForeach() {
-	C.g_dataset_foreach()
+func DatasetForeach(datasetLocation interface{}, fn DataForeachFunc) {
+	var _arg1 C.gpointer
+	var _arg2 C.GDataForeachFunc
+	var _arg3 C.gpointer
+
+	_arg1 = C.gpointer(datasetLocation)
+	_arg2 = (*[0]byte)(C.gotk4_DataForeachFunc)
+	_arg3 = C.gpointer(box.Assign(fn))
+
+	C.g_dataset_foreach(_arg1, _arg2, _arg3)
 }
 
 // Data: the #GData struct is an opaque data structure to represent a [Keyed

@@ -3,11 +3,9 @@
 package gsk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -155,9 +153,6 @@ type GLShader interface {
 	// UniformOffset: get the offset into the data block where data for this
 	// uniforms is stored.
 	UniformOffset(idx int) int
-	// UniformType: get the type of the declared uniform for this shader at
-	// index @idx.
-	UniformType(idx int) GLUniformType
 }
 
 // glShader implements the GLShader interface.
@@ -179,24 +174,6 @@ func marshalGLShader(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGLShader(obj), nil
-}
-
-// NewGLShaderFromResource constructs a class GLShader.
-func NewGLShaderFromResource(resourcePath string) GLShader {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GskGLShader
-
-	cret = C.gsk_gl_shader_new_from_resource(_arg1)
-
-	var _glShader GLShader
-
-	_glShader = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GLShader)
-
-	return _glShader
 }
 
 // Compile tries to compile the @shader for the given @renderer.
@@ -239,7 +216,7 @@ func (s glShader) FindUniformByName(name string) int {
 
 	var _cret C.int
 
-	cret = C.gsk_gl_shader_find_uniform_by_name(_arg0, _arg1)
+	_cret = C.gsk_gl_shader_find_uniform_by_name(_arg0, _arg1)
 
 	var _gint int
 
@@ -257,7 +234,7 @@ func (s glShader) ArgsSize() uint {
 
 	var _cret C.gsize
 
-	cret = C.gsk_gl_shader_get_args_size(_arg0)
+	_cret = C.gsk_gl_shader_get_args_size(_arg0)
 
 	var _gsize uint
 
@@ -278,7 +255,7 @@ func (s glShader) NTextures() int {
 
 	var _cret C.int
 
-	cret = C.gsk_gl_shader_get_n_textures(_arg0)
+	_cret = C.gsk_gl_shader_get_n_textures(_arg0)
 
 	var _gint int
 
@@ -295,7 +272,7 @@ func (s glShader) NUniforms() int {
 
 	var _cret C.int
 
-	cret = C.gsk_gl_shader_get_n_uniforms(_arg0)
+	_cret = C.gsk_gl_shader_get_n_uniforms(_arg0)
 
 	var _gint int
 
@@ -313,7 +290,7 @@ func (s glShader) Resource() string {
 
 	var _cret *C.char
 
-	cret = C.gsk_gl_shader_get_resource(_arg0)
+	_cret = C.gsk_gl_shader_get_resource(_arg0)
 
 	var _utf8 string
 
@@ -333,7 +310,7 @@ func (s glShader) UniformName(idx int) string {
 
 	var _cret *C.char
 
-	cret = C.gsk_gl_shader_get_uniform_name(_arg0, _arg1)
+	_cret = C.gsk_gl_shader_get_uniform_name(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -353,33 +330,13 @@ func (s glShader) UniformOffset(idx int) int {
 
 	var _cret C.int
 
-	cret = C.gsk_gl_shader_get_uniform_offset(_arg0, _arg1)
+	_cret = C.gsk_gl_shader_get_uniform_offset(_arg0, _arg1)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// UniformType: get the type of the declared uniform for this shader at
-// index @idx.
-func (s glShader) UniformType(idx int) GLUniformType {
-	var _arg0 *C.GskGLShader
-	var _arg1 C.int
-
-	_arg0 = (*C.GskGLShader)(unsafe.Pointer(s.Native()))
-	_arg1 = C.int(idx)
-
-	var _cret C.GskGLUniformType
-
-	cret = C.gsk_gl_shader_get_uniform_type(_arg0, _arg1)
-
-	var _glUniformType GLUniformType
-
-	_glUniformType = GLUniformType(_cret)
-
-	return _glUniformType
 }
 
 // ShaderArgsBuilder: an object to build the uniforms data for a GLShader.
@@ -405,26 +362,6 @@ func marshalShaderArgsBuilder(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (s *ShaderArgsBuilder) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// Ref increases the reference count of a `GskShaderArgsBuilder` by one.
-func (b *ShaderArgsBuilder) Ref() *ShaderArgsBuilder {
-	var _arg0 *C.GskShaderArgsBuilder
-
-	_arg0 = (*C.GskShaderArgsBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GskShaderArgsBuilder
-
-	cret = C.gsk_shader_args_builder_ref(_arg0)
-
-	var _shaderArgsBuilder *ShaderArgsBuilder
-
-	_shaderArgsBuilder = WrapShaderArgsBuilder(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_shaderArgsBuilder, func(v *ShaderArgsBuilder) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _shaderArgsBuilder
 }
 
 // SetBool sets the value of the uniform @idx.

@@ -16,7 +16,7 @@ import "C"
 func GetDebugFlags() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_debug_flags()
+	_cret = C.gtk_get_debug_flags()
 
 	var _guint uint
 

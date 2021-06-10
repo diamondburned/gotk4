@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/ptr"
@@ -155,7 +154,7 @@ func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain 
 	var _arg2 *C.gchar
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_GOptionEntry))
+	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_struct_GOptionEntry))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
@@ -191,7 +190,7 @@ func (c *OptionContext) Description() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_option_context_get_description(_arg0)
+	_cret = C.g_option_context_get_description(_arg0)
 
 	var _utf8 string
 
@@ -219,7 +218,7 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_option_context_get_help(_arg0, _arg1, _arg2)
+	_cret = C.g_option_context_get_help(_arg0, _arg1, _arg2)
 
 	var _utf8 string
 
@@ -238,7 +237,7 @@ func (c *OptionContext) HelpEnabled() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_option_context_get_help_enabled(_arg0)
+	_cret = C.g_option_context_get_help_enabled(_arg0)
 
 	var _ok bool
 
@@ -258,7 +257,7 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_option_context_get_ignore_unknown_options(_arg0)
+	_cret = C.g_option_context_get_ignore_unknown_options(_arg0)
 
 	var _ok bool
 
@@ -267,23 +266,6 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 	}
 
 	return _ok
-}
-
-// MainGroup returns a pointer to the main group of @context.
-func (c *OptionContext) MainGroup() *OptionGroup {
-	var _arg0 *C.GOptionContext
-
-	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GOptionGroup
-
-	cret = C.g_option_context_get_main_group(_arg0)
-
-	var _optionGroup *OptionGroup
-
-	_optionGroup = WrapOptionGroup(unsafe.Pointer(_cret))
-
-	return _optionGroup
 }
 
 // StrictPosix returns whether strict POSIX code is enabled.
@@ -296,7 +278,7 @@ func (c *OptionContext) StrictPosix() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_option_context_get_strict_posix(_arg0)
+	_cret = C.g_option_context_get_strict_posix(_arg0)
 
 	var _ok bool
 
@@ -315,7 +297,7 @@ func (c *OptionContext) Summary() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_option_context_get_summary(_arg0)
+	_cret = C.g_option_context_get_summary(_arg0)
 
 	var _utf8 string
 
@@ -440,25 +422,6 @@ func (c *OptionContext) SetSummary(summary string) {
 	C.g_option_context_set_summary(_arg0, _arg1)
 }
 
-// SetTranslateFunc sets the function which is used to translate the contexts
-// user-visible strings, for `--help` output. If @func is nil, strings are not
-// translated.
-//
-// Note that option groups have their own translation functions, this function
-// only affects the @parameter_string (see g_option_context_new()), the summary
-// (see g_option_context_set_summary()) and the description (see
-// g_option_context_set_description()).
-//
-// If you are using gettext(), you only need to set the translation domain, see
-// g_option_context_set_translation_domain().
-func (c *OptionContext) SetTranslateFunc() {
-	var _arg0 *C.GOptionContext
-
-	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
-
-	C.g_option_context_set_translate_func(_arg0)
-}
-
 // SetTranslationDomain: a convenience function to use gettext() for translating
 // user-visible strings.
 func (c *OptionContext) SetTranslationDomain(domain string) {
@@ -520,13 +483,6 @@ func (o *OptionEntry) Flags() int {
 	return v
 }
 
-// Arg gets the field inside the struct.
-func (o *OptionEntry) Arg() OptionArg {
-	var v OptionArg
-	v = OptionArg(o.native.arg)
-	return v
-}
-
 // ArgData gets the field inside the struct.
 func (o *OptionEntry) ArgData() interface{} {
 	var v interface{}
@@ -585,7 +541,7 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 	var _arg1 *C.GOptionEntry
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_GOptionEntry))
+	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_struct_GOptionEntry))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
@@ -608,40 +564,6 @@ func (g *OptionGroup) Free() {
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
 	C.g_option_group_free(_arg0)
-}
-
-// Ref increments the reference count of @group by one.
-func (g *OptionGroup) Ref() *OptionGroup {
-	var _arg0 *C.GOptionGroup
-
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
-
-	var _cret *C.GOptionGroup
-
-	cret = C.g_option_group_ref(_arg0)
-
-	var _optionGroup *OptionGroup
-
-	_optionGroup = WrapOptionGroup(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_optionGroup, func(v *OptionGroup) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _optionGroup
-}
-
-// SetTranslateFunc sets the function which is used to translate user-visible
-// strings, for `--help` output. Different groups can use different Funcs. If
-// @func is nil, strings are not translated.
-//
-// If you are using gettext(), you only need to set the translation domain, see
-// g_option_group_set_translation_domain().
-func (g *OptionGroup) SetTranslateFunc() {
-	var _arg0 *C.GOptionGroup
-
-	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
-
-	C.g_option_group_set_translate_func(_arg0)
 }
 
 // SetTranslationDomain: a convenience function to use gettext() for translating

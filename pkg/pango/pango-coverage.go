@@ -3,9 +3,10 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config:

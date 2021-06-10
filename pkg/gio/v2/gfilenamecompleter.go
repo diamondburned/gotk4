@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -68,19 +67,6 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 	return WrapFilenameCompleter(obj), nil
 }
 
-// NewFilenameCompleter constructs a class FilenameCompleter.
-func NewFilenameCompleter() FilenameCompleter {
-	var _cret C.GFilenameCompleter
-
-	cret = C.g_filename_completer_new()
-
-	var _filenameCompleter FilenameCompleter
-
-	_filenameCompleter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FilenameCompleter)
-
-	return _filenameCompleter
-}
-
 // CompletionSuffix obtains a completion for @initial_text from @completer.
 func (c filenameCompleter) CompletionSuffix(initialText string) string {
 	var _arg0 *C.GFilenameCompleter
@@ -92,7 +78,7 @@ func (c filenameCompleter) CompletionSuffix(initialText string) string {
 
 	var _cret *C.char
 
-	cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
+	_cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -113,7 +99,7 @@ func (c filenameCompleter) Completions(initialText string) []string {
 
 	var _cret **C.char
 
-	cret = C.g_filename_completer_get_completions(_arg0, _arg1)
+	_cret = C.g_filename_completer_get_completions(_arg0, _arg1)
 
 	var _utf8s []string
 
@@ -130,7 +116,7 @@ func (c filenameCompleter) Completions(initialText string) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}

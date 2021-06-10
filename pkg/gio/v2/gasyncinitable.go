@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -71,7 +72,7 @@ type AsyncInitableOverrider interface {
 	// a thread, so if you want to support asynchronous initialization via
 	// threads, just implement the Initable interface without overriding any
 	// interface methods.
-	InitAsync()
+	InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 	// InitFinish finishes asynchronous initialization and returns the result.
 	// See g_async_initable_init_async().
 	InitFinish(res AsyncResult) error
@@ -240,12 +241,20 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 // a thread, so if you want to support asynchronous initialization via
 // threads, just implement the Initable interface without overriding any
 // interface methods.
-func (i asyncInitable) InitAsync() {
+func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GAsyncInitable
+	var _arg1 C.int
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
+	_arg1 = C.int(ioPriority)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	C.g_async_initable_init_async(_arg0)
+	C.g_async_initable_init_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // InitFinish finishes asynchronous initialization and returns the result.
@@ -280,7 +289,7 @@ func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
 	var _cret *C.GObject
 	var _cerr *C.GError
 
-	cret = C.g_async_initable_new_finish(_arg0, _arg1, _cerr)
+	_cret = C.g_async_initable_new_finish(_arg0, _arg1, _cerr)
 
 	var _object gextras.Objector
 	var _goerr error

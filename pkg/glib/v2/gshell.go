@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
+	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -26,6 +27,44 @@ const (
 	ShellErrorFailed ShellError = 2
 )
 
+// ShellParseArgv parses a command line into an argument vector, in much the
+// same way the shell would, but without many of the expansions the shell would
+// perform (variable expansion, globs, operators, filename expansion, etc. are
+// not supported). The results are defined to be the same as those you would get
+// from a UNIX98 /bin/sh, as long as the input contains none of the unsupported
+// shell expansions. If the input does contain such expansions, they are passed
+// through literally. Possible errors are those from the SHELL_ERROR domain.
+// Free the returned vector with g_strfreev().
+func ShellParseArgv(commandLine *string) ([]*string, error) {
+	var _arg1 *C.gchar
+
+	_arg1 = (*C.gchar)(C.CString(commandLine))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	var _arg3 **C.gchar
+	var _arg2 *C.gint
+	var _cerr *C.GError
+
+	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, _cerr)
+
+	var _argvp []*string
+	var _goerr error
+
+	{
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg3), int(_arg2))
+
+		_argvp = make([]*string, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_argvp = C.GoString(_arg3)
+			defer C.free(unsafe.Pointer(_arg3))
+		}
+	}
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _argvp, _goerr
+}
+
 // ShellQuote quotes a string so that the shell (/bin/sh) will interpret the
 // quoted string to mean @unquoted_string. If you pass a filename to the shell,
 // for example, you should first quote it with this function. The return value
@@ -39,7 +78,7 @@ func ShellQuote(unquotedString *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_shell_quote(_arg1)
+	_cret = C.g_shell_quote(_arg1)
 
 	var _filename *string
 
@@ -76,7 +115,7 @@ func ShellUnquote(quotedString *string) (*string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_shell_unquote(_arg1, _cerr)
+	_cret = C.g_shell_unquote(_arg1, _cerr)
 
 	var _filename *string
 	var _goerr error

@@ -6,12 +6,10 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/ptr"
-	externglib "github.com/gotk3/gotk3/glib"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
 
@@ -21,7 +19,7 @@ func TestListAllTypes() []externglib.Type {
 	var _cret *C.GType
 	var _arg1 *C.guint
 
-	cret = C.gtk_test_list_all_types()
+	_cret = C.gtk_test_list_all_types(&_arg1)
 
 	var _gTypes []externglib.Type
 

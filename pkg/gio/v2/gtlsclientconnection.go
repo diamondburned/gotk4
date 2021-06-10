@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,21 +67,9 @@ type TLSClientConnection interface {
 	TLSConnection
 	TLSClientConnectionOverrider
 
-	// AcceptedCAS gets the list of distinguished names of the Certificate
-	// Authorities that the server will accept certificates from. This will be
-	// set during the TLS handshake if the server requests a certificate.
-	// Otherwise, it will be nil.
-	//
-	// Each item in the list is a Array which contains the complete subject DN
-	// of the certificate authority.
-	AcceptedCAS() *glib.List
-	// ServerIdentity gets @conn's expected server identity
-	ServerIdentity() SocketConnectable
 	// UseSSL3: SSL 3.0 is no longer supported. See
 	// g_tls_client_connection_set_use_ssl3() for details.
 	UseSSL3() bool
-	// ValidationFlags gets @conn's validation flags
-	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets @conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
 	// also to let @conn know what name to look for in the certificate when
@@ -166,49 +149,6 @@ func (c tlsClientConnection) CopySessionState(source TLSClientConnection) {
 	C.g_tls_client_connection_copy_session_state(_arg0, _arg1)
 }
 
-// AcceptedCAS gets the list of distinguished names of the Certificate
-// Authorities that the server will accept certificates from. This will be
-// set during the TLS handshake if the server requests a certificate.
-// Otherwise, it will be nil.
-//
-// Each item in the list is a Array which contains the complete subject DN
-// of the certificate authority.
-func (c tlsClientConnection) AcceptedCAS() *glib.List {
-	var _arg0 *C.GTlsClientConnection
-
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GList
-
-	cret = C.g_tls_client_connection_get_accepted_cas(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// ServerIdentity gets @conn's expected server identity
-func (c tlsClientConnection) ServerIdentity() SocketConnectable {
-	var _arg0 *C.GTlsClientConnection
-
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocketConnectable
-
-	cret = C.g_tls_client_connection_get_server_identity(_arg0)
-
-	var _socketConnectable SocketConnectable
-
-	_socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SocketConnectable)
-
-	return _socketConnectable
-}
-
 // UseSSL3: SSL 3.0 is no longer supported. See
 // g_tls_client_connection_set_use_ssl3() for details.
 func (c tlsClientConnection) UseSSL3() bool {
@@ -218,7 +158,7 @@ func (c tlsClientConnection) UseSSL3() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_tls_client_connection_get_use_ssl3(_arg0)
+	_cret = C.g_tls_client_connection_get_use_ssl3(_arg0)
 
 	var _ok bool
 
@@ -227,23 +167,6 @@ func (c tlsClientConnection) UseSSL3() bool {
 	}
 
 	return _ok
-}
-
-// ValidationFlags gets @conn's validation flags
-func (c tlsClientConnection) ValidationFlags() TLSCertificateFlags {
-	var _arg0 *C.GTlsClientConnection
-
-	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GTlsCertificateFlags
-
-	cret = C.g_tls_client_connection_get_validation_flags(_arg0)
-
-	var _tlsCertificateFlags TLSCertificateFlags
-
-	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-
-	return _tlsCertificateFlags
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used

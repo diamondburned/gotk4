@@ -42,6 +42,153 @@ const (
 	ConvertErrorEmbeddedNUL ConvertError = 7
 )
 
+// Convert converts a string from one character set to another.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+//
+// Using extensions such as "//TRANSLIT" may not work (or may not work well) on
+// many platforms. Consider using g_str_to_ascii() instead.
+func Convert(str []byte, toCodeset string, fromCodeset string) (uint, []byte, error) {
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
+	var _arg3 *C.gchar
+	var _arg4 *C.gchar
+
+	_arg2 = C.gssize(len(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	_arg3 = (*C.gchar)(C.CString(toCodeset))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(fromCodeset))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	var _arg5 C.gsize
+	var _cret *C.gchar
+	var _arg6 *C.gsize
+	var _cerr *C.GError
+
+	_cret = C.g_convert(_arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6, _cerr)
+
+	var _bytesRead uint
+	var _guint8s []byte
+	var _goerr error
+
+	_bytesRead = (uint)(_arg5)
+	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg6))
+	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesRead, _guint8s, _goerr
+}
+
+// ConvertWithFallback converts a string from one character set to another,
+// possibly including fallback sequences for characters not representable in the
+// output. Note that it is not guaranteed that the specification for the
+// fallback sequences in @fallback will be honored. Some systems may do an
+// approximate conversion from @from_codeset to @to_codeset in their iconv()
+// functions, in which case GLib will simply return that approximate conversion.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+func ConvertWithFallback(str []byte, toCodeset string, fromCodeset string, fallback string) (uint, []byte, error) {
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
+	var _arg3 *C.gchar
+	var _arg4 *C.gchar
+	var _arg5 *C.gchar
+
+	_arg2 = C.gssize(len(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	_arg3 = (*C.gchar)(C.CString(toCodeset))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg4 = (*C.gchar)(C.CString(fromCodeset))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = (*C.gchar)(C.CString(fallback))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	var _arg6 C.gsize
+	var _cret *C.gchar
+	var _arg7 *C.gsize
+	var _cerr *C.GError
+
+	_cret = C.g_convert_with_fallback(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6, &_arg7, _cerr)
+
+	var _bytesRead uint
+	var _guint8s []byte
+	var _goerr error
+
+	_bytesRead = (uint)(_arg6)
+	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg7))
+	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesRead, _guint8s, _goerr
+}
+
+// ConvertWithIconv converts a string from one character set to another.
+//
+// Note that you should use g_iconv() for streaming conversions. Despite the
+// fact that @bytes_read can return information about partial characters, the
+// g_convert_... functions are not generally suitable for streaming. If the
+// underlying converter maintains internal state, then this won't be preserved
+// across successive calls to g_convert(), g_convert_with_iconv() or
+// g_convert_with_fallback(). (An example of this is the GNU C converter for
+// CP1255 which does not emit a base character until it knows that the next
+// character is not a mark that could combine with the base character.)
+//
+// Characters which are valid in the input character set, but which have no
+// representation in the output character set will result in a
+// G_CONVERT_ERROR_ILLEGAL_SEQUENCE error. This is in contrast to the iconv()
+// specification, which leaves this behaviour implementation defined. Note that
+// this is the same error code as is returned for an invalid byte sequence in
+// the input character set. To get defined behaviour for conversion of
+// unrepresentable characters, use g_convert_with_fallback().
+func ConvertWithIconv(str []byte, converter IConv) (uint, []byte, error) {
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
+	var _arg3 C.GIConv
+
+	_arg2 = C.gssize(len(str))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&str[0]))
+	_arg3 = (C.GIConv)(unsafe.Pointer(converter.Native()))
+
+	var _arg4 C.gsize
+	var _cret *C.gchar
+	var _arg5 *C.gsize
+	var _cerr *C.GError
+
+	_cret = C.g_convert_with_iconv(_arg1, _arg2, _arg3, &_arg4, &_arg5, _cerr)
+
+	var _bytesRead uint
+	var _guint8s []byte
+	var _goerr error
+
+	_bytesRead = (uint)(_arg4)
+	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg5))
+	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
+		C.free(ptr.Slice(unsafe.Pointer(v)))
+	})
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesRead, _guint8s, _goerr
+}
+
 // FilenameDisplayBasename returns the display basename for the particular
 // filename, guaranteed to be valid UTF-8. The display name might not be
 // identical to the filename, for instance there might be problems converting it
@@ -66,7 +213,7 @@ func FilenameDisplayBasename(filename *string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_filename_display_basename(_arg1)
+	_cret = C.g_filename_display_basename(_arg1)
 
 	var _utf8 string
 
@@ -99,7 +246,7 @@ func FilenameDisplayName(filename *string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_filename_display_name(_arg1)
+	_cret = C.g_filename_display_name(_arg1)
 
 	var _utf8 string
 
@@ -121,7 +268,7 @@ func FilenameFromURI(uri string) (string, *string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_filename_from_uri(_arg1, &_arg2, _cerr)
+	_cret = C.g_filename_from_uri(_arg1, &_arg2, _cerr)
 
 	var _hostname string
 	var _filename *string
@@ -159,7 +306,7 @@ func FilenameFromUTF8(utf8String string, len int) (bytesRead uint, bytesWritten 
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_filename_from_utf8(_arg1, _arg2, &_arg3, &_arg4, _cerr)
+	_cret = C.g_filename_from_utf8(_arg1, _arg2, &_arg3, &_arg4, _cerr)
 
 	var _bytesRead uint
 	var _bytesWritten uint
@@ -189,7 +336,7 @@ func FilenameToURI(filename *string, hostname string) (string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_filename_to_uri(_arg1, _arg2, _cerr)
+	_cret = C.g_filename_to_uri(_arg1, _arg2, _cerr)
 
 	var _utf8 string
 	var _goerr error
@@ -225,7 +372,7 @@ func FilenameToUTF8(opsysstring *string, len int) (bytesRead uint, bytesWritten 
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_filename_to_utf8(_arg1, _arg2, &_arg3, &_arg4, _cerr)
+	_cret = C.g_filename_to_utf8(_arg1, _arg2, &_arg3, &_arg4, _cerr)
 
 	var _bytesRead uint
 	var _bytesWritten uint
@@ -268,7 +415,7 @@ func GetFilenameCharsets() ([]*string, bool) {
 	var _arg1 **C.gchar
 	var _cret C.gboolean
 
-	cret = C.g_get_filename_charsets(&_arg1)
+	_cret = C.g_get_filename_charsets(&_arg1)
 
 	var _filenameCharsets []*string
 	var _ok bool
@@ -286,7 +433,7 @@ func GetFilenameCharsets() ([]*string, bool) {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(length))
 
 		_filenameCharsets = make([]*string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_filenameCharsets = C.GoString(_arg1)
 		}
 	}
@@ -326,7 +473,7 @@ func Iconv(converter IConv, inbuf *string, inbytesLeft *uint, outbuf *string, ou
 
 	var _cret C.gsize
 
-	cret = C.g_iconv(_arg1, _arg2, _arg3, _arg4, _arg5)
+	_cret = C.g_iconv(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _gsize uint
 
@@ -343,7 +490,7 @@ func Iconv(converter IConv, inbuf *string, inbytesLeft *uint, outbuf *string, ou
 // is positive. A nul character found inside the string will result in error
 // G_CONVERT_ERROR_ILLEGAL_SEQUENCE. Use g_convert() to convert input that may
 // contain embedded nul characters.
-func LocaleFromUTF8(utf8String string, len int) ([]byte, error) {
+func LocaleFromUTF8(utf8String string, len int) (uint, []byte, error) {
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
 
@@ -351,22 +498,63 @@ func LocaleFromUTF8(utf8String string, len int) ([]byte, error) {
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
+	var _arg3 C.gsize
 	var _cret *C.gchar
-	var _arg3 *C.gsize
+	var _arg4 *C.gsize
 	var _cerr *C.GError
 
-	cret = C.g_locale_from_utf8(_arg1, _arg2, _cerr)
+	_cret = C.g_locale_from_utf8(_arg1, _arg2, &_arg3, &_arg4, _cerr)
 
+	var _bytesRead uint
 	var _guint8s []byte
 	var _goerr error
 
-	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg3))
+	_bytesRead = (uint)(_arg3)
+	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg4))
 	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
 		C.free(ptr.Slice(unsafe.Pointer(v)))
 	})
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
-	return _guint8s, _goerr
+	return _bytesRead, _guint8s, _goerr
+}
+
+// LocaleToUTF8 converts a string which is in the encoding used for strings by
+// the C runtime (usually the same as that used by the operating system) in the
+// [current locale][setlocale] into a UTF-8 string.
+//
+// If the source encoding is not UTF-8 and the conversion output contains a nul
+// character, the error G_CONVERT_ERROR_EMBEDDED_NUL is set and the function
+// returns nil. If the source encoding is UTF-8, an embedded nul character is
+// treated with the G_CONVERT_ERROR_ILLEGAL_SEQUENCE error for backward
+// compatibility with earlier versions of this library. Use g_convert() to
+// produce output that may contain embedded nul characters.
+func LocaleToUTF8(opsysstring []byte) (bytesRead uint, bytesWritten uint, utf8 string, goerr error) {
+	var _arg1 *C.gchar
+	var _arg2 C.gssize
+
+	_arg2 = C.gssize(len(opsysstring))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&opsysstring[0]))
+
+	var _arg3 C.gsize
+	var _arg4 C.gsize
+	var _cret *C.gchar
+	var _cerr *C.GError
+
+	_cret = C.g_locale_to_utf8(_arg1, _arg2, &_arg3, &_arg4, _cerr)
+
+	var _bytesRead uint
+	var _bytesWritten uint
+	var _utf8 string
+	var _goerr error
+
+	_bytesRead = (uint)(_arg3)
+	_bytesWritten = (uint)(_arg4)
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _bytesRead, _bytesWritten, _utf8, _goerr
 }
 
 // IConv: the GIConv struct wraps an iconv() conversion descriptor. It contains
@@ -409,7 +597,7 @@ func (c *IConv) Close() int {
 
 	var _cret C.gint
 
-	cret = C.g_iconv_close(_arg0)
+	_cret = C.g_iconv_close(_arg0)
 
 	var _gint int
 

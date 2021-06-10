@@ -3,7 +3,6 @@
 package gdkpixbuf
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
@@ -37,24 +36,6 @@ const (
 	PixbufFormatFlagsThreadsafe PixbufFormatFlags = 4
 )
 
-// PixbufModulePreparedFunc defines the type of the function that gets called
-// once the initial setup of @pixbuf is done.
-//
-// PixbufLoader uses a function of this type to emit the "<link
-// linkend="GdkPixbufLoader-area-prepared">area_prepared</link>" signal.
-type PixbufModulePreparedFunc func()
-
-//export gotk4_PixbufModulePreparedFunc
-func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimation, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(PixbufModulePreparedFunc)
-	fn()
-}
-
 // PixbufModuleSizeFunc defines the type of the function that gets called once
 // the size of the loaded image is known.
 //
@@ -68,7 +49,7 @@ func gotk4_PixbufModulePreparedFunc(arg0 *C.GdkPixbuf, arg1 *C.GdkPixbufAnimatio
 // this as a hint that it will be closed soon and shouldn't allocate further
 // resources. This convention is used to implement gdk_pixbuf_get_file_info()
 // efficiently.
-type PixbufModuleSizeFunc func()
+type PixbufModuleSizeFunc func(width *int, height *int)
 
 //export gotk4_PixbufModuleSizeFunc
 func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
@@ -77,26 +58,14 @@ func gotk4_PixbufModuleSizeFunc(arg0 *C.gint, arg1 *C.gint, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
+	var width *int
+	var height *int
+
+	width = (*int)(arg0)
+	height = (*int)(arg1)
+
 	fn := v.(PixbufModuleSizeFunc)
-	fn()
-}
-
-// PixbufModuleUpdatedFunc defines the type of the function that gets called
-// every time a region of @pixbuf is updated.
-//
-// PixbufLoader uses a function of this type to emit the "<link
-// linkend="GdkPixbufLoader-area-updated">area_updated</link>" signal.
-type PixbufModuleUpdatedFunc func()
-
-//export gotk4_PixbufModuleUpdatedFunc
-func gotk4_PixbufModuleUpdatedFunc(arg0 *C.GdkPixbuf, arg1 C.int, arg2 C.int, arg3 C.int, arg4 C.int, arg5 C.gpointer) {
-	v := box.Get(uintptr(arg5))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(PixbufModuleUpdatedFunc)
-	fn()
+	fn(width, height)
 }
 
 // PixbufFormat: a `GdkPixbufFormat` contains information about the image format
@@ -128,13 +97,6 @@ func (p *PixbufFormat) Native() unsafe.Pointer {
 	return unsafe.Pointer(&p.native)
 }
 
-// Signature gets the field inside the struct.
-func (p *PixbufFormat) Signature() *PixbufModulePattern {
-	var v *PixbufModulePattern
-	v = WrapPixbufModulePattern(unsafe.Pointer(p.native.signature))
-	return v
-}
-
 // Domain gets the field inside the struct.
 func (p *PixbufFormat) Domain() string {
 	var v string
@@ -158,26 +120,6 @@ func (p *PixbufFormat) Disabled() bool {
 	return v
 }
 
-// Copy creates a copy of `format`.
-func (f *PixbufFormat) Copy() *PixbufFormat {
-	var _arg0 *C.GdkPixbufFormat
-
-	_arg0 = (*C.GdkPixbufFormat)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GdkPixbufFormat
-
-	cret = C.gdk_pixbuf_format_copy(_arg0)
-
-	var _pixbufFormat *PixbufFormat
-
-	_pixbufFormat = WrapPixbufFormat(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_pixbufFormat, func(v *PixbufFormat) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _pixbufFormat
-}
-
 // Free frees the resources allocated when copying a `GdkPixbufFormat` using
 // gdk_pixbuf_format_copy()
 func (f *PixbufFormat) Free() {
@@ -196,7 +138,7 @@ func (f *PixbufFormat) Description() string {
 
 	var _cret *C.gchar
 
-	cret = C.gdk_pixbuf_format_get_description(_arg0)
+	_cret = C.gdk_pixbuf_format_get_description(_arg0)
 
 	var _utf8 string
 
@@ -215,7 +157,7 @@ func (f *PixbufFormat) Extensions() []string {
 
 	var _cret **C.gchar
 
-	cret = C.gdk_pixbuf_format_get_extensions(_arg0)
+	_cret = C.gdk_pixbuf_format_get_extensions(_arg0)
 
 	var _utf8s []string
 
@@ -232,7 +174,7 @@ func (f *PixbufFormat) Extensions() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -253,7 +195,7 @@ func (f *PixbufFormat) License() string {
 
 	var _cret *C.gchar
 
-	cret = C.gdk_pixbuf_format_get_license(_arg0)
+	_cret = C.gdk_pixbuf_format_get_license(_arg0)
 
 	var _utf8 string
 
@@ -271,7 +213,7 @@ func (f *PixbufFormat) MIMETypes() []string {
 
 	var _cret **C.gchar
 
-	cret = C.gdk_pixbuf_format_get_mime_types(_arg0)
+	_cret = C.gdk_pixbuf_format_get_mime_types(_arg0)
 
 	var _utf8s []string
 
@@ -288,7 +230,7 @@ func (f *PixbufFormat) MIMETypes() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -305,7 +247,7 @@ func (f *PixbufFormat) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.gdk_pixbuf_format_get_name(_arg0)
+	_cret = C.gdk_pixbuf_format_get_name(_arg0)
 
 	var _utf8 string
 
@@ -325,7 +267,7 @@ func (f *PixbufFormat) IsDisabled() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_disabled(_arg0)
+	_cret = C.gdk_pixbuf_format_is_disabled(_arg0)
 
 	var _ok bool
 
@@ -351,7 +293,7 @@ func (f *PixbufFormat) IsSaveOptionSupported(optionKey string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)
+	_cret = C.gdk_pixbuf_format_is_save_option_supported(_arg0, _arg1)
 
 	var _ok bool
 
@@ -374,7 +316,7 @@ func (f *PixbufFormat) IsScalable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_scalable(_arg0)
+	_cret = C.gdk_pixbuf_format_is_scalable(_arg0)
 
 	var _ok bool
 
@@ -393,7 +335,7 @@ func (f *PixbufFormat) IsWritable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_format_is_writable(_arg0)
+	_cret = C.gdk_pixbuf_format_is_writable(_arg0)
 
 	var _ok bool
 

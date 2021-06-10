@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,8 +35,6 @@ func init() {
 type FilterOutputStream interface {
 	OutputStream
 
-	// BaseStream gets the base stream for the filter stream.
-	BaseStream() OutputStream
 	// CloseBaseStream returns whether the base stream will be closed when
 	// @stream is closed.
 	CloseBaseStream() bool
@@ -69,23 +64,6 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 	return WrapFilterOutputStream(obj), nil
 }
 
-// BaseStream gets the base stream for the filter stream.
-func (s filterOutputStream) BaseStream() OutputStream {
-	var _arg0 *C.GFilterOutputStream
-
-	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GOutputStream
-
-	cret = C.g_filter_output_stream_get_base_stream(_arg0)
-
-	var _outputStream OutputStream
-
-	_outputStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(OutputStream)
-
-	return _outputStream
-}
-
 // CloseBaseStream returns whether the base stream will be closed when
 // @stream is closed.
 func (s filterOutputStream) CloseBaseStream() bool {
@@ -95,7 +73,7 @@ func (s filterOutputStream) CloseBaseStream() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
+	_cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
 
 	var _ok bool
 

@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -85,42 +82,6 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 	return WrapBufferedOutputStream(obj), nil
 }
 
-// NewBufferedOutputStream constructs a class BufferedOutputStream.
-func NewBufferedOutputStream(baseStream OutputStream) BufferedOutputStream {
-	var _arg1 *C.GOutputStream
-
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-
-	var _cret C.GBufferedOutputStream
-
-	cret = C.g_buffered_output_stream_new(_arg1)
-
-	var _bufferedOutputStream BufferedOutputStream
-
-	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedOutputStream)
-
-	return _bufferedOutputStream
-}
-
-// NewBufferedOutputStreamSized constructs a class BufferedOutputStream.
-func NewBufferedOutputStreamSized(baseStream OutputStream, size uint) BufferedOutputStream {
-	var _arg1 *C.GOutputStream
-	var _arg2 C.gsize
-
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-	_arg2 = C.gsize(size)
-
-	var _cret C.GBufferedOutputStream
-
-	cret = C.g_buffered_output_stream_new_sized(_arg1, _arg2)
-
-	var _bufferedOutputStream BufferedOutputStream
-
-	_bufferedOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BufferedOutputStream)
-
-	return _bufferedOutputStream
-}
-
 // AutoGrow checks if the buffer automatically grows as data is added.
 func (s bufferedOutputStream) AutoGrow() bool {
 	var _arg0 *C.GBufferedOutputStream
@@ -129,7 +90,7 @@ func (s bufferedOutputStream) AutoGrow() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
+	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
 
 	var _ok bool
 
@@ -148,7 +109,7 @@ func (s bufferedOutputStream) BufferSize() uint {
 
 	var _cret C.gsize
 
-	cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
+	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
 
 	var _gsize uint
 

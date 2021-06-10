@@ -27,7 +27,7 @@ func IsZeroWidth(ch uint32) bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_is_zero_width(_arg1)
+	_cret = C.pango_is_zero_width(_arg1)
 
 	var _ok bool
 
@@ -60,7 +60,7 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 
 	var _cret *C.guint8
 
-	cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
+	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
 
 	var _guint8 *byte
 
@@ -93,7 +93,7 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	var _arg5 *C.char
 	var _cret C.gboolean
 
-	cret = C.pango_parse_enum(_arg1, _arg2, _arg4, &_arg3, &_arg5)
+	_cret = C.pango_parse_enum(_arg1, _arg2, _arg4, &_arg3, &_arg5)
 
 	var _value int
 	var _possibleValues string
@@ -107,147 +107,6 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 	}
 
 	return _value, _possibleValues, _ok
-}
-
-// ParseStretch parses a font stretch.
-//
-// The allowed values are "ultra_condensed", "extra_condensed", "condensed",
-// "semi_condensed", "normal", "semi_expanded", "expanded", "extra_expanded" and
-// "ultra_expanded". Case variations are ignored and the '_' characters may be
-// omitted.
-func ParseStretch(str string, warn bool) (Stretch, bool) {
-	var _arg1 *C.char
-	var _arg3 C.gboolean
-
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	if warn {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _arg2 C.PangoStretch
-	var _cret C.gboolean
-
-	cret = C.pango_parse_stretch(_arg1, _arg3, &_arg2)
-
-	var _stretch Stretch
-	var _ok bool
-
-	_stretch = Stretch(_arg2)
-	if _cret {
-		_ok = true
-	}
-
-	return _stretch, _ok
-}
-
-// ParseStyle parses a font style.
-//
-// The allowed values are "normal", "italic" and "oblique", case variations
-// being ignored.
-func ParseStyle(str string, warn bool) (Style, bool) {
-	var _arg1 *C.char
-	var _arg3 C.gboolean
-
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	if warn {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _arg2 C.PangoStyle
-	var _cret C.gboolean
-
-	cret = C.pango_parse_style(_arg1, _arg3, &_arg2)
-
-	var _style Style
-	var _ok bool
-
-	_style = Style(_arg2)
-	if _cret {
-		_ok = true
-	}
-
-	return _style, _ok
-}
-
-// ParseVariant parses a font variant.
-//
-// The allowed values are "normal" and "smallcaps" or "small_caps", case
-// variations being ignored.
-func ParseVariant(str string, warn bool) (Variant, bool) {
-	var _arg1 *C.char
-	var _arg3 C.gboolean
-
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	if warn {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _arg2 C.PangoVariant
-	var _cret C.gboolean
-
-	cret = C.pango_parse_variant(_arg1, _arg3, &_arg2)
-
-	var _variant Variant
-	var _ok bool
-
-	_variant = Variant(_arg2)
-	if _cret {
-		_ok = true
-	}
-
-	return _variant, _ok
-}
-
-// ParseWeight parses a font weight.
-//
-// The allowed values are "heavy", "ultrabold", "bold", "normal", "light",
-// "ultraleight" and integers. Case variations are ignored.
-func ParseWeight(str string, warn bool) (Weight, bool) {
-	var _arg1 *C.char
-	var _arg3 C.gboolean
-
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-	if warn {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _arg2 C.PangoWeight
-	var _cret C.gboolean
-
-	cret = C.pango_parse_weight(_arg1, _arg3, &_arg2)
-
-	var _weight Weight
-	var _ok bool
-
-	_weight = Weight(_arg2)
-	if _cret {
-		_ok = true
-	}
-
-	return _weight, _ok
-}
-
-// QuantizeLineGeometry quantizes the thickness and position of a line to whole
-// device pixels.
-//
-// This is typically used for underline or strikethrough. The purpose of this
-// function is to avoid such lines looking blurry.
-//
-// Care is taken to make sure @thickness is at least one pixel when this
-// function returns, but returned @position may become zero as a result of
-// rounding.
-func QuantizeLineGeometry(thickness *int, position *int) {
-	var _arg1 *C.int
-	var _arg2 *C.int
-
-	_arg1 = *C.int(thickness)
-	_arg2 = *C.int(position)
-
-	C.pango_quantize_line_geometry(_arg1, _arg2)
 }
 
 // ReadLine reads an entire line from a file into a buffer.
@@ -269,105 +128,13 @@ func ReadLine(stream *interface{}, str *glib.String) int {
 
 	var _cret C.gint
 
-	cret = C.pango_read_line(_arg1, _arg2)
+	_cret = C.pango_read_line(_arg1, _arg2)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// ScanInt scans an integer.
-//
-// Leading white space is skipped.
-func ScanInt(pos *string) (int, bool) {
-	var _arg1 **C.char
-
-	_arg1 = (**C.char)(C.CString(pos))
-
-	var _arg2 C.int
-	var _cret C.gboolean
-
-	cret = C.pango_scan_int(_arg1, &_arg2)
-
-	var _out int
-	var _ok bool
-
-	_out = (int)(_arg2)
-	if _cret {
-		_ok = true
-	}
-
-	return _out, _ok
-}
-
-// ScanString scans a string into a #GString buffer.
-//
-// The string may either be a sequence of non-white-space characters, or a
-// quoted string with '"'. Instead a quoted string, '\"' represents a literal
-// quote. Leading white space outside of quotes is skipped.
-func ScanString(pos *string, out *glib.String) bool {
-	var _arg1 **C.char
-	var _arg2 *C.GString
-
-	_arg1 = (**C.char)(C.CString(pos))
-	_arg2 = (*C.GString)(unsafe.Pointer(out.Native()))
-
-	var _cret C.gboolean
-
-	cret = C.pango_scan_string(_arg1, _arg2)
-
-	var _ok bool
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// ScanWord scans a word into a #GString buffer.
-//
-// A word consists of [A-Za-z_] followed by zero or more [A-Za-z_0-9]. Leading
-// white space is skipped.
-func ScanWord(pos *string, out *glib.String) bool {
-	var _arg1 **C.char
-	var _arg2 *C.GString
-
-	_arg1 = (**C.char)(C.CString(pos))
-	_arg2 = (*C.GString)(unsafe.Pointer(out.Native()))
-
-	var _cret C.gboolean
-
-	cret = C.pango_scan_word(_arg1, _arg2)
-
-	var _ok bool
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
-}
-
-// SkipSpace skips 0 or more characters of white space.
-func SkipSpace(pos *string) bool {
-	var _arg1 **C.char
-
-	_arg1 = (**C.char)(C.CString(pos))
-
-	var _cret C.gboolean
-
-	cret = C.pango_skip_space(_arg1)
-
-	var _ok bool
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,
@@ -380,7 +147,7 @@ func SplitFileList(str string) []string {
 
 	var _cret **C.char
 
-	cret = C.pango_split_file_list(_arg1)
+	_cret = C.pango_split_file_list(_arg1)
 
 	var _utf8s []string
 
@@ -397,7 +164,7 @@ func SplitFileList(str string) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -415,7 +182,7 @@ func TrimString(str string) string {
 
 	var _cret *C.char
 
-	cret = C.pango_trim_string(_arg1)
+	_cret = C.pango_trim_string(_arg1)
 
 	var _utf8 string
 
@@ -433,7 +200,7 @@ func TrimString(str string) string {
 func Version() int {
 	var _cret C.int
 
-	cret = C.pango_version()
+	_cret = C.pango_version()
 
 	var _gint int
 
@@ -469,7 +236,7 @@ func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) strin
 
 	var _cret *C.char
 
-	cret = C.pango_version_check(_arg1, _arg2, _arg3)
+	_cret = C.pango_version_check(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -485,7 +252,7 @@ func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) strin
 func VersionString() string {
 	var _cret *C.char
 
-	cret = C.pango_version_string()
+	_cret = C.pango_version_string()
 
 	var _utf8 string
 

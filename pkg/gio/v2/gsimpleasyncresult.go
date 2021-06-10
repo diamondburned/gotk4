@@ -3,6 +3,9 @@
 package gio
 
 import (
+	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -27,6 +30,43 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.g_simple_async_result_get_type()), F: marshalSimpleAsyncResult},
 	})
+}
+
+// SimpleAsyncReportGerrorInIdle reports an error in an idle function. Similar
+// to g_simple_async_report_error_in_idle(), but takes a #GError rather than
+// building a new one.
+func SimpleAsyncReportGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, err *error) {
+	var _arg1 *C.GObject
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
+	var _arg4 *C.GError
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+	_arg4 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	defer C.g_error_free(_arg4)
+
+	C.g_simple_async_report_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
+}
+
+// SimpleAsyncReportTakeGerrorInIdle reports an error in an idle function.
+// Similar to g_simple_async_report_gerror_in_idle(), but takes over the
+// caller's ownership of @error, so the caller does not have to free it any
+// more.
+func SimpleAsyncReportTakeGerrorInIdle(object gextras.Objector, callback AsyncReadyCallback, err *error) {
+	var _arg1 *C.GObject
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
+	var _arg4 *C.GError
+
+	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
+	_arg4 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
+	defer C.g_error_free(_arg4)
+
+	C.g_simple_async_report_take_gerror_in_idle(_arg1, _arg2, _arg3, _arg4)
 }
 
 // SimpleAsyncResult as of GLib 2.46, AsyncResult is deprecated in favor of
@@ -322,7 +362,7 @@ func (s simpleAsyncResult) OpResGboolean() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
+	_cret = C.g_simple_async_result_get_op_res_gboolean(_arg0)
 
 	var _ok bool
 
@@ -342,7 +382,7 @@ func (s simpleAsyncResult) OpResGpointer() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_simple_async_result_get_op_res_gpointer(_arg0)
+	_cret = C.g_simple_async_result_get_op_res_gpointer(_arg0)
 
 	var _gpointer interface{}
 
@@ -359,7 +399,7 @@ func (s simpleAsyncResult) OpResGssize() int {
 
 	var _cret C.gssize
 
-	cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
+	_cret = C.g_simple_async_result_get_op_res_gssize(_arg0)
 
 	var _gssize int
 
@@ -376,7 +416,7 @@ func (s simpleAsyncResult) SourceTag() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_simple_async_result_get_source_tag(_arg0)
+	_cret = C.g_simple_async_result_get_source_tag(_arg0)
 
 	var _gpointer interface{}
 

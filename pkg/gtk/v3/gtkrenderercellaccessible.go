@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,21 +43,4 @@ func marshalRendererCellAccessible(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRendererCellAccessible(obj), nil
-}
-
-// NewRendererCellAccessible constructs a class RendererCellAccessible.
-func NewRendererCellAccessible(renderer CellRenderer) RendererCellAccessible {
-	var _arg1 *C.GtkCellRenderer
-
-	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
-
-	var _cret C.GtkRendererCellAccessible
-
-	cret = C.gtk_renderer_cell_accessible_new(_arg1)
-
-	var _rendererCellAccessible RendererCellAccessible
-
-	_rendererCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RendererCellAccessible)
-
-	return _rendererCellAccessible
 }

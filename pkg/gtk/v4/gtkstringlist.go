@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -112,34 +111,6 @@ func marshalStringList(p uintptr) (interface{}, error) {
 	return WrapStringList(obj), nil
 }
 
-// NewStringList constructs a class StringList.
-func NewStringList(strings []string) StringList {
-	var _arg1 **C.char
-
-	_arg1 = (**C.char)(C.malloc((len(strings) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	{
-		var out []*C.char
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(strings)))
-
-		for i := range strings {
-			_arg1 = (*C.char)(C.CString(strings))
-			defer C.free(unsafe.Pointer(_arg1))
-		}
-	}
-
-	var _cret C.GtkStringList
-
-	cret = C.gtk_string_list_new(_arg1)
-
-	var _stringList StringList
-
-	_stringList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringList)
-
-	return _stringList
-}
-
 // Append appends @string to @self.
 //
 // The @string will be copied. See [method@Gtk.StringList.take] for a way to
@@ -170,7 +141,7 @@ func (s stringList) String(position uint) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_string_list_get_string(_arg0, _arg1)
+	_cret = C.gtk_string_list_get_string(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -277,24 +248,6 @@ func marshalStringObject(p uintptr) (interface{}, error) {
 	return WrapStringObject(obj), nil
 }
 
-// NewStringObject constructs a class StringObject.
-func NewStringObject(string string) StringObject {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkStringObject
-
-	cret = C.gtk_string_object_new(_arg1)
-
-	var _stringObject StringObject
-
-	_stringObject = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringObject)
-
-	return _stringObject
-}
-
 // String returns the string contained in a `GtkStringObject`.
 func (s stringObject) String() string {
 	var _arg0 *C.GtkStringObject
@@ -303,7 +256,7 @@ func (s stringObject) String() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_string_object_get_string(_arg0)
+	_cret = C.gtk_string_object_get_string(_arg0)
 
 	var _utf8 string
 

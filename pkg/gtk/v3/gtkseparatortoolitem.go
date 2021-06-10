@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -76,19 +73,6 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 	return WrapSeparatorToolItem(obj), nil
 }
 
-// NewSeparatorToolItem constructs a class SeparatorToolItem.
-func NewSeparatorToolItem() SeparatorToolItem {
-	var _cret C.GtkSeparatorToolItem
-
-	cret = C.gtk_separator_tool_item_new()
-
-	var _separatorToolItem SeparatorToolItem
-
-	_separatorToolItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SeparatorToolItem)
-
-	return _separatorToolItem
-}
-
 // Draw returns whether @item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
 func (i separatorToolItem) Draw() bool {
@@ -98,7 +82,7 @@ func (i separatorToolItem) Draw() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_separator_tool_item_get_draw(_arg0)
+	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
 
 	var _ok bool
 

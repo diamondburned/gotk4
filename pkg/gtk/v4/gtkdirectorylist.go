@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -61,8 +60,6 @@ type DirectoryList interface {
 	// An error being set does not mean that no files were loaded, and all
 	// successfully queried files will remain in the list.
 	Error() *error
-	// File gets the file whose children are currently enumerated.
-	File() gio.File
 	// IOPriority gets the IO priority set via
 	// gtk_directory_list_set_io_priority().
 	IOPriority() int
@@ -128,26 +125,6 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 	return WrapDirectoryList(obj), nil
 }
 
-// NewDirectoryList constructs a class DirectoryList.
-func NewDirectoryList(attributes string, file gio.File) DirectoryList {
-	var _arg1 *C.char
-	var _arg2 *C.GFile
-
-	_arg1 = (*C.char)(C.CString(attributes))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkDirectoryList
-
-	cret = C.gtk_directory_list_new(_arg1, _arg2)
-
-	var _directoryList DirectoryList
-
-	_directoryList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DirectoryList)
-
-	return _directoryList
-}
-
 // Attributes gets the attributes queried on the children.
 func (s directoryList) Attributes() string {
 	var _arg0 *C.GtkDirectoryList
@@ -156,7 +133,7 @@ func (s directoryList) Attributes() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_directory_list_get_attributes(_arg0)
+	_cret = C.gtk_directory_list_get_attributes(_arg0)
 
 	var _utf8 string
 
@@ -180,30 +157,13 @@ func (s directoryList) Error() *error {
 
 	var _cret *C.GError
 
-	cret = C.gtk_directory_list_get_error(_arg0)
+	_cret = C.gtk_directory_list_get_error(_arg0)
 
 	var _err *error
 
 	_err = gerror.Take(unsafe.Pointer(_cret))
 
 	return _err
-}
-
-// File gets the file whose children are currently enumerated.
-func (s directoryList) File() gio.File {
-	var _arg0 *C.GtkDirectoryList
-
-	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_directory_list_get_file(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
 }
 
 // IOPriority gets the IO priority set via
@@ -215,7 +175,7 @@ func (s directoryList) IOPriority() int {
 
 	var _cret C.int
 
-	cret = C.gtk_directory_list_get_io_priority(_arg0)
+	_cret = C.gtk_directory_list_get_io_priority(_arg0)
 
 	var _gint int
 
@@ -233,7 +193,7 @@ func (s directoryList) Monitored() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_directory_list_get_monitored(_arg0)
+	_cret = C.gtk_directory_list_get_monitored(_arg0)
 
 	var _ok bool
 
@@ -256,7 +216,7 @@ func (s directoryList) IsLoading() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_directory_list_is_loading(_arg0)
+	_cret = C.gtk_directory_list_is_loading(_arg0)
 
 	var _ok bool
 

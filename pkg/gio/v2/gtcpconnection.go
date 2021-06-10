@@ -79,7 +79,7 @@ func (c tcpConnection) GracefulDisconnect() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
+	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
 
 	var _ok bool
 

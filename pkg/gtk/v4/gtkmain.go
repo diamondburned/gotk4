@@ -2,10 +2,6 @@
 
 package gtk
 
-import (
-	"github.com/diamondburned/gotk4/pkg/pango"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
@@ -21,55 +17,6 @@ import "C"
 // Most programs should not need to call this function.
 func DisableSetlocale() {
 	C.gtk_disable_setlocale()
-}
-
-// GetDefaultLanguage returns the Language for the default language currently in
-// effect. (Note that this can change over the life of an application.) The
-// default language is derived from the current locale. It determines, for
-// example, whether GTK uses the right-to-left or left-to-right text direction.
-//
-// This function is equivalent to pango_language_get_default(). See that
-// function for details.
-func GetDefaultLanguage() *pango.Language {
-	var _cret *C.PangoLanguage
-
-	cret = C.gtk_get_default_language()
-
-	var _language *pango.Language
-
-	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
-
-	return _language
-}
-
-// GetLocaleDirection: get the direction of the current locale. This is the
-// expected reading direction for text and UI.
-//
-// This function depends on the current locale being set with setlocale() and
-// will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
-// GTK_TEXT_DIR_NONE will never be returned.
-//
-// GTK sets the default text direction according to the locale during
-// gtk_init(), and you should normally use gtk_widget_get_direction() or
-// gtk_widget_get_default_direction() to obtain the current direction.
-//
-// This function is only needed rare cases when the locale is changed after GTK
-// has already been initialized. In this case, you can use it to update the
-// default text direction as follows:
-//
-//    setlocale (LC_ALL, new_locale);
-//    direction = gtk_get_locale_direction ();
-//    gtk_widget_set_default_direction (direction);
-func GetLocaleDirection() TextDirection {
-	var _cret C.GtkTextDirection
-
-	cret = C.gtk_get_locale_direction()
-
-	var _textDirection TextDirection
-
-	_textDirection = TextDirection(_cret)
-
-	return _textDirection
 }
 
 // Init: call this function before using any other GTK functions in your GUI
@@ -101,7 +48,7 @@ func Init() {
 func InitCheck() bool {
 	var _cret C.gboolean
 
-	cret = C.gtk_init_check()
+	_cret = C.gtk_init_check()
 
 	var _ok bool
 
@@ -117,7 +64,7 @@ func InitCheck() bool {
 func IsInitialized() bool {
 	var _cret C.gboolean
 
-	cret = C.gtk_is_initialized()
+	_cret = C.gtk_is_initialized()
 
 	var _ok bool
 

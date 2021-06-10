@@ -3,9 +3,6 @@
 package pangoft2
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -23,47 +20,6 @@ func init() {
 	})
 }
 
-// FontGetCoverage gets the Coverage for a `PangoFT2Font`. Use
-// pango_font_get_coverage() instead.
-func FontGetCoverage(font pango.Font, language *pango.Language) pango.Coverage {
-	var _arg1 *C.PangoFont
-	var _arg2 *C.PangoLanguage
-
-	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
-	_arg2 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
-
-	var _cret *C.PangoCoverage
-
-	cret = C.pango_ft2_font_get_coverage(_arg1, _arg2)
-
-	var _coverage pango.Coverage
-
-	_coverage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Coverage)
-
-	return _coverage
-}
-
-// GetContext retrieves a `PangoContext` for the default PangoFT2 fontmap (see
-// pango_ft2_font_map_for_display()) and sets the resolution for the default
-// fontmap to @dpi_x by @dpi_y.
-func GetContext(dpiX float64, dpiY float64) pango.Context {
-	var _arg1 C.double
-	var _arg2 C.double
-
-	_arg1 = C.double(dpiX)
-	_arg2 = C.double(dpiY)
-
-	var _cret *C.PangoContext
-
-	cret = C.pango_ft2_get_context(_arg1, _arg2)
-
-	var _context pango.Context
-
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
-
-	return _context
-}
-
 // ShutdownDisplay: free the global fontmap. (See
 // pango_ft2_font_map_for_display()) Use of the global PangoFT2 fontmap is
 // deprecated.
@@ -76,15 +32,6 @@ func ShutdownDisplay() {
 type FontMap interface {
 	pangofc.FontMap
 
-	// CreateContext: create a `PangoContext` for the given fontmap.
-	CreateContext() pango.Context
-	// SetDefaultSubstitute sets a function that will be called to do final
-	// configuration substitution on a `FcPattern` before it is used to load the
-	// font.
-	//
-	// This function can be used to do things like set hinting and antialiasing
-	// options.
-	SetDefaultSubstitute()
 	// SetResolution sets the horizontal and vertical resolutions for the
 	// fontmap.
 	SetResolution(dpiX float64, dpiY float64)
@@ -116,50 +63,6 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontMap(obj), nil
-}
-
-// NewFontMap constructs a class FontMap.
-func NewFontMap() FontMap {
-	var _cret C.PangoFT2FontMap
-
-	cret = C.pango_ft2_font_map_new()
-
-	var _fontMap FontMap
-
-	_fontMap = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FontMap)
-
-	return _fontMap
-}
-
-// CreateContext: create a `PangoContext` for the given fontmap.
-func (f fontMap) CreateContext() pango.Context {
-	var _arg0 *C.PangoFT2FontMap
-
-	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.PangoContext
-
-	cret = C.pango_ft2_font_map_create_context(_arg0)
-
-	var _context pango.Context
-
-	_context = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
-
-	return _context
-}
-
-// SetDefaultSubstitute sets a function that will be called to do final
-// configuration substitution on a `FcPattern` before it is used to load the
-// font.
-//
-// This function can be used to do things like set hinting and antialiasing
-// options.
-func (f fontMap) SetDefaultSubstitute() {
-	var _arg0 *C.PangoFT2FontMap
-
-	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
-
-	C.pango_ft2_font_map_set_default_substitute(_arg0)
 }
 
 // SetResolution sets the horizontal and vertical resolutions for the

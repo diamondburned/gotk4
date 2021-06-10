@@ -38,7 +38,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 
 	var _cret *C.char
 
-	cret = C.gtk_check_version(_arg1, _arg2, _arg3)
+	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -53,7 +53,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 func GetBinaryAge() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_binary_age()
+	_cret = C.gtk_get_binary_age()
 
 	var _guint uint
 
@@ -68,7 +68,7 @@ func GetBinaryAge() uint {
 func GetInterfaceAge() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_interface_age()
+	_cret = C.gtk_get_interface_age()
 
 	var _guint uint
 
@@ -88,7 +88,7 @@ func GetInterfaceAge() uint {
 func GetMajorVersion() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_major_version()
+	_cret = C.gtk_get_major_version()
 
 	var _guint uint
 
@@ -108,7 +108,7 @@ func GetMajorVersion() uint {
 func GetMicroVersion() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_micro_version()
+	_cret = C.gtk_get_micro_version()
 
 	var _guint uint
 
@@ -128,7 +128,7 @@ func GetMicroVersion() uint {
 func GetMinorVersion() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_minor_version()
+	_cret = C.gtk_get_minor_version()
 
 	var _guint uint
 

@@ -3,11 +3,8 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,13 +60,6 @@ func (a *Analysis) LangEngine() interface{} {
 	return v
 }
 
-// Font gets the field inside the struct.
-func (a *Analysis) Font() Font {
-	var v Font
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(a.native.font.Native()))).(Font)
-	return v
-}
-
 // Level gets the field inside the struct.
 func (a *Analysis) Level() byte {
 	var v byte
@@ -98,20 +88,6 @@ func (a *Analysis) Script() byte {
 	return v
 }
 
-// Language gets the field inside the struct.
-func (a *Analysis) Language() *Language {
-	var v *Language
-	v = WrapLanguage(unsafe.Pointer(a.native.language))
-	return v
-}
-
-// ExtraAttrs gets the field inside the struct.
-func (a *Analysis) ExtraAttrs() *glib.SList {
-	var v *glib.SList
-	v = glib.WrapSList(unsafe.Pointer(a.native.extra_attrs))
-	return v
-}
-
 // Item: the `PangoItem` structure stores information about a segment of text.
 //
 // You typically obtain `PangoItems` by itemizing a piece of text with
@@ -133,22 +109,6 @@ func WrapItem(ptr unsafe.Pointer) *Item {
 func marshalItem(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapItem(unsafe.Pointer(b)), nil
-}
-
-// NewItem constructs a struct Item.
-func NewItem() *Item {
-	var _cret *C.PangoItem
-
-	cret = C.pango_item_new()
-
-	var _item *Item
-
-	_item = WrapItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_item, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _item
 }
 
 // Native returns the underlying C source pointer.
@@ -177,13 +137,6 @@ func (i *Item) NumChars() int {
 	return v
 }
 
-// Analysis gets the field inside the struct.
-func (i *Item) Analysis() Analysis {
-	var v Analysis
-	v = *WrapAnalysis(unsafe.Pointer(&i.native.analysis))
-	return v
-}
-
 // ApplyAttrs: add attributes to a `PangoItem`.
 //
 // The idea is that you have attributes that don't affect itemization, such as
@@ -204,26 +157,6 @@ func (i *Item) ApplyAttrs(iter *AttrIterator) {
 	C.pango_item_apply_attrs(_arg0, _arg1)
 }
 
-// Copy: copy an existing `PangoItem` structure.
-func (i *Item) Copy() *Item {
-	var _arg0 *C.PangoItem
-
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.PangoItem
-
-	cret = C.pango_item_copy(_arg0)
-
-	var _ret *Item
-
-	_ret = WrapItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _ret
-}
-
 // Free: free a `PangoItem` and all associated memory.
 func (i *Item) Free() {
 	var _arg0 *C.PangoItem
@@ -231,37 +164,4 @@ func (i *Item) Free() {
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 
 	C.pango_item_free(_arg0)
-}
-
-// Split modifies @orig to cover only the text after @split_index, and returns a
-// new item that covers the text before @split_index that used to be in @orig.
-//
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item). @split_offset is the length of
-// the first item in chars, and must be provided because the text used to
-// generate the item isn't available, so `pango_item_split()` can't count the
-// char length of the split items itself.
-func (o *Item) Split(splitIndex int, splitOffset int) *Item {
-	var _arg0 *C.PangoItem
-	var _arg1 C.int
-	var _arg2 C.int
-
-	_arg0 = (*C.PangoItem)(unsafe.Pointer(o.Native()))
-	_arg1 = C.int(splitIndex)
-	_arg2 = C.int(splitOffset)
-
-	var _cret *C.PangoItem
-
-	cret = C.pango_item_split(_arg0, _arg1, _arg2)
-
-	var _item *Item
-
-	_item = WrapItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_item, func(v *Item) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _item
 }

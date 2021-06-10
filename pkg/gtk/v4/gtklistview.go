@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -113,10 +110,6 @@ type ListView interface {
 	// EnableRubberband returns whether rows can be selected by dragging with
 	// the mouse.
 	EnableRubberband() bool
-	// Factory gets the factory that's currently used to populate list items.
-	Factory() ListItemFactory
-	// Model gets the model that's currently used to read the items displayed.
-	Model() SelectionModel
 	// ShowSeparators returns whether the list box should show separators
 	// between rows.
 	ShowSeparators() bool
@@ -172,25 +165,6 @@ func marshalListView(p uintptr) (interface{}, error) {
 	return WrapListView(obj), nil
 }
 
-// NewListView constructs a class ListView.
-func NewListView(model SelectionModel, factory ListItemFactory) ListView {
-	var _arg1 *C.GtkSelectionModel
-	var _arg2 *C.GtkListItemFactory
-
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
-
-	var _cret C.GtkListView
-
-	cret = C.gtk_list_view_new(_arg1, _arg2)
-
-	var _listView ListView
-
-	_listView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListView)
-
-	return _listView
-}
-
 // EnableRubberband returns whether rows can be selected by dragging with
 // the mouse.
 func (s listView) EnableRubberband() bool {
@@ -200,7 +174,7 @@ func (s listView) EnableRubberband() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_view_get_enable_rubberband(_arg0)
+	_cret = C.gtk_list_view_get_enable_rubberband(_arg0)
 
 	var _ok bool
 
@@ -209,40 +183,6 @@ func (s listView) EnableRubberband() bool {
 	}
 
 	return _ok
-}
-
-// Factory gets the factory that's currently used to populate list items.
-func (s listView) Factory() ListItemFactory {
-	var _arg0 *C.GtkListView
-
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkListItemFactory
-
-	cret = C.gtk_list_view_get_factory(_arg0)
-
-	var _listItemFactory ListItemFactory
-
-	_listItemFactory = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListItemFactory)
-
-	return _listItemFactory
-}
-
-// Model gets the model that's currently used to read the items displayed.
-func (s listView) Model() SelectionModel {
-	var _arg0 *C.GtkListView
-
-	_arg0 = (*C.GtkListView)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel
-
-	cret = C.gtk_list_view_get_model(_arg0)
-
-	var _selectionModel SelectionModel
-
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
-
-	return _selectionModel
 }
 
 // ShowSeparators returns whether the list box should show separators
@@ -254,7 +194,7 @@ func (s listView) ShowSeparators() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_view_get_show_separators(_arg0)
+	_cret = C.gtk_list_view_get_show_separators(_arg0)
 
 	var _ok bool
 
@@ -274,7 +214,7 @@ func (s listView) SingleClickActivate() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_view_get_single_click_activate(_arg0)
+	_cret = C.gtk_list_view_get_single_click_activate(_arg0)
 
 	var _ok bool
 

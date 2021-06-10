@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -69,9 +66,6 @@ type Fixed interface {
 	//
 	// See also: [method@Gtk.Fixed.get_child_transform].
 	ChildPosition(widget Widget) (x float64, y float64)
-	// ChildTransform retrieves the transformation for @widget set using
-	// gtk_fixed_set_child_transform().
-	ChildTransform(widget Widget) *gsk.Transform
 	// Move sets a translation transformation to the given @x and @y coordinates
 	// to the child @widget of the `GtkFixed`.
 	Move(widget Widget, x float64, y float64)
@@ -114,19 +108,6 @@ func marshalFixed(p uintptr) (interface{}, error) {
 	return WrapFixed(obj), nil
 }
 
-// NewFixed constructs a class Fixed.
-func NewFixed() Fixed {
-	var _cret C.GtkFixed
-
-	cret = C.gtk_fixed_new()
-
-	var _fixed Fixed
-
-	_fixed = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Fixed)
-
-	return _fixed
-}
-
 // ChildPosition retrieves the translation transformation of the given child
 // `GtkWidget` in the `GtkFixed`.
 //
@@ -150,26 +131,6 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 	_y = (float64)(_arg3)
 
 	return _x, _y
-}
-
-// ChildTransform retrieves the transformation for @widget set using
-// gtk_fixed_set_child_transform().
-func (f fixed) ChildTransform(widget Widget) *gsk.Transform {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret *C.GskTransform
-
-	cret = C.gtk_fixed_get_child_transform(_arg0, _arg1)
-
-	var _transform *gsk.Transform
-
-	_transform = gsk.WrapTransform(unsafe.Pointer(_cret))
-
-	return _transform
 }
 
 // Move sets a translation transformation to the given @x and @y coordinates

@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -20,24 +16,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_drawing_area_get_type()), F: marshalDrawingArea},
 	})
-}
-
-// DrawingAreaDrawFunc: whenever @drawing_area needs to redraw, this function
-// will be called.
-//
-// This function should exclusively redraw the contents of the drawing area and
-// must not call any widget functions that cause changes.
-type DrawingAreaDrawFunc func()
-
-//export gotk4_DrawingAreaDrawFunc
-func gotk4_DrawingAreaDrawFunc(arg0 *C.GtkDrawingArea, arg1 *C.cairo_t, arg2 C.int, arg3 C.int, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(DrawingAreaDrawFunc)
-	fn()
 }
 
 // DrawingArea: `GtkDrawingArea` is a widget that allows drawing with cairo.
@@ -139,22 +117,6 @@ type DrawingArea interface {
 	//
 	// If the width is set to 0 (the default), the drawing area may disappear.
 	SetContentWidth(width int)
-	// SetDrawFunc: setting a draw function is the main thing you want to do
-	// when using a drawing area.
-	//
-	// The draw function is called whenever GTK needs to draw the contents of
-	// the drawing area to the screen.
-	//
-	// The draw function will be called during the drawing stage of GTK. In the
-	// drawing stage it is not allowed to change properties of any GTK widgets
-	// or call any functions that would cause any properties to be changed. You
-	// should restrict yourself exclusively to drawing your contents in the draw
-	// function.
-	//
-	// If what you are drawing does change, call [method@Gtk.Widget.queue_draw]
-	// on the drawing area. This will cause a redraw and will call @draw_func
-	// again.
-	SetDrawFunc()
 }
 
 // drawingArea implements the DrawingArea interface.
@@ -184,19 +146,6 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 	return WrapDrawingArea(obj), nil
 }
 
-// NewDrawingArea constructs a class DrawingArea.
-func NewDrawingArea() DrawingArea {
-	var _cret C.GtkDrawingArea
-
-	cret = C.gtk_drawing_area_new()
-
-	var _drawingArea DrawingArea
-
-	_drawingArea = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DrawingArea)
-
-	return _drawingArea
-}
-
 // ContentHeight retrieves the content height of the `GtkDrawingArea`.
 func (s drawingArea) ContentHeight() int {
 	var _arg0 *C.GtkDrawingArea
@@ -205,7 +154,7 @@ func (s drawingArea) ContentHeight() int {
 
 	var _cret C.int
 
-	cret = C.gtk_drawing_area_get_content_height(_arg0)
+	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 
 	var _gint int
 
@@ -222,7 +171,7 @@ func (s drawingArea) ContentWidth() int {
 
 	var _cret C.int
 
-	cret = C.gtk_drawing_area_get_content_width(_arg0)
+	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 
 	var _gint int
 
@@ -267,27 +216,4 @@ func (s drawingArea) SetContentWidth(width int) {
 	_arg1 = C.int(width)
 
 	C.gtk_drawing_area_set_content_width(_arg0, _arg1)
-}
-
-// SetDrawFunc: setting a draw function is the main thing you want to do
-// when using a drawing area.
-//
-// The draw function is called whenever GTK needs to draw the contents of
-// the drawing area to the screen.
-//
-// The draw function will be called during the drawing stage of GTK. In the
-// drawing stage it is not allowed to change properties of any GTK widgets
-// or call any functions that would cause any properties to be changed. You
-// should restrict yourself exclusively to drawing your contents in the draw
-// function.
-//
-// If what you are drawing does change, call [method@Gtk.Widget.queue_draw]
-// on the drawing area. This will cause a redraw and will call @draw_func
-// again.
-func (s drawingArea) SetDrawFunc() {
-	var _arg0 *C.GtkDrawingArea
-
-	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
-
-	C.gtk_drawing_area_set_draw_func(_arg0)
 }

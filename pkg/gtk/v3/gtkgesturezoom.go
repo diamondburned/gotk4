@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,23 +53,6 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 	return WrapGestureZoom(obj), nil
 }
 
-// NewGestureZoom constructs a class GestureZoom.
-func NewGestureZoom(widget Widget) GestureZoom {
-	var _arg1 *C.GtkWidget
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureZoom
-
-	cret = C.gtk_gesture_zoom_new(_arg1)
-
-	var _gestureZoom GestureZoom
-
-	_gestureZoom = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureZoom)
-
-	return _gestureZoom
-}
-
 // ScaleDelta: if @gesture is active, this function returns the zooming
 // difference since the gesture was recognized (hence the starting point is
 // considered 1:1). If @gesture is not active, 1 is returned.
@@ -83,7 +63,7 @@ func (g gestureZoom) ScaleDelta() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
+	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 
 	var _gdouble float64
 

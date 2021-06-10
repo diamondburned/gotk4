@@ -3,12 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,7 +32,7 @@ func init() {
 // created by the GtkListBoxCreateWidgetFunc, but this forced all widgets inside
 // the row to be shown, and is no longer the case. Applications should be
 // updated to show the desired row widgets.
-type ListBoxCreateWidgetFunc func() (widget Widget)
+type ListBoxCreateWidgetFunc func(item gextras.Objector) (widget Widget)
 
 //export gotk4_ListBoxCreateWidgetFunc
 func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidget {
@@ -43,77 +41,16 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 		panic(`callback not found`)
 	}
 
+	var item gextras.Objector
+
+	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
+
 	fn := v.(ListBoxCreateWidgetFunc)
-	widget := fn()
+	widget := fn(item)
 
 	cret = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-}
 
-// ListBoxFilterFunc: will be called whenever the row changes or is added and
-// lets you control if the row should be visible or not.
-type ListBoxFilterFunc func() (ok bool)
-
-//export gotk4_ListBoxFilterFunc
-func gotk4_ListBoxFilterFunc(arg0 *C.GtkListBoxRow, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(ListBoxFilterFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}
-
-// ListBoxForeachFunc: a function used by gtk_list_box_selected_foreach(). It
-// will be called on every selected child of the @box.
-type ListBoxForeachFunc func()
-
-//export gotk4_ListBoxForeachFunc
-func gotk4_ListBoxForeachFunc(arg0 *C.GtkListBox, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(ListBoxForeachFunc)
-	fn()
-}
-
-// ListBoxSortFunc: compare two rows to determine which should be first.
-type ListBoxSortFunc func() (gint int)
-
-//export gotk4_ListBoxSortFunc
-func gotk4_ListBoxSortFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) C.gint {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(ListBoxSortFunc)
-	gint := fn()
-
-	cret = C.gint(gint)
-}
-
-// ListBoxUpdateHeaderFunc: whenever @row changes or which row is before @row
-// changes this is called, which lets you update the header on @row. You may
-// remove or set a new one via gtk_list_box_row_set_header() or just change the
-// state of the current header widget.
-type ListBoxUpdateHeaderFunc func()
-
-//export gotk4_ListBoxUpdateHeaderFunc
-func gotk4_ListBoxUpdateHeaderFunc(arg0 *C.GtkListBoxRow, arg1 *C.GtkListBoxRow, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(ListBoxUpdateHeaderFunc)
-	fn()
+	return widget
 }
 
 // ListBox: a GtkListBox is a vertical container that contains GtkListBoxRow
@@ -155,22 +92,6 @@ type ListBox interface {
 	Container
 	Buildable
 
-	// BindModel binds @model to @box.
-	//
-	// If @box was already bound to a model, that previous binding is destroyed.
-	//
-	// The contents of @box are cleared and then filled with widgets that
-	// represent items from @model. @box is updated whenever @model changes. If
-	// @model is nil, @box is left empty.
-	//
-	// It is undefined to add or remove widgets directly (for example, with
-	// gtk_list_box_insert() or gtk_container_add()) while @box is bound to a
-	// model.
-	//
-	// Note that using a model is incompatible with the filtering and sorting
-	// functionality in GtkListBox. When using a model, filtering and sorting
-	// should be implemented by the model.
-	BindModel()
 	// DragHighlightRow: this is a helper function for implementing DnD onto a
 	// ListBox. The passed in @row will be highlighted via gtk_drag_highlight(),
 	// and any previously highlighted row will be unhighlighted.
@@ -183,24 +104,6 @@ type ListBox interface {
 	DragUnhighlightRow()
 	// ActivateOnSingleClick returns whether rows activate on single clicks.
 	ActivateOnSingleClick() bool
-	// Adjustment gets the adjustment (if any) that the widget uses to for
-	// vertical scrolling.
-	Adjustment() Adjustment
-	// RowAtIndex gets the n-th child in the list (not counting headers). If
-	// @_index is negative or larger than the number of items in the list, nil
-	// is returned.
-	RowAtIndex(index_ int) ListBoxRow
-	// RowAtY gets the row at the @y position.
-	RowAtY(y int) ListBoxRow
-	// SelectedRow gets the selected row.
-	//
-	// Note that the box may allow multiple selection, in which case you should
-	// use gtk_list_box_selected_foreach() to find all selected rows.
-	SelectedRow() ListBoxRow
-	// SelectedRows creates a list of all selected children.
-	SelectedRows() *glib.List
-	// SelectionMode gets the selection mode of the listbox.
-	SelectionMode() SelectionMode
 	// Insert: insert the @child into the @box at @position. If a sort function
 	// is set, the widget will actually be inserted at the calculated position
 	// and this function has the same effect of gtk_container_add().
@@ -232,7 +135,7 @@ type ListBox interface {
 	// SelectedForeach calls a function for each selected child.
 	//
 	// Note that the selection cannot be modified from within this function.
-	SelectedForeach()
+	SelectedForeach(fn ListBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, rows will be activated when
 	// you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -244,59 +147,12 @@ type ListBox interface {
 	// adjustment from that will be picked up automatically, so there is no need
 	// to manually do that.
 	SetAdjustment(adjustment Adjustment)
-	// SetFilterFunc: by setting a filter function on the @box one can decide
-	// dynamically which of the rows to show. For instance, to implement a
-	// search function on a list that filters the original list to only show the
-	// matching rows.
-	//
-	// The @filter_func will be called for each row after the call, and it will
-	// continue to be called each time a row changes (via
-	// gtk_list_box_row_changed()) or when gtk_list_box_invalidate_filter() is
-	// called.
-	//
-	// Note that using a filter function is incompatible with using a model (see
-	// gtk_list_box_bind_model()).
-	SetFilterFunc()
-	// SetHeaderFunc: by setting a header function on the @box one can
-	// dynamically add headers in front of rows, depending on the contents of
-	// the row and its position in the list. For instance, one could use it to
-	// add headers in front of the first item of a new kind, in a list sorted by
-	// the kind.
-	//
-	// The @update_header can look at the current header widget using
-	// gtk_list_box_row_get_header() and either update the state of the widget
-	// as needed, or set a new one using gtk_list_box_row_set_header(). If no
-	// header is needed, set the header to nil.
-	//
-	// Note that you may get many calls @update_header to this for a particular
-	// row when e.g. changing things that don’t affect the header. In this case
-	// it is important for performance to not blindly replace an existing header
-	// with an identical one.
-	//
-	// The @update_header function will be called for each row after the call,
-	// and it will continue to be called each time a row changes (via
-	// gtk_list_box_row_changed()) and when the row before changes (either by
-	// gtk_list_box_row_changed() on the previous row, or when the previous row
-	// becomes a different row). It is also called for all rows when
-	// gtk_list_box_invalidate_headers() is called.
-	SetHeaderFunc()
 	// SetPlaceholder sets the placeholder widget that is shown in the list when
 	// it doesn't display any visible children.
 	SetPlaceholder(placeholder Widget)
 	// SetSelectionMode sets how selection works in the listbox. See
 	// SelectionMode for details.
 	SetSelectionMode(mode SelectionMode)
-	// SetSortFunc: by setting a sort function on the @box one can dynamically
-	// reorder the rows of the list, based on the contents of the rows.
-	//
-	// The @sort_func will be called for each row after the call, and will
-	// continue to be called each time a row changes (via
-	// gtk_list_box_row_changed()) and when gtk_list_box_invalidate_sort() is
-	// called.
-	//
-	// Note that using a sort function is incompatible with using a model (see
-	// gtk_list_box_bind_model()).
-	SetSortFunc()
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
 	UnselectAll()
@@ -326,42 +182,6 @@ func marshalListBox(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapListBox(obj), nil
-}
-
-// NewListBox constructs a class ListBox.
-func NewListBox() ListBox {
-	var _cret C.GtkListBox
-
-	cret = C.gtk_list_box_new()
-
-	var _listBox ListBox
-
-	_listBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBox)
-
-	return _listBox
-}
-
-// BindModel binds @model to @box.
-//
-// If @box was already bound to a model, that previous binding is destroyed.
-//
-// The contents of @box are cleared and then filled with widgets that
-// represent items from @model. @box is updated whenever @model changes. If
-// @model is nil, @box is left empty.
-//
-// It is undefined to add or remove widgets directly (for example, with
-// gtk_list_box_insert() or gtk_container_add()) while @box is bound to a
-// model.
-//
-// Note that using a model is incompatible with the filtering and sorting
-// functionality in GtkListBox. When using a model, filtering and sorting
-// should be implemented by the model.
-func (b listBox) BindModel() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_bind_model(_arg0)
 }
 
 // DragHighlightRow: this is a helper function for implementing DnD onto a
@@ -398,7 +218,7 @@ func (b listBox) ActivateOnSingleClick() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
+	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
 
 	var _ok bool
 
@@ -407,121 +227,6 @@ func (b listBox) ActivateOnSingleClick() bool {
 	}
 
 	return _ok
-}
-
-// Adjustment gets the adjustment (if any) that the widget uses to for
-// vertical scrolling.
-func (b listBox) Adjustment() Adjustment {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_list_box_get_adjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
-// RowAtIndex gets the n-th child in the list (not counting headers). If
-// @_index is negative or larger than the number of items in the list, nil
-// is returned.
-func (b listBox) RowAtIndex(index_ int) ListBoxRow {
-	var _arg0 *C.GtkListBox
-	var _arg1 C.gint
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.gint(index_)
-
-	var _cret *C.GtkListBoxRow
-
-	cret = C.gtk_list_box_get_row_at_index(_arg0, _arg1)
-
-	var _listBoxRow ListBoxRow
-
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
-
-	return _listBoxRow
-}
-
-// RowAtY gets the row at the @y position.
-func (b listBox) RowAtY(y int) ListBoxRow {
-	var _arg0 *C.GtkListBox
-	var _arg1 C.gint
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.gint(y)
-
-	var _cret *C.GtkListBoxRow
-
-	cret = C.gtk_list_box_get_row_at_y(_arg0, _arg1)
-
-	var _listBoxRow ListBoxRow
-
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
-
-	return _listBoxRow
-}
-
-// SelectedRow gets the selected row.
-//
-// Note that the box may allow multiple selection, in which case you should
-// use gtk_list_box_selected_foreach() to find all selected rows.
-func (b listBox) SelectedRow() ListBoxRow {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkListBoxRow
-
-	cret = C.gtk_list_box_get_selected_row(_arg0)
-
-	var _listBoxRow ListBoxRow
-
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
-
-	return _listBoxRow
-}
-
-// SelectedRows creates a list of all selected children.
-func (b listBox) SelectedRows() *glib.List {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_list_box_get_selected_rows(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// SelectionMode gets the selection mode of the listbox.
-func (b listBox) SelectionMode() SelectionMode {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkSelectionMode
-
-	cret = C.gtk_list_box_get_selection_mode(_arg0)
-
-	var _selectionMode SelectionMode
-
-	_selectionMode = SelectionMode(_cret)
-
-	return _selectionMode
 }
 
 // Insert: insert the @child into the @box at @position. If a sort function
@@ -612,12 +317,16 @@ func (b listBox) SelectRow(row ListBoxRow) {
 // SelectedForeach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
-func (b listBox) SelectedForeach() {
+func (b listBox) SelectedForeach(fn ListBoxForeachFunc) {
 	var _arg0 *C.GtkListBox
+	var _arg1 C.GtkListBoxForeachFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_ListBoxForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_list_box_selected_foreach(_arg0)
+	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick: if @single is true, rows will be activated when
@@ -651,56 +360,6 @@ func (b listBox) SetAdjustment(adjustment Adjustment) {
 	C.gtk_list_box_set_adjustment(_arg0, _arg1)
 }
 
-// SetFilterFunc: by setting a filter function on the @box one can decide
-// dynamically which of the rows to show. For instance, to implement a
-// search function on a list that filters the original list to only show the
-// matching rows.
-//
-// The @filter_func will be called for each row after the call, and it will
-// continue to be called each time a row changes (via
-// gtk_list_box_row_changed()) or when gtk_list_box_invalidate_filter() is
-// called.
-//
-// Note that using a filter function is incompatible with using a model (see
-// gtk_list_box_bind_model()).
-func (b listBox) SetFilterFunc() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_set_filter_func(_arg0)
-}
-
-// SetHeaderFunc: by setting a header function on the @box one can
-// dynamically add headers in front of rows, depending on the contents of
-// the row and its position in the list. For instance, one could use it to
-// add headers in front of the first item of a new kind, in a list sorted by
-// the kind.
-//
-// The @update_header can look at the current header widget using
-// gtk_list_box_row_get_header() and either update the state of the widget
-// as needed, or set a new one using gtk_list_box_row_set_header(). If no
-// header is needed, set the header to nil.
-//
-// Note that you may get many calls @update_header to this for a particular
-// row when e.g. changing things that don’t affect the header. In this case
-// it is important for performance to not blindly replace an existing header
-// with an identical one.
-//
-// The @update_header function will be called for each row after the call,
-// and it will continue to be called each time a row changes (via
-// gtk_list_box_row_changed()) and when the row before changes (either by
-// gtk_list_box_row_changed() on the previous row, or when the previous row
-// becomes a different row). It is also called for all rows when
-// gtk_list_box_invalidate_headers() is called.
-func (b listBox) SetHeaderFunc() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_set_header_func(_arg0)
-}
-
 // SetPlaceholder sets the placeholder widget that is shown in the list when
 // it doesn't display any visible children.
 func (b listBox) SetPlaceholder(placeholder Widget) {
@@ -723,24 +382,6 @@ func (b listBox) SetSelectionMode(mode SelectionMode) {
 	_arg1 = (C.GtkSelectionMode)(mode)
 
 	C.gtk_list_box_set_selection_mode(_arg0, _arg1)
-}
-
-// SetSortFunc: by setting a sort function on the @box one can dynamically
-// reorder the rows of the list, based on the contents of the rows.
-//
-// The @sort_func will be called for each row after the call, and will
-// continue to be called each time a row changes (via
-// gtk_list_box_row_changed()) and when gtk_list_box_invalidate_sort() is
-// called.
-//
-// Note that using a sort function is incompatible with using a model (see
-// gtk_list_box_bind_model()).
-func (b listBox) SetSortFunc() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_set_sort_func(_arg0)
 }
 
 // UnselectAll: unselect all children of @box, if the selection mode allows
@@ -789,10 +430,6 @@ type ListBoxRow interface {
 	// Activatable gets the value of the ListBoxRow:activatable property for
 	// this row.
 	Activatable() bool
-	// Header returns the current header of the @row. This can be used in a
-	// ListBoxUpdateHeaderFunc to see if there is a header set already, and if
-	// so to update the state of it.
-	Header() Widget
 	// Index gets the current index of the @row in its ListBox container.
 	Index() int
 	// Selectable gets the value of the ListBoxRow:selectable property for this
@@ -836,19 +473,6 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 	return WrapListBoxRow(obj), nil
 }
 
-// NewListBoxRow constructs a class ListBoxRow.
-func NewListBoxRow() ListBoxRow {
-	var _cret C.GtkListBoxRow
-
-	cret = C.gtk_list_box_row_new()
-
-	var _listBoxRow ListBoxRow
-
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
-
-	return _listBoxRow
-}
-
 // Changed marks @row as changed, causing any state that depends on this to
 // be updated. This affects sorting, filtering and headers.
 //
@@ -881,7 +505,7 @@ func (r listBoxRow) Activatable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_box_row_get_activatable(_arg0)
+	_cret = C.gtk_list_box_row_get_activatable(_arg0)
 
 	var _ok bool
 
@@ -892,25 +516,6 @@ func (r listBoxRow) Activatable() bool {
 	return _ok
 }
 
-// Header returns the current header of the @row. This can be used in a
-// ListBoxUpdateHeaderFunc to see if there is a header set already, and if
-// so to update the state of it.
-func (r listBoxRow) Header() Widget {
-	var _arg0 *C.GtkListBoxRow
-
-	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_list_box_row_get_header(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Index gets the current index of the @row in its ListBox container.
 func (r listBoxRow) Index() int {
 	var _arg0 *C.GtkListBoxRow
@@ -919,7 +524,7 @@ func (r listBoxRow) Index() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_list_box_row_get_index(_arg0)
+	_cret = C.gtk_list_box_row_get_index(_arg0)
 
 	var _gint int
 
@@ -937,7 +542,7 @@ func (r listBoxRow) Selectable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_box_row_get_selectable(_arg0)
+	_cret = C.gtk_list_box_row_get_selectable(_arg0)
 
 	var _ok bool
 
@@ -957,7 +562,7 @@ func (r listBoxRow) IsSelected() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_box_row_is_selected(_arg0)
+	_cret = C.gtk_list_box_row_is_selected(_arg0)
 
 	var _ok bool
 

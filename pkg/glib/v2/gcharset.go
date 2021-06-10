@@ -35,7 +35,7 @@ func GetCharset() (string, bool) {
 	var _arg1 **C.char
 	var _cret C.gboolean
 
-	cret = C.g_get_charset(_arg1)
+	_cret = C.g_get_charset(_arg1)
 
 	var _charset string
 	var _ok bool
@@ -52,7 +52,7 @@ func GetCharset() (string, bool) {
 func GetCodeset() string {
 	var _cret *C.gchar
 
-	cret = C.g_get_codeset()
+	_cret = C.g_get_codeset()
 
 	var _utf8 string
 
@@ -82,7 +82,7 @@ func GetConsoleCharset() (string, bool) {
 	var _arg1 **C.char
 	var _cret C.gboolean
 
-	cret = C.g_get_console_charset(_arg1)
+	_cret = C.g_get_console_charset(_arg1)
 
 	var _charset string
 	var _ok bool
@@ -108,7 +108,7 @@ func GetConsoleCharset() (string, bool) {
 func GetLanguageNames() []string {
 	var _cret **C.gchar
 
-	cret = C.g_get_language_names()
+	_cret = C.g_get_language_names()
 
 	var _utf8s []string
 
@@ -125,7 +125,7 @@ func GetLanguageNames() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -151,7 +151,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_get_language_names_with_category(_arg1)
+	_cret = C.g_get_language_names_with_category(_arg1)
 
 	var _utf8s []string
 
@@ -168,7 +168,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -199,7 +199,7 @@ func GetLocaleVariants(locale string) []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_get_locale_variants(_arg1)
+	_cret = C.g_get_locale_variants(_arg1)
 
 	var _utf8s []string
 
@@ -216,7 +216,7 @@ func GetLocaleVariants(locale string) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}

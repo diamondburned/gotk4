@@ -3,14 +3,8 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config:
@@ -19,23 +13,6 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// KeySnoopFunc: key snooper functions are called before normal event delivery.
-// They can be used to implement custom key event handling.
-type KeySnoopFunc func() (gint int)
-
-//export gotk4_KeySnoopFunc
-func gotk4_KeySnoopFunc(arg0 *C.GtkWidget, arg1 *C.GdkEventKey, arg2 C.gpointer) C.gint {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(KeySnoopFunc)
-	gint := fn()
-
-	cret = C.gint(gint)
-}
 
 // CheckVersion checks that the GTK+ library in use is compatible with the given
 // version. Generally you would pass in the constants K_MAJOR_VERSION,
@@ -66,7 +43,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 
 	var _cret *C.gchar
 
-	cret = C.gtk_check_version(_arg1, _arg2, _arg3)
+	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -133,7 +110,7 @@ func DisableSetlocale() {
 func EventsPending() bool {
 	var _cret C.gboolean
 
-	cret = C.gtk_events_pending()
+	_cret = C.gtk_events_pending()
 
 	var _ok bool
 
@@ -149,7 +126,7 @@ func EventsPending() bool {
 func False() bool {
 	var _cret C.gboolean
 
-	cret = C.gtk_false()
+	_cret = C.gtk_false()
 
 	var _ok bool
 
@@ -166,7 +143,7 @@ func False() bool {
 func GetBinaryAge() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_binary_age()
+	_cret = C.gtk_get_binary_age()
 
 	var _guint uint
 
@@ -175,45 +152,12 @@ func GetBinaryAge() uint {
 	return _guint
 }
 
-// GetCurrentEventDevice: if there is a current event and it has a device,
-// return that device, otherwise return nil.
-func GetCurrentEventDevice() gdk.Device {
-	var _cret *C.GdkDevice
-
-	cret = C.gtk_get_current_event_device()
-
-	var _device gdk.Device
-
-	_device = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Device)
-
-	return _device
-}
-
-// GetCurrentEventState: if there is a current event and it has a state field,
-// place that state field in @state and return true, otherwise return false.
-func GetCurrentEventState() (gdk.ModifierType, bool) {
-	var _arg1 C.GdkModifierType
-	var _cret C.gboolean
-
-	cret = C.gtk_get_current_event_state(&_arg1)
-
-	var _state gdk.ModifierType
-	var _ok bool
-
-	_state = gdk.ModifierType(_arg1)
-	if _cret {
-		_ok = true
-	}
-
-	return _state, _ok
-}
-
 // GetCurrentEventTime: if there is a current event and it has a timestamp,
 // return that timestamp, otherwise return GDK_CURRENT_TIME.
 func GetCurrentEventTime() uint32 {
 	var _cret C.guint32
 
-	cret = C.gtk_get_current_event_time()
+	_cret = C.gtk_get_current_event_time()
 
 	var _guint32 uint32
 
@@ -222,68 +166,19 @@ func GetCurrentEventTime() uint32 {
 	return _guint32
 }
 
-// GetDefaultLanguage returns the Language for the default language currently in
-// effect. (Note that this can change over the life of an application.) The
-// default language is derived from the current locale. It determines, for
-// example, whether GTK+ uses the right-to-left or left-to-right text direction.
-//
-// This function is equivalent to pango_language_get_default(). See that
-// function for details.
-func GetDefaultLanguage() *pango.Language {
-	var _cret *C.PangoLanguage
-
-	cret = C.gtk_get_default_language()
-
-	var _language *pango.Language
-
-	_language = pango.WrapLanguage(unsafe.Pointer(_cret))
-
-	return _language
-}
-
 // GetInterfaceAge returns the interface age as passed to `libtool` when
 // building the GTK+ library the process is running against. If `libtool` means
 // nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_interface_age()
+	_cret = C.gtk_get_interface_age()
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// GetLocaleDirection: get the direction of the current locale. This is the
-// expected reading direction for text and UI.
-//
-// This function depends on the current locale being set with setlocale() and
-// will default to setting the GTK_TEXT_DIR_LTR direction otherwise.
-// GTK_TEXT_DIR_NONE will never be returned.
-//
-// GTK+ sets the default text direction according to the locale during
-// gtk_init(), and you should normally use gtk_widget_get_direction() or
-// gtk_widget_get_default_direction() to obtain the current direcion.
-//
-// This function is only needed rare cases when the locale is changed after GTK+
-// has already been initialized. In this case, you can use it to update the
-// default text direction as follows:
-//
-//    setlocale (LC_ALL, new_locale);
-//    direction = gtk_get_locale_direction ();
-//    gtk_widget_set_default_direction (direction);
-func GetLocaleDirection() TextDirection {
-	var _cret C.GtkTextDirection
-
-	cret = C.gtk_get_locale_direction()
-
-	var _textDirection TextDirection
-
-	_textDirection = TextDirection(_cret)
-
-	return _textDirection
 }
 
 // GetMajorVersion returns the major version number of the GTK+ library. (e.g.
@@ -296,7 +191,7 @@ func GetLocaleDirection() TextDirection {
 func GetMajorVersion() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_major_version()
+	_cret = C.gtk_get_major_version()
 
 	var _guint uint
 
@@ -315,7 +210,7 @@ func GetMajorVersion() uint {
 func GetMicroVersion() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_micro_version()
+	_cret = C.gtk_get_micro_version()
 
 	var _guint uint
 
@@ -334,7 +229,7 @@ func GetMicroVersion() uint {
 func GetMinorVersion() uint {
 	var _cret C.guint
 
-	cret = C.gtk_get_minor_version()
+	_cret = C.gtk_get_minor_version()
 
 	var _guint uint
 
@@ -343,52 +238,18 @@ func GetMinorVersion() uint {
 	return _guint
 }
 
-// GetOptionGroup returns a Group for the commandline arguments recognized by
-// GTK+ and GDK.
-//
-// You should add this group to your Context with g_option_context_add_group(),
-// if you are using g_option_context_parse() to parse your commandline
-// arguments.
-func GetOptionGroup(openDefaultDisplay bool) *glib.OptionGroup {
-	var _arg1 C.gboolean
-
-	if openDefaultDisplay {
-		_arg1 = C.gboolean(1)
-	}
-
-	var _cret *C.GOptionGroup
-
-	cret = C.gtk_get_option_group(_arg1)
-
-	var _optionGroup *glib.OptionGroup
-
-	_optionGroup = glib.WrapOptionGroup(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_optionGroup, func(v *glib.OptionGroup) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _optionGroup
-}
-
-// GrabGetCurrent queries the current grab of the default window group.
-func GrabGetCurrent() Widget {
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_grab_get_current()
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // KeySnooperInstall installs a key snooper function, which will get called on
 // all key events before delivering them normally.
-func KeySnooperInstall() uint {
+func KeySnooperInstall(snooper KeySnoopFunc) uint {
+	var _arg1 C.GtkKeySnoopFunc
+	var _arg2 C.gpointer
+
+	_arg1 = (*[0]byte)(C.gotk4_KeySnoopFunc)
+	_arg2 = C.gpointer(box.Assign(snooper))
+
 	var _cret C.guint
 
-	cret = C.gtk_key_snooper_install()
+	_cret = C.gtk_key_snooper_install(_arg1, _arg2)
 
 	var _guint uint
 
@@ -422,7 +283,7 @@ func Main() {
 func MainIteration() bool {
 	var _cret C.gboolean
 
-	cret = C.gtk_main_iteration()
+	_cret = C.gtk_main_iteration()
 
 	var _ok bool
 
@@ -444,7 +305,7 @@ func MainIterationDo(blocking bool) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_main_iteration_do(_arg1)
+	_cret = C.gtk_main_iteration_do(_arg1)
 
 	var _ok bool
 
@@ -459,7 +320,7 @@ func MainIterationDo(blocking bool) bool {
 func MainLevel() uint {
 	var _cret C.guint
 
-	cret = C.gtk_main_level()
+	_cret = C.gtk_main_level()
 
 	var _guint uint
 
@@ -516,7 +377,7 @@ func MainQuit() {
 func True() bool {
 	var _cret C.gboolean
 
-	cret = C.gtk_true()
+	_cret = C.gtk_true()
 
 	var _ok bool
 

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -39,11 +36,6 @@ func init() {
 type MountOperation interface {
 	gio.MountOperation
 
-	// Display gets the display on which windows of the `GtkMountOperation` will
-	// be shown.
-	Display() gdk.Display
-	// Parent gets the transient parent used by the `GtkMountOperation`.
-	Parent() Window
 	// IsShowing returns whether the `GtkMountOperation` is currently displaying
 	// a window.
 	IsShowing() bool
@@ -76,58 +68,6 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
-// NewMountOperation constructs a class MountOperation.
-func NewMountOperation(parent Window) MountOperation {
-	var _arg1 *C.GtkWindow
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkMountOperation
-
-	cret = C.gtk_mount_operation_new(_arg1)
-
-	var _mountOperation MountOperation
-
-	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MountOperation)
-
-	return _mountOperation
-}
-
-// Display gets the display on which windows of the `GtkMountOperation` will
-// be shown.
-func (o mountOperation) Display() gdk.Display {
-	var _arg0 *C.GtkMountOperation
-
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GdkDisplay
-
-	cret = C.gtk_mount_operation_get_display(_arg0)
-
-	var _display gdk.Display
-
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
-
-	return _display
-}
-
-// Parent gets the transient parent used by the `GtkMountOperation`.
-func (o mountOperation) Parent() Window {
-	var _arg0 *C.GtkMountOperation
-
-	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkWindow
-
-	cret = C.gtk_mount_operation_get_parent(_arg0)
-
-	var _window Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
-
-	return _window
-}
-
 // IsShowing returns whether the `GtkMountOperation` is currently displaying
 // a window.
 func (o mountOperation) IsShowing() bool {
@@ -137,7 +77,7 @@ func (o mountOperation) IsShowing() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_mount_operation_is_showing(_arg0)
+	_cret = C.gtk_mount_operation_is_showing(_arg0)
 
 	var _ok bool
 

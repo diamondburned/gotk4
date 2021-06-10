@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -44,22 +43,6 @@ func marshalQuad(p uintptr) (interface{}, error) {
 	return WrapQuad(unsafe.Pointer(b)), nil
 }
 
-// NewQuadAlloc constructs a struct Quad.
-func NewQuadAlloc() *Quad {
-	var _cret *C.graphene_quad_t
-
-	cret = C.graphene_quad_alloc()
-
-	var _quad *Quad
-
-	_quad = WrapQuad(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_quad, func(v *Quad) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _quad
-}
-
 // Native returns the underlying C source pointer.
 func (q *Quad) Native() unsafe.Pointer {
 	return unsafe.Pointer(&q.native)
@@ -89,7 +72,7 @@ func (q *Quad) Contains(p *Point) bool {
 
 	var _cret C._Bool
 
-	cret = C.graphene_quad_contains(_arg0, _arg1)
+	_cret = C.graphene_quad_contains(_arg0, _arg1)
 
 	var _ok bool
 
@@ -107,88 +90,4 @@ func (q *Quad) Free() {
 	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 
 	C.graphene_quad_free(_arg0)
-}
-
-// Point retrieves the point of a #graphene_quad_t at the given index.
-func (q *Quad) Point(index_ uint) *Point {
-	var _arg0 *C.graphene_quad_t
-	var _arg1 C.uint
-
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
-	_arg1 = C.uint(index_)
-
-	var _cret *C.graphene_point_t
-
-	cret = C.graphene_quad_get_point(_arg0, _arg1)
-
-	var _point *Point
-
-	_point = WrapPoint(unsafe.Pointer(_cret))
-
-	return _point
-}
-
-// Init initializes a #graphene_quad_t with the given points.
-func (q *Quad) Init(p1 *Point, p2 *Point, p3 *Point, p4 *Point) *Quad {
-	var _arg0 *C.graphene_quad_t
-	var _arg1 *C.graphene_point_t
-	var _arg2 *C.graphene_point_t
-	var _arg3 *C.graphene_point_t
-	var _arg4 *C.graphene_point_t
-
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p1.Native()))
-	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(p2.Native()))
-	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(p3.Native()))
-	_arg4 = (*C.graphene_point_t)(unsafe.Pointer(p4.Native()))
-
-	var _cret *C.graphene_quad_t
-
-	cret = C.graphene_quad_init(_arg0, _arg1, _arg2, _arg3, _arg4)
-
-	var _quad *Quad
-
-	_quad = WrapQuad(unsafe.Pointer(_cret))
-
-	return _quad
-}
-
-// InitFromPoints initializes a #graphene_quad_t using an array of points.
-func (q *Quad) InitFromPoints(points [4]Point) *Quad {
-	var _arg0 *C.graphene_quad_t
-	var _arg1 *C.graphene_point_t
-
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(&points))
-	defer runtime.KeepAlive(&_arg1)
-
-	var _cret *C.graphene_quad_t
-
-	cret = C.graphene_quad_init_from_points(_arg0, _arg1)
-
-	var _quad *Quad
-
-	_quad = WrapQuad(unsafe.Pointer(_cret))
-
-	return _quad
-}
-
-// InitFromRect initializes a #graphene_quad_t using the four corners of the
-// given #graphene_rect_t.
-func (q *Quad) InitFromRect(r *Rect) *Quad {
-	var _arg0 *C.graphene_quad_t
-	var _arg1 *C.graphene_rect_t
-
-	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.graphene_quad_t
-
-	cret = C.graphene_quad_init_from_rect(_arg0, _arg1)
-
-	var _quad *Quad
-
-	_quad = WrapQuad(unsafe.Pointer(_cret))
-
-	return _quad
 }

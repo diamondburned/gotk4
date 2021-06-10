@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,10 +69,6 @@ func init() {
 type Socket interface {
 	Container
 	Buildable
-
-	// PlugWindow retrieves the window of the plug. Use this to check if the
-	// plug has been created inside of the socket.
-	PlugWindow() gdk.Window
 }
 
 // socket implements the Socket interface.
@@ -100,35 +92,4 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSocket(obj), nil
-}
-
-// NewSocket constructs a class Socket.
-func NewSocket() Socket {
-	var _cret C.GtkSocket
-
-	cret = C.gtk_socket_new()
-
-	var _socket Socket
-
-	_socket = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Socket)
-
-	return _socket
-}
-
-// PlugWindow retrieves the window of the plug. Use this to check if the
-// plug has been created inside of the socket.
-func (s socket) PlugWindow() gdk.Window {
-	var _arg0 *C.GtkSocket
-
-	_arg0 = (*C.GtkSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkWindow
-
-	cret = C.gtk_socket_get_plug_window(_arg0)
-
-	var _window gdk.Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
-
-	return _window
 }

@@ -185,7 +185,7 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
+	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -208,7 +208,7 @@ func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
+	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
 	var _ok bool
 
@@ -289,7 +289,7 @@ func (c imContext) Surrounding() (string, int, bool) {
 	var _arg2 C.gint
 	var _cret C.gboolean
 
-	cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 
 	var _text string
 	var _cursorIndex int

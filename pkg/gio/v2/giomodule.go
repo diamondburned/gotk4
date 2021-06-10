@@ -3,10 +3,8 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,59 +24,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// IOModulesLoadAllInDirectory loads all the modules in the specified directory.
-//
-// If don't require all modules to be initialized (and thus registering all
-// gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
-// delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectory(dirname *string) *glib.List {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(dirname))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GList
-
-	cret = C.g_io_modules_load_all_in_directory(_arg1)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// IOModulesLoadAllInDirectoryWithScope loads all the modules in the specified
-// directory.
-//
-// If don't require all modules to be initialized (and thus registering all
-// gtypes) then you can use g_io_modules_scan_all_in_directory() which allows
-// delayed/lazy loading of modules.
-func IOModulesLoadAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) *glib.List {
-	var _arg1 *C.gchar
-	var _arg2 *C.GIOModuleScope
-
-	_arg1 = (*C.gchar)(C.CString(dirname))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GIOModuleScope)(unsafe.Pointer(scope.Native()))
-
-	var _cret *C.GList
-
-	cret = C.g_io_modules_load_all_in_directory_with_scope(_arg1, _arg2)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
 
 // IOModulesScanAllInDirectory scans all the modules in the specified directory,
 // ensuring that any extension point implemented by a module is registered.

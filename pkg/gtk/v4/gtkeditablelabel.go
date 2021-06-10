@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -92,24 +89,6 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 	return WrapEditableLabel(obj), nil
 }
 
-// NewEditableLabel constructs a class EditableLabel.
-func NewEditableLabel(str string) EditableLabel {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkEditableLabel
-
-	cret = C.gtk_editable_label_new(_arg1)
-
-	var _editableLabel EditableLabel
-
-	_editableLabel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EditableLabel)
-
-	return _editableLabel
-}
-
 // Editing returns whether the label is currently in “editing mode”.
 func (s editableLabel) Editing() bool {
 	var _arg0 *C.GtkEditableLabel
@@ -118,7 +97,7 @@ func (s editableLabel) Editing() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_editable_label_get_editing(_arg0)
+	_cret = C.gtk_editable_label_get_editing(_arg0)
 
 	var _ok bool
 

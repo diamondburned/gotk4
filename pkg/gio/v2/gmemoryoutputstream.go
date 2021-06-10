@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -98,32 +95,6 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 	return WrapMemoryOutputStream(obj), nil
 }
 
-// NewMemoryOutputStream constructs a class MemoryOutputStream.
-func NewMemoryOutputStream() MemoryOutputStream {
-	var _cret C.GMemoryOutputStream
-
-	cret = C.g_memory_output_stream_new()
-
-	var _memoryOutputStream MemoryOutputStream
-
-	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryOutputStream)
-
-	return _memoryOutputStream
-}
-
-// NewMemoryOutputStreamResizable constructs a class MemoryOutputStream.
-func NewMemoryOutputStreamResizable() MemoryOutputStream {
-	var _cret C.GMemoryOutputStream
-
-	cret = C.g_memory_output_stream_new_resizable()
-
-	var _memoryOutputStream MemoryOutputStream
-
-	_memoryOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MemoryOutputStream)
-
-	return _memoryOutputStream
-}
-
 // Data gets any loaded data from the @ostream.
 //
 // Note that the returned pointer may become invalid on the next write or
@@ -135,7 +106,7 @@ func (o memoryOutputStream) Data() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_memory_output_stream_get_data(_arg0)
+	_cret = C.g_memory_output_stream_get_data(_arg0)
 
 	var _gpointer interface{}
 
@@ -153,7 +124,7 @@ func (o memoryOutputStream) DataSize() uint {
 
 	var _cret C.gsize
 
-	cret = C.g_memory_output_stream_get_data_size(_arg0)
+	_cret = C.g_memory_output_stream_get_data_size(_arg0)
 
 	var _gsize uint
 
@@ -183,7 +154,7 @@ func (o memoryOutputStream) Size() uint {
 
 	var _cret C.gsize
 
-	cret = C.g_memory_output_stream_get_size(_arg0)
+	_cret = C.g_memory_output_stream_get_size(_arg0)
 
 	var _gsize uint
 
@@ -205,7 +176,7 @@ func (o memoryOutputStream) StealData() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_memory_output_stream_steal_data(_arg0)
+	_cret = C.g_memory_output_stream_steal_data(_arg0)
 
 	var _gpointer interface{}
 

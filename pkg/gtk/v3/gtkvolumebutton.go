@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,17 +57,4 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapVolumeButton(obj), nil
-}
-
-// NewVolumeButton constructs a class VolumeButton.
-func NewVolumeButton() VolumeButton {
-	var _cret C.GtkVolumeButton
-
-	cret = C.gtk_volume_button_new()
-
-	var _volumeButton VolumeButton
-
-	_volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VolumeButton)
-
-	return _volumeButton
 }

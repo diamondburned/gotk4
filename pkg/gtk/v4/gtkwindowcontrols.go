@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,8 +72,6 @@ type WindowControls interface {
 	DecorationLayout() string
 	// Empty gets whether the widget has any window buttons.
 	Empty() bool
-	// Side gets the side to which this `GtkWindowControls` instance belongs.
-	Side() PackType
 	// SetDecorationLayout sets the decoration layout for the title buttons.
 	//
 	// This overrides the [property@Gtk.Settings:gtk-decoration-layout] setting.
@@ -124,23 +121,6 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 	return WrapWindowControls(obj), nil
 }
 
-// NewWindowControls constructs a class WindowControls.
-func NewWindowControls(side PackType) WindowControls {
-	var _arg1 C.GtkPackType
-
-	_arg1 = (C.GtkPackType)(side)
-
-	var _cret C.GtkWindowControls
-
-	cret = C.gtk_window_controls_new(_arg1)
-
-	var _windowControls WindowControls
-
-	_windowControls = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(WindowControls)
-
-	return _windowControls
-}
-
 // DecorationLayout gets the decoration layout of this `GtkWindowControls`.
 func (s windowControls) DecorationLayout() string {
 	var _arg0 *C.GtkWindowControls
@@ -149,7 +129,7 @@ func (s windowControls) DecorationLayout() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_window_controls_get_decoration_layout(_arg0)
+	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
 
 	var _utf8 string
 
@@ -166,7 +146,7 @@ func (s windowControls) Empty() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_window_controls_get_empty(_arg0)
+	_cret = C.gtk_window_controls_get_empty(_arg0)
 
 	var _ok bool
 
@@ -175,23 +155,6 @@ func (s windowControls) Empty() bool {
 	}
 
 	return _ok
-}
-
-// Side gets the side to which this `GtkWindowControls` instance belongs.
-func (s windowControls) Side() PackType {
-	var _arg0 *C.GtkWindowControls
-
-	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPackType
-
-	cret = C.gtk_window_controls_get_side(_arg0)
-
-	var _packType PackType
-
-	_packType = PackType(_cret)
-
-	return _packType
 }
 
 // SetDecorationLayout sets the decoration layout for the title buttons.

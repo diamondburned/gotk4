@@ -3,8 +3,10 @@
 package gtk
 
 import (
+	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,7 +95,7 @@ type TreeStore interface {
 	// InsertWithValuesv: a variant of gtk_tree_store_insert_with_values() which
 	// takes the columns and values as two arrays, instead of varargs. This
 	// function is mainly intended for language bindings.
-	InsertWithValuesv() TreeIter
+	InsertWithValuesv(parent *TreeIter, position int, columns []int, values []**externglib.Value) TreeIter
 	// IsAncestor returns true if @iter is an ancestor of @descendant. That is,
 	// @iter is the parent (or grandparent or great-grandparent) of @descendant.
 	IsAncestor(iter *TreeIter, descendant *TreeIter) bool
@@ -126,6 +128,11 @@ type TreeStore interface {
 	// to the next valid row at that level, or invalidated if it previously
 	// pointed to the last one.
 	Remove(iter *TreeIter) bool
+	// SetColumnTypes: this function is meant primarily for #GObjects that
+	// inherit from TreeStore, and should only be used when constructing a new
+	// TreeStore. It will not function after a row has been added, or a method
+	// on the TreeModel interface is called.
+	SetColumnTypes(types []externglib.Type)
 	// SetValue sets the data in the cell specified by @iter and @column. The
 	// type of @value must be convertible to the type of the column.
 	SetValue(iter *TreeIter, column int, value **externglib.Value)
@@ -133,7 +140,7 @@ type TreeStore interface {
 	// columns and values as two arrays, instead of varargs. This function is
 	// mainly intended for language bindings or in case the number of columns to
 	// change is not known until run-time.
-	SetValuesv()
+	SetValuesv(iter *TreeIter, columns []int, values []**externglib.Value)
 	// Swap swaps @a and @b in the same level of @tree_store. Note that this
 	// function only works with unsorted stores.
 	Swap(a *TreeIter, b *TreeIter)
@@ -275,14 +282,36 @@ func (t treeStore) InsertBefore(parent *TreeIter, sibling *TreeIter) TreeIter {
 // InsertWithValuesv: a variant of gtk_tree_store_insert_with_values() which
 // takes the columns and values as two arrays, instead of varargs. This
 // function is mainly intended for language bindings.
-func (t treeStore) InsertWithValuesv() TreeIter {
+func (t treeStore) InsertWithValuesv(parent *TreeIter, position int, columns []int, values []**externglib.Value) TreeIter {
 	var _arg0 *C.GtkTreeStore
+	var _arg2 *C.GtkTreeIter
+	var _arg3 C.int
+	var _arg4 *C.int
+	var _arg6 C.int
+	var _arg5 *C.GValue
+	var _arg6 C.int
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(parent.Native()))
+	_arg3 = C.int(position)
+	_arg6 = C.int(len(columns))
+	_arg4 = (*C.int)(unsafe.Pointer(&columns[0]))
+	_arg6 = C.int(len(values))
+	_arg5 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	defer C.free(unsafe.Pointer(_arg5))
+
+	{
+		var out []C.GValue
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg5), int(len(values)))
+
+		for i := range values {
+			_arg5 = (*C.GValue)(values.GValue)
+		}
+	}
 
 	var _iter TreeIter
 
-	C.gtk_tree_store_insert_with_valuesv(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	C.gtk_tree_store_insert_with_valuesv(_arg0, _arg2, _arg3, _arg4, _arg5, _arg6, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	return _iter
 }
@@ -300,7 +329,7 @@ func (t treeStore) IsAncestor(iter *TreeIter, descendant *TreeIter) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_store_is_ancestor(_arg0, _arg1, _arg2)
+	_cret = C.gtk_tree_store_is_ancestor(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -322,7 +351,7 @@ func (t treeStore) IterDepth(iter *TreeIter) int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_store_iter_depth(_arg0, _arg1)
+	_cret = C.gtk_tree_store_iter_depth(_arg0, _arg1)
 
 	var _gint int
 
@@ -344,7 +373,7 @@ func (t treeStore) IterIsValid(iter *TreeIter) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_store_iter_is_valid(_arg0, _arg1)
+	_cret = C.gtk_tree_store_iter_is_valid(_arg0, _arg1)
 
 	var _ok bool
 
@@ -419,7 +448,7 @@ func (t treeStore) Remove(iter *TreeIter) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_store_remove(_arg0, _arg1)
+	_cret = C.gtk_tree_store_remove(_arg0, _arg1)
 
 	var _ok bool
 
@@ -428,6 +457,32 @@ func (t treeStore) Remove(iter *TreeIter) bool {
 	}
 
 	return _ok
+}
+
+// SetColumnTypes: this function is meant primarily for #GObjects that
+// inherit from TreeStore, and should only be used when constructing a new
+// TreeStore. It will not function after a row has been added, or a method
+// on the TreeModel interface is called.
+func (t treeStore) SetColumnTypes(types []externglib.Type) {
+	var _arg0 *C.GtkTreeStore
+	var _arg2 *C.GType
+	var _arg1 C.int
+
+	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
+	_arg1 = C.int(len(types))
+	_arg2 = (*C.GType)(C.malloc(len(types) * C.sizeof_GType))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	{
+		var out []C.GType
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(types)))
+
+		for i := range types {
+			_arg2 = C.GType(types)
+		}
+	}
+
+	C.gtk_tree_store_set_column_types(_arg0, _arg1, _arg2)
 }
 
 // SetValue sets the data in the cell specified by @iter and @column. The
@@ -450,12 +505,32 @@ func (t treeStore) SetValue(iter *TreeIter, column int, value **externglib.Value
 // columns and values as two arrays, instead of varargs. This function is
 // mainly intended for language bindings or in case the number of columns to
 // change is not known until run-time.
-func (t treeStore) SetValuesv() {
+func (t treeStore) SetValuesv(iter *TreeIter, columns []int, values []**externglib.Value) {
 	var _arg0 *C.GtkTreeStore
+	var _arg1 *C.GtkTreeIter
+	var _arg2 *C.int
+	var _arg4 C.int
+	var _arg3 *C.GValue
+	var _arg4 C.int
 
 	_arg0 = (*C.GtkTreeStore)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg4 = C.int(len(columns))
+	_arg2 = (*C.int)(unsafe.Pointer(&columns[0]))
+	_arg4 = C.int(len(values))
+	_arg3 = (*C.GValue)(C.malloc(len(values) * C.sizeof_GValue))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.gtk_tree_store_set_valuesv(_arg0)
+	{
+		var out []C.GValue
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(values)))
+
+		for i := range values {
+			_arg3 = (*C.GValue)(values.GValue)
+		}
+	}
+
+	C.gtk_tree_store_set_valuesv(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // Swap swaps @a and @b in the same level of @tree_store. Note that this

@@ -83,7 +83,7 @@ func (t *Timer) Elapsed(microseconds *uint32) float64 {
 
 	var _cret C.gdouble
 
-	cret = C.g_timer_elapsed(_arg0, _arg1)
+	_cret = C.g_timer_elapsed(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -100,7 +100,7 @@ func (t *Timer) IsActive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_timer_is_active(_arg0)
+	_cret = C.g_timer_is_active(_arg0)
 
 	var _ok bool
 

@@ -3,11 +3,6 @@
 package gdkpixbuf
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -43,51 +38,6 @@ type PixbufAnimation interface {
 
 	// Height queries the height of the bounding box of a pixbuf animation.
 	Height() int
-	// Iter: get an iterator for displaying an animation.
-	//
-	// The iterator provides the frames that should be displayed at a given
-	// time.
-	//
-	// @start_time would normally come from g_get_current_time(), and marks the
-	// beginning of animation playback. After creating an iterator, you should
-	// immediately display the pixbuf returned by
-	// gdk_pixbuf_animation_iter_get_pixbuf(). Then, you should install a
-	// timeout (with g_timeout_add()) or by some other mechanism ensure that
-	// you'll update the image after gdk_pixbuf_animation_iter_get_delay_time()
-	// milliseconds. Each time the image is updated, you should reinstall the
-	// timeout with the new, possibly-changed delay time.
-	//
-	// As a shortcut, if @start_time is `NULL`, the result of
-	// g_get_current_time() will be used automatically.
-	//
-	// To update the image (i.e. possibly change the result of
-	// gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation),
-	// call gdk_pixbuf_animation_iter_advance().
-	//
-	// If you're using PixbufLoader, in addition to updating the image after the
-	// delay time, you should also update it whenever you receive the
-	// area_updated signal and
-	// gdk_pixbuf_animation_iter_on_currently_loading_frame() returns `TRUE`. In
-	// this case, the frame currently being fed into the loader has received new
-	// data, so needs to be refreshed. The delay time for a frame may also be
-	// modified after an area_updated signal, for example if the delay time for
-	// a frame is encoded in the data after the frame itself. So your timeout
-	// should be reinstalled after any area_updated signal.
-	//
-	// A delay time of -1 is possible, indicating "infinite".
-	Iter(startTime *glib.TimeVal) PixbufAnimationIter
-	// StaticImage retrieves a static image for the animation.
-	//
-	// If an animation is really just a plain image (has only one frame), this
-	// function returns that image.
-	//
-	// If the animation is an animation, this function returns a reasonable
-	// image to use as a static unanimated image, which might be the first
-	// frame, or something more sophisticated depending on the file format.
-	//
-	// If an animation hasn't loaded any frames yet, this function will return
-	// `NULL`.
-	StaticImage() Pixbuf
 	// Width queries the width of the bounding box of a pixbuf animation.
 	Width() int
 	// IsStaticImage checks whether the animation is a static image.
@@ -97,8 +47,6 @@ type PixbufAnimation interface {
 	// `TRUE`. Use gdk_pixbuf_animation_get_static_image() to retrieve the
 	// image.
 	IsStaticImage() bool
-	// Ref adds a reference to an animation.
-	Ref() PixbufAnimation
 	// Unref removes a reference from an animation.
 	Unref()
 }
@@ -124,90 +72,6 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 	return WrapPixbufAnimation(obj), nil
 }
 
-// NewPixbufAnimationFromFile constructs a class PixbufAnimation.
-func NewPixbufAnimationFromFile(filename *string) (PixbufAnimation, error) {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_animation_new_from_file(_arg1, _cerr)
-
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromResource constructs a class PixbufAnimation.
-func NewPixbufAnimationFromResource(resourcePath string) (PixbufAnimation, error) {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_animation_new_from_resource(_arg1, _cerr)
-
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromStream constructs a class PixbufAnimation.
-func NewPixbufAnimationFromStream(stream gio.InputStream, cancellable gio.Cancellable) (PixbufAnimation, error) {
-	var _arg1 *C.GInputStream
-	var _arg2 *C.GCancellable
-
-	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_animation_new_from_stream(_arg1, _arg2, _cerr)
-
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
-// NewPixbufAnimationFromStreamFinish constructs a class PixbufAnimation.
-func NewPixbufAnimationFromStreamFinish(asyncResult gio.AsyncResult) (PixbufAnimation, error) {
-	var _arg1 *C.GAsyncResult
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(asyncResult.Native()))
-
-	var _cret C.GdkPixbufAnimation
-	var _cerr *C.GError
-
-	cret = C.gdk_pixbuf_animation_new_from_stream_finish(_arg1, _cerr)
-
-	var _pixbufAnimation PixbufAnimation
-	var _goerr error
-
-	_pixbufAnimation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbufAnimation, _goerr
-}
-
 // Height queries the height of the bounding box of a pixbuf animation.
 func (a pixbufAnimation) Height() int {
 	var _arg0 *C.GdkPixbufAnimation
@@ -216,90 +80,13 @@ func (a pixbufAnimation) Height() int {
 
 	var _cret C.int
 
-	cret = C.gdk_pixbuf_animation_get_height(_arg0)
+	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Iter: get an iterator for displaying an animation.
-//
-// The iterator provides the frames that should be displayed at a given
-// time.
-//
-// @start_time would normally come from g_get_current_time(), and marks the
-// beginning of animation playback. After creating an iterator, you should
-// immediately display the pixbuf returned by
-// gdk_pixbuf_animation_iter_get_pixbuf(). Then, you should install a
-// timeout (with g_timeout_add()) or by some other mechanism ensure that
-// you'll update the image after gdk_pixbuf_animation_iter_get_delay_time()
-// milliseconds. Each time the image is updated, you should reinstall the
-// timeout with the new, possibly-changed delay time.
-//
-// As a shortcut, if @start_time is `NULL`, the result of
-// g_get_current_time() will be used automatically.
-//
-// To update the image (i.e. possibly change the result of
-// gdk_pixbuf_animation_iter_get_pixbuf() to a new frame of the animation),
-// call gdk_pixbuf_animation_iter_advance().
-//
-// If you're using PixbufLoader, in addition to updating the image after the
-// delay time, you should also update it whenever you receive the
-// area_updated signal and
-// gdk_pixbuf_animation_iter_on_currently_loading_frame() returns `TRUE`. In
-// this case, the frame currently being fed into the loader has received new
-// data, so needs to be refreshed. The delay time for a frame may also be
-// modified after an area_updated signal, for example if the delay time for
-// a frame is encoded in the data after the frame itself. So your timeout
-// should be reinstalled after any area_updated signal.
-//
-// A delay time of -1 is possible, indicating "infinite".
-func (a pixbufAnimation) Iter(startTime *glib.TimeVal) PixbufAnimationIter {
-	var _arg0 *C.GdkPixbufAnimation
-	var _arg1 *C.GTimeVal
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GTimeVal)(unsafe.Pointer(startTime.Native()))
-
-	var _cret *C.GdkPixbufAnimationIter
-
-	cret = C.gdk_pixbuf_animation_get_iter(_arg0, _arg1)
-
-	var _pixbufAnimationIter PixbufAnimationIter
-
-	_pixbufAnimationIter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PixbufAnimationIter)
-
-	return _pixbufAnimationIter
-}
-
-// StaticImage retrieves a static image for the animation.
-//
-// If an animation is really just a plain image (has only one frame), this
-// function returns that image.
-//
-// If the animation is an animation, this function returns a reasonable
-// image to use as a static unanimated image, which might be the first
-// frame, or something more sophisticated depending on the file format.
-//
-// If an animation hasn't loaded any frames yet, this function will return
-// `NULL`.
-func (a pixbufAnimation) StaticImage() Pixbuf {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gdk_pixbuf_animation_get_static_image(_arg0)
-
-	var _pixbuf Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
-
-	return _pixbuf
 }
 
 // Width queries the width of the bounding box of a pixbuf animation.
@@ -310,7 +97,7 @@ func (a pixbufAnimation) Width() int {
 
 	var _cret C.int
 
-	cret = C.gdk_pixbuf_animation_get_width(_arg0)
+	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 
 	var _gint int
 
@@ -332,7 +119,7 @@ func (a pixbufAnimation) IsStaticImage() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
+	_cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
 
 	var _ok bool
 
@@ -341,23 +128,6 @@ func (a pixbufAnimation) IsStaticImage() bool {
 	}
 
 	return _ok
-}
-
-// Ref adds a reference to an animation.
-func (a pixbufAnimation) Ref() PixbufAnimation {
-	var _arg0 *C.GdkPixbufAnimation
-
-	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPixbufAnimation
-
-	cret = C.gdk_pixbuf_animation_ref(_arg0)
-
-	var _pixbufAnimation PixbufAnimation
-
-	_pixbufAnimation = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PixbufAnimation)
-
-	return _pixbufAnimation
 }
 
 // Unref removes a reference from an animation.
@@ -405,22 +175,6 @@ type PixbufAnimationIter interface {
 	// image file to avoid updates that are just too quick. The minimum timeout
 	// for GIF images is currently 20 milliseconds.
 	DelayTime() int
-	// Pixbuf gets the current pixbuf which should be displayed.
-	//
-	// The pixbuf might not be the same size as the animation itself
-	// (gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).
-	//
-	// This pixbuf should be displayed for
-	// gdk_pixbuf_animation_iter_get_delay_time() milliseconds.
-	//
-	// The caller of this function does not own a reference to the returned
-	// pixbuf; the returned pixbuf will become invalid when the iterator
-	// advances to the next frame, which may happen anytime you call
-	// gdk_pixbuf_animation_iter_advance().
-	//
-	// Copy the pixbuf to keep it (don't just add a reference), as it may get
-	// recycled as you advance the iterator.
-	Pixbuf() Pixbuf
 	// OnCurrentlyLoadingFrame: used to determine how to respond to the
 	// area_updated signal on PixbufLoader when loading an animation.
 	//
@@ -480,7 +234,7 @@ func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
+	_cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
 
 	var _ok bool
 
@@ -507,44 +261,13 @@ func (i pixbufAnimationIter) DelayTime() int {
 
 	var _cret C.int
 
-	cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
+	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Pixbuf gets the current pixbuf which should be displayed.
-//
-// The pixbuf might not be the same size as the animation itself
-// (gdk_pixbuf_animation_get_width(), gdk_pixbuf_animation_get_height()).
-//
-// This pixbuf should be displayed for
-// gdk_pixbuf_animation_iter_get_delay_time() milliseconds.
-//
-// The caller of this function does not own a reference to the returned
-// pixbuf; the returned pixbuf will become invalid when the iterator
-// advances to the next frame, which may happen anytime you call
-// gdk_pixbuf_animation_iter_advance().
-//
-// Copy the pixbuf to keep it (don't just add a reference), as it may get
-// recycled as you advance the iterator.
-func (i pixbufAnimationIter) Pixbuf() Pixbuf {
-	var _arg0 *C.GdkPixbufAnimationIter
-
-	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gdk_pixbuf_animation_iter_get_pixbuf(_arg0)
-
-	var _pixbuf Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Pixbuf)
-
-	return _pixbuf
 }
 
 // OnCurrentlyLoadingFrame: used to determine how to respond to the
@@ -560,7 +283,7 @@ func (i pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
+	_cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
 
 	var _ok bool
 

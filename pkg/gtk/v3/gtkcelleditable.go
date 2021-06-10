@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,19 +27,6 @@ type CellEditableOverrider interface {
 	EditingDone()
 	// RemoveWidget emits the CellEditable::remove-widget signal.
 	RemoveWidget()
-	// StartEditing begins editing on a @cell_editable.
-	//
-	// The CellRenderer for the cell creates and returns a CellEditable from
-	// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-	//
-	// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
-	// for editing a cell, e.g. making the Esc key emit
-	// CellEditable::editing-done.
-	//
-	// Note that the @cell_editable is created on-demand for the current edit;
-	// its lifetime is temporary and does not persist across other edits and/or
-	// cells.
-	StartEditing(event *gdk.Event)
 }
 
 // CellEditable: the CellEditable interface must be implemented for widgets to
@@ -89,26 +75,4 @@ func (c cellEditable) RemoveWidget() {
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 
 	C.gtk_cell_editable_remove_widget(_arg0)
-}
-
-// StartEditing begins editing on a @cell_editable.
-//
-// The CellRenderer for the cell creates and returns a CellEditable from
-// gtk_cell_renderer_start_editing(), configured for the CellRenderer type.
-//
-// gtk_cell_editable_start_editing() can then set up @cell_editable suitably
-// for editing a cell, e.g. making the Esc key emit
-// CellEditable::editing-done.
-//
-// Note that the @cell_editable is created on-demand for the current edit;
-// its lifetime is temporary and does not persist across other edits and/or
-// cells.
-func (c cellEditable) StartEditing(event *gdk.Event) {
-	var _arg0 *C.GtkCellEditable
-	var _arg1 *C.GdkEvent
-
-	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
-	var _arg1 *C.GdkEvent // unsupported
-
-	C.gtk_cell_editable_start_editing(_arg0, _arg1)
 }

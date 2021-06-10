@@ -3135,8 +3135,6 @@ func marshalTreeModelFlags(p uintptr) (interface{}, error) {
 type AppChooser interface {
 	Widget
 
-	// AppInfo returns the currently selected application.
-	AppInfo() gio.AppInfo
 	// ContentType returns the content type for which the `GtkAppChooser` shows
 	// applications.
 	ContentType() string
@@ -3165,23 +3163,6 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 	return WrapAppChooser(obj), nil
 }
 
-// AppInfo returns the currently selected application.
-func (s appChooser) AppInfo() gio.AppInfo {
-	var _arg0 *C.GtkAppChooser
-
-	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GAppInfo
-
-	cret = C.gtk_app_chooser_get_app_info(_arg0)
-
-	var _appInfo gio.AppInfo
-
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.AppInfo)
-
-	return _appInfo
-}
-
 // ContentType returns the content type for which the `GtkAppChooser` shows
 // applications.
 func (s appChooser) ContentType() string {
@@ -3191,7 +3172,7 @@ func (s appChooser) ContentType() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_app_chooser_get_content_type(_arg0)
+	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 
 	var _utf8 string
 
@@ -3274,51 +3255,20 @@ type FileChooser interface {
 	// AddShortcutFolder adds a folder to be displayed with the shortcut folders
 	// in a file chooser.
 	AddShortcutFolder(folder gio.File) error
-	// Action gets the type of operation that the file chooser is performing.
-	Action() FileChooserAction
 	// Choice gets the currently selected option in the 'choice' with the given
 	// ID.
 	Choice(id string) string
 	// CreateFolders gets whether file chooser will offer to create new folders.
 	CreateFolders() bool
-	// CurrentFolder gets the current folder of @chooser as #GFile.
-	CurrentFolder() gio.File
 	// CurrentName gets the current name in the file selector, as entered by the
 	// user.
 	//
 	// This is meant to be used in save dialogs, to get the currently typed
 	// filename when the file itself does not exist yet.
 	CurrentName() string
-	// File gets the `GFile` for the currently selected file in the file
-	// selector.
-	//
-	// If multiple files are selected, one of the files will be returned at
-	// random.
-	//
-	// If the file chooser is in folder mode, this function returns the selected
-	// folder.
-	File() gio.File
-	// Files lists all the selected files and subfolders in the current folder
-	// of @chooser as #GFile.
-	Files() gio.ListModel
-	// Filter gets the current filter.
-	Filter() FileFilter
-	// Filters gets the current set of user-selectable filters, as a list model.
-	//
-	// See [method@Gtk.FileChooser.add_filter] and
-	// [method@Gtk.FileChooser.remove_filter] for changing individual filters.
-	//
-	// You should not modify the returned list model. Future changes to @chooser
-	// may or may not affect the returned model.
-	Filters() gio.ListModel
 	// SelectMultiple gets whether multiple files can be selected in the file
 	// chooser.
 	SelectMultiple() bool
-	// ShortcutFolders queries the list of shortcut folders in the file chooser.
-	//
-	// You should not modify the returned list model. Future changes to @chooser
-	// may or may not affect the returned model.
-	ShortcutFolders() gio.ListModel
 	// RemoveChoice removes a 'choice' that has been added with
 	// gtk_file_chooser_add_choice().
 	RemoveChoice(id string)
@@ -3528,23 +3478,6 @@ func (c fileChooser) AddShortcutFolder(folder gio.File) error {
 	return _goerr
 }
 
-// Action gets the type of operation that the file chooser is performing.
-func (c fileChooser) Action() FileChooserAction {
-	var _arg0 *C.GtkFileChooser
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkFileChooserAction
-
-	cret = C.gtk_file_chooser_get_action(_arg0)
-
-	var _fileChooserAction FileChooserAction
-
-	_fileChooserAction = FileChooserAction(_cret)
-
-	return _fileChooserAction
-}
-
 // Choice gets the currently selected option in the 'choice' with the given
 // ID.
 func (c fileChooser) Choice(id string) string {
@@ -3557,7 +3490,7 @@ func (c fileChooser) Choice(id string) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
+	_cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -3574,7 +3507,7 @@ func (c fileChooser) CreateFolders() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_file_chooser_get_create_folders(_arg0)
+	_cret = C.gtk_file_chooser_get_create_folders(_arg0)
 
 	var _ok bool
 
@@ -3583,23 +3516,6 @@ func (c fileChooser) CreateFolders() bool {
 	}
 
 	return _ok
-}
-
-// CurrentFolder gets the current folder of @chooser as #GFile.
-func (c fileChooser) CurrentFolder() gio.File {
-	var _arg0 *C.GtkFileChooser
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_file_chooser_get_current_folder(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
 }
 
 // CurrentName gets the current name in the file selector, as entered by the
@@ -3614,7 +3530,7 @@ func (c fileChooser) CurrentName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_file_chooser_get_current_name(_arg0)
+	_cret = C.gtk_file_chooser_get_current_name(_arg0)
 
 	var _utf8 string
 
@@ -3622,88 +3538,6 @@ func (c fileChooser) CurrentName() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// File gets the `GFile` for the currently selected file in the file
-// selector.
-//
-// If multiple files are selected, one of the files will be returned at
-// random.
-//
-// If the file chooser is in folder mode, this function returns the selected
-// folder.
-func (c fileChooser) File() gio.File {
-	var _arg0 *C.GtkFileChooser
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_file_chooser_get_file(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
-}
-
-// Files lists all the selected files and subfolders in the current folder
-// of @chooser as #GFile.
-func (c fileChooser) Files() gio.ListModel {
-	var _arg0 *C.GtkFileChooser
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_file_chooser_get_files(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
-}
-
-// Filter gets the current filter.
-func (c fileChooser) Filter() FileFilter {
-	var _arg0 *C.GtkFileChooser
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkFileFilter
-
-	cret = C.gtk_file_chooser_get_filter(_arg0)
-
-	var _fileFilter FileFilter
-
-	_fileFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileFilter)
-
-	return _fileFilter
-}
-
-// Filters gets the current set of user-selectable filters, as a list model.
-//
-// See [method@Gtk.FileChooser.add_filter] and
-// [method@Gtk.FileChooser.remove_filter] for changing individual filters.
-//
-// You should not modify the returned list model. Future changes to @chooser
-// may or may not affect the returned model.
-func (c fileChooser) Filters() gio.ListModel {
-	var _arg0 *C.GtkFileChooser
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_file_chooser_get_filters(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // SelectMultiple gets whether multiple files can be selected in the file
@@ -3715,7 +3549,7 @@ func (c fileChooser) SelectMultiple() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_file_chooser_get_select_multiple(_arg0)
+	_cret = C.gtk_file_chooser_get_select_multiple(_arg0)
 
 	var _ok bool
 
@@ -3724,26 +3558,6 @@ func (c fileChooser) SelectMultiple() bool {
 	}
 
 	return _ok
-}
-
-// ShortcutFolders queries the list of shortcut folders in the file chooser.
-//
-// You should not modify the returned list model. Future changes to @chooser
-// may or may not affect the returned model.
-func (c fileChooser) ShortcutFolders() gio.ListModel {
-	var _arg0 *C.GtkFileChooser
-
-	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_file_chooser_get_shortcut_folders(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // RemoveChoice removes a 'choice' that has been added with
@@ -4083,10 +3897,6 @@ type AboutDialog interface {
 	Documenters() []string
 	// License returns the license information.
 	License() string
-	// LicenseType retrieves the license type.
-	LicenseType() License
-	// Logo returns the paintable displayed as logo in the about dialog.
-	Logo() gdk.Paintable
 	// LogoIconName returns the icon name displayed as logo in the about dialog.
 	LogoIconName() string
 	// ProgramName returns the program name displayed in the about dialog.
@@ -4211,19 +4021,6 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return WrapAboutDialog(obj), nil
 }
 
-// NewAboutDialog constructs a class AboutDialog.
-func NewAboutDialog() AboutDialog {
-	var _cret C.GtkAboutDialog
-
-	cret = C.gtk_about_dialog_new()
-
-	var _aboutDialog AboutDialog
-
-	_aboutDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AboutDialog)
-
-	return _aboutDialog
-}
-
 // AddCreditSection creates a new section in the "Credits" page.
 func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 	var _arg0 *C.GtkAboutDialog
@@ -4258,7 +4055,7 @@ func (a aboutDialog) Artists() []string {
 
 	var _cret **C.char
 
-	cret = C.gtk_about_dialog_get_artists(_arg0)
+	_cret = C.gtk_about_dialog_get_artists(_arg0)
 
 	var _utf8s []string
 
@@ -4275,7 +4072,7 @@ func (a aboutDialog) Artists() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -4292,7 +4089,7 @@ func (a aboutDialog) Authors() []string {
 
 	var _cret **C.char
 
-	cret = C.gtk_about_dialog_get_authors(_arg0)
+	_cret = C.gtk_about_dialog_get_authors(_arg0)
 
 	var _utf8s []string
 
@@ -4309,7 +4106,7 @@ func (a aboutDialog) Authors() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -4325,7 +4122,7 @@ func (a aboutDialog) Comments() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_comments(_arg0)
+	_cret = C.gtk_about_dialog_get_comments(_arg0)
 
 	var _utf8 string
 
@@ -4342,7 +4139,7 @@ func (a aboutDialog) Copyright() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_copyright(_arg0)
+	_cret = C.gtk_about_dialog_get_copyright(_arg0)
 
 	var _utf8 string
 
@@ -4360,7 +4157,7 @@ func (a aboutDialog) Documenters() []string {
 
 	var _cret **C.char
 
-	cret = C.gtk_about_dialog_get_documenters(_arg0)
+	_cret = C.gtk_about_dialog_get_documenters(_arg0)
 
 	var _utf8s []string
 
@@ -4377,7 +4174,7 @@ func (a aboutDialog) Documenters() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -4393,47 +4190,13 @@ func (a aboutDialog) License() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_license(_arg0)
+	_cret = C.gtk_about_dialog_get_license(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// LicenseType retrieves the license type.
-func (a aboutDialog) LicenseType() License {
-	var _arg0 *C.GtkAboutDialog
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GtkLicense
-
-	cret = C.gtk_about_dialog_get_license_type(_arg0)
-
-	var _license License
-
-	_license = License(_cret)
-
-	return _license
-}
-
-// Logo returns the paintable displayed as logo in the about dialog.
-func (a aboutDialog) Logo() gdk.Paintable {
-	var _arg0 *C.GtkAboutDialog
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPaintable
-
-	cret = C.gtk_about_dialog_get_logo(_arg0)
-
-	var _paintable gdk.Paintable
-
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
-
-	return _paintable
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
@@ -4444,7 +4207,7 @@ func (a aboutDialog) LogoIconName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
+	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -4461,7 +4224,7 @@ func (a aboutDialog) ProgramName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_program_name(_arg0)
+	_cret = C.gtk_about_dialog_get_program_name(_arg0)
 
 	var _utf8 string
 
@@ -4479,7 +4242,7 @@ func (a aboutDialog) SystemInformation() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_system_information(_arg0)
+	_cret = C.gtk_about_dialog_get_system_information(_arg0)
 
 	var _utf8 string
 
@@ -4497,7 +4260,7 @@ func (a aboutDialog) TranslatorCredits() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_translator_credits(_arg0)
+	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
 
 	var _utf8 string
 
@@ -4514,7 +4277,7 @@ func (a aboutDialog) Version() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_version(_arg0)
+	_cret = C.gtk_about_dialog_get_version(_arg0)
 
 	var _utf8 string
 
@@ -4531,7 +4294,7 @@ func (a aboutDialog) Website() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_website(_arg0)
+	_cret = C.gtk_about_dialog_get_website(_arg0)
 
 	var _utf8 string
 
@@ -4548,7 +4311,7 @@ func (a aboutDialog) WebsiteLabel() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_about_dialog_get_website_label(_arg0)
+	_cret = C.gtk_about_dialog_get_website_label(_arg0)
 
 	var _utf8 string
 
@@ -4566,7 +4329,7 @@ func (a aboutDialog) WrapLicense() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_about_dialog_get_wrap_license(_arg0)
+	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
 
 	var _ok bool
 
@@ -4858,8 +4621,6 @@ type ActionBar interface {
 	Buildable
 	ConstraintTarget
 
-	// CenterWidget retrieves the center bar widget of the bar.
-	CenterWidget() Widget
 	// Revealed gets whether the contents of the action bar are revealed.
 	Revealed() bool
 	// PackEnd adds @child to @action_bar, packed with reference to the end of
@@ -4907,36 +4668,6 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 	return WrapActionBar(obj), nil
 }
 
-// NewActionBar constructs a class ActionBar.
-func NewActionBar() ActionBar {
-	var _cret C.GtkActionBar
-
-	cret = C.gtk_action_bar_new()
-
-	var _actionBar ActionBar
-
-	_actionBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ActionBar)
-
-	return _actionBar
-}
-
-// CenterWidget retrieves the center bar widget of the bar.
-func (a actionBar) CenterWidget() Widget {
-	var _arg0 *C.GtkActionBar
-
-	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_action_bar_get_center_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Revealed gets whether the contents of the action bar are revealed.
 func (a actionBar) Revealed() bool {
 	var _arg0 *C.GtkActionBar
@@ -4945,7 +4676,7 @@ func (a actionBar) Revealed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_bar_get_revealed(_arg0)
+	_cret = C.gtk_action_bar_get_revealed(_arg0)
 
 	var _ok bool
 
@@ -5128,24 +4859,6 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return WrapAppChooserButton(obj), nil
 }
 
-// NewAppChooserButton constructs a class AppChooserButton.
-func NewAppChooserButton(contentType string) AppChooserButton {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkAppChooserButton
-
-	cret = C.gtk_app_chooser_button_new(_arg1)
-
-	var _appChooserButton AppChooserButton
-
-	_appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserButton)
-
-	return _appChooserButton
-}
-
 // AppendCustomItem appends a custom item to the list of applications that
 // is shown in the popup.
 //
@@ -5189,7 +4902,7 @@ func (s appChooserButton) Heading() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_app_chooser_button_get_heading(_arg0)
+	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
 
 	var _utf8 string
 
@@ -5206,7 +4919,7 @@ func (s appChooserButton) Modal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_button_get_modal(_arg0)
+	_cret = C.gtk_app_chooser_button_get_modal(_arg0)
 
 	var _ok bool
 
@@ -5226,7 +4939,7 @@ func (s appChooserButton) ShowDefaultItem() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
+	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 
 	var _ok bool
 
@@ -5246,7 +4959,7 @@ func (s appChooserButton) ShowDialogItem() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
+	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
 
 	var _ok bool
 
@@ -5353,8 +5066,6 @@ type AppChooserDialog interface {
 
 	// Heading returns the text to display at the top of the dialog.
 	Heading() string
-	// Widget returns the `GtkAppChooserWidget` of this dialog.
-	Widget() Widget
 	// SetHeading sets the text to display at the top of the dialog.
 	//
 	// If the heading is not set, the dialog displays a default text.
@@ -5396,49 +5107,6 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return WrapAppChooserDialog(obj), nil
 }
 
-// NewAppChooserDialog constructs a class AppChooserDialog.
-func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppChooserDialog {
-	var _arg1 *C.GtkWindow
-	var _arg2 C.GtkDialogFlags
-	var _arg3 *C.GFile
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (C.GtkDialogFlags)(flags)
-	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkAppChooserDialog
-
-	cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
-
-	var _appChooserDialog AppChooserDialog
-
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
-
-	return _appChooserDialog
-}
-
-// NewAppChooserDialogForContentType constructs a class AppChooserDialog.
-func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
-	var _arg1 *C.GtkWindow
-	var _arg2 C.GtkDialogFlags
-	var _arg3 *C.char
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (C.GtkDialogFlags)(flags)
-	_arg3 = (*C.char)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret C.GtkAppChooserDialog
-
-	cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
-
-	var _appChooserDialog AppChooserDialog
-
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
-
-	return _appChooserDialog
-}
-
 // Heading returns the text to display at the top of the dialog.
 func (s appChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog
@@ -5447,30 +5115,13 @@ func (s appChooserDialog) Heading() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
+	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Widget returns the `GtkAppChooserWidget` of this dialog.
-func (s appChooserDialog) Widget() Widget {
-	var _arg0 *C.GtkAppChooserDialog
-
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // SetHeading sets the text to display at the top of the dialog.
@@ -5585,24 +5236,6 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return WrapAppChooserWidget(obj), nil
 }
 
-// NewAppChooserWidget constructs a class AppChooserWidget.
-func NewAppChooserWidget(contentType string) AppChooserWidget {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkAppChooserWidget
-
-	cret = C.gtk_app_chooser_widget_new(_arg1)
-
-	var _appChooserWidget AppChooserWidget
-
-	_appChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserWidget)
-
-	return _appChooserWidget
-}
-
 // DefaultText returns the text that is shown if there are not applications
 // that can handle the content type.
 func (s appChooserWidget) DefaultText() string {
@@ -5612,7 +5245,7 @@ func (s appChooserWidget) DefaultText() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
 
 	var _utf8 string
 
@@ -5630,7 +5263,7 @@ func (s appChooserWidget) ShowAll() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
 
 	var _ok bool
 
@@ -5650,7 +5283,7 @@ func (s appChooserWidget) ShowDefault() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
 
 	var _ok bool
 
@@ -5670,7 +5303,7 @@ func (s appChooserWidget) ShowFallback() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
 
 	var _ok bool
 
@@ -5690,7 +5323,7 @@ func (s appChooserWidget) ShowOther() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
 
 	var _ok bool
 
@@ -5710,7 +5343,7 @@ func (s appChooserWidget) ShowRecommended() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
 
 	var _ok bool
 
@@ -5819,8 +5452,6 @@ type AspectFrame interface {
 	Buildable
 	ConstraintTarget
 
-	// Child gets the child widget of @self.
-	Child() Widget
 	// ObeyChild returns whether the child's size request should override the
 	// set aspect ratio of the `GtkAspectFrame`.
 	ObeyChild() bool
@@ -5874,48 +5505,6 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 	return WrapAspectFrame(obj), nil
 }
 
-// NewAspectFrame constructs a class AspectFrame.
-func NewAspectFrame(xalign float32, yalign float32, ratio float32, obeyChild bool) AspectFrame {
-	var _arg1 C.float
-	var _arg2 C.float
-	var _arg3 C.float
-	var _arg4 C.gboolean
-
-	_arg1 = C.float(xalign)
-	_arg2 = C.float(yalign)
-	_arg3 = C.float(ratio)
-	if obeyChild {
-		_arg4 = C.gboolean(1)
-	}
-
-	var _cret C.GtkAspectFrame
-
-	cret = C.gtk_aspect_frame_new(_arg1, _arg2, _arg3, _arg4)
-
-	var _aspectFrame AspectFrame
-
-	_aspectFrame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AspectFrame)
-
-	return _aspectFrame
-}
-
-// Child gets the child widget of @self.
-func (s aspectFrame) Child() Widget {
-	var _arg0 *C.GtkAspectFrame
-
-	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_aspect_frame_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // ObeyChild returns whether the child's size request should override the
 // set aspect ratio of the `GtkAspectFrame`.
 func (s aspectFrame) ObeyChild() bool {
@@ -5925,7 +5514,7 @@ func (s aspectFrame) ObeyChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_aspect_frame_get_obey_child(_arg0)
+	_cret = C.gtk_aspect_frame_get_obey_child(_arg0)
 
 	var _ok bool
 
@@ -5944,7 +5533,7 @@ func (s aspectFrame) Ratio() float32 {
 
 	var _cret C.float
 
-	cret = C.gtk_aspect_frame_get_ratio(_arg0)
+	_cret = C.gtk_aspect_frame_get_ratio(_arg0)
 
 	var _gfloat float32
 
@@ -5962,7 +5551,7 @@ func (s aspectFrame) Xalign() float32 {
 
 	var _cret C.float
 
-	cret = C.gtk_aspect_frame_get_xalign(_arg0)
+	_cret = C.gtk_aspect_frame_get_xalign(_arg0)
 
 	var _gfloat float32
 
@@ -5980,7 +5569,7 @@ func (s aspectFrame) Yalign() float32 {
 
 	var _cret C.float
 
-	cret = C.gtk_aspect_frame_get_yalign(_arg0)
+	_cret = C.gtk_aspect_frame_get_yalign(_arg0)
 
 	var _gfloat float32
 
@@ -6114,18 +5703,10 @@ type Assistant interface {
 	CurrentPage() int
 	// NPages returns the number of pages in the @assistant
 	NPages() int
-	// NthPage returns the child widget contained in page number @page_num.
-	NthPage(pageNum int) Widget
-	// Page returns the `GtkAssistantPage` object for @child.
-	Page(child Widget) AssistantPage
 	// PageComplete gets whether @page is complete.
 	PageComplete(page Widget) bool
 	// PageTitle gets the title for @page.
 	PageTitle(page Widget) string
-	// PageType gets the page type of @page.
-	PageType(page Widget) AssistantPageType
-	// Pages gets a list model of the assistant pages.
-	Pages() gio.ListModel
 	// InsertPage inserts a page in the @assistant at a given position.
 	InsertPage(page Widget, position int) int
 	// NextPage: navigate to the next page.
@@ -6156,13 +5737,6 @@ type Assistant interface {
 	// Note that this will only be necessary in custom buttons, as the
 	// @assistant flow can be set with gtk_assistant_set_forward_page_func().
 	SetCurrentPage(pageNum int)
-	// SetForwardPageFunc sets the page forwarding function to be @page_func.
-	//
-	// This function will be used to determine what will be the next page when
-	// the user presses the forward button. Setting @page_func to nil will make
-	// the assistant to use the default forward function, which just goes to the
-	// next visible page.
-	SetForwardPageFunc()
 	// SetPageComplete sets whether @page contents are complete.
 	//
 	// This will make @assistant update the buttons state to be able to continue
@@ -6222,19 +5796,6 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
-// NewAssistant constructs a class Assistant.
-func NewAssistant() Assistant {
-	var _cret C.GtkAssistant
-
-	cret = C.gtk_assistant_new()
-
-	var _assistant Assistant
-
-	_assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Assistant)
-
-	return _assistant
-}
-
 // AddActionWidget adds a widget to the action area of a `GtkAssistant`.
 func (a assistant) AddActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant
@@ -6256,7 +5817,7 @@ func (a assistant) AppendPage(page Widget) int {
 
 	var _cret C.int
 
-	cret = C.gtk_assistant_append_page(_arg0, _arg1)
+	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
 
 	var _gint int
 
@@ -6290,7 +5851,7 @@ func (a assistant) CurrentPage() int {
 
 	var _cret C.int
 
-	cret = C.gtk_assistant_get_current_page(_arg0)
+	_cret = C.gtk_assistant_get_current_page(_arg0)
 
 	var _gint int
 
@@ -6307,51 +5868,13 @@ func (a assistant) NPages() int {
 
 	var _cret C.int
 
-	cret = C.gtk_assistant_get_n_pages(_arg0)
+	_cret = C.gtk_assistant_get_n_pages(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// NthPage returns the child widget contained in page number @page_num.
-func (a assistant) NthPage(pageNum int) Widget {
-	var _arg0 *C.GtkAssistant
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = C.int(pageNum)
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// Page returns the `GtkAssistantPage` object for @child.
-func (a assistant) Page(child Widget) AssistantPage {
-	var _arg0 *C.GtkAssistant
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkAssistantPage
-
-	cret = C.gtk_assistant_get_page(_arg0, _arg1)
-
-	var _assistantPage AssistantPage
-
-	_assistantPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AssistantPage)
-
-	return _assistantPage
 }
 
 // PageComplete gets whether @page is complete.
@@ -6364,7 +5887,7 @@ func (a assistant) PageComplete(page Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
+	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
 
 	var _ok bool
 
@@ -6385,49 +5908,13 @@ func (a assistant) PageTitle(page Widget) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
+	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// PageType gets the page type of @page.
-func (a assistant) PageType(page Widget) AssistantPageType {
-	var _arg0 *C.GtkAssistant
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-
-	var _cret C.GtkAssistantPageType
-
-	cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
-
-	var _assistantPageType AssistantPageType
-
-	_assistantPageType = AssistantPageType(_cret)
-
-	return _assistantPageType
-}
-
-// Pages gets a list model of the assistant pages.
-func (a assistant) Pages() gio.ListModel {
-	var _arg0 *C.GtkAssistant
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_assistant_get_pages(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
@@ -6442,7 +5929,7 @@ func (a assistant) InsertPage(page Widget, position int) int {
 
 	var _cret C.int
 
-	cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
+	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
 
 	var _gint int
 
@@ -6476,7 +5963,7 @@ func (a assistant) PrependPage(page Widget) int {
 
 	var _cret C.int
 
-	cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
+	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
 
 	var _gint int
 
@@ -6535,20 +6022,6 @@ func (a assistant) SetCurrentPage(pageNum int) {
 	_arg1 = C.int(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
-}
-
-// SetForwardPageFunc sets the page forwarding function to be @page_func.
-//
-// This function will be used to determine what will be the next page when
-// the user presses the forward button. Setting @page_func to nil will make
-// the assistant to use the default forward function, which just goes to the
-// next visible page.
-func (a assistant) SetForwardPageFunc() {
-	var _arg0 *C.GtkAssistant
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-
-	C.gtk_assistant_set_forward_page_func(_arg0)
 }
 
 // SetPageComplete sets whether @page contents are complete.
@@ -6622,9 +6095,6 @@ func (a assistant) UpdateButtonsState() {
 // `GtkAssistant.
 type AssistantPage interface {
 	gextras.Objector
-
-	// Child returns the child to which @page belongs.
-	Child() Widget
 }
 
 // assistantPage implements the AssistantPage interface.
@@ -6646,23 +6116,6 @@ func marshalAssistantPage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapAssistantPage(obj), nil
-}
-
-// Child returns the child to which @page belongs.
-func (p assistantPage) Child() Widget {
-	var _arg0 *C.GtkAssistantPage
-
-	_arg0 = (*C.GtkAssistantPage)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_assistant_page_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // Calendar: `GtkCalendar` is a widget that displays a Gregorian calendar, one
@@ -6713,11 +6166,6 @@ type Calendar interface {
 
 	// ClearMarks: remove all visual markers.
 	ClearMarks()
-	// Date returns a Time representing the shown year, month and the selected
-	// day.
-	//
-	// The returned date is in the local time zone.
-	Date() *glib.DateTime
 	// DayIsMarked returns if the @day of the @calendar is already marked.
 	DayIsMarked(day uint) bool
 	// ShowDayNames returns whether @self is currently showing the names of the
@@ -6778,19 +6226,6 @@ func marshalCalendar(p uintptr) (interface{}, error) {
 	return WrapCalendar(obj), nil
 }
 
-// NewCalendar constructs a class Calendar.
-func NewCalendar() Calendar {
-	var _cret C.GtkCalendar
-
-	cret = C.gtk_calendar_new()
-
-	var _calendar Calendar
-
-	_calendar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Calendar)
-
-	return _calendar
-}
-
 // ClearMarks: remove all visual markers.
 func (c calendar) ClearMarks() {
 	var _arg0 *C.GtkCalendar
@@ -6798,29 +6233,6 @@ func (c calendar) ClearMarks() {
 	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(c.Native()))
 
 	C.gtk_calendar_clear_marks(_arg0)
-}
-
-// Date returns a Time representing the shown year, month and the selected
-// day.
-//
-// The returned date is in the local time zone.
-func (s calendar) Date() *glib.DateTime {
-	var _arg0 *C.GtkCalendar
-
-	_arg0 = (*C.GtkCalendar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GDateTime
-
-	cret = C.gtk_calendar_get_date(_arg0)
-
-	var _dateTime *glib.DateTime
-
-	_dateTime = glib.WrapDateTime(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_dateTime, func(v *glib.DateTime) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _dateTime
 }
 
 // DayIsMarked returns if the @day of the @calendar is already marked.
@@ -6833,7 +6245,7 @@ func (c calendar) DayIsMarked(day uint) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
+	_cret = C.gtk_calendar_get_day_is_marked(_arg0, _arg1)
 
 	var _ok bool
 
@@ -6855,7 +6267,7 @@ func (s calendar) ShowDayNames() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_calendar_get_show_day_names(_arg0)
+	_cret = C.gtk_calendar_get_show_day_names(_arg0)
 
 	var _ok bool
 
@@ -6876,7 +6288,7 @@ func (s calendar) ShowHeading() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_calendar_get_show_heading(_arg0)
+	_cret = C.gtk_calendar_get_show_heading(_arg0)
 
 	var _ok bool
 
@@ -6898,7 +6310,7 @@ func (s calendar) ShowWeekNumbers() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_calendar_get_show_week_numbers(_arg0)
+	_cret = C.gtk_calendar_get_show_week_numbers(_arg0)
 
 	var _ok bool
 
@@ -7051,19 +6463,6 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 	return WrapCellAreaBox(obj), nil
 }
 
-// NewCellAreaBox constructs a class CellAreaBox.
-func NewCellAreaBox() CellAreaBox {
-	var _cret C.GtkCellAreaBox
-
-	cret = C.gtk_cell_area_box_new()
-
-	var _cellAreaBox CellAreaBox
-
-	_cellAreaBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellAreaBox)
-
-	return _cellAreaBox
-}
-
 // Spacing gets the spacing added between cell renderers.
 func (b cellAreaBox) Spacing() int {
 	var _arg0 *C.GtkCellAreaBox
@@ -7072,7 +6471,7 @@ func (b cellAreaBox) Spacing() int {
 
 	var _cret C.int
 
-	cret = C.gtk_cell_area_box_get_spacing(_arg0)
+	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 
 	var _gint int
 
@@ -7175,19 +6574,6 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	return WrapCellRendererAccel(obj), nil
 }
 
-// NewCellRendererAccel constructs a class CellRendererAccel.
-func NewCellRendererAccel() CellRendererAccel {
-	var _cret C.GtkCellRendererAccel
-
-	cret = C.gtk_cell_renderer_accel_new()
-
-	var _cellRendererAccel CellRendererAccel
-
-	_cellRendererAccel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererAccel)
-
-	return _cellRendererAccel
-}
-
 // CellRendererCombo renders a combobox in a cell
 //
 // CellRendererCombo renders text in a cell like CellRendererText from which it
@@ -7223,19 +6609,6 @@ func marshalCellRendererCombo(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRendererCombo(obj), nil
-}
-
-// NewCellRendererCombo constructs a class CellRendererCombo.
-func NewCellRendererCombo() CellRendererCombo {
-	var _cret C.GtkCellRendererCombo
-
-	cret = C.gtk_cell_renderer_combo_new()
-
-	var _cellRendererCombo CellRendererCombo
-
-	_cellRendererCombo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererCombo)
-
-	return _cellRendererCombo
 }
 
 // CellRendererPixbuf renders a pixbuf in a cell
@@ -7276,19 +6649,6 @@ func marshalCellRendererPixbuf(p uintptr) (interface{}, error) {
 	return WrapCellRendererPixbuf(obj), nil
 }
 
-// NewCellRendererPixbuf constructs a class CellRendererPixbuf.
-func NewCellRendererPixbuf() CellRendererPixbuf {
-	var _cret C.GtkCellRendererPixbuf
-
-	cret = C.gtk_cell_renderer_pixbuf_new()
-
-	var _cellRendererPixbuf CellRendererPixbuf
-
-	_cellRendererPixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererPixbuf)
-
-	return _cellRendererPixbuf
-}
-
 // CellRendererProgress renders numbers as progress bars
 //
 // CellRendererProgress renders a numeric value as a progress par in a cell.
@@ -7319,19 +6679,6 @@ func marshalCellRendererProgress(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRendererProgress(obj), nil
-}
-
-// NewCellRendererProgress constructs a class CellRendererProgress.
-func NewCellRendererProgress() CellRendererProgress {
-	var _cret C.GtkCellRendererProgress
-
-	cret = C.gtk_cell_renderer_progress_new()
-
-	var _cellRendererProgress CellRendererProgress
-
-	_cellRendererProgress = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererProgress)
-
-	return _cellRendererProgress
 }
 
 // CellRendererSpin renders a spin button in a cell
@@ -7374,19 +6721,6 @@ func marshalCellRendererSpin(p uintptr) (interface{}, error) {
 	return WrapCellRendererSpin(obj), nil
 }
 
-// NewCellRendererSpin constructs a class CellRendererSpin.
-func NewCellRendererSpin() CellRendererSpin {
-	var _cret C.GtkCellRendererSpin
-
-	cret = C.gtk_cell_renderer_spin_new()
-
-	var _cellRendererSpin CellRendererSpin
-
-	_cellRendererSpin = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererSpin)
-
-	return _cellRendererSpin
-}
-
 // CellRendererSpinner renders a spinning animation in a cell
 //
 // GtkCellRendererSpinner renders a spinning animation in a cell, very similar
@@ -7421,19 +6755,6 @@ func marshalCellRendererSpinner(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRendererSpinner(obj), nil
-}
-
-// NewCellRendererSpinner constructs a class CellRendererSpinner.
-func NewCellRendererSpinner() CellRendererSpinner {
-	var _cret C.GtkCellRendererSpinner
-
-	cret = C.gtk_cell_renderer_spinner_new()
-
-	var _cellRendererSpinner CellRendererSpinner
-
-	_cellRendererSpinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererSpinner)
-
-	return _cellRendererSpinner
 }
 
 // CellRendererToggle renders a toggle button in a cell
@@ -7487,19 +6808,6 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return WrapCellRendererToggle(obj), nil
 }
 
-// NewCellRendererToggle constructs a class CellRendererToggle.
-func NewCellRendererToggle() CellRendererToggle {
-	var _cret C.GtkCellRendererToggle
-
-	cret = C.gtk_cell_renderer_toggle_new()
-
-	var _cellRendererToggle CellRendererToggle
-
-	_cellRendererToggle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererToggle)
-
-	return _cellRendererToggle
-}
-
 // Activatable returns whether the cell renderer is activatable. See
 // gtk_cell_renderer_toggle_set_activatable().
 func (t cellRendererToggle) Activatable() bool {
@@ -7509,7 +6817,7 @@ func (t cellRendererToggle) Activatable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
+	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
 
 	var _ok bool
 
@@ -7529,7 +6837,7 @@ func (t cellRendererToggle) Active() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
+	_cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
 
 	var _ok bool
 
@@ -7549,7 +6857,7 @@ func (t cellRendererToggle) Radio() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
+	_cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
 
 	var _ok bool
 
@@ -7631,18 +6939,12 @@ type CellView interface {
 	ConstraintTarget
 	Orientable
 
-	// DisplayedRow returns a TreePath referring to the currently displayed row.
-	// If no row is currently displayed, nil is returned.
-	DisplayedRow() *TreePath
 	// DrawSensitive gets whether @cell_view is configured to draw all of its
 	// cells in a sensitive state.
 	DrawSensitive() bool
 	// FitModel gets whether @cell_view is configured to request space to fit
 	// the entire TreeModel.
 	FitModel() bool
-	// Model returns the model for @cell_view. If no model is used nil is
-	// returned.
-	Model() TreeModel
 	// SetDisplayedRow sets the row of the model that is currently displayed by
 	// the CellView. If the path is unset, then the contents of the cellview
 	// “stick” at their last value; this is not normally a desired result, but
@@ -7698,112 +7000,6 @@ func marshalCellView(p uintptr) (interface{}, error) {
 	return WrapCellView(obj), nil
 }
 
-// NewCellView constructs a class CellView.
-func NewCellView() CellView {
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new()
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithContext constructs a class CellView.
-func NewCellViewWithContext(area CellArea, context CellAreaContext) CellView {
-	var _arg1 *C.GtkCellArea
-	var _arg2 *C.GtkCellAreaContext
-
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-	_arg2 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_context(_arg1, _arg2)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithMarkup constructs a class CellView.
-func NewCellViewWithMarkup(markup string) CellView {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(markup))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_markup(_arg1)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithText constructs a class CellView.
-func NewCellViewWithText(text string) CellView {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_text(_arg1)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// NewCellViewWithTexture constructs a class CellView.
-func NewCellViewWithTexture(texture gdk.Texture) CellView {
-	var _arg1 *C.GdkTexture
-
-	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
-
-	var _cret C.GtkCellView
-
-	cret = C.gtk_cell_view_new_with_texture(_arg1)
-
-	var _cellView CellView
-
-	_cellView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellView)
-
-	return _cellView
-}
-
-// DisplayedRow returns a TreePath referring to the currently displayed row.
-// If no row is currently displayed, nil is returned.
-func (c cellView) DisplayedRow() *TreePath {
-	var _arg0 *C.GtkCellView
-
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_cell_view_get_displayed_row(_arg0)
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
-}
-
 // DrawSensitive gets whether @cell_view is configured to draw all of its
 // cells in a sensitive state.
 func (c cellView) DrawSensitive() bool {
@@ -7813,7 +7009,7 @@ func (c cellView) DrawSensitive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
+	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
 
 	var _ok bool
 
@@ -7833,7 +7029,7 @@ func (c cellView) FitModel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_view_get_fit_model(_arg0)
+	_cret = C.gtk_cell_view_get_fit_model(_arg0)
 
 	var _ok bool
 
@@ -7842,24 +7038,6 @@ func (c cellView) FitModel() bool {
 	}
 
 	return _ok
-}
-
-// Model returns the model for @cell_view. If no model is used nil is
-// returned.
-func (c cellView) Model() TreeModel {
-	var _arg0 *C.GtkCellView
-
-	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreeModel
-
-	cret = C.gtk_cell_view_get_model(_arg0)
-
-	var _treeModel TreeModel
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
-
-	return _treeModel
 }
 
 // SetDisplayedRow sets the row of the model that is currently displayed by
@@ -7985,36 +7163,6 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 	return WrapColorButton(obj), nil
 }
 
-// NewColorButton constructs a class ColorButton.
-func NewColorButton() ColorButton {
-	var _cret C.GtkColorButton
-
-	cret = C.gtk_color_button_new()
-
-	var _colorButton ColorButton
-
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
-
-	return _colorButton
-}
-
-// NewColorButtonWithRGBA constructs a class ColorButton.
-func NewColorButtonWithRGBA(rgba *gdk.RGBA) ColorButton {
-	var _arg1 *C.GdkRGBA
-
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
-
-	var _cret C.GtkColorButton
-
-	cret = C.gtk_color_button_new_with_rgba(_arg1)
-
-	var _colorButton ColorButton
-
-	_colorButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorButton)
-
-	return _colorButton
-}
-
 // Modal gets whether the dialog is modal.
 func (b colorButton) Modal() bool {
 	var _arg0 *C.GtkColorButton
@@ -8023,7 +7171,7 @@ func (b colorButton) Modal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_color_button_get_modal(_arg0)
+	_cret = C.gtk_color_button_get_modal(_arg0)
 
 	var _ok bool
 
@@ -8042,7 +7190,7 @@ func (b colorButton) Title() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_color_button_get_title(_arg0)
+	_cret = C.gtk_color_button_get_title(_arg0)
 
 	var _utf8 string
 
@@ -8134,26 +7282,6 @@ func marshalColorChooserDialog(p uintptr) (interface{}, error) {
 	return WrapColorChooserDialog(obj), nil
 }
 
-// NewColorChooserDialog constructs a class ColorChooserDialog.
-func NewColorChooserDialog(title string, parent Window) ColorChooserDialog {
-	var _arg1 *C.char
-	var _arg2 *C.GtkWindow
-
-	_arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkColorChooserDialog
-
-	cret = C.gtk_color_chooser_dialog_new(_arg1, _arg2)
-
-	var _colorChooserDialog ColorChooserDialog
-
-	_colorChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorChooserDialog)
-
-	return _colorChooserDialog
-}
-
 // ColorChooserWidget: the `GtkColorChooserWidget` widget lets the user select a
 // color.
 //
@@ -8215,19 +7343,6 @@ func marshalColorChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapColorChooserWidget(obj), nil
-}
-
-// NewColorChooserWidget constructs a class ColorChooserWidget.
-func NewColorChooserWidget() ColorChooserWidget {
-	var _cret C.GtkColorChooserWidget
-
-	cret = C.gtk_color_chooser_widget_new()
-
-	var _colorChooserWidget ColorChooserWidget
-
-	_colorChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ColorChooserWidget)
-
-	return _colorChooserWidget
 }
 
 // ComboBoxText: a `GtkComboBoxText` is a simple variant of `GtkComboBox` for
@@ -8366,32 +7481,6 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return WrapComboBoxText(obj), nil
 }
 
-// NewComboBoxText constructs a class ComboBoxText.
-func NewComboBoxText() ComboBoxText {
-	var _cret C.GtkComboBoxText
-
-	cret = C.gtk_combo_box_text_new()
-
-	var _comboBoxText ComboBoxText
-
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
-
-	return _comboBoxText
-}
-
-// NewComboBoxTextWithEntry constructs a class ComboBoxText.
-func NewComboBoxTextWithEntry() ComboBoxText {
-	var _cret C.GtkComboBoxText
-
-	cret = C.gtk_combo_box_text_new_with_entry()
-
-	var _comboBoxText ComboBoxText
-
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
-
-	return _comboBoxText
-}
-
 // Append appends @text to the list of strings stored in @combo_box.
 //
 // If @id is non-nil then it is used as the ID of the row.
@@ -8439,7 +7528,7 @@ func (c comboBoxText) ActiveText() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_combo_box_text_get_active_text(_arg0)
+	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
 
 	var _utf8 string
 
@@ -8603,8 +7692,6 @@ type EntryCompletion interface {
 	// CompletionPrefix: get the original text entered by the user that
 	// triggered the completion or nil if there’s no completion ongoing.
 	CompletionPrefix() string
-	// Entry gets the entry @completion has been attached to.
-	Entry() Widget
 	// InlineCompletion returns whether the common prefix of the possible
 	// completions should be automatically inserted in the entry.
 	InlineCompletion() bool
@@ -8612,10 +7699,6 @@ type EntryCompletion interface {
 	InlineSelection() bool
 	// MinimumKeyLength returns the minimum key length as set for @completion.
 	MinimumKeyLength() int
-	// Model returns the model the `GtkEntryCompletion` is using as data source.
-	//
-	// Returns nil if the model is unset.
-	Model() TreeModel
 	// PopupCompletion returns whether the completions should be presented in a
 	// popup window.
 	PopupCompletion() bool
@@ -8636,11 +7719,6 @@ type EntryCompletion interface {
 	// SetInlineSelection sets whether it is possible to cycle through the
 	// possible completions inside the entry.
 	SetInlineSelection(inlineSelection bool)
-	// SetMatchFunc sets the match function for @completion to be @func.
-	//
-	// The match function is used to determine if a row should or should not be
-	// in the completion list.
-	SetMatchFunc()
 	// SetMinimumKeyLength requires the length of the search key for @completion
 	// to be at least @length.
 	//
@@ -8704,36 +7782,6 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 	return WrapEntryCompletion(obj), nil
 }
 
-// NewEntryCompletion constructs a class EntryCompletion.
-func NewEntryCompletion() EntryCompletion {
-	var _cret C.GtkEntryCompletion
-
-	cret = C.gtk_entry_completion_new()
-
-	var _entryCompletion EntryCompletion
-
-	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryCompletion)
-
-	return _entryCompletion
-}
-
-// NewEntryCompletionWithArea constructs a class EntryCompletion.
-func NewEntryCompletionWithArea(area CellArea) EntryCompletion {
-	var _arg1 *C.GtkCellArea
-
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-
-	var _cret C.GtkEntryCompletion
-
-	cret = C.gtk_entry_completion_new_with_area(_arg1)
-
-	var _entryCompletion EntryCompletion
-
-	_entryCompletion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryCompletion)
-
-	return _entryCompletion
-}
-
 // Complete requests a completion operation, or in other words a refiltering
 // of the current list with completions, using the current key.
 //
@@ -8762,7 +7810,7 @@ func (c entryCompletion) ComputePrefix(key string) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
+	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -8781,30 +7829,13 @@ func (c entryCompletion) CompletionPrefix() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_entry_completion_get_completion_prefix(_arg0)
+	_cret = C.gtk_entry_completion_get_completion_prefix(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Entry gets the entry @completion has been attached to.
-func (c entryCompletion) Entry() Widget {
-	var _arg0 *C.GtkEntryCompletion
-
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_entry_completion_get_entry(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // InlineCompletion returns whether the common prefix of the possible
@@ -8816,7 +7847,7 @@ func (c entryCompletion) InlineCompletion() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_entry_completion_get_inline_completion(_arg0)
+	_cret = C.gtk_entry_completion_get_inline_completion(_arg0)
 
 	var _ok bool
 
@@ -8835,7 +7866,7 @@ func (c entryCompletion) InlineSelection() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_entry_completion_get_inline_selection(_arg0)
+	_cret = C.gtk_entry_completion_get_inline_selection(_arg0)
 
 	var _ok bool
 
@@ -8854,32 +7885,13 @@ func (c entryCompletion) MinimumKeyLength() int {
 
 	var _cret C.int
 
-	cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
+	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Model returns the model the `GtkEntryCompletion` is using as data source.
-//
-// Returns nil if the model is unset.
-func (c entryCompletion) Model() TreeModel {
-	var _arg0 *C.GtkEntryCompletion
-
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreeModel
-
-	cret = C.gtk_entry_completion_get_model(_arg0)
-
-	var _treeModel TreeModel
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
-
-	return _treeModel
 }
 
 // PopupCompletion returns whether the completions should be presented in a
@@ -8891,7 +7903,7 @@ func (c entryCompletion) PopupCompletion() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_entry_completion_get_popup_completion(_arg0)
+	_cret = C.gtk_entry_completion_get_popup_completion(_arg0)
 
 	var _ok bool
 
@@ -8911,7 +7923,7 @@ func (c entryCompletion) PopupSetWidth() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_entry_completion_get_popup_set_width(_arg0)
+	_cret = C.gtk_entry_completion_get_popup_set_width(_arg0)
 
 	var _ok bool
 
@@ -8931,7 +7943,7 @@ func (c entryCompletion) PopupSingleMatch() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_entry_completion_get_popup_single_match(_arg0)
+	_cret = C.gtk_entry_completion_get_popup_single_match(_arg0)
 
 	var _ok bool
 
@@ -8951,7 +7963,7 @@ func (c entryCompletion) TextColumn() int {
 
 	var _cret C.int
 
-	cret = C.gtk_entry_completion_get_text_column(_arg0)
+	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 
 	var _gint int
 
@@ -8995,18 +8007,6 @@ func (c entryCompletion) SetInlineSelection(inlineSelection bool) {
 	}
 
 	C.gtk_entry_completion_set_inline_selection(_arg0, _arg1)
-}
-
-// SetMatchFunc sets the match function for @completion to be @func.
-//
-// The match function is used to determine if a row should or should not be
-// in the completion list.
-func (c entryCompletion) SetMatchFunc() {
-	var _arg0 *C.GtkEntryCompletion
-
-	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
-
-	C.gtk_entry_completion_set_match_func(_arg0)
 }
 
 // SetMinimumKeyLength requires the length of the search key for @completion
@@ -9184,8 +8184,6 @@ type Expander interface {
 	Buildable
 	ConstraintTarget
 
-	// Child gets the child widget of @expander.
-	Child() Widget
 	// Expanded queries a Expander and returns its current state.
 	//
 	// Returns true if the child widget is revealed.
@@ -9197,8 +8195,6 @@ type Expander interface {
 	// not been set the return value will be nil. This will be the case if you
 	// create an empty button with gtk_button_new() to use as a container.
 	Label() string
-	// LabelWidget retrieves the label widget for the frame.
-	LabelWidget() Widget
 	// ResizeToplevel returns whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	ResizeToplevel() bool
@@ -9260,59 +8256,6 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return WrapExpander(obj), nil
 }
 
-// NewExpander constructs a class Expander.
-func NewExpander(label string) Expander {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkExpander
-
-	cret = C.gtk_expander_new(_arg1)
-
-	var _expander Expander
-
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
-
-	return _expander
-}
-
-// NewExpanderWithMnemonic constructs a class Expander.
-func NewExpanderWithMnemonic(label string) Expander {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkExpander
-
-	cret = C.gtk_expander_new_with_mnemonic(_arg1)
-
-	var _expander Expander
-
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
-
-	return _expander
-}
-
-// Child gets the child widget of @expander.
-func (e expander) Child() Widget {
-	var _arg0 *C.GtkExpander
-
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_expander_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Expanded queries a Expander and returns its current state.
 //
 // Returns true if the child widget is revealed.
@@ -9323,7 +8266,7 @@ func (e expander) Expanded() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_expanded(_arg0)
+	_cret = C.gtk_expander_get_expanded(_arg0)
 
 	var _ok bool
 
@@ -9347,30 +8290,13 @@ func (e expander) Label() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_expander_get_label(_arg0)
+	_cret = C.gtk_expander_get_label(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// LabelWidget retrieves the label widget for the frame.
-func (e expander) LabelWidget() Widget {
-	var _arg0 *C.GtkExpander
-
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_expander_get_label_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // ResizeToplevel returns whether the expander will resize the toplevel
@@ -9382,7 +8308,7 @@ func (e expander) ResizeToplevel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_resize_toplevel(_arg0)
+	_cret = C.gtk_expander_get_resize_toplevel(_arg0)
 
 	var _ok bool
 
@@ -9402,7 +8328,7 @@ func (e expander) UseMarkup() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_use_markup(_arg0)
+	_cret = C.gtk_expander_get_use_markup(_arg0)
 
 	var _ok bool
 
@@ -9422,7 +8348,7 @@ func (e expander) UseUnderline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_use_underline(_arg0)
+	_cret = C.gtk_expander_get_use_underline(_arg0)
 
 	var _ok bool
 
@@ -9774,23 +8700,6 @@ func marshalFileChooserWidget(p uintptr) (interface{}, error) {
 	return WrapFileChooserWidget(obj), nil
 }
 
-// NewFileChooserWidget constructs a class FileChooserWidget.
-func NewFileChooserWidget(action FileChooserAction) FileChooserWidget {
-	var _arg1 C.GtkFileChooserAction
-
-	_arg1 = (C.GtkFileChooserAction)(action)
-
-	var _cret C.GtkFileChooserWidget
-
-	cret = C.gtk_file_chooser_widget_new(_arg1)
-
-	var _fileChooserWidget FileChooserWidget
-
-	_fileChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileChooserWidget)
-
-	return _fileChooserWidget
-}
-
 // FileFilter: `GtkFileFilter` filters files by name or mime type.
 //
 // `GtkFileFilter` can be used to restrict the files being shown in a
@@ -9853,8 +8762,6 @@ type FileFilter interface {
 	// This is the string that will be displayed in the file chooser if there is
 	// a selectable list of filters.
 	SetName(name string)
-	// ToGVariant: serialize a file filter to an `a{sv}` variant.
-	ToGVariant() *glib.Variant
 }
 
 // fileFilter implements the FileFilter interface.
@@ -9878,36 +8785,6 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFileFilter(obj), nil
-}
-
-// NewFileFilter constructs a class FileFilter.
-func NewFileFilter() FileFilter {
-	var _cret C.GtkFileFilter
-
-	cret = C.gtk_file_filter_new()
-
-	var _fileFilter FileFilter
-
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
-
-	return _fileFilter
-}
-
-// NewFileFilterFromGVariant constructs a class FileFilter.
-func NewFileFilterFromGVariant(variant *glib.Variant) FileFilter {
-	var _arg1 *C.GVariant
-
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	var _cret C.GtkFileFilter
-
-	cret = C.gtk_file_filter_new_from_gvariant(_arg1)
-
-	var _fileFilter FileFilter
-
-	_fileFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileFilter)
-
-	return _fileFilter
 }
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
@@ -9959,7 +8836,7 @@ func (f fileFilter) Attributes() []string {
 
 	var _cret **C.char
 
-	cret = C.gtk_file_filter_get_attributes(_arg0)
+	_cret = C.gtk_file_filter_get_attributes(_arg0)
 
 	var _utf8s []string
 
@@ -9976,7 +8853,7 @@ func (f fileFilter) Attributes() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -9994,7 +8871,7 @@ func (f fileFilter) Name() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_file_filter_get_name(_arg0)
+	_cret = C.gtk_file_filter_get_name(_arg0)
 
 	var _utf8 string
 
@@ -10016,23 +8893,6 @@ func (f fileFilter) SetName(name string) {
 	defer C.free(unsafe.Pointer(_arg1))
 
 	C.gtk_file_filter_set_name(_arg0, _arg1)
-}
-
-// ToGVariant: serialize a file filter to an `a{sv}` variant.
-func (f fileFilter) ToGVariant() *glib.Variant {
-	var _arg0 *C.GtkFileFilter
-
-	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GVariant
-
-	cret = C.gtk_file_filter_to_gvariant(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-
-	return _variant
 }
 
 // FlowBox: a `GtkFlowBox` puts child widgets in reflowing grid.
@@ -10081,29 +8941,8 @@ type FlowBox interface {
 	ConstraintTarget
 	Orientable
 
-	// BindModel binds @model to @box.
-	//
-	// If @box was already bound to a model, that previous binding is destroyed.
-	//
-	// The contents of @box are cleared and then filled with widgets that
-	// represent items from @model. @box is updated whenever @model changes. If
-	// @model is nil, @box is left empty.
-	//
-	// It is undefined to add or remove widgets directly (for example, with
-	// [method@Gtk.FlowBox.insert]) while @box is bound to a model.
-	//
-	// Note that using a model is incompatible with the filtering and sorting
-	// functionality in `GtkFlowBox`. When using a model, filtering and sorting
-	// should be implemented by the model.
-	BindModel()
 	// ActivateOnSingleClick returns whether children activate on single clicks.
 	ActivateOnSingleClick() bool
-	// ChildAtIndex gets the nth child in the @box.
-	ChildAtIndex(idx int) FlowBoxChild
-	// ChildAtPos gets the child in the (@x, @y) position.
-	//
-	// Both @x and @y are assumed to be relative to the origin of @box.
-	ChildAtPos(x int, y int) FlowBoxChild
 	// ColumnSpacing gets the horizontal spacing.
 	ColumnSpacing() uint
 	// Homogeneous returns whether the box is homogeneous.
@@ -10114,10 +8953,6 @@ type FlowBox interface {
 	MinChildrenPerLine() uint
 	// RowSpacing gets the vertical spacing.
 	RowSpacing() uint
-	// SelectedChildren creates a list of all selected children.
-	SelectedChildren() *glib.List
-	// SelectionMode gets the selection mode of @box.
-	SelectionMode() SelectionMode
 	// Insert inserts the @widget into @box at @position.
 	//
 	// If a sort function is set, the widget will actually be inserted at the
@@ -10148,26 +8983,12 @@ type FlowBox interface {
 	// SelectedForeach calls a function for each selected child.
 	//
 	// Note that the selection cannot be modified from within this function.
-	SelectedForeach()
+	SelectedForeach(fn FlowBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, children will be activated
 	// when you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
 	// SetColumnSpacing sets the horizontal space to add between children.
 	SetColumnSpacing(spacing uint)
-	// SetFilterFunc: by setting a filter function on the @box one can decide
-	// dynamically which of the children to show.
-	//
-	// For instance, to implement a search function that only shows the children
-	// matching the search terms.
-	//
-	// The @filter_func will be called for each child after the call, and it
-	// will continue to be called each time a child changes (via
-	// [method@Gtk.FlowBoxChild.changed]) or when
-	// [method@Gtk.FlowBox.invalidate_filter] is called.
-	//
-	// Note that using a filter function is incompatible with using a model (see
-	// [method@Gtk.FlowBox.bind_model]).
-	SetFilterFunc()
 	// SetHAdjustment hooks up an adjustment to focus handling in @box.
 	//
 	// The adjustment is also used for autoscrolling during rubberband
@@ -10195,17 +9016,6 @@ type FlowBox interface {
 	SetRowSpacing(spacing uint)
 	// SetSelectionMode sets how selection works in @box.
 	SetSelectionMode(mode SelectionMode)
-	// SetSortFunc: by setting a sort function on the @box, one can dynamically
-	// reorder the children of the box, based on the contents of the children.
-	//
-	// The @sort_func will be called for each child after the call, and will
-	// continue to be called each time a child changes (via
-	// [method@Gtk.FlowBoxChild.changed]) and when
-	// [method@Gtk.FlowBox.invalidate_sort] is called.
-	//
-	// Note that using a sort function is incompatible with using a model (see
-	// [method@Gtk.FlowBox.bind_model]).
-	SetSortFunc()
 	// SetVAdjustment hooks up an adjustment to focus handling in @box.
 	//
 	// The adjustment is also used for autoscrolling during rubberband
@@ -10253,41 +9063,6 @@ func marshalFlowBox(p uintptr) (interface{}, error) {
 	return WrapFlowBox(obj), nil
 }
 
-// NewFlowBox constructs a class FlowBox.
-func NewFlowBox() FlowBox {
-	var _cret C.GtkFlowBox
-
-	cret = C.gtk_flow_box_new()
-
-	var _flowBox FlowBox
-
-	_flowBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBox)
-
-	return _flowBox
-}
-
-// BindModel binds @model to @box.
-//
-// If @box was already bound to a model, that previous binding is destroyed.
-//
-// The contents of @box are cleared and then filled with widgets that
-// represent items from @model. @box is updated whenever @model changes. If
-// @model is nil, @box is left empty.
-//
-// It is undefined to add or remove widgets directly (for example, with
-// [method@Gtk.FlowBox.insert]) while @box is bound to a model.
-//
-// Note that using a model is incompatible with the filtering and sorting
-// functionality in `GtkFlowBox`. When using a model, filtering and sorting
-// should be implemented by the model.
-func (b flowBox) BindModel() {
-	var _arg0 *C.GtkFlowBox
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_flow_box_bind_model(_arg0)
-}
-
 // ActivateOnSingleClick returns whether children activate on single clicks.
 func (b flowBox) ActivateOnSingleClick() bool {
 	var _arg0 *C.GtkFlowBox
@@ -10296,7 +9071,7 @@ func (b flowBox) ActivateOnSingleClick() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_flow_box_get_activate_on_single_click(_arg0)
+	_cret = C.gtk_flow_box_get_activate_on_single_click(_arg0)
 
 	var _ok bool
 
@@ -10307,48 +9082,6 @@ func (b flowBox) ActivateOnSingleClick() bool {
 	return _ok
 }
 
-// ChildAtIndex gets the nth child in the @box.
-func (b flowBox) ChildAtIndex(idx int) FlowBoxChild {
-	var _arg0 *C.GtkFlowBox
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.int(idx)
-
-	var _cret *C.GtkFlowBoxChild
-
-	cret = C.gtk_flow_box_get_child_at_index(_arg0, _arg1)
-
-	var _flowBoxChild FlowBoxChild
-
-	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
-
-	return _flowBoxChild
-}
-
-// ChildAtPos gets the child in the (@x, @y) position.
-//
-// Both @x and @y are assumed to be relative to the origin of @box.
-func (b flowBox) ChildAtPos(x int, y int) FlowBoxChild {
-	var _arg0 *C.GtkFlowBox
-	var _arg1 C.int
-	var _arg2 C.int
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
-	var _cret *C.GtkFlowBoxChild
-
-	cret = C.gtk_flow_box_get_child_at_pos(_arg0, _arg1, _arg2)
-
-	var _flowBoxChild FlowBoxChild
-
-	_flowBoxChild = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FlowBoxChild)
-
-	return _flowBoxChild
-}
-
 // ColumnSpacing gets the horizontal spacing.
 func (b flowBox) ColumnSpacing() uint {
 	var _arg0 *C.GtkFlowBox
@@ -10357,7 +9090,7 @@ func (b flowBox) ColumnSpacing() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_flow_box_get_column_spacing(_arg0)
+	_cret = C.gtk_flow_box_get_column_spacing(_arg0)
 
 	var _guint uint
 
@@ -10374,7 +9107,7 @@ func (b flowBox) Homogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_flow_box_get_homogeneous(_arg0)
+	_cret = C.gtk_flow_box_get_homogeneous(_arg0)
 
 	var _ok bool
 
@@ -10393,7 +9126,7 @@ func (b flowBox) MaxChildrenPerLine() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
+	_cret = C.gtk_flow_box_get_max_children_per_line(_arg0)
 
 	var _guint uint
 
@@ -10410,7 +9143,7 @@ func (b flowBox) MinChildrenPerLine() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
+	_cret = C.gtk_flow_box_get_min_children_per_line(_arg0)
 
 	var _guint uint
 
@@ -10427,50 +9160,13 @@ func (b flowBox) RowSpacing() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_flow_box_get_row_spacing(_arg0)
+	_cret = C.gtk_flow_box_get_row_spacing(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// SelectedChildren creates a list of all selected children.
-func (b flowBox) SelectedChildren() *glib.List {
-	var _arg0 *C.GtkFlowBox
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_flow_box_get_selected_children(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// SelectionMode gets the selection mode of @box.
-func (b flowBox) SelectionMode() SelectionMode {
-	var _arg0 *C.GtkFlowBox
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkSelectionMode
-
-	cret = C.gtk_flow_box_get_selection_mode(_arg0)
-
-	var _selectionMode SelectionMode
-
-	_selectionMode = SelectionMode(_cret)
-
-	return _selectionMode
 }
 
 // Insert inserts the @widget into @box at @position.
@@ -10553,12 +9249,16 @@ func (b flowBox) SelectChild(child FlowBoxChild) {
 // SelectedForeach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
-func (b flowBox) SelectedForeach() {
+func (b flowBox) SelectedForeach(fn FlowBoxForeachFunc) {
 	var _arg0 *C.GtkFlowBox
+	var _arg1 C.GtkFlowBoxForeachFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_FlowBoxForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_flow_box_selected_foreach(_arg0)
+	C.gtk_flow_box_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick: if @single is true, children will be activated
@@ -10584,27 +9284,6 @@ func (b flowBox) SetColumnSpacing(spacing uint) {
 	_arg1 = C.guint(spacing)
 
 	C.gtk_flow_box_set_column_spacing(_arg0, _arg1)
-}
-
-// SetFilterFunc: by setting a filter function on the @box one can decide
-// dynamically which of the children to show.
-//
-// For instance, to implement a search function that only shows the children
-// matching the search terms.
-//
-// The @filter_func will be called for each child after the call, and it
-// will continue to be called each time a child changes (via
-// [method@Gtk.FlowBoxChild.changed]) or when
-// [method@Gtk.FlowBox.invalidate_filter] is called.
-//
-// Note that using a filter function is incompatible with using a model (see
-// [method@Gtk.FlowBox.bind_model]).
-func (b flowBox) SetFilterFunc() {
-	var _arg0 *C.GtkFlowBox
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_flow_box_set_filter_func(_arg0)
 }
 
 // SetHAdjustment hooks up an adjustment to focus handling in @box.
@@ -10688,24 +9367,6 @@ func (b flowBox) SetSelectionMode(mode SelectionMode) {
 	_arg1 = (C.GtkSelectionMode)(mode)
 
 	C.gtk_flow_box_set_selection_mode(_arg0, _arg1)
-}
-
-// SetSortFunc: by setting a sort function on the @box, one can dynamically
-// reorder the children of the box, based on the contents of the children.
-//
-// The @sort_func will be called for each child after the call, and will
-// continue to be called each time a child changes (via
-// [method@Gtk.FlowBoxChild.changed]) and when
-// [method@Gtk.FlowBox.invalidate_sort] is called.
-//
-// Note that using a sort function is incompatible with using a model (see
-// [method@Gtk.FlowBox.bind_model]).
-func (b flowBox) SetSortFunc() {
-	var _arg0 *C.GtkFlowBox
-
-	_arg0 = (*C.GtkFlowBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_flow_box_set_sort_func(_arg0)
 }
 
 // SetVAdjustment hooks up an adjustment to focus handling in @box.
@@ -10819,37 +9480,6 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return WrapFontButton(obj), nil
 }
 
-// NewFontButton constructs a class FontButton.
-func NewFontButton() FontButton {
-	var _cret C.GtkFontButton
-
-	cret = C.gtk_font_button_new()
-
-	var _fontButton FontButton
-
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontButton)
-
-	return _fontButton
-}
-
-// NewFontButtonWithFont constructs a class FontButton.
-func NewFontButtonWithFont(fontname string) FontButton {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(fontname))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkFontButton
-
-	cret = C.gtk_font_button_new_with_font(_arg1)
-
-	var _fontButton FontButton
-
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontButton)
-
-	return _fontButton
-}
-
 // Modal gets whether the dialog is modal.
 func (f fontButton) Modal() bool {
 	var _arg0 *C.GtkFontButton
@@ -10858,7 +9488,7 @@ func (f fontButton) Modal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_get_modal(_arg0)
+	_cret = C.gtk_font_button_get_modal(_arg0)
 
 	var _ok bool
 
@@ -10877,7 +9507,7 @@ func (f fontButton) Title() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_font_button_get_title(_arg0)
+	_cret = C.gtk_font_button_get_title(_arg0)
 
 	var _utf8 string
 
@@ -10894,7 +9524,7 @@ func (f fontButton) UseFont() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_get_use_font(_arg0)
+	_cret = C.gtk_font_button_get_use_font(_arg0)
 
 	var _ok bool
 
@@ -10913,7 +9543,7 @@ func (f fontButton) UseSize() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_get_use_size(_arg0)
+	_cret = C.gtk_font_button_get_use_size(_arg0)
 
 	var _ok bool
 
@@ -11038,26 +9668,6 @@ func marshalFontChooserDialog(p uintptr) (interface{}, error) {
 	return WrapFontChooserDialog(obj), nil
 }
 
-// NewFontChooserDialog constructs a class FontChooserDialog.
-func NewFontChooserDialog(title string, parent Window) FontChooserDialog {
-	var _arg1 *C.char
-	var _arg2 *C.GtkWindow
-
-	_arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkFontChooserDialog
-
-	cret = C.gtk_font_chooser_dialog_new(_arg1, _arg2)
-
-	var _fontChooserDialog FontChooserDialog
-
-	_fontChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontChooserDialog)
-
-	return _fontChooserDialog
-}
-
 // FontChooserWidget: the `GtkFontChooserWidget` widget lets the user select a
 // font.
 //
@@ -11112,19 +9722,6 @@ func marshalFontChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFontChooserWidget(obj), nil
-}
-
-// NewFontChooserWidget constructs a class FontChooserWidget.
-func NewFontChooserWidget() FontChooserWidget {
-	var _cret C.GtkFontChooserWidget
-
-	cret = C.gtk_font_chooser_widget_new()
-
-	var _fontChooserWidget FontChooserWidget
-
-	_fontChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontChooserWidget)
-
-	return _fontChooserWidget
 }
 
 // HeaderBar: `GtkHeaderBar` is a widget for creating custom title bars for
@@ -11193,10 +9790,6 @@ type HeaderBar interface {
 	// ShowTitleButtons returns whether this header bar shows the standard
 	// window title buttons.
 	ShowTitleButtons() bool
-	// TitleWidget retrieves the title widget of the header.
-	//
-	// See [method@Gtk.HeaderBar.set_title_widget].
-	TitleWidget() Widget
 	// PackEnd adds @child to @bar, packed with reference to the end of the
 	// @bar.
 	PackEnd(child Widget)
@@ -11270,19 +9863,6 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return WrapHeaderBar(obj), nil
 }
 
-// NewHeaderBar constructs a class HeaderBar.
-func NewHeaderBar() HeaderBar {
-	var _cret C.GtkHeaderBar
-
-	cret = C.gtk_header_bar_new()
-
-	var _headerBar HeaderBar
-
-	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HeaderBar)
-
-	return _headerBar
-}
-
 // DecorationLayout gets the decoration layout of the `GtkHeaderBar`.
 func (b headerBar) DecorationLayout() string {
 	var _arg0 *C.GtkHeaderBar
@@ -11291,7 +9871,7 @@ func (b headerBar) DecorationLayout() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_header_bar_get_decoration_layout(_arg0)
+	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
 	var _utf8 string
 
@@ -11309,7 +9889,7 @@ func (b headerBar) ShowTitleButtons() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
+	_cret = C.gtk_header_bar_get_show_title_buttons(_arg0)
 
 	var _ok bool
 
@@ -11318,25 +9898,6 @@ func (b headerBar) ShowTitleButtons() bool {
 	}
 
 	return _ok
-}
-
-// TitleWidget retrieves the title widget of the header.
-//
-// See [method@Gtk.HeaderBar.set_title_widget].
-func (b headerBar) TitleWidget() Widget {
-	var _arg0 *C.GtkHeaderBar
-
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_header_bar_get_title_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // PackEnd adds @child to @bar, packed with reference to the end of the
@@ -11448,10 +10009,6 @@ type IconPaintable interface {
 	gextras.Objector
 	gdk.Paintable
 
-	// File gets the `GFile` that was used to load the icon.
-	//
-	// Returns nil if the icon was not loaded from a file.
-	File() gio.File
 	// IconName: get the icon name being used for this icon.
 	//
 	// When an icon looked up in the icon theme was not available, the icon
@@ -11494,46 +10051,6 @@ func marshalIconPaintable(p uintptr) (interface{}, error) {
 	return WrapIconPaintable(obj), nil
 }
 
-// NewIconPaintableForFile constructs a class IconPaintable.
-func NewIconPaintableForFile(file gio.File, size int, scale int) IconPaintable {
-	var _arg1 *C.GFile
-	var _arg2 C.int
-	var _arg3 C.int
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-	_arg2 = C.int(size)
-	_arg3 = C.int(scale)
-
-	var _cret C.GtkIconPaintable
-
-	cret = C.gtk_icon_paintable_new_for_file(_arg1, _arg2, _arg3)
-
-	var _iconPaintable IconPaintable
-
-	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
-
-	return _iconPaintable
-}
-
-// File gets the `GFile` that was used to load the icon.
-//
-// Returns nil if the icon was not loaded from a file.
-func (s iconPaintable) File() gio.File {
-	var _arg0 *C.GtkIconPaintable
-
-	_arg0 = (*C.GtkIconPaintable)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_icon_paintable_get_file(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
-}
-
 // IconName: get the icon name being used for this icon.
 //
 // When an icon looked up in the icon theme was not available, the icon
@@ -11549,7 +10066,7 @@ func (s iconPaintable) IconName() *string {
 
 	var _cret *C.char
 
-	cret = C.gtk_icon_paintable_get_icon_name(_arg0)
+	_cret = C.gtk_icon_paintable_get_icon_name(_arg0)
 
 	var _filename *string
 
@@ -11572,7 +10089,7 @@ func (s iconPaintable) IsSymbolic() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_paintable_is_symbolic(_arg0)
+	_cret = C.gtk_icon_paintable_is_symbolic(_arg0)
 
 	var _ok bool
 
@@ -11623,9 +10140,6 @@ type IconTheme interface {
 	//
 	// See [method@Gtk.IconTheme.set_search_path].
 	AddSearchPath(path *string)
-	// Display returns the display that the `GtkIconTheme` object was created
-	// for.
-	Display() gdk.Display
 	// IconNames lists the names of icons in the current icon theme.
 	IconNames() []string
 	// IconSizes returns an array of integers describing the sizes at which the
@@ -11652,28 +10166,6 @@ type IconTheme interface {
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
-	// LookupByGIcon looks up a icon for a desired size and window scale.
-	//
-	// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-	// get information such as the filename and size.
-	LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
-	// LookupIcon looks up a named icon for a desired size and window scale,
-	// returning a `GtkIconPaintable`.
-	//
-	// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-	// get information such as the filename and size.
-	//
-	// If the available @icon_name is not available and @fallbacks are provided,
-	// they will be tried in order.
-	//
-	// If no matching icon is found, then a paintable that renders the "missing
-	// icon" icon is returned. If you need to do something else for missing
-	// icons you need to use [method@Gtk.IconTheme.has_icon].
-	//
-	// Note that you probably want to listen for icon theme changes and update
-	// the icon. This is usually done by overriding the
-	// GtkWidgetClass.css-changed() function.
-	LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable
 	// SetResourcePath sets the resource paths that will be looked at when
 	// looking for icons, similar to search paths.
 	//
@@ -11730,19 +10222,6 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 	return WrapIconTheme(obj), nil
 }
 
-// NewIconTheme constructs a class IconTheme.
-func NewIconTheme() IconTheme {
-	var _cret C.GtkIconTheme
-
-	cret = C.gtk_icon_theme_new()
-
-	var _iconTheme IconTheme
-
-	_iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconTheme)
-
-	return _iconTheme
-}
-
 // AddResourcePath adds a resource path that will be looked at when looking
 // for icons, similar to search paths.
 //
@@ -11775,24 +10254,6 @@ func (s iconTheme) AddSearchPath(path *string) {
 	C.gtk_icon_theme_add_search_path(_arg0, _arg1)
 }
 
-// Display returns the display that the `GtkIconTheme` object was created
-// for.
-func (s iconTheme) Display() gdk.Display {
-	var _arg0 *C.GtkIconTheme
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDisplay
-
-	cret = C.gtk_icon_theme_get_display(_arg0)
-
-	var _display gdk.Display
-
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
-
-	return _display
-}
-
 // IconNames lists the names of icons in the current icon theme.
 func (s iconTheme) IconNames() []string {
 	var _arg0 *C.GtkIconTheme
@@ -11801,7 +10262,7 @@ func (s iconTheme) IconNames() []string {
 
 	var _cret **C.char
 
-	cret = C.gtk_icon_theme_get_icon_names(_arg0)
+	_cret = C.gtk_icon_theme_get_icon_names(_arg0)
 
 	var _utf8s []string
 
@@ -11818,7 +10279,7 @@ func (s iconTheme) IconNames() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -11842,13 +10303,13 @@ func (s iconTheme) IconSizes(iconName string) []int {
 
 	var _cret *C.int
 
-	cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
+	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
 
 	var _gints []int
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.int)(ptr.Add(unsafe.Pointer(p), C.sizeof_int)) {
+		for p := _cret; *p != 0; p = (*C.int)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -11859,7 +10320,7 @@ func (s iconTheme) IconSizes(iconName string) []int {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_gints = make([]int, length)
-		for i := uintptr(0); i < uintptr(length); i += C.sizeof_int {
+		for i := range src {
 			_gints = (int)(_cret)
 		}
 	}
@@ -11877,7 +10338,7 @@ func (s iconTheme) ResourcePath() []string {
 
 	var _cret **C.char
 
-	cret = C.gtk_icon_theme_get_resource_path(_arg0)
+	_cret = C.gtk_icon_theme_get_resource_path(_arg0)
 
 	var _utf8s []string
 
@@ -11894,7 +10355,7 @@ func (s iconTheme) ResourcePath() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -11913,7 +10374,7 @@ func (s iconTheme) SearchPath() []*string {
 
 	var _cret **C.char
 
-	cret = C.gtk_icon_theme_get_search_path(_arg0)
+	_cret = C.gtk_icon_theme_get_search_path(_arg0)
 
 	var _filenames []*string
 
@@ -11930,7 +10391,7 @@ func (s iconTheme) SearchPath() []*string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_filenames = make([]*string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_filenames = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -11949,7 +10410,7 @@ func (s iconTheme) ThemeName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_icon_theme_get_theme_name(_arg0)
+	_cret = C.gtk_icon_theme_get_theme_name(_arg0)
 
 	var _utf8 string
 
@@ -11970,7 +10431,7 @@ func (s iconTheme) HasGIcon(gicon gio.Icon) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
+	_cret = C.gtk_icon_theme_has_gicon(_arg0, _arg1)
 
 	var _ok bool
 
@@ -11993,7 +10454,7 @@ func (s iconTheme) HasIcon(iconName string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
+	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
 
 	var _ok bool
 
@@ -12002,92 +10463,6 @@ func (s iconTheme) HasIcon(iconName string) bool {
 	}
 
 	return _ok
-}
-
-// LookupByGIcon looks up a icon for a desired size and window scale.
-//
-// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-// get information such as the filename and size.
-func (s iconTheme) LookupByGIcon(icon gio.Icon, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.GIcon
-	var _arg2 C.int
-	var _arg3 C.int
-	var _arg4 C.GtkTextDirection
-	var _arg5 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = C.int(size)
-	_arg3 = C.int(scale)
-	_arg4 = (C.GtkTextDirection)(direction)
-	_arg5 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconPaintable
-
-	cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _iconPaintable IconPaintable
-
-	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
-
-	return _iconPaintable
-}
-
-// LookupIcon looks up a named icon for a desired size and window scale,
-// returning a `GtkIconPaintable`.
-//
-// The icon can then be rendered by using it as a `GdkPaintable`, or you can
-// get information such as the filename and size.
-//
-// If the available @icon_name is not available and @fallbacks are provided,
-// they will be tried in order.
-//
-// If no matching icon is found, then a paintable that renders the "missing
-// icon" icon is returned. If you need to do something else for missing
-// icons you need to use [method@Gtk.IconTheme.has_icon].
-//
-// Note that you probably want to listen for icon theme changes and update
-// the icon. This is usually done by overriding the
-// GtkWidgetClass.css-changed() function.
-func (s iconTheme) LookupIcon(iconName string, fallbacks []string, size int, scale int, direction TextDirection, flags IconLookupFlags) IconPaintable {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.char
-	var _arg2 **C.char
-	var _arg3 C.int
-	var _arg4 C.int
-	var _arg5 C.GtkTextDirection
-	var _arg6 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.char)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (**C.char)(C.malloc((len(fallbacks) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	{
-		var out []*C.char
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(fallbacks)))
-
-		for i := range fallbacks {
-			_arg2 = (*C.char)(C.CString(fallbacks))
-			defer C.free(unsafe.Pointer(_arg2))
-		}
-	}
-	_arg3 = C.int(size)
-	_arg4 = C.int(scale)
-	_arg5 = (C.GtkTextDirection)(direction)
-	_arg6 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconPaintable
-
-	cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
-	var _iconPaintable IconPaintable
-
-	_iconPaintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconPaintable)
-
-	return _iconPaintable
 }
 
 // SetResourcePath sets the resource paths that will be looked at when
@@ -12191,9 +10566,6 @@ type IconView interface {
 	ConstraintTarget
 	Scrollable
 
-	// CreateDragIcon creates a #cairo_surface_t representation of the item at
-	// @path. This image is used for a drag icon.
-	CreateDragIcon(path *TreePath) gdk.Paintable
 	// EnableModelDragDest turns @icon_view into a drop destination for
 	// automatic DND. Calling this method sets IconView:reorderable to false.
 	EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction)
@@ -12212,26 +10584,9 @@ type IconView interface {
 	ColumnSpacing() int
 	// Columns returns the value of the ::columns property.
 	Columns() int
-	// Cursor fills in @path and @cell with the current cursor path and cell. If
-	// the cursor isn’t currently set, then *@path will be nil. If no cell
-	// currently has focus, then *@cell will be nil.
-	//
-	// The returned TreePath must be freed with gtk_tree_path_free().
-	Cursor() (*TreePath, CellRenderer, bool)
-	// DestItemAtPos determines the destination item for a given position.
-	DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool)
-	// DragDestItem gets information about the item that is highlighted for
-	// feedback.
-	DragDestItem() (*TreePath, IconViewDropPosition)
-	// ItemAtPos gets the path and cell for the icon at the given position.
-	ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool)
 	// ItemColumn gets the column in which the item @path is currently
 	// displayed. Column numbers start at 0.
 	ItemColumn(path *TreePath) int
-	// ItemOrientation returns the value of the ::item-orientation property
-	// which determines whether the labels are drawn beside the icons instead of
-	// below.
-	ItemOrientation() Orientation
 	// ItemPadding returns the value of the ::item-padding property.
 	ItemPadding() int
 	// ItemRow gets the row in which the item @path is currently displayed. Row
@@ -12243,11 +10598,6 @@ type IconView interface {
 	Margin() int
 	// MarkupColumn returns the column with markup text for @icon_view.
 	MarkupColumn() int
-	// Model returns the model the IconView is based on. Returns nil if the
-	// model is unset.
-	Model() TreeModel
-	// PathAtPos gets the path for the icon at the given position.
-	PathAtPos(x int, y int) *TreePath
 	// PixbufColumn returns the column with pixbufs for @icon_view.
 	PixbufColumn() int
 	// Reorderable retrieves whether the user can reorder the list via
@@ -12255,17 +10605,6 @@ type IconView interface {
 	Reorderable() bool
 	// RowSpacing returns the value of the ::row-spacing property.
 	RowSpacing() int
-	// SelectedItems creates a list of paths of all selected items.
-	// Additionally, if you are planning on modifying the model after calling
-	// this function, you may want to convert the returned list into a list of
-	// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
-	//
-	// To free the return value, use:
-	//
-	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-	SelectedItems() *glib.List
-	// SelectionMode gets the selection mode of the @icon_view.
-	SelectionMode() SelectionMode
 	// Spacing returns the value of the ::spacing property.
 	Spacing() int
 	// TextColumn returns the column with text for @icon_view.
@@ -12273,17 +10612,6 @@ type IconView interface {
 	// TooltipColumn returns the column of @icon_view’s model which is being
 	// used for displaying tooltips on @icon_view’s rows.
 	TooltipColumn() int
-	// TooltipContext: this function is supposed to be used in a
-	// Widget::query-tooltip signal handler for IconView. The @x, @y and
-	// @keyboard_tip values which are received in the signal handler, should be
-	// passed to this function without modification.
-	//
-	// The return value indicates whether there is an icon view item at the
-	// given coordinates (true) or not (false) for mouse tooltips. For keyboard
-	// tooltips the item returned will be the cursor item. When true, then any
-	// of @model, @path and @iter which have been provided will be set to point
-	// to that row and the corresponding model.
-	TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool)
 	// VisibleRange sets @start_path and @end_path to be the first and last
 	// visible path. Note that there may be invisible paths in between.
 	//
@@ -12317,7 +10645,7 @@ type IconView interface {
 	SelectPath(path *TreePath)
 	// SelectedForeach calls a function for each selected icon. Note that the
 	// model or selection cannot be modified from within this function.
-	SelectedForeach()
+	SelectedForeach(fn IconViewForeachFunc)
 	// SetActivateOnSingleClick causes the IconView::item-activated signal to be
 	// emitted on a single click instead of a double click.
 	SetActivateOnSingleClick(single bool)
@@ -12457,73 +10785,6 @@ func marshalIconView(p uintptr) (interface{}, error) {
 	return WrapIconView(obj), nil
 }
 
-// NewIconView constructs a class IconView.
-func NewIconView() IconView {
-	var _cret C.GtkIconView
-
-	cret = C.gtk_icon_view_new()
-
-	var _iconView IconView
-
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
-
-	return _iconView
-}
-
-// NewIconViewWithArea constructs a class IconView.
-func NewIconViewWithArea(area CellArea) IconView {
-	var _arg1 *C.GtkCellArea
-
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-
-	var _cret C.GtkIconView
-
-	cret = C.gtk_icon_view_new_with_area(_arg1)
-
-	var _iconView IconView
-
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
-
-	return _iconView
-}
-
-// NewIconViewWithModel constructs a class IconView.
-func NewIconViewWithModel(model TreeModel) IconView {
-	var _arg1 *C.GtkTreeModel
-
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkIconView
-
-	cret = C.gtk_icon_view_new_with_model(_arg1)
-
-	var _iconView IconView
-
-	_iconView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(IconView)
-
-	return _iconView
-}
-
-// CreateDragIcon creates a #cairo_surface_t representation of the item at
-// @path. This image is used for a drag icon.
-func (i iconView) CreateDragIcon(path *TreePath) gdk.Paintable {
-	var _arg0 *C.GtkIconView
-	var _arg1 *C.GtkTreePath
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GdkPaintable
-
-	cret = C.gtk_icon_view_create_drag_icon(_arg0, _arg1)
-
-	var _paintable gdk.Paintable
-
-	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
-
-	return _paintable
-}
-
 // EnableModelDragDest turns @icon_view into a drop destination for
 // automatic DND. Calling this method sets IconView:reorderable to false.
 func (i iconView) EnableModelDragDest(formats *gdk.ContentFormats, actions gdk.DragAction) {
@@ -12563,7 +10824,7 @@ func (i iconView) ActivateOnSingleClick() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_view_get_activate_on_single_click(_arg0)
+	_cret = C.gtk_icon_view_get_activate_on_single_click(_arg0)
 
 	var _ok bool
 
@@ -12590,7 +10851,7 @@ func (i iconView) CellRect(path *TreePath, cell CellRenderer) (gdk.Rectangle, bo
 	var _rect gdk.Rectangle
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_icon_view_get_cell_rect(_arg0, _arg1, _arg2, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
 	var _ok bool
 
@@ -12609,7 +10870,7 @@ func (i iconView) ColumnSpacing() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_column_spacing(_arg0)
+	_cret = C.gtk_icon_view_get_column_spacing(_arg0)
 
 	var _gint int
 
@@ -12626,113 +10887,13 @@ func (i iconView) Columns() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_columns(_arg0)
+	_cret = C.gtk_icon_view_get_columns(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Cursor fills in @path and @cell with the current cursor path and cell. If
-// the cursor isn’t currently set, then *@path will be nil. If no cell
-// currently has focus, then *@cell will be nil.
-//
-// The returned TreePath must be freed with gtk_tree_path_free().
-func (i iconView) Cursor() (*TreePath, CellRenderer, bool) {
-	var _arg0 *C.GtkIconView
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-
-	var _path *TreePath
-	var _arg2 **C.GtkCellRenderer
-	var _cret C.gboolean
-
-	cret = C.gtk_icon_view_get_cursor(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), _arg2)
-
-	var _cell CellRenderer
-	var _ok bool
-
-	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(CellRenderer)
-	if _cret {
-		_ok = true
-	}
-
-	return _path, _cell, _ok
-}
-
-// DestItemAtPos determines the destination item for a given position.
-func (i iconView) DestItemAtPos(dragX int, dragY int) (*TreePath, IconViewDropPosition, bool) {
-	var _arg0 *C.GtkIconView
-	var _arg1 C.int
-	var _arg2 C.int
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(dragX)
-	_arg2 = C.int(dragY)
-
-	var _path *TreePath
-	var _arg4 C.GtkIconViewDropPosition
-	var _cret C.gboolean
-
-	cret = C.gtk_icon_view_get_dest_item_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg4)
-
-	var _pos IconViewDropPosition
-	var _ok bool
-
-	_pos = IconViewDropPosition(_arg4)
-	if _cret {
-		_ok = true
-	}
-
-	return _path, _pos, _ok
-}
-
-// DragDestItem gets information about the item that is highlighted for
-// feedback.
-func (i iconView) DragDestItem() (*TreePath, IconViewDropPosition) {
-	var _arg0 *C.GtkIconView
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-
-	var _path *TreePath
-	var _arg2 C.GtkIconViewDropPosition
-
-	C.gtk_icon_view_get_drag_dest_item(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_path)), &_arg2)
-
-	var _pos IconViewDropPosition
-
-	_pos = IconViewDropPosition(_arg2)
-
-	return _path, _pos
-}
-
-// ItemAtPos gets the path and cell for the icon at the given position.
-func (i iconView) ItemAtPos(x int, y int) (*TreePath, CellRenderer, bool) {
-	var _arg0 *C.GtkIconView
-	var _arg1 C.int
-	var _arg2 C.int
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
-	var _path *TreePath
-	var _arg4 **C.GtkCellRenderer
-	var _cret C.gboolean
-
-	cret = C.gtk_icon_view_get_item_at_pos(_arg0, _arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)), _arg4)
-
-	var _cell CellRenderer
-	var _ok bool
-
-	_cell = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(CellRenderer)
-	if _cret {
-		_ok = true
-	}
-
-	return _path, _cell, _ok
 }
 
 // ItemColumn gets the column in which the item @path is currently
@@ -12746,32 +10907,13 @@ func (i iconView) ItemColumn(path *TreePath) int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_item_column(_arg0, _arg1)
+	_cret = C.gtk_icon_view_get_item_column(_arg0, _arg1)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// ItemOrientation returns the value of the ::item-orientation property
-// which determines whether the labels are drawn beside the icons instead of
-// below.
-func (i iconView) ItemOrientation() Orientation {
-	var _arg0 *C.GtkIconView
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkOrientation
-
-	cret = C.gtk_icon_view_get_item_orientation(_arg0)
-
-	var _orientation Orientation
-
-	_orientation = Orientation(_cret)
-
-	return _orientation
 }
 
 // ItemPadding returns the value of the ::item-padding property.
@@ -12782,7 +10924,7 @@ func (i iconView) ItemPadding() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_item_padding(_arg0)
+	_cret = C.gtk_icon_view_get_item_padding(_arg0)
 
 	var _gint int
 
@@ -12802,7 +10944,7 @@ func (i iconView) ItemRow(path *TreePath) int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_item_row(_arg0, _arg1)
+	_cret = C.gtk_icon_view_get_item_row(_arg0, _arg1)
 
 	var _gint int
 
@@ -12819,7 +10961,7 @@ func (i iconView) ItemWidth() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_item_width(_arg0)
+	_cret = C.gtk_icon_view_get_item_width(_arg0)
 
 	var _gint int
 
@@ -12836,7 +10978,7 @@ func (i iconView) Margin() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_margin(_arg0)
+	_cret = C.gtk_icon_view_get_margin(_arg0)
 
 	var _gint int
 
@@ -12853,55 +10995,13 @@ func (i iconView) MarkupColumn() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_markup_column(_arg0)
+	_cret = C.gtk_icon_view_get_markup_column(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Model returns the model the IconView is based on. Returns nil if the
-// model is unset.
-func (i iconView) Model() TreeModel {
-	var _arg0 *C.GtkIconView
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkTreeModel
-
-	cret = C.gtk_icon_view_get_model(_arg0)
-
-	var _treeModel TreeModel
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
-
-	return _treeModel
-}
-
-// PathAtPos gets the path for the icon at the given position.
-func (i iconView) PathAtPos(x int, y int) *TreePath {
-	var _arg0 *C.GtkIconView
-	var _arg1 C.int
-	var _arg2 C.int
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_icon_view_get_path_at_pos(_arg0, _arg1, _arg2)
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
 }
 
 // PixbufColumn returns the column with pixbufs for @icon_view.
@@ -12912,7 +11012,7 @@ func (i iconView) PixbufColumn() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_pixbuf_column(_arg0)
+	_cret = C.gtk_icon_view_get_pixbuf_column(_arg0)
 
 	var _gint int
 
@@ -12930,7 +11030,7 @@ func (i iconView) Reorderable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_view_get_reorderable(_arg0)
+	_cret = C.gtk_icon_view_get_reorderable(_arg0)
 
 	var _ok bool
 
@@ -12949,57 +11049,13 @@ func (i iconView) RowSpacing() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_row_spacing(_arg0)
+	_cret = C.gtk_icon_view_get_row_spacing(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// SelectedItems creates a list of paths of all selected items.
-// Additionally, if you are planning on modifying the model after calling
-// this function, you may want to convert the returned list into a list of
-// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
-//
-// To free the return value, use:
-//
-//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-func (i iconView) SelectedItems() *glib.List {
-	var _arg0 *C.GtkIconView
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_icon_view_get_selected_items(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// SelectionMode gets the selection mode of the @icon_view.
-func (i iconView) SelectionMode() SelectionMode {
-	var _arg0 *C.GtkIconView
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkSelectionMode
-
-	cret = C.gtk_icon_view_get_selection_mode(_arg0)
-
-	var _selectionMode SelectionMode
-
-	_selectionMode = SelectionMode(_cret)
-
-	return _selectionMode
 }
 
 // Spacing returns the value of the ::spacing property.
@@ -13010,7 +11066,7 @@ func (i iconView) Spacing() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_spacing(_arg0)
+	_cret = C.gtk_icon_view_get_spacing(_arg0)
 
 	var _gint int
 
@@ -13027,7 +11083,7 @@ func (i iconView) TextColumn() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_text_column(_arg0)
+	_cret = C.gtk_icon_view_get_text_column(_arg0)
 
 	var _gint int
 
@@ -13045,56 +11101,13 @@ func (i iconView) TooltipColumn() int {
 
 	var _cret C.int
 
-	cret = C.gtk_icon_view_get_tooltip_column(_arg0)
+	_cret = C.gtk_icon_view_get_tooltip_column(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// TooltipContext: this function is supposed to be used in a
-// Widget::query-tooltip signal handler for IconView. The @x, @y and
-// @keyboard_tip values which are received in the signal handler, should be
-// passed to this function without modification.
-//
-// The return value indicates whether there is an icon view item at the
-// given coordinates (true) or not (false) for mouse tooltips. For keyboard
-// tooltips the item returned will be the cursor item. When true, then any
-// of @model, @path and @iter which have been provided will be set to point
-// to that row and the corresponding model.
-func (i iconView) TooltipContext(x int, y int, keyboardTip bool) (TreeModel, *TreePath, TreeIter, bool) {
-	var _arg0 *C.GtkIconView
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 C.gboolean
-
-	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(x)
-	_arg2 = C.int(y)
-	if keyboardTip {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _arg4 **C.GtkTreeModel
-	var _path *TreePath
-	var _iter TreeIter
-	var _cret C.gboolean
-
-	cret = C.gtk_icon_view_get_tooltip_context(_arg0, _arg1, _arg2, _arg3, _arg4, (**C.GtkTreePath)(unsafe.Pointer(&_path)), (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
-
-	var _model TreeModel
-
-	var _ok bool
-
-	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg4.Native()))).(TreeModel)
-
-	if _cret {
-		_ok = true
-	}
-
-	return _model, _path, _iter, _ok
 }
 
 // VisibleRange sets @start_path and @end_path to be the first and last
@@ -13110,7 +11123,7 @@ func (i iconView) VisibleRange() (startPath *TreePath, endPath *TreePath, ok boo
 	var _endPath *TreePath
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_view_get_visible_range(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_startPath)), (**C.GtkTreePath)(unsafe.Pointer(&_endPath)))
+	_cret = C.gtk_icon_view_get_visible_range(_arg0, (**C.GtkTreePath)(unsafe.Pointer(&_startPath)), (**C.GtkTreePath)(unsafe.Pointer(&_endPath)))
 
 	var _ok bool
 
@@ -13143,7 +11156,7 @@ func (i iconView) PathIsSelected(path *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_view_path_is_selected(_arg0, _arg1)
+	_cret = C.gtk_icon_view_path_is_selected(_arg0, _arg1)
 
 	var _ok bool
 
@@ -13210,12 +11223,16 @@ func (i iconView) SelectPath(path *TreePath) {
 
 // SelectedForeach calls a function for each selected icon. Note that the
 // model or selection cannot be modified from within this function.
-func (i iconView) SelectedForeach() {
+func (i iconView) SelectedForeach(fn IconViewForeachFunc) {
 	var _arg0 *C.GtkIconView
+	var _arg1 C.GtkIconViewForeachFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkIconView)(unsafe.Pointer(i.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_IconViewForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_icon_view_selected_foreach(_arg0)
+	C.gtk_icon_view_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick causes the IconView::item-activated signal to be
@@ -13599,35 +11616,14 @@ type Image interface {
 
 	// Clear resets the image to be empty.
 	Clear()
-	// GIcon gets the `GIcon` being displayed by the `GtkImage`.
-	//
-	// The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON
-	// (see [method@Gtk.Image.get_storage_type]). The caller of this function
-	// does not own a reference to the returned `GIcon`.
-	GIcon() gio.Icon
 	// IconName gets the icon name and size being displayed by the `GtkImage`.
 	//
 	// The storage type of the image must be GTK_IMAGE_EMPTY or
 	// GTK_IMAGE_ICON_NAME (see [method@Gtk.Image.get_storage_type]). The
 	// returned string is owned by the `GtkImage` and should not be freed.
 	IconName() string
-	// IconSize gets the icon size used by the @image when rendering icons.
-	IconSize() IconSize
-	// Paintable gets the image `GdkPaintable` being displayed by the
-	// `GtkImage`.
-	//
-	// The storage type of the image must be GTK_IMAGE_EMPTY or
-	// GTK_IMAGE_PAINTABLE (see [method@Gtk.Image.get_storage_type]). The caller
-	// of this function does not own a reference to the returned paintable.
-	Paintable() gdk.Paintable
 	// PixelSize gets the pixel size used for named icons.
 	PixelSize() int
-	// StorageType gets the type of representation being used by the `GtkImage`
-	// to store image data.
-	//
-	// If the `GtkImage` has no image data, the return value will be
-	// GTK_IMAGE_EMPTY.
-	StorageType() ImageType
 	// SetFromFile sets a `GtkImage` to show a file.
 	//
 	// See [ctor@Gtk.Image.new_from_file] for details.
@@ -13691,124 +11687,6 @@ func marshalImage(p uintptr) (interface{}, error) {
 	return WrapImage(obj), nil
 }
 
-// NewImage constructs a class Image.
-func NewImage() Image {
-	var _cret C.GtkImage
-
-	cret = C.gtk_image_new()
-
-	var _image Image
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
-
-	return _image
-}
-
-// NewImageFromFile constructs a class Image.
-func NewImageFromFile(filename *string) Image {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkImage
-
-	cret = C.gtk_image_new_from_file(_arg1)
-
-	var _image Image
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
-
-	return _image
-}
-
-// NewImageFromGIcon constructs a class Image.
-func NewImageFromGIcon(icon gio.Icon) Image {
-	var _arg1 *C.GIcon
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	var _cret C.GtkImage
-
-	cret = C.gtk_image_new_from_gicon(_arg1)
-
-	var _image Image
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
-
-	return _image
-}
-
-// NewImageFromIconName constructs a class Image.
-func NewImageFromIconName(iconName string) Image {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkImage
-
-	cret = C.gtk_image_new_from_icon_name(_arg1)
-
-	var _image Image
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
-
-	return _image
-}
-
-// NewImageFromPaintable constructs a class Image.
-func NewImageFromPaintable(paintable gdk.Paintable) Image {
-	var _arg1 *C.GdkPaintable
-
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	var _cret C.GtkImage
-
-	cret = C.gtk_image_new_from_paintable(_arg1)
-
-	var _image Image
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
-
-	return _image
-}
-
-// NewImageFromPixbuf constructs a class Image.
-func NewImageFromPixbuf(pixbuf gdkpixbuf.Pixbuf) Image {
-	var _arg1 *C.GdkPixbuf
-
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GtkImage
-
-	cret = C.gtk_image_new_from_pixbuf(_arg1)
-
-	var _image Image
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
-
-	return _image
-}
-
-// NewImageFromResource constructs a class Image.
-func NewImageFromResource(resourcePath string) Image {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkImage
-
-	cret = C.gtk_image_new_from_resource(_arg1)
-
-	var _image Image
-
-	_image = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Image)
-
-	return _image
-}
-
 // Clear resets the image to be empty.
 func (i image) Clear() {
 	var _arg0 *C.GtkImage
@@ -13816,27 +11694,6 @@ func (i image) Clear() {
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
 	C.gtk_image_clear(_arg0)
-}
-
-// GIcon gets the `GIcon` being displayed by the `GtkImage`.
-//
-// The storage type of the image must be GTK_IMAGE_EMPTY or GTK_IMAGE_GICON
-// (see [method@Gtk.Image.get_storage_type]). The caller of this function
-// does not own a reference to the returned `GIcon`.
-func (i image) GIcon() gio.Icon {
-	var _arg0 *C.GtkImage
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GIcon
-
-	cret = C.gtk_image_get_gicon(_arg0)
-
-	var _icon gio.Icon
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
-
-	return _icon
 }
 
 // IconName gets the icon name and size being displayed by the `GtkImage`.
@@ -13851,52 +11708,13 @@ func (i image) IconName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_image_get_icon_name(_arg0)
+	_cret = C.gtk_image_get_icon_name(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// IconSize gets the icon size used by the @image when rendering icons.
-func (i image) IconSize() IconSize {
-	var _arg0 *C.GtkImage
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkIconSize
-
-	cret = C.gtk_image_get_icon_size(_arg0)
-
-	var _iconSize IconSize
-
-	_iconSize = IconSize(_cret)
-
-	return _iconSize
-}
-
-// Paintable gets the image `GdkPaintable` being displayed by the
-// `GtkImage`.
-//
-// The storage type of the image must be GTK_IMAGE_EMPTY or
-// GTK_IMAGE_PAINTABLE (see [method@Gtk.Image.get_storage_type]). The caller
-// of this function does not own a reference to the returned paintable.
-func (i image) Paintable() gdk.Paintable {
-	var _arg0 *C.GtkImage
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GdkPaintable
-
-	cret = C.gtk_image_get_paintable(_arg0)
-
-	var _paintable gdk.Paintable
-
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
-
-	return _paintable
 }
 
 // PixelSize gets the pixel size used for named icons.
@@ -13907,34 +11725,13 @@ func (i image) PixelSize() int {
 
 	var _cret C.int
 
-	cret = C.gtk_image_get_pixel_size(_arg0)
+	_cret = C.gtk_image_get_pixel_size(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// StorageType gets the type of representation being used by the `GtkImage`
-// to store image data.
-//
-// If the `GtkImage` has no image data, the return value will be
-// GTK_IMAGE_EMPTY.
-func (i image) StorageType() ImageType {
-	var _arg0 *C.GtkImage
-
-	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkImageType
-
-	cret = C.gtk_image_get_storage_type(_arg0)
-
-	var _imageType ImageType
-
-	_imageType = ImageType(_cret)
-
-	return _imageType
 }
 
 // SetFromFile sets a `GtkImage` to show a file.
@@ -14117,17 +11914,8 @@ type InfoBar interface {
 	// is activated. The widget is appended to the end of the message areas
 	// action area.
 	AddActionWidget(child Widget, responseId int)
-	// AddButton adds a button with the given text.
-	//
-	// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
-	// with the given response_id. The button is appended to the end of the info
-	// bars's action area. The button widget is returned, but usually you don't
-	// need it.
-	AddButton(buttonText string, responseId int) Button
 	// AddChild adds a widget to the content area of the info bar.
 	AddChild(widget Widget)
-	// MessageType returns the message type of the message area.
-	MessageType() MessageType
 	// Revealed returns whether the info bar is currently revealed.
 	Revealed() bool
 	// ShowCloseButton returns whether the widget will display a standard close
@@ -14204,19 +11992,6 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return WrapInfoBar(obj), nil
 }
 
-// NewInfoBar constructs a class InfoBar.
-func NewInfoBar() InfoBar {
-	var _cret C.GtkInfoBar
-
-	cret = C.gtk_info_bar_new()
-
-	var _infoBar InfoBar
-
-	_infoBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InfoBar)
-
-	return _infoBar
-}
-
 // AddActionWidget: add an activatable widget to the action area of a
 // `GtkInfoBar`.
 //
@@ -14236,33 +12011,6 @@ func (i infoBar) AddActionWidget(child Widget, responseId int) {
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
 
-// AddButton adds a button with the given text.
-//
-// Clicking the button will emit the [signal@Gtk.InfoBar::response] signal
-// with the given response_id. The button is appended to the end of the info
-// bars's action area. The button widget is returned, but usually you don't
-// need it.
-func (i infoBar) AddButton(buttonText string, responseId int) Button {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 *C.char
-	var _arg2 C.int
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.char)(C.CString(buttonText))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(responseId)
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
-
-	var _button Button
-
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _button
-}
-
 // AddChild adds a widget to the content area of the info bar.
 func (i infoBar) AddChild(widget Widget) {
 	var _arg0 *C.GtkInfoBar
@@ -14274,23 +12022,6 @@ func (i infoBar) AddChild(widget Widget) {
 	C.gtk_info_bar_add_child(_arg0, _arg1)
 }
 
-// MessageType returns the message type of the message area.
-func (i infoBar) MessageType() MessageType {
-	var _arg0 *C.GtkInfoBar
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkMessageType
-
-	cret = C.gtk_info_bar_get_message_type(_arg0)
-
-	var _messageType MessageType
-
-	_messageType = MessageType(_cret)
-
-	return _messageType
-}
-
 // Revealed returns whether the info bar is currently revealed.
 func (i infoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar
@@ -14299,7 +12030,7 @@ func (i infoBar) Revealed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_info_bar_get_revealed(_arg0)
+	_cret = C.gtk_info_bar_get_revealed(_arg0)
 
 	var _ok bool
 
@@ -14319,7 +12050,7 @@ func (i infoBar) ShowCloseButton() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_info_bar_get_show_close_button(_arg0)
+	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
 
 	var _ok bool
 
@@ -14615,15 +12346,6 @@ type Label interface {
 	Buildable
 	ConstraintTarget
 
-	// Attributes gets the labels attribute list.
-	//
-	// This is the [struct@Pango.AttrList] that was set on the label using
-	// [method@Gtk.Label.set_attributes], if any. This function does not reflect
-	// attributes that come from the labels markup (see
-	// [method@Gtk.Label.set_markup]). If you want to get the effective
-	// attributes for the label, use `pango_layout_get_attribute
-	// (gtk_label_get_layout (self))`.
-	Attributes() *pango.AttrList
 	// CurrentURI returns the URI for the currently active link in the label.
 	//
 	// The active link is the one under the mouse pointer or, in a selectable
@@ -14632,31 +12354,11 @@ type Label interface {
 	// This function is intended for use in a [signal@Gtk.Label::activate-link]
 	// handler or for use in a [signal@Gtk.Widget::query-tooltip] handler.
 	CurrentURI() string
-	// Ellipsize returns the ellipsizing position of the label.
-	//
-	// See [method@Gtk.Label.set_ellipsize].
-	Ellipsize() pango.EllipsizeMode
-	// ExtraMenu gets the extra menu model of @label.
-	//
-	// See [method@Gtk.Label.set_extra_menu].
-	ExtraMenu() gio.MenuModel
-	// Justify returns the justification of the label.
-	//
-	// See [method@Gtk.Label.set_justify].
-	Justify() Justification
 	// Label fetches the text from a label.
 	//
 	// The returned text includes any embedded underlines indicating mnemonics
 	// and Pango markup. (See [method@Gtk.Label.get_text]).
 	Label() string
-	// Layout gets the `PangoLayout` used to display the label.
-	//
-	// The layout is useful to e.g. convert text positions to pixel positions,
-	// in combination with [method@Gtk.Label.get_layout_offsets]. The returned
-	// layout is owned by the @label so need not be freed by the caller. The
-	// @label is free to recreate its layout at any time, so it should be
-	// considered read-only.
-	Layout() pango.Layout
 	// LayoutOffsets obtains the coordinates where the label will draw its
 	// `PangoLayout`.
 	//
@@ -14682,11 +12384,6 @@ type Label interface {
 	// returns the keyval used for the mnemonic accelerator. If there is no
 	// mnemonic set up it returns `GDK_KEY_VoidSymbol`.
 	MnemonicKeyval() uint
-	// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
-	// of this label.
-	//
-	// See [method@Gtk.Label.set_mnemonic_widget].
-	MnemonicWidget() Widget
 	// Selectable returns whether the label is selectable.
 	Selectable() bool
 	// SelectionBounds gets the selected range of characters in the label.
@@ -14717,10 +12414,6 @@ type Label interface {
 	//
 	// See [method@Gtk.Label.set_wrap].
 	Wrap() bool
-	// WrapMode returns line wrap mode used by the label.
-	//
-	// See [method@Gtk.Label.set_wrap_mode].
-	WrapMode() pango.WrapMode
 	// Xalign gets the `xalign` of the label.
 	//
 	// See the [property@Gtk.Label:xalign] property.
@@ -14921,66 +12614,6 @@ func marshalLabel(p uintptr) (interface{}, error) {
 	return WrapLabel(obj), nil
 }
 
-// NewLabel constructs a class Label.
-func NewLabel(str string) Label {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkLabel
-
-	cret = C.gtk_label_new(_arg1)
-
-	var _label Label
-
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
-
-	return _label
-}
-
-// NewLabelWithMnemonic constructs a class Label.
-func NewLabelWithMnemonic(str string) Label {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(str))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkLabel
-
-	cret = C.gtk_label_new_with_mnemonic(_arg1)
-
-	var _label Label
-
-	_label = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Label)
-
-	return _label
-}
-
-// Attributes gets the labels attribute list.
-//
-// This is the [struct@Pango.AttrList] that was set on the label using
-// [method@Gtk.Label.set_attributes], if any. This function does not reflect
-// attributes that come from the labels markup (see
-// [method@Gtk.Label.set_markup]). If you want to get the effective
-// attributes for the label, use `pango_layout_get_attribute
-// (gtk_label_get_layout (self))`.
-func (s label) Attributes() *pango.AttrList {
-	var _arg0 *C.GtkLabel
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.PangoAttrList
-
-	cret = C.gtk_label_get_attributes(_arg0)
-
-	var _attrList *pango.AttrList
-
-	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
-
-	return _attrList
-}
-
 // CurrentURI returns the URI for the currently active link in the label.
 //
 // The active link is the one under the mouse pointer or, in a selectable
@@ -14995,70 +12628,13 @@ func (s label) CurrentURI() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_label_get_current_uri(_arg0)
+	_cret = C.gtk_label_get_current_uri(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Ellipsize returns the ellipsizing position of the label.
-//
-// See [method@Gtk.Label.set_ellipsize].
-func (s label) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkLabel
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.PangoEllipsizeMode
-
-	cret = C.gtk_label_get_ellipsize(_arg0)
-
-	var _ellipsizeMode pango.EllipsizeMode
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
-}
-
-// ExtraMenu gets the extra menu model of @label.
-//
-// See [method@Gtk.Label.set_extra_menu].
-func (s label) ExtraMenu() gio.MenuModel {
-	var _arg0 *C.GtkLabel
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_label_get_extra_menu(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
-}
-
-// Justify returns the justification of the label.
-//
-// See [method@Gtk.Label.set_justify].
-func (s label) Justify() Justification {
-	var _arg0 *C.GtkLabel
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkJustification
-
-	cret = C.gtk_label_get_justify(_arg0)
-
-	var _justification Justification
-
-	_justification = Justification(_cret)
-
-	return _justification
 }
 
 // Label fetches the text from a label.
@@ -15072,36 +12648,13 @@ func (s label) Label() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_label_get_label(_arg0)
+	_cret = C.gtk_label_get_label(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Layout gets the `PangoLayout` used to display the label.
-//
-// The layout is useful to e.g. convert text positions to pixel positions,
-// in combination with [method@Gtk.Label.get_layout_offsets]. The returned
-// layout is owned by the @label so need not be freed by the caller. The
-// @label is free to recreate its layout at any time, so it should be
-// considered read-only.
-func (s label) Layout() pango.Layout {
-	var _arg0 *C.GtkLabel
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.PangoLayout
-
-	cret = C.gtk_label_get_layout(_arg0)
-
-	var _layout pango.Layout
-
-	_layout = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.Layout)
-
-	return _layout
 }
 
 // LayoutOffsets obtains the coordinates where the label will draw its
@@ -15142,7 +12695,7 @@ func (s label) Lines() int {
 
 	var _cret C.int
 
-	cret = C.gtk_label_get_lines(_arg0)
+	_cret = C.gtk_label_get_lines(_arg0)
 
 	var _gint int
 
@@ -15162,7 +12715,7 @@ func (s label) MaxWidthChars() int {
 
 	var _cret C.int
 
-	cret = C.gtk_label_get_max_width_chars(_arg0)
+	_cret = C.gtk_label_get_max_width_chars(_arg0)
 
 	var _gint int
 
@@ -15183,33 +12736,13 @@ func (s label) MnemonicKeyval() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_label_get_mnemonic_keyval(_arg0)
+	_cret = C.gtk_label_get_mnemonic_keyval(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// MnemonicWidget retrieves the target of the mnemonic (keyboard shortcut)
-// of this label.
-//
-// See [method@Gtk.Label.set_mnemonic_widget].
-func (s label) MnemonicWidget() Widget {
-	var _arg0 *C.GtkLabel
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_label_get_mnemonic_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // Selectable returns whether the label is selectable.
@@ -15220,7 +12753,7 @@ func (s label) Selectable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_label_get_selectable(_arg0)
+	_cret = C.gtk_label_get_selectable(_arg0)
 
 	var _ok bool
 
@@ -15241,7 +12774,7 @@ func (s label) SelectionBounds() (start int, end int, ok bool) {
 	var _arg2 C.int
 	var _cret C.gboolean
 
-	cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_label_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
 	var _start int
 	var _end int
@@ -15264,7 +12797,7 @@ func (s label) SingleLineMode() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_label_get_single_line_mode(_arg0)
+	_cret = C.gtk_label_get_single_line_mode(_arg0)
 
 	var _ok bool
 
@@ -15287,7 +12820,7 @@ func (s label) Text() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_label_get_text(_arg0)
+	_cret = C.gtk_label_get_text(_arg0)
 
 	var _utf8 string
 
@@ -15307,7 +12840,7 @@ func (s label) UseMarkup() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_label_get_use_markup(_arg0)
+	_cret = C.gtk_label_get_use_markup(_arg0)
 
 	var _ok bool
 
@@ -15329,7 +12862,7 @@ func (s label) UseUnderline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_label_get_use_underline(_arg0)
+	_cret = C.gtk_label_get_use_underline(_arg0)
 
 	var _ok bool
 
@@ -15350,7 +12883,7 @@ func (s label) WidthChars() int {
 
 	var _cret C.int
 
-	cret = C.gtk_label_get_width_chars(_arg0)
+	_cret = C.gtk_label_get_width_chars(_arg0)
 
 	var _gint int
 
@@ -15369,7 +12902,7 @@ func (s label) Wrap() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_label_get_wrap(_arg0)
+	_cret = C.gtk_label_get_wrap(_arg0)
 
 	var _ok bool
 
@@ -15378,25 +12911,6 @@ func (s label) Wrap() bool {
 	}
 
 	return _ok
-}
-
-// WrapMode returns line wrap mode used by the label.
-//
-// See [method@Gtk.Label.set_wrap_mode].
-func (s label) WrapMode() pango.WrapMode {
-	var _arg0 *C.GtkLabel
-
-	_arg0 = (*C.GtkLabel)(unsafe.Pointer(s.Native()))
-
-	var _cret C.PangoWrapMode
-
-	cret = C.gtk_label_get_wrap_mode(_arg0)
-
-	var _wrapMode pango.WrapMode
-
-	_wrapMode = pango.WrapMode(_cret)
-
-	return _wrapMode
 }
 
 // Xalign gets the `xalign` of the label.
@@ -15409,7 +12923,7 @@ func (s label) Xalign() float32 {
 
 	var _cret C.float
 
-	cret = C.gtk_label_get_xalign(_arg0)
+	_cret = C.gtk_label_get_xalign(_arg0)
 
 	var _gfloat float32
 
@@ -15428,7 +12942,7 @@ func (s label) Yalign() float32 {
 
 	var _cret C.float
 
-	cret = C.gtk_label_get_yalign(_arg0)
+	_cret = C.gtk_label_get_yalign(_arg0)
 
 	var _gfloat float32
 
@@ -15929,8 +13443,6 @@ type LevelBar interface {
 	MaxValue() float64
 	// MinValue returns the `min-value of the `GtkLevelBar`.
 	MinValue() float64
-	// Mode returns the `mode` of the `GtkLevelBar`.
-	Mode() LevelBarMode
 	// OffsetValue fetches the value specified for the offset marker @name in
 	// @self.
 	OffsetValue(name string) (float64, bool)
@@ -15988,38 +13500,6 @@ func marshalLevelBar(p uintptr) (interface{}, error) {
 	return WrapLevelBar(obj), nil
 }
 
-// NewLevelBar constructs a class LevelBar.
-func NewLevelBar() LevelBar {
-	var _cret C.GtkLevelBar
-
-	cret = C.gtk_level_bar_new()
-
-	var _levelBar LevelBar
-
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
-
-	return _levelBar
-}
-
-// NewLevelBarForInterval constructs a class LevelBar.
-func NewLevelBarForInterval(minValue float64, maxValue float64) LevelBar {
-	var _arg1 C.double
-	var _arg2 C.double
-
-	_arg1 = C.double(minValue)
-	_arg2 = C.double(maxValue)
-
-	var _cret C.GtkLevelBar
-
-	cret = C.gtk_level_bar_new_for_interval(_arg1, _arg2)
-
-	var _levelBar LevelBar
-
-	_levelBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LevelBar)
-
-	return _levelBar
-}
-
 // AddOffsetValue adds a new offset marker on @self at the position
 // specified by @value.
 //
@@ -16051,7 +13531,7 @@ func (s levelBar) Inverted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_level_bar_get_inverted(_arg0)
+	_cret = C.gtk_level_bar_get_inverted(_arg0)
 
 	var _ok bool
 
@@ -16070,7 +13550,7 @@ func (s levelBar) MaxValue() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_level_bar_get_max_value(_arg0)
+	_cret = C.gtk_level_bar_get_max_value(_arg0)
 
 	var _gdouble float64
 
@@ -16087,30 +13567,13 @@ func (s levelBar) MinValue() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_level_bar_get_min_value(_arg0)
+	_cret = C.gtk_level_bar_get_min_value(_arg0)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// Mode returns the `mode` of the `GtkLevelBar`.
-func (s levelBar) Mode() LevelBarMode {
-	var _arg0 *C.GtkLevelBar
-
-	_arg0 = (*C.GtkLevelBar)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkLevelBarMode
-
-	cret = C.gtk_level_bar_get_mode(_arg0)
-
-	var _levelBarMode LevelBarMode
-
-	_levelBarMode = LevelBarMode(_cret)
-
-	return _levelBarMode
 }
 
 // OffsetValue fetches the value specified for the offset marker @name in
@@ -16126,7 +13589,7 @@ func (s levelBar) OffsetValue(name string) (float64, bool) {
 	var _arg2 C.double
 	var _cret C.gboolean
 
-	cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_level_bar_get_offset_value(_arg0, _arg1, &_arg2)
 
 	var _value float64
 	var _ok bool
@@ -16147,7 +13610,7 @@ func (s levelBar) Value() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_level_bar_get_value(_arg0)
+	_cret = C.gtk_level_bar_get_value(_arg0)
 
 	var _gdouble float64
 
@@ -16317,45 +13780,6 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 	return WrapLinkButton(obj), nil
 }
 
-// NewLinkButton constructs a class LinkButton.
-func NewLinkButton(uri string) LinkButton {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkLinkButton
-
-	cret = C.gtk_link_button_new(_arg1)
-
-	var _linkButton LinkButton
-
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
-
-	return _linkButton
-}
-
-// NewLinkButtonWithLabel constructs a class LinkButton.
-func NewLinkButtonWithLabel(uri string, label string) LinkButton {
-	var _arg1 *C.char
-	var _arg2 *C.char
-
-	_arg1 = (*C.char)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkLinkButton
-
-	cret = C.gtk_link_button_new_with_label(_arg1, _arg2)
-
-	var _linkButton LinkButton
-
-	_linkButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LinkButton)
-
-	return _linkButton
-}
-
 // URI retrieves the URI of the `GtkLinkButton`.
 func (l linkButton) URI() string {
 	var _arg0 *C.GtkLinkButton
@@ -16364,7 +13788,7 @@ func (l linkButton) URI() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_link_button_get_uri(_arg0)
+	_cret = C.gtk_link_button_get_uri(_arg0)
 
 	var _utf8 string
 
@@ -16386,7 +13810,7 @@ func (l linkButton) Visited() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_link_button_get_visited(_arg0)
+	_cret = C.gtk_link_button_get_visited(_arg0)
 
 	var _ok bool
 
@@ -16487,21 +13911,6 @@ type ListBox interface {
 	// If a sort function is set, the widget will actually be inserted at the
 	// calculated position.
 	Append(child Widget)
-	// BindModel binds @model to @box.
-	//
-	// If @box was already bound to a model, that previous binding is destroyed.
-	//
-	// The contents of @box are cleared and then filled with widgets that
-	// represent items from @model. @box is updated whenever @model changes. If
-	// @model is nil, @box is left empty.
-	//
-	// It is undefined to add or remove widgets directly (for example, with
-	// [method@Gtk.ListBox.insert]) while @box is bound to a model.
-	//
-	// Note that using a model is incompatible with the filtering and sorting
-	// functionality in `GtkListBox`. When using a model, filtering and sorting
-	// should be implemented by the model.
-	BindModel()
 	// DragHighlightRow: add a drag highlight to a row.
 	//
 	// This is a helper function for implementing DnD onto a `GtkListBox`. The
@@ -16517,25 +13926,6 @@ type ListBox interface {
 	DragUnhighlightRow()
 	// ActivateOnSingleClick returns whether rows activate on single clicks.
 	ActivateOnSingleClick() bool
-	// Adjustment gets the adjustment (if any) that the widget uses to for
-	// vertical scrolling.
-	Adjustment() Adjustment
-	// RowAtIndex gets the n-th child in the list (not counting headers).
-	//
-	// If @index_ is negative or larger than the number of items in the list,
-	// nil is returned.
-	RowAtIndex(index_ int) ListBoxRow
-	// RowAtY gets the row at the @y position.
-	RowAtY(y int) ListBoxRow
-	// SelectedRow gets the selected row, or nil if no rows are selected.
-	//
-	// Note that the box may allow multiple selection, in which case you should
-	// use [method@Gtk.ListBox.selected_foreach] to find all selected rows.
-	SelectedRow() ListBoxRow
-	// SelectedRows creates a list of all selected children.
-	SelectedRows() *glib.List
-	// SelectionMode gets the selection mode of the listbox.
-	SelectionMode() SelectionMode
 	// ShowSeparators returns whether the list box should show separators
 	// between rows.
 	ShowSeparators() bool
@@ -16578,7 +13968,7 @@ type ListBox interface {
 	// SelectedForeach calls a function for each selected child.
 	//
 	// Note that the selection cannot be modified from within this function.
-	SelectedForeach()
+	SelectedForeach(fn ListBoxForeachFunc)
 	// SetActivateOnSingleClick: if @single is true, rows will be activated when
 	// you click on them, otherwise you need to double-click.
 	SetActivateOnSingleClick(single bool)
@@ -16592,47 +13982,6 @@ type ListBox interface {
 	// the adjustment from that will be picked up automatically, so there is no
 	// need to manually do that.
 	SetAdjustment(adjustment Adjustment)
-	// SetFilterFunc: by setting a filter function on the @box one can decide
-	// dynamically which of the rows to show.
-	//
-	// For instance, to implement a search function on a list that filters the
-	// original list to only show the matching rows.
-	//
-	// The @filter_func will be called for each row after the call, and it will
-	// continue to be called each time a row changes (via
-	// [method@Gtk.ListBoxRow.changed]) or when
-	// [method@Gtk.ListBox.invalidate_filter] is called.
-	//
-	// Note that using a filter function is incompatible with using a model (see
-	// [method@Gtk.ListBox.bind_model]).
-	SetFilterFunc()
-	// SetHeaderFunc sets a header function.
-	//
-	// By setting a header function on the @box one can dynamically add headers
-	// in front of rows, depending on the contents of the row and its position
-	// in the list.
-	//
-	// For instance, one could use it to add headers in front of the first item
-	// of a new kind, in a list sorted by the kind.
-	//
-	// The @update_header can look at the current header widget using
-	// [method@Gtk.ListBoxRow.get_header] and either update the state of the
-	// widget as needed, or set a new one using
-	// [method@Gtk.ListBoxRow.set_header]. If no header is needed, set the
-	// header to nil.
-	//
-	// Note that you may get many calls @update_header to this for a particular
-	// row when e.g. changing things that don’t affect the header. In this case
-	// it is important for performance to not blindly replace an existing header
-	// with an identical one.
-	//
-	// The @update_header function will be called for each row after the call,
-	// and it will continue to be called each time a row changes (via
-	// [method@Gtk.ListBoxRow.changed]) and when the row before changes (either
-	// by [method@Gtk.ListBoxRow.changed] on the previous row, or when the
-	// previous row becomes a different row). It is also called for all rows
-	// when [method@Gtk.ListBox.invalidate_headers] is called.
-	SetHeaderFunc()
 	// SetPlaceholder sets the placeholder widget that is shown in the list when
 	// it doesn't display any visible children.
 	SetPlaceholder(placeholder Widget)
@@ -16641,19 +13990,6 @@ type ListBox interface {
 	// SetShowSeparators sets whether the list box should show separators
 	// between rows.
 	SetShowSeparators(showSeparators bool)
-	// SetSortFunc sets a sort function.
-	//
-	// By setting a sort function on the @box one can dynamically reorder the
-	// rows of the list, based on the contents of the rows.
-	//
-	// The @sort_func will be called for each row after the call, and will
-	// continue to be called each time a row changes (via
-	// [method@Gtk.ListBoxRow.changed]) and when
-	// [method@Gtk.ListBox.invalidate_sort] is called.
-	//
-	// Note that using a sort function is incompatible with using a model (see
-	// [method@Gtk.ListBox.bind_model]).
-	SetSortFunc()
 	// UnselectAll: unselect all children of @box, if the selection mode allows
 	// it.
 	UnselectAll()
@@ -16689,19 +14025,6 @@ func marshalListBox(p uintptr) (interface{}, error) {
 	return WrapListBox(obj), nil
 }
 
-// NewListBox constructs a class ListBox.
-func NewListBox() ListBox {
-	var _cret C.GtkListBox
-
-	cret = C.gtk_list_box_new()
-
-	var _listBox ListBox
-
-	_listBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBox)
-
-	return _listBox
-}
-
 // Append: append a widget to the list.
 //
 // If a sort function is set, the widget will actually be inserted at the
@@ -16714,28 +14037,6 @@ func (b listBox) Append(child Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
 
 	C.gtk_list_box_append(_arg0, _arg1)
-}
-
-// BindModel binds @model to @box.
-//
-// If @box was already bound to a model, that previous binding is destroyed.
-//
-// The contents of @box are cleared and then filled with widgets that
-// represent items from @model. @box is updated whenever @model changes. If
-// @model is nil, @box is left empty.
-//
-// It is undefined to add or remove widgets directly (for example, with
-// [method@Gtk.ListBox.insert]) while @box is bound to a model.
-//
-// Note that using a model is incompatible with the filtering and sorting
-// functionality in `GtkListBox`. When using a model, filtering and sorting
-// should be implemented by the model.
-func (b listBox) BindModel() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_bind_model(_arg0)
 }
 
 // DragHighlightRow: add a drag highlight to a row.
@@ -16775,7 +14076,7 @@ func (b listBox) ActivateOnSingleClick() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
+	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
 
 	var _ok bool
 
@@ -16784,122 +14085,6 @@ func (b listBox) ActivateOnSingleClick() bool {
 	}
 
 	return _ok
-}
-
-// Adjustment gets the adjustment (if any) that the widget uses to for
-// vertical scrolling.
-func (b listBox) Adjustment() Adjustment {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_list_box_get_adjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
-// RowAtIndex gets the n-th child in the list (not counting headers).
-//
-// If @index_ is negative or larger than the number of items in the list,
-// nil is returned.
-func (b listBox) RowAtIndex(index_ int) ListBoxRow {
-	var _arg0 *C.GtkListBox
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.int(index_)
-
-	var _cret *C.GtkListBoxRow
-
-	cret = C.gtk_list_box_get_row_at_index(_arg0, _arg1)
-
-	var _listBoxRow ListBoxRow
-
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
-
-	return _listBoxRow
-}
-
-// RowAtY gets the row at the @y position.
-func (b listBox) RowAtY(y int) ListBoxRow {
-	var _arg0 *C.GtkListBox
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-	_arg1 = C.int(y)
-
-	var _cret *C.GtkListBoxRow
-
-	cret = C.gtk_list_box_get_row_at_y(_arg0, _arg1)
-
-	var _listBoxRow ListBoxRow
-
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
-
-	return _listBoxRow
-}
-
-// SelectedRow gets the selected row, or nil if no rows are selected.
-//
-// Note that the box may allow multiple selection, in which case you should
-// use [method@Gtk.ListBox.selected_foreach] to find all selected rows.
-func (b listBox) SelectedRow() ListBoxRow {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkListBoxRow
-
-	cret = C.gtk_list_box_get_selected_row(_arg0)
-
-	var _listBoxRow ListBoxRow
-
-	_listBoxRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ListBoxRow)
-
-	return _listBoxRow
-}
-
-// SelectedRows creates a list of all selected children.
-func (b listBox) SelectedRows() *glib.List {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_list_box_get_selected_rows(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// SelectionMode gets the selection mode of the listbox.
-func (b listBox) SelectionMode() SelectionMode {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkSelectionMode
-
-	cret = C.gtk_list_box_get_selection_mode(_arg0)
-
-	var _selectionMode SelectionMode
-
-	_selectionMode = SelectionMode(_cret)
-
-	return _selectionMode
 }
 
 // ShowSeparators returns whether the list box should show separators
@@ -16911,7 +14096,7 @@ func (b listBox) ShowSeparators() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_list_box_get_show_separators(_arg0)
+	_cret = C.gtk_list_box_get_show_separators(_arg0)
 
 	var _ok bool
 
@@ -17027,12 +14212,16 @@ func (b listBox) SelectRow(row ListBoxRow) {
 // SelectedForeach calls a function for each selected child.
 //
 // Note that the selection cannot be modified from within this function.
-func (b listBox) SelectedForeach() {
+func (b listBox) SelectedForeach(fn ListBoxForeachFunc) {
 	var _arg0 *C.GtkListBox
+	var _arg1 C.GtkListBoxForeachFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_ListBoxForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_list_box_selected_foreach(_arg0)
+	C.gtk_list_box_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetActivateOnSingleClick: if @single is true, rows will be activated when
@@ -17066,61 +14255,6 @@ func (b listBox) SetAdjustment(adjustment Adjustment) {
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
 
 	C.gtk_list_box_set_adjustment(_arg0, _arg1)
-}
-
-// SetFilterFunc: by setting a filter function on the @box one can decide
-// dynamically which of the rows to show.
-//
-// For instance, to implement a search function on a list that filters the
-// original list to only show the matching rows.
-//
-// The @filter_func will be called for each row after the call, and it will
-// continue to be called each time a row changes (via
-// [method@Gtk.ListBoxRow.changed]) or when
-// [method@Gtk.ListBox.invalidate_filter] is called.
-//
-// Note that using a filter function is incompatible with using a model (see
-// [method@Gtk.ListBox.bind_model]).
-func (b listBox) SetFilterFunc() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_set_filter_func(_arg0)
-}
-
-// SetHeaderFunc sets a header function.
-//
-// By setting a header function on the @box one can dynamically add headers
-// in front of rows, depending on the contents of the row and its position
-// in the list.
-//
-// For instance, one could use it to add headers in front of the first item
-// of a new kind, in a list sorted by the kind.
-//
-// The @update_header can look at the current header widget using
-// [method@Gtk.ListBoxRow.get_header] and either update the state of the
-// widget as needed, or set a new one using
-// [method@Gtk.ListBoxRow.set_header]. If no header is needed, set the
-// header to nil.
-//
-// Note that you may get many calls @update_header to this for a particular
-// row when e.g. changing things that don’t affect the header. In this case
-// it is important for performance to not blindly replace an existing header
-// with an identical one.
-//
-// The @update_header function will be called for each row after the call,
-// and it will continue to be called each time a row changes (via
-// [method@Gtk.ListBoxRow.changed]) and when the row before changes (either
-// by [method@Gtk.ListBoxRow.changed] on the previous row, or when the
-// previous row becomes a different row). It is also called for all rows
-// when [method@Gtk.ListBox.invalidate_headers] is called.
-func (b listBox) SetHeaderFunc() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_set_header_func(_arg0)
 }
 
 // SetPlaceholder sets the placeholder widget that is shown in the list when
@@ -17158,26 +14292,6 @@ func (b listBox) SetShowSeparators(showSeparators bool) {
 	}
 
 	C.gtk_list_box_set_show_separators(_arg0, _arg1)
-}
-
-// SetSortFunc sets a sort function.
-//
-// By setting a sort function on the @box one can dynamically reorder the
-// rows of the list, based on the contents of the rows.
-//
-// The @sort_func will be called for each row after the call, and will
-// continue to be called each time a row changes (via
-// [method@Gtk.ListBoxRow.changed]) and when
-// [method@Gtk.ListBox.invalidate_sort] is called.
-//
-// Note that using a sort function is incompatible with using a model (see
-// [method@Gtk.ListBox.bind_model]).
-func (b listBox) SetSortFunc() {
-	var _arg0 *C.GtkListBox
-
-	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
-
-	C.gtk_list_box_set_sort_func(_arg0)
 }
 
 // UnselectAll: unselect all children of @box, if the selection mode allows
@@ -17246,8 +14360,6 @@ type LockButton interface {
 	Buildable
 	ConstraintTarget
 
-	// Permission obtains the `GPermission` object that controls @button.
-	Permission() gio.Permission
 	// SetPermission sets the `GPermission` object that controls @button.
 	SetPermission(permission gio.Permission)
 }
@@ -17279,40 +14391,6 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapLockButton(obj), nil
-}
-
-// NewLockButton constructs a class LockButton.
-func NewLockButton(permission gio.Permission) LockButton {
-	var _arg1 *C.GPermission
-
-	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-
-	var _cret C.GtkLockButton
-
-	cret = C.gtk_lock_button_new(_arg1)
-
-	var _lockButton LockButton
-
-	_lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LockButton)
-
-	return _lockButton
-}
-
-// Permission obtains the `GPermission` object that controls @button.
-func (b lockButton) Permission() gio.Permission {
-	var _arg0 *C.GtkLockButton
-
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GPermission
-
-	cret = C.gtk_lock_button_get_permission(_arg0)
-
-	var _permission gio.Permission
-
-	_permission = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Permission)
-
-	return _permission
 }
 
 // SetPermission sets the `GPermission` object that controls @button.
@@ -17386,21 +14464,12 @@ type MenuButton interface {
 	Buildable
 	ConstraintTarget
 
-	// Direction returns the direction the popup will be pointing at when popped
-	// up.
-	Direction() ArrowType
 	// HasFrame returns whether the button has a frame.
 	HasFrame() bool
 	// IconName gets the name of the icon shown in the button.
 	IconName() string
 	// Label gets the label shown in the button
 	Label() string
-	// MenuModel returns the `GMenuModel` used to generate the popup.
-	MenuModel() gio.MenuModel
-	// Popover returns the `GtkPopover` that pops out of the button.
-	//
-	// If the button is not using a `GtkPopover`, this function returns nil.
-	Popover() Popover
 	// UseUnderline returns whether an embedded underline in the text indicates
 	// a mnemonic.
 	UseUnderline() bool
@@ -17408,20 +14477,6 @@ type MenuButton interface {
 	Popdown()
 	// Popup: pop up the menu.
 	Popup()
-	// SetCreatePopupFunc sets @func to be called when a popup is about to be
-	// shown.
-	//
-	// @func should use one of
-	//
-	//    - [method@Gtk.MenuButton.set_popover]
-	//    - [method@Gtk.MenuButton.set_menu_model]
-	//
-	// to set a popup for @menu_button. If @func is non-nil, @menu_button will
-	// always be sensitive.
-	//
-	// Using this function will not reset the menu widget attached to
-	// @menu_button. Instead, this can be done manually in @func.
-	SetCreatePopupFunc()
 	// SetDirection sets the direction in which the popup will be popped up.
 	//
 	// If the button is automatically populated with an arrow icon, its
@@ -17490,37 +14545,6 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return WrapMenuButton(obj), nil
 }
 
-// NewMenuButton constructs a class MenuButton.
-func NewMenuButton() MenuButton {
-	var _cret C.GtkMenuButton
-
-	cret = C.gtk_menu_button_new()
-
-	var _menuButton MenuButton
-
-	_menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuButton)
-
-	return _menuButton
-}
-
-// Direction returns the direction the popup will be pointing at when popped
-// up.
-func (m menuButton) Direction() ArrowType {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GtkArrowType
-
-	cret = C.gtk_menu_button_get_direction(_arg0)
-
-	var _arrowType ArrowType
-
-	_arrowType = ArrowType(_cret)
-
-	return _arrowType
-}
-
 // HasFrame returns whether the button has a frame.
 func (m menuButton) HasFrame() bool {
 	var _arg0 *C.GtkMenuButton
@@ -17529,7 +14553,7 @@ func (m menuButton) HasFrame() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_menu_button_get_has_frame(_arg0)
+	_cret = C.gtk_menu_button_get_has_frame(_arg0)
 
 	var _ok bool
 
@@ -17548,7 +14572,7 @@ func (m menuButton) IconName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_menu_button_get_icon_name(_arg0)
+	_cret = C.gtk_menu_button_get_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -17565,49 +14589,13 @@ func (m menuButton) Label() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_menu_button_get_label(_arg0)
+	_cret = C.gtk_menu_button_get_label(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// MenuModel returns the `GMenuModel` used to generate the popup.
-func (m menuButton) MenuModel() gio.MenuModel {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_menu_button_get_menu_model(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
-}
-
-// Popover returns the `GtkPopover` that pops out of the button.
-//
-// If the button is not using a `GtkPopover`, this function returns nil.
-func (m menuButton) Popover() Popover {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkPopover
-
-	cret = C.gtk_menu_button_get_popover(_arg0)
-
-	var _popover Popover
-
-	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Popover)
-
-	return _popover
 }
 
 // UseUnderline returns whether an embedded underline in the text indicates
@@ -17619,7 +14607,7 @@ func (m menuButton) UseUnderline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_menu_button_get_use_underline(_arg0)
+	_cret = C.gtk_menu_button_get_use_underline(_arg0)
 
 	var _ok bool
 
@@ -17646,27 +14634,6 @@ func (m menuButton) Popup() {
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
 	C.gtk_menu_button_popup(_arg0)
-}
-
-// SetCreatePopupFunc sets @func to be called when a popup is about to be
-// shown.
-//
-// @func should use one of
-//
-//    - [method@Gtk.MenuButton.set_popover]
-//    - [method@Gtk.MenuButton.set_menu_model]
-//
-// to set a popup for @menu_button. If @func is non-nil, @menu_button will
-// always be sensitive.
-//
-// Using this function will not reset the menu widget attached to
-// @menu_button. Instead, this can be done manually in @func.
-func (m menuButton) SetCreatePopupFunc() {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	C.gtk_menu_button_set_create_popup_func(_arg0)
 }
 
 // SetDirection sets the direction in which the popup will be popped up.
@@ -17863,31 +14830,15 @@ type Notebook interface {
 	// additionally informs the notebook that the removal is happening as part
 	// of a tab DND operation, which should not be cancelled.
 	DetachTab(child Widget)
-	// ActionWidget gets one of the action widgets.
-	//
-	// See [method@Gtk.Notebook.set_action_widget].
-	ActionWidget(packType PackType) Widget
 	// CurrentPage returns the page number of the current page.
 	CurrentPage() int
 	// GroupName gets the current group name for @notebook.
 	GroupName() string
-	// MenuLabel retrieves the menu label widget of the page containing @child.
-	MenuLabel(child Widget) Widget
 	// MenuLabelText retrieves the text of the menu label for the page
 	// containing @child.
 	MenuLabelText(child Widget) string
 	// NPages gets the number of pages in a notebook.
 	NPages() int
-	// NthPage returns the child widget contained in page number @page_num.
-	NthPage(pageNum int) Widget
-	// Page returns the `GtkNotebookPage` for @child.
-	Page(child Widget) NotebookPage
-	// Pages returns a `GListModel` that contains the pages of the notebook.
-	//
-	// This can be used to keep an up-to-date view. The model also implements
-	// [iface@Gtk.SelectionModel] and can be used to track and modify the
-	// visible page.
-	Pages() gio.ListModel
 	// Scrollable returns whether the tab label area has arrows for scrolling.
 	Scrollable() bool
 	// ShowBorder returns whether a bevel will be drawn around the notebook
@@ -17898,16 +14849,9 @@ type Notebook interface {
 	// TabDetachable returns whether the tab contents can be detached from
 	// @notebook.
 	TabDetachable(child Widget) bool
-	// TabLabel returns the tab label widget for the page @child.
-	//
-	// nil is returned if @child is not in @notebook or if no tab label has
-	// specifically been set for @child.
-	TabLabel(child Widget) Widget
 	// TabLabelText retrieves the text of the tab label for the page containing
 	// @child.
 	TabLabelText(child Widget) string
-	// TabPos gets the edge at which the tabs are drawn.
-	TabPos() PositionType
 	// TabReorderable gets whether the tab can be reordered via drag and drop or
 	// not.
 	TabReorderable(child Widget) bool
@@ -18059,19 +15003,6 @@ func marshalNotebook(p uintptr) (interface{}, error) {
 	return WrapNotebook(obj), nil
 }
 
-// NewNotebook constructs a class Notebook.
-func NewNotebook() Notebook {
-	var _cret C.GtkNotebook
-
-	cret = C.gtk_notebook_new()
-
-	var _notebook Notebook
-
-	_notebook = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Notebook)
-
-	return _notebook
-}
-
 // AppendPage appends a page to @notebook.
 func (n notebook) AppendPage(child Widget, tabLabel Widget) int {
 	var _arg0 *C.GtkNotebook
@@ -18084,7 +15015,7 @@ func (n notebook) AppendPage(child Widget, tabLabel Widget) int {
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_append_page(_arg0, _arg1, _arg2)
+	_cret = C.gtk_notebook_append_page(_arg0, _arg1, _arg2)
 
 	var _gint int
 
@@ -18108,7 +15039,7 @@ func (n notebook) AppendPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_append_page_menu(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_notebook_append_page_menu(_arg0, _arg1, _arg2, _arg3)
 
 	var _gint int
 
@@ -18132,27 +15063,6 @@ func (n notebook) DetachTab(child Widget) {
 	C.gtk_notebook_detach_tab(_arg0, _arg1)
 }
 
-// ActionWidget gets one of the action widgets.
-//
-// See [method@Gtk.Notebook.set_action_widget].
-func (n notebook) ActionWidget(packType PackType) Widget {
-	var _arg0 *C.GtkNotebook
-	var _arg1 C.GtkPackType
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (C.GtkPackType)(packType)
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_notebook_get_action_widget(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // CurrentPage returns the page number of the current page.
 func (n notebook) CurrentPage() int {
 	var _arg0 *C.GtkNotebook
@@ -18161,7 +15071,7 @@ func (n notebook) CurrentPage() int {
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_get_current_page(_arg0)
+	_cret = C.gtk_notebook_get_current_page(_arg0)
 
 	var _gint int
 
@@ -18178,32 +15088,13 @@ func (n notebook) GroupName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_notebook_get_group_name(_arg0)
+	_cret = C.gtk_notebook_get_group_name(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// MenuLabel retrieves the menu label widget of the page containing @child.
-func (n notebook) MenuLabel(child Widget) Widget {
-	var _arg0 *C.GtkNotebook
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_notebook_get_menu_label(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // MenuLabelText retrieves the text of the menu label for the page
@@ -18217,7 +15108,7 @@ func (n notebook) MenuLabelText(child Widget) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_notebook_get_menu_label_text(_arg0, _arg1)
+	_cret = C.gtk_notebook_get_menu_label_text(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -18234,72 +15125,13 @@ func (n notebook) NPages() int {
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_get_n_pages(_arg0)
+	_cret = C.gtk_notebook_get_n_pages(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// NthPage returns the child widget contained in page number @page_num.
-func (n notebook) NthPage(pageNum int) Widget {
-	var _arg0 *C.GtkNotebook
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = C.int(pageNum)
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_notebook_get_nth_page(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// Page returns the `GtkNotebookPage` for @child.
-func (n notebook) Page(child Widget) NotebookPage {
-	var _arg0 *C.GtkNotebook
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkNotebookPage
-
-	cret = C.gtk_notebook_get_page(_arg0, _arg1)
-
-	var _notebookPage NotebookPage
-
-	_notebookPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(NotebookPage)
-
-	return _notebookPage
-}
-
-// Pages returns a `GListModel` that contains the pages of the notebook.
-//
-// This can be used to keep an up-to-date view. The model also implements
-// [iface@Gtk.SelectionModel] and can be used to track and modify the
-// visible page.
-func (n notebook) Pages() gio.ListModel {
-	var _arg0 *C.GtkNotebook
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_notebook_get_pages(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // Scrollable returns whether the tab label area has arrows for scrolling.
@@ -18310,7 +15142,7 @@ func (n notebook) Scrollable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_notebook_get_scrollable(_arg0)
+	_cret = C.gtk_notebook_get_scrollable(_arg0)
 
 	var _ok bool
 
@@ -18330,7 +15162,7 @@ func (n notebook) ShowBorder() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_notebook_get_show_border(_arg0)
+	_cret = C.gtk_notebook_get_show_border(_arg0)
 
 	var _ok bool
 
@@ -18349,7 +15181,7 @@ func (n notebook) ShowTabs() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_notebook_get_show_tabs(_arg0)
+	_cret = C.gtk_notebook_get_show_tabs(_arg0)
 
 	var _ok bool
 
@@ -18371,7 +15203,7 @@ func (n notebook) TabDetachable(child Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_notebook_get_tab_detachable(_arg0, _arg1)
+	_cret = C.gtk_notebook_get_tab_detachable(_arg0, _arg1)
 
 	var _ok bool
 
@@ -18380,28 +15212,6 @@ func (n notebook) TabDetachable(child Widget) bool {
 	}
 
 	return _ok
-}
-
-// TabLabel returns the tab label widget for the page @child.
-//
-// nil is returned if @child is not in @notebook or if no tab label has
-// specifically been set for @child.
-func (n notebook) TabLabel(child Widget) Widget {
-	var _arg0 *C.GtkNotebook
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_notebook_get_tab_label(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // TabLabelText retrieves the text of the tab label for the page containing
@@ -18415,30 +15225,13 @@ func (n notebook) TabLabelText(child Widget) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_notebook_get_tab_label_text(_arg0, _arg1)
+	_cret = C.gtk_notebook_get_tab_label_text(_arg0, _arg1)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// TabPos gets the edge at which the tabs are drawn.
-func (n notebook) TabPos() PositionType {
-	var _arg0 *C.GtkNotebook
-
-	_arg0 = (*C.GtkNotebook)(unsafe.Pointer(n.Native()))
-
-	var _cret C.GtkPositionType
-
-	cret = C.gtk_notebook_get_tab_pos(_arg0)
-
-	var _positionType PositionType
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
 }
 
 // TabReorderable gets whether the tab can be reordered via drag and drop or
@@ -18452,7 +15245,7 @@ func (n notebook) TabReorderable(child Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_notebook_get_tab_reorderable(_arg0, _arg1)
+	_cret = C.gtk_notebook_get_tab_reorderable(_arg0, _arg1)
 
 	var _ok bool
 
@@ -18477,7 +15270,7 @@ func (n notebook) InsertPage(child Widget, tabLabel Widget, position int) int {
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_insert_page(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_notebook_insert_page(_arg0, _arg1, _arg2, _arg3)
 
 	var _gint int
 
@@ -18503,7 +15296,7 @@ func (n notebook) InsertPageMenu(child Widget, tabLabel Widget, menuLabel Widget
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_insert_page_menu(_arg0, _arg1, _arg2, _arg3, _arg4)
+	_cret = C.gtk_notebook_insert_page_menu(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _gint int
 
@@ -18534,7 +15327,7 @@ func (n notebook) PageNum(child Widget) int {
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_page_num(_arg0, _arg1)
+	_cret = C.gtk_notebook_page_num(_arg0, _arg1)
 
 	var _gint int
 
@@ -18576,7 +15369,7 @@ func (n notebook) PrependPage(child Widget, tabLabel Widget) int {
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_prepend_page(_arg0, _arg1, _arg2)
+	_cret = C.gtk_notebook_prepend_page(_arg0, _arg1, _arg2)
 
 	var _gint int
 
@@ -18600,7 +15393,7 @@ func (n notebook) PrependPageMenu(child Widget, tabLabel Widget, menuLabel Widge
 
 	var _cret C.int
 
-	cret = C.gtk_notebook_prepend_page_menu(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_notebook_prepend_page_menu(_arg0, _arg1, _arg2, _arg3)
 
 	var _gint int
 
@@ -18878,9 +15671,6 @@ func (n notebook) SetTabReorderable(child Widget, reorderable bool) {
 // NotebookPage: `GtkNotebookPage` is an auxiliary object used by `GtkNotebook`.
 type NotebookPage interface {
 	gextras.Objector
-
-	// Child returns the notebook child to which @page belongs.
-	Child() Widget
 }
 
 // notebookPage implements the NotebookPage interface.
@@ -18902,23 +15692,6 @@ func marshalNotebookPage(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNotebookPage(obj), nil
-}
-
-// Child returns the notebook child to which @page belongs.
-func (p notebookPage) Child() Widget {
-	var _arg0 *C.GtkNotebookPage
-
-	_arg0 = (*C.GtkNotebookPage)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_notebook_page_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // Overlay: `GtkOverlay` is a container which contains a single main child, on
@@ -18968,8 +15741,6 @@ type Overlay interface {
 	// The position at which @widget is placed is determined from its
 	// [property@Gtk.Widget:halign] and [property@Gtk.Widget:valign] properties.
 	AddOverlay(widget Widget)
-	// Child gets the child widget of @overlay.
-	Child() Widget
 	// ClipOverlay gets whether @widget should be clipped within the parent.
 	ClipOverlay(widget Widget) bool
 	// MeasureOverlay gets whether @widget's size is included in the measurement
@@ -19018,19 +15789,6 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return WrapOverlay(obj), nil
 }
 
-// NewOverlay constructs a class Overlay.
-func NewOverlay() Overlay {
-	var _cret C.GtkOverlay
-
-	cret = C.gtk_overlay_new()
-
-	var _overlay Overlay
-
-	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Overlay)
-
-	return _overlay
-}
-
 // AddOverlay adds @widget to @overlay.
 //
 // The widget will be stacked on top of the main widget added with
@@ -19048,23 +15806,6 @@ func (o overlay) AddOverlay(widget Widget) {
 	C.gtk_overlay_add_overlay(_arg0, _arg1)
 }
 
-// Child gets the child widget of @overlay.
-func (o overlay) Child() Widget {
-	var _arg0 *C.GtkOverlay
-
-	_arg0 = (*C.GtkOverlay)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_overlay_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // ClipOverlay gets whether @widget should be clipped within the parent.
 func (o overlay) ClipOverlay(widget Widget) bool {
 	var _arg0 *C.GtkOverlay
@@ -19075,7 +15816,7 @@ func (o overlay) ClipOverlay(widget Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_overlay_get_clip_overlay(_arg0, _arg1)
+	_cret = C.gtk_overlay_get_clip_overlay(_arg0, _arg1)
 
 	var _ok bool
 
@@ -19097,7 +15838,7 @@ func (o overlay) MeasureOverlay(widget Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_overlay_get_measure_overlay(_arg0, _arg1)
+	_cret = C.gtk_overlay_get_measure_overlay(_arg0, _arg1)
 
 	var _ok bool
 
@@ -19209,14 +15950,10 @@ func (o overlay) SetMeasureOverlay(widget Widget, measure bool) {
 type PageSetup interface {
 	gextras.Objector
 
-	// Copy copies a `GtkPageSetup`.
-	Copy() PageSetup
 	// BottomMargin gets the bottom margin in units of @unit.
 	BottomMargin(unit Unit) float64
 	// LeftMargin gets the left margin in units of @unit.
 	LeftMargin(unit Unit) float64
-	// Orientation gets the page orientation of the `GtkPageSetup`.
-	Orientation() PageOrientation
 	// PageHeight returns the page height in units of @unit.
 	//
 	// Note that this function takes orientation and margins into consideration.
@@ -19232,8 +15969,6 @@ type PageSetup interface {
 	// Note that this function takes orientation, but not margins into
 	// consideration. See [method@Gtk.PageSetup.get_page_height].
 	PaperHeight(unit Unit) float64
-	// PaperSize gets the paper size of the `GtkPageSetup`.
-	PaperSize() *PaperSize
 	// PaperWidth returns the paper width in units of @unit.
 	//
 	// Note that this function takes orientation, but not margins into
@@ -19270,8 +16005,6 @@ type PageSetup interface {
 	SetTopMargin(margin float64, unit Unit)
 	// ToFile: this function saves the information from @setup to @file_name.
 	ToFile(fileName *string) error
-	// ToGVariant: serialize page setup to an a{sv} variant.
-	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the page setup from @setup to @key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
 }
@@ -19297,97 +16030,6 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 	return WrapPageSetup(obj), nil
 }
 
-// NewPageSetup constructs a class PageSetup.
-func NewPageSetup() PageSetup {
-	var _cret C.GtkPageSetup
-
-	cret = C.gtk_page_setup_new()
-
-	var _pageSetup PageSetup
-
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
-
-	return _pageSetup
-}
-
-// NewPageSetupFromFile constructs a class PageSetup.
-func NewPageSetupFromFile(fileName *string) (PageSetup, error) {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(fileName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkPageSetup
-	var _cerr *C.GError
-
-	cret = C.gtk_page_setup_new_from_file(_arg1, _cerr)
-
-	var _pageSetup PageSetup
-	var _goerr error
-
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pageSetup, _goerr
-}
-
-// NewPageSetupFromGVariant constructs a class PageSetup.
-func NewPageSetupFromGVariant(variant *glib.Variant) PageSetup {
-	var _arg1 *C.GVariant
-
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	var _cret C.GtkPageSetup
-
-	cret = C.gtk_page_setup_new_from_gvariant(_arg1)
-
-	var _pageSetup PageSetup
-
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
-
-	return _pageSetup
-}
-
-// NewPageSetupFromKeyFile constructs a class PageSetup.
-func NewPageSetupFromKeyFile(keyFile *glib.KeyFile, groupName string) (PageSetup, error) {
-	var _arg1 *C.GKeyFile
-	var _arg2 *C.char
-
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
-	_arg2 = (*C.char)(C.CString(groupName))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkPageSetup
-	var _cerr *C.GError
-
-	cret = C.gtk_page_setup_new_from_key_file(_arg1, _arg2, _cerr)
-
-	var _pageSetup PageSetup
-	var _goerr error
-
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pageSetup, _goerr
-}
-
-// Copy copies a `GtkPageSetup`.
-func (o pageSetup) Copy() PageSetup {
-	var _arg0 *C.GtkPageSetup
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkPageSetup
-
-	cret = C.gtk_page_setup_copy(_arg0)
-
-	var _pageSetup PageSetup
-
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
-
-	return _pageSetup
-}
-
 // BottomMargin gets the bottom margin in units of @unit.
 func (s pageSetup) BottomMargin(unit Unit) float64 {
 	var _arg0 *C.GtkPageSetup
@@ -19398,7 +16040,7 @@ func (s pageSetup) BottomMargin(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_bottom_margin(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_bottom_margin(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -19417,30 +16059,13 @@ func (s pageSetup) LeftMargin(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_left_margin(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_left_margin(_arg0, _arg1)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// Orientation gets the page orientation of the `GtkPageSetup`.
-func (s pageSetup) Orientation() PageOrientation {
-	var _arg0 *C.GtkPageSetup
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPageOrientation
-
-	cret = C.gtk_page_setup_get_orientation(_arg0)
-
-	var _pageOrientation PageOrientation
-
-	_pageOrientation = PageOrientation(_cret)
-
-	return _pageOrientation
 }
 
 // PageHeight returns the page height in units of @unit.
@@ -19456,7 +16081,7 @@ func (s pageSetup) PageHeight(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_page_height(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_page_height(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -19478,7 +16103,7 @@ func (s pageSetup) PageWidth(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_page_width(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_page_width(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -19500,30 +16125,13 @@ func (s pageSetup) PaperHeight(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_paper_height(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_paper_height(_arg0, _arg1)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// PaperSize gets the paper size of the `GtkPageSetup`.
-func (s pageSetup) PaperSize() *PaperSize {
-	var _arg0 *C.GtkPageSetup
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkPaperSize
-
-	cret = C.gtk_page_setup_get_paper_size(_arg0)
-
-	var _paperSize *PaperSize
-
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-
-	return _paperSize
 }
 
 // PaperWidth returns the paper width in units of @unit.
@@ -19539,7 +16147,7 @@ func (s pageSetup) PaperWidth(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_paper_width(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_paper_width(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -19558,7 +16166,7 @@ func (s pageSetup) RightMargin(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_right_margin(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_right_margin(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -19577,7 +16185,7 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_page_setup_get_top_margin(_arg0, _arg1)
+	_cret = C.gtk_page_setup_get_top_margin(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -19740,23 +16348,6 @@ func (s pageSetup) ToFile(fileName *string) error {
 	return _goerr
 }
 
-// ToGVariant: serialize page setup to an a{sv} variant.
-func (s pageSetup) ToGVariant() *glib.Variant {
-	var _arg0 *C.GtkPageSetup
-
-	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GVariant
-
-	cret = C.gtk_page_setup_to_gvariant(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-
-	return _variant
-}
-
 // ToKeyFile: this function adds the page setup from @setup to @key_file.
 func (s pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 	var _arg0 *C.GtkPageSetup
@@ -19788,10 +16379,6 @@ type PageSetupUnixDialog interface {
 	Root
 	ShortcutManager
 
-	// PageSetup gets the currently selected page setup from the dialog.
-	PageSetup() PageSetup
-	// PrintSettings gets the current print settings from the dialog.
-	PrintSettings() PrintSettings
 	// SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
 	// takes its values.
 	SetPageSetup(pageSetup PageSetup)
@@ -19831,60 +16418,6 @@ func marshalPageSetupUnixDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPageSetupUnixDialog(obj), nil
-}
-
-// NewPageSetupUnixDialog constructs a class PageSetupUnixDialog.
-func NewPageSetupUnixDialog(title string, parent Window) PageSetupUnixDialog {
-	var _arg1 *C.char
-	var _arg2 *C.GtkWindow
-
-	_arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkPageSetupUnixDialog
-
-	cret = C.gtk_page_setup_unix_dialog_new(_arg1, _arg2)
-
-	var _pageSetupUnixDialog PageSetupUnixDialog
-
-	_pageSetupUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetupUnixDialog)
-
-	return _pageSetupUnixDialog
-}
-
-// PageSetup gets the currently selected page setup from the dialog.
-func (d pageSetupUnixDialog) PageSetup() PageSetup {
-	var _arg0 *C.GtkPageSetupUnixDialog
-
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPageSetup
-
-	cret = C.gtk_page_setup_unix_dialog_get_page_setup(_arg0)
-
-	var _pageSetup PageSetup
-
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
-
-	return _pageSetup
-}
-
-// PrintSettings gets the current print settings from the dialog.
-func (d pageSetupUnixDialog) PrintSettings() PrintSettings {
-	var _arg0 *C.GtkPageSetupUnixDialog
-
-	_arg0 = (*C.GtkPageSetupUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPrintSettings
-
-	cret = C.gtk_page_setup_unix_dialog_get_print_settings(_arg0)
-
-	var _printSettings PrintSettings
-
-	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-
-	return _printSettings
 }
 
 // SetPageSetup sets the `GtkPageSetup` from which the page setup dialog
@@ -19976,10 +16509,6 @@ type Paned interface {
 	ConstraintTarget
 	Orientable
 
-	// EndChild retrieves the end child of the given `GtkPaned`.
-	//
-	// See also: `GtkPaned`:end-child
-	EndChild() Widget
 	// Position obtains the position of the divider between the two panes.
 	Position() int
 	// ResizeEndChild returns whether the end child can be resized.
@@ -19990,10 +16519,6 @@ type Paned interface {
 	ShrinkEndChild() bool
 	// ShrinkStartChild returns whether the start child can be shrunk.
 	ShrinkStartChild() bool
-	// StartChild retrieves the start child of the given `GtkPaned`.
-	//
-	// See also: `GtkPaned`:start-child
-	StartChild() Widget
 	// WideHandle gets whether the separator should be wide.
 	WideHandle() bool
 	// SetEndChild sets the end child of @paned to @child.
@@ -20043,42 +16568,6 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return WrapPaned(obj), nil
 }
 
-// NewPaned constructs a class Paned.
-func NewPaned(orientation Orientation) Paned {
-	var _arg1 C.GtkOrientation
-
-	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkPaned
-
-	cret = C.gtk_paned_new(_arg1)
-
-	var _paned Paned
-
-	_paned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Paned)
-
-	return _paned
-}
-
-// EndChild retrieves the end child of the given `GtkPaned`.
-//
-// See also: `GtkPaned`:end-child
-func (p paned) EndChild() Widget {
-	var _arg0 *C.GtkPaned
-
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_paned_get_end_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Position obtains the position of the divider between the two panes.
 func (p paned) Position() int {
 	var _arg0 *C.GtkPaned
@@ -20087,7 +16576,7 @@ func (p paned) Position() int {
 
 	var _cret C.int
 
-	cret = C.gtk_paned_get_position(_arg0)
+	_cret = C.gtk_paned_get_position(_arg0)
 
 	var _gint int
 
@@ -20104,7 +16593,7 @@ func (p paned) ResizeEndChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_paned_get_resize_end_child(_arg0)
+	_cret = C.gtk_paned_get_resize_end_child(_arg0)
 
 	var _ok bool
 
@@ -20123,7 +16612,7 @@ func (p paned) ResizeStartChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_paned_get_resize_start_child(_arg0)
+	_cret = C.gtk_paned_get_resize_start_child(_arg0)
 
 	var _ok bool
 
@@ -20142,7 +16631,7 @@ func (p paned) ShrinkEndChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_paned_get_shrink_end_child(_arg0)
+	_cret = C.gtk_paned_get_shrink_end_child(_arg0)
 
 	var _ok bool
 
@@ -20161,7 +16650,7 @@ func (p paned) ShrinkStartChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_paned_get_shrink_start_child(_arg0)
+	_cret = C.gtk_paned_get_shrink_start_child(_arg0)
 
 	var _ok bool
 
@@ -20172,25 +16661,6 @@ func (p paned) ShrinkStartChild() bool {
 	return _ok
 }
 
-// StartChild retrieves the start child of the given `GtkPaned`.
-//
-// See also: `GtkPaned`:start-child
-func (p paned) StartChild() Widget {
-	var _arg0 *C.GtkPaned
-
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_paned_get_start_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // WideHandle gets whether the separator should be wide.
 func (p paned) WideHandle() bool {
 	var _arg0 *C.GtkPaned
@@ -20199,7 +16669,7 @@ func (p paned) WideHandle() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_paned_get_wide_handle(_arg0)
+	_cret = C.gtk_paned_get_wide_handle(_arg0)
 
 	var _ok bool
 
@@ -20409,8 +16879,6 @@ type PopoverMenu interface {
 	// For this to work, the menu model of @popover must have an item with a
 	// `custom` attribute that matches @id.
 	AddChild(child Widget, id string) bool
-	// MenuModel returns the menu model used to populate the popover.
-	MenuModel() gio.MenuModel
 	// RemoveChild removes a widget that has previously been added with
 	// gtk_popover_menu_add_child().
 	RemoveChild(child Widget) bool
@@ -20452,42 +16920,6 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	return WrapPopoverMenu(obj), nil
 }
 
-// NewPopoverMenuFromModel constructs a class PopoverMenu.
-func NewPopoverMenuFromModel(model gio.MenuModel) PopoverMenu {
-	var _arg1 *C.GMenuModel
-
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkPopoverMenu
-
-	cret = C.gtk_popover_menu_new_from_model(_arg1)
-
-	var _popoverMenu PopoverMenu
-
-	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
-
-	return _popoverMenu
-}
-
-// NewPopoverMenuFromModelFull constructs a class PopoverMenu.
-func NewPopoverMenuFromModelFull(model gio.MenuModel, flags PopoverMenuFlags) PopoverMenu {
-	var _arg1 *C.GMenuModel
-	var _arg2 C.GtkPopoverMenuFlags
-
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (C.GtkPopoverMenuFlags)(flags)
-
-	var _cret C.GtkPopoverMenu
-
-	cret = C.gtk_popover_menu_new_from_model_full(_arg1, _arg2)
-
-	var _popoverMenu PopoverMenu
-
-	_popoverMenu = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
-
-	return _popoverMenu
-}
-
 // AddChild adds a custom widget to a generated menu.
 //
 // For this to work, the menu model of @popover must have an item with a
@@ -20504,7 +16936,7 @@ func (p popoverMenu) AddChild(child Widget, id string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_menu_add_child(_arg0, _arg1, _arg2)
+	_cret = C.gtk_popover_menu_add_child(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -20513,23 +16945,6 @@ func (p popoverMenu) AddChild(child Widget, id string) bool {
 	}
 
 	return _ok
-}
-
-// MenuModel returns the menu model used to populate the popover.
-func (p popoverMenu) MenuModel() gio.MenuModel {
-	var _arg0 *C.GtkPopoverMenu
-
-	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_popover_menu_get_menu_model(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
 }
 
 // RemoveChild removes a widget that has previously been added with
@@ -20543,7 +16958,7 @@ func (p popoverMenu) RemoveChild(child Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_menu_remove_child(_arg0, _arg1)
+	_cret = C.gtk_popover_menu_remove_child(_arg0, _arg1)
 
 	var _ok bool
 
@@ -20603,8 +17018,6 @@ type PopoverMenuBar interface {
 	// For this to work, the menu model of @bar must have an item with a
 	// `custom` attribute that matches @id.
 	AddChild(child Widget, id string) bool
-	// MenuModel returns the model from which the contents of @bar are taken.
-	MenuModel() gio.MenuModel
 	// RemoveChild removes a widget that has previously been added with
 	// gtk_popover_menu_bar_add_child().
 	RemoveChild(child Widget) bool
@@ -20639,23 +17052,6 @@ func marshalPopoverMenuBar(p uintptr) (interface{}, error) {
 	return WrapPopoverMenuBar(obj), nil
 }
 
-// NewPopoverMenuBarFromModel constructs a class PopoverMenuBar.
-func NewPopoverMenuBarFromModel(model gio.MenuModel) PopoverMenuBar {
-	var _arg1 *C.GMenuModel
-
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkPopoverMenuBar
-
-	cret = C.gtk_popover_menu_bar_new_from_model(_arg1)
-
-	var _popoverMenuBar PopoverMenuBar
-
-	_popoverMenuBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PopoverMenuBar)
-
-	return _popoverMenuBar
-}
-
 // AddChild adds a custom widget to a generated menubar.
 //
 // For this to work, the menu model of @bar must have an item with a
@@ -20672,7 +17068,7 @@ func (b popoverMenuBar) AddChild(child Widget, id string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_menu_bar_add_child(_arg0, _arg1, _arg2)
+	_cret = C.gtk_popover_menu_bar_add_child(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -20681,23 +17077,6 @@ func (b popoverMenuBar) AddChild(child Widget, id string) bool {
 	}
 
 	return _ok
-}
-
-// MenuModel returns the model from which the contents of @bar are taken.
-func (b popoverMenuBar) MenuModel() gio.MenuModel {
-	var _arg0 *C.GtkPopoverMenuBar
-
-	_arg0 = (*C.GtkPopoverMenuBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_popover_menu_bar_get_menu_model(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
 }
 
 // RemoveChild removes a widget that has previously been added with
@@ -20711,7 +17090,7 @@ func (b popoverMenuBar) RemoveChild(child Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_menu_bar_remove_child(_arg0, _arg1)
+	_cret = C.gtk_popover_menu_bar_remove_child(_arg0, _arg1)
 
 	var _ok bool
 
@@ -20800,15 +17179,6 @@ func (b popoverMenuBar) SetMenuModel(model gio.MenuModel) {
 type PrintContext interface {
 	gextras.Objector
 
-	// CreatePangoContext creates a new `PangoContext` that can be used with the
-	// `GtkPrintContext`.
-	CreatePangoContext() pango.Context
-	// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
-	// with the `GtkPrintContext`.
-	CreatePangoLayout() pango.Layout
-	// CairoContext obtains the cairo context that is associated with the
-	// `GtkPrintContext`.
-	CairoContext() *cairo.Context
 	// DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
 	// per inch.
 	DPIX() float64
@@ -20820,12 +17190,6 @@ type PrintContext interface {
 	HardMargins() (top float64, bottom float64, left float64, right float64, ok bool)
 	// Height obtains the height of the `GtkPrintContext`, in pixels.
 	Height() float64
-	// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
-	// of the `GtkPrintContext`.
-	PageSetup() PageSetup
-	// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
-	// `GtkPrintContext`.
-	PangoFontmap() pango.FontMap
 	// Width obtains the width of the `GtkPrintContext`, in pixels.
 	Width() float64
 	// SetCairoContext sets a new cairo context on a print context.
@@ -20857,60 +17221,6 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 	return WrapPrintContext(obj), nil
 }
 
-// CreatePangoContext creates a new `PangoContext` that can be used with the
-// `GtkPrintContext`.
-func (c printContext) CreatePangoContext() pango.Context {
-	var _arg0 *C.GtkPrintContext
-
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoContext
-
-	cret = C.gtk_print_context_create_pango_context(_arg0)
-
-	var _ret pango.Context
-
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Context)
-
-	return _ret
-}
-
-// CreatePangoLayout creates a new `PangoLayout` that is suitable for use
-// with the `GtkPrintContext`.
-func (c printContext) CreatePangoLayout() pango.Layout {
-	var _arg0 *C.GtkPrintContext
-
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoLayout
-
-	cret = C.gtk_print_context_create_pango_layout(_arg0)
-
-	var _layout pango.Layout
-
-	_layout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(pango.Layout)
-
-	return _layout
-}
-
-// CairoContext obtains the cairo context that is associated with the
-// `GtkPrintContext`.
-func (c printContext) CairoContext() *cairo.Context {
-	var _arg0 *C.GtkPrintContext
-
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.cairo_t
-
-	cret = C.gtk_print_context_get_cairo_context(_arg0)
-
-	var _ret *cairo.Context
-
-	_ret = cairo.WrapContext(unsafe.Pointer(_cret))
-
-	return _ret
-}
-
 // DPIX obtains the horizontal resolution of the `GtkPrintContext`, in dots
 // per inch.
 func (c printContext) DPIX() float64 {
@@ -20920,7 +17230,7 @@ func (c printContext) DPIX() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_context_get_dpi_x(_arg0)
+	_cret = C.gtk_print_context_get_dpi_x(_arg0)
 
 	var _gdouble float64
 
@@ -20938,7 +17248,7 @@ func (c printContext) DPIY() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_context_get_dpi_y(_arg0)
+	_cret = C.gtk_print_context_get_dpi_y(_arg0)
 
 	var _gdouble float64
 
@@ -20960,7 +17270,7 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 	var _arg4 C.double
 	var _cret C.gboolean
 
-	cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
 	var _top float64
 	var _bottom float64
@@ -20987,49 +17297,13 @@ func (c printContext) Height() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_context_get_height(_arg0)
+	_cret = C.gtk_print_context_get_height(_arg0)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// PageSetup obtains the `GtkPageSetup` that determines the page dimensions
-// of the `GtkPrintContext`.
-func (c printContext) PageSetup() PageSetup {
-	var _arg0 *C.GtkPrintContext
-
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkPageSetup
-
-	cret = C.gtk_print_context_get_page_setup(_arg0)
-
-	var _pageSetup PageSetup
-
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
-
-	return _pageSetup
-}
-
-// PangoFontmap returns a `PangoFontMap` that is suitable for use with the
-// `GtkPrintContext`.
-func (c printContext) PangoFontmap() pango.FontMap {
-	var _arg0 *C.GtkPrintContext
-
-	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.PangoFontMap
-
-	cret = C.gtk_print_context_get_pango_fontmap(_arg0)
-
-	var _fontMap pango.FontMap
-
-	_fontMap = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(pango.FontMap)
-
-	return _fontMap
 }
 
 // Width obtains the width of the `GtkPrintContext`, in pixels.
@@ -21040,7 +17314,7 @@ func (c printContext) Width() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_context_get_width(_arg0)
+	_cret = C.gtk_print_context_get_width(_arg0)
 
 	var _gdouble float64
 
@@ -21085,39 +17359,20 @@ type PrintJob interface {
 	Collate() bool
 	// NUp gets the n-up setting for this job.
 	NUp() uint
-	// NUpLayout gets the n-up layout setting for this job.
-	NUpLayout() NumberUpLayout
 	// NumCopies gets the number of copies of this job.
 	NumCopies() int
-	// PageRanges gets the page ranges for this job.
-	PageRanges() []PageRange
-	// PageSet gets the `GtkPageSet` setting for this job.
-	PageSet() PageSet
-	// Pages gets the `GtkPrintPages` setting for this job.
-	Pages() PrintPages
-	// Printer gets the `GtkPrinter` of the print job.
-	Printer() Printer
 	// Reverse gets whether this job is printed reversed.
 	Reverse() bool
 	// Rotate gets whether the job is printed rotated.
 	Rotate() bool
 	// Scale gets the scale for this job.
 	Scale() float64
-	// Settings gets the `GtkPrintSettings` of the print job.
-	Settings() PrintSettings
-	// Status gets the status of the print job.
-	Status() PrintStatus
-	// Surface gets a cairo surface onto which the pages of the print job should
-	// be rendered.
-	Surface() (*cairo.Surface, error)
 	// Title gets the job title.
 	Title() string
 	// TrackPrintStatus returns whether jobs will be tracked after printing.
 	//
 	// For details, see [method@Gtk.PrintJob.set_track_print_status].
 	TrackPrintStatus() bool
-	// Send sends the print job off to the printer.
-	Send()
 	// SetCollate sets whether this job is printed collated.
 	SetCollate(collate bool)
 	// SetNUp sets the n-up setting for this job.
@@ -21127,7 +17382,7 @@ type PrintJob interface {
 	// SetNumCopies sets the number of copies for this job.
 	SetNumCopies(numCopies int)
 	// SetPageRanges sets the page ranges for this job.
-	SetPageRanges()
+	SetPageRanges(ranges []PageRange)
 	// SetPageSet sets the `GtkPageSet` setting for this job.
 	SetPageSet(pageSet PageSet)
 	// SetPages sets the `GtkPrintPages` setting for this job.
@@ -21190,30 +17445,6 @@ func marshalPrintJob(p uintptr) (interface{}, error) {
 	return WrapPrintJob(obj), nil
 }
 
-// NewPrintJob constructs a class PrintJob.
-func NewPrintJob(title string, printer Printer, settings PrintSettings, pageSetup PageSetup) PrintJob {
-	var _arg1 *C.char
-	var _arg2 *C.GtkPrinter
-	var _arg3 *C.GtkPrintSettings
-	var _arg4 *C.GtkPageSetup
-
-	_arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkPrinter)(unsafe.Pointer(printer.Native()))
-	_arg3 = (*C.GtkPrintSettings)(unsafe.Pointer(settings.Native()))
-	_arg4 = (*C.GtkPageSetup)(unsafe.Pointer(pageSetup.Native()))
-
-	var _cret C.GtkPrintJob
-
-	cret = C.gtk_print_job_new(_arg1, _arg2, _arg3, _arg4)
-
-	var _printJob PrintJob
-
-	_printJob = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintJob)
-
-	return _printJob
-}
-
 // Collate gets whether this job is printed collated.
 func (j printJob) Collate() bool {
 	var _arg0 *C.GtkPrintJob
@@ -21222,7 +17453,7 @@ func (j printJob) Collate() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_job_get_collate(_arg0)
+	_cret = C.gtk_print_job_get_collate(_arg0)
 
 	var _ok bool
 
@@ -21241,30 +17472,13 @@ func (j printJob) NUp() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_print_job_get_n_up(_arg0)
+	_cret = C.gtk_print_job_get_n_up(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// NUpLayout gets the n-up layout setting for this job.
-func (j printJob) NUpLayout() NumberUpLayout {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkNumberUpLayout
-
-	cret = C.gtk_print_job_get_n_up_layout(_arg0)
-
-	var _numberUpLayout NumberUpLayout
-
-	_numberUpLayout = NumberUpLayout(_cret)
-
-	return _numberUpLayout
 }
 
 // NumCopies gets the number of copies of this job.
@@ -21275,90 +17489,13 @@ func (j printJob) NumCopies() int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_job_get_num_copies(_arg0)
+	_cret = C.gtk_print_job_get_num_copies(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// PageRanges gets the page ranges for this job.
-func (j printJob) PageRanges() []PageRange {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.GtkPageRange
-	var _arg1 *C.int
-
-	cret = C.gtk_print_job_get_page_ranges(_arg0)
-
-	var _pageRanges []PageRange
-
-	{
-		var src []C.GtkPageRange
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
-		_pageRanges = make([]PageRange, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_pageRanges = *WrapPageRange(unsafe.Pointer(&_cret))
-		}
-	}
-
-	return _pageRanges
-}
-
-// PageSet gets the `GtkPageSet` setting for this job.
-func (j printJob) PageSet() PageSet {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkPageSet
-
-	cret = C.gtk_print_job_get_page_set(_arg0)
-
-	var _pageSet PageSet
-
-	_pageSet = PageSet(_cret)
-
-	return _pageSet
-}
-
-// Pages gets the `GtkPrintPages` setting for this job.
-func (j printJob) Pages() PrintPages {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkPrintPages
-
-	cret = C.gtk_print_job_get_pages(_arg0)
-
-	var _printPages PrintPages
-
-	_printPages = PrintPages(_cret)
-
-	return _printPages
-}
-
-// Printer gets the `GtkPrinter` of the print job.
-func (j printJob) Printer() Printer {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.GtkPrinter
-
-	cret = C.gtk_print_job_get_printer(_arg0)
-
-	var _printer Printer
-
-	_printer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Printer)
-
-	return _printer
 }
 
 // Reverse gets whether this job is printed reversed.
@@ -21369,7 +17506,7 @@ func (j printJob) Reverse() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_job_get_reverse(_arg0)
+	_cret = C.gtk_print_job_get_reverse(_arg0)
 
 	var _ok bool
 
@@ -21388,7 +17525,7 @@ func (j printJob) Rotate() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_job_get_rotate(_arg0)
+	_cret = C.gtk_print_job_get_rotate(_arg0)
 
 	var _ok bool
 
@@ -21407,68 +17544,13 @@ func (j printJob) Scale() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_job_get_scale(_arg0)
+	_cret = C.gtk_print_job_get_scale(_arg0)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// Settings gets the `GtkPrintSettings` of the print job.
-func (j printJob) Settings() PrintSettings {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.GtkPrintSettings
-
-	cret = C.gtk_print_job_get_settings(_arg0)
-
-	var _printSettings PrintSettings
-
-	_printSettings = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-
-	return _printSettings
-}
-
-// Status gets the status of the print job.
-func (j printJob) Status() PrintStatus {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret C.GtkPrintStatus
-
-	cret = C.gtk_print_job_get_status(_arg0)
-
-	var _printStatus PrintStatus
-
-	_printStatus = PrintStatus(_cret)
-
-	return _printStatus
-}
-
-// Surface gets a cairo surface onto which the pages of the print job should
-// be rendered.
-func (j printJob) Surface() (*cairo.Surface, error) {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	var _cret *C.cairo_surface_t
-	var _cerr *C.GError
-
-	cret = C.gtk_print_job_get_surface(_arg0, _cerr)
-
-	var _surface *cairo.Surface
-	var _goerr error
-
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _surface, _goerr
 }
 
 // Title gets the job title.
@@ -21479,7 +17561,7 @@ func (j printJob) Title() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_job_get_title(_arg0)
+	_cret = C.gtk_print_job_get_title(_arg0)
 
 	var _utf8 string
 
@@ -21498,7 +17580,7 @@ func (j printJob) TrackPrintStatus() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_job_get_track_print_status(_arg0)
+	_cret = C.gtk_print_job_get_track_print_status(_arg0)
 
 	var _ok bool
 
@@ -21507,15 +17589,6 @@ func (j printJob) TrackPrintStatus() bool {
 	}
 
 	return _ok
-}
-
-// Send sends the print job off to the printer.
-func (j printJob) Send() {
-	var _arg0 *C.GtkPrintJob
-
-	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
-
-	C.gtk_print_job_send(_arg0)
 }
 
 // SetCollate sets whether this job is printed collated.
@@ -21565,12 +17638,24 @@ func (j printJob) SetNumCopies(numCopies int) {
 }
 
 // SetPageRanges sets the page ranges for this job.
-func (j printJob) SetPageRanges() {
+func (j printJob) SetPageRanges(ranges []PageRange) {
 	var _arg0 *C.GtkPrintJob
+	var _arg1 *C.GtkPageRange
+	var _arg2 C.int
 
 	_arg0 = (*C.GtkPrintJob)(unsafe.Pointer(j.Native()))
+	_arg2 = C.int(len(ranges))
+	_arg1 = (*C.GtkPageRange)(C.malloc(len(ranges) * C.sizeof_struct_GtkPageRange))
+	{
+		var out []C.GtkPageRange
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg1), int(len(ranges)))
 
-	C.gtk_print_job_set_page_ranges(_arg0)
+		for i := range ranges {
+			_arg1 = (C.GtkPageRange)(unsafe.Pointer(ranges.Native()))
+		}
+	}
+
+	C.gtk_print_job_set_page_ranges(_arg0, _arg1, _arg2)
 }
 
 // SetPageSet sets the `GtkPageSet` setting for this job.
@@ -21722,10 +17807,8 @@ func (j printJob) SetTrackPrintStatus(trackStatus bool) {
 type PrintSettings interface {
 	gextras.Objector
 
-	// Copy copies a `GtkPrintSettings` object.
-	Copy() PrintSettings
 	// Foreach calls @func for each key-value pair of @settings.
-	Foreach()
+	Foreach(fn PrintSettingsFunc)
 	// Get looks up the string value associated with @key.
 	Get(key string) string
 	// Bool returns the boolean represented by the value that is associated with
@@ -21747,8 +17830,6 @@ type PrintSettings interface {
 	//
 	// Floating point numbers are parsed with g_ascii_strtod().
 	DoubleWithDefault(key string, def float64) float64
-	// Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
-	Duplex() PrintDuplex
 	// Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 	Finishings() string
 	// Int returns the integer value of @key, or 0.
@@ -21768,35 +17849,19 @@ type PrintSettings interface {
 	NCopies() int
 	// NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
 	NumberUp() int
-	// NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
-	NumberUpLayout() NumberUpLayout
-	// Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
-	// to a `GtkPageOrientation`.
-	Orientation() PageOrientation
 	// OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	OutputBin() string
-	// PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-	PageRanges() []PageRange
-	// PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
-	PageSet() PageSet
 	// PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
 	// to @unit.
 	PaperHeight(unit Unit) float64
-	// PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
-	// a `GtkPaperSize`.
-	PaperSize() *PaperSize
 	// PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
 	// @unit.
 	PaperWidth(unit Unit) float64
-	// PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
-	PrintPages() PrintPages
 	// Printer: convenience function to obtain the value of
 	// GTK_PRINT_SETTINGS_PRINTER.
 	Printer() string
 	// PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
 	PrinterLpi() float64
-	// Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
-	Quality() PrintQuality
 	// Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
 	Resolution() int
 	// ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
@@ -21859,7 +17924,7 @@ type PrintSettings interface {
 	// SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 	SetOutputBin(outputBin string)
 	// SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-	SetPageRanges()
+	SetPageRanges(pageRanges []PageRange)
 	// SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 	SetPageSet(pageSet PageSet)
 	// SetPaperHeight sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
@@ -21896,8 +17961,6 @@ type PrintSettings interface {
 	// If the file could not be written then error is set to either a
 	// `GFileError` or `GKeyFileError`.
 	ToFile(fileName *string) error
-	// ToGVariant: serialize print settings to an a{sv} variant.
-	ToGVariant() *glib.Variant
 	// ToKeyFile: this function adds the print settings from @settings to
 	// @key_file.
 	ToKeyFile(keyFile *glib.KeyFile, groupName string)
@@ -21928,104 +17991,17 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 	return WrapPrintSettings(obj), nil
 }
 
-// NewPrintSettings constructs a class PrintSettings.
-func NewPrintSettings() PrintSettings {
-	var _cret C.GtkPrintSettings
-
-	cret = C.gtk_print_settings_new()
-
-	var _printSettings PrintSettings
-
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-
-	return _printSettings
-}
-
-// NewPrintSettingsFromFile constructs a class PrintSettings.
-func NewPrintSettingsFromFile(fileName *string) (PrintSettings, error) {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(fileName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkPrintSettings
-	var _cerr *C.GError
-
-	cret = C.gtk_print_settings_new_from_file(_arg1, _cerr)
-
-	var _printSettings PrintSettings
-	var _goerr error
-
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _printSettings, _goerr
-}
-
-// NewPrintSettingsFromGVariant constructs a class PrintSettings.
-func NewPrintSettingsFromGVariant(variant *glib.Variant) PrintSettings {
-	var _arg1 *C.GVariant
-
-	_arg1 = (*C.GVariant)(unsafe.Pointer(variant.Native()))
-
-	var _cret C.GtkPrintSettings
-
-	cret = C.gtk_print_settings_new_from_gvariant(_arg1)
-
-	var _printSettings PrintSettings
-
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-
-	return _printSettings
-}
-
-// NewPrintSettingsFromKeyFile constructs a class PrintSettings.
-func NewPrintSettingsFromKeyFile(keyFile *glib.KeyFile, groupName string) (PrintSettings, error) {
-	var _arg1 *C.GKeyFile
-	var _arg2 *C.char
-
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
-	_arg2 = (*C.char)(C.CString(groupName))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkPrintSettings
-	var _cerr *C.GError
-
-	cret = C.gtk_print_settings_new_from_key_file(_arg1, _arg2, _cerr)
-
-	var _printSettings PrintSettings
-	var _goerr error
-
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _printSettings, _goerr
-}
-
-// Copy copies a `GtkPrintSettings` object.
-func (o printSettings) Copy() PrintSettings {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.GtkPrintSettings
-
-	cret = C.gtk_print_settings_copy(_arg0)
-
-	var _printSettings PrintSettings
-
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-
-	return _printSettings
-}
-
 // Foreach calls @func for each key-value pair of @settings.
-func (s printSettings) Foreach() {
+func (s printSettings) Foreach(fn PrintSettingsFunc) {
 	var _arg0 *C.GtkPrintSettings
+	var _arg1 C.GtkPrintSettingsFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_PrintSettingsFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_print_settings_foreach(_arg0)
+	C.gtk_print_settings_foreach(_arg0, _arg1, _arg2)
 }
 
 // Get looks up the string value associated with @key.
@@ -22039,7 +18015,7 @@ func (s printSettings) Get(key string) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_settings_get(_arg0, _arg1)
+	_cret = C.gtk_print_settings_get(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -22062,7 +18038,7 @@ func (s printSettings) Bool(key string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_settings_get_bool(_arg0, _arg1)
+	_cret = C.gtk_print_settings_get_bool(_arg0, _arg1)
 
 	var _ok bool
 
@@ -22081,7 +18057,7 @@ func (s printSettings) Collate() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_settings_get_collate(_arg0)
+	_cret = C.gtk_print_settings_get_collate(_arg0)
 
 	var _ok bool
 
@@ -22100,7 +18076,7 @@ func (s printSettings) DefaultSource() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_settings_get_default_source(_arg0)
+	_cret = C.gtk_print_settings_get_default_source(_arg0)
 
 	var _utf8 string
 
@@ -22117,7 +18093,7 @@ func (s printSettings) Dither() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_settings_get_dither(_arg0)
+	_cret = C.gtk_print_settings_get_dither(_arg0)
 
 	var _utf8 string
 
@@ -22137,7 +18113,7 @@ func (s printSettings) Double(key string) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_settings_get_double(_arg0, _arg1)
+	_cret = C.gtk_print_settings_get_double(_arg0, _arg1)
 
 	var _gdouble float64
 
@@ -22163,30 +18139,13 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_settings_get_double_with_default(_arg0, _arg1, _arg2)
+	_cret = C.gtk_print_settings_get_double_with_default(_arg0, _arg1, _arg2)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// Duplex gets the value of GTK_PRINT_SETTINGS_DUPLEX.
-func (s printSettings) Duplex() PrintDuplex {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPrintDuplex
-
-	cret = C.gtk_print_settings_get_duplex(_arg0)
-
-	var _printDuplex PrintDuplex
-
-	_printDuplex = PrintDuplex(_cret)
-
-	return _printDuplex
 }
 
 // Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
@@ -22197,7 +18156,7 @@ func (s printSettings) Finishings() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_settings_get_finishings(_arg0)
+	_cret = C.gtk_print_settings_get_finishings(_arg0)
 
 	var _utf8 string
 
@@ -22217,7 +18176,7 @@ func (s printSettings) Int(key string) int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_settings_get_int(_arg0, _arg1)
+	_cret = C.gtk_print_settings_get_int(_arg0, _arg1)
 
 	var _gint int
 
@@ -22240,7 +18199,7 @@ func (s printSettings) IntWithDefault(key string, def int) int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_settings_get_int_with_default(_arg0, _arg1, _arg2)
+	_cret = C.gtk_print_settings_get_int_with_default(_arg0, _arg1, _arg2)
 
 	var _gint int
 
@@ -22264,7 +18223,7 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_settings_get_length(_arg0, _arg1, _arg2)
+	_cret = C.gtk_print_settings_get_length(_arg0, _arg1, _arg2)
 
 	var _gdouble float64
 
@@ -22283,7 +18242,7 @@ func (s printSettings) MediaType() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_settings_get_media_type(_arg0)
+	_cret = C.gtk_print_settings_get_media_type(_arg0)
 
 	var _utf8 string
 
@@ -22300,7 +18259,7 @@ func (s printSettings) NCopies() int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_settings_get_n_copies(_arg0)
+	_cret = C.gtk_print_settings_get_n_copies(_arg0)
 
 	var _gint int
 
@@ -22317,48 +18276,13 @@ func (s printSettings) NumberUp() int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_settings_get_number_up(_arg0)
+	_cret = C.gtk_print_settings_get_number_up(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// NumberUpLayout gets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
-func (s printSettings) NumberUpLayout() NumberUpLayout {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkNumberUpLayout
-
-	cret = C.gtk_print_settings_get_number_up_layout(_arg0)
-
-	var _numberUpLayout NumberUpLayout
-
-	_numberUpLayout = NumberUpLayout(_cret)
-
-	return _numberUpLayout
-}
-
-// Orientation: get the value of GTK_PRINT_SETTINGS_ORIENTATION, converted
-// to a `GtkPageOrientation`.
-func (s printSettings) Orientation() PageOrientation {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPageOrientation
-
-	cret = C.gtk_print_settings_get_orientation(_arg0)
-
-	var _pageOrientation PageOrientation
-
-	_pageOrientation = PageOrientation(_cret)
-
-	return _pageOrientation
 }
 
 // OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
@@ -22369,51 +18293,13 @@ func (s printSettings) OutputBin() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_settings_get_output_bin(_arg0)
+	_cret = C.gtk_print_settings_get_output_bin(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// PageRanges gets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-func (s printSettings) PageRanges() []PageRange {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkPageRange
-	var _arg1 *C.int
-
-	cret = C.gtk_print_settings_get_page_ranges(_arg0)
-
-	var _pageRanges []PageRange
-
-	ptr.SetSlice(unsafe.Pointer(&_pageRanges), unsafe.Pointer(_cret), int(_arg1))
-	runtime.SetFinalizer(&_pageRanges, func(v *[]PageRange) {
-		C.free(ptr.Slice(unsafe.Pointer(v)))
-	})
-
-	return _pageRanges
-}
-
-// PageSet gets the value of GTK_PRINT_SETTINGS_PAGE_SET.
-func (s printSettings) PageSet() PageSet {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPageSet
-
-	cret = C.gtk_print_settings_get_page_set(_arg0)
-
-	var _pageSet PageSet
-
-	_pageSet = PageSet(_cret)
-
-	return _pageSet
 }
 
 // PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
@@ -22427,34 +18313,13 @@ func (s printSettings) PaperHeight(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_settings_get_paper_height(_arg0, _arg1)
+	_cret = C.gtk_print_settings_get_paper_height(_arg0, _arg1)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// PaperSize gets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT, converted to
-// a `GtkPaperSize`.
-func (s printSettings) PaperSize() *PaperSize {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkPaperSize
-
-	cret = C.gtk_print_settings_get_paper_size(_arg0)
-
-	var _paperSize *PaperSize
-
-	_paperSize = WrapPaperSize(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_paperSize, func(v *PaperSize) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _paperSize
 }
 
 // PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
@@ -22468,30 +18333,13 @@ func (s printSettings) PaperWidth(unit Unit) float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_settings_get_paper_width(_arg0, _arg1)
+	_cret = C.gtk_print_settings_get_paper_width(_arg0, _arg1)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// PrintPages gets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
-func (s printSettings) PrintPages() PrintPages {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPrintPages
-
-	cret = C.gtk_print_settings_get_print_pages(_arg0)
-
-	var _printPages PrintPages
-
-	_printPages = PrintPages(_cret)
-
-	return _printPages
 }
 
 // Printer: convenience function to obtain the value of
@@ -22503,7 +18351,7 @@ func (s printSettings) Printer() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_print_settings_get_printer(_arg0)
+	_cret = C.gtk_print_settings_get_printer(_arg0)
 
 	var _utf8 string
 
@@ -22520,30 +18368,13 @@ func (s printSettings) PrinterLpi() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_settings_get_printer_lpi(_arg0)
+	_cret = C.gtk_print_settings_get_printer_lpi(_arg0)
 
 	var _gdouble float64
 
 	_gdouble = (float64)(_cret)
 
 	return _gdouble
-}
-
-// Quality gets the value of GTK_PRINT_SETTINGS_QUALITY.
-func (s printSettings) Quality() PrintQuality {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkPrintQuality
-
-	cret = C.gtk_print_settings_get_quality(_arg0)
-
-	var _printQuality PrintQuality
-
-	_printQuality = PrintQuality(_cret)
-
-	return _printQuality
 }
 
 // Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
@@ -22554,7 +18385,7 @@ func (s printSettings) Resolution() int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_settings_get_resolution(_arg0)
+	_cret = C.gtk_print_settings_get_resolution(_arg0)
 
 	var _gint int
 
@@ -22571,7 +18402,7 @@ func (s printSettings) ResolutionX() int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_settings_get_resolution_x(_arg0)
+	_cret = C.gtk_print_settings_get_resolution_x(_arg0)
 
 	var _gint int
 
@@ -22588,7 +18419,7 @@ func (s printSettings) ResolutionY() int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_settings_get_resolution_y(_arg0)
+	_cret = C.gtk_print_settings_get_resolution_y(_arg0)
 
 	var _gint int
 
@@ -22605,7 +18436,7 @@ func (s printSettings) Reverse() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_settings_get_reverse(_arg0)
+	_cret = C.gtk_print_settings_get_reverse(_arg0)
 
 	var _ok bool
 
@@ -22624,7 +18455,7 @@ func (s printSettings) Scale() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_print_settings_get_scale(_arg0)
+	_cret = C.gtk_print_settings_get_scale(_arg0)
 
 	var _gdouble float64
 
@@ -22641,7 +18472,7 @@ func (s printSettings) UseColor() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_settings_get_use_color(_arg0)
+	_cret = C.gtk_print_settings_get_use_color(_arg0)
 
 	var _ok bool
 
@@ -22663,7 +18494,7 @@ func (s printSettings) HasKey(key string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_settings_has_key(_arg0, _arg1)
+	_cret = C.gtk_print_settings_has_key(_arg0, _arg1)
 
 	var _ok bool
 
@@ -22931,12 +18762,16 @@ func (s printSettings) SetOutputBin(outputBin string) {
 }
 
 // SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
-func (s printSettings) SetPageRanges() {
+func (s printSettings) SetPageRanges(pageRanges []PageRange) {
 	var _arg0 *C.GtkPrintSettings
+	var _arg1 *C.GtkPageRange
+	var _arg2 C.int
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
+	_arg2 = C.int(len(pageRanges))
+	_arg1 = (*C.GtkPageRange)(unsafe.Pointer(&pageRanges[0]))
 
-	C.gtk_print_settings_set_page_ranges(_arg0)
+	C.gtk_print_settings_set_page_ranges(_arg0, _arg1, _arg2)
 }
 
 // SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
@@ -23121,23 +18956,6 @@ func (s printSettings) ToFile(fileName *string) error {
 	return _goerr
 }
 
-// ToGVariant: serialize print settings to an a{sv} variant.
-func (s printSettings) ToGVariant() *glib.Variant {
-	var _arg0 *C.GtkPrintSettings
-
-	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GVariant
-
-	cret = C.gtk_print_settings_to_gvariant(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-
-	return _variant
-}
-
 // ToKeyFile: this function adds the print settings from @settings to
 // @key_file.
 func (s printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
@@ -23225,21 +19043,8 @@ type PrintUnixDialog interface {
 	EmbedPageSetup() bool
 	// HasSelection gets whether there is a selection.
 	HasSelection() bool
-	// ManualCapabilities gets the capabilities that have been set on this
-	// `GtkPrintUnixDialog`.
-	ManualCapabilities() PrintCapabilities
-	// PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
-	PageSetup() PageSetup
 	// PageSetupSet gets whether a page setup was set by the user.
 	PageSetupSet() bool
-	// SelectedPrinter gets the currently selected printer.
-	SelectedPrinter() Printer
-	// Settings gets a new `GtkPrintSettings` object that represents the current
-	// values in the print dialog.
-	//
-	// Note that this creates a new object, and you need to unref it if don’t
-	// want to keep it.
-	Settings() PrintSettings
 	// SupportSelection gets whether the print dialog allows user to print a
 	// selection.
 	SupportSelection() bool
@@ -23306,26 +19111,6 @@ func marshalPrintUnixDialog(p uintptr) (interface{}, error) {
 	return WrapPrintUnixDialog(obj), nil
 }
 
-// NewPrintUnixDialog constructs a class PrintUnixDialog.
-func NewPrintUnixDialog(title string, parent Window) PrintUnixDialog {
-	var _arg1 *C.char
-	var _arg2 *C.GtkWindow
-
-	_arg1 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-
-	var _cret C.GtkPrintUnixDialog
-
-	cret = C.gtk_print_unix_dialog_new(_arg1, _arg2)
-
-	var _printUnixDialog PrintUnixDialog
-
-	_printUnixDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PrintUnixDialog)
-
-	return _printUnixDialog
-}
-
 // AddCustomTab adds a custom tab to the print dialog.
 func (d printUnixDialog) AddCustomTab(child Widget, tabLabel Widget) {
 	var _arg0 *C.GtkPrintUnixDialog
@@ -23347,7 +19132,7 @@ func (d printUnixDialog) CurrentPage() int {
 
 	var _cret C.int
 
-	cret = C.gtk_print_unix_dialog_get_current_page(_arg0)
+	_cret = C.gtk_print_unix_dialog_get_current_page(_arg0)
 
 	var _gint int
 
@@ -23364,7 +19149,7 @@ func (d printUnixDialog) EmbedPageSetup() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_unix_dialog_get_embed_page_setup(_arg0)
+	_cret = C.gtk_print_unix_dialog_get_embed_page_setup(_arg0)
 
 	var _ok bool
 
@@ -23383,7 +19168,7 @@ func (d printUnixDialog) HasSelection() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_unix_dialog_get_has_selection(_arg0)
+	_cret = C.gtk_print_unix_dialog_get_has_selection(_arg0)
 
 	var _ok bool
 
@@ -23392,41 +19177,6 @@ func (d printUnixDialog) HasSelection() bool {
 	}
 
 	return _ok
-}
-
-// ManualCapabilities gets the capabilities that have been set on this
-// `GtkPrintUnixDialog`.
-func (d printUnixDialog) ManualCapabilities() PrintCapabilities {
-	var _arg0 *C.GtkPrintUnixDialog
-
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret C.GtkPrintCapabilities
-
-	cret = C.gtk_print_unix_dialog_get_manual_capabilities(_arg0)
-
-	var _printCapabilities PrintCapabilities
-
-	_printCapabilities = PrintCapabilities(_cret)
-
-	return _printCapabilities
-}
-
-// PageSetup gets the page setup that is used by the `GtkPrintUnixDialog`.
-func (d printUnixDialog) PageSetup() PageSetup {
-	var _arg0 *C.GtkPrintUnixDialog
-
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPageSetup
-
-	cret = C.gtk_print_unix_dialog_get_page_setup(_arg0)
-
-	var _pageSetup PageSetup
-
-	_pageSetup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PageSetup)
-
-	return _pageSetup
 }
 
 // PageSetupSet gets whether a page setup was set by the user.
@@ -23437,7 +19187,7 @@ func (d printUnixDialog) PageSetupSet() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_unix_dialog_get_page_setup_set(_arg0)
+	_cret = C.gtk_print_unix_dialog_get_page_setup_set(_arg0)
 
 	var _ok bool
 
@@ -23446,44 +19196,6 @@ func (d printUnixDialog) PageSetupSet() bool {
 	}
 
 	return _ok
-}
-
-// SelectedPrinter gets the currently selected printer.
-func (d printUnixDialog) SelectedPrinter() Printer {
-	var _arg0 *C.GtkPrintUnixDialog
-
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPrinter
-
-	cret = C.gtk_print_unix_dialog_get_selected_printer(_arg0)
-
-	var _printer Printer
-
-	_printer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Printer)
-
-	return _printer
-}
-
-// Settings gets a new `GtkPrintSettings` object that represents the current
-// values in the print dialog.
-//
-// Note that this creates a new object, and you need to unref it if don’t
-// want to keep it.
-func (d printUnixDialog) Settings() PrintSettings {
-	var _arg0 *C.GtkPrintUnixDialog
-
-	_arg0 = (*C.GtkPrintUnixDialog)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.GtkPrintSettings
-
-	cret = C.gtk_print_unix_dialog_get_settings(_arg0)
-
-	var _printSettings PrintSettings
-
-	_printSettings = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PrintSettings)
-
-	return _printSettings
 }
 
 // SupportSelection gets whether the print dialog allows user to print a
@@ -23495,7 +19207,7 @@ func (d printUnixDialog) SupportSelection() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_print_unix_dialog_get_support_selection(_arg0)
+	_cret = C.gtk_print_unix_dialog_get_support_selection(_arg0)
 
 	var _ok bool
 
@@ -23621,20 +19333,6 @@ type Printer interface {
 	AcceptsPS() bool
 	// Compare compares two printers.
 	Compare(b Printer) int
-	// Backend returns the backend of the printer.
-	Backend() *PrintBackend
-	// Capabilities returns the printer’s capabilities.
-	//
-	// This is useful when you’re using `GtkPrintUnixDialog`’s
-	// manual-capabilities setting and need to know which settings the printer
-	// can handle and which you must handle yourself.
-	//
-	// This will return 0 unless the printer’s details are available, see
-	// [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	Capabilities() PrintCapabilities
-	// DefaultPageSize returns default page size of @printer.
-	DefaultPageSize() PageSetup
 	// Description gets the description of the printer.
 	Description() string
 	// HardMargins: retrieve the hard margins of @printer.
@@ -23683,12 +19381,6 @@ type Printer interface {
 	// IsVirtual returns whether the printer is virtual (i.e. does not represent
 	// actual printer hardware, but something like a CUPS class).
 	IsVirtual() bool
-	// ListPapers lists all the paper sizes @printer supports.
-	//
-	// This will return and empty list unless the printer’s details are
-	// available, see [method@Gtk.Printer.has_details] and
-	// [method@Gtk.Printer.request_details].
-	ListPapers() *glib.List
 	// RequestDetails requests the printer details.
 	//
 	// When the details are available, the
@@ -23718,30 +19410,6 @@ func marshalPrinter(p uintptr) (interface{}, error) {
 	return WrapPrinter(obj), nil
 }
 
-// NewPrinter constructs a class Printer.
-func NewPrinter(name string, backend *PrintBackend, virtual_ bool) Printer {
-	var _arg1 *C.char
-	var _arg2 *C.GtkPrintBackend
-	var _arg3 C.gboolean
-
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkPrintBackend)(unsafe.Pointer(backend.Native()))
-	if virtual_ {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _cret C.GtkPrinter
-
-	cret = C.gtk_printer_new(_arg1, _arg2, _arg3)
-
-	var _printer Printer
-
-	_printer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Printer)
-
-	return _printer
-}
-
 // AcceptsPDF returns whether the printer accepts input in PDF format.
 func (p printer) AcceptsPDF() bool {
 	var _arg0 *C.GtkPrinter
@@ -23750,7 +19418,7 @@ func (p printer) AcceptsPDF() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_accepts_pdf(_arg0)
+	_cret = C.gtk_printer_accepts_pdf(_arg0)
 
 	var _ok bool
 
@@ -23769,7 +19437,7 @@ func (p printer) AcceptsPS() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_accepts_ps(_arg0)
+	_cret = C.gtk_printer_accepts_ps(_arg0)
 
 	var _ok bool
 
@@ -23790,72 +19458,13 @@ func (a printer) Compare(b Printer) int {
 
 	var _cret C.int
 
-	cret = C.gtk_printer_compare(_arg0, _arg1)
+	_cret = C.gtk_printer_compare(_arg0, _arg1)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Backend returns the backend of the printer.
-func (p printer) Backend() *PrintBackend {
-	var _arg0 *C.GtkPrinter
-
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkPrintBackend
-
-	cret = C.gtk_printer_get_backend(_arg0)
-
-	var _printBackend *PrintBackend
-
-	_printBackend = WrapPrintBackend(unsafe.Pointer(_cret))
-
-	return _printBackend
-}
-
-// Capabilities returns the printer’s capabilities.
-//
-// This is useful when you’re using `GtkPrintUnixDialog`’s
-// manual-capabilities setting and need to know which settings the printer
-// can handle and which you must handle yourself.
-//
-// This will return 0 unless the printer’s details are available, see
-// [method@Gtk.Printer.has_details] and
-// [method@Gtk.Printer.request_details].
-func (p printer) Capabilities() PrintCapabilities {
-	var _arg0 *C.GtkPrinter
-
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GtkPrintCapabilities
-
-	cret = C.gtk_printer_get_capabilities(_arg0)
-
-	var _printCapabilities PrintCapabilities
-
-	_printCapabilities = PrintCapabilities(_cret)
-
-	return _printCapabilities
-}
-
-// DefaultPageSize returns default page size of @printer.
-func (p printer) DefaultPageSize() PageSetup {
-	var _arg0 *C.GtkPrinter
-
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkPageSetup
-
-	cret = C.gtk_printer_get_default_page_size(_arg0)
-
-	var _pageSetup PageSetup
-
-	_pageSetup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(PageSetup)
-
-	return _pageSetup
 }
 
 // Description gets the description of the printer.
@@ -23866,7 +19475,7 @@ func (p printer) Description() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_printer_get_description(_arg0)
+	_cret = C.gtk_printer_get_description(_arg0)
 
 	var _utf8 string
 
@@ -23894,7 +19503,7 @@ func (p printer) HardMargins() (top float64, bottom float64, left float64, right
 	var _arg4 C.double
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
+	_cret = C.gtk_printer_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
 	var _top float64
 	var _bottom float64
@@ -23935,7 +19544,7 @@ func (p printer) HardMarginsForPaperSize(paperSize *PaperSize) (top float64, bot
 	var _arg5 C.double
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_get_hard_margins_for_paper_size(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
+	_cret = C.gtk_printer_get_hard_margins_for_paper_size(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
 
 	var _top float64
 	var _bottom float64
@@ -23962,7 +19571,7 @@ func (p printer) IconName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_printer_get_icon_name(_arg0)
+	_cret = C.gtk_printer_get_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -23979,7 +19588,7 @@ func (p printer) JobCount() int {
 
 	var _cret C.int
 
-	cret = C.gtk_printer_get_job_count(_arg0)
+	_cret = C.gtk_printer_get_job_count(_arg0)
 
 	var _gint int
 
@@ -23996,7 +19605,7 @@ func (p printer) Location() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_printer_get_location(_arg0)
+	_cret = C.gtk_printer_get_location(_arg0)
 
 	var _utf8 string
 
@@ -24013,7 +19622,7 @@ func (p printer) Name() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_printer_get_name(_arg0)
+	_cret = C.gtk_printer_get_name(_arg0)
 
 	var _utf8 string
 
@@ -24031,7 +19640,7 @@ func (p printer) StateMessage() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_printer_get_state_message(_arg0)
+	_cret = C.gtk_printer_get_state_message(_arg0)
 
 	var _utf8 string
 
@@ -24048,7 +19657,7 @@ func (p printer) HasDetails() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_has_details(_arg0)
+	_cret = C.gtk_printer_has_details(_arg0)
 
 	var _ok bool
 
@@ -24067,7 +19676,7 @@ func (p printer) IsAcceptingJobs() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_is_accepting_jobs(_arg0)
+	_cret = C.gtk_printer_is_accepting_jobs(_arg0)
 
 	var _ok bool
 
@@ -24087,7 +19696,7 @@ func (p printer) IsActive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_is_active(_arg0)
+	_cret = C.gtk_printer_is_active(_arg0)
 
 	var _ok bool
 
@@ -24106,7 +19715,7 @@ func (p printer) IsDefault() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_is_default(_arg0)
+	_cret = C.gtk_printer_is_default(_arg0)
 
 	var _ok bool
 
@@ -24127,7 +19736,7 @@ func (p printer) IsPaused() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_is_paused(_arg0)
+	_cret = C.gtk_printer_is_paused(_arg0)
 
 	var _ok bool
 
@@ -24147,7 +19756,7 @@ func (p printer) IsVirtual() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_printer_is_virtual(_arg0)
+	_cret = C.gtk_printer_is_virtual(_arg0)
 
 	var _ok bool
 
@@ -24156,30 +19765,6 @@ func (p printer) IsVirtual() bool {
 	}
 
 	return _ok
-}
-
-// ListPapers lists all the paper sizes @printer supports.
-//
-// This will return and empty list unless the printer’s details are
-// available, see [method@Gtk.Printer.has_details] and
-// [method@Gtk.Printer.request_details].
-func (p printer) ListPapers() *glib.List {
-	var _arg0 *C.GtkPrinter
-
-	_arg0 = (*C.GtkPrinter)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_printer_list_papers(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
 }
 
 // RequestDetails requests the printer details.
@@ -24247,10 +19832,6 @@ type ProgressBar interface {
 	ConstraintTarget
 	Orientable
 
-	// Ellipsize returns the ellipsizing position of the progress bar.
-	//
-	// See [method@Gtk.ProgressBar.set_ellipsize].
-	Ellipsize() pango.EllipsizeMode
 	// Fraction returns the current fraction of the task that’s been completed.
 	Fraction() float64
 	// Inverted returns whether the progress bar is inverted.
@@ -24351,38 +19932,6 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	return WrapProgressBar(obj), nil
 }
 
-// NewProgressBar constructs a class ProgressBar.
-func NewProgressBar() ProgressBar {
-	var _cret C.GtkProgressBar
-
-	cret = C.gtk_progress_bar_new()
-
-	var _progressBar ProgressBar
-
-	_progressBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ProgressBar)
-
-	return _progressBar
-}
-
-// Ellipsize returns the ellipsizing position of the progress bar.
-//
-// See [method@Gtk.ProgressBar.set_ellipsize].
-func (p progressBar) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkProgressBar
-
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret C.PangoEllipsizeMode
-
-	cret = C.gtk_progress_bar_get_ellipsize(_arg0)
-
-	var _ellipsizeMode pango.EllipsizeMode
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
-}
-
 // Fraction returns the current fraction of the task that’s been completed.
 func (p progressBar) Fraction() float64 {
 	var _arg0 *C.GtkProgressBar
@@ -24391,7 +19940,7 @@ func (p progressBar) Fraction() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_progress_bar_get_fraction(_arg0)
+	_cret = C.gtk_progress_bar_get_fraction(_arg0)
 
 	var _gdouble float64
 
@@ -24408,7 +19957,7 @@ func (p progressBar) Inverted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_progress_bar_get_inverted(_arg0)
+	_cret = C.gtk_progress_bar_get_inverted(_arg0)
 
 	var _ok bool
 
@@ -24429,7 +19978,7 @@ func (p progressBar) PulseStep() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_progress_bar_get_pulse_step(_arg0)
+	_cret = C.gtk_progress_bar_get_pulse_step(_arg0)
 
 	var _gdouble float64
 
@@ -24448,7 +19997,7 @@ func (p progressBar) ShowText() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_progress_bar_get_show_text(_arg0)
+	_cret = C.gtk_progress_bar_get_show_text(_arg0)
 
 	var _ok bool
 
@@ -24470,7 +20019,7 @@ func (p progressBar) Text() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_progress_bar_get_text(_arg0)
+	_cret = C.gtk_progress_bar_get_text(_arg0)
 
 	var _utf8 string
 
@@ -24627,8 +20176,6 @@ type Revealer interface {
 	Buildable
 	ConstraintTarget
 
-	// Child gets the child widget of @revealer.
-	Child() Widget
 	// ChildRevealed returns whether the child is fully revealed.
 	//
 	// In other words, this returns whether the transition to the revealed state
@@ -24643,9 +20190,6 @@ type Revealer interface {
 	// TransitionDuration returns the amount of time (in milliseconds) that
 	// transitions will take.
 	TransitionDuration() uint
-	// TransitionType gets the type of animation that will be used for
-	// transitions in @revealer.
-	TransitionType() RevealerTransitionType
 	// SetChild sets the child widget of @revealer.
 	SetChild(child Widget)
 	// SetRevealChild tells the `GtkRevealer` to reveal or conceal its child.
@@ -24689,36 +20233,6 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	return WrapRevealer(obj), nil
 }
 
-// NewRevealer constructs a class Revealer.
-func NewRevealer() Revealer {
-	var _cret C.GtkRevealer
-
-	cret = C.gtk_revealer_new()
-
-	var _revealer Revealer
-
-	_revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Revealer)
-
-	return _revealer
-}
-
-// Child gets the child widget of @revealer.
-func (r revealer) Child() Widget {
-	var _arg0 *C.GtkRevealer
-
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_revealer_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // ChildRevealed returns whether the child is fully revealed.
 //
 // In other words, this returns whether the transition to the revealed state
@@ -24730,7 +20244,7 @@ func (r revealer) ChildRevealed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_revealer_get_child_revealed(_arg0)
+	_cret = C.gtk_revealer_get_child_revealed(_arg0)
 
 	var _ok bool
 
@@ -24753,7 +20267,7 @@ func (r revealer) RevealChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_revealer_get_reveal_child(_arg0)
+	_cret = C.gtk_revealer_get_reveal_child(_arg0)
 
 	var _ok bool
 
@@ -24773,31 +20287,13 @@ func (r revealer) TransitionDuration() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_revealer_get_transition_duration(_arg0)
+	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// TransitionType gets the type of animation that will be used for
-// transitions in @revealer.
-func (r revealer) TransitionType() RevealerTransitionType {
-	var _arg0 *C.GtkRevealer
-
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
-
-	var _cret C.GtkRevealerTransitionType
-
-	cret = C.gtk_revealer_get_transition_type(_arg0)
-
-	var _revealerTransitionType RevealerTransitionType
-
-	_revealerTransitionType = RevealerTransitionType(_cret)
-
-	return _revealerTransitionType
 }
 
 // SetChild sets the child widget of @revealer.
@@ -24898,8 +20394,6 @@ type Scrollbar interface {
 	ConstraintTarget
 	Orientable
 
-	// Adjustment returns the scrollbar's adjustment.
-	Adjustment() Adjustment
 	// SetAdjustment makes the scrollbar use the given adjustment.
 	SetAdjustment(adjustment Adjustment)
 }
@@ -24931,42 +20425,6 @@ func marshalScrollbar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapScrollbar(obj), nil
-}
-
-// NewScrollbar constructs a class Scrollbar.
-func NewScrollbar(orientation Orientation, adjustment Adjustment) Scrollbar {
-	var _arg1 C.GtkOrientation
-	var _arg2 *C.GtkAdjustment
-
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-
-	var _cret C.GtkScrollbar
-
-	cret = C.gtk_scrollbar_new(_arg1, _arg2)
-
-	var _scrollbar Scrollbar
-
-	_scrollbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Scrollbar)
-
-	return _scrollbar
-}
-
-// Adjustment returns the scrollbar's adjustment.
-func (s scrollbar) Adjustment() Adjustment {
-	var _arg0 *C.GtkScrollbar
-
-	_arg0 = (*C.GtkScrollbar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_scrollbar_get_adjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
 }
 
 // SetAdjustment makes the scrollbar use the given adjustment.
@@ -25069,17 +20527,8 @@ type ScrolledWindow interface {
 	Buildable
 	ConstraintTarget
 
-	// Child gets the child widget of @scrolled_window.
-	Child() Widget
-	// HAdjustment returns the horizontal scrollbar’s adjustment.
-	//
-	// This is the adjustment used to connect the horizontal scrollbar to the
-	// child widget’s horizontal scroll functionality.
-	HAdjustment() Adjustment
 	// HasFrame gets whether the scrolled window draws a frame.
 	HasFrame() bool
-	// HScrollbar returns the horizontal scrollbar of @scrolled_window.
-	HScrollbar() Widget
 	// KineticScrolling returns the specified kinetic scrolling behavior.
 	KineticScrolling() bool
 	// MaxContentHeight returns the maximum content height set.
@@ -25093,14 +20542,6 @@ type ScrolledWindow interface {
 	// OverlayScrolling returns whether overlay scrolling is enabled for this
 	// scrolled window.
 	OverlayScrolling() bool
-	// Placement gets the placement of the contents with respect to the
-	// scrollbars.
-	Placement() CornerType
-	// Policy retrieves the current policy values for the horizontal and
-	// vertical scrollbars.
-	//
-	// See [method@Gtk.ScrolledWindow.set_policy].
-	Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType)
 	// PropagateNaturalHeight reports whether the natural height of the child
 	// will be calculated and propagated through the scrolled window’s requested
 	// natural height.
@@ -25109,13 +20550,6 @@ type ScrolledWindow interface {
 	// be calculated and propagated through the scrolled window’s requested
 	// natural width.
 	PropagateNaturalWidth() bool
-	// VAdjustment returns the vertical scrollbar’s adjustment.
-	//
-	// This is the adjustment used to connect the vertical scrollbar to the
-	// child widget’s vertical scroll functionality.
-	VAdjustment() Adjustment
-	// VScrollbar returns the vertical scrollbar of @scrolled_window.
-	VScrollbar() Widget
 	// SetChild sets the child widget of @scrolled_window.
 	SetChild(child Widget)
 	// SetHAdjustment sets the `GtkAdjustment` for the horizontal scrollbar.
@@ -25233,56 +20667,6 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 	return WrapScrolledWindow(obj), nil
 }
 
-// NewScrolledWindow constructs a class ScrolledWindow.
-func NewScrolledWindow() ScrolledWindow {
-	var _cret C.GtkScrolledWindow
-
-	cret = C.gtk_scrolled_window_new()
-
-	var _scrolledWindow ScrolledWindow
-
-	_scrolledWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ScrolledWindow)
-
-	return _scrolledWindow
-}
-
-// Child gets the child widget of @scrolled_window.
-func (s scrolledWindow) Child() Widget {
-	var _arg0 *C.GtkScrolledWindow
-
-	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_scrolled_window_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// HAdjustment returns the horizontal scrollbar’s adjustment.
-//
-// This is the adjustment used to connect the horizontal scrollbar to the
-// child widget’s horizontal scroll functionality.
-func (s scrolledWindow) HAdjustment() Adjustment {
-	var _arg0 *C.GtkScrolledWindow
-
-	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_scrolled_window_get_hadjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
 // HasFrame gets whether the scrolled window draws a frame.
 func (s scrolledWindow) HasFrame() bool {
 	var _arg0 *C.GtkScrolledWindow
@@ -25291,7 +20675,7 @@ func (s scrolledWindow) HasFrame() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_scrolled_window_get_has_frame(_arg0)
+	_cret = C.gtk_scrolled_window_get_has_frame(_arg0)
 
 	var _ok bool
 
@@ -25302,23 +20686,6 @@ func (s scrolledWindow) HasFrame() bool {
 	return _ok
 }
 
-// HScrollbar returns the horizontal scrollbar of @scrolled_window.
-func (s scrolledWindow) HScrollbar() Widget {
-	var _arg0 *C.GtkScrolledWindow
-
-	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_scrolled_window_get_hscrollbar(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // KineticScrolling returns the specified kinetic scrolling behavior.
 func (s scrolledWindow) KineticScrolling() bool {
 	var _arg0 *C.GtkScrolledWindow
@@ -25327,7 +20694,7 @@ func (s scrolledWindow) KineticScrolling() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_scrolled_window_get_kinetic_scrolling(_arg0)
+	_cret = C.gtk_scrolled_window_get_kinetic_scrolling(_arg0)
 
 	var _ok bool
 
@@ -25346,7 +20713,7 @@ func (s scrolledWindow) MaxContentHeight() int {
 
 	var _cret C.int
 
-	cret = C.gtk_scrolled_window_get_max_content_height(_arg0)
+	_cret = C.gtk_scrolled_window_get_max_content_height(_arg0)
 
 	var _gint int
 
@@ -25363,7 +20730,7 @@ func (s scrolledWindow) MaxContentWidth() int {
 
 	var _cret C.int
 
-	cret = C.gtk_scrolled_window_get_max_content_width(_arg0)
+	_cret = C.gtk_scrolled_window_get_max_content_width(_arg0)
 
 	var _gint int
 
@@ -25380,7 +20747,7 @@ func (s scrolledWindow) MinContentHeight() int {
 
 	var _cret C.int
 
-	cret = C.gtk_scrolled_window_get_min_content_height(_arg0)
+	_cret = C.gtk_scrolled_window_get_min_content_height(_arg0)
 
 	var _gint int
 
@@ -25397,7 +20764,7 @@ func (s scrolledWindow) MinContentWidth() int {
 
 	var _cret C.int
 
-	cret = C.gtk_scrolled_window_get_min_content_width(_arg0)
+	_cret = C.gtk_scrolled_window_get_min_content_width(_arg0)
 
 	var _gint int
 
@@ -25415,7 +20782,7 @@ func (s scrolledWindow) OverlayScrolling() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_scrolled_window_get_overlay_scrolling(_arg0)
+	_cret = C.gtk_scrolled_window_get_overlay_scrolling(_arg0)
 
 	var _ok bool
 
@@ -25424,47 +20791,6 @@ func (s scrolledWindow) OverlayScrolling() bool {
 	}
 
 	return _ok
-}
-
-// Placement gets the placement of the contents with respect to the
-// scrollbars.
-func (s scrolledWindow) Placement() CornerType {
-	var _arg0 *C.GtkScrolledWindow
-
-	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkCornerType
-
-	cret = C.gtk_scrolled_window_get_placement(_arg0)
-
-	var _cornerType CornerType
-
-	_cornerType = CornerType(_cret)
-
-	return _cornerType
-}
-
-// Policy retrieves the current policy values for the horizontal and
-// vertical scrollbars.
-//
-// See [method@Gtk.ScrolledWindow.set_policy].
-func (s scrolledWindow) Policy() (hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
-	var _arg0 *C.GtkScrolledWindow
-
-	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-
-	var _arg1 C.GtkPolicyType
-	var _arg2 C.GtkPolicyType
-
-	C.gtk_scrolled_window_get_policy(_arg0, &_arg1, &_arg2)
-
-	var _hscrollbarPolicy PolicyType
-	var _vscrollbarPolicy PolicyType
-
-	_hscrollbarPolicy = PolicyType(_arg1)
-	_vscrollbarPolicy = PolicyType(_arg2)
-
-	return _hscrollbarPolicy, _vscrollbarPolicy
 }
 
 // PropagateNaturalHeight reports whether the natural height of the child
@@ -25477,7 +20803,7 @@ func (s scrolledWindow) PropagateNaturalHeight() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_scrolled_window_get_propagate_natural_height(_arg0)
+	_cret = C.gtk_scrolled_window_get_propagate_natural_height(_arg0)
 
 	var _ok bool
 
@@ -25498,7 +20824,7 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_scrolled_window_get_propagate_natural_width(_arg0)
+	_cret = C.gtk_scrolled_window_get_propagate_natural_width(_arg0)
 
 	var _ok bool
 
@@ -25507,43 +20833,6 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 	}
 
 	return _ok
-}
-
-// VAdjustment returns the vertical scrollbar’s adjustment.
-//
-// This is the adjustment used to connect the vertical scrollbar to the
-// child widget’s vertical scroll functionality.
-func (s scrolledWindow) VAdjustment() Adjustment {
-	var _arg0 *C.GtkScrolledWindow
-
-	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_scrolled_window_get_vadjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
-// VScrollbar returns the vertical scrollbar of @scrolled_window.
-func (s scrolledWindow) VScrollbar() Widget {
-	var _arg0 *C.GtkScrolledWindow
-
-	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_scrolled_window_get_vscrollbar(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // SetChild sets the child widget of @scrolled_window.
@@ -25832,10 +21121,6 @@ type SearchBar interface {
 	// manually is only required if the entry isn’t the direct child of the
 	// search bar (as in our main example).
 	ConnectEntry(entry Editable)
-	// Child gets the child widget of @bar.
-	Child() Widget
-	// KeyCaptureWidget gets the widget that @bar is capturing key events from.
-	KeyCaptureWidget() Widget
 	// SearchMode returns whether the search mode is on or off.
 	SearchMode() bool
 	// ShowCloseButton returns whether the close button is shown.
@@ -25891,19 +21176,6 @@ func marshalSearchBar(p uintptr) (interface{}, error) {
 	return WrapSearchBar(obj), nil
 }
 
-// NewSearchBar constructs a class SearchBar.
-func NewSearchBar() SearchBar {
-	var _cret C.GtkSearchBar
-
-	cret = C.gtk_search_bar_new()
-
-	var _searchBar SearchBar
-
-	_searchBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchBar)
-
-	return _searchBar
-}
-
 // ConnectEntry connects the `GtkEditable widget passed as the one to be
 // used in this search bar.
 //
@@ -25920,40 +21192,6 @@ func (b searchBar) ConnectEntry(entry Editable) {
 	C.gtk_search_bar_connect_entry(_arg0, _arg1)
 }
 
-// Child gets the child widget of @bar.
-func (b searchBar) Child() Widget {
-	var _arg0 *C.GtkSearchBar
-
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_search_bar_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// KeyCaptureWidget gets the widget that @bar is capturing key events from.
-func (b searchBar) KeyCaptureWidget() Widget {
-	var _arg0 *C.GtkSearchBar
-
-	_arg0 = (*C.GtkSearchBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_search_bar_get_key_capture_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // SearchMode returns whether the search mode is on or off.
 func (b searchBar) SearchMode() bool {
 	var _arg0 *C.GtkSearchBar
@@ -25962,7 +21200,7 @@ func (b searchBar) SearchMode() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_search_bar_get_search_mode(_arg0)
+	_cret = C.gtk_search_bar_get_search_mode(_arg0)
 
 	var _ok bool
 
@@ -25981,7 +21219,7 @@ func (b searchBar) ShowCloseButton() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_search_bar_get_show_close_button(_arg0)
+	_cret = C.gtk_search_bar_get_show_close_button(_arg0)
 
 	var _ok bool
 
@@ -26104,9 +21342,6 @@ type SearchEntry interface {
 	ConstraintTarget
 	Editable
 
-	// KeyCaptureWidget gets the widget that @entry is capturing key events
-	// from.
-	KeyCaptureWidget() Widget
 	// SetKeyCaptureWidget sets @widget as the widget that @entry will capture
 	// key events from.
 	//
@@ -26152,37 +21387,6 @@ func marshalSearchEntry(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSearchEntry(obj), nil
-}
-
-// NewSearchEntry constructs a class SearchEntry.
-func NewSearchEntry() SearchEntry {
-	var _cret C.GtkSearchEntry
-
-	cret = C.gtk_search_entry_new()
-
-	var _searchEntry SearchEntry
-
-	_searchEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SearchEntry)
-
-	return _searchEntry
-}
-
-// KeyCaptureWidget gets the widget that @entry is capturing key events
-// from.
-func (e searchEntry) KeyCaptureWidget() Widget {
-	var _arg0 *C.GtkSearchEntry
-
-	_arg0 = (*C.GtkSearchEntry)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_search_entry_get_key_capture_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // SetKeyCaptureWidget sets @widget as the widget that @entry will capture
@@ -26262,23 +21466,6 @@ func marshalSeparator(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSeparator(obj), nil
-}
-
-// NewSeparator constructs a class Separator.
-func NewSeparator(orientation Orientation) Separator {
-	var _arg1 C.GtkOrientation
-
-	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkSeparator
-
-	cret = C.gtk_separator_new(_arg1)
-
-	var _separator Separator
-
-	_separator = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Separator)
-
-	return _separator
 }
 
 // Settings: `GtkSettings` provides a mechanism to share global settings between
@@ -26517,10 +21704,6 @@ type SizeGroup interface {
 	// When the widget is destroyed or no longer referenced elsewhere, it will
 	// be removed from the size group.
 	AddWidget(widget Widget)
-	// Mode gets the current mode of the size group.
-	Mode() SizeGroupMode
-	// Widgets returns the list of widgets associated with @size_group.
-	Widgets() *glib.SList
 	// RemoveWidget removes a widget from a `GtkSizeGroup`.
 	RemoveWidget(widget Widget)
 	// SetMode sets the `GtkSizeGroupMode` of the size group.
@@ -26556,23 +21739,6 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 	return WrapSizeGroup(obj), nil
 }
 
-// NewSizeGroup constructs a class SizeGroup.
-func NewSizeGroup(mode SizeGroupMode) SizeGroup {
-	var _arg1 C.GtkSizeGroupMode
-
-	_arg1 = (C.GtkSizeGroupMode)(mode)
-
-	var _cret C.GtkSizeGroup
-
-	cret = C.gtk_size_group_new(_arg1)
-
-	var _sizeGroup SizeGroup
-
-	_sizeGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SizeGroup)
-
-	return _sizeGroup
-}
-
 // AddWidget adds a widget to a `GtkSizeGroup`.
 //
 // In the future, the requisition of the widget will be determined as the
@@ -26591,40 +21757,6 @@ func (s sizeGroup) AddWidget(widget Widget) {
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
 	C.gtk_size_group_add_widget(_arg0, _arg1)
-}
-
-// Mode gets the current mode of the size group.
-func (s sizeGroup) Mode() SizeGroupMode {
-	var _arg0 *C.GtkSizeGroup
-
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSizeGroupMode
-
-	cret = C.gtk_size_group_get_mode(_arg0)
-
-	var _sizeGroupMode SizeGroupMode
-
-	_sizeGroupMode = SizeGroupMode(_cret)
-
-	return _sizeGroupMode
-}
-
-// Widgets returns the list of widgets associated with @size_group.
-func (s sizeGroup) Widgets() *glib.SList {
-	var _arg0 *C.GtkSizeGroup
-
-	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_size_group_get_widgets(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-
-	return _sList
 }
 
 // RemoveWidget removes a widget from a `GtkSizeGroup`.
@@ -26757,8 +21889,6 @@ type SpinButton interface {
 	// The adjustment, climb rate, and number of decimal places are updated
 	// accordingly.
 	Configure(adjustment Adjustment, climbRate float64, digits uint)
-	// Adjustment: get the adjustment associated with a `GtkSpinButton`.
-	Adjustment() Adjustment
 	// ClimbRate returns the acceleration rate for repeated changes.
 	ClimbRate() float64
 	// Digits fetches the precision of @spin_button.
@@ -26777,10 +21907,6 @@ type SpinButton interface {
 	Range() (min float64, max float64)
 	// SnapToTicks returns whether the values are corrected to the nearest step.
 	SnapToTicks() bool
-	// UpdatePolicy gets the update behavior of a spin button.
-	//
-	// See [method@Gtk.SpinButton.set_update_policy].
-	UpdatePolicy() SpinButtonUpdatePolicy
 	// Value: get the value in the @spin_button.
 	Value() float64
 	// ValueAsInt: get the value @spin_button represented as an integer.
@@ -26865,48 +21991,6 @@ func marshalSpinButton(p uintptr) (interface{}, error) {
 	return WrapSpinButton(obj), nil
 }
 
-// NewSpinButton constructs a class SpinButton.
-func NewSpinButton(adjustment Adjustment, climbRate float64, digits uint) SpinButton {
-	var _arg1 *C.GtkAdjustment
-	var _arg2 C.double
-	var _arg3 C.guint
-
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
-	_arg2 = C.double(climbRate)
-	_arg3 = C.guint(digits)
-
-	var _cret C.GtkSpinButton
-
-	cret = C.gtk_spin_button_new(_arg1, _arg2, _arg3)
-
-	var _spinButton SpinButton
-
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SpinButton)
-
-	return _spinButton
-}
-
-// NewSpinButtonWithRange constructs a class SpinButton.
-func NewSpinButtonWithRange(min float64, max float64, step float64) SpinButton {
-	var _arg1 C.double
-	var _arg2 C.double
-	var _arg3 C.double
-
-	_arg1 = C.double(min)
-	_arg2 = C.double(max)
-	_arg3 = C.double(step)
-
-	var _cret C.GtkSpinButton
-
-	cret = C.gtk_spin_button_new_with_range(_arg1, _arg2, _arg3)
-
-	var _spinButton SpinButton
-
-	_spinButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SpinButton)
-
-	return _spinButton
-}
-
 // Configure changes the properties of an existing spin button.
 //
 // The adjustment, climb rate, and number of decimal places are updated
@@ -26925,23 +22009,6 @@ func (s spinButton) Configure(adjustment Adjustment, climbRate float64, digits u
 	C.gtk_spin_button_configure(_arg0, _arg1, _arg2, _arg3)
 }
 
-// Adjustment: get the adjustment associated with a `GtkSpinButton`.
-func (s spinButton) Adjustment() Adjustment {
-	var _arg0 *C.GtkSpinButton
-
-	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_spin_button_get_adjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
 // ClimbRate returns the acceleration rate for repeated changes.
 func (s spinButton) ClimbRate() float64 {
 	var _arg0 *C.GtkSpinButton
@@ -26950,7 +22017,7 @@ func (s spinButton) ClimbRate() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_spin_button_get_climb_rate(_arg0)
+	_cret = C.gtk_spin_button_get_climb_rate(_arg0)
 
 	var _gdouble float64
 
@@ -26967,7 +22034,7 @@ func (s spinButton) Digits() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_spin_button_get_digits(_arg0)
+	_cret = C.gtk_spin_button_get_digits(_arg0)
 
 	var _guint uint
 
@@ -27008,7 +22075,7 @@ func (s spinButton) Numeric() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_spin_button_get_numeric(_arg0)
+	_cret = C.gtk_spin_button_get_numeric(_arg0)
 
 	var _ok bool
 
@@ -27049,7 +22116,7 @@ func (s spinButton) SnapToTicks() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_spin_button_get_snap_to_ticks(_arg0)
+	_cret = C.gtk_spin_button_get_snap_to_ticks(_arg0)
 
 	var _ok bool
 
@@ -27060,25 +22127,6 @@ func (s spinButton) SnapToTicks() bool {
 	return _ok
 }
 
-// UpdatePolicy gets the update behavior of a spin button.
-//
-// See [method@Gtk.SpinButton.set_update_policy].
-func (s spinButton) UpdatePolicy() SpinButtonUpdatePolicy {
-	var _arg0 *C.GtkSpinButton
-
-	_arg0 = (*C.GtkSpinButton)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSpinButtonUpdatePolicy
-
-	cret = C.gtk_spin_button_get_update_policy(_arg0)
-
-	var _spinButtonUpdatePolicy SpinButtonUpdatePolicy
-
-	_spinButtonUpdatePolicy = SpinButtonUpdatePolicy(_cret)
-
-	return _spinButtonUpdatePolicy
-}
-
 // Value: get the value in the @spin_button.
 func (s spinButton) Value() float64 {
 	var _arg0 *C.GtkSpinButton
@@ -27087,7 +22135,7 @@ func (s spinButton) Value() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_spin_button_get_value(_arg0)
+	_cret = C.gtk_spin_button_get_value(_arg0)
 
 	var _gdouble float64
 
@@ -27104,7 +22152,7 @@ func (s spinButton) ValueAsInt() int {
 
 	var _cret C.int
 
-	cret = C.gtk_spin_button_get_value_as_int(_arg0)
+	_cret = C.gtk_spin_button_get_value_as_int(_arg0)
 
 	var _gint int
 
@@ -27122,7 +22170,7 @@ func (s spinButton) Wrap() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_spin_button_get_wrap(_arg0)
+	_cret = C.gtk_spin_button_get_wrap(_arg0)
 
 	var _ok bool
 
@@ -27351,19 +22399,6 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 	return WrapSpinner(obj), nil
 }
 
-// NewSpinner constructs a class Spinner.
-func NewSpinner() Spinner {
-	var _cret C.GtkSpinner
-
-	cret = C.gtk_spinner_new()
-
-	var _spinner Spinner
-
-	_spinner = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Spinner)
-
-	return _spinner
-}
-
 // Spinning returns whether the spinner is spinning.
 func (s spinner) Spinning() bool {
 	var _arg0 *C.GtkSpinner
@@ -27372,7 +22407,7 @@ func (s spinner) Spinning() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_spinner_get_spinning(_arg0)
+	_cret = C.gtk_spinner_get_spinning(_arg0)
 
 	var _ok bool
 
@@ -27460,50 +22495,19 @@ type Stack interface {
 	Buildable
 	ConstraintTarget
 
-	// AddChild adds a child to @stack.
-	AddChild(child Widget) StackPage
-	// AddNamed adds a child to @stack.
-	//
-	// The child is identified by the @name.
-	AddNamed(child Widget, name string) StackPage
-	// AddTitled adds a child to @stack.
-	//
-	// The child is identified by the @name. The @title will be used by
-	// `GtkStackSwitcher` to represent @child in a tab bar, so it should be
-	// short.
-	AddTitled(child Widget, name string, title string) StackPage
-	// ChildByName finds the child with the name given as the argument.
-	//
-	// Returns nil if there is no child with this name.
-	ChildByName(name string) Widget
 	// Hhomogeneous gets whether @stack is horizontally homogeneous.
 	Hhomogeneous() bool
 	// InterpolateSize returns whether the Stack is set up to interpolate
 	// between the sizes of children on page switch.
 	InterpolateSize() bool
-	// Page returns the `GtkStackPage` object for @child.
-	Page(child Widget) StackPage
-	// Pages returns a `GListModel` that contains the pages of the stack.
-	//
-	// This can be used to keep an up-to-date view. The model also implements
-	// [iface@Gtk.SelectionModel] and can be used to track and modify the
-	// visible page.
-	Pages() SelectionModel
 	// TransitionDuration returns the amount of time (in milliseconds) that
 	// transitions between pages in @stack will take.
 	TransitionDuration() uint
 	// TransitionRunning returns whether the @stack is currently in a transition
 	// from one page to another.
 	TransitionRunning() bool
-	// TransitionType gets the type of animation that will be used for
-	// transitions between pages in @stack.
-	TransitionType() StackTransitionType
 	// Vhomogeneous gets whether @stack is vertically homogeneous.
 	Vhomogeneous() bool
-	// VisibleChild gets the currently visible child of @stack.
-	//
-	// Returns nil if there are no visible children.
-	VisibleChild() Widget
 	// VisibleChildName returns the name of the currently visible child of
 	// @stack.
 	//
@@ -27596,113 +22600,6 @@ func marshalStack(p uintptr) (interface{}, error) {
 	return WrapStack(obj), nil
 }
 
-// NewStack constructs a class Stack.
-func NewStack() Stack {
-	var _cret C.GtkStack
-
-	cret = C.gtk_stack_new()
-
-	var _stack Stack
-
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
-
-	return _stack
-}
-
-// AddChild adds a child to @stack.
-func (s stack) AddChild(child Widget) StackPage {
-	var _arg0 *C.GtkStack
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkStackPage
-
-	cret = C.gtk_stack_add_child(_arg0, _arg1)
-
-	var _stackPage StackPage
-
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
-
-	return _stackPage
-}
-
-// AddNamed adds a child to @stack.
-//
-// The child is identified by the @name.
-func (s stack) AddNamed(child Widget, name string) StackPage {
-	var _arg0 *C.GtkStack
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.char
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret *C.GtkStackPage
-
-	cret = C.gtk_stack_add_named(_arg0, _arg1, _arg2)
-
-	var _stackPage StackPage
-
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
-
-	return _stackPage
-}
-
-// AddTitled adds a child to @stack.
-//
-// The child is identified by the @name. The @title will be used by
-// `GtkStackSwitcher` to represent @child in a tab bar, so it should be
-// short.
-func (s stack) AddTitled(child Widget, name string, title string) StackPage {
-	var _arg0 *C.GtkStack
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.char
-	var _arg3 *C.char
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-	_arg2 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.char)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret *C.GtkStackPage
-
-	cret = C.gtk_stack_add_titled(_arg0, _arg1, _arg2, _arg3)
-
-	var _stackPage StackPage
-
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
-
-	return _stackPage
-}
-
-// ChildByName finds the child with the name given as the argument.
-//
-// Returns nil if there is no child with this name.
-func (s stack) ChildByName(name string) Widget {
-	var _arg0 *C.GtkStack
-	var _arg1 *C.char
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_stack_get_child_by_name(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Hhomogeneous gets whether @stack is horizontally homogeneous.
 func (s stack) Hhomogeneous() bool {
 	var _arg0 *C.GtkStack
@@ -27711,7 +22608,7 @@ func (s stack) Hhomogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_hhomogeneous(_arg0)
+	_cret = C.gtk_stack_get_hhomogeneous(_arg0)
 
 	var _ok bool
 
@@ -27731,7 +22628,7 @@ func (s stack) InterpolateSize() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_interpolate_size(_arg0)
+	_cret = C.gtk_stack_get_interpolate_size(_arg0)
 
 	var _ok bool
 
@@ -27740,46 +22637,6 @@ func (s stack) InterpolateSize() bool {
 	}
 
 	return _ok
-}
-
-// Page returns the `GtkStackPage` object for @child.
-func (s stack) Page(child Widget) StackPage {
-	var _arg0 *C.GtkStack
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _cret *C.GtkStackPage
-
-	cret = C.gtk_stack_get_page(_arg0, _arg1)
-
-	var _stackPage StackPage
-
-	_stackPage = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackPage)
-
-	return _stackPage
-}
-
-// Pages returns a `GListModel` that contains the pages of the stack.
-//
-// This can be used to keep an up-to-date view. The model also implements
-// [iface@Gtk.SelectionModel] and can be used to track and modify the
-// visible page.
-func (s stack) Pages() SelectionModel {
-	var _arg0 *C.GtkStack
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel
-
-	cret = C.gtk_stack_get_pages(_arg0)
-
-	var _selectionModel SelectionModel
-
-	_selectionModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SelectionModel)
-
-	return _selectionModel
 }
 
 // TransitionDuration returns the amount of time (in milliseconds) that
@@ -27791,7 +22648,7 @@ func (s stack) TransitionDuration() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_stack_get_transition_duration(_arg0)
+	_cret = C.gtk_stack_get_transition_duration(_arg0)
 
 	var _guint uint
 
@@ -27809,7 +22666,7 @@ func (s stack) TransitionRunning() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_transition_running(_arg0)
+	_cret = C.gtk_stack_get_transition_running(_arg0)
 
 	var _ok bool
 
@@ -27818,24 +22675,6 @@ func (s stack) TransitionRunning() bool {
 	}
 
 	return _ok
-}
-
-// TransitionType gets the type of animation that will be used for
-// transitions between pages in @stack.
-func (s stack) TransitionType() StackTransitionType {
-	var _arg0 *C.GtkStack
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkStackTransitionType
-
-	cret = C.gtk_stack_get_transition_type(_arg0)
-
-	var _stackTransitionType StackTransitionType
-
-	_stackTransitionType = StackTransitionType(_cret)
-
-	return _stackTransitionType
 }
 
 // Vhomogeneous gets whether @stack is vertically homogeneous.
@@ -27846,7 +22685,7 @@ func (s stack) Vhomogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_stack_get_vhomogeneous(_arg0)
+	_cret = C.gtk_stack_get_vhomogeneous(_arg0)
 
 	var _ok bool
 
@@ -27855,25 +22694,6 @@ func (s stack) Vhomogeneous() bool {
 	}
 
 	return _ok
-}
-
-// VisibleChild gets the currently visible child of @stack.
-//
-// Returns nil if there are no visible children.
-func (s stack) VisibleChild() Widget {
-	var _arg0 *C.GtkStack
-
-	_arg0 = (*C.GtkStack)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_stack_get_visible_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // VisibleChildName returns the name of the currently visible child of
@@ -27887,7 +22707,7 @@ func (s stack) VisibleChildName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_stack_get_visible_child_name(_arg0)
+	_cret = C.gtk_stack_get_visible_child_name(_arg0)
 
 	var _utf8 string
 
@@ -28050,8 +22870,6 @@ type StackPage interface {
 	gextras.Objector
 	Accessible
 
-	// Child returns the stack child to which @self belongs.
-	Child() Widget
 	// IconName returns the icon name of the page.
 	IconName() string
 	// Name returns the name of the page.
@@ -28106,23 +22924,6 @@ func marshalStackPage(p uintptr) (interface{}, error) {
 	return WrapStackPage(obj), nil
 }
 
-// Child returns the stack child to which @self belongs.
-func (s stackPage) Child() Widget {
-	var _arg0 *C.GtkStackPage
-
-	_arg0 = (*C.GtkStackPage)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_stack_page_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // IconName returns the icon name of the page.
 func (s stackPage) IconName() string {
 	var _arg0 *C.GtkStackPage
@@ -28131,7 +22932,7 @@ func (s stackPage) IconName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_stack_page_get_icon_name(_arg0)
+	_cret = C.gtk_stack_page_get_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -28148,7 +22949,7 @@ func (s stackPage) Name() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_stack_page_get_name(_arg0)
+	_cret = C.gtk_stack_page_get_name(_arg0)
 
 	var _utf8 string
 
@@ -28165,7 +22966,7 @@ func (s stackPage) NeedsAttention() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_stack_page_get_needs_attention(_arg0)
+	_cret = C.gtk_stack_page_get_needs_attention(_arg0)
 
 	var _ok bool
 
@@ -28184,7 +22985,7 @@ func (s stackPage) Title() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_stack_page_get_title(_arg0)
+	_cret = C.gtk_stack_page_get_title(_arg0)
 
 	var _utf8 string
 
@@ -28202,7 +23003,7 @@ func (s stackPage) UseUnderline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_stack_page_get_use_underline(_arg0)
+	_cret = C.gtk_stack_page_get_use_underline(_arg0)
 
 	var _ok bool
 
@@ -28224,7 +23025,7 @@ func (s stackPage) Visible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_stack_page_get_visible(_arg0)
+	_cret = C.gtk_stack_page_get_visible(_arg0)
 
 	var _ok bool
 
@@ -28333,8 +23134,6 @@ type StackSidebar interface {
 	Buildable
 	ConstraintTarget
 
-	// Stack retrieves the stack.
-	Stack() Stack
 	// SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
 	//
 	// The sidebar widget will automatically update according to the order and
@@ -28367,36 +23166,6 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapStackSidebar(obj), nil
-}
-
-// NewStackSidebar constructs a class StackSidebar.
-func NewStackSidebar() StackSidebar {
-	var _cret C.GtkStackSidebar
-
-	cret = C.gtk_stack_sidebar_new()
-
-	var _stackSidebar StackSidebar
-
-	_stackSidebar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackSidebar)
-
-	return _stackSidebar
-}
-
-// Stack retrieves the stack.
-func (s stackSidebar) Stack() Stack {
-	var _arg0 *C.GtkStackSidebar
-
-	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkStack
-
-	cret = C.gtk_stack_sidebar_get_stack(_arg0)
-
-	var _stack Stack
-
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
-
-	return _stack
 }
 
 // SetStack: set the `GtkStack` associated with this `GtkStackSidebar`.
@@ -28447,8 +23216,6 @@ type StackSwitcher interface {
 	Buildable
 	ConstraintTarget
 
-	// Stack retrieves the stack.
-	Stack() Stack
 	// SetStack sets the stack to control.
 	SetStack(stack Stack)
 }
@@ -28478,36 +23245,6 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapStackSwitcher(obj), nil
-}
-
-// NewStackSwitcher constructs a class StackSwitcher.
-func NewStackSwitcher() StackSwitcher {
-	var _cret C.GtkStackSwitcher
-
-	cret = C.gtk_stack_switcher_new()
-
-	var _stackSwitcher StackSwitcher
-
-	_stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackSwitcher)
-
-	return _stackSwitcher
-}
-
-// Stack retrieves the stack.
-func (s stackSwitcher) Stack() Stack {
-	var _arg0 *C.GtkStackSwitcher
-
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkStack
-
-	cret = C.gtk_stack_switcher_get_stack(_arg0)
-
-	var _stack Stack
-
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
-
-	return _stack
 }
 
 // SetStack sets the stack to control.
@@ -28612,19 +23349,6 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 	return WrapStatusbar(obj), nil
 }
 
-// NewStatusbar constructs a class Statusbar.
-func NewStatusbar() Statusbar {
-	var _cret C.GtkStatusbar
-
-	cret = C.gtk_statusbar_new()
-
-	var _statusbar Statusbar
-
-	_statusbar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Statusbar)
-
-	return _statusbar
-}
-
 // ContextID returns a new context identifier, given a description of the
 // actual context.
 //
@@ -28639,7 +23363,7 @@ func (s statusbar) ContextID(contextDescription string) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
+	_cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
 
 	var _guint uint
 
@@ -28676,7 +23400,7 @@ func (s statusbar) Push(contextId uint, text string) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
+	_cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
 
 	var _guint uint
 
@@ -28786,19 +23510,6 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 	return WrapSwitch(obj), nil
 }
 
-// NewSwitch constructs a class Switch.
-func NewSwitch() Switch {
-	var _cret C.GtkSwitch
-
-	cret = C.gtk_switch_new()
-
-	var __switch Switch
-
-	__switch = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Switch)
-
-	return __switch
-}
-
 // Active gets whether the `GtkSwitch` is in its “on” or “off” state.
 func (s _switch) Active() bool {
 	var _arg0 *C.GtkSwitch
@@ -28807,7 +23518,7 @@ func (s _switch) Active() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_switch_get_active(_arg0)
+	_cret = C.gtk_switch_get_active(_arg0)
 
 	var _ok bool
 
@@ -28826,7 +23537,7 @@ func (s _switch) State() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_switch_get_state(_arg0)
+	_cret = C.gtk_switch_get_state(_arg0)
 
 	var _ok bool
 
@@ -28935,21 +23646,9 @@ type Text interface {
 	// ActivatesDefault retrieves the value set by
 	// gtk_text_set_activates_default().
 	ActivatesDefault() bool
-	// Attributes gets the attribute list that was set on the `GtkText` using
-	// gtk_text_set_attributes().
-	Attributes() *pango.AttrList
-	// Buffer: get the `GtkEntryBuffer` object which holds the text for this
-	// self.
-	Buffer() EntryBuffer
 	// EnableEmojiCompletion returns whether Emoji completion is enabled for
 	// this `GtkText` widget.
 	EnableEmojiCompletion() bool
-	// ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
-	ExtraMenu() gio.MenuModel
-	// InputHints gets the input hints of the `GtkText`.
-	InputHints() InputHints
-	// InputPurpose gets the input purpose of the `GtkText`.
-	InputPurpose() InputPurpose
 	// InvisibleChar retrieves the character displayed in place of the real
 	// characters for entries with visibility set to false.
 	//
@@ -28972,9 +23671,6 @@ type Text interface {
 	// PropagateTextWidth returns whether the `GtkText` will grow and shrink
 	// with the content.
 	PropagateTextWidth() bool
-	// Tabs gets the tabstops that were set on the `GtkText` using
-	// gtk_text_set_tabs().
-	Tabs() *pango.TabArray
 	// TextLength retrieves the current length of the text in @self.
 	//
 	// This is equivalent to getting @self's `GtkEntryBuffer` and calling
@@ -29102,36 +23798,6 @@ func marshalText(p uintptr) (interface{}, error) {
 	return WrapText(obj), nil
 }
 
-// NewText constructs a class Text.
-func NewText() Text {
-	var _cret C.GtkText
-
-	cret = C.gtk_text_new()
-
-	var _text Text
-
-	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Text)
-
-	return _text
-}
-
-// NewTextWithBuffer constructs a class Text.
-func NewTextWithBuffer(buffer EntryBuffer) Text {
-	var _arg1 *C.GtkEntryBuffer
-
-	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
-
-	var _cret C.GtkText
-
-	cret = C.gtk_text_new_with_buffer(_arg1)
-
-	var _text Text
-
-	_text = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Text)
-
-	return _text
-}
-
 // ActivatesDefault retrieves the value set by
 // gtk_text_set_activates_default().
 func (s text) ActivatesDefault() bool {
@@ -29141,7 +23807,7 @@ func (s text) ActivatesDefault() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_get_activates_default(_arg0)
+	_cret = C.gtk_text_get_activates_default(_arg0)
 
 	var _ok bool
 
@@ -29150,42 +23816,6 @@ func (s text) ActivatesDefault() bool {
 	}
 
 	return _ok
-}
-
-// Attributes gets the attribute list that was set on the `GtkText` using
-// gtk_text_set_attributes().
-func (s text) Attributes() *pango.AttrList {
-	var _arg0 *C.GtkText
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.PangoAttrList
-
-	cret = C.gtk_text_get_attributes(_arg0)
-
-	var _attrList *pango.AttrList
-
-	_attrList = pango.WrapAttrList(unsafe.Pointer(_cret))
-
-	return _attrList
-}
-
-// Buffer: get the `GtkEntryBuffer` object which holds the text for this
-// self.
-func (s text) Buffer() EntryBuffer {
-	var _arg0 *C.GtkText
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkEntryBuffer
-
-	cret = C.gtk_text_get_buffer(_arg0)
-
-	var _entryBuffer EntryBuffer
-
-	_entryBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(EntryBuffer)
-
-	return _entryBuffer
 }
 
 // EnableEmojiCompletion returns whether Emoji completion is enabled for
@@ -29197,7 +23827,7 @@ func (s text) EnableEmojiCompletion() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_get_enable_emoji_completion(_arg0)
+	_cret = C.gtk_text_get_enable_emoji_completion(_arg0)
 
 	var _ok bool
 
@@ -29206,57 +23836,6 @@ func (s text) EnableEmojiCompletion() bool {
 	}
 
 	return _ok
-}
-
-// ExtraMenu gets the menu model set with gtk_text_set_extra_menu().
-func (s text) ExtraMenu() gio.MenuModel {
-	var _arg0 *C.GtkText
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_text_get_extra_menu(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
-}
-
-// InputHints gets the input hints of the `GtkText`.
-func (s text) InputHints() InputHints {
-	var _arg0 *C.GtkText
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkInputHints
-
-	cret = C.gtk_text_get_input_hints(_arg0)
-
-	var _inputHints InputHints
-
-	_inputHints = InputHints(_cret)
-
-	return _inputHints
-}
-
-// InputPurpose gets the input purpose of the `GtkText`.
-func (s text) InputPurpose() InputPurpose {
-	var _arg0 *C.GtkText
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkInputPurpose
-
-	cret = C.gtk_text_get_input_purpose(_arg0)
-
-	var _inputPurpose InputPurpose
-
-	_inputPurpose = InputPurpose(_cret)
-
-	return _inputPurpose
 }
 
 // InvisibleChar retrieves the character displayed in place of the real
@@ -29272,7 +23851,7 @@ func (s text) InvisibleChar() uint32 {
 
 	var _cret C.gunichar
 
-	cret = C.gtk_text_get_invisible_char(_arg0)
+	_cret = C.gtk_text_get_invisible_char(_arg0)
 
 	var _gunichar uint32
 
@@ -29294,7 +23873,7 @@ func (s text) MaxLength() int {
 
 	var _cret C.int
 
-	cret = C.gtk_text_get_max_length(_arg0)
+	_cret = C.gtk_text_get_max_length(_arg0)
 
 	var _gint int
 
@@ -29311,7 +23890,7 @@ func (s text) OverwriteMode() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_get_overwrite_mode(_arg0)
+	_cret = C.gtk_text_get_overwrite_mode(_arg0)
 
 	var _ok bool
 
@@ -29331,7 +23910,7 @@ func (s text) PlaceholderText() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_text_get_placeholder_text(_arg0)
+	_cret = C.gtk_text_get_placeholder_text(_arg0)
 
 	var _utf8 string
 
@@ -29349,7 +23928,7 @@ func (s text) PropagateTextWidth() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_get_propagate_text_width(_arg0)
+	_cret = C.gtk_text_get_propagate_text_width(_arg0)
 
 	var _ok bool
 
@@ -29358,24 +23937,6 @@ func (s text) PropagateTextWidth() bool {
 	}
 
 	return _ok
-}
-
-// Tabs gets the tabstops that were set on the `GtkText` using
-// gtk_text_set_tabs().
-func (s text) Tabs() *pango.TabArray {
-	var _arg0 *C.GtkText
-
-	_arg0 = (*C.GtkText)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.PangoTabArray
-
-	cret = C.gtk_text_get_tabs(_arg0)
-
-	var _tabArray *pango.TabArray
-
-	_tabArray = pango.WrapTabArray(unsafe.Pointer(_cret))
-
-	return _tabArray
 }
 
 // TextLength retrieves the current length of the text in @self.
@@ -29389,7 +23950,7 @@ func (s text) TextLength() uint16 {
 
 	var _cret C.guint16
 
-	cret = C.gtk_text_get_text_length(_arg0)
+	_cret = C.gtk_text_get_text_length(_arg0)
 
 	var _guint16 uint16
 
@@ -29407,7 +23968,7 @@ func (s text) TruncateMultiline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_get_truncate_multiline(_arg0)
+	_cret = C.gtk_text_get_truncate_multiline(_arg0)
 
 	var _ok bool
 
@@ -29426,7 +23987,7 @@ func (s text) Visibility() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_get_visibility(_arg0)
+	_cret = C.gtk_text_get_visibility(_arg0)
 
 	var _ok bool
 
@@ -29450,7 +24011,7 @@ func (s text) GrabFocusWithoutSelecting() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_grab_focus_without_selecting(_arg0)
+	_cret = C.gtk_text_grab_focus_without_selecting(_arg0)
 
 	var _ok bool
 
@@ -29725,11 +24286,9 @@ type TextTagTable interface {
 	//
 	// Note that the table may not be modified while iterating over it (you
 	// can’t add/remove tags).
-	Foreach()
+	Foreach(fn TextTagTableForeach)
 	// Size returns the size of the table (number of tags)
 	Size() int
-	// Lookup: look up a named tag.
-	Lookup(name string) TextTag
 	// Remove: remove a tag from the table.
 	//
 	// If a `GtkTextBuffer` has @table as its tag table, the tag is removed from
@@ -29761,19 +24320,6 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 	return WrapTextTagTable(obj), nil
 }
 
-// NewTextTagTable constructs a class TextTagTable.
-func NewTextTagTable() TextTagTable {
-	var _cret C.GtkTextTagTable
-
-	cret = C.gtk_text_tag_table_new()
-
-	var _textTagTable TextTagTable
-
-	_textTagTable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextTagTable)
-
-	return _textTagTable
-}
-
 // Add: add a tag to the table.
 //
 // The tag is assigned the highest priority in the table.
@@ -29789,7 +24335,7 @@ func (t textTagTable) Add(tag TextTag) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_tag_table_add(_arg0, _arg1)
+	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
 	var _ok bool
 
@@ -29804,12 +24350,16 @@ func (t textTagTable) Add(tag TextTag) bool {
 //
 // Note that the table may not be modified while iterating over it (you
 // can’t add/remove tags).
-func (t textTagTable) Foreach() {
+func (t textTagTable) Foreach(fn TextTagTableForeach) {
 	var _arg0 *C.GtkTextTagTable
+	var _arg1 C.GtkTextTagTableForeach
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TextTagTableForeach)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_text_tag_table_foreach(_arg0)
+	C.gtk_text_tag_table_foreach(_arg0, _arg1, _arg2)
 }
 
 // Size returns the size of the table (number of tags)
@@ -29820,33 +24370,13 @@ func (t textTagTable) Size() int {
 
 	var _cret C.int
 
-	cret = C.gtk_text_tag_table_get_size(_arg0)
+	_cret = C.gtk_text_tag_table_get_size(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Lookup: look up a named tag.
-func (t textTagTable) Lookup(name string) TextTag {
-	var _arg0 *C.GtkTextTagTable
-	var _arg1 *C.char
-
-	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.char)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkTextTag
-
-	cret = C.gtk_text_tag_table_lookup(_arg0, _arg1)
-
-	var _textTag TextTag
-
-	_textTag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextTag)
-
-	return _textTag
 }
 
 // Remove: remove a tag from the table.
@@ -30081,26 +24611,6 @@ type TreeSelection interface {
 	// CountSelectedRows returns the number of rows that have been selected in
 	// @tree.
 	CountSelectedRows() int
-	// Mode gets the selection mode for @selection. See
-	// gtk_tree_selection_set_mode().
-	Mode() SelectionMode
-	// Selected sets @iter to the currently selected node if @selection is set
-	// to K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you
-	// just want to test if @selection has any selected nodes. @model is filled
-	// with the current model as a convenience. This function will not work if
-	// you use @selection is K_SELECTION_MULTIPLE.
-	Selected() (TreeModel, TreeIter, bool)
-	// SelectedRows creates a list of path of all selected rows. Additionally,
-	// if you are planning on modifying the model after calling this function,
-	// you may want to convert the returned list into a list of
-	// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
-	//
-	// To free the return value, use:
-	//
-	//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-	SelectedRows() (TreeModel, *glib.List)
-	// TreeView returns the tree view associated with @selection.
-	TreeView() TreeView
 	// UserData returns the user data for the selection function.
 	UserData() interface{}
 	// IterIsSelected returns true if the row at @iter is currently selected.
@@ -30121,18 +24631,11 @@ type TreeSelection interface {
 	// SelectedForeach calls a function for each selected node. Note that you
 	// cannot modify the tree or selection from within this function. As a
 	// result, gtk_tree_selection_get_selected_rows() might be more useful.
-	SelectedForeach()
+	SelectedForeach(fn TreeSelectionForeachFunc)
 	// SetMode sets the selection mode of the @selection. If the previous type
 	// was K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was
 	// previously selected.
 	SetMode(typ SelectionMode)
-	// SetSelectFunction sets the selection function.
-	//
-	// If set, this function is called before any node is selected or
-	// unselected, giving some control over which nodes are selected. The select
-	// function should return true if the state of the node may be toggled, and
-	// false if the state of the node should be left unchanged.
-	SetSelectFunction()
 	// UnselectAll unselects all the nodes.
 	UnselectAll()
 	// UnselectIter unselects the specified iterator.
@@ -30174,107 +24677,13 @@ func (s treeSelection) CountSelectedRows() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_selection_count_selected_rows(_arg0)
+	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Mode gets the selection mode for @selection. See
-// gtk_tree_selection_set_mode().
-func (s treeSelection) Mode() SelectionMode {
-	var _arg0 *C.GtkTreeSelection
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkSelectionMode
-
-	cret = C.gtk_tree_selection_get_mode(_arg0)
-
-	var _selectionMode SelectionMode
-
-	_selectionMode = SelectionMode(_cret)
-
-	return _selectionMode
-}
-
-// Selected sets @iter to the currently selected node if @selection is set
-// to K_SELECTION_SINGLE or K_SELECTION_BROWSE. @iter may be NULL if you
-// just want to test if @selection has any selected nodes. @model is filled
-// with the current model as a convenience. This function will not work if
-// you use @selection is K_SELECTION_MULTIPLE.
-func (s treeSelection) Selected() (TreeModel, TreeIter, bool) {
-	var _arg0 *C.GtkTreeSelection
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _arg1 **C.GtkTreeModel
-	var _iter TreeIter
-	var _cret C.gboolean
-
-	cret = C.gtk_tree_selection_get_selected(_arg0, _arg1, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
-
-	var _model TreeModel
-
-	var _ok bool
-
-	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(TreeModel)
-
-	if _cret {
-		_ok = true
-	}
-
-	return _model, _iter, _ok
-}
-
-// SelectedRows creates a list of path of all selected rows. Additionally,
-// if you are planning on modifying the model after calling this function,
-// you may want to convert the returned list into a list of
-// TreeRowReferences. To do this, you can use gtk_tree_row_reference_new().
-//
-// To free the return value, use:
-//
-//    g_list_free_full (list, (GDestroyNotify) gtk_tree_path_free);
-func (s treeSelection) SelectedRows() (TreeModel, *glib.List) {
-	var _arg0 *C.GtkTreeSelection
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _arg1 **C.GtkTreeModel
-	var _cret *C.GList
-
-	cret = C.gtk_tree_selection_get_selected_rows(_arg0, _arg1)
-
-	var _model TreeModel
-	var _list *glib.List
-
-	_model = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg1.Native()))).(TreeModel)
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _model, _list
-}
-
-// TreeView returns the tree view associated with @selection.
-func (s treeSelection) TreeView() TreeView {
-	var _arg0 *C.GtkTreeSelection
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkTreeView
-
-	cret = C.gtk_tree_selection_get_tree_view(_arg0)
-
-	var _treeView TreeView
-
-	_treeView = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeView)
-
-	return _treeView
 }
 
 // UserData returns the user data for the selection function.
@@ -30285,7 +24694,7 @@ func (s treeSelection) UserData() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.gtk_tree_selection_get_user_data(_arg0)
+	_cret = C.gtk_tree_selection_get_user_data(_arg0)
 
 	var _gpointer interface{}
 
@@ -30304,7 +24713,7 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_selection_iter_is_selected(_arg0, _arg1)
+	_cret = C.gtk_tree_selection_iter_is_selected(_arg0, _arg1)
 
 	var _ok bool
 
@@ -30326,7 +24735,7 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_selection_path_is_selected(_arg0, _arg1)
+	_cret = C.gtk_tree_selection_path_is_selected(_arg0, _arg1)
 
 	var _ok bool
 
@@ -30386,12 +24795,16 @@ func (s treeSelection) SelectRange(startPath *TreePath, endPath *TreePath) {
 // SelectedForeach calls a function for each selected node. Note that you
 // cannot modify the tree or selection from within this function. As a
 // result, gtk_tree_selection_get_selected_rows() might be more useful.
-func (s treeSelection) SelectedForeach() {
+func (s treeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
 	var _arg0 *C.GtkTreeSelection
+	var _arg1 C.GtkTreeSelectionForeachFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TreeSelectionForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_tree_selection_selected_foreach(_arg0)
+	C.gtk_tree_selection_selected_foreach(_arg0, _arg1, _arg2)
 }
 
 // SetMode sets the selection mode of the @selection. If the previous type
@@ -30405,20 +24818,6 @@ func (s treeSelection) SetMode(typ SelectionMode) {
 	_arg1 = (C.GtkSelectionMode)(typ)
 
 	C.gtk_tree_selection_set_mode(_arg0, _arg1)
-}
-
-// SetSelectFunction sets the selection function.
-//
-// If set, this function is called before any node is selected or
-// unselected, giving some control over which nodes are selected. The select
-// function should return true if the state of the node may be toggled, and
-// false if the state of the node should be left unchanged.
-func (s treeSelection) SetSelectFunction() {
-	var _arg0 *C.GtkTreeSelection
-
-	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
-
-	C.gtk_tree_selection_set_select_function(_arg0)
 }
 
 // UnselectAll unselects all the nodes.
@@ -30518,8 +24917,6 @@ type TreeViewColumn interface {
 	// Alignment returns the current x alignment of @tree_column. This value can
 	// range between 0.0 and 1.0.
 	Alignment() float32
-	// Button returns the button used in the treeview column header
-	Button() Widget
 	// Clickable returns true if the user can click on the header for the
 	// column.
 	Clickable() bool
@@ -30541,8 +24938,6 @@ type TreeViewColumn interface {
 	// Resizable returns true if the @tree_column can be resized by the end
 	// user.
 	Resizable() bool
-	// Sizing returns the current type of @tree_column.
-	Sizing() TreeViewColumnSizing
 	// SortColumnID gets the logical @sort_column_id that the model sorts on
 	// when this column is selected for sorting. See
 	// gtk_tree_view_column_set_sort_column_id().
@@ -30550,20 +24945,12 @@ type TreeViewColumn interface {
 	// SortIndicator gets the value set by
 	// gtk_tree_view_column_set_sort_indicator().
 	SortIndicator() bool
-	// SortOrder gets the value set by gtk_tree_view_column_set_sort_order().
-	SortOrder() SortType
 	// Spacing returns the spacing of @tree_column.
 	Spacing() int
 	// Title returns the title of the widget.
 	Title() string
-	// TreeView returns the TreeView wherein @tree_column has been inserted. If
-	// @column is currently not inserted in any tree view, nil is returned.
-	TreeView() Widget
 	// Visible returns true if @tree_column is visible.
 	Visible() bool
-	// Widget returns the Widget in the button on the column header. If a custom
-	// widget has not been set then nil is returned.
-	Widget() Widget
 	// Width returns the current size of @tree_column in pixels.
 	Width() int
 	// XOffset returns the current X offset of @tree_column in pixels.
@@ -30583,11 +24970,6 @@ type TreeViewColumn interface {
 	// column header. The alignment determines its location inside the button --
 	// 0.0 for left, 0.5 for center, 1.0 for right.
 	SetAlignment(xalign float32)
-	// SetCellDataFunc sets the TreeCellDataFunc to use for the column. This
-	// function is used instead of the standard attributes mapping for setting
-	// the column value, and should set the value of @tree_column's cell
-	// renderer as appropriate. @func may be nil to remove an older one.
-	SetCellDataFunc()
 	// SetClickable sets the header to be active if @clickable is true. When the
 	// header is active, then it can take keyboard focus, and can be clicked.
 	SetClickable(clickable bool)
@@ -30690,36 +25072,6 @@ func marshalTreeViewColumn(p uintptr) (interface{}, error) {
 	return WrapTreeViewColumn(obj), nil
 }
 
-// NewTreeViewColumn constructs a class TreeViewColumn.
-func NewTreeViewColumn() TreeViewColumn {
-	var _cret C.GtkTreeViewColumn
-
-	cret = C.gtk_tree_view_column_new()
-
-	var _treeViewColumn TreeViewColumn
-
-	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeViewColumn)
-
-	return _treeViewColumn
-}
-
-// NewTreeViewColumnWithArea constructs a class TreeViewColumn.
-func NewTreeViewColumnWithArea(area CellArea) TreeViewColumn {
-	var _arg1 *C.GtkCellArea
-
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-
-	var _cret C.GtkTreeViewColumn
-
-	cret = C.gtk_tree_view_column_new_with_area(_arg1)
-
-	var _treeViewColumn TreeViewColumn
-
-	_treeViewColumn = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeViewColumn)
-
-	return _treeViewColumn
-}
-
 // AddAttribute adds an attribute mapping to the list in @tree_column. The
 // @column is the column of the model to get a value from, and the
 // @attribute is the parameter on @cell_renderer to be set from the value.
@@ -30754,7 +25106,7 @@ func (t treeViewColumn) CellGetPosition(cellRenderer CellRenderer) (xOffset int,
 	var _arg3 C.int
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_cell_get_position(_arg0, _arg1, &_arg2, &_arg3)
+	_cret = C.gtk_tree_view_column_cell_get_position(_arg0, _arg1, &_arg2, &_arg3)
 
 	var _xOffset int
 	var _width int
@@ -30806,7 +25158,7 @@ func (t treeViewColumn) CellIsVisible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_cell_is_visible(_arg0)
+	_cret = C.gtk_tree_view_column_cell_is_visible(_arg0)
 
 	var _ok bool
 
@@ -30893,30 +25245,13 @@ func (t treeViewColumn) Alignment() float32 {
 
 	var _cret C.float
 
-	cret = C.gtk_tree_view_column_get_alignment(_arg0)
+	_cret = C.gtk_tree_view_column_get_alignment(_arg0)
 
 	var _gfloat float32
 
 	_gfloat = (float32)(_cret)
 
 	return _gfloat
-}
-
-// Button returns the button used in the treeview column header
-func (t treeViewColumn) Button() Widget {
-	var _arg0 *C.GtkTreeViewColumn
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_tree_view_column_get_button(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // Clickable returns true if the user can click on the header for the
@@ -30928,7 +25263,7 @@ func (t treeViewColumn) Clickable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_get_clickable(_arg0)
+	_cret = C.gtk_tree_view_column_get_clickable(_arg0)
 
 	var _ok bool
 
@@ -30947,7 +25282,7 @@ func (t treeViewColumn) Expand() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_get_expand(_arg0)
+	_cret = C.gtk_tree_view_column_get_expand(_arg0)
 
 	var _ok bool
 
@@ -30968,7 +25303,7 @@ func (t treeViewColumn) FixedWidth() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_view_column_get_fixed_width(_arg0)
+	_cret = C.gtk_tree_view_column_get_fixed_width(_arg0)
 
 	var _gint int
 
@@ -30986,7 +25321,7 @@ func (t treeViewColumn) MaxWidth() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_view_column_get_max_width(_arg0)
+	_cret = C.gtk_tree_view_column_get_max_width(_arg0)
 
 	var _gint int
 
@@ -31004,7 +25339,7 @@ func (t treeViewColumn) MinWidth() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_view_column_get_min_width(_arg0)
+	_cret = C.gtk_tree_view_column_get_min_width(_arg0)
 
 	var _gint int
 
@@ -31022,7 +25357,7 @@ func (t treeViewColumn) Reorderable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_get_reorderable(_arg0)
+	_cret = C.gtk_tree_view_column_get_reorderable(_arg0)
 
 	var _ok bool
 
@@ -31042,7 +25377,7 @@ func (t treeViewColumn) Resizable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_get_resizable(_arg0)
+	_cret = C.gtk_tree_view_column_get_resizable(_arg0)
 
 	var _ok bool
 
@@ -31051,23 +25386,6 @@ func (t treeViewColumn) Resizable() bool {
 	}
 
 	return _ok
-}
-
-// Sizing returns the current type of @tree_column.
-func (t treeViewColumn) Sizing() TreeViewColumnSizing {
-	var _arg0 *C.GtkTreeViewColumn
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GtkTreeViewColumnSizing
-
-	cret = C.gtk_tree_view_column_get_sizing(_arg0)
-
-	var _treeViewColumnSizing TreeViewColumnSizing
-
-	_treeViewColumnSizing = TreeViewColumnSizing(_cret)
-
-	return _treeViewColumnSizing
 }
 
 // SortColumnID gets the logical @sort_column_id that the model sorts on
@@ -31080,7 +25398,7 @@ func (t treeViewColumn) SortColumnID() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_view_column_get_sort_column_id(_arg0)
+	_cret = C.gtk_tree_view_column_get_sort_column_id(_arg0)
 
 	var _gint int
 
@@ -31098,7 +25416,7 @@ func (t treeViewColumn) SortIndicator() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_get_sort_indicator(_arg0)
+	_cret = C.gtk_tree_view_column_get_sort_indicator(_arg0)
 
 	var _ok bool
 
@@ -31109,23 +25427,6 @@ func (t treeViewColumn) SortIndicator() bool {
 	return _ok
 }
 
-// SortOrder gets the value set by gtk_tree_view_column_set_sort_order().
-func (t treeViewColumn) SortOrder() SortType {
-	var _arg0 *C.GtkTreeViewColumn
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GtkSortType
-
-	cret = C.gtk_tree_view_column_get_sort_order(_arg0)
-
-	var _sortType SortType
-
-	_sortType = SortType(_cret)
-
-	return _sortType
-}
-
 // Spacing returns the spacing of @tree_column.
 func (t treeViewColumn) Spacing() int {
 	var _arg0 *C.GtkTreeViewColumn
@@ -31134,7 +25435,7 @@ func (t treeViewColumn) Spacing() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_view_column_get_spacing(_arg0)
+	_cret = C.gtk_tree_view_column_get_spacing(_arg0)
 
 	var _gint int
 
@@ -31151,31 +25452,13 @@ func (t treeViewColumn) Title() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_tree_view_column_get_title(_arg0)
+	_cret = C.gtk_tree_view_column_get_title(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// TreeView returns the TreeView wherein @tree_column has been inserted. If
-// @column is currently not inserted in any tree view, nil is returned.
-func (t treeViewColumn) TreeView() Widget {
-	var _arg0 *C.GtkTreeViewColumn
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_tree_view_column_get_tree_view(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // Visible returns true if @tree_column is visible.
@@ -31186,7 +25469,7 @@ func (t treeViewColumn) Visible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_view_column_get_visible(_arg0)
+	_cret = C.gtk_tree_view_column_get_visible(_arg0)
 
 	var _ok bool
 
@@ -31197,24 +25480,6 @@ func (t treeViewColumn) Visible() bool {
 	return _ok
 }
 
-// Widget returns the Widget in the button on the column header. If a custom
-// widget has not been set then nil is returned.
-func (t treeViewColumn) Widget() Widget {
-	var _arg0 *C.GtkTreeViewColumn
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_tree_view_column_get_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Width returns the current size of @tree_column in pixels.
 func (t treeViewColumn) Width() int {
 	var _arg0 *C.GtkTreeViewColumn
@@ -31223,7 +25488,7 @@ func (t treeViewColumn) Width() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_view_column_get_width(_arg0)
+	_cret = C.gtk_tree_view_column_get_width(_arg0)
 
 	var _gint int
 
@@ -31240,7 +25505,7 @@ func (t treeViewColumn) XOffset() int {
 
 	var _cret C.int
 
-	cret = C.gtk_tree_view_column_get_x_offset(_arg0)
+	_cret = C.gtk_tree_view_column_get_x_offset(_arg0)
 
 	var _gint int
 
@@ -31304,18 +25569,6 @@ func (t treeViewColumn) SetAlignment(xalign float32) {
 	_arg1 = C.float(xalign)
 
 	C.gtk_tree_view_column_set_alignment(_arg0, _arg1)
-}
-
-// SetCellDataFunc sets the TreeCellDataFunc to use for the column. This
-// function is used instead of the standard attributes mapping for setting
-// the column value, and should set the value of @tree_column's cell
-// renderer as appropriate. @func may be nil to remove an older one.
-func (t treeViewColumn) SetCellDataFunc() {
-	var _arg0 *C.GtkTreeViewColumn
-
-	_arg0 = (*C.GtkTreeViewColumn)(unsafe.Pointer(t.Native()))
-
-	C.gtk_tree_view_column_set_cell_data_func(_arg0)
 }
 
 // SetClickable sets the header to be active if @clickable is true. When the
@@ -31566,8 +25819,6 @@ type Viewport interface {
 	ConstraintTarget
 	Scrollable
 
-	// Child gets the child widget of @viewport.
-	Child() Widget
 	// ScrollToFocus gets whether the viewport is scrolling to keep the focused
 	// child in view.
 	ScrollToFocus() bool
@@ -31607,42 +25858,6 @@ func marshalViewport(p uintptr) (interface{}, error) {
 	return WrapViewport(obj), nil
 }
 
-// NewViewport constructs a class Viewport.
-func NewViewport(hadjustment Adjustment, vadjustment Adjustment) Viewport {
-	var _arg1 *C.GtkAdjustment
-	var _arg2 *C.GtkAdjustment
-
-	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
-	_arg2 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
-
-	var _cret C.GtkViewport
-
-	cret = C.gtk_viewport_new(_arg1, _arg2)
-
-	var _viewport Viewport
-
-	_viewport = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Viewport)
-
-	return _viewport
-}
-
-// Child gets the child widget of @viewport.
-func (v viewport) Child() Widget {
-	var _arg0 *C.GtkViewport
-
-	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_viewport_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // ScrollToFocus gets whether the viewport is scrolling to keep the focused
 // child in view.
 func (v viewport) ScrollToFocus() bool {
@@ -31652,7 +25867,7 @@ func (v viewport) ScrollToFocus() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
+	_cret = C.gtk_viewport_get_scroll_to_focus(_arg0)
 
 	var _ok bool
 
@@ -31727,17 +25942,4 @@ func marshalVolumeButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapVolumeButton(obj), nil
-}
-
-// NewVolumeButton constructs a class VolumeButton.
-func NewVolumeButton() VolumeButton {
-	var _cret C.GtkVolumeButton
-
-	cret = C.gtk_volume_button_new()
-
-	var _volumeButton VolumeButton
-
-	_volumeButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(VolumeButton)
-
-	return _volumeButton
 }

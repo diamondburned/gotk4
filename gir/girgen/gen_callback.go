@@ -2,6 +2,7 @@ package girgen
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/diamondburned/gotk4/gir"
@@ -110,6 +111,10 @@ func findClosure(params []gir.Parameter) *int {
 	return nil
 }
 
+func callbackArg(i int) string {
+	return "arg" + strconv.Itoa(i)
+}
+
 func (cg *callbackGenerator) cgoTail() string {
 	cgotail := pen.NewJoints(", ", len(cg.Parameters.Parameters))
 
@@ -121,7 +126,7 @@ func (cg *callbackGenerator) cgoTail() string {
 		}
 
 		cgotype := anyTypeCGo(param.AnyType)
-		cgotail.Addf("arg%d %s", i, cgotype)
+		cgotail.Addf("%s %s", callbackArg(i), cgotype)
 	}
 
 	callTail := "(" + cgotail.Join() + ")"
@@ -154,7 +159,7 @@ func (cg *callbackGenerator) renderBlock() bool {
 
 	cap := len(cg.Parameters.Parameters) + 2
 
-	cg.pen.Linef(secPrefix, "v := box.Get(uintptr(arg%d))", *cg.Closure)
+	cg.pen.Linef(secPrefix, "v := box.Get(uintptr(%s))", callbackArg(*cg.Closure))
 	cg.pen.Linef(secPrefix, "if v == nil {")
 	cg.pen.Linef(secPrefix, "  panic(`callback not found`)")
 	cg.pen.Linef(secPrefix, "}")
@@ -162,42 +167,34 @@ func (cg *callbackGenerator) renderBlock() bool {
 
 	cg.pen.Linef(secFnCall, "fn := v.(%s)", cg.GoName)
 
-	inputAt := func(i int) string { return fmt.Sprintf("arg%d", i) }
-
-	inputValues := make([]CValueProp, 0, cap)
-	outputValues := make([]GoValueProp, 0, cap)
+	inputValues := make([]ValueProp, 0, cap)
+	outputValues := make([]ValueProp, 0, cap)
 
 	for i, param := range cg.Parameters.Parameters {
-		if param.Direction != "out" {
-			inputValues = append(inputValues, CValueProp{
-				ValueProp: NewValuePropParam(
-					inputAt(i), SnakeToGo(false, param.Name),
-					&i, param.ParameterAttrs,
-				),
-			})
-		} else {
+		switch param.Direction {
+		case "inout": // TODO
+			return false
+		case "out":
 			// No need to have this declare a variable, since we're using the
 			// walrus operator in the function call.
-			outputValues = append(outputValues, GoValueProp{
-				ValueProp: NewValuePropParam(
-					SnakeToGo(false, param.Name), inputAt(i),
-					&i, param.ParameterAttrs,
-				),
-			})
+			outputValues = append(outputValues, NewValuePropParam(
+				SnakeToGo(false, param.Name), callbackArg(i),
+				i, param.ParameterAttrs,
+			))
+		default:
+			inputValues = append(inputValues, NewValuePropParam(
+				callbackArg(i), SnakeToGo(false, param.Name),
+				i, param.ParameterAttrs,
+			))
 		}
 	}
 
-	// TODO: add GError support.
-
 	var fnReturn string
-
 	if !returnIsVoid(cg.ReturnValue) {
-		outputValues = append(outputValues, GoValueProp{
-			ValueProp: NewValuePropReturn(
-				returnName(cg.CallableAttrs), "cret",
-				*cg.ReturnValue,
-			),
-		})
+		fnReturn = returnName(cg.CallableAttrs)
+		outputValues = append(outputValues, NewValuePropReturn(
+			fnReturn, "cret", *cg.ReturnValue,
+		))
 	}
 
 	convertedIns := cg.fg.CGoConverter(cg.Name, inputValues).ConvertAll()

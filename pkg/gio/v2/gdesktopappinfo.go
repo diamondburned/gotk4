@@ -5,9 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -36,41 +34,10 @@ func init() {
 	})
 }
 
-// DesktopAppLaunchCallback: during invocation,
-// g_desktop_app_info_launch_uris_as_manager() may create one or more child
-// processes. This callback is invoked once for each, providing the process ID.
-type DesktopAppLaunchCallback func()
-
-//export gotk4_DesktopAppLaunchCallback
-func gotk4_DesktopAppLaunchCallback(arg0 *C.GDesktopAppInfo, arg1 C.GPid, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(DesktopAppLaunchCallback)
-	fn()
-}
-
-// DesktopAppInfoLookupOverrider contains methods that are overridable. This
-// interface is a subset of the interface DesktopAppInfoLookup.
-type DesktopAppInfoLookupOverrider interface {
-	// DefaultForURIScheme gets the default application for launching
-	// applications using this URI scheme for a particular AppInfoLookup
-	// implementation.
-	//
-	// The AppInfoLookup interface and this function is used to implement
-	// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
-	// is no reason for applications to use it directly. Applications should use
-	// g_app_info_get_default_for_uri_scheme().
-	DefaultForURIScheme(uriScheme string) AppInfo
-}
-
 // DesktopAppInfoLookup is an opaque data structure and can only be accessed
 // using the following functions.
 type DesktopAppInfoLookup interface {
 	gextras.Objector
-	DesktopAppInfoLookupOverrider
 }
 
 // desktopAppInfoLookup implements the DesktopAppInfoLookup interface.
@@ -92,33 +59,6 @@ func marshalDesktopAppInfoLookup(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDesktopAppInfoLookup(obj), nil
-}
-
-// DefaultForURIScheme gets the default application for launching
-// applications using this URI scheme for a particular AppInfoLookup
-// implementation.
-//
-// The AppInfoLookup interface and this function is used to implement
-// g_app_info_get_default_for_uri_scheme() backends in a GIO module. There
-// is no reason for applications to use it directly. Applications should use
-// g_app_info_get_default_for_uri_scheme().
-func (l desktopAppInfoLookup) DefaultForURIScheme(uriScheme string) AppInfo {
-	var _arg0 *C.GDesktopAppInfoLookup
-	var _arg1 *C.char
-
-	_arg0 = (*C.GDesktopAppInfoLookup)(unsafe.Pointer(l.Native()))
-	_arg1 = (*C.char)(C.CString(uriScheme))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GAppInfo
-
-	cret = C.g_desktop_app_info_lookup_get_default_for_uri_scheme(_arg0, _arg1)
-
-	var _appInfo AppInfo
-
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppInfo)
-
-	return _appInfo
 }
 
 // DesktopAppInfo is an implementation of Info based on desktop files.
@@ -221,7 +161,15 @@ type DesktopAppInfo interface {
 	// If application launching occurs via some other mechanism (eg: D-Bus
 	// activation) then @spawn_flags, @user_setup, @user_setup_data,
 	// @pid_callback and @pid_callback_data are ignored.
-	LaunchUrisAsManager() error
+	LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags) error
+	// LaunchUrisAsManagerWithFds: equivalent to
+	// g_desktop_app_info_launch_uris_as_manager() but allows you to pass in
+	// file descriptors for the stdin, stdout and stderr streams of the launched
+	// process.
+	//
+	// If application launching occurs via some non-spawn mechanism (e.g. D-Bus
+	// activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
+	LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, stdinFd int, stdoutFd int, stderrFd int) error
 	// ListActions returns the list of "additional application actions"
 	// supported on the desktop file, as per the desktop file specification.
 	//
@@ -253,59 +201,6 @@ func marshalDesktopAppInfo(p uintptr) (interface{}, error) {
 	return WrapDesktopAppInfo(obj), nil
 }
 
-// NewDesktopAppInfo constructs a class DesktopAppInfo.
-func NewDesktopAppInfo(desktopId string) DesktopAppInfo {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(desktopId))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GDesktopAppInfo
-
-	cret = C.g_desktop_app_info_new(_arg1)
-
-	var _desktopAppInfo DesktopAppInfo
-
-	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
-
-	return _desktopAppInfo
-}
-
-// NewDesktopAppInfoFromFilename constructs a class DesktopAppInfo.
-func NewDesktopAppInfoFromFilename(filename *string) DesktopAppInfo {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GDesktopAppInfo
-
-	cret = C.g_desktop_app_info_new_from_filename(_arg1)
-
-	var _desktopAppInfo DesktopAppInfo
-
-	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
-
-	return _desktopAppInfo
-}
-
-// NewDesktopAppInfoFromKeyfile constructs a class DesktopAppInfo.
-func NewDesktopAppInfoFromKeyfile(keyFile *glib.KeyFile) DesktopAppInfo {
-	var _arg1 *C.GKeyFile
-
-	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
-
-	var _cret C.GDesktopAppInfo
-
-	cret = C.g_desktop_app_info_new_from_keyfile(_arg1)
-
-	var _desktopAppInfo DesktopAppInfo
-
-	_desktopAppInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DesktopAppInfo)
-
-	return _desktopAppInfo
-}
-
 // ActionName gets the user-visible display name of the "additional
 // application action" specified by @action_name.
 //
@@ -321,7 +216,7 @@ func (i desktopAppInfo) ActionName(actionName string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_desktop_app_info_get_action_name(_arg0, _arg1)
+	_cret = C.g_desktop_app_info_get_action_name(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -344,7 +239,7 @@ func (i desktopAppInfo) Boolean(key string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_desktop_app_info_get_boolean(_arg0, _arg1)
+	_cret = C.g_desktop_app_info_get_boolean(_arg0, _arg1)
 
 	var _ok bool
 
@@ -363,7 +258,7 @@ func (i desktopAppInfo) Categories() string {
 
 	var _cret *C.char
 
-	cret = C.g_desktop_app_info_get_categories(_arg0)
+	_cret = C.g_desktop_app_info_get_categories(_arg0)
 
 	var _utf8 string
 
@@ -382,7 +277,7 @@ func (i desktopAppInfo) Filename() *string {
 
 	var _cret *C.char
 
-	cret = C.g_desktop_app_info_get_filename(_arg0)
+	_cret = C.g_desktop_app_info_get_filename(_arg0)
 
 	var _filename *string
 
@@ -399,7 +294,7 @@ func (i desktopAppInfo) GenericName() string {
 
 	var _cret *C.char
 
-	cret = C.g_desktop_app_info_get_generic_name(_arg0)
+	_cret = C.g_desktop_app_info_get_generic_name(_arg0)
 
 	var _utf8 string
 
@@ -417,7 +312,7 @@ func (i desktopAppInfo) IsHidden() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_desktop_app_info_get_is_hidden(_arg0)
+	_cret = C.g_desktop_app_info_get_is_hidden(_arg0)
 
 	var _ok bool
 
@@ -436,7 +331,7 @@ func (i desktopAppInfo) Keywords() []string {
 
 	var _cret **C.char
 
-	cret = C.g_desktop_app_info_get_keywords(_arg0)
+	_cret = C.g_desktop_app_info_get_keywords(_arg0)
 
 	var _utf8s []string
 
@@ -453,7 +348,7 @@ func (i desktopAppInfo) Keywords() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -475,7 +370,7 @@ func (i desktopAppInfo) LocaleString(key string) string {
 
 	var _cret *C.char
 
-	cret = C.g_desktop_app_info_get_locale_string(_arg0, _arg1)
+	_cret = C.g_desktop_app_info_get_locale_string(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -495,7 +390,7 @@ func (i desktopAppInfo) Nodisplay() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_desktop_app_info_get_nodisplay(_arg0)
+	_cret = C.g_desktop_app_info_get_nodisplay(_arg0)
 
 	var _ok bool
 
@@ -527,7 +422,7 @@ func (i desktopAppInfo) ShowIn(desktopEnv string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_desktop_app_info_get_show_in(_arg0, _arg1)
+	_cret = C.g_desktop_app_info_get_show_in(_arg0, _arg1)
 
 	var _ok bool
 
@@ -548,7 +443,7 @@ func (i desktopAppInfo) StartupWmClass() string {
 
 	var _cret *C.char
 
-	cret = C.g_desktop_app_info_get_startup_wm_class(_arg0)
+	_cret = C.g_desktop_app_info_get_startup_wm_class(_arg0)
 
 	var _utf8 string
 
@@ -570,7 +465,7 @@ func (i desktopAppInfo) String(key string) string {
 
 	var _cret *C.char
 
-	cret = C.g_desktop_app_info_get_string(_arg0, _arg1)
+	_cret = C.g_desktop_app_info_get_string(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -594,7 +489,7 @@ func (i desktopAppInfo) StringList(key string) []string {
 	var _cret **C.gchar
 	var _arg2 *C.gsize
 
-	cret = C.g_desktop_app_info_get_string_list(_arg0, _arg1)
+	_cret = C.g_desktop_app_info_get_string_list(_arg0, _arg1, &_arg2)
 
 	var _utf8s []string
 
@@ -624,7 +519,7 @@ func (i desktopAppInfo) HasKey(key string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_desktop_app_info_has_key(_arg0, _arg1)
+	_cret = C.g_desktop_app_info_has_key(_arg0, _arg1)
 
 	var _ok bool
 
@@ -679,14 +574,55 @@ func (i desktopAppInfo) LaunchAction(actionName string, launchContext AppLaunchC
 // If application launching occurs via some other mechanism (eg: D-Bus
 // activation) then @spawn_flags, @user_setup, @user_setup_data,
 // @pid_callback and @pid_callback_data are ignored.
-func (a desktopAppInfo) LaunchUrisAsManager() error {
+func (a desktopAppInfo) LaunchUrisAsManager(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags) error {
 	var _arg0 *C.GDesktopAppInfo
+	var _arg1 *C.GList
+	var _arg2 *C.GAppLaunchContext
+	var _arg3 C.GSpawnFlags
 
 	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(uris.Native()))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	_arg3 = (C.GSpawnFlags)(spawnFlags)
 
 	var _cerr *C.GError
 
-	C.g_desktop_app_info_launch_uris_as_manager(_arg0, _cerr)
+	C.g_desktop_app_info_launch_uris_as_manager(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _cerr)
+
+	var _goerr error
+
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _goerr
+}
+
+// LaunchUrisAsManagerWithFds: equivalent to
+// g_desktop_app_info_launch_uris_as_manager() but allows you to pass in
+// file descriptors for the stdin, stdout and stderr streams of the launched
+// process.
+//
+// If application launching occurs via some non-spawn mechanism (e.g. D-Bus
+// activation) then @stdin_fd, @stdout_fd and @stderr_fd are ignored.
+func (a desktopAppInfo) LaunchUrisAsManagerWithFds(uris *glib.List, launchContext AppLaunchContext, spawnFlags glib.SpawnFlags, stdinFd int, stdoutFd int, stderrFd int) error {
+	var _arg0 *C.GDesktopAppInfo
+	var _arg1 *C.GList
+	var _arg2 *C.GAppLaunchContext
+	var _arg3 C.GSpawnFlags
+	var _arg8 C.gint
+	var _arg9 C.gint
+	var _arg10 C.gint
+
+	_arg0 = (*C.GDesktopAppInfo)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(uris.Native()))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(launchContext.Native()))
+	_arg3 = (C.GSpawnFlags)(spawnFlags)
+	_arg8 = C.gint(stdinFd)
+	_arg9 = C.gint(stdoutFd)
+	_arg10 = C.gint(stderrFd)
+
+	var _cerr *C.GError
+
+	C.g_desktop_app_info_launch_uris_as_manager_with_fds(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8, _arg9, _arg10, _cerr)
 
 	var _goerr error
 
@@ -707,7 +643,7 @@ func (i desktopAppInfo) ListActions() []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_desktop_app_info_list_actions(_arg0)
+	_cret = C.g_desktop_app_info_list_actions(_arg0)
 
 	var _utf8s []string
 
@@ -724,7 +660,7 @@ func (i desktopAppInfo) ListActions() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}

@@ -3,10 +3,7 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,16 +32,10 @@ func init() {
 // LoadableIconOverrider contains methods that are overridable. This
 // interface is a subset of the interface LoadableIcon.
 type LoadableIconOverrider interface {
-	// Load loads a loadable icon. For the asynchronous version of this
-	// function, see g_loadable_icon_load_async().
-	Load(size int, cancellable Cancellable) (string, InputStream, error)
 	// LoadAsync loads an icon asynchronously. To finish this function, see
 	// g_loadable_icon_load_finish(). For the synchronous, blocking version of
 	// this function, see g_loadable_icon_load().
-	LoadAsync()
-	// LoadFinish finishes an asynchronous icon load started in
-	// g_loadable_icon_load_async().
-	LoadFinish(res AsyncResult) (string, InputStream, error)
+	LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
 // LoadableIcon extends the #GIcon interface and adds the ability to load icons
@@ -75,69 +66,21 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 	return WrapLoadableIcon(obj), nil
 }
 
-// Load loads a loadable icon. For the asynchronous version of this
-// function, see g_loadable_icon_load_async().
-func (i loadableIcon) Load(size int, cancellable Cancellable) (string, InputStream, error) {
-	var _arg0 *C.GLoadableIcon
-	var _arg1 C.int
-	var _arg3 *C.GCancellable
-
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
-	_arg1 = C.int(size)
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _arg2 *C.char
-	var _cret *C.GInputStream
-	var _cerr *C.GError
-
-	cret = C.g_loadable_icon_load(_arg0, _arg1, _arg3, &_arg2, _cerr)
-
-	var _typ string
-	var _inputStream InputStream
-	var _goerr error
-
-	_typ = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _typ, _inputStream, _goerr
-}
-
 // LoadAsync loads an icon asynchronously. To finish this function, see
 // g_loadable_icon_load_finish(). For the synchronous, blocking version of
 // this function, see g_loadable_icon_load().
-func (i loadableIcon) LoadAsync() {
+func (i loadableIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GLoadableIcon
+	var _arg1 C.int
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
+	_arg1 = C.int(size)
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	C.g_loadable_icon_load_async(_arg0)
-}
-
-// LoadFinish finishes an asynchronous icon load started in
-// g_loadable_icon_load_async().
-func (i loadableIcon) LoadFinish(res AsyncResult) (string, InputStream, error) {
-	var _arg0 *C.GLoadableIcon
-	var _arg1 *C.GAsyncResult
-
-	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _arg2 *C.char
-	var _cret *C.GInputStream
-	var _cerr *C.GError
-
-	cret = C.g_loadable_icon_load_finish(_arg0, _arg1, &_arg2, _cerr)
-
-	var _typ string
-	var _inputStream InputStream
-	var _goerr error
-
-	_typ = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_inputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(InputStream)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _typ, _inputStream, _goerr
+	C.g_loadable_icon_load_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }

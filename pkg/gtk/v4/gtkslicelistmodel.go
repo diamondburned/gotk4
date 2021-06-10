@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -32,8 +29,6 @@ type SliceListModel interface {
 	gextras.Objector
 	gio.ListModel
 
-	// Model gets the model that is currently being used or nil if none.
-	Model() gio.ListModel
 	// Offset gets the offset set via gtk_slice_list_model_set_offset().
 	Offset() uint
 	// Size gets the size set via gtk_slice_list_model_set_size().
@@ -77,44 +72,6 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 	return WrapSliceListModel(obj), nil
 }
 
-// NewSliceListModel constructs a class SliceListModel.
-func NewSliceListModel(model gio.ListModel, offset uint, size uint) SliceListModel {
-	var _arg1 *C.GListModel
-	var _arg2 C.guint
-	var _arg3 C.guint
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-	_arg2 = C.guint(offset)
-	_arg3 = C.guint(size)
-
-	var _cret C.GtkSliceListModel
-
-	cret = C.gtk_slice_list_model_new(_arg1, _arg2, _arg3)
-
-	var _sliceListModel SliceListModel
-
-	_sliceListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SliceListModel)
-
-	return _sliceListModel
-}
-
-// Model gets the model that is currently being used or nil if none.
-func (s sliceListModel) Model() gio.ListModel {
-	var _arg0 *C.GtkSliceListModel
-
-	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_slice_list_model_get_model(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
-}
-
 // Offset gets the offset set via gtk_slice_list_model_set_offset().
 func (s sliceListModel) Offset() uint {
 	var _arg0 *C.GtkSliceListModel
@@ -123,7 +80,7 @@ func (s sliceListModel) Offset() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_slice_list_model_get_offset(_arg0)
+	_cret = C.gtk_slice_list_model_get_offset(_arg0)
 
 	var _guint uint
 
@@ -140,7 +97,7 @@ func (s sliceListModel) Size() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_slice_list_model_get_size(_arg0)
+	_cret = C.gtk_slice_list_model_get_size(_arg0)
 
 	var _guint uint
 

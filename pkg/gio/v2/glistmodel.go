@@ -161,7 +161,7 @@ func (l listModel) ItemType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_list_model_get_item_type(_arg0)
+	_cret = C.g_list_model_get_item_type(_arg0)
 
 	var _gType externglib.Type
 
@@ -182,7 +182,7 @@ func (l listModel) NItems() uint {
 
 	var _cret C.guint
 
-	cret = C.g_list_model_get_n_items(_arg0)
+	_cret = C.g_list_model_get_n_items(_arg0)
 
 	var _guint uint
 
@@ -205,7 +205,7 @@ func (l listModel) Object(position uint) gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.g_list_model_get_object(_arg0, _arg1)
+	_cret = C.g_list_model_get_object(_arg0, _arg1)
 
 	var _object gextras.Objector
 

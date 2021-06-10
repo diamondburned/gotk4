@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,9 +36,6 @@ type BoxLayout interface {
 	LayoutManager
 	Orientable
 
-	// BaselinePosition gets the value set by
-	// gtk_box_layout_set_baseline_position().
-	BaselinePosition() BaselinePosition
 	// Homogeneous returns whether the layout is set to be homogeneous.
 	Homogeneous() bool
 	// Spacing returns the space that @box_layout puts between children.
@@ -84,41 +78,6 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 	return WrapBoxLayout(obj), nil
 }
 
-// NewBoxLayout constructs a class BoxLayout.
-func NewBoxLayout(orientation Orientation) BoxLayout {
-	var _arg1 C.GtkOrientation
-
-	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkBoxLayout
-
-	cret = C.gtk_box_layout_new(_arg1)
-
-	var _boxLayout BoxLayout
-
-	_boxLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BoxLayout)
-
-	return _boxLayout
-}
-
-// BaselinePosition gets the value set by
-// gtk_box_layout_set_baseline_position().
-func (b boxLayout) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBoxLayout
-
-	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkBaselinePosition
-
-	cret = C.gtk_box_layout_get_baseline_position(_arg0)
-
-	var _baselinePosition BaselinePosition
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
-}
-
 // Homogeneous returns whether the layout is set to be homogeneous.
 func (b boxLayout) Homogeneous() bool {
 	var _arg0 *C.GtkBoxLayout
@@ -127,7 +86,7 @@ func (b boxLayout) Homogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_box_layout_get_homogeneous(_arg0)
+	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
 
 	var _ok bool
 
@@ -146,7 +105,7 @@ func (b boxLayout) Spacing() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_box_layout_get_spacing(_arg0)
+	_cret = C.gtk_box_layout_get_spacing(_arg0)
 
 	var _guint uint
 

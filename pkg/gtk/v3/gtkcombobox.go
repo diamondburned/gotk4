@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -90,9 +89,6 @@ type ComboBox interface {
 	ActiveIter() (TreeIter, bool)
 	// AddTearoffs gets the current value of the :add-tearoffs property.
 	AddTearoffs() bool
-	// ButtonSensitivity returns whether the combo box sets the dropdown button
-	// sensitive or not when there are no items in the model.
-	ButtonSensitivity() SensitivityType
 	// ColumnSpanColumn returns the column with column span information for
 	// @combo_box.
 	ColumnSpanColumn() int
@@ -107,9 +103,6 @@ type ComboBox interface {
 	// IDColumn returns the column which @combo_box is using to get string IDs
 	// for values from.
 	IDColumn() int
-	// Model returns the TreeModel which is acting as data source for
-	// @combo_box.
-	Model() TreeModel
 	// PopupFixedWidth gets whether the popup uses a fixed width matching the
 	// allocated width of the combo box.
 	PopupFixedWidth() bool
@@ -190,11 +183,6 @@ type ComboBox interface {
 	// SetPopupFixedWidth specifies whether the popup’s width should be a fixed
 	// width matching the allocated width of the combo box.
 	SetPopupFixedWidth(fixed bool)
-	// SetRowSeparatorFunc sets the row separator function, which is used to
-	// determine whether a row should be drawn as a separator. If the row
-	// separator function is nil, no separators are drawn. This is the default
-	// value.
-	SetRowSeparatorFunc()
 	// SetRowSpanColumn sets the column with row span information for @combo_box
 	// to be @row_span. The row span column contains integers which indicate how
 	// many rows an item should span.
@@ -234,100 +222,6 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 	return WrapComboBox(obj), nil
 }
 
-// NewComboBox constructs a class ComboBox.
-func NewComboBox() ComboBox {
-	var _cret C.GtkComboBox
-
-	cret = C.gtk_combo_box_new()
-
-	var _comboBox ComboBox
-
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
-
-	return _comboBox
-}
-
-// NewComboBoxWithArea constructs a class ComboBox.
-func NewComboBoxWithArea(area CellArea) ComboBox {
-	var _arg1 *C.GtkCellArea
-
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-
-	var _cret C.GtkComboBox
-
-	cret = C.gtk_combo_box_new_with_area(_arg1)
-
-	var _comboBox ComboBox
-
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
-
-	return _comboBox
-}
-
-// NewComboBoxWithAreaAndEntry constructs a class ComboBox.
-func NewComboBoxWithAreaAndEntry(area CellArea) ComboBox {
-	var _arg1 *C.GtkCellArea
-
-	_arg1 = (*C.GtkCellArea)(unsafe.Pointer(area.Native()))
-
-	var _cret C.GtkComboBox
-
-	cret = C.gtk_combo_box_new_with_area_and_entry(_arg1)
-
-	var _comboBox ComboBox
-
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
-
-	return _comboBox
-}
-
-// NewComboBoxWithEntry constructs a class ComboBox.
-func NewComboBoxWithEntry() ComboBox {
-	var _cret C.GtkComboBox
-
-	cret = C.gtk_combo_box_new_with_entry()
-
-	var _comboBox ComboBox
-
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
-
-	return _comboBox
-}
-
-// NewComboBoxWithModel constructs a class ComboBox.
-func NewComboBoxWithModel(model TreeModel) ComboBox {
-	var _arg1 *C.GtkTreeModel
-
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkComboBox
-
-	cret = C.gtk_combo_box_new_with_model(_arg1)
-
-	var _comboBox ComboBox
-
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
-
-	return _comboBox
-}
-
-// NewComboBoxWithModelAndEntry constructs a class ComboBox.
-func NewComboBoxWithModelAndEntry(model TreeModel) ComboBox {
-	var _arg1 *C.GtkTreeModel
-
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkComboBox
-
-	cret = C.gtk_combo_box_new_with_model_and_entry(_arg1)
-
-	var _comboBox ComboBox
-
-	_comboBox = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBox)
-
-	return _comboBox
-}
-
 // Active returns the index of the currently active item, or -1 if there’s
 // no active item. If the model is a non-flat treemodel, and the active item
 // is not an immediate child of the root of the tree, this function returns
@@ -340,7 +234,7 @@ func (c comboBox) Active() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_combo_box_get_active(_arg0)
+	_cret = C.gtk_combo_box_get_active(_arg0)
 
 	var _gint int
 
@@ -367,7 +261,7 @@ func (c comboBox) ActiveID() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_combo_box_get_active_id(_arg0)
+	_cret = C.gtk_combo_box_get_active_id(_arg0)
 
 	var _utf8 string
 
@@ -386,7 +280,7 @@ func (c comboBox) ActiveIter() (TreeIter, bool) {
 	var _iter TreeIter
 	var _cret C.gboolean
 
-	cret = C.gtk_combo_box_get_active_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_combo_box_get_active_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _ok bool
 
@@ -405,7 +299,7 @@ func (c comboBox) AddTearoffs() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_combo_box_get_add_tearoffs(_arg0)
+	_cret = C.gtk_combo_box_get_add_tearoffs(_arg0)
 
 	var _ok bool
 
@@ -414,24 +308,6 @@ func (c comboBox) AddTearoffs() bool {
 	}
 
 	return _ok
-}
-
-// ButtonSensitivity returns whether the combo box sets the dropdown button
-// sensitive or not when there are no items in the model.
-func (c comboBox) ButtonSensitivity() SensitivityType {
-	var _arg0 *C.GtkComboBox
-
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkSensitivityType
-
-	cret = C.gtk_combo_box_get_button_sensitivity(_arg0)
-
-	var _sensitivityType SensitivityType
-
-	_sensitivityType = SensitivityType(_cret)
-
-	return _sensitivityType
 }
 
 // ColumnSpanColumn returns the column with column span information for
@@ -443,7 +319,7 @@ func (c comboBox) ColumnSpanColumn() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_combo_box_get_column_span_column(_arg0)
+	_cret = C.gtk_combo_box_get_column_span_column(_arg0)
 
 	var _gint int
 
@@ -461,7 +337,7 @@ func (c comboBox) EntryTextColumn() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_combo_box_get_entry_text_column(_arg0)
+	_cret = C.gtk_combo_box_get_entry_text_column(_arg0)
 
 	var _gint int
 
@@ -479,7 +355,7 @@ func (c comboBox) FocusOnClick() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_combo_box_get_focus_on_click(_arg0)
+	_cret = C.gtk_combo_box_get_focus_on_click(_arg0)
 
 	var _ok bool
 
@@ -498,7 +374,7 @@ func (c comboBox) HasEntry() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_combo_box_get_has_entry(_arg0)
+	_cret = C.gtk_combo_box_get_has_entry(_arg0)
 
 	var _ok bool
 
@@ -518,31 +394,13 @@ func (c comboBox) IDColumn() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_combo_box_get_id_column(_arg0)
+	_cret = C.gtk_combo_box_get_id_column(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Model returns the TreeModel which is acting as data source for
-// @combo_box.
-func (c comboBox) Model() TreeModel {
-	var _arg0 *C.GtkComboBox
-
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkTreeModel
-
-	cret = C.gtk_combo_box_get_model(_arg0)
-
-	var _treeModel TreeModel
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
-
-	return _treeModel
 }
 
 // PopupFixedWidth gets whether the popup uses a fixed width matching the
@@ -554,7 +412,7 @@ func (c comboBox) PopupFixedWidth() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_combo_box_get_popup_fixed_width(_arg0)
+	_cret = C.gtk_combo_box_get_popup_fixed_width(_arg0)
 
 	var _ok bool
 
@@ -574,7 +432,7 @@ func (c comboBox) RowSpanColumn() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_combo_box_get_row_span_column(_arg0)
+	_cret = C.gtk_combo_box_get_row_span_column(_arg0)
 
 	var _gint int
 
@@ -592,7 +450,7 @@ func (c comboBox) Title() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_combo_box_get_title(_arg0)
+	_cret = C.gtk_combo_box_get_title(_arg0)
 
 	var _utf8 string
 
@@ -611,7 +469,7 @@ func (c comboBox) WrapWidth() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_combo_box_get_wrap_width(_arg0)
+	_cret = C.gtk_combo_box_get_wrap_width(_arg0)
 
 	var _gint int
 
@@ -686,7 +544,7 @@ func (c comboBox) SetActiveID(activeId string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
+	_cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
 
 	var _ok bool
 
@@ -824,18 +682,6 @@ func (c comboBox) SetPopupFixedWidth(fixed bool) {
 	}
 
 	C.gtk_combo_box_set_popup_fixed_width(_arg0, _arg1)
-}
-
-// SetRowSeparatorFunc sets the row separator function, which is used to
-// determine whether a row should be drawn as a separator. If the row
-// separator function is nil, no separators are drawn. This is the default
-// value.
-func (c comboBox) SetRowSeparatorFunc() {
-	var _arg0 *C.GtkComboBox
-
-	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
-
-	C.gtk_combo_box_set_row_separator_func(_arg0)
 }
 
 // SetRowSpanColumn sets the column with row span information for @combo_box

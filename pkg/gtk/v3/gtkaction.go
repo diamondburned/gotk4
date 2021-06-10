@@ -5,9 +5,7 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -94,19 +92,6 @@ type Action interface {
 	// been called and doesn’t remove the accelerator until
 	// gtk_action_disconnect_accelerator() has been called as many times.
 	ConnectAccelerator()
-	// CreateIcon: this function is intended for use by action implementations
-	// to create icons displayed in the proxy widgets.
-	CreateIcon(iconSize int) Widget
-	// CreateMenu: if @action provides a Menu widget as a submenu for the menu
-	// item or the toolbar item it creates, this function returns an instance of
-	// that menu.
-	CreateMenu() Widget
-	// CreateMenuItem creates a menu item widget that proxies for the given
-	// action.
-	CreateMenuItem() Widget
-	// CreateToolItem creates a toolbar item widget that proxies for the given
-	// action.
-	CreateToolItem() Widget
 	// DisconnectAccelerator undoes the effect of one call to
 	// gtk_action_connect_accelerator().
 	DisconnectAccelerator()
@@ -115,8 +100,6 @@ type Action interface {
 	// AlwaysShowImage returns whether @action's menu item proxies will always
 	// show their image, if available.
 	AlwaysShowImage() bool
-	// GIcon gets the gicon of @action.
-	GIcon() gio.Icon
 	// IconName gets the icon name of @action.
 	IconName() string
 	// IsImportant checks whether @action is important or not
@@ -125,9 +108,6 @@ type Action interface {
 	Label() string
 	// Name returns the name of the action.
 	Name() string
-	// Proxies returns the proxy widgets for an action. See also
-	// gtk_activatable_get_related_action().
-	Proxies() *glib.SList
 	// Sensitive returns whether the action itself is sensitive. Note that this
 	// doesn’t necessarily mean effective sensitivity. See
 	// gtk_action_is_sensitive() for that.
@@ -222,33 +202,6 @@ func marshalAction(p uintptr) (interface{}, error) {
 	return WrapAction(obj), nil
 }
 
-// NewAction constructs a class Action.
-func NewAction(name string, label string, tooltip string, stockId string) Action {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(tooltip))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg4))
-
-	var _cret C.GtkAction
-
-	cret = C.gtk_action_new(_arg1, _arg2, _arg3, _arg4)
-
-	var _action Action
-
-	_action = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Action)
-
-	return _action
-}
-
 // Activate emits the “activate” signal on the specified action, if it isn't
 // insensitive. This gets called by the proxy widgets when they get
 // activated.
@@ -292,81 +245,6 @@ func (a action) ConnectAccelerator() {
 	C.gtk_action_connect_accelerator(_arg0)
 }
 
-// CreateIcon: this function is intended for use by action implementations
-// to create icons displayed in the proxy widgets.
-func (a action) CreateIcon(iconSize int) Widget {
-	var _arg0 *C.GtkAction
-	var _arg1 C.GtkIconSize
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-	_arg1 = C.GtkIconSize(iconSize)
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_action_create_icon(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// CreateMenu: if @action provides a Menu widget as a submenu for the menu
-// item or the toolbar item it creates, this function returns an instance of
-// that menu.
-func (a action) CreateMenu() Widget {
-	var _arg0 *C.GtkAction
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_action_create_menu(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// CreateMenuItem creates a menu item widget that proxies for the given
-// action.
-func (a action) CreateMenuItem() Widget {
-	var _arg0 *C.GtkAction
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_action_create_menu_item(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// CreateToolItem creates a toolbar item widget that proxies for the given
-// action.
-func (a action) CreateToolItem() Widget {
-	var _arg0 *C.GtkAction
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_action_create_tool_item(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // DisconnectAccelerator undoes the effect of one call to
 // gtk_action_connect_accelerator().
 func (a action) DisconnectAccelerator() {
@@ -385,7 +263,7 @@ func (a action) AccelPath() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_get_accel_path(_arg0)
+	_cret = C.gtk_action_get_accel_path(_arg0)
 
 	var _utf8 string
 
@@ -403,7 +281,7 @@ func (a action) AlwaysShowImage() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_get_always_show_image(_arg0)
+	_cret = C.gtk_action_get_always_show_image(_arg0)
 
 	var _ok bool
 
@@ -414,23 +292,6 @@ func (a action) AlwaysShowImage() bool {
 	return _ok
 }
 
-// GIcon gets the gicon of @action.
-func (a action) GIcon() gio.Icon {
-	var _arg0 *C.GtkAction
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GIcon
-
-	cret = C.gtk_action_get_gicon(_arg0)
-
-	var _icon gio.Icon
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
-
-	return _icon
-}
-
 // IconName gets the icon name of @action.
 func (a action) IconName() string {
 	var _arg0 *C.GtkAction
@@ -439,7 +300,7 @@ func (a action) IconName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_get_icon_name(_arg0)
+	_cret = C.gtk_action_get_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -456,7 +317,7 @@ func (a action) IsImportant() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_get_is_important(_arg0)
+	_cret = C.gtk_action_get_is_important(_arg0)
 
 	var _ok bool
 
@@ -475,7 +336,7 @@ func (a action) Label() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_get_label(_arg0)
+	_cret = C.gtk_action_get_label(_arg0)
 
 	var _utf8 string
 
@@ -492,31 +353,13 @@ func (a action) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_get_name(_arg0)
+	_cret = C.gtk_action_get_name(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Proxies returns the proxy widgets for an action. See also
-// gtk_activatable_get_related_action().
-func (a action) Proxies() *glib.SList {
-	var _arg0 *C.GtkAction
-
-	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_action_get_proxies(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-
-	return _sList
 }
 
 // Sensitive returns whether the action itself is sensitive. Note that this
@@ -529,7 +372,7 @@ func (a action) Sensitive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_get_sensitive(_arg0)
+	_cret = C.gtk_action_get_sensitive(_arg0)
 
 	var _ok bool
 
@@ -548,7 +391,7 @@ func (a action) ShortLabel() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_get_short_label(_arg0)
+	_cret = C.gtk_action_get_short_label(_arg0)
 
 	var _utf8 string
 
@@ -565,7 +408,7 @@ func (a action) StockID() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_get_stock_id(_arg0)
+	_cret = C.gtk_action_get_stock_id(_arg0)
 
 	var _utf8 string
 
@@ -582,7 +425,7 @@ func (a action) Tooltip() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_get_tooltip(_arg0)
+	_cret = C.gtk_action_get_tooltip(_arg0)
 
 	var _utf8 string
 
@@ -601,7 +444,7 @@ func (a action) Visible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_get_visible(_arg0)
+	_cret = C.gtk_action_get_visible(_arg0)
 
 	var _ok bool
 
@@ -620,7 +463,7 @@ func (a action) VisibleHorizontal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_get_visible_horizontal(_arg0)
+	_cret = C.gtk_action_get_visible_horizontal(_arg0)
 
 	var _ok bool
 
@@ -639,7 +482,7 @@ func (a action) VisibleVertical() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_get_visible_vertical(_arg0)
+	_cret = C.gtk_action_get_visible_vertical(_arg0)
 
 	var _ok bool
 
@@ -658,7 +501,7 @@ func (a action) IsSensitive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_is_sensitive(_arg0)
+	_cret = C.gtk_action_is_sensitive(_arg0)
 
 	var _ok bool
 
@@ -677,7 +520,7 @@ func (a action) IsVisible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_is_visible(_arg0)
+	_cret = C.gtk_action_is_visible(_arg0)
 
 	var _ok bool
 

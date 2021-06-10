@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -36,10 +35,6 @@ type NumerableIcon interface {
 	gio.EmblemedIcon
 	gio.Icon
 
-	// BackgroundGIcon returns the #GIcon that was set as the base background
-	// image, or nil if there’s none. The caller of this function does not own a
-	// reference to the returned #GIcon.
-	BackgroundGIcon() gio.Icon
 	// BackgroundIconName returns the icon name used as the base background
 	// image, or nil if there’s none.
 	BackgroundIconName() string
@@ -47,9 +42,6 @@ type NumerableIcon interface {
 	Count() int
 	// Label returns the currently displayed label of the icon, or nil.
 	Label() string
-	// StyleContext returns the StyleContext used by the icon for theming, or
-	// nil if there’s none.
-	StyleContext() StyleContext
 	// SetBackgroundGIcon updates the icon to use @icon as the base background
 	// image. If @icon is nil, @self will go back using style information or
 	// default theming for its background image.
@@ -119,25 +111,6 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 	return WrapNumerableIcon(obj), nil
 }
 
-// BackgroundGIcon returns the #GIcon that was set as the base background
-// image, or nil if there’s none. The caller of this function does not own a
-// reference to the returned #GIcon.
-func (s numerableIcon) BackgroundGIcon() gio.Icon {
-	var _arg0 *C.GtkNumerableIcon
-
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GIcon
-
-	cret = C.gtk_numerable_icon_get_background_gicon(_arg0)
-
-	var _icon gio.Icon
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Icon)
-
-	return _icon
-}
-
 // BackgroundIconName returns the icon name used as the base background
 // image, or nil if there’s none.
 func (s numerableIcon) BackgroundIconName() string {
@@ -147,7 +120,7 @@ func (s numerableIcon) BackgroundIconName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_numerable_icon_get_background_icon_name(_arg0)
+	_cret = C.gtk_numerable_icon_get_background_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -164,7 +137,7 @@ func (s numerableIcon) Count() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_numerable_icon_get_count(_arg0)
+	_cret = C.gtk_numerable_icon_get_count(_arg0)
 
 	var _gint int
 
@@ -181,31 +154,13 @@ func (s numerableIcon) Label() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_numerable_icon_get_label(_arg0)
+	_cret = C.gtk_numerable_icon_get_label(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// StyleContext returns the StyleContext used by the icon for theming, or
-// nil if there’s none.
-func (s numerableIcon) StyleContext() StyleContext {
-	var _arg0 *C.GtkNumerableIcon
-
-	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkStyleContext
-
-	cret = C.gtk_numerable_icon_get_style_context(_arg0)
-
-	var _styleContext StyleContext
-
-	_styleContext = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StyleContext)
-
-	return _styleContext
 }
 
 // SetBackgroundGIcon updates the icon to use @icon as the base background

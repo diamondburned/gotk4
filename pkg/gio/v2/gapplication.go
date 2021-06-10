@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -254,20 +253,6 @@ type Application interface {
 	BindBusyProperty(object gextras.Objector, property string)
 	// ApplicationID gets the unique identifier for @application.
 	ApplicationID() string
-	// DBusConnection gets the BusConnection being used by the application, or
-	// nil.
-	//
-	// If #GApplication is using its D-Bus backend then this function will
-	// return the BusConnection being used for uniqueness and communication with
-	// the desktop environment and other instances of the application.
-	//
-	// If #GApplication is not using D-Bus then this function will return nil.
-	// This includes the situation where the D-Bus backend would normally be in
-	// use but we were unable to connect to the bus.
-	//
-	// This function must not be called before the application has been
-	// registered. See g_application_get_is_registered().
-	DBusConnection() DBusConnection
 	// DBusObjectPath gets the D-Bus object path being used by the application,
 	// or nil.
 	//
@@ -284,10 +269,6 @@ type Application interface {
 	// This function must not be called before the application has been
 	// registered. See g_application_get_is_registered().
 	DBusObjectPath() string
-	// Flags gets the flags for @application.
-	//
-	// See Flags.
-	Flags() ApplicationFlags
 	// InactivityTimeout gets the current inactivity timeout for the
 	// application.
 	//
@@ -336,6 +317,21 @@ type Application interface {
 	//
 	// To cancel the busy indication, use g_application_unmark_busy().
 	MarkBusy()
+	// Open opens the given files.
+	//
+	// In essence, this results in the #GApplication::open signal being emitted
+	// in the primary instance.
+	//
+	// @n_files must be greater than zero.
+	//
+	// @hint is simply passed through to the ::open signal. It is intended to be
+	// used by applications that have multiple modes for opening files (eg:
+	// "view" vs "edit", etc). Unless you have a need for this functionality,
+	// you should use "".
+	//
+	// The application must be registered before calling this function and it
+	// must have the G_APPLICATION_HANDLES_OPEN flag set.
+	Open(files []File, hint string)
 	// Quit: immediately quits the application.
 	//
 	// Upon return to the mainloop, g_application_run() will return, calling
@@ -385,6 +381,80 @@ type Application interface {
 	// Never call this function except to cancel the effect of a previous call
 	// to g_application_hold().
 	Release()
+	// Run runs the application.
+	//
+	// This function is intended to be run from main() and its return value is
+	// intended to be returned by main(). Although you are expected to pass the
+	// @argc, @argv parameters from main() to this function, it is possible to
+	// pass nil if @argv is not available or commandline handling is not
+	// required. Note that on Windows, @argc and @argv are ignored, and
+	// g_win32_get_command_line() is called internally (for proper support of
+	// Unicode commandline arguments).
+	//
+	// #GApplication will attempt to parse the commandline arguments. You can
+	// add commandline flags to the list of recognised options by way of
+	// g_application_add_main_option_entries(). After this, the
+	// #GApplication::handle-local-options signal is emitted, from which the
+	// application can inspect the values of its Entrys.
+	//
+	// #GApplication::handle-local-options is a good place to handle options
+	// such as `--version`, where an immediate reply from the local process is
+	// desired (instead of communicating with an already-running instance). A
+	// #GApplication::handle-local-options handler can stop further processing
+	// by returning a non-negative value, which then becomes the exit status of
+	// the process.
+	//
+	// What happens next depends on the flags: if
+	// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
+	// commandline arguments are sent to the primary instance, where a
+	// #GApplication::command-line signal is emitted. Otherwise, the remaining
+	// commandline arguments are assumed to be a list of files. If there are no
+	// files listed, the application is activated via the
+	// #GApplication::activate signal. If there are one or more files, and
+	// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
+	// the #GApplication::open signal.
+	//
+	// If you are interested in doing more complicated local handling of the
+	// commandline then you should implement your own #GApplication subclass and
+	// override local_command_line(). In this case, you most likely want to
+	// return true from your local_command_line() implementation to suppress the
+	// default handling. See
+	// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
+	// example.
+	//
+	// If, after the above is done, the use count of the application is zero
+	// then the exit status is returned immediately. If the use count is
+	// non-zero then the default main context is iterated until the use count
+	// falls to zero, at which point 0 is returned.
+	//
+	// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
+	// for as much as 10 seconds with a use count of zero while waiting for the
+	// message that caused the activation to arrive. After that, if the use
+	// count falls to zero the application will exit immediately, except in the
+	// case that g_application_set_inactivity_timeout() is in use.
+	//
+	// This function sets the prgname (g_set_prgname()), if not already set, to
+	// the basename of argv[0].
+	//
+	// Much like g_main_loop_run(), this function will acquire the main context
+	// for the duration that the application is running.
+	//
+	// Since 2.40, applications that are not explicitly flagged as services or
+	// launchers (ie: neither G_APPLICATION_IS_SERVICE or
+	// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
+	// default handler for local_command_line) if "--gapplication-service" was
+	// given in the command line. If this flag is present then normal
+	// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
+	// flag is set. This provides a "compromise" solution whereby running an
+	// application directly from the commandline will invoke it in the normal
+	// way (which can be useful for debugging) while still allowing applications
+	// to be D-Bus activated in service mode. The D-Bus service file should
+	// invoke the executable with "--gapplication-service" as the sole
+	// commandline argument. This approach is suitable for use by most graphical
+	// applications but should not be used from applications like editors that
+	// need precise control over when processes invoked via the commandline will
+	// exit and what their exit status will be.
+	Run(argv []*string) int
 	// SendNotification sends a notification on behalf of @application to the
 	// desktop shell. There is no guarantee that the notification is displayed
 	// immediately, or even at all.
@@ -552,26 +622,6 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
-// NewApplication constructs a class Application.
-func NewApplication(applicationId string, flags ApplicationFlags) Application {
-	var _arg1 *C.gchar
-	var _arg2 C.GApplicationFlags
-
-	_arg1 = (*C.gchar)(C.CString(applicationId))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GApplicationFlags)(flags)
-
-	var _cret C.GApplication
-
-	cret = C.g_application_new(_arg1, _arg2)
-
-	var _application Application
-
-	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Application)
-
-	return _application
-}
-
 // Activate activates the application.
 //
 // In essence, this results in the #GApplication::activate signal being
@@ -678,7 +728,7 @@ func (a application) AddMainOptionEntries(entries []glib.OptionEntry) {
 	var _arg1 *C.GOptionEntry
 
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_GOptionEntry))
+	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_struct_GOptionEntry))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	{
@@ -753,42 +803,13 @@ func (a application) ApplicationID() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_application_get_application_id(_arg0)
+	_cret = C.g_application_get_application_id(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// DBusConnection gets the BusConnection being used by the application, or
-// nil.
-//
-// If #GApplication is using its D-Bus backend then this function will
-// return the BusConnection being used for uniqueness and communication with
-// the desktop environment and other instances of the application.
-//
-// If #GApplication is not using D-Bus then this function will return nil.
-// This includes the situation where the D-Bus backend would normally be in
-// use but we were unable to connect to the bus.
-//
-// This function must not be called before the application has been
-// registered. See g_application_get_is_registered().
-func (a application) DBusConnection() DBusConnection {
-	var _arg0 *C.GApplication
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GDBusConnection
-
-	cret = C.g_application_get_dbus_connection(_arg0)
-
-	var _dBusConnection DBusConnection
-
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
-
-	return _dBusConnection
 }
 
 // DBusObjectPath gets the D-Bus object path being used by the application,
@@ -813,32 +834,13 @@ func (a application) DBusObjectPath() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_application_get_dbus_object_path(_arg0)
+	_cret = C.g_application_get_dbus_object_path(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Flags gets the flags for @application.
-//
-// See Flags.
-func (a application) Flags() ApplicationFlags {
-	var _arg0 *C.GApplication
-
-	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GApplicationFlags
-
-	cret = C.g_application_get_flags(_arg0)
-
-	var _applicationFlags ApplicationFlags
-
-	_applicationFlags = ApplicationFlags(_cret)
-
-	return _applicationFlags
 }
 
 // InactivityTimeout gets the current inactivity timeout for the
@@ -853,7 +855,7 @@ func (a application) InactivityTimeout() uint {
 
 	var _cret C.guint
 
-	cret = C.g_application_get_inactivity_timeout(_arg0)
+	_cret = C.g_application_get_inactivity_timeout(_arg0)
 
 	var _guint uint
 
@@ -871,7 +873,7 @@ func (a application) IsBusy() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_application_get_is_busy(_arg0)
+	_cret = C.g_application_get_is_busy(_arg0)
 
 	var _ok bool
 
@@ -893,7 +895,7 @@ func (a application) IsRegistered() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_application_get_is_registered(_arg0)
+	_cret = C.g_application_get_is_registered(_arg0)
 
 	var _ok bool
 
@@ -921,7 +923,7 @@ func (a application) IsRemote() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_application_get_is_remote(_arg0)
+	_cret = C.g_application_get_is_remote(_arg0)
 
 	var _ok bool
 
@@ -942,7 +944,7 @@ func (a application) ResourceBasePath() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_application_get_resource_base_path(_arg0)
+	_cret = C.g_application_get_resource_base_path(_arg0)
 
 	var _utf8 string
 
@@ -982,6 +984,45 @@ func (a application) MarkBusy() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_mark_busy(_arg0)
+}
+
+// Open opens the given files.
+//
+// In essence, this results in the #GApplication::open signal being emitted
+// in the primary instance.
+//
+// @n_files must be greater than zero.
+//
+// @hint is simply passed through to the ::open signal. It is intended to be
+// used by applications that have multiple modes for opening files (eg:
+// "view" vs "edit", etc). Unless you have a need for this functionality,
+// you should use "".
+//
+// The application must be registered before calling this function and it
+// must have the G_APPLICATION_HANDLES_OPEN flag set.
+func (a application) Open(files []File, hint string) {
+	var _arg0 *C.GApplication
+	var _arg1 **C.GFile
+	var _arg2 C.gint
+	var _arg3 *C.gchar
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg2 = C.gint(len(files))
+	_arg1 = (**C.GFile)(C.malloc(len(files) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg1))
+
+	{
+		var out []*C.GFile
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg1), int(len(files)))
+
+		for i := range files {
+			_arg1 = (*C.GFile)(unsafe.Pointer(files.Native()))
+		}
+	}
+	_arg3 = (*C.gchar)(C.CString(hint))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	C.g_application_open(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Quit: immediately quits the application.
@@ -1062,6 +1103,110 @@ func (a application) Release() {
 	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
 
 	C.g_application_release(_arg0)
+}
+
+// Run runs the application.
+//
+// This function is intended to be run from main() and its return value is
+// intended to be returned by main(). Although you are expected to pass the
+// @argc, @argv parameters from main() to this function, it is possible to
+// pass nil if @argv is not available or commandline handling is not
+// required. Note that on Windows, @argc and @argv are ignored, and
+// g_win32_get_command_line() is called internally (for proper support of
+// Unicode commandline arguments).
+//
+// #GApplication will attempt to parse the commandline arguments. You can
+// add commandline flags to the list of recognised options by way of
+// g_application_add_main_option_entries(). After this, the
+// #GApplication::handle-local-options signal is emitted, from which the
+// application can inspect the values of its Entrys.
+//
+// #GApplication::handle-local-options is a good place to handle options
+// such as `--version`, where an immediate reply from the local process is
+// desired (instead of communicating with an already-running instance). A
+// #GApplication::handle-local-options handler can stop further processing
+// by returning a non-negative value, which then becomes the exit status of
+// the process.
+//
+// What happens next depends on the flags: if
+// G_APPLICATION_HANDLES_COMMAND_LINE was specified then the remaining
+// commandline arguments are sent to the primary instance, where a
+// #GApplication::command-line signal is emitted. Otherwise, the remaining
+// commandline arguments are assumed to be a list of files. If there are no
+// files listed, the application is activated via the
+// #GApplication::activate signal. If there are one or more files, and
+// G_APPLICATION_HANDLES_OPEN was specified then the files are opened via
+// the #GApplication::open signal.
+//
+// If you are interested in doing more complicated local handling of the
+// commandline then you should implement your own #GApplication subclass and
+// override local_command_line(). In this case, you most likely want to
+// return true from your local_command_line() implementation to suppress the
+// default handling. See
+// [gapplication-example-cmdline2.c][gapplication-example-cmdline2] for an
+// example.
+//
+// If, after the above is done, the use count of the application is zero
+// then the exit status is returned immediately. If the use count is
+// non-zero then the default main context is iterated until the use count
+// falls to zero, at which point 0 is returned.
+//
+// If the G_APPLICATION_IS_SERVICE flag is set, then the service will run
+// for as much as 10 seconds with a use count of zero while waiting for the
+// message that caused the activation to arrive. After that, if the use
+// count falls to zero the application will exit immediately, except in the
+// case that g_application_set_inactivity_timeout() is in use.
+//
+// This function sets the prgname (g_set_prgname()), if not already set, to
+// the basename of argv[0].
+//
+// Much like g_main_loop_run(), this function will acquire the main context
+// for the duration that the application is running.
+//
+// Since 2.40, applications that are not explicitly flagged as services or
+// launchers (ie: neither G_APPLICATION_IS_SERVICE or
+// G_APPLICATION_IS_LAUNCHER are given as flags) will check (from the
+// default handler for local_command_line) if "--gapplication-service" was
+// given in the command line. If this flag is present then normal
+// commandline processing is interrupted and the G_APPLICATION_IS_SERVICE
+// flag is set. This provides a "compromise" solution whereby running an
+// application directly from the commandline will invoke it in the normal
+// way (which can be useful for debugging) while still allowing applications
+// to be D-Bus activated in service mode. The D-Bus service file should
+// invoke the executable with "--gapplication-service" as the sole
+// commandline argument. This approach is suitable for use by most graphical
+// applications but should not be used from applications like editors that
+// need precise control over when processes invoked via the commandline will
+// exit and what their exit status will be.
+func (a application) Run(argv []*string) int {
+	var _arg0 *C.GApplication
+	var _arg2 **C.char
+	var _arg1 C.int
+
+	_arg0 = (*C.GApplication)(unsafe.Pointer(a.Native()))
+	_arg1 = C.int(len(argv))
+	_arg2 = (**C.char)(C.malloc(len(argv) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	{
+		var out []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg2), int(len(argv)))
+
+		for i := range argv {
+			_arg2 = (*C.gchar)(C.CString(argv))
+			defer C.free(unsafe.Pointer(_arg2))
+		}
+	}
+
+	var _cret C.int
+
+	_cret = C.g_application_run(_arg0, _arg1, _arg2)
+
+	var _gint int
+
+	_gint = (int)(_cret)
+
+	return _gint
 }
 
 // SendNotification sends a notification on behalf of @application to the

@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -74,14 +70,6 @@ type Paned interface {
 	// Add2 adds a child to the bottom or right pane with default parameters.
 	// This is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
 	Add2(child Widget)
-	// Child1 obtains the first child of the paned widget.
-	Child1() Widget
-	// Child2 obtains the second child of the paned widget.
-	Child2() Widget
-	// HandleWindow returns the Window of the handle. This function is useful
-	// when handling button or motion events because it enables the callback to
-	// distinguish between the window of the paned, a child and the handle.
-	HandleWindow() gdk.Window
 	// Position obtains the position of the divider between the two panes.
 	Position() int
 	// WideHandle gets the Paned:wide-handle property.
@@ -121,23 +109,6 @@ func marshalPaned(p uintptr) (interface{}, error) {
 	return WrapPaned(obj), nil
 }
 
-// NewPaned constructs a class Paned.
-func NewPaned(orientation Orientation) Paned {
-	var _arg1 C.GtkOrientation
-
-	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkPaned
-
-	cret = C.gtk_paned_new(_arg1)
-
-	var _paned Paned
-
-	_paned = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Paned)
-
-	return _paned
-}
-
 // Add1 adds a child to the top or left pane with default parameters. This
 // is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
 func (p paned) Add1(child Widget) {
@@ -162,59 +133,6 @@ func (p paned) Add2(child Widget) {
 	C.gtk_paned_add2(_arg0, _arg1)
 }
 
-// Child1 obtains the first child of the paned widget.
-func (p paned) Child1() Widget {
-	var _arg0 *C.GtkPaned
-
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_paned_get_child1(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// Child2 obtains the second child of the paned widget.
-func (p paned) Child2() Widget {
-	var _arg0 *C.GtkPaned
-
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_paned_get_child2(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// HandleWindow returns the Window of the handle. This function is useful
-// when handling button or motion events because it enables the callback to
-// distinguish between the window of the paned, a child and the handle.
-func (p paned) HandleWindow() gdk.Window {
-	var _arg0 *C.GtkPaned
-
-	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GdkWindow
-
-	cret = C.gtk_paned_get_handle_window(_arg0)
-
-	var _window gdk.Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
-
-	return _window
-}
-
 // Position obtains the position of the divider between the two panes.
 func (p paned) Position() int {
 	var _arg0 *C.GtkPaned
@@ -223,7 +141,7 @@ func (p paned) Position() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_paned_get_position(_arg0)
+	_cret = C.gtk_paned_get_position(_arg0)
 
 	var _gint int
 
@@ -240,7 +158,7 @@ func (p paned) WideHandle() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_paned_get_wide_handle(_arg0)
+	_cret = C.gtk_paned_get_wide_handle(_arg0)
 
 	var _ok bool
 

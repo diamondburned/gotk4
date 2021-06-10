@@ -4,8 +4,6 @@ package gtk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 )
 
 // #cgo pkg-config:

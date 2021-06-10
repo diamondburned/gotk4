@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -107,26 +106,6 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 	return WrapEntryBuffer(obj), nil
 }
 
-// NewEntryBuffer constructs a class EntryBuffer.
-func NewEntryBuffer(initialChars string, nInitialChars int) EntryBuffer {
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-
-	_arg1 = (*C.gchar)(C.CString(initialChars))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(nInitialChars)
-
-	var _cret C.GtkEntryBuffer
-
-	cret = C.gtk_entry_buffer_new(_arg1, _arg2)
-
-	var _entryBuffer EntryBuffer
-
-	_entryBuffer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EntryBuffer)
-
-	return _entryBuffer
-}
-
 // DeleteText deletes a sequence of characters from the buffer. @n_chars
 // characters are deleted starting at @position. If @n_chars is negative,
 // then all characters until the end of the text are deleted.
@@ -146,7 +125,7 @@ func (b entryBuffer) DeleteText(position uint, nChars int) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_entry_buffer_delete_text(_arg0, _arg1, _arg2)
+	_cret = C.gtk_entry_buffer_delete_text(_arg0, _arg1, _arg2)
 
 	var _guint uint
 
@@ -193,7 +172,7 @@ func (b entryBuffer) Bytes() uint {
 
 	var _cret C.gsize
 
-	cret = C.gtk_entry_buffer_get_bytes(_arg0)
+	_cret = C.gtk_entry_buffer_get_bytes(_arg0)
 
 	var _gsize uint
 
@@ -210,7 +189,7 @@ func (b entryBuffer) Length() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_entry_buffer_get_length(_arg0)
+	_cret = C.gtk_entry_buffer_get_length(_arg0)
 
 	var _guint uint
 
@@ -228,7 +207,7 @@ func (b entryBuffer) MaxLength() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_entry_buffer_get_max_length(_arg0)
+	_cret = C.gtk_entry_buffer_get_max_length(_arg0)
 
 	var _gint int
 
@@ -248,7 +227,7 @@ func (b entryBuffer) Text() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_entry_buffer_get_text(_arg0)
+	_cret = C.gtk_entry_buffer_get_text(_arg0)
 
 	var _utf8 string
 
@@ -280,7 +259,7 @@ func (b entryBuffer) InsertText(position uint, chars string, nChars int) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_entry_buffer_insert_text(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_entry_buffer_insert_text(_arg0, _arg1, _arg2, _arg3)
 
 	var _guint uint
 

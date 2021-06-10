@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -159,36 +158,6 @@ type Application interface {
 	// It is a programmer error to pass an invalid accelerator string. If you
 	// are unsure, check it with gtk_accelerator_parse() first.
 	ActionsForAccel(accel string) []string
-	// ActiveWindow gets the “active” window for the application.
-	//
-	// The active window is the one that was most recently focused (within the
-	// application). This window may not have the focus at the moment if another
-	// application has it — this is just the most recently-focused window within
-	// this application.
-	ActiveWindow() Window
-	// AppMenu returns the menu model that has been set with
-	// gtk_application_set_app_menu().
-	AppMenu() gio.MenuModel
-	// MenuByID gets a menu from automatically loaded resources. See [Automatic
-	// resources][automatic-resources] for more information.
-	MenuByID(id string) gio.Menu
-	// Menubar returns the menu model that has been set with
-	// gtk_application_set_menubar().
-	Menubar() gio.MenuModel
-	// WindowByID returns the ApplicationWindow with the given ID.
-	//
-	// The ID of a ApplicationWindow can be retrieved with
-	// gtk_application_window_get_id().
-	WindowByID(id uint) Window
-	// Windows gets a list of the Windows associated with @application.
-	//
-	// The list is sorted by most recently focused window, such that the first
-	// element is the currently focused window. (Useful for choosing a parent
-	// for a transient window.)
-	//
-	// The list that is returned should not be modified in any way. It will only
-	// remain valid until the next focus change or window creation or deletion.
-	Windows() *glib.List
 	// Inhibit: inform the session manager that certain types of actions should
 	// be inhibited. This is not guaranteed to work on all platforms and for all
 	// types of actions.
@@ -340,26 +309,6 @@ func marshalApplication(p uintptr) (interface{}, error) {
 	return WrapApplication(obj), nil
 }
 
-// NewApplication constructs a class Application.
-func NewApplication(applicationId string, flags gio.ApplicationFlags) Application {
-	var _arg1 *C.gchar
-	var _arg2 C.GApplicationFlags
-
-	_arg1 = (*C.gchar)(C.CString(applicationId))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GApplicationFlags)(flags)
-
-	var _cret C.GtkApplication
-
-	cret = C.gtk_application_new(_arg1, _arg2)
-
-	var _application Application
-
-	_application = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Application)
-
-	return _application
-}
-
 // AddAccelerator installs an accelerator that will cause the named action
 // to be activated when the key combination specificed by @accelerator is
 // pressed.
@@ -428,7 +377,7 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 
 	var _cret **C.gchar
 
-	cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
+	_cret = C.gtk_application_get_accels_for_action(_arg0, _arg1)
 
 	var _utf8s []string
 
@@ -445,7 +394,7 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -479,7 +428,7 @@ func (a application) ActionsForAccel(accel string) []string {
 
 	var _cret **C.gchar
 
-	cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
+	_cret = C.gtk_application_get_actions_for_accel(_arg0, _arg1)
 
 	var _utf8s []string
 
@@ -496,138 +445,13 @@ func (a application) ActionsForAccel(accel string) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
 	}
 
 	return _utf8s
-}
-
-// ActiveWindow gets the “active” window for the application.
-//
-// The active window is the one that was most recently focused (within the
-// application). This window may not have the focus at the moment if another
-// application has it — this is just the most recently-focused window within
-// this application.
-func (a application) ActiveWindow() Window {
-	var _arg0 *C.GtkApplication
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkWindow
-
-	cret = C.gtk_application_get_active_window(_arg0)
-
-	var _window Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
-
-	return _window
-}
-
-// AppMenu returns the menu model that has been set with
-// gtk_application_set_app_menu().
-func (a application) AppMenu() gio.MenuModel {
-	var _arg0 *C.GtkApplication
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_application_get_app_menu(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
-}
-
-// MenuByID gets a menu from automatically loaded resources. See [Automatic
-// resources][automatic-resources] for more information.
-func (a application) MenuByID(id string) gio.Menu {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(id))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GMenu
-
-	cret = C.gtk_application_get_menu_by_id(_arg0, _arg1)
-
-	var _menu gio.Menu
-
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Menu)
-
-	return _menu
-}
-
-// Menubar returns the menu model that has been set with
-// gtk_application_set_menubar().
-func (a application) Menubar() gio.MenuModel {
-	var _arg0 *C.GtkApplication
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_application_get_menubar(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
-}
-
-// WindowByID returns the ApplicationWindow with the given ID.
-//
-// The ID of a ApplicationWindow can be retrieved with
-// gtk_application_window_get_id().
-func (a application) WindowByID(id uint) Window {
-	var _arg0 *C.GtkApplication
-	var _arg1 C.guint
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-	_arg1 = C.guint(id)
-
-	var _cret *C.GtkWindow
-
-	cret = C.gtk_application_get_window_by_id(_arg0, _arg1)
-
-	var _window Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
-
-	return _window
-}
-
-// Windows gets a list of the Windows associated with @application.
-//
-// The list is sorted by most recently focused window, such that the first
-// element is the currently focused window. (Useful for choosing a parent
-// for a transient window.)
-//
-// The list that is returned should not be modified in any way. It will only
-// remain valid until the next focus change or window creation or deletion.
-func (a application) Windows() *glib.List {
-	var _arg0 *C.GtkApplication
-
-	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_application_get_windows(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-
-	return _list
 }
 
 // Inhibit: inform the session manager that certain types of actions should
@@ -665,7 +489,7 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 
 	var _cret C.guint
 
-	cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 
 	var _guint uint
 
@@ -688,7 +512,7 @@ func (a application) IsInhibited(flags ApplicationInhibitFlags) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_application_is_inhibited(_arg0, _arg1)
+	_cret = C.gtk_application_is_inhibited(_arg0, _arg1)
 
 	var _ok bool
 
@@ -708,7 +532,7 @@ func (a application) ListActionDescriptions() []string {
 
 	var _cret **C.gchar
 
-	cret = C.gtk_application_list_action_descriptions(_arg0)
+	_cret = C.gtk_application_list_action_descriptions(_arg0)
 
 	var _utf8s []string
 
@@ -725,7 +549,7 @@ func (a application) ListActionDescriptions() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -773,7 +597,7 @@ func (a application) PrefersAppMenu() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_application_prefers_app_menu(_arg0)
+	_cret = C.gtk_application_prefers_app_menu(_arg0)
 
 	var _ok bool
 

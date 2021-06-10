@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,8 +59,6 @@ type Button interface {
 	Buildable
 	ConstraintTarget
 
-	// Child gets the child widget of @button.
-	Child() Widget
 	// HasFrame returns whether the button has a frame.
 	HasFrame() bool
 	// IconName returns the icon name of the button.
@@ -131,90 +128,6 @@ func marshalButton(p uintptr) (interface{}, error) {
 	return WrapButton(obj), nil
 }
 
-// NewButton constructs a class Button.
-func NewButton() Button {
-	var _cret C.GtkButton
-
-	cret = C.gtk_button_new()
-
-	var _button Button
-
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _button
-}
-
-// NewButtonFromIconName constructs a class Button.
-func NewButtonFromIconName(iconName string) Button {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkButton
-
-	cret = C.gtk_button_new_from_icon_name(_arg1)
-
-	var _button Button
-
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _button
-}
-
-// NewButtonWithLabel constructs a class Button.
-func NewButtonWithLabel(label string) Button {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkButton
-
-	cret = C.gtk_button_new_with_label(_arg1)
-
-	var _button Button
-
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _button
-}
-
-// NewButtonWithMnemonic constructs a class Button.
-func NewButtonWithMnemonic(label string) Button {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkButton
-
-	cret = C.gtk_button_new_with_mnemonic(_arg1)
-
-	var _button Button
-
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _button
-}
-
-// Child gets the child widget of @button.
-func (b button) Child() Widget {
-	var _arg0 *C.GtkButton
-
-	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_button_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // HasFrame returns whether the button has a frame.
 func (b button) HasFrame() bool {
 	var _arg0 *C.GtkButton
@@ -223,7 +136,7 @@ func (b button) HasFrame() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_button_get_has_frame(_arg0)
+	_cret = C.gtk_button_get_has_frame(_arg0)
 
 	var _ok bool
 
@@ -246,7 +159,7 @@ func (b button) IconName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_button_get_icon_name(_arg0)
+	_cret = C.gtk_button_get_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -267,7 +180,7 @@ func (b button) Label() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_button_get_label(_arg0)
+	_cret = C.gtk_button_get_label(_arg0)
 
 	var _utf8 string
 
@@ -286,7 +199,7 @@ func (b button) UseUnderline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_button_get_use_underline(_arg0)
+	_cret = C.gtk_button_get_use_underline(_arg0)
 
 	var _ok bool
 

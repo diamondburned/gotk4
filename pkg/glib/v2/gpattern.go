@@ -43,7 +43,7 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 
 	var _cret C.gboolean
 
-	cret = C.g_pattern_match(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.g_pattern_match(_arg1, _arg2, _arg3, _arg4)
 
 	var _ok bool
 
@@ -69,7 +69,7 @@ func PatternMatchSimple(pattern string, string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_pattern_match_simple(_arg1, _arg2)
+	_cret = C.g_pattern_match_simple(_arg1, _arg2)
 
 	var _ok bool
 
@@ -93,7 +93,7 @@ func PatternMatchString(pspec *PatternSpec, string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_pattern_match_string(_arg1, _arg2)
+	_cret = C.g_pattern_match_string(_arg1, _arg2)
 
 	var _ok bool
 
@@ -141,7 +141,7 @@ func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_pattern_spec_equal(_arg0, _arg1)
+	_cret = C.g_pattern_spec_equal(_arg0, _arg1)
 
 	var _ok bool
 

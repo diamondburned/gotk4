@@ -43,3 +43,8 @@ func (j *Joints) Join() string {
 func (j *Joints) Joints() []string {
 	return j.strs
 }
+
+// SetJoints overrides the internal joints list.
+func (j *Joints) SetJoints(new []string) {
+	j.strs = new
+}

@@ -178,7 +178,7 @@ func (m typeModule) RegisterEnum(name string, constStaticValues *EnumValue) exte
 
 	var _cret C.GType
 
-	cret = C.g_type_module_register_enum(_arg0, _arg1, _arg2)
+	_cret = C.g_type_module_register_enum(_arg0, _arg1, _arg2)
 
 	var _gType externglib.Type
 
@@ -209,7 +209,7 @@ func (m typeModule) RegisterFlags(name string, constStaticValues *FlagsValue) ex
 
 	var _cret C.GType
 
-	cret = C.g_type_module_register_flags(_arg0, _arg1, _arg2)
+	_cret = C.g_type_module_register_flags(_arg0, _arg1, _arg2)
 
 	var _gType externglib.Type
 
@@ -248,7 +248,7 @@ func (m typeModule) RegisterType(parentType externglib.Type, typeName string, ty
 
 	var _cret C.GType
 
-	cret = C.g_type_module_register_type(_arg0, _arg1, _arg2, _arg3, _arg4)
+	_cret = C.g_type_module_register_type(_arg0, _arg1, _arg2, _arg3, _arg4)
 
 	var _gType externglib.Type
 
@@ -291,7 +291,7 @@ func (m typeModule) Use() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_type_module_use(_arg0)
+	_cret = C.g_type_module_use(_arg0)
 
 	var _ok bool
 

@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,8 +33,6 @@ type ZlibCompressor interface {
 	gextras.Objector
 	Converter
 
-	// FileInfo returns the Compressor:file-info property.
-	FileInfo() FileInfo
 	// SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's
 	// Compressor:format property is G_ZLIB_COMPRESSOR_FORMAT_GZIP, it will be
 	// used to set the file name and modification time in the GZIP header of the
@@ -70,42 +65,6 @@ func marshalZlibCompressor(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapZlibCompressor(obj), nil
-}
-
-// NewZlibCompressor constructs a class ZlibCompressor.
-func NewZlibCompressor(format ZlibCompressorFormat, level int) ZlibCompressor {
-	var _arg1 C.GZlibCompressorFormat
-	var _arg2 C.int
-
-	_arg1 = (C.GZlibCompressorFormat)(format)
-	_arg2 = C.int(level)
-
-	var _cret C.GZlibCompressor
-
-	cret = C.g_zlib_compressor_new(_arg1, _arg2)
-
-	var _zlibCompressor ZlibCompressor
-
-	_zlibCompressor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ZlibCompressor)
-
-	return _zlibCompressor
-}
-
-// FileInfo returns the Compressor:file-info property.
-func (c zlibCompressor) FileInfo() FileInfo {
-	var _arg0 *C.GZlibCompressor
-
-	_arg0 = (*C.GZlibCompressor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GFileInfo
-
-	cret = C.g_zlib_compressor_get_file_info(_arg0)
-
-	var _fileInfo FileInfo
-
-	_fileInfo = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileInfo)
-
-	return _fileInfo
 }
 
 // SetFileInfo sets @file_info in @compressor. If non-nil, and @compressor's

@@ -5,8 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -40,8 +38,6 @@ type AppChooserDialog interface {
 
 	// Heading returns the text to display at the top of the dialog.
 	Heading() string
-	// Widget returns the AppChooserWidget of this dialog.
-	Widget() Widget
 	// SetHeading sets the text to display at the top of the dialog. If the
 	// heading is not set, the dialog displays a default text.
 	SetHeading(heading string)
@@ -72,49 +68,6 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 	return WrapAppChooserDialog(obj), nil
 }
 
-// NewAppChooserDialog constructs a class AppChooserDialog.
-func NewAppChooserDialog(parent Window, flags DialogFlags, file gio.File) AppChooserDialog {
-	var _arg1 *C.GtkWindow
-	var _arg2 C.GtkDialogFlags
-	var _arg3 *C.GFile
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (C.GtkDialogFlags)(flags)
-	_arg3 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkAppChooserDialog
-
-	cret = C.gtk_app_chooser_dialog_new(_arg1, _arg2, _arg3)
-
-	var _appChooserDialog AppChooserDialog
-
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
-
-	return _appChooserDialog
-}
-
-// NewAppChooserDialogForContentType constructs a class AppChooserDialog.
-func NewAppChooserDialogForContentType(parent Window, flags DialogFlags, contentType string) AppChooserDialog {
-	var _arg1 *C.GtkWindow
-	var _arg2 C.GtkDialogFlags
-	var _arg3 *C.gchar
-
-	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg2 = (C.GtkDialogFlags)(flags)
-	_arg3 = (*C.gchar)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret C.GtkAppChooserDialog
-
-	cret = C.gtk_app_chooser_dialog_new_for_content_type(_arg1, _arg2, _arg3)
-
-	var _appChooserDialog AppChooserDialog
-
-	_appChooserDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserDialog)
-
-	return _appChooserDialog
-}
-
 // Heading returns the text to display at the top of the dialog.
 func (s appChooserDialog) Heading() string {
 	var _arg0 *C.GtkAppChooserDialog
@@ -123,30 +76,13 @@ func (s appChooserDialog) Heading() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
+	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Widget returns the AppChooserWidget of this dialog.
-func (s appChooserDialog) Widget() Widget {
-	var _arg0 *C.GtkAppChooserDialog
-
-	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_app_chooser_dialog_get_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // SetHeading sets the text to display at the top of the dialog. If the

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -102,19 +99,6 @@ func marshalOverlay(p uintptr) (interface{}, error) {
 	return WrapOverlay(obj), nil
 }
 
-// NewOverlay constructs a class Overlay.
-func NewOverlay() Overlay {
-	var _cret C.GtkOverlay
-
-	cret = C.gtk_overlay_new()
-
-	var _overlay Overlay
-
-	_overlay = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Overlay)
-
-	return _overlay
-}
-
 // AddOverlay adds @widget to @overlay.
 //
 // The widget will be stacked on top of the main widget added with
@@ -143,7 +127,7 @@ func (o overlay) OverlayPassThrough(widget Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
+	_cret = C.gtk_overlay_get_overlay_pass_through(_arg0, _arg1)
 
 	var _ok bool
 

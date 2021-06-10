@@ -3,13 +3,11 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -291,13 +289,6 @@ type Builder interface {
 	// Note that this function does not increment the reference count of the
 	// returned object.
 	Object(name string) gextras.Objector
-	// Objects gets all objects that have been constructed by @builder.
-	//
-	// Note that this function does not increment the reference counts of the
-	// returned objects.
-	Objects() *glib.SList
-	// Scope gets the scope in use that was set via gtk_builder_set_scope().
-	Scope() BuilderScope
 	// TranslationDomain gets the translation domain of @builder.
 	TranslationDomain() string
 	// TypeFromName looks up a type by name.
@@ -365,75 +356,6 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBuilder(obj), nil
-}
-
-// NewBuilder constructs a class Builder.
-func NewBuilder() Builder {
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new()
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
-}
-
-// NewBuilderFromFile constructs a class Builder.
-func NewBuilderFromFile(filename string) Builder {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new_from_file(_arg1)
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
-}
-
-// NewBuilderFromResource constructs a class Builder.
-func NewBuilderFromResource(resourcePath string) Builder {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new_from_resource(_arg1)
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
-}
-
-// NewBuilderFromString constructs a class Builder.
-func NewBuilderFromString(string string, length int) Builder {
-	var _arg1 *C.char
-	var _arg2 C.gssize
-
-	_arg1 = (*C.char)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(length)
-
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new_from_string(_arg1, _arg2)
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
 }
 
 // AddFromFile parses a file containing a UI definition and merges it with
@@ -725,7 +647,7 @@ func (b builder) CurrentObject() gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.gtk_builder_get_current_object(_arg0)
+	_cret = C.gtk_builder_get_current_object(_arg0)
 
 	var _object gextras.Objector
 
@@ -748,53 +670,13 @@ func (b builder) Object(name string) gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.gtk_builder_get_object(_arg0, _arg1)
+	_cret = C.gtk_builder_get_object(_arg0, _arg1)
 
 	var _object gextras.Objector
 
 	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
 	return _object
-}
-
-// Objects gets all objects that have been constructed by @builder.
-//
-// Note that this function does not increment the reference counts of the
-// returned objects.
-func (b builder) Objects() *glib.SList {
-	var _arg0 *C.GtkBuilder
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_builder_get_objects(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sList, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _sList
-}
-
-// Scope gets the scope in use that was set via gtk_builder_set_scope().
-func (b builder) Scope() BuilderScope {
-	var _arg0 *C.GtkBuilder
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkBuilderScope
-
-	cret = C.gtk_builder_get_scope(_arg0)
-
-	var _builderScope BuilderScope
-
-	_builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(BuilderScope)
-
-	return _builderScope
 }
 
 // TranslationDomain gets the translation domain of @builder.
@@ -805,7 +687,7 @@ func (b builder) TranslationDomain() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_builder_get_translation_domain(_arg0)
+	_cret = C.gtk_builder_get_translation_domain(_arg0)
 
 	var _utf8 string
 
@@ -829,7 +711,7 @@ func (b builder) TypeFromName(typeName string) externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
+	_cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
 
 	var _gType externglib.Type
 

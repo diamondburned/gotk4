@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,14 +35,6 @@ func init() {
 type Root interface {
 	NativeWidget
 
-	// Display returns the display that this `GtkRoot` is on.
-	Display() gdk.Display
-	// Focus retrieves the current focused widget within the root.
-	//
-	// Note that this is the widget that would have the focus if the root is
-	// active; if the root is not focused then `gtk_widget_has_focus (widget)`
-	// will be false for the widget.
-	Focus() Widget
 	// SetFocus: if @focus is not the current focus widget, and is focusable,
 	// sets it as the focus widget for the root.
 	//
@@ -79,44 +67,6 @@ func marshalRoot(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRoot(obj), nil
-}
-
-// Display returns the display that this `GtkRoot` is on.
-func (s root) Display() gdk.Display {
-	var _arg0 *C.GtkRoot
-
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDisplay
-
-	cret = C.gtk_root_get_display(_arg0)
-
-	var _display gdk.Display
-
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
-
-	return _display
-}
-
-// Focus retrieves the current focused widget within the root.
-//
-// Note that this is the widget that would have the focus if the root is
-// active; if the root is not focused then `gtk_widget_has_focus (widget)`
-// will be false for the widget.
-func (s root) Focus() Widget {
-	var _arg0 *C.GtkRoot
-
-	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_root_get_focus(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // SetFocus: if @focus is not the current focus widget, and is focusable,

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -111,19 +108,6 @@ type MenuButton interface {
 	Activatable
 	Buildable
 
-	// AlignWidget returns the parent Widget to use to line up with menu.
-	AlignWidget() Widget
-	// Direction returns the direction the popup will be pointing at when popped
-	// up.
-	Direction() ArrowType
-	// MenuModel returns the Model used to generate the popup.
-	MenuModel() gio.MenuModel
-	// Popover returns the Popover that pops out of the button. If the button is
-	// not using a Popover, this function returns nil.
-	Popover() Popover
-	// Popup returns the Menu that pops out of the button. If the button does
-	// not use a Menu, this function returns nil.
-	Popup() Menu
 	// UsePopover returns whether a Popover or a Menu will be constructed from
 	// the menu model.
 	UsePopover() bool
@@ -204,107 +188,6 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 	return WrapMenuButton(obj), nil
 }
 
-// NewMenuButton constructs a class MenuButton.
-func NewMenuButton() MenuButton {
-	var _cret C.GtkMenuButton
-
-	cret = C.gtk_menu_button_new()
-
-	var _menuButton MenuButton
-
-	_menuButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuButton)
-
-	return _menuButton
-}
-
-// AlignWidget returns the parent Widget to use to line up with menu.
-func (m menuButton) AlignWidget() Widget {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_menu_button_get_align_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// Direction returns the direction the popup will be pointing at when popped
-// up.
-func (m menuButton) Direction() ArrowType {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GtkArrowType
-
-	cret = C.gtk_menu_button_get_direction(_arg0)
-
-	var _arrowType ArrowType
-
-	_arrowType = ArrowType(_cret)
-
-	return _arrowType
-}
-
-// MenuModel returns the Model used to generate the popup.
-func (m menuButton) MenuModel() gio.MenuModel {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_menu_button_get_menu_model(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
-}
-
-// Popover returns the Popover that pops out of the button. If the button is
-// not using a Popover, this function returns nil.
-func (m menuButton) Popover() Popover {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkPopover
-
-	cret = C.gtk_menu_button_get_popover(_arg0)
-
-	var _popover Popover
-
-	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Popover)
-
-	return _popover
-}
-
-// Popup returns the Menu that pops out of the button. If the button does
-// not use a Menu, this function returns nil.
-func (m menuButton) Popup() Menu {
-	var _arg0 *C.GtkMenuButton
-
-	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkMenu
-
-	cret = C.gtk_menu_button_get_popup(_arg0)
-
-	var _menu Menu
-
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
-
-	return _menu
-}
-
 // UsePopover returns whether a Popover or a Menu will be constructed from
 // the menu model.
 func (m menuButton) UsePopover() bool {
@@ -314,7 +197,7 @@ func (m menuButton) UsePopover() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_menu_button_get_use_popover(_arg0)
+	_cret = C.gtk_menu_button_get_use_popover(_arg0)
 
 	var _ok bool
 

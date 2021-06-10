@@ -3,10 +3,8 @@
 package gio
 
 import (
-	"unsafe"
-
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,23 +42,6 @@ func init() {
 type UnixConnection interface {
 	SocketConnection
 
-	// ReceiveCredentials receives credentials from the sending end of the
-	// connection. The sending end has to call
-	// g_unix_connection_send_credentials() (or similar) for this to work.
-	//
-	// As well as reading the credentials this also reads (and discards) a
-	// single byte from the stream, as this is required for credentials passing
-	// to work on some implementations.
-	//
-	// This method can be expected to be available on the following platforms:
-	//
-	// - Linux since GLib 2.26 - FreeBSD since GLib 2.26 - GNU/kFreeBSD since
-	// GLib 2.36 - Solaris, Illumos and OpenSolaris since GLib 2.40 - GNU/Hurd
-	// since GLib 2.40
-	//
-	// Other ways to exchange credentials with a foreign peer includes the
-	// CredentialsMessage type and g_socket_get_credentials() function.
-	ReceiveCredentials(cancellable Cancellable) (Credentials, error)
 	// ReceiveCredentialsAsync: asynchronously receive credentials.
 	//
 	// For more details, see g_unix_connection_receive_credentials() which is
@@ -69,10 +50,7 @@ type UnixConnection interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_unix_connection_receive_credentials_finish() to get the result of
 	// the operation.
-	ReceiveCredentialsAsync()
-	// ReceiveCredentialsFinish finishes an asynchronous receive credentials
-	// operation started with g_unix_connection_receive_credentials_async().
-	ReceiveCredentialsFinish(result AsyncResult) (Credentials, error)
+	ReceiveCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// ReceiveFd receives a file descriptor from the sending end of the
 	// connection. The sending end has to call g_unix_connection_send_fd() for
 	// this to work.
@@ -106,7 +84,7 @@ type UnixConnection interface {
 	// When the operation is finished, @callback will be called. You can then
 	// call g_unix_connection_send_credentials_finish() to get the result of the
 	// operation.
-	SendCredentialsAsync()
+	SendCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback)
 	// SendCredentialsFinish finishes an asynchronous send credentials operation
 	// started with g_unix_connection_send_credentials_async().
 	SendCredentialsFinish(result AsyncResult) error
@@ -140,43 +118,6 @@ func marshalUnixConnection(p uintptr) (interface{}, error) {
 	return WrapUnixConnection(obj), nil
 }
 
-// ReceiveCredentials receives credentials from the sending end of the
-// connection. The sending end has to call
-// g_unix_connection_send_credentials() (or similar) for this to work.
-//
-// As well as reading the credentials this also reads (and discards) a
-// single byte from the stream, as this is required for credentials passing
-// to work on some implementations.
-//
-// This method can be expected to be available on the following platforms:
-//
-// - Linux since GLib 2.26 - FreeBSD since GLib 2.26 - GNU/kFreeBSD since
-// GLib 2.36 - Solaris, Illumos and OpenSolaris since GLib 2.40 - GNU/Hurd
-// since GLib 2.40
-//
-// Other ways to exchange credentials with a foreign peer includes the
-// CredentialsMessage type and g_socket_get_credentials() function.
-func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials, error) {
-	var _arg0 *C.GUnixConnection
-	var _arg1 *C.GCancellable
-
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GCredentials
-	var _cerr *C.GError
-
-	cret = C.g_unix_connection_receive_credentials(_arg0, _arg1, _cerr)
-
-	var _credentials Credentials
-	var _goerr error
-
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Credentials)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _credentials, _goerr
-}
-
 // ReceiveCredentialsAsync: asynchronously receive credentials.
 //
 // For more details, see g_unix_connection_receive_credentials() which is
@@ -185,35 +126,18 @@ func (c unixConnection) ReceiveCredentials(cancellable Cancellable) (Credentials
 // When the operation is finished, @callback will be called. You can then
 // call g_unix_connection_receive_credentials_finish() to get the result of
 // the operation.
-func (c unixConnection) ReceiveCredentialsAsync() {
+func (c unixConnection) ReceiveCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection
+	var _arg1 *C.GCancellable
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
 
-	C.g_unix_connection_receive_credentials_async(_arg0)
-}
-
-// ReceiveCredentialsFinish finishes an asynchronous receive credentials
-// operation started with g_unix_connection_receive_credentials_async().
-func (c unixConnection) ReceiveCredentialsFinish(result AsyncResult) (Credentials, error) {
-	var _arg0 *C.GUnixConnection
-	var _arg1 *C.GAsyncResult
-
-	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GCredentials
-	var _cerr *C.GError
-
-	cret = C.g_unix_connection_receive_credentials_finish(_arg0, _arg1, _cerr)
-
-	var _credentials Credentials
-	var _goerr error
-
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Credentials)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _credentials, _goerr
+	C.g_unix_connection_receive_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ReceiveFd receives a file descriptor from the sending end of the
@@ -232,7 +156,7 @@ func (c unixConnection) ReceiveFd(cancellable Cancellable) (int, error) {
 	var _cret C.gint
 	var _cerr *C.GError
 
-	cret = C.g_unix_connection_receive_fd(_arg0, _arg1, _cerr)
+	_cret = C.g_unix_connection_receive_fd(_arg0, _arg1, _cerr)
 
 	var _gint int
 	var _goerr error
@@ -286,12 +210,18 @@ func (c unixConnection) SendCredentials(cancellable Cancellable) error {
 // When the operation is finished, @callback will be called. You can then
 // call g_unix_connection_send_credentials_finish() to get the result of the
 // operation.
-func (c unixConnection) SendCredentialsAsync() {
+func (c unixConnection) SendCredentialsAsync(cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GUnixConnection
+	var _arg1 *C.GCancellable
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GUnixConnection)(unsafe.Pointer(c.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
 
-	C.g_unix_connection_send_credentials_async(_arg0)
+	C.g_unix_connection_send_credentials_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SendCredentialsFinish finishes an asynchronous send credentials operation

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -90,8 +87,6 @@ type RadioButton interface {
 	Activatable
 	Buildable
 
-	// Group retrieves the group assigned to a radio button.
-	Group() *glib.SList
 	// JoinGroup joins a RadioButton object to the group of another RadioButton
 	// object
 	//
@@ -143,137 +138,6 @@ func marshalRadioButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRadioButton(obj), nil
-}
-
-// NewRadioButton constructs a class RadioButton.
-func NewRadioButton(group *glib.SList) RadioButton {
-	var _arg1 *C.GSList
-
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-
-	var _cret C.GtkRadioButton
-
-	cret = C.gtk_radio_button_new(_arg1)
-
-	var _radioButton RadioButton
-
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
-
-	return _radioButton
-}
-
-// NewRadioButtonFromWidget constructs a class RadioButton.
-func NewRadioButtonFromWidget(radioGroupMember RadioButton) RadioButton {
-	var _arg1 *C.GtkRadioButton
-
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
-
-	var _cret C.GtkRadioButton
-
-	cret = C.gtk_radio_button_new_from_widget(_arg1)
-
-	var _radioButton RadioButton
-
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
-
-	return _radioButton
-}
-
-// NewRadioButtonWithLabel constructs a class RadioButton.
-func NewRadioButtonWithLabel(group *glib.SList, label string) RadioButton {
-	var _arg1 *C.GSList
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioButton
-
-	cret = C.gtk_radio_button_new_with_label(_arg1, _arg2)
-
-	var _radioButton RadioButton
-
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
-
-	return _radioButton
-}
-
-// NewRadioButtonWithLabelFromWidget constructs a class RadioButton.
-func NewRadioButtonWithLabelFromWidget(radioGroupMember RadioButton, label string) RadioButton {
-	var _arg1 *C.GtkRadioButton
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioButton
-
-	cret = C.gtk_radio_button_new_with_label_from_widget(_arg1, _arg2)
-
-	var _radioButton RadioButton
-
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
-
-	return _radioButton
-}
-
-// NewRadioButtonWithMnemonic constructs a class RadioButton.
-func NewRadioButtonWithMnemonic(group *glib.SList, label string) RadioButton {
-	var _arg1 *C.GSList
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioButton
-
-	cret = C.gtk_radio_button_new_with_mnemonic(_arg1, _arg2)
-
-	var _radioButton RadioButton
-
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
-
-	return _radioButton
-}
-
-// NewRadioButtonWithMnemonicFromWidget constructs a class RadioButton.
-func NewRadioButtonWithMnemonicFromWidget(radioGroupMember RadioButton, label string) RadioButton {
-	var _arg1 *C.GtkRadioButton
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(radioGroupMember.Native()))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkRadioButton
-
-	cret = C.gtk_radio_button_new_with_mnemonic_from_widget(_arg1, _arg2)
-
-	var _radioButton RadioButton
-
-	_radioButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RadioButton)
-
-	return _radioButton
-}
-
-// Group retrieves the group assigned to a radio button.
-func (r radioButton) Group() *glib.SList {
-	var _arg0 *C.GtkRadioButton
-
-	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_radio_button_get_group(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-
-	return _sList
 }
 
 // JoinGroup joins a RadioButton object to the group of another RadioButton

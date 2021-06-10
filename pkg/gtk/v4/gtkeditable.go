@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -43,17 +42,6 @@ type EditableOverrider interface {
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DoDeleteText(startPos int, endPos int)
-	// DoInsertText inserts @length bytes of @text into the contents of the
-	// widget, at position @position.
-	//
-	// Note that the position is in characters, not in bytes. The function
-	// updates @position to point after the newly inserted text.
-	DoInsertText(text string, length int, position *int)
-	// Delegate gets the `GtkEditable` that @editable is delegating its
-	// implementation to.
-	//
-	// Typically, the delegate is a [class@Gtk.Text] widget.
-	Delegate() Editable
 	// SelectionBounds retrieves the selection bound of the editable.
 	//
 	// @start_pos will be filled with the start of the selection and @end_pos
@@ -66,12 +54,6 @@ type EditableOverrider interface {
 	//
 	// The returned string is owned by GTK and must not be modified or freed.
 	Text() string
-	// InsertText inserts @length bytes of @text into the contents of the
-	// widget, at position @position.
-	//
-	// Note that the position is in characters, not in bytes. The function
-	// updates @position to point after the newly inserted text.
-	InsertText(text string, length int, position *int)
 	// SetSelectionBounds selects a region of text.
 	//
 	// The characters that are selected are those characters at positions from
@@ -344,7 +326,7 @@ func (e editable) Alignment() float32 {
 
 	var _cret C.float
 
-	cret = C.gtk_editable_get_alignment(_arg0)
+	_cret = C.gtk_editable_get_alignment(_arg0)
 
 	var _gfloat float32
 
@@ -372,7 +354,7 @@ func (e editable) Chars(startPos int, endPos int) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
+	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 
 	var _utf8 string
 
@@ -380,26 +362,6 @@ func (e editable) Chars(startPos int, endPos int) string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Delegate gets the `GtkEditable` that @editable is delegating its
-// implementation to.
-//
-// Typically, the delegate is a [class@Gtk.Text] widget.
-func (e editable) Delegate() Editable {
-	var _arg0 *C.GtkEditable
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GtkEditable
-
-	cret = C.gtk_editable_get_delegate(_arg0)
-
-	var _ret Editable
-
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Editable)
-
-	return _ret
 }
 
 // Editable retrieves whether @editable is editable.
@@ -410,7 +372,7 @@ func (e editable) Editable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_editable(_arg0)
+	_cret = C.gtk_editable_get_editable(_arg0)
 
 	var _ok bool
 
@@ -429,7 +391,7 @@ func (e editable) EnableUndo() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_enable_undo(_arg0)
+	_cret = C.gtk_editable_get_enable_undo(_arg0)
 
 	var _ok bool
 
@@ -449,7 +411,7 @@ func (e editable) MaxWidthChars() int {
 
 	var _cret C.int
 
-	cret = C.gtk_editable_get_max_width_chars(_arg0)
+	_cret = C.gtk_editable_get_max_width_chars(_arg0)
 
 	var _gint int
 
@@ -469,7 +431,7 @@ func (e editable) Position() int {
 
 	var _cret C.int
 
-	cret = C.gtk_editable_get_position(_arg0)
+	_cret = C.gtk_editable_get_position(_arg0)
 
 	var _gint int
 
@@ -494,7 +456,7 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg2 C.int
 	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
 	var _startPos int
 	var _endPos int
@@ -519,7 +481,7 @@ func (e editable) Text() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_editable_get_text(_arg0)
+	_cret = C.gtk_editable_get_text(_arg0)
 
 	var _utf8 string
 
@@ -537,7 +499,7 @@ func (e editable) WidthChars() int {
 
 	var _cret C.int
 
-	cret = C.gtk_editable_get_width_chars(_arg0)
+	_cret = C.gtk_editable_get_width_chars(_arg0)
 
 	var _gint int
 
@@ -559,26 +521,6 @@ func (e editable) InitDelegate() {
 	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
 
 	C.gtk_editable_init_delegate(_arg0)
-}
-
-// InsertText inserts @length bytes of @text into the contents of the
-// widget, at position @position.
-//
-// Note that the position is in characters, not in bytes. The function
-// updates @position to point after the newly inserted text.
-func (e editable) InsertText(text string, length int, position *int) {
-	var _arg0 *C.GtkEditable
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 *C.int
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(length)
-	_arg3 = *C.int(position)
-
-	C.gtk_editable_insert_text(_arg0, _arg1, _arg2, _arg3)
 }
 
 // SelectRegion selects a region of text.

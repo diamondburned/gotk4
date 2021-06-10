@@ -105,7 +105,7 @@ func (b buildable) BuildableID() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_buildable_get_buildable_id(_arg0)
+	_cret = C.gtk_buildable_get_buildable_id(_arg0)
 
 	var _utf8 string
 
@@ -151,7 +151,7 @@ func (c *BuildableParseContext) Element() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_buildable_parse_context_get_element(_arg0)
+	_cret = C.gtk_buildable_parse_context_get_element(_arg0)
 
 	var _utf8 string
 
@@ -178,7 +178,7 @@ func (c *BuildableParseContext) ElementStack() []string {
 
 	var _cret *C.GPtrArray
 
-	cret = C.gtk_buildable_parse_context_get_element_stack(_arg0)
+	_cret = C.gtk_buildable_parse_context_get_element_stack(_arg0)
 
 	var _utf8s []string
 
@@ -195,7 +195,7 @@ func (c *BuildableParseContext) ElementStack() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -245,7 +245,7 @@ func (c *BuildableParseContext) Pop() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.gtk_buildable_parse_context_pop(_arg0)
+	_cret = C.gtk_buildable_parse_context_pop(_arg0)
 
 	var _gpointer interface{}
 

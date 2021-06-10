@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -114,12 +114,6 @@ type IconFactory interface {
 	// that comes with icons. The default icon factories can be overridden by
 	// themes.
 	AddDefault()
-	// Lookup looks up @stock_id in the icon factory, returning an icon set if
-	// found, otherwise nil. For display to the user, you should use
-	// gtk_style_lookup_icon_set() on the Style for the widget that will display
-	// the icon, instead of using this function directly, so that themes are
-	// taken into account.
-	Lookup(stockId string) *IconSet
 	// RemoveDefault removes an icon factory from the list of default icon
 	// factories. Not normally used; you might use it for a library that can be
 	// unloaded or shut down.
@@ -147,19 +141,6 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapIconFactory(obj), nil
-}
-
-// NewIconFactory constructs a class IconFactory.
-func NewIconFactory() IconFactory {
-	var _cret C.GtkIconFactory
-
-	cret = C.gtk_icon_factory_new()
-
-	var _iconFactory IconFactory
-
-	_iconFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconFactory)
-
-	return _iconFactory
 }
 
 // Add adds the given @icon_set to the icon factory, under the name
@@ -196,30 +177,6 @@ func (f iconFactory) AddDefault() {
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 
 	C.gtk_icon_factory_add_default(_arg0)
-}
-
-// Lookup looks up @stock_id in the icon factory, returning an icon set if
-// found, otherwise nil. For display to the user, you should use
-// gtk_style_lookup_icon_set() on the Style for the widget that will display
-// the icon, instead of using this function directly, so that themes are
-// taken into account.
-func (f iconFactory) Lookup(stockId string) *IconSet {
-	var _arg0 *C.GtkIconFactory
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkIconSet
-
-	cret = C.gtk_icon_factory_lookup(_arg0, _arg1)
-
-	var _iconSet *IconSet
-
-	_iconSet = WrapIconSet(unsafe.Pointer(_cret))
-
-	return _iconSet
 }
 
 // RemoveDefault removes an icon factory from the list of default icon

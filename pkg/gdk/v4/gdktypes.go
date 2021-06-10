@@ -72,42 +72,6 @@ func marshalContentFormats(p uintptr) (interface{}, error) {
 	return WrapContentFormats(unsafe.Pointer(b)), nil
 }
 
-// NewContentFormats constructs a struct ContentFormats.
-func NewContentFormats() *ContentFormats {
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_new()
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
-// NewContentFormatsForGType constructs a struct ContentFormats.
-func NewContentFormatsForGType(typ externglib.Type) *ContentFormats {
-	var _arg1 C.GType
-
-	_arg1 = C.GType(typ)
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_new_for_gtype(_arg1)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
 // Native returns the underlying C source pointer.
 func (c *ContentFormats) Native() unsafe.Pointer {
 	return unsafe.Pointer(&c.native)
@@ -123,7 +87,7 @@ func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_content_formats_contain_gtype(_arg0, _arg1)
+	_cret = C.gdk_content_formats_contain_gtype(_arg0, _arg1)
 
 	var _ok bool
 
@@ -145,7 +109,7 @@ func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_content_formats_contain_mime_type(_arg0, _arg1)
+	_cret = C.gdk_content_formats_contain_mime_type(_arg0, _arg1)
 
 	var _ok bool
 
@@ -168,7 +132,7 @@ func (f *ContentFormats) GTypes() []externglib.Type {
 	var _cret *C.GType
 	var _arg1 *C.gsize
 
-	cret = C.gdk_content_formats_get_gtypes(_arg0)
+	_cret = C.gdk_content_formats_get_gtypes(_arg0, &_arg1)
 
 	var _gTypes []externglib.Type
 
@@ -197,7 +161,7 @@ func (f *ContentFormats) MIMETypes() []string {
 	var _cret **C.char
 	var _arg1 *C.gsize
 
-	cret = C.gdk_content_formats_get_mime_types(_arg0)
+	_cret = C.gdk_content_formats_get_mime_types(_arg0, &_arg1)
 
 	var _utf8s []string
 
@@ -224,7 +188,7 @@ func (f *ContentFormats) Match(second *ContentFormats) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_content_formats_match(_arg0, _arg1)
+	_cret = C.gdk_content_formats_match(_arg0, _arg1)
 
 	var _ok bool
 
@@ -248,7 +212,7 @@ func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.gdk_content_formats_match_gtype(_arg0, _arg1)
+	_cret = C.gdk_content_formats_match_gtype(_arg0, _arg1)
 
 	var _gType externglib.Type
 
@@ -270,7 +234,7 @@ func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 
 	var _cret *C.char
 
-	cret = C.gdk_content_formats_match_mime_type(_arg0, _arg1)
+	_cret = C.gdk_content_formats_match_mime_type(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -295,26 +259,6 @@ func (f *ContentFormats) Print(string *glib.String) {
 	C.gdk_content_formats_print(_arg0, _arg1)
 }
 
-// Ref increases the reference count of a `GdkContentFormats` by one.
-func (f *ContentFormats) Ref() *ContentFormats {
-	var _arg0 *C.GdkContentFormats
-
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_ref(_arg0)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
 // String prints the given @formats into a human-readable string.
 //
 // This is a small wrapper around [method@Gdk.ContentFormats.print] to help when
@@ -326,7 +270,7 @@ func (f *ContentFormats) String() string {
 
 	var _cret *C.char
 
-	cret = C.gdk_content_formats_to_string(_arg0)
+	_cret = C.gdk_content_formats_to_string(_arg0)
 
 	var _utf8 string
 
@@ -334,113 +278,6 @@ func (f *ContentFormats) String() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Union: append all missing types from @second to @first, in the order they had
-// in @second.
-func (f *ContentFormats) Union(second *ContentFormats) *ContentFormats {
-	var _arg0 *C.GdkContentFormats
-	var _arg1 *C.GdkContentFormats
-
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_union(_arg0, _arg1)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
-// UnionDeserializeGTypes: add GTypes for mime types in @formats for which
-// deserializers are registered.
-func (f *ContentFormats) UnionDeserializeGTypes() *ContentFormats {
-	var _arg0 *C.GdkContentFormats
-
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_union_deserialize_gtypes(_arg0)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
-// UnionDeserializeMIMETypes: add mime types for GTypes in @formats for which
-// deserializers are registered.
-func (f *ContentFormats) UnionDeserializeMIMETypes() *ContentFormats {
-	var _arg0 *C.GdkContentFormats
-
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_union_deserialize_mime_types(_arg0)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
-// UnionSerializeGTypes: add GTypes for the mime types in @formats for which
-// serializers are registered.
-func (f *ContentFormats) UnionSerializeGTypes() *ContentFormats {
-	var _arg0 *C.GdkContentFormats
-
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_union_serialize_gtypes(_arg0)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
-}
-
-// UnionSerializeMIMETypes: add mime types for GTypes in @formats for which
-// serializers are registered.
-func (f *ContentFormats) UnionSerializeMIMETypes() *ContentFormats {
-	var _arg0 *C.GdkContentFormats
-
-	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GdkContentFormats
-
-	cret = C.gdk_content_formats_union_serialize_mime_types(_arg0)
-
-	var _contentFormats *ContentFormats
-
-	_contentFormats = WrapContentFormats(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_contentFormats, func(v *ContentFormats) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _contentFormats
 }
 
 // Unref decreases the reference count of a `GdkContentFormats` by one.
@@ -579,7 +416,7 @@ func (r *Rectangle) ContainsPoint(x int, y int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_rectangle_contains_point(_arg0, _arg1, _arg2)
+	_cret = C.gdk_rectangle_contains_point(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -600,7 +437,7 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_rectangle_equal(_arg0, _arg1)
+	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -628,7 +465,7 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 	var _dest Rectangle
 	var _cret C.gboolean
 
-	cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
+	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
 	var _ok bool
 

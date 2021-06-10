@@ -27,7 +27,7 @@ func HostnameIsASCIIEncoded(hostname string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_hostname_is_ascii_encoded(_arg1)
+	_cret = C.g_hostname_is_ascii_encoded(_arg1)
 
 	var _ok bool
 
@@ -50,7 +50,7 @@ func HostnameIsIpAddress(hostname string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_hostname_is_ip_address(_arg1)
+	_cret = C.g_hostname_is_ip_address(_arg1)
 
 	var _ok bool
 
@@ -76,7 +76,7 @@ func HostnameIsNonASCII(hostname string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_hostname_is_non_ascii(_arg1)
+	_cret = C.g_hostname_is_non_ascii(_arg1)
 
 	var _ok bool
 
@@ -97,7 +97,7 @@ func HostnameToASCII(hostname string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_hostname_to_ascii(_arg1)
+	_cret = C.g_hostname_to_ascii(_arg1)
 
 	var _utf8 string
 
@@ -122,7 +122,7 @@ func HostnameToUnicode(hostname string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_hostname_to_unicode(_arg1)
+	_cret = C.g_hostname_to_unicode(_arg1)
 
 	var _utf8 string
 

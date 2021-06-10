@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,12 +72,6 @@ type Frame interface {
 	// LabelAlign retrieves the X and Y alignment of the frame’s label. See
 	// gtk_frame_set_label_align().
 	LabelAlign() (xalign float32, yalign float32)
-	// LabelWidget retrieves the label widget for the frame. See
-	// gtk_frame_set_label_widget().
-	LabelWidget() Widget
-	// ShadowType retrieves the shadow type of the frame. See
-	// gtk_frame_set_shadow_type().
-	ShadowType() ShadowType
 	// SetLabel removes the current Frame:label-widget. If @label is not nil,
 	// creates a new Label with that text and adds it as the Frame:label-widget.
 	SetLabel(label string)
@@ -119,24 +112,6 @@ func marshalFrame(p uintptr) (interface{}, error) {
 	return WrapFrame(obj), nil
 }
 
-// NewFrame constructs a class Frame.
-func NewFrame(label string) Frame {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkFrame
-
-	cret = C.gtk_frame_new(_arg1)
-
-	var _frame Frame
-
-	_frame = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Frame)
-
-	return _frame
-}
-
 // Label: if the frame’s label widget is a Label, returns the text in the
 // label widget. (The frame will have a Label for the label widget if a
 // non-nil argument was passed to gtk_frame_new().)
@@ -147,7 +122,7 @@ func (f frame) Label() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_frame_get_label(_arg0)
+	_cret = C.gtk_frame_get_label(_arg0)
 
 	var _utf8 string
 
@@ -175,42 +150,6 @@ func (f frame) LabelAlign() (xalign float32, yalign float32) {
 	_yalign = (float32)(_arg2)
 
 	return _xalign, _yalign
-}
-
-// LabelWidget retrieves the label widget for the frame. See
-// gtk_frame_set_label_widget().
-func (f frame) LabelWidget() Widget {
-	var _arg0 *C.GtkFrame
-
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_frame_get_label_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// ShadowType retrieves the shadow type of the frame. See
-// gtk_frame_set_shadow_type().
-func (f frame) ShadowType() ShadowType {
-	var _arg0 *C.GtkFrame
-
-	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
-
-	var _cret C.GtkShadowType
-
-	cret = C.gtk_frame_get_shadow_type(_arg0)
-
-	var _shadowType ShadowType
-
-	_shadowType = ShadowType(_cret)
-
-	return _shadowType
 }
 
 // SetLabel removes the current Frame:label-widget. If @label is not nil,

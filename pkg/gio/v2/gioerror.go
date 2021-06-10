@@ -16,26 +16,3 @@ package gio
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// IOErrorFromErrno converts errno.h error codes into GIO error codes. The
-// fallback value G_IO_ERROR_FAILED is returned for error codes not currently
-// handled (but note that future GLib releases may return a more specific value
-// instead).
-//
-// As errno is global and may be modified by intermediate function calls, you
-// should save its value as soon as the call which sets it
-func IOErrorFromErrno(errNo int) IOErrorEnum {
-	var _arg1 C.gint
-
-	_arg1 = C.gint(errNo)
-
-	var _cret C.GIOErrorEnum
-
-	cret = C.g_io_error_from_errno(_arg1)
-
-	var _ioErrorEnum IOErrorEnum
-
-	_ioErrorEnum = IOErrorEnum(_cret)
-
-	return _ioErrorEnum
-}

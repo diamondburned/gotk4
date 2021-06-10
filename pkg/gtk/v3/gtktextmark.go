@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,9 +50,6 @@ func init() {
 type TextMark interface {
 	gextras.Objector
 
-	// Buffer gets the buffer this mark is located inside, or nil if the mark is
-	// deleted.
-	Buffer() TextBuffer
 	// Deleted returns true if the mark has been removed from its buffer with
 	// gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
 	// to add it to a buffer again.
@@ -96,46 +90,6 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 	return WrapTextMark(obj), nil
 }
 
-// NewTextMark constructs a class TextMark.
-func NewTextMark(name string, leftGravity bool) TextMark {
-	var _arg1 *C.gchar
-	var _arg2 C.gboolean
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	if leftGravity {
-		_arg2 = C.gboolean(1)
-	}
-
-	var _cret C.GtkTextMark
-
-	cret = C.gtk_text_mark_new(_arg1, _arg2)
-
-	var _textMark TextMark
-
-	_textMark = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextMark)
-
-	return _textMark
-}
-
-// Buffer gets the buffer this mark is located inside, or nil if the mark is
-// deleted.
-func (m textMark) Buffer() TextBuffer {
-	var _arg0 *C.GtkTextMark
-
-	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkTextBuffer
-
-	cret = C.gtk_text_mark_get_buffer(_arg0)
-
-	var _textBuffer TextBuffer
-
-	_textBuffer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TextBuffer)
-
-	return _textBuffer
-}
-
 // Deleted returns true if the mark has been removed from its buffer with
 // gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
 // to add it to a buffer again.
@@ -146,7 +100,7 @@ func (m textMark) Deleted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_mark_get_deleted(_arg0)
+	_cret = C.gtk_text_mark_get_deleted(_arg0)
 
 	var _ok bool
 
@@ -165,7 +119,7 @@ func (m textMark) LeftGravity() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_mark_get_left_gravity(_arg0)
+	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
 
 	var _ok bool
 
@@ -184,7 +138,7 @@ func (m textMark) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_text_mark_get_name(_arg0)
+	_cret = C.gtk_text_mark_get_name(_arg0)
 
 	var _utf8 string
 
@@ -202,7 +156,7 @@ func (m textMark) Visible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_mark_get_visible(_arg0)
+	_cret = C.gtk_text_mark_get_visible(_arg0)
 
 	var _ok bool
 

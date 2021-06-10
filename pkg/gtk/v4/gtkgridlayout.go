@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,12 +45,6 @@ type GridLayout interface {
 	// ColumnSpacing retrieves the spacing set with
 	// gtk_grid_layout_set_column_spacing().
 	ColumnSpacing() uint
-	// RowBaselinePosition returns the baseline position of @row.
-	//
-	// If no value has been set with
-	// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
-	// GTK_BASELINE_POSITION_CENTER is returned.
-	RowBaselinePosition(row int) BaselinePosition
 	// RowHomogeneous checks whether all rows of @grid should have the same
 	// height.
 	RowHomogeneous() bool
@@ -105,19 +96,6 @@ func marshalGridLayout(p uintptr) (interface{}, error) {
 	return WrapGridLayout(obj), nil
 }
 
-// NewGridLayout constructs a class GridLayout.
-func NewGridLayout() GridLayout {
-	var _cret C.GtkGridLayout
-
-	cret = C.gtk_grid_layout_new()
-
-	var _gridLayout GridLayout
-
-	_gridLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GridLayout)
-
-	return _gridLayout
-}
-
 // BaselineRow retrieves the row set with
 // gtk_grid_layout_set_baseline_row().
 func (g gridLayout) BaselineRow() int {
@@ -127,7 +105,7 @@ func (g gridLayout) BaselineRow() int {
 
 	var _cret C.int
 
-	cret = C.gtk_grid_layout_get_baseline_row(_arg0)
+	_cret = C.gtk_grid_layout_get_baseline_row(_arg0)
 
 	var _gint int
 
@@ -145,7 +123,7 @@ func (g gridLayout) ColumnHomogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_grid_layout_get_column_homogeneous(_arg0)
+	_cret = C.gtk_grid_layout_get_column_homogeneous(_arg0)
 
 	var _ok bool
 
@@ -165,36 +143,13 @@ func (g gridLayout) ColumnSpacing() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_grid_layout_get_column_spacing(_arg0)
+	_cret = C.gtk_grid_layout_get_column_spacing(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// RowBaselinePosition returns the baseline position of @row.
-//
-// If no value has been set with
-// [method@Gtk.GridLayout.set_row_baseline_position], the default value of
-// GTK_BASELINE_POSITION_CENTER is returned.
-func (g gridLayout) RowBaselinePosition(row int) BaselinePosition {
-	var _arg0 *C.GtkGridLayout
-	var _arg1 C.int
-
-	_arg0 = (*C.GtkGridLayout)(unsafe.Pointer(g.Native()))
-	_arg1 = C.int(row)
-
-	var _cret C.GtkBaselinePosition
-
-	cret = C.gtk_grid_layout_get_row_baseline_position(_arg0, _arg1)
-
-	var _baselinePosition BaselinePosition
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
 }
 
 // RowHomogeneous checks whether all rows of @grid should have the same
@@ -206,7 +161,7 @@ func (g gridLayout) RowHomogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_grid_layout_get_row_homogeneous(_arg0)
+	_cret = C.gtk_grid_layout_get_row_homogeneous(_arg0)
 
 	var _ok bool
 
@@ -226,7 +181,7 @@ func (g gridLayout) RowSpacing() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_grid_layout_get_row_spacing(_arg0)
+	_cret = C.gtk_grid_layout_get_row_spacing(_arg0)
 
 	var _guint uint
 
@@ -370,7 +325,7 @@ func (c gridLayoutChild) Column() int {
 
 	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_column(_arg0)
+	_cret = C.gtk_grid_layout_child_get_column(_arg0)
 
 	var _gint int
 
@@ -387,7 +342,7 @@ func (c gridLayoutChild) ColumnSpan() int {
 
 	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_column_span(_arg0)
+	_cret = C.gtk_grid_layout_child_get_column_span(_arg0)
 
 	var _gint int
 
@@ -404,7 +359,7 @@ func (c gridLayoutChild) Row() int {
 
 	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_row(_arg0)
+	_cret = C.gtk_grid_layout_child_get_row(_arg0)
 
 	var _gint int
 
@@ -421,7 +376,7 @@ func (c gridLayoutChild) RowSpan() int {
 
 	var _cret C.int
 
-	cret = C.gtk_grid_layout_child_get_row_span(_arg0)
+	_cret = C.gtk_grid_layout_child_get_row_span(_arg0)
 
 	var _gint int
 

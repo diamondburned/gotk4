@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -59,9 +56,6 @@ type PasswordEntry interface {
 	ConstraintTarget
 	Editable
 
-	// ExtraMenu gets the menu model set with
-	// gtk_password_entry_set_extra_menu().
-	ExtraMenu() gio.MenuModel
 	// ShowPeekIcon returns whether the entry is showing an icon to reveal the
 	// contents.
 	ShowPeekIcon() bool
@@ -104,37 +98,6 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 	return WrapPasswordEntry(obj), nil
 }
 
-// NewPasswordEntry constructs a class PasswordEntry.
-func NewPasswordEntry() PasswordEntry {
-	var _cret C.GtkPasswordEntry
-
-	cret = C.gtk_password_entry_new()
-
-	var _passwordEntry PasswordEntry
-
-	_passwordEntry = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PasswordEntry)
-
-	return _passwordEntry
-}
-
-// ExtraMenu gets the menu model set with
-// gtk_password_entry_set_extra_menu().
-func (e passwordEntry) ExtraMenu() gio.MenuModel {
-	var _arg0 *C.GtkPasswordEntry
-
-	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GMenuModel
-
-	cret = C.gtk_password_entry_get_extra_menu(_arg0)
-
-	var _menuModel gio.MenuModel
-
-	_menuModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.MenuModel)
-
-	return _menuModel
-}
-
 // ShowPeekIcon returns whether the entry is showing an icon to reveal the
 // contents.
 func (e passwordEntry) ShowPeekIcon() bool {
@@ -144,7 +107,7 @@ func (e passwordEntry) ShowPeekIcon() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
+	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
 
 	var _ok bool
 

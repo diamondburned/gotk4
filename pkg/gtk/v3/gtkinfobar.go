@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -103,17 +100,6 @@ type InfoBar interface {
 	// signal on the message area when the widget is activated. The widget is
 	// appended to the end of the message areas action area.
 	AddActionWidget(child Widget, responseId int)
-	// AddButton adds a button with the given text and sets things up so that
-	// clicking the button will emit the “response” signal with the given
-	// response_id. The button is appended to the end of the info bars's action
-	// area. The button widget is returned, but usually you don't need it.
-	AddButton(buttonText string, responseId int) Button
-	// ActionArea returns the action area of @info_bar.
-	ActionArea() Box
-	// ContentArea returns the content area of @info_bar.
-	ContentArea() Box
-	// MessageType returns the message type of the message area.
-	MessageType() MessageType
 
 	Revealed() bool
 	// ShowCloseButton returns whether the widget will display a standard close
@@ -172,19 +158,6 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 	return WrapInfoBar(obj), nil
 }
 
-// NewInfoBar constructs a class InfoBar.
-func NewInfoBar() InfoBar {
-	var _cret C.GtkInfoBar
-
-	cret = C.gtk_info_bar_new()
-
-	var _infoBar InfoBar
-
-	_infoBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(InfoBar)
-
-	return _infoBar
-}
-
 // AddActionWidget: add an activatable widget to the action area of a
 // InfoBar, connecting a signal handler that will emit the InfoBar::response
 // signal on the message area when the widget is activated. The widget is
@@ -201,82 +174,6 @@ func (i infoBar) AddActionWidget(child Widget, responseId int) {
 	C.gtk_info_bar_add_action_widget(_arg0, _arg1, _arg2)
 }
 
-// AddButton adds a button with the given text and sets things up so that
-// clicking the button will emit the “response” signal with the given
-// response_id. The button is appended to the end of the info bars's action
-// area. The button widget is returned, but usually you don't need it.
-func (i infoBar) AddButton(buttonText string, responseId int) Button {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(buttonText))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(responseId)
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_info_bar_add_button(_arg0, _arg1, _arg2)
-
-	var _button Button
-
-	_button = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Button)
-
-	return _button
-}
-
-// ActionArea returns the action area of @info_bar.
-func (i infoBar) ActionArea() Box {
-	var _arg0 *C.GtkInfoBar
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_info_bar_get_action_area(_arg0)
-
-	var _box Box
-
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
-
-	return _box
-}
-
-// ContentArea returns the content area of @info_bar.
-func (i infoBar) ContentArea() Box {
-	var _arg0 *C.GtkInfoBar
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_info_bar_get_content_area(_arg0)
-
-	var _box Box
-
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
-
-	return _box
-}
-
-// MessageType returns the message type of the message area.
-func (i infoBar) MessageType() MessageType {
-	var _arg0 *C.GtkInfoBar
-
-	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
-
-	var _cret C.GtkMessageType
-
-	cret = C.gtk_info_bar_get_message_type(_arg0)
-
-	var _messageType MessageType
-
-	_messageType = MessageType(_cret)
-
-	return _messageType
-}
-
 func (i infoBar) Revealed() bool {
 	var _arg0 *C.GtkInfoBar
 
@@ -284,7 +181,7 @@ func (i infoBar) Revealed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_info_bar_get_revealed(_arg0)
+	_cret = C.gtk_info_bar_get_revealed(_arg0)
 
 	var _ok bool
 
@@ -304,7 +201,7 @@ func (i infoBar) ShowCloseButton() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_info_bar_get_show_close_button(_arg0)
+	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
 
 	var _ok bool
 

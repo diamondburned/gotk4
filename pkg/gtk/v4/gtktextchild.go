@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,10 +33,6 @@ type TextChildAnchor interface {
 	// if you plan to use this function — otherwise all deleted child anchors
 	// will also be finalized.
 	Deleted() bool
-	// Widgets gets a list of all widgets anchored at this child anchor.
-	//
-	// The order in which the widgets are returned is not defined.
-	Widgets() []Widget
 }
 
 // textChildAnchor implements the TextChildAnchor interface.
@@ -64,19 +56,6 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 	return WrapTextChildAnchor(obj), nil
 }
 
-// NewTextChildAnchor constructs a class TextChildAnchor.
-func NewTextChildAnchor() TextChildAnchor {
-	var _cret C.GtkTextChildAnchor
-
-	cret = C.gtk_text_child_anchor_new()
-
-	var _textChildAnchor TextChildAnchor
-
-	_textChildAnchor = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextChildAnchor)
-
-	return _textChildAnchor
-}
-
 // Deleted determines whether a child anchor has been deleted from the
 // buffer.
 //
@@ -91,7 +70,7 @@ func (a textChildAnchor) Deleted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_text_child_anchor_get_deleted(_arg0)
+	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 
 	var _ok bool
 
@@ -100,32 +79,4 @@ func (a textChildAnchor) Deleted() bool {
 	}
 
 	return _ok
-}
-
-// Widgets gets a list of all widgets anchored at this child anchor.
-//
-// The order in which the widgets are returned is not defined.
-func (a textChildAnchor) Widgets() []Widget {
-	var _arg0 *C.GtkTextChildAnchor
-
-	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
-
-	var _cret **C.GtkWidget
-	var _arg1 *C.guint
-
-	cret = C.gtk_text_child_anchor_get_widgets(_arg0)
-
-	var _widgets []Widget
-
-	{
-		var src []*C.GtkWidget
-		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(_arg1))
-
-		_widgets = make([]Widget, _arg1)
-		for i := 0; i < uintptr(_arg1); i++ {
-			_widgets = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-		}
-	}
-
-	return _widgets
 }

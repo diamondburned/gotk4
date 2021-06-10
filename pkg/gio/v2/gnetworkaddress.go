@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -75,43 +72,6 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 	return WrapNetworkAddress(obj), nil
 }
 
-// NewNetworkAddress constructs a class NetworkAddress.
-func NewNetworkAddress(hostname string, port uint16) NetworkAddress {
-	var _arg1 *C.gchar
-	var _arg2 C.guint16
-
-	_arg1 = (*C.gchar)(C.CString(hostname))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.guint16(port)
-
-	var _cret C.GNetworkAddress
-
-	cret = C.g_network_address_new(_arg1, _arg2)
-
-	var _networkAddress NetworkAddress
-
-	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
-
-	return _networkAddress
-}
-
-// NewNetworkAddressLoopback constructs a class NetworkAddress.
-func NewNetworkAddressLoopback(port uint16) NetworkAddress {
-	var _arg1 C.guint16
-
-	_arg1 = C.guint16(port)
-
-	var _cret C.GNetworkAddress
-
-	cret = C.g_network_address_new_loopback(_arg1)
-
-	var _networkAddress NetworkAddress
-
-	_networkAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkAddress)
-
-	return _networkAddress
-}
-
 // Hostname gets @addr's hostname. This might be either UTF-8 or
 // ASCII-encoded, depending on what @addr was created with.
 func (a networkAddress) Hostname() string {
@@ -121,7 +81,7 @@ func (a networkAddress) Hostname() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_network_address_get_hostname(_arg0)
+	_cret = C.g_network_address_get_hostname(_arg0)
 
 	var _utf8 string
 
@@ -138,7 +98,7 @@ func (a networkAddress) Port() uint16 {
 
 	var _cret C.guint16
 
-	cret = C.g_network_address_get_port(_arg0)
+	_cret = C.g_network_address_get_port(_arg0)
 
 	var _guint16 uint16
 
@@ -155,7 +115,7 @@ func (a networkAddress) Scheme() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_network_address_get_scheme(_arg0)
+	_cret = C.g_network_address_get_scheme(_arg0)
 
 	var _utf8 string
 

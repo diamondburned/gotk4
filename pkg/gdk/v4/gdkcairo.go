@@ -3,8 +3,6 @@
 package gdk
 
 import (
-	"runtime"
-
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 )
@@ -75,30 +73,6 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
 
 	C.gdk_cairo_region(_arg1, _arg2)
-}
-
-// CairoRegionCreateFromSurface creates region that covers the area where the
-// given @surface is more than 50% opaque.
-//
-// This function takes into account device offsets that might be set with
-// cairo_surface_set_device_offset().
-func CairoRegionCreateFromSurface(surface *cairo.Surface) *cairo.Region {
-	var _arg1 *C.cairo_surface_t
-
-	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
-
-	var _cret *C.cairo_region_t
-
-	cret = C.gdk_cairo_region_create_from_surface(_arg1)
-
-	var _region *cairo.Region
-
-	_region = cairo.WrapRegion(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_region, func(v *cairo.Region) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _region
 }
 
 // CairoSetSourcePixbuf sets the given pixbuf as the source pattern for @cr.

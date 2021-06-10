@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,9 +72,6 @@ type Expander interface {
 	// LabelFill returns whether the label widget will fill all available
 	// horizontal space allocated to @expander.
 	LabelFill() bool
-	// LabelWidget retrieves the label widget for the frame. See
-	// gtk_expander_set_label_widget().
-	LabelWidget() Widget
 	// ResizeToplevel returns whether the expander will resize the toplevel
 	// widget containing the expander upon resizing and collpasing.
 	ResizeToplevel() bool
@@ -143,42 +139,6 @@ func marshalExpander(p uintptr) (interface{}, error) {
 	return WrapExpander(obj), nil
 }
 
-// NewExpander constructs a class Expander.
-func NewExpander(label string) Expander {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkExpander
-
-	cret = C.gtk_expander_new(_arg1)
-
-	var _expander Expander
-
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
-
-	return _expander
-}
-
-// NewExpanderWithMnemonic constructs a class Expander.
-func NewExpanderWithMnemonic(label string) Expander {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkExpander
-
-	cret = C.gtk_expander_new_with_mnemonic(_arg1)
-
-	var _expander Expander
-
-	_expander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expander)
-
-	return _expander
-}
-
 // Expanded queries a Expander and returns its current state. Returns true
 // if the child widget is revealed.
 //
@@ -190,7 +150,7 @@ func (e expander) Expanded() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_expanded(_arg0)
+	_cret = C.gtk_expander_get_expanded(_arg0)
 
 	var _ok bool
 
@@ -218,7 +178,7 @@ func (e expander) Label() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_expander_get_label(_arg0)
+	_cret = C.gtk_expander_get_label(_arg0)
 
 	var _utf8 string
 
@@ -236,7 +196,7 @@ func (e expander) LabelFill() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_label_fill(_arg0)
+	_cret = C.gtk_expander_get_label_fill(_arg0)
 
 	var _ok bool
 
@@ -245,24 +205,6 @@ func (e expander) LabelFill() bool {
 	}
 
 	return _ok
-}
-
-// LabelWidget retrieves the label widget for the frame. See
-// gtk_expander_set_label_widget().
-func (e expander) LabelWidget() Widget {
-	var _arg0 *C.GtkExpander
-
-	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_expander_get_label_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // ResizeToplevel returns whether the expander will resize the toplevel
@@ -274,7 +216,7 @@ func (e expander) ResizeToplevel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_resize_toplevel(_arg0)
+	_cret = C.gtk_expander_get_resize_toplevel(_arg0)
 
 	var _ok bool
 
@@ -293,7 +235,7 @@ func (e expander) Spacing() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_expander_get_spacing(_arg0)
+	_cret = C.gtk_expander_get_spacing(_arg0)
 
 	var _gint int
 
@@ -312,7 +254,7 @@ func (e expander) UseMarkup() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_use_markup(_arg0)
+	_cret = C.gtk_expander_get_use_markup(_arg0)
 
 	var _ok bool
 
@@ -332,7 +274,7 @@ func (e expander) UseUnderline() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_expander_get_use_underline(_arg0)
+	_cret = C.gtk_expander_get_use_underline(_arg0)
 
 	var _ok bool
 

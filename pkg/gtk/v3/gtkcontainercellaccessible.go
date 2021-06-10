@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,8 +24,6 @@ type ContainerCellAccessible interface {
 	CellAccessible
 
 	AddChild(child CellAccessible)
-	// Children: get a list of children.
-	Children() *glib.List
 
 	RemoveChild(child CellAccessible)
 }
@@ -55,19 +49,6 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 	return WrapContainerCellAccessible(obj), nil
 }
 
-// NewContainerCellAccessible constructs a class ContainerCellAccessible.
-func NewContainerCellAccessible() ContainerCellAccessible {
-	var _cret C.GtkContainerCellAccessible
-
-	cret = C.gtk_container_cell_accessible_new()
-
-	var _containerCellAccessible ContainerCellAccessible
-
-	_containerCellAccessible = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ContainerCellAccessible)
-
-	return _containerCellAccessible
-}
-
 func (c containerCellAccessible) AddChild(child CellAccessible) {
 	var _arg0 *C.GtkContainerCellAccessible
 	var _arg1 *C.GtkCellAccessible
@@ -76,23 +57,6 @@ func (c containerCellAccessible) AddChild(child CellAccessible) {
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
 
 	C.gtk_container_cell_accessible_add_child(_arg0, _arg1)
-}
-
-// Children: get a list of children.
-func (c containerCellAccessible) Children() *glib.List {
-	var _arg0 *C.GtkContainerCellAccessible
-
-	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_container_cell_accessible_get_children(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-
-	return _list
 }
 
 func (c containerCellAccessible) RemoveChild(child CellAccessible) {

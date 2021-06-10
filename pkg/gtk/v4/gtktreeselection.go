@@ -3,54 +3,10 @@
 package gtk
 
 import (
-	"runtime"
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
-
-// TreeSelectionForeachFunc: a function used by
-// gtk_tree_selection_selected_foreach() to map all selected rows. It will be
-// called on every selected row in the view.
-type TreeSelectionForeachFunc func()
-
-//export gotk4_TreeSelectionForeachFunc
-func gotk4_TreeSelectionForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(TreeSelectionForeachFunc)
-	fn()
-}
-
-// TreeSelectionFunc: a function used by
-// gtk_tree_selection_set_select_function() to filter whether or not a row may
-// be selected. It is called whenever a row's state might change.
-//
-// A return value of true indicates to @selection that it is okay to change the
-// selection.
-type TreeSelectionFunc func() (ok bool)
-
-//export gotk4_TreeSelectionFunc
-func gotk4_TreeSelectionFunc(arg0 *C.GtkTreeSelection, arg1 *C.GtkTreeModel, arg2 *C.GtkTreePath, arg3 C.gboolean, arg4 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(TreeSelectionFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}

@@ -3,7 +3,6 @@
 package gsk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/glib/v2"

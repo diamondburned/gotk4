@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/internal/box"
+	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -93,20 +93,25 @@ type ActionGroup interface {
 	//
 	// Accel paths are set to `<Actions>/group-name/action-name`.
 	AddActionWithAccel(action Action, accelerator string)
+	// AddActions: this is a convenience function to create a number of actions
+	// and add them to the action group.
+	//
+	// The “activate” signals of the actions are connected to the callbacks and
+	// their accel paths are set to `<Actions>/group-name/action-name`.
+	AddActions(entries []ActionEntry, userData interface{})
 	// AddRadioActions: this is a convenience routine to create a group of radio
 	// actions and add them to the action group.
 	//
 	// The “changed” signal of the first radio action is connected to the
 	// @on_change callback and the accel paths of the actions are set to
 	// `<Actions>/group-name/action-name`.
-	AddRadioActions()
-	// AddRadioActionsFull: this variant of gtk_action_group_add_radio_actions()
-	// adds a Notify callback for @user_data.
-	AddRadioActionsFull()
-	// AccelGroup gets the accelerator group.
-	AccelGroup() AccelGroup
-	// Action looks up an action in the action group by name.
-	Action(actionName string) Action
+	AddRadioActions(entries []RadioActionEntry, value int, onChange gobject.Callback)
+	// AddToggleActions: this is a convenience function to create a number of
+	// toggle actions and add them to the action group.
+	//
+	// The “activate” signals of the actions are connected to the callbacks and
+	// their accel paths are set to `<Actions>/group-name/action-name`.
+	AddToggleActions(entries []ToggleActionEntry, userData interface{})
 	// Name gets the name of the action group.
 	Name() string
 	// Sensitive returns true if the group is sensitive. The constituent actions
@@ -118,8 +123,6 @@ type ActionGroup interface {
 	// only be logically visible (see gtk_action_is_visible()) if they are
 	// visible (see gtk_action_get_visible()) and their group is visible.
 	Visible() bool
-	// ListActions lists the actions in the action group.
-	ListActions() *glib.List
 	// RemoveAction removes an action object from the action group.
 	RemoveAction(action Action)
 	// SetAccelGroup sets the accelerator group to be used by every action in
@@ -127,12 +130,6 @@ type ActionGroup interface {
 	SetAccelGroup(accelGroup AccelGroup)
 	// SetSensitive changes the sensitivity of @action_group
 	SetSensitive(sensitive bool)
-	// SetTranslateFunc sets a function to be used for translating the @label
-	// and @tooltip of ActionEntrys added by gtk_action_group_add_actions().
-	//
-	// If you’re using gettext(), it is enough to set the translation domain
-	// with gtk_action_group_set_translation_domain().
-	SetTranslateFunc()
 	// SetTranslationDomain sets the translation domain and uses g_dgettext()
 	// for translating the @label and @tooltip of ActionEntrys added by
 	// gtk_action_group_add_actions().
@@ -171,24 +168,6 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 	return WrapActionGroup(obj), nil
 }
 
-// NewActionGroup constructs a class ActionGroup.
-func NewActionGroup(name string) ActionGroup {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkActionGroup
-
-	cret = C.gtk_action_group_new(_arg1)
-
-	var _actionGroup ActionGroup
-
-	_actionGroup = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ActionGroup)
-
-	return _actionGroup
-}
-
 // AddAction adds an action object to the action group. Note that this
 // function does not set up the accel path of the action, which can lead to
 // problems if a user tries to modify the accelerator of a menuitem
@@ -225,65 +204,66 @@ func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 	C.gtk_action_group_add_action_with_accel(_arg0, _arg1, _arg2)
 }
 
+// AddActions: this is a convenience function to create a number of actions
+// and add them to the action group.
+//
+// The “activate” signals of the actions are connected to the callbacks and
+// their accel paths are set to `<Actions>/group-name/action-name`.
+func (a actionGroup) AddActions(entries []ActionEntry, userData interface{}) {
+	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.GtkActionEntry
+	var _arg2 C.guint
+	var _arg3 C.gpointer
+
+	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg2 = C.guint(len(entries))
+	_arg1 = (*C.GtkActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg3 = C.gpointer(userData)
+
+	C.gtk_action_group_add_actions(_arg0, _arg1, _arg2, _arg3)
+}
+
 // AddRadioActions: this is a convenience routine to create a group of radio
 // actions and add them to the action group.
 //
 // The “changed” signal of the first radio action is connected to the
 // @on_change callback and the accel paths of the actions are set to
 // `<Actions>/group-name/action-name`.
-func (a actionGroup) AddRadioActions() {
+func (a actionGroup) AddRadioActions(entries []RadioActionEntry, value int, onChange gobject.Callback) {
 	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.GtkRadioActionEntry
+	var _arg2 C.guint
+	var _arg3 C.gint
+	var _arg4 C.GCallback
+	var _arg5 C.gpointer
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg2 = C.guint(len(entries))
+	_arg1 = (*C.GtkRadioActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg3 = C.gint(value)
+	_arg4 = (*[0]byte)(C.gotk4_Callback)
+	_arg5 = C.gpointer(box.Assign(onChange))
 
-	C.gtk_action_group_add_radio_actions(_arg0)
+	C.gtk_action_group_add_radio_actions(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
-// AddRadioActionsFull: this variant of gtk_action_group_add_radio_actions()
-// adds a Notify callback for @user_data.
-func (a actionGroup) AddRadioActionsFull() {
+// AddToggleActions: this is a convenience function to create a number of
+// toggle actions and add them to the action group.
+//
+// The “activate” signals of the actions are connected to the callbacks and
+// their accel paths are set to `<Actions>/group-name/action-name`.
+func (a actionGroup) AddToggleActions(entries []ToggleActionEntry, userData interface{}) {
 	var _arg0 *C.GtkActionGroup
+	var _arg1 *C.GtkToggleActionEntry
+	var _arg2 C.guint
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
+	_arg2 = C.guint(len(entries))
+	_arg1 = (*C.GtkToggleActionEntry)(unsafe.Pointer(&entries[0]))
+	_arg3 = C.gpointer(userData)
 
-	C.gtk_action_group_add_radio_actions_full(_arg0)
-}
-
-// AccelGroup gets the accelerator group.
-func (a actionGroup) AccelGroup() AccelGroup {
-	var _arg0 *C.GtkActionGroup
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GtkAccelGroup
-
-	cret = C.gtk_action_group_get_accel_group(_arg0)
-
-	var _accelGroup AccelGroup
-
-	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
-
-	return _accelGroup
-}
-
-// Action looks up an action in the action group by name.
-func (a actionGroup) Action(actionName string) Action {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.gchar)(C.CString(actionName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkAction
-
-	cret = C.gtk_action_group_get_action(_arg0, _arg1)
-
-	var _action Action
-
-	_action = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Action)
-
-	return _action
+	C.gtk_action_group_add_toggle_actions(_arg0, _arg1, _arg2, _arg3)
 }
 
 // Name gets the name of the action group.
@@ -294,7 +274,7 @@ func (a actionGroup) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_group_get_name(_arg0)
+	_cret = C.gtk_action_group_get_name(_arg0)
 
 	var _utf8 string
 
@@ -314,7 +294,7 @@ func (a actionGroup) Sensitive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_group_get_sensitive(_arg0)
+	_cret = C.gtk_action_group_get_sensitive(_arg0)
 
 	var _ok bool
 
@@ -335,7 +315,7 @@ func (a actionGroup) Visible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_action_group_get_visible(_arg0)
+	_cret = C.gtk_action_group_get_visible(_arg0)
 
 	var _ok bool
 
@@ -344,26 +324,6 @@ func (a actionGroup) Visible() bool {
 	}
 
 	return _ok
-}
-
-// ListActions lists the actions in the action group.
-func (a actionGroup) ListActions() *glib.List {
-	var _arg0 *C.GtkActionGroup
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_action_group_list_actions(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
 }
 
 // RemoveAction removes an action object from the action group.
@@ -400,19 +360,6 @@ func (a actionGroup) SetSensitive(sensitive bool) {
 	}
 
 	C.gtk_action_group_set_sensitive(_arg0, _arg1)
-}
-
-// SetTranslateFunc sets a function to be used for translating the @label
-// and @tooltip of ActionEntrys added by gtk_action_group_add_actions().
-//
-// If you’re using gettext(), it is enough to set the translation domain
-// with gtk_action_group_set_translation_domain().
-func (a actionGroup) SetTranslateFunc() {
-	var _arg0 *C.GtkActionGroup
-
-	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
-
-	C.gtk_action_group_set_translate_func(_arg0)
 }
 
 // SetTranslationDomain sets the translation domain and uses g_dgettext()
@@ -458,7 +405,7 @@ func (a actionGroup) TranslateString(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_action_group_translate_string(_arg0, _arg1)
+	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
 
 	var _utf8 string
 

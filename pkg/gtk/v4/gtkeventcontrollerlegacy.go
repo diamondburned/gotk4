@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,17 +46,4 @@ func marshalEventControllerLegacy(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEventControllerLegacy(obj), nil
-}
-
-// NewEventControllerLegacy constructs a class EventControllerLegacy.
-func NewEventControllerLegacy() EventControllerLegacy {
-	var _cret C.GtkEventControllerLegacy
-
-	cret = C.gtk_event_controller_legacy_new()
-
-	var _eventControllerLegacy EventControllerLegacy
-
-	_eventControllerLegacy = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(EventControllerLegacy)
-
-	return _eventControllerLegacy
 }

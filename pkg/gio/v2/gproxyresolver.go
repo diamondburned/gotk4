@@ -5,6 +5,7 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -54,7 +55,7 @@ type ProXYResolverOverrider interface {
 	Lookup(uri string, cancellable Cancellable) ([]string, error)
 	// LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 	// for more details.
-	LookupAsync()
+	LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback)
 	// LookupFinish: call this function to obtain the array of proxy URIs when
 	// g_proxy_resolver_lookup_async() is complete. See
 	// g_proxy_resolver_lookup() for more details.
@@ -104,7 +105,7 @@ func (r proXYResolver) IsSupported() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_proxy_resolver_is_supported(_arg0)
+	_cret = C.g_proxy_resolver_is_supported(_arg0)
 
 	var _ok bool
 
@@ -140,7 +141,7 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	var _cret **C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, _cerr)
 
 	var _utf8s []string
 	var _goerr error
@@ -158,7 +159,7 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -170,12 +171,21 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 // for more details.
-func (r proXYResolver) LookupAsync() {
+func (r proXYResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GProxyResolver
+	var _arg1 *C.gchar
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
+	_arg1 = (*C.gchar)(C.CString(uri))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	C.g_proxy_resolver_lookup_async(_arg0)
+	C.g_proxy_resolver_lookup_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // LookupFinish: call this function to obtain the array of proxy URIs when
@@ -191,7 +201,7 @@ func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
 	var _cret **C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, _cerr)
+	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, _cerr)
 
 	var _utf8s []string
 	var _goerr error
@@ -209,7 +219,7 @@ func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -82,24 +79,6 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 	return WrapTextTag(obj), nil
 }
 
-// NewTextTag constructs a class TextTag.
-func NewTextTag(name string) TextTag {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkTextTag
-
-	cret = C.gtk_text_tag_new(_arg1)
-
-	var _textTag TextTag
-
-	_textTag = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TextTag)
-
-	return _textTag
-}
-
 // Changed emits the TextTagTable::tag-changed signal on the TextTagTable
 // where the tag is included.
 //
@@ -125,7 +104,7 @@ func (t textTag) Priority() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_text_tag_get_priority(_arg0)
+	_cret = C.gtk_text_tag_get_priority(_arg0)
 
 	var _gint int
 

@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -30,11 +26,6 @@ func init() {
 // `GtkAccessible`.
 type ATContext interface {
 	gextras.Objector
-
-	// Accessible retrieves the `GtkAccessible` using this context.
-	Accessible() Accessible
-	// AccessibleRole retrieves the accessible role of this context.
-	AccessibleRole() AccessibleRole
 }
 
 // atContext implements the ATContext interface.
@@ -56,59 +47,4 @@ func marshalATContext(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapATContext(obj), nil
-}
-
-// NewATContextCreate constructs a class ATContext.
-func NewATContextCreate(accessibleRole AccessibleRole, accessible Accessible, display gdk.Display) ATContext {
-	var _arg1 C.GtkAccessibleRole
-	var _arg2 *C.GtkAccessible
-	var _arg3 *C.GdkDisplay
-
-	_arg1 = (C.GtkAccessibleRole)(accessibleRole)
-	_arg2 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
-	_arg3 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-
-	var _cret C.GtkATContext
-
-	cret = C.gtk_at_context_create(_arg1, _arg2, _arg3)
-
-	var _atContext ATContext
-
-	_atContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ATContext)
-
-	return _atContext
-}
-
-// Accessible retrieves the `GtkAccessible` using this context.
-func (s atContext) Accessible() Accessible {
-	var _arg0 *C.GtkATContext
-
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAccessible
-
-	cret = C.gtk_at_context_get_accessible(_arg0)
-
-	var _accessible Accessible
-
-	_accessible = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Accessible)
-
-	return _accessible
-}
-
-// AccessibleRole retrieves the accessible role of this context.
-func (s atContext) AccessibleRole() AccessibleRole {
-	var _arg0 *C.GtkATContext
-
-	_arg0 = (*C.GtkATContext)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkAccessibleRole
-
-	cret = C.gtk_at_context_get_accessible_role(_arg0)
-
-	var _accessibleRole AccessibleRole
-
-	_accessibleRole = AccessibleRole(_cret)
-
-	return _accessibleRole
 }

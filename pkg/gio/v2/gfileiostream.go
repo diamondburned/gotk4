@@ -5,8 +5,7 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/box"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -57,33 +56,13 @@ type FileIOStream interface {
 	// be called after the stream has been written and closed, as the etag can
 	// change while writing.
 	Etag() string
-	// QueryInfo queries a file io stream for the given @attributes. This
-	// function blocks while querying the stream. For the asynchronous version
-	// of this function, see g_file_io_stream_query_info_async(). While the
-	// stream is blocked, the stream will set the pending flag internally, and
-	// any other operations on the stream will fail with G_IO_ERROR_PENDING.
-	//
-	// Can fail if the stream was already closed (with @error being set to
-	// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
-	// set to G_IO_ERROR_PENDING), or if querying info is not supported for the
-	// stream's interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED). I
-	// all cases of failure, nil will be returned.
-	//
-	// If @cancellable is not nil, then the operation can be cancelled by
-	// triggering the cancellable object from another thread. If the operation
-	// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
-	// be returned.
-	QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error)
 	// QueryInfoAsync: asynchronously queries the @stream for a Info. When
 	// completed, @callback will be called with a Result which can be used to
 	// finish the operation with g_file_io_stream_query_info_finish().
 	//
 	// For the synchronous version of this function, see
 	// g_file_io_stream_query_info().
-	QueryInfoAsync()
-	// QueryInfoFinish finalizes the asynchronous query started by
-	// g_file_io_stream_query_info_async().
-	QueryInfoFinish(result AsyncResult) (FileInfo, error)
+	QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback)
 }
 
 // fileIOStream implements the FileIOStream interface.
@@ -119,7 +98,7 @@ func (s fileIOStream) Etag() string {
 
 	var _cret *C.char
 
-	cret = C.g_file_io_stream_get_etag(_arg0)
+	_cret = C.g_file_io_stream_get_etag(_arg0)
 
 	var _utf8 string
 
@@ -129,79 +108,27 @@ func (s fileIOStream) Etag() string {
 	return _utf8
 }
 
-// QueryInfo queries a file io stream for the given @attributes. This
-// function blocks while querying the stream. For the asynchronous version
-// of this function, see g_file_io_stream_query_info_async(). While the
-// stream is blocked, the stream will set the pending flag internally, and
-// any other operations on the stream will fail with G_IO_ERROR_PENDING.
-//
-// Can fail if the stream was already closed (with @error being set to
-// G_IO_ERROR_CLOSED), the stream has pending operations (with @error being
-// set to G_IO_ERROR_PENDING), or if querying info is not supported for the
-// stream's interface (with @error being set to G_IO_ERROR_NOT_SUPPORTED). I
-// all cases of failure, nil will be returned.
-//
-// If @cancellable is not nil, then the operation can be cancelled by
-// triggering the cancellable object from another thread. If the operation
-// was cancelled, the error G_IO_ERROR_CANCELLED will be set, and nil will
-// be returned.
-func (s fileIOStream) QueryInfo(attributes string, cancellable Cancellable) (FileInfo, error) {
-	var _arg0 *C.GFileIOStream
-	var _arg1 *C.char
-	var _arg2 *C.GCancellable
-
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.char)(C.CString(attributes))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GFileInfo
-	var _cerr *C.GError
-
-	cret = C.g_file_io_stream_query_info(_arg0, _arg1, _arg2, _cerr)
-
-	var _fileInfo FileInfo
-	var _goerr error
-
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _fileInfo, _goerr
-}
-
 // QueryInfoAsync: asynchronously queries the @stream for a Info. When
 // completed, @callback will be called with a Result which can be used to
 // finish the operation with g_file_io_stream_query_info_finish().
 //
 // For the synchronous version of this function, see
 // g_file_io_stream_query_info().
-func (s fileIOStream) QueryInfoAsync() {
+func (s fileIOStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GFileIOStream
+	var _arg1 *C.char
+	var _arg2 C.int
+	var _arg3 *C.GCancellable
+	var _arg4 C.GAsyncReadyCallback
+	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.char)(C.CString(attributes))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(ioPriority)
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
 
-	C.g_file_io_stream_query_info_async(_arg0)
-}
-
-// QueryInfoFinish finalizes the asynchronous query started by
-// g_file_io_stream_query_info_async().
-func (s fileIOStream) QueryInfoFinish(result AsyncResult) (FileInfo, error) {
-	var _arg0 *C.GFileIOStream
-	var _arg1 *C.GAsyncResult
-
-	_arg0 = (*C.GFileIOStream)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
-
-	var _cret *C.GFileInfo
-	var _cerr *C.GError
-
-	cret = C.g_file_io_stream_query_info_finish(_arg0, _arg1, _cerr)
-
-	var _fileInfo FileInfo
-	var _goerr error
-
-	_fileInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileInfo)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _fileInfo, _goerr
+	C.g_file_io_stream_query_info_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }

@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -58,10 +57,6 @@ type UnixFDMessage interface {
 	// A possible cause of failure is exceeding the per-process or system-wide
 	// file descriptor limit.
 	AppendFd(fd int) error
-	// FdList gets the FDList contained in @message. This function does not
-	// return a reference to the caller, but the returned list is valid for the
-	// lifetime of @message.
-	FdList() UnixFDList
 	// StealFds returns the array of file descriptors that is contained in this
 	// object.
 	//
@@ -101,36 +96,6 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 	return WrapUnixFDMessage(obj), nil
 }
 
-// NewUnixFDMessage constructs a class UnixFDMessage.
-func NewUnixFDMessage() UnixFDMessage {
-	var _cret C.GUnixFDMessage
-
-	cret = C.g_unix_fd_message_new()
-
-	var _unixFDMessage UnixFDMessage
-
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
-
-	return _unixFDMessage
-}
-
-// NewUnixFDMessageWithFdList constructs a class UnixFDMessage.
-func NewUnixFDMessageWithFdList(fdList UnixFDList) UnixFDMessage {
-	var _arg1 *C.GUnixFDList
-
-	_arg1 = (*C.GUnixFDList)(unsafe.Pointer(fdList.Native()))
-
-	var _cret C.GUnixFDMessage
-
-	cret = C.g_unix_fd_message_new_with_fd_list(_arg1)
-
-	var _unixFDMessage UnixFDMessage
-
-	_unixFDMessage = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDMessage)
-
-	return _unixFDMessage
-}
-
 // AppendFd adds a file descriptor to @message.
 //
 // The file descriptor is duplicated using dup(). You keep your copy of the
@@ -157,25 +122,6 @@ func (m unixFDMessage) AppendFd(fd int) error {
 	return _goerr
 }
 
-// FdList gets the FDList contained in @message. This function does not
-// return a reference to the caller, but the returned list is valid for the
-// lifetime of @message.
-func (m unixFDMessage) FdList() UnixFDList {
-	var _arg0 *C.GUnixFDMessage
-
-	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GUnixFDList
-
-	cret = C.g_unix_fd_message_get_fd_list(_arg0)
-
-	var _unixFDList UnixFDList
-
-	_unixFDList = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(UnixFDList)
-
-	return _unixFDList
-}
-
 // StealFds returns the array of file descriptors that is contained in this
 // object.
 //
@@ -199,7 +145,7 @@ func (m unixFDMessage) StealFds() []int {
 	var _cret *C.gint
 	var _arg1 *C.gint
 
-	cret = C.g_unix_fd_message_steal_fds(_arg0)
+	_cret = C.g_unix_fd_message_steal_fds(_arg0, &_arg1)
 
 	var _gints []int
 

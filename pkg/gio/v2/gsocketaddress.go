@@ -3,10 +3,7 @@
 package gio
 
 import (
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,8 +36,6 @@ type SocketAddress interface {
 	gextras.Objector
 	SocketConnectable
 
-	// Family gets the socket family type of @address.
-	Family() SocketFamily
 	// NativeSize gets the size of @address's native struct sockaddr. You can
 	// use this to allocate memory to pass to g_socket_address_to_native().
 	NativeSize() int
@@ -76,42 +71,6 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 	return WrapSocketAddress(obj), nil
 }
 
-// NewSocketAddressFromNative constructs a class SocketAddress.
-func NewSocketAddressFromNative(native interface{}, len uint) SocketAddress {
-	var _arg1 C.gpointer
-	var _arg2 C.gsize
-
-	_arg1 = C.gpointer(native)
-	_arg2 = C.gsize(len)
-
-	var _cret C.GSocketAddress
-
-	cret = C.g_socket_address_new_from_native(_arg1, _arg2)
-
-	var _socketAddress SocketAddress
-
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
-
-	return _socketAddress
-}
-
-// Family gets the socket family type of @address.
-func (a socketAddress) Family() SocketFamily {
-	var _arg0 *C.GSocketAddress
-
-	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GSocketFamily
-
-	cret = C.g_socket_address_get_family(_arg0)
-
-	var _socketFamily SocketFamily
-
-	_socketFamily = SocketFamily(_cret)
-
-	return _socketFamily
-}
-
 // NativeSize gets the size of @address's native struct sockaddr. You can
 // use this to allocate memory to pass to g_socket_address_to_native().
 func (a socketAddress) NativeSize() int {
@@ -121,7 +80,7 @@ func (a socketAddress) NativeSize() int {
 
 	var _cret C.gssize
 
-	cret = C.g_socket_address_get_native_size(_arg0)
+	_cret = C.g_socket_address_get_native_size(_arg0)
 
 	var _gssize int
 

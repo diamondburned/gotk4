@@ -5,6 +5,7 @@ package glib
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
@@ -93,7 +94,7 @@ func (p *ThreadPool) MaxThreads() int {
 
 	var _cret C.gint
 
-	cret = C.g_thread_pool_get_max_threads(_arg0)
+	_cret = C.g_thread_pool_get_max_threads(_arg0)
 
 	var _gint int
 
@@ -110,7 +111,7 @@ func (p *ThreadPool) NumThreads() uint {
 
 	var _cret C.guint
 
-	cret = C.g_thread_pool_get_num_threads(_arg0)
+	_cret = C.g_thread_pool_get_num_threads(_arg0)
 
 	var _guint uint
 
@@ -130,7 +131,7 @@ func (p *ThreadPool) MoveToFront(data interface{}) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_thread_pool_move_to_front(_arg0, _arg1)
+	_cret = C.g_thread_pool_move_to_front(_arg0, _arg1)
 
 	var _ok bool
 
@@ -215,12 +216,16 @@ func (p *ThreadPool) SetMaxThreads(maxThreads int) error {
 // are executed cannot be guaranteed 100%. Threads are scheduled by the
 // operating system and are executed at random. It cannot be assumed that
 // threads are executed in the order they are created.
-func (p *ThreadPool) SetSortFunction() {
+func (p *ThreadPool) SetSortFunction(fn CompareDataFunc) {
 	var _arg0 *C.GThreadPool
+	var _arg1 C.GCompareDataFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_CompareDataFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.g_thread_pool_set_sort_function(_arg0)
+	C.g_thread_pool_set_sort_function(_arg0, _arg1, _arg2)
 }
 
 // Unprocessed returns the number of tasks still unprocessed in @pool.
@@ -231,7 +236,7 @@ func (p *ThreadPool) Unprocessed() uint {
 
 	var _cret C.guint
 
-	cret = C.g_thread_pool_unprocessed(_arg0)
+	_cret = C.g_thread_pool_unprocessed(_arg0)
 
 	var _guint uint
 

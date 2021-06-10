@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -150,32 +149,6 @@ func marshalComboBoxText(p uintptr) (interface{}, error) {
 	return WrapComboBoxText(obj), nil
 }
 
-// NewComboBoxText constructs a class ComboBoxText.
-func NewComboBoxText() ComboBoxText {
-	var _cret C.GtkComboBoxText
-
-	cret = C.gtk_combo_box_text_new()
-
-	var _comboBoxText ComboBoxText
-
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
-
-	return _comboBoxText
-}
-
-// NewComboBoxTextWithEntry constructs a class ComboBoxText.
-func NewComboBoxTextWithEntry() ComboBoxText {
-	var _cret C.GtkComboBoxText
-
-	cret = C.gtk_combo_box_text_new_with_entry()
-
-	var _comboBoxText ComboBoxText
-
-	_comboBoxText = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ComboBoxText)
-
-	return _comboBoxText
-}
-
 // Append appends @text to the list of strings stored in @combo_box. If @id
 // is non-nil then it is used as the ID of the row.
 //
@@ -221,7 +194,7 @@ func (c comboBoxText) ActiveText() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_combo_box_text_get_active_text(_arg0)
+	_cret = C.gtk_combo_box_text_get_active_text(_arg0)
 
 	var _utf8 string
 

@@ -3,7 +3,10 @@
 package gdkx11
 
 import (
+	"runtime"
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: gtk4-x11 gtk4

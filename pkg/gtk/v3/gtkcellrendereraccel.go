@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,17 +48,4 @@ func marshalCellRendererAccel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCellRendererAccel(obj), nil
-}
-
-// NewCellRendererAccel constructs a class CellRendererAccel.
-func NewCellRendererAccel() CellRendererAccel {
-	var _cret C.GtkCellRendererAccel
-
-	cret = C.gtk_cell_renderer_accel_new()
-
-	var _cellRendererAccel CellRendererAccel
-
-	_cellRendererAccel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererAccel)
-
-	return _cellRendererAccel
 }

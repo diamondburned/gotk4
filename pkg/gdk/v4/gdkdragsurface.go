@@ -59,7 +59,7 @@ func (d dragSurface) Present(width int, height int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
+	_cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
 
 	var _ok bool
 

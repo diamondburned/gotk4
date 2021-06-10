@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -84,36 +81,6 @@ func marshalRecentChooserMenu(p uintptr) (interface{}, error) {
 	return WrapRecentChooserMenu(obj), nil
 }
 
-// NewRecentChooserMenu constructs a class RecentChooserMenu.
-func NewRecentChooserMenu() RecentChooserMenu {
-	var _cret C.GtkRecentChooserMenu
-
-	cret = C.gtk_recent_chooser_menu_new()
-
-	var _recentChooserMenu RecentChooserMenu
-
-	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserMenu)
-
-	return _recentChooserMenu
-}
-
-// NewRecentChooserMenuForManager constructs a class RecentChooserMenu.
-func NewRecentChooserMenuForManager(manager RecentManager) RecentChooserMenu {
-	var _arg1 *C.GtkRecentManager
-
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-
-	var _cret C.GtkRecentChooserMenu
-
-	cret = C.gtk_recent_chooser_menu_new_for_manager(_arg1)
-
-	var _recentChooserMenu RecentChooserMenu
-
-	_recentChooserMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserMenu)
-
-	return _recentChooserMenu
-}
-
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
 func (m recentChooserMenu) ShowNumbers() bool {
@@ -123,7 +90,7 @@ func (m recentChooserMenu) ShowNumbers() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
+	_cret = C.gtk_recent_chooser_menu_get_show_numbers(_arg0)
 
 	var _ok bool
 

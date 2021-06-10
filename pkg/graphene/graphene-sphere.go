@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,22 +40,6 @@ func marshalSphere(p uintptr) (interface{}, error) {
 	return WrapSphere(unsafe.Pointer(b)), nil
 }
 
-// NewSphereAlloc constructs a struct Sphere.
-func NewSphereAlloc() *Sphere {
-	var _cret *C.graphene_sphere_t
-
-	cret = C.graphene_sphere_alloc()
-
-	var _sphere *Sphere
-
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sphere, func(v *Sphere) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _sphere
-}
-
 // Native returns the underlying C source pointer.
 func (s *Sphere) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
@@ -73,7 +56,7 @@ func (s *Sphere) ContainsPoint(point *Point3D) bool {
 
 	var _cret C._Bool
 
-	cret = C.graphene_sphere_contains_point(_arg0, _arg1)
+	_cret = C.graphene_sphere_contains_point(_arg0, _arg1)
 
 	var _ok bool
 
@@ -95,7 +78,7 @@ func (s *Sphere) Distance(point *Point3D) float32 {
 
 	var _cret C.float
 
-	cret = C.graphene_sphere_distance(_arg0, _arg1)
+	_cret = C.graphene_sphere_distance(_arg0, _arg1)
 
 	var _gfloat float32
 
@@ -114,7 +97,7 @@ func (a *Sphere) Equal(b *Sphere) bool {
 
 	var _cret C._Bool
 
-	cret = C.graphene_sphere_equal(_arg0, _arg1)
+	_cret = C.graphene_sphere_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -169,35 +152,13 @@ func (s *Sphere) Radius() float32 {
 
 	var _cret C.float
 
-	cret = C.graphene_sphere_get_radius(_arg0)
+	_cret = C.graphene_sphere_get_radius(_arg0)
 
 	var _gfloat float32
 
 	_gfloat = (float32)(_cret)
 
 	return _gfloat
-}
-
-// Init initializes the given #graphene_sphere_t with the given @center and
-// @radius.
-func (s *Sphere) Init(center *Point3D, radius float32) *Sphere {
-	var _arg0 *C.graphene_sphere_t
-	var _arg1 *C.graphene_point3d_t
-	var _arg2 C.float
-
-	_arg0 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(center.Native()))
-	_arg2 = C.float(radius)
-
-	var _cret *C.graphene_sphere_t
-
-	cret = C.graphene_sphere_init(_arg0, _arg1, _arg2)
-
-	var _sphere *Sphere
-
-	_sphere = WrapSphere(unsafe.Pointer(_cret))
-
-	return _sphere
 }
 
 // IsEmpty checks whether the sphere has a zero radius.
@@ -208,7 +169,7 @@ func (s *Sphere) IsEmpty() bool {
 
 	var _cret C._Bool
 
-	cret = C.graphene_sphere_is_empty(_arg0)
+	_cret = C.graphene_sphere_is_empty(_arg0)
 
 	var _ok bool
 

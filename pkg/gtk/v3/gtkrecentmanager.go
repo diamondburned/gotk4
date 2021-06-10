@@ -3,15 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -103,15 +98,9 @@ type RecentManager interface {
 	// See gtk_recent_manager_add_full() if you want to explicitly define the
 	// metadata for the resource pointed by @uri.
 	AddItem(uri string) bool
-	// Items gets the list of recently used resources.
-	Items() *glib.List
 	// HasItem checks whether there is a recently used resource registered with
 	// @uri inside the recent manager.
 	HasItem(uri string) bool
-	// LookupItem searches for a URI inside the recently used resources list,
-	// and returns a RecentInfo-struct containing informations about the
-	// resource like its MIME type, or its display name.
-	LookupItem(uri string) (*RecentInfo, error)
 	// MoveItem changes the location of a recently used resource from @uri to
 	// @new_uri.
 	//
@@ -146,19 +135,6 @@ func marshalRecentManager(p uintptr) (interface{}, error) {
 	return WrapRecentManager(obj), nil
 }
 
-// NewRecentManager constructs a class RecentManager.
-func NewRecentManager() RecentManager {
-	var _cret C.GtkRecentManager
-
-	cret = C.gtk_recent_manager_new()
-
-	var _recentManager RecentManager
-
-	_recentManager = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentManager)
-
-	return _recentManager
-}
-
 // AddFull adds a new resource, pointed by @uri, into the recently used
 // resources list, using the metadata specified inside the RecentData-struct
 // passed in @recent_data.
@@ -188,7 +164,7 @@ func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_manager_add_full(_arg0, _arg1, _arg2)
+	_cret = C.gtk_recent_manager_add_full(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -218,7 +194,7 @@ func (m recentManager) AddItem(uri string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_manager_add_item(_arg0, _arg1)
+	_cret = C.gtk_recent_manager_add_item(_arg0, _arg1)
 
 	var _ok bool
 
@@ -227,26 +203,6 @@ func (m recentManager) AddItem(uri string) bool {
 	}
 
 	return _ok
-}
-
-// Items gets the list of recently used resources.
-func (m recentManager) Items() *glib.List {
-	var _arg0 *C.GtkRecentManager
-
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_recent_manager_get_items(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
 }
 
 // HasItem checks whether there is a recently used resource registered with
@@ -261,7 +217,7 @@ func (m recentManager) HasItem(uri string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_manager_has_item(_arg0, _arg1)
+	_cret = C.gtk_recent_manager_has_item(_arg0, _arg1)
 
 	var _ok bool
 
@@ -270,34 +226,6 @@ func (m recentManager) HasItem(uri string) bool {
 	}
 
 	return _ok
-}
-
-// LookupItem searches for a URI inside the recently used resources list,
-// and returns a RecentInfo-struct containing informations about the
-// resource like its MIME type, or its display name.
-func (m recentManager) LookupItem(uri string) (*RecentInfo, error) {
-	var _arg0 *C.GtkRecentManager
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.gchar)(C.CString(uri))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkRecentInfo
-	var _cerr *C.GError
-
-	cret = C.gtk_recent_manager_lookup_item(_arg0, _arg1, _cerr)
-
-	var _recentInfo *RecentInfo
-	var _goerr error
-
-	_recentInfo = WrapRecentInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _recentInfo, _goerr
 }
 
 // MoveItem changes the location of a recently used resource from @uri to
@@ -336,7 +264,7 @@ func (m recentManager) PurgeItems() (int, error) {
 	var _cret C.gint
 	var _cerr *C.GError
 
-	cret = C.gtk_recent_manager_purge_items(_arg0, _cerr)
+	_cret = C.gtk_recent_manager_purge_items(_arg0, _cerr)
 
 	var _gint int
 	var _goerr error
@@ -445,7 +373,7 @@ func (r *RecentData) Groups() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(r.native.groups), int(length))
 
 		v = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			v = C.GoString(r.native.groups)
 		}
 	}
@@ -490,29 +418,6 @@ func (r *RecentInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// CreateAppInfo creates a Info for the specified RecentInfo
-func (i *RecentInfo) CreateAppInfo(appName string) (gio.AppInfo, error) {
-	var _arg0 *C.GtkRecentInfo
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(appName))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GAppInfo
-	var _cerr *C.GError
-
-	cret = C.gtk_recent_info_create_app_info(_arg0, _arg1, _cerr)
-
-	var _appInfo gio.AppInfo
-	var _goerr error
-
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.AppInfo)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _appInfo, _goerr
-}
-
 // Exists checks whether the resource pointed by @info still exists. At the
 // moment this check is done only on resources pointing to local files.
 func (i *RecentInfo) Exists() bool {
@@ -522,7 +427,7 @@ func (i *RecentInfo) Exists() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_info_exists(_arg0)
+	_cret = C.gtk_recent_info_exists(_arg0)
 
 	var _ok bool
 
@@ -542,7 +447,7 @@ func (i *RecentInfo) Added() int32 {
 
 	var _cret C.time_t
 
-	cret = C.gtk_recent_info_get_added(_arg0)
+	_cret = C.gtk_recent_info_get_added(_arg0)
 
 	var _glong int32
 
@@ -560,7 +465,7 @@ func (i *RecentInfo) Age() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_recent_info_get_age(_arg0)
+	_cret = C.gtk_recent_info_get_age(_arg0)
 
 	var _gint int
 
@@ -587,7 +492,7 @@ func (i *RecentInfo) ApplicationInfo(appName string) (string, uint, int32, bool)
 	var _arg4 C.time_t
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, _arg2, &_arg3, &_arg4)
+	_cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
 	var _appExec string
 	var _count uint
@@ -614,7 +519,7 @@ func (i *RecentInfo) Applications() []string {
 	var _cret **C.gchar
 	var _arg1 *C.gsize
 
-	cret = C.gtk_recent_info_get_applications(_arg0)
+	_cret = C.gtk_recent_info_get_applications(_arg0, &_arg1)
 
 	var _utf8s []string
 
@@ -640,7 +545,7 @@ func (i *RecentInfo) Description() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_info_get_description(_arg0)
+	_cret = C.gtk_recent_info_get_description(_arg0)
 
 	var _utf8 string
 
@@ -658,30 +563,13 @@ func (i *RecentInfo) DisplayName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_info_get_display_name(_arg0)
+	_cret = C.gtk_recent_info_get_display_name(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// GIcon retrieves the icon associated to the resource MIME type.
-func (i *RecentInfo) GIcon() gio.Icon {
-	var _arg0 *C.GtkRecentInfo
-
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GIcon
-
-	cret = C.gtk_recent_info_get_gicon(_arg0)
-
-	var _icon gio.Icon
-
-	_icon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.Icon)
-
-	return _icon
 }
 
 // Groups returns all groups registered for the recently used item @info. The
@@ -695,7 +583,7 @@ func (i *RecentInfo) Groups() []string {
 	var _cret **C.gchar
 	var _arg1 *C.gsize
 
-	cret = C.gtk_recent_info_get_groups(_arg0)
+	_cret = C.gtk_recent_info_get_groups(_arg0, &_arg1)
 
 	var _utf8s []string
 
@@ -713,25 +601,6 @@ func (i *RecentInfo) Groups() []string {
 	return _utf8s
 }
 
-// Icon retrieves the icon of size @size associated to the resource MIME type.
-func (i *RecentInfo) Icon(size int) gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkRecentInfo
-	var _arg1 C.gint
-
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = C.gint(size)
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gtk_recent_info_get_icon(_arg0, _arg1)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return _pixbuf
-}
-
 // MIMEType gets the MIME type of the resource.
 func (i *RecentInfo) MIMEType() string {
 	var _arg0 *C.GtkRecentInfo
@@ -740,7 +609,7 @@ func (i *RecentInfo) MIMEType() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_info_get_mime_type(_arg0)
+	_cret = C.gtk_recent_info_get_mime_type(_arg0)
 
 	var _utf8 string
 
@@ -758,7 +627,7 @@ func (i *RecentInfo) Modified() int32 {
 
 	var _cret C.time_t
 
-	cret = C.gtk_recent_info_get_modified(_arg0)
+	_cret = C.gtk_recent_info_get_modified(_arg0)
 
 	var _glong int32
 
@@ -777,7 +646,7 @@ func (i *RecentInfo) PrivateHint() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_info_get_private_hint(_arg0)
+	_cret = C.gtk_recent_info_get_private_hint(_arg0)
 
 	var _ok bool
 
@@ -798,7 +667,7 @@ func (i *RecentInfo) ShortName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_info_get_short_name(_arg0)
+	_cret = C.gtk_recent_info_get_short_name(_arg0)
 
 	var _utf8 string
 
@@ -816,7 +685,7 @@ func (i *RecentInfo) URI() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_info_get_uri(_arg0)
+	_cret = C.gtk_recent_info_get_uri(_arg0)
 
 	var _utf8 string
 
@@ -835,7 +704,7 @@ func (i *RecentInfo) URIDisplay() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_info_get_uri_display(_arg0)
+	_cret = C.gtk_recent_info_get_uri_display(_arg0)
 
 	var _utf8 string
 
@@ -854,7 +723,7 @@ func (i *RecentInfo) Visited() int32 {
 
 	var _cret C.time_t
 
-	cret = C.gtk_recent_info_get_visited(_arg0)
+	_cret = C.gtk_recent_info_get_visited(_arg0)
 
 	var _glong int32
 
@@ -875,7 +744,7 @@ func (i *RecentInfo) HasApplication(appName string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_info_has_application(_arg0, _arg1)
+	_cret = C.gtk_recent_info_has_application(_arg0, _arg1)
 
 	var _ok bool
 
@@ -898,7 +767,7 @@ func (i *RecentInfo) HasGroup(groupName string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_info_has_group(_arg0, _arg1)
+	_cret = C.gtk_recent_info_has_group(_arg0, _arg1)
 
 	var _ok bool
 
@@ -918,7 +787,7 @@ func (i *RecentInfo) IsLocal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_info_is_local(_arg0)
+	_cret = C.gtk_recent_info_is_local(_arg0)
 
 	var _ok bool
 
@@ -938,7 +807,7 @@ func (i *RecentInfo) LastApplication() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_info_last_application(_arg0)
+	_cret = C.gtk_recent_info_last_application(_arg0)
 
 	var _utf8 string
 
@@ -958,7 +827,7 @@ func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_info_match(_arg0, _arg1)
+	_cret = C.gtk_recent_info_match(_arg0, _arg1)
 
 	var _ok bool
 
@@ -967,26 +836,6 @@ func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 	}
 
 	return _ok
-}
-
-// Ref increases the reference count of @recent_info by one.
-func (i *RecentInfo) Ref() *RecentInfo {
-	var _arg0 *C.GtkRecentInfo
-
-	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkRecentInfo
-
-	cret = C.gtk_recent_info_ref(_arg0)
-
-	var _recentInfo *RecentInfo
-
-	_recentInfo = WrapRecentInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _recentInfo
 }
 
 // Unref decreases the reference count of @info by one. If the reference count

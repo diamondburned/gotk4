@@ -3,13 +3,12 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	"github.com/diamondburned/gotk4/pkg/gobject/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -304,7 +303,7 @@ type Builder interface {
 	// ConnectSignalsFull: this function can be thought of the interpreted
 	// language binding version of gtk_builder_connect_signals(), except that it
 	// does not require GModule to function correctly.
-	ConnectSignalsFull()
+	ConnectSignalsFull(fn BuilderConnectFunc)
 	// ExposeObject: add @object to the @builder object pool so it can be
 	// referenced just like any other object built by builder.
 	ExposeObject(name string, object gextras.Objector)
@@ -314,22 +313,9 @@ type Builder interface {
 	// This is exported purely to let gtk-builder-tool validate templates,
 	// applications have no need to call this function.
 	ExtendWithTemplate(widget Widget, templateType externglib.Type, buffer string, length uint) (uint, error)
-	// Application gets the Application associated with the builder.
-	//
-	// The Application is used for creating action proxies as requested from XML
-	// that the builder is loading.
-	//
-	// By default, the builder uses the default application: the one from
-	// g_application_get_default(). If you want to use another application for
-	// constructing proxies, use gtk_builder_set_application().
-	Application() Application
 	// Object gets the object named @name. Note that this function does not
 	// increment the reference count of the returned object.
 	Object(name string) gextras.Objector
-	// Objects gets all objects that have been constructed by @builder. Note
-	// that this function does not increment the reference counts of the
-	// returned objects.
-	Objects() *glib.SList
 	// TranslationDomain gets the translation domain of @builder.
 	TranslationDomain() string
 	// TypeFromName looks up a type by name, using the virtual function that
@@ -386,75 +372,6 @@ func marshalBuilder(p uintptr) (interface{}, error) {
 	return WrapBuilder(obj), nil
 }
 
-// NewBuilder constructs a class Builder.
-func NewBuilder() Builder {
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new()
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
-}
-
-// NewBuilderFromFile constructs a class Builder.
-func NewBuilderFromFile(filename string) Builder {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new_from_file(_arg1)
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
-}
-
-// NewBuilderFromResource constructs a class Builder.
-func NewBuilderFromResource(resourcePath string) Builder {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new_from_resource(_arg1)
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
-}
-
-// NewBuilderFromString constructs a class Builder.
-func NewBuilderFromString(string string, length int) Builder {
-	var _arg1 *C.gchar
-	var _arg2 C.gssize
-
-	_arg1 = (*C.gchar)(C.CString(string))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gssize(length)
-
-	var _cret C.GtkBuilder
-
-	cret = C.gtk_builder_new_from_string(_arg1, _arg2)
-
-	var _builder Builder
-
-	_builder = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Builder)
-
-	return _builder
-}
-
 // AddFromFile parses a file containing a [GtkBuilder UI
 // definition][BUILDER-UI] and merges it with the current contents of
 // @builder.
@@ -481,7 +398,7 @@ func (b builder) AddFromFile(filename string) (uint, error) {
 	var _cret C.guint
 	var _cerr *C.GError
 
-	cret = C.gtk_builder_add_from_file(_arg0, _arg1, _cerr)
+	_cret = C.gtk_builder_add_from_file(_arg0, _arg1, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -515,7 +432,7 @@ func (b builder) AddFromResource(resourcePath string) (uint, error) {
 	var _cret C.guint
 	var _cerr *C.GError
 
-	cret = C.gtk_builder_add_from_resource(_arg0, _arg1, _cerr)
+	_cret = C.gtk_builder_add_from_resource(_arg0, _arg1, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -551,7 +468,7 @@ func (b builder) AddFromString(buffer string, length uint) (uint, error) {
 	var _cret C.guint
 	var _cerr *C.GError
 
-	cret = C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.gtk_builder_add_from_string(_arg0, _arg1, _arg2, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -596,7 +513,7 @@ func (b builder) AddObjectsFromFile(filename string, objectIds []string) (uint, 
 	var _cret C.guint
 	var _cerr *C.GError
 
-	cret = C.gtk_builder_add_objects_from_file(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.gtk_builder_add_objects_from_file(_arg0, _arg1, _arg2, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -641,7 +558,7 @@ func (b builder) AddObjectsFromResource(resourcePath string, objectIds []string)
 	var _cret C.guint
 	var _cerr *C.GError
 
-	cret = C.gtk_builder_add_objects_from_resource(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.gtk_builder_add_objects_from_resource(_arg0, _arg1, _arg2, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -688,7 +605,7 @@ func (b builder) AddObjectsFromString(buffer string, length uint, objectIds []st
 	var _cret C.guint
 	var _cerr *C.GError
 
-	cret = C.gtk_builder_add_objects_from_string(_arg0, _arg1, _arg2, _arg3, _cerr)
+	_cret = C.gtk_builder_add_objects_from_string(_arg0, _arg1, _arg2, _arg3, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -734,12 +651,16 @@ func (b builder) ConnectSignals(userData interface{}) {
 // ConnectSignalsFull: this function can be thought of the interpreted
 // language binding version of gtk_builder_connect_signals(), except that it
 // does not require GModule to function correctly.
-func (b builder) ConnectSignalsFull() {
+func (b builder) ConnectSignalsFull(fn BuilderConnectFunc) {
 	var _arg0 *C.GtkBuilder
+	var _arg1 C.GtkBuilderConnectFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_BuilderConnectFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_builder_connect_signals_full(_arg0)
+	C.gtk_builder_connect_signals_full(_arg0, _arg1, _arg2)
 }
 
 // ExposeObject: add @object to the @builder object pool so it can be
@@ -779,7 +700,7 @@ func (b builder) ExtendWithTemplate(widget Widget, templateType externglib.Type,
 	var _cret C.guint
 	var _cerr *C.GError
 
-	cret = C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
+	_cret = C.gtk_builder_extend_with_template(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -788,30 +709,6 @@ func (b builder) ExtendWithTemplate(widget Widget, templateType externglib.Type,
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _guint, _goerr
-}
-
-// Application gets the Application associated with the builder.
-//
-// The Application is used for creating action proxies as requested from XML
-// that the builder is loading.
-//
-// By default, the builder uses the default application: the one from
-// g_application_get_default(). If you want to use another application for
-// constructing proxies, use gtk_builder_set_application().
-func (b builder) Application() Application {
-	var _arg0 *C.GtkBuilder
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkApplication
-
-	cret = C.gtk_builder_get_application(_arg0)
-
-	var _application Application
-
-	_application = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Application)
-
-	return _application
 }
 
 // Object gets the object named @name. Note that this function does not
@@ -826,35 +723,13 @@ func (b builder) Object(name string) gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.gtk_builder_get_object(_arg0, _arg1)
+	_cret = C.gtk_builder_get_object(_arg0, _arg1)
 
 	var _object gextras.Objector
 
 	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
 	return _object
-}
-
-// Objects gets all objects that have been constructed by @builder. Note
-// that this function does not increment the reference counts of the
-// returned objects.
-func (b builder) Objects() *glib.SList {
-	var _arg0 *C.GtkBuilder
-
-	_arg0 = (*C.GtkBuilder)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_builder_get_objects(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sList, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _sList
 }
 
 // TranslationDomain gets the translation domain of @builder.
@@ -865,7 +740,7 @@ func (b builder) TranslationDomain() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_builder_get_translation_domain(_arg0)
+	_cret = C.gtk_builder_get_translation_domain(_arg0)
 
 	var _utf8 string
 
@@ -887,7 +762,7 @@ func (b builder) TypeFromName(typeName string) externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
+	_cret = C.gtk_builder_get_type_from_name(_arg0, _arg1)
 
 	var _gType externglib.Type
 

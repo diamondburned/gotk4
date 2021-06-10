@@ -3,7 +3,6 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 )
 
@@ -54,7 +53,7 @@ func (i *BitsetIter) Value() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_bitset_iter_get_value(_arg0)
+	_cret = C.gtk_bitset_iter_get_value(_arg0)
 
 	var _guint uint
 
@@ -71,7 +70,7 @@ func (i *BitsetIter) IsValid() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_bitset_iter_is_valid(_arg0)
+	_cret = C.gtk_bitset_iter_is_valid(_arg0)
 
 	var _ok bool
 
@@ -94,7 +93,7 @@ func (i *BitsetIter) Next() (uint, bool) {
 	var _arg1 C.guint
 	var _cret C.gboolean
 
-	cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
+	_cret = C.gtk_bitset_iter_next(_arg0, &_arg1)
 
 	var _value uint
 	var _ok bool
@@ -119,7 +118,7 @@ func (i *BitsetIter) Previous() (uint, bool) {
 	var _arg1 C.guint
 	var _cret C.gboolean
 
-	cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
+	_cret = C.gtk_bitset_iter_previous(_arg0, &_arg1)
 
 	var _value uint
 	var _ok bool

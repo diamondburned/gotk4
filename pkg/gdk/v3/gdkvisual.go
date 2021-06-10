@@ -3,11 +3,9 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
+	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -15,45 +13,28 @@ import (
 // #include <gdk/gdk.h>
 import "C"
 
-// ListVisuals lists the available visuals for the default screen. (See
-// gdk_screen_list_visuals()) A visual describes a hardware image data format.
-// For example, a visual might support 24-bit color, or 8-bit color, and might
-// expect pixels to be in a certain format.
-//
-// Call g_list_free() on the return value when you’re finished with it.
-func ListVisuals() *glib.List {
-	var _cret *C.GList
-
-	cret = C.gdk_list_visuals()
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
 // QueryDepths: this function returns the available bit depths for the default
 // screen. It’s equivalent to listing the visuals (gdk_list_visuals()) and then
 // looking at the depth field in each visual, removing duplicates.
 //
 // The array returned by this function should not be freed.
-func QueryDepths() {
-	C.gdk_query_depths()
+func QueryDepths() []*int {
+	var _arg1 *C.gint
+	var _arg2 *C.gint
 
-	return
-}
+	C.gdk_query_depths(&_arg1, &_arg2)
 
-// QueryVisualTypes: this function returns the available visual types for the
-// default screen. It’s equivalent to listing the visuals (gdk_list_visuals())
-// and then looking at the type field in each visual, removing duplicates.
-//
-// The array returned by this function should not be freed.
-func QueryVisualTypes() {
-	C.gdk_query_visual_types()
+	var _depths []*int
 
-	return
+	{
+		var src []*C.gint
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_depths = make([]*int, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_depths = (*int)(_arg1)
+		}
+	}
+
+	return _depths
 }

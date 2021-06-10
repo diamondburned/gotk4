@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -113,24 +112,6 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 	return WrapAppChooserWidget(obj), nil
 }
 
-// NewAppChooserWidget constructs a class AppChooserWidget.
-func NewAppChooserWidget(contentType string) AppChooserWidget {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkAppChooserWidget
-
-	cret = C.gtk_app_chooser_widget_new(_arg1)
-
-	var _appChooserWidget AppChooserWidget
-
-	_appChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserWidget)
-
-	return _appChooserWidget
-}
-
 // DefaultText returns the text that is shown if there are not applications
 // that can handle the content type.
 func (s appChooserWidget) DefaultText() string {
@@ -140,7 +121,7 @@ func (s appChooserWidget) DefaultText() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
 
 	var _utf8 string
 
@@ -158,7 +139,7 @@ func (s appChooserWidget) ShowAll() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
 
 	var _ok bool
 
@@ -178,7 +159,7 @@ func (s appChooserWidget) ShowDefault() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
 
 	var _ok bool
 
@@ -198,7 +179,7 @@ func (s appChooserWidget) ShowFallback() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
 
 	var _ok bool
 
@@ -218,7 +199,7 @@ func (s appChooserWidget) ShowOther() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
 
 	var _ok bool
 
@@ -238,7 +219,7 @@ func (s appChooserWidget) ShowRecommended() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
+	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
 
 	var _ok bool
 

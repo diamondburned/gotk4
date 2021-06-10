@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -60,8 +57,6 @@ type LockButton interface {
 	Activatable
 	Buildable
 
-	// Permission obtains the #GPermission object that controls @button.
-	Permission() gio.Permission
 	// SetPermission sets the #GPermission object that controls @button.
 	SetPermission(permission gio.Permission)
 }
@@ -91,40 +86,6 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapLockButton(obj), nil
-}
-
-// NewLockButton constructs a class LockButton.
-func NewLockButton(permission gio.Permission) LockButton {
-	var _arg1 *C.GPermission
-
-	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))
-
-	var _cret C.GtkLockButton
-
-	cret = C.gtk_lock_button_new(_arg1)
-
-	var _lockButton LockButton
-
-	_lockButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(LockButton)
-
-	return _lockButton
-}
-
-// Permission obtains the #GPermission object that controls @button.
-func (b lockButton) Permission() gio.Permission {
-	var _arg0 *C.GtkLockButton
-
-	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GPermission
-
-	cret = C.gtk_lock_button_get_permission(_arg0)
-
-	var _permission gio.Permission
-
-	_permission = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.Permission)
-
-	return _permission
 }
 
 // SetPermission sets the #GPermission object that controls @button.

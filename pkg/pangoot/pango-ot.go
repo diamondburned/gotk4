@@ -3,12 +3,9 @@
 package pangoot
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
-	"github.com/diamondburned/gotk4/pkg/pangofc"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -60,26 +57,6 @@ func marshalBuffer(p uintptr) (interface{}, error) {
 	return WrapBuffer(unsafe.Pointer(b)), nil
 }
 
-// NewBuffer constructs a struct Buffer.
-func NewBuffer(font pangofc.Font) *Buffer {
-	var _arg1 *C.PangoFcFont
-
-	_arg1 = (*C.PangoFcFont)(unsafe.Pointer(font.Native()))
-
-	var _cret *C.PangoOTBuffer
-
-	cret = C.pango_ot_buffer_new(_arg1)
-
-	var _buffer *Buffer
-
-	_buffer = WrapBuffer(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_buffer, func(v *Buffer) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _buffer
-}
-
 // Native returns the underlying C source pointer.
 func (b *Buffer) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
@@ -117,19 +94,6 @@ func (b *Buffer) Destroy() {
 	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
 
 	C.pango_ot_buffer_destroy(_arg0)
-}
-
-// Glyphs gets the glyph array contained in a OTBuffer. The glyphs are owned by
-// the buffer and should not be freed, and are only valid as long as buffer is
-// not modified.
-func (b *Buffer) Glyphs() {
-	var _arg0 *C.PangoOTBuffer
-
-	_arg0 = (*C.PangoOTBuffer)(unsafe.Pointer(b.Native()))
-
-	C.pango_ot_buffer_get_glyphs(_arg0)
-
-	return
 }
 
 // Output exports the glyphs in a OTBuffer into a GlyphString. This is typically
@@ -205,7 +169,7 @@ func (f *FeatureMap) Native() unsafe.Pointer {
 // FeatureName gets the field inside the struct.
 func (f *FeatureMap) FeatureName() [5]byte {
 	var v [5]byte
-	v = *(*[5]byte)(unsafe.Pointer(f.native.feature_name))
+	v = *(*[5]byte)(unsafe.Pointer(&f.native.feature_name))
 	return v
 }
 
@@ -315,38 +279,10 @@ func (r *RulesetDescription) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Script gets the field inside the struct.
-func (r *RulesetDescription) Script() pango.Script {
-	var v pango.Script
-	v = pango.Script(r.native.script)
-	return v
-}
-
-// Language gets the field inside the struct.
-func (r *RulesetDescription) Language() *pango.Language {
-	var v *pango.Language
-	v = pango.WrapLanguage(unsafe.Pointer(r.native.language))
-	return v
-}
-
-// StaticGsubFeatures gets the field inside the struct.
-func (r *RulesetDescription) StaticGsubFeatures() *FeatureMap {
-	var v *FeatureMap
-	v = WrapFeatureMap(unsafe.Pointer(r.native.static_gsub_features))
-	return v
-}
-
 // NStaticGsubFeatures gets the field inside the struct.
 func (r *RulesetDescription) NStaticGsubFeatures() uint {
 	var v uint
 	v = (uint)(r.native.n_static_gsub_features)
-	return v
-}
-
-// StaticGposFeatures gets the field inside the struct.
-func (r *RulesetDescription) StaticGposFeatures() *FeatureMap {
-	var v *FeatureMap
-	v = WrapFeatureMap(unsafe.Pointer(r.native.static_gpos_features))
 	return v
 }
 
@@ -357,41 +293,11 @@ func (r *RulesetDescription) NStaticGposFeatures() uint {
 	return v
 }
 
-// OtherFeatures gets the field inside the struct.
-func (r *RulesetDescription) OtherFeatures() *FeatureMap {
-	var v *FeatureMap
-	v = WrapFeatureMap(unsafe.Pointer(r.native.other_features))
-	return v
-}
-
 // NOtherFeatures gets the field inside the struct.
 func (r *RulesetDescription) NOtherFeatures() uint {
 	var v uint
 	v = (uint)(r.native.n_other_features)
 	return v
-}
-
-// Copy creates a copy of @desc, which should be freed with
-// pango_ot_ruleset_description_free(). Primarily used internally by
-// pango_ot_ruleset_get_for_description() to cache rulesets for ruleset
-// descriptions.
-func (d *RulesetDescription) Copy() *RulesetDescription {
-	var _arg0 *C.PangoOTRulesetDescription
-
-	_arg0 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(d.Native()))
-
-	var _cret *C.PangoOTRulesetDescription
-
-	cret = C.pango_ot_ruleset_description_copy(_arg0)
-
-	var _rulesetDescription *RulesetDescription
-
-	_rulesetDescription = WrapRulesetDescription(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_rulesetDescription, func(v *RulesetDescription) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _rulesetDescription
 }
 
 // Equal compares two ruleset descriptions for equality. Two ruleset
@@ -410,7 +316,7 @@ func (d *RulesetDescription) Equal(desc2 *RulesetDescription) bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_ot_ruleset_description_equal(_arg0, _arg1)
+	_cret = C.pango_ot_ruleset_description_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -440,7 +346,7 @@ func (d *RulesetDescription) Hash() uint {
 
 	var _cret C.guint
 
-	cret = C.pango_ot_ruleset_description_hash(_arg0)
+	_cret = C.pango_ot_ruleset_description_hash(_arg0)
 
 	var _guint uint
 

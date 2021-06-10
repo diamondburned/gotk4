@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -29,7 +28,7 @@ func init() {
 // to know which is the next page given a current one. It’s called both for
 // computing the next page when the user presses the “forward” button and for
 // handling the behavior of the “last” button.
-type AssistantPageFunc func() (gint int)
+type AssistantPageFunc func(currentPage int) (gint int)
 
 //export gotk4_AssistantPageFunc
 func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
@@ -38,10 +37,16 @@ func gotk4_AssistantPageFunc(arg0 C.gint, arg1 C.gpointer) C.gint {
 		panic(`callback not found`)
 	}
 
+	var currentPage int
+
+	currentPage = (int)(arg0)
+
 	fn := v.(AssistantPageFunc)
-	gint := fn()
+	gint := fn(currentPage)
 
 	cret = C.gint(gint)
+
+	return gint
 }
 
 // Assistant: a Assistant is a widget used to represent a generally complex
@@ -91,20 +96,12 @@ type Assistant interface {
 	CurrentPage() int
 	// NPages returns the number of pages in the @assistant
 	NPages() int
-	// NthPage returns the child widget contained in page number @page_num.
-	NthPage(pageNum int) Widget
 	// PageComplete gets whether @page is complete.
 	PageComplete(page Widget) bool
 	// PageHasPadding gets whether page has padding.
 	PageHasPadding(page Widget) bool
-	// PageHeaderImage gets the header image for @page.
-	PageHeaderImage(page Widget) gdkpixbuf.Pixbuf
-	// PageSideImage gets the side image for @page.
-	PageSideImage(page Widget) gdkpixbuf.Pixbuf
 	// PageTitle gets the title for @page.
 	PageTitle(page Widget) string
-	// PageType gets the page type of @page.
-	PageType(page Widget) AssistantPageType
 	// InsertPage inserts a page in the @assistant at a given position.
 	InsertPage(page Widget, position int) int
 	// NextPage: navigate to the next page.
@@ -134,13 +131,6 @@ type Assistant interface {
 	// Note that this will only be necessary in custom buttons, as the
 	// @assistant flow can be set with gtk_assistant_set_forward_page_func().
 	SetCurrentPage(pageNum int)
-	// SetForwardPageFunc sets the page forwarding function to be @page_func.
-	//
-	// This function will be used to determine what will be the next page when
-	// the user presses the forward button. Setting @page_func to nil will make
-	// the assistant to use the default forward function, which just goes to the
-	// next visible page.
-	SetForwardPageFunc()
 	// SetPageComplete sets whether @page contents are complete.
 	//
 	// This will make @assistant update the buttons state to be able to continue
@@ -200,19 +190,6 @@ func marshalAssistant(p uintptr) (interface{}, error) {
 	return WrapAssistant(obj), nil
 }
 
-// NewAssistant constructs a class Assistant.
-func NewAssistant() Assistant {
-	var _cret C.GtkAssistant
-
-	cret = C.gtk_assistant_new()
-
-	var _assistant Assistant
-
-	_assistant = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Assistant)
-
-	return _assistant
-}
-
 // AddActionWidget adds a widget to the action area of a Assistant.
 func (a assistant) AddActionWidget(child Widget) {
 	var _arg0 *C.GtkAssistant
@@ -234,7 +211,7 @@ func (a assistant) AppendPage(page Widget) int {
 
 	var _cret C.gint
 
-	cret = C.gtk_assistant_append_page(_arg0, _arg1)
+	_cret = C.gtk_assistant_append_page(_arg0, _arg1)
 
 	var _gint int
 
@@ -266,7 +243,7 @@ func (a assistant) CurrentPage() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_assistant_get_current_page(_arg0)
+	_cret = C.gtk_assistant_get_current_page(_arg0)
 
 	var _gint int
 
@@ -283,32 +260,13 @@ func (a assistant) NPages() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_assistant_get_n_pages(_arg0)
+	_cret = C.gtk_assistant_get_n_pages(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// NthPage returns the child widget contained in page number @page_num.
-func (a assistant) NthPage(pageNum int) Widget {
-	var _arg0 *C.GtkAssistant
-	var _arg1 C.gint
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = C.gint(pageNum)
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_assistant_get_nth_page(_arg0, _arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // PageComplete gets whether @page is complete.
@@ -321,7 +279,7 @@ func (a assistant) PageComplete(page Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
+	_cret = C.gtk_assistant_get_page_complete(_arg0, _arg1)
 
 	var _ok bool
 
@@ -342,7 +300,7 @@ func (a assistant) PageHasPadding(page Widget) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_assistant_get_page_has_padding(_arg0, _arg1)
+	_cret = C.gtk_assistant_get_page_has_padding(_arg0, _arg1)
 
 	var _ok bool
 
@@ -351,44 +309,6 @@ func (a assistant) PageHasPadding(page Widget) bool {
 	}
 
 	return _ok
-}
-
-// PageHeaderImage gets the header image for @page.
-func (a assistant) PageHeaderImage(page Widget) gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkAssistant
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gtk_assistant_get_page_header_image(_arg0, _arg1)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return _pixbuf
-}
-
-// PageSideImage gets the side image for @page.
-func (a assistant) PageSideImage(page Widget) gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkAssistant
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gtk_assistant_get_page_side_image(_arg0, _arg1)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return _pixbuf
 }
 
 // PageTitle gets the title for @page.
@@ -401,32 +321,13 @@ func (a assistant) PageTitle(page Widget) string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
+	_cret = C.gtk_assistant_get_page_title(_arg0, _arg1)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// PageType gets the page type of @page.
-func (a assistant) PageType(page Widget) AssistantPageType {
-	var _arg0 *C.GtkAssistant
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(page.Native()))
-
-	var _cret C.GtkAssistantPageType
-
-	cret = C.gtk_assistant_get_page_type(_arg0, _arg1)
-
-	var _assistantPageType AssistantPageType
-
-	_assistantPageType = AssistantPageType(_cret)
-
-	return _assistantPageType
 }
 
 // InsertPage inserts a page in the @assistant at a given position.
@@ -441,7 +342,7 @@ func (a assistant) InsertPage(page Widget, position int) int {
 
 	var _cret C.gint
 
-	cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
+	_cret = C.gtk_assistant_insert_page(_arg0, _arg1, _arg2)
 
 	var _gint int
 
@@ -475,7 +376,7 @@ func (a assistant) PrependPage(page Widget) int {
 
 	var _cret C.gint
 
-	cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
+	_cret = C.gtk_assistant_prepend_page(_arg0, _arg1)
 
 	var _gint int
 
@@ -533,20 +434,6 @@ func (a assistant) SetCurrentPage(pageNum int) {
 	_arg1 = C.gint(pageNum)
 
 	C.gtk_assistant_set_current_page(_arg0, _arg1)
-}
-
-// SetForwardPageFunc sets the page forwarding function to be @page_func.
-//
-// This function will be used to determine what will be the next page when
-// the user presses the forward button. Setting @page_func to nil will make
-// the assistant to use the default forward function, which just goes to the
-// next visible page.
-func (a assistant) SetForwardPageFunc() {
-	var _arg0 *C.GtkAssistant
-
-	_arg0 = (*C.GtkAssistant)(unsafe.Pointer(a.Native()))
-
-	C.gtk_assistant_set_forward_page_func(_arg0)
 }
 
 // SetPageComplete sets whether @page contents are complete.

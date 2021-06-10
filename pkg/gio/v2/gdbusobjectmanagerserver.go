@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -71,8 +70,6 @@ type DBusObjectManagerServer interface {
 	// path if an object with the given path already exists. As such, the
 	// BusObjectProxy:g-object-path property of @object may be modified.
 	ExportUniquely(object DBusObjectSkeleton)
-	// Connection gets the BusConnection used by @manager.
-	Connection() DBusConnection
 	// IsExported returns whether @object is currently exported on @manager.
 	IsExported(object DBusObjectSkeleton) bool
 	// SetConnection exports all objects managed by @manager on @connection. If
@@ -109,24 +106,6 @@ func marshalDBusObjectManagerServer(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerServer(obj), nil
 }
 
-// NewDBusObjectManagerServer constructs a class DBusObjectManagerServer.
-func NewDBusObjectManagerServer(objectPath string) DBusObjectManagerServer {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(objectPath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GDBusObjectManagerServer
-
-	cret = C.g_dbus_object_manager_server_new(_arg1)
-
-	var _dBusObjectManagerServer DBusObjectManagerServer
-
-	_dBusObjectManagerServer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectManagerServer)
-
-	return _dBusObjectManagerServer
-}
-
 // Export exports @object on @manager.
 //
 // If there is already a BusObject exported at the object path, then the old
@@ -161,23 +140,6 @@ func (m dBusObjectManagerServer) ExportUniquely(object DBusObjectSkeleton) {
 	C.g_dbus_object_manager_server_export_uniquely(_arg0, _arg1)
 }
 
-// Connection gets the BusConnection used by @manager.
-func (m dBusObjectManagerServer) Connection() DBusConnection {
-	var _arg0 *C.GDBusObjectManagerServer
-
-	_arg0 = (*C.GDBusObjectManagerServer)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GDBusConnection
-
-	cret = C.g_dbus_object_manager_server_get_connection(_arg0)
-
-	var _dBusConnection DBusConnection
-
-	_dBusConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusConnection)
-
-	return _dBusConnection
-}
-
 // IsExported returns whether @object is currently exported on @manager.
 func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 	var _arg0 *C.GDBusObjectManagerServer
@@ -188,7 +150,7 @@ func (m dBusObjectManagerServer) IsExported(object DBusObjectSkeleton) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
+	_cret = C.g_dbus_object_manager_server_is_exported(_arg0, _arg1)
 
 	var _ok bool
 
@@ -226,7 +188,7 @@ func (m dBusObjectManagerServer) Unexport(objectPath string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)
+	_cret = C.g_dbus_object_manager_server_unexport(_arg0, _arg1)
 
 	var _ok bool
 

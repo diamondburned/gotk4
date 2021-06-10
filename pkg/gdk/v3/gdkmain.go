@@ -51,7 +51,7 @@ func DisableMultidevice() {
 func ErrorTrapPop() int {
 	var _cret C.gint
 
-	cret = C.gdk_error_trap_pop()
+	_cret = C.gdk_error_trap_pop()
 
 	var _gint int
 
@@ -108,7 +108,7 @@ func Flush() {
 func GetDisplay() string {
 	var _cret *C.gchar
 
-	cret = C.gdk_get_display()
+	_cret = C.gdk_get_display()
 
 	var _utf8 string
 
@@ -123,7 +123,7 @@ func GetDisplay() string {
 func GetDisplayArgName() string {
 	var _cret *C.gchar
 
-	cret = C.gdk_get_display_arg_name()
+	_cret = C.gdk_get_display_arg_name()
 
 	var _utf8 string
 
@@ -139,42 +139,13 @@ func GetDisplayArgName() string {
 func GetProgramClass() string {
 	var _cret *C.gchar
 
-	cret = C.gdk_get_program_class()
+	_cret = C.gdk_get_program_class()
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// KeyboardGrab grabs the keyboard so that all events are passed to this
-// application until the keyboard is ungrabbed with gdk_keyboard_ungrab(). This
-// overrides any previous keyboard grab by this client.
-//
-// If you set up anything at the time you take the grab that needs to be cleaned
-// up when the grab ends, you should handle the EventGrabBroken events that are
-// emitted when the grab ends unvoluntarily.
-func KeyboardGrab(window Window, ownerEvents bool, time_ uint32) GrabStatus {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gboolean
-	var _arg3 C.guint32
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	if ownerEvents {
-		_arg2 = C.gboolean(1)
-	}
-	_arg3 = C.guint32(time_)
-
-	var _cret C.GdkGrabStatus
-
-	cret = C.gdk_keyboard_grab(_arg1, _arg2, _arg3)
-
-	var _grabStatus GrabStatus
-
-	_grabStatus = GrabStatus(_cret)
-
-	return _grabStatus
 }
 
 // KeyboardUngrab ungrabs the keyboard on the default display, if it is grabbed
@@ -213,54 +184,6 @@ func NotifyStartupCompleteWithID(startupId string) {
 	C.gdk_notify_startup_complete_with_id(_arg1)
 }
 
-// PointerGrab grabs the pointer (usually a mouse) so that all events are passed
-// to this application until the pointer is ungrabbed with gdk_pointer_ungrab(),
-// or the grab window becomes unviewable. This overrides any previous pointer
-// grab by this client.
-//
-// Pointer grabs are used for operations which need complete control over mouse
-// events, even if the mouse leaves the application. For example in GTK+ it is
-// used for Drag and Drop, for dragging the handle in the HPaned and VPaned
-// widgets.
-//
-// Note that if the event mask of an X window has selected both button press and
-// button release events, then a button press event will cause an automatic
-// pointer grab until the button is released. X does this automatically since
-// most applications expect to receive button press and release events in pairs.
-// It is equivalent to a pointer grab on the window with @owner_events set to
-// true.
-//
-// If you set up anything at the time you take the grab that needs to be cleaned
-// up when the grab ends, you should handle the EventGrabBroken events that are
-// emitted when the grab ends unvoluntarily.
-func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo Window, cursor Cursor, time_ uint32) GrabStatus {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gboolean
-	var _arg3 C.GdkEventMask
-	var _arg4 *C.GdkWindow
-	var _arg5 *C.GdkCursor
-	var _arg6 C.guint32
-
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
-	if ownerEvents {
-		_arg2 = C.gboolean(1)
-	}
-	_arg3 = (C.GdkEventMask)(eventMask)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer(confineTo.Native()))
-	_arg5 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
-	_arg6 = C.guint32(time_)
-
-	var _cret C.GdkGrabStatus
-
-	cret = C.gdk_pointer_grab(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
-	var _grabStatus GrabStatus
-
-	_grabStatus = GrabStatus(_cret)
-
-	return _grabStatus
-}
-
 // PointerIsGrabbed returns true if the pointer on the default display is
 // currently grabbed by this application.
 //
@@ -269,7 +192,7 @@ func PointerGrab(window Window, ownerEvents bool, eventMask EventMask, confineTo
 func PointerIsGrabbed() bool {
 	var _cret C.gboolean
 
-	cret = C.gdk_pointer_is_grabbed()
+	_cret = C.gdk_pointer_is_grabbed()
 
 	var _ok bool
 

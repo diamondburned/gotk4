@@ -3,9 +3,6 @@
 package gsk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,17 +41,4 @@ func marshalBroadwayRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBroadwayRenderer(obj), nil
-}
-
-// NewBroadwayRenderer constructs a class BroadwayRenderer.
-func NewBroadwayRenderer() BroadwayRenderer {
-	var _cret C.GskBroadwayRenderer
-
-	cret = C.gsk_broadway_renderer_new()
-
-	var _broadwayRenderer BroadwayRenderer
-
-	_broadwayRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BroadwayRenderer)
-
-	return _broadwayRenderer
 }

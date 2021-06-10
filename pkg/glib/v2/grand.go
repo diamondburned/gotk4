@@ -17,7 +17,7 @@ import "C"
 func RandomDouble() float64 {
 	var _cret C.gdouble
 
-	cret = C.g_random_double()
+	_cret = C.g_random_double()
 
 	var _gdouble float64
 
@@ -37,7 +37,7 @@ func RandomDoubleRange(begin float64, end float64) float64 {
 
 	var _cret C.gdouble
 
-	cret = C.g_random_double_range(_arg1, _arg2)
+	_cret = C.g_random_double_range(_arg1, _arg2)
 
 	var _gdouble float64
 
@@ -51,7 +51,7 @@ func RandomDoubleRange(begin float64, end float64) float64 {
 func RandomInt() uint32 {
 	var _cret C.guint32
 
-	cret = C.g_random_int()
+	_cret = C.g_random_int()
 
 	var _guint32 uint32
 
@@ -71,7 +71,7 @@ func RandomIntRange(begin int32, end int32) int32 {
 
 	var _cret C.gint32
 
-	cret = C.g_random_int_range(_arg1, _arg2)
+	_cret = C.g_random_int_range(_arg1, _arg2)
 
 	var _gint32 int32
 
@@ -116,25 +116,6 @@ func (r *Rand) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
 }
 
-// Copy copies a #GRand into a new one with the same exact state as before. This
-// way you can take a snapshot of the random number generator for replaying
-// later.
-func (r *Rand) Copy() *Rand {
-	var _arg0 *C.GRand
-
-	_arg0 = (*C.GRand)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GRand
-
-	cret = C.g_rand_copy(_arg0)
-
-	var _rand *Rand
-
-	_rand = WrapRand(unsafe.Pointer(_cret))
-
-	return _rand
-}
-
 // Double returns the next random #gdouble from @rand_ equally distributed over
 // the range [0..1).
 func (r *Rand) Double() float64 {
@@ -144,7 +125,7 @@ func (r *Rand) Double() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.g_rand_double(_arg0)
+	_cret = C.g_rand_double(_arg0)
 
 	var _gdouble float64
 
@@ -166,7 +147,7 @@ func (r *Rand) DoubleRange(begin float64, end float64) float64 {
 
 	var _cret C.gdouble
 
-	cret = C.g_rand_double_range(_arg0, _arg1, _arg2)
+	_cret = C.g_rand_double_range(_arg0, _arg1, _arg2)
 
 	var _gdouble float64
 
@@ -193,7 +174,7 @@ func (r *Rand) Int() uint32 {
 
 	var _cret C.guint32
 
-	cret = C.g_rand_int(_arg0)
+	_cret = C.g_rand_int(_arg0)
 
 	var _guint32 uint32
 
@@ -215,7 +196,7 @@ func (r *Rand) IntRange(begin int32, end int32) int32 {
 
 	var _cret C.gint32
 
-	cret = C.g_rand_int_range(_arg0, _arg1, _arg2)
+	_cret = C.g_rand_int_range(_arg0, _arg1, _arg2)
 
 	var _gint32 int32
 

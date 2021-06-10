@@ -3,9 +3,6 @@
 package gsk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,17 +41,4 @@ func marshalNglRenderer(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNglRenderer(obj), nil
-}
-
-// NewNglRenderer constructs a class NglRenderer.
-func NewNglRenderer() NglRenderer {
-	var _cret C.GskNglRenderer
-
-	cret = C.gsk_ngl_renderer_new()
-
-	var _nglRenderer NglRenderer
-
-	_nglRenderer = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NglRenderer)
-
-	return _nglRenderer
 }

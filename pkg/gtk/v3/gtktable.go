@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -135,29 +134,6 @@ func marshalTable(p uintptr) (interface{}, error) {
 	return WrapTable(obj), nil
 }
 
-// NewTable constructs a class Table.
-func NewTable(rows uint, columns uint, homogeneous bool) Table {
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.gboolean
-
-	_arg1 = C.guint(rows)
-	_arg2 = C.guint(columns)
-	if homogeneous {
-		_arg3 = C.gboolean(1)
-	}
-
-	var _cret C.GtkTable
-
-	cret = C.gtk_table_new(_arg1, _arg2, _arg3)
-
-	var _table Table
-
-	_table = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Table)
-
-	return _table
-}
-
 // Attach adds a widget to a table. The number of “cells” that a widget will
 // occupy is specified by @left_attach, @right_attach, @top_attach and
 // @bottom_attach. These each represent the leftmost, rightmost, uppermost
@@ -234,7 +210,7 @@ func (t table) ColSpacing(column uint) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
+	_cret = C.gtk_table_get_col_spacing(_arg0, _arg1)
 
 	var _guint uint
 
@@ -253,7 +229,7 @@ func (t table) DefaultColSpacing() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_table_get_default_col_spacing(_arg0)
+	_cret = C.gtk_table_get_default_col_spacing(_arg0)
 
 	var _guint uint
 
@@ -272,7 +248,7 @@ func (t table) DefaultRowSpacing() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_table_get_default_row_spacing(_arg0)
+	_cret = C.gtk_table_get_default_row_spacing(_arg0)
 
 	var _guint uint
 
@@ -290,7 +266,7 @@ func (t table) Homogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_table_get_homogeneous(_arg0)
+	_cret = C.gtk_table_get_homogeneous(_arg0)
 
 	var _ok bool
 
@@ -312,7 +288,7 @@ func (t table) RowSpacing(row uint) uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
+	_cret = C.gtk_table_get_row_spacing(_arg0, _arg1)
 
 	var _guint uint
 
@@ -443,13 +419,6 @@ func marshalTableChild(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (t *TableChild) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// Widget gets the field inside the struct.
-func (t *TableChild) Widget() Widget {
-	var v Widget
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(t.native.widget.Native()))).(Widget)
-	return v
 }
 
 // LeftAttach gets the field inside the struct.

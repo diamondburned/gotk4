@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,9 +43,6 @@ type ConstraintGuide interface {
 	Name() string
 	// NatSize gets the natural size of @guide.
 	NatSize(width *int, height *int)
-	// Strength retrieves the strength set using
-	// gtk_constraint_guide_set_strength().
-	Strength() ConstraintStrength
 	// SetMaxSize sets the maximum size of @guide.
 	//
 	// If @guide is attached to a `GtkConstraintLayout`, the constraints will be
@@ -94,19 +90,6 @@ func marshalConstraintGuide(p uintptr) (interface{}, error) {
 	return WrapConstraintGuide(obj), nil
 }
 
-// NewConstraintGuide constructs a class ConstraintGuide.
-func NewConstraintGuide() ConstraintGuide {
-	var _cret C.GtkConstraintGuide
-
-	cret = C.gtk_constraint_guide_new()
-
-	var _constraintGuide ConstraintGuide
-
-	_constraintGuide = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConstraintGuide)
-
-	return _constraintGuide
-}
-
 // MaxSize gets the maximum size of @guide.
 func (g constraintGuide) MaxSize(width *int, height *int) {
 	var _arg0 *C.GtkConstraintGuide
@@ -141,7 +124,7 @@ func (g constraintGuide) Name() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_constraint_guide_get_name(_arg0)
+	_cret = C.gtk_constraint_guide_get_name(_arg0)
 
 	var _utf8 string
 
@@ -161,24 +144,6 @@ func (g constraintGuide) NatSize(width *int, height *int) {
 	_arg2 = *C.int(height)
 
 	C.gtk_constraint_guide_get_nat_size(_arg0, _arg1, _arg2)
-}
-
-// Strength retrieves the strength set using
-// gtk_constraint_guide_set_strength().
-func (g constraintGuide) Strength() ConstraintStrength {
-	var _arg0 *C.GtkConstraintGuide
-
-	_arg0 = (*C.GtkConstraintGuide)(unsafe.Pointer(g.Native()))
-
-	var _cret C.GtkConstraintStrength
-
-	cret = C.gtk_constraint_guide_get_strength(_arg0)
-
-	var _constraintStrength ConstraintStrength
-
-	_constraintStrength = ConstraintStrength(_cret)
-
-	return _constraintStrength
 }
 
 // SetMaxSize sets the maximum size of @guide.

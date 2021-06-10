@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -63,23 +60,6 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 	return WrapGestureSwipe(obj), nil
 }
 
-// NewGestureSwipe constructs a class GestureSwipe.
-func NewGestureSwipe(widget Widget) GestureSwipe {
-	var _arg1 *C.GtkWidget
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureSwipe
-
-	cret = C.gtk_gesture_swipe_new(_arg1)
-
-	var _gestureSwipe GestureSwipe
-
-	_gestureSwipe = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureSwipe)
-
-	return _gestureSwipe
-}
-
 // Velocity: if the gesture is recognized, this function returns true and
 // fill in @velocity_x and @velocity_y with the recorded velocity, as per
 // the last event(s) processed.
@@ -92,7 +72,7 @@ func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool)
 	var _arg2 C.gdouble
 	var _cret C.gboolean
 
-	cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 
 	var _velocityX float64
 	var _velocityY float64

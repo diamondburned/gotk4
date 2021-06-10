@@ -3,11 +3,7 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -58,24 +54,6 @@ type Cancellable interface {
 	// operation's ReadyCallback will not be invoked until the application
 	// returns to the main loop.
 	Cancel()
-	// Connect: convenience function to connect to the #GCancellable::cancelled
-	// signal. Also handles the race condition that may happen if the
-	// cancellable is cancelled right before connecting.
-	//
-	// @callback is called at most once, either directly at the time of the
-	// connect if @cancellable is already cancelled, or when @cancellable is
-	// cancelled in some thread.
-	//
-	// @data_destroy_func will be called when the handler is disconnected, or
-	// immediately if the cancellable is already cancelled.
-	//
-	// See #GCancellable::cancelled for details on how to use this.
-	//
-	// Since GLib 2.40, the lock protecting @cancellable is not held when
-	// @callback is invoked. This lifts a restriction in place for earlier GLib
-	// versions which now makes it easier to write cleanup code that
-	// unconditionally invokes e.g. g_cancellable_cancel().
-	Connect() uint32
 	// Disconnect disconnects a handler from a cancellable instance similar to
 	// g_signal_handler_disconnect(). Additionally, in the event that a signal
 	// handler is currently running, this call will block until the handler has
@@ -159,16 +137,6 @@ type Cancellable interface {
 	// SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 	// notify that the operation was cancelled.
 	SetErrorIfCancelled() error
-	// NewSource creates a source that triggers if @cancellable is cancelled and
-	// calls its callback of type SourceFunc. This is primarily useful for
-	// attaching to another (non-cancellable) source with
-	// g_source_add_child_source() to add cancellability to it.
-	//
-	// For convenience, you can call this with a nil #GCancellable, in which
-	// case the source will never trigger.
-	//
-	// The new #GSource will hold a reference to the #GCancellable.
-	NewSource() *glib.Source
 }
 
 // cancellable implements the Cancellable interface.
@@ -190,19 +158,6 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapCancellable(obj), nil
-}
-
-// NewCancellable constructs a class Cancellable.
-func NewCancellable() Cancellable {
-	var _cret C.GCancellable
-
-	cret = C.g_cancellable_new()
-
-	var _cancellable Cancellable
-
-	_cancellable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Cancellable)
-
-	return _cancellable
 }
 
 // Cancel: will set @cancellable to cancelled, and will emit the
@@ -228,39 +183,6 @@ func (c cancellable) Cancel() {
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
 	C.g_cancellable_cancel(_arg0)
-}
-
-// Connect: convenience function to connect to the #GCancellable::cancelled
-// signal. Also handles the race condition that may happen if the
-// cancellable is cancelled right before connecting.
-//
-// @callback is called at most once, either directly at the time of the
-// connect if @cancellable is already cancelled, or when @cancellable is
-// cancelled in some thread.
-//
-// @data_destroy_func will be called when the handler is disconnected, or
-// immediately if the cancellable is already cancelled.
-//
-// See #GCancellable::cancelled for details on how to use this.
-//
-// Since GLib 2.40, the lock protecting @cancellable is not held when
-// @callback is invoked. This lifts a restriction in place for earlier GLib
-// versions which now makes it easier to write cleanup code that
-// unconditionally invokes e.g. g_cancellable_cancel().
-func (c cancellable) Connect() uint32 {
-	var _arg0 *C.GCancellable
-
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-
-	var _cret C.gulong
-
-	cret = C.g_cancellable_connect(_arg0)
-
-	var _gulong uint32
-
-	_gulong = (uint32)(_cret)
-
-	return _gulong
 }
 
 // Disconnect disconnects a handler from a cancellable instance similar to
@@ -304,7 +226,7 @@ func (c cancellable) Fd() int {
 
 	var _cret C.int
 
-	cret = C.g_cancellable_get_fd(_arg0)
+	_cret = C.g_cancellable_get_fd(_arg0)
 
 	var _gint int
 
@@ -321,7 +243,7 @@ func (c cancellable) IsCancelled() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_cancellable_is_cancelled(_arg0)
+	_cret = C.g_cancellable_is_cancelled(_arg0)
 
 	var _ok bool
 
@@ -358,7 +280,7 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
+	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
 	var _ok bool
 
@@ -447,32 +369,4 @@ func (c cancellable) SetErrorIfCancelled() error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// NewSource creates a source that triggers if @cancellable is cancelled and
-// calls its callback of type SourceFunc. This is primarily useful for
-// attaching to another (non-cancellable) source with
-// g_source_add_child_source() to add cancellability to it.
-//
-// For convenience, you can call this with a nil #GCancellable, in which
-// case the source will never trigger.
-//
-// The new #GSource will hold a reference to the #GCancellable.
-func (c cancellable) NewSource() *glib.Source {
-	var _arg0 *C.GCancellable
-
-	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSource
-
-	cret = C.g_cancellable_source_new(_arg0)
-
-	var _source *glib.Source
-
-	_source = glib.WrapSource(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _source
 }

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -64,34 +61,4 @@ func marshalRecentChooserWidget(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapRecentChooserWidget(obj), nil
-}
-
-// NewRecentChooserWidget constructs a class RecentChooserWidget.
-func NewRecentChooserWidget() RecentChooserWidget {
-	var _cret C.GtkRecentChooserWidget
-
-	cret = C.gtk_recent_chooser_widget_new()
-
-	var _recentChooserWidget RecentChooserWidget
-
-	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserWidget)
-
-	return _recentChooserWidget
-}
-
-// NewRecentChooserWidgetForManager constructs a class RecentChooserWidget.
-func NewRecentChooserWidgetForManager(manager RecentManager) RecentChooserWidget {
-	var _arg1 *C.GtkRecentManager
-
-	_arg1 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-
-	var _cret C.GtkRecentChooserWidget
-
-	cret = C.gtk_recent_chooser_widget_new_for_manager(_arg1)
-
-	var _recentChooserWidget RecentChooserWidget
-
-	_recentChooserWidget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentChooserWidget)
-
-	return _recentChooserWidget
 }

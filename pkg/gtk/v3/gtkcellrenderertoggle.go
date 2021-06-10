@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -72,19 +69,6 @@ func marshalCellRendererToggle(p uintptr) (interface{}, error) {
 	return WrapCellRendererToggle(obj), nil
 }
 
-// NewCellRendererToggle constructs a class CellRendererToggle.
-func NewCellRendererToggle() CellRendererToggle {
-	var _cret C.GtkCellRendererToggle
-
-	cret = C.gtk_cell_renderer_toggle_new()
-
-	var _cellRendererToggle CellRendererToggle
-
-	_cellRendererToggle = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CellRendererToggle)
-
-	return _cellRendererToggle
-}
-
 // Activatable returns whether the cell renderer is activatable. See
 // gtk_cell_renderer_toggle_set_activatable().
 func (t cellRendererToggle) Activatable() bool {
@@ -94,7 +78,7 @@ func (t cellRendererToggle) Activatable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
+	_cret = C.gtk_cell_renderer_toggle_get_activatable(_arg0)
 
 	var _ok bool
 
@@ -114,7 +98,7 @@ func (t cellRendererToggle) Active() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
+	_cret = C.gtk_cell_renderer_toggle_get_active(_arg0)
 
 	var _ok bool
 
@@ -134,7 +118,7 @@ func (t cellRendererToggle) Radio() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
+	_cret = C.gtk_cell_renderer_toggle_get_radio(_arg0)
 
 	var _ok bool
 

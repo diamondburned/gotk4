@@ -4,9 +4,6 @@ package gsk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
 // #cgo pkg-config:
@@ -14,21 +11,6 @@ import (
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
 import "C"
-
-// ParseErrorFunc: type of callback that is called when an error occurs during
-// node deserialization.
-type ParseErrorFunc func()
-
-//export gotk4_ParseErrorFunc
-func gotk4_ParseErrorFunc(arg0 *C.GskParseLocation, arg1 *C.GskParseLocation, arg2 *C.GError, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(ParseErrorFunc)
-	fn()
-}
 
 // ColorStop: a color stop in a gradient node.
 type ColorStop struct {
@@ -59,13 +41,6 @@ func (c *ColorStop) Native() unsafe.Pointer {
 func (c *ColorStop) Offset() float32 {
 	var v float32
 	v = (float32)(c.native.offset)
-	return v
-}
-
-// Color gets the field inside the struct.
-func (c *ColorStop) Color() gdk.RGBA {
-	var v gdk.RGBA
-	v = *gdk.WrapRGBA(unsafe.Pointer(&c.native.color))
 	return v
 }
 
@@ -152,13 +127,6 @@ func marshalShadow(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (s *Shadow) Native() unsafe.Pointer {
 	return unsafe.Pointer(&s.native)
-}
-
-// Color gets the field inside the struct.
-func (s *Shadow) Color() gdk.RGBA {
-	var v gdk.RGBA
-	v = *gdk.WrapRGBA(unsafe.Pointer(&s.native.color))
-	return v
 }
 
 // Dx gets the field inside the struct.

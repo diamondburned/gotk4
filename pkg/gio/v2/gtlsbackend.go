@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -34,8 +31,6 @@ func init() {
 // TLSBackendOverrider contains methods that are overridable. This
 // interface is a subset of the interface TLSBackend.
 type TLSBackendOverrider interface {
-	// DefaultDatabase gets the default Database used to verify TLS connections.
-	DefaultDatabase() TLSDatabase
 	// SupportsDTLS checks if DTLS is supported. DTLS support may not be
 	// available even if TLS support is available, and vice-versa.
 	SupportsDTLS() bool
@@ -108,7 +103,7 @@ func (b tlsBackend) CertificateType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_tls_backend_get_certificate_type(_arg0)
+	_cret = C.g_tls_backend_get_certificate_type(_arg0)
 
 	var _gType externglib.Type
 
@@ -126,30 +121,13 @@ func (b tlsBackend) ClientConnectionType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_tls_backend_get_client_connection_type(_arg0)
+	_cret = C.g_tls_backend_get_client_connection_type(_arg0)
 
 	var _gType externglib.Type
 
 	_gType = externglib.Type(_cret)
 
 	return _gType
-}
-
-// DefaultDatabase gets the default Database used to verify TLS connections.
-func (b tlsBackend) DefaultDatabase() TLSDatabase {
-	var _arg0 *C.GTlsBackend
-
-	_arg0 = (*C.GTlsBackend)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GTlsDatabase
-
-	cret = C.g_tls_backend_get_default_database(_arg0)
-
-	var _tlsDatabase TLSDatabase
-
-	_tlsDatabase = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TLSDatabase)
-
-	return _tlsDatabase
 }
 
 // DTLSClientConnectionType gets the #GType of @backend’s ClientConnection
@@ -161,7 +139,7 @@ func (b tlsBackend) DTLSClientConnectionType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_tls_backend_get_dtls_client_connection_type(_arg0)
+	_cret = C.g_tls_backend_get_dtls_client_connection_type(_arg0)
 
 	var _gType externglib.Type
 
@@ -179,7 +157,7 @@ func (b tlsBackend) DTLSServerConnectionType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_tls_backend_get_dtls_server_connection_type(_arg0)
+	_cret = C.g_tls_backend_get_dtls_server_connection_type(_arg0)
 
 	var _gType externglib.Type
 
@@ -197,7 +175,7 @@ func (b tlsBackend) FileDatabaseType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_tls_backend_get_file_database_type(_arg0)
+	_cret = C.g_tls_backend_get_file_database_type(_arg0)
 
 	var _gType externglib.Type
 
@@ -215,7 +193,7 @@ func (b tlsBackend) ServerConnectionType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_tls_backend_get_server_connection_type(_arg0)
+	_cret = C.g_tls_backend_get_server_connection_type(_arg0)
 
 	var _gType externglib.Type
 
@@ -253,7 +231,7 @@ func (b tlsBackend) SupportsDTLS() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_tls_backend_supports_dtls(_arg0)
+	_cret = C.g_tls_backend_supports_dtls(_arg0)
 
 	var _ok bool
 
@@ -273,7 +251,7 @@ func (b tlsBackend) SupportsTLS() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_tls_backend_supports_tls(_arg0)
+	_cret = C.g_tls_backend_supports_tls(_arg0)
 
 	var _ok bool
 

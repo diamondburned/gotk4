@@ -3,10 +3,8 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -53,81 +51,6 @@ func (g *GlyphItem) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// Item gets the field inside the struct.
-func (g *GlyphItem) Item() *Item {
-	var v *Item
-	v = WrapItem(unsafe.Pointer(g.native.item))
-	return v
-}
-
-// Glyphs gets the field inside the struct.
-func (g *GlyphItem) Glyphs() *GlyphString {
-	var v *GlyphString
-	v = WrapGlyphString(unsafe.Pointer(g.native.glyphs))
-	return v
-}
-
-// ApplyAttrs splits a shaped item (`PangoGlyphItem`) into multiple items based
-// on an attribute list.
-//
-// The idea is that if you have attributes that don't affect shaping, such as
-// color or underline, to avoid affecting shaping, you filter them out
-// ([method@Pango.AttrList.filter]), apply the shaping process and then reapply
-// them to the result using this function.
-//
-// All attributes that start or end inside a cluster are applied to that
-// cluster; for instance, if half of a cluster is underlined and the other-half
-// strikethrough, then the cluster will end up with both underline and
-// strikethrough attributes. In these cases, it may happen that
-// @item->extra_attrs for some of the result items can have multiple attributes
-// of the same type.
-//
-// This function takes ownership of @glyph_item; it will be reused as one of the
-// elements in the list.
-func (g *GlyphItem) ApplyAttrs(text string, list *AttrList) *glib.SList {
-	var _arg0 *C.PangoGlyphItem
-	var _arg1 *C.char
-	var _arg2 *C.PangoAttrList
-
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g.Native()))
-	_arg1 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.PangoAttrList)(unsafe.Pointer(list.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.pango_glyph_item_apply_attrs(_arg0, _arg1, _arg2)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sList, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _sList
-}
-
-// Copy: make a deep copy of an existing `PangoGlyphItem` structure.
-func (o *GlyphItem) Copy() *GlyphItem {
-	var _arg0 *C.PangoGlyphItem
-
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.PangoGlyphItem
-
-	cret = C.pango_glyph_item_copy(_arg0)
-
-	var _glyphItem *GlyphItem
-
-	_glyphItem = WrapGlyphItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _glyphItem
-}
-
 // Free frees a `PangoGlyphItem` and resources to which it points.
 func (g *GlyphItem) Free() {
 	var _arg0 *C.PangoGlyphItem
@@ -135,40 +58,6 @@ func (g *GlyphItem) Free() {
 	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(g.Native()))
 
 	C.pango_glyph_item_free(_arg0)
-}
-
-// Split modifies @orig to cover only the text after @split_index, and returns a
-// new item that covers the text before @split_index that used to be in @orig.
-//
-// You can think of @split_index as the length of the returned item.
-// @split_index may not be 0, and it may not be greater than or equal to the
-// length of @orig (that is, there must be at least one byte assigned to each
-// item, you can't create a zero-length item).
-//
-// This function is similar in function to pango_item_split() (and uses it
-// internally.)
-func (o *GlyphItem) Split(text string, splitIndex int) *GlyphItem {
-	var _arg0 *C.PangoGlyphItem
-	var _arg1 *C.char
-	var _arg2 C.int
-
-	_arg0 = (*C.PangoGlyphItem)(unsafe.Pointer(o.Native()))
-	_arg1 = (*C.char)(C.CString(text))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.int(splitIndex)
-
-	var _cret *C.PangoGlyphItem
-
-	cret = C.pango_glyph_item_split(_arg0, _arg1, _arg2)
-
-	var _glyphItem *GlyphItem
-
-	_glyphItem = WrapGlyphItem(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphItem, func(v *GlyphItem) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _glyphItem
 }
 
 // GlyphItemIter: a `PangoGlyphItemIter` is an iterator over the clusters in a
@@ -227,13 +116,6 @@ func (g *GlyphItemIter) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// GlyphItem gets the field inside the struct.
-func (g *GlyphItemIter) GlyphItem() *GlyphItem {
-	var v *GlyphItem
-	v = WrapGlyphItem(unsafe.Pointer(g.native.glyph_item))
-	return v
-}
-
 // Text gets the field inside the struct.
 func (g *GlyphItemIter) Text() string {
 	var v string
@@ -283,26 +165,6 @@ func (g *GlyphItemIter) EndChar() int {
 	return v
 }
 
-// Copy: make a shallow copy of an existing `PangoGlyphItemIter` structure.
-func (o *GlyphItemIter) Copy() *GlyphItemIter {
-	var _arg0 *C.PangoGlyphItemIter
-
-	_arg0 = (*C.PangoGlyphItemIter)(unsafe.Pointer(o.Native()))
-
-	var _cret *C.PangoGlyphItemIter
-
-	cret = C.pango_glyph_item_iter_copy(_arg0)
-
-	var _glyphItemIter *GlyphItemIter
-
-	_glyphItemIter = WrapGlyphItemIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphItemIter, func(v *GlyphItemIter) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _glyphItemIter
-}
-
 // Free frees a `PangoGlyphItem`Iter.
 func (i *GlyphItemIter) Free() {
 	var _arg0 *C.PangoGlyphItemIter
@@ -328,7 +190,7 @@ func (i *GlyphItemIter) InitEnd(glyphItem *GlyphItem, text string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_glyph_item_iter_init_end(_arg0, _arg1, _arg2)
+	_cret = C.pango_glyph_item_iter_init_end(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -355,7 +217,7 @@ func (i *GlyphItemIter) InitStart(glyphItem *GlyphItem, text string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_glyph_item_iter_init_start(_arg0, _arg1, _arg2)
+	_cret = C.pango_glyph_item_iter_init_start(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -376,7 +238,7 @@ func (i *GlyphItemIter) NextCluster() bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_glyph_item_iter_next_cluster(_arg0)
+	_cret = C.pango_glyph_item_iter_next_cluster(_arg0)
 
 	var _ok bool
 
@@ -396,7 +258,7 @@ func (i *GlyphItemIter) PrevCluster() bool {
 
 	var _cret C.gboolean
 
-	cret = C.pango_glyph_item_iter_prev_cluster(_arg0)
+	_cret = C.pango_glyph_item_iter_prev_cluster(_arg0)
 
 	var _ok bool
 

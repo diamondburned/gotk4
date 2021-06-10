@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -123,9 +120,6 @@ type ApplicationWindow interface {
 	gio.ActionMap
 	Buildable
 
-	// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
-	// call to gtk_application_window_set_help_overlay().
-	HelpOverlay() ShortcutsWindow
 	// ID returns the unique ID of the window. If the window has not yet been
 	// added to a Application, returns `0`.
 	ID() uint
@@ -169,41 +163,6 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 	return WrapApplicationWindow(obj), nil
 }
 
-// NewApplicationWindow constructs a class ApplicationWindow.
-func NewApplicationWindow(application Application) ApplicationWindow {
-	var _arg1 *C.GtkApplication
-
-	_arg1 = (*C.GtkApplication)(unsafe.Pointer(application.Native()))
-
-	var _cret C.GtkApplicationWindow
-
-	cret = C.gtk_application_window_new(_arg1)
-
-	var _applicationWindow ApplicationWindow
-
-	_applicationWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ApplicationWindow)
-
-	return _applicationWindow
-}
-
-// HelpOverlay gets the ShortcutsWindow that has been set up with a prior
-// call to gtk_application_window_set_help_overlay().
-func (w applicationWindow) HelpOverlay() ShortcutsWindow {
-	var _arg0 *C.GtkApplicationWindow
-
-	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
-
-	var _cret *C.GtkShortcutsWindow
-
-	cret = C.gtk_application_window_get_help_overlay(_arg0)
-
-	var _shortcutsWindow ShortcutsWindow
-
-	_shortcutsWindow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutsWindow)
-
-	return _shortcutsWindow
-}
-
 // ID returns the unique ID of the window. If the window has not yet been
 // added to a Application, returns `0`.
 func (w applicationWindow) ID() uint {
@@ -213,7 +172,7 @@ func (w applicationWindow) ID() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_application_window_get_id(_arg0)
+	_cret = C.gtk_application_window_get_id(_arg0)
 
 	var _guint uint
 
@@ -231,7 +190,7 @@ func (w applicationWindow) ShowMenubar() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_application_window_get_show_menubar(_arg0)
+	_cret = C.gtk_application_window_get_show_menubar(_arg0)
 
 	var _ok bool
 

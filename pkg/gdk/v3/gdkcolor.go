@@ -3,7 +3,6 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -75,28 +74,6 @@ func (c *Color) Blue() uint16 {
 	return v
 }
 
-// Copy makes a copy of a Color.
-//
-// The result must be freed using gdk_color_free().
-func (c *Color) Copy() *Color {
-	var _arg0 *C.GdkColor
-
-	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkColor
-
-	cret = C.gdk_color_copy(_arg0)
-
-	var _ret *Color
-
-	_ret = WrapColor(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_ret, func(v *Color) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _ret
-}
-
 // Equal compares two colors.
 func (c *Color) Equal(colorb *Color) bool {
 	var _arg0 *C.GdkColor
@@ -107,7 +84,7 @@ func (c *Color) Equal(colorb *Color) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_color_equal(_arg0, _arg1)
+	_cret = C.gdk_color_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -135,7 +112,7 @@ func (c *Color) Hash() uint {
 
 	var _cret C.guint
 
-	cret = C.gdk_color_hash(_arg0)
+	_cret = C.gdk_color_hash(_arg0)
 
 	var _guint uint
 
@@ -156,7 +133,7 @@ func (c *Color) String() string {
 
 	var _cret *C.gchar
 
-	cret = C.gdk_color_to_string(_arg0)
+	_cret = C.gdk_color_to_string(_arg0)
 
 	var _utf8 string
 

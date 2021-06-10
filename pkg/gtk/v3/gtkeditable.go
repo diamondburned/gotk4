@@ -40,12 +40,6 @@ type EditableOverrider interface {
 	//
 	// Note that the positions are specified in characters, not bytes.
 	DoDeleteText(startPos int, endPos int)
-	// DoInsertText inserts @new_text_length bytes of @new_text into the
-	// contents of the widget, at position @position.
-	//
-	// Note that the position is in characters, not in bytes. The function
-	// updates @position to point after the newly inserted text.
-	DoInsertText(newText string, newTextLength int, position *int)
 	// Chars retrieves a sequence of characters. The characters that are
 	// retrieved are those characters at positions from @start_pos up to, but
 	// not including @end_pos. If @end_pos is negative, then the characters
@@ -64,12 +58,6 @@ type EditableOverrider interface {
 	//
 	// Note that positions are specified in characters, not bytes.
 	SelectionBounds() (startPos int, endPos int, ok bool)
-	// InsertText inserts @new_text_length bytes of @new_text into the contents
-	// of the widget, at position @position.
-	//
-	// Note that the position is in characters, not in bytes. The function
-	// updates @position to point after the newly inserted text.
-	InsertText(newText string, newTextLength int, position *int)
 	// SetPosition sets the cursor position in the editable to the given value.
 	//
 	// The cursor is displayed before the character with the given (base 0)
@@ -237,7 +225,7 @@ func (e editable) Chars(startPos int, endPos int) string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
+	_cret = C.gtk_editable_get_chars(_arg0, _arg1, _arg2)
 
 	var _utf8 string
 
@@ -256,7 +244,7 @@ func (e editable) Editable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_editable(_arg0)
+	_cret = C.gtk_editable_get_editable(_arg0)
 
 	var _ok bool
 
@@ -278,7 +266,7 @@ func (e editable) Position() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_editable_get_position(_arg0)
+	_cret = C.gtk_editable_get_position(_arg0)
 
 	var _gint int
 
@@ -301,7 +289,7 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	var _arg2 C.gint
 	var _cret C.gboolean
 
-	cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
+	_cret = C.gtk_editable_get_selection_bounds(_arg0, &_arg1, &_arg2)
 
 	var _startPos int
 	var _endPos int
@@ -314,26 +302,6 @@ func (e editable) SelectionBounds() (startPos int, endPos int, ok bool) {
 	}
 
 	return _startPos, _endPos, _ok
-}
-
-// InsertText inserts @new_text_length bytes of @new_text into the contents
-// of the widget, at position @position.
-//
-// Note that the position is in characters, not in bytes. The function
-// updates @position to point after the newly inserted text.
-func (e editable) InsertText(newText string, newTextLength int, position *int) {
-	var _arg0 *C.GtkEditable
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 *C.gint
-
-	_arg0 = (*C.GtkEditable)(unsafe.Pointer(e.Native()))
-	_arg1 = (*C.gchar)(C.CString(newText))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(newTextLength)
-	_arg3 = *C.gint(position)
-
-	C.gtk_editable_insert_text(_arg0, _arg1, _arg2, _arg3)
 }
 
 // PasteClipboard pastes the content of the clipboard to the current

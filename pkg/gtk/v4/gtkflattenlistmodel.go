@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -31,10 +28,6 @@ type FlattenListModel interface {
 	gextras.Objector
 	gio.ListModel
 
-	// Model gets the model set via gtk_flatten_list_model_set_model().
-	Model() gio.ListModel
-	// ModelForItem returns the model containing the item at the given position.
-	ModelForItem(position uint) gio.ListModel
 	// SetModel sets a new model to be flattened.
 	SetModel(model gio.ListModel)
 }
@@ -60,59 +53,6 @@ func marshalFlattenListModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapFlattenListModel(obj), nil
-}
-
-// NewFlattenListModel constructs a class FlattenListModel.
-func NewFlattenListModel(model gio.ListModel) FlattenListModel {
-	var _arg1 *C.GListModel
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkFlattenListModel
-
-	cret = C.gtk_flatten_list_model_new(_arg1)
-
-	var _flattenListModel FlattenListModel
-
-	_flattenListModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FlattenListModel)
-
-	return _flattenListModel
-}
-
-// Model gets the model set via gtk_flatten_list_model_set_model().
-func (s flattenListModel) Model() gio.ListModel {
-	var _arg0 *C.GtkFlattenListModel
-
-	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_flatten_list_model_get_model(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
-}
-
-// ModelForItem returns the model containing the item at the given position.
-func (s flattenListModel) ModelForItem(position uint) gio.ListModel {
-	var _arg0 *C.GtkFlattenListModel
-	var _arg1 C.guint
-
-	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(s.Native()))
-	_arg1 = C.guint(position)
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_flatten_list_model_get_model_for_item(_arg0, _arg1)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // SetModel sets a new model to be flattened.

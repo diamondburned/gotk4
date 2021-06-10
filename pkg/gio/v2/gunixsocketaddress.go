@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -48,8 +45,6 @@ type UnixSocketAddress interface {
 	SocketAddress
 	SocketConnectable
 
-	// AddressType gets @address's type.
-	AddressType() UnixSocketAddressType
 	// IsAbstract tests if @address is abstract.
 	IsAbstract() bool
 	// Path gets @address's path, or for abstract sockets the "name".
@@ -88,54 +83,6 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 	return WrapUnixSocketAddress(obj), nil
 }
 
-// NewUnixSocketAddress constructs a class UnixSocketAddress.
-func NewUnixSocketAddress(path string) UnixSocketAddress {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GUnixSocketAddress
-
-	cret = C.g_unix_socket_address_new(_arg1)
-
-	var _unixSocketAddress UnixSocketAddress
-
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
-
-	return _unixSocketAddress
-}
-
-// NewUnixSocketAddressAbstract constructs a class UnixSocketAddress.
-func NewUnixSocketAddressAbstract() UnixSocketAddress {
-	var _cret C.GUnixSocketAddress
-
-	cret = C.g_unix_socket_address_new_abstract()
-
-	var _unixSocketAddress UnixSocketAddress
-
-	_unixSocketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixSocketAddress)
-
-	return _unixSocketAddress
-}
-
-// AddressType gets @address's type.
-func (a unixSocketAddress) AddressType() UnixSocketAddressType {
-	var _arg0 *C.GUnixSocketAddress
-
-	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GUnixSocketAddressType
-
-	cret = C.g_unix_socket_address_get_address_type(_arg0)
-
-	var _unixSocketAddressType UnixSocketAddressType
-
-	_unixSocketAddressType = UnixSocketAddressType(_cret)
-
-	return _unixSocketAddressType
-}
-
 // IsAbstract tests if @address is abstract.
 func (a unixSocketAddress) IsAbstract() bool {
 	var _arg0 *C.GUnixSocketAddress
@@ -144,7 +91,7 @@ func (a unixSocketAddress) IsAbstract() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_unix_socket_address_get_is_abstract(_arg0)
+	_cret = C.g_unix_socket_address_get_is_abstract(_arg0)
 
 	var _ok bool
 
@@ -168,7 +115,7 @@ func (a unixSocketAddress) Path() string {
 
 	var _cret *C.char
 
-	cret = C.g_unix_socket_address_get_path(_arg0)
+	_cret = C.g_unix_socket_address_get_path(_arg0)
 
 	var _utf8 string
 
@@ -187,7 +134,7 @@ func (a unixSocketAddress) PathLen() uint {
 
 	var _cret C.gsize
 
-	cret = C.g_unix_socket_address_get_path_len(_arg0)
+	_cret = C.g_unix_socket_address_get_path_len(_arg0)
 
 	var _gsize uint
 

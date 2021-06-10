@@ -6,9 +6,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,28 +22,6 @@ func init() {
 	externglib.RegisterGValueMarshalers([]externglib.TypeMarshaler{
 		{T: externglib.Type(C.gtk_menu_get_type()), F: marshalMenu},
 	})
-}
-
-// MenuPositionFunc: a user function supplied when calling gtk_menu_popup()
-// which controls the positioning of the menu when it is displayed. The function
-// sets the @x and @y parameters to the coordinates where the menu is to be
-// drawn. To make the menu appear on a different monitor than the mouse pointer,
-// gtk_menu_set_monitor() must be called.
-type MenuPositionFunc func() (pushIn bool)
-
-//export gotk4_MenuPositionFunc
-func gotk4_MenuPositionFunc(arg0 *C.GtkMenu, arg1 *C.gint, arg2 *C.gint, arg3 *C.gboolean, arg4 C.gpointer) {
-	v := box.Get(uintptr(arg4))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(MenuPositionFunc)
-	pushIn := fn()
-
-	if pushIn {
-		arg3 = *C.gboolean(1)
-	}
 }
 
 // Menu: a Menu is a MenuShell that implements a drop down menu consisting of a
@@ -90,16 +66,8 @@ type Menu interface {
 	// This function will call the callback function, @detacher, provided when
 	// the gtk_menu_attach_to_widget() function was called.
 	Detach()
-	// AccelGroup gets the AccelGroup which holds global accelerators for the
-	// menu. See gtk_menu_set_accel_group().
-	AccelGroup() AccelGroup
 	// AccelPath retrieves the accelerator path set on the menu.
 	AccelPath() string
-	// Active returns the selected menu item from the menu. This is used by the
-	// ComboBox.
-	Active() Widget
-	// AttachWidget returns the Widget that the menu is attached to.
-	AttachWidget() Widget
 	// Monitor retrieves the number of the monitor on which to show the menu.
 	Monitor() int
 	// ReserveToggleSize returns whether the menu reserves space for toggles and
@@ -114,59 +82,31 @@ type Menu interface {
 	PlaceOnMonitor(monitor gdk.Monitor)
 	// Popdown removes the menu from the screen.
 	Popdown()
-	// PopupAtPointer displays @menu and makes it available for selection.
+	// Popup displays a menu and makes it available for selection.
 	//
-	// See gtk_menu_popup_at_widget () to pop up a menu at a widget.
-	// gtk_menu_popup_at_rect () also allows you to position a menu at an
-	// arbitrary rectangle.
+	// Applications can use this function to display context-sensitive menus,
+	// and will typically supply nil for the @parent_menu_shell,
+	// @parent_menu_item, @func and @data parameters. The default menu
+	// positioning function will position the menu at the current mouse cursor
+	// position.
 	//
-	// @menu will be positioned at the pointer associated with @trigger_event.
+	// The @button parameter should be the mouse button pressed to initiate the
+	// menu popup. If the menu popup was initiated by something other than a
+	// mouse button press, such as a mouse button release or a keypress, @button
+	// should be 0.
 	//
-	// Properties that influence the behaviour of this function are
-	// Menu:anchor-hints, Menu:rect-anchor-dx, Menu:rect-anchor-dy, and
-	// Menu:menu-type-hint. Connect to the Menu::popped-up signal to find out
-	// how it was actually positioned.
-	PopupAtPointer(triggerEvent *gdk.Event)
-	// PopupAtRect displays @menu and makes it available for selection.
+	// The @activate_time parameter is used to conflict-resolve initiation of
+	// concurrent requests for mouse/keyboard grab requests. To function
+	// properly, this needs to be the timestamp of the user event (such as a
+	// mouse click or key press) that caused the initiation of the popup. Only
+	// if no such event is available, gtk_get_current_event_time() can be used
+	// instead.
 	//
-	// See gtk_menu_popup_at_widget () and gtk_menu_popup_at_pointer (), which
-	// handle more common cases for popping up menus.
-	//
-	// @menu will be positioned at @rect, aligning their anchor points. @rect is
-	// relative to the top-left corner of @rect_window. @rect_anchor and
-	// @menu_anchor determine anchor points on @rect and @menu to pin together.
-	// @menu can optionally be offset by Menu:rect-anchor-dx and
-	// Menu:rect-anchor-dy.
-	//
-	// Anchors should be specified under the assumption that the text direction
-	// is left-to-right; they will be flipped horizontally automatically if the
-	// text direction is right-to-left.
-	//
-	// Other properties that influence the behaviour of this function are
-	// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-	// signal to find out how it was actually positioned.
-	PopupAtRect(rectWindow gdk.Window, rect *gdk.Rectangle, rectAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event)
-	// PopupAtWidget displays @menu and makes it available for selection.
-	//
-	// See gtk_menu_popup_at_pointer () to pop up a menu at the master pointer.
-	// gtk_menu_popup_at_rect () also allows you to position a menu at an
-	// arbitrary rectangle.
-	//
-	// ! (popup-anchors.png)
-	//
-	// @menu will be positioned at @widget, aligning their anchor points.
-	// @widget_anchor and @menu_anchor determine anchor points on @widget and
-	// @menu to pin together. @menu can optionally be offset by
-	// Menu:rect-anchor-dx and Menu:rect-anchor-dy.
-	//
-	// Anchors should be specified under the assumption that the text direction
-	// is left-to-right; they will be flipped horizontally automatically if the
-	// text direction is right-to-left.
-	//
-	// Other properties that influence the behaviour of this function are
-	// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-	// signal to find out how it was actually positioned.
-	PopupAtWidget(widget Widget, widgetAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event)
+	// Note that this function does not work very well on GDK backends that do
+	// not have global coordinates, such as Wayland or Mir. You should probably
+	// use one of the gtk_menu_popup_at_ variants, which do not have this
+	// problem.
+	Popup(parentMenuShell Widget, parentMenuItem Widget, fn MenuPositionFunc, button uint, activateTime uint32)
 	// ReorderChild moves @child to a new @position in the list of @menu
 	// children.
 	ReorderChild(child Widget, position int)
@@ -253,36 +193,6 @@ func marshalMenu(p uintptr) (interface{}, error) {
 	return WrapMenu(obj), nil
 }
 
-// NewMenu constructs a class Menu.
-func NewMenu() Menu {
-	var _cret C.GtkMenu
-
-	cret = C.gtk_menu_new()
-
-	var _menu Menu
-
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
-
-	return _menu
-}
-
-// NewMenuFromModel constructs a class Menu.
-func NewMenuFromModel(model gio.MenuModel) Menu {
-	var _arg1 *C.GMenuModel
-
-	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkMenu
-
-	cret = C.gtk_menu_new_from_model(_arg1)
-
-	var _menu Menu
-
-	_menu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Menu)
-
-	return _menu
-}
-
 // Attach adds a new MenuItem to a (table) menu. The number of “cells” that
 // an item will occupy is specified by @left_attach, @right_attach,
 // @top_attach and @bottom_attach. These each represent the leftmost,
@@ -319,24 +229,6 @@ func (m menu) Detach() {
 	C.gtk_menu_detach(_arg0)
 }
 
-// AccelGroup gets the AccelGroup which holds global accelerators for the
-// menu. See gtk_menu_set_accel_group().
-func (m menu) AccelGroup() AccelGroup {
-	var _arg0 *C.GtkMenu
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkAccelGroup
-
-	cret = C.gtk_menu_get_accel_group(_arg0)
-
-	var _accelGroup AccelGroup
-
-	_accelGroup = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AccelGroup)
-
-	return _accelGroup
-}
-
 // AccelPath retrieves the accelerator path set on the menu.
 func (m menu) AccelPath() string {
 	var _arg0 *C.GtkMenu
@@ -345,48 +237,13 @@ func (m menu) AccelPath() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_menu_get_accel_path(_arg0)
+	_cret = C.gtk_menu_get_accel_path(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Active returns the selected menu item from the menu. This is used by the
-// ComboBox.
-func (m menu) Active() Widget {
-	var _arg0 *C.GtkMenu
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_menu_get_active(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// AttachWidget returns the Widget that the menu is attached to.
-func (m menu) AttachWidget() Widget {
-	var _arg0 *C.GtkMenu
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_menu_get_attach_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // Monitor retrieves the number of the monitor on which to show the menu.
@@ -397,7 +254,7 @@ func (m menu) Monitor() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_menu_get_monitor(_arg0)
+	_cret = C.gtk_menu_get_monitor(_arg0)
 
 	var _gint int
 
@@ -415,7 +272,7 @@ func (m menu) ReserveToggleSize() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_menu_get_reserve_toggle_size(_arg0)
+	_cret = C.gtk_menu_get_reserve_toggle_size(_arg0)
 
 	var _ok bool
 
@@ -435,7 +292,7 @@ func (m menu) TearoffState() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_menu_get_tearoff_state(_arg0)
+	_cret = C.gtk_menu_get_tearoff_state(_arg0)
 
 	var _ok bool
 
@@ -454,7 +311,7 @@ func (m menu) Title() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_menu_get_title(_arg0)
+	_cret = C.gtk_menu_get_title(_arg0)
 
 	var _utf8 string
 
@@ -483,98 +340,48 @@ func (m menu) Popdown() {
 	C.gtk_menu_popdown(_arg0)
 }
 
-// PopupAtPointer displays @menu and makes it available for selection.
+// Popup displays a menu and makes it available for selection.
 //
-// See gtk_menu_popup_at_widget () to pop up a menu at a widget.
-// gtk_menu_popup_at_rect () also allows you to position a menu at an
-// arbitrary rectangle.
+// Applications can use this function to display context-sensitive menus,
+// and will typically supply nil for the @parent_menu_shell,
+// @parent_menu_item, @func and @data parameters. The default menu
+// positioning function will position the menu at the current mouse cursor
+// position.
 //
-// @menu will be positioned at the pointer associated with @trigger_event.
+// The @button parameter should be the mouse button pressed to initiate the
+// menu popup. If the menu popup was initiated by something other than a
+// mouse button press, such as a mouse button release or a keypress, @button
+// should be 0.
 //
-// Properties that influence the behaviour of this function are
-// Menu:anchor-hints, Menu:rect-anchor-dx, Menu:rect-anchor-dy, and
-// Menu:menu-type-hint. Connect to the Menu::popped-up signal to find out
-// how it was actually positioned.
-func (m menu) PopupAtPointer(triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu
-	var _arg1 *C.GdkEvent
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-	var _arg1 *C.GdkEvent // unsupported
-
-	C.gtk_menu_popup_at_pointer(_arg0, _arg1)
-}
-
-// PopupAtRect displays @menu and makes it available for selection.
+// The @activate_time parameter is used to conflict-resolve initiation of
+// concurrent requests for mouse/keyboard grab requests. To function
+// properly, this needs to be the timestamp of the user event (such as a
+// mouse click or key press) that caused the initiation of the popup. Only
+// if no such event is available, gtk_get_current_event_time() can be used
+// instead.
 //
-// See gtk_menu_popup_at_widget () and gtk_menu_popup_at_pointer (), which
-// handle more common cases for popping up menus.
-//
-// @menu will be positioned at @rect, aligning their anchor points. @rect is
-// relative to the top-left corner of @rect_window. @rect_anchor and
-// @menu_anchor determine anchor points on @rect and @menu to pin together.
-// @menu can optionally be offset by Menu:rect-anchor-dx and
-// Menu:rect-anchor-dy.
-//
-// Anchors should be specified under the assumption that the text direction
-// is left-to-right; they will be flipped horizontally automatically if the
-// text direction is right-to-left.
-//
-// Other properties that influence the behaviour of this function are
-// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-// signal to find out how it was actually positioned.
-func (m menu) PopupAtRect(rectWindow gdk.Window, rect *gdk.Rectangle, rectAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
-	var _arg0 *C.GtkMenu
-	var _arg1 *C.GdkWindow
-	var _arg2 *C.GdkRectangle
-	var _arg3 C.GdkGravity
-	var _arg4 C.GdkGravity
-	var _arg5 *C.GdkEvent
-
-	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(rectWindow.Native()))
-	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
-	_arg3 = (C.GdkGravity)(rectAnchor)
-	_arg4 = (C.GdkGravity)(menuAnchor)
-	var _arg5 *C.GdkEvent // unsupported
-
-	C.gtk_menu_popup_at_rect(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// PopupAtWidget displays @menu and makes it available for selection.
-//
-// See gtk_menu_popup_at_pointer () to pop up a menu at the master pointer.
-// gtk_menu_popup_at_rect () also allows you to position a menu at an
-// arbitrary rectangle.
-//
-// ! (popup-anchors.png)
-//
-// @menu will be positioned at @widget, aligning their anchor points.
-// @widget_anchor and @menu_anchor determine anchor points on @widget and
-// @menu to pin together. @menu can optionally be offset by
-// Menu:rect-anchor-dx and Menu:rect-anchor-dy.
-//
-// Anchors should be specified under the assumption that the text direction
-// is left-to-right; they will be flipped horizontally automatically if the
-// text direction is right-to-left.
-//
-// Other properties that influence the behaviour of this function are
-// Menu:anchor-hints and Menu:menu-type-hint. Connect to the Menu::popped-up
-// signal to find out how it was actually positioned.
-func (m menu) PopupAtWidget(widget Widget, widgetAnchor gdk.Gravity, menuAnchor gdk.Gravity, triggerEvent *gdk.Event) {
+// Note that this function does not work very well on GDK backends that do
+// not have global coordinates, such as Wayland or Mir. You should probably
+// use one of the gtk_menu_popup_at_ variants, which do not have this
+// problem.
+func (m menu) Popup(parentMenuShell Widget, parentMenuItem Widget, fn MenuPositionFunc, button uint, activateTime uint32) {
 	var _arg0 *C.GtkMenu
 	var _arg1 *C.GtkWidget
-	var _arg2 C.GdkGravity
-	var _arg3 C.GdkGravity
-	var _arg4 *C.GdkEvent
+	var _arg2 *C.GtkWidget
+	var _arg3 C.GtkMenuPositionFunc
+	var _arg4 C.gpointer
+	var _arg5 C.guint
+	var _arg6 C.guint32
 
 	_arg0 = (*C.GtkMenu)(unsafe.Pointer(m.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-	_arg2 = (C.GdkGravity)(widgetAnchor)
-	_arg3 = (C.GdkGravity)(menuAnchor)
-	var _arg4 *C.GdkEvent // unsupported
+	_arg1 = (*C.GtkWidget)(unsafe.Pointer(parentMenuShell.Native()))
+	_arg2 = (*C.GtkWidget)(unsafe.Pointer(parentMenuItem.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_MenuPositionFunc)
+	_arg4 = C.gpointer(box.Assign(fn))
+	_arg5 = C.guint(button)
+	_arg6 = C.guint32(activateTime)
 
-	C.gtk_menu_popup_at_widget(_arg0, _arg1, _arg2, _arg3, _arg4)
+	C.gtk_menu_popup(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // ReorderChild moves @child to a new @position in the list of @menu

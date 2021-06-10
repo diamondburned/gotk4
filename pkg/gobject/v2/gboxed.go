@@ -19,7 +19,7 @@ func BoxedCopy(boxedType externglib.Type, srcBoxed interface{}) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_boxed_copy(_arg1, _arg2)
+	_cret = C.g_boxed_copy(_arg1, _arg2)
 
 	var _gpointer interface{}
 

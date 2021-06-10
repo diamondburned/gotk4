@@ -65,7 +65,7 @@ func (d *Dir) ReadName() *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dir_read_name(_arg0)
+	_cret = C.g_dir_read_name(_arg0)
 
 	var _filename *string
 

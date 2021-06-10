@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,13 +36,8 @@ func init() {
 type StringFilter interface {
 	Filter
 
-	// Expression gets the expression that the string filter uses to obtain
-	// strings from items.
-	Expression() Expression
 	// IgnoreCase returns whether the filter ignores case differences.
 	IgnoreCase() bool
-	// MatchMode returns the match mode that the filter is using.
-	MatchMode() StringFilterMatchMode
 	// Search gets the search term.
 	Search() string
 	// SetExpression sets the expression that the string filter uses to obtain
@@ -80,41 +74,6 @@ func marshalStringFilter(p uintptr) (interface{}, error) {
 	return WrapStringFilter(obj), nil
 }
 
-// NewStringFilter constructs a class StringFilter.
-func NewStringFilter(expression Expression) StringFilter {
-	var _arg1 *C.GtkExpression
-
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkStringFilter
-
-	cret = C.gtk_string_filter_new(_arg1)
-
-	var _stringFilter StringFilter
-
-	_stringFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(StringFilter)
-
-	return _stringFilter
-}
-
-// Expression gets the expression that the string filter uses to obtain
-// strings from items.
-func (s stringFilter) Expression() Expression {
-	var _arg0 *C.GtkStringFilter
-
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression
-
-	cret = C.gtk_string_filter_get_expression(_arg0)
-
-	var _expression Expression
-
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
-
-	return _expression
-}
-
 // IgnoreCase returns whether the filter ignores case differences.
 func (s stringFilter) IgnoreCase() bool {
 	var _arg0 *C.GtkStringFilter
@@ -123,7 +82,7 @@ func (s stringFilter) IgnoreCase() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_string_filter_get_ignore_case(_arg0)
+	_cret = C.gtk_string_filter_get_ignore_case(_arg0)
 
 	var _ok bool
 
@@ -134,23 +93,6 @@ func (s stringFilter) IgnoreCase() bool {
 	return _ok
 }
 
-// MatchMode returns the match mode that the filter is using.
-func (s stringFilter) MatchMode() StringFilterMatchMode {
-	var _arg0 *C.GtkStringFilter
-
-	_arg0 = (*C.GtkStringFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkStringFilterMatchMode
-
-	cret = C.gtk_string_filter_get_match_mode(_arg0)
-
-	var _stringFilterMatchMode StringFilterMatchMode
-
-	_stringFilterMatchMode = StringFilterMatchMode(_cret)
-
-	return _stringFilterMatchMode
-}
-
 // Search gets the search term.
 func (s stringFilter) Search() string {
 	var _arg0 *C.GtkStringFilter
@@ -159,7 +101,7 @@ func (s stringFilter) Search() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_string_filter_get_search(_arg0)
+	_cret = C.gtk_string_filter_get_search(_arg0)
 
 	var _utf8 string
 

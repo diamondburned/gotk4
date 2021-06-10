@@ -30,7 +30,7 @@ func RefStringAcquire(str string) string {
 
 	var _cret *C.char
 
-	cret = C.g_ref_string_acquire(_arg1)
+	_cret = C.g_ref_string_acquire(_arg1)
 
 	var _utf8 string
 
@@ -49,7 +49,7 @@ func RefStringLength(str string) uint {
 
 	var _cret C.gsize
 
-	cret = C.g_ref_string_length(_arg1)
+	_cret = C.g_ref_string_length(_arg1)
 
 	var _gsize uint
 
@@ -68,7 +68,7 @@ func NewRefString(str string) string {
 
 	var _cret *C.char
 
-	cret = C.g_ref_string_new(_arg1)
+	_cret = C.g_ref_string_new(_arg1)
 
 	var _utf8 string
 
@@ -92,7 +92,7 @@ func RefStringNewIntern(str string) string {
 
 	var _cret *C.char
 
-	cret = C.g_ref_string_new_intern(_arg1)
+	_cret = C.g_ref_string_new_intern(_arg1)
 
 	var _utf8 string
 
@@ -117,7 +117,7 @@ func RefStringNewLen(str string, len int) string {
 
 	var _cret *C.char
 
-	cret = C.g_ref_string_new_len(_arg1, _arg2)
+	_cret = C.g_ref_string_new_len(_arg1, _arg2)
 
 	var _utf8 string
 

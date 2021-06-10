@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -16,10 +17,51 @@ import "C"
 // convenience wrapper for g_hmac_new(), g_hmac_get_string() and g_hmac_unref().
 //
 // The hexadecimal string returned will be in lower case.
-func ComputeHMACForData() string {
+func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
+	var _arg1 C.GChecksumType
+	var _arg2 *C.guchar
+	var _arg3 C.gsize
+	var _arg4 *C.guchar
+	var _arg5 C.gsize
+
+	_arg1 = (C.GChecksumType)(digestType)
+	_arg3 = C.gsize(len(key))
+	_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
+	_arg5 = C.gsize(len(data))
+	_arg4 = (*C.guchar)(unsafe.Pointer(&data[0]))
+
 	var _cret *C.gchar
 
-	cret = C.g_compute_hmac_for_data()
+	_cret = C.g_compute_hmac_for_data(_arg1, _arg2, _arg3, _arg4, _arg5)
+
+	var _utf8 string
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
+}
+
+// ComputeHMACForString computes the HMAC for a string.
+//
+// The hexadecimal string returned will be in lower case.
+func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
+	var _arg1 C.GChecksumType
+	var _arg2 *C.guchar
+	var _arg3 C.gsize
+	var _arg4 *C.gchar
+	var _arg5 C.gssize
+
+	_arg1 = (C.GChecksumType)(digestType)
+	_arg3 = C.gsize(len(key))
+	_arg2 = (*C.guchar)(unsafe.Pointer(&key[0]))
+	_arg4 = (*C.gchar)(C.CString(str))
+	defer C.free(unsafe.Pointer(_arg4))
+	_arg5 = C.gssize(length)
+
+	var _cret *C.gchar
+
+	_cret = C.g_compute_hmac_for_string(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _utf8 string
 
@@ -55,38 +97,6 @@ func (h *HMAC) Native() unsafe.Pointer {
 	return unsafe.Pointer(&h.native)
 }
 
-// Copy copies a #GHmac. If @hmac has been closed, by calling
-// g_hmac_get_string() or g_hmac_get_digest(), the copied HMAC will be closed as
-// well.
-func (h *HMAC) Copy() *HMAC {
-	var _arg0 *C.GHmac
-
-	_arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
-
-	var _cret *C.GHmac
-
-	cret = C.g_hmac_copy(_arg0)
-
-	var _ret *HMAC
-
-	_ret = WrapHMAC(unsafe.Pointer(_cret))
-
-	return _ret
-}
-
-// Digest gets the digest from @checksum as a raw binary array and places it
-// into @buffer. The size of the digest depends on the type of checksum.
-//
-// Once this function has been called, the #GHmac is closed and can no longer be
-// updated with g_checksum_update().
-func (h *HMAC) Digest() {
-	var _arg0 *C.GHmac
-
-	_arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
-
-	C.g_hmac_get_digest(_arg0)
-}
-
 // String gets the HMAC as a hexadecimal string.
 //
 // Once this function has been called the #GHmac can no longer be updated with
@@ -100,32 +110,13 @@ func (h *HMAC) String() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_hmac_get_string(_arg0)
+	_cret = C.g_hmac_get_string(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Ref: atomically increments the reference count of @hmac by one.
-//
-// This function is MT-safe and may be called from any thread.
-func (h *HMAC) Ref() *HMAC {
-	var _arg0 *C.GHmac
-
-	_arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
-
-	var _cret *C.GHmac
-
-	cret = C.g_hmac_ref(_arg0)
-
-	var _ret *HMAC
-
-	_ret = WrapHMAC(unsafe.Pointer(_cret))
-
-	return _ret
 }
 
 // Unref: atomically decrements the reference count of @hmac by one.
@@ -145,10 +136,14 @@ func (h *HMAC) Unref() {
 //
 // The HMAC must still be open, that is g_hmac_get_string() or
 // g_hmac_get_digest() must not have been called on @hmac.
-func (h *HMAC) Update() {
+func (h *HMAC) Update(data []byte) {
 	var _arg0 *C.GHmac
+	var _arg1 *C.guchar
+	var _arg2 C.gssize
 
 	_arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
+	_arg2 = C.gssize(len(data))
+	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
 
-	C.g_hmac_update(_arg0)
+	C.g_hmac_update(_arg0, _arg1, _arg2)
 }

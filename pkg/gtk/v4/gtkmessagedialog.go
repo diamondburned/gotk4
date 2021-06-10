@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -69,13 +68,6 @@ type MessageDialog interface {
 	Root
 	ShortcutManager
 
-	// MessageArea returns the message area of the dialog.
-	//
-	// This is the box where the dialog’s primary and secondary labels are
-	// packed. You can add your own extra content to that box and it will appear
-	// below those labels. See [method@Gtk.Dialog.get_content_area] for the
-	// corresponding function in the parent [class@Gtk.Dialog].
-	MessageArea() Widget
 	// SetMarkup sets the text of the message dialog.
 	SetMarkup(str string)
 }
@@ -111,28 +103,6 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMessageDialog(obj), nil
-}
-
-// MessageArea returns the message area of the dialog.
-//
-// This is the box where the dialog’s primary and secondary labels are
-// packed. You can add your own extra content to that box and it will appear
-// below those labels. See [method@Gtk.Dialog.get_content_area] for the
-// corresponding function in the parent [class@Gtk.Dialog].
-func (m messageDialog) MessageArea() Widget {
-	var _arg0 *C.GtkMessageDialog
-
-	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_message_dialog_get_message_area(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // SetMarkup sets the text of the message dialog.

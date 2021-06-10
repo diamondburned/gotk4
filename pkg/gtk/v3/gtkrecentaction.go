@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -70,62 +67,6 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 	return WrapRecentAction(obj), nil
 }
 
-// NewRecentAction constructs a class RecentAction.
-func NewRecentAction(name string, label string, tooltip string, stockId string) RecentAction {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(tooltip))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg4))
-
-	var _cret C.GtkRecentAction
-
-	cret = C.gtk_recent_action_new(_arg1, _arg2, _arg3, _arg4)
-
-	var _recentAction RecentAction
-
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
-
-	return _recentAction
-}
-
-// NewRecentActionForManager constructs a class RecentAction.
-func NewRecentActionForManager(name string, label string, tooltip string, stockId string, manager RecentManager) RecentAction {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 *C.gchar
-	var _arg5 *C.GtkRecentManager
-
-	_arg1 = (*C.gchar)(C.CString(name))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(tooltip))
-	defer C.free(unsafe.Pointer(_arg3))
-	_arg4 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.GtkRecentManager)(unsafe.Pointer(manager.Native()))
-
-	var _cret C.GtkRecentAction
-
-	cret = C.gtk_recent_action_new_for_manager(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _recentAction RecentAction
-
-	_recentAction = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(RecentAction)
-
-	return _recentAction
-}
-
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
 func (a recentAction) ShowNumbers() bool {
@@ -135,7 +76,7 @@ func (a recentAction) ShowNumbers() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_action_get_show_numbers(_arg0)
+	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
 
 	var _ok bool
 

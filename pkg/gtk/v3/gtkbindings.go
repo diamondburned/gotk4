@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,7 +30,7 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 
 	var _cret C.gboolean
 
-	cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
+	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
 
 	var _ok bool
 
@@ -53,7 +52,7 @@ func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_bindings_activate_event(_arg1, _arg2)
+	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 
 	var _ok bool
 
@@ -130,41 +129,6 @@ func (b *BindingEntry) Keyval() uint {
 	return v
 }
 
-// Modifiers gets the field inside the struct.
-func (b *BindingEntry) Modifiers() gdk.ModifierType {
-	var v gdk.ModifierType
-	v = gdk.ModifierType(b.native.modifiers)
-	return v
-}
-
-// BindingSet gets the field inside the struct.
-func (b *BindingEntry) BindingSet() *BindingSet {
-	var v *BindingSet
-	v = WrapBindingSet(unsafe.Pointer(b.native.binding_set))
-	return v
-}
-
-// SetNext gets the field inside the struct.
-func (b *BindingEntry) SetNext() *BindingEntry {
-	var v *BindingEntry
-	v = WrapBindingEntry(unsafe.Pointer(b.native.set_next))
-	return v
-}
-
-// HashNext gets the field inside the struct.
-func (b *BindingEntry) HashNext() *BindingEntry {
-	var v *BindingEntry
-	v = WrapBindingEntry(unsafe.Pointer(b.native.hash_next))
-	return v
-}
-
-// Signals gets the field inside the struct.
-func (b *BindingEntry) Signals() *BindingSignal {
-	var v *BindingSignal
-	v = WrapBindingSignal(unsafe.Pointer(b.native.signals))
-	return v
-}
-
 // BindingSet: a binding set maintains a list of activatable key bindings. A
 // single binding set can match multiple types of widgets. Similar to style
 // contexts, can be matched by any information contained in a widgets
@@ -208,41 +172,6 @@ func (b *BindingSet) Priority() int {
 	return v
 }
 
-// WidgetPathPspecs gets the field inside the struct.
-func (b *BindingSet) WidgetPathPspecs() *glib.SList {
-	var v *glib.SList
-	v = glib.WrapSList(unsafe.Pointer(b.native.widget_path_pspecs))
-	return v
-}
-
-// WidgetClassPspecs gets the field inside the struct.
-func (b *BindingSet) WidgetClassPspecs() *glib.SList {
-	var v *glib.SList
-	v = glib.WrapSList(unsafe.Pointer(b.native.widget_class_pspecs))
-	return v
-}
-
-// ClassBranchPspecs gets the field inside the struct.
-func (b *BindingSet) ClassBranchPspecs() *glib.SList {
-	var v *glib.SList
-	v = glib.WrapSList(unsafe.Pointer(b.native.class_branch_pspecs))
-	return v
-}
-
-// Entries gets the field inside the struct.
-func (b *BindingSet) Entries() *BindingEntry {
-	var v *BindingEntry
-	v = WrapBindingEntry(unsafe.Pointer(b.native.entries))
-	return v
-}
-
-// Current gets the field inside the struct.
-func (b *BindingSet) Current() *BindingEntry {
-	var v *BindingEntry
-	v = WrapBindingEntry(unsafe.Pointer(b.native.current))
-	return v
-}
-
 // Activate: find a key binding matching @keyval and @modifiers within
 // @binding_set and activate the binding on @object.
 func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
@@ -258,7 +187,7 @@ func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object ge
 
 	var _cret C.gboolean
 
-	cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
 
 	var _ok bool
 
@@ -312,13 +241,6 @@ func marshalBindingSignal(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (b *BindingSignal) Native() unsafe.Pointer {
 	return unsafe.Pointer(&b.native)
-}
-
-// Next gets the field inside the struct.
-func (b *BindingSignal) Next() *BindingSignal {
-	var v *BindingSignal
-	v = WrapBindingSignal(unsafe.Pointer(b.native.next))
-	return v
 }
 
 // SignalName gets the field inside the struct.

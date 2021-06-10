@@ -91,63 +91,6 @@ func marshalRuleset(p uintptr) (interface{}, error) {
 	return WrapRuleset(obj), nil
 }
 
-// NewRuleset constructs a class Ruleset.
-func NewRuleset(info Info) Ruleset {
-	var _arg1 *C.PangoOTInfo
-
-	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
-
-	var _cret C.PangoOTRuleset
-
-	cret = C.pango_ot_ruleset_new(_arg1)
-
-	var _ruleset Ruleset
-
-	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
-
-	return _ruleset
-}
-
-// NewRulesetFor constructs a class Ruleset.
-func NewRulesetFor(info Info, script pango.Script, language *pango.Language) Ruleset {
-	var _arg1 *C.PangoOTInfo
-	var _arg2 C.PangoScript
-	var _arg3 *C.PangoLanguage
-
-	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
-	_arg2 = (C.PangoScript)(script)
-	_arg3 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
-
-	var _cret C.PangoOTRuleset
-
-	cret = C.pango_ot_ruleset_new_for(_arg1, _arg2, _arg3)
-
-	var _ruleset Ruleset
-
-	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
-
-	return _ruleset
-}
-
-// NewRulesetFromDescription constructs a class Ruleset.
-func NewRulesetFromDescription(info Info, desc *RulesetDescription) Ruleset {
-	var _arg1 *C.PangoOTInfo
-	var _arg2 *C.PangoOTRulesetDescription
-
-	_arg1 = (*C.PangoOTInfo)(unsafe.Pointer(info.Native()))
-	_arg2 = (*C.PangoOTRulesetDescription)(unsafe.Pointer(desc.Native()))
-
-	var _cret C.PangoOTRuleset
-
-	cret = C.pango_ot_ruleset_new_from_description(_arg1, _arg2)
-
-	var _ruleset Ruleset
-
-	_ruleset = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Ruleset)
-
-	return _ruleset
-}
-
 // AddFeature adds a feature to the ruleset.
 func (r ruleset) AddFeature(tableType TableType, featureIndex uint, propertyBit uint32) {
 	var _arg0 *C.PangoOTRuleset
@@ -173,7 +116,7 @@ func (r ruleset) FeatureCount() (nGsubFeatures uint, nGposFeatures uint, guint u
 	var _arg2 C.guint
 	var _cret C.guint
 
-	cret = C.pango_ot_ruleset_get_feature_count(_arg0, &_arg1, &_arg2)
+	_cret = C.pango_ot_ruleset_get_feature_count(_arg0, &_arg1, &_arg2)
 
 	var _nGsubFeatures uint
 	var _nGposFeatures uint
@@ -203,7 +146,7 @@ func (r ruleset) MaybeAddFeatures(tableType TableType, features *FeatureMap, nFe
 
 	var _cret C.guint
 
-	cret = C.pango_ot_ruleset_maybe_add_features(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.pango_ot_ruleset_maybe_add_features(_arg0, _arg1, _arg2, _arg3)
 
 	var _guint uint
 

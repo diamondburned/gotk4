@@ -3,7 +3,6 @@
 package glib
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
@@ -129,7 +128,7 @@ func MarkupEscapeText(text string, length int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_markup_escape_text(_arg1, _arg2)
+	_cret = C.g_markup_escape_text(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -212,39 +211,13 @@ func (c *MarkupParseContext) Element() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_markup_parse_context_get_element(_arg0)
+	_cret = C.g_markup_parse_context_get_element(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// ElementStack retrieves the element stack from the internal state of the
-// parser.
-//
-// The returned List is a list of strings where the first item is the currently
-// open tag (as would be returned by g_markup_parse_context_get_element()) and
-// the next item is its immediate parent.
-//
-// This function is intended to be used in the start_element and end_element
-// handlers where g_markup_parse_context_get_element() would merely return the
-// name of the element that is being processed.
-func (c *MarkupParseContext) ElementStack() *SList {
-	var _arg0 *C.GMarkupParseContext
-
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.g_markup_parse_context_get_element_stack(_arg0)
-
-	var _sList *SList
-
-	_sList = WrapSList(unsafe.Pointer(_cret))
-
-	return _sList
 }
 
 // Position retrieves the current line number and the number of the character on
@@ -282,7 +255,7 @@ func (c *MarkupParseContext) UserData() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_markup_parse_context_get_user_data(_arg0)
+	_cret = C.g_markup_parse_context_get_user_data(_arg0)
 
 	var _gpointer interface{}
 
@@ -340,33 +313,13 @@ func (c *MarkupParseContext) Pop() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_markup_parse_context_pop(_arg0)
+	_cret = C.g_markup_parse_context_pop(_arg0)
 
 	var _gpointer interface{}
 
 	_gpointer = (interface{})(_cret)
 
 	return _gpointer
-}
-
-// Ref increases the reference count of @context.
-func (c *MarkupParseContext) Ref() *MarkupParseContext {
-	var _arg0 *C.GMarkupParseContext
-
-	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GMarkupParseContext
-
-	cret = C.g_markup_parse_context_ref(_arg0)
-
-	var _markupParseContext *MarkupParseContext
-
-	_markupParseContext = WrapMarkupParseContext(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_markupParseContext, func(v *MarkupParseContext) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _markupParseContext
 }
 
 // Unref decreases the reference count of @context. When its reference count

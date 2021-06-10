@@ -29,7 +29,7 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 
 	var _cret *C.gchar
 
-	cret = C.glib_check_version(_arg1, _arg2, _arg3)
+	_cret = C.glib_check_version(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 

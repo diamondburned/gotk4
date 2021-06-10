@@ -3,12 +3,7 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
 // #cgo pkg-config:
@@ -16,27 +11,6 @@ import (
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
 import "C"
-
-// PrinterFunc: the type of function passed to gtk_enumerate_printers().
-//
-// Note that you need to ref @printer, if you want to keep a reference to it
-// after the function has returned.
-type PrinterFunc func() (ok bool)
-
-//export gotk4_PrinterFunc
-func gotk4_PrinterFunc(arg0 *C.GtkPrinter, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(PrinterFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}
 
 type PrintBackend struct {
 	native C.GtkPrintBackend

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -73,10 +70,6 @@ type Box interface {
 	Buildable
 	Orientable
 
-	// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-	BaselinePosition() BaselinePosition
-	// CenterWidget retrieves the center widget of the box.
-	CenterWidget() Widget
 	// Homogeneous returns whether the box is homogeneous (all children are the
 	// same size). See gtk_box_set_homogeneous().
 	Homogeneous() bool
@@ -90,9 +83,6 @@ type Box interface {
 	// @box. The @child is packed after any other child packed with reference to
 	// the start of @box.
 	PackStart(child Widget, expand bool, fill bool, padding uint)
-	// QueryChildPacking obtains information about how @child is packed into
-	// @box.
-	QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType PackType)
 	// ReorderChild moves @child to a new @position in the list of @box
 	// children. The list contains widgets packed K_PACK_START as well as
 	// widgets packed K_PACK_END, in the order that these widgets were added to
@@ -148,59 +138,6 @@ func marshalBox(p uintptr) (interface{}, error) {
 	return WrapBox(obj), nil
 }
 
-// NewBox constructs a class Box.
-func NewBox(orientation Orientation, spacing int) Box {
-	var _arg1 C.GtkOrientation
-	var _arg2 C.gint
-
-	_arg1 = (C.GtkOrientation)(orientation)
-	_arg2 = C.gint(spacing)
-
-	var _cret C.GtkBox
-
-	cret = C.gtk_box_new(_arg1, _arg2)
-
-	var _box Box
-
-	_box = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Box)
-
-	return _box
-}
-
-// BaselinePosition gets the value set by gtk_box_set_baseline_position().
-func (b box) BaselinePosition() BaselinePosition {
-	var _arg0 *C.GtkBox
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GtkBaselinePosition
-
-	cret = C.gtk_box_get_baseline_position(_arg0)
-
-	var _baselinePosition BaselinePosition
-
-	_baselinePosition = BaselinePosition(_cret)
-
-	return _baselinePosition
-}
-
-// CenterWidget retrieves the center widget of the box.
-func (b box) CenterWidget() Widget {
-	var _arg0 *C.GtkBox
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_box_get_center_widget(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Homogeneous returns whether the box is homogeneous (all children are the
 // same size). See gtk_box_set_homogeneous().
 func (b box) Homogeneous() bool {
@@ -210,7 +147,7 @@ func (b box) Homogeneous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_box_get_homogeneous(_arg0)
+	_cret = C.gtk_box_get_homogeneous(_arg0)
 
 	var _ok bool
 
@@ -229,7 +166,7 @@ func (b box) Spacing() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_box_get_spacing(_arg0)
+	_cret = C.gtk_box_get_spacing(_arg0)
 
 	var _gint int
 
@@ -282,39 +219,6 @@ func (b box) PackStart(child Widget, expand bool, fill bool, padding uint) {
 	_arg4 = C.guint(padding)
 
 	C.gtk_box_pack_start(_arg0, _arg1, _arg2, _arg3, _arg4)
-}
-
-// QueryChildPacking obtains information about how @child is packed into
-// @box.
-func (b box) QueryChildPacking(child Widget) (expand bool, fill bool, padding uint, packType PackType) {
-	var _arg0 *C.GtkBox
-	var _arg1 *C.GtkWidget
-
-	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
-
-	var _arg2 C.gboolean
-	var _arg3 C.gboolean
-	var _arg4 C.guint
-	var _arg5 C.GtkPackType
-
-	C.gtk_box_query_child_packing(_arg0, _arg1, &_arg2, &_arg3, &_arg4, &_arg5)
-
-	var _expand bool
-	var _fill bool
-	var _padding uint
-	var _packType PackType
-
-	if _arg2 {
-		_expand = true
-	}
-	if _arg3 {
-		_fill = true
-	}
-	_padding = (uint)(_arg4)
-	_packType = PackType(_arg5)
-
-	return _expand, _fill, _padding, _packType
 }
 
 // ReorderChild moves @child to a new @position in the list of @box

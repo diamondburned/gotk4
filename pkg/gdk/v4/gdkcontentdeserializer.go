@@ -3,11 +3,10 @@
 package gdk
 
 import (
-	"runtime"
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -26,8 +25,25 @@ import "C"
 //
 // When the operation is finished, @callback will be called. You must then call
 // [func@content_deserialize_finish] to get the result of the operation.
-func ContentDeserializeAsync() {
-	C.gdk_content_deserialize_async()
+func ContentDeserializeAsync(stream gio.InputStream, mimeType string, typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
+	var _arg1 *C.GInputStream
+	var _arg2 *C.char
+	var _arg3 C.GType
+	var _arg4 C.int
+	var _arg5 *C.GCancellable
+	var _arg6 C.GAsyncReadyCallback
+	var _arg7 C.gpointer
+
+	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
+	_arg2 = (*C.char)(C.CString(mimeType))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = C.GType(typ)
+	_arg4 = C.int(ioPriority)
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(box.Assign(callback))
+
+	C.gdk_content_deserialize_async(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 // ContentDeserializeFinish finishes a content deserialization operation.
@@ -47,10 +63,4 @@ func ContentDeserializeFinish(result gio.AsyncResult, value **externglib.Value) 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
-}
-
-// ContentRegisterDeserializer registers a function to deserialize object of a
-// given type.
-func ContentRegisterDeserializer() {
-	C.gdk_content_register_deserializer()
 }

@@ -5,9 +5,6 @@ package gdk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -23,48 +20,11 @@ func init() {
 	})
 }
 
-// EventFunc specifies the type of function passed to gdk_event_handler_set() to
-// handle all GDK events.
-type EventFunc func()
-
-//export gotk4_EventFunc
-func gotk4_EventFunc(arg0 *C.GdkEvent, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(EventFunc)
-	fn()
-}
-
-// FilterFunc specifies the type of function used to filter native events before
-// they are converted to GDK events.
-//
-// When a filter is called, @event is unpopulated, except for `event->window`.
-// The filter may translate the native event to a GDK event and store the result
-// in @event, or handle it without translation. If the filter translates the
-// event and processing should continue, it should return GDK_FILTER_TRANSLATE.
-type FilterFunc func() (filterReturn FilterReturn)
-
-//export gotk4_FilterFunc
-func gotk4_FilterFunc(arg0 *C.GdkXEvent, arg1 *C.GdkEvent, arg2 C.gpointer) C.GdkFilterReturn {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(FilterFunc)
-	filterReturn := fn()
-
-	cret = (C.GdkFilterReturn)(filterReturn)
-}
-
 // EventsPending checks if any events are ready to be processed for any display.
 func EventsPending() bool {
 	var _cret C.gboolean
 
-	cret = C.gdk_events_pending()
+	_cret = C.gdk_events_pending()
 
 	var _ok bool
 
@@ -79,7 +39,7 @@ func EventsPending() bool {
 func GetShowEvents() bool {
 	var _cret C.gboolean
 
-	cret = C.gdk_get_show_events()
+	_cret = C.gdk_get_show_events()
 
 	var _ok bool
 
@@ -115,7 +75,7 @@ func SettingGet(name string, value **externglib.Value) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_setting_get(_arg1, _arg2)
+	_cret = C.gdk_setting_get(_arg1, _arg2)
 
 	var _ok bool
 
@@ -150,20 +110,6 @@ func marshalEventAny(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (e *EventAny) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
-}
-
-// Type gets the field inside the struct.
-func (e *EventAny) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventAny) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
 }
 
 // SendEvent gets the field inside the struct.
@@ -222,20 +168,6 @@ func (e *EventButton) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventButton) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventButton) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventButton) SendEvent() int8 {
 	var v int8
@@ -271,24 +203,10 @@ func (e *EventButton) Axes() *float64 {
 	return v
 }
 
-// State gets the field inside the struct.
-func (e *EventButton) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
-	return v
-}
-
 // Button gets the field inside the struct.
 func (e *EventButton) Button() uint {
 	var v uint
 	v = (uint)(e.native.button)
-	return v
-}
-
-// Device gets the field inside the struct.
-func (e *EventButton) Device() Device {
-	var v Device
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device.Native()))).(Device)
 	return v
 }
 
@@ -329,20 +247,6 @@ func marshalEventConfigure(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (e *EventConfigure) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
-}
-
-// Type gets the field inside the struct.
-func (e *EventConfigure) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventConfigure) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
 }
 
 // SendEvent gets the field inside the struct.
@@ -405,31 +309,10 @@ func (e *EventCrossing) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventCrossing) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventCrossing) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventCrossing) SendEvent() int8 {
 	var v int8
 	v = (int8)(e.native.send_event)
-	return v
-}
-
-// Subwindow gets the field inside the struct.
-func (e *EventCrossing) Subwindow() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.subwindow.Native()))).(Window)
 	return v
 }
 
@@ -468,33 +351,12 @@ func (e *EventCrossing) YRoot() float64 {
 	return v
 }
 
-// Mode gets the field inside the struct.
-func (e *EventCrossing) Mode() CrossingMode {
-	var v CrossingMode
-	v = CrossingMode(e.native.mode)
-	return v
-}
-
-// Detail gets the field inside the struct.
-func (e *EventCrossing) Detail() NotifyType {
-	var v NotifyType
-	v = NotifyType(e.native.detail)
-	return v
-}
-
 // Focus gets the field inside the struct.
 func (e *EventCrossing) Focus() bool {
 	var v bool
 	if e.native.focus {
 		v = true
 	}
-	return v
-}
-
-// State gets the field inside the struct.
-func (e *EventCrossing) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
 	return v
 }
 
@@ -523,31 +385,10 @@ func (e *EventDND) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventDND) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventDND) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventDND) SendEvent() int8 {
 	var v int8
 	v = (int8)(e.native.send_event)
-	return v
-}
-
-// Context gets the field inside the struct.
-func (e *EventDND) Context() DragContext {
-	var v DragContext
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.context.Native()))).(DragContext)
 	return v
 }
 
@@ -598,38 +439,10 @@ func (e *EventExpose) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventExpose) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventExpose) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventExpose) SendEvent() int8 {
 	var v int8
 	v = (int8)(e.native.send_event)
-	return v
-}
-
-// Area gets the field inside the struct.
-func (e *EventExpose) Area() Rectangle {
-	var v Rectangle
-	v = *WrapRectangle(unsafe.Pointer(&e.native.area))
-	return v
-}
-
-// Region gets the field inside the struct.
-func (e *EventExpose) Region() *cairo.Region {
-	var v *cairo.Region
-	v = cairo.WrapRegion(unsafe.Pointer(e.native.region))
 	return v
 }
 
@@ -663,20 +476,6 @@ func marshalEventFocus(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (e *EventFocus) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
-}
-
-// Type gets the field inside the struct.
-func (e *EventFocus) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventFocus) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
 }
 
 // SendEvent gets the field inside the struct.
@@ -722,20 +521,6 @@ func (e *EventGrabBroken) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventGrabBroken) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventGrabBroken) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventGrabBroken) SendEvent() int8 {
 	var v int8
@@ -758,13 +543,6 @@ func (e *EventGrabBroken) Implicit() bool {
 	if e.native.implicit {
 		v = true
 	}
-	return v
-}
-
-// GrabWindow gets the field inside the struct.
-func (e *EventGrabBroken) GrabWindow() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.grab_window.Native()))).(Window)
 	return v
 }
 
@@ -793,20 +571,6 @@ func (e *EventKey) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventKey) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventKey) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventKey) SendEvent() int8 {
 	var v int8
@@ -818,13 +582,6 @@ func (e *EventKey) SendEvent() int8 {
 func (e *EventKey) Time() uint32 {
 	var v uint32
 	v = (uint32)(e.native.time)
-	return v
-}
-
-// State gets the field inside the struct.
-func (e *EventKey) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
 	return v
 }
 
@@ -888,20 +645,6 @@ func (e *EventMotion) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventMotion) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventMotion) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventMotion) SendEvent() int8 {
 	var v int8
@@ -937,24 +680,10 @@ func (e *EventMotion) Axes() *float64 {
 	return v
 }
 
-// State gets the field inside the struct.
-func (e *EventMotion) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
-	return v
-}
-
 // IsHint gets the field inside the struct.
 func (e *EventMotion) IsHint() int16 {
 	var v int16
 	v = (int16)(e.native.is_hint)
-	return v
-}
-
-// Device gets the field inside the struct.
-func (e *EventMotion) Device() Device {
-	var v Device
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device.Native()))).(Device)
 	return v
 }
 
@@ -999,45 +728,10 @@ func (e *EventOwnerChange) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventOwnerChange) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventOwnerChange) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventOwnerChange) SendEvent() int8 {
 	var v int8
 	v = (int8)(e.native.send_event)
-	return v
-}
-
-// Owner gets the field inside the struct.
-func (e *EventOwnerChange) Owner() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.owner.Native()))).(Window)
-	return v
-}
-
-// Reason gets the field inside the struct.
-func (e *EventOwnerChange) Reason() OwnerChange {
-	var v OwnerChange
-	v = OwnerChange(e.native.reason)
-	return v
-}
-
-// Selection gets the field inside the struct.
-func (e *EventOwnerChange) Selection() Atom {
-	var v Atom
-	v = *WrapAtom(unsafe.Pointer(&e.native.selection))
 	return v
 }
 
@@ -1079,20 +773,6 @@ func marshalEventPadAxis(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (e *EventPadAxis) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
-}
-
-// Type gets the field inside the struct.
-func (e *EventPadAxis) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventPadAxis) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
 }
 
 // SendEvent gets the field inside the struct.
@@ -1163,20 +843,6 @@ func (e *EventPadButton) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventPadButton) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventPadButton) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventPadButton) SendEvent() int8 {
 	var v int8
@@ -1238,20 +904,6 @@ func (e *EventPadGroupMode) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventPadGroupMode) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventPadGroupMode) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventPadGroupMode) SendEvent() int8 {
 	var v int8
@@ -1305,20 +957,6 @@ func (e *EventProperty) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventProperty) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventProperty) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventProperty) SendEvent() int8 {
 	var v int8
@@ -1326,24 +964,10 @@ func (e *EventProperty) SendEvent() int8 {
 	return v
 }
 
-// Atom gets the field inside the struct.
-func (e *EventProperty) Atom() Atom {
-	var v Atom
-	v = *WrapAtom(unsafe.Pointer(&e.native.atom))
-	return v
-}
-
 // Time gets the field inside the struct.
 func (e *EventProperty) Time() uint32 {
 	var v uint32
 	v = (uint32)(e.native.time)
-	return v
-}
-
-// State gets the field inside the struct.
-func (e *EventProperty) State() PropertyState {
-	var v PropertyState
-	v = PropertyState(e.native.state)
 	return v
 }
 
@@ -1380,20 +1004,6 @@ func (e *EventProximity) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventProximity) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventProximity) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventProximity) SendEvent() int8 {
 	var v int8
@@ -1405,13 +1015,6 @@ func (e *EventProximity) SendEvent() int8 {
 func (e *EventProximity) Time() uint32 {
 	var v uint32
 	v = (uint32)(e.native.time)
-	return v
-}
-
-// Device gets the field inside the struct.
-func (e *EventProximity) Device() Device {
-	var v Device
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device.Native()))).(Device)
 	return v
 }
 
@@ -1446,20 +1049,6 @@ func (e *EventScroll) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventScroll) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventScroll) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventScroll) SendEvent() int8 {
 	var v int8
@@ -1485,27 +1074,6 @@ func (e *EventScroll) X() float64 {
 func (e *EventScroll) Y() float64 {
 	var v float64
 	v = (float64)(e.native.y)
-	return v
-}
-
-// State gets the field inside the struct.
-func (e *EventScroll) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
-	return v
-}
-
-// Direction gets the field inside the struct.
-func (e *EventScroll) Direction() ScrollDirection {
-	var v ScrollDirection
-	v = ScrollDirection(e.native.direction)
-	return v
-}
-
-// Device gets the field inside the struct.
-func (e *EventScroll) Device() Device {
-	var v Device
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device.Native()))).(Device)
 	return v
 }
 
@@ -1563,20 +1131,6 @@ func (e *EventSelection) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventSelection) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventSelection) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventSelection) SendEvent() int8 {
 	var v int8
@@ -1584,38 +1138,10 @@ func (e *EventSelection) SendEvent() int8 {
 	return v
 }
 
-// Selection gets the field inside the struct.
-func (e *EventSelection) Selection() Atom {
-	var v Atom
-	v = *WrapAtom(unsafe.Pointer(&e.native.selection))
-	return v
-}
-
-// Target gets the field inside the struct.
-func (e *EventSelection) Target() Atom {
-	var v Atom
-	v = *WrapAtom(unsafe.Pointer(&e.native.target))
-	return v
-}
-
-// Property gets the field inside the struct.
-func (e *EventSelection) Property() Atom {
-	var v Atom
-	v = *WrapAtom(unsafe.Pointer(&e.native.property))
-	return v
-}
-
 // Time gets the field inside the struct.
 func (e *EventSelection) Time() uint32 {
 	var v uint32
 	v = (uint32)(e.native.time)
-	return v
-}
-
-// Requestor gets the field inside the struct.
-func (e *EventSelection) Requestor() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.requestor.Native()))).(Window)
 	return v
 }
 
@@ -1668,31 +1194,10 @@ func (e *EventSetting) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventSetting) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventSetting) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventSetting) SendEvent() int8 {
 	var v int8
 	v = (int8)(e.native.send_event)
-	return v
-}
-
-// Action gets the field inside the struct.
-func (e *EventSetting) Action() SettingAction {
-	var v SettingAction
-	v = SettingAction(e.native.action)
 	return v
 }
 
@@ -1736,20 +1241,6 @@ func (e *EventTouch) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventTouch) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventTouch) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventTouch) SendEvent() int8 {
 	var v int8
@@ -1785,33 +1276,12 @@ func (e *EventTouch) Axes() *float64 {
 	return v
 }
 
-// State gets the field inside the struct.
-func (e *EventTouch) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
-	return v
-}
-
-// Sequence gets the field inside the struct.
-func (e *EventTouch) Sequence() *EventSequence {
-	var v *EventSequence
-	v = WrapEventSequence(unsafe.Pointer(e.native.sequence))
-	return v
-}
-
 // EmulatingPointer gets the field inside the struct.
 func (e *EventTouch) EmulatingPointer() bool {
 	var v bool
 	if e.native.emulating_pointer {
 		v = true
 	}
-	return v
-}
-
-// Device gets the field inside the struct.
-func (e *EventTouch) Device() Device {
-	var v Device
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.device.Native()))).(Device)
 	return v
 }
 
@@ -1852,20 +1322,6 @@ func marshalEventTouchpadPinch(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (e *EventTouchpadPinch) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
-}
-
-// Type gets the field inside the struct.
-func (e *EventTouchpadPinch) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventTouchpadPinch) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
 }
 
 // SendEvent gets the field inside the struct.
@@ -1952,13 +1408,6 @@ func (e *EventTouchpadPinch) YRoot() float64 {
 	return v
 }
 
-// State gets the field inside the struct.
-func (e *EventTouchpadPinch) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
-	return v
-}
-
 // EventTouchpadSwipe: generated during touchpad swipe gestures.
 type EventTouchpadSwipe struct {
 	native C.GdkEventTouchpadSwipe
@@ -1982,20 +1431,6 @@ func marshalEventTouchpadSwipe(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (e *EventTouchpadSwipe) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
-}
-
-// Type gets the field inside the struct.
-func (e *EventTouchpadSwipe) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventTouchpadSwipe) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
 }
 
 // SendEvent gets the field inside the struct.
@@ -2068,13 +1503,6 @@ func (e *EventTouchpadSwipe) YRoot() float64 {
 	return v
 }
 
-// State gets the field inside the struct.
-func (e *EventTouchpadSwipe) State() ModifierType {
-	var v ModifierType
-	v = ModifierType(e.native.state)
-	return v
-}
-
 // EventVisibility: generated when the window visibility status has changed.
 type EventVisibility struct {
 	native C.GdkEventVisibility
@@ -2100,31 +1528,10 @@ func (e *EventVisibility) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventVisibility) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventVisibility) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventVisibility) SendEvent() int8 {
 	var v int8
 	v = (int8)(e.native.send_event)
-	return v
-}
-
-// State gets the field inside the struct.
-func (e *EventVisibility) State() VisibilityState {
-	var v VisibilityState
-	v = VisibilityState(e.native.state)
 	return v
 }
 
@@ -2153,37 +1560,9 @@ func (e *EventWindowState) Native() unsafe.Pointer {
 	return unsafe.Pointer(&e.native)
 }
 
-// Type gets the field inside the struct.
-func (e *EventWindowState) Type() EventType {
-	var v EventType
-	v = EventType(e.native._type)
-	return v
-}
-
-// Window gets the field inside the struct.
-func (e *EventWindowState) Window() Window {
-	var v Window
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(e.native.window.Native()))).(Window)
-	return v
-}
-
 // SendEvent gets the field inside the struct.
 func (e *EventWindowState) SendEvent() int8 {
 	var v int8
 	v = (int8)(e.native.send_event)
-	return v
-}
-
-// ChangedMask gets the field inside the struct.
-func (e *EventWindowState) ChangedMask() WindowState {
-	var v WindowState
-	v = WindowState(e.native.changed_mask)
-	return v
-}
-
-// NewWindowState gets the field inside the struct.
-func (e *EventWindowState) NewWindowState() WindowState {
-	var v WindowState
-	v = WindowState(e.native.new_window_state)
 	return v
 }

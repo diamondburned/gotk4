@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -111,17 +110,4 @@ func marshalBuilderCScope(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapBuilderCScope(obj), nil
-}
-
-// NewBuilderCScope constructs a class BuilderCScope.
-func NewBuilderCScope() BuilderCScope {
-	var _cret C.GtkBuilderCScope
-
-	cret = C.gtk_builder_cscope_new()
-
-	var _builderCScope BuilderCScope
-
-	_builderCScope = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BuilderCScope)
-
-	return _builderCScope
 }

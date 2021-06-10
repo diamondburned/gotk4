@@ -16,7 +16,7 @@ func AtomicRCBoxAcquire(memBlock interface{}) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_atomic_rc_box_acquire(_arg1)
+	_cret = C.g_atomic_rc_box_acquire(_arg1)
 
 	var _gpointer interface{}
 
@@ -39,7 +39,7 @@ func AtomicRCBoxAlloc(blockSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_atomic_rc_box_alloc(_arg1)
+	_cret = C.g_atomic_rc_box_alloc(_arg1)
 
 	var _gpointer interface{}
 
@@ -64,7 +64,7 @@ func AtomicRCBoxAlloc0(blockSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_atomic_rc_box_alloc0(_arg1)
+	_cret = C.g_atomic_rc_box_alloc0(_arg1)
 
 	var _gpointer interface{}
 
@@ -84,7 +84,7 @@ func AtomicRCBoxDup(blockSize uint, memBlock interface{}) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_atomic_rc_box_dup(_arg1, _arg2)
+	_cret = C.g_atomic_rc_box_dup(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -102,7 +102,7 @@ func AtomicRCBoxGetSize(memBlock interface{}) uint {
 
 	var _cret C.gsize
 
-	cret = C.g_atomic_rc_box_get_size(_arg1)
+	_cret = C.g_atomic_rc_box_get_size(_arg1)
 
 	var _gsize uint
 
@@ -132,7 +132,7 @@ func RCBoxAcquire(memBlock interface{}) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_rc_box_acquire(_arg1)
+	_cret = C.g_rc_box_acquire(_arg1)
 
 	var _gpointer interface{}
 
@@ -155,7 +155,7 @@ func RCBoxAlloc(blockSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_rc_box_alloc(_arg1)
+	_cret = C.g_rc_box_alloc(_arg1)
 
 	var _gpointer interface{}
 
@@ -180,7 +180,7 @@ func RCBoxAlloc0(blockSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_rc_box_alloc0(_arg1)
+	_cret = C.g_rc_box_alloc0(_arg1)
 
 	var _gpointer interface{}
 
@@ -200,7 +200,7 @@ func RCBoxDup(blockSize uint, memBlock interface{}) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_rc_box_dup(_arg1, _arg2)
+	_cret = C.g_rc_box_dup(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -218,7 +218,7 @@ func RCBoxGetSize(memBlock interface{}) uint {
 
 	var _cret C.gsize
 
-	cret = C.g_rc_box_get_size(_arg1)
+	_cret = C.g_rc_box_get_size(_arg1)
 
 	var _gsize uint
 

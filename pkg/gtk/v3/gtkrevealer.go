@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -54,9 +51,6 @@ type Revealer interface {
 	// TransitionDuration returns the amount of time (in milliseconds) that
 	// transitions will take.
 	TransitionDuration() uint
-	// TransitionType gets the type of animation that will be used for
-	// transitions in @revealer.
-	TransitionType() RevealerTransitionType
 	// SetRevealChild tells the Revealer to reveal or conceal its child.
 	//
 	// The transition will be animated with the current transition type of
@@ -93,19 +87,6 @@ func marshalRevealer(p uintptr) (interface{}, error) {
 	return WrapRevealer(obj), nil
 }
 
-// NewRevealer constructs a class Revealer.
-func NewRevealer() Revealer {
-	var _cret C.GtkRevealer
-
-	cret = C.gtk_revealer_new()
-
-	var _revealer Revealer
-
-	_revealer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Revealer)
-
-	return _revealer
-}
-
 // ChildRevealed returns whether the child is fully revealed, in other words
 // whether the transition to the revealed state is completed.
 func (r revealer) ChildRevealed() bool {
@@ -115,7 +96,7 @@ func (r revealer) ChildRevealed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_revealer_get_child_revealed(_arg0)
+	_cret = C.gtk_revealer_get_child_revealed(_arg0)
 
 	var _ok bool
 
@@ -139,7 +120,7 @@ func (r revealer) RevealChild() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_revealer_get_reveal_child(_arg0)
+	_cret = C.gtk_revealer_get_reveal_child(_arg0)
 
 	var _ok bool
 
@@ -159,31 +140,13 @@ func (r revealer) TransitionDuration() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_revealer_get_transition_duration(_arg0)
+	_cret = C.gtk_revealer_get_transition_duration(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// TransitionType gets the type of animation that will be used for
-// transitions in @revealer.
-func (r revealer) TransitionType() RevealerTransitionType {
-	var _arg0 *C.GtkRevealer
-
-	_arg0 = (*C.GtkRevealer)(unsafe.Pointer(r.Native()))
-
-	var _cret C.GtkRevealerTransitionType
-
-	cret = C.gtk_revealer_get_transition_type(_arg0)
-
-	var _revealerTransitionType RevealerTransitionType
-
-	_revealerTransitionType = RevealerTransitionType(_cret)
-
-	return _revealerTransitionType
 }
 
 // SetRevealChild tells the Revealer to reveal or conceal its child.

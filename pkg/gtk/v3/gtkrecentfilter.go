@@ -5,8 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
@@ -17,25 +15,6 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// RecentFilterFunc: the type of function that is used with custom filters, see
-// gtk_recent_filter_add_custom().
-type RecentFilterFunc func() (ok bool)
-
-//export gotk4_RecentFilterFunc
-func gotk4_RecentFilterFunc(arg0 *C.GtkRecentFilterInfo, arg1 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(RecentFilterFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}
 
 // RecentFilterInfo: a GtkRecentFilterInfo struct is used to pass information
 // about the tested file to gtk_recent_filter_filter().
@@ -61,13 +40,6 @@ func marshalRecentFilterInfo(p uintptr) (interface{}, error) {
 // Native returns the underlying C source pointer.
 func (r *RecentFilterInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&r.native)
-}
-
-// Contains gets the field inside the struct.
-func (r *RecentFilterInfo) Contains() RecentFilterFlags {
-	var v RecentFilterFlags
-	v = RecentFilterFlags(r.native.contains)
-	return v
 }
 
 // URI gets the field inside the struct.
@@ -107,7 +79,7 @@ func (r *RecentFilterInfo) Applications() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(r.native.applications), int(length))
 
 		v = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			v = C.GoString(r.native.applications)
 		}
 	}
@@ -130,7 +102,7 @@ func (r *RecentFilterInfo) Groups() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(r.native.groups), int(length))
 
 		v = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			v = C.GoString(r.native.groups)
 		}
 	}

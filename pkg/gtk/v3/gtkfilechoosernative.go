@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -228,34 +227,6 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 	return WrapFileChooserNative(obj), nil
 }
 
-// NewFileChooserNative constructs a class FileChooserNative.
-func NewFileChooserNative(title string, parent Window, action FileChooserAction, acceptLabel string, cancelLabel string) FileChooserNative {
-	var _arg1 *C.gchar
-	var _arg2 *C.GtkWindow
-	var _arg3 C.GtkFileChooserAction
-	var _arg4 *C.gchar
-	var _arg5 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
-	_arg3 = (C.GtkFileChooserAction)(action)
-	_arg4 = (*C.gchar)(C.CString(acceptLabel))
-	defer C.free(unsafe.Pointer(_arg4))
-	_arg5 = (*C.gchar)(C.CString(cancelLabel))
-	defer C.free(unsafe.Pointer(_arg5))
-
-	var _cret C.GtkFileChooserNative
-
-	cret = C.gtk_file_chooser_native_new(_arg1, _arg2, _arg3, _arg4, _arg5)
-
-	var _fileChooserNative FileChooserNative
-
-	_fileChooserNative = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(FileChooserNative)
-
-	return _fileChooserNative
-}
-
 // AcceptLabel retrieves the custom label text for the accept button.
 func (s fileChooserNative) AcceptLabel() string {
 	var _arg0 *C.GtkFileChooserNative
@@ -264,7 +235,7 @@ func (s fileChooserNative) AcceptLabel() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
+	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
 
 	var _utf8 string
 
@@ -281,7 +252,7 @@ func (s fileChooserNative) CancelLabel() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
+	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
 
 	var _utf8 string
 

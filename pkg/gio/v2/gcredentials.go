@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -134,19 +133,6 @@ func marshalCredentials(p uintptr) (interface{}, error) {
 	return WrapCredentials(obj), nil
 }
 
-// NewCredentials constructs a class Credentials.
-func NewCredentials() Credentials {
-	var _cret C.GCredentials
-
-	cret = C.g_credentials_new()
-
-	var _credentials Credentials
-
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Credentials)
-
-	return _credentials
-}
-
 // Native gets a pointer to native credentials of type @native_type from
 // @credentials.
 //
@@ -162,7 +148,7 @@ func (c credentials) Native(nativeType CredentialsType) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_credentials_get_native(_arg0, _arg1)
+	_cret = C.g_credentials_get_native(_arg0, _arg1)
 
 	var _gpointer interface{}
 
@@ -186,7 +172,7 @@ func (c credentials) UnixPid() (int, error) {
 	var _cret C.pid_t
 	var _cerr *C.GError
 
-	cret = C.g_credentials_get_unix_pid(_arg0, _cerr)
+	_cret = C.g_credentials_get_unix_pid(_arg0, _cerr)
 
 	var _gint int
 	var _goerr error
@@ -211,7 +197,7 @@ func (c credentials) UnixUser() (uint, error) {
 	var _cret C.uid_t
 	var _cerr *C.GError
 
-	cret = C.g_credentials_get_unix_user(_arg0, _cerr)
+	_cret = C.g_credentials_get_unix_user(_arg0, _cerr)
 
 	var _guint uint
 	var _goerr error
@@ -297,7 +283,7 @@ func (c credentials) String() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_credentials_to_string(_arg0)
+	_cret = C.g_credentials_to_string(_arg0)
 
 	var _utf8 string
 

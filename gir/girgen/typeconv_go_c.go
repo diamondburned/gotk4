@@ -2,143 +2,45 @@ package girgen
 
 import (
 	"fmt"
-	"log"
-	"strings"
 )
 
 // Go to C type conversions.
 
-// TODO: is there a reason GoCConverter just doesn't take in ParameterAttr?
-
-// GoValueProp describes a Go variable.
-type GoValueProp struct {
-	ValueProp
-}
-
-// inner is used only for arrays.
-func (prop *GoValueProp) inner(in, out string) *GoValueProp {
-	return &GoValueProp{
-		ValueProp: prop.ValueProp.inner(in, out),
-	}
-}
-
 // TypeConversionToC describes a conversion of one or more Go values to C using
 // CGo.
 type TypeConversionToC struct {
-	values  []GoValueProp
-	ignores map[int]struct{}
-	parent  string // for debugging
-
 	conversionTo
 }
 
 // GoCConverter returns a new converter that converts a value from Go to C.
-func (fg *FileGenerator) GoCConverter(parent string, values []GoValueProp) *TypeConversionToC {
-	ignores := make(map[int]struct{}, 10)
-	for _, value := range values {
-		value.loadIgnore(ignores)
-	}
-
-	return &TypeConversionToC{
-		values:       values,
-		ignores:      ignores,
-		parent:       parent,
-		conversionTo: newConversionTo(fg, parent),
-	}
+func (fg *FileGenerator) GoCConverter(parent string, values []ValueProp) *TypeConversionToC {
+	conv := &TypeConversionToC{}
+	conv.conversionTo = newConversionTo(fg, parent, values, conv)
+	return conv
 }
 
-// ConvertAll converts all values.
-func (conv *TypeConversionToC) ConvertAll() []TypeConverted {
-	return ConvertAllValues(conv, len(conv.values))
-}
-
-// Convert converts the value at the given index.
-func (conv *TypeConversionToC) Convert(i int) *TypeConverted {
-	// Bound check.
-	if i >= len(conv.values) {
-		return nil
-	}
-
-	value := conv.values[i]
-	value.init()
-
-	// Ignored values are manually obtained in the conversion process, so we
-	// don't convert them here.
-	if value.ParameterIndex != nil {
-		_, ignore := conv.ignores[*value.ParameterIndex]
-		if ignore {
-			return &TypeConverted{}
-		}
-	}
-
-	// Reset the state when done. The returns all copy the internal state, so
-	// we're fine.
-	defer conv.reset()
-
-	conv.gocConverter(&value)
-	if conv.failed {
-		conv.logFail(LogDebug, "Go->C cannot convert type", anyTypeC(conv.values[i].AnyType))
-		return nil
-	}
-
-	if value.InType == "" || value.OutType == "" {
-		log.Panicln("missing CGoType or GoType for value", conv.parent, i)
-	}
-
-	c := value.TypeConverted
-	c.finalize()
-	c.ConversionSideEffects = conv.sides
-
-	return &c
-}
-
-func (conv *TypeConversionToC) valueAt(at int) *GoValueProp {
-	for _, value := range conv.values {
-		if value.ParameterIndex != nil && *value.ParameterIndex == at {
-			value.init()
-			return &value
-		}
-	}
-
-	conv.logFail(LogError, "Go->C conversion arg not found at", at)
-
-	prop := GoValueProp{ValueProp: errorValueProp}
-	prop.init()
-
-	return &prop
-}
-
-func (conv *TypeConversionToC) gocConverter(value *GoValueProp) {
-	if value.ValueProp == errorValueProp {
-		conv.fail()
-		return
-	}
-
+func (conv *TypeConversionToC) convert(value *ValueConverted) bool {
 	switch {
 	case value.AnyType.Type != nil:
-		conv.gocTypeConverter(value)
+		return conv.typeConverter(value)
 	case value.AnyType.Array != nil:
-		conv.gocArrayConverter(value)
+		return conv.arrayConverter(value)
 	default:
-		conv.fail()
+		return false
 	}
 }
 
-func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
+func (conv *TypeConversionToC) arrayConverter(value *ValueConverted) bool {
 	if value.AnyType.Array.Type == nil {
-		if !value.AllowNone {
-			conv.logFail(LogSkip, "nested array", value.AnyType.Array.CType)
-		}
-		return
+		conv.log(LogDebug, "Go->C skipping nested array", value.AnyType.Array.CType)
+		return value.AllowNone
 	}
 
 	array := value.AnyType.Array
 
-	inner := value.inner(value.InName+"[i]", "out[i]")
-	conv.gocConverter(inner)
-
-	if conv.failed {
-		return
+	inner := conv.convertInner(value, value.InName+"[i]", "out[i]")
+	if inner == nil {
+		return false
 	}
 
 	if array.FixedSize > 0 {
@@ -159,7 +61,7 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		// calllback, since the callback will retain Go memory beyond its
 		// lifetime which is bad.
 		if !value.isTransferring() && inner.resolved.CanCast() {
-			conv.sides.addImport("runtime")
+			value.addImport("runtime")
 
 			// We can directly use Go's array as a pointer, as long as we defer
 			// properly.
@@ -167,9 +69,8 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 				"%s = (%s)(unsafe.Pointer(&%s))",
 				value.OutName, value.OutType, value.InName,
 			)
-			value.p.Linef("defer runtime.KeepAlive(&%s)", value.OutName)
 
-			return
+			return true
 		}
 
 		// Target fixed array, so we can directly set the data over. The memory
@@ -180,36 +81,38 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 			array.FixedSize, inner.OutType, value.OutName)
 
 		value.p.Linef("for i := 0; i < %d; i++ {", array.FixedSize)
-		value.p.Linef("  " + inner.p.String())
+		value.p.Linef("  " + inner.Conversion)
 		value.p.Linef("}")
 
 		value.p.Ascend()
+		return true
 
 	case array.Length != nil:
-		length := conv.valueAt(*array.Length)
-		conv.gocConverter(length)
-		// Length has no input, as it's from the slice.
+		length := conv.convertParam(*array.Length)
+		if length == nil {
+			return false
+		}
 
+		// Length has no input, as it's from the slice.
 		value.outDecl.Linef("var %s %s", length.OutName, length.OutType)
 		value.p.Linef("%s = %s(len(%s))", length.OutName, length.OutType, value.InName)
 
 		// Use the backing array with the appropriate transfer-ownership rule
 		// for primitive types; see type_c_go.go.
 		if !value.isTransferring() && inner.resolved.CanCast() {
-			conv.sides.addImport("unsafe")
-			conv.sides.addImport("runtime")
+			value.addImport("unsafe")
+			value.addImport("runtime")
 
 			value.p.Linef(
 				"%s = (%s)(unsafe.Pointer(&%s[0]))",
 				value.OutName, value.OutType, value.InName,
 			)
-			value.p.Linef("defer runtime.KeepAlive(%s)", value.OutName)
 
-			return
+			return true
 		}
 
-		conv.sides.addImport(importInternal("ptr"))
-		conv.sides.addImport("unsafe")
+		value.addImport(importInternal("ptr"))
+		value.addImport("unsafe")
 
 		value.p.Linef(
 			"%s = (%s)(%s)",
@@ -227,19 +130,20 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		value.p.EmptyLine()
 
 		value.p.Linef("for i := range %s {", value.InName)
-		value.p.Linef(inner.p.String())
+		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
 		value.p.Ascend()
+		return true
 
 	case array.Name == "GLib.Array":
-		conv.sides.addImport(importInternal("ptr"))
-		conv.sides.addImport("unsafe")
+		value.addImport(importInternal("ptr"))
+		value.addImport("unsafe")
 
 		// https://developer.gnome.org/glib/stable/glib-Arrays.html#g-array-sized-new
 		value.p.Linef(
 			"%s = C.g_array_sized_new(%t, false, C.guint(%s), C.guint(len(%s)))",
-			value.OutName, array.IsZeroTerminated(), csizeof(inner.resolved), value.InName)
+			value.OutName, array.IsZeroTerminated(), inner.csizeof(), value.InName)
 		value.p.Linef(
 			"%s = C.g_array_set_size(%s, C.guint(len(%s)))",
 			value.OutName, value.OutName, value.InName)
@@ -257,16 +161,19 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		value.p.EmptyLine()
 
 		value.p.Linef("for i := range %s {", value.InName)
-		value.p.Linef(inner.p.String())
+		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
 		value.p.Ascend()
+		return true
 
 	case array.IsZeroTerminated():
-		conv.sides.addImport(importInternal("ptr"))
-		conv.sides.addImport("unsafe")
+		value.addImport(importInternal("ptr"))
+		value.addImport("unsafe")
 
-		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, inner.malloc(value.InName, true))
+		value.p.Linef(
+			"%s = (%s)(%s)",
+			value.OutName, value.OutType, inner.malloc(value.InName, true))
 		if !value.isTransferring() {
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 			value.p.EmptyLine()
@@ -279,36 +186,28 @@ func (conv *TypeConversionToC) gocArrayConverter(value *GoValueProp) {
 		value.p.EmptyLine()
 
 		value.p.Linef("for i := range %s {", value.InName)
-		value.p.Linef(inner.p.String())
+		value.p.Linef(inner.Conversion)
 		value.p.Linef("}")
 
 		value.p.Ascend()
+		return true
 
 	default:
-		conv.logFail(LogSkip, "weird array type to C")
-	}
-}
-
-func csizeof(resolved *ResolvedType) string {
-	if !strings.Contains(resolved.CType, "*") {
-		return "C.sizeof_" + resolved.CType
+		conv.log(LogDebug, "Go->C weird array type", array.Type)
 	}
 
-	// Size of an integer is the same as uintptr.
-	return "unsafe.Sizeof(int(0))"
+	return false
 }
 
-func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
+func (conv *TypeConversionToC) typeConverter(value *ValueConverted) bool {
 	for _, unsupported := range unsupportedCTypes {
 		if unsupported == value.AnyType.Type.CType {
-			conv.fail()
-			return
+			return false
 		}
 	}
 
 	if !value.resolveType(&conv.conversionTo, false) {
-		conv.fail()
-		return
+		return false
 	}
 
 	switch {
@@ -317,72 +216,70 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		// If we're not giving ownership this mallocated string, then we
 		// can free it once done.
 		if !value.isTransferring() {
-			conv.sides.addImport("unsafe")
+			value.addImport("unsafe")
 			value.p.Linef("defer C.free(unsafe.Pointer(%s))", value.OutName)
 		}
-		return
+		return true
 
 	case value.resolved.IsBuiltin("bool"):
 		value.p.Linef("if %s { %s = %s(1) }", value.InName, value.OutName, value.OutType)
-		return
+		return true
 
 	case value.resolved.IsBuiltin("error"):
-		conv.sides.addImport(importInternal("gerror"))
+		value.addImport(importInternal("gerror"))
 		value.p.Linef("%s = (*C.GError)(gerror.New(unsafe.Pointer(%s)))", value.OutName, value.InName)
 		if !value.isTransferring() {
 			value.p.Linef("defer C.g_error_free(%s)", value.OutName)
 		}
-		return
+		return true
 
 	case value.resolved.IsPrimitive():
 		value.p.Linef("%s = %s(%s)", value.OutName, value.OutType, value.InName)
-		return
+		return true
 	}
 
 	switch ensureNamespace(conv.ng.current, value.AnyType.Type.Name) {
 	case "gpointer":
-		conv.sides.addImport(importInternal("box"))
-
+		value.addImport("unsafe")
+		value.addImport(importInternal("box"))
 		value.p.Linef(
 			"%s = %s(box.Assign(unsafe.Pointer(%s)))",
 			value.OutName, value.OutType, value.InName,
 		)
-		return
+		return true
 
 	case "GObject.Type", "GType":
-		conv.sides.NeedsGLibObject = true
-
+		value.NeedsGLibObject = true
 		// Just a primitive.
 		value.p.Linef("%s = C.GType(%s)", value.OutName, value.InName)
-		return
+		return true
 
 	case "GObject.Value":
-		conv.sides.NeedsGLibObject = true
-
+		value.NeedsGLibObject = true
 		// https://pkg.go.dev/github.com/gotk3/gotk3/glib#Type
 		value.p.Linef("%s = (*C.GValue)(%s.GValue)", value.OutName, value.InName)
-		return
+		return true
 
 	case "GObject.Object":
+		value.addImport("unsafe")
 		value.p.Linef("%s = (*C.GObject)(unsafe.Pointer(%s.Native()))", value.OutName, value.InName)
-		return
+		return true
 
 	case "GObject.InitiallyUnowned":
+		value.addImport("unsafe")
 		value.p.Linef(
 			"%s = (*C.GInitiallyUnowned)(unsafe.Pointer(%s.Native()))",
 			value.OutName, value.InName)
-		return
+		return true
 	}
 
 	// Pretend that ignored types don't exist.
 	if conv.ng.mustIgnore(value.AnyType.Type.Name, value.AnyType.Type.CType) {
-		conv.fail()
-		return
+		return false
 	}
 
 	if value.resolved.Extern == nil {
-		conv.fail()
-		return
+		return false
 	}
 
 	result := value.resolved.Extern.Result
@@ -390,12 +287,14 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 	switch {
 	case result.Enum != nil, result.Bitfield != nil:
 		value.p.Linef("%s = (%s)(%s)", value.OutName, value.OutType, value.InName)
+		return true
 
 	case result.Class != nil, result.Record != nil, result.Interface != nil:
 		value.p.Linef(
 			"%s = (%s)(unsafe.Pointer(%s.Native()))",
 			value.OutName, value.OutType, value.InName,
 		)
+		return true
 
 	case result.Callback != nil:
 		exportedName, _ := result.Info()
@@ -404,12 +303,12 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		// Callbacks must have the closure attribute to store the closure
 		// pointer.
 		if value.Closure == nil {
-			conv.logFail(LogSkip, "Go->C callback", exportedName, "since missing closure")
-			return
+			conv.log(LogDebug, "Go->C callback", exportedName, "since missing closure")
+			return false
 		}
 
-		conv.sides.addImport(importInternal("box"))
-		conv.sides.addCallback(result.Callback)
+		value.addImport(importInternal("box"))
+		value.addCallback(result.Callback)
 
 		// Return the constant function here. The function will dynamically load
 		// the user_data, which will match with the "gpointer" case above.
@@ -418,17 +317,21 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 		// https://github.com/golang/go/issues/19835.
 		value.p.Linef("%s = (*[0]byte)(C.%s%s)", value.OutName, callbackPrefix, exportedName)
 
-		closure := conv.valueAt(*value.Closure)
-		conv.gocConverter(closure)
+		closure := conv.convertParam(*value.Closure)
+		if closure == nil {
+			return false
+		}
 
 		value.outDecl.Linef("var %s %s", closure.OutName, closure.OutType)
 		value.p.Linef("%s = %s(box.Assign(%s))", closure.OutName, closure.OutType, value.InName)
 
 		if value.Destroy != nil {
-			conv.sides.CallbackDelete = true
+			value.CallbackDelete = true
 
-			destroy := conv.valueAt(*value.Destroy)
-			conv.gocConverter(destroy)
+			destroy := conv.convertParam(*value.Destroy)
+			if destroy == nil {
+				return false
+			}
 
 			value.outDecl.Linef("var %s %s", destroy.OutName, destroy.OutType)
 			value.p.Linef(
@@ -437,10 +340,11 @@ func (conv *TypeConversionToC) gocTypeConverter(value *GoValueProp) {
 			)
 		}
 
-	case value.AllowNone:
-		value.p.Linef("var %s %s // unsupported", value.OutName, value.OutType)
+		return true
 
-	default:
-		conv.fail()
+		// case value.AllowNone:
+		// 	value.p.Linef("var %s %s // unsupported", value.OutName, value.OutType)
 	}
+
+	return false
 }

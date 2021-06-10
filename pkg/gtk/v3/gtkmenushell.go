@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -96,13 +95,6 @@ type MenuShell interface {
 	// Deselect deselects the currently selected item from the menu shell, if
 	// any.
 	Deselect()
-	// ParentShell gets the parent menu shell.
-	//
-	// The parent menu shell of a submenu is the Menu or MenuBar from which it
-	// was opened up.
-	ParentShell() Widget
-	// SelectedItem gets the currently selected item.
-	SelectedItem() Widget
 	// TakeFocus returns true if the menu shell will take the keyboard focus on
 	// popup.
 	TakeFocus() bool
@@ -270,43 +262,6 @@ func (m menuShell) Deselect() {
 	C.gtk_menu_shell_deselect(_arg0)
 }
 
-// ParentShell gets the parent menu shell.
-//
-// The parent menu shell of a submenu is the Menu or MenuBar from which it
-// was opened up.
-func (m menuShell) ParentShell() Widget {
-	var _arg0 *C.GtkMenuShell
-
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_menu_shell_get_parent_shell(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
-// SelectedItem gets the currently selected item.
-func (m menuShell) SelectedItem() Widget {
-	var _arg0 *C.GtkMenuShell
-
-	_arg0 = (*C.GtkMenuShell)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_menu_shell_get_selected_item(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // TakeFocus returns true if the menu shell will take the keyboard focus on
 // popup.
 func (m menuShell) TakeFocus() bool {
@@ -316,7 +271,7 @@ func (m menuShell) TakeFocus() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_menu_shell_get_take_focus(_arg0)
+	_cret = C.gtk_menu_shell_get_take_focus(_arg0)
 
 	var _ok bool
 

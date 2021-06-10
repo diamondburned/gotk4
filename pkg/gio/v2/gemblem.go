@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -39,11 +36,6 @@ func init() {
 type Emblem interface {
 	gextras.Objector
 	Icon
-
-	// Icon gives back the icon from @emblem.
-	Icon() Icon
-	// Origin gets the origin of the emblem.
-	Origin() EmblemOrigin
 }
 
 // emblem implements the Emblem interface.
@@ -67,74 +59,4 @@ func marshalEmblem(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapEmblem(obj), nil
-}
-
-// NewEmblem constructs a class Emblem.
-func NewEmblem(icon Icon) Emblem {
-	var _arg1 *C.GIcon
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-
-	var _cret C.GEmblem
-
-	cret = C.g_emblem_new(_arg1)
-
-	var _emblem Emblem
-
-	_emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Emblem)
-
-	return _emblem
-}
-
-// NewEmblemWithOrigin constructs a class Emblem.
-func NewEmblemWithOrigin(icon Icon, origin EmblemOrigin) Emblem {
-	var _arg1 *C.GIcon
-	var _arg2 C.GEmblemOrigin
-
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = (C.GEmblemOrigin)(origin)
-
-	var _cret C.GEmblem
-
-	cret = C.g_emblem_new_with_origin(_arg1, _arg2)
-
-	var _emblem Emblem
-
-	_emblem = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Emblem)
-
-	return _emblem
-}
-
-// Icon gives back the icon from @emblem.
-func (e emblem) Icon() Icon {
-	var _arg0 *C.GEmblem
-
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
-
-	var _cret *C.GIcon
-
-	cret = C.g_emblem_get_icon(_arg0)
-
-	var _icon Icon
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
-
-	return _icon
-}
-
-// Origin gets the origin of the emblem.
-func (e emblem) Origin() EmblemOrigin {
-	var _arg0 *C.GEmblem
-
-	_arg0 = (*C.GEmblem)(unsafe.Pointer(e.Native()))
-
-	var _cret C.GEmblemOrigin
-
-	cret = C.g_emblem_get_origin(_arg0)
-
-	var _emblemOrigin EmblemOrigin
-
-	_emblemOrigin = EmblemOrigin(_cret)
-
-	return _emblemOrigin
 }

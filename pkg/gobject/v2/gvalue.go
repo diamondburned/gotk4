@@ -73,7 +73,7 @@ func (v *Value) DupBoxed() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_value_dup_boxed(_arg0)
+	_cret = C.g_value_dup_boxed(_arg0)
 
 	var _gpointer interface{}
 
@@ -92,31 +92,13 @@ func (v *Value) DupObject() gextras.Objector {
 
 	var _cret C.gpointer
 
-	cret = C.g_value_dup_object(_arg0)
+	_cret = C.g_value_dup_object(_arg0)
 
 	var _object gextras.Objector
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
 	return _object
-}
-
-// DupParam: get the contents of a G_TYPE_PARAM #GValue, increasing its
-// reference count.
-func (v *Value) DupParam() ParamSpec {
-	var _arg0 *C.GValue
-
-	_arg0 = (*C.GValue)(v.GValue)
-
-	var _cret *C.GParamSpec
-
-	cret = C.g_value_dup_param(_arg0)
-
-	var _paramSpec ParamSpec
-
-	_paramSpec = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ParamSpec)
-
-	return _paramSpec
 }
 
 // DupString: get a copy the contents of a G_TYPE_STRING #GValue.
@@ -127,7 +109,7 @@ func (v *Value) DupString() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_value_dup_string(_arg0)
+	_cret = C.g_value_dup_string(_arg0)
 
 	var _utf8 string
 
@@ -135,27 +117,6 @@ func (v *Value) DupString() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// DupVariant: get the contents of a variant #GValue, increasing its refcount.
-// The returned #GVariant is never floating.
-func (v *Value) DupVariant() *glib.Variant {
-	var _arg0 *C.GValue
-
-	_arg0 = (*C.GValue)(v.GValue)
-
-	var _cret *C.GVariant
-
-	cret = C.g_value_dup_variant(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _variant
 }
 
 // FitsPointer determines if @value will fit inside the size of a pointer value.
@@ -167,7 +128,7 @@ func (v *Value) FitsPointer() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_value_fits_pointer(_arg0)
+	_cret = C.g_value_fits_pointer(_arg0)
 
 	var _ok bool
 
@@ -186,7 +147,7 @@ func (v *Value) Boolean() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_value_get_boolean(_arg0)
+	_cret = C.g_value_get_boolean(_arg0)
 
 	var _ok bool
 
@@ -205,7 +166,7 @@ func (v *Value) Boxed() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_value_get_boxed(_arg0)
+	_cret = C.g_value_get_boxed(_arg0)
 
 	var _gpointer interface{}
 
@@ -225,7 +186,7 @@ func (v *Value) Char() byte {
 
 	var _cret C.gchar
 
-	cret = C.g_value_get_char(_arg0)
+	_cret = C.g_value_get_char(_arg0)
 
 	var _gchar byte
 
@@ -242,7 +203,7 @@ func (v *Value) Double() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.g_value_get_double(_arg0)
+	_cret = C.g_value_get_double(_arg0)
 
 	var _gdouble float64
 
@@ -259,7 +220,7 @@ func (v *Value) Enum() int {
 
 	var _cret C.gint
 
-	cret = C.g_value_get_enum(_arg0)
+	_cret = C.g_value_get_enum(_arg0)
 
 	var _gint int
 
@@ -276,7 +237,7 @@ func (v *Value) Flags() uint {
 
 	var _cret C.guint
 
-	cret = C.g_value_get_flags(_arg0)
+	_cret = C.g_value_get_flags(_arg0)
 
 	var _guint uint
 
@@ -293,7 +254,7 @@ func (v *Value) Float() float32 {
 
 	var _cret C.gfloat
 
-	cret = C.g_value_get_float(_arg0)
+	_cret = C.g_value_get_float(_arg0)
 
 	var _gfloat float32
 
@@ -310,7 +271,7 @@ func (v *Value) GType() externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_value_get_gtype(_arg0)
+	_cret = C.g_value_get_gtype(_arg0)
 
 	var _gType externglib.Type
 
@@ -327,7 +288,7 @@ func (v *Value) Int() int {
 
 	var _cret C.gint
 
-	cret = C.g_value_get_int(_arg0)
+	_cret = C.g_value_get_int(_arg0)
 
 	var _gint int
 
@@ -344,7 +305,7 @@ func (v *Value) Int64() int64 {
 
 	var _cret C.gint64
 
-	cret = C.g_value_get_int64(_arg0)
+	_cret = C.g_value_get_int64(_arg0)
 
 	var _gint64 int64
 
@@ -361,7 +322,7 @@ func (v *Value) Long() int32 {
 
 	var _cret C.glong
 
-	cret = C.g_value_get_long(_arg0)
+	_cret = C.g_value_get_long(_arg0)
 
 	var _glong int32
 
@@ -378,30 +339,13 @@ func (v *Value) Object() gextras.Objector {
 
 	var _cret C.gpointer
 
-	cret = C.g_value_get_object(_arg0)
+	_cret = C.g_value_get_object(_arg0)
 
 	var _object gextras.Objector
 
 	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
 	return _object
-}
-
-// Param: get the contents of a G_TYPE_PARAM #GValue.
-func (v *Value) Param() ParamSpec {
-	var _arg0 *C.GValue
-
-	_arg0 = (*C.GValue)(v.GValue)
-
-	var _cret *C.GParamSpec
-
-	cret = C.g_value_get_param(_arg0)
-
-	var _paramSpec ParamSpec
-
-	_paramSpec = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ParamSpec)
-
-	return _paramSpec
 }
 
 // Pointer: get the contents of a pointer #GValue.
@@ -412,7 +356,7 @@ func (v *Value) Pointer() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_value_get_pointer(_arg0)
+	_cret = C.g_value_get_pointer(_arg0)
 
 	var _gpointer interface{}
 
@@ -429,7 +373,7 @@ func (v *Value) Schar() int8 {
 
 	var _cret C.gint8
 
-	cret = C.g_value_get_schar(_arg0)
+	_cret = C.g_value_get_schar(_arg0)
 
 	var _gint8 int8
 
@@ -446,7 +390,7 @@ func (v *Value) String() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_value_get_string(_arg0)
+	_cret = C.g_value_get_string(_arg0)
 
 	var _utf8 string
 
@@ -463,7 +407,7 @@ func (v *Value) Uchar() byte {
 
 	var _cret C.guchar
 
-	cret = C.g_value_get_uchar(_arg0)
+	_cret = C.g_value_get_uchar(_arg0)
 
 	var _guint8 byte
 
@@ -480,7 +424,7 @@ func (v *Value) Uint() uint {
 
 	var _cret C.guint
 
-	cret = C.g_value_get_uint(_arg0)
+	_cret = C.g_value_get_uint(_arg0)
 
 	var _guint uint
 
@@ -497,7 +441,7 @@ func (v *Value) Uint64() uint64 {
 
 	var _cret C.guint64
 
-	cret = C.g_value_get_uint64(_arg0)
+	_cret = C.g_value_get_uint64(_arg0)
 
 	var _guint64 uint64
 
@@ -514,30 +458,13 @@ func (v *Value) Ulong() uint32 {
 
 	var _cret C.gulong
 
-	cret = C.g_value_get_ulong(_arg0)
+	_cret = C.g_value_get_ulong(_arg0)
 
 	var _gulong uint32
 
 	_gulong = (uint32)(_cret)
 
 	return _gulong
-}
-
-// Variant: get the contents of a variant #GValue.
-func (v *Value) Variant() *glib.Variant {
-	var _arg0 *C.GValue
-
-	_arg0 = (*C.GValue)(v.GValue)
-
-	var _cret *C.GVariant
-
-	cret = C.g_value_get_variant(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-
-	return _variant
 }
 
 // Init initializes @value with the default value of @type.
@@ -550,7 +477,7 @@ func (v *Value) Init(gType externglib.Type) **externglib.Value {
 
 	var _cret *C.GValue
 
-	cret = C.g_value_init(_arg0, _arg1)
+	_cret = C.g_value_init(_arg0, _arg1)
 
 	var _ret **externglib.Value
 
@@ -585,7 +512,7 @@ func (v *Value) PeekPointer() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_value_peek_pointer(_arg0)
+	_cret = C.g_value_peek_pointer(_arg0)
 
 	var _gpointer interface{}
 
@@ -603,7 +530,7 @@ func (v *Value) Reset() **externglib.Value {
 
 	var _cret *C.GValue
 
-	cret = C.g_value_reset(_arg0)
+	_cret = C.g_value_reset(_arg0)
 
 	var _ret **externglib.Value
 
@@ -1056,7 +983,7 @@ func (s *Value) Transform(destValue **externglib.Value) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_value_transform(_arg0, _arg1)
+	_cret = C.g_value_transform(_arg0, _arg1)
 
 	var _ok bool
 

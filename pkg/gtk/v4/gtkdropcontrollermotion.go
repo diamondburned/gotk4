@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,9 +32,6 @@ type DropControllerMotion interface {
 	// ContainsPointer returns if a Drag-and-Drop operation is within the widget
 	// @self or one of its children.
 	ContainsPointer() bool
-	// Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
-	// widget of @self.
-	Drop() gdk.Drop
 	// IsPointer returns if a Drag-and-Drop operation is within the widget
 	// @self, not one of its children.
 	IsPointer() bool
@@ -65,19 +58,6 @@ func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 	return WrapDropControllerMotion(obj), nil
 }
 
-// NewDropControllerMotion constructs a class DropControllerMotion.
-func NewDropControllerMotion() DropControllerMotion {
-	var _cret C.GtkDropControllerMotion
-
-	cret = C.gtk_drop_controller_motion_new()
-
-	var _dropControllerMotion DropControllerMotion
-
-	_dropControllerMotion = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DropControllerMotion)
-
-	return _dropControllerMotion
-}
-
 // ContainsPointer returns if a Drag-and-Drop operation is within the widget
 // @self or one of its children.
 func (s dropControllerMotion) ContainsPointer() bool {
@@ -87,7 +67,7 @@ func (s dropControllerMotion) ContainsPointer() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
+	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 
 	var _ok bool
 
@@ -96,24 +76,6 @@ func (s dropControllerMotion) ContainsPointer() bool {
 	}
 
 	return _ok
-}
-
-// Drop returns the `GdkDrop` of a current Drag-and-Drop operation over the
-// widget of @self.
-func (s dropControllerMotion) Drop() gdk.Drop {
-	var _arg0 *C.GtkDropControllerMotion
-
-	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDrop
-
-	cret = C.gtk_drop_controller_motion_get_drop(_arg0)
-
-	var _drop gdk.Drop
-
-	_drop = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Drop)
-
-	return _drop
 }
 
 // IsPointer returns if a Drag-and-Drop operation is within the widget
@@ -125,7 +87,7 @@ func (s dropControllerMotion) IsPointer() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
+	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
 
 	var _ok bool
 

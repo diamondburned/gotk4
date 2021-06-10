@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -116,24 +115,6 @@ func marshalAppChooserButton(p uintptr) (interface{}, error) {
 	return WrapAppChooserButton(obj), nil
 }
 
-// NewAppChooserButton constructs a class AppChooserButton.
-func NewAppChooserButton(contentType string) AppChooserButton {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(contentType))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkAppChooserButton
-
-	cret = C.gtk_app_chooser_button_new(_arg1)
-
-	var _appChooserButton AppChooserButton
-
-	_appChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AppChooserButton)
-
-	return _appChooserButton
-}
-
 // AppendCustomItem appends a custom item to the list of applications that
 // is shown in the popup; the item name must be unique per-widget. Clients
 // can use the provided name as a detail for the
@@ -174,7 +155,7 @@ func (s appChooserButton) Heading() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_app_chooser_button_get_heading(_arg0)
+	_cret = C.gtk_app_chooser_button_get_heading(_arg0)
 
 	var _utf8 string
 
@@ -192,7 +173,7 @@ func (s appChooserButton) ShowDefaultItem() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
+	_cret = C.gtk_app_chooser_button_get_show_default_item(_arg0)
 
 	var _ok bool
 
@@ -212,7 +193,7 @@ func (s appChooserButton) ShowDialogItem() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
+	_cret = C.gtk_app_chooser_button_get_show_dialog_item(_arg0)
 
 	var _ok bool
 

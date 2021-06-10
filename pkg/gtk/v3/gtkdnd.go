@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -56,23 +55,6 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 	_arg4 = C.guint32(time_)
 
 	C.gtk_drag_finish(_arg1, _arg2, _arg3, _arg4)
-}
-
-// DragGetSourceWidget determines the source widget for a drag.
-func DragGetSourceWidget(context gdk.DragContext) Widget {
-	var _arg1 *C.GdkDragContext
-
-	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_drag_get_source_widget(_arg1)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // DragSetIconDefault sets the icon for a particular drag to the default icon.

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,8 +48,6 @@ type MenuToolButton interface {
 	Activatable
 	Buildable
 
-	// Menu gets the Menu associated with MenuToolButton.
-	Menu() Widget
 	// SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip
 	// for the arrow button which pops up the menu. See
 	// gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
@@ -90,61 +87,6 @@ func marshalMenuToolButton(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapMenuToolButton(obj), nil
-}
-
-// NewMenuToolButton constructs a class MenuToolButton.
-func NewMenuToolButton(iconWidget Widget, label string) MenuToolButton {
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.gchar
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(iconWidget.Native()))
-	_arg2 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkMenuToolButton
-
-	cret = C.gtk_menu_tool_button_new(_arg1, _arg2)
-
-	var _menuToolButton MenuToolButton
-
-	_menuToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuToolButton)
-
-	return _menuToolButton
-}
-
-// NewMenuToolButtonFromStock constructs a class MenuToolButton.
-func NewMenuToolButtonFromStock(stockId string) MenuToolButton {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(stockId))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkMenuToolButton
-
-	cret = C.gtk_menu_tool_button_new_from_stock(_arg1)
-
-	var _menuToolButton MenuToolButton
-
-	_menuToolButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MenuToolButton)
-
-	return _menuToolButton
-}
-
-// Menu gets the Menu associated with MenuToolButton.
-func (b menuToolButton) Menu() Widget {
-	var _arg0 *C.GtkMenuToolButton
-
-	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_menu_tool_button_get_menu(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // SetArrowTooltipMarkup sets the tooltip markup text to be used as tooltip

@@ -27,7 +27,7 @@ func UUIDStringIsValid(str string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_uuid_string_is_valid(_arg1)
+	_cret = C.g_uuid_string_is_valid(_arg1)
 
 	var _ok bool
 
@@ -45,7 +45,7 @@ func UUIDStringIsValid(str string) bool {
 func UUIDStringRandom() string {
 	var _cret *C.gchar
 
-	cret = C.g_uuid_string_random()
+	_cret = C.g_uuid_string_random()
 
 	var _utf8 string
 

@@ -5,8 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -54,8 +54,6 @@ type AppInfoOverrider interface {
 	// which can be deleted, and system-wide ones which cannot. See
 	// g_app_info_can_delete().
 	DoDelete() bool
-	// Dup creates a duplicate of a Info.
-	Dup() AppInfo
 	// Equal checks if two Infos are equal.
 	//
 	// Note that the check *may not* compare each individual field, and only
@@ -73,8 +71,6 @@ type AppInfoOverrider interface {
 	DisplayName() string
 	// Executable gets the executable's name for the installed application.
 	Executable() *string
-	// Icon gets the icon for the application.
-	Icon() Icon
 	// ID gets the ID of an application. An id is a string that identifies the
 	// application. The exact format of the id is platform dependent. For
 	// instance, on Unix this is the desktop file id from the xdg menu
@@ -136,7 +132,7 @@ type AppInfoOverrider interface {
 	// waits for activation in case of D-Bus–activated applications and also
 	// provides extended error information for sandboxed applications, see notes
 	// for g_app_info_launch_default_for_uri_async().
-	LaunchUrisAsync()
+	LaunchUrisAsync(uris *glib.List, context AppLaunchContext, cancellable Cancellable, callback AsyncReadyCallback)
 	// LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
 	LaunchUrisFinish(result AsyncResult) error
 	// RemoveSupportsType removes a supported type from an application, if
@@ -269,7 +265,7 @@ func (a appInfo) CanDelete() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_app_info_can_delete(_arg0)
+	_cret = C.g_app_info_can_delete(_arg0)
 
 	var _ok bool
 
@@ -289,7 +285,7 @@ func (a appInfo) CanRemoveSupportsType() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_app_info_can_remove_supports_type(_arg0)
+	_cret = C.g_app_info_can_remove_supports_type(_arg0)
 
 	var _ok bool
 
@@ -312,7 +308,7 @@ func (a appInfo) Delete() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_app_info_delete(_arg0)
+	_cret = C.g_app_info_delete(_arg0)
 
 	var _ok bool
 
@@ -321,23 +317,6 @@ func (a appInfo) Delete() bool {
 	}
 
 	return _ok
-}
-
-// Dup creates a duplicate of a Info.
-func (a appInfo) Dup() AppInfo {
-	var _arg0 *C.GAppInfo
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GAppInfo
-
-	cret = C.g_app_info_dup(_arg0)
-
-	var _appInfo AppInfo
-
-	_appInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppInfo)
-
-	return _appInfo
 }
 
 // Equal checks if two Infos are equal.
@@ -354,7 +333,7 @@ func (a appInfo) Equal(appinfo2 AppInfo) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_app_info_equal(_arg0, _arg1)
+	_cret = C.g_app_info_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -374,7 +353,7 @@ func (a appInfo) Commandline() *string {
 
 	var _cret *C.char
 
-	cret = C.g_app_info_get_commandline(_arg0)
+	_cret = C.g_app_info_get_commandline(_arg0)
 
 	var _filename *string
 
@@ -392,7 +371,7 @@ func (a appInfo) Description() string {
 
 	var _cret *C.char
 
-	cret = C.g_app_info_get_description(_arg0)
+	_cret = C.g_app_info_get_description(_arg0)
 
 	var _utf8 string
 
@@ -410,7 +389,7 @@ func (a appInfo) DisplayName() string {
 
 	var _cret *C.char
 
-	cret = C.g_app_info_get_display_name(_arg0)
+	_cret = C.g_app_info_get_display_name(_arg0)
 
 	var _utf8 string
 
@@ -427,30 +406,13 @@ func (a appInfo) Executable() *string {
 
 	var _cret *C.char
 
-	cret = C.g_app_info_get_executable(_arg0)
+	_cret = C.g_app_info_get_executable(_arg0)
 
 	var _filename *string
 
 	_filename = C.GoString(_cret)
 
 	return _filename
-}
-
-// Icon gets the icon for the application.
-func (a appInfo) Icon() Icon {
-	var _arg0 *C.GAppInfo
-
-	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GIcon
-
-	cret = C.g_app_info_get_icon(_arg0)
-
-	var _icon Icon
-
-	_icon = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Icon)
-
-	return _icon
 }
 
 // ID gets the ID of an application. An id is a string that identifies the
@@ -467,7 +429,7 @@ func (a appInfo) ID() string {
 
 	var _cret *C.char
 
-	cret = C.g_app_info_get_id(_arg0)
+	_cret = C.g_app_info_get_id(_arg0)
 
 	var _utf8 string
 
@@ -484,7 +446,7 @@ func (a appInfo) Name() string {
 
 	var _cret *C.char
 
-	cret = C.g_app_info_get_name(_arg0)
+	_cret = C.g_app_info_get_name(_arg0)
 
 	var _utf8 string
 
@@ -505,7 +467,7 @@ func (a appInfo) SupportedTypes() []string {
 
 	var _cret **C.char
 
-	cret = C.g_app_info_get_supported_types(_arg0)
+	_cret = C.g_app_info_get_supported_types(_arg0)
 
 	var _utf8s []string
 
@@ -522,7 +484,7 @@ func (a appInfo) SupportedTypes() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -613,12 +575,22 @@ func (a appInfo) LaunchUris(uris *glib.List, context AppLaunchContext) error {
 // waits for activation in case of D-Bus–activated applications and also
 // provides extended error information for sandboxed applications, see notes
 // for g_app_info_launch_default_for_uri_async().
-func (a appInfo) LaunchUrisAsync() {
+func (a appInfo) LaunchUrisAsync(uris *glib.List, context AppLaunchContext, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg0 *C.GAppInfo
+	var _arg1 *C.GList
+	var _arg2 *C.GAppLaunchContext
+	var _arg3 *C.GCancellable
+	var _arg4 C.GAsyncReadyCallback
+	var _arg5 C.gpointer
 
 	_arg0 = (*C.GAppInfo)(unsafe.Pointer(a.Native()))
+	_arg1 = (*C.GList)(unsafe.Pointer(uris.Native()))
+	_arg2 = (*C.GAppLaunchContext)(unsafe.Pointer(context.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg4 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg5 = C.gpointer(box.Assign(callback))
 
-	C.g_app_info_launch_uris_async(_arg0)
+	C.g_app_info_launch_uris_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // LaunchUrisFinish finishes a g_app_info_launch_uris_async() operation.
@@ -735,7 +707,7 @@ func (a appInfo) ShouldShow() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_app_info_should_show(_arg0)
+	_cret = C.g_app_info_should_show(_arg0)
 
 	var _ok bool
 
@@ -754,7 +726,7 @@ func (a appInfo) SupportsFiles() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_app_info_supports_files(_arg0)
+	_cret = C.g_app_info_supports_files(_arg0)
 
 	var _ok bool
 
@@ -774,7 +746,7 @@ func (a appInfo) SupportsUris() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_app_info_supports_uris(_arg0)
+	_cret = C.g_app_info_supports_uris(_arg0)
 
 	var _ok bool
 
@@ -841,19 +813,6 @@ func marshalAppLaunchContext(p uintptr) (interface{}, error) {
 	return WrapAppLaunchContext(obj), nil
 }
 
-// NewAppLaunchContext constructs a class AppLaunchContext.
-func NewAppLaunchContext() AppLaunchContext {
-	var _cret C.GAppLaunchContext
-
-	cret = C.g_app_launch_context_new()
-
-	var _appLaunchContext AppLaunchContext
-
-	_appLaunchContext = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(AppLaunchContext)
-
-	return _appLaunchContext
-}
-
 // Display gets the display string for the @context. This is used to ensure
 // new applications are started on the same display as the launching
 // application, by setting the `DISPLAY` environment variable.
@@ -868,7 +827,7 @@ func (c appLaunchContext) Display(info AppInfo, files *glib.List) string {
 
 	var _cret *C.char
 
-	cret = C.g_app_launch_context_get_display(_arg0, _arg1, _arg2)
+	_cret = C.g_app_launch_context_get_display(_arg0, _arg1, _arg2)
 
 	var _utf8 string
 
@@ -889,7 +848,7 @@ func (c appLaunchContext) Environment() []*string {
 
 	var _cret **C.char
 
-	cret = C.g_app_launch_context_get_environment(_arg0)
+	_cret = C.g_app_launch_context_get_environment(_arg0)
 
 	var _filenames []*string
 
@@ -906,7 +865,7 @@ func (c appLaunchContext) Environment() []*string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_filenames = make([]*string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_filenames = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -933,7 +892,7 @@ func (c appLaunchContext) StartupNotifyID(info AppInfo, files *glib.List) string
 
 	var _cret *C.char
 
-	cret = C.g_app_launch_context_get_startup_notify_id(_arg0, _arg1, _arg2)
+	_cret = C.g_app_launch_context_get_startup_notify_id(_arg0, _arg1, _arg2)
 
 	var _utf8 string
 

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -24,38 +21,6 @@ func init() {
 	})
 }
 
-// TreeGetRowDragData obtains a @tree_model and @path from selection data of
-// target type GTK_TREE_MODEL_ROW. Normally called from a drag_data_received
-// handler. This function can only be used if @selection_data originates from
-// the same process that’s calling this function, because a pointer to the tree
-// model is being passed around. If you aren’t in the same process, then you'll
-// get memory corruption. In the TreeDragDest drag_data_received handler, you
-// can assume that selection data of type GTK_TREE_MODEL_ROW is in from the
-// current process. The returned path must be freed with gtk_tree_path_free().
-func TreeGetRowDragData(selectionData *SelectionData) (TreeModel, *TreePath, bool) {
-	var _arg1 *C.GtkSelectionData
-
-	_arg1 = (*C.GtkSelectionData)(unsafe.Pointer(selectionData.Native()))
-
-	var _arg2 **C.GtkTreeModel
-	var _path *TreePath
-	var _cret C.gboolean
-
-	cret = C.gtk_tree_get_row_drag_data(_arg1, _arg2, (**C.GtkTreePath)(unsafe.Pointer(&_path)))
-
-	var _treeModel TreeModel
-
-	var _ok bool
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_arg2.Native()))).(TreeModel)
-
-	if _cret {
-		_ok = true
-	}
-
-	return _treeModel, _path, _ok
-}
-
 // TreeSetRowDragData sets selection data of target type GTK_TREE_MODEL_ROW.
 // Normally used in a drag_data_get handler.
 func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path *TreePath) bool {
@@ -69,7 +34,7 @@ func TreeSetRowDragData(selectionData *SelectionData, treeModel TreeModel, path 
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_set_row_drag_data(_arg1, _arg2, _arg3)
+	_cret = C.gtk_tree_set_row_drag_data(_arg1, _arg2, _arg3)
 
 	var _ok bool
 
@@ -141,7 +106,7 @@ func (d treeDragDest) DragDataReceived(dest *TreePath, selectionData *SelectionD
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
+	_cret = C.gtk_tree_drag_dest_drag_data_received(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -168,7 +133,7 @@ func (d treeDragDest) RowDropPossible(destPath *TreePath, selectionData *Selecti
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
+	_cret = C.gtk_tree_drag_dest_row_drop_possible(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -239,7 +204,7 @@ func (d treeDragSource) DragDataDelete(path *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
+	_cret = C.gtk_tree_drag_source_drag_data_delete(_arg0, _arg1)
 
 	var _ok bool
 
@@ -265,7 +230,7 @@ func (d treeDragSource) DragDataGet(path *TreePath, selectionData *SelectionData
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_source_drag_data_get(_arg0, _arg1, _arg2)
+	_cret = C.gtk_tree_drag_source_drag_data_get(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -288,7 +253,7 @@ func (d treeDragSource) RowDraggable(path *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
+	_cret = C.gtk_tree_drag_source_row_draggable(_arg0, _arg1)
 
 	var _ok bool
 

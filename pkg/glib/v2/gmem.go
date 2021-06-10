@@ -27,7 +27,7 @@ func Malloc(nBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_malloc(_arg1)
+	_cret = C.g_malloc(_arg1)
 
 	var _gpointer interface{}
 
@@ -45,7 +45,7 @@ func Malloc0(nBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_malloc0(_arg1)
+	_cret = C.g_malloc0(_arg1)
 
 	var _gpointer interface{}
 
@@ -66,7 +66,7 @@ func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_malloc0_n(_arg1, _arg2)
+	_cret = C.g_malloc0_n(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -87,7 +87,7 @@ func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_malloc_n(_arg1, _arg2)
+	_cret = C.g_malloc_n(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -104,7 +104,7 @@ func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
 func MemIsSystemMalloc() bool {
 	var _cret C.gboolean
 
-	cret = C.g_mem_is_system_malloc()
+	_cret = C.g_mem_is_system_malloc()
 
 	var _ok bool
 
@@ -136,7 +136,7 @@ func Realloc(mem interface{}, nBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_realloc(_arg1, _arg2)
+	_cret = C.g_realloc(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -159,7 +159,7 @@ func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_realloc_n(_arg1, _arg2, _arg3)
+	_cret = C.g_realloc_n(_arg1, _arg2, _arg3)
 
 	var _gpointer interface{}
 
@@ -177,7 +177,7 @@ func TryMalloc(nBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_try_malloc(_arg1)
+	_cret = C.g_try_malloc(_arg1)
 
 	var _gpointer interface{}
 
@@ -195,7 +195,7 @@ func TryMalloc0(nBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_try_malloc0(_arg1)
+	_cret = C.g_try_malloc0(_arg1)
 
 	var _gpointer interface{}
 
@@ -216,7 +216,7 @@ func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_try_malloc0_n(_arg1, _arg2)
+	_cret = C.g_try_malloc0_n(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -237,7 +237,7 @@ func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_try_malloc_n(_arg1, _arg2)
+	_cret = C.g_try_malloc_n(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -259,7 +259,7 @@ func TryRealloc(mem interface{}, nBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_try_realloc(_arg1, _arg2)
+	_cret = C.g_try_realloc(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -282,7 +282,7 @@ func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_try_realloc_n(_arg1, _arg2, _arg3)
+	_cret = C.g_try_realloc_n(_arg1, _arg2, _arg3)
 
 	var _gpointer interface{}
 

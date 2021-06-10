@@ -43,10 +43,3 @@ func (s *SList) Data() interface{} {
 	v = (interface{})(s.native.data)
 	return v
 }
-
-// Next gets the field inside the struct.
-func (s *SList) Next() *SList {
-	var v *SList
-	v = WrapSList(unsafe.Pointer(s.native.next))
-	return v
-}

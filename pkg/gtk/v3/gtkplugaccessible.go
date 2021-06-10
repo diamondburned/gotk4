@@ -56,7 +56,7 @@ func (p plugAccessible) ID() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_plug_accessible_get_id(_arg0)
+	_cret = C.gtk_plug_accessible_get_id(_arg0)
 
 	var _utf8 string
 

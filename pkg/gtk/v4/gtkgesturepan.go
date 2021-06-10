@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -37,9 +34,6 @@ func init() {
 type GesturePan interface {
 	GestureDrag
 
-	// Orientation returns the orientation of the pan gestures that this
-	// @gesture expects.
-	Orientation() Orientation
 	// SetOrientation sets the orientation to be expected on pan gestures.
 	SetOrientation(orientation Orientation)
 }
@@ -63,41 +57,6 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGesturePan(obj), nil
-}
-
-// NewGesturePan constructs a class GesturePan.
-func NewGesturePan(orientation Orientation) GesturePan {
-	var _arg1 C.GtkOrientation
-
-	_arg1 = (C.GtkOrientation)(orientation)
-
-	var _cret C.GtkGesturePan
-
-	cret = C.gtk_gesture_pan_new(_arg1)
-
-	var _gesturePan GesturePan
-
-	_gesturePan = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GesturePan)
-
-	return _gesturePan
-}
-
-// Orientation returns the orientation of the pan gestures that this
-// @gesture expects.
-func (g gesturePan) Orientation() Orientation {
-	var _arg0 *C.GtkGesturePan
-
-	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
-
-	var _cret C.GtkOrientation
-
-	cret = C.gtk_gesture_pan_get_orientation(_arg0)
-
-	var _orientation Orientation
-
-	_orientation = Orientation(_cret)
-
-	return _orientation
 }
 
 // SetOrientation sets the orientation to be expected on pan gestures.

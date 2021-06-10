@@ -2,12 +2,6 @@
 
 package gdk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-)
-
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
@@ -28,46 +22,6 @@ func SelectionConvert(requestor Window, selection Atom, target Atom, time_ uint3
 	C.gdk_selection_convert(_arg1, _arg2, _arg3, _arg4)
 }
 
-// SelectionOwnerGet determines the owner of the given selection.
-func SelectionOwnerGet(selection Atom) Window {
-	var _arg1 C.GdkAtom
-
-	_arg1 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-
-	var _cret *C.GdkWindow
-
-	cret = C.gdk_selection_owner_get(_arg1)
-
-	var _window Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
-
-	return _window
-}
-
-// SelectionOwnerGetForDisplay: determine the owner of the given selection.
-//
-// Note that the return value may be owned by a different process if a foreign
-// window was previously created for that window, but a new foreign window will
-// never be created by this call.
-func SelectionOwnerGetForDisplay(display Display, selection Atom) Window {
-	var _arg1 *C.GdkDisplay
-	var _arg2 C.GdkAtom
-
-	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
-	_arg2 = (C.GdkAtom)(unsafe.Pointer(selection.Native()))
-
-	var _cret *C.GdkWindow
-
-	cret = C.gdk_selection_owner_get_for_display(_arg1, _arg2)
-
-	var _window Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
-
-	return _window
-}
-
 // SelectionOwnerSet sets the owner of the given selection.
 func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent bool) bool {
 	var _arg1 *C.GdkWindow
@@ -84,7 +38,7 @@ func SelectionOwnerSet(owner Window, selection Atom, time_ uint32, sendEvent boo
 
 	var _cret C.gboolean
 
-	cret = C.gdk_selection_owner_set(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.gdk_selection_owner_set(_arg1, _arg2, _arg3, _arg4)
 
 	var _ok bool
 
@@ -114,7 +68,7 @@ func SelectionOwnerSetForDisplay(display Display, owner Window, selection Atom, 
 
 	var _cret C.gboolean
 
-	cret = C.gdk_selection_owner_set_for_display(_arg1, _arg2, _arg3, _arg4, _arg5)
+	_cret = C.gdk_selection_owner_set_for_display(_arg1, _arg2, _arg3, _arg4, _arg5)
 
 	var _ok bool
 
@@ -142,7 +96,7 @@ func SelectionPropertyGet(requestor Window, data **byte, propType *Atom, propFor
 
 	var _cret C.gint
 
-	cret = C.gdk_selection_property_get(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.gdk_selection_property_get(_arg1, _arg2, _arg3, _arg4)
 
 	var _gint int
 

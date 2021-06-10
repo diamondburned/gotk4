@@ -2,10 +2,6 @@
 
 package gio
 
-import (
-	"github.com/diamondburned/gotk4/internal/box"
-)
-
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gio/gdesktopappinfo.h>
@@ -20,50 +16,6 @@ import (
 // #include <gio/gunixoutputstream.h>
 // #include <gio/gunixsocketaddress.h>
 import "C"
-
-// BusAcquiredCallback: invoked when a connection to a message bus has been
-// obtained.
-type BusAcquiredCallback func()
-
-//export gotk4_BusAcquiredCallback
-func gotk4_BusAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(BusAcquiredCallback)
-	fn()
-}
-
-// BusNameAcquiredCallback: invoked when the name is acquired.
-type BusNameAcquiredCallback func()
-
-//export gotk4_BusNameAcquiredCallback
-func gotk4_BusNameAcquiredCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(BusNameAcquiredCallback)
-	fn()
-}
-
-// BusNameLostCallback: invoked when the name is lost or @connection has been
-// closed.
-type BusNameLostCallback func()
-
-//export gotk4_BusNameLostCallback
-func gotk4_BusNameLostCallback(arg0 *C.GDBusConnection, arg1 *C.gchar, arg2 C.gpointer) {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(BusNameLostCallback)
-	fn()
-}
 
 // BusUnownName stops owning a name.
 //

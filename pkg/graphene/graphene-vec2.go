@@ -3,7 +3,6 @@
 package graphene
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -42,22 +41,6 @@ func WrapVec2(ptr unsafe.Pointer) *Vec2 {
 func marshalVec2(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapVec2(unsafe.Pointer(b)), nil
-}
-
-// NewVec2Alloc constructs a struct Vec2.
-func NewVec2Alloc() *Vec2 {
-	var _cret *C.graphene_vec2_t
-
-	cret = C.graphene_vec2_alloc()
-
-	var _vec2 *Vec2
-
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_vec2, func(v *Vec2) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _vec2
 }
 
 // Native returns the underlying C source pointer.
@@ -108,7 +91,7 @@ func (a *Vec2) Dot(b *Vec2) float32 {
 
 	var _cret C.float
 
-	cret = C.graphene_vec2_dot(_arg0, _arg1)
+	_cret = C.graphene_vec2_dot(_arg0, _arg1)
 
 	var _gfloat float32
 
@@ -127,7 +110,7 @@ func (v *Vec2) Equal(v2 *Vec2) bool {
 
 	var _cret C._Bool
 
-	cret = C.graphene_vec2_equal(_arg0, _arg1)
+	_cret = C.graphene_vec2_equal(_arg0, _arg1)
 
 	var _ok bool
 
@@ -155,7 +138,7 @@ func (v *Vec2) X() float32 {
 
 	var _cret C.float
 
-	cret = C.graphene_vec2_get_x(_arg0)
+	_cret = C.graphene_vec2_get_x(_arg0)
 
 	var _gfloat float32
 
@@ -172,75 +155,13 @@ func (v *Vec2) Y() float32 {
 
 	var _cret C.float
 
-	cret = C.graphene_vec2_get_y(_arg0)
+	_cret = C.graphene_vec2_get_y(_arg0)
 
 	var _gfloat float32
 
 	_gfloat = (float32)(_cret)
 
 	return _gfloat
-}
-
-// Init initializes a #graphene_vec2_t using the given values.
-//
-// This function can be called multiple times.
-func (v *Vec2) Init(x float32, y float32) *Vec2 {
-	var _arg0 *C.graphene_vec2_t
-	var _arg1 C.float
-	var _arg2 C.float
-
-	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	_arg1 = C.float(x)
-	_arg2 = C.float(y)
-
-	var _cret *C.graphene_vec2_t
-
-	cret = C.graphene_vec2_init(_arg0, _arg1, _arg2)
-
-	var _vec2 *Vec2
-
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
-
-	return _vec2
-}
-
-// InitFromFloat initializes @v with the contents of the given array.
-func (v *Vec2) InitFromFloat(src [2]float32) *Vec2 {
-	var _arg0 *C.graphene_vec2_t
-	var _arg1 *C.float
-
-	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.float)(unsafe.Pointer(&src))
-	defer runtime.KeepAlive(&_arg1)
-
-	var _cret *C.graphene_vec2_t
-
-	cret = C.graphene_vec2_init_from_float(_arg0, _arg1)
-
-	var _vec2 *Vec2
-
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
-
-	return _vec2
-}
-
-// InitFromVec2 copies the contents of @src into @v.
-func (v *Vec2) InitFromVec2(src *Vec2) *Vec2 {
-	var _arg0 *C.graphene_vec2_t
-	var _arg1 *C.graphene_vec2_t
-
-	_arg0 = (*C.graphene_vec2_t)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.graphene_vec2_t)(unsafe.Pointer(src.Native()))
-
-	var _cret *C.graphene_vec2_t
-
-	cret = C.graphene_vec2_init_from_vec2(_arg0, _arg1)
-
-	var _vec2 *Vec2
-
-	_vec2 = WrapVec2(unsafe.Pointer(_cret))
-
-	return _vec2
 }
 
 // Interpolate: linearly interpolates @v1 and @v2 using the given @factor.
@@ -268,7 +189,7 @@ func (v *Vec2) Length() float32 {
 
 	var _cret C.float
 
-	cret = C.graphene_vec2_length(_arg0)
+	_cret = C.graphene_vec2_length(_arg0)
 
 	var _gfloat float32
 
@@ -338,7 +259,7 @@ func (v *Vec2) Near(v2 *Vec2, epsilon float32) bool {
 
 	var _cret C._Bool
 
-	cret = C.graphene_vec2_near(_arg0, _arg1, _arg2)
+	_cret = C.graphene_vec2_near(_arg0, _arg1, _arg2)
 
 	var _ok bool
 
@@ -420,7 +341,7 @@ func (v *Vec2) ToFloat() [2]float32 {
 
 	var _dest [2]float32
 
-	_dest = *(*[2]float32)(unsafe.Pointer(_arg1))
+	_dest = *(*[2]float32)(unsafe.Pointer(&_arg1))
 
 	return _dest
 }

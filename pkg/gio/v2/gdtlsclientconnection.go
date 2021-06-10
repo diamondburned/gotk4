@@ -3,11 +3,6 @@
 package gio
 
 import (
-	"runtime"
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,18 +33,6 @@ func init() {
 type DTLSClientConnection interface {
 	DatagramBasedDTLSConnection
 
-	// AcceptedCAS gets the list of distinguished names of the Certificate
-	// Authorities that the server will accept certificates from. This will be
-	// set during the TLS handshake if the server requests a certificate.
-	// Otherwise, it will be nil.
-	//
-	// Each item in the list is a Array which contains the complete subject DN
-	// of the certificate authority.
-	AcceptedCAS() *glib.List
-	// ServerIdentity gets @conn's expected server identity
-	ServerIdentity() SocketConnectable
-	// ValidationFlags gets @conn's validation flags
-	ValidationFlags() TLSCertificateFlags
 	// SetServerIdentity sets @conn's expected server identity, which is used
 	// both to tell servers on virtual hosts which certificate to present, and
 	// also to let @conn know what name to look for in the certificate when
@@ -82,66 +65,6 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDTLSClientConnection(obj), nil
-}
-
-// AcceptedCAS gets the list of distinguished names of the Certificate
-// Authorities that the server will accept certificates from. This will be
-// set during the TLS handshake if the server requests a certificate.
-// Otherwise, it will be nil.
-//
-// Each item in the list is a Array which contains the complete subject DN
-// of the certificate authority.
-func (c dtlsClientConnection) AcceptedCAS() *glib.List {
-	var _arg0 *C.GDtlsClientConnection
-
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GList
-
-	cret = C.g_dtls_client_connection_get_accepted_cas(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// ServerIdentity gets @conn's expected server identity
-func (c dtlsClientConnection) ServerIdentity() SocketConnectable {
-	var _arg0 *C.GDtlsClientConnection
-
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSocketConnectable
-
-	cret = C.g_dtls_client_connection_get_server_identity(_arg0)
-
-	var _socketConnectable SocketConnectable
-
-	_socketConnectable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SocketConnectable)
-
-	return _socketConnectable
-}
-
-// ValidationFlags gets @conn's validation flags
-func (c dtlsClientConnection) ValidationFlags() TLSCertificateFlags {
-	var _arg0 *C.GDtlsClientConnection
-
-	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GTlsCertificateFlags
-
-	cret = C.g_dtls_client_connection_get_validation_flags(_arg0)
-
-	var _tlsCertificateFlags TLSCertificateFlags
-
-	_tlsCertificateFlags = TLSCertificateFlags(_cret)
-
-	return _tlsCertificateFlags
 }
 
 // SetServerIdentity sets @conn's expected server identity, which is used

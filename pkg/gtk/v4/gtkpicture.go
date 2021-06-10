@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
@@ -83,16 +82,9 @@ type Picture interface {
 	AlternativeText() string
 	// CanShrink returns whether the `GtkPicture` respects its contents size.
 	CanShrink() bool
-	// File gets the `GFile` currently displayed if @self is displaying a file.
-	//
-	// If @self is not displaying a file, for example when
-	// [method@Gtk.Picture.set_paintable] was used, then nil is returned.
-	File() gio.File
 	// KeepAspectRatio returns whether the `GtkPicture` preserves its contents
 	// aspect ratio.
 	KeepAspectRatio() bool
-	// Paintable gets the `GdkPaintable` being displayed by the `GtkPicture`.
-	Paintable() gdk.Paintable
 	// SetAlternativeText sets an alternative textual description for the
 	// picture contents.
 	//
@@ -177,106 +169,6 @@ func marshalPicture(p uintptr) (interface{}, error) {
 	return WrapPicture(obj), nil
 }
 
-// NewPicture constructs a class Picture.
-func NewPicture() Picture {
-	var _cret C.GtkPicture
-
-	cret = C.gtk_picture_new()
-
-	var _picture Picture
-
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
-
-	return _picture
-}
-
-// NewPictureForFile constructs a class Picture.
-func NewPictureForFile(file gio.File) Picture {
-	var _arg1 *C.GFile
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkPicture
-
-	cret = C.gtk_picture_new_for_file(_arg1)
-
-	var _picture Picture
-
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
-
-	return _picture
-}
-
-// NewPictureForFilename constructs a class Picture.
-func NewPictureForFilename(filename *string) Picture {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkPicture
-
-	cret = C.gtk_picture_new_for_filename(_arg1)
-
-	var _picture Picture
-
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
-
-	return _picture
-}
-
-// NewPictureForPaintable constructs a class Picture.
-func NewPictureForPaintable(paintable gdk.Paintable) Picture {
-	var _arg1 *C.GdkPaintable
-
-	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
-
-	var _cret C.GtkPicture
-
-	cret = C.gtk_picture_new_for_paintable(_arg1)
-
-	var _picture Picture
-
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
-
-	return _picture
-}
-
-// NewPictureForPixbuf constructs a class Picture.
-func NewPictureForPixbuf(pixbuf gdkpixbuf.Pixbuf) Picture {
-	var _arg1 *C.GdkPixbuf
-
-	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GtkPicture
-
-	cret = C.gtk_picture_new_for_pixbuf(_arg1)
-
-	var _picture Picture
-
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
-
-	return _picture
-}
-
-// NewPictureForResource constructs a class Picture.
-func NewPictureForResource(resourcePath string) Picture {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkPicture
-
-	cret = C.gtk_picture_new_for_resource(_arg1)
-
-	var _picture Picture
-
-	_picture = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Picture)
-
-	return _picture
-}
-
 // AlternativeText gets the alternative textual description of the picture.
 //
 // The returned string will be nil if the picture cannot be described
@@ -288,7 +180,7 @@ func (s picture) AlternativeText() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_picture_get_alternative_text(_arg0)
+	_cret = C.gtk_picture_get_alternative_text(_arg0)
 
 	var _utf8 string
 
@@ -305,7 +197,7 @@ func (s picture) CanShrink() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_picture_get_can_shrink(_arg0)
+	_cret = C.gtk_picture_get_can_shrink(_arg0)
 
 	var _ok bool
 
@@ -314,26 +206,6 @@ func (s picture) CanShrink() bool {
 	}
 
 	return _ok
-}
-
-// File gets the `GFile` currently displayed if @self is displaying a file.
-//
-// If @self is not displaying a file, for example when
-// [method@Gtk.Picture.set_paintable] was used, then nil is returned.
-func (s picture) File() gio.File {
-	var _arg0 *C.GtkPicture
-
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_picture_get_file(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
 }
 
 // KeepAspectRatio returns whether the `GtkPicture` preserves its contents
@@ -345,7 +217,7 @@ func (s picture) KeepAspectRatio() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
+	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
 
 	var _ok bool
 
@@ -354,23 +226,6 @@ func (s picture) KeepAspectRatio() bool {
 	}
 
 	return _ok
-}
-
-// Paintable gets the `GdkPaintable` being displayed by the `GtkPicture`.
-func (s picture) Paintable() gdk.Paintable {
-	var _arg0 *C.GtkPicture
-
-	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkPaintable
-
-	cret = C.gtk_picture_get_paintable(_arg0)
-
-	var _paintable gdk.Paintable
-
-	_paintable = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
-
-	return _paintable
 }
 
 // SetAlternativeText sets an alternative textual description for the

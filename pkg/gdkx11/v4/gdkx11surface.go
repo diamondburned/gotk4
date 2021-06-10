@@ -5,7 +5,6 @@ package gdkx11
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -30,7 +29,7 @@ func X11GetServerTime(surface X11Surface) uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_get_server_time(_arg1)
+	_cret = C.gdk_x11_get_server_time(_arg1)
 
 	var _guint32 uint32
 
@@ -44,8 +43,6 @@ type X11Surface interface {
 
 	// Desktop gets the number of the workspace @surface is on.
 	Desktop() uint32
-	// Group returns the group this surface belongs to.
-	Group() gdk.Surface
 	// MoveToCurrentDesktop moves the surface to the correct workspace when
 	// running under a window manager that supports multiple workspaces, as
 	// described in the Extended Window Manager Hints
@@ -135,30 +132,13 @@ func (s x11Surface) Desktop() uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_x11_surface_get_desktop(_arg0)
+	_cret = C.gdk_x11_surface_get_desktop(_arg0)
 
 	var _guint32 uint32
 
 	_guint32 = (uint32)(_cret)
 
 	return _guint32
-}
-
-// Group returns the group this surface belongs to.
-func (s x11Surface) Group() gdk.Surface {
-	var _arg0 *C.GdkSurface
-
-	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkSurface
-
-	cret = C.gdk_x11_surface_get_group(_arg0)
-
-	var _ret gdk.Surface
-
-	_ret = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
-
-	return _ret
 }
 
 // MoveToCurrentDesktop moves the surface to the correct workspace when

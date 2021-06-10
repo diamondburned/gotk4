@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -90,21 +89,12 @@ type StyleContext interface {
 	Border() Border
 	// Color gets the foreground color for a given state.
 	Color() gdk.RGBA
-	// Display returns the `GdkDisplay` to which @context is attached.
-	Display() gdk.Display
 	// Margin gets the margin for a given state as a `GtkBorder`.
 	Margin() Border
 	// Padding gets the padding for a given state as a `GtkBorder`.
 	Padding() Border
 	// Scale returns the scale used for assets.
 	Scale() int
-	// State returns the state used for style matching.
-	//
-	// This method should only be used to retrieve the `GtkStateFlags` to pass
-	// to `GtkStyleContext` methods, like [method@Gtk.StyleContext.get_padding].
-	// If you need to retrieve the current state of a `GtkWidget`, use
-	// [method@Gtk.Widget.get_state_flags].
-	State() StateFlags
 	// HasClass returns true if @context currently has defined the given class
 	// name.
 	HasClass(className string) bool
@@ -245,23 +235,6 @@ func (c styleContext) Color() gdk.RGBA {
 	return _color
 }
 
-// Display returns the `GdkDisplay` to which @context is attached.
-func (c styleContext) Display() gdk.Display {
-	var _arg0 *C.GtkStyleContext
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GdkDisplay
-
-	cret = C.gtk_style_context_get_display(_arg0)
-
-	var _display gdk.Display
-
-	_display = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Display)
-
-	return _display
-}
-
 // Margin gets the margin for a given state as a `GtkBorder`.
 func (c styleContext) Margin() Border {
 	var _arg0 *C.GtkStyleContext
@@ -296,35 +269,13 @@ func (c styleContext) Scale() int {
 
 	var _cret C.int
 
-	cret = C.gtk_style_context_get_scale(_arg0)
+	_cret = C.gtk_style_context_get_scale(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// State returns the state used for style matching.
-//
-// This method should only be used to retrieve the `GtkStateFlags` to pass
-// to `GtkStyleContext` methods, like [method@Gtk.StyleContext.get_padding].
-// If you need to retrieve the current state of a `GtkWidget`, use
-// [method@Gtk.Widget.get_state_flags].
-func (c styleContext) State() StateFlags {
-	var _arg0 *C.GtkStyleContext
-
-	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkStateFlags
-
-	cret = C.gtk_style_context_get_state(_arg0)
-
-	var _stateFlags StateFlags
-
-	_stateFlags = StateFlags(_cret)
-
-	return _stateFlags
 }
 
 // HasClass returns true if @context currently has defined the given class
@@ -339,7 +290,7 @@ func (c styleContext) HasClass(className string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_style_context_has_class(_arg0, _arg1)
+	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
 
 	var _ok bool
 
@@ -362,7 +313,7 @@ func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 	var _color gdk.RGBA
 	var _cret C.gboolean
 
-	cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
+	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
 	var _ok bool
 
@@ -484,7 +435,7 @@ func (c styleContext) String(flags StyleContextPrintFlags) string {
 
 	var _cret *C.char
 
-	cret = C.gtk_style_context_to_string(_arg0, _arg1)
+	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
 
 	var _utf8 string
 

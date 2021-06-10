@@ -5,8 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -101,10 +99,6 @@ type DBusObjectManagerClient interface {
 	DBusObjectManager
 	Initable
 
-	// Connection gets the BusConnection used by @manager.
-	Connection() DBusConnection
-	// Flags gets the flags that @manager was constructed with.
-	Flags() DBusObjectManagerClientFlags
 	// Name gets the name that @manager is for, or nil if not a message bus
 	// connection.
 	Name() string
@@ -142,80 +136,6 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 	return WrapDBusObjectManagerClient(obj), nil
 }
 
-// NewDBusObjectManagerClientFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientFinish(res AsyncResult) (DBusObjectManagerClient, error) {
-	var _arg1 *C.GAsyncResult
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret C.GDBusObjectManagerClient
-	var _cerr *C.GError
-
-	cret = C.g_dbus_object_manager_client_new_finish(_arg1, _cerr)
-
-	var _dBusObjectManagerClient DBusObjectManagerClient
-	var _goerr error
-
-	_dBusObjectManagerClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectManagerClient)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _dBusObjectManagerClient, _goerr
-}
-
-// NewDBusObjectManagerClientForBusFinish constructs a class DBusObjectManagerClient.
-func NewDBusObjectManagerClientForBusFinish(res AsyncResult) (DBusObjectManagerClient, error) {
-	var _arg1 *C.GAsyncResult
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret C.GDBusObjectManagerClient
-	var _cerr *C.GError
-
-	cret = C.g_dbus_object_manager_client_new_for_bus_finish(_arg1, _cerr)
-
-	var _dBusObjectManagerClient DBusObjectManagerClient
-	var _goerr error
-
-	_dBusObjectManagerClient = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DBusObjectManagerClient)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _dBusObjectManagerClient, _goerr
-}
-
-// Connection gets the BusConnection used by @manager.
-func (m dBusObjectManagerClient) Connection() DBusConnection {
-	var _arg0 *C.GDBusObjectManagerClient
-
-	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
-
-	var _cret *C.GDBusConnection
-
-	cret = C.g_dbus_object_manager_client_get_connection(_arg0)
-
-	var _dBusConnection DBusConnection
-
-	_dBusConnection = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(DBusConnection)
-
-	return _dBusConnection
-}
-
-// Flags gets the flags that @manager was constructed with.
-func (m dBusObjectManagerClient) Flags() DBusObjectManagerClientFlags {
-	var _arg0 *C.GDBusObjectManagerClient
-
-	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
-
-	var _cret C.GDBusObjectManagerClientFlags
-
-	cret = C.g_dbus_object_manager_client_get_flags(_arg0)
-
-	var _dBusObjectManagerClientFlags DBusObjectManagerClientFlags
-
-	_dBusObjectManagerClientFlags = DBusObjectManagerClientFlags(_cret)
-
-	return _dBusObjectManagerClientFlags
-}
-
 // Name gets the name that @manager is for, or nil if not a message bus
 // connection.
 func (m dBusObjectManagerClient) Name() string {
@@ -225,7 +145,7 @@ func (m dBusObjectManagerClient) Name() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dbus_object_manager_client_get_name(_arg0)
+	_cret = C.g_dbus_object_manager_client_get_name(_arg0)
 
 	var _utf8 string
 
@@ -245,7 +165,7 @@ func (m dBusObjectManagerClient) NameOwner() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dbus_object_manager_client_get_name_owner(_arg0)
+	_cret = C.g_dbus_object_manager_client_get_name_owner(_arg0)
 
 	var _utf8 string
 

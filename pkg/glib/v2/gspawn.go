@@ -263,7 +263,7 @@ func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardE
 
 	{
 		var length int
-		for p := _arg2; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := _arg2; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -274,13 +274,13 @@ func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardE
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg2), int(length))
 
 		_standardOutput = make([]byte, length)
-		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
+		for i := range src {
 			_standardOutput = (byte)(_arg2)
 		}
 	}
 	{
 		var length int
-		for p := _arg3; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := _arg3; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -291,11 +291,119 @@ func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardE
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg3), int(length))
 
 		_standardError = make([]byte, length)
-		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
+		for i := range src {
 			_standardError = (byte)(_arg3)
 		}
 	}
 	_exitStatus = (int)(_arg4)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _standardOutput, _standardError, _exitStatus, _goerr
+}
+
+// SpawnSync executes a child synchronously (waits for the child to exit before
+// returning). All output from the child is stored in @standard_output and
+// @standard_error, if those parameters are non-nil. Note that you must set the
+// G_SPAWN_STDOUT_TO_DEV_NULL and G_SPAWN_STDERR_TO_DEV_NULL flags when passing
+// nil for @standard_output and @standard_error.
+//
+// If @exit_status is non-nil, the platform-specific exit status of the child is
+// stored there; see the documentation of g_spawn_check_exit_status() for how to
+// use and interpret this. Note that it is invalid to pass
+// G_SPAWN_DO_NOT_REAP_CHILD in @flags, and on POSIX platforms, the same
+// restrictions as for g_child_watch_source_new() apply.
+//
+// If an error occurs, no data is returned in @standard_output, @standard_error,
+// or @exit_status.
+//
+// This function calls g_spawn_async_with_pipes() internally; see that function
+// for full details on the other parameters and details on how these functions
+// work on Windows.
+func SpawnSync(workingDirectory *string, argv []*string, envp []*string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
+	var _arg1 *C.gchar
+	var _arg2 **C.gchar
+	var _arg3 **C.gchar
+	var _arg4 C.GSpawnFlags
+	var _arg5 C.GSpawnChildSetupFunc
+	var _arg6 C.gpointer
+
+	_arg1 = (*C.gchar)(C.CString(workingDirectory))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (**C.gchar)(C.malloc((len(argv) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg2))
+
+	{
+		var out []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg2), int(len(argv)))
+
+		for i := range argv {
+			_arg2 = (*C.gchar)(C.CString(argv))
+			defer C.free(unsafe.Pointer(_arg2))
+		}
+	}
+	_arg3 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg3))
+
+	{
+		var out []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg3), int(len(envp)))
+
+		for i := range envp {
+			_arg3 = (*C.gchar)(C.CString(envp))
+			defer C.free(unsafe.Pointer(_arg3))
+		}
+	}
+	_arg4 = (C.GSpawnFlags)(flags)
+	_arg5 = (*[0]byte)(C.gotk4_SpawnChildSetupFunc)
+	_arg6 = C.gpointer(box.Assign(childSetup))
+
+	var _arg7 *C.gchar
+	var _arg8 *C.gchar
+	var _arg9 C.gint
+	var _cerr *C.GError
+
+	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, _cerr)
+
+	var _standardOutput []byte
+	var _standardError []byte
+	var _exitStatus int
+	var _goerr error
+
+	{
+		var length int
+		for p := _arg7; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg7), int(length))
+
+		_standardOutput = make([]byte, length)
+		for i := range src {
+			_standardOutput = (byte)(_arg7)
+		}
+	}
+	{
+		var length int
+		for p := _arg8; *p != 0; p = (*C.gchar)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
+			length++
+			if length < 0 {
+				panic(`length overflow`)
+			}
+		}
+
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg8), int(length))
+
+		_standardError = make([]byte, length)
+		for i := range src {
+			_standardError = (byte)(_arg8)
+		}
+	}
+	_exitStatus = (int)(_arg9)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _standardOutput, _standardError, _exitStatus, _goerr

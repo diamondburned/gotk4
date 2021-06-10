@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,8 +35,6 @@ type BuilderListItemFactory interface {
 	// Resource: if the data references a resource, gets the path of that
 	// resource.
 	Resource() string
-	// Scope gets the scope used when constructing listitems.
-	Scope() BuilderScope
 }
 
 // builderListItemFactory implements the BuilderListItemFactory interface.
@@ -63,26 +58,6 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 	return WrapBuilderListItemFactory(obj), nil
 }
 
-// NewBuilderListItemFactoryFromResource constructs a class BuilderListItemFactory.
-func NewBuilderListItemFactoryFromResource(scope BuilderScope, resourcePath string) BuilderListItemFactory {
-	var _arg1 *C.GtkBuilderScope
-	var _arg2 *C.char
-
-	_arg1 = (*C.GtkBuilderScope)(unsafe.Pointer(scope.Native()))
-	_arg2 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg2))
-
-	var _cret C.GtkBuilderListItemFactory
-
-	cret = C.gtk_builder_list_item_factory_new_from_resource(_arg1, _arg2)
-
-	var _builderListItemFactory BuilderListItemFactory
-
-	_builderListItemFactory = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BuilderListItemFactory)
-
-	return _builderListItemFactory
-}
-
 // Resource: if the data references a resource, gets the path of that
 // resource.
 func (s builderListItemFactory) Resource() string {
@@ -92,28 +67,11 @@ func (s builderListItemFactory) Resource() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
+	_cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// Scope gets the scope used when constructing listitems.
-func (s builderListItemFactory) Scope() BuilderScope {
-	var _arg0 *C.GtkBuilderListItemFactory
-
-	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkBuilderScope
-
-	cret = C.gtk_builder_list_item_factory_get_scope(_arg0)
-
-	var _builderScope BuilderScope
-
-	_builderScope = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(BuilderScope)
-
-	return _builderScope
 }

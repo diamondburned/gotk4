@@ -6,8 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/graphene"
 	"github.com/diamondburned/gotk4/pkg/gsk/v4"
@@ -47,9 +45,6 @@ type Snapshot interface {
 	//
 	// The four sides of the border can have different widths and colors.
 	AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA)
-	// AppendCairo creates a new `GskCairoNode` and appends it to the current
-	// render node of @snapshot, without changing the current node.
-	AppendCairo(bounds *graphene.Rect) *cairo.Context
 	// AppendColor creates a new render node drawing the @color into the given
 	// @bounds and appends it to the current render node of @snapshot.
 	//
@@ -57,14 +52,14 @@ type Snapshot interface {
 	AppendColor(color *gdk.RGBA, bounds *graphene.Rect)
 	// AppendConicGradient appends a conic gradient node with the given stops to
 	// @snapshot.
-	AppendConicGradient()
+	AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop)
 	// AppendInsetShadow appends an inset shadow into the box given by @outline.
 	AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 
 	AppendLayout(layout pango.Layout, color *gdk.RGBA)
 	// AppendLinearGradient appends a linear gradient node with the given stops
 	// to @snapshot.
-	AppendLinearGradient()
+	AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 	// AppendNode appends @node to the current render node of @snapshot, without
 	// changing the current node.
 	//
@@ -76,22 +71,16 @@ type Snapshot interface {
 	AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32)
 	// AppendRadialGradient appends a radial gradient node with the given stops
 	// to @snapshot.
-	AppendRadialGradient()
+	AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendRepeatingLinearGradient appends a repeating linear gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingLinearGradient()
+	AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop)
 	// AppendRepeatingRadialGradient appends a repeating radial gradient node
 	// with the given stops to @snapshot.
-	AppendRepeatingRadialGradient()
+	AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop)
 	// AppendTexture creates a new render node drawing the @texture into the
 	// given @bounds and appends it to the current render node of @snapshot.
 	AppendTexture(texture gdk.Texture, bounds *graphene.Rect)
-	// FreeToNode returns the node that was constructed by @snapshot and frees
-	// @snapshot.
-	FreeToNode() gsk.RenderNode
-	// FreeToPaintable returns a paintable for the node that was constructed by
-	// @snapshot and frees @snapshot.
-	FreeToPaintable(size *graphene.Size) gdk.Paintable
 	// GLShaderPopTexture removes the top element from the stack of render nodes
 	// and adds it to the nearest `GskGLShaderNode` below it.
 	//
@@ -205,19 +194,6 @@ type Snapshot interface {
 	Scale(factorX float32, factorY float32)
 	// Scale3D scales @snapshot's coordinate system by the given factors.
 	Scale3D(factorX float32, factorY float32, factorZ float32)
-	// ToNode returns the render node that was constructed by @snapshot.
-	//
-	// After calling this function, it is no longer possible to add more nodes
-	// to @snapshot. The only function that should be called after this is
-	// g_object_unref().
-	ToNode() gsk.RenderNode
-	// ToPaintable returns a paintable encapsulating the render node that was
-	// constructed by @snapshot.
-	//
-	// After calling this function, it is no longer possible to add more nodes
-	// to @snapshot. The only function that should be called after this is
-	// g_object_unref().
-	ToPaintable(size *graphene.Size) gdk.Paintable
 	// Transform transforms @snapshot's coordinate system with the given
 	// @transform.
 	Transform(transform *gsk.Transform)
@@ -252,19 +228,6 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 	return WrapSnapshot(obj), nil
 }
 
-// NewSnapshot constructs a class Snapshot.
-func NewSnapshot() Snapshot {
-	var _cret C.GtkSnapshot
-
-	cret = C.gtk_snapshot_new()
-
-	var _snapshot Snapshot
-
-	_snapshot = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Snapshot)
-
-	return _snapshot
-}
-
 // AppendBorder appends a stroked border rectangle inside the given
 // @outline.
 //
@@ -278,34 +241,9 @@ func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32,
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline.Native()))
 	_arg2 = (*C.float)(unsafe.Pointer(&borderWidth))
-	defer runtime.KeepAlive(&_arg2)
 	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(&borderColor))
-	defer runtime.KeepAlive(&_arg3)
 
 	C.gtk_snapshot_append_border(_arg0, _arg1, _arg2, _arg3)
-}
-
-// AppendCairo creates a new `GskCairoNode` and appends it to the current
-// render node of @snapshot, without changing the current node.
-func (s snapshot) AppendCairo(bounds *graphene.Rect) *cairo.Context {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
-
-	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
-
-	var _cret *C.cairo_t
-
-	cret = C.gtk_snapshot_append_cairo(_arg0, _arg1)
-
-	var _context *cairo.Context
-
-	_context = cairo.WrapContext(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_context, func(v *cairo.Context) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _context
 }
 
 // AppendColor creates a new render node drawing the @color into the given
@@ -326,12 +264,22 @@ func (s snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 
 // AppendConicGradient appends a conic gradient node with the given stops to
 // @snapshot.
-func (s snapshot) AppendConicGradient() {
+func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot
+	var _arg1 *C.graphene_rect_t
+	var _arg2 *C.graphene_point_t
+	var _arg3 C.float
+	var _arg4 *C.GskColorStop
+	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
+	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center.Native()))
+	_arg3 = C.float(rotation)
+	_arg5 = C.gsize(len(stops))
+	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
-	C.gtk_snapshot_append_conic_gradient(_arg0)
+	C.gtk_snapshot_append_conic_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // AppendInsetShadow appends an inset shadow into the box given by @outline.
@@ -369,12 +317,22 @@ func (s snapshot) AppendLayout(layout pango.Layout, color *gdk.RGBA) {
 
 // AppendLinearGradient appends a linear gradient node with the given stops
 // to @snapshot.
-func (s snapshot) AppendLinearGradient() {
+func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot
+	var _arg1 *C.graphene_rect_t
+	var _arg2 *C.graphene_point_t
+	var _arg3 *C.graphene_point_t
+	var _arg4 *C.GskColorStop
+	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
+	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint.Native()))
+	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint.Native()))
+	_arg5 = C.gsize(len(stops))
+	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
-	C.gtk_snapshot_append_linear_gradient(_arg0)
+	C.gtk_snapshot_append_linear_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // AppendNode appends @node to the current render node of @snapshot, without
@@ -416,32 +374,74 @@ func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, 
 
 // AppendRadialGradient appends a radial gradient node with the given stops
 // to @snapshot.
-func (s snapshot) AppendRadialGradient() {
+func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot
+	var _arg1 *C.graphene_rect_t
+	var _arg2 *C.graphene_point_t
+	var _arg3 C.float
+	var _arg4 C.float
+	var _arg5 C.float
+	var _arg6 C.float
+	var _arg7 *C.GskColorStop
+	var _arg8 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
+	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center.Native()))
+	_arg3 = C.float(hradius)
+	_arg4 = C.float(vradius)
+	_arg5 = C.float(start)
+	_arg6 = C.float(end)
+	_arg8 = C.gsize(len(stops))
+	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
-	C.gtk_snapshot_append_radial_gradient(_arg0)
+	C.gtk_snapshot_append_radial_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
 // AppendRepeatingLinearGradient appends a repeating linear gradient node
 // with the given stops to @snapshot.
-func (s snapshot) AppendRepeatingLinearGradient() {
+func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot
+	var _arg1 *C.graphene_rect_t
+	var _arg2 *C.graphene_point_t
+	var _arg3 *C.graphene_point_t
+	var _arg4 *C.GskColorStop
+	var _arg5 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
+	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(startPoint.Native()))
+	_arg3 = (*C.graphene_point_t)(unsafe.Pointer(endPoint.Native()))
+	_arg5 = C.gsize(len(stops))
+	_arg4 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
-	C.gtk_snapshot_append_repeating_linear_gradient(_arg0)
+	C.gtk_snapshot_append_repeating_linear_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // AppendRepeatingRadialGradient appends a repeating radial gradient node
 // with the given stops to @snapshot.
-func (s snapshot) AppendRepeatingRadialGradient() {
+func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop) {
 	var _arg0 *C.GtkSnapshot
+	var _arg1 *C.graphene_rect_t
+	var _arg2 *C.graphene_point_t
+	var _arg3 C.float
+	var _arg4 C.float
+	var _arg5 C.float
+	var _arg6 C.float
+	var _arg7 *C.GskColorStop
+	var _arg8 C.gsize
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
+	_arg2 = (*C.graphene_point_t)(unsafe.Pointer(center.Native()))
+	_arg3 = C.float(hradius)
+	_arg4 = C.float(vradius)
+	_arg5 = C.float(start)
+	_arg6 = C.float(end)
+	_arg8 = C.gsize(len(stops))
+	_arg7 = (*C.GskColorStop)(unsafe.Pointer(&stops[0]))
 
-	C.gtk_snapshot_append_repeating_radial_gradient(_arg0)
+	C.gtk_snapshot_append_repeating_radial_gradient(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 }
 
 // AppendTexture creates a new render node drawing the @texture into the
@@ -456,44 +456,6 @@ func (s snapshot) AppendTexture(texture gdk.Texture, bounds *graphene.Rect) {
 	_arg2 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
 
 	C.gtk_snapshot_append_texture(_arg0, _arg1, _arg2)
-}
-
-// FreeToNode returns the node that was constructed by @snapshot and frees
-// @snapshot.
-func (s snapshot) FreeToNode() gsk.RenderNode {
-	var _arg0 *C.GtkSnapshot
-
-	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GskRenderNode
-
-	cret = C.gtk_snapshot_free_to_node(_arg0)
-
-	var _renderNode gsk.RenderNode
-
-	_renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gsk.RenderNode)
-
-	return _renderNode
-}
-
-// FreeToPaintable returns a paintable for the node that was constructed by
-// @snapshot and frees @snapshot.
-func (s snapshot) FreeToPaintable(size *graphene.Size) gdk.Paintable {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_size_t
-
-	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(size.Native()))
-
-	var _cret *C.GdkPaintable
-
-	cret = C.gtk_snapshot_free_to_paintable(_arg0, _arg1)
-
-	var _paintable gdk.Paintable
-
-	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
-
-	return _paintable
 }
 
 // GLShaderPopTexture removes the top element from the stack of render nodes
@@ -860,51 +822,6 @@ func (s snapshot) Scale3D(factorX float32, factorY float32, factorZ float32) {
 	_arg3 = C.float(factorZ)
 
 	C.gtk_snapshot_scale_3d(_arg0, _arg1, _arg2, _arg3)
-}
-
-// ToNode returns the render node that was constructed by @snapshot.
-//
-// After calling this function, it is no longer possible to add more nodes
-// to @snapshot. The only function that should be called after this is
-// g_object_unref().
-func (s snapshot) ToNode() gsk.RenderNode {
-	var _arg0 *C.GtkSnapshot
-
-	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GskRenderNode
-
-	cret = C.gtk_snapshot_to_node(_arg0)
-
-	var _renderNode gsk.RenderNode
-
-	_renderNode = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gsk.RenderNode)
-
-	return _renderNode
-}
-
-// ToPaintable returns a paintable encapsulating the render node that was
-// constructed by @snapshot.
-//
-// After calling this function, it is no longer possible to add more nodes
-// to @snapshot. The only function that should be called after this is
-// g_object_unref().
-func (s snapshot) ToPaintable(size *graphene.Size) gdk.Paintable {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_size_t
-
-	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(size.Native()))
-
-	var _cret *C.GdkPaintable
-
-	cret = C.gtk_snapshot_to_paintable(_arg0, _arg1)
-
-	var _paintable gdk.Paintable
-
-	_paintable = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdk.Paintable)
-
-	return _paintable
 }
 
 // Transform transforms @snapshot's coordinate system with the given

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -72,23 +71,6 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 	return WrapGestureMultiPress(obj), nil
 }
 
-// NewGestureMultiPress constructs a class GestureMultiPress.
-func NewGestureMultiPress(widget Widget) GestureMultiPress {
-	var _arg1 *C.GtkWidget
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureMultiPress
-
-	cret = C.gtk_gesture_multi_press_new(_arg1)
-
-	var _gestureMultiPress GestureMultiPress
-
-	_gestureMultiPress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureMultiPress)
-
-	return _gestureMultiPress
-}
-
 // Area: if an area was set through gtk_gesture_multi_press_set_area(), this
 // function will return true and fill in @rect with the press area. See
 // gtk_gesture_multi_press_set_area() for more details on what the press
@@ -101,7 +83,7 @@ func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle
 	var _cret C.gboolean
 
-	cret = C.gtk_gesture_multi_press_get_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_gesture_multi_press_get_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
 	var _ok bool
 

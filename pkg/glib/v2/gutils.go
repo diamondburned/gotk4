@@ -3,6 +3,7 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/ptr"
@@ -77,7 +78,7 @@ func BitNthLsf(mask uint32, nthBit int) int {
 
 	var _cret C.gint
 
-	cret = C.g_bit_nth_lsf(_arg1, _arg2)
+	_cret = C.g_bit_nth_lsf(_arg1, _arg2)
 
 	var _gint int
 
@@ -99,7 +100,7 @@ func BitNthMsf(mask uint32, nthBit int) int {
 
 	var _cret C.gint
 
-	cret = C.g_bit_nth_msf(_arg1, _arg2)
+	_cret = C.g_bit_nth_msf(_arg1, _arg2)
 
 	var _gint int
 
@@ -117,7 +118,7 @@ func BitStorage(number uint32) uint {
 
 	var _cret C.guint
 
-	cret = C.g_bit_storage(_arg1)
+	_cret = C.g_bit_storage(_arg1)
 
 	var _guint uint
 
@@ -148,7 +149,7 @@ func FindProgramInPath(program *string) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_find_program_in_path(_arg1)
+	_cret = C.g_find_program_in_path(_arg1)
 
 	var _filename *string
 
@@ -178,7 +179,7 @@ func FormatSize(size uint64) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_format_size(_arg1)
+	_cret = C.g_format_size(_arg1)
 
 	var _utf8 string
 
@@ -203,7 +204,7 @@ func FormatSizeForDisplay(size int64) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_format_size_for_display(_arg1)
+	_cret = C.g_format_size_for_display(_arg1)
 
 	var _utf8 string
 
@@ -226,7 +227,7 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_format_size_full(_arg1, _arg2)
+	_cret = C.g_format_size_full(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -245,7 +246,7 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 func GetApplicationName() string {
 	var _cret *C.gchar
 
-	cret = C.g_get_application_name()
+	_cret = C.g_get_application_name()
 
 	var _utf8 string
 
@@ -277,7 +278,7 @@ func GetApplicationName() string {
 func GetHomeDir() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_home_dir()
+	_cret = C.g_get_home_dir()
 
 	var _filename *string
 
@@ -301,7 +302,7 @@ func GetHomeDir() *string {
 func GetHostName() string {
 	var _cret *C.gchar
 
-	cret = C.g_get_host_name()
+	_cret = C.g_get_host_name()
 
 	var _utf8 string
 
@@ -326,7 +327,7 @@ func GetOsInfo(keyName string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_get_os_info(_arg1)
+	_cret = C.g_get_os_info(_arg1)
 
 	var _utf8 string
 
@@ -346,7 +347,7 @@ func GetOsInfo(keyName string) string {
 func GetPrgname() string {
 	var _cret *C.gchar
 
-	cret = C.g_get_prgname()
+	_cret = C.g_get_prgname()
 
 	var _utf8 string
 
@@ -362,7 +363,7 @@ func GetPrgname() string {
 func GetRealName() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_real_name()
+	_cret = C.g_get_real_name()
 
 	var _filename *string
 
@@ -393,7 +394,7 @@ func GetRealName() *string {
 func GetSystemConfigDirs() []*string {
 	var _cret **C.gchar
 
-	cret = C.g_get_system_config_dirs()
+	_cret = C.g_get_system_config_dirs()
 
 	var _filenames []*string
 
@@ -410,7 +411,7 @@ func GetSystemConfigDirs() []*string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_filenames = make([]*string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_filenames = C.GoString(_cret)
 		}
 	}
@@ -452,7 +453,7 @@ func GetSystemConfigDirs() []*string {
 func GetSystemDataDirs() []*string {
 	var _cret **C.gchar
 
-	cret = C.g_get_system_data_dirs()
+	_cret = C.g_get_system_data_dirs()
 
 	var _filenames []*string
 
@@ -469,7 +470,7 @@ func GetSystemDataDirs() []*string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_filenames = make([]*string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_filenames = C.GoString(_cret)
 		}
 	}
@@ -491,7 +492,7 @@ func GetSystemDataDirs() []*string {
 func GetTmpDir() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_tmp_dir()
+	_cret = C.g_get_tmp_dir()
 
 	var _filename *string
 
@@ -520,7 +521,7 @@ func GetTmpDir() *string {
 func GetUserCacheDir() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_user_cache_dir()
+	_cret = C.g_get_user_cache_dir()
 
 	var _filename *string
 
@@ -550,7 +551,7 @@ func GetUserCacheDir() *string {
 func GetUserConfigDir() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_user_config_dir()
+	_cret = C.g_get_user_config_dir()
 
 	var _filename *string
 
@@ -580,7 +581,7 @@ func GetUserConfigDir() *string {
 func GetUserDataDir() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_user_data_dir()
+	_cret = C.g_get_user_data_dir()
 
 	var _filename *string
 
@@ -596,7 +597,7 @@ func GetUserDataDir() *string {
 func GetUserName() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_user_name()
+	_cret = C.g_get_user_name()
 
 	var _filename *string
 
@@ -619,7 +620,7 @@ func GetUserName() *string {
 func GetUserRuntimeDir() *string {
 	var _cret *C.gchar
 
-	cret = C.g_get_user_runtime_dir()
+	_cret = C.g_get_user_runtime_dir()
 
 	var _filename *string
 
@@ -645,7 +646,7 @@ func GetUserSpecialDir(directory UserDirectory) *string {
 
 	var _cret *C.gchar
 
-	cret = C.g_get_user_special_dir(_arg1)
+	_cret = C.g_get_user_special_dir(_arg1)
 
 	var _filename *string
 
@@ -673,10 +674,19 @@ func NullifyPointer(nullifyLocation *interface{}) {
 //
 // If @string is equal to "help", all the available keys in @keys are printed
 // out to standard error.
-func ParseDebugString() uint {
+func ParseDebugString(string string, keys []DebugKey) uint {
+	var _arg1 *C.gchar
+	var _arg2 *C.GDebugKey
+	var _arg3 C.guint
+
+	_arg1 = (*C.gchar)(C.CString(string))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg3 = C.guint(len(keys))
+	_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
+
 	var _cret C.guint
 
-	cret = C.g_parse_debug_string()
+	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
 
 	var _guint uint
 

@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -57,20 +59,6 @@ func (h *Hook) Data() interface{} {
 	return v
 }
 
-// Next gets the field inside the struct.
-func (h *Hook) Next() *Hook {
-	var v *Hook
-	v = WrapHook(unsafe.Pointer(h.native.next))
-	return v
-}
-
-// Prev gets the field inside the struct.
-func (h *Hook) Prev() *Hook {
-	var v *Hook
-	v = WrapHook(unsafe.Pointer(h.native.prev))
-	return v
-}
-
 // RefCount gets the field inside the struct.
 func (h *Hook) RefCount() uint {
 	var v uint
@@ -110,7 +98,7 @@ func (n *Hook) CompareIds(sibling *Hook) int {
 
 	var _cret C.gint
 
-	cret = C.g_hook_compare_ids(_arg0, _arg1)
+	_cret = C.g_hook_compare_ids(_arg0, _arg1)
 
 	var _gint int
 
@@ -151,13 +139,6 @@ func (h *HookList) SeqID() uint32 {
 	return v
 }
 
-// Hooks gets the field inside the struct.
-func (h *HookList) Hooks() *Hook {
-	var v *Hook
-	v = WrapHook(unsafe.Pointer(h.native.hooks))
-	return v
-}
-
 // Dummy3 gets the field inside the struct.
 func (h *HookList) Dummy3() interface{} {
 	var v interface{}
@@ -168,7 +149,7 @@ func (h *HookList) Dummy3() interface{} {
 // Dummy gets the field inside the struct.
 func (h *HookList) Dummy() [2]interface{} {
 	var v [2]interface{}
-	v = *(*[2]interface{})(unsafe.Pointer(h.native.dummy))
+	v = *(*[2]interface{})(unsafe.Pointer(&h.native.dummy))
 	return v
 }
 
@@ -220,20 +201,36 @@ func (h *HookList) InvokeCheck(mayRecurse bool) {
 }
 
 // Marshal calls a function on each valid #GHook.
-func (h *HookList) Marshal() {
+func (h *HookList) Marshal(mayRecurse bool, marshaller HookMarshaller) {
 	var _arg0 *C.GHookList
+	var _arg1 C.gboolean
+	var _arg2 C.GHookMarshaller
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	if mayRecurse {
+		_arg1 = C.gboolean(1)
+	}
+	_arg2 = (*[0]byte)(C.gotk4_HookMarshaller)
+	_arg3 = C.gpointer(box.Assign(marshaller))
 
-	C.g_hook_list_marshal(_arg0)
+	C.g_hook_list_marshal(_arg0, _arg1, _arg2, _arg3)
 }
 
 // MarshalCheck calls a function on each valid #GHook and destroys it if the
 // function returns false.
-func (h *HookList) MarshalCheck() {
+func (h *HookList) MarshalCheck(mayRecurse bool, marshaller HookCheckMarshaller) {
 	var _arg0 *C.GHookList
+	var _arg1 C.gboolean
+	var _arg2 C.GHookCheckMarshaller
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
+	if mayRecurse {
+		_arg1 = C.gboolean(1)
+	}
+	_arg2 = (*[0]byte)(C.gotk4_HookCheckMarshaller)
+	_arg3 = C.gpointer(box.Assign(marshaller))
 
-	C.g_hook_list_marshal_check(_arg0)
+	C.g_hook_list_marshal_check(_arg0, _arg1, _arg2, _arg3)
 }

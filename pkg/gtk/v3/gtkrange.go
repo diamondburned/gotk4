@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -36,19 +35,12 @@ type Range interface {
 	Buildable
 	Orientable
 
-	// Adjustment: get the Adjustment which is the “model” object for Range. See
-	// gtk_range_set_adjustment() for details. The return value does not have a
-	// reference added, so should not be unreferenced.
-	Adjustment() Adjustment
 	// FillLevel gets the current position of the fill level indicator.
 	FillLevel() float64
 	// Flippable gets the value set by gtk_range_set_flippable().
 	Flippable() bool
 	// Inverted gets the value set by gtk_range_set_inverted().
 	Inverted() bool
-	// LowerStepperSensitivity gets the sensitivity policy for the stepper that
-	// points to the 'lower' end of the GtkRange’s adjustment.
-	LowerStepperSensitivity() SensitivityType
 	// MinSliderSize: this function is useful mainly for Range subclasses.
 	//
 	// See gtk_range_set_min_slider_size().
@@ -75,9 +67,6 @@ type Range interface {
 	//
 	// See gtk_range_set_slider_size_fixed().
 	SliderSizeFixed() bool
-	// UpperStepperSensitivity gets the sensitivity policy for the stepper that
-	// points to the 'upper' end of the GtkRange’s adjustment.
-	UpperStepperSensitivity() SensitivityType
 	// Value gets the current value of the range.
 	Value() float64
 	// SetAdjustment sets the adjustment to be used as the “model” object for
@@ -181,25 +170,6 @@ func marshalRange(p uintptr) (interface{}, error) {
 	return WrapRange(obj), nil
 }
 
-// Adjustment: get the Adjustment which is the “model” object for Range. See
-// gtk_range_set_adjustment() for details. The return value does not have a
-// reference added, so should not be unreferenced.
-func (r _range) Adjustment() Adjustment {
-	var _arg0 *C.GtkRange
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_range_get_adjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
 // FillLevel gets the current position of the fill level indicator.
 func (r _range) FillLevel() float64 {
 	var _arg0 *C.GtkRange
@@ -208,7 +178,7 @@ func (r _range) FillLevel() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_range_get_fill_level(_arg0)
+	_cret = C.gtk_range_get_fill_level(_arg0)
 
 	var _gdouble float64
 
@@ -225,7 +195,7 @@ func (r _range) Flippable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_range_get_flippable(_arg0)
+	_cret = C.gtk_range_get_flippable(_arg0)
 
 	var _ok bool
 
@@ -244,7 +214,7 @@ func (r _range) Inverted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_range_get_inverted(_arg0)
+	_cret = C.gtk_range_get_inverted(_arg0)
 
 	var _ok bool
 
@@ -253,24 +223,6 @@ func (r _range) Inverted() bool {
 	}
 
 	return _ok
-}
-
-// LowerStepperSensitivity gets the sensitivity policy for the stepper that
-// points to the 'lower' end of the GtkRange’s adjustment.
-func (r _range) LowerStepperSensitivity() SensitivityType {
-	var _arg0 *C.GtkRange
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-
-	var _cret C.GtkSensitivityType
-
-	cret = C.gtk_range_get_lower_stepper_sensitivity(_arg0)
-
-	var _sensitivityType SensitivityType
-
-	_sensitivityType = SensitivityType(_cret)
-
-	return _sensitivityType
 }
 
 // MinSliderSize: this function is useful mainly for Range subclasses.
@@ -283,7 +235,7 @@ func (r _range) MinSliderSize() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_range_get_min_slider_size(_arg0)
+	_cret = C.gtk_range_get_min_slider_size(_arg0)
 
 	var _gint int
 
@@ -317,7 +269,7 @@ func (r _range) RestrictToFillLevel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
+	_cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
 
 	var _ok bool
 
@@ -337,7 +289,7 @@ func (r _range) RoundDigits() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_range_get_round_digits(_arg0)
+	_cret = C.gtk_range_get_round_digits(_arg0)
 
 	var _gint int
 
@@ -354,7 +306,7 @@ func (r _range) ShowFillLevel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_range_get_show_fill_level(_arg0)
+	_cret = C.gtk_range_get_show_fill_level(_arg0)
 
 	var _ok bool
 
@@ -398,7 +350,7 @@ func (r _range) SliderSizeFixed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_range_get_slider_size_fixed(_arg0)
+	_cret = C.gtk_range_get_slider_size_fixed(_arg0)
 
 	var _ok bool
 
@@ -409,24 +361,6 @@ func (r _range) SliderSizeFixed() bool {
 	return _ok
 }
 
-// UpperStepperSensitivity gets the sensitivity policy for the stepper that
-// points to the 'upper' end of the GtkRange’s adjustment.
-func (r _range) UpperStepperSensitivity() SensitivityType {
-	var _arg0 *C.GtkRange
-
-	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
-
-	var _cret C.GtkSensitivityType
-
-	cret = C.gtk_range_get_upper_stepper_sensitivity(_arg0)
-
-	var _sensitivityType SensitivityType
-
-	_sensitivityType = SensitivityType(_cret)
-
-	return _sensitivityType
-}
-
 // Value gets the current value of the range.
 func (r _range) Value() float64 {
 	var _arg0 *C.GtkRange
@@ -435,7 +369,7 @@ func (r _range) Value() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_range_get_value(_arg0)
+	_cret = C.gtk_range_get_value(_arg0)
 
 	var _gdouble float64
 

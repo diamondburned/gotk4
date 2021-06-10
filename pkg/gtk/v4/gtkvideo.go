@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -44,12 +43,8 @@ type Video interface {
 
 	// Autoplay returns true if videos have been set to loop.
 	Autoplay() bool
-	// File gets the file played by @self or nil if not playing back a file.
-	File() gio.File
 	// Loop returns true if videos have been set to loop.
 	Loop() bool
-	// MediaStream gets the media stream managed by @self or nil if none.
-	MediaStream() MediaStream
 	// SetAutoplay sets whether @self automatically starts playback when it
 	// becomes visible or when a new file gets loaded.
 	SetAutoplay(autoplay bool)
@@ -103,89 +98,6 @@ func marshalVideo(p uintptr) (interface{}, error) {
 	return WrapVideo(obj), nil
 }
 
-// NewVideo constructs a class Video.
-func NewVideo() Video {
-	var _cret C.GtkVideo
-
-	cret = C.gtk_video_new()
-
-	var _video Video
-
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
-
-	return _video
-}
-
-// NewVideoForFile constructs a class Video.
-func NewVideoForFile(file gio.File) Video {
-	var _arg1 *C.GFile
-
-	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
-
-	var _cret C.GtkVideo
-
-	cret = C.gtk_video_new_for_file(_arg1)
-
-	var _video Video
-
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
-
-	return _video
-}
-
-// NewVideoForFilename constructs a class Video.
-func NewVideoForFilename(filename *string) Video {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(filename))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkVideo
-
-	cret = C.gtk_video_new_for_filename(_arg1)
-
-	var _video Video
-
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
-
-	return _video
-}
-
-// NewVideoForMediaStream constructs a class Video.
-func NewVideoForMediaStream(stream MediaStream) Video {
-	var _arg1 *C.GtkMediaStream
-
-	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
-
-	var _cret C.GtkVideo
-
-	cret = C.gtk_video_new_for_media_stream(_arg1)
-
-	var _video Video
-
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
-
-	return _video
-}
-
-// NewVideoForResource constructs a class Video.
-func NewVideoForResource(resourcePath string) Video {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(resourcePath))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkVideo
-
-	cret = C.gtk_video_new_for_resource(_arg1)
-
-	var _video Video
-
-	_video = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Video)
-
-	return _video
-}
-
 // Autoplay returns true if videos have been set to loop.
 func (s video) Autoplay() bool {
 	var _arg0 *C.GtkVideo
@@ -194,7 +106,7 @@ func (s video) Autoplay() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_video_get_autoplay(_arg0)
+	_cret = C.gtk_video_get_autoplay(_arg0)
 
 	var _ok bool
 
@@ -203,23 +115,6 @@ func (s video) Autoplay() bool {
 	}
 
 	return _ok
-}
-
-// File gets the file played by @self or nil if not playing back a file.
-func (s video) File() gio.File {
-	var _arg0 *C.GtkVideo
-
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GFile
-
-	cret = C.gtk_video_get_file(_arg0)
-
-	var _file gio.File
-
-	_file = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.File)
-
-	return _file
 }
 
 // Loop returns true if videos have been set to loop.
@@ -230,7 +125,7 @@ func (s video) Loop() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_video_get_loop(_arg0)
+	_cret = C.gtk_video_get_loop(_arg0)
 
 	var _ok bool
 
@@ -239,23 +134,6 @@ func (s video) Loop() bool {
 	}
 
 	return _ok
-}
-
-// MediaStream gets the media stream managed by @self or nil if none.
-func (s video) MediaStream() MediaStream {
-	var _arg0 *C.GtkVideo
-
-	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkMediaStream
-
-	cret = C.gtk_video_get_media_stream(_arg0)
-
-	var _mediaStream MediaStream
-
-	_mediaStream = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(MediaStream)
-
-	return _mediaStream
 }
 
 // SetAutoplay sets whether @self automatically starts playback when it

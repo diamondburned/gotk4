@@ -3,17 +3,12 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
-	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -36,12 +31,8 @@ func init() {
 type IconInfo interface {
 	gextras.Objector
 
-	// Copy: make a copy of a IconInfo.
-	Copy() IconInfo
 	// Free: free a IconInfo and associated information
 	Free()
-	// AttachPoints: this function is deprecated and always returns false.
-	AttachPoints() bool
 	// BaseScale gets the base scale for the icon. The base scale is a scale for
 	// the icon that was specified by the icon theme creator. For instance an
 	// icon drawn for a high-dpi screen with window scale 2 for a base size of
@@ -55,10 +46,6 @@ type IconInfo interface {
 	//
 	// Note that for scaled icons the base size does not include the base scale.
 	BaseSize() int
-	// BuiltinPixbuf gets the built-in image for this icon, if any. To allow
-	// GTK+ to use built in icon images, you must pass the
-	// GTK_ICON_LOOKUP_USE_BUILTIN to gtk_icon_theme_lookup_icon().
-	BuiltinPixbuf() gdkpixbuf.Pixbuf
 	// DisplayName: this function is deprecated and always returns nil.
 	DisplayName() string
 	// EmbeddedRect: this function is deprecated and always returns false.
@@ -73,98 +60,26 @@ type IconInfo interface {
 	// only the file name and not the file contents for determining this. This
 	// behaviour may change in the future.
 	IsSymbolic() bool
-	// LoadIcon renders an icon previously looked up in an icon theme using
-	// gtk_icon_theme_lookup_icon(); the size will be based on the size passed
-	// to gtk_icon_theme_lookup_icon(). Note that the resulting pixbuf may not
-	// be exactly this size; an icon theme may have icons that differ slightly
-	// from their nominal sizes, and in addition GTK+ will avoid scaling icons
-	// that it considers sufficiently close to the requested size or for which
-	// the source image would have to be scaled up too far. (This maintains
-	// sharpness.). This behaviour can be changed by passing the
-	// GTK_ICON_LOOKUP_FORCE_SIZE flag when obtaining the IconInfo. If this flag
-	// has been specified, the pixbuf returned by this function will be scaled
-	// to the exact size.
-	LoadIcon() (gdkpixbuf.Pixbuf, error)
 	// LoadIconAsync: asynchronously load, render and scale an icon previously
 	// looked up from the icon theme using gtk_icon_theme_lookup_icon().
 	//
 	// For more details, see gtk_icon_info_load_icon() which is the synchronous
 	// version of this call.
-	LoadIconAsync()
-	// LoadIconFinish finishes an async icon load, see
-	// gtk_icon_info_load_icon_async().
-	LoadIconFinish(res gio.AsyncResult) (gdkpixbuf.Pixbuf, error)
-	// LoadSurface renders an icon previously looked up in an icon theme using
-	// gtk_icon_theme_lookup_icon(); the size will be based on the size passed
-	// to gtk_icon_theme_lookup_icon(). Note that the resulting surface may not
-	// be exactly this size; an icon theme may have icons that differ slightly
-	// from their nominal sizes, and in addition GTK+ will avoid scaling icons
-	// that it considers sufficiently close to the requested size or for which
-	// the source image would have to be scaled up too far. (This maintains
-	// sharpness.). This behaviour can be changed by passing the
-	// GTK_ICON_LOOKUP_FORCE_SIZE flag when obtaining the IconInfo. If this flag
-	// has been specified, the pixbuf returned by this function will be scaled
-	// to the exact size.
-	LoadSurface(forWindow gdk.Window) (*cairo.Surface, error)
-	// LoadSymbolic loads an icon, modifying it to match the system colours for
-	// the foreground, success, warning and error colors provided. If the icon
-	// is not a symbolic one, the function will return the result from
-	// gtk_icon_info_load_icon().
-	//
-	// This allows loading symbolic icons that will match the system theme.
-	//
-	// Unless you are implementing a widget, you will want to use
-	// g_themed_icon_new_with_default_fallbacks() to load the icon.
-	//
-	// As implementation details, the icon loaded needs to be of SVG type,
-	// contain the “symbolic” term as the last component of the icon name, and
-	// use the “fg”, “success”, “warning” and “error” CSS styles in the SVG file
-	// itself.
-	//
-	// See the Symbolic Icons Specification
-	// (http://www.freedesktop.org/wiki/SymbolicIcons) for more information
-	// about symbolic icons.
-	LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA) (bool, gdkpixbuf.Pixbuf, error)
+	LoadIconAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// LoadSymbolicAsync: asynchronously load, render and scale a symbolic icon
 	// previously looked up from the icon theme using
 	// gtk_icon_theme_lookup_icon().
 	//
 	// For more details, see gtk_icon_info_load_symbolic() which is the
 	// synchronous version of this call.
-	LoadSymbolicAsync()
-	// LoadSymbolicFinish finishes an async icon load, see
-	// gtk_icon_info_load_symbolic_async().
-	LoadSymbolicFinish(res gio.AsyncResult) (bool, gdkpixbuf.Pixbuf, error)
-	// LoadSymbolicForContext loads an icon, modifying it to match the system
-	// colors for the foreground, success, warning and error colors provided. If
-	// the icon is not a symbolic one, the function will return the result from
-	// gtk_icon_info_load_icon(). This function uses the regular foreground
-	// color and the symbolic colors with the names “success_color”,
-	// “warning_color” and “error_color” from the context.
-	//
-	// This allows loading symbolic icons that will match the system theme.
-	//
-	// See gtk_icon_info_load_symbolic() for more details.
-	LoadSymbolicForContext(context StyleContext) (bool, gdkpixbuf.Pixbuf, error)
+	LoadSymbolicAsync(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// LoadSymbolicForContextAsync: asynchronously load, render and scale a
 	// symbolic icon previously looked up from the icon theme using
 	// gtk_icon_theme_lookup_icon().
 	//
 	// For more details, see gtk_icon_info_load_symbolic_for_context() which is
 	// the synchronous version of this call.
-	LoadSymbolicForContextAsync()
-	// LoadSymbolicForContextFinish finishes an async icon load, see
-	// gtk_icon_info_load_symbolic_for_context_async().
-	LoadSymbolicForContextFinish(res gio.AsyncResult) (bool, gdkpixbuf.Pixbuf, error)
-	// LoadSymbolicForStyle loads an icon, modifying it to match the system
-	// colours for the foreground, success, warning and error colors provided.
-	// If the icon is not a symbolic one, the function will return the result
-	// from gtk_icon_info_load_icon().
-	//
-	// This allows loading symbolic icons that will match the system theme.
-	//
-	// See gtk_icon_info_load_symbolic() for more details.
-	LoadSymbolicForStyle(style Style, state StateType) (bool, gdkpixbuf.Pixbuf, error)
+	LoadSymbolicForContextAsync(context StyleContext, cancellable gio.Cancellable, callback gio.AsyncReadyCallback)
 	// SetRawCoordinates sets whether the coordinates returned by
 	// gtk_icon_info_get_embedded_rect() and gtk_icon_info_get_attach_points()
 	// should be returned in their original form as specified in the icon theme,
@@ -204,42 +119,6 @@ func marshalIconInfo(p uintptr) (interface{}, error) {
 	return WrapIconInfo(obj), nil
 }
 
-// NewIconInfoForPixbuf constructs a class IconInfo.
-func NewIconInfoForPixbuf(iconTheme IconTheme, pixbuf gdkpixbuf.Pixbuf) IconInfo {
-	var _arg1 *C.GtkIconTheme
-	var _arg2 *C.GdkPixbuf
-
-	_arg1 = (*C.GtkIconTheme)(unsafe.Pointer(iconTheme.Native()))
-	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
-
-	var _cret C.GtkIconInfo
-
-	cret = C.gtk_icon_info_new_for_pixbuf(_arg1, _arg2)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
-}
-
-// Copy: make a copy of a IconInfo.
-func (i iconInfo) Copy() IconInfo {
-	var _arg0 *C.GtkIconInfo
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkIconInfo
-
-	cret = C.gtk_icon_info_copy(_arg0)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
-}
-
 // Free: free a IconInfo and associated information
 func (i iconInfo) Free() {
 	var _arg0 *C.GtkIconInfo
@@ -247,25 +126,6 @@ func (i iconInfo) Free() {
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
 
 	C.gtk_icon_info_free(_arg0)
-}
-
-// AttachPoints: this function is deprecated and always returns false.
-func (i iconInfo) AttachPoints() bool {
-	var _arg0 *C.GtkIconInfo
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret C.gboolean
-
-	cret = C.gtk_icon_info_get_attach_points(_arg0)
-
-	var _ok bool
-
-	if _cret {
-		_ok = true
-	}
-
-	return _ok
 }
 
 // BaseScale gets the base scale for the icon. The base scale is a scale for
@@ -279,7 +139,7 @@ func (i iconInfo) BaseScale() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_icon_info_get_base_scale(_arg0)
+	_cret = C.gtk_icon_info_get_base_scale(_arg0)
 
 	var _gint int
 
@@ -302,32 +162,13 @@ func (i iconInfo) BaseSize() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_icon_info_get_base_size(_arg0)
+	_cret = C.gtk_icon_info_get_base_size(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// BuiltinPixbuf gets the built-in image for this icon, if any. To allow
-// GTK+ to use built in icon images, you must pass the
-// GTK_ICON_LOOKUP_USE_BUILTIN to gtk_icon_theme_lookup_icon().
-func (i iconInfo) BuiltinPixbuf() gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkIconInfo
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gtk_icon_info_get_builtin_pixbuf(_arg0)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return _pixbuf
 }
 
 // DisplayName: this function is deprecated and always returns nil.
@@ -338,7 +179,7 @@ func (i iconInfo) DisplayName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_icon_info_get_display_name(_arg0)
+	_cret = C.gtk_icon_info_get_display_name(_arg0)
 
 	var _utf8 string
 
@@ -356,7 +197,7 @@ func (i iconInfo) EmbeddedRect() (gdk.Rectangle, bool) {
 	var _rectangle gdk.Rectangle
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_info_get_embedded_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rectangle)))
+	_cret = C.gtk_icon_info_get_embedded_rect(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rectangle)))
 
 	var _ok bool
 
@@ -379,7 +220,7 @@ func (i iconInfo) Filename() *string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_icon_info_get_filename(_arg0)
+	_cret = C.gtk_icon_info_get_filename(_arg0)
 
 	var _filename *string
 
@@ -398,7 +239,7 @@ func (i iconInfo) IsSymbolic() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_info_is_symbolic(_arg0)
+	_cret = C.gtk_icon_info_is_symbolic(_arg0)
 
 	var _ok bool
 
@@ -409,155 +250,23 @@ func (i iconInfo) IsSymbolic() bool {
 	return _ok
 }
 
-// LoadIcon renders an icon previously looked up in an icon theme using
-// gtk_icon_theme_lookup_icon(); the size will be based on the size passed
-// to gtk_icon_theme_lookup_icon(). Note that the resulting pixbuf may not
-// be exactly this size; an icon theme may have icons that differ slightly
-// from their nominal sizes, and in addition GTK+ will avoid scaling icons
-// that it considers sufficiently close to the requested size or for which
-// the source image would have to be scaled up too far. (This maintains
-// sharpness.). This behaviour can be changed by passing the
-// GTK_ICON_LOOKUP_FORCE_SIZE flag when obtaining the IconInfo. If this flag
-// has been specified, the pixbuf returned by this function will be scaled
-// to the exact size.
-func (i iconInfo) LoadIcon() (gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconInfo
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_icon(_arg0, _cerr)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbuf, _goerr
-}
-
 // LoadIconAsync: asynchronously load, render and scale an icon previously
 // looked up from the icon theme using gtk_icon_theme_lookup_icon().
 //
 // For more details, see gtk_icon_info_load_icon() which is the synchronous
 // version of this call.
-func (i iconInfo) LoadIconAsync() {
+func (i iconInfo) LoadIconAsync(cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GtkIconInfo
+	var _arg1 *C.GCancellable
+	var _arg2 C.GAsyncReadyCallback
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg3 = C.gpointer(box.Assign(callback))
 
-	C.gtk_icon_info_load_icon_async(_arg0)
-}
-
-// LoadIconFinish finishes an async icon load, see
-// gtk_icon_info_load_icon_async().
-func (i iconInfo) LoadIconFinish(res gio.AsyncResult) (gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconInfo
-	var _arg1 *C.GAsyncResult
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_icon_finish(_arg0, _arg1, _cerr)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbuf, _goerr
-}
-
-// LoadSurface renders an icon previously looked up in an icon theme using
-// gtk_icon_theme_lookup_icon(); the size will be based on the size passed
-// to gtk_icon_theme_lookup_icon(). Note that the resulting surface may not
-// be exactly this size; an icon theme may have icons that differ slightly
-// from their nominal sizes, and in addition GTK+ will avoid scaling icons
-// that it considers sufficiently close to the requested size or for which
-// the source image would have to be scaled up too far. (This maintains
-// sharpness.). This behaviour can be changed by passing the
-// GTK_ICON_LOOKUP_FORCE_SIZE flag when obtaining the IconInfo. If this flag
-// has been specified, the pixbuf returned by this function will be scaled
-// to the exact size.
-func (i iconInfo) LoadSurface(forWindow gdk.Window) (*cairo.Surface, error) {
-	var _arg0 *C.GtkIconInfo
-	var _arg1 *C.GdkWindow
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
-
-	var _cret *C.cairo_surface_t
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_surface(_arg0, _arg1, _cerr)
-
-	var _surface *cairo.Surface
-	var _goerr error
-
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _surface, _goerr
-}
-
-// LoadSymbolic loads an icon, modifying it to match the system colours for
-// the foreground, success, warning and error colors provided. If the icon
-// is not a symbolic one, the function will return the result from
-// gtk_icon_info_load_icon().
-//
-// This allows loading symbolic icons that will match the system theme.
-//
-// Unless you are implementing a widget, you will want to use
-// g_themed_icon_new_with_default_fallbacks() to load the icon.
-//
-// As implementation details, the icon loaded needs to be of SVG type,
-// contain the “symbolic” term as the last component of the icon name, and
-// use the “fg”, “success”, “warning” and “error” CSS styles in the SVG file
-// itself.
-//
-// See the Symbolic Icons Specification
-// (http://www.freedesktop.org/wiki/SymbolicIcons) for more information
-// about symbolic icons.
-func (i iconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA) (bool, gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconInfo
-	var _arg1 *C.GdkRGBA
-	var _arg2 *C.GdkRGBA
-	var _arg3 *C.GdkRGBA
-	var _arg4 *C.GdkRGBA
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(fg.Native()))
-	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(successColor.Native()))
-	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(warningColor.Native()))
-	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(errorColor.Native()))
-
-	var _arg5 C.gboolean
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_symbolic(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, _cerr)
-
-	var _wasSymbolic bool
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	if _arg5 {
-		_wasSymbolic = true
-	}
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _wasSymbolic, _pixbuf, _goerr
+	C.gtk_icon_info_load_icon_async(_arg0, _arg1, _arg2, _arg3)
 }
 
 // LoadSymbolicAsync: asynchronously load, render and scale a symbolic icon
@@ -566,76 +275,26 @@ func (i iconInfo) LoadSymbolic(fg *gdk.RGBA, successColor *gdk.RGBA, warningColo
 //
 // For more details, see gtk_icon_info_load_symbolic() which is the
 // synchronous version of this call.
-func (i iconInfo) LoadSymbolicAsync() {
+func (i iconInfo) LoadSymbolicAsync(fg *gdk.RGBA, successColor *gdk.RGBA, warningColor *gdk.RGBA, errorColor *gdk.RGBA, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GtkIconInfo
+	var _arg1 *C.GdkRGBA
+	var _arg2 *C.GdkRGBA
+	var _arg3 *C.GdkRGBA
+	var _arg4 *C.GdkRGBA
+	var _arg5 *C.GCancellable
+	var _arg6 C.GAsyncReadyCallback
+	var _arg7 C.gpointer
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(fg.Native()))
+	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(successColor.Native()))
+	_arg3 = (*C.GdkRGBA)(unsafe.Pointer(warningColor.Native()))
+	_arg4 = (*C.GdkRGBA)(unsafe.Pointer(errorColor.Native()))
+	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg6 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg7 = C.gpointer(box.Assign(callback))
 
-	C.gtk_icon_info_load_symbolic_async(_arg0)
-}
-
-// LoadSymbolicFinish finishes an async icon load, see
-// gtk_icon_info_load_symbolic_async().
-func (i iconInfo) LoadSymbolicFinish(res gio.AsyncResult) (bool, gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconInfo
-	var _arg1 *C.GAsyncResult
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _arg2 C.gboolean
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_symbolic_finish(_arg0, _arg1, &_arg2, _cerr)
-
-	var _wasSymbolic bool
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	if _arg2 {
-		_wasSymbolic = true
-	}
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _wasSymbolic, _pixbuf, _goerr
-}
-
-// LoadSymbolicForContext loads an icon, modifying it to match the system
-// colors for the foreground, success, warning and error colors provided. If
-// the icon is not a symbolic one, the function will return the result from
-// gtk_icon_info_load_icon(). This function uses the regular foreground
-// color and the symbolic colors with the names “success_color”,
-// “warning_color” and “error_color” from the context.
-//
-// This allows loading symbolic icons that will match the system theme.
-//
-// See gtk_icon_info_load_symbolic() for more details.
-func (i iconInfo) LoadSymbolicForContext(context StyleContext) (bool, gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconInfo
-	var _arg1 *C.GtkStyleContext
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-
-	var _arg2 C.gboolean
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_symbolic_for_context(_arg0, _arg1, &_arg2, _cerr)
-
-	var _wasSymbolic bool
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	if _arg2 {
-		_wasSymbolic = true
-	}
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _wasSymbolic, _pixbuf, _goerr
+	C.gtk_icon_info_load_symbolic_async(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7)
 }
 
 // LoadSymbolicForContextAsync: asynchronously load, render and scale a
@@ -644,76 +303,20 @@ func (i iconInfo) LoadSymbolicForContext(context StyleContext) (bool, gdkpixbuf.
 //
 // For more details, see gtk_icon_info_load_symbolic_for_context() which is
 // the synchronous version of this call.
-func (i iconInfo) LoadSymbolicForContextAsync() {
+func (i iconInfo) LoadSymbolicForContextAsync(context StyleContext, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
 	var _arg0 *C.GtkIconInfo
+	var _arg1 *C.GtkStyleContext
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
+	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	C.gtk_icon_info_load_symbolic_for_context_async(_arg0)
-}
-
-// LoadSymbolicForContextFinish finishes an async icon load, see
-// gtk_icon_info_load_symbolic_for_context_async().
-func (i iconInfo) LoadSymbolicForContextFinish(res gio.AsyncResult) (bool, gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconInfo
-	var _arg1 *C.GAsyncResult
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _arg2 C.gboolean
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_symbolic_for_context_finish(_arg0, _arg1, &_arg2, _cerr)
-
-	var _wasSymbolic bool
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	if _arg2 {
-		_wasSymbolic = true
-	}
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _wasSymbolic, _pixbuf, _goerr
-}
-
-// LoadSymbolicForStyle loads an icon, modifying it to match the system
-// colours for the foreground, success, warning and error colors provided.
-// If the icon is not a symbolic one, the function will return the result
-// from gtk_icon_info_load_icon().
-//
-// This allows loading symbolic icons that will match the system theme.
-//
-// See gtk_icon_info_load_symbolic() for more details.
-func (i iconInfo) LoadSymbolicForStyle(style Style, state StateType) (bool, gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconInfo
-	var _arg1 *C.GtkStyle
-	var _arg2 C.GtkStateType
-
-	_arg0 = (*C.GtkIconInfo)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GtkStyle)(unsafe.Pointer(style.Native()))
-	_arg2 = (C.GtkStateType)(state)
-
-	var _arg3 C.gboolean
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_info_load_symbolic_for_style(_arg0, _arg1, _arg2, &_arg3, _cerr)
-
-	var _wasSymbolic bool
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	if _arg3 {
-		_wasSymbolic = true
-	}
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _wasSymbolic, _pixbuf, _goerr
+	C.gtk_icon_info_load_symbolic_for_context_async(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetRawCoordinates sets whether the coordinates returned by
@@ -821,24 +424,6 @@ type IconTheme interface {
 	// AppendSearchPath appends a directory to the search path. See
 	// gtk_icon_theme_set_search_path().
 	AppendSearchPath(path *string)
-	// ChooseIcon looks up a named icon and returns a IconInfo containing
-	// information such as the filename of the icon. The icon can then be
-	// rendered into a pixbuf using gtk_icon_info_load_icon().
-	// (gtk_icon_theme_load_icon() combines these two steps if all you need is
-	// the pixbuf.)
-	//
-	// If @icon_names contains more than one name, this function tries them all
-	// in the given order before falling back to inherited icon themes.
-	ChooseIcon(iconNames []string, size int, flags IconLookupFlags) IconInfo
-	// ChooseIconForScale looks up a named icon for a particular window scale
-	// and returns a IconInfo containing information such as the filename of the
-	// icon. The icon can then be rendered into a pixbuf using
-	// gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon() combines these two
-	// steps if all you need is the pixbuf.)
-	//
-	// If @icon_names contains more than one name, this function tries them all
-	// in the given order before falling back to inherited icon themes.
-	ChooseIconForScale(iconNames []string, size int, scale int, flags IconLookupFlags) IconInfo
 	// ExampleIconName gets the name of an icon that is representative of the
 	// current theme (for instance, to use when presenting a list of themes to
 	// the user.)
@@ -849,91 +434,10 @@ type IconTheme interface {
 	IconSizes(iconName string) []int
 	// SearchPath gets the current search path. See
 	// gtk_icon_theme_set_search_path().
-	SearchPath()
+	SearchPath() []*string
 	// HasIcon checks whether an icon theme includes an icon for a particular
 	// name.
 	HasIcon(iconName string) bool
-	// ListContexts gets the list of contexts available within the current
-	// hierarchy of icon themes. See gtk_icon_theme_list_icons() for details
-	// about contexts.
-	ListContexts() *glib.List
-	// ListIcons lists the icons in the current icon theme. Only a subset of the
-	// icons can be listed by providing a context string. The set of values for
-	// the context string is system dependent, but will typically include such
-	// values as “Applications” and “MimeTypes”. Contexts are explained in the
-	// Icon Theme Specification
-	// (http://www.freedesktop.org/wiki/Specifications/icon-theme-spec). The
-	// standard contexts are listed in the Icon Naming Specification
-	// (http://www.freedesktop.org/wiki/Specifications/icon-naming-spec). Also
-	// see gtk_icon_theme_list_contexts().
-	ListIcons(context string) *glib.List
-	// LoadIcon looks up an icon in an icon theme, scales it to the given size
-	// and renders it into a pixbuf. This is a convenience function; if more
-	// details about the icon are needed, use gtk_icon_theme_lookup_icon()
-	// followed by gtk_icon_info_load_icon().
-	//
-	// Note that you probably want to listen for icon theme changes and update
-	// the icon. This is usually done by connecting to the GtkWidget::style-set
-	// signal. If for some reason you do not want to update the icon when the
-	// icon theme changes, you should consider using gdk_pixbuf_copy() to make a
-	// private copy of the pixbuf returned by this function. Otherwise GTK+ may
-	// need to keep the old icon theme loaded, which would be a waste of memory.
-	LoadIcon(iconName string, size int, flags IconLookupFlags) (gdkpixbuf.Pixbuf, error)
-	// LoadIconForScale looks up an icon in an icon theme for a particular
-	// window scale, scales it to the given size and renders it into a pixbuf.
-	// This is a convenience function; if more details about the icon are
-	// needed, use gtk_icon_theme_lookup_icon() followed by
-	// gtk_icon_info_load_icon().
-	//
-	// Note that you probably want to listen for icon theme changes and update
-	// the icon. This is usually done by connecting to the GtkWidget::style-set
-	// signal. If for some reason you do not want to update the icon when the
-	// icon theme changes, you should consider using gdk_pixbuf_copy() to make a
-	// private copy of the pixbuf returned by this function. Otherwise GTK+ may
-	// need to keep the old icon theme loaded, which would be a waste of memory.
-	LoadIconForScale(iconName string, size int, scale int, flags IconLookupFlags) (gdkpixbuf.Pixbuf, error)
-	// LoadSurface looks up an icon in an icon theme for a particular window
-	// scale, scales it to the given size and renders it into a cairo surface.
-	// This is a convenience function; if more details about the icon are
-	// needed, use gtk_icon_theme_lookup_icon() followed by
-	// gtk_icon_info_load_surface().
-	//
-	// Note that you probably want to listen for icon theme changes and update
-	// the icon. This is usually done by connecting to the GtkWidget::style-set
-	// signal.
-	LoadSurface(iconName string, size int, scale int, forWindow gdk.Window, flags IconLookupFlags) (*cairo.Surface, error)
-	// LookupByGIcon looks up an icon and returns a IconInfo containing
-	// information such as the filename of the icon. The icon can then be
-	// rendered into a pixbuf using gtk_icon_info_load_icon().
-	//
-	// When rendering on displays with high pixel densities you should not use a
-	// @size multiplied by the scaling factor returned by functions like
-	// gdk_window_get_scale_factor(). Instead, you should use
-	// gtk_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded for a
-	// given scaling factor may be different.
-	LookupByGIcon(icon gio.Icon, size int, flags IconLookupFlags) IconInfo
-	// LookupByGIconForScale looks up an icon and returns a IconInfo containing
-	// information such as the filename of the icon. The icon can then be
-	// rendered into a pixbuf using gtk_icon_info_load_icon().
-	LookupByGIconForScale(icon gio.Icon, size int, scale int, flags IconLookupFlags) IconInfo
-	// LookupIcon looks up a named icon and returns a IconInfo containing
-	// information such as the filename of the icon. The icon can then be
-	// rendered into a pixbuf using gtk_icon_info_load_icon().
-	// (gtk_icon_theme_load_icon() combines these two steps if all you need is
-	// the pixbuf.)
-	//
-	// When rendering on displays with high pixel densities you should not use a
-	// @size multiplied by the scaling factor returned by functions like
-	// gdk_window_get_scale_factor(). Instead, you should use
-	// gtk_icon_theme_lookup_icon_for_scale(), as the assets loaded for a given
-	// scaling factor may be different.
-	LookupIcon(iconName string, size int, flags IconLookupFlags) IconInfo
-	// LookupIconForScale looks up a named icon for a particular window scale
-	// and returns a IconInfo containing information such as the filename of the
-	// icon. The icon can then be rendered into a pixbuf using
-	// gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon() combines these two
-	// steps if all you need is the pixbuf.)
-	LookupIconForScale(iconName string, size int, scale int, flags IconLookupFlags) IconInfo
 	// PrependSearchPath prepends a directory to the search path. See
 	// gtk_icon_theme_set_search_path().
 	PrependSearchPath(path *string)
@@ -963,7 +467,7 @@ type IconTheme interface {
 	// for the icon name. (This is legacy feature, and new icons should be put
 	// into the fallback icon theme, which is called hicolor, rather than
 	// directly on the icon path.)
-	SetSearchPath()
+	SetSearchPath(path []*string)
 }
 
 // iconTheme implements the IconTheme interface.
@@ -985,19 +489,6 @@ func marshalIconTheme(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapIconTheme(obj), nil
-}
-
-// NewIconTheme constructs a class IconTheme.
-func NewIconTheme() IconTheme {
-	var _cret C.GtkIconTheme
-
-	cret = C.gtk_icon_theme_new()
-
-	var _iconTheme IconTheme
-
-	_iconTheme = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconTheme)
-
-	return _iconTheme
 }
 
 // AddResourcePath adds a resource path that will be looked at when looking
@@ -1035,90 +526,6 @@ func (i iconTheme) AppendSearchPath(path *string) {
 	C.gtk_icon_theme_append_search_path(_arg0, _arg1)
 }
 
-// ChooseIcon looks up a named icon and returns a IconInfo containing
-// information such as the filename of the icon. The icon can then be
-// rendered into a pixbuf using gtk_icon_info_load_icon().
-// (gtk_icon_theme_load_icon() combines these two steps if all you need is
-// the pixbuf.)
-//
-// If @icon_names contains more than one name, this function tries them all
-// in the given order before falling back to inherited icon themes.
-func (i iconTheme) ChooseIcon(iconNames []string, size int, flags IconLookupFlags) IconInfo {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 **C.gchar
-	var _arg2 C.gint
-	var _arg3 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (**C.gchar)(C.malloc((len(iconNames) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(iconNames)))
-
-		for i := range iconNames {
-			_arg1 = (*C.gchar)(C.CString(iconNames))
-			defer C.free(unsafe.Pointer(_arg1))
-		}
-	}
-	_arg2 = C.gint(size)
-	_arg3 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconInfo
-
-	cret = C.gtk_icon_theme_choose_icon(_arg0, _arg1, _arg2, _arg3)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
-}
-
-// ChooseIconForScale looks up a named icon for a particular window scale
-// and returns a IconInfo containing information such as the filename of the
-// icon. The icon can then be rendered into a pixbuf using
-// gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon() combines these two
-// steps if all you need is the pixbuf.)
-//
-// If @icon_names contains more than one name, this function tries them all
-// in the given order before falling back to inherited icon themes.
-func (i iconTheme) ChooseIconForScale(iconNames []string, size int, scale int, flags IconLookupFlags) IconInfo {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 **C.gchar
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (**C.gchar)(C.malloc((len(iconNames) + 1) * unsafe.Sizeof(int(0))))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	{
-		var out []*C.gchar
-		ptr.SetSlice(unsafe.Pointer(&dst), unsafe.Pointer(_arg1), int(len(iconNames)))
-
-		for i := range iconNames {
-			_arg1 = (*C.gchar)(C.CString(iconNames))
-			defer C.free(unsafe.Pointer(_arg1))
-		}
-	}
-	_arg2 = C.gint(size)
-	_arg3 = C.gint(scale)
-	_arg4 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconInfo
-
-	cret = C.gtk_icon_theme_choose_icon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
-}
-
 // ExampleIconName gets the name of an icon that is representative of the
 // current theme (for instance, to use when presenting a list of themes to
 // the user.)
@@ -1129,7 +536,7 @@ func (i iconTheme) ExampleIconName() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_icon_theme_get_example_icon_name(_arg0)
+	_cret = C.gtk_icon_theme_get_example_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -1152,13 +559,13 @@ func (i iconTheme) IconSizes(iconName string) []int {
 
 	var _cret *C.gint
 
-	cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
+	_cret = C.gtk_icon_theme_get_icon_sizes(_arg0, _arg1)
 
 	var _gints []int
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.gint)(ptr.Add(unsafe.Pointer(p), C.sizeof_gint)) {
+		for p := _cret; *p != 0; p = (*C.gint)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -1169,7 +576,7 @@ func (i iconTheme) IconSizes(iconName string) []int {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_gints = make([]int, length)
-		for i := uintptr(0); i < uintptr(length); i += C.sizeof_gint {
+		for i := range src {
 			_gints = (int)(_cret)
 		}
 	}
@@ -1179,14 +586,30 @@ func (i iconTheme) IconSizes(iconName string) []int {
 
 // SearchPath gets the current search path. See
 // gtk_icon_theme_set_search_path().
-func (i iconTheme) SearchPath() {
+func (i iconTheme) SearchPath() []*string {
 	var _arg0 *C.GtkIconTheme
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
 
-	C.gtk_icon_theme_get_search_path(_arg0)
+	var _arg1 **C.gchar
+	var _arg2 *C.gint
 
-	return
+	C.gtk_icon_theme_get_search_path(_arg0, &_arg1, &_arg2)
+
+	var _path []*string
+
+	{
+		var src []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_path = make([]*string, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_path = C.GoString(_arg1)
+			defer C.free(unsafe.Pointer(_arg1))
+		}
+	}
+
+	return _path
 }
 
 // HasIcon checks whether an icon theme includes an icon for a particular
@@ -1201,7 +624,7 @@ func (i iconTheme) HasIcon(iconName string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
+	_cret = C.gtk_icon_theme_has_icon(_arg0, _arg1)
 
 	var _ok bool
 
@@ -1210,300 +633,6 @@ func (i iconTheme) HasIcon(iconName string) bool {
 	}
 
 	return _ok
-}
-
-// ListContexts gets the list of contexts available within the current
-// hierarchy of icon themes. See gtk_icon_theme_list_icons() for details
-// about contexts.
-func (i iconTheme) ListContexts() *glib.List {
-	var _arg0 *C.GtkIconTheme
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_icon_theme_list_contexts(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// ListIcons lists the icons in the current icon theme. Only a subset of the
-// icons can be listed by providing a context string. The set of values for
-// the context string is system dependent, but will typically include such
-// values as “Applications” and “MimeTypes”. Contexts are explained in the
-// Icon Theme Specification
-// (http://www.freedesktop.org/wiki/Specifications/icon-theme-spec). The
-// standard contexts are listed in the Icon Naming Specification
-// (http://www.freedesktop.org/wiki/Specifications/icon-naming-spec). Also
-// see gtk_icon_theme_list_contexts().
-func (i iconTheme) ListIcons(context string) *glib.List {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.gchar
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(context))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GList
-
-	cret = C.gtk_icon_theme_list_icons(_arg0, _arg1)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
-
-// LoadIcon looks up an icon in an icon theme, scales it to the given size
-// and renders it into a pixbuf. This is a convenience function; if more
-// details about the icon are needed, use gtk_icon_theme_lookup_icon()
-// followed by gtk_icon_info_load_icon().
-//
-// Note that you probably want to listen for icon theme changes and update
-// the icon. This is usually done by connecting to the GtkWidget::style-set
-// signal. If for some reason you do not want to update the icon when the
-// icon theme changes, you should consider using gdk_pixbuf_copy() to make a
-// private copy of the pixbuf returned by this function. Otherwise GTK+ may
-// need to keep the old icon theme loaded, which would be a waste of memory.
-func (i iconTheme) LoadIcon(iconName string, size int, flags IconLookupFlags) (gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(size)
-	_arg3 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_theme_load_icon(_arg0, _arg1, _arg2, _arg3, _cerr)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbuf, _goerr
-}
-
-// LoadIconForScale looks up an icon in an icon theme for a particular
-// window scale, scales it to the given size and renders it into a pixbuf.
-// This is a convenience function; if more details about the icon are
-// needed, use gtk_icon_theme_lookup_icon() followed by
-// gtk_icon_info_load_icon().
-//
-// Note that you probably want to listen for icon theme changes and update
-// the icon. This is usually done by connecting to the GtkWidget::style-set
-// signal. If for some reason you do not want to update the icon when the
-// icon theme changes, you should consider using gdk_pixbuf_copy() to make a
-// private copy of the pixbuf returned by this function. Otherwise GTK+ may
-// need to keep the old icon theme loaded, which would be a waste of memory.
-func (i iconTheme) LoadIconForScale(iconName string, size int, scale int, flags IconLookupFlags) (gdkpixbuf.Pixbuf, error) {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(size)
-	_arg3 = C.gint(scale)
-	_arg4 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GdkPixbuf
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_theme_load_icon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-	var _goerr error
-
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _pixbuf, _goerr
-}
-
-// LoadSurface looks up an icon in an icon theme for a particular window
-// scale, scales it to the given size and renders it into a cairo surface.
-// This is a convenience function; if more details about the icon are
-// needed, use gtk_icon_theme_lookup_icon() followed by
-// gtk_icon_info_load_surface().
-//
-// Note that you probably want to listen for icon theme changes and update
-// the icon. This is usually done by connecting to the GtkWidget::style-set
-// signal.
-func (i iconTheme) LoadSurface(iconName string, size int, scale int, forWindow gdk.Window, flags IconLookupFlags) (*cairo.Surface, error) {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 *C.GdkWindow
-	var _arg5 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(size)
-	_arg3 = C.gint(scale)
-	_arg4 = (*C.GdkWindow)(unsafe.Pointer(forWindow.Native()))
-	_arg5 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.cairo_surface_t
-	var _cerr *C.GError
-
-	cret = C.gtk_icon_theme_load_surface(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
-
-	var _surface *cairo.Surface
-	var _goerr error
-
-	_surface = cairo.WrapSurface(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_surface, func(v *cairo.Surface) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _surface, _goerr
-}
-
-// LookupByGIcon looks up an icon and returns a IconInfo containing
-// information such as the filename of the icon. The icon can then be
-// rendered into a pixbuf using gtk_icon_info_load_icon().
-//
-// When rendering on displays with high pixel densities you should not use a
-// @size multiplied by the scaling factor returned by functions like
-// gdk_window_get_scale_factor(). Instead, you should use
-// gtk_icon_theme_lookup_by_gicon_for_scale(), as the assets loaded for a
-// given scaling factor may be different.
-func (i iconTheme) LookupByGIcon(icon gio.Icon, size int, flags IconLookupFlags) IconInfo {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.GIcon
-	var _arg2 C.gint
-	var _arg3 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = C.gint(size)
-	_arg3 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconInfo
-
-	cret = C.gtk_icon_theme_lookup_by_gicon(_arg0, _arg1, _arg2, _arg3)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
-}
-
-// LookupByGIconForScale looks up an icon and returns a IconInfo containing
-// information such as the filename of the icon. The icon can then be
-// rendered into a pixbuf using gtk_icon_info_load_icon().
-func (i iconTheme) LookupByGIconForScale(icon gio.Icon, size int, scale int, flags IconLookupFlags) IconInfo {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.GIcon
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
-	_arg2 = C.gint(size)
-	_arg3 = C.gint(scale)
-	_arg4 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconInfo
-
-	cret = C.gtk_icon_theme_lookup_by_gicon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
-}
-
-// LookupIcon looks up a named icon and returns a IconInfo containing
-// information such as the filename of the icon. The icon can then be
-// rendered into a pixbuf using gtk_icon_info_load_icon().
-// (gtk_icon_theme_load_icon() combines these two steps if all you need is
-// the pixbuf.)
-//
-// When rendering on displays with high pixel densities you should not use a
-// @size multiplied by the scaling factor returned by functions like
-// gdk_window_get_scale_factor(). Instead, you should use
-// gtk_icon_theme_lookup_icon_for_scale(), as the assets loaded for a given
-// scaling factor may be different.
-func (i iconTheme) LookupIcon(iconName string, size int, flags IconLookupFlags) IconInfo {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(size)
-	_arg3 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconInfo
-
-	cret = C.gtk_icon_theme_lookup_icon(_arg0, _arg1, _arg2, _arg3)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
-}
-
-// LookupIconForScale looks up a named icon for a particular window scale
-// and returns a IconInfo containing information such as the filename of the
-// icon. The icon can then be rendered into a pixbuf using
-// gtk_icon_info_load_icon(). (gtk_icon_theme_load_icon() combines these two
-// steps if all you need is the pixbuf.)
-func (i iconTheme) LookupIconForScale(iconName string, size int, scale int, flags IconLookupFlags) IconInfo {
-	var _arg0 *C.GtkIconTheme
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.GtkIconLookupFlags
-
-	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
-	_arg1 = (*C.gchar)(C.CString(iconName))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = C.gint(size)
-	_arg3 = C.gint(scale)
-	_arg4 = (C.GtkIconLookupFlags)(flags)
-
-	var _cret *C.GtkIconInfo
-
-	cret = C.gtk_icon_theme_lookup_icon_for_scale(_arg0, _arg1, _arg2, _arg3, _arg4)
-
-	var _iconInfo IconInfo
-
-	_iconInfo = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IconInfo)
-
-	return _iconInfo
 }
 
 // PrependSearchPath prepends a directory to the search path. See
@@ -1529,7 +658,7 @@ func (i iconTheme) RescanIfNeeded() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_icon_theme_rescan_if_needed(_arg0)
+	_cret = C.gtk_icon_theme_rescan_if_needed(_arg0)
 
 	var _ok bool
 
@@ -1581,10 +710,25 @@ func (i iconTheme) SetScreen(screen gdk.Screen) {
 // for the icon name. (This is legacy feature, and new icons should be put
 // into the fallback icon theme, which is called hicolor, rather than
 // directly on the icon path.)
-func (i iconTheme) SetSearchPath() {
+func (i iconTheme) SetSearchPath(path []*string) {
 	var _arg0 *C.GtkIconTheme
+	var _arg1 **C.gchar
+	var _arg2 C.gint
 
 	_arg0 = (*C.GtkIconTheme)(unsafe.Pointer(i.Native()))
+	_arg2 = C.gint(len(path))
+	_arg1 = (**C.gchar)(C.malloc(len(path) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg1))
 
-	C.gtk_icon_theme_set_search_path(_arg0)
+	{
+		var out []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg1), int(len(path)))
+
+		for i := range path {
+			_arg1 = (*C.gchar)(C.CString(path))
+			defer C.free(unsafe.Pointer(_arg1))
+		}
+	}
+
+	C.gtk_icon_theme_set_search_path(_arg0, _arg1, _arg2)
 }

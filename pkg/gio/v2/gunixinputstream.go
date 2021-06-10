@@ -3,9 +3,6 @@
 package gio
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -79,27 +76,6 @@ func marshalUnixInputStream(p uintptr) (interface{}, error) {
 	return WrapUnixInputStream(obj), nil
 }
 
-// NewUnixInputStream constructs a class UnixInputStream.
-func NewUnixInputStream(fd int, closeFd bool) UnixInputStream {
-	var _arg1 C.gint
-	var _arg2 C.gboolean
-
-	_arg1 = C.gint(fd)
-	if closeFd {
-		_arg2 = C.gboolean(1)
-	}
-
-	var _cret C.GUnixInputStream
-
-	cret = C.g_unix_input_stream_new(_arg1, _arg2)
-
-	var _unixInputStream UnixInputStream
-
-	_unixInputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixInputStream)
-
-	return _unixInputStream
-}
-
 // CloseFd returns whether the file descriptor of @stream will be closed
 // when the stream is closed.
 func (s unixInputStream) CloseFd() bool {
@@ -109,7 +85,7 @@ func (s unixInputStream) CloseFd() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_unix_input_stream_get_close_fd(_arg0)
+	_cret = C.g_unix_input_stream_get_close_fd(_arg0)
 
 	var _ok bool
 
@@ -128,7 +104,7 @@ func (s unixInputStream) Fd() int {
 
 	var _cret C.gint
 
-	cret = C.g_unix_input_stream_get_fd(_arg0)
+	_cret = C.g_unix_input_stream_get_fd(_arg0)
 
 	var _gint int
 

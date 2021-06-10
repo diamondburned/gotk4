@@ -3,7 +3,6 @@
 package gio
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/ptr"
@@ -37,7 +36,7 @@ func DBusEscapeObjectPath(s string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dbus_escape_object_path(_arg1)
+	_cret = C.g_dbus_escape_object_path(_arg1)
 
 	var _utf8 string
 
@@ -78,7 +77,7 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dbus_escape_object_path_bytestring(_arg1)
+	_cret = C.g_dbus_escape_object_path_bytestring(_arg1)
 
 	var _utf8 string
 
@@ -96,7 +95,7 @@ func DBusEscapeObjectPathBytestring(bytes []byte) string {
 func DBusGenerateGuid() string {
 	var _cret *C.gchar
 
-	cret = C.g_dbus_generate_guid()
+	_cret = C.g_dbus_generate_guid()
 
 	var _utf8 string
 
@@ -104,48 +103,6 @@ func DBusGenerateGuid() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// DBusGValueToGVariant converts a #GValue to a #GVariant of the type indicated
-// by the @type parameter.
-//
-// The conversion is using the following rules:
-//
-// - TYPE_STRING: 's', 'o', 'g' or 'ay' - TYPE_STRV: 'as', 'ao' or 'aay' -
-// TYPE_BOOLEAN: 'b' - TYPE_UCHAR: 'y' - TYPE_INT: 'i', 'n' - TYPE_UINT: 'u',
-// 'q' - TYPE_INT64 'x' - TYPE_UINT64: 't' - TYPE_DOUBLE: 'd' - TYPE_VARIANT:
-// Any Type
-//
-// This can fail if e.g. @gvalue is of type TYPE_STRING and @type is
-// ['i'][G-VARIANT-TYPE-INT32:CAPS]. It will also fail for any #GType (including
-// e.g. TYPE_OBJECT and TYPE_BOXED derived-types) not in the table above.
-//
-// Note that if @gvalue is of type TYPE_VARIANT and its value is nil, the empty
-// #GVariant instance (never nil) for @type is returned (e.g. 0 for scalar
-// types, the empty string for string types, '/' for object path types, the
-// empty array for any array type and so on).
-//
-// See the g_dbus_gvariant_to_gvalue() function for how to convert a #GVariant
-// to a #GValue.
-func DBusGValueToGVariant(gvalue **externglib.Value, typ *glib.VariantType) *glib.Variant {
-	var _arg1 *C.GValue
-	var _arg2 *C.GVariantType
-
-	_arg1 = (*C.GValue)(gvalue.GValue)
-	_arg2 = (*C.GVariantType)(unsafe.Pointer(typ.Native()))
-
-	var _cret *C.GVariant
-
-	cret = C.g_dbus_gvalue_to_gvariant(_arg1, _arg2)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_variant, func(v *glib.Variant) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _variant
 }
 
 // DBusGVariantToGValue converts a #GVariant to a #GValue. If @value is
@@ -187,7 +144,7 @@ func DBusIsGuid(string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_is_guid(_arg1)
+	_cret = C.g_dbus_is_guid(_arg1)
 
 	var _ok bool
 
@@ -207,7 +164,7 @@ func DBusIsInterfaceName(string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_is_interface_name(_arg1)
+	_cret = C.g_dbus_is_interface_name(_arg1)
 
 	var _ok bool
 
@@ -228,7 +185,7 @@ func DBusIsMemberName(string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_is_member_name(_arg1)
+	_cret = C.g_dbus_is_member_name(_arg1)
 
 	var _ok bool
 
@@ -249,7 +206,7 @@ func DBusIsName(string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_is_name(_arg1)
+	_cret = C.g_dbus_is_name(_arg1)
 
 	var _ok bool
 
@@ -269,7 +226,7 @@ func DBusIsUniqueName(string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_is_unique_name(_arg1)
+	_cret = C.g_dbus_is_unique_name(_arg1)
 
 	var _ok bool
 
@@ -294,13 +251,13 @@ func DBusUnescapeObjectPath(s string) []byte {
 
 	var _cret *C.guint8
 
-	cret = C.g_dbus_unescape_object_path(_arg1)
+	_cret = C.g_dbus_unescape_object_path(_arg1)
 
 	var _guint8s []byte
 
 	{
 		var length int
-		for p := _cret; *p != 0; p = (*C.guint8)(ptr.Add(unsafe.Pointer(p), C.sizeof_guint8)) {
+		for p := _cret; *p != 0; p = (*C.guint8)(ptr.Add(unsafe.Pointer(p), unsafe.Sizeof(int(0)))) {
 			length++
 			if length < 0 {
 				panic(`length overflow`)
@@ -311,7 +268,7 @@ func DBusUnescapeObjectPath(s string) []byte {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_guint8s = make([]byte, length)
-		for i := uintptr(0); i < uintptr(length); i += C.sizeof_guint8 {
+		for i := range src {
 			_guint8s = (byte)(_cret)
 		}
 	}

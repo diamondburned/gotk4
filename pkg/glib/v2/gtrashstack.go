@@ -37,10 +37,3 @@ func marshalTrashStack(p uintptr) (interface{}, error) {
 func (t *TrashStack) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
 }
-
-// Next gets the field inside the struct.
-func (t *TrashStack) Next() *TrashStack {
-	var v *TrashStack
-	v = WrapTrashStack(unsafe.Pointer(t.native.next))
-	return v
-}

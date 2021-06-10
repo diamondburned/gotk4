@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/pango"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -66,9 +65,6 @@ type ProgressBar interface {
 	Buildable
 	Orientable
 
-	// Ellipsize returns the ellipsizing position of the progress bar. See
-	// gtk_progress_bar_set_ellipsize().
-	Ellipsize() pango.EllipsizeMode
 	// Fraction returns the current fraction of the task that’s been completed.
 	Fraction() float64
 	// Inverted gets the value set by gtk_progress_bar_set_inverted().
@@ -147,37 +143,6 @@ func marshalProgressBar(p uintptr) (interface{}, error) {
 	return WrapProgressBar(obj), nil
 }
 
-// NewProgressBar constructs a class ProgressBar.
-func NewProgressBar() ProgressBar {
-	var _cret C.GtkProgressBar
-
-	cret = C.gtk_progress_bar_new()
-
-	var _progressBar ProgressBar
-
-	_progressBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ProgressBar)
-
-	return _progressBar
-}
-
-// Ellipsize returns the ellipsizing position of the progress bar. See
-// gtk_progress_bar_set_ellipsize().
-func (p progressBar) Ellipsize() pango.EllipsizeMode {
-	var _arg0 *C.GtkProgressBar
-
-	_arg0 = (*C.GtkProgressBar)(unsafe.Pointer(p.Native()))
-
-	var _cret C.PangoEllipsizeMode
-
-	cret = C.gtk_progress_bar_get_ellipsize(_arg0)
-
-	var _ellipsizeMode pango.EllipsizeMode
-
-	_ellipsizeMode = pango.EllipsizeMode(_cret)
-
-	return _ellipsizeMode
-}
-
 // Fraction returns the current fraction of the task that’s been completed.
 func (p progressBar) Fraction() float64 {
 	var _arg0 *C.GtkProgressBar
@@ -186,7 +151,7 @@ func (p progressBar) Fraction() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_progress_bar_get_fraction(_arg0)
+	_cret = C.gtk_progress_bar_get_fraction(_arg0)
 
 	var _gdouble float64
 
@@ -203,7 +168,7 @@ func (p progressBar) Inverted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_progress_bar_get_inverted(_arg0)
+	_cret = C.gtk_progress_bar_get_inverted(_arg0)
 
 	var _ok bool
 
@@ -223,7 +188,7 @@ func (p progressBar) PulseStep() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_progress_bar_get_pulse_step(_arg0)
+	_cret = C.gtk_progress_bar_get_pulse_step(_arg0)
 
 	var _gdouble float64
 
@@ -241,7 +206,7 @@ func (p progressBar) ShowText() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_progress_bar_get_show_text(_arg0)
+	_cret = C.gtk_progress_bar_get_show_text(_arg0)
 
 	var _ok bool
 
@@ -262,7 +227,7 @@ func (p progressBar) Text() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_progress_bar_get_text(_arg0)
+	_cret = C.gtk_progress_bar_get_text(_arg0)
 
 	var _utf8 string
 

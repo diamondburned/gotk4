@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -55,8 +54,6 @@ type NativeDialog interface {
 	Modal() bool
 	// Title gets the title of the `GtkNativeDialog`.
 	Title() string
-	// TransientFor fetches the transient parent for this window.
-	TransientFor() Window
 	// Visible determines whether the dialog is visible.
 	Visible() bool
 	// Hide hides the dialog if it is visible, aborting any interaction.
@@ -143,7 +140,7 @@ func (s nativeDialog) Modal() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_native_dialog_get_modal(_arg0)
+	_cret = C.gtk_native_dialog_get_modal(_arg0)
 
 	var _ok bool
 
@@ -162,30 +159,13 @@ func (s nativeDialog) Title() string {
 
 	var _cret *C.char
 
-	cret = C.gtk_native_dialog_get_title(_arg0)
+	_cret = C.gtk_native_dialog_get_title(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// TransientFor fetches the transient parent for this window.
-func (s nativeDialog) TransientFor() Window {
-	var _arg0 *C.GtkNativeDialog
-
-	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWindow
-
-	cret = C.gtk_native_dialog_get_transient_for(_arg0)
-
-	var _window Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Window)
-
-	return _window
 }
 
 // Visible determines whether the dialog is visible.
@@ -196,7 +176,7 @@ func (s nativeDialog) Visible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_native_dialog_get_visible(_arg0)
+	_cret = C.gtk_native_dialog_get_visible(_arg0)
 
 	var _ok bool
 

@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -42,9 +41,6 @@ type HeaderBar interface {
 	Container
 	Buildable
 
-	// CustomTitle retrieves the custom title widget of the header. See
-	// gtk_header_bar_set_custom_title().
-	CustomTitle() Widget
 	// DecorationLayout gets the decoration layout set with
 	// gtk_header_bar_set_decoration_layout().
 	DecorationLayout() string
@@ -133,37 +129,6 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 	return WrapHeaderBar(obj), nil
 }
 
-// NewHeaderBar constructs a class HeaderBar.
-func NewHeaderBar() HeaderBar {
-	var _cret C.GtkHeaderBar
-
-	cret = C.gtk_header_bar_new()
-
-	var _headerBar HeaderBar
-
-	_headerBar = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(HeaderBar)
-
-	return _headerBar
-}
-
-// CustomTitle retrieves the custom title widget of the header. See
-// gtk_header_bar_set_custom_title().
-func (b headerBar) CustomTitle() Widget {
-	var _arg0 *C.GtkHeaderBar
-
-	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_header_bar_get_custom_title(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // DecorationLayout gets the decoration layout set with
 // gtk_header_bar_set_decoration_layout().
 func (b headerBar) DecorationLayout() string {
@@ -173,7 +138,7 @@ func (b headerBar) DecorationLayout() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_header_bar_get_decoration_layout(_arg0)
+	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
 	var _utf8 string
 
@@ -191,7 +156,7 @@ func (b headerBar) HasSubtitle() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_header_bar_get_has_subtitle(_arg0)
+	_cret = C.gtk_header_bar_get_has_subtitle(_arg0)
 
 	var _ok bool
 
@@ -211,7 +176,7 @@ func (b headerBar) ShowCloseButton() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_header_bar_get_show_close_button(_arg0)
+	_cret = C.gtk_header_bar_get_show_close_button(_arg0)
 
 	var _ok bool
 
@@ -231,7 +196,7 @@ func (b headerBar) Subtitle() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_header_bar_get_subtitle(_arg0)
+	_cret = C.gtk_header_bar_get_subtitle(_arg0)
 
 	var _utf8 string
 
@@ -248,7 +213,7 @@ func (b headerBar) Title() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_header_bar_get_title(_arg0)
+	_cret = C.gtk_header_bar_get_title(_arg0)
 
 	var _utf8 string
 

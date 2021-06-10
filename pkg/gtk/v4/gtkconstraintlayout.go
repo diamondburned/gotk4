@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -193,26 +189,6 @@ type ConstraintLayout interface {
 	// The `layout` acquires the ownership of `guide` after calling this
 	// function.
 	AddGuide(guide ConstraintGuide)
-	// ObserveConstraints returns a `GListModel` to track the constraints that
-	// are part of the layout.
-	//
-	// Calling this function will enable extra internal bookkeeping to track
-	// constraints and emit signals on the returned listmodel. It may slow down
-	// operations a lot.
-	//
-	// Applications should try hard to avoid calling this function because of
-	// the slowdowns.
-	ObserveConstraints() gio.ListModel
-	// ObserveGuides returns a `GListModel` to track the guides that are part of
-	// the layout.
-	//
-	// Calling this function will enable extra internal bookkeeping to track
-	// guides and emit signals on the returned listmodel. It may slow down
-	// operations a lot.
-	//
-	// Applications should try hard to avoid calling this function because of
-	// the slowdowns.
-	ObserveGuides() gio.ListModel
 	// RemoveAllConstraints removes all constraints from the layout manager.
 	RemoveAllConstraints()
 	// RemoveConstraint removes `constraint` from the layout manager, so that it
@@ -244,19 +220,6 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapConstraintLayout(obj), nil
-}
-
-// NewConstraintLayout constructs a class ConstraintLayout.
-func NewConstraintLayout() ConstraintLayout {
-	var _cret C.GtkConstraintLayout
-
-	cret = C.gtk_constraint_layout_new()
-
-	var _constraintLayout ConstraintLayout
-
-	_constraintLayout = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ConstraintLayout)
-
-	return _constraintLayout
 }
 
 // AddConstraint adds a constraint to the layout manager.
@@ -297,56 +260,6 @@ func (l constraintLayout) AddGuide(guide ConstraintGuide) {
 	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
 
 	C.gtk_constraint_layout_add_guide(_arg0, _arg1)
-}
-
-// ObserveConstraints returns a `GListModel` to track the constraints that
-// are part of the layout.
-//
-// Calling this function will enable extra internal bookkeeping to track
-// constraints and emit signals on the returned listmodel. It may slow down
-// operations a lot.
-//
-// Applications should try hard to avoid calling this function because of
-// the slowdowns.
-func (l constraintLayout) ObserveConstraints() gio.ListModel {
-	var _arg0 *C.GtkConstraintLayout
-
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_constraint_layout_observe_constraints(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
-}
-
-// ObserveGuides returns a `GListModel` to track the guides that are part of
-// the layout.
-//
-// Calling this function will enable extra internal bookkeeping to track
-// guides and emit signals on the returned listmodel. It may slow down
-// operations a lot.
-//
-// Applications should try hard to avoid calling this function because of
-// the slowdowns.
-func (l constraintLayout) ObserveGuides() gio.ListModel {
-	var _arg0 *C.GtkConstraintLayout
-
-	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_constraint_layout_observe_guides(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // RemoveAllConstraints removes all constraints from the layout manager.

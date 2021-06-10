@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -97,55 +94,6 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 	return WrapCheckMenuItem(obj), nil
 }
 
-// NewCheckMenuItem constructs a class CheckMenuItem.
-func NewCheckMenuItem() CheckMenuItem {
-	var _cret C.GtkCheckMenuItem
-
-	cret = C.gtk_check_menu_item_new()
-
-	var _checkMenuItem CheckMenuItem
-
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
-
-	return _checkMenuItem
-}
-
-// NewCheckMenuItemWithLabel constructs a class CheckMenuItem.
-func NewCheckMenuItemWithLabel(label string) CheckMenuItem {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckMenuItem
-
-	cret = C.gtk_check_menu_item_new_with_label(_arg1)
-
-	var _checkMenuItem CheckMenuItem
-
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
-
-	return _checkMenuItem
-}
-
-// NewCheckMenuItemWithMnemonic constructs a class CheckMenuItem.
-func NewCheckMenuItemWithMnemonic(label string) CheckMenuItem {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkCheckMenuItem
-
-	cret = C.gtk_check_menu_item_new_with_mnemonic(_arg1)
-
-	var _checkMenuItem CheckMenuItem
-
-	_checkMenuItem = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(CheckMenuItem)
-
-	return _checkMenuItem
-}
-
 // Active returns whether the check menu item is active. See
 // gtk_check_menu_item_set_active ().
 func (c checkMenuItem) Active() bool {
@@ -155,7 +103,7 @@ func (c checkMenuItem) Active() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_check_menu_item_get_active(_arg0)
+	_cret = C.gtk_check_menu_item_get_active(_arg0)
 
 	var _ok bool
 
@@ -174,7 +122,7 @@ func (c checkMenuItem) DrawAsRadio() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
+	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
 
 	var _ok bool
 
@@ -194,7 +142,7 @@ func (c checkMenuItem) Inconsistent() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
+	_cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
 
 	var _ok bool
 

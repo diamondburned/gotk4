@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -104,37 +103,6 @@ func marshalFontButton(p uintptr) (interface{}, error) {
 	return WrapFontButton(obj), nil
 }
 
-// NewFontButton constructs a class FontButton.
-func NewFontButton() FontButton {
-	var _cret C.GtkFontButton
-
-	cret = C.gtk_font_button_new()
-
-	var _fontButton FontButton
-
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontButton)
-
-	return _fontButton
-}
-
-// NewFontButtonWithFont constructs a class FontButton.
-func NewFontButtonWithFont(fontname string) FontButton {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(fontname))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkFontButton
-
-	cret = C.gtk_font_button_new_with_font(_arg1)
-
-	var _fontButton FontButton
-
-	_fontButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FontButton)
-
-	return _fontButton
-}
-
 // FontName retrieves the name of the currently selected font. This name
 // includes style and size information as well. If you want to render
 // something with the font, use this string with
@@ -148,7 +116,7 @@ func (f fontButton) FontName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_font_button_get_font_name(_arg0)
+	_cret = C.gtk_font_button_get_font_name(_arg0)
 
 	var _utf8 string
 
@@ -165,7 +133,7 @@ func (f fontButton) ShowSize() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_get_show_size(_arg0)
+	_cret = C.gtk_font_button_get_show_size(_arg0)
 
 	var _ok bool
 
@@ -185,7 +153,7 @@ func (f fontButton) ShowStyle() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_get_show_style(_arg0)
+	_cret = C.gtk_font_button_get_show_style(_arg0)
 
 	var _ok bool
 
@@ -204,7 +172,7 @@ func (f fontButton) Title() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_font_button_get_title(_arg0)
+	_cret = C.gtk_font_button_get_title(_arg0)
 
 	var _utf8 string
 
@@ -221,7 +189,7 @@ func (f fontButton) UseFont() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_get_use_font(_arg0)
+	_cret = C.gtk_font_button_get_use_font(_arg0)
 
 	var _ok bool
 
@@ -240,7 +208,7 @@ func (f fontButton) UseSize() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_get_use_size(_arg0)
+	_cret = C.gtk_font_button_get_use_size(_arg0)
 
 	var _ok bool
 
@@ -263,7 +231,7 @@ func (f fontButton) SetFontName(fontname string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_font_button_set_font_name(_arg0, _arg1)
+	_cret = C.gtk_font_button_set_font_name(_arg0, _arg1)
 
 	var _ok bool
 

@@ -3,7 +3,6 @@
 package gobject
 
 import (
-	"runtime"
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
@@ -19,7 +18,7 @@ import "C"
 func GTypeGetType() externglib.Type {
 	var _cret C.GType
 
-	cret = C.g_gtype_get_type()
+	_cret = C.g_gtype_get_type()
 
 	var _gType externglib.Type
 
@@ -38,7 +37,7 @@ func PointerTypeRegisterStatic(name string) externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.g_pointer_type_register_static(_arg1)
+	_cret = C.g_pointer_type_register_static(_arg1)
 
 	var _gType externglib.Type
 
@@ -58,7 +57,7 @@ func StrdupValueContents(value **externglib.Value) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strdup_value_contents(_arg1)
+	_cret = C.g_strdup_value_contents(_arg1)
 
 	var _utf8 string
 

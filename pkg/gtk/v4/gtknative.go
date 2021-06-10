@@ -3,11 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v4"
-	"github.com/diamondburned/gotk4/pkg/gsk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -41,10 +36,6 @@ func init() {
 type Native interface {
 	Widget
 
-	// Renderer returns the renderer that is used for this `GtkNative`.
-	Renderer() gsk.Renderer
-	// Surface returns the surface of this `GtkNative`.
-	Surface() gdk.Surface
 	// SurfaceTransform retrieves the surface transform of @self.
 	//
 	// This is the translation from @self's surface coordinates into @self's
@@ -79,40 +70,6 @@ func marshalNative(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapNative(obj), nil
-}
-
-// Renderer returns the renderer that is used for this `GtkNative`.
-func (s native) Renderer() gsk.Renderer {
-	var _arg0 *C.GtkNative
-
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GskRenderer
-
-	cret = C.gtk_native_get_renderer(_arg0)
-
-	var _renderer gsk.Renderer
-
-	_renderer = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gsk.Renderer)
-
-	return _renderer
-}
-
-// Surface returns the surface of this `GtkNative`.
-func (s native) Surface() gdk.Surface {
-	var _arg0 *C.GtkNative
-
-	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkSurface
-
-	cret = C.gtk_native_get_surface(_arg0)
-
-	var _surface gdk.Surface
-
-	_surface = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Surface)
-
-	return _surface
 }
 
 // SurfaceTransform retrieves the surface transform of @self.

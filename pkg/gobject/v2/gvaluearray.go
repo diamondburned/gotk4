@@ -3,7 +3,6 @@
 package gobject
 
 import (
-	"runtime"
 	"unsafe"
 
 	externglib "github.com/gotk3/gotk3/glib"
@@ -41,26 +40,6 @@ func marshalValueArray(p uintptr) (interface{}, error) {
 	return WrapValueArray(unsafe.Pointer(b)), nil
 }
 
-// NewValueArray constructs a struct ValueArray.
-func NewValueArray(nPrealloced uint) *ValueArray {
-	var _arg1 C.guint
-
-	_arg1 = C.guint(nPrealloced)
-
-	var _cret *C.GValueArray
-
-	cret = C.g_value_array_new(_arg1)
-
-	var _valueArray *ValueArray
-
-	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_valueArray, func(v *ValueArray) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _valueArray
-}
-
 // Native returns the underlying C source pointer.
 func (v *ValueArray) Native() unsafe.Pointer {
 	return unsafe.Pointer(&v.native)
@@ -78,46 +57,6 @@ func (v *ValueArray) Values() **externglib.Value {
 	var v **externglib.Value
 	v = externglib.ValueFromNative(unsafe.Pointer(v.native.values))
 	return v
-}
-
-// Append: insert a copy of @value as last element of @value_array. If @value is
-// nil, an uninitialized value is appended.
-func (v *ValueArray) Append(value **externglib.Value) *ValueArray {
-	var _arg0 *C.GValueArray
-	var _arg1 *C.GValue
-
-	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret *C.GValueArray
-
-	cret = C.g_value_array_append(_arg0, _arg1)
-
-	var _valueArray *ValueArray
-
-	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
-
-	return _valueArray
-}
-
-// Copy: construct an exact copy of a Array by duplicating all its contents.
-func (v *ValueArray) Copy() *ValueArray {
-	var _arg0 *C.GValueArray
-
-	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GValueArray
-
-	cret = C.g_value_array_copy(_arg0)
-
-	var _valueArray *ValueArray
-
-	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_valueArray, func(v *ValueArray) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _valueArray
 }
 
 // Free: free a Array including its contents.
@@ -139,93 +78,11 @@ func (v *ValueArray) Nth(index_ uint) **externglib.Value {
 
 	var _cret *C.GValue
 
-	cret = C.g_value_array_get_nth(_arg0, _arg1)
+	_cret = C.g_value_array_get_nth(_arg0, _arg1)
 
 	var _value **externglib.Value
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
 	return _value
-}
-
-// Insert: insert a copy of @value at specified position into @value_array. If
-// @value is nil, an uninitialized value is inserted.
-func (v *ValueArray) Insert(index_ uint, value **externglib.Value) *ValueArray {
-	var _arg0 *C.GValueArray
-	var _arg1 C.guint
-	var _arg2 *C.GValue
-
-	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	_arg1 = C.guint(index_)
-	_arg2 = (*C.GValue)(value.GValue)
-
-	var _cret *C.GValueArray
-
-	cret = C.g_value_array_insert(_arg0, _arg1, _arg2)
-
-	var _valueArray *ValueArray
-
-	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
-
-	return _valueArray
-}
-
-// Prepend: insert a copy of @value as first element of @value_array. If @value
-// is nil, an uninitialized value is prepended.
-func (v *ValueArray) Prepend(value **externglib.Value) *ValueArray {
-	var _arg0 *C.GValueArray
-	var _arg1 *C.GValue
-
-	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	_arg1 = (*C.GValue)(value.GValue)
-
-	var _cret *C.GValueArray
-
-	cret = C.g_value_array_prepend(_arg0, _arg1)
-
-	var _valueArray *ValueArray
-
-	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
-
-	return _valueArray
-}
-
-// Remove: remove the value at position @index_ from @value_array.
-func (v *ValueArray) Remove(index_ uint) *ValueArray {
-	var _arg0 *C.GValueArray
-	var _arg1 C.guint
-
-	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-	_arg1 = C.guint(index_)
-
-	var _cret *C.GValueArray
-
-	cret = C.g_value_array_remove(_arg0, _arg1)
-
-	var _valueArray *ValueArray
-
-	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
-
-	return _valueArray
-}
-
-// SortWithData: sort @value_array using @compare_func to compare the elements
-// according to the semantics of DataFunc.
-//
-// The current implementation uses the same sorting algorithm as standard C
-// qsort() function.
-func (v *ValueArray) SortWithData() *ValueArray {
-	var _arg0 *C.GValueArray
-
-	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
-
-	var _cret *C.GValueArray
-
-	cret = C.g_value_array_sort_with_data(_arg0)
-
-	var _valueArray *ValueArray
-
-	_valueArray = WrapValueArray(unsafe.Pointer(_cret))
-
-	return _valueArray
 }

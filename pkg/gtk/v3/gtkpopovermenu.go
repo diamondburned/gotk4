@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -126,19 +125,6 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapPopoverMenu(obj), nil
-}
-
-// NewPopoverMenu constructs a class PopoverMenu.
-func NewPopoverMenu() PopoverMenu {
-	var _cret C.GtkPopoverMenu
-
-	cret = C.gtk_popover_menu_new()
-
-	var _popoverMenu PopoverMenu
-
-	_popoverMenu = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(PopoverMenu)
-
-	return _popoverMenu
 }
 
 // OpenSubmenu opens a submenu of the @popover. The @name must be one of the

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -82,12 +79,6 @@ type DragSource interface {
 
 	// DragCancel cancels a currently ongoing drag operation.
 	DragCancel()
-	// Actions gets the actions that are currently set on the `GtkDragSource`.
-	Actions() gdk.DragAction
-	// Content gets the current content provider of a `GtkDragSource`.
-	Content() gdk.ContentProvider
-	// Drag returns the underlying `GdkDrag` object for an ongoing drag.
-	Drag() gdk.Drag
 	// SetActions sets the actions on the `GtkDragSource`.
 	//
 	// During a DND operation, the actions are offered to potential drop
@@ -143,19 +134,6 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 	return WrapDragSource(obj), nil
 }
 
-// NewDragSource constructs a class DragSource.
-func NewDragSource() DragSource {
-	var _cret C.GtkDragSource
-
-	cret = C.gtk_drag_source_new()
-
-	var _dragSource DragSource
-
-	_dragSource = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DragSource)
-
-	return _dragSource
-}
-
 // DragCancel cancels a currently ongoing drag operation.
 func (s dragSource) DragCancel() {
 	var _arg0 *C.GtkDragSource
@@ -163,57 +141,6 @@ func (s dragSource) DragCancel() {
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
 	C.gtk_drag_source_drag_cancel(_arg0)
-}
-
-// Actions gets the actions that are currently set on the `GtkDragSource`.
-func (s dragSource) Actions() gdk.DragAction {
-	var _arg0 *C.GtkDragSource
-
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkDragAction
-
-	cret = C.gtk_drag_source_get_actions(_arg0)
-
-	var _dragAction gdk.DragAction
-
-	_dragAction = gdk.DragAction(_cret)
-
-	return _dragAction
-}
-
-// Content gets the current content provider of a `GtkDragSource`.
-func (s dragSource) Content() gdk.ContentProvider {
-	var _arg0 *C.GtkDragSource
-
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkContentProvider
-
-	cret = C.gtk_drag_source_get_content(_arg0)
-
-	var _contentProvider gdk.ContentProvider
-
-	_contentProvider = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.ContentProvider)
-
-	return _contentProvider
-}
-
-// Drag returns the underlying `GdkDrag` object for an ongoing drag.
-func (s dragSource) Drag() gdk.Drag {
-	var _arg0 *C.GtkDragSource
-
-	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GdkDrag
-
-	cret = C.gtk_drag_source_get_drag(_arg0)
-
-	var _drag gdk.Drag
-
-	_drag = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Drag)
-
-	return _drag
 }
 
 // SetActions sets the actions on the `GtkDragSource`.

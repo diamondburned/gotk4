@@ -40,8 +40,6 @@ type SingleSelection interface {
 	// CanUnselect: if true, gtk_selection_model_unselect_item() is supported
 	// and allows unselecting the selected item.
 	CanUnselect() bool
-	// Model gets the model that @self is wrapping.
-	Model() gio.ListModel
 	// Selected gets the position of the selected item.
 	//
 	// If no item is selected, GTK_INVALID_LIST_POSITION is returned.
@@ -102,23 +100,6 @@ func marshalSingleSelection(p uintptr) (interface{}, error) {
 	return WrapSingleSelection(obj), nil
 }
 
-// NewSingleSelection constructs a class SingleSelection.
-func NewSingleSelection(model gio.ListModel) SingleSelection {
-	var _arg1 *C.GListModel
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkSingleSelection
-
-	cret = C.gtk_single_selection_new(_arg1)
-
-	var _singleSelection SingleSelection
-
-	_singleSelection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SingleSelection)
-
-	return _singleSelection
-}
-
 // Autoselect checks if autoselect has been enabled or disabled via
 // gtk_single_selection_set_autoselect().
 func (s singleSelection) Autoselect() bool {
@@ -128,7 +109,7 @@ func (s singleSelection) Autoselect() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_single_selection_get_autoselect(_arg0)
+	_cret = C.gtk_single_selection_get_autoselect(_arg0)
 
 	var _ok bool
 
@@ -148,7 +129,7 @@ func (s singleSelection) CanUnselect() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_single_selection_get_can_unselect(_arg0)
+	_cret = C.gtk_single_selection_get_can_unselect(_arg0)
 
 	var _ok bool
 
@@ -157,23 +138,6 @@ func (s singleSelection) CanUnselect() bool {
 	}
 
 	return _ok
-}
-
-// Model gets the model that @self is wrapping.
-func (s singleSelection) Model() gio.ListModel {
-	var _arg0 *C.GtkSingleSelection
-
-	_arg0 = (*C.GtkSingleSelection)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GListModel
-
-	cret = C.gtk_single_selection_get_model(_arg0)
-
-	var _listModel gio.ListModel
-
-	_listModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gio.ListModel)
-
-	return _listModel
 }
 
 // Selected gets the position of the selected item.
@@ -186,7 +150,7 @@ func (s singleSelection) Selected() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_single_selection_get_selected(_arg0)
+	_cret = C.gtk_single_selection_get_selected(_arg0)
 
 	var _guint uint
 
@@ -205,7 +169,7 @@ func (s singleSelection) SelectedItem() gextras.Objector {
 
 	var _cret C.gpointer
 
-	cret = C.gtk_single_selection_get_selected_item(_arg0)
+	_cret = C.gtk_single_selection_get_selected_item(_arg0)
 
 	var _object gextras.Objector
 

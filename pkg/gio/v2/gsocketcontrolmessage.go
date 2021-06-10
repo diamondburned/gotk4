@@ -96,7 +96,7 @@ func (m socketControlMessage) Level() int {
 
 	var _cret C.int
 
-	cret = C.g_socket_control_message_get_level(_arg0)
+	_cret = C.g_socket_control_message_get_level(_arg0)
 
 	var _gint int
 
@@ -114,7 +114,7 @@ func (m socketControlMessage) MsgType() int {
 
 	var _cret C.int
 
-	cret = C.g_socket_control_message_get_msg_type(_arg0)
+	_cret = C.g_socket_control_message_get_msg_type(_arg0)
 
 	var _gint int
 
@@ -132,7 +132,7 @@ func (m socketControlMessage) Size() uint {
 
 	var _cret C.gsize
 
-	cret = C.g_socket_control_message_get_size(_arg0)
+	_cret = C.g_socket_control_message_get_size(_arg0)
 
 	var _gsize uint
 

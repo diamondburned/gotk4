@@ -20,7 +20,7 @@ func SpacedPrimesClosest(num uint) uint {
 
 	var _cret C.guint
 
-	cret = C.g_spaced_primes_closest(_arg1)
+	_cret = C.g_spaced_primes_closest(_arg1)
 
 	var _guint uint
 

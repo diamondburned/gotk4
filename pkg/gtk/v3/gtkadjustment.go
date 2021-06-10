@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -142,33 +139,6 @@ func marshalAdjustment(p uintptr) (interface{}, error) {
 	return WrapAdjustment(obj), nil
 }
 
-// NewAdjustment constructs a class Adjustment.
-func NewAdjustment(value float64, lower float64, upper float64, stepIncrement float64, pageIncrement float64, pageSize float64) Adjustment {
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
-	var _arg5 C.gdouble
-	var _arg6 C.gdouble
-
-	_arg1 = C.gdouble(value)
-	_arg2 = C.gdouble(lower)
-	_arg3 = C.gdouble(upper)
-	_arg4 = C.gdouble(stepIncrement)
-	_arg5 = C.gdouble(pageIncrement)
-	_arg6 = C.gdouble(pageSize)
-
-	var _cret C.GtkAdjustment
-
-	cret = C.gtk_adjustment_new(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
 // Changed emits a Adjustment::changed signal from the Adjustment. This is
 // typically called by the owner of the Adjustment after it has changed any
 // of the Adjustment properties other than the value.
@@ -233,7 +203,7 @@ func (a adjustment) Lower() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_adjustment_get_lower(_arg0)
+	_cret = C.gtk_adjustment_get_lower(_arg0)
 
 	var _gdouble float64
 
@@ -250,7 +220,7 @@ func (a adjustment) MinimumIncrement() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_adjustment_get_minimum_increment(_arg0)
+	_cret = C.gtk_adjustment_get_minimum_increment(_arg0)
 
 	var _gdouble float64
 
@@ -267,7 +237,7 @@ func (a adjustment) PageIncrement() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_adjustment_get_page_increment(_arg0)
+	_cret = C.gtk_adjustment_get_page_increment(_arg0)
 
 	var _gdouble float64
 
@@ -284,7 +254,7 @@ func (a adjustment) PageSize() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_adjustment_get_page_size(_arg0)
+	_cret = C.gtk_adjustment_get_page_size(_arg0)
 
 	var _gdouble float64
 
@@ -301,7 +271,7 @@ func (a adjustment) StepIncrement() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_adjustment_get_step_increment(_arg0)
+	_cret = C.gtk_adjustment_get_step_increment(_arg0)
 
 	var _gdouble float64
 
@@ -318,7 +288,7 @@ func (a adjustment) Upper() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_adjustment_get_upper(_arg0)
+	_cret = C.gtk_adjustment_get_upper(_arg0)
 
 	var _gdouble float64
 
@@ -336,7 +306,7 @@ func (a adjustment) Value() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_adjustment_get_value(_arg0)
+	_cret = C.gtk_adjustment_get_value(_arg0)
 
 	var _gdouble float64
 

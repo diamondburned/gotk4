@@ -26,7 +26,7 @@ func Base64Decode(text string) []byte {
 	var _cret *C.guchar
 	var _arg2 *C.gsize
 
-	cret = C.g_base64_decode(_arg1)
+	_cret = C.g_base64_decode(_arg1, &_arg2)
 
 	var _guint8s []byte
 
@@ -38,26 +38,18 @@ func Base64Decode(text string) []byte {
 	return _guint8s
 }
 
-// Base64DecodeInplace: decode a sequence of Base-64 encoded text into binary
-// data by overwriting the input data.
-func Base64DecodeInplace() *byte {
-	var _cret *C.guchar
-
-	cret = C.g_base64_decode_inplace()
-
-	var _guint8 *byte
-
-	_guint8 = (*byte)(_cret)
-
-	return _guint8
-}
-
 // Base64Encode: encode a sequence of binary data into its Base-64 stringified
 // representation.
-func Base64Encode() string {
+func Base64Encode(data []byte) string {
+	var _arg1 *C.guchar
+	var _arg2 C.gsize
+
+	_arg2 = C.gsize(len(data))
+	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
+
 	var _cret *C.gchar
 
-	cret = C.g_base64_encode()
+	_cret = C.g_base64_encode(_arg1, _arg2)
 
 	var _utf8 string
 

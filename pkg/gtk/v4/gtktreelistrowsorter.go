@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -35,8 +32,6 @@ func init() {
 type TreeListRowSorter interface {
 	Sorter
 
-	// Sorter returns the sorter used by @self.
-	Sorter() Sorter
 	// SetSorter sets the sorter to use for items with the same parent.
 	//
 	// This sorter will be passed the [property@Gtk.TreeListRow:item] of the
@@ -63,40 +58,6 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapTreeListRowSorter(obj), nil
-}
-
-// NewTreeListRowSorter constructs a class TreeListRowSorter.
-func NewTreeListRowSorter(sorter Sorter) TreeListRowSorter {
-	var _arg1 *C.GtkSorter
-
-	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
-
-	var _cret C.GtkTreeListRowSorter
-
-	cret = C.gtk_tree_list_row_sorter_new(_arg1)
-
-	var _treeListRowSorter TreeListRowSorter
-
-	_treeListRowSorter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeListRowSorter)
-
-	return _treeListRowSorter
-}
-
-// Sorter returns the sorter used by @self.
-func (s treeListRowSorter) Sorter() Sorter {
-	var _arg0 *C.GtkTreeListRowSorter
-
-	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSorter
-
-	cret = C.gtk_tree_list_row_sorter_get_sorter(_arg0)
-
-	var _sorter Sorter
-
-	_sorter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Sorter)
-
-	return _sorter
 }
 
 // SetSorter sets the sorter to use for items with the same parent.

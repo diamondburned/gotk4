@@ -2,14 +2,7 @@
 
 package gdk
 
-import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-)
-
 // #cgo pkg-config:
 // #cgo CFLAGS: -Wno-deprecated-declarations
-// #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"

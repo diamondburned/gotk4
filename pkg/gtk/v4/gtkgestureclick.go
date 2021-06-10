@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -51,17 +48,4 @@ func marshalGestureClick(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapGestureClick(obj), nil
-}
-
-// NewGestureClick constructs a class GestureClick.
-func NewGestureClick() GestureClick {
-	var _cret C.GtkGestureClick
-
-	cret = C.gtk_gesture_click_new()
-
-	var _gestureClick GestureClick
-
-	_gestureClick = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureClick)
-
-	return _gestureClick
 }

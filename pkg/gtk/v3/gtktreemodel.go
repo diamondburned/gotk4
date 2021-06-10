@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -29,44 +28,16 @@ func init() {
 	})
 }
 
-// TreeModelForeachFunc: type of the callback passed to gtk_tree_model_foreach()
-// to iterate over the rows in a tree model.
-type TreeModelForeachFunc func() (ok bool)
-
-//export gotk4_TreeModelForeachFunc
-func gotk4_TreeModelForeachFunc(arg0 *C.GtkTreeModel, arg1 *C.GtkTreePath, arg2 *C.GtkTreeIter, arg3 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(TreeModelForeachFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}
-
 // TreeModelOverrider contains methods that are overridable. This
 // interface is a subset of the interface TreeModel.
 type TreeModelOverrider interface {
 	// ColumnType returns the type of the column.
 	ColumnType(index_ int) externglib.Type
-	// Flags returns a set of flags supported by this interface.
-	//
-	// The flags are a bitwise combination of TreeModelFlags. The flags
-	// supported should not change during the lifetime of the @tree_model.
-	Flags() TreeModelFlags
 	// Iter sets @iter to a valid iterator pointing to @path. If @path does not
 	// exist, @iter is set to an invalid iterator and false is returned.
 	Iter(path *TreePath) (TreeIter, bool)
 	// NColumns returns the number of columns supported by @tree_model.
 	NColumns() int
-	// Path returns a newly-created TreePath-struct referenced by @iter.
-	//
-	// This path should be freed with gtk_tree_path_free().
-	Path(iter *TreeIter) *TreePath
 	// Value initializes and sets @value to that at @column.
 	//
 	// When done with @value, g_value_unset() needs to be called to free any
@@ -317,14 +288,11 @@ type TreeModel interface {
 	gextras.Objector
 	TreeModelOverrider
 
-	// NewFilter creates a new TreeModel, with @child_model as the child_model
-	// and @root as the virtual root.
-	NewFilter(root *TreePath) TreeModel
 	// Foreach calls func on each node in model in a depth-first fashion.
 	//
 	// If @func returns true, then the tree ceases to be walked, and
 	// gtk_tree_model_foreach() returns.
-	Foreach()
+	Foreach(fn TreeModelForeachFunc)
 	// IterFirst initializes @iter with the first iterator in the tree (the one
 	// at the path "0") and returns true. Returns false if the tree is empty.
 	IterFirst() (TreeIter, bool)
@@ -340,7 +308,7 @@ type TreeModel interface {
 	// @tree_model.
 	//
 	// This should be called by models when their rows have been reordered.
-	RowsReorderedWithLength()
+	RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int)
 }
 
 // treeModel implements the TreeModel interface.
@@ -364,36 +332,20 @@ func marshalTreeModel(p uintptr) (interface{}, error) {
 	return WrapTreeModel(obj), nil
 }
 
-// NewFilter creates a new TreeModel, with @child_model as the child_model
-// and @root as the virtual root.
-func (c treeModel) NewFilter(root *TreePath) TreeModel {
-	var _arg0 *C.GtkTreeModel
-	var _arg1 *C.GtkTreePath
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(c.Native()))
-	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(root.Native()))
-
-	var _cret *C.GtkTreeModel
-
-	cret = C.gtk_tree_model_filter_new(_arg0, _arg1)
-
-	var _treeModel TreeModel
-
-	_treeModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(TreeModel)
-
-	return _treeModel
-}
-
 // Foreach calls func on each node in model in a depth-first fashion.
 //
 // If @func returns true, then the tree ceases to be walked, and
 // gtk_tree_model_foreach() returns.
-func (m treeModel) Foreach() {
+func (m treeModel) Foreach(fn TreeModelForeachFunc) {
 	var _arg0 *C.GtkTreeModel
+	var _arg1 C.GtkTreeModelForeachFunc
+	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(m.Native()))
+	_arg1 = (*[0]byte)(C.gotk4_TreeModelForeachFunc)
+	_arg2 = C.gpointer(box.Assign(fn))
 
-	C.gtk_tree_model_foreach(_arg0)
+	C.gtk_tree_model_foreach(_arg0, _arg1, _arg2)
 }
 
 // ColumnType returns the type of the column.
@@ -406,33 +358,13 @@ func (t treeModel) ColumnType(index_ int) externglib.Type {
 
 	var _cret C.GType
 
-	cret = C.gtk_tree_model_get_column_type(_arg0, _arg1)
+	_cret = C.gtk_tree_model_get_column_type(_arg0, _arg1)
 
 	var _gType externglib.Type
 
 	_gType = externglib.Type(_cret)
 
 	return _gType
-}
-
-// Flags returns a set of flags supported by this interface.
-//
-// The flags are a bitwise combination of TreeModelFlags. The flags
-// supported should not change during the lifetime of the @tree_model.
-func (t treeModel) Flags() TreeModelFlags {
-	var _arg0 *C.GtkTreeModel
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
-
-	var _cret C.GtkTreeModelFlags
-
-	cret = C.gtk_tree_model_get_flags(_arg0)
-
-	var _treeModelFlags TreeModelFlags
-
-	_treeModelFlags = TreeModelFlags(_cret)
-
-	return _treeModelFlags
 }
 
 // Iter sets @iter to a valid iterator pointing to @path. If @path does not
@@ -447,7 +379,7 @@ func (t treeModel) Iter(path *TreePath) (TreeIter, bool) {
 	var _iter TreeIter
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_get_iter(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_model_get_iter(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _ok bool
 
@@ -468,7 +400,7 @@ func (t treeModel) IterFirst() (TreeIter, bool) {
 	var _iter TreeIter
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_get_iter_first(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_model_get_iter_first(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _ok bool
 
@@ -492,7 +424,7 @@ func (t treeModel) IterFromString(pathString string) (TreeIter, bool) {
 	var _iter TreeIter
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_get_iter_from_string(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_model_get_iter_from_string(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _ok bool
 
@@ -511,37 +443,13 @@ func (t treeModel) NColumns() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_tree_model_get_n_columns(_arg0)
+	_cret = C.gtk_tree_model_get_n_columns(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Path returns a newly-created TreePath-struct referenced by @iter.
-//
-// This path should be freed with gtk_tree_path_free().
-func (t treeModel) Path(iter *TreeIter) *TreePath {
-	var _arg0 *C.GtkTreeModel
-	var _arg1 *C.GtkTreeIter
-
-	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
-	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
-
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_tree_model_get_path(_arg0, _arg1)
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
 }
 
 // StringFromIter generates a string representation of the iter.
@@ -557,7 +465,7 @@ func (t treeModel) StringFromIter(iter *TreeIter) string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_tree_model_get_string_from_iter(_arg0, _arg1)
+	_cret = C.gtk_tree_model_get_string_from_iter(_arg0, _arg1)
 
 	var _utf8 string
 
@@ -609,7 +517,7 @@ func (t treeModel) IterChildren(parent *TreeIter) (TreeIter, bool) {
 	var _iter TreeIter
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_iter_children(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_model_iter_children(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _ok bool
 
@@ -630,7 +538,7 @@ func (t treeModel) IterHasChild(iter *TreeIter) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_iter_has_child(_arg0, _arg1)
+	_cret = C.gtk_tree_model_iter_has_child(_arg0, _arg1)
 
 	var _ok bool
 
@@ -654,7 +562,7 @@ func (t treeModel) IterNChildren(iter *TreeIter) int {
 
 	var _cret C.gint
 
-	cret = C.gtk_tree_model_iter_n_children(_arg0, _arg1)
+	_cret = C.gtk_tree_model_iter_n_children(_arg0, _arg1)
 
 	var _gint int
 
@@ -677,7 +585,7 @@ func (t treeModel) IterNext(iter *TreeIter) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_iter_next(_arg0, _arg1)
+	_cret = C.gtk_tree_model_iter_next(_arg0, _arg1)
 
 	var _ok bool
 
@@ -707,7 +615,7 @@ func (t treeModel) IterNthChild(parent *TreeIter, n int) (TreeIter, bool) {
 	var _iter TreeIter
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_iter_nth_child(_arg0, _arg2, _arg3, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_model_iter_nth_child(_arg0, _arg2, _arg3, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _ok bool
 
@@ -736,7 +644,7 @@ func (t treeModel) IterParent(child *TreeIter) (TreeIter, bool) {
 	var _iter TreeIter
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_iter_parent(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
+	_cret = C.gtk_tree_model_iter_parent(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
 	var _ok bool
 
@@ -761,7 +669,7 @@ func (t treeModel) IterPrevious(iter *TreeIter) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_model_iter_previous(_arg0, _arg1)
+	_cret = C.gtk_tree_model_iter_previous(_arg0, _arg1)
 
 	var _ok bool
 
@@ -861,12 +769,20 @@ func (t treeModel) RowInserted(path *TreePath, iter *TreeIter) {
 // @tree_model.
 //
 // This should be called by models when their rows have been reordered.
-func (t treeModel) RowsReorderedWithLength() {
+func (t treeModel) RowsReorderedWithLength(path *TreePath, iter *TreeIter, newOrder []int) {
 	var _arg0 *C.GtkTreeModel
+	var _arg1 *C.GtkTreePath
+	var _arg2 *C.GtkTreeIter
+	var _arg3 *C.gint
+	var _arg4 C.gint
 
 	_arg0 = (*C.GtkTreeModel)(unsafe.Pointer(t.Native()))
+	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
+	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
+	_arg4 = C.gint(len(newOrder))
+	_arg3 = (*C.gint)(unsafe.Pointer(&newOrder[0]))
 
-	C.gtk_tree_model_rows_reordered_with_length(_arg0)
+	C.gtk_tree_model_rows_reordered_with_length(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // UnrefNode lets the tree unref the node.
@@ -942,30 +858,6 @@ func (t *TreeIter) UserData3() interface{} {
 	return v
 }
 
-// Copy creates a dynamically allocated tree iterator as a copy of @iter.
-//
-// This function is not intended for use in applications, because you can just
-// copy the structs by value (`GtkTreeIter new_iter = iter;`). You must free
-// this iter with gtk_tree_iter_free().
-func (i *TreeIter) Copy() *TreeIter {
-	var _arg0 *C.GtkTreeIter
-
-	_arg0 = (*C.GtkTreeIter)(unsafe.Pointer(i.Native()))
-
-	var _cret *C.GtkTreeIter
-
-	cret = C.gtk_tree_iter_copy(_arg0)
-
-	var _treeIter *TreeIter
-
-	_treeIter = WrapTreeIter(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeIter, func(v *TreeIter) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treeIter
-}
-
 // Free frees an iterator that has been allocated by gtk_tree_iter_copy().
 //
 // This function is mainly used for language bindings.
@@ -994,75 +886,6 @@ func WrapTreePath(ptr unsafe.Pointer) *TreePath {
 func marshalTreePath(p uintptr) (interface{}, error) {
 	b := C.g_value_get_boxed((*C.GValue)(unsafe.Pointer(p)))
 	return WrapTreePath(unsafe.Pointer(b)), nil
-}
-
-// NewTreePath constructs a struct TreePath.
-func NewTreePath() *TreePath {
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_tree_path_new()
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
-}
-
-// NewTreePathFirst constructs a struct TreePath.
-func NewTreePathFirst() *TreePath {
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_tree_path_new_first()
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
-}
-
-// NewTreePathFromIndicesv constructs a struct TreePath.
-func NewTreePathFromIndicesv() *TreePath {
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_tree_path_new_from_indicesv()
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
-}
-
-// NewTreePathFromString constructs a struct TreePath.
-func NewTreePathFromString(path string) *TreePath {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(path))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_tree_path_new_from_string(_arg1)
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
 }
 
 // Native returns the underlying C source pointer.
@@ -1096,33 +919,13 @@ func (a *TreePath) Compare(b *TreePath) int {
 
 	var _cret C.gint
 
-	cret = C.gtk_tree_path_compare(_arg0, _arg1)
+	_cret = C.gtk_tree_path_compare(_arg0, _arg1)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// Copy creates a new TreePath-struct as a copy of @path.
-func (p *TreePath) Copy() *TreePath {
-	var _arg0 *C.GtkTreePath
-
-	_arg0 = (*C.GtkTreePath)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_tree_path_copy(_arg0)
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
 }
 
 // Down moves @path to point to the first child of the current path.
@@ -1151,7 +954,7 @@ func (p *TreePath) Depth() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_tree_path_get_depth(_arg0)
+	_cret = C.gtk_tree_path_get_depth(_arg0)
 
 	var _gint int
 
@@ -1172,7 +975,7 @@ func (p *TreePath) IndicesWithDepth() []int {
 	var _cret *C.gint
 	var _arg1 *C.gint
 
-	cret = C.gtk_tree_path_get_indices_with_depth(_arg0)
+	_cret = C.gtk_tree_path_get_indices_with_depth(_arg0, &_arg1)
 
 	var _gints []int
 
@@ -1199,7 +1002,7 @@ func (p *TreePath) IsAncestor(descendant *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_path_is_ancestor(_arg0, _arg1)
+	_cret = C.gtk_tree_path_is_ancestor(_arg0, _arg1)
 
 	var _ok bool
 
@@ -1220,7 +1023,7 @@ func (p *TreePath) IsDescendant(ancestor *TreePath) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_path_is_descendant(_arg0, _arg1)
+	_cret = C.gtk_tree_path_is_descendant(_arg0, _arg1)
 
 	var _ok bool
 
@@ -1262,7 +1065,7 @@ func (p *TreePath) Prev() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_path_prev(_arg0)
+	_cret = C.gtk_tree_path_prev(_arg0)
 
 	var _ok bool
 
@@ -1284,7 +1087,7 @@ func (p *TreePath) String() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_tree_path_to_string(_arg0)
+	_cret = C.gtk_tree_path_to_string(_arg0)
 
 	var _utf8 string
 
@@ -1302,7 +1105,7 @@ func (p *TreePath) Up() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_path_up(_arg0)
+	_cret = C.gtk_tree_path_up(_arg0)
 
 	var _ok bool
 
@@ -1335,75 +1138,9 @@ func marshalTreeRowReference(p uintptr) (interface{}, error) {
 	return WrapTreeRowReference(unsafe.Pointer(b)), nil
 }
 
-// NewTreeRowReference constructs a struct TreeRowReference.
-func NewTreeRowReference(model TreeModel, path *TreePath) *TreeRowReference {
-	var _arg1 *C.GtkTreeModel
-	var _arg2 *C.GtkTreePath
-
-	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-	_arg2 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GtkTreeRowReference
-
-	cret = C.gtk_tree_row_reference_new(_arg1, _arg2)
-
-	var _treeRowReference *TreeRowReference
-
-	_treeRowReference = WrapTreeRowReference(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treeRowReference
-}
-
-// NewTreeRowReferenceProXY constructs a struct TreeRowReference.
-func NewTreeRowReferenceProXY(proxy gextras.Objector, model TreeModel, path *TreePath) *TreeRowReference {
-	var _arg1 *C.GObject
-	var _arg2 *C.GtkTreeModel
-	var _arg3 *C.GtkTreePath
-
-	_arg1 = (*C.GObject)(unsafe.Pointer(proxy.Native()))
-	_arg2 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
-	_arg3 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
-
-	var _cret *C.GtkTreeRowReference
-
-	cret = C.gtk_tree_row_reference_new_proxy(_arg1, _arg2, _arg3)
-
-	var _treeRowReference *TreeRowReference
-
-	_treeRowReference = WrapTreeRowReference(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treeRowReference
-}
-
 // Native returns the underlying C source pointer.
 func (t *TreeRowReference) Native() unsafe.Pointer {
 	return unsafe.Pointer(&t.native)
-}
-
-// Copy copies a TreeRowReference.
-func (r *TreeRowReference) Copy() *TreeRowReference {
-	var _arg0 *C.GtkTreeRowReference
-
-	_arg0 = (*C.GtkTreeRowReference)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GtkTreeRowReference
-
-	cret = C.gtk_tree_row_reference_copy(_arg0)
-
-	var _treeRowReference *TreeRowReference
-
-	_treeRowReference = WrapTreeRowReference(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treeRowReference, func(v *TreeRowReference) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treeRowReference
 }
 
 // Free free’s @reference. @reference may be nil
@@ -1415,44 +1152,6 @@ func (r *TreeRowReference) Free() {
 	C.gtk_tree_row_reference_free(_arg0)
 }
 
-// Model returns the model that the row reference is monitoring.
-func (r *TreeRowReference) Model() TreeModel {
-	var _arg0 *C.GtkTreeRowReference
-
-	_arg0 = (*C.GtkTreeRowReference)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GtkTreeModel
-
-	cret = C.gtk_tree_row_reference_get_model(_arg0)
-
-	var _treeModel TreeModel
-
-	_treeModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeModel)
-
-	return _treeModel
-}
-
-// Path returns a path that the row reference currently points to, or nil if the
-// path pointed to is no longer valid.
-func (r *TreeRowReference) Path() *TreePath {
-	var _arg0 *C.GtkTreeRowReference
-
-	_arg0 = (*C.GtkTreeRowReference)(unsafe.Pointer(r.Native()))
-
-	var _cret *C.GtkTreePath
-
-	cret = C.gtk_tree_row_reference_get_path(_arg0)
-
-	var _treePath *TreePath
-
-	_treePath = WrapTreePath(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_treePath, func(v *TreePath) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _treePath
-}
-
 // Valid returns true if the @reference is non-nil and refers to a current valid
 // path.
 func (r *TreeRowReference) Valid() bool {
@@ -1462,7 +1161,7 @@ func (r *TreeRowReference) Valid() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_tree_row_reference_valid(_arg0)
+	_cret = C.gtk_tree_row_reference_valid(_arg0)
 
 	var _ok bool
 

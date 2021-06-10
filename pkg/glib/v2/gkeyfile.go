@@ -79,22 +79,6 @@ func marshalKeyFile(p uintptr) (interface{}, error) {
 	return WrapKeyFile(unsafe.Pointer(b)), nil
 }
 
-// NewKeyFile constructs a struct KeyFile.
-func NewKeyFile() *KeyFile {
-	var _cret *C.GKeyFile
-
-	cret = C.g_key_file_new()
-
-	var _keyFile *KeyFile
-
-	_keyFile = WrapKeyFile(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _keyFile
-}
-
 // Native returns the underlying C source pointer.
 func (k *KeyFile) Native() unsafe.Pointer {
 	return unsafe.Pointer(&k.native)
@@ -162,7 +146,7 @@ func (k *KeyFile) BooleanList(groupName string, key string) ([]bool, error) {
 	var _arg3 *C.gsize
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_boolean_list(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_boolean_list(_arg0, _arg1, _arg2, &_arg3, _cerr)
 
 	var _oks []bool
 	var _goerr error
@@ -197,7 +181,7 @@ func (k *KeyFile) Comment(groupName string, key string) (string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_comment(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_comment(_arg0, _arg1, _arg2, _cerr)
 
 	var _utf8 string
 	var _goerr error
@@ -230,7 +214,7 @@ func (k *KeyFile) Double(groupName string, key string) (float64, error) {
 	var _cret C.gdouble
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_double(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_double(_arg0, _arg1, _arg2, _cerr)
 
 	var _gdouble float64
 	var _goerr error
@@ -263,7 +247,7 @@ func (k *KeyFile) DoubleList(groupName string, key string) ([]float64, error) {
 	var _arg3 *C.gsize
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_double_list(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_double_list(_arg0, _arg1, _arg2, &_arg3, _cerr)
 
 	var _gdoubles []float64
 	var _goerr error
@@ -287,7 +271,7 @@ func (k *KeyFile) Groups() (uint, []string) {
 	var _arg1 C.gsize
 	var _cret **C.gchar
 
-	cret = C.g_key_file_get_groups(_arg0, &_arg1)
+	_cret = C.g_key_file_get_groups(_arg0, &_arg1)
 
 	var _length uint
 	var _utf8s []string
@@ -306,7 +290,7 @@ func (k *KeyFile) Groups() (uint, []string) {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -332,7 +316,7 @@ func (k *KeyFile) Int64(groupName string, key string) (int64, error) {
 	var _cret C.gint64
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_int64(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_int64(_arg0, _arg1, _arg2, _cerr)
 
 	var _gint64 int64
 	var _goerr error
@@ -364,7 +348,7 @@ func (k *KeyFile) Integer(groupName string, key string) (int, error) {
 	var _cret C.gint
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_integer(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_integer(_arg0, _arg1, _arg2, _cerr)
 
 	var _gint int
 	var _goerr error
@@ -397,7 +381,7 @@ func (k *KeyFile) IntegerList(groupName string, key string) ([]int, error) {
 	var _arg3 *C.gsize
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_integer_list(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_integer_list(_arg0, _arg1, _arg2, &_arg3, _cerr)
 
 	var _gints []int
 	var _goerr error
@@ -427,7 +411,7 @@ func (k *KeyFile) Keys(groupName string) (uint, []string, error) {
 	var _cret **C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_keys(_arg0, _arg1, &_arg2, _cerr)
+	_cret = C.g_key_file_get_keys(_arg0, _arg1, &_arg2, _cerr)
 
 	var _length uint
 	var _utf8s []string
@@ -447,7 +431,7 @@ func (k *KeyFile) Keys(groupName string) (uint, []string, error) {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -481,7 +465,7 @@ func (k *KeyFile) LocaleForKey(groupName string, key string, locale string) stri
 
 	var _cret *C.gchar
 
-	cret = C.g_key_file_get_locale_for_key(_arg0, _arg1, _arg2, _arg3)
+	_cret = C.g_key_file_get_locale_for_key(_arg0, _arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -520,7 +504,7 @@ func (k *KeyFile) LocaleString(groupName string, key string, locale string) (str
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_locale_string(_arg0, _arg1, _arg2, _arg3, _cerr)
+	_cret = C.g_key_file_get_locale_string(_arg0, _arg1, _arg2, _arg3, _cerr)
 
 	var _utf8 string
 	var _goerr error
@@ -563,7 +547,7 @@ func (k *KeyFile) LocaleStringList(groupName string, key string, locale string) 
 	var _arg4 *C.gsize
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_locale_string_list(_arg0, _arg1, _arg2, _arg3, _cerr)
+	_cret = C.g_key_file_get_locale_string_list(_arg0, _arg1, _arg2, _arg3, &_arg4, _cerr)
 
 	var _utf8s []string
 	var _goerr error
@@ -591,7 +575,7 @@ func (k *KeyFile) StartGroup() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_key_file_get_start_group(_arg0)
+	_cret = C.g_key_file_get_start_group(_arg0)
 
 	var _utf8 string
 
@@ -622,7 +606,7 @@ func (k *KeyFile) String(groupName string, key string) (string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_string(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_string(_arg0, _arg1, _arg2, _cerr)
 
 	var _utf8 string
 	var _goerr error
@@ -654,7 +638,7 @@ func (k *KeyFile) StringList(groupName string, key string) ([]string, error) {
 	var _arg3 *C.gsize
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_string_list(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_string_list(_arg0, _arg1, _arg2, &_arg3, _cerr)
 
 	var _utf8s []string
 	var _goerr error
@@ -691,7 +675,7 @@ func (k *KeyFile) Uint64(groupName string, key string) (uint64, error) {
 	var _cret C.guint64
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_uint64(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_uint64(_arg0, _arg1, _arg2, _cerr)
 
 	var _guint64 uint64
 	var _goerr error
@@ -722,7 +706,7 @@ func (k *KeyFile) Value(groupName string, key string) (string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_key_file_get_value(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_key_file_get_value(_arg0, _arg1, _arg2, _cerr)
 
 	var _utf8 string
 	var _goerr error
@@ -745,7 +729,7 @@ func (k *KeyFile) HasGroup(groupName string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_key_file_has_group(_arg0, _arg1)
+	_cret = C.g_key_file_has_group(_arg0, _arg1)
 
 	var _ok bool
 
@@ -917,26 +901,6 @@ func (k *KeyFile) LoadFromFile(file *string, flags KeyFileFlags) error {
 	return _goerr
 }
 
-// Ref increases the reference count of @key_file.
-func (k *KeyFile) Ref() *KeyFile {
-	var _arg0 *C.GKeyFile
-
-	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
-
-	var _cret *C.GKeyFile
-
-	cret = C.g_key_file_ref(_arg0)
-
-	var _keyFile *KeyFile
-
-	_keyFile = WrapKeyFile(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_keyFile, func(v *KeyFile) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _keyFile
-}
-
 // RemoveComment removes a comment above @key from @group_name. If @key is nil
 // then @comment will be removed above @group_name. If both @key and @group_name
 // are nil, then @comment will be removed above the first group in the file.
@@ -1054,12 +1018,22 @@ func (k *KeyFile) SetBoolean(groupName string, key string, value bool) {
 // SetBooleanList associates a list of boolean values with @key under
 // @group_name. If @key cannot be found then it is created. If @group_name is
 // nil, the start_group is used.
-func (k *KeyFile) SetBooleanList() {
+func (k *KeyFile) SetBooleanList(groupName string, key string, list []bool) {
 	var _arg0 *C.GKeyFile
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gboolean
+	var _arg4 C.gsize
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg4 = C.gsize(len(list))
+	_arg3 = (*C.gboolean)(unsafe.Pointer(&list[0]))
 
-	C.g_key_file_set_boolean_list(_arg0)
+	C.g_key_file_set_boolean_list(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetComment places a comment above @key from @group_name.
@@ -1115,12 +1089,22 @@ func (k *KeyFile) SetDouble(groupName string, key string, value float64) {
 
 // SetDoubleList associates a list of double values with @key under @group_name.
 // If @key cannot be found then it is created.
-func (k *KeyFile) SetDoubleList() {
+func (k *KeyFile) SetDoubleList(groupName string, key string, list []float64) {
 	var _arg0 *C.GKeyFile
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gdouble
+	var _arg4 C.gsize
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg4 = C.gsize(len(list))
+	_arg3 = (*C.gdouble)(unsafe.Pointer(&list[0]))
 
-	C.g_key_file_set_double_list(_arg0)
+	C.g_key_file_set_double_list(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetInt64 associates a new integer value with @key under @group_name. If @key
@@ -1161,12 +1145,22 @@ func (k *KeyFile) SetInteger(groupName string, key string, value int) {
 
 // SetIntegerList associates a list of integer values with @key under
 // @group_name. If @key cannot be found then it is created.
-func (k *KeyFile) SetIntegerList() {
+func (k *KeyFile) SetIntegerList(groupName string, key string, list []int) {
 	var _arg0 *C.GKeyFile
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gint
+	var _arg4 C.gsize
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg4 = C.gsize(len(list))
+	_arg3 = (*C.gint)(unsafe.Pointer(&list[0]))
 
-	C.g_key_file_set_integer_list(_arg0)
+	C.g_key_file_set_integer_list(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetListSeparator sets the character which is used to separate values in
@@ -1207,12 +1201,36 @@ func (k *KeyFile) SetLocaleString(groupName string, key string, locale string, s
 // SetLocaleStringList associates a list of string values for @key and @locale
 // under @group_name. If the translation for @key cannot be found then it is
 // created.
-func (k *KeyFile) SetLocaleStringList() {
+func (k *KeyFile) SetLocaleStringList(groupName string, key string, locale string, list []string) {
 	var _arg0 *C.GKeyFile
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 *C.gchar
+	var _arg4 **C.gchar
+	var _arg5 C.gsize
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg3 = (*C.gchar)(C.CString(locale))
+	defer C.free(unsafe.Pointer(_arg3))
+	_arg5 = C.gsize(len(list))
+	_arg4 = (**C.gchar)(C.malloc(len(list) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg4))
 
-	C.g_key_file_set_locale_string_list(_arg0)
+	{
+		var out []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg4), int(len(list)))
+
+		for i := range list {
+			_arg4 = (*C.gchar)(C.CString(list))
+			defer C.free(unsafe.Pointer(_arg4))
+		}
+	}
+
+	C.g_key_file_set_locale_string_list(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // SetString associates a new string value with @key under @group_name. If @key
@@ -1239,12 +1257,33 @@ func (k *KeyFile) SetString(groupName string, key string, string string) {
 // SetStringList associates a list of string values for @key under @group_name.
 // If @key cannot be found then it is created. If @group_name cannot be found
 // then it is created.
-func (k *KeyFile) SetStringList() {
+func (k *KeyFile) SetStringList(groupName string, key string, list []string) {
 	var _arg0 *C.GKeyFile
+	var _arg1 *C.gchar
+	var _arg2 *C.gchar
+	var _arg3 **C.gchar
+	var _arg4 C.gsize
 
 	_arg0 = (*C.GKeyFile)(unsafe.Pointer(k.Native()))
+	_arg1 = (*C.gchar)(C.CString(groupName))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = (*C.gchar)(C.CString(key))
+	defer C.free(unsafe.Pointer(_arg2))
+	_arg4 = C.gsize(len(list))
+	_arg3 = (**C.gchar)(C.malloc(len(list) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg3))
 
-	C.g_key_file_set_string_list(_arg0)
+	{
+		var out []*C.gchar
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg3), int(len(list)))
+
+		for i := range list {
+			_arg3 = (*C.gchar)(C.CString(list))
+			defer C.free(unsafe.Pointer(_arg3))
+		}
+	}
+
+	C.g_key_file_set_string_list(_arg0, _arg1, _arg2, _arg3, _arg4)
 }
 
 // SetUint64 associates a new integer value with @key under @group_name. If @key
@@ -1300,7 +1339,7 @@ func (k *KeyFile) ToData() (uint, string, error) {
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_key_file_to_data(_arg0, &_arg1, _cerr)
+	_cret = C.g_key_file_to_data(_arg0, &_arg1, _cerr)
 
 	var _length uint
 	var _utf8 string

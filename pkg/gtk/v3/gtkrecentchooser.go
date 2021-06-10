@@ -3,14 +3,10 @@
 package gtk
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -28,21 +24,6 @@ func init() {
 	})
 }
 
-type RecentSortFunc func() (gint int)
-
-//export gotk4_RecentSortFunc
-func gotk4_RecentSortFunc(arg0 *C.GtkRecentInfo, arg1 *C.GtkRecentInfo, arg2 C.gpointer) C.gint {
-	v := box.Get(uintptr(arg2))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(RecentSortFunc)
-	gint := fn()
-
-	cret = C.gint(gint)
-}
-
 // RecentChooserOverrider contains methods that are overridable. This
 // interface is a subset of the interface RecentChooser.
 type RecentChooserOverrider interface {
@@ -54,18 +35,8 @@ type RecentChooserOverrider interface {
 	AddFilter(filter RecentFilter)
 	// CurrentURI gets the URI currently selected by @chooser.
 	CurrentURI() string
-	// Items gets the list of recently used resources in form of RecentInfo
-	// objects.
-	//
-	// The return value of this function is affected by the “sort-type” and
-	// “limit” properties of @chooser.
-	Items() *glib.List
-
-	RecentManager() RecentManager
 
 	ItemActivated()
-	// ListFilters gets the RecentFilter objects held by @chooser.
-	ListFilters() *glib.SList
 	// RemoveFilter removes @filter from the list of RecentFilter objects held
 	// by @chooser.
 	RemoveFilter(filter RecentFilter)
@@ -78,15 +49,6 @@ type RecentChooserOverrider interface {
 	SelectionChanged()
 	// SetCurrentURI sets @uri as the current URI for @chooser.
 	SetCurrentURI(uri string) error
-	// SetSortFunc sets the comparison function used when sorting to be
-	// @sort_func. If the @chooser has the sort type set to K_RECENT_SORT_CUSTOM
-	// then the chooser will sort using this function.
-	//
-	// To the comparison function will be passed two RecentInfo structs and
-	// @sort_data; @sort_func should return a positive integer if the first item
-	// comes before the second, zero if the two items are equal and a negative
-	// integer if the first item comes after the second.
-	SetSortFunc()
 	// UnselectAll unselects all the items inside @chooser.
 	UnselectAll()
 	// UnselectURI unselects @uri inside @chooser.
@@ -103,11 +65,6 @@ type RecentChooser interface {
 	gextras.Objector
 	RecentChooserOverrider
 
-	// CurrentItem gets the RecentInfo currently selected by @chooser.
-	CurrentItem() *RecentInfo
-	// Filter gets the RecentFilter object currently used by @chooser to affect
-	// the display of the recently used resources.
-	Filter() RecentFilter
 	// Limit gets the number of items returned by gtk_recent_chooser_get_items()
 	// and gtk_recent_chooser_get_uris().
 	Limit() int
@@ -128,8 +85,6 @@ type RecentChooser interface {
 	// ShowTips gets whether @chooser should display tooltips containing the
 	// full path of a recently user resource.
 	ShowTips() bool
-	// SortType gets the value set by gtk_recent_chooser_set_sort_type().
-	SortType() RecentSortType
 	// Uris gets the URI of the recently used resources.
 	//
 	// The return value of this function is affected by the “sort-type” and
@@ -204,26 +159,6 @@ func (c recentChooser) AddFilter(filter RecentFilter) {
 	C.gtk_recent_chooser_add_filter(_arg0, _arg1)
 }
 
-// CurrentItem gets the RecentInfo currently selected by @chooser.
-func (c recentChooser) CurrentItem() *RecentInfo {
-	var _arg0 *C.GtkRecentChooser
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkRecentInfo
-
-	cret = C.gtk_recent_chooser_get_current_item(_arg0)
-
-	var _recentInfo *RecentInfo
-
-	_recentInfo = WrapRecentInfo(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_recentInfo, func(v *RecentInfo) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _recentInfo
-}
-
 // CurrentURI gets the URI currently selected by @chooser.
 func (c recentChooser) CurrentURI() string {
 	var _arg0 *C.GtkRecentChooser
@@ -232,7 +167,7 @@ func (c recentChooser) CurrentURI() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_recent_chooser_get_current_uri(_arg0)
+	_cret = C.gtk_recent_chooser_get_current_uri(_arg0)
 
 	var _utf8 string
 
@@ -240,48 +175,6 @@ func (c recentChooser) CurrentURI() string {
 	defer C.free(unsafe.Pointer(_cret))
 
 	return _utf8
-}
-
-// Filter gets the RecentFilter object currently used by @chooser to affect
-// the display of the recently used resources.
-func (c recentChooser) Filter() RecentFilter {
-	var _arg0 *C.GtkRecentChooser
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GtkRecentFilter
-
-	cret = C.gtk_recent_chooser_get_filter(_arg0)
-
-	var _recentFilter RecentFilter
-
-	_recentFilter = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(RecentFilter)
-
-	return _recentFilter
-}
-
-// Items gets the list of recently used resources in form of RecentInfo
-// objects.
-//
-// The return value of this function is affected by the “sort-type” and
-// “limit” properties of @chooser.
-func (c recentChooser) Items() *glib.List {
-	var _arg0 *C.GtkRecentChooser
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GList
-
-	cret = C.gtk_recent_chooser_get_items(_arg0)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
 }
 
 // Limit gets the number of items returned by gtk_recent_chooser_get_items()
@@ -293,7 +186,7 @@ func (c recentChooser) Limit() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_recent_chooser_get_limit(_arg0)
+	_cret = C.gtk_recent_chooser_get_limit(_arg0)
 
 	var _gint int
 
@@ -311,7 +204,7 @@ func (c recentChooser) LocalOnly() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_get_local_only(_arg0)
+	_cret = C.gtk_recent_chooser_get_local_only(_arg0)
 
 	var _ok bool
 
@@ -330,7 +223,7 @@ func (c recentChooser) SelectMultiple() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
+	_cret = C.gtk_recent_chooser_get_select_multiple(_arg0)
 
 	var _ok bool
 
@@ -350,7 +243,7 @@ func (c recentChooser) ShowIcons() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_get_show_icons(_arg0)
+	_cret = C.gtk_recent_chooser_get_show_icons(_arg0)
 
 	var _ok bool
 
@@ -370,7 +263,7 @@ func (c recentChooser) ShowNotFound() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
+	_cret = C.gtk_recent_chooser_get_show_not_found(_arg0)
 
 	var _ok bool
 
@@ -390,7 +283,7 @@ func (c recentChooser) ShowPrivate() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_get_show_private(_arg0)
+	_cret = C.gtk_recent_chooser_get_show_private(_arg0)
 
 	var _ok bool
 
@@ -410,7 +303,7 @@ func (c recentChooser) ShowTips() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_recent_chooser_get_show_tips(_arg0)
+	_cret = C.gtk_recent_chooser_get_show_tips(_arg0)
 
 	var _ok bool
 
@@ -419,23 +312,6 @@ func (c recentChooser) ShowTips() bool {
 	}
 
 	return _ok
-}
-
-// SortType gets the value set by gtk_recent_chooser_set_sort_type().
-func (c recentChooser) SortType() RecentSortType {
-	var _arg0 *C.GtkRecentChooser
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret C.GtkRecentSortType
-
-	cret = C.gtk_recent_chooser_get_sort_type(_arg0)
-
-	var _recentSortType RecentSortType
-
-	_recentSortType = RecentSortType(_cret)
-
-	return _recentSortType
 }
 
 // Uris gets the URI of the recently used resources.
@@ -452,7 +328,7 @@ func (c recentChooser) Uris() []string {
 	var _cret **C.gchar
 	var _arg1 *C.gsize
 
-	cret = C.gtk_recent_chooser_get_uris(_arg0)
+	_cret = C.gtk_recent_chooser_get_uris(_arg0, &_arg1)
 
 	var _utf8s []string
 
@@ -468,26 +344,6 @@ func (c recentChooser) Uris() []string {
 	}
 
 	return _utf8s
-}
-
-// ListFilters gets the RecentFilter objects held by @chooser.
-func (c recentChooser) ListFilters() *glib.SList {
-	var _arg0 *C.GtkRecentChooser
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	var _cret *C.GSList
-
-	cret = C.gtk_recent_chooser_list_filters(_arg0)
-
-	var _sList *glib.SList
-
-	_sList = glib.WrapSList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_sList, func(v *glib.SList) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _sList
 }
 
 // RemoveFilter removes @filter from the list of RecentFilter objects held
@@ -660,22 +516,6 @@ func (c recentChooser) SetShowTips(showTips bool) {
 	}
 
 	C.gtk_recent_chooser_set_show_tips(_arg0, _arg1)
-}
-
-// SetSortFunc sets the comparison function used when sorting to be
-// @sort_func. If the @chooser has the sort type set to K_RECENT_SORT_CUSTOM
-// then the chooser will sort using this function.
-//
-// To the comparison function will be passed two RecentInfo structs and
-// @sort_data; @sort_func should return a positive integer if the first item
-// comes before the second, zero if the two items are equal and a negative
-// integer if the first item comes after the second.
-func (c recentChooser) SetSortFunc() {
-	var _arg0 *C.GtkRecentChooser
-
-	_arg0 = (*C.GtkRecentChooser)(unsafe.Pointer(c.Native()))
-
-	C.gtk_recent_chooser_set_sort_func(_arg0)
 }
 
 // SetSortType changes the sorting order of the recently used resources list

@@ -146,7 +146,7 @@ func SignalAccumulatorFirstWins(ihint *SignalInvocationHint, returnAccu **extern
 
 	var _cret C.gboolean
 
-	cret = C.g_signal_accumulator_first_wins(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.g_signal_accumulator_first_wins(_arg1, _arg2, _arg3, _arg4)
 
 	var _ok bool
 
@@ -176,7 +176,7 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu **exte
 
 	var _cret C.gboolean
 
-	cret = C.g_signal_accumulator_true_handled(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.g_signal_accumulator_true_handled(_arg1, _arg2, _arg3, _arg4)
 
 	var _ok bool
 
@@ -185,39 +185,6 @@ func SignalAccumulatorTrueHandled(ihint *SignalInvocationHint, returnAccu **exte
 	}
 
 	return _ok
-}
-
-// SignalAddEmissionHook adds an emission hook for a signal, which will get
-// called for any emission of that signal, independent of the instance. This is
-// possible only for signals which don't have SIGNAL_NO_HOOKS flag set.
-func SignalAddEmissionHook() uint32 {
-	var _cret C.gulong
-
-	cret = C.g_signal_add_emission_hook()
-
-	var _gulong uint32
-
-	_gulong = (uint32)(_cret)
-
-	return _gulong
-}
-
-// SignalGetInvocationHint returns the invocation hint of the innermost signal
-// emission of instance.
-func SignalGetInvocationHint(instance gextras.Objector) *SignalInvocationHint {
-	var _arg1 C.gpointer
-
-	_arg1 = (*C.GObject)(unsafe.Pointer(instance.Native()))
-
-	var _cret *C.GSignalInvocationHint
-
-	cret = C.g_signal_get_invocation_hint(_arg1)
-
-	var _signalInvocationHint *SignalInvocationHint
-
-	_signalInvocationHint = WrapSignalInvocationHint(unsafe.Pointer(_cret))
-
-	return _signalInvocationHint
 }
 
 // SignalHandlerBlock blocks a handler of an instance so it will not be called
@@ -265,7 +232,7 @@ func SignalHandlerIsConnected(instance gextras.Objector, handlerId uint32) bool 
 
 	var _cret C.gboolean
 
-	cret = C.g_signal_handler_is_connected(_arg1, _arg2)
+	_cret = C.g_signal_handler_is_connected(_arg1, _arg2)
 
 	var _ok bool
 
@@ -324,7 +291,7 @@ func SignalIsValidName(name string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_signal_is_valid_name(_arg1)
+	_cret = C.g_signal_is_valid_name(_arg1)
 
 	var _ok bool
 
@@ -346,7 +313,7 @@ func SignalListIds(itype externglib.Type) []uint {
 	var _cret *C.guint
 	var _arg2 *C.guint
 
-	cret = C.g_signal_list_ids(_arg1)
+	_cret = C.g_signal_list_ids(_arg1, &_arg2)
 
 	var _guints []uint
 
@@ -379,7 +346,7 @@ func SignalLookup(name string, itype externglib.Type) uint {
 
 	var _cret C.guint
 
-	cret = C.g_signal_lookup(_arg1, _arg2)
+	_cret = C.g_signal_lookup(_arg1, _arg2)
 
 	var _guint uint
 
@@ -398,7 +365,7 @@ func SignalName(signalId uint) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_signal_name(_arg1)
+	_cret = C.g_signal_name(_arg1)
 
 	var _utf8 string
 
@@ -483,13 +450,6 @@ func (s *SignalInvocationHint) SignalID() uint {
 	return v
 }
 
-// RunType gets the field inside the struct.
-func (s *SignalInvocationHint) RunType() SignalFlags {
-	var v SignalFlags
-	v = SignalFlags(s.native.run_type)
-	return v
-}
-
 // SignalQuery: a structure holding in-depth information for a specific signal.
 // It is filled in by the g_signal_query() function.
 type SignalQuery struct {
@@ -534,13 +494,6 @@ func (s *SignalQuery) SignalName() string {
 func (s *SignalQuery) Itype() externglib.Type {
 	var v externglib.Type
 	v = externglib.Type(s.native.itype)
-	return v
-}
-
-// SignalFlags gets the field inside the struct.
-func (s *SignalQuery) SignalFlags() SignalFlags {
-	var v SignalFlags
-	v = SignalFlags(s.native.signal_flags)
 	return v
 }
 

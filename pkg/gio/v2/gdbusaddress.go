@@ -5,8 +5,8 @@ package gio
 import (
 	"unsafe"
 
+	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 )
 
 // #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
@@ -38,7 +38,7 @@ func DBusAddressEscapeValue(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_dbus_address_escape_value(_arg1)
+	_cret = C.g_dbus_address_escape_value(_arg1)
 
 	var _utf8 string
 
@@ -64,7 +64,7 @@ func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string,
 	var _cret *C.gchar
 	var _cerr *C.GError
 
-	cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, _cerr)
+	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, _cerr)
 
 	var _utf8 string
 	var _goerr error
@@ -87,73 +87,19 @@ func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string,
 //
 // This is an asynchronous failable function. See
 // g_dbus_address_get_stream_sync() for the synchronous version.
-func DBusAddressGetStream() {
-	C.g_dbus_address_get_stream()
-}
-
-// DBusAddressGetStreamFinish finishes an operation started with
-// g_dbus_address_get_stream().
-//
-// A server is not required to set a GUID, so @out_guid may be set to nil even
-// on success.
-func DBusAddressGetStreamFinish(res AsyncResult) (string, IOStream, error) {
-	var _arg1 *C.GAsyncResult
-
-	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
-
-	var _arg2 *C.gchar
-	var _cret *C.GIOStream
-	var _cerr *C.GError
-
-	cret = C.g_dbus_address_get_stream_finish(_arg1, &_arg2, _cerr)
-
-	var _outGuid string
-	var _ioStream IOStream
-	var _goerr error
-
-	_outGuid = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _outGuid, _ioStream, _goerr
-}
-
-// DBusAddressGetStreamSync: synchronously connects to an endpoint specified by
-// @address and sets up the connection so it is in a state to run the
-// client-side of the D-Bus authentication conversation. @address must be in the
-// D-Bus address format
-// (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
-//
-// A server is not required to set a GUID, so @out_guid may be set to nil even
-// on success.
-//
-// This is a synchronous failable function. See g_dbus_address_get_stream() for
-// the asynchronous version.
-func DBusAddressGetStreamSync(address string, cancellable Cancellable) (string, IOStream, error) {
+func DBusAddressGetStream(address string, cancellable Cancellable, callback AsyncReadyCallback) {
 	var _arg1 *C.gchar
-	var _arg3 *C.GCancellable
+	var _arg2 *C.GCancellable
+	var _arg3 C.GAsyncReadyCallback
+	var _arg4 C.gpointer
 
 	_arg1 = (*C.gchar)(C.CString(address))
 	defer C.free(unsafe.Pointer(_arg1))
-	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+	_arg3 = (*[0]byte)(C.gotk4_AsyncReadyCallback)
+	_arg4 = C.gpointer(box.Assign(callback))
 
-	var _arg2 *C.gchar
-	var _cret *C.GIOStream
-	var _cerr *C.GError
-
-	cret = C.g_dbus_address_get_stream_sync(_arg1, _arg3, &_arg2, _cerr)
-
-	var _outGuid string
-	var _ioStream IOStream
-	var _goerr error
-
-	_outGuid = C.GoString(_arg2)
-	defer C.free(unsafe.Pointer(_arg2))
-	_ioStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(IOStream)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _outGuid, _ioStream, _goerr
+	C.g_dbus_address_get_stream(_arg1, _arg2, _arg3, _arg4)
 }
 
 // DBusIsAddress checks if @string is a D-Bus address
@@ -169,7 +115,7 @@ func DBusIsAddress(string string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_dbus_is_address(_arg1)
+	_cret = C.g_dbus_is_address(_arg1)
 
 	var _ok bool
 

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -28,8 +25,6 @@ type SelectionFilterModel interface {
 	gextras.Objector
 	gio.ListModel
 
-	// Model gets the model currently filtered or nil if none.
-	Model() SelectionModel
 	// SetModel sets the model to be filtered.
 	//
 	// Note that GTK makes no effort to ensure that @model conforms to the item
@@ -59,40 +54,6 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapSelectionFilterModel(obj), nil
-}
-
-// NewSelectionFilterModel constructs a class SelectionFilterModel.
-func NewSelectionFilterModel(model SelectionModel) SelectionFilterModel {
-	var _arg1 *C.GtkSelectionModel
-
-	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkSelectionFilterModel
-
-	cret = C.gtk_selection_filter_model_new(_arg1)
-
-	var _selectionFilterModel SelectionFilterModel
-
-	_selectionFilterModel = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SelectionFilterModel)
-
-	return _selectionFilterModel
-}
-
-// Model gets the model currently filtered or nil if none.
-func (s selectionFilterModel) Model() SelectionModel {
-	var _arg0 *C.GtkSelectionFilterModel
-
-	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkSelectionModel
-
-	cret = C.gtk_selection_filter_model_get_model(_arg0)
-
-	var _selectionModel SelectionModel
-
-	_selectionModel = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(SelectionModel)
-
-	return _selectionModel
 }
 
 // SetModel sets the model to be filtered.

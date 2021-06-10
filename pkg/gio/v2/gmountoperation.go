@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -69,8 +68,6 @@ type MountOperation interface {
 	IsTcryptSystemVolume() bool
 	// Password gets a password from the mount operation.
 	Password() string
-	// PasswordSave gets the state of saving passwords for the mount operation.
-	PasswordSave() PasswordSave
 	// Pim gets a PIM from the mount operation.
 	Pim() uint
 	// Username: get the user name from the mount operation.
@@ -122,19 +119,6 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 	return WrapMountOperation(obj), nil
 }
 
-// NewMountOperation constructs a class MountOperation.
-func NewMountOperation() MountOperation {
-	var _cret C.GMountOperation
-
-	cret = C.g_mount_operation_new()
-
-	var _mountOperation MountOperation
-
-	_mountOperation = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(MountOperation)
-
-	return _mountOperation
-}
-
 // Anonymous: check to see whether the mount operation is being used for an
 // anonymous user.
 func (o mountOperation) Anonymous() bool {
@@ -144,7 +128,7 @@ func (o mountOperation) Anonymous() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_mount_operation_get_anonymous(_arg0)
+	_cret = C.g_mount_operation_get_anonymous(_arg0)
 
 	var _ok bool
 
@@ -163,7 +147,7 @@ func (o mountOperation) Choice() int {
 
 	var _cret C.int
 
-	cret = C.g_mount_operation_get_choice(_arg0)
+	_cret = C.g_mount_operation_get_choice(_arg0)
 
 	var _gint int
 
@@ -180,7 +164,7 @@ func (o mountOperation) Domain() string {
 
 	var _cret *C.char
 
-	cret = C.g_mount_operation_get_domain(_arg0)
+	_cret = C.g_mount_operation_get_domain(_arg0)
 
 	var _utf8 string
 
@@ -198,7 +182,7 @@ func (o mountOperation) IsTcryptHiddenVolume() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(_arg0)
+	_cret = C.g_mount_operation_get_is_tcrypt_hidden_volume(_arg0)
 
 	var _ok bool
 
@@ -218,7 +202,7 @@ func (o mountOperation) IsTcryptSystemVolume() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_mount_operation_get_is_tcrypt_system_volume(_arg0)
+	_cret = C.g_mount_operation_get_is_tcrypt_system_volume(_arg0)
 
 	var _ok bool
 
@@ -237,30 +221,13 @@ func (o mountOperation) Password() string {
 
 	var _cret *C.char
 
-	cret = C.g_mount_operation_get_password(_arg0)
+	_cret = C.g_mount_operation_get_password(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// PasswordSave gets the state of saving passwords for the mount operation.
-func (o mountOperation) PasswordSave() PasswordSave {
-	var _arg0 *C.GMountOperation
-
-	_arg0 = (*C.GMountOperation)(unsafe.Pointer(o.Native()))
-
-	var _cret C.GPasswordSave
-
-	cret = C.g_mount_operation_get_password_save(_arg0)
-
-	var _passwordSave PasswordSave
-
-	_passwordSave = PasswordSave(_cret)
-
-	return _passwordSave
 }
 
 // Pim gets a PIM from the mount operation.
@@ -271,7 +238,7 @@ func (o mountOperation) Pim() uint {
 
 	var _cret C.guint
 
-	cret = C.g_mount_operation_get_pim(_arg0)
+	_cret = C.g_mount_operation_get_pim(_arg0)
 
 	var _guint uint
 
@@ -288,7 +255,7 @@ func (o mountOperation) Username() string {
 
 	var _cret *C.char
 
-	cret = C.g_mount_operation_get_username(_arg0)
+	_cret = C.g_mount_operation_get_username(_arg0)
 
 	var _utf8 string
 

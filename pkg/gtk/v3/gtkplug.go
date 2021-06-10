@@ -3,10 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -46,8 +42,6 @@ type Plug interface {
 
 	// Embedded determines whether the plug is embedded in a socket.
 	Embedded() bool
-	// SocketWindow retrieves the socket the plug is embedded in.
-	SocketWindow() gdk.Window
 }
 
 // plug implements the Plug interface.
@@ -81,7 +75,7 @@ func (p plug) Embedded() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_plug_get_embedded(_arg0)
+	_cret = C.gtk_plug_get_embedded(_arg0)
 
 	var _ok bool
 
@@ -90,21 +84,4 @@ func (p plug) Embedded() bool {
 	}
 
 	return _ok
-}
-
-// SocketWindow retrieves the socket the plug is embedded in.
-func (p plug) SocketWindow() gdk.Window {
-	var _arg0 *C.GtkPlug
-
-	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GdkWindow
-
-	cret = C.gtk_plug_get_socket_window(_arg0)
-
-	var _window gdk.Window
-
-	_window = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.Window)
-
-	return _window
 }

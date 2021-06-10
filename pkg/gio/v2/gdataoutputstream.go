@@ -6,7 +6,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -38,8 +37,6 @@ type DataOutputStream interface {
 	FilterOutputStream
 	Seekable
 
-	// ByteOrder gets the byte order for the stream.
-	ByteOrder() DataStreamByteOrder
 	// PutByte puts a byte into the output stream.
 	PutByte(data byte, cancellable Cancellable) error
 	// PutInt16 puts a signed 16-bit integer into the output stream.
@@ -81,40 +78,6 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapDataOutputStream(obj), nil
-}
-
-// NewDataOutputStream constructs a class DataOutputStream.
-func NewDataOutputStream(baseStream OutputStream) DataOutputStream {
-	var _arg1 *C.GOutputStream
-
-	_arg1 = (*C.GOutputStream)(unsafe.Pointer(baseStream.Native()))
-
-	var _cret C.GDataOutputStream
-
-	cret = C.g_data_output_stream_new(_arg1)
-
-	var _dataOutputStream DataOutputStream
-
-	_dataOutputStream = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(DataOutputStream)
-
-	return _dataOutputStream
-}
-
-// ByteOrder gets the byte order for the stream.
-func (s dataOutputStream) ByteOrder() DataStreamByteOrder {
-	var _arg0 *C.GDataOutputStream
-
-	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GDataStreamByteOrder
-
-	cret = C.g_data_output_stream_get_byte_order(_arg0)
-
-	var _dataStreamByteOrder DataStreamByteOrder
-
-	_dataStreamByteOrder = DataStreamByteOrder(_cret)
-
-	return _dataStreamByteOrder
 }
 
 // PutByte puts a byte into the output stream.

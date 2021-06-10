@@ -56,7 +56,7 @@ func ASCIIDigitValue(c byte) int {
 
 	var _cret C.gint
 
-	cret = C.g_ascii_digit_value(_arg1)
+	_cret = C.g_ascii_digit_value(_arg1)
 
 	var _gint int
 
@@ -84,7 +84,7 @@ func ASCIIDtostr(buffer string, bufLen int, d float64) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_ascii_dtostr(_arg1, _arg2, _arg3)
+	_cret = C.g_ascii_dtostr(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -117,7 +117,7 @@ func ASCIIFormatd(buffer string, bufLen int, format string, d float64) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_ascii_formatd(_arg1, _arg2, _arg3, _arg4)
+	_cret = C.g_ascii_formatd(_arg1, _arg2, _arg3, _arg4)
 
 	var _utf8 string
 
@@ -152,7 +152,7 @@ func ASCIIStrcasecmp(s1 string, s2 string) int {
 
 	var _cret C.gint
 
-	cret = C.g_ascii_strcasecmp(_arg1, _arg2)
+	_cret = C.g_ascii_strcasecmp(_arg1, _arg2)
 
 	var _gint int
 
@@ -173,7 +173,7 @@ func ASCIIStrdown(str string, len int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_ascii_strdown(_arg1, _arg2)
+	_cret = C.g_ascii_strdown(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -299,7 +299,7 @@ func ASCIIStrncasecmp(s1 string, s2 string, n uint) int {
 
 	var _cret C.gint
 
-	cret = C.g_ascii_strncasecmp(_arg1, _arg2, _arg3)
+	_cret = C.g_ascii_strncasecmp(_arg1, _arg2, _arg3)
 
 	var _gint int
 
@@ -338,7 +338,7 @@ func ASCIIStrtod(nptr string) (string, float64) {
 	var _arg2 **C.gchar
 	var _cret C.gdouble
 
-	cret = C.g_ascii_strtod(_arg1, _arg2)
+	_cret = C.g_ascii_strtod(_arg1, _arg2)
 
 	var _endptr string
 	var _gdouble float64
@@ -373,7 +373,7 @@ func ASCIIStrtoll(nptr string, base uint) (string, int64) {
 	var _arg2 **C.gchar
 	var _cret C.gint64
 
-	cret = C.g_ascii_strtoll(_arg1, _arg3, _arg2)
+	_cret = C.g_ascii_strtoll(_arg1, _arg3, _arg2)
 
 	var _endptr string
 	var _gint64 int64
@@ -413,7 +413,7 @@ func ASCIIStrtoull(nptr string, base uint) (string, uint64) {
 	var _arg2 **C.gchar
 	var _cret C.guint64
 
-	cret = C.g_ascii_strtoull(_arg1, _arg3, _arg2)
+	_cret = C.g_ascii_strtoull(_arg1, _arg3, _arg2)
 
 	var _endptr string
 	var _guint64 uint64
@@ -435,7 +435,7 @@ func ASCIIStrup(str string, len int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_ascii_strup(_arg1, _arg2)
+	_cret = C.g_ascii_strup(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -460,7 +460,7 @@ func ASCIIToLower(c byte) byte {
 
 	var _cret C.gchar
 
-	cret = C.g_ascii_tolower(_arg1)
+	_cret = C.g_ascii_tolower(_arg1)
 
 	var _gchar byte
 
@@ -484,7 +484,7 @@ func ASCIIToUpper(c byte) byte {
 
 	var _cret C.gchar
 
-	cret = C.g_ascii_toupper(_arg1)
+	_cret = C.g_ascii_toupper(_arg1)
 
 	var _gchar byte
 
@@ -503,7 +503,7 @@ func ASCIIXDigitValue(c byte) int {
 
 	var _cret C.gint
 
-	cret = C.g_ascii_xdigit_value(_arg1)
+	_cret = C.g_ascii_xdigit_value(_arg1)
 
 	var _gint int
 
@@ -523,7 +523,7 @@ func Memdup(mem interface{}, byteSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_memdup(_arg1, _arg2)
+	_cret = C.g_memdup(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -546,7 +546,7 @@ func Memdup2(mem interface{}, byteSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_memdup2(_arg1, _arg2)
+	_cret = C.g_memdup2(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -570,7 +570,7 @@ func Stpcpy(dest string, src string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_stpcpy(_arg1, _arg2)
+	_cret = C.g_stpcpy(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -592,7 +592,7 @@ func StrHasPrefix(str string, prefix string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_str_has_prefix(_arg1, _arg2)
+	_cret = C.g_str_has_prefix(_arg1, _arg2)
 
 	var _ok bool
 
@@ -615,7 +615,7 @@ func StrHasSuffix(str string, suffix string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_str_has_suffix(_arg1, _arg2)
+	_cret = C.g_str_has_suffix(_arg1, _arg2)
 
 	var _ok bool
 
@@ -636,7 +636,7 @@ func StrIsASCII(str string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_str_is_ascii(_arg1)
+	_cret = C.g_str_is_ascii(_arg1)
 
 	var _ok bool
 
@@ -682,7 +682,7 @@ func StrMatchString(searchTerm string, potentialHit string, acceptAlternates boo
 
 	var _cret C.gboolean
 
-	cret = C.g_str_match_string(_arg1, _arg2, _arg3)
+	_cret = C.g_str_match_string(_arg1, _arg2, _arg3)
 
 	var _ok bool
 
@@ -720,7 +720,7 @@ func StrToASCII(str string, fromLocale string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_str_to_ascii(_arg1, _arg2)
+	_cret = C.g_str_to_ascii(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -756,7 +756,7 @@ func StrTokenizeAndFold(string string, translitLocale string) ([]*string, []stri
 	var _arg3 **C.gchar
 	var _cret **C.gchar
 
-	cret = C.g_str_tokenize_and_fold(_arg1, _arg2, &_arg3)
+	_cret = C.g_str_tokenize_and_fold(_arg1, _arg2, &_arg3)
 
 	var _asciiAlternates []*string
 	var _utf8s []string
@@ -774,7 +774,7 @@ func StrTokenizeAndFold(string string, translitLocale string) ([]*string, []stri
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg3), int(length))
 
 		_asciiAlternates = make([]*string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_asciiAlternates = C.GoString(_arg3)
 			defer C.free(unsafe.Pointer(_arg3))
 		}
@@ -792,7 +792,7 @@ func StrTokenizeAndFold(string string, translitLocale string) ([]*string, []stri
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 			defer C.free(unsafe.Pointer(_cret))
 		}
@@ -822,7 +822,7 @@ func Strcanon(string string, validChars string, substitutor byte) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strcanon(_arg1, _arg2, _arg3)
+	_cret = C.g_strcanon(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -845,7 +845,7 @@ func Strcasecmp(s1 string, s2 string) int {
 
 	var _cret C.gint
 
-	cret = C.g_strcasecmp(_arg1, _arg2)
+	_cret = C.g_strcasecmp(_arg1, _arg2)
 
 	var _gint int
 
@@ -870,7 +870,7 @@ func Strchomp(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strchomp(_arg1)
+	_cret = C.g_strchomp(_arg1)
 
 	var _utf8 string
 
@@ -897,7 +897,7 @@ func Strchug(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strchug(_arg1)
+	_cret = C.g_strchug(_arg1)
 
 	var _utf8 string
 
@@ -918,7 +918,7 @@ func Strcompress(source string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strcompress(_arg1)
+	_cret = C.g_strcompress(_arg1)
 
 	var _utf8 string
 
@@ -949,7 +949,7 @@ func Strdelimit(string string, delimiters string, newDelimiter byte) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strdelimit(_arg1, _arg2, _arg3)
+	_cret = C.g_strdelimit(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -968,7 +968,7 @@ func Strdown(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strdown(_arg1)
+	_cret = C.g_strdown(_arg1)
 
 	var _utf8 string
 
@@ -988,7 +988,7 @@ func Strdup(str string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strdup(_arg1)
+	_cret = C.g_strdup(_arg1)
 
 	var _utf8 string
 
@@ -1010,7 +1010,7 @@ func Strdupv(strArray *string) []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_strdupv(_arg1)
+	_cret = C.g_strdupv(_arg1)
 
 	var _utf8s []string
 
@@ -1027,7 +1027,7 @@ func Strdupv(strArray *string) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -1059,7 +1059,7 @@ func Strerror(errnum int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strerror(_arg1)
+	_cret = C.g_strerror(_arg1)
 
 	var _utf8 string
 
@@ -1087,7 +1087,7 @@ func Strescape(source string, exceptions string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strescape(_arg1, _arg2)
+	_cret = C.g_strescape(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -1128,7 +1128,7 @@ func Strjoinv(separator string, strArray *string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strjoinv(_arg1, _arg2)
+	_cret = C.g_strjoinv(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -1164,7 +1164,7 @@ func Strlcat(dest string, src string, destSize uint) uint {
 
 	var _cret C.gsize
 
-	cret = C.g_strlcat(_arg1, _arg2, _arg3)
+	_cret = C.g_strlcat(_arg1, _arg2, _arg3)
 
 	var _gsize uint
 
@@ -1199,7 +1199,7 @@ func Strlcpy(dest string, src string, destSize uint) uint {
 
 	var _cret C.gsize
 
-	cret = C.g_strlcpy(_arg1, _arg2, _arg3)
+	_cret = C.g_strlcpy(_arg1, _arg2, _arg3)
 
 	var _gsize uint
 
@@ -1225,7 +1225,7 @@ func Strncasecmp(s1 string, s2 string, n uint) int {
 
 	var _cret C.gint
 
-	cret = C.g_strncasecmp(_arg1, _arg2, _arg3)
+	_cret = C.g_strncasecmp(_arg1, _arg2, _arg3)
 
 	var _gint int
 
@@ -1251,7 +1251,7 @@ func Strndup(str string, n uint) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strndup(_arg1, _arg2)
+	_cret = C.g_strndup(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -1272,7 +1272,7 @@ func Strnfill(length uint, fillChar byte) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strnfill(_arg1, _arg2)
+	_cret = C.g_strnfill(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -1295,7 +1295,7 @@ func Strreverse(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strreverse(_arg1)
+	_cret = C.g_strreverse(_arg1)
 
 	var _utf8 string
 
@@ -1318,7 +1318,7 @@ func Strrstr(haystack string, needle string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strrstr(_arg1, _arg2)
+	_cret = C.g_strrstr(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -1343,7 +1343,7 @@ func StrrstrLen(haystack string, haystackLen int, needle string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strrstr_len(_arg1, _arg2, _arg3)
+	_cret = C.g_strrstr_len(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -1364,7 +1364,7 @@ func Strsignal(signum int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strsignal(_arg1)
+	_cret = C.g_strsignal(_arg1)
 
 	var _utf8 string
 
@@ -1400,7 +1400,7 @@ func Strsplit(string string, delimiter string, maxTokens int) []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_strsplit(_arg1, _arg2, _arg3)
+	_cret = C.g_strsplit(_arg1, _arg2, _arg3)
 
 	var _utf8s []string
 
@@ -1417,7 +1417,7 @@ func Strsplit(string string, delimiter string, maxTokens int) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -1458,7 +1458,7 @@ func StrsplitSet(string string, delimiters string, maxTokens int) []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_strsplit_set(_arg1, _arg2, _arg3)
+	_cret = C.g_strsplit_set(_arg1, _arg2, _arg3)
 
 	var _utf8s []string
 
@@ -1475,7 +1475,7 @@ func StrsplitSet(string string, delimiters string, maxTokens int) []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -1498,7 +1498,7 @@ func StrstrLen(haystack string, haystackLen int, needle string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strstr_len(_arg1, _arg2, _arg3)
+	_cret = C.g_strstr_len(_arg1, _arg2, _arg3)
 
 	var _utf8 string
 
@@ -1528,7 +1528,7 @@ func Strtod(nptr string) (string, float64) {
 	var _arg2 **C.gchar
 	var _cret C.gdouble
 
-	cret = C.g_strtod(_arg1, _arg2)
+	_cret = C.g_strtod(_arg1, _arg2)
 
 	var _endptr string
 	var _gdouble float64
@@ -1548,7 +1548,7 @@ func Strup(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_strup(_arg1)
+	_cret = C.g_strup(_arg1)
 
 	var _utf8 string
 
@@ -1570,7 +1570,7 @@ func StrvContains(strv *string, str string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_strv_contains(_arg1, _arg2)
+	_cret = C.g_strv_contains(_arg1, _arg2)
 
 	var _ok bool
 
@@ -1598,7 +1598,7 @@ func StrvEqual(strv1 *string, strv2 *string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_strv_equal(_arg1, _arg2)
+	_cret = C.g_strv_equal(_arg1, _arg2)
 
 	var _ok bool
 
@@ -1619,7 +1619,7 @@ func StrvLength(strArray *string) uint {
 
 	var _cret C.guint
 
-	cret = C.g_strv_length(_arg1)
+	_cret = C.g_strv_length(_arg1)
 
 	var _guint uint
 

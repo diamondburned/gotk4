@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -98,8 +97,6 @@ type Popover interface {
 	// CascadePopdown returns whether the popover will close after a modal child
 	// is closed.
 	CascadePopdown() bool
-	// Child gets the child widget of @popover.
-	Child() Widget
 	// HasArrow gets whether this popover is showing an arrow pointing at the
 	// widget that it is relative to.
 	HasArrow() bool
@@ -113,8 +110,6 @@ type Popover interface {
 	// and fill in @rect with such rectangle, otherwise it will return false and
 	// fill in @rect with the parent widget coordinates.
 	PointingTo() (gdk.Rectangle, bool)
-	// Position returns the preferred position of @popover.
-	Position() PositionType
 	// Popdown pops @popover down.
 	//
 	// This is different from a [method@Gtk.Widget.hide] call in that it may
@@ -207,19 +202,6 @@ func marshalPopover(p uintptr) (interface{}, error) {
 	return WrapPopover(obj), nil
 }
 
-// NewPopover constructs a class Popover.
-func NewPopover() Popover {
-	var _cret C.GtkPopover
-
-	cret = C.gtk_popover_new()
-
-	var _popover Popover
-
-	_popover = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Popover)
-
-	return _popover
-}
-
 // Autohide returns whether the popover is modal.
 //
 // See [method@Gtk.Popover.set_autohide] for the implications of this.
@@ -230,7 +212,7 @@ func (p popover) Autohide() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_autohide(_arg0)
+	_cret = C.gtk_popover_get_autohide(_arg0)
 
 	var _ok bool
 
@@ -250,7 +232,7 @@ func (p popover) CascadePopdown() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_cascade_popdown(_arg0)
+	_cret = C.gtk_popover_get_cascade_popdown(_arg0)
 
 	var _ok bool
 
@@ -259,23 +241,6 @@ func (p popover) CascadePopdown() bool {
 	}
 
 	return _ok
-}
-
-// Child gets the child widget of @popover.
-func (p popover) Child() Widget {
-	var _arg0 *C.GtkPopover
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_popover_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
 }
 
 // HasArrow gets whether this popover is showing an arrow pointing at the
@@ -287,7 +252,7 @@ func (p popover) HasArrow() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_has_arrow(_arg0)
+	_cret = C.gtk_popover_get_has_arrow(_arg0)
 
 	var _ok bool
 
@@ -306,7 +271,7 @@ func (p popover) MnemonicsVisible() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_mnemonics_visible(_arg0)
+	_cret = C.gtk_popover_get_mnemonics_visible(_arg0)
 
 	var _ok bool
 
@@ -350,7 +315,7 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 	var _rect gdk.Rectangle
 	var _cret C.gboolean
 
-	cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
+	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
 	var _ok bool
 
@@ -359,23 +324,6 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 	}
 
 	return _rect, _ok
-}
-
-// Position returns the preferred position of @popover.
-func (p popover) Position() PositionType {
-	var _arg0 *C.GtkPopover
-
-	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
-
-	var _cret C.GtkPositionType
-
-	cret = C.gtk_popover_get_position(_arg0)
-
-	var _positionType PositionType
-
-	_positionType = PositionType(_cret)
-
-	return _positionType
 }
 
 // Popdown pops @popover down.

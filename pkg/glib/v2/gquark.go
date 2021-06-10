@@ -31,7 +31,7 @@ func InternStaticString(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_intern_static_string(_arg1)
+	_cret = C.g_intern_static_string(_arg1)
 
 	var _utf8 string
 
@@ -55,7 +55,7 @@ func InternString(string string) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_intern_string(_arg1)
+	_cret = C.g_intern_string(_arg1)
 
 	var _utf8 string
 

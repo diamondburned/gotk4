@@ -63,8 +63,6 @@ type TreeExpander interface {
 	Buildable
 	ConstraintTarget
 
-	// Child gets the child widget displayed by @self.
-	Child() Widget
 	// Item forwards the item set on the `GtkTreeListRow` that @self is
 	// managing.
 	//
@@ -73,8 +71,6 @@ type TreeExpander interface {
 	// “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
 	// “`
 	Item() gextras.Objector
-	// ListRow gets the list row managed by @self.
-	ListRow() TreeListRow
 	// SetChild sets the content widget to display.
 	SetChild(child Widget)
 	// SetListRow sets the tree list row that this expander should manage.
@@ -108,36 +104,6 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 	return WrapTreeExpander(obj), nil
 }
 
-// NewTreeExpander constructs a class TreeExpander.
-func NewTreeExpander() TreeExpander {
-	var _cret C.GtkTreeExpander
-
-	cret = C.gtk_tree_expander_new()
-
-	var _treeExpander TreeExpander
-
-	_treeExpander = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeExpander)
-
-	return _treeExpander
-}
-
-// Child gets the child widget displayed by @self.
-func (s treeExpander) Child() Widget {
-	var _arg0 *C.GtkTreeExpander
-
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkWidget
-
-	cret = C.gtk_tree_expander_get_child(_arg0)
-
-	var _widget Widget
-
-	_widget = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Widget)
-
-	return _widget
-}
-
 // Item forwards the item set on the `GtkTreeListRow` that @self is
 // managing.
 //
@@ -152,30 +118,13 @@ func (s treeExpander) Item() gextras.Objector {
 
 	var _cret C.gpointer
 
-	cret = C.gtk_tree_expander_get_item(_arg0)
+	_cret = C.gtk_tree_expander_get_item(_arg0)
 
 	var _object gextras.Objector
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
 	return _object
-}
-
-// ListRow gets the list row managed by @self.
-func (s treeExpander) ListRow() TreeListRow {
-	var _arg0 *C.GtkTreeExpander
-
-	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkTreeListRow
-
-	cret = C.gtk_tree_expander_get_list_row(_arg0)
-
-	var _treeListRow TreeListRow
-
-	_treeListRow = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(TreeListRow)
-
-	return _treeListRow
 }
 
 // SetChild sets the content widget to display.

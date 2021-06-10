@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -108,43 +107,6 @@ func marshalFileChooserButton(p uintptr) (interface{}, error) {
 	return WrapFileChooserButton(obj), nil
 }
 
-// NewFileChooserButton constructs a class FileChooserButton.
-func NewFileChooserButton(title string, action FileChooserAction) FileChooserButton {
-	var _arg1 *C.gchar
-	var _arg2 C.GtkFileChooserAction
-
-	_arg1 = (*C.gchar)(C.CString(title))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GtkFileChooserAction)(action)
-
-	var _cret C.GtkFileChooserButton
-
-	cret = C.gtk_file_chooser_button_new(_arg1, _arg2)
-
-	var _fileChooserButton FileChooserButton
-
-	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileChooserButton)
-
-	return _fileChooserButton
-}
-
-// NewFileChooserButtonWithDialog constructs a class FileChooserButton.
-func NewFileChooserButtonWithDialog(dialog Dialog) FileChooserButton {
-	var _arg1 *C.GtkWidget
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(dialog.Native()))
-
-	var _cret C.GtkFileChooserButton
-
-	cret = C.gtk_file_chooser_button_new_with_dialog(_arg1)
-
-	var _fileChooserButton FileChooserButton
-
-	_fileChooserButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(FileChooserButton)
-
-	return _fileChooserButton
-}
-
 // FocusOnClick returns whether the button grabs focus when it is clicked
 // with the mouse. See gtk_file_chooser_button_set_focus_on_click().
 func (b fileChooserButton) FocusOnClick() bool {
@@ -154,7 +116,7 @@ func (b fileChooserButton) FocusOnClick() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_file_chooser_button_get_focus_on_click(_arg0)
+	_cret = C.gtk_file_chooser_button_get_focus_on_click(_arg0)
 
 	var _ok bool
 
@@ -174,7 +136,7 @@ func (b fileChooserButton) Title() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_file_chooser_button_get_title(_arg0)
+	_cret = C.gtk_file_chooser_button_get_title(_arg0)
 
 	var _utf8 string
 
@@ -192,7 +154,7 @@ func (b fileChooserButton) WidthChars() int {
 
 	var _cret C.gint
 
-	cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
+	_cret = C.gtk_file_chooser_button_get_width_chars(_arg0)
 
 	var _gint int
 

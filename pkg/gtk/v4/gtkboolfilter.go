@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -26,9 +23,6 @@ func init() {
 type BoolFilter interface {
 	Filter
 
-	// Expression gets the expression that the filter uses to evaluate if an
-	// item should be filtered.
-	Expression() Expression
 	// Invert returns whether the filter inverts the expression.
 	Invert() bool
 	// SetExpression sets the expression that the filter uses to check if items
@@ -61,41 +55,6 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 	return WrapBoolFilter(obj), nil
 }
 
-// NewBoolFilter constructs a class BoolFilter.
-func NewBoolFilter(expression Expression) BoolFilter {
-	var _arg1 *C.GtkExpression
-
-	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
-
-	var _cret C.GtkBoolFilter
-
-	cret = C.gtk_bool_filter_new(_arg1)
-
-	var _boolFilter BoolFilter
-
-	_boolFilter = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(BoolFilter)
-
-	return _boolFilter
-}
-
-// Expression gets the expression that the filter uses to evaluate if an
-// item should be filtered.
-func (s boolFilter) Expression() Expression {
-	var _arg0 *C.GtkBoolFilter
-
-	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkExpression
-
-	cret = C.gtk_bool_filter_get_expression(_arg0)
-
-	var _expression Expression
-
-	_expression = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Expression)
-
-	return _expression
-}
-
 // Invert returns whether the filter inverts the expression.
 func (s boolFilter) Invert() bool {
 	var _arg0 *C.GtkBoolFilter
@@ -104,7 +63,7 @@ func (s boolFilter) Invert() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_bool_filter_get_invert(_arg0)
+	_cret = C.gtk_bool_filter_get_invert(_arg0)
 
 	var _ok bool
 

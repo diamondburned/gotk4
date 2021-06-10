@@ -3,6 +3,7 @@
 package pango
 
 import (
+	"runtime"
 	"unsafe"
 )
 
@@ -16,8 +17,21 @@ import "C"
 // Unicode text with a single analysis.
 //
 // For most purposes you may want to use pango_get_log_attrs().
-func Break() {
-	C.pango_break()
+func Break(text string, length int, analysis *Analysis, attrs []LogAttr) {
+	var _arg1 *C.gchar
+	var _arg2 C.int
+	var _arg3 *C.PangoAnalysis
+	var _arg4 *C.PangoLogAttr
+	var _arg5 C.int
+
+	_arg1 = (*C.gchar)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
+	_arg5 = C.int(len(attrs))
+	_arg4 = (*C.PangoLogAttr)(unsafe.Pointer(&attrs[0]))
+
+	C.pango_break(_arg1, _arg2, _arg3, _arg4, _arg5)
 }
 
 // DefaultBreak: this is the default break algorithm.
@@ -83,8 +97,23 @@ func FindParagraphBoundary(text string, length int) (paragraphDelimiterIndex int
 // position at the end of the text. @text should be an entire paragraph; logical
 // attributes can't be computed without context (for example you need to see
 // spaces on either side of a word to know the word is a word).
-func GetLogAttrs() {
-	C.pango_get_log_attrs()
+func GetLogAttrs(text string, length int, level int, language *Language, logAttrs []LogAttr) {
+	var _arg1 *C.char
+	var _arg2 C.int
+	var _arg3 C.int
+	var _arg4 *C.PangoLanguage
+	var _arg5 *C.PangoLogAttr
+	var _arg6 C.int
+
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = C.int(level)
+	_arg4 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
+	_arg6 = C.int(len(logAttrs))
+	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+
+	C.pango_get_log_attrs(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // TailorBreak: apply language-specific tailoring to the breaks in @log_attrs.
@@ -93,8 +122,23 @@ func GetLogAttrs() {
 //
 // If @offset is not -1, it is used to apply attributes from @analysis that are
 // relevant to line breaking.
-func TailorBreak() {
-	C.pango_tailor_break()
+func TailorBreak(text string, length int, analysis *Analysis, offset int, logAttrs []LogAttr) {
+	var _arg1 *C.char
+	var _arg2 C.int
+	var _arg3 *C.PangoAnalysis
+	var _arg4 C.int
+	var _arg5 *C.PangoLogAttr
+	var _arg6 C.int
+
+	_arg1 = (*C.char)(C.CString(text))
+	defer C.free(unsafe.Pointer(_arg1))
+	_arg2 = C.int(length)
+	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
+	_arg4 = C.int(offset)
+	_arg6 = C.int(len(logAttrs))
+	_arg5 = (*C.PangoLogAttr)(unsafe.Pointer(&logAttrs[0]))
+
+	C.pango_tailor_break(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 }
 
 // LogAttr: the `PangoLogAttr` structure stores information about the attributes

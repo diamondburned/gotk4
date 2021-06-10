@@ -62,7 +62,7 @@ func EnumRegisterStatic(name string, constStaticValues *EnumValue) externglib.Ty
 
 	var _cret C.GType
 
-	cret = C.g_enum_register_static(_arg1, _arg2)
+	_cret = C.g_enum_register_static(_arg1, _arg2)
 
 	var _gType externglib.Type
 
@@ -84,7 +84,7 @@ func EnumToString(gEnumType externglib.Type, value int) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_enum_to_string(_arg1, _arg2)
+	_cret = C.g_enum_to_string(_arg1, _arg2)
 
 	var _utf8 string
 
@@ -126,7 +126,7 @@ func FlagsRegisterStatic(name string, constStaticValues *FlagsValue) externglib.
 
 	var _cret C.GType
 
-	cret = C.g_flags_register_static(_arg1, _arg2)
+	_cret = C.g_flags_register_static(_arg1, _arg2)
 
 	var _gType externglib.Type
 
@@ -150,7 +150,7 @@ func FlagsToString(flagsType externglib.Type, value uint) string {
 
 	var _cret *C.gchar
 
-	cret = C.g_flags_to_string(_arg1, _arg2)
+	_cret = C.g_flags_to_string(_arg1, _arg2)
 
 	var _utf8 string
 

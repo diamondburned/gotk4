@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -80,30 +79,6 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 	return WrapNetworkService(obj), nil
 }
 
-// NewNetworkService constructs a class NetworkService.
-func NewNetworkService(service string, protocol string, domain string) NetworkService {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(service))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (*C.gchar)(C.CString(protocol))
-	defer C.free(unsafe.Pointer(_arg2))
-	_arg3 = (*C.gchar)(C.CString(domain))
-	defer C.free(unsafe.Pointer(_arg3))
-
-	var _cret C.GNetworkService
-
-	cret = C.g_network_service_new(_arg1, _arg2, _arg3)
-
-	var _networkService NetworkService
-
-	_networkService = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(NetworkService)
-
-	return _networkService
-}
-
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what @srv was created with.
 func (s networkService) Domain() string {
@@ -113,7 +88,7 @@ func (s networkService) Domain() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_network_service_get_domain(_arg0)
+	_cret = C.g_network_service_get_domain(_arg0)
 
 	var _utf8 string
 
@@ -130,7 +105,7 @@ func (s networkService) Protocol() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_network_service_get_protocol(_arg0)
+	_cret = C.g_network_service_get_protocol(_arg0)
 
 	var _utf8 string
 
@@ -148,7 +123,7 @@ func (s networkService) Scheme() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_network_service_get_scheme(_arg0)
+	_cret = C.g_network_service_get_scheme(_arg0)
 
 	var _utf8 string
 
@@ -165,7 +140,7 @@ func (s networkService) Service() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_network_service_get_service(_arg0)
+	_cret = C.g_network_service_get_service(_arg0)
 
 	var _utf8 string
 

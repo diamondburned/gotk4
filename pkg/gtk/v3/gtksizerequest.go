@@ -31,7 +31,7 @@ func DistributeNaturalAllocation(extraSpace int, nRequestedSizes uint, sizes *Re
 
 	var _cret C.gint
 
-	cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
+	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
 
 	var _gint int
 

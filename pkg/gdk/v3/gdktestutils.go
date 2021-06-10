@@ -48,7 +48,7 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 
 	var _cret C.gboolean
 
-	cret = C.gdk_test_simulate_button(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	_cret = C.gdk_test_simulate_button(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _ok bool
 
@@ -90,7 +90,7 @@ func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers Modifie
 
 	var _cret C.gboolean
 
-	cret = C.gdk_test_simulate_key(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
+	_cret = C.gdk_test_simulate_key(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
 	var _ok bool
 

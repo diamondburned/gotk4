@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -33,11 +30,6 @@ type GestureStylus interface {
 	// must be called from either the GestureStylus:down, GestureStylus:motion,
 	// GestureStylus:up or GestureStylus:proximity signals.
 	Axis(axis gdk.AxisUse) (float64, bool)
-	// DeviceTool returns the DeviceTool currently driving input through this
-	// gesture. This function must be called from either the
-	// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
-	// GestureStylus::proximity signal handlers.
-	DeviceTool() gdk.DeviceTool
 }
 
 // gestureStylus implements the GestureStylus interface.
@@ -61,23 +53,6 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 	return WrapGestureStylus(obj), nil
 }
 
-// NewGestureStylus constructs a class GestureStylus.
-func NewGestureStylus(widget Widget) GestureStylus {
-	var _arg1 *C.GtkWidget
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureStylus
-
-	cret = C.gtk_gesture_stylus_new(_arg1)
-
-	var _gestureStylus GestureStylus
-
-	_gestureStylus = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureStylus)
-
-	return _gestureStylus
-}
-
 // Axis returns the current value for the requested @axis. This function
 // must be called from either the GestureStylus:down, GestureStylus:motion,
 // GestureStylus:up or GestureStylus:proximity signals.
@@ -91,7 +66,7 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	var _arg2 C.gdouble
 	var _cret C.gboolean
 
-	cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
+	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
 
 	var _value float64
 	var _ok bool
@@ -102,24 +77,4 @@ func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
 	}
 
 	return _value, _ok
-}
-
-// DeviceTool returns the DeviceTool currently driving input through this
-// gesture. This function must be called from either the
-// GestureStylus::down, GestureStylus::motion, GestureStylus::up or
-// GestureStylus::proximity signal handlers.
-func (g gestureStylus) DeviceTool() gdk.DeviceTool {
-	var _arg0 *C.GtkGestureStylus
-
-	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
-
-	var _cret *C.GdkDeviceTool
-
-	cret = C.gtk_gesture_stylus_get_device_tool(_arg0)
-
-	var _deviceTool gdk.DeviceTool
-
-	_deviceTool = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdk.DeviceTool)
-
-	return _deviceTool
 }

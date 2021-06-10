@@ -5,8 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
@@ -14,22 +12,3 @@ import (
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
-
-// MenuButtonCreatePopupFunc: user-provided callback function to create a popup
-// for a `GtkMenuButton` on demand.
-//
-// This function is called when the popup of @menu_button is shown, but none has
-// been provided via [method@Gtk.MenuButton.set_popover] or
-// [method@Gtk.MenuButton.set_menu_model].
-type MenuButtonCreatePopupFunc func()
-
-//export gotk4_MenuButtonCreatePopupFunc
-func gotk4_MenuButtonCreatePopupFunc(arg0 *C.GtkMenuButton, arg1 C.gpointer) {
-	v := box.Get(uintptr(arg1))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(MenuButtonCreatePopupFunc)
-	fn()
-}

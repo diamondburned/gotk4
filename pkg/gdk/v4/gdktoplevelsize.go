@@ -17,7 +17,7 @@ import "C"
 func ToplevelSizeGetType() externglib.Type {
 	var _cret C.GType
 
-	cret = C.gdk_toplevel_size_get_type()
+	_cret = C.gdk_toplevel_size_get_type()
 
 	var _gType externglib.Type
 

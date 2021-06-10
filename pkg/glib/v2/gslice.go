@@ -33,7 +33,7 @@ func SliceAlloc(blockSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_slice_alloc(_arg1)
+	_cret = C.g_slice_alloc(_arg1)
 
 	var _gpointer interface{}
 
@@ -53,7 +53,7 @@ func SliceAlloc0(blockSize uint) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_slice_alloc0(_arg1)
+	_cret = C.g_slice_alloc0(_arg1)
 
 	var _gpointer interface{}
 
@@ -75,7 +75,7 @@ func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_slice_copy(_arg1, _arg2)
+	_cret = C.g_slice_copy(_arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -133,7 +133,7 @@ func SliceGetConfig(ckey SliceConfig) int64 {
 
 	var _cret C.gint64
 
-	cret = C.g_slice_get_config(_arg1)
+	_cret = C.g_slice_get_config(_arg1)
 
 	var _gint64 int64
 
@@ -153,7 +153,7 @@ func SliceGetConfigState(ckey SliceConfig, address int64, nValues *uint) *int64 
 
 	var _cret *C.gint64
 
-	cret = C.g_slice_get_config_state(_arg1, _arg2, _arg3)
+	_cret = C.g_slice_get_config_state(_arg1, _arg2, _arg3)
 
 	var _gint64 *int64
 

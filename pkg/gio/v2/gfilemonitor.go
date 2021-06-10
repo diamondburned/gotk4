@@ -87,7 +87,7 @@ func (m fileMonitor) Cancel() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_file_monitor_cancel(_arg0)
+	_cret = C.g_file_monitor_cancel(_arg0)
 
 	var _ok bool
 
@@ -126,7 +126,7 @@ func (m fileMonitor) IsCancelled() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_file_monitor_is_cancelled(_arg0)
+	_cret = C.g_file_monitor_is_cancelled(_arg0)
 
 	var _ok bool
 

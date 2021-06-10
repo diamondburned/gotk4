@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -49,8 +46,6 @@ type StackSwitcher interface {
 	Buildable
 	Orientable
 
-	// Stack retrieves the stack. See gtk_stack_switcher_set_stack().
-	Stack() Stack
 	// SetStack sets the stack to control.
 	SetStack(stack Stack)
 }
@@ -78,36 +73,6 @@ func marshalStackSwitcher(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapStackSwitcher(obj), nil
-}
-
-// NewStackSwitcher constructs a class StackSwitcher.
-func NewStackSwitcher() StackSwitcher {
-	var _cret C.GtkStackSwitcher
-
-	cret = C.gtk_stack_switcher_new()
-
-	var _stackSwitcher StackSwitcher
-
-	_stackSwitcher = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(StackSwitcher)
-
-	return _stackSwitcher
-}
-
-// Stack retrieves the stack. See gtk_stack_switcher_set_stack().
-func (s stackSwitcher) Stack() Stack {
-	var _arg0 *C.GtkStackSwitcher
-
-	_arg0 = (*C.GtkStackSwitcher)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkStack
-
-	cret = C.gtk_stack_switcher_get_stack(_arg0)
-
-	var _stack Stack
-
-	_stack = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Stack)
-
-	return _stack
 }
 
 // SetStack sets the stack to control.

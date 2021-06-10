@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -82,11 +81,6 @@ type AboutDialog interface {
 	Documenters() []string
 	// License returns the license information.
 	License() string
-	// LicenseType retrieves the license set using
-	// gtk_about_dialog_set_license_type()
-	LicenseType() License
-	// Logo returns the pixbuf displayed as logo in the about dialog.
-	Logo() gdkpixbuf.Pixbuf
 	// LogoIconName returns the icon name displayed as logo in the about dialog.
 	LogoIconName() string
 	// ProgramName returns the program name displayed in the about dialog.
@@ -188,19 +182,6 @@ func marshalAboutDialog(p uintptr) (interface{}, error) {
 	return WrapAboutDialog(obj), nil
 }
 
-// NewAboutDialog constructs a class AboutDialog.
-func NewAboutDialog() AboutDialog {
-	var _cret C.GtkAboutDialog
-
-	cret = C.gtk_about_dialog_new()
-
-	var _aboutDialog AboutDialog
-
-	_aboutDialog = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(AboutDialog)
-
-	return _aboutDialog
-}
-
 // AddCreditSection creates a new section in the Credits page.
 func (a aboutDialog) AddCreditSection(sectionName string, people []string) {
 	var _arg0 *C.GtkAboutDialog
@@ -235,7 +216,7 @@ func (a aboutDialog) Artists() []string {
 
 	var _cret **C.gchar
 
-	cret = C.gtk_about_dialog_get_artists(_arg0)
+	_cret = C.gtk_about_dialog_get_artists(_arg0)
 
 	var _utf8s []string
 
@@ -252,7 +233,7 @@ func (a aboutDialog) Artists() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -269,7 +250,7 @@ func (a aboutDialog) Authors() []string {
 
 	var _cret **C.gchar
 
-	cret = C.gtk_about_dialog_get_authors(_arg0)
+	_cret = C.gtk_about_dialog_get_authors(_arg0)
 
 	var _utf8s []string
 
@@ -286,7 +267,7 @@ func (a aboutDialog) Authors() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -302,7 +283,7 @@ func (a aboutDialog) Comments() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_comments(_arg0)
+	_cret = C.gtk_about_dialog_get_comments(_arg0)
 
 	var _utf8 string
 
@@ -319,7 +300,7 @@ func (a aboutDialog) Copyright() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_copyright(_arg0)
+	_cret = C.gtk_about_dialog_get_copyright(_arg0)
 
 	var _utf8 string
 
@@ -337,7 +318,7 @@ func (a aboutDialog) Documenters() []string {
 
 	var _cret **C.gchar
 
-	cret = C.gtk_about_dialog_get_documenters(_arg0)
+	_cret = C.gtk_about_dialog_get_documenters(_arg0)
 
 	var _utf8s []string
 
@@ -354,7 +335,7 @@ func (a aboutDialog) Documenters() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}
@@ -370,48 +351,13 @@ func (a aboutDialog) License() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_license(_arg0)
+	_cret = C.gtk_about_dialog_get_license(_arg0)
 
 	var _utf8 string
 
 	_utf8 = C.GoString(_cret)
 
 	return _utf8
-}
-
-// LicenseType retrieves the license set using
-// gtk_about_dialog_set_license_type()
-func (a aboutDialog) LicenseType() License {
-	var _arg0 *C.GtkAboutDialog
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret C.GtkLicense
-
-	cret = C.gtk_about_dialog_get_license_type(_arg0)
-
-	var _license License
-
-	_license = License(_cret)
-
-	return _license
-}
-
-// Logo returns the pixbuf displayed as logo in the about dialog.
-func (a aboutDialog) Logo() gdkpixbuf.Pixbuf {
-	var _arg0 *C.GtkAboutDialog
-
-	_arg0 = (*C.GtkAboutDialog)(unsafe.Pointer(a.Native()))
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gtk_about_dialog_get_logo(_arg0)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return _pixbuf
 }
 
 // LogoIconName returns the icon name displayed as logo in the about dialog.
@@ -422,7 +368,7 @@ func (a aboutDialog) LogoIconName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
+	_cret = C.gtk_about_dialog_get_logo_icon_name(_arg0)
 
 	var _utf8 string
 
@@ -439,7 +385,7 @@ func (a aboutDialog) ProgramName() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_program_name(_arg0)
+	_cret = C.gtk_about_dialog_get_program_name(_arg0)
 
 	var _utf8 string
 
@@ -457,7 +403,7 @@ func (a aboutDialog) TranslatorCredits() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_translator_credits(_arg0)
+	_cret = C.gtk_about_dialog_get_translator_credits(_arg0)
 
 	var _utf8 string
 
@@ -474,7 +420,7 @@ func (a aboutDialog) Version() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_version(_arg0)
+	_cret = C.gtk_about_dialog_get_version(_arg0)
 
 	var _utf8 string
 
@@ -491,7 +437,7 @@ func (a aboutDialog) Website() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_website(_arg0)
+	_cret = C.gtk_about_dialog_get_website(_arg0)
 
 	var _utf8 string
 
@@ -508,7 +454,7 @@ func (a aboutDialog) WebsiteLabel() string {
 
 	var _cret *C.gchar
 
-	cret = C.gtk_about_dialog_get_website_label(_arg0)
+	_cret = C.gtk_about_dialog_get_website_label(_arg0)
 
 	var _utf8 string
 
@@ -526,7 +472,7 @@ func (a aboutDialog) WrapLicense() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_about_dialog_get_wrap_license(_arg0)
+	_cret = C.gtk_about_dialog_get_wrap_license(_arg0)
 
 	var _ok bool
 

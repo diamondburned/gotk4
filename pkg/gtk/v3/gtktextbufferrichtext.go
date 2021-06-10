@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/box"
 	"github.com/diamondburned/gotk4/internal/gerror"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
@@ -18,40 +17,3 @@ import (
 // #include <gtk/gtk.h>
 // #include <gtk/gtkx.h>
 import "C"
-
-// TextBufferDeserializeFunc: a function that is called to deserialize rich text
-// that has been serialized with gtk_text_buffer_serialize(), and insert it at
-// @iter.
-type TextBufferDeserializeFunc func() (ok bool)
-
-//export gotk4_TextBufferDeserializeFunc
-func gotk4_TextBufferDeserializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.guint8, arg4 C.gsize, arg5 C.gboolean, arg6 C.gpointer) C.gboolean {
-	v := box.Get(uintptr(arg6))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(TextBufferDeserializeFunc)
-	ok := fn()
-
-	if ok {
-		cret = C.gboolean(1)
-	}
-}
-
-// TextBufferSerializeFunc: a function that is called to serialize the content
-// of a text buffer. It must return the serialized form of the content.
-type TextBufferSerializeFunc func() (guint8 *byte)
-
-//export gotk4_TextBufferSerializeFunc
-func gotk4_TextBufferSerializeFunc(arg0 *C.GtkTextBuffer, arg1 *C.GtkTextBuffer, arg2 *C.GtkTextIter, arg3 *C.GtkTextIter, arg4 *C.gsize, arg5 C.gpointer) *C.guint8 {
-	v := box.Get(uintptr(arg5))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(TextBufferSerializeFunc)
-	guint8 := fn()
-
-	cret = *C.guint8(guint8)
-}

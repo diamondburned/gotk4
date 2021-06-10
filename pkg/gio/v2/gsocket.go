@@ -7,7 +7,7 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
+	"github.com/diamondburned/gotk4/internal/ptr"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -87,17 +87,6 @@ type Socket interface {
 	DatagramBased
 	Initable
 
-	// Accept: accept incoming connections on a connection-based socket. This
-	// removes the first outstanding connection request from the listening
-	// socket and creates a #GSocket object for it.
-	//
-	// The @socket must be bound to a local address with g_socket_bind() and
-	// must be listening for incoming connections (g_socket_listen()).
-	//
-	// If there are no outstanding connections then the operation will block or
-	// return G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled. To be
-	// notified of an incoming connection, wait for the G_IO_IN condition.
-	Accept(cancellable Cancellable) (Socket, error)
 	// Bind: when a socket is created it is attached to an address family, but
 	// it doesn't have an address in this family. g_socket_bind() assigns the
 	// address (sometimes called name) of the socket.
@@ -153,23 +142,6 @@ type Socket interface {
 	// call g_tcp_connection_set_graceful_disconnect(). But of course, this only
 	// works if the client will close its connection after the server does.)
 	Close() error
-	// ConditionCheck checks on the readiness of @socket to perform operations.
-	// The operations specified in @condition are checked for and masked against
-	// the currently-satisfied conditions on @socket. The result is returned.
-	//
-	// Note that on Windows, it is possible for an operation to return
-	// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check()
-	// has claimed that the socket is ready for writing. Rather than calling
-	// g_socket_condition_check() and then writing to the socket if it succeeds,
-	// it is generally better to simply try writing to the socket right away,
-	// and try again later if the initial attempt returns
-	// G_IO_ERROR_WOULD_BLOCK.
-	//
-	// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
-	// conditions will always be set in the output if they are true.
-	//
-	// This call never blocks.
-	ConditionCheck(condition glib.IOCondition) glib.IOCondition
 	// ConditionTimedWait waits for up to @timeout_us microseconds for
 	// @condition to become true on @socket. If the condition is met, true is
 	// returned.
@@ -214,30 +186,6 @@ type Socket interface {
 	// G_IO_OUT condition. The result of the connection must then be checked
 	// with g_socket_check_connect_result().
 	Connect(address SocketAddress, cancellable Cancellable) error
-	// ConnectionFactoryCreateConnection creates a Connection subclass of the
-	// right type for @socket.
-	ConnectionFactoryCreateConnection() SocketConnection
-	// CreateSource creates a #GSource that can be attached to a GMainContext to
-	// monitor for the availability of the specified @condition on the socket.
-	// The #GSource keeps a reference to the @socket.
-	//
-	// The callback on the source is of the SourceFunc type.
-	//
-	// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
-	// conditions will always be reported output if they are true.
-	//
-	// @cancellable if not nil can be used to cancel the source, which will
-	// cause the source to trigger, reporting the current condition (which is
-	// likely 0 unless cancellation happened at the same time as a condition
-	// change). You can check for this in the callback using
-	// g_cancellable_is_cancelled().
-	//
-	// If @socket has a timeout set, and it is reached before @condition occurs,
-	// the source will then trigger anyway, reporting G_IO_IN or G_IO_OUT
-	// depending on @condition. However, @socket will have been marked as having
-	// had a timeout, and so the next #GSocket I/O method you call will then
-	// fail with a G_IO_ERROR_TIMED_OUT.
-	CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source
 	// AvailableBytes: get the amount of data pending in the OS input buffer,
 	// without blocking.
 	//
@@ -256,26 +204,6 @@ type Socket interface {
 	// Broadcast gets the broadcast setting on @socket; if true, it is possible
 	// to send packets to broadcast addresses.
 	Broadcast() bool
-	// Credentials returns the credentials of the foreign process connected to
-	// this socket, if any (e.g. it is only supported for G_SOCKET_FAMILY_UNIX
-	// sockets).
-	//
-	// If this operation isn't supported on the OS, the method fails with the
-	// G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented by reading
-	// the SO_PEERCRED option on the underlying socket.
-	//
-	// This method can be expected to be available on the following platforms:
-	//
-	// - Linux since GLib 2.26 - OpenBSD since GLib 2.30 - Solaris, Illumos and
-	// OpenSolaris since GLib 2.40 - NetBSD since GLib 2.42 - macOS, tvOS, iOS
-	// since GLib 2.66
-	//
-	// Other ways to obtain credentials from a foreign peer includes the
-	// CredentialsMessage type and g_unix_connection_send_credentials() /
-	// g_unix_connection_receive_credentials() functions.
-	Credentials() (Credentials, error)
-	// Family gets the socket family of the socket.
-	Family() SocketFamily
 	// Fd returns the underlying OS socket object. On unix this is a socket file
 	// descriptor, and on Windows this is a Winsock2 SOCKET handle. This may be
 	// useful for doing platform specific or otherwise unusual operations on the
@@ -287,10 +215,6 @@ type Socket interface {
 	// ListenBacklog gets the listen backlog setting of the socket. For details
 	// on this, see g_socket_set_listen_backlog().
 	ListenBacklog() int
-	// LocalAddress: try to get the local address of a bound socket. This is
-	// only useful if the socket has been bound to a local address, either
-	// explicitly or implicitly when connecting.
-	LocalAddress() (SocketAddress, error)
 	// MulticastLoopback gets the multicast loopback setting on @socket; if true
 	// (the default), outgoing multicast packets will be looped back to
 	// multicast listeners on the same host.
@@ -311,14 +235,6 @@ type Socket interface {
 	// is still a pointer to a #gint variable, not a #guchar;
 	// g_socket_get_option() will handle the conversion internally.
 	Option(level int, optname int) (int, error)
-	// Protocol gets the socket protocol id the socket was created with. In case
-	// the protocol is unknown, -1 is returned.
-	Protocol() SocketProtocol
-	// RemoteAddress: try to get the remote address of a connected socket. This
-	// is only useful for connection oriented sockets that have been connected.
-	RemoteAddress() (SocketAddress, error)
-	// SocketType gets the socket type of the socket.
-	SocketType() SocketType
 	// Timeout gets the timeout setting of the socket. For details on this, see
 	// g_socket_set_timeout().
 	Timeout() uint
@@ -391,6 +307,184 @@ type Socket interface {
 	// To set the maximum amount of outstanding clients, use
 	// g_socket_set_listen_backlog().
 	Listen() error
+	// Receive: receive data (up to @size bytes) from a socket. This is mainly
+	// used by connection-oriented sockets; it is identical to
+	// g_socket_receive_from() with @address set to nil.
+	//
+	// For G_SOCKET_TYPE_DATAGRAM and G_SOCKET_TYPE_SEQPACKET sockets,
+	// g_socket_receive() will always read either 0 or 1 complete messages from
+	// the socket. If the received message is too large to fit in @buffer, then
+	// the data beyond @size bytes will be discarded, without any explicit
+	// indication that this has occurred.
+	//
+	// For G_SOCKET_TYPE_STREAM sockets, g_socket_receive() can return any
+	// number of bytes, up to @size. If more than @size bytes have been
+	// received, the additional data will be returned in future calls to
+	// g_socket_receive().
+	//
+	// If the socket is in blocking mode the call will block until there is some
+	// data to receive, the connection is closed, or there is an error. If there
+	// is no data available and the socket is in non-blocking mode, a
+	// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data
+	// is available, wait for the G_IO_IN condition.
+	//
+	// On error -1 is returned and @error is set accordingly.
+	Receive(cancellable Cancellable) ([]byte, int, error)
+	// ReceiveMessages: receive multiple data messages from @socket in one go.
+	// This is the most complicated and fully-featured version of this call. For
+	// easier use, see g_socket_receive(), g_socket_receive_from(), and
+	// g_socket_receive_message().
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains a pointer to an
+	// array of Vector structs describing the buffers that the data received in
+	// each message will be written to. Using multiple Vectors is more
+	// memory-efficient than manually copying data out of a single buffer to
+	// multiple sources, and more system-call-efficient than making multiple
+	// calls to g_socket_receive(), such as in scenarios where a lot of data
+	// packets need to be received (e.g. high-bandwidth video streaming over
+	// RTP/UDP).
+	//
+	// @flags modify how all messages are received. The commonly available
+	// arguments for this are available in the MsgFlags enum, but the values
+	// there are the same as the system values, and the flags are passed in
+	// as-is, so you can pass in system-specific flags too. These flags affect
+	// the overall receive operation. Flags affecting individual messages are
+	// returned in Message.flags.
+	//
+	// The other members of Message are treated as described in its
+	// documentation.
+	//
+	// If #GSocket:blocking is true the call will block until @num_messages have
+	// been received, or the end of the stream is reached.
+	//
+	// If #GSocket:blocking is false the call will return up to @num_messages
+	// without blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in
+	// the operating system to be received.
+	//
+	// In blocking mode, if #GSocket:timeout is positive and is reached before
+	// any messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up
+	// to @num_messages are returned. (Note: This is effectively the behaviour
+	// of `MSG_WAITFORONE` with recvmmsg().)
+	//
+	// To be notified when messages are available, wait for the G_IO_IN
+	// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+	// from g_socket_receive_messages() even if you were previously notified of
+	// a G_IO_IN condition.
+	//
+	// If the remote peer closes the connection, any messages queued in the
+	// operating system will be returned, and subsequent calls to
+	// g_socket_receive_messages() will return 0 (with no error set).
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be received; otherwise the number of
+	// messages successfully received before the error will be returned.
+	ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) (int, error)
+	// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
+	// except that the choice of blocking or non-blocking behavior is determined
+	// by the @blocking argument rather than by @socket's properties.
+	ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]byte, int, error)
+	// Send tries to send @size bytes from @buffer on the socket. This is mainly
+	// used by connection-oriented sockets; it is identical to
+	// g_socket_send_to() with @address set to nil.
+	//
+	// If the socket is in blocking mode the call will block until there is
+	// space for the data in the socket queue. If there is no space available
+	// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+	// will be returned. To be notified when space is available, wait for the
+	// G_IO_OUT condition. Note though that you may still receive
+	// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// On error -1 is returned and @error is set accordingly.
+	Send(buffer []byte, cancellable Cancellable) (int, error)
+	// SendMessage: send data to @address on @socket. For sending multiple
+	// messages see g_socket_send_messages(); for easier use, see
+	// g_socket_send() and g_socket_send_to().
+	//
+	// If @address is nil then the message is sent to the default receiver (set
+	// by g_socket_connect()).
+	//
+	// @vectors must point to an array of Vector structs and @num_vectors must
+	// be the length of this array. (If @num_vectors is -1, then @vectors is
+	// assumed to be terminated by a Vector with a nil buffer pointer.) The
+	// Vector structs describe the buffers that the sent data will be gathered
+	// from. Using multiple Vectors is more memory-efficient than manually
+	// copying data from multiple sources into a single buffer, and more
+	// network-efficient than making multiple calls to g_socket_send().
+	//
+	// @messages, if non-nil, is taken to point to an array of @num_messages
+	// ControlMessage instances. These correspond to the control messages to be
+	// sent on the socket. If @num_messages is -1 then @messages is treated as a
+	// nil-terminated array.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// If the socket is in blocking mode the call will block until there is
+	// space for the data in the socket queue. If there is no space available
+	// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+	// will be returned. To be notified when space is available, wait for the
+	// G_IO_OUT condition. Note though that you may still receive
+	// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+	// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+	// common due to the way the underlying APIs work.)
+	//
+	// The sum of the sizes of each Vector in vectors must not be greater than
+	// G_MAXSSIZE. If the message can be larger than this, then it is mandatory
+	// to use the g_socket_send_message_with_timeout() function.
+	//
+	// On error -1 is returned and @error is set accordingly.
+	SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error)
+	// SendMessages: send multiple data messages from @socket in one go. This is
+	// the most complicated and fully-featured version of this call. For easier
+	// use, see g_socket_send(), g_socket_send_to(), and
+	// g_socket_send_message().
+	//
+	// @messages must point to an array of Message structs and @num_messages
+	// must be the length of this array. Each Message contains an address to
+	// send the data to, and a pointer to an array of Vector structs to describe
+	// the buffers that the data to be sent for each message will be gathered
+	// from. Using multiple Vectors is more memory-efficient than manually
+	// copying data from multiple sources into a single buffer, and more
+	// network-efficient than making multiple calls to g_socket_send(). Sending
+	// multiple messages in one go avoids the overhead of making a lot of
+	// syscalls in scenarios where a lot of data packets need to be sent (e.g.
+	// high-bandwidth video streaming over RTP/UDP), or where the same data
+	// needs to be sent to multiple recipients.
+	//
+	// @flags modify how the message is sent. The commonly available arguments
+	// for this are available in the MsgFlags enum, but the values there are the
+	// same as the system values, and the flags are passed in as-is, so you can
+	// pass in system-specific flags too.
+	//
+	// If the socket is in blocking mode the call will block until there is
+	// space for all the data in the socket queue. If there is no space
+	// available and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK
+	// error will be returned if no data was written at all, otherwise the
+	// number of messages sent will be returned. To be notified when space is
+	// available, wait for the G_IO_OUT condition. Note though that you may
+	// still receive G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you
+	// were previously notified of a G_IO_OUT condition. (On Windows in
+	// particular, this is very common due to the way the underlying APIs work.)
+	//
+	// On error -1 is returned and @error is set accordingly. An error will only
+	// be returned if zero messages could be sent; otherwise the number of
+	// messages successfully sent before the error will be returned.
+	SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) (int, error)
+	// SendTo tries to send @size bytes from @buffer to @address. If @address is
+	// nil then the message is sent to the default receiver (set by
+	// g_socket_connect()).
+	//
+	// See g_socket_send() for additional information.
+	SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error)
+	// SendWithBlocking: this behaves exactly the same as g_socket_send(),
+	// except that the choice of blocking or non-blocking behavior is determined
+	// by the @blocking argument rather than by @socket's properties.
+	SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) (int, error)
 	// SetBlocking sets the blocking mode of the socket. In blocking mode all
 	// operations (which don’t take an explicit blocking parameter) block until
 	// they succeed or there is an error. In non-blocking mode all functions
@@ -518,81 +612,6 @@ func marshalSocket(p uintptr) (interface{}, error) {
 	return WrapSocket(obj), nil
 }
 
-// NewSocket constructs a class Socket.
-func NewSocket(family SocketFamily, typ SocketType, protocol SocketProtocol) (Socket, error) {
-	var _arg1 C.GSocketFamily
-	var _arg2 C.GSocketType
-	var _arg3 C.GSocketProtocol
-
-	_arg1 = (C.GSocketFamily)(family)
-	_arg2 = (C.GSocketType)(typ)
-	_arg3 = (C.GSocketProtocol)(protocol)
-
-	var _cret C.GSocket
-	var _cerr *C.GError
-
-	cret = C.g_socket_new(_arg1, _arg2, _arg3, _cerr)
-
-	var _socket Socket
-	var _goerr error
-
-	_socket = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Socket)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _socket, _goerr
-}
-
-// NewSocketFromFd constructs a class Socket.
-func NewSocketFromFd(fd int) (Socket, error) {
-	var _arg1 C.gint
-
-	_arg1 = C.gint(fd)
-
-	var _cret C.GSocket
-	var _cerr *C.GError
-
-	cret = C.g_socket_new_from_fd(_arg1, _cerr)
-
-	var _socket Socket
-	var _goerr error
-
-	_socket = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Socket)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _socket, _goerr
-}
-
-// Accept: accept incoming connections on a connection-based socket. This
-// removes the first outstanding connection request from the listening
-// socket and creates a #GSocket object for it.
-//
-// The @socket must be bound to a local address with g_socket_bind() and
-// must be listening for incoming connections (g_socket_listen()).
-//
-// If there are no outstanding connections then the operation will block or
-// return G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled. To be
-// notified of an incoming connection, wait for the G_IO_IN condition.
-func (s socket) Accept(cancellable Cancellable) (Socket, error) {
-	var _arg0 *C.GSocket
-	var _arg1 *C.GCancellable
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GSocket
-	var _cerr *C.GError
-
-	cret = C.g_socket_accept(_arg0, _arg1, _cerr)
-
-	var _ret Socket
-	var _goerr error
-
-	_ret = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Socket)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _ret, _goerr
-}
-
 // Bind: when a socket is created it is attached to an address family, but
 // it doesn't have an address in this family. g_socket_bind() assigns the
 // address (sometimes called name) of the socket.
@@ -699,40 +718,6 @@ func (s socket) Close() error {
 	return _goerr
 }
 
-// ConditionCheck checks on the readiness of @socket to perform operations.
-// The operations specified in @condition are checked for and masked against
-// the currently-satisfied conditions on @socket. The result is returned.
-//
-// Note that on Windows, it is possible for an operation to return
-// G_IO_ERROR_WOULD_BLOCK even immediately after g_socket_condition_check()
-// has claimed that the socket is ready for writing. Rather than calling
-// g_socket_condition_check() and then writing to the socket if it succeeds,
-// it is generally better to simply try writing to the socket right away,
-// and try again later if the initial attempt returns
-// G_IO_ERROR_WOULD_BLOCK.
-//
-// It is meaningless to specify G_IO_ERR or G_IO_HUP in condition; these
-// conditions will always be set in the output if they are true.
-//
-// This call never blocks.
-func (s socket) ConditionCheck(condition glib.IOCondition) glib.IOCondition {
-	var _arg0 *C.GSocket
-	var _arg1 C.GIOCondition
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GIOCondition)(condition)
-
-	var _cret C.GIOCondition
-
-	cret = C.g_socket_condition_check(_arg0, _arg1)
-
-	var _ioCondition glib.IOCondition
-
-	_ioCondition = glib.IOCondition(_cret)
-
-	return _ioCondition
-}
-
 // ConditionTimedWait waits for up to @timeout_us microseconds for
 // @condition to become true on @socket. If the condition is met, true is
 // returned.
@@ -836,67 +821,6 @@ func (s socket) Connect(address SocketAddress, cancellable Cancellable) error {
 	return _goerr
 }
 
-// ConnectionFactoryCreateConnection creates a Connection subclass of the
-// right type for @socket.
-func (s socket) ConnectionFactoryCreateConnection() SocketConnection {
-	var _arg0 *C.GSocket
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GSocketConnection
-
-	cret = C.g_socket_connection_factory_create_connection(_arg0)
-
-	var _socketConnection SocketConnection
-
-	_socketConnection = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketConnection)
-
-	return _socketConnection
-}
-
-// CreateSource creates a #GSource that can be attached to a GMainContext to
-// monitor for the availability of the specified @condition on the socket.
-// The #GSource keeps a reference to the @socket.
-//
-// The callback on the source is of the SourceFunc type.
-//
-// It is meaningless to specify G_IO_ERR or G_IO_HUP in @condition; these
-// conditions will always be reported output if they are true.
-//
-// @cancellable if not nil can be used to cancel the source, which will
-// cause the source to trigger, reporting the current condition (which is
-// likely 0 unless cancellation happened at the same time as a condition
-// change). You can check for this in the callback using
-// g_cancellable_is_cancelled().
-//
-// If @socket has a timeout set, and it is reached before @condition occurs,
-// the source will then trigger anyway, reporting G_IO_IN or G_IO_OUT
-// depending on @condition. However, @socket will have been marked as having
-// had a timeout, and so the next #GSocket I/O method you call will then
-// fail with a G_IO_ERROR_TIMED_OUT.
-func (s socket) CreateSource(condition glib.IOCondition, cancellable Cancellable) *glib.Source {
-	var _arg0 *C.GSocket
-	var _arg1 C.GIOCondition
-	var _arg2 *C.GCancellable
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-	_arg1 = (C.GIOCondition)(condition)
-	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
-
-	var _cret *C.GSource
-
-	cret = C.g_socket_create_source(_arg0, _arg1, _arg2)
-
-	var _source *glib.Source
-
-	_source = glib.WrapSource(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_source, func(v *glib.Source) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _source
-}
-
 // AvailableBytes: get the amount of data pending in the OS input buffer,
 // without blocking.
 //
@@ -915,7 +839,7 @@ func (s socket) AvailableBytes() int {
 
 	var _cret C.gssize
 
-	cret = C.g_socket_get_available_bytes(_arg0)
+	_cret = C.g_socket_get_available_bytes(_arg0)
 
 	var _gssize int
 
@@ -933,7 +857,7 @@ func (s socket) Blocking() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_socket_get_blocking(_arg0)
+	_cret = C.g_socket_get_blocking(_arg0)
 
 	var _ok bool
 
@@ -953,7 +877,7 @@ func (s socket) Broadcast() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_socket_get_broadcast(_arg0)
+	_cret = C.g_socket_get_broadcast(_arg0)
 
 	var _ok bool
 
@@ -962,59 +886,6 @@ func (s socket) Broadcast() bool {
 	}
 
 	return _ok
-}
-
-// Credentials returns the credentials of the foreign process connected to
-// this socket, if any (e.g. it is only supported for G_SOCKET_FAMILY_UNIX
-// sockets).
-//
-// If this operation isn't supported on the OS, the method fails with the
-// G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented by reading
-// the SO_PEERCRED option on the underlying socket.
-//
-// This method can be expected to be available on the following platforms:
-//
-// - Linux since GLib 2.26 - OpenBSD since GLib 2.30 - Solaris, Illumos and
-// OpenSolaris since GLib 2.40 - NetBSD since GLib 2.42 - macOS, tvOS, iOS
-// since GLib 2.66
-//
-// Other ways to obtain credentials from a foreign peer includes the
-// CredentialsMessage type and g_unix_connection_send_credentials() /
-// g_unix_connection_receive_credentials() functions.
-func (s socket) Credentials() (Credentials, error) {
-	var _arg0 *C.GSocket
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GCredentials
-	var _cerr *C.GError
-
-	cret = C.g_socket_get_credentials(_arg0, _cerr)
-
-	var _credentials Credentials
-	var _goerr error
-
-	_credentials = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Credentials)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _credentials, _goerr
-}
-
-// Family gets the socket family of the socket.
-func (s socket) Family() SocketFamily {
-	var _arg0 *C.GSocket
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GSocketFamily
-
-	cret = C.g_socket_get_family(_arg0)
-
-	var _socketFamily SocketFamily
-
-	_socketFamily = SocketFamily(_cret)
-
-	return _socketFamily
 }
 
 // Fd returns the underlying OS socket object. On unix this is a socket file
@@ -1028,7 +899,7 @@ func (s socket) Fd() int {
 
 	var _cret C.int
 
-	cret = C.g_socket_get_fd(_arg0)
+	_cret = C.g_socket_get_fd(_arg0)
 
 	var _gint int
 
@@ -1046,7 +917,7 @@ func (s socket) Keepalive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_socket_get_keepalive(_arg0)
+	_cret = C.g_socket_get_keepalive(_arg0)
 
 	var _ok bool
 
@@ -1066,35 +937,13 @@ func (s socket) ListenBacklog() int {
 
 	var _cret C.gint
 
-	cret = C.g_socket_get_listen_backlog(_arg0)
+	_cret = C.g_socket_get_listen_backlog(_arg0)
 
 	var _gint int
 
 	_gint = (int)(_cret)
 
 	return _gint
-}
-
-// LocalAddress: try to get the local address of a bound socket. This is
-// only useful if the socket has been bound to a local address, either
-// explicitly or implicitly when connecting.
-func (s socket) LocalAddress() (SocketAddress, error) {
-	var _arg0 *C.GSocket
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GSocketAddress
-	var _cerr *C.GError
-
-	cret = C.g_socket_get_local_address(_arg0, _cerr)
-
-	var _socketAddress SocketAddress
-	var _goerr error
-
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _socketAddress, _goerr
 }
 
 // MulticastLoopback gets the multicast loopback setting on @socket; if true
@@ -1107,7 +956,7 @@ func (s socket) MulticastLoopback() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_socket_get_multicast_loopback(_arg0)
+	_cret = C.g_socket_get_multicast_loopback(_arg0)
 
 	var _ok bool
 
@@ -1127,7 +976,7 @@ func (s socket) MulticastTtl() uint {
 
 	var _cret C.guint
 
-	cret = C.g_socket_get_multicast_ttl(_arg0)
+	_cret = C.g_socket_get_multicast_ttl(_arg0)
 
 	var _guint uint
 
@@ -1171,62 +1020,6 @@ func (s socket) Option(level int, optname int) (int, error) {
 	return _value, _goerr
 }
 
-// Protocol gets the socket protocol id the socket was created with. In case
-// the protocol is unknown, -1 is returned.
-func (s socket) Protocol() SocketProtocol {
-	var _arg0 *C.GSocket
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GSocketProtocol
-
-	cret = C.g_socket_get_protocol(_arg0)
-
-	var _socketProtocol SocketProtocol
-
-	_socketProtocol = SocketProtocol(_cret)
-
-	return _socketProtocol
-}
-
-// RemoteAddress: try to get the remote address of a connected socket. This
-// is only useful for connection oriented sockets that have been connected.
-func (s socket) RemoteAddress() (SocketAddress, error) {
-	var _arg0 *C.GSocket
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GSocketAddress
-	var _cerr *C.GError
-
-	cret = C.g_socket_get_remote_address(_arg0, _cerr)
-
-	var _socketAddress SocketAddress
-	var _goerr error
-
-	_socketAddress = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(SocketAddress)
-	_goerr = gerror.Take(unsafe.Pointer(_cerr))
-
-	return _socketAddress, _goerr
-}
-
-// SocketType gets the socket type of the socket.
-func (s socket) SocketType() SocketType {
-	var _arg0 *C.GSocket
-
-	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GSocketType
-
-	cret = C.g_socket_get_socket_type(_arg0)
-
-	var _socketType SocketType
-
-	_socketType = SocketType(_cret)
-
-	return _socketType
-}
-
 // Timeout gets the timeout setting of the socket. For details on this, see
 // g_socket_set_timeout().
 func (s socket) Timeout() uint {
@@ -1236,7 +1029,7 @@ func (s socket) Timeout() uint {
 
 	var _cret C.guint
 
-	cret = C.g_socket_get_timeout(_arg0)
+	_cret = C.g_socket_get_timeout(_arg0)
 
 	var _guint uint
 
@@ -1254,7 +1047,7 @@ func (s socket) Ttl() uint {
 
 	var _cret C.guint
 
-	cret = C.g_socket_get_ttl(_arg0)
+	_cret = C.g_socket_get_ttl(_arg0)
 
 	var _guint uint
 
@@ -1271,7 +1064,7 @@ func (s socket) IsClosed() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_socket_is_closed(_arg0)
+	_cret = C.g_socket_is_closed(_arg0)
 
 	var _ok bool
 
@@ -1296,7 +1089,7 @@ func (s socket) IsConnected() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_socket_is_connected(_arg0)
+	_cret = C.g_socket_is_connected(_arg0)
 
 	var _ok bool
 
@@ -1468,6 +1261,424 @@ func (s socket) Listen() error {
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
 	return _goerr
+}
+
+// Receive: receive data (up to @size bytes) from a socket. This is mainly
+// used by connection-oriented sockets; it is identical to
+// g_socket_receive_from() with @address set to nil.
+//
+// For G_SOCKET_TYPE_DATAGRAM and G_SOCKET_TYPE_SEQPACKET sockets,
+// g_socket_receive() will always read either 0 or 1 complete messages from
+// the socket. If the received message is too large to fit in @buffer, then
+// the data beyond @size bytes will be discarded, without any explicit
+// indication that this has occurred.
+//
+// For G_SOCKET_TYPE_STREAM sockets, g_socket_receive() can return any
+// number of bytes, up to @size. If more than @size bytes have been
+// received, the additional data will be returned in future calls to
+// g_socket_receive().
+//
+// If the socket is in blocking mode the call will block until there is some
+// data to receive, the connection is closed, or there is an error. If there
+// is no data available and the socket is in non-blocking mode, a
+// G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when data
+// is available, wait for the G_IO_IN condition.
+//
+// On error -1 is returned and @error is set accordingly.
+func (s socket) Receive(cancellable Cancellable) ([]byte, int, error) {
+	var _arg0 *C.GSocket
+	var _arg3 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg1 C.gchar
+	var _arg2 C.gsize
+	var _cret C.gssize
+	var _cerr *C.GError
+
+	_cret = C.g_socket_receive(_arg0, _arg3, &_arg1, &_arg2, _cerr)
+
+	var _buffer []byte
+	var _gssize int
+	var _goerr error
+
+	{
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_buffer = make([]byte, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_buffer = (byte)(_arg1)
+		}
+	}
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _buffer, _gssize, _goerr
+}
+
+// ReceiveMessages: receive multiple data messages from @socket in one go.
+// This is the most complicated and fully-featured version of this call. For
+// easier use, see g_socket_receive(), g_socket_receive_from(), and
+// g_socket_receive_message().
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains a pointer to an
+// array of Vector structs describing the buffers that the data received in
+// each message will be written to. Using multiple Vectors is more
+// memory-efficient than manually copying data out of a single buffer to
+// multiple sources, and more system-call-efficient than making multiple
+// calls to g_socket_receive(), such as in scenarios where a lot of data
+// packets need to be received (e.g. high-bandwidth video streaming over
+// RTP/UDP).
+//
+// @flags modify how all messages are received. The commonly available
+// arguments for this are available in the MsgFlags enum, but the values
+// there are the same as the system values, and the flags are passed in
+// as-is, so you can pass in system-specific flags too. These flags affect
+// the overall receive operation. Flags affecting individual messages are
+// returned in Message.flags.
+//
+// The other members of Message are treated as described in its
+// documentation.
+//
+// If #GSocket:blocking is true the call will block until @num_messages have
+// been received, or the end of the stream is reached.
+//
+// If #GSocket:blocking is false the call will return up to @num_messages
+// without blocking, or G_IO_ERROR_WOULD_BLOCK if no messages are queued in
+// the operating system to be received.
+//
+// In blocking mode, if #GSocket:timeout is positive and is reached before
+// any messages are received, G_IO_ERROR_TIMED_OUT is returned, otherwise up
+// to @num_messages are returned. (Note: This is effectively the behaviour
+// of `MSG_WAITFORONE` with recvmmsg().)
+//
+// To be notified when messages are available, wait for the G_IO_IN
+// condition. Note though that you may still receive G_IO_ERROR_WOULD_BLOCK
+// from g_socket_receive_messages() even if you were previously notified of
+// a G_IO_IN condition.
+//
+// If the remote peer closes the connection, any messages queued in the
+// operating system will be returned, and subsequent calls to
+// g_socket_receive_messages() will return 0 (with no error set).
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be received; otherwise the number of
+// messages successfully received before the error will be returned.
+func (s socket) ReceiveMessages(messages []InputMessage, flags int, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GSocket
+	var _arg1 *C.GInputMessage
+	var _arg2 C.guint
+	var _arg3 C.gint
+	var _arg4 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg2 = C.guint(len(messages))
+	_arg1 = (*C.GInputMessage)(unsafe.Pointer(&messages[0]))
+	_arg3 = C.gint(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gint
+	var _cerr *C.GError
+
+	_cret = C.g_socket_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
+
+	var _gint int
+	var _goerr error
+
+	_gint = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gint, _goerr
+}
+
+// ReceiveWithBlocking: this behaves exactly the same as g_socket_receive(),
+// except that the choice of blocking or non-blocking behavior is determined
+// by the @blocking argument rather than by @socket's properties.
+func (s socket) ReceiveWithBlocking(blocking bool, cancellable Cancellable) ([]byte, int, error) {
+	var _arg0 *C.GSocket
+	var _arg3 C.gboolean
+	var _arg4 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	if blocking {
+		_arg3 = C.gboolean(1)
+	}
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _arg1 C.gchar
+	var _arg2 C.gsize
+	var _cret C.gssize
+	var _cerr *C.GError
+
+	_cret = C.g_socket_receive_with_blocking(_arg0, _arg3, _arg4, &_arg1, &_arg2, _cerr)
+
+	var _buffer []byte
+	var _gssize int
+	var _goerr error
+
+	{
+		var src []C.guint8
+		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_arg1), int(_arg2))
+
+		_buffer = make([]byte, _arg2)
+		for i := 0; i < uintptr(_arg2); i++ {
+			_buffer = (byte)(_arg1)
+		}
+	}
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _buffer, _gssize, _goerr
+}
+
+// Send tries to send @size bytes from @buffer on the socket. This is mainly
+// used by connection-oriented sockets; it is identical to
+// g_socket_send_to() with @address set to nil.
+//
+// If the socket is in blocking mode the call will block until there is
+// space for the data in the socket queue. If there is no space available
+// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+// will be returned. To be notified when space is available, wait for the
+// G_IO_OUT condition. Note though that you may still receive
+// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+// common due to the way the underlying APIs work.)
+//
+// On error -1 is returned and @error is set accordingly.
+func (s socket) Send(buffer []byte, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GSocket
+	var _arg1 *C.gchar
+	var _arg2 C.gsize
+	var _arg3 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(buffer))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gssize
+	var _cerr *C.GError
+
+	_cret = C.g_socket_send(_arg0, _arg1, _arg2, _arg3, _cerr)
+
+	var _gssize int
+	var _goerr error
+
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gssize, _goerr
+}
+
+// SendMessage: send data to @address on @socket. For sending multiple
+// messages see g_socket_send_messages(); for easier use, see
+// g_socket_send() and g_socket_send_to().
+//
+// If @address is nil then the message is sent to the default receiver (set
+// by g_socket_connect()).
+//
+// @vectors must point to an array of Vector structs and @num_vectors must
+// be the length of this array. (If @num_vectors is -1, then @vectors is
+// assumed to be terminated by a Vector with a nil buffer pointer.) The
+// Vector structs describe the buffers that the sent data will be gathered
+// from. Using multiple Vectors is more memory-efficient than manually
+// copying data from multiple sources into a single buffer, and more
+// network-efficient than making multiple calls to g_socket_send().
+//
+// @messages, if non-nil, is taken to point to an array of @num_messages
+// ControlMessage instances. These correspond to the control messages to be
+// sent on the socket. If @num_messages is -1 then @messages is treated as a
+// nil-terminated array.
+//
+// @flags modify how the message is sent. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can
+// pass in system-specific flags too.
+//
+// If the socket is in blocking mode the call will block until there is
+// space for the data in the socket queue. If there is no space available
+// and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK error
+// will be returned. To be notified when space is available, wait for the
+// G_IO_OUT condition. Note though that you may still receive
+// G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you were previously
+// notified of a G_IO_OUT condition. (On Windows in particular, this is very
+// common due to the way the underlying APIs work.)
+//
+// The sum of the sizes of each Vector in vectors must not be greater than
+// G_MAXSSIZE. If the message can be larger than this, then it is mandatory
+// to use the g_socket_send_message_with_timeout() function.
+//
+// On error -1 is returned and @error is set accordingly.
+func (s socket) SendMessage(address SocketAddress, vectors []OutputVector, messages []SocketControlMessage, flags int, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GSocket
+	var _arg1 *C.GSocketAddress
+	var _arg2 *C.GOutputVector
+	var _arg3 C.gint
+	var _arg4 **C.GSocketControlMessage
+	var _arg5 C.gint
+	var _arg6 C.gint
+	var _arg7 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg3 = C.gint(len(vectors))
+	_arg2 = (*C.GOutputVector)(unsafe.Pointer(&vectors[0]))
+	_arg5 = C.gint(len(messages))
+	_arg4 = (**C.GSocketControlMessage)(C.malloc(len(messages) * unsafe.Sizeof(int(0))))
+	defer C.free(unsafe.Pointer(_arg4))
+
+	{
+		var out []*C.GSocketControlMessage
+		ptr.SetSlice(unsafe.Pointer(&out), unsafe.Pointer(_arg4), int(len(messages)))
+
+		for i := range messages {
+			_arg4 = (*C.GSocketControlMessage)(unsafe.Pointer(messages.Native()))
+		}
+	}
+	_arg6 = C.gint(flags)
+	_arg7 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gssize
+	var _cerr *C.GError
+
+	_cret = C.g_socket_send_message(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _cerr)
+
+	var _gssize int
+	var _goerr error
+
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gssize, _goerr
+}
+
+// SendMessages: send multiple data messages from @socket in one go. This is
+// the most complicated and fully-featured version of this call. For easier
+// use, see g_socket_send(), g_socket_send_to(), and
+// g_socket_send_message().
+//
+// @messages must point to an array of Message structs and @num_messages
+// must be the length of this array. Each Message contains an address to
+// send the data to, and a pointer to an array of Vector structs to describe
+// the buffers that the data to be sent for each message will be gathered
+// from. Using multiple Vectors is more memory-efficient than manually
+// copying data from multiple sources into a single buffer, and more
+// network-efficient than making multiple calls to g_socket_send(). Sending
+// multiple messages in one go avoids the overhead of making a lot of
+// syscalls in scenarios where a lot of data packets need to be sent (e.g.
+// high-bandwidth video streaming over RTP/UDP), or where the same data
+// needs to be sent to multiple recipients.
+//
+// @flags modify how the message is sent. The commonly available arguments
+// for this are available in the MsgFlags enum, but the values there are the
+// same as the system values, and the flags are passed in as-is, so you can
+// pass in system-specific flags too.
+//
+// If the socket is in blocking mode the call will block until there is
+// space for all the data in the socket queue. If there is no space
+// available and the socket is in non-blocking mode a G_IO_ERROR_WOULD_BLOCK
+// error will be returned if no data was written at all, otherwise the
+// number of messages sent will be returned. To be notified when space is
+// available, wait for the G_IO_OUT condition. Note though that you may
+// still receive G_IO_ERROR_WOULD_BLOCK from g_socket_send() even if you
+// were previously notified of a G_IO_OUT condition. (On Windows in
+// particular, this is very common due to the way the underlying APIs work.)
+//
+// On error -1 is returned and @error is set accordingly. An error will only
+// be returned if zero messages could be sent; otherwise the number of
+// messages successfully sent before the error will be returned.
+func (s socket) SendMessages(messages []OutputMessage, flags int, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GSocket
+	var _arg1 *C.GOutputMessage
+	var _arg2 C.guint
+	var _arg3 C.gint
+	var _arg4 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg2 = C.guint(len(messages))
+	_arg1 = (*C.GOutputMessage)(unsafe.Pointer(&messages[0]))
+	_arg3 = C.gint(flags)
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gint
+	var _cerr *C.GError
+
+	_cret = C.g_socket_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
+
+	var _gint int
+	var _goerr error
+
+	_gint = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gint, _goerr
+}
+
+// SendTo tries to send @size bytes from @buffer to @address. If @address is
+// nil then the message is sent to the default receiver (set by
+// g_socket_connect()).
+//
+// See g_socket_send() for additional information.
+func (s socket) SendTo(address SocketAddress, buffer []byte, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GSocket
+	var _arg1 *C.GSocketAddress
+	var _arg2 *C.gchar
+	var _arg3 C.gsize
+	var _arg4 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
+	_arg3 = C.gsize(len(buffer))
+	_arg2 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gssize
+	var _cerr *C.GError
+
+	_cret = C.g_socket_send_to(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
+
+	var _gssize int
+	var _goerr error
+
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gssize, _goerr
+}
+
+// SendWithBlocking: this behaves exactly the same as g_socket_send(),
+// except that the choice of blocking or non-blocking behavior is determined
+// by the @blocking argument rather than by @socket's properties.
+func (s socket) SendWithBlocking(buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
+	var _arg0 *C.GSocket
+	var _arg1 *C.gchar
+	var _arg2 C.gsize
+	var _arg3 C.gboolean
+	var _arg4 *C.GCancellable
+
+	_arg0 = (*C.GSocket)(unsafe.Pointer(s.Native()))
+	_arg2 = C.gsize(len(buffer))
+	_arg1 = (*C.gchar)(unsafe.Pointer(&buffer[0]))
+	if blocking {
+		_arg3 = C.gboolean(1)
+	}
+	_arg4 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
+
+	var _cret C.gssize
+	var _cerr *C.GError
+
+	_cret = C.g_socket_send_with_blocking(_arg0, _arg1, _arg2, _arg3, _arg4, _cerr)
+
+	var _gssize int
+	var _goerr error
+
+	_gssize = (int)(_cret)
+	_goerr = gerror.Take(unsafe.Pointer(_cerr))
+
+	return _gssize, _goerr
 }
 
 // SetBlocking sets the blocking mode of the socket. In blocking mode all
@@ -1700,7 +1911,7 @@ func (s socket) SpeaksIpv4() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_socket_speaks_ipv4(_arg0)
+	_cret = C.g_socket_speaks_ipv4(_arg0)
 
 	var _ok bool
 

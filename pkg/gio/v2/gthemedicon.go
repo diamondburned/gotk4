@@ -5,7 +5,6 @@ package gio
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -79,55 +78,6 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 	return WrapThemedIcon(obj), nil
 }
 
-// NewThemedIcon constructs a class ThemedIcon.
-func NewThemedIcon(iconname string) ThemedIcon {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(iconname))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GThemedIcon
-
-	cret = C.g_themed_icon_new(_arg1)
-
-	var _themedIcon ThemedIcon
-
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
-
-	return _themedIcon
-}
-
-// NewThemedIconFromNames constructs a class ThemedIcon.
-func NewThemedIconFromNames() ThemedIcon {
-	var _cret C.GThemedIcon
-
-	cret = C.g_themed_icon_new_from_names()
-
-	var _themedIcon ThemedIcon
-
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
-
-	return _themedIcon
-}
-
-// NewThemedIconWithDefaultFallbacks constructs a class ThemedIcon.
-func NewThemedIconWithDefaultFallbacks(iconname string) ThemedIcon {
-	var _arg1 *C.char
-
-	_arg1 = (*C.char)(C.CString(iconname))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GThemedIcon
-
-	cret = C.g_themed_icon_new_with_default_fallbacks(_arg1)
-
-	var _themedIcon ThemedIcon
-
-	_themedIcon = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ThemedIcon)
-
-	return _themedIcon
-}
-
 // AppendName: append a name to the list of icons from within @icon.
 //
 // Note that doing so invalidates the hash computed by prior calls to
@@ -151,7 +101,7 @@ func (i themedIcon) Names() []string {
 
 	var _cret **C.gchar
 
-	cret = C.g_themed_icon_get_names(_arg0)
+	_cret = C.g_themed_icon_get_names(_arg0)
 
 	var _utf8s []string
 
@@ -168,7 +118,7 @@ func (i themedIcon) Names() []string {
 		ptr.SetSlice(unsafe.Pointer(&src), unsafe.Pointer(_cret), int(length))
 
 		_utf8s = make([]string, length)
-		for i := uintptr(0); i < uintptr(length); i += unsafe.Sizeof(int(0)) {
+		for i := range src {
 			_utf8s = C.GoString(_cret)
 		}
 	}

@@ -4,6 +4,8 @@ package glib
 
 import (
 	"unsafe"
+
+	"github.com/diamondburned/gotk4/internal/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -151,27 +153,6 @@ func (s *Scanner) InputName() string {
 	return v
 }
 
-// Qdata gets the field inside the struct.
-func (s *Scanner) Qdata() *Data {
-	var v *Data
-	v = WrapData(unsafe.Pointer(s.native.qdata))
-	return v
-}
-
-// Config gets the field inside the struct.
-func (s *Scanner) Config() *ScannerConfig {
-	var v *ScannerConfig
-	v = WrapScannerConfig(unsafe.Pointer(s.native.config))
-	return v
-}
-
-// Token gets the field inside the struct.
-func (s *Scanner) Token() TokenType {
-	var v TokenType
-	v = TokenType(s.native.token)
-	return v
-}
-
 // Line gets the field inside the struct.
 func (s *Scanner) Line() uint {
 	var v uint
@@ -209,7 +190,7 @@ func (s *Scanner) CurLine() uint {
 
 	var _cret C.guint
 
-	cret = C.g_scanner_cur_line(_arg0)
+	_cret = C.g_scanner_cur_line(_arg0)
 
 	var _guint uint
 
@@ -228,31 +209,13 @@ func (s *Scanner) CurPosition() uint {
 
 	var _cret C.guint
 
-	cret = C.g_scanner_cur_position(_arg0)
+	_cret = C.g_scanner_cur_position(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// CurToken gets the current token type. This is simply the @token field in the
-// #GScanner structure.
-func (s *Scanner) CurToken() TokenType {
-	var _arg0 *C.GScanner
-
-	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GTokenType
-
-	cret = C.g_scanner_cur_token(_arg0)
-
-	var _tokenType TokenType
-
-	_tokenType = TokenType(_cret)
-
-	return _tokenType
 }
 
 // Destroy frees all memory used by the #GScanner.
@@ -273,7 +236,7 @@ func (s *Scanner) EOF() bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_scanner_eof(_arg0)
+	_cret = C.g_scanner_eof(_arg0)
 
 	var _ok bool
 
@@ -282,25 +245,6 @@ func (s *Scanner) EOF() bool {
 	}
 
 	return _ok
-}
-
-// NextToken parses the next token just like g_scanner_peek_next_token() and
-// also removes it from the input stream. The token data is placed in the
-// @token, @value, @line, and @position fields of the #GScanner structure.
-func (s *Scanner) NextToken() TokenType {
-	var _arg0 *C.GScanner
-
-	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GTokenType
-
-	cret = C.g_scanner_get_next_token(_arg0)
-
-	var _tokenType TokenType
-
-	_tokenType = TokenType(_cret)
-
-	return _tokenType
 }
 
 // InputFile prepares to scan a file.
@@ -340,40 +284,13 @@ func (s *Scanner) LookupSymbol(symbol string) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
+	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
 
 	var _gpointer interface{}
 
 	_gpointer = (interface{})(_cret)
 
 	return _gpointer
-}
-
-// PeekNextToken parses the next token, without removing it from the input
-// stream. The token data is placed in the @next_token, @next_value, @next_line,
-// and @next_position fields of the #GScanner structure.
-//
-// Note that, while the token is not removed from the input stream (i.e. the
-// next call to g_scanner_get_next_token() will return the same token), it will
-// not be reevaluated. This can lead to surprising results when changing scope
-// or the scanner configuration after peeking the next token. Getting the next
-// token after switching the scope or configuration will return whatever was
-// peeked before, regardless of any symbols that may have been added or removed
-// in the new scope.
-func (s *Scanner) PeekNextToken() TokenType {
-	var _arg0 *C.GScanner
-
-	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GTokenType
-
-	cret = C.g_scanner_peek_next_token(_arg0)
-
-	var _tokenType TokenType
-
-	_tokenType = TokenType(_cret)
-
-	return _tokenType
 }
 
 // ScopeAddSymbol adds a symbol to the given scope.
@@ -395,12 +312,18 @@ func (s *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value interface{})
 // ScopeForeachSymbol calls the given function for each of the symbol/value
 // pairs in the given scope of the #GScanner. The function is passed the symbol
 // and value of each pair, and the given @user_data parameter.
-func (s *Scanner) ScopeForeachSymbol() {
+func (s *Scanner) ScopeForeachSymbol(scopeId uint, fn HFunc) {
 	var _arg0 *C.GScanner
+	var _arg1 C.guint
+	var _arg2 C.GHFunc
+	var _arg3 C.gpointer
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
+	_arg1 = C.guint(scopeId)
+	_arg2 = (*[0]byte)(C.gotk4_HFunc)
+	_arg3 = C.gpointer(box.Assign(fn))
 
-	C.g_scanner_scope_foreach_symbol(_arg0)
+	C.g_scanner_scope_foreach_symbol(_arg0, _arg1, _arg2, _arg3)
 }
 
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
@@ -417,7 +340,7 @@ func (s *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
+	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
 
 	var _gpointer interface{}
 
@@ -450,7 +373,7 @@ func (s *Scanner) SetScope(scopeId uint) uint {
 
 	var _cret C.guint
 
-	cret = C.g_scanner_set_scope(_arg0, _arg1)
+	_cret = C.g_scanner_set_scope(_arg0, _arg1)
 
 	var _guint uint
 

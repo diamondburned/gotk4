@@ -249,8 +249,6 @@ type Binding interface {
 	// a strong reference to the target. If the target is destroyed before the
 	// binding then this function will return nil.
 	DupTarget() gextras.Objector
-	// Flags retrieves the flags passed when constructing the #GBinding.
-	Flags() BindingFlags
 	// Source retrieves the #GObject instance used as the source of the binding.
 	//
 	// A #GBinding can outlive the source #GObject as the binding does not hold
@@ -327,7 +325,7 @@ func (b binding) DupSource() gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.g_binding_dup_source(_arg0)
+	_cret = C.g_binding_dup_source(_arg0)
 
 	var _object gextras.Objector
 
@@ -349,30 +347,13 @@ func (b binding) DupTarget() gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.g_binding_dup_target(_arg0)
+	_cret = C.g_binding_dup_target(_arg0)
 
 	var _object gextras.Objector
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
 	return _object
-}
-
-// Flags retrieves the flags passed when constructing the #GBinding.
-func (b binding) Flags() BindingFlags {
-	var _arg0 *C.GBinding
-
-	_arg0 = (*C.GBinding)(unsafe.Pointer(b.Native()))
-
-	var _cret C.GBindingFlags
-
-	cret = C.g_binding_get_flags(_arg0)
-
-	var _bindingFlags BindingFlags
-
-	_bindingFlags = BindingFlags(_cret)
-
-	return _bindingFlags
 }
 
 // Source retrieves the #GObject instance used as the source of the binding.
@@ -392,7 +373,7 @@ func (b binding) Source() gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.g_binding_get_source(_arg0)
+	_cret = C.g_binding_get_source(_arg0)
 
 	var _object gextras.Objector
 
@@ -410,7 +391,7 @@ func (b binding) SourceProperty() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_binding_get_source_property(_arg0)
+	_cret = C.g_binding_get_source_property(_arg0)
 
 	var _utf8 string
 
@@ -436,7 +417,7 @@ func (b binding) Target() gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.g_binding_get_target(_arg0)
+	_cret = C.g_binding_get_target(_arg0)
 
 	var _object gextras.Objector
 
@@ -454,7 +435,7 @@ func (b binding) TargetProperty() string {
 
 	var _cret *C.gchar
 
-	cret = C.g_binding_get_target_property(_arg0)
+	_cret = C.g_binding_get_target_property(_arg0)
 
 	var _utf8 string
 
@@ -535,13 +516,6 @@ func (o *ObjectConstructParam) Native() unsafe.Pointer {
 	return unsafe.Pointer(&o.native)
 }
 
-// Pspec gets the field inside the struct.
-func (o *ObjectConstructParam) Pspec() ParamSpec {
-	var v ParamSpec
-	v = gextras.CastObject(externglib.Take(unsafe.Pointer(o.native.pspec.Native()))).(ParamSpec)
-	return v
-}
-
 // Value gets the field inside the struct.
 func (o *ObjectConstructParam) Value() **externglib.Value {
 	var v **externglib.Value
@@ -620,7 +594,7 @@ func (w *WeakRef) Get() gextras.Objector {
 
 	var _cret C.gpointer
 
-	cret = C.g_weak_ref_get(_arg0)
+	_cret = C.g_weak_ref_get(_arg0)
 
 	var _object gextras.Objector
 

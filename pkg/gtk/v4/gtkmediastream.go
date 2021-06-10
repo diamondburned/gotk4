@@ -294,7 +294,7 @@ func (s mediaStream) Duration() int64 {
 
 	var _cret C.gint64
 
-	cret = C.gtk_media_stream_get_duration(_arg0)
+	_cret = C.gtk_media_stream_get_duration(_arg0)
 
 	var _gint64 int64
 
@@ -311,7 +311,7 @@ func (s mediaStream) GetEnded() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_ended(_arg0)
+	_cret = C.gtk_media_stream_get_ended(_arg0)
 
 	var _ok bool
 
@@ -343,7 +343,7 @@ func (s mediaStream) Error() *error {
 
 	var _cret *C.GError
 
-	cret = C.gtk_media_stream_get_error(_arg0)
+	_cret = C.gtk_media_stream_get_error(_arg0)
 
 	var _err *error
 
@@ -362,7 +362,7 @@ func (s mediaStream) Loop() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_loop(_arg0)
+	_cret = C.gtk_media_stream_get_loop(_arg0)
 
 	var _ok bool
 
@@ -383,7 +383,7 @@ func (s mediaStream) Muted() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_muted(_arg0)
+	_cret = C.gtk_media_stream_get_muted(_arg0)
 
 	var _ok bool
 
@@ -402,7 +402,7 @@ func (s mediaStream) Playing() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_get_playing(_arg0)
+	_cret = C.gtk_media_stream_get_playing(_arg0)
 
 	var _ok bool
 
@@ -421,7 +421,7 @@ func (s mediaStream) Timestamp() int64 {
 
 	var _cret C.gint64
 
-	cret = C.gtk_media_stream_get_timestamp(_arg0)
+	_cret = C.gtk_media_stream_get_timestamp(_arg0)
 
 	var _gint64 int64
 
@@ -440,7 +440,7 @@ func (s mediaStream) Volume() float64 {
 
 	var _cret C.double
 
-	cret = C.gtk_media_stream_get_volume(_arg0)
+	_cret = C.gtk_media_stream_get_volume(_arg0)
 
 	var _gdouble float64
 
@@ -457,7 +457,7 @@ func (s mediaStream) HasAudio() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_has_audio(_arg0)
+	_cret = C.gtk_media_stream_has_audio(_arg0)
 
 	var _ok bool
 
@@ -476,7 +476,7 @@ func (s mediaStream) HasVideo() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_has_video(_arg0)
+	_cret = C.gtk_media_stream_has_video(_arg0)
 
 	var _ok bool
 
@@ -497,7 +497,7 @@ func (s mediaStream) IsPrepared() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_is_prepared(_arg0)
+	_cret = C.gtk_media_stream_is_prepared(_arg0)
 
 	var _ok bool
 
@@ -524,7 +524,7 @@ func (s mediaStream) IsSeekable() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_is_seekable(_arg0)
+	_cret = C.gtk_media_stream_is_seekable(_arg0)
 
 	var _ok bool
 
@@ -543,7 +543,7 @@ func (s mediaStream) IsSeeking() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_media_stream_is_seeking(_arg0)
+	_cret = C.gtk_media_stream_is_seeking(_arg0)
 
 	var _ok bool
 

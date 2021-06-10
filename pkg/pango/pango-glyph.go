@@ -3,10 +3,8 @@
 package pango
 
 import (
-	"runtime"
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -31,29 +29,6 @@ func init() {
 // should not depend on its exact value. The PANGO_PIXELS() macro can be used to
 // convert from glyph units into device units with correct rounding.
 type GlyphUnit int32
-
-// ReorderItems: reorder items from logical order to visual order.
-//
-// The visual order is determined from the associated directional levels of the
-// items. The original list is unmodified.
-func ReorderItems(logicalItems *glib.List) *glib.List {
-	var _arg1 *C.GList
-
-	_arg1 = (*C.GList)(unsafe.Pointer(logicalItems.Native()))
-
-	var _cret *C.GList
-
-	cret = C.pango_reorder_items(_arg1)
-
-	var _list *glib.List
-
-	_list = glib.WrapList(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_list, func(v *glib.List) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _list
-}
 
 // Shape: convert the characters in @text into glyphs.
 //
@@ -206,20 +181,6 @@ func (g *GlyphInfo) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
 }
 
-// Geometry gets the field inside the struct.
-func (g *GlyphInfo) Geometry() GlyphGeometry {
-	var v GlyphGeometry
-	v = *WrapGlyphGeometry(unsafe.Pointer(&g.native.geometry))
-	return v
-}
-
-// Attr gets the field inside the struct.
-func (g *GlyphInfo) Attr() GlyphVisAttr {
-	var v GlyphVisAttr
-	v = *WrapGlyphVisAttr(unsafe.Pointer(&g.native.attr))
-	return v
-}
-
 // GlyphString: a `PangoGlyphString` is used to store strings of glyphs with
 // geometry and visual attribute information.
 //
@@ -244,22 +205,6 @@ func marshalGlyphString(p uintptr) (interface{}, error) {
 	return WrapGlyphString(unsafe.Pointer(b)), nil
 }
 
-// NewGlyphString constructs a struct GlyphString.
-func NewGlyphString() *GlyphString {
-	var _cret *C.PangoGlyphString
-
-	cret = C.pango_glyph_string_new()
-
-	var _glyphString *GlyphString
-
-	_glyphString = WrapGlyphString(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _glyphString
-}
-
 // Native returns the underlying C source pointer.
 func (g *GlyphString) Native() unsafe.Pointer {
 	return unsafe.Pointer(&g.native)
@@ -277,26 +222,6 @@ func (g *GlyphString) LogClusters() *int {
 	var v *int
 	v = (*int)(g.native.log_clusters)
 	return v
-}
-
-// Copy: copy a glyph string and associated storage.
-func (s *GlyphString) Copy() *GlyphString {
-	var _arg0 *C.PangoGlyphString
-
-	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.PangoGlyphString
-
-	cret = C.pango_glyph_string_copy(_arg0)
-
-	var _glyphString *GlyphString
-
-	_glyphString = WrapGlyphString(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_glyphString, func(v *GlyphString) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _glyphString
 }
 
 // Extents: compute the logical and ink extents of a glyph string.
@@ -368,7 +293,7 @@ func (g *GlyphString) Width() int {
 
 	var _cret C.int
 
-	cret = C.pango_glyph_string_get_width(_arg0)
+	_cret = C.pango_glyph_string_get_width(_arg0)
 
 	var _gint int
 

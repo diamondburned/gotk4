@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -56,23 +53,6 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 	return WrapGestureRotate(obj), nil
 }
 
-// NewGestureRotate constructs a class GestureRotate.
-func NewGestureRotate(widget Widget) GestureRotate {
-	var _arg1 *C.GtkWidget
-
-	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
-
-	var _cret C.GtkGestureRotate
-
-	cret = C.gtk_gesture_rotate_new(_arg1)
-
-	var _gestureRotate GestureRotate
-
-	_gestureRotate = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(GestureRotate)
-
-	return _gestureRotate
-}
-
 // AngleDelta: if @gesture is active, this function returns the angle
 // difference in radians since the gesture was first recognized. If @gesture
 // is not active, 0 is returned.
@@ -83,7 +63,7 @@ func (g gestureRotate) AngleDelta() float64 {
 
 	var _cret C.gdouble
 
-	cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
+	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 
 	var _gdouble float64
 

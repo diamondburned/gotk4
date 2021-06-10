@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/cairo"
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
@@ -316,28 +315,6 @@ func RenderIcon(context StyleContext, cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf
 	_arg5 = C.gdouble(y)
 
 	C.gtk_render_icon(_arg1, _arg2, _arg3, _arg4, _arg5)
-}
-
-// RenderIconPixbuf renders the icon specified by @source at the given @size,
-// returning the result in a pixbuf.
-func RenderIconPixbuf(context StyleContext, source *IconSource, size int) gdkpixbuf.Pixbuf {
-	var _arg1 *C.GtkStyleContext
-	var _arg2 *C.GtkIconSource
-	var _arg3 C.GtkIconSize
-
-	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
-	_arg2 = (*C.GtkIconSource)(unsafe.Pointer(source.Native()))
-	_arg3 = C.GtkIconSize(size)
-
-	var _cret *C.GdkPixbuf
-
-	cret = C.gtk_render_icon_pixbuf(_arg1, _arg2, _arg3)
-
-	var _pixbuf gdkpixbuf.Pixbuf
-
-	_pixbuf = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gdkpixbuf.Pixbuf)
-
-	return _pixbuf
 }
 
 // RenderIconSurface renders the icon in @surface at the specified @x and @y

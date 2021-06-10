@@ -47,7 +47,7 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 
 	var _cret C.gboolean
 
-	cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
+	_cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
 
 	var _ok bool
 
@@ -68,7 +68,7 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 
 	var _cret C.gboolean
 
-	cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
+	_cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
 
 	var _ok bool
 
@@ -90,7 +90,7 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
+	_cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
 
 	var _ok bool
 
@@ -111,7 +111,7 @@ func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_test_accessible_has_state(_arg1, _arg2)
+	_cret = C.gtk_test_accessible_has_state(_arg1, _arg2)
 
 	var _ok bool
 

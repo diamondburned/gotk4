@@ -7,7 +7,6 @@ import (
 	"unsafe"
 
 	"github.com/diamondburned/gotk4/internal/gerror"
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/internal/ptr"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -127,32 +126,6 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 	return WrapUnixFDList(obj), nil
 }
 
-// NewUnixFDList constructs a class UnixFDList.
-func NewUnixFDList() UnixFDList {
-	var _cret C.GUnixFDList
-
-	cret = C.g_unix_fd_list_new()
-
-	var _unixFDList UnixFDList
-
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDList)
-
-	return _unixFDList
-}
-
-// NewUnixFDListFromArray constructs a class UnixFDList.
-func NewUnixFDListFromArray() UnixFDList {
-	var _cret C.GUnixFDList
-
-	cret = C.g_unix_fd_list_new_from_array()
-
-	var _unixFDList UnixFDList
-
-	_unixFDList = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(UnixFDList)
-
-	return _unixFDList
-}
-
 // Append adds a file descriptor to @list.
 //
 // The file descriptor is duplicated using dup(). You keep your copy of the
@@ -175,7 +148,7 @@ func (l unixFDList) Append(fd int) (int, error) {
 	var _cret C.gint
 	var _cerr *C.GError
 
-	cret = C.g_unix_fd_list_append(_arg0, _arg1, _cerr)
+	_cret = C.g_unix_fd_list_append(_arg0, _arg1, _cerr)
 
 	var _gint int
 	var _goerr error
@@ -207,7 +180,7 @@ func (l unixFDList) Get(index_ int) (int, error) {
 	var _cret C.gint
 	var _cerr *C.GError
 
-	cret = C.g_unix_fd_list_get(_arg0, _arg1, _cerr)
+	_cret = C.g_unix_fd_list_get(_arg0, _arg1, _cerr)
 
 	var _gint int
 	var _goerr error
@@ -227,7 +200,7 @@ func (l unixFDList) Length() int {
 
 	var _cret C.gint
 
-	cret = C.g_unix_fd_list_get_length(_arg0)
+	_cret = C.g_unix_fd_list_get_length(_arg0)
 
 	var _gint int
 
@@ -256,7 +229,7 @@ func (l unixFDList) PeekFds() []int {
 	var _cret *C.gint
 	var _arg1 *C.gint
 
-	cret = C.g_unix_fd_list_peek_fds(_arg0)
+	_cret = C.g_unix_fd_list_peek_fds(_arg0, &_arg1)
 
 	var _gints []int
 
@@ -297,7 +270,7 @@ func (l unixFDList) StealFds() []int {
 	var _cret *C.gint
 	var _arg1 *C.gint
 
-	cret = C.g_unix_fd_list_steal_fds(_arg0)
+	_cret = C.g_unix_fd_list_steal_fds(_arg0, &_arg1)
 
 	var _gints []int
 

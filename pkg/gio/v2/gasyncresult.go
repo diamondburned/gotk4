@@ -168,7 +168,7 @@ func (r asyncResult) SourceObject() gextras.Objector {
 
 	var _cret *C.GObject
 
-	cret = C.g_async_result_get_source_object(_arg0)
+	_cret = C.g_async_result_get_source_object(_arg0)
 
 	var _object gextras.Objector
 
@@ -185,7 +185,7 @@ func (r asyncResult) UserData() interface{} {
 
 	var _cret C.gpointer
 
-	cret = C.g_async_result_get_user_data(_arg0)
+	_cret = C.g_async_result_get_user_data(_arg0)
 
 	var _gpointer interface{}
 
@@ -205,7 +205,7 @@ func (r asyncResult) IsTagged(sourceTag interface{}) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_async_result_is_tagged(_arg0, _arg1)
+	_cret = C.g_async_result_is_tagged(_arg0, _arg1)
 
 	var _ok bool
 

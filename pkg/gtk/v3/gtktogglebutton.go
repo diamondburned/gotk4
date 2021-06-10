@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -154,55 +151,6 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 	return WrapToggleButton(obj), nil
 }
 
-// NewToggleButton constructs a class ToggleButton.
-func NewToggleButton() ToggleButton {
-	var _cret C.GtkToggleButton
-
-	cret = C.gtk_toggle_button_new()
-
-	var _toggleButton ToggleButton
-
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
-
-	return _toggleButton
-}
-
-// NewToggleButtonWithLabel constructs a class ToggleButton.
-func NewToggleButtonWithLabel(label string) ToggleButton {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkToggleButton
-
-	cret = C.gtk_toggle_button_new_with_label(_arg1)
-
-	var _toggleButton ToggleButton
-
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
-
-	return _toggleButton
-}
-
-// NewToggleButtonWithMnemonic constructs a class ToggleButton.
-func NewToggleButtonWithMnemonic(label string) ToggleButton {
-	var _arg1 *C.gchar
-
-	_arg1 = (*C.gchar)(C.CString(label))
-	defer C.free(unsafe.Pointer(_arg1))
-
-	var _cret C.GtkToggleButton
-
-	cret = C.gtk_toggle_button_new_with_mnemonic(_arg1)
-
-	var _toggleButton ToggleButton
-
-	_toggleButton = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ToggleButton)
-
-	return _toggleButton
-}
-
 // Active queries a ToggleButton and returns its current state. Returns true
 // if the toggle button is pressed in and false if it is raised.
 func (t toggleButton) Active() bool {
@@ -212,7 +160,7 @@ func (t toggleButton) Active() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_toggle_button_get_active(_arg0)
+	_cret = C.gtk_toggle_button_get_active(_arg0)
 
 	var _ok bool
 
@@ -231,7 +179,7 @@ func (t toggleButton) Inconsistent() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_toggle_button_get_inconsistent(_arg0)
+	_cret = C.gtk_toggle_button_get_inconsistent(_arg0)
 
 	var _ok bool
 
@@ -251,7 +199,7 @@ func (t toggleButton) Mode() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_toggle_button_get_mode(_arg0)
+	_cret = C.gtk_toggle_button_get_mode(_arg0)
 
 	var _ok bool
 

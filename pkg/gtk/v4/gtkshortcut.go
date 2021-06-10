@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 	externglib "github.com/gotk3/gotk3/glib"
 )
@@ -39,13 +36,6 @@ func init() {
 type Shortcut interface {
 	gextras.Objector
 
-	// Action gets the action that is activated by this shortcut.
-	Action() ShortcutAction
-	// Arguments gets the arguments that are passed when activating the
-	// shortcut.
-	Arguments() *glib.Variant
-	// Trigger gets the trigger used to trigger @self.
-	Trigger() ShortcutTrigger
 	// SetAction sets the new action for @self to be @action.
 	SetAction(action ShortcutAction)
 	// SetArguments sets the arguments to pass when activating the shortcut.
@@ -73,77 +63,6 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 	val := C.g_value_get_object((*C.GValue)(unsafe.Pointer(p)))
 	obj := externglib.Take(unsafe.Pointer(val))
 	return WrapShortcut(obj), nil
-}
-
-// NewShortcut constructs a class Shortcut.
-func NewShortcut(trigger ShortcutTrigger, action ShortcutAction) Shortcut {
-	var _arg1 *C.GtkShortcutTrigger
-	var _arg2 *C.GtkShortcutAction
-
-	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))
-	_arg2 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
-
-	var _cret C.GtkShortcut
-
-	cret = C.gtk_shortcut_new(_arg1, _arg2)
-
-	var _shortcut Shortcut
-
-	_shortcut = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(Shortcut)
-
-	return _shortcut
-}
-
-// Action gets the action that is activated by this shortcut.
-func (s shortcut) Action() ShortcutAction {
-	var _arg0 *C.GtkShortcut
-
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkShortcutAction
-
-	cret = C.gtk_shortcut_get_action(_arg0)
-
-	var _shortcutAction ShortcutAction
-
-	_shortcutAction = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutAction)
-
-	return _shortcutAction
-}
-
-// Arguments gets the arguments that are passed when activating the
-// shortcut.
-func (s shortcut) Arguments() *glib.Variant {
-	var _arg0 *C.GtkShortcut
-
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GVariant
-
-	cret = C.gtk_shortcut_get_arguments(_arg0)
-
-	var _variant *glib.Variant
-
-	_variant = glib.WrapVariant(unsafe.Pointer(_cret))
-
-	return _variant
-}
-
-// Trigger gets the trigger used to trigger @self.
-func (s shortcut) Trigger() ShortcutTrigger {
-	var _arg0 *C.GtkShortcut
-
-	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkShortcutTrigger
-
-	cret = C.gtk_shortcut_get_trigger(_arg0)
-
-	var _shortcutTrigger ShortcutTrigger
-
-	_shortcutTrigger = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(ShortcutTrigger)
-
-	return _shortcutTrigger
 }
 
 // SetAction sets the new action for @self to be @action.

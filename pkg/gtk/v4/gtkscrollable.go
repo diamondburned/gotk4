@@ -5,7 +5,6 @@ package gtk
 import (
 	"unsafe"
 
-	"github.com/diamondburned/gotk4/internal/gextras"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -67,14 +66,6 @@ type Scrollable interface {
 	gextras.Objector
 	ScrollableOverrider
 
-	// HAdjustment retrieves the `GtkAdjustment` used for horizontal scrolling.
-	HAdjustment() Adjustment
-	// HScrollPolicy gets the horizontal `GtkScrollablePolicy`.
-	HScrollPolicy() ScrollablePolicy
-	// VAdjustment retrieves the `GtkAdjustment` used for vertical scrolling.
-	VAdjustment() Adjustment
-	// VScrollPolicy gets the vertical `GtkScrollablePolicy`.
-	VScrollPolicy() ScrollablePolicy
 	// SetHAdjustment sets the horizontal adjustment of the `GtkScrollable`.
 	SetHAdjustment(hadjustment Adjustment)
 	// SetHScrollPolicy sets the `GtkScrollablePolicy`.
@@ -126,7 +117,7 @@ func (s scrollable) Border() (Border, bool) {
 	var _border Border
 	var _cret C.gboolean
 
-	cret = C.gtk_scrollable_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
+	_cret = C.gtk_scrollable_get_border(_arg0, (*C.GtkBorder)(unsafe.Pointer(&_border)))
 
 	var _ok bool
 
@@ -135,74 +126,6 @@ func (s scrollable) Border() (Border, bool) {
 	}
 
 	return _border, _ok
-}
-
-// HAdjustment retrieves the `GtkAdjustment` used for horizontal scrolling.
-func (s scrollable) HAdjustment() Adjustment {
-	var _arg0 *C.GtkScrollable
-
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_scrollable_get_hadjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
-// HScrollPolicy gets the horizontal `GtkScrollablePolicy`.
-func (s scrollable) HScrollPolicy() ScrollablePolicy {
-	var _arg0 *C.GtkScrollable
-
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkScrollablePolicy
-
-	cret = C.gtk_scrollable_get_hscroll_policy(_arg0)
-
-	var _scrollablePolicy ScrollablePolicy
-
-	_scrollablePolicy = ScrollablePolicy(_cret)
-
-	return _scrollablePolicy
-}
-
-// VAdjustment retrieves the `GtkAdjustment` used for vertical scrolling.
-func (s scrollable) VAdjustment() Adjustment {
-	var _arg0 *C.GtkScrollable
-
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret *C.GtkAdjustment
-
-	cret = C.gtk_scrollable_get_vadjustment(_arg0)
-
-	var _adjustment Adjustment
-
-	_adjustment = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(Adjustment)
-
-	return _adjustment
-}
-
-// VScrollPolicy gets the vertical `GtkScrollablePolicy`.
-func (s scrollable) VScrollPolicy() ScrollablePolicy {
-	var _arg0 *C.GtkScrollable
-
-	_arg0 = (*C.GtkScrollable)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkScrollablePolicy
-
-	cret = C.gtk_scrollable_get_vscroll_policy(_arg0)
-
-	var _scrollablePolicy ScrollablePolicy
-
-	_scrollablePolicy = ScrollablePolicy(_cret)
-
-	return _scrollablePolicy
 }
 
 // SetHAdjustment sets the horizontal adjustment of the `GtkScrollable`.

@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/gextras"
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	externglib "github.com/gotk3/gotk3/glib"
@@ -66,12 +63,6 @@ type ShortcutController interface {
 	// If this controller uses an external shortcut list, this function does
 	// nothing.
 	AddShortcut(shortcut Shortcut)
-	// MnemonicsModifiers gets the mnemonics modifiers for when this controller
-	// activates its shortcuts.
-	MnemonicsModifiers() gdk.ModifierType
-	// Scope gets the scope for when this controller activates its shortcuts.
-	// See gtk_shortcut_controller_set_scope() for details.
-	Scope() ShortcutScope
 	// RemoveShortcut removes @shortcut from the list of shortcuts handled by
 	// @self.
 	//
@@ -129,36 +120,6 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 	return WrapShortcutController(obj), nil
 }
 
-// NewShortcutController constructs a class ShortcutController.
-func NewShortcutController() ShortcutController {
-	var _cret C.GtkShortcutController
-
-	cret = C.gtk_shortcut_controller_new()
-
-	var _shortcutController ShortcutController
-
-	_shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutController)
-
-	return _shortcutController
-}
-
-// NewShortcutControllerForModel constructs a class ShortcutController.
-func NewShortcutControllerForModel(model gio.ListModel) ShortcutController {
-	var _arg1 *C.GListModel
-
-	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
-
-	var _cret C.GtkShortcutController
-
-	cret = C.gtk_shortcut_controller_new_for_model(_arg1)
-
-	var _shortcutController ShortcutController
-
-	_shortcutController = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(ShortcutController)
-
-	return _shortcutController
-}
-
 // AddShortcut adds @shortcut to the list of shortcuts handled by @self.
 //
 // If this controller uses an external shortcut list, this function does
@@ -171,42 +132,6 @@ func (s shortcutController) AddShortcut(shortcut Shortcut) {
 	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
 
 	C.gtk_shortcut_controller_add_shortcut(_arg0, _arg1)
-}
-
-// MnemonicsModifiers gets the mnemonics modifiers for when this controller
-// activates its shortcuts.
-func (s shortcutController) MnemonicsModifiers() gdk.ModifierType {
-	var _arg0 *C.GtkShortcutController
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GdkModifierType
-
-	cret = C.gtk_shortcut_controller_get_mnemonics_modifiers(_arg0)
-
-	var _modifierType gdk.ModifierType
-
-	_modifierType = gdk.ModifierType(_cret)
-
-	return _modifierType
-}
-
-// Scope gets the scope for when this controller activates its shortcuts.
-// See gtk_shortcut_controller_set_scope() for details.
-func (s shortcutController) Scope() ShortcutScope {
-	var _arg0 *C.GtkShortcutController
-
-	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
-
-	var _cret C.GtkShortcutScope
-
-	cret = C.gtk_shortcut_controller_get_scope(_arg0)
-
-	var _shortcutScope ShortcutScope
-
-	_shortcutScope = ShortcutScope(_cret)
-
-	return _shortcutScope
 }
 
 // RemoveShortcut removes @shortcut from the list of shortcuts handled by

@@ -45,7 +45,7 @@ func Poll(fds *PollFD, nfds uint, timeout int) int {
 
 	var _cret C.gint
 
-	cret = C.g_poll(_arg1, _arg2, _arg3)
+	_cret = C.g_poll(_arg1, _arg2, _arg3)
 
 	var _gint int
 

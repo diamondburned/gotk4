@@ -3,9 +3,6 @@
 package gtk
 
 import (
-	"runtime"
-
-	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
@@ -44,10 +41,6 @@ type GestureSingle interface {
 	// CurrentButton returns the button number currently interacting with
 	// @gesture, or 0 if there is none.
 	CurrentButton() uint
-	// CurrentSequence returns the event sequence currently interacting with
-	// @gesture. This is only meaningful if gtk_gesture_is_active() returns
-	// true.
-	CurrentSequence() *gdk.EventSequence
 	// Exclusive gets whether a gesture is exclusive. For more information, see
 	// gtk_gesture_single_set_exclusive().
 	Exclusive() bool
@@ -97,7 +90,7 @@ func (g gestureSingle) Button() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_gesture_single_get_button(_arg0)
+	_cret = C.gtk_gesture_single_get_button(_arg0)
 
 	var _guint uint
 
@@ -115,35 +108,13 @@ func (g gestureSingle) CurrentButton() uint {
 
 	var _cret C.guint
 
-	cret = C.gtk_gesture_single_get_current_button(_arg0)
+	_cret = C.gtk_gesture_single_get_current_button(_arg0)
 
 	var _guint uint
 
 	_guint = (uint)(_cret)
 
 	return _guint
-}
-
-// CurrentSequence returns the event sequence currently interacting with
-// @gesture. This is only meaningful if gtk_gesture_is_active() returns
-// true.
-func (g gestureSingle) CurrentSequence() *gdk.EventSequence {
-	var _arg0 *C.GtkGestureSingle
-
-	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
-
-	var _cret *C.GdkEventSequence
-
-	cret = C.gtk_gesture_single_get_current_sequence(_arg0)
-
-	var _eventSequence *gdk.EventSequence
-
-	_eventSequence = gdk.WrapEventSequence(unsafe.Pointer(_cret))
-	runtime.SetFinalizer(_eventSequence, func(v *gdk.EventSequence) {
-		C.free(unsafe.Pointer(v.Native()))
-	})
-
-	return _eventSequence
 }
 
 // Exclusive gets whether a gesture is exclusive. For more information, see
@@ -155,7 +126,7 @@ func (g gestureSingle) Exclusive() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_gesture_single_get_exclusive(_arg0)
+	_cret = C.gtk_gesture_single_get_exclusive(_arg0)
 
 	var _ok bool
 
@@ -174,7 +145,7 @@ func (g gestureSingle) TouchOnly() bool {
 
 	var _cret C.gboolean
 
-	cret = C.gtk_gesture_single_get_touch_only(_arg0)
+	_cret = C.gtk_gesture_single_get_touch_only(_arg0)
 
 	var _ok bool
 

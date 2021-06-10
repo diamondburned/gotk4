@@ -4,8 +4,6 @@ package gdk
 
 import (
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/pkg/pango"
 )
 
 // #cgo pkg-config: gdk-3.0 gtk+-3.0
@@ -47,7 +45,7 @@ func KeyvalFromName(keyvalName string) uint {
 
 	var _cret C.guint
 
-	cret = C.gdk_keyval_from_name(_arg1)
+	_cret = C.gdk_keyval_from_name(_arg1)
 
 	var _guint uint
 
@@ -64,7 +62,7 @@ func KeyvalIsLower(keyval uint) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_keyval_is_lower(_arg1)
+	_cret = C.gdk_keyval_is_lower(_arg1)
 
 	var _ok bool
 
@@ -83,7 +81,7 @@ func KeyvalIsUpper(keyval uint) bool {
 
 	var _cret C.gboolean
 
-	cret = C.gdk_keyval_is_upper(_arg1)
+	_cret = C.gdk_keyval_is_upper(_arg1)
 
 	var _ok bool
 
@@ -105,7 +103,7 @@ func KeyvalName(keyval uint) string {
 
 	var _cret *C.gchar
 
-	cret = C.gdk_keyval_name(_arg1)
+	_cret = C.gdk_keyval_name(_arg1)
 
 	var _utf8 string
 
@@ -122,7 +120,7 @@ func KeyvalToLower(keyval uint) uint {
 
 	var _cret C.guint
 
-	cret = C.gdk_keyval_to_lower(_arg1)
+	_cret = C.gdk_keyval_to_lower(_arg1)
 
 	var _guint uint
 
@@ -140,7 +138,7 @@ func KeyvalToUnicode(keyval uint) uint32 {
 
 	var _cret C.guint32
 
-	cret = C.gdk_keyval_to_unicode(_arg1)
+	_cret = C.gdk_keyval_to_unicode(_arg1)
 
 	var _guint32 uint32
 
@@ -157,7 +155,7 @@ func KeyvalToUpper(keyval uint) uint {
 
 	var _cret C.guint
 
-	cret = C.gdk_keyval_to_upper(_arg1)
+	_cret = C.gdk_keyval_to_upper(_arg1)
 
 	var _guint uint
 
@@ -174,7 +172,7 @@ func UnicodeToKeyval(wc uint32) uint {
 
 	var _cret C.guint
 
-	cret = C.gdk_unicode_to_keyval(_arg1)
+	_cret = C.gdk_unicode_to_keyval(_arg1)
 
 	var _guint uint
 

@@ -3,9 +3,8 @@
 package glib
 
 import (
+	"runtime"
 	"unsafe"
-
-	"github.com/diamondburned/gotk4/internal/box"
 )
 
 // #cgo pkg-config: glib-2.0 gobject-introspection-1.0
@@ -58,62 +57,6 @@ const (
 	// LogLevelFlagsLevelMask: a mask including all log levels
 	LogLevelFlagsLevelMask LogLevelFlags = -4
 )
-
-// LogFunc specifies the prototype of log handler functions.
-//
-// The default log handler, g_log_default_handler(), automatically appends a
-// new-line character to @message when printing it. It is advised that any
-// custom log handler functions behave similarly, so that logging calls in user
-// code do not need modifying to add a new-line character to the message if the
-// log handler is changed.
-//
-// This is not used if structured logging is enabled; see [Using Structured
-// Logging][using-structured-logging].
-type LogFunc func()
-
-//export gotk4_LogFunc
-func gotk4_LogFunc(arg0 *C.gchar, arg1 C.GLogLevelFlags, arg2 *C.gchar, arg3 C.gpointer) {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(LogFunc)
-	fn()
-}
-
-// LogWriterFunc: writer function for log entries. A log entry is a collection
-// of one or more Fields, using the standard [field names from journal
-// specification](https://www.freedesktop.org/software/systemd/man/systemd.journal-fields.html).
-// See g_log_structured() for more information.
-//
-// Writer functions must ignore fields which they do not recognise, unless they
-// can write arbitrary binary output, as field values may be arbitrary binary.
-//
-// @log_level is guaranteed to be included in @fields as the `PRIORITY` field,
-// but is provided separately for convenience of deciding whether or where to
-// output the log entry.
-//
-// Writer functions should return G_LOG_WRITER_HANDLED if they handled the log
-// message successfully or if they deliberately ignored it. If there was an
-// error handling the message (for example, if the writer function is meant to
-// send messages to a remote logging server and there is a network error), it
-// should return G_LOG_WRITER_UNHANDLED. This allows writer functions to be
-// chained and fall back to simpler handlers in case of failure.
-type LogWriterFunc func() (logWriterOutput LogWriterOutput)
-
-//export gotk4_LogWriterFunc
-func gotk4_LogWriterFunc(arg0 C.GLogLevelFlags, arg1 *C.GLogField, arg2 C.gsize, arg3 C.gpointer) C.GLogWriterOutput {
-	v := box.Get(uintptr(arg3))
-	if v == nil {
-		panic(`callback not found`)
-	}
-
-	fn := v.(LogWriterFunc)
-	logWriterOutput := fn()
-
-	cret = (C.GLogWriterOutput)(logWriterOutput)
-}
 
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
 	var _arg1 *C.char
@@ -190,100 +133,6 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 	C.g_log_remove_handler(_arg1, _arg2)
 }
 
-// LogSetAlwaysFatal sets the message levels which are always fatal, in any log
-// domain. When a message with any of these levels is logged the program
-// terminates. You can only set the levels defined by GLib to be fatal.
-// G_LOG_LEVEL_ERROR is always fatal.
-//
-// You can also make some message levels fatal at runtime by setting the
-// `G_DEBUG` environment variable (see Running GLib Applications
-// (glib-running.html)).
-//
-// Libraries should not call this function, as it affects all messages logged by
-// a process, including those from other libraries.
-//
-// Structured log messages (using g_log_structured() and
-// g_log_structured_array()) are fatal only if the default log writer is used;
-// otherwise it is up to the writer function to determine which log messages are
-// fatal. See [Using Structured Logging][using-structured-logging].
-func LogSetAlwaysFatal(fatalMask LogLevelFlags) LogLevelFlags {
-	var _arg1 C.GLogLevelFlags
-
-	_arg1 = (C.GLogLevelFlags)(fatalMask)
-
-	var _cret C.GLogLevelFlags
-
-	cret = C.g_log_set_always_fatal(_arg1)
-
-	var _logLevelFlags LogLevelFlags
-
-	_logLevelFlags = LogLevelFlags(_cret)
-
-	return _logLevelFlags
-}
-
-// LogSetFatalMask sets the log levels which are fatal in the given domain.
-// G_LOG_LEVEL_ERROR is always fatal.
-//
-// This has no effect on structured log messages (using g_log_structured() or
-// g_log_structured_array()). To change the fatal behaviour for specific log
-// messages, programs must install a custom log writer function using
-// g_log_set_writer_func(). See [Using Structured
-// Logging][using-structured-logging].
-//
-// This function is mostly intended to be used with G_LOG_LEVEL_CRITICAL. You
-// should typically not set G_LOG_LEVEL_WARNING, G_LOG_LEVEL_MESSAGE,
-// G_LOG_LEVEL_INFO or G_LOG_LEVEL_DEBUG as fatal except inside of test
-// programs.
-func LogSetFatalMask(logDomain string, fatalMask LogLevelFlags) LogLevelFlags {
-	var _arg1 *C.gchar
-	var _arg2 C.GLogLevelFlags
-
-	_arg1 = (*C.gchar)(C.CString(logDomain))
-	defer C.free(unsafe.Pointer(_arg1))
-	_arg2 = (C.GLogLevelFlags)(fatalMask)
-
-	var _cret C.GLogLevelFlags
-
-	cret = C.g_log_set_fatal_mask(_arg1, _arg2)
-
-	var _logLevelFlags LogLevelFlags
-
-	_logLevelFlags = LogLevelFlags(_cret)
-
-	return _logLevelFlags
-}
-
-// LogSetHandlerFull: like g_log_set_handler(), but takes a destroy notify for
-// the @user_data.
-//
-// This has no effect if structured logging is enabled; see [Using Structured
-// Logging][using-structured-logging].
-func LogSetHandlerFull() uint {
-	var _cret C.guint
-
-	cret = C.g_log_set_handler_full()
-
-	var _guint uint
-
-	_guint = (uint)(_cret)
-
-	return _guint
-}
-
-// LogSetWriterFunc: set a writer function which will be called to format and
-// write out each log message. Each program should set a writer function, or the
-// default writer (g_log_writer_default()) will be used.
-//
-// Libraries **must not** call this function — only programs are allowed to
-// install a writer function, as there must be a single, central point where log
-// messages are formatted and outputted.
-//
-// There can only be one writer function. It is an error to set more than one.
-func LogSetWriterFunc() {
-	C.g_log_set_writer_func()
-}
-
 // LogStructuredArray: log a message with structured data. The message will be
 // passed through to the log writer set by the application using
 // g_log_set_writer_func(). If the message is fatal (i.e. its log level is
@@ -293,8 +142,16 @@ func LogSetWriterFunc() {
 //
 // This assumes that @log_level is already present in @fields (typically as the
 // `PRIORITY` field).
-func LogStructuredArray() {
-	C.g_log_structured_array()
+func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
+	var _arg1 C.GLogLevelFlags
+	var _arg2 *C.GLogField
+	var _arg3 C.gsize
+
+	_arg1 = (C.GLogLevelFlags)(logLevel)
+	_arg3 = C.gsize(len(fields))
+	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+
+	C.g_log_structured_array(_arg1, _arg2, _arg3)
 }
 
 // LogVariant: log a message with structured data, accepting the data within a
@@ -378,7 +235,7 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
+	_cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
 
 	var _ok bool
 
@@ -387,6 +244,40 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 	}
 
 	return _ok
+}
+
+// LogWriterFormatFields: format a structured log message as a string suitable
+// for outputting to the terminal (or elsewhere). This will include the values
+// of all fields it knows how to interpret, which includes `MESSAGE` and
+// `GLIB_DOMAIN` (see the documentation for g_log_structured()). It does not
+// include values from unknown fields.
+//
+// The returned string does **not** have a trailing new-line character. It is
+// encoded in the character set of the current locale, which is not necessarily
+// UTF-8.
+func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
+	var _arg1 C.GLogLevelFlags
+	var _arg2 *C.GLogField
+	var _arg3 C.gsize
+	var _arg4 C.gboolean
+
+	_arg1 = (C.GLogLevelFlags)(logLevel)
+	_arg3 = C.gsize(len(fields))
+	_arg2 = (*C.GLogField)(unsafe.Pointer(&fields[0]))
+	if useColor {
+		_arg4 = C.gboolean(1)
+	}
+
+	var _cret *C.gchar
+
+	_cret = C.g_log_writer_format_fields(_arg1, _arg2, _arg3, _arg4)
+
+	var _utf8 string
+
+	_utf8 = C.GoString(_cret)
+	defer C.free(unsafe.Pointer(_cret))
+
+	return _utf8
 }
 
 // LogWriterIsJournald: check whether the given @output_fd file descriptor is a
@@ -404,7 +295,7 @@ func LogWriterIsJournald(outputFd int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_log_writer_is_journald(_arg1)
+	_cret = C.g_log_writer_is_journald(_arg1)
 
 	var _ok bool
 
@@ -425,7 +316,7 @@ func LogWriterSupportsColor(outputFd int) bool {
 
 	var _cret C.gboolean
 
-	cret = C.g_log_writer_supports_color(_arg1)
+	_cret = C.g_log_writer_supports_color(_arg1)
 
 	var _ok bool
 

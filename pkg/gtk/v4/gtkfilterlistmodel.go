@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -105,15 +105,15 @@ func marshalFilterListModel(p uintptr) (interface{}, error) {
 //
 // See [method@Gtk.FilterListModel.set_incremental].
 func (s filterListModel) Incremental() bool {
-	var _arg0 *C.GtkFilterListModel
+	var _arg0 *C.GtkFilterListModel // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_filter_list_model_get_incremental(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -137,15 +137,15 @@ func (s filterListModel) Incremental() bool {
 // [property@Gtk.FilterListModel:incremental] is false - this function
 // returns 0.
 func (s filterListModel) Pending() uint {
-	var _arg0 *C.GtkFilterListModel
+	var _arg0 *C.GtkFilterListModel // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_filter_list_model_get_pending(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -154,8 +154,8 @@ func (s filterListModel) Pending() uint {
 
 // SetFilter sets the filter used to filter items.
 func (s filterListModel) SetFilter(filter Filter) {
-	var _arg0 *C.GtkFilterListModel
-	var _arg1 *C.GtkFilter
+	var _arg0 *C.GtkFilterListModel // out
+	var _arg1 *C.GtkFilter          // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
@@ -180,8 +180,8 @@ func (s filterListModel) SetFilter(filter Filter) {
 // See [method@Gtk.FilterListModel.get_pending] for progress information
 // about an ongoing incremental filtering operation.
 func (s filterListModel) SetIncremental(incremental bool) {
-	var _arg0 *C.GtkFilterListModel
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFilterListModel // out
+	var _arg1 C.gboolean            // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 	if incremental {
@@ -197,8 +197,8 @@ func (s filterListModel) SetIncremental(incremental bool) {
 // type of @self. It assumes that the caller knows what they are doing and
 // have set up an appropriate filter to ensure that item types match.
 func (s filterListModel) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkFilterListModel
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkFilterListModel // out
+	var _arg1 *C.GListModel         // out
 
 	_arg0 = (*C.GtkFilterListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))

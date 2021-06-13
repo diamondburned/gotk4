@@ -10,7 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -182,15 +182,15 @@ func gotk4_SpawnChildSetupFunc(arg0 C.gpointer) {
 // error message string; it may be translated and/or change in future versions
 // of GLib.
 func SpawnCheckExitStatus(exitStatus int) error {
-	var _arg1 C.gint
+	var _arg1 C.gint // out
 
 	_arg1 = C.gint(exitStatus)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_spawn_check_exit_status(_arg1, _cerr)
+	C.g_spawn_check_exit_status(_arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -207,16 +207,16 @@ func SpawnCheckExitStatus(exitStatus int) error {
 //
 // The same concerns on Windows apply as for g_spawn_command_line_sync().
 func SpawnCommandLineAsync(commandLine *string) error {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_spawn_command_line_async(_arg1, _cerr)
+	C.g_spawn_command_line_async(_arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -244,22 +244,22 @@ func SpawnCommandLineAsync(commandLine *string) error {
 // with single quotes, like "'c:\\program files\\app\\app.exe'
 // 'e:\\folder\\argument.txt'".
 func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _arg2 *C.gchar
 	var _arg3 *C.gchar
-	var _arg4 C.gint
-	var _cerr *C.GError
+	var _arg4 C.gint    // in
+	var _cerr *C.GError // in
 
-	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, _cerr)
+	C.g_spawn_command_line_sync(_arg1, &_arg2, &_arg3, &_arg4, &_cerr)
 
 	var _standardOutput []byte
 	var _standardError []byte
-	var _exitStatus int
-	var _goerr error
+	var _exitStatus int // out
+	var _goerr error    // out
 
 	{
 		var length int
@@ -320,11 +320,11 @@ func SpawnCommandLineSync(commandLine *string) (standardOutput []byte, standardE
 // for full details on the other parameters and details on how these functions
 // work on Windows.
 func SpawnSync(workingDirectory *string, argv []*string, envp []*string, flags SpawnFlags, childSetup SpawnChildSetupFunc) (standardOutput []byte, standardError []byte, exitStatus int, goerr error) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 **C.gchar
 	var _arg3 **C.gchar
-	var _arg4 C.GSpawnFlags
-	var _arg5 C.GSpawnChildSetupFunc
+	var _arg4 C.GSpawnFlags          // out
+	var _arg5 C.GSpawnChildSetupFunc // out
 	var _arg6 C.gpointer
 
 	_arg1 = (*C.gchar)(C.CString(workingDirectory))
@@ -359,15 +359,15 @@ func SpawnSync(workingDirectory *string, argv []*string, envp []*string, flags S
 
 	var _arg7 *C.gchar
 	var _arg8 *C.gchar
-	var _arg9 C.gint
-	var _cerr *C.GError
+	var _arg9 C.gint    // in
+	var _cerr *C.GError // in
 
-	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, _cerr)
+	C.g_spawn_sync(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, &_arg7, &_arg8, &_arg9, &_cerr)
 
 	var _standardOutput []byte
 	var _standardError []byte
-	var _exitStatus int
-	var _goerr error
+	var _exitStatus int // out
+	var _goerr error    // out
 
 	{
 		var length int

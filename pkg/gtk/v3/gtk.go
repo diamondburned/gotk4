@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -3149,15 +3149,15 @@ func marshalAppChooser(p uintptr) (interface{}, error) {
 // ContentType returns the current value of the AppChooser:content-type
 // property.
 func (s appChooser) ContentType() string {
-	var _arg0 *C.GtkAppChooser
+	var _arg0 *C.GtkAppChooser // out
 
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_app_chooser_get_content_type(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -3167,7 +3167,7 @@ func (s appChooser) ContentType() string {
 
 // Refresh reloads the list of applications.
 func (s appChooser) Refresh() {
-	var _arg0 *C.GtkAppChooser
+	var _arg0 *C.GtkAppChooser // out
 
 	_arg0 = (*C.GtkAppChooser)(unsafe.Pointer(s.Native()))
 
@@ -3630,9 +3630,9 @@ func marshalFileChooser(p uintptr) (interface{}, error) {
 //
 // Compare gtk_file_chooser_set_extra_widget().
 func (c fileChooser) AddChoice(id string, label string, options []string, optionLabels []string) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
-	var _arg2 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
+	var _arg2 *C.char           // out
 	var _arg3 **C.char
 	var _arg4 **C.char
 
@@ -3676,8 +3676,8 @@ func (c fileChooser) AddChoice(id string, label string, options []string, option
 // Note that the @chooser takes ownership of the filter, so you have to ref
 // and sink it if you want to keep a reference.
 func (c fileChooser) AddFilter(filter FileFilter) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GtkFileFilter
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
@@ -3690,18 +3690,18 @@ func (c fileChooser) AddFilter(filter FileFilter) {
 // are provided by the application. For example, you can use this to add a
 // “/usr/share/mydrawprogram/Clipart” folder to the volume list.
 func (c fileChooser) AddShortcutFolder(folder *string) error {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(folder))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, _cerr)
+	C.gtk_file_chooser_add_shortcut_folder(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -3714,18 +3714,18 @@ func (c fileChooser) AddShortcutFolder(folder *string) error {
 // add a “file:///usr/share/mydrawprogram/Clipart” folder to the volume
 // list.
 func (c fileChooser) AddShortcutFolderURI(uri string) error {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_file_chooser_add_shortcut_folder_uri(_arg0, _arg1, _cerr)
+	C.gtk_file_chooser_add_shortcut_folder_uri(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -3735,18 +3735,18 @@ func (c fileChooser) AddShortcutFolderURI(uri string) error {
 // Choice gets the currently selected option in the 'choice' with the given
 // ID.
 func (c fileChooser) Choice(id string) string {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(id))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_file_chooser_get_choice(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -3756,15 +3756,15 @@ func (c fileChooser) Choice(id string) string {
 // CreateFolders gets whether file choser will offer to create new folders.
 // See gtk_file_chooser_set_create_folders().
 func (c fileChooser) CreateFolders() bool {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_get_create_folders(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -3784,15 +3784,15 @@ func (c fileChooser) CreateFolders() bool {
 // currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
 // the usual way to get the selection.
 func (c fileChooser) CurrentFolder() *string {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_chooser_get_current_folder(_arg0)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -3811,15 +3811,15 @@ func (c fileChooser) CurrentFolder() *string {
 // currently-selected folder in that mode, use gtk_file_chooser_get_uri() as
 // the usual way to get the selection.
 func (c fileChooser) CurrentFolderURI() string {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_chooser_get_current_folder_uri(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -3836,15 +3836,15 @@ func (c fileChooser) CurrentFolderURI() string {
 // format” may want to change the extension of the typed filename based on
 // the chosen format, say, from “.jpg” to “.png”.
 func (c fileChooser) CurrentName() string {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_chooser_get_current_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -3855,15 +3855,15 @@ func (c fileChooser) CurrentName() string {
 // DoOverwriteConfirmation queries whether a file chooser is set to confirm
 // for overwriting when the user types a file name that already exists.
 func (c fileChooser) DoOverwriteConfirmation() bool {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_get_do_overwrite_confirmation(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -3879,15 +3879,15 @@ func (c fileChooser) DoOverwriteConfirmation() bool {
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
 func (c fileChooser) Filename() *string {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_chooser_get_filename(_arg0)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -3898,15 +3898,15 @@ func (c fileChooser) Filename() *string {
 // LocalOnly gets whether only local files can be selected in the file
 // selector. See gtk_file_chooser_set_local_only()
 func (c fileChooser) LocalOnly() bool {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_get_local_only(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -3918,15 +3918,15 @@ func (c fileChooser) LocalOnly() bool {
 // PreviewFilename gets the filename that should be previewed in a custom
 // preview widget. See gtk_file_chooser_set_preview_widget().
 func (c fileChooser) PreviewFilename() *string {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_file_chooser_get_preview_filename(_arg0)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -3937,15 +3937,15 @@ func (c fileChooser) PreviewFilename() *string {
 // PreviewURI gets the URI that should be previewed in a custom preview
 // widget. See gtk_file_chooser_set_preview_widget().
 func (c fileChooser) PreviewURI() string {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_file_chooser_get_preview_uri(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -3957,15 +3957,15 @@ func (c fileChooser) PreviewURI() string {
 // gtk_file_chooser_set_preview_widget() should be shown for the current
 // filename. See gtk_file_chooser_set_preview_widget_active().
 func (c fileChooser) PreviewWidgetActive() bool {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_get_preview_widget_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -3977,15 +3977,15 @@ func (c fileChooser) PreviewWidgetActive() bool {
 // SelectMultiple gets whether multiple files can be selected in the file
 // selector. See gtk_file_chooser_set_select_multiple().
 func (c fileChooser) SelectMultiple() bool {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_get_select_multiple(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -3997,15 +3997,15 @@ func (c fileChooser) SelectMultiple() bool {
 // ShowHidden gets whether hidden files and folders are displayed in the
 // file selector. See gtk_file_chooser_set_show_hidden().
 func (c fileChooser) ShowHidden() bool {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_get_show_hidden(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4021,15 +4021,15 @@ func (c fileChooser) ShowHidden() bool {
 // If the file chooser is in folder mode, this function returns the selected
 // folder.
 func (c fileChooser) URI() string {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_chooser_get_uri(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -4040,15 +4040,15 @@ func (c fileChooser) URI() string {
 // UsePreviewLabel gets whether a stock label should be drawn with the name
 // of the previewed file. See gtk_file_chooser_set_use_preview_label().
 func (c fileChooser) UsePreviewLabel() bool {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_get_use_preview_label(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4060,8 +4060,8 @@ func (c fileChooser) UsePreviewLabel() bool {
 // RemoveChoice removes a 'choice' that has been added with
 // gtk_file_chooser_add_choice().
 func (c fileChooser) RemoveChoice(id string) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(id))
@@ -4073,8 +4073,8 @@ func (c fileChooser) RemoveChoice(id string) {
 // RemoveFilter removes @filter from the list of filters that the user can
 // select between.
 func (c fileChooser) RemoveFilter(filter FileFilter) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GtkFileFilter
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
@@ -4085,18 +4085,18 @@ func (c fileChooser) RemoveFilter(filter FileFilter) {
 // RemoveShortcutFolder removes a folder from a file chooser’s list of
 // shortcut folders.
 func (c fileChooser) RemoveShortcutFolder(folder *string) error {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(folder))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, _cerr)
+	C.gtk_file_chooser_remove_shortcut_folder(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -4106,18 +4106,18 @@ func (c fileChooser) RemoveShortcutFolder(folder *string) error {
 // RemoveShortcutFolderURI removes a folder URI from a file chooser’s list
 // of shortcut folders.
 func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_file_chooser_remove_shortcut_folder_uri(_arg0, _arg1, _cerr)
+	C.gtk_file_chooser_remove_shortcut_folder_uri(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -4126,7 +4126,7 @@ func (c fileChooser) RemoveShortcutFolderURI(uri string) error {
 
 // SelectAll selects all the files in the current folder of a file chooser.
 func (c fileChooser) SelectAll() {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
@@ -4136,17 +4136,17 @@ func (c fileChooser) SelectAll() {
 // SelectFile selects the file referred to by @file. An internal function.
 // See _gtk_file_chooser_select_uri().
 func (c fileChooser) SelectFile(file gio.File) error {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_file_chooser_select_file(_arg0, _arg1, _cerr)
+	C.gtk_file_chooser_select_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -4157,18 +4157,18 @@ func (c fileChooser) SelectFile(file gio.File) error {
 // folder of @chooser, then the current folder of @chooser will be changed
 // to the folder containing @filename.
 func (c fileChooser) SelectFilename(filename *string) bool {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_select_filename(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4181,18 +4181,18 @@ func (c fileChooser) SelectFilename(filename *string) bool {
 // in the current folder of @chooser, then the current folder of @chooser
 // will be changed to the folder containing @filename.
 func (c fileChooser) SelectURI(uri string) bool {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_select_uri(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4207,8 +4207,8 @@ func (c fileChooser) SelectURI(uri string) bool {
 // GTK_FILE_CHOOSER_ACTION_SAVE but not if the action is
 // GTK_FILE_CHOOSER_ACTION_OPEN.
 func (c fileChooser) SetAction(action FileChooserAction) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.GtkFileChooserAction
+	var _arg0 *C.GtkFileChooser      // out
+	var _arg1 C.GtkFileChooserAction // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkFileChooserAction)(action)
@@ -4220,9 +4220,9 @@ func (c fileChooser) SetAction(action FileChooserAction) {
 // gtk_file_chooser_add_choice(). For a boolean choice, the possible options
 // are "true" and "false".
 func (c fileChooser) SetChoice(id string, option string) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
-	var _arg2 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
+	var _arg2 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(id))
@@ -4237,8 +4237,8 @@ func (c fileChooser) SetChoice(id string, option string) {
 // folders. This is only relevant if the action is not set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN.
 func (c fileChooser) SetCreateFolders(createFolders bool) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	if createFolders {
@@ -4256,18 +4256,18 @@ func (c fileChooser) SetCreateFolders(createFolders bool) {
 // up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
 // rationale behind this.
 func (c fileChooser) SetCurrentFolder(filename *string) bool {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_set_current_folder(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4279,17 +4279,17 @@ func (c fileChooser) SetCurrentFolder(filename *string) bool {
 // SetCurrentFolderFile sets the current folder for @chooser from a #GFile.
 // Internal function, see gtk_file_chooser_set_current_folder_uri().
 func (c fileChooser) SetCurrentFolderFile(file gio.File) error {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_file_chooser_set_current_folder_file(_arg0, _arg1, _cerr)
+	C.gtk_file_chooser_set_current_folder_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -4304,18 +4304,18 @@ func (c fileChooser) SetCurrentFolderFile(file gio.File) error {
 // up a file chooser dialog][gtkfilechooserdialog-setting-up] for the
 // rationale behind this.
 func (c fileChooser) SetCurrentFolderURI(uri string) bool {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_set_current_folder_uri(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4335,8 +4335,8 @@ func (c fileChooser) SetCurrentFolderURI(uri string) bool {
 // Please see the documentation for those functions for an example of using
 // gtk_file_chooser_set_current_name() as well.
 func (c fileChooser) SetCurrentName(name string) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -4357,8 +4357,8 @@ func (c fileChooser) SetCurrentName(name string) {
 // the FileChooser::confirm-overwrite signal; please refer to its
 // documentation for the details.
 func (c fileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	if doOverwriteConfirmation {
@@ -4371,8 +4371,8 @@ func (c fileChooser) SetDoOverwriteConfirmation(doOverwriteConfirmation bool) {
 // SetExtraWidget sets an application-supplied widget to provide extra
 // options to the user.
 func (c fileChooser) SetExtraWidget(extraWidget Widget) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(extraWidget.Native()))
@@ -4413,17 +4413,17 @@ func (c fileChooser) SetExtraWidget(extraWidget Widget) {
 //        gtk_file_chooser_set_file (chooser, existing_file);
 //      }
 func (c fileChooser) SetFile(file gio.File) error {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_file_chooser_set_file(_arg0, _arg1, _cerr)
+	C.gtk_file_chooser_set_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -4463,18 +4463,18 @@ func (c fileChooser) SetFile(file gio.File) error {
 // file’s existing location is already known, so the file chooser will use
 // it.
 func (c fileChooser) SetFilename(filename *string) bool {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_set_filename(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4489,8 +4489,8 @@ func (c fileChooser) SetFilename(filename *string) bool {
 // current filter when the list of filters is empty is useful if you want to
 // restrict the displayed set of files without letting the user change it.
 func (c fileChooser) SetFilter(filter FileFilter) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GtkFileFilter
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GtkFileFilter  // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkFileFilter)(unsafe.Pointer(filter.Native()))
@@ -4509,8 +4509,8 @@ func (c fileChooser) SetFilter(filter FileFilter) {
 // On some systems non-native files may still be available using the native
 // filesystem via a userspace filesystem (FUSE).
 func (c fileChooser) SetLocalOnly(localOnly bool) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	if localOnly {
@@ -4534,8 +4534,8 @@ func (c fileChooser) SetLocalOnly(localOnly bool) {
 // application-supplied preview widget is not active, the file chooser will
 // display no preview at all.
 func (c fileChooser) SetPreviewWidget(previewWidget Widget) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GtkWidget      // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(previewWidget.Native()))
@@ -4550,8 +4550,8 @@ func (c fileChooser) SetPreviewWidget(previewWidget Widget) {
 // preview at all. See gtk_file_chooser_set_preview_widget() for more
 // details.
 func (c fileChooser) SetPreviewWidgetActive(active bool) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	if active {
@@ -4565,8 +4565,8 @@ func (c fileChooser) SetPreviewWidgetActive(active bool) {
 // selector. This is only relevant if the action is set to be
 // GTK_FILE_CHOOSER_ACTION_OPEN or GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER.
 func (c fileChooser) SetSelectMultiple(selectMultiple bool) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	if selectMultiple {
@@ -4579,8 +4579,8 @@ func (c fileChooser) SetSelectMultiple(selectMultiple bool) {
 // SetShowHidden sets whether hidden files and folders are displayed in the
 // file selector.
 func (c fileChooser) SetShowHidden(showHidden bool) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	if showHidden {
@@ -4623,18 +4623,18 @@ func (c fileChooser) SetShowHidden(showHidden bool) {
 // file’s existing location is already known, so the file chooser will use
 // it.
 func (c fileChooser) SetURI(uri string) bool {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_chooser_set_uri(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -4651,8 +4651,8 @@ func (c fileChooser) SetURI(uri string) bool {
 //
 // See also: gtk_file_chooser_set_preview_widget()
 func (c fileChooser) SetUsePreviewLabel(useLabel bool) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	if useLabel {
@@ -4665,7 +4665,7 @@ func (c fileChooser) SetUsePreviewLabel(useLabel bool) {
 // UnselectAll unselects all the files in the current folder of a file
 // chooser.
 func (c fileChooser) UnselectAll() {
-	var _arg0 *C.GtkFileChooser
+	var _arg0 *C.GtkFileChooser // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 
@@ -4676,8 +4676,8 @@ func (c fileChooser) UnselectAll() {
 // in the current directory, does not exist, or is otherwise not currently
 // selected, does nothing.
 func (c fileChooser) UnselectFile(file gio.File) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.GFile          // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
@@ -4689,8 +4689,8 @@ func (c fileChooser) UnselectFile(file gio.File) {
 // is not in the current directory, does not exist, or is otherwise not
 // currently selected, does nothing.
 func (c fileChooser) UnselectFilename(filename *string) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -4703,8 +4703,8 @@ func (c fileChooser) UnselectFilename(filename *string) {
 // the current directory, does not exist, or is otherwise not currently
 // selected, does nothing.
 func (c fileChooser) UnselectURI(uri string) {
-	var _arg0 *C.GtkFileChooser
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooser // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkFileChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -4929,7 +4929,7 @@ func marshalClipboard(p uintptr) (interface{}, error) {
 // gtk_clipboard_set_with_data(), and when the @clear_func you supplied is
 // called. Otherwise, the clipboard may be owned by someone else.
 func (c clipboard) Clear() {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
@@ -4941,15 +4941,15 @@ func (c clipboard) Clear() {
 // gtk_clipboard_clear() has not subsequently called, returns the owner set
 // by gtk_clipboard_set_with_owner().
 func (c clipboard) Owner() gextras.Objector {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.GObject
+	var _cret *C.GObject // in
 
 	_cret = C.gtk_clipboard_get_owner(_arg0)
 
-	var _object gextras.Objector
+	var _object gextras.Objector // out
 
 	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
@@ -4960,9 +4960,9 @@ func (c clipboard) Owner() gextras.Objector {
 // When the results of the result are later received the supplied callback
 // will be called.
 func (c clipboard) RequestContents(target gdk.Atom, callback ClipboardReceivedFunc) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 C.GdkAtom
-	var _arg2 C.GtkClipboardReceivedFunc
+	var _arg0 *C.GtkClipboard            // out
+	var _arg1 C.GdkAtom                  // out
+	var _arg2 C.GtkClipboardReceivedFunc // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -4982,8 +4982,8 @@ func (c clipboard) RequestContents(target gdk.Atom, callback ClipboardReceivedFu
 // reasons, in particular if the clipboard was empty or if the contents of
 // the clipboard could not be converted into an image.
 func (c clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 C.GtkClipboardImageReceivedFunc
+	var _arg0 *C.GtkClipboard                 // out
+	var _arg1 C.GtkClipboardImageReceivedFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -5002,9 +5002,9 @@ func (c clipboard) RequestImage(callback ClipboardImageReceivedFunc) {
 // particular if the clipboard was empty or if the contents of the clipboard
 // could not be converted into rich text form.
 func (c clipboard) RequestRichText(buffer TextBuffer, callback ClipboardRichTextReceivedFunc) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 *C.GtkTextBuffer
-	var _arg2 C.GtkClipboardRichTextReceivedFunc
+	var _arg0 *C.GtkClipboard                    // out
+	var _arg1 *C.GtkTextBuffer                   // out
+	var _arg2 C.GtkClipboardRichTextReceivedFunc // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -5022,8 +5022,8 @@ func (c clipboard) RequestRichText(buffer TextBuffer, callback ClipboardRichText
 // The @targets parameter to @callback will contain the resulting targets if
 // the request succeeded, or nil if it failed.
 func (c clipboard) RequestTargets(callback ClipboardTargetsReceivedFunc) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 C.GtkClipboardTargetsReceivedFunc
+	var _arg0 *C.GtkClipboard                   // out
+	var _arg1 C.GtkClipboardTargetsReceivedFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -5042,8 +5042,8 @@ func (c clipboard) RequestTargets(callback ClipboardTargetsReceivedFunc) {
 // reasons, in particular if the clipboard was empty or if the contents of
 // the clipboard could not be converted into text form.
 func (c clipboard) RequestText(callback ClipboardTextReceivedFunc) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 C.GtkClipboardTextReceivedFunc
+	var _arg0 *C.GtkClipboard                // out
+	var _arg1 C.GtkClipboardTextReceivedFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -5061,8 +5061,8 @@ func (c clipboard) RequestText(callback ClipboardTextReceivedFunc) {
 // various reasons, in particular if the clipboard was empty or if the
 // contents of the clipboard could not be converted into URI form.
 func (c clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 C.GtkClipboardURIReceivedFunc
+	var _arg0 *C.GtkClipboard               // out
+	var _arg1 C.GtkClipboardURIReceivedFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
@@ -5079,7 +5079,7 @@ func (c clipboard) RequestUris(callback ClipboardURIReceivedFunc) {
 // data is stored is platform dependent, see gdk_display_store_clipboard ()
 // for more information.
 func (c clipboard) SetCanStore(targets []TargetEntry) {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 	var _arg1 *C.GtkTargetEntry
 	var _arg2 C.gint
 
@@ -5094,8 +5094,8 @@ func (c clipboard) SetCanStore(targets []TargetEntry) {
 // will take responsibility for responding for requests for the image, and
 // for converting the image into the requested format.
 func (c clipboard) SetImage(pixbuf gdkpixbuf.Pixbuf) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 *C.GdkPixbuf
+	var _arg0 *C.GtkClipboard // out
+	var _arg1 *C.GdkPixbuf    // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -5108,9 +5108,9 @@ func (c clipboard) SetImage(pixbuf gdkpixbuf.Pixbuf) {
 // for requests for the text, and for converting the text into the requested
 // format.
 func (c clipboard) SetText(text string, len int) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 *C.gchar
-	var _arg2 C.gint
+	var _arg0 *C.GtkClipboard // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gint          // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -5123,7 +5123,7 @@ func (c clipboard) SetText(text string, len int) {
 // Store stores the current clipboard data somewhere so that it will stay
 // around after the application has quit.
 func (c clipboard) Store() {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
@@ -5134,15 +5134,15 @@ func (c clipboard) Store() {
 // function waits for the data to be received using the main loop, so
 // events, timeouts, etc, may be dispatched during the wait.
 func (c clipboard) WaitForRichText(buffer TextBuffer) (gdk.Atom, []byte) {
-	var _arg0 *C.GtkClipboard
-	var _arg1 *C.GtkTextBuffer
+	var _arg0 *C.GtkClipboard  // out
+	var _arg1 *C.GtkTextBuffer // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
 	var _format gdk.Atom
 	var _cret *C.guint8
-	var _arg3 *C.gsize
+	var _arg3 C.gsize // in
 
 	_cret = C.gtk_clipboard_wait_for_rich_text(_arg0, _arg1, (*C.GdkAtom)(unsafe.Pointer(&_format)), &_arg3)
 
@@ -5161,15 +5161,15 @@ func (c clipboard) WaitForRichText(buffer TextBuffer) (gdk.Atom, []byte) {
 // received using the main loop, so events, timeouts, etc, may be dispatched
 // during the wait.
 func (c clipboard) WaitForText() string {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_clipboard_wait_for_text(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -5181,7 +5181,7 @@ func (c clipboard) WaitForText() string {
 // waits for the data to be received using the main loop, so events,
 // timeouts, etc, may be dispatched during the wait.
 func (c clipboard) WaitForUris() []string {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
@@ -5223,15 +5223,15 @@ func (c clipboard) WaitForUris() []string {
 // gtk_clipboard_wait_for_image() since it doesn’t need to retrieve the
 // actual image data.
 func (c clipboard) WaitIsImageAvailable() bool {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_image_available(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -5250,17 +5250,17 @@ func (c clipboard) WaitIsImageAvailable() bool {
 // gtk_clipboard_wait_for_rich_text() since it doesn’t need to retrieve the
 // actual text.
 func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
-	var _arg0 *C.GtkClipboard
-	var _arg1 *C.GtkTextBuffer
+	var _arg0 *C.GtkClipboard  // out
+	var _arg1 *C.GtkTextBuffer // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTextBuffer)(unsafe.Pointer(buffer.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_rich_text_available(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -5276,17 +5276,17 @@ func (c clipboard) WaitIsRichTextAvailable(buffer TextBuffer) bool {
 // If you want to see if there’s text available on the clipboard, use
 // gtk_clipboard_wait_is_text_available () instead.
 func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
-	var _arg0 *C.GtkClipboard
-	var _arg1 C.GdkAtom
+	var _arg0 *C.GtkClipboard // out
+	var _arg1 C.GdkAtom       // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GdkAtom)(unsafe.Pointer(target.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_target_available(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -5305,15 +5305,15 @@ func (c clipboard) WaitIsTargetAvailable(target gdk.Atom) bool {
 // gtk_clipboard_wait_for_text() since it doesn’t need to retrieve the
 // actual text.
 func (c clipboard) WaitIsTextAvailable() bool {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_text_available(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -5332,15 +5332,15 @@ func (c clipboard) WaitIsTextAvailable() bool {
 // gtk_clipboard_wait_for_uris() since it doesn’t need to retrieve the
 // actual URI data.
 func (c clipboard) WaitIsUrisAvailable() bool {
-	var _arg0 *C.GtkClipboard
+	var _arg0 *C.GtkClipboard // out
 
 	_arg0 = (*C.GtkClipboard)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_clipboard_wait_is_uris_available(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -5438,8 +5438,8 @@ func marshalFileFilter(p uintptr) (interface{}, error) {
 
 // AddMIMEType adds a rule allowing a given mime type to @filter.
 func (f fileFilter) AddMIMEType(mimeType string) {
-	var _arg0 *C.GtkFileFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkFileFilter // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
@@ -5450,8 +5450,8 @@ func (f fileFilter) AddMIMEType(mimeType string) {
 
 // AddPattern adds a rule allowing a shell style glob to a filter.
 func (f fileFilter) AddPattern(pattern string) {
-	var _arg0 *C.GtkFileFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkFileFilter // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(pattern))
@@ -5463,7 +5463,7 @@ func (f fileFilter) AddPattern(pattern string) {
 // AddPixbufFormats adds a rule allowing image files in the formats
 // supported by GdkPixbuf.
 func (f fileFilter) AddPixbufFormats() {
-	var _arg0 *C.GtkFileFilter
+	var _arg0 *C.GtkFileFilter // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
@@ -5477,17 +5477,17 @@ func (f fileFilter) AddPixbufFormats() {
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of FileChooser.
 func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
-	var _arg0 *C.GtkFileFilter
-	var _arg1 *C.GtkFileFilterInfo
+	var _arg0 *C.GtkFileFilter     // out
+	var _arg1 *C.GtkFileFilterInfo // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkFileFilterInfo)(unsafe.Pointer(filterInfo.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_file_filter_filter(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -5499,15 +5499,15 @@ func (f fileFilter) Filter(filterInfo *FileFilterInfo) bool {
 // Name gets the human-readable name for the filter. See
 // gtk_file_filter_set_name().
 func (f fileFilter) Name() string {
-	var _arg0 *C.GtkFileFilter
+	var _arg0 *C.GtkFileFilter // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_file_filter_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -5518,8 +5518,8 @@ func (f fileFilter) Name() string {
 // that will be displayed in the file selector user interface if there is a
 // selectable list of filters.
 func (f fileFilter) SetName(name string) {
-	var _arg0 *C.GtkFileFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkFileFilter // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkFileFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -5754,17 +5754,17 @@ func marshalPageSetup(p uintptr) (interface{}, error) {
 
 // BottomMargin gets the bottom margin in units of @unit.
 func (s pageSetup) BottomMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_bottom_margin(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5773,17 +5773,17 @@ func (s pageSetup) BottomMargin(unit Unit) float64 {
 
 // LeftMargin gets the left margin in units of @unit.
 func (s pageSetup) LeftMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_left_margin(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5795,17 +5795,17 @@ func (s pageSetup) LeftMargin(unit Unit) float64 {
 // Note that this function takes orientation and margins into consideration.
 // See gtk_page_setup_get_paper_height().
 func (s pageSetup) PageHeight(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_page_height(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5817,17 +5817,17 @@ func (s pageSetup) PageHeight(unit Unit) float64 {
 // Note that this function takes orientation and margins into consideration.
 // See gtk_page_setup_get_paper_width().
 func (s pageSetup) PageWidth(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_page_width(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5839,17 +5839,17 @@ func (s pageSetup) PageWidth(unit Unit) float64 {
 // Note that this function takes orientation, but not margins into
 // consideration. See gtk_page_setup_get_page_height().
 func (s pageSetup) PaperHeight(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_paper_height(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5861,17 +5861,17 @@ func (s pageSetup) PaperHeight(unit Unit) float64 {
 // Note that this function takes orientation, but not margins into
 // consideration. See gtk_page_setup_get_page_width().
 func (s pageSetup) PaperWidth(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_paper_width(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5880,17 +5880,17 @@ func (s pageSetup) PaperWidth(unit Unit) float64 {
 
 // RightMargin gets the right margin in units of @unit.
 func (s pageSetup) RightMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_right_margin(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5899,17 +5899,17 @@ func (s pageSetup) RightMargin(unit Unit) float64 {
 
 // TopMargin gets the top margin in units of @unit.
 func (s pageSetup) TopMargin(unit Unit) float64 {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_page_setup_get_top_margin(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -5919,18 +5919,18 @@ func (s pageSetup) TopMargin(unit Unit) float64 {
 // LoadFile reads the page setup from the file @file_name. See
 // gtk_page_setup_to_file().
 func (s pageSetup) LoadFile(fileName *string) error {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 *C.char
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_page_setup_load_file(_arg0, _arg1, _cerr)
+	C.gtk_page_setup_load_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -5940,20 +5940,20 @@ func (s pageSetup) LoadFile(fileName *string) error {
 // LoadKeyFile reads the page setup from the group @group_name in the key
 // file @key_file.
 func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 *C.GKeyFile
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.GKeyFile     // out
+	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	_arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, _cerr)
+	C.gtk_page_setup_load_key_file(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -5962,9 +5962,9 @@ func (s pageSetup) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
 
 // SetBottomMargin sets the bottom margin of the PageSetup.
 func (s pageSetup) SetBottomMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.gdouble
-	var _arg2 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(margin)
@@ -5975,9 +5975,9 @@ func (s pageSetup) SetBottomMargin(margin float64, unit Unit) {
 
 // SetLeftMargin sets the left margin of the PageSetup.
 func (s pageSetup) SetLeftMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.gdouble
-	var _arg2 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(margin)
@@ -5988,8 +5988,8 @@ func (s pageSetup) SetLeftMargin(margin float64, unit Unit) {
 
 // SetOrientation sets the page orientation of the PageSetup.
 func (s pageSetup) SetOrientation(orientation PageOrientation) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.GtkPageOrientation
+	var _arg0 *C.GtkPageSetup      // out
+	var _arg1 C.GtkPageOrientation // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPageOrientation)(orientation)
@@ -6000,8 +6000,8 @@ func (s pageSetup) SetOrientation(orientation PageOrientation) {
 // SetPaperSize sets the paper size of the PageSetup without changing the
 // margins. See gtk_page_setup_set_paper_size_and_default_margins().
 func (s pageSetup) SetPaperSize(size *PaperSize) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 *C.GtkPaperSize
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.GtkPaperSize // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size.Native()))
@@ -6012,8 +6012,8 @@ func (s pageSetup) SetPaperSize(size *PaperSize) {
 // SetPaperSizeAndDefaultMargins sets the paper size of the PageSetup and
 // modifies the margins according to the new paper size.
 func (s pageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 *C.GtkPaperSize
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.GtkPaperSize // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(size.Native()))
@@ -6023,9 +6023,9 @@ func (s pageSetup) SetPaperSizeAndDefaultMargins(size *PaperSize) {
 
 // SetRightMargin sets the right margin of the PageSetup.
 func (s pageSetup) SetRightMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.gdouble
-	var _arg2 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(margin)
@@ -6036,9 +6036,9 @@ func (s pageSetup) SetRightMargin(margin float64, unit Unit) {
 
 // SetTopMargin sets the top margin of the PageSetup.
 func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 C.gdouble
-	var _arg2 C.GtkUnit
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 C.gdouble       // out
+	var _arg2 C.GtkUnit       // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(margin)
@@ -6049,18 +6049,18 @@ func (s pageSetup) SetTopMargin(margin float64, unit Unit) {
 
 // ToFile: this function saves the information from @setup to @file_name.
 func (s pageSetup) ToFile(fileName *string) error {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 *C.char
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_page_setup_to_file(_arg0, _arg1, _cerr)
+	C.gtk_page_setup_to_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -6069,9 +6069,9 @@ func (s pageSetup) ToFile(fileName *string) error {
 
 // ToKeyFile: this function adds the page setup from @setup to @key_file.
 func (s pageSetup) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
-	var _arg0 *C.GtkPageSetup
-	var _arg1 *C.GKeyFile
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkPageSetup // out
+	var _arg1 *C.GKeyFile     // out
+	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GtkPageSetup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
@@ -6194,15 +6194,15 @@ func marshalPrintContext(p uintptr) (interface{}, error) {
 // DPIX obtains the horizontal resolution of the PrintContext, in dots per
 // inch.
 func (c printContext) DPIX() float64 {
-	var _arg0 *C.GtkPrintContext
+	var _arg0 *C.GtkPrintContext // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_context_get_dpi_x(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6212,15 +6212,15 @@ func (c printContext) DPIX() float64 {
 // DPIY obtains the vertical resolution of the PrintContext, in dots per
 // inch.
 func (c printContext) DPIY() float64 {
-	var _arg0 *C.GtkPrintContext
+	var _arg0 *C.GtkPrintContext // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_context_get_dpi_y(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6230,23 +6230,23 @@ func (c printContext) DPIY() float64 {
 // HardMargins obtains the hardware printer margins of the PrintContext, in
 // units.
 func (c printContext) HardMargins() (top float64, bottom float64, left float64, right float64, ok bool) {
-	var _arg0 *C.GtkPrintContext
+	var _arg0 *C.GtkPrintContext // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
-	var _cret C.gboolean
+	var _arg1 C.gdouble  // in
+	var _arg2 C.gdouble  // in
+	var _arg3 C.gdouble  // in
+	var _arg4 C.gdouble  // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_context_get_hard_margins(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
-	var _top float64
-	var _bottom float64
-	var _left float64
-	var _right float64
-	var _ok bool
+	var _top float64    // out
+	var _bottom float64 // out
+	var _left float64   // out
+	var _right float64  // out
+	var _ok bool        // out
 
 	_top = (float64)(_arg1)
 	_bottom = (float64)(_arg2)
@@ -6261,15 +6261,15 @@ func (c printContext) HardMargins() (top float64, bottom float64, left float64, 
 
 // Height obtains the height of the PrintContext, in pixels.
 func (c printContext) Height() float64 {
-	var _arg0 *C.GtkPrintContext
+	var _arg0 *C.GtkPrintContext // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_context_get_height(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6278,15 +6278,15 @@ func (c printContext) Height() float64 {
 
 // Width obtains the width of the PrintContext, in pixels.
 func (c printContext) Width() float64 {
-	var _arg0 *C.GtkPrintContext
+	var _arg0 *C.GtkPrintContext // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_context_get_width(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6299,10 +6299,10 @@ func (c printContext) Width() float64 {
 // preview, it is not needed for printing, since GTK+ itself creates a
 // suitable cairo context in that case.
 func (c printContext) SetCairoContext(cr *cairo.Context, dpiX float64, dpiY float64) {
-	var _arg0 *C.GtkPrintContext
-	var _arg1 *C.cairo_t
-	var _arg2 C.double
-	var _arg3 C.double
+	var _arg0 *C.GtkPrintContext // out
+	var _arg1 *C.cairo_t         // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
 
 	_arg0 = (*C.GtkPrintContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
@@ -6504,8 +6504,8 @@ func marshalPrintSettings(p uintptr) (interface{}, error) {
 
 // Foreach calls @func for each key-value pair of @settings.
 func (s printSettings) Foreach(fn PrintSettingsFunc) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkPrintSettingsFunc
+	var _arg0 *C.GtkPrintSettings    // out
+	var _arg1 C.GtkPrintSettingsFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
@@ -6517,18 +6517,18 @@ func (s printSettings) Foreach(fn PrintSettingsFunc) {
 
 // Get looks up the string value associated with @key.
 func (s printSettings) Get(key string) string {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -6540,18 +6540,18 @@ func (s printSettings) Get(key string) string {
 //
 // The string “true” represents true, any other string false.
 func (s printSettings) Bool(key string) bool {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_bool(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -6562,15 +6562,15 @@ func (s printSettings) Bool(key string) bool {
 
 // Collate gets the value of GTK_PRINT_SETTINGS_COLLATE.
 func (s printSettings) Collate() bool {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_collate(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -6581,15 +6581,15 @@ func (s printSettings) Collate() bool {
 
 // DefaultSource gets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
 func (s printSettings) DefaultSource() string {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_default_source(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -6598,15 +6598,15 @@ func (s printSettings) DefaultSource() string {
 
 // Dither gets the value of GTK_PRINT_SETTINGS_DITHER.
 func (s printSettings) Dither() string {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_dither(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -6615,18 +6615,18 @@ func (s printSettings) Dither() string {
 
 // Double returns the double value associated with @key, or 0.
 func (s printSettings) Double(key string) float64 {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_double(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6639,20 +6639,20 @@ func (s printSettings) Double(key string) float64 {
 //
 // Floating point numbers are parsed with g_ascii_strtod().
 func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gdouble
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gdouble           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(def)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_double_with_default(_arg0, _arg1, _arg2)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6661,15 +6661,15 @@ func (s printSettings) DoubleWithDefault(key string, def float64) float64 {
 
 // Finishings gets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 func (s printSettings) Finishings() string {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_finishings(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -6678,18 +6678,18 @@ func (s printSettings) Finishings() string {
 
 // Int returns the integer value of @key, or 0.
 func (s printSettings) Int(key string) int {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_int(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -6699,20 +6699,20 @@ func (s printSettings) Int(key string) int {
 // IntWithDefault returns the value of @key, interpreted as an integer, or
 // the default value.
 func (s printSettings) IntWithDefault(key string, def int) int {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gint
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(def)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_int_with_default(_arg0, _arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -6722,20 +6722,20 @@ func (s printSettings) IntWithDefault(key string, def int) int {
 // Length returns the value associated with @key, interpreted as a length.
 // The returned value is converted to @units.
 func (s printSettings) Length(key string, unit Unit) float64 {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 C.GtkUnit
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_length(_arg0, _arg1, _arg2)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6746,15 +6746,15 @@ func (s printSettings) Length(key string, unit Unit) float64 {
 //
 // The set of media types is defined in PWG 5101.1-2002 PWG.
 func (s printSettings) MediaType() string {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_media_type(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -6763,15 +6763,15 @@ func (s printSettings) MediaType() string {
 
 // NCopies gets the value of GTK_PRINT_SETTINGS_N_COPIES.
 func (s printSettings) NCopies() int {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_n_copies(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -6780,15 +6780,15 @@ func (s printSettings) NCopies() int {
 
 // NumberUp gets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
 func (s printSettings) NumberUp() int {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_number_up(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -6797,15 +6797,15 @@ func (s printSettings) NumberUp() int {
 
 // OutputBin gets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 func (s printSettings) OutputBin() string {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_output_bin(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -6815,17 +6815,17 @@ func (s printSettings) OutputBin() string {
 // PaperHeight gets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT, converted
 // to @unit.
 func (s printSettings) PaperHeight(unit Unit) float64 {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_paper_height(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6835,17 +6835,17 @@ func (s printSettings) PaperHeight(unit Unit) float64 {
 // PaperWidth gets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH, converted to
 // @unit.
 func (s printSettings) PaperWidth(unit Unit) float64 {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkUnit
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkUnit)(unit)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_paper_width(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6855,15 +6855,15 @@ func (s printSettings) PaperWidth(unit Unit) float64 {
 // Printer: convenience function to obtain the value of
 // GTK_PRINT_SETTINGS_PRINTER.
 func (s printSettings) Printer() string {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_print_settings_get_printer(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -6872,15 +6872,15 @@ func (s printSettings) Printer() string {
 
 // PrinterLpi gets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
 func (s printSettings) PrinterLpi() float64 {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_printer_lpi(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6889,15 +6889,15 @@ func (s printSettings) PrinterLpi() float64 {
 
 // Resolution gets the value of GTK_PRINT_SETTINGS_RESOLUTION.
 func (s printSettings) Resolution() int {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_resolution(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -6906,15 +6906,15 @@ func (s printSettings) Resolution() int {
 
 // ResolutionX gets the value of GTK_PRINT_SETTINGS_RESOLUTION_X.
 func (s printSettings) ResolutionX() int {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_resolution_x(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -6923,15 +6923,15 @@ func (s printSettings) ResolutionX() int {
 
 // ResolutionY gets the value of GTK_PRINT_SETTINGS_RESOLUTION_Y.
 func (s printSettings) ResolutionY() int {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_print_settings_get_resolution_y(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -6940,15 +6940,15 @@ func (s printSettings) ResolutionY() int {
 
 // Reverse gets the value of GTK_PRINT_SETTINGS_REVERSE.
 func (s printSettings) Reverse() bool {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_reverse(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -6959,15 +6959,15 @@ func (s printSettings) Reverse() bool {
 
 // Scale gets the value of GTK_PRINT_SETTINGS_SCALE.
 func (s printSettings) Scale() float64 {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_print_settings_get_scale(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -6976,15 +6976,15 @@ func (s printSettings) Scale() float64 {
 
 // UseColor gets the value of GTK_PRINT_SETTINGS_USE_COLOR.
 func (s printSettings) UseColor() bool {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_get_use_color(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -6995,18 +6995,18 @@ func (s printSettings) UseColor() bool {
 
 // HasKey returns true, if a value is associated with @key.
 func (s printSettings) HasKey(key string) bool {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_settings_has_key(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -7019,18 +7019,18 @@ func (s printSettings) HasKey(key string) bool {
 // be loaded then error is set to either a Error or FileError. See
 // gtk_print_settings_to_file().
 func (s printSettings) LoadFile(fileName *string) error {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_print_settings_load_file(_arg0, _arg1, _cerr)
+	C.gtk_print_settings_load_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -7041,20 +7041,20 @@ func (s printSettings) LoadFile(fileName *string) error {
 // @key_file. If the file could not be loaded then error is set to either a
 // Error or FileError.
 func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) error {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.GKeyFile
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.GKeyFile         // out
+	var _arg2 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
 	_arg2 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_print_settings_load_key_file(_arg0, _arg1, _arg2, _cerr)
+	C.gtk_print_settings_load_key_file(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -7063,9 +7063,9 @@ func (s printSettings) LoadKeyFile(keyFile *glib.KeyFile, groupName string) erro
 
 // Set associates @value with @key.
 func (s printSettings) Set(key string, value string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -7078,9 +7078,9 @@ func (s printSettings) Set(key string, value string) {
 
 // SetBool sets @key to a boolean value.
 func (s printSettings) SetBool(key string, value bool) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gboolean
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gboolean          // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -7094,8 +7094,8 @@ func (s printSettings) SetBool(key string, value bool) {
 
 // SetCollate sets the value of GTK_PRINT_SETTINGS_COLLATE.
 func (s printSettings) SetCollate(collate bool) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	if collate {
@@ -7107,8 +7107,8 @@ func (s printSettings) SetCollate(collate bool) {
 
 // SetDefaultSource sets the value of GTK_PRINT_SETTINGS_DEFAULT_SOURCE.
 func (s printSettings) SetDefaultSource(defaultSource string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(defaultSource))
@@ -7119,8 +7119,8 @@ func (s printSettings) SetDefaultSource(defaultSource string) {
 
 // SetDither sets the value of GTK_PRINT_SETTINGS_DITHER.
 func (s printSettings) SetDither(dither string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(dither))
@@ -7131,9 +7131,9 @@ func (s printSettings) SetDither(dither string) {
 
 // SetDouble sets @key to a double value.
 func (s printSettings) SetDouble(key string, value float64) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gdouble
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gdouble           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -7145,8 +7145,8 @@ func (s printSettings) SetDouble(key string, value float64) {
 
 // SetDuplex sets the value of GTK_PRINT_SETTINGS_DUPLEX.
 func (s printSettings) SetDuplex(duplex PrintDuplex) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkPrintDuplex
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPrintDuplex    // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPrintDuplex)(duplex)
@@ -7156,8 +7156,8 @@ func (s printSettings) SetDuplex(duplex PrintDuplex) {
 
 // SetFinishings sets the value of GTK_PRINT_SETTINGS_FINISHINGS.
 func (s printSettings) SetFinishings(finishings string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(finishings))
@@ -7168,9 +7168,9 @@ func (s printSettings) SetFinishings(finishings string) {
 
 // SetInt sets @key to an integer value.
 func (s printSettings) SetInt(key string, value int) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gint
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -7182,10 +7182,10 @@ func (s printSettings) SetInt(key string, value int) {
 
 // SetLength associates a length in units of @unit with @key.
 func (s printSettings) SetLength(key string, value float64, unit Unit) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gdouble
-	var _arg3 C.GtkUnit
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gdouble           // out
+	var _arg3 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -7200,8 +7200,8 @@ func (s printSettings) SetLength(key string, value float64, unit Unit) {
 //
 // The set of media types is defined in PWG 5101.1-2002 PWG.
 func (s printSettings) SetMediaType(mediaType string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(mediaType))
@@ -7212,8 +7212,8 @@ func (s printSettings) SetMediaType(mediaType string) {
 
 // SetNCopies sets the value of GTK_PRINT_SETTINGS_N_COPIES.
 func (s printSettings) SetNCopies(numCopies int) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gint
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(numCopies)
@@ -7223,8 +7223,8 @@ func (s printSettings) SetNCopies(numCopies int) {
 
 // SetNumberUp sets the value of GTK_PRINT_SETTINGS_NUMBER_UP.
 func (s printSettings) SetNumberUp(numberUp int) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gint
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(numberUp)
@@ -7234,8 +7234,8 @@ func (s printSettings) SetNumberUp(numberUp int) {
 
 // SetNumberUpLayout sets the value of GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT.
 func (s printSettings) SetNumberUpLayout(numberUpLayout NumberUpLayout) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkNumberUpLayout
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkNumberUpLayout // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkNumberUpLayout)(numberUpLayout)
@@ -7245,8 +7245,8 @@ func (s printSettings) SetNumberUpLayout(numberUpLayout NumberUpLayout) {
 
 // SetOrientation sets the value of GTK_PRINT_SETTINGS_ORIENTATION.
 func (s printSettings) SetOrientation(orientation PageOrientation) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkPageOrientation
+	var _arg0 *C.GtkPrintSettings  // out
+	var _arg1 C.GtkPageOrientation // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPageOrientation)(orientation)
@@ -7256,8 +7256,8 @@ func (s printSettings) SetOrientation(orientation PageOrientation) {
 
 // SetOutputBin sets the value of GTK_PRINT_SETTINGS_OUTPUT_BIN.
 func (s printSettings) SetOutputBin(outputBin string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(outputBin))
@@ -7268,7 +7268,7 @@ func (s printSettings) SetOutputBin(outputBin string) {
 
 // SetPageRanges sets the value of GTK_PRINT_SETTINGS_PAGE_RANGES.
 func (s printSettings) SetPageRanges(pageRanges []PageRange) {
-	var _arg0 *C.GtkPrintSettings
+	var _arg0 *C.GtkPrintSettings // out
 	var _arg1 *C.GtkPageRange
 	var _arg2 C.gint
 
@@ -7281,8 +7281,8 @@ func (s printSettings) SetPageRanges(pageRanges []PageRange) {
 
 // SetPageSet sets the value of GTK_PRINT_SETTINGS_PAGE_SET.
 func (s printSettings) SetPageSet(pageSet PageSet) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkPageSet
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPageSet        // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPageSet)(pageSet)
@@ -7292,9 +7292,9 @@ func (s printSettings) SetPageSet(pageSet PageSet) {
 
 // SetPaperHeight sets the value of GTK_PRINT_SETTINGS_PAPER_HEIGHT.
 func (s printSettings) SetPaperHeight(height float64, unit Unit) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gdouble
-	var _arg2 C.GtkUnit
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gdouble           // out
+	var _arg2 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(height)
@@ -7306,8 +7306,8 @@ func (s printSettings) SetPaperHeight(height float64, unit Unit) {
 // SetPaperSize sets the value of GTK_PRINT_SETTINGS_PAPER_FORMAT,
 // GTK_PRINT_SETTINGS_PAPER_WIDTH and GTK_PRINT_SETTINGS_PAPER_HEIGHT.
 func (s printSettings) SetPaperSize(paperSize *PaperSize) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.GtkPaperSize
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.GtkPaperSize     // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkPaperSize)(unsafe.Pointer(paperSize.Native()))
@@ -7317,9 +7317,9 @@ func (s printSettings) SetPaperSize(paperSize *PaperSize) {
 
 // SetPaperWidth sets the value of GTK_PRINT_SETTINGS_PAPER_WIDTH.
 func (s printSettings) SetPaperWidth(width float64, unit Unit) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gdouble
-	var _arg2 C.GtkUnit
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gdouble           // out
+	var _arg2 C.GtkUnit           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(width)
@@ -7330,8 +7330,8 @@ func (s printSettings) SetPaperWidth(width float64, unit Unit) {
 
 // SetPrintPages sets the value of GTK_PRINT_SETTINGS_PRINT_PAGES.
 func (s printSettings) SetPrintPages(pages PrintPages) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkPrintPages
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPrintPages     // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPrintPages)(pages)
@@ -7342,8 +7342,8 @@ func (s printSettings) SetPrintPages(pages PrintPages) {
 // SetPrinter: convenience function to set GTK_PRINT_SETTINGS_PRINTER to
 // @printer.
 func (s printSettings) SetPrinter(printer string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(printer))
@@ -7354,8 +7354,8 @@ func (s printSettings) SetPrinter(printer string) {
 
 // SetPrinterLpi sets the value of GTK_PRINT_SETTINGS_PRINTER_LPI.
 func (s printSettings) SetPrinterLpi(lpi float64) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gdouble
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gdouble           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(lpi)
@@ -7365,8 +7365,8 @@ func (s printSettings) SetPrinterLpi(lpi float64) {
 
 // SetQuality sets the value of GTK_PRINT_SETTINGS_QUALITY.
 func (s printSettings) SetQuality(quality PrintQuality) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.GtkPrintQuality
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.GtkPrintQuality   // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPrintQuality)(quality)
@@ -7377,8 +7377,8 @@ func (s printSettings) SetQuality(quality PrintQuality) {
 // SetResolution sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
 func (s printSettings) SetResolution(resolution int) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gint
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(resolution)
@@ -7389,9 +7389,9 @@ func (s printSettings) SetResolution(resolution int) {
 // SetResolutionXY sets the values of GTK_PRINT_SETTINGS_RESOLUTION,
 // GTK_PRINT_SETTINGS_RESOLUTION_X and GTK_PRINT_SETTINGS_RESOLUTION_Y.
 func (s printSettings) SetResolutionXY(resolutionX int, resolutionY int) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gint              // out
+	var _arg2 C.gint              // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(resolutionX)
@@ -7402,8 +7402,8 @@ func (s printSettings) SetResolutionXY(resolutionX int, resolutionY int) {
 
 // SetReverse sets the value of GTK_PRINT_SETTINGS_REVERSE.
 func (s printSettings) SetReverse(reverse bool) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	if reverse {
@@ -7415,8 +7415,8 @@ func (s printSettings) SetReverse(reverse bool) {
 
 // SetScale sets the value of GTK_PRINT_SETTINGS_SCALE.
 func (s printSettings) SetScale(scale float64) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gdouble
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gdouble           // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(scale)
@@ -7426,8 +7426,8 @@ func (s printSettings) SetScale(scale float64) {
 
 // SetUseColor sets the value of GTK_PRINT_SETTINGS_USE_COLOR.
 func (s printSettings) SetUseColor(useColor bool) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	if useColor {
@@ -7441,18 +7441,18 @@ func (s printSettings) SetUseColor(useColor bool) {
 // @file_name. If the file could not be loaded then error is set to either a
 // Error or FileError.
 func (s printSettings) ToFile(fileName *string) error {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(fileName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_print_settings_to_file(_arg0, _arg1, _cerr)
+	C.gtk_print_settings_to_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -7462,9 +7462,9 @@ func (s printSettings) ToFile(fileName *string) error {
 // ToKeyFile: this function adds the print settings from @settings to
 // @key_file.
 func (s printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.GKeyFile
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.GKeyFile         // out
+	var _arg2 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GKeyFile)(unsafe.Pointer(keyFile.Native()))
@@ -7477,8 +7477,8 @@ func (s printSettings) ToKeyFile(keyFile *glib.KeyFile, groupName string) {
 // Unset removes any value associated with @key. This has the same effect as
 // setting the value to nil.
 func (s printSettings) Unset(key string) {
-	var _arg0 *C.GtkPrintSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPrintSettings // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkPrintSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -7599,8 +7599,8 @@ func marshalRecentFilter(p uintptr) (interface{}, error) {
 // AddAge adds a rule that allows resources based on their age - that is,
 // the number of days elapsed since they were last modified.
 func (f recentFilter) AddAge(days int) {
-	var _arg0 *C.GtkRecentFilter
-	var _arg1 C.gint
+	var _arg0 *C.GtkRecentFilter // out
+	var _arg1 C.gint             // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gint(days)
@@ -7611,8 +7611,8 @@ func (f recentFilter) AddAge(days int) {
 // AddApplication adds a rule that allows resources based on the name of the
 // application that has registered them.
 func (f recentFilter) AddApplication(application string) {
-	var _arg0 *C.GtkRecentFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentFilter // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(application))
@@ -7624,8 +7624,8 @@ func (f recentFilter) AddApplication(application string) {
 // AddGroup adds a rule that allows resources based on the name of the group
 // to which they belong
 func (f recentFilter) AddGroup(group string) {
-	var _arg0 *C.GtkRecentFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentFilter // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(group))
@@ -7637,8 +7637,8 @@ func (f recentFilter) AddGroup(group string) {
 // AddMIMEType adds a rule that allows resources based on their registered
 // MIME type.
 func (f recentFilter) AddMIMEType(mimeType string) {
-	var _arg0 *C.GtkRecentFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentFilter // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(mimeType))
@@ -7650,8 +7650,8 @@ func (f recentFilter) AddMIMEType(mimeType string) {
 // AddPattern adds a rule that allows resources based on a pattern matching
 // their display name.
 func (f recentFilter) AddPattern(pattern string) {
-	var _arg0 *C.GtkRecentFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentFilter // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(pattern))
@@ -7663,7 +7663,7 @@ func (f recentFilter) AddPattern(pattern string) {
 // AddPixbufFormats adds a rule allowing image files in the formats
 // supported by GdkPixbuf.
 func (f recentFilter) AddPixbufFormats() {
-	var _arg0 *C.GtkRecentFilter
+	var _arg0 *C.GtkRecentFilter // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 
@@ -7679,17 +7679,17 @@ func (f recentFilter) AddPixbufFormats() {
 // This function will not typically be used by applications; it is intended
 // principally for use in the implementation of RecentChooser.
 func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
-	var _arg0 *C.GtkRecentFilter
-	var _arg1 *C.GtkRecentFilterInfo
+	var _arg0 *C.GtkRecentFilter     // out
+	var _arg1 *C.GtkRecentFilterInfo // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkRecentFilterInfo)(unsafe.Pointer(filterInfo.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_filter_filter(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -7701,15 +7701,15 @@ func (f recentFilter) Filter(filterInfo *RecentFilterInfo) bool {
 // Name gets the human-readable name for the filter. See
 // gtk_recent_filter_set_name().
 func (f recentFilter) Name() string {
-	var _arg0 *C.GtkRecentFilter
+	var _arg0 *C.GtkRecentFilter // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_filter_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -7720,8 +7720,8 @@ func (f recentFilter) Name() string {
 // that will be displayed in the recently used resources selector user
 // interface if there is a selectable list of filters.
 func (f recentFilter) SetName(name string) {
-	var _arg0 *C.GtkRecentFilter
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentFilter // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkRecentFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -7834,8 +7834,8 @@ func marshalTooltip(p uintptr) (interface{}, error) {
 // tooltip, which can be configured using gtk_tooltip_set_markup() and
 // gtk_tooltip_set_icon().
 func (t tooltip) SetCustom(customWidget Widget) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(customWidget.Native()))
@@ -7846,8 +7846,8 @@ func (t tooltip) SetCustom(customWidget Widget) {
 // SetIcon sets the icon of the tooltip (which is in front of the text) to
 // be @pixbuf. If @pixbuf is nil, the image will be hidden.
 func (t tooltip) SetIcon(pixbuf gdkpixbuf.Pixbuf) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.GdkPixbuf
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.GdkPixbuf  // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -7859,9 +7859,9 @@ func (t tooltip) SetIcon(pixbuf gdkpixbuf.Pixbuf) {
 // text) to be the icon indicated by @gicon with the size indicated by
 // @size. If @gicon is nil, the image will be hidden.
 func (t tooltip) SetIconFromGIcon(gicon gio.Icon, size int) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.GIcon
-	var _arg2 C.GtkIconSize
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(gicon.Native()))
@@ -7874,9 +7874,9 @@ func (t tooltip) SetIconFromGIcon(gicon gio.Icon, size int) {
 // the text) to be the icon indicated by @icon_name with the size indicated
 // by @size. If @icon_name is nil, the image will be hidden.
 func (t tooltip) SetIconFromIconName(iconName string, size int) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.gchar
-	var _arg2 C.GtkIconSize
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
@@ -7890,9 +7890,9 @@ func (t tooltip) SetIconFromIconName(iconName string, size int) {
 // text) to be the stock item indicated by @stock_id with the size indicated
 // by @size. If @stock_id is nil, the image will be hidden.
 func (t tooltip) SetIconFromStock(stockId string, size int) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.gchar
-	var _arg2 C.GtkIconSize
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
@@ -7906,8 +7906,8 @@ func (t tooltip) SetIconFromStock(stockId string, size int) {
 // with the [Pango text markup language][PangoMarkupFormat]. If @markup is
 // nil, the label will be hidden.
 func (t tooltip) SetMarkup(markup string) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(markup))
@@ -7919,8 +7919,8 @@ func (t tooltip) SetMarkup(markup string) {
 // SetText sets the text of the tooltip to be @text. If @text is nil, the
 // label will be hidden. See also gtk_tooltip_set_markup().
 func (t tooltip) SetText(text string) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkTooltip // out
+	var _arg1 *C.gchar      // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -7938,8 +7938,8 @@ func (t tooltip) SetText(text string) {
 // functions for this: gtk_tree_view_set_tooltip_row() and
 // gtk_tree_view_set_tooltip_cell().
 func (t tooltip) SetTipArea(rect *gdk.Rectangle) {
-	var _arg0 *C.GtkTooltip
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GtkTooltip   // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkTooltip)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))

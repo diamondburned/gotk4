@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -153,9 +153,9 @@ func marshalIconFactory(p uintptr) (interface{}, error) {
 // default icons. If an icon already existed in @factory for @stock_id, it
 // is unreferenced and replaced with the new @icon_set.
 func (f iconFactory) Add(stockId string, iconSet *IconSet) {
-	var _arg0 *C.GtkIconFactory
-	var _arg1 *C.gchar
-	var _arg2 *C.GtkIconSet
+	var _arg0 *C.GtkIconFactory // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.GtkIconSet     // out
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
@@ -172,7 +172,7 @@ func (f iconFactory) Add(stockId string, iconSet *IconSet) {
 // that comes with icons. The default icon factories can be overridden by
 // themes.
 func (f iconFactory) AddDefault() {
-	var _arg0 *C.GtkIconFactory
+	var _arg0 *C.GtkIconFactory // out
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 
@@ -183,7 +183,7 @@ func (f iconFactory) AddDefault() {
 // factories. Not normally used; you might use it for a library that can be
 // unloaded or shut down.
 func (f iconFactory) RemoveDefault() {
-	var _arg0 *C.GtkIconFactory
+	var _arg0 *C.GtkIconFactory // out
 
 	_arg0 = (*C.GtkIconFactory)(unsafe.Pointer(f.Native()))
 

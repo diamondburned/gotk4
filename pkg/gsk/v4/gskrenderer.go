@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -78,15 +78,15 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 
 // IsRealized checks whether the @renderer is realized or not.
 func (r renderer) IsRealized() bool {
-	var _arg0 *C.GskRenderer
+	var _arg0 *C.GskRenderer // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gsk_renderer_is_realized(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -98,17 +98,17 @@ func (r renderer) IsRealized() bool {
 // Realize creates the resources needed by the @renderer to render the scene
 // graph.
 func (r renderer) Realize(surface gdk.Surface) error {
-	var _arg0 *C.GskRenderer
-	var _arg1 *C.GdkSurface
+	var _arg0 *C.GskRenderer // out
+	var _arg1 *C.GdkSurface  // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gsk_renderer_realize(_arg0, _arg1, _cerr)
+	C.gsk_renderer_realize(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -126,9 +126,9 @@ func (r renderer) Realize(surface gdk.Surface) error {
 // The @renderer will acquire a reference on the `GskRenderNode` tree while
 // the rendering is in progress.
 func (r renderer) Render(root RenderNode, region *cairo.Region) {
-	var _arg0 *C.GskRenderer
-	var _arg1 *C.GskRenderNode
-	var _arg2 *C.cairo_region_t
+	var _arg0 *C.GskRenderer    // out
+	var _arg1 *C.GskRenderNode  // out
+	var _arg2 *C.cairo_region_t // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(root.Native()))
@@ -139,7 +139,7 @@ func (r renderer) Render(root RenderNode, region *cairo.Region) {
 
 // Unrealize releases all the resources created by gsk_renderer_realize().
 func (r renderer) Unrealize() {
-	var _arg0 *C.GskRenderer
+	var _arg0 *C.GskRenderer // out
 
 	_arg0 = (*C.GskRenderer)(unsafe.Pointer(r.Native()))
 

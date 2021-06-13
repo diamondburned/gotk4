@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -48,15 +48,15 @@ func (a *Atom) Native() unsafe.Pointer {
 
 // Name determines the string corresponding to an atom.
 func (a *Atom) Name() string {
-	var _arg0 C.GdkAtom
+	var _arg0 C.GdkAtom // out
 
 	_arg0 = (C.GdkAtom)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gdk_atom_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -91,14 +91,14 @@ func (p *Point) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (p *Point) X() int {
-	var v int
+	var v int // out
 	v = (int)(p.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (p *Point) Y() int {
-	var v int
+	var v int // out
 	v = (int)(p.native.y)
 	return v
 }
@@ -131,45 +131,45 @@ func (r *Rectangle) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (r *Rectangle) X() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (r *Rectangle) Y() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (r *Rectangle) Width() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (r *Rectangle) Height() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.height)
 	return v
 }
 
 // Equal checks if the two given rectangles are equal.
 func (r *Rectangle) Equal(rect2 *Rectangle) bool {
-	var _arg0 *C.GdkRectangle
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -184,18 +184,18 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 // undefined. If you are only interested in whether the rectangles intersect,
 // but not in the intersecting area itself, pass nil for @dest.
 func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
-	var _arg0 *C.GdkRectangle
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
 	var _dest Rectangle
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -211,8 +211,8 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
 func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
-	var _arg0 *C.GdkRectangle
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))

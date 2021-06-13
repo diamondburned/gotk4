@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -175,8 +175,8 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 // yourself with gtk_action_set_accel_path(), or use
 // `gtk_action_group_add_action_with_accel (..., NULL)`.
 func (a actionGroup) AddAction(action Action) {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 *C.GtkAction
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -192,9 +192,9 @@ func (a actionGroup) AddAction(action Action) {
 //
 // Accel paths are set to `<Actions>/group-name/action-name`.
 func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 *C.GtkAction
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 *C.GtkAction      // out
+	var _arg2 *C.gchar          // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -210,10 +210,10 @@ func (a actionGroup) AddActionWithAccel(action Action, accelerator string) {
 // The “activate” signals of the actions are connected to the callbacks and
 // their accel paths are set to `<Actions>/group-name/action-name`.
 func (a actionGroup) AddActions(entries []ActionEntry, userData interface{}) {
-	var _arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkActionEntry
 	var _arg2 C.guint
-	var _arg3 C.gpointer
+	var _arg3 C.gpointer // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg2 = C.guint(len(entries))
@@ -230,11 +230,11 @@ func (a actionGroup) AddActions(entries []ActionEntry, userData interface{}) {
 // @on_change callback and the accel paths of the actions are set to
 // `<Actions>/group-name/action-name`.
 func (a actionGroup) AddRadioActions(entries []RadioActionEntry, value int, onChange gobject.Callback) {
-	var _arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkRadioActionEntry
 	var _arg2 C.guint
-	var _arg3 C.gint
-	var _arg4 C.GCallback
+	var _arg3 C.gint      // out
+	var _arg4 C.GCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
@@ -253,10 +253,10 @@ func (a actionGroup) AddRadioActions(entries []RadioActionEntry, value int, onCh
 // The “activate” signals of the actions are connected to the callbacks and
 // their accel paths are set to `<Actions>/group-name/action-name`.
 func (a actionGroup) AddToggleActions(entries []ToggleActionEntry, userData interface{}) {
-	var _arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup // out
 	var _arg1 *C.GtkToggleActionEntry
 	var _arg2 C.guint
-	var _arg3 C.gpointer
+	var _arg3 C.gpointer // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg2 = C.guint(len(entries))
@@ -268,15 +268,15 @@ func (a actionGroup) AddToggleActions(entries []ToggleActionEntry, userData inte
 
 // Name gets the name of the action group.
 func (a actionGroup) Name() string {
-	var _arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_group_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -288,15 +288,15 @@ func (a actionGroup) Name() string {
 // are sensitive (see gtk_action_get_sensitive()) and their group is
 // sensitive.
 func (a actionGroup) Sensitive() bool {
-	var _arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_group_get_sensitive(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -309,15 +309,15 @@ func (a actionGroup) Sensitive() bool {
 // only be logically visible (see gtk_action_is_visible()) if they are
 // visible (see gtk_action_get_visible()) and their group is visible.
 func (a actionGroup) Visible() bool {
-	var _arg0 *C.GtkActionGroup
+	var _arg0 *C.GtkActionGroup // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_group_get_visible(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -328,8 +328,8 @@ func (a actionGroup) Visible() bool {
 
 // RemoveAction removes an action object from the action group.
 func (a actionGroup) RemoveAction(action Action) {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 *C.GtkAction
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -340,8 +340,8 @@ func (a actionGroup) RemoveAction(action Action) {
 // SetAccelGroup sets the accelerator group to be used by every action in
 // this group.
 func (a actionGroup) SetAccelGroup(accelGroup AccelGroup) {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 *C.GtkAccelGroup
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 *C.GtkAccelGroup  // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
@@ -351,8 +351,8 @@ func (a actionGroup) SetAccelGroup(accelGroup AccelGroup) {
 
 // SetSensitive changes the sensitivity of @action_group
 func (a actionGroup) SetSensitive(sensitive bool) {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	if sensitive {
@@ -369,8 +369,8 @@ func (a actionGroup) SetSensitive(sensitive bool) {
 // If you’re not using gettext() for localization, see
 // gtk_action_group_set_translate_func().
 func (a actionGroup) SetTranslationDomain(domain string) {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
@@ -381,8 +381,8 @@ func (a actionGroup) SetTranslationDomain(domain string) {
 
 // SetVisible changes the visible of @action_group.
 func (a actionGroup) SetVisible(visible bool) {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	if visible {
@@ -396,18 +396,18 @@ func (a actionGroup) SetVisible(visible bool) {
 // gtk_action_group_set_translate_func(). This is mainly intended for
 // language bindings.
 func (a actionGroup) TranslateString(string string) string {
-	var _arg0 *C.GtkActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkActionGroup // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_group_translate_string(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -442,35 +442,35 @@ func (a *ActionEntry) Native() unsafe.Pointer {
 
 // Name gets the field inside the struct.
 func (a *ActionEntry) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(a.native.name)
 	return v
 }
 
 // StockID gets the field inside the struct.
 func (a *ActionEntry) StockID() string {
-	var v string
+	var v string // out
 	v = C.GoString(a.native.stock_id)
 	return v
 }
 
 // Label gets the field inside the struct.
 func (a *ActionEntry) Label() string {
-	var v string
+	var v string // out
 	v = C.GoString(a.native.label)
 	return v
 }
 
 // Accelerator gets the field inside the struct.
 func (a *ActionEntry) Accelerator() string {
-	var v string
+	var v string // out
 	v = C.GoString(a.native.accelerator)
 	return v
 }
 
 // Tooltip gets the field inside the struct.
 func (a *ActionEntry) Tooltip() string {
-	var v string
+	var v string // out
 	v = C.GoString(a.native.tooltip)
 	return v
 }
@@ -503,42 +503,42 @@ func (r *RadioActionEntry) Native() unsafe.Pointer {
 
 // Name gets the field inside the struct.
 func (r *RadioActionEntry) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.name)
 	return v
 }
 
 // StockID gets the field inside the struct.
 func (r *RadioActionEntry) StockID() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.stock_id)
 	return v
 }
 
 // Label gets the field inside the struct.
 func (r *RadioActionEntry) Label() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.label)
 	return v
 }
 
 // Accelerator gets the field inside the struct.
 func (r *RadioActionEntry) Accelerator() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.accelerator)
 	return v
 }
 
 // Tooltip gets the field inside the struct.
 func (r *RadioActionEntry) Tooltip() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.tooltip)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (r *RadioActionEntry) Value() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.value)
 	return v
 }
@@ -571,42 +571,42 @@ func (t *ToggleActionEntry) Native() unsafe.Pointer {
 
 // Name gets the field inside the struct.
 func (t *ToggleActionEntry) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(t.native.name)
 	return v
 }
 
 // StockID gets the field inside the struct.
 func (t *ToggleActionEntry) StockID() string {
-	var v string
+	var v string // out
 	v = C.GoString(t.native.stock_id)
 	return v
 }
 
 // Label gets the field inside the struct.
 func (t *ToggleActionEntry) Label() string {
-	var v string
+	var v string // out
 	v = C.GoString(t.native.label)
 	return v
 }
 
 // Accelerator gets the field inside the struct.
 func (t *ToggleActionEntry) Accelerator() string {
-	var v string
+	var v string // out
 	v = C.GoString(t.native.accelerator)
 	return v
 }
 
 // Tooltip gets the field inside the struct.
 func (t *ToggleActionEntry) Tooltip() string {
-	var v string
+	var v string // out
 	v = C.GoString(t.native.tooltip)
 	return v
 }
 
 // IsActive gets the field inside the struct.
 func (t *ToggleActionEntry) IsActive() bool {
-	var v bool
+	var v bool // out
 	if t.native.is_active {
 		v = true
 	}

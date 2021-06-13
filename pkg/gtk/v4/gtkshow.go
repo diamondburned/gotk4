@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
@@ -17,9 +17,9 @@ import "C"
 // ShowURI: this function launches the default application for showing a given
 // uri, or shows an error dialog if that fails.
 func ShowURI(parent Window, uri string, timestamp uint32) {
-	var _arg1 *C.GtkWindow
-	var _arg2 *C.char
-	var _arg3 C.guint32
+	var _arg1 *C.GtkWindow // out
+	var _arg2 *C.char      // out
+	var _arg3 C.guint32    // out
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(C.CString(uri))
@@ -38,10 +38,10 @@ func ShowURI(parent Window, uri string, timestamp uint32) {
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
 func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Cancellable) {
-	var _arg1 *C.GtkWindow
-	var _arg2 *C.char
-	var _arg3 C.guint32
-	var _arg4 *C.GCancellable
+	var _arg1 *C.GtkWindow    // out
+	var _arg2 *C.char         // out
+	var _arg3 C.guint32       // out
+	var _arg4 *C.GCancellable // out
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(C.CString(uri))
@@ -55,17 +55,17 @@ func ShowURIFull(parent Window, uri string, timestamp uint32, cancellable gio.Ca
 // ShowURIFullFinish finishes the gtk_show_uri() call and returns the result of
 // the operation.
 func ShowURIFullFinish(parent Window, result gio.AsyncResult) error {
-	var _arg1 *C.GtkWindow
-	var _arg2 *C.GAsyncResult
+	var _arg1 *C.GtkWindow    // out
+	var _arg2 *C.GAsyncResult // out
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_show_uri_full_finish(_arg1, _arg2, _cerr)
+	C.gtk_show_uri_full_finish(_arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

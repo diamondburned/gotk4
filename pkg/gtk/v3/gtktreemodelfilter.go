@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -148,7 +148,7 @@ func marshalTreeModelFilter(p uintptr) (interface{}, error) {
 // unreffed access to nodes. As a side effect of this function, all unreffed
 // iters will be invalid.
 func (f treeModelFilter) ClearCache() {
-	var _arg0 *C.GtkTreeModelFilter
+	var _arg0 *C.GtkTreeModelFilter // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
 
@@ -159,18 +159,18 @@ func (f treeModelFilter) ClearCache() {
 // that corresponds to the row pointed at by @child_iter. If @filter_iter
 // was not set, false is returned.
 func (f treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, bool) {
-	var _arg0 *C.GtkTreeModelFilter
-	var _arg2 *C.GtkTreeIter
+	var _arg0 *C.GtkTreeModelFilter // out
+	var _arg2 *C.GtkTreeIter        // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(childIter.Native()))
 
 	var _filterIter TreeIter
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_model_filter_convert_child_iter_to_iter(_arg0, _arg2, (*C.GtkTreeIter)(unsafe.Pointer(&_filterIter)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -182,8 +182,8 @@ func (f treeModelFilter) ConvertChildIterToIter(childIter *TreeIter) (TreeIter, 
 // ConvertIterToChildIter sets @child_iter to point to the row pointed to by
 // @filter_iter.
 func (f treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
-	var _arg0 *C.GtkTreeModelFilter
-	var _arg2 *C.GtkTreeIter
+	var _arg0 *C.GtkTreeModelFilter // out
+	var _arg2 *C.GtkTreeIter        // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
 	_arg2 = (*C.GtkTreeIter)(unsafe.Pointer(filterIter.Native()))
@@ -198,7 +198,7 @@ func (f treeModelFilter) ConvertIterToChildIter(filterIter *TreeIter) TreeIter {
 // Refilter emits ::row_changed for each row in the child model, which
 // causes the filter to re-evaluate whether a row is visible or not.
 func (f treeModelFilter) Refilter() {
-	var _arg0 *C.GtkTreeModelFilter
+	var _arg0 *C.GtkTreeModelFilter // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
 
@@ -214,8 +214,8 @@ func (f treeModelFilter) Refilter() {
 // gtk_tree_model_filter_set_visible_column() can only be called once for a
 // given filter model.
 func (f treeModelFilter) SetVisibleColumn(column int) {
-	var _arg0 *C.GtkTreeModelFilter
-	var _arg1 C.gint
+	var _arg0 *C.GtkTreeModelFilter // out
+	var _arg1 C.gint                // out
 
 	_arg0 = (*C.GtkTreeModelFilter)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gint(column)

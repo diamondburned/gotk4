@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -42,7 +42,7 @@ func (s *StringChunk) Native() unsafe.Pointer {
 // g_string_chunk_clear() it is not safe to access any of the strings which were
 // contained within it.
 func (c *StringChunk) Clear() {
-	var _arg0 *C.GStringChunk
+	var _arg0 *C.GStringChunk // out
 
 	_arg0 = (*C.GStringChunk)(unsafe.Pointer(c.Native()))
 
@@ -53,7 +53,7 @@ func (c *StringChunk) Clear() {
 // g_string_chunk_free() it is not safe to access any of the strings which were
 // contained within it.
 func (c *StringChunk) Free() {
-	var _arg0 *C.GStringChunk
+	var _arg0 *C.GStringChunk // out
 
 	_arg0 = (*C.GStringChunk)(unsafe.Pointer(c.Native()))
 
@@ -69,18 +69,18 @@ func (c *StringChunk) Free() {
 // duplicates. Also strings added with g_string_chunk_insert() will not be
 // searched by g_string_chunk_insert_const() when looking for duplicates.
 func (c *StringChunk) Insert(string string) string {
-	var _arg0 *C.GStringChunk
-	var _arg1 *C.gchar
+	var _arg0 *C.GStringChunk // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GStringChunk)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_string_chunk_insert(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -99,18 +99,18 @@ func (c *StringChunk) Insert(string string) string {
 // Note that g_string_chunk_insert_const() will not return a pointer to a string
 // added with g_string_chunk_insert(), even if they do match.
 func (c *StringChunk) InsertConst(string string) string {
-	var _arg0 *C.GStringChunk
-	var _arg1 *C.gchar
+	var _arg0 *C.GStringChunk // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GStringChunk)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_string_chunk_insert_const(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -127,20 +127,20 @@ func (c *StringChunk) InsertConst(string string) string {
 // The characters in the returned string can be changed, if necessary, though
 // you should not change anything after the end of the string.
 func (c *StringChunk) InsertLen(string string, len int) string {
-	var _arg0 *C.GStringChunk
-	var _arg1 *C.gchar
-	var _arg2 C.gssize
+	var _arg0 *C.GStringChunk // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gssize        // out
 
 	_arg0 = (*C.GStringChunk)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(len)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_string_chunk_insert_len(_arg0, _arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

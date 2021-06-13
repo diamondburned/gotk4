@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -26,7 +26,7 @@ func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 		panic(`callback not found`)
 	}
 
-	var data interface{}
+	var data interface{} // out
 
 	data = (interface{})(arg0)
 
@@ -41,7 +41,7 @@ func gotk4_DuplicateFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 // DatalistClear frees all the data elements of the datalist. The data elements'
 // destroy functions are called if they have been set.
 func DatalistClear(datalist **Data) {
-	var _arg1 **C.GData
+	var _arg1 **C.GData // out
 
 	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
@@ -58,8 +58,8 @@ func DatalistClear(datalist **Data) {
 // changes made during the g_datalist_foreach() call, other than skipping over
 // elements that are removed.
 func DatalistForeach(datalist **Data, fn DataForeachFunc) {
-	var _arg1 **C.GData
-	var _arg2 C.GDataForeachFunc
+	var _arg1 **C.GData          // out
+	var _arg2 C.GDataForeachFunc // out
 	var _arg3 C.gpointer
 
 	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
@@ -72,18 +72,18 @@ func DatalistForeach(datalist **Data, fn DataForeachFunc) {
 // DatalistGetData gets a data element, using its string identifier. This is
 // slower than g_datalist_id_get_data() because it compares strings.
 func DatalistGetData(datalist **Data, key string) interface{} {
-	var _arg1 **C.GData
-	var _arg2 *C.gchar
+	var _arg1 **C.GData // out
+	var _arg2 *C.gchar  // out
 
 	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 	_arg2 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_datalist_get_data(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -93,15 +93,15 @@ func DatalistGetData(datalist **Data, key string) interface{} {
 // DatalistGetFlags gets flags values packed in together with the datalist. See
 // g_datalist_set_flags().
 func DatalistGetFlags(datalist **Data) uint {
-	var _arg1 **C.GData
+	var _arg1 **C.GData // out
 
 	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_datalist_get_flags(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -111,7 +111,7 @@ func DatalistGetFlags(datalist **Data) uint {
 // DatalistInit resets the datalist to nil. It does not free any memory or call
 // any destroy functions.
 func DatalistInit(datalist **Data) {
-	var _arg1 **C.GData
+	var _arg1 **C.GData // out
 
 	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 
@@ -124,8 +124,8 @@ func DatalistInit(datalist **Data) {
 // circumstances where space is very tight. (It is used in the base #GObject
 // type, for example.)
 func DatalistSetFlags(datalist **Data, flags uint) {
-	var _arg1 **C.GData
-	var _arg2 C.guint
+	var _arg1 **C.GData // out
+	var _arg2 C.guint   // out
 
 	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 	_arg2 = C.guint(flags)
@@ -136,8 +136,8 @@ func DatalistSetFlags(datalist **Data, flags uint) {
 // DatalistUnsetFlags turns off flag values for a data list. See
 // g_datalist_unset_flags()
 func DatalistUnsetFlags(datalist **Data, flags uint) {
-	var _arg1 **C.GData
-	var _arg2 C.guint
+	var _arg1 **C.GData // out
+	var _arg2 C.guint   // out
 
 	_arg1 = (**C.GData)(unsafe.Pointer(datalist.Native()))
 	_arg2 = C.guint(flags)
@@ -148,7 +148,7 @@ func DatalistUnsetFlags(datalist **Data, flags uint) {
 // DatasetDestroy destroys the dataset, freeing all memory allocated, and
 // calling any destroy functions set for data elements.
 func DatasetDestroy(datasetLocation interface{}) {
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // out
 
 	_arg1 = C.gpointer(datasetLocation)
 
@@ -164,8 +164,8 @@ func DatasetDestroy(datasetLocation interface{}) {
 // changes made during the g_dataset_foreach() call, other than skipping over
 // elements that are removed.
 func DatasetForeach(datasetLocation interface{}, fn DataForeachFunc) {
-	var _arg1 C.gpointer
-	var _arg2 C.GDataForeachFunc
+	var _arg1 C.gpointer         // out
+	var _arg2 C.GDataForeachFunc // out
 	var _arg3 C.gpointer
 
 	_arg1 = C.gpointer(datasetLocation)

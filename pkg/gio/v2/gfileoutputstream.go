@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -87,15 +87,15 @@ func marshalFileOutputStream(p uintptr) (interface{}, error) {
 // be called after the stream has been written and closed, as the etag can
 // change while writing.
 func (s fileOutputStream) Etag() string {
-	var _arg0 *C.GFileOutputStream
+	var _arg0 *C.GFileOutputStream // out
 
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_file_output_stream_get_etag(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -110,11 +110,11 @@ func (s fileOutputStream) Etag() string {
 // For the synchronous version of this function, see
 // g_file_output_stream_query_info().
 func (s fileOutputStream) QueryInfoAsync(attributes string, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GFileOutputStream
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GFileOutputStream  // out
+	var _arg1 *C.char               // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFileOutputStream)(unsafe.Pointer(s.Native()))

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -47,21 +47,21 @@ func (s *String) Native() unsafe.Pointer {
 
 // Str gets the field inside the struct.
 func (s *String) Str() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.str)
 	return v
 }
 
 // Len gets the field inside the struct.
 func (s *String) Len() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.len)
 	return v
 }
 
 // AllocatedLen gets the field inside the struct.
 func (s *String) AllocatedLen() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.allocated_len)
 	return v
 }
@@ -69,17 +69,17 @@ func (s *String) AllocatedLen() uint {
 // Equal compares two strings for equality, returning true if they are equal.
 // For use with Table.
 func (v *String) Equal(v2 *String) bool {
-	var _arg0 *C.GString
-	var _arg1 *C.GString
+	var _arg0 *C.GString // out
+	var _arg1 *C.GString // out
 
 	_arg0 = (*C.GString)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GString)(unsafe.Pointer(v2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_string_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -92,19 +92,19 @@ func (v *String) Equal(v2 *String) bool {
 // also frees the character data. If it's false, the caller gains ownership of
 // the buffer and must free it after use with g_free().
 func (s *String) Free(freeSegment bool) string {
-	var _arg0 *C.GString
-	var _arg1 C.gboolean
+	var _arg0 *C.GString // out
+	var _arg1 C.gboolean // out
 
 	_arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 	if freeSegment {
 		_arg1 = C.gboolean(1)
 	}
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_string_free(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -114,15 +114,15 @@ func (s *String) Free(freeSegment bool) string {
 
 // Hash creates a hash code for @str; for use with Table.
 func (s *String) Hash() uint {
-	var _arg0 *C.GString
+	var _arg0 *C.GString // out
 
 	_arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_string_hash(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -134,10 +134,10 @@ func (s *String) Hash() uint {
 // than @limit, all instances are replaced. If the number of instances is `0`,
 // all instances of @find are replaced.
 func (s *String) Replace(find string, replace string, limit uint) uint {
-	var _arg0 *C.GString
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 C.guint
+	var _arg0 *C.GString // out
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _arg3 C.guint    // out
 
 	_arg0 = (*C.GString)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(find))
@@ -146,11 +146,11 @@ func (s *String) Replace(find string, replace string, limit uint) uint {
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint(limit)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_string_replace(_arg0, _arg1, _arg2, _arg3)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 

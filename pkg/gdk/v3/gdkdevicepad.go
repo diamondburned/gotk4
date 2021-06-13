@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -74,19 +74,19 @@ func marshalDevicePad(p uintptr) (interface{}, error) {
 // FeatureGroup returns the group the given @feature and @idx belong to, or
 // -1 if feature/index do not exist in @pad.
 func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
-	var _arg0 *C.GdkDevicePad
-	var _arg1 C.GdkDevicePadFeature
-	var _arg2 C.gint
+	var _arg0 *C.GdkDevicePad       // out
+	var _arg1 C.GdkDevicePadFeature // out
+	var _arg2 C.gint                // out
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 	_arg1 = (C.GdkDevicePadFeature)(feature)
 	_arg2 = C.gint(featureIdx)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_device_pad_get_feature_group(_arg0, _arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -95,17 +95,17 @@ func (p devicePad) FeatureGroup(feature DevicePadFeature, featureIdx int) int {
 
 // GroupNModes returns the number of modes that @group may have.
 func (p devicePad) GroupNModes(groupIdx int) int {
-	var _arg0 *C.GdkDevicePad
-	var _arg1 C.gint
+	var _arg0 *C.GdkDevicePad // out
+	var _arg1 C.gint          // out
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 	_arg1 = C.gint(groupIdx)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_device_pad_get_group_n_modes(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -114,17 +114,17 @@ func (p devicePad) GroupNModes(groupIdx int) int {
 
 // NFeatures returns the number of features a tablet pad has.
 func (p devicePad) NFeatures(feature DevicePadFeature) int {
-	var _arg0 *C.GdkDevicePad
-	var _arg1 C.GdkDevicePadFeature
+	var _arg0 *C.GdkDevicePad       // out
+	var _arg1 C.GdkDevicePadFeature // out
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 	_arg1 = (C.GdkDevicePadFeature)(feature)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_device_pad_get_n_features(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -135,15 +135,15 @@ func (p devicePad) NFeatures(feature DevicePadFeature) int {
 // least one group. A pad group is a subcollection of buttons/strip/rings
 // that is affected collectively by a same current mode.
 func (p devicePad) NGroups() int {
-	var _arg0 *C.GdkDevicePad
+	var _arg0 *C.GdkDevicePad // out
 
 	_arg0 = (*C.GdkDevicePad)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_device_pad_get_n_groups(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 

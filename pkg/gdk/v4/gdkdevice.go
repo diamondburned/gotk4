@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -39,7 +39,7 @@ func (t *TimeCoord) Native() unsafe.Pointer {
 
 // Time gets the field inside the struct.
 func (t *TimeCoord) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(t.native.time)
 	return v
 }

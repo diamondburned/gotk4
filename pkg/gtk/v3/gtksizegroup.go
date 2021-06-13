@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -144,8 +144,8 @@ func marshalSizeGroup(p uintptr) (interface{}, error) {
 // When the widget is destroyed or no longer referenced elsewhere, it will
 // be removed from the size group.
 func (s sizeGroup) AddWidget(widget Widget) {
-	var _arg0 *C.GtkSizeGroup
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkSizeGroup // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -156,15 +156,15 @@ func (s sizeGroup) AddWidget(widget Widget) {
 // IgnoreHidden returns if invisible widgets are ignored when calculating
 // the size.
 func (s sizeGroup) IgnoreHidden() bool {
-	var _arg0 *C.GtkSizeGroup
+	var _arg0 *C.GtkSizeGroup // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_size_group_get_ignore_hidden(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -175,8 +175,8 @@ func (s sizeGroup) IgnoreHidden() bool {
 
 // RemoveWidget removes a widget from a SizeGroup.
 func (s sizeGroup) RemoveWidget(widget Widget) {
-	var _arg0 *C.GtkSizeGroup
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkSizeGroup // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -187,8 +187,8 @@ func (s sizeGroup) RemoveWidget(widget Widget) {
 // SetIgnoreHidden sets whether unmapped widgets should be ignored when
 // calculating the size.
 func (s sizeGroup) SetIgnoreHidden(ignoreHidden bool) {
-	var _arg0 *C.GtkSizeGroup
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkSizeGroup // out
+	var _arg1 C.gboolean      // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 	if ignoreHidden {
@@ -204,8 +204,8 @@ func (s sizeGroup) SetIgnoreHidden(ignoreHidden bool) {
 // same vertical requisition (GTK_SIZE_GROUP_VERTICAL), or should all have
 // the same requisition in both directions (GTK_SIZE_GROUP_BOTH).
 func (s sizeGroup) SetMode(mode SizeGroupMode) {
-	var _arg0 *C.GtkSizeGroup
-	var _arg1 C.GtkSizeGroupMode
+	var _arg0 *C.GtkSizeGroup    // out
+	var _arg1 C.GtkSizeGroupMode // out
 
 	_arg0 = (*C.GtkSizeGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkSizeGroupMode)(mode)

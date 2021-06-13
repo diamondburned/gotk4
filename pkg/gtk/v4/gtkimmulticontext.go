@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -61,15 +61,15 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 
 // ContextID gets the id of the currently active delegate of the @context.
 func (c imMulticontext) ContextID() string {
-	var _arg0 *C.GtkIMMulticontext
+	var _arg0 *C.GtkIMMulticontext // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -81,8 +81,8 @@ func (c imMulticontext) ContextID() string {
 // This causes the currently active delegate of @context to be replaced by
 // the delegate corresponding to the new context id.
 func (c imMulticontext) SetContextID(contextId string) {
-	var _arg0 *C.GtkIMMulticontext
-	var _arg1 *C.char
+	var _arg0 *C.GtkIMMulticontext // out
+	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(contextId))

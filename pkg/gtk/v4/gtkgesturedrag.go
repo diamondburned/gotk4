@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -68,19 +68,19 @@ func marshalGestureDrag(p uintptr) (interface{}, error) {
 // @y with the coordinates of the current point, as an offset to the
 // starting drag point.
 func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
-	var _arg0 *C.GtkGestureDrag
+	var _arg0 *C.GtkGestureDrag // out
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	var _arg1 C.double
-	var _arg2 C.double
-	var _cret C.gboolean
+	var _arg1 C.double   // in
+	var _arg2 C.double   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_drag_get_offset(_arg0, &_arg1, &_arg2)
 
-	var _x float64
-	var _y float64
-	var _ok bool
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
 
 	_x = (float64)(_arg1)
 	_y = (float64)(_arg2)
@@ -96,19 +96,19 @@ func (g gestureDrag) Offset() (x float64, y float64, ok bool) {
 // If the @gesture is active, this function returns true and fills in @x and
 // @y with the drag start coordinates, in surface-relative coordinates.
 func (g gestureDrag) StartPoint() (x float64, y float64, ok bool) {
-	var _arg0 *C.GtkGestureDrag
+	var _arg0 *C.GtkGestureDrag // out
 
 	_arg0 = (*C.GtkGestureDrag)(unsafe.Pointer(g.Native()))
 
-	var _arg1 C.double
-	var _arg2 C.double
-	var _cret C.gboolean
+	var _arg1 C.double   // in
+	var _arg2 C.double   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_drag_get_start_point(_arg0, &_arg1, &_arg2)
 
-	var _x float64
-	var _y float64
-	var _ok bool
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
 
 	_x = (float64)(_arg1)
 	_y = (float64)(_arg2)

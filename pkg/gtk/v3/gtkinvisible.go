@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -59,8 +59,8 @@ func marshalInvisible(p uintptr) (interface{}, error) {
 
 // SetScreen sets the Screen where the Invisible object will be displayed.
 func (i invisible) SetScreen(screen gdk.Screen) {
-	var _arg0 *C.GtkInvisible
-	var _arg1 *C.GdkScreen
+	var _arg0 *C.GtkInvisible // out
+	var _arg1 *C.GdkScreen    // out
 
 	_arg0 = (*C.GtkInvisible)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))

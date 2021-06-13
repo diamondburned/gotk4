@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -52,17 +52,17 @@ func (d *DateTime) Native() unsafe.Pointer {
 // Compare: a comparison function for Times that is suitable as a Func. Both
 // Times must be non-nil.
 func (d *DateTime) Compare(dt2 DateTime) int {
-	var _arg0 C.gpointer
-	var _arg1 C.gpointer
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(d.Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(dt2.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_compare(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -74,17 +74,17 @@ func (d *DateTime) Compare(dt2 DateTime) int {
 // Equal here means that they represent the same moment after converting them to
 // the same time zone.
 func (d *DateTime) Equal(dt2 DateTime) bool {
-	var _arg0 C.gpointer
-	var _arg1 C.gpointer
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(d.Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(dt2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_date_time_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -174,18 +174,18 @@ func (d *DateTime) Equal(dt2 DateTime) bool {
 // extension expected to be added to the future POSIX specification, \Ob and \Oh
 // are GNU strftime() extensions. Since: 2.56
 func (d *DateTime) Format(format string) string {
-	var _arg0 *C.GDateTime
-	var _arg1 *C.gchar
+	var _arg0 *C.GDateTime // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.gchar)(C.CString(format))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_date_time_format(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -199,15 +199,15 @@ func (d *DateTime) Format(format string) string {
 //
 // Since GLib 2.66, this will output to sub-second precision if needed.
 func (d *DateTime) FormatISO8601() string {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_date_time_format_iso8601(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -218,15 +218,15 @@ func (d *DateTime) FormatISO8601() string {
 // DayOfMonth retrieves the day of the month represented by @datetime in the
 // gregorian calendar.
 func (d *DateTime) DayOfMonth() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_day_of_month(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -236,15 +236,15 @@ func (d *DateTime) DayOfMonth() int {
 // DayOfWeek retrieves the ISO 8601 day of the week on which @datetime falls (1
 // is Monday, 2 is Tuesday... 7 is Sunday).
 func (d *DateTime) DayOfWeek() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_day_of_week(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -254,15 +254,15 @@ func (d *DateTime) DayOfWeek() int {
 // DayOfYear retrieves the day of the year represented by @datetime in the
 // Gregorian calendar.
 func (d *DateTime) DayOfYear() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_day_of_year(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -271,15 +271,15 @@ func (d *DateTime) DayOfYear() int {
 
 // Hour retrieves the hour of the day represented by @datetime
 func (d *DateTime) Hour() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_hour(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -288,15 +288,15 @@ func (d *DateTime) Hour() int {
 
 // Microsecond retrieves the microsecond of the date represented by @datetime
 func (d *DateTime) Microsecond() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_microsecond(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -305,15 +305,15 @@ func (d *DateTime) Microsecond() int {
 
 // Minute retrieves the minute of the hour represented by @datetime
 func (d *DateTime) Minute() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_minute(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -323,15 +323,15 @@ func (d *DateTime) Minute() int {
 // Month retrieves the month of the year represented by @datetime in the
 // Gregorian calendar.
 func (d *DateTime) Month() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_month(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -340,15 +340,15 @@ func (d *DateTime) Month() int {
 
 // Second retrieves the second of the minute represented by @datetime
 func (d *DateTime) Second() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_second(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -358,15 +358,15 @@ func (d *DateTime) Second() int {
 // Seconds retrieves the number of seconds since the start of the last minute,
 // including the fractional part.
 func (d *DateTime) Seconds() float64 {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.g_date_time_get_seconds(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -379,15 +379,15 @@ func (d *DateTime) Seconds() float64 {
 // For example, in Toronto this is currently "EST" during the winter months and
 // "EDT" during the summer months when daylight savings time is in effect.
 func (d *DateTime) TimezoneAbbreviation() string {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_date_time_get_timezone_abbreviation(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -425,15 +425,15 @@ func (d *DateTime) TimezoneAbbreviation() string {
 // Note that January 1 0001 in the proleptic Gregorian calendar is a Monday, so
 // this function never returns 0.
 func (d *DateTime) WeekNumberingYear() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_week_numbering_year(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -456,15 +456,15 @@ func (d *DateTime) WeekNumberingYear() int {
 // week of the next year if 4 or more days of that week are contained within the
 // new year.
 func (d *DateTime) WeekOfYear() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_week_of_year(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -473,15 +473,15 @@ func (d *DateTime) WeekOfYear() int {
 
 // Year retrieves the year represented by @datetime in the Gregorian calendar.
 func (d *DateTime) Year() int {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_date_time_get_year(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -490,19 +490,19 @@ func (d *DateTime) Year() int {
 
 // Ymd retrieves the Gregorian day, month, and year of a given Time.
 func (d *DateTime) Ymd() (year int, month int, day int) {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
+	var _arg3 C.gint // in
 
 	C.g_date_time_get_ymd(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _year int
-	var _month int
-	var _day int
+	var _year int  // out
+	var _month int // out
+	var _day int   // out
 
 	_year = (int)(_arg1)
 	_month = (int)(_arg2)
@@ -513,15 +513,15 @@ func (d *DateTime) Ymd() (year int, month int, day int) {
 
 // Hash hashes @datetime into a #guint, suitable for use within Table.
 func (d *DateTime) Hash() uint {
-	var _arg0 C.gpointer
+	var _arg0 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(d.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_date_time_hash(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -531,15 +531,15 @@ func (d *DateTime) Hash() uint {
 // IsDaylightSavings determines if daylight savings time is in effect at the
 // time and in the time zone of @datetime.
 func (d *DateTime) IsDaylightSavings() bool {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_date_time_is_daylight_savings(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -561,17 +561,17 @@ func (d *DateTime) IsDaylightSavings() bool {
 //
 // On systems where 'long' is 64bit, this function never fails.
 func (d *DateTime) ToTimeval(tv *TimeVal) bool {
-	var _arg0 *C.GDateTime
-	var _arg1 *C.GTimeVal
+	var _arg0 *C.GDateTime // out
+	var _arg1 *C.GTimeVal  // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GTimeVal)(unsafe.Pointer(tv.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_date_time_to_timeval(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -586,15 +586,15 @@ func (d *DateTime) ToTimeval(tv *TimeVal) bool {
 // Unix time is the number of seconds that have elapsed since 1970-01-01
 // 00:00:00 UTC, regardless of the time zone associated with @datetime.
 func (d *DateTime) ToUnix() int64 {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.g_date_time_to_unix(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -606,7 +606,7 @@ func (d *DateTime) ToUnix() int64 {
 // When the reference count reaches zero, the resources allocated by @datetime
 // are freed
 func (d *DateTime) Unref() {
-	var _arg0 *C.GDateTime
+	var _arg0 *C.GDateTime // out
 
 	_arg0 = (*C.GDateTime)(unsafe.Pointer(d.Native()))
 

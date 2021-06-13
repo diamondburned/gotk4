@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -74,8 +74,8 @@ func marshalStackSidebar(p uintptr) (interface{}, error) {
 // The sidebar widget will automatically update according to the order
 // (packing) and items within the given Stack.
 func (s stackSidebar) SetStack(stack Stack) {
-	var _arg0 *C.GtkStackSidebar
-	var _arg1 *C.GtkStack
+	var _arg0 *C.GtkStackSidebar // out
+	var _arg1 *C.GtkStack        // out
 
 	_arg0 = (*C.GtkStackSidebar)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStack)(unsafe.Pointer(stack.Native()))

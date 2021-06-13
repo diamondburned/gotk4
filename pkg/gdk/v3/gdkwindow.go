@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -30,8 +30,8 @@ func init() {
 // @embedder and the Window::to-embedder and Window::from-embedder signals on
 // @window.
 func OffscreenWindowSetEmbedder(window Window, embedder Window) {
-	var _arg1 *C.GdkWindow
-	var _arg2 *C.GdkWindow
+	var _arg1 *C.GdkWindow // out
+	var _arg2 *C.GdkWindow // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(embedder.Native()))
@@ -1060,8 +1060,8 @@ func marshalWindow(p uintptr) (interface{}, error) {
 // XGetEventData() has been already called on the event, and
 // XFreeEventData() must not be called within @function.
 func (w window) AddFilter(function FilterFunc) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkFilterFunc
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkFilterFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
@@ -1075,7 +1075,7 @@ func (w window) AddFilter(function FilterFunc) {
 // if supported. Otherwise, emits a short beep on the display just as
 // gdk_display_beep().
 func (w window) Beep() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1088,11 +1088,11 @@ func (w window) Beep() {
 // device, use gdk_window_begin_move_drag_for_device() to begin a drag with
 // a different device.
 func (w window) BeginMoveDrag(button int, rootX int, rootY int, timestamp uint32) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.guint32
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(button)
@@ -1110,12 +1110,12 @@ func (w window) BeginMoveDrag(button int, rootX int, rootY int, timestamp uint32
 // (http://www.freedesktop.org/Standards/wm-spec) but has a fallback
 // implementation for other window managers.
 func (w window) BeginMoveDragForDevice(device Device, button int, rootX int, rootY int, timestamp uint32) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkDevice
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.gint
-	var _arg5 C.guint32
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
+	var _arg5 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -1131,8 +1131,8 @@ func (w window) BeginMoveDragForDevice(device Device, button int, rootX int, roo
 // gdk_window_begin_paint_region() which creates a rectangular region for
 // you. See gdk_window_begin_paint_region() for details.
 func (w window) BeginPaintRect(rectangle *Rectangle) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rectangle.Native()))
@@ -1177,8 +1177,8 @@ func (w window) BeginPaintRect(rectangle *Rectangle) {
 // store in the stack. One matching call to gdk_window_end_paint() is
 // required for each call to gdk_window_begin_paint_region().
 func (w window) BeginPaintRegion(region *cairo.Region) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_region_t
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
@@ -1192,12 +1192,12 @@ func (w window) BeginPaintRegion(region *cairo.Region) {
 // device, use gdk_window_begin_resize_drag_for_device() to begin a drag
 // with a different device.
 func (w window) BeginResizeDrag(edge WindowEdge, button int, rootX int, rootY int, timestamp uint32) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkWindowEdge
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.gint
-	var _arg5 C.guint32
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkWindowEdge // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.guint32       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkWindowEdge)(edge)
@@ -1216,13 +1216,13 @@ func (w window) BeginResizeDrag(edge WindowEdge, button int, rootX int, rootY in
 // (http://www.freedesktop.org/Standards/wm-spec) but has a fallback
 // implementation for other window managers.
 func (w window) BeginResizeDragForDevice(edge WindowEdge, device Device, button int, rootX int, rootY int, timestamp uint32) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkWindowEdge
-	var _arg2 *C.GdkDevice
-	var _arg3 C.gint
-	var _arg4 C.gint
-	var _arg5 C.gint
-	var _arg6 C.guint32
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkWindowEdge // out
+	var _arg2 *C.GdkDevice    // out
+	var _arg3 C.gint          // out
+	var _arg4 C.gint          // out
+	var _arg5 C.gint          // out
+	var _arg6 C.guint32       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkWindowEdge)(edge)
@@ -1237,7 +1237,7 @@ func (w window) BeginResizeDragForDevice(edge WindowEdge, device Device, button 
 
 // ConfigureFinished does nothing, present only for compatiblity.
 func (w window) ConfigureFinished() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1260,21 +1260,21 @@ func (w window) ConfigureFinished() {
 //
 // See also: gdk_window_coords_to_parent()
 func (w window) CoordsFromParent(parentX float64, parentY float64) (x float64, y float64) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gdouble(parentX)
 	_arg2 = C.gdouble(parentY)
 
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
+	var _arg3 C.gdouble // in
+	var _arg4 C.gdouble // in
 
 	C.gdk_window_coords_from_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
-	var _x float64
-	var _y float64
+	var _x float64 // out
+	var _y float64 // out
 
 	_x = (float64)(_arg3)
 	_y = (float64)(_arg4)
@@ -1298,21 +1298,21 @@ func (w window) CoordsFromParent(parentX float64, parentY float64) (x float64, y
 //
 // See also: gdk_window_coords_from_parent()
 func (w window) CoordsToParent(x float64, y float64) (parentX float64, parentY float64) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
+	var _arg2 C.gdouble    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gdouble(x)
 	_arg2 = C.gdouble(y)
 
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
+	var _arg3 C.gdouble // in
+	var _arg4 C.gdouble // in
 
 	C.gdk_window_coords_to_parent(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
-	var _parentX float64
-	var _parentY float64
+	var _parentX float64 // out
+	var _parentY float64 // out
 
 	_parentX = (float64)(_arg3)
 	_parentY = (float64)(_arg4)
@@ -1326,7 +1326,7 @@ func (w window) CoordsToParent(x float64, y float64) (parentX float64, parentY f
 // you probably want to use gtk_window_present_with_time(), which raises the
 // window, focuses it, unminimizes it, and puts it on the current desktop.
 func (w window) Deiconify() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1342,7 +1342,7 @@ func (w window) Deiconify() {
 // count reaches zero. You must call this function yourself before that
 // happens.
 func (w window) Destroy() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1350,7 +1350,7 @@ func (w window) Destroy() {
 }
 
 func (w window) DestroyNotify() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1359,7 +1359,7 @@ func (w window) DestroyNotify() {
 
 // EnableSynchronizedConfigure does nothing, present only for compatiblity.
 func (w window) EnableSynchronizedConfigure() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1374,8 +1374,8 @@ func (w window) EnableSynchronizedConfigure() {
 // It is an error to call this function without a matching
 // gdk_window_begin_frame() first.
 func (w window) EndDrawFrame(context DrawingContext) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkDrawingContext
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.GdkDrawingContext // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDrawingContext)(unsafe.Pointer(context.Native()))
@@ -1392,7 +1392,7 @@ func (w window) EndDrawFrame(context DrawingContext) {
 // It is an error to call this function without a matching
 // gdk_window_begin_paint_region() first.
 func (w window) EndPaint() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1406,15 +1406,15 @@ func (w window) EndPaint() {
 //
 // Some backends may not support native child windows.
 func (w window) EnsureNative() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_ensure_native(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1425,7 +1425,7 @@ func (w window) EnsureNative() bool {
 
 // Flush: this function does nothing.
 func (w window) Flush() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1436,8 +1436,8 @@ func (w window) Flush() {
 // gtk_window_present_with_time() should be used on a Window, rather than
 // calling this function.
 func (w window) Focus(timestamp uint32) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.guint32
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.guint32(timestamp)
@@ -1456,7 +1456,7 @@ func (w window) Focus(timestamp uint32) {
 // This function is not part of the GDK public API and is only for use by
 // GTK+.
 func (w window) FreezeToplevelUpdatesLibgtkOnly() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1469,7 +1469,7 @@ func (w window) FreezeToplevelUpdatesLibgtkOnly() {
 // been called more than once, gdk_window_thaw_updates() must be called an
 // equal number of times to begin processing exposes.
 func (w window) FreezeUpdates() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1488,7 +1488,7 @@ func (w window) FreezeUpdates() {
 // happening. But it will happen with most standard window managers, and GDK
 // makes a best effort to get it to happen.
 func (w window) Fullscreen() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1501,8 +1501,8 @@ func (w window) Fullscreen() {
 //
 // If the window was already fullscreen, then this function does nothing.
 func (w window) FullscreenOnMonitor(monitor int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(monitor)
@@ -1514,7 +1514,7 @@ func (w window) FullscreenOnMonitor(monitor int) {
 // embedded offscreen window has changed. This is necessary for GDK to keep
 // track of which offscreen window the pointer is in.
 func (w window) GeometryChanged() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1524,15 +1524,15 @@ func (w window) GeometryChanged() {
 // AcceptFocus determines whether or not the desktop environment shuld be
 // hinted that the window does not want to receive input focus.
 func (w window) AcceptFocus() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_get_accept_focus(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1545,15 +1545,15 @@ func (w window) AcceptFocus() bool {
 //
 // See gdk_window_set_composited().
 func (w window) Composited() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_get_composited(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1565,15 +1565,15 @@ func (w window) Composited() bool {
 // EventCompression: get the current event compression setting for this
 // window.
 func (w window) EventCompression() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_get_event_compression(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1586,15 +1586,15 @@ func (w window) EventCompression() bool {
 // hinted that the window does not want to receive input focus when it is
 // mapped.
 func (w window) FocusOnMap() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_get_focus_on_map(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1608,7 +1608,7 @@ func (w window) FocusOnMap() bool {
 // window coordinates. To get the position of the window itself (rather than
 // the frame) in root window coordinates, use gdk_window_get_origin().
 func (w window) FrameExtents() Rectangle {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1640,21 +1640,21 @@ func (w window) FrameExtents() Rectangle {
 // space, whereas gdk_window_get_geometry() is restricted to the 16-bit
 // coordinates of X11.
 func (w window) Geometry() (x int, y int, width int, height int) {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
+	var _arg3 C.gint // in
+	var _arg4 C.gint // in
 
 	C.gdk_window_get_geometry(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
-	var _x int
-	var _y int
-	var _width int
-	var _height int
+	var _x int      // out
+	var _y int      // out
+	var _width int  // out
+	var _height int // out
 
 	_x = (int)(_arg1)
 	_y = (int)(_arg2)
@@ -1670,15 +1670,15 @@ func (w window) Geometry() (x int, y int, width int, height int) {
 // most-recently-processed configure event, rather than the current size on
 // the X server.
 func (w window) Height() int {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_window_get_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -1688,15 +1688,15 @@ func (w window) Height() int {
 // ModalHint determines whether or not the window manager is hinted that
 // @window has modal behaviour.
 func (w window) ModalHint() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_get_modal_hint(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1709,19 +1709,19 @@ func (w window) ModalHint() bool {
 // (Compare with gdk_window_get_position() and gdk_window_get_geometry()
 // which return the position of a window relative to its parent window.)
 func (w window) Origin() (x int, y int, gint int) {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
-	var _cret C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
+	var _cret C.gint // in
 
 	_cret = C.gdk_window_get_origin(_arg0, &_arg1, &_arg2)
 
-	var _x int
-	var _y int
-	var _gint int
+	var _x int    // out
+	var _y int    // out
+	var _gint int // out
 
 	_x = (int)(_arg1)
 	_y = (int)(_arg2)
@@ -1735,15 +1735,15 @@ func (w window) Origin() (x int, y int, gint int) {
 //
 // See gdk_window_set_pass_through() for details
 func (w window) PassThrough() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_get_pass_through(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1760,17 +1760,17 @@ func (w window) PassThrough() bool {
 //
 // The position coordinates are relative to the window’s parent window.
 func (w window) Position() (x int, y int) {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
 
 	C.gdk_window_get_position(_arg0, &_arg1, &_arg2)
 
-	var _x int
-	var _y int
+	var _x int // out
+	var _y int // out
 
 	_x = (int)(_arg1)
 	_y = (int)(_arg2)
@@ -1782,21 +1782,21 @@ func (w window) Position() (x int, y int) {
 // coordinates. This is similar to gdk_window_get_origin() but allows you to
 // pass in any position in the window, not just the origin.
 func (w window) RootCoords(x int, y int) (rootX int, rootY int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg3 C.gint // in
+	var _arg4 C.gint // in
 
 	C.gdk_window_get_root_coords(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
-	var _rootX int
-	var _rootY int
+	var _rootX int // out
+	var _rootY int // out
 
 	_rootX = (int)(_arg3)
 	_rootY = (int)(_arg4)
@@ -1807,17 +1807,17 @@ func (w window) RootCoords(x int, y int) (rootX int, rootY int) {
 // RootOrigin obtains the top-left corner of the window manager frame in
 // root window coordinates.
 func (w window) RootOrigin() (x int, y int) {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
 
 	C.gdk_window_get_root_origin(_arg0, &_arg1, &_arg2)
 
-	var _x int
-	var _y int
+	var _x int // out
+	var _y int // out
 
 	_x = (int)(_arg1)
 	_y = (int)(_arg2)
@@ -1838,15 +1838,15 @@ func (w window) RootOrigin() (x int, y int) {
 // The scale of a window may change during runtime, if this happens a
 // configure event will be sent to the toplevel window.
 func (w window) ScaleFactor() int {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_window_get_scale_factor(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -1856,15 +1856,15 @@ func (w window) ScaleFactor() int {
 // SupportMultidevice returns true if the window is aware of the existence
 // of multiple devices.
 func (w window) SupportMultidevice() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_get_support_multidevice(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1876,15 +1876,15 @@ func (w window) SupportMultidevice() bool {
 // UserData retrieves the user data for @window, which is normally the
 // widget that @window belongs to. See gdk_window_set_user_data().
 func (w window) UserData() interface{} {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // in
 
 	C.gdk_window_get_user_data(_arg0, &_arg1)
 
-	var _data interface{}
+	var _data interface{} // out
 
 	_data = (interface{})(_arg1)
 
@@ -1897,15 +1897,15 @@ func (w window) UserData() interface{} {
 // most-recently-processed configure event, rather than the current size on
 // the X server.
 func (w window) Width() int {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_window_get_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -1915,15 +1915,15 @@ func (w window) Width() int {
 // HasNative checks whether the window has a native window or not. Note that
 // you can use gdk_window_ensure_native() if a native window is needed.
 func (w window) HasNative() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_has_native(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1936,7 +1936,7 @@ func (w window) HasNative() bool {
 // known to the window manager; for all windows, unmaps them, so they won’t
 // be displayed. Normally done automatically as part of gtk_widget_hide().
 func (w window) Hide() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1949,7 +1949,7 @@ func (w window) Hide() {
 //
 // This function only makes sense when @window is a toplevel window.
 func (w window) Iconify() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -1971,10 +1971,10 @@ func (w window) Iconify() {
 // On the Win32 platform, this functionality is not present and the function
 // does nothing.
 func (w window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_region_t
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
@@ -2000,9 +2000,9 @@ func (w window) InputShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, 
 // window that intersects @region will also be invalidated. Only children
 // for which @child_func returns UE will have the area invalidated.
 func (w window) InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChildFunc) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_region_t
-	var _arg2 C.GdkWindowChildFunc
+	var _arg0 *C.GdkWindow         // out
+	var _arg1 *C.cairo_region_t    // out
+	var _arg2 C.GdkWindowChildFunc // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
@@ -2017,9 +2017,9 @@ func (w window) InvalidateMaybeRecurse(region *cairo.Region, childFunc WindowChi
 // gdk_window_invalidate_region() which invalidates a rectangular region.
 // See gdk_window_invalidate_region() for details.
 func (w window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkRectangle
-	var _arg2 C.gboolean
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 *C.GdkRectangle // out
+	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
@@ -2048,9 +2048,9 @@ func (w window) InvalidateRect(rect *Rectangle, invalidateChildren bool) {
 // gdk_window_invalidate_maybe_recurse if you need fine grained control over
 // which children are invalidated.
 func (w window) InvalidateRegion(region *cairo.Region, invalidateChildren bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_region_t
-	var _arg2 C.gboolean
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gboolean        // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
@@ -2063,15 +2063,15 @@ func (w window) InvalidateRegion(region *cairo.Region, invalidateChildren bool) 
 
 // IsDestroyed: check to see if a window is destroyed..
 func (w window) IsDestroyed() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_is_destroyed(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -2082,15 +2082,15 @@ func (w window) IsDestroyed() bool {
 
 // IsInputOnly determines whether or not the window is an input only window.
 func (w window) IsInputOnly() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_is_input_only(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -2101,15 +2101,15 @@ func (w window) IsInputOnly() bool {
 
 // IsShaped determines whether or not the window is shaped.
 func (w window) IsShaped() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_is_shaped(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -2122,15 +2122,15 @@ func (w window) IsShaped() bool {
 // mapped. (This is not necessarily "viewable" in the X sense, since we only
 // check as far as we have GDK window parents, not to the root window.)
 func (w window) IsViewable() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_is_viewable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -2142,15 +2142,15 @@ func (w window) IsViewable() bool {
 // IsVisible checks whether the window has been mapped (with
 // gdk_window_show() or gdk_window_show_unraised()).
 func (w window) IsVisible() bool {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_is_visible(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -2170,7 +2170,7 @@ func (w window) IsVisible() bool {
 // Note that gdk_window_show() raises the window again, so don’t call this
 // function before gdk_window_show(). (Try gdk_window_show_unraised().)
 func (w window) Lower() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2187,8 +2187,8 @@ func (w window) Lower() {
 // This is typically called automatically by GTK+ and you don't need to care
 // about this.
 func (w window) MarkPaintFromClip(cr *cairo.Context) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_t
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.cairo_t   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
@@ -2208,7 +2208,7 @@ func (w window) MarkPaintFromClip(cr *cairo.Context) {
 //
 // On Windows, reliably maximizes the window.
 func (w window) Maximize() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2224,7 +2224,7 @@ func (w window) Maximize() {
 // because it includes @window’s input shape mask in the set of shapes to be
 // merged.
 func (w window) MergeChildInputShapes() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2239,7 +2239,7 @@ func (w window) MergeChildInputShapes() {
 // This function is distinct from gdk_window_set_child_shapes() because it
 // includes @window’s shape mask in the set of shapes to be merged.
 func (w window) MergeChildShapes() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2255,9 +2255,9 @@ func (w window) MergeChildShapes() {
 // gdk_window_move_resize() to both move and resize simultaneously, for a
 // nicer visual effect.
 func (w window) Move(x int, y int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(x)
@@ -2272,10 +2272,10 @@ func (w window) Move(x int, y int) {
 //
 // Child windows are not moved.
 func (w window) MoveRegion(region *cairo.Region, dx int, dy int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_region_t
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
@@ -2291,11 +2291,11 @@ func (w window) MoveRegion(region *cairo.Region, dx int, dy int) {
 // window first move, then resize, if you don’t use
 // gdk_window_move_resize().)
 func (w window) MoveResize(x int, y int, width int, height int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(x)
@@ -2322,13 +2322,13 @@ func (w window) MoveResize(x int, y int, width int, height int) {
 // Connect to the Window::moved-to-rect signal to find out how it was
 // actually positioned.
 func (w window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gravity, anchorHints AnchorHints, rectAnchorDx int, rectAnchorDy int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkRectangle
-	var _arg2 C.GdkGravity
-	var _arg3 C.GdkGravity
-	var _arg4 C.GdkAnchorHints
-	var _arg5 C.gint
-	var _arg6 C.gint
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 *C.GdkRectangle  // out
+	var _arg2 C.GdkGravity     // out
+	var _arg3 C.GdkGravity     // out
+	var _arg4 C.GdkAnchorHints // out
+	var _arg5 C.gint           // out
+	var _arg6 C.gint           // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
@@ -2350,8 +2350,8 @@ func (w window) MoveToRect(rect *Rectangle, rectAnchor Gravity, windowAnchor Gra
 // them in an idle handler). Occasionally this is useful to produce nicer
 // scrolling behavior, for example.
 func (w window) ProcessUpdates(updateChildren bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if updateChildren {
@@ -2369,7 +2369,7 @@ func (w window) ProcessUpdates(updateChildren bool) {
 // request to move the window in the Z-order, gdk_window_raise() only
 // requests the restack, does not guarantee it.
 func (w window) Raise() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2378,7 +2378,7 @@ func (w window) Raise() {
 
 // RegisterDnd registers a window as a potential drop destination.
 func (w window) RegisterDnd() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2388,8 +2388,8 @@ func (w window) RegisterDnd() {
 // RemoveFilter: remove a filter previously added with
 // gdk_window_add_filter().
 func (w window) RemoveFilter(function FilterFunc) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkFilterFunc
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkFilterFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
@@ -2402,10 +2402,10 @@ func (w window) RemoveFilter(function FilterFunc) {
 // Reparent reparents @window into the given @new_parent. The window being
 // reparented will be unmapped as a side effect.
 func (w window) Reparent(newParent Window, x int, y int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(newParent.Native()))
@@ -2425,9 +2425,9 @@ func (w window) Reparent(newParent Window, x int, y int) {
 // If you’re also planning to move the window, use gdk_window_move_resize()
 // to both move and resize simultaneously, for a nicer visual effect.
 func (w window) Resize(width int, height int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(width)
@@ -2447,9 +2447,9 @@ func (w window) Resize(width int, height int) {
 // request to move the window in the Z-order, gdk_window_restack() only
 // requests the restack, does not guarantee it.
 func (w window) Restack(sibling Window, above bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(sibling.Native()))
@@ -2471,9 +2471,9 @@ func (w window) Restack(sibling Window, above bool) {
 // scroll the window which may produce temporary visual artifacts and
 // unnecessary invalidations.
 func (w window) Scroll(dx int, dy int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(dx)
@@ -2488,8 +2488,8 @@ func (w window) Scroll(dx int, dy int) {
 // On X, it is the responsibility of the window manager to interpret this
 // hint. ICCCM-compliant window manager usually respect it.
 func (w window) SetAcceptFocus(acceptFocus bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if acceptFocus {
@@ -2506,8 +2506,8 @@ func (w window) SetAcceptFocus(acceptFocus bool) {
 // gtk_style_context_set_background() — if you're implementing a custom
 // widget.
 func (w window) SetBackground(color *Color) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkColor
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkColor  // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
@@ -2524,8 +2524,8 @@ func (w window) SetBackground(color *Color) {
 // The windowing system will normally fill a window with its background when
 // the window is obscured then exposed.
 func (w window) SetBackgroundPattern(pattern *cairo.Pattern) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_pattern_t
+	var _arg0 *C.GdkWindow       // out
+	var _arg1 *C.cairo_pattern_t // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_pattern_t)(unsafe.Pointer(pattern.Native()))
@@ -2537,8 +2537,8 @@ func (w window) SetBackgroundPattern(pattern *cairo.Pattern) {
 //
 // See also gdk_window_set_background_pattern().
 func (w window) SetBackgroundRGBA(rgba *RGBA) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkRGBA
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkRGBA   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
@@ -2552,7 +2552,7 @@ func (w window) SetBackgroundRGBA(rgba *RGBA) {
 // gdk_window_merge_child_input_shapes() which includes the input shape mask
 // of @window in the masks to be merged.
 func (w window) SetChildInputShapes() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2564,7 +2564,7 @@ func (w window) SetChildInputShapes() {
 // Contrast with gdk_window_merge_child_shapes() which includes the shape
 // mask of @window in the masks to be merged.
 func (w window) SetChildShapes() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -2590,8 +2590,8 @@ func (w window) SetChildShapes() {
 // gdk_display_supports_composite() to check if setting a window as
 // composited is supported before attempting to do so.
 func (w window) SetComposited(composited bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if composited {
@@ -2611,8 +2611,8 @@ func (w window) SetComposited(composited bool) {
 // that @window will use the cursor of its parent window. Most windows
 // should use this default.
 func (w window) SetCursor(cursor Cursor) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkCursor
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkCursor // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
@@ -2636,8 +2636,8 @@ func (w window) SetCursor(cursor Cursor) {
 // Most window managers honor a decorations hint of 0 to disable all
 // decorations, but very few honor all possible combinations of bits.
 func (w window) SetDecorations(decorations WMDecoration) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkWMDecoration
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 C.GdkWMDecoration // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkWMDecoration)(decorations)
@@ -2652,9 +2652,9 @@ func (w window) SetDecorations(decorations WMDecoration) {
 // gdk_window_set_cursor() means that @window will use the cursor of its
 // parent window. Most windows should use this default.
 func (w window) SetDeviceCursor(device Device, cursor Cursor) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkDevice
-	var _arg2 *C.GdkCursor
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkDevice // out
+	var _arg2 *C.GdkCursor // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -2671,9 +2671,9 @@ func (w window) SetDeviceCursor(device Device, cursor Cursor) {
 //
 // See the [input handling overview][event-masks] for details.
 func (w window) SetDeviceEvents(device Device, eventMask EventMask) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkDevice
-	var _arg2 C.GdkEventMask
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 *C.GdkDevice   // out
+	var _arg2 C.GdkEventMask // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -2691,8 +2691,8 @@ func (w window) SetDeviceEvents(device Device, eventMask EventMask) {
 //
 // By default, event compression is enabled.
 func (w window) SetEventCompression(eventCompression bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if eventCompression {
@@ -2710,8 +2710,8 @@ func (w window) SetEventCompression(eventCompression bool) {
 //
 // See the [input handling overview][event-masks] for details.
 func (w window) SetEvents(eventMask EventMask) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkEventMask
+	var _arg0 *C.GdkWindow   // out
+	var _arg1 C.GdkEventMask // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkEventMask)(eventMask)
@@ -2728,8 +2728,8 @@ func (w window) SetEvents(eventMask EventMask) {
 // hint. Window managers following the freedesktop.org window manager
 // extension specification should respect it.
 func (w window) SetFocusOnMap(focusOnMap bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if focusOnMap {
@@ -2758,8 +2758,8 @@ func (w window) SetFocusOnMap(focusOnMap bool) {
 // window to span over the multiple monitors when
 // K_FULLSCREEN_ON_ALL_MONITORS is specified.
 func (w window) SetFullscreenMode(mode FullscreenMode) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkFullscreenMode
+	var _arg0 *C.GdkWindow        // out
+	var _arg1 C.GdkFullscreenMode // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkFullscreenMode)(mode)
@@ -2779,8 +2779,8 @@ func (w window) SetFullscreenMode(mode FullscreenMode) {
 // indicate which functions to disable; if it doesn’t include K_FUNC_ALL, it
 // indicates which functions to enable.
 func (w window) SetFunctions(functions WMFunction) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkWMFunction
+	var _arg0 *C.GdkWindow    // out
+	var _arg1 C.GdkWMFunction // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkWMFunction)(functions)
@@ -2808,9 +2808,9 @@ func (w window) SetFunctions(functions WMFunction) {
 // programmatic resizes, you should generally call
 // gdk_window_constrain_size() yourself to determine appropriate sizes.
 func (w window) SetGeometryHints(geometry *Geometry, geomMask WindowHints) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkGeometry
-	var _arg2 C.GdkWindowHints
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 *C.GdkGeometry   // out
+	var _arg2 C.GdkWindowHints // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkGeometry)(unsafe.Pointer(geometry.Native()))
@@ -2829,8 +2829,8 @@ func (w window) SetGeometryHints(geometry *Geometry, geomMask WindowHints) {
 // once. You should only set a non-default group window if your application
 // pretends to be multiple applications.
 func (w window) SetGroup(leader Window) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(leader.Native()))
@@ -2848,8 +2848,8 @@ func (w window) SetGroup(leader Window) {
 //
 // Note that some platforms don't support window icons.
 func (w window) SetIconList(pixbufs *glib.List) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GList
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GList     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GList)(unsafe.Pointer(pixbufs.Native()))
@@ -2870,8 +2870,8 @@ func (w window) SetIconList(pixbufs *glib.List) {
 //
 // Note that some platforms don't support window icons.
 func (w window) SetIconName(name string) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.gchar
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -2890,8 +2890,8 @@ func (w window) SetIconName(name string) {
 // most standard window managers, and GDK makes a best effort to get it to
 // happen.
 func (w window) SetKeepAbove(setting bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
@@ -2911,8 +2911,8 @@ func (w window) SetKeepAbove(setting bool) {
 // most standard window managers, and GDK makes a best effort to get it to
 // happen.
 func (w window) SetKeepBelow(setting bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if setting {
@@ -2929,8 +2929,8 @@ func (w window) SetKeepBelow(setting bool) {
 // You should only use this on windows for which you have previously called
 // gdk_window_set_transient_for()
 func (w window) SetModalHint(modal bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if modal {
@@ -2961,8 +2961,8 @@ func (w window) SetModalHint(modal bool) {
 //
 // Support for non-toplevel windows was added in 3.8.
 func (w window) SetOpacity(opacity float64) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gdouble
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gdouble    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gdouble(opacity)
@@ -2983,8 +2983,8 @@ func (w window) SetOpacity(opacity float64) {
 // background is not opaque, please update this property in your
 // Widget::style-updated handler.
 func (w window) SetOpaqueRegion(region *cairo.Region) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_region_t
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
@@ -3002,8 +3002,8 @@ func (w window) SetOpaqueRegion(region *cairo.Region) {
 // such as popup menus. Menu uses an override redirect window in its
 // implementation, for example.
 func (w window) SetOverrideRedirect(overrideRedirect bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if overrideRedirect {
@@ -3032,8 +3032,8 @@ func (w window) SetOverrideRedirect(overrideRedirect bool) {
 // in that cases you would get the in-between related events such as the
 // pointer enter/leave events on its way to the destination window.
 func (w window) SetPassThrough(passThrough bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if passThrough {
@@ -3055,8 +3055,8 @@ func (w window) SetPassThrough(passThrough bool) {
 // windows. It doesn’t matter what string you use for the role, as long as
 // you have a different role for each non-interchangeable kind of window.
 func (w window) SetRole(role string) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.gchar
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.gchar)(C.CString(role))
@@ -3075,11 +3075,11 @@ func (w window) SetRole(role string) {
 // function should only be used by applications which do not use GTK+ to
 // create toplevel windows.
 func (w window) SetShadowWidth(left int, right int, top int, bottom int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gint
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
+	var _arg4 C.gint       // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.gint(left)
@@ -3098,8 +3098,8 @@ func (w window) SetShadowWidth(left int, right int, top int, bottom int) {
 // addition, instead you should allow the window to be treated according to
 // standard policy for its semantic type.
 func (w window) SetSkipPagerHint(skipsPager bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if skipsPager {
@@ -3115,8 +3115,8 @@ func (w window) SetSkipPagerHint(skipsPager bool) {
 // function should not be called in addition, instead you should allow the
 // window to be treated according to standard policy for its semantic type.
 func (w window) SetSkipTaskbarHint(skipsTaskbar bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if skipsTaskbar {
@@ -3131,9 +3131,9 @@ func (w window) SetSkipTaskbarHint(skipsTaskbar bool) {
 // This event mask will be applied both to currently existing, newly added
 // devices after this call, and devices being attached/detached.
 func (w window) SetSourceEvents(source InputSource, eventMask EventMask) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkInputSource
-	var _arg2 C.GdkEventMask
+	var _arg0 *C.GdkWindow     // out
+	var _arg1 C.GdkInputSource // out
+	var _arg2 C.GdkEventMask   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkInputSource)(source)
@@ -3145,8 +3145,8 @@ func (w window) SetSourceEvents(source InputSource, eventMask EventMask) {
 // SetStartupID: when using GTK+, typically you should use
 // gtk_window_set_startup_id() instead of this low-level function.
 func (w window) SetStartupID(startupId string) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.gchar
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.gchar)(C.CString(startupId))
@@ -3160,19 +3160,19 @@ func (w window) SetStartupID(startupId string) {
 // used if you are implementing scary features that involve deep knowledge
 // of the windowing system. Don’t worry about it.
 func (w window) SetStaticGravities(useStatic bool) bool {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if useStatic {
 		_arg1 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_window_set_static_gravities(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -3187,8 +3187,8 @@ func (w window) SetStaticGravities(useStatic bool) bool {
 // Multidevice aware windows will need to handle properly multiple, per
 // device enter/leave events, device grabs and grab ownerships.
 func (w window) SetSupportMultidevice(supportMultidevice bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if supportMultidevice {
@@ -3204,8 +3204,8 @@ func (w window) SetSupportMultidevice(supportMultidevice bool) {
 // as well. @title must be in UTF-8 encoding (as with all user-readable
 // strings in GDK/GTK+). @title may not be nil.
 func (w window) SetTitle(title string) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.gchar
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
@@ -3221,8 +3221,8 @@ func (w window) SetTitle(title string) {
 //
 // See gtk_window_set_transient_for() if you’re using Window or Dialog.
 func (w window) SetTransientFor(parent Window) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(parent.Native()))
@@ -3237,8 +3237,8 @@ func (w window) SetTransientFor(parent Window) {
 //
 // The hint must be set before the window is mapped.
 func (w window) SetTypeHint(hint WindowTypeHint) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.GdkWindowTypeHint
+	var _arg0 *C.GdkWindow        // out
+	var _arg1 C.GdkWindowTypeHint // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (C.GdkWindowTypeHint)(hint)
@@ -3249,8 +3249,8 @@ func (w window) SetTypeHint(hint WindowTypeHint) {
 // SetUrgencyHint toggles whether a window needs the user's urgent
 // attention.
 func (w window) SetUrgencyHint(urgent bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if urgent {
@@ -3268,8 +3268,8 @@ func (w window) SetUrgencyHint(urgent bool) {
 // will assume the user data is a Widget, and forward the event to that
 // widget.
 func (w window) SetUserData(userData gextras.Objector) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gpointer
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gpointer   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(userData.Native()))
@@ -3291,10 +3291,10 @@ func (w window) SetUserData(userData gextras.Objector) {
 //
 // This function works on both toplevel and child windows.
 func (w window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offsetY int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.cairo_region_t
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GdkWindow      // out
+	var _arg1 *C.cairo_region_t // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(shapeRegion.Native()))
@@ -3313,7 +3313,7 @@ func (w window) ShapeCombineRegion(shapeRegion *cairo.Region, offsetX int, offse
 // When implementing a Widget, you should call this function on the widget's
 // Window as part of the “map” method.
 func (w window) Show() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3328,7 +3328,7 @@ func (w window) Show() {
 // also updates some internal GDK state, which means that you can’t really
 // use XMapWindow() directly on a GDK window).
 func (w window) ShowUnraised() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3345,7 +3345,7 @@ func (w window) ShowUnraised() {
 // window managers that don’t support this operation, there’s nothing you
 // can do to force it to happen.
 func (w window) Stick() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3358,7 +3358,7 @@ func (w window) Stick() {
 // This function is not part of the GDK public API and is only for use by
 // GTK+.
 func (w window) ThawToplevelUpdatesLibgtkOnly() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3367,7 +3367,7 @@ func (w window) ThawToplevelUpdatesLibgtkOnly() {
 
 // ThawUpdates thaws a window frozen with gdk_window_freeze_updates().
 func (w window) ThawUpdates() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3384,7 +3384,7 @@ func (w window) ThawUpdates() {
 // actually happening. But it will happen with most standard window
 // managers, and GDK makes a best effort to get it to happen.
 func (w window) Unfullscreen() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3403,7 +3403,7 @@ func (w window) Unfullscreen() {
 //
 // On Windows, reliably unmaximizes the window.
 func (w window) Unmaximize() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3413,7 +3413,7 @@ func (w window) Unmaximize() {
 // Unstick: reverse operation for gdk_window_stick(); see
 // gdk_window_stick(), and gtk_window_unstick().
 func (w window) Unstick() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3424,7 +3424,7 @@ func (w window) Unstick() {
 // forget about it). This function is not really useful as gdk_window_hide()
 // automatically withdraws toplevel windows before hiding them.
 func (w window) Withdraw() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -3509,70 +3509,70 @@ func (g *Geometry) Native() unsafe.Pointer {
 
 // MinWidth gets the field inside the struct.
 func (g *Geometry) MinWidth() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.min_width)
 	return v
 }
 
 // MinHeight gets the field inside the struct.
 func (g *Geometry) MinHeight() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.min_height)
 	return v
 }
 
 // MaxWidth gets the field inside the struct.
 func (g *Geometry) MaxWidth() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.max_width)
 	return v
 }
 
 // MaxHeight gets the field inside the struct.
 func (g *Geometry) MaxHeight() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.max_height)
 	return v
 }
 
 // BaseWidth gets the field inside the struct.
 func (g *Geometry) BaseWidth() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.base_width)
 	return v
 }
 
 // BaseHeight gets the field inside the struct.
 func (g *Geometry) BaseHeight() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.base_height)
 	return v
 }
 
 // WidthInc gets the field inside the struct.
 func (g *Geometry) WidthInc() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.width_inc)
 	return v
 }
 
 // HeightInc gets the field inside the struct.
 func (g *Geometry) HeightInc() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.height_inc)
 	return v
 }
 
 // MinAspect gets the field inside the struct.
 func (g *Geometry) MinAspect() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(g.native.min_aspect)
 	return v
 }
 
 // MaxAspect gets the field inside the struct.
 func (g *Geometry) MaxAspect() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(g.native.max_aspect)
 	return v
 }
@@ -3604,63 +3604,63 @@ func (w *WindowAttr) Native() unsafe.Pointer {
 
 // Title gets the field inside the struct.
 func (w *WindowAttr) Title() string {
-	var v string
+	var v string // out
 	v = C.GoString(w.native.title)
 	return v
 }
 
 // EventMask gets the field inside the struct.
 func (w *WindowAttr) EventMask() int {
-	var v int
+	var v int // out
 	v = (int)(w.native.event_mask)
 	return v
 }
 
 // X gets the field inside the struct.
 func (w *WindowAttr) X() int {
-	var v int
+	var v int // out
 	v = (int)(w.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (w *WindowAttr) Y() int {
-	var v int
+	var v int // out
 	v = (int)(w.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (w *WindowAttr) Width() int {
-	var v int
+	var v int // out
 	v = (int)(w.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (w *WindowAttr) Height() int {
-	var v int
+	var v int // out
 	v = (int)(w.native.height)
 	return v
 }
 
 // WmclassName gets the field inside the struct.
 func (w *WindowAttr) WmclassName() string {
-	var v string
+	var v string // out
 	v = C.GoString(w.native.wmclass_name)
 	return v
 }
 
 // WmclassClass gets the field inside the struct.
 func (w *WindowAttr) WmclassClass() string {
-	var v string
+	var v string // out
 	v = C.GoString(w.native.wmclass_class)
 	return v
 }
 
 // OverrideRedirect gets the field inside the struct.
 func (w *WindowAttr) OverrideRedirect() bool {
-	var v bool
+	var v bool // out
 	if w.native.override_redirect {
 		v = true
 	}

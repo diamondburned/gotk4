@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -75,15 +75,15 @@ func marshalTreeSortable(p uintptr) (interface{}, error) {
 // This is used primarily by GtkTreeViewColumns in order to determine if a
 // model can go back to the default state, or not.
 func (s treeSortable) HasDefaultSortFunc() bool {
-	var _arg0 *C.GtkTreeSortable
+	var _arg0 *C.GtkTreeSortable // out
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_sortable_has_default_sort_func(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -102,9 +102,9 @@ func (s treeSortable) HasDefaultSortFunc() bool {
 //
 // - GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID: no sorting will occur
 func (s treeSortable) SetSortColumnID(sortColumnId int, order SortType) {
-	var _arg0 *C.GtkTreeSortable
-	var _arg1 C.int
-	var _arg2 C.GtkSortType
+	var _arg0 *C.GtkTreeSortable // out
+	var _arg1 C.int              // out
+	var _arg2 C.GtkSortType      // out
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(sortColumnId)
@@ -116,7 +116,7 @@ func (s treeSortable) SetSortColumnID(sortColumnId int, order SortType) {
 // SortColumnChanged emits a TreeSortable::sort-column-changed signal on
 // @sortable.
 func (s treeSortable) SortColumnChanged() {
-	var _arg0 *C.GtkTreeSortable
+	var _arg0 *C.GtkTreeSortable // out
 
 	_arg0 = (*C.GtkTreeSortable)(unsafe.Pointer(s.Native()))
 

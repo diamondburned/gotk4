@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -95,15 +95,15 @@ func marshalMenuAttributeIter(p uintptr) (interface{}, error) {
 //
 // The iterator is not advanced.
 func (i menuAttributeIter) Name() string {
-	var _arg0 *C.GMenuAttributeIter
+	var _arg0 *C.GMenuAttributeIter // out
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_menu_attribute_iter_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -125,19 +125,19 @@ func (i menuAttributeIter) Name() string {
 // remains at the current position. The value returned in @value must be
 // unreffed using g_variant_unref() when it is no longer in use.
 func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
-	var _arg0 *C.GMenuAttributeIter
+	var _arg0 *C.GMenuAttributeIter // out
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
 
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar // in
 	var _value *glib.Variant
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_menu_attribute_iter_get_next(_arg0, _arg1, (**C.GVariant)(unsafe.Pointer(&_value)))
 
-	var _outName string
+	var _outName string // out
 
-	var _ok bool
+	var _ok bool // out
 
 	_outName = C.GoString(_arg1)
 
@@ -157,15 +157,15 @@ func (i menuAttributeIter) GetNext() (string, *glib.Variant, bool) {
 // advance it to the first attribute (and determine if the first attribute
 // exists at all).
 func (i menuAttributeIter) Next() bool {
-	var _arg0 *C.GMenuAttributeIter
+	var _arg0 *C.GMenuAttributeIter // out
 
 	_arg0 = (*C.GMenuAttributeIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_menu_attribute_iter_next(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -218,15 +218,15 @@ func marshalMenuLinkIter(p uintptr) (interface{}, error) {
 //
 // The iterator is not advanced.
 func (i menuLinkIter) Name() string {
-	var _arg0 *C.GMenuLinkIter
+	var _arg0 *C.GMenuLinkIter // out
 
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_menu_link_iter_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -241,15 +241,15 @@ func (i menuLinkIter) Name() string {
 // advance it to the first link (and determine if the first link exists at
 // all).
 func (i menuLinkIter) Next() bool {
-	var _arg0 *C.GMenuLinkIter
+	var _arg0 *C.GMenuLinkIter // out
 
 	_arg0 = (*C.GMenuLinkIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_menu_link_iter_next(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -420,15 +420,15 @@ func marshalMenuModel(p uintptr) (interface{}, error) {
 
 // NItems: query the number of items in @model.
 func (m menuModel) NItems() int {
-	var _arg0 *C.GMenuModel
+	var _arg0 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_menu_model_get_n_items(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -440,15 +440,15 @@ func (m menuModel) NItems() int {
 // An immutable Model will never emit the Model::items-changed signal.
 // Consumers of the model may make optimisations accordingly.
 func (m menuModel) IsMutable() bool {
-	var _arg0 *C.GMenuModel
+	var _arg0 *C.GMenuModel // out
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_menu_model_is_mutable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -474,10 +474,10 @@ func (m menuModel) IsMutable() bool {
 // Said another way: the menu must not change while user code is running
 // without returning to the mainloop.
 func (m menuModel) ItemsChanged(position int, removed int, added int) {
-	var _arg0 *C.GMenuModel
-	var _arg1 C.gint
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GMenuModel // out
+	var _arg1 C.gint        // out
+	var _arg2 C.gint        // out
+	var _arg3 C.gint        // out
 
 	_arg0 = (*C.GMenuModel)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(position)

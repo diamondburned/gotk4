@@ -25,7 +25,7 @@ import "C"
 // function passed to g_bus_own_name() is called, in order to avoid memory leaks
 // through callbacks queued on the Context after it’s stopped being iterated.
 func BusUnownName(ownerId uint) {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(ownerId)
 

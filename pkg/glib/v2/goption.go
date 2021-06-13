@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -137,8 +137,8 @@ func (o *OptionContext) Native() unsafe.Pointer {
 // recognize the options in the group. Note that this will take ownership of the
 // @group and thus the @group should not be freed.
 func (c *OptionContext) AddGroup(group *OptionGroup) {
-	var _arg0 *C.GOptionContext
-	var _arg1 *C.GOptionGroup
+	var _arg0 *C.GOptionContext // out
+	var _arg1 *C.GOptionGroup   // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
@@ -149,9 +149,9 @@ func (c *OptionContext) AddGroup(group *OptionGroup) {
 // AddMainEntries: a convenience function which creates a main group if it
 // doesn't exist, adds the @entries to it and sets the translation domain.
 func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain string) {
-	var _arg0 *C.GOptionContext
+	var _arg0 *C.GOptionContext // out
 	var _arg1 *C.GOptionEntry
-	var _arg2 *C.gchar
+	var _arg2 *C.gchar // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GOptionEntry)(C.malloc((len(entries) + 1) * C.sizeof_struct_GOptionEntry))
@@ -175,7 +175,7 @@ func (c *OptionContext) AddMainEntries(entries []OptionEntry, translationDomain 
 //
 // Please note that parsed arguments need to be freed separately (see Entry).
 func (c *OptionContext) Free() {
-	var _arg0 *C.GOptionContext
+	var _arg0 *C.GOptionContext // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
@@ -184,15 +184,15 @@ func (c *OptionContext) Free() {
 
 // Description returns the description. See g_option_context_set_description().
 func (c *OptionContext) Description() string {
-	var _arg0 *C.GOptionContext
+	var _arg0 *C.GOptionContext // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_option_context_get_description(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -206,9 +206,9 @@ func (c *OptionContext) Description() string {
 // for an option group, call `g_option_context_get_help (context, FALSE,
 // group)`.
 func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
-	var _arg0 *C.GOptionContext
-	var _arg1 C.gboolean
-	var _arg2 *C.GOptionGroup
+	var _arg0 *C.GOptionContext // out
+	var _arg1 C.gboolean        // out
+	var _arg2 *C.GOptionGroup   // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if mainHelp {
@@ -216,11 +216,11 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 	}
 	_arg2 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_option_context_get_help(_arg0, _arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -231,15 +231,15 @@ func (c *OptionContext) Help(mainHelp bool, group *OptionGroup) string {
 // HelpEnabled returns whether automatic `--help` generation is turned on for
 // @context. See g_option_context_set_help_enabled().
 func (c *OptionContext) HelpEnabled() bool {
-	var _arg0 *C.GOptionContext
+	var _arg0 *C.GOptionContext // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_option_context_get_help_enabled(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -251,15 +251,15 @@ func (c *OptionContext) HelpEnabled() bool {
 // IgnoreUnknownOptions returns whether unknown options are ignored or not. See
 // g_option_context_set_ignore_unknown_options().
 func (c *OptionContext) IgnoreUnknownOptions() bool {
-	var _arg0 *C.GOptionContext
+	var _arg0 *C.GOptionContext // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_option_context_get_ignore_unknown_options(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -272,15 +272,15 @@ func (c *OptionContext) IgnoreUnknownOptions() bool {
 //
 // See g_option_context_set_strict_posix() for more information.
 func (c *OptionContext) StrictPosix() bool {
-	var _arg0 *C.GOptionContext
+	var _arg0 *C.GOptionContext // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_option_context_get_strict_posix(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -291,15 +291,15 @@ func (c *OptionContext) StrictPosix() bool {
 
 // Summary returns the summary. See g_option_context_set_summary().
 func (c *OptionContext) Summary() string {
-	var _arg0 *C.GOptionContext
+	var _arg0 *C.GOptionContext // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_option_context_get_summary(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -312,8 +312,8 @@ func (c *OptionContext) Summary() string {
 // Note that the summary is translated (see
 // g_option_context_set_translate_func()).
 func (c *OptionContext) SetDescription(description string) {
-	var _arg0 *C.GOptionContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GOptionContext // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(description))
@@ -326,8 +326,8 @@ func (c *OptionContext) SetDescription(description string) {
 // By default, g_option_context_parse() recognizes `--help`, `-h`, `-?`,
 // `--help-all` and `--help-groupname` and creates suitable output to stdout.
 func (c *OptionContext) SetHelpEnabled(helpEnabled bool) {
-	var _arg0 *C.GOptionContext
-	var _arg1 C.gboolean
+	var _arg0 *C.GOptionContext // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if helpEnabled {
@@ -345,8 +345,8 @@ func (c *OptionContext) SetHelpEnabled(helpEnabled bool) {
 // start with a dash). But note that GOption cannot reliably determine whether a
 // non-option belongs to a preceding unknown option.
 func (c *OptionContext) SetIgnoreUnknownOptions(ignoreUnknown bool) {
-	var _arg0 *C.GOptionContext
-	var _arg1 C.gboolean
+	var _arg0 *C.GOptionContext // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if ignoreUnknown {
@@ -361,8 +361,8 @@ func (c *OptionContext) SetIgnoreUnknownOptions(ignoreUnknown bool) {
 // the options in the main group are treated differently when generating
 // `--help` output.
 func (c *OptionContext) SetMainGroup(group *OptionGroup) {
-	var _arg0 *C.GOptionContext
-	var _arg1 *C.GOptionGroup
+	var _arg0 *C.GOptionContext // out
+	var _arg1 *C.GOptionGroup   // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GOptionGroup)(unsafe.Pointer(group.Native()))
@@ -394,8 +394,8 @@ func (c *OptionContext) SetMainGroup(group *OptionGroup) {
 // determined by examining the verb name, which should be present in argv[1]
 // after parsing).
 func (c *OptionContext) SetStrictPosix(strictPosix bool) {
-	var _arg0 *C.GOptionContext
-	var _arg1 C.gboolean
+	var _arg0 *C.GOptionContext // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	if strictPosix {
@@ -412,8 +412,8 @@ func (c *OptionContext) SetStrictPosix(strictPosix bool) {
 // g_option_context_set_translate_func() and
 // g_option_context_set_translation_domain()).
 func (c *OptionContext) SetSummary(summary string) {
-	var _arg0 *C.GOptionContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GOptionContext // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(summary))
@@ -425,8 +425,8 @@ func (c *OptionContext) SetSummary(summary string) {
 // SetTranslationDomain: a convenience function to use gettext() for translating
 // user-visible strings.
 func (c *OptionContext) SetTranslationDomain(domain string) {
-	var _arg0 *C.GOptionContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GOptionContext // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GOptionContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
@@ -464,42 +464,42 @@ func (o *OptionEntry) Native() unsafe.Pointer {
 
 // LongName gets the field inside the struct.
 func (o *OptionEntry) LongName() string {
-	var v string
+	var v string // out
 	v = C.GoString(o.native.long_name)
 	return v
 }
 
 // ShortName gets the field inside the struct.
 func (o *OptionEntry) ShortName() byte {
-	var v byte
+	var v byte // out
 	v = (byte)(o.native.short_name)
 	return v
 }
 
 // Flags gets the field inside the struct.
 func (o *OptionEntry) Flags() int {
-	var v int
+	var v int // out
 	v = (int)(o.native.flags)
 	return v
 }
 
 // ArgData gets the field inside the struct.
 func (o *OptionEntry) ArgData() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(o.native.arg_data)
 	return v
 }
 
 // Description gets the field inside the struct.
 func (o *OptionEntry) Description() string {
-	var v string
+	var v string // out
 	v = C.GoString(o.native.description)
 	return v
 }
 
 // ArgDescription gets the field inside the struct.
 func (o *OptionEntry) ArgDescription() string {
-	var v string
+	var v string // out
 	v = C.GoString(o.native.arg_description)
 	return v
 }
@@ -537,7 +537,7 @@ func (o *OptionGroup) Native() unsafe.Pointer {
 
 // AddEntries adds the options specified in @entries to @group.
 func (g *OptionGroup) AddEntries(entries []OptionEntry) {
-	var _arg0 *C.GOptionGroup
+	var _arg0 *C.GOptionGroup // out
 	var _arg1 *C.GOptionEntry
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
@@ -559,7 +559,7 @@ func (g *OptionGroup) AddEntries(entries []OptionEntry) {
 // Free frees a Group. Note that you must not free groups which have been added
 // to a Context.
 func (g *OptionGroup) Free() {
-	var _arg0 *C.GOptionGroup
+	var _arg0 *C.GOptionGroup // out
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 
@@ -569,8 +569,8 @@ func (g *OptionGroup) Free() {
 // SetTranslationDomain: a convenience function to use gettext() for translating
 // user-visible strings.
 func (g *OptionGroup) SetTranslationDomain(domain string) {
-	var _arg0 *C.GOptionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GOptionGroup // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.gchar)(C.CString(domain))
@@ -583,7 +583,7 @@ func (g *OptionGroup) SetTranslationDomain(domain string) {
 // drops to 0, the @group will be freed. and all memory allocated by the @group
 // is released.
 func (g *OptionGroup) Unref() {
-	var _arg0 *C.GOptionGroup
+	var _arg0 *C.GOptionGroup // out
 
 	_arg0 = (*C.GOptionGroup)(unsafe.Pointer(g.Native()))
 

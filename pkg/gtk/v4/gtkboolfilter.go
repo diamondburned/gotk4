@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -57,15 +57,15 @@ func marshalBoolFilter(p uintptr) (interface{}, error) {
 
 // Invert returns whether the filter inverts the expression.
 func (s boolFilter) Invert() bool {
-	var _arg0 *C.GtkBoolFilter
+	var _arg0 *C.GtkBoolFilter // out
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bool_filter_get_invert(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -79,8 +79,8 @@ func (s boolFilter) Invert() bool {
 //
 // The expression must have a value type of G_TYPE_BOOLEAN.
 func (s boolFilter) SetExpression(expression Expression) {
-	var _arg0 *C.GtkBoolFilter
-	var _arg1 *C.GtkExpression
+	var _arg0 *C.GtkBoolFilter // out
+	var _arg1 *C.GtkExpression // out
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
@@ -90,8 +90,8 @@ func (s boolFilter) SetExpression(expression Expression) {
 
 // SetInvert sets whether the filter should invert the expression.
 func (s boolFilter) SetInvert(invert bool) {
-	var _arg0 *C.GtkBoolFilter
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkBoolFilter // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GtkBoolFilter)(unsafe.Pointer(s.Native()))
 	if invert {

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -33,8 +33,8 @@ import "C"
 //      g_enum_complete_type_info (type, info, values);
 //    }
 func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) TypeInfo {
-	var _arg1 C.GType
-	var _arg3 *C.GEnumValue
+	var _arg1 C.GType       // out
+	var _arg3 *C.GEnumValue // out
 
 	_arg1 = C.GType(gEnumType)
 	_arg3 = (*C.GEnumValue)(unsafe.Pointer(constValues.Native()))
@@ -53,18 +53,18 @@ func EnumCompleteTypeInfo(gEnumType externglib.Type, constValues *EnumValue) Typ
 // a my_enum_get_type() function from a usual C enumeration definition than to
 // write one yourself using g_enum_register_static().
 func EnumRegisterStatic(name string, constStaticValues *EnumValue) externglib.Type {
-	var _arg1 *C.gchar
-	var _arg2 *C.GEnumValue
+	var _arg1 *C.gchar      // out
+	var _arg2 *C.GEnumValue // out
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
 
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_enum_register_static(_arg1, _arg2)
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -76,17 +76,17 @@ func EnumRegisterStatic(name string, constStaticValues *EnumValue) externglib.Ty
 // This is intended to be used for debugging purposes. The format of the output
 // may change in the future.
 func EnumToString(gEnumType externglib.Type, value int) string {
-	var _arg1 C.GType
-	var _arg2 C.gint
+	var _arg1 C.GType // out
+	var _arg2 C.gint  // out
 
 	_arg1 = C.GType(gEnumType)
 	_arg2 = C.gint(value)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_enum_to_string(_arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -98,8 +98,8 @@ func EnumToString(gEnumType externglib.Type, value int) string {
 // complete_type_info() function of a Plugin implementation, see the example for
 // g_enum_complete_type_info() above.
 func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) TypeInfo {
-	var _arg1 C.GType
-	var _arg3 *C.GFlagsValue
+	var _arg1 C.GType        // out
+	var _arg3 *C.GFlagsValue // out
 
 	_arg1 = C.GType(gFlagsType)
 	_arg3 = (*C.GFlagsValue)(unsafe.Pointer(constValues.Native()))
@@ -117,18 +117,18 @@ func FlagsCompleteTypeInfo(gFlagsType externglib.Type, constValues *FlagsValue) 
 // my_flags_get_type() function from a usual C enumeration definition than to
 // write one yourself using g_flags_register_static().
 func FlagsRegisterStatic(name string, constStaticValues *FlagsValue) externglib.Type {
-	var _arg1 *C.gchar
-	var _arg2 *C.GFlagsValue
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.GFlagsValue // out
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
 
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_flags_register_static(_arg1, _arg2)
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -142,17 +142,17 @@ func FlagsRegisterStatic(name string, constStaticValues *FlagsValue) externglib.
 // This is intended to be used for debugging purposes. The format of the output
 // may change in the future.
 func FlagsToString(flagsType externglib.Type, value uint) string {
-	var _arg1 C.GType
-	var _arg2 C.guint
+	var _arg1 C.GType // out
+	var _arg2 C.guint // out
 
 	_arg1 = C.GType(flagsType)
 	_arg2 = C.guint(value)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_flags_to_string(_arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -188,21 +188,21 @@ func (e *EnumValue) Native() unsafe.Pointer {
 
 // Value gets the field inside the struct.
 func (e *EnumValue) Value() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.value)
 	return v
 }
 
 // ValueName gets the field inside the struct.
 func (e *EnumValue) ValueName() string {
-	var v string
+	var v string // out
 	v = C.GoString(e.native.value_name)
 	return v
 }
 
 // ValueNick gets the field inside the struct.
 func (e *EnumValue) ValueNick() string {
-	var v string
+	var v string // out
 	v = C.GoString(e.native.value_nick)
 	return v
 }
@@ -235,21 +235,21 @@ func (f *FlagsValue) Native() unsafe.Pointer {
 
 // Value gets the field inside the struct.
 func (f *FlagsValue) Value() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(f.native.value)
 	return v
 }
 
 // ValueName gets the field inside the struct.
 func (f *FlagsValue) ValueName() string {
-	var v string
+	var v string // out
 	v = C.GoString(f.native.value_name)
 	return v
 }
 
 // ValueNick gets the field inside the struct.
 func (f *FlagsValue) ValueNick() string {
-	var v string
+	var v string // out
 	v = C.GoString(f.native.value_nick)
 	return v
 }

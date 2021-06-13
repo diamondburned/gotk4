@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -79,15 +79,15 @@ func marshalDBusObjectManager(p uintptr) (interface{}, error) {
 
 // ObjectPath gets the object path that @manager is for.
 func (m dBusObjectManager) ObjectPath() string {
-	var _arg0 *C.GDBusObjectManager
+	var _arg0 *C.GDBusObjectManager // out
 
 	_arg0 = (*C.GDBusObjectManager)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_object_manager_get_object_path(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

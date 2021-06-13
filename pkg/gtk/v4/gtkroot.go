@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -78,8 +78,8 @@ func marshalRoot(p uintptr) (interface{}, error) {
 // convenient to use [method@Gtk.Widget.grab_focus] instead of this
 // function.
 func (s root) SetFocus(focus Widget) {
-	var _arg0 *C.GtkRoot
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkRoot   // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkRoot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(focus.Native()))

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -75,15 +75,15 @@ func marshalTexture(p uintptr) (interface{}, error) {
 
 // Height returns the height of the @texture, in pixels.
 func (t texture) Height() int {
-	var _arg0 *C.GdkTexture
+	var _arg0 *C.GdkTexture // out
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_texture_get_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -92,15 +92,15 @@ func (t texture) Height() int {
 
 // Width returns the width of @texture, in pixels.
 func (t texture) Width() int {
-	var _arg0 *C.GdkTexture
+	var _arg0 *C.GdkTexture // out
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_texture_get_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -114,18 +114,18 @@ func (t texture) Width() int {
 // a `GFile` or other location, you might want to look into using the
 // gdk-pixbuf library.
 func (t texture) SaveToPng(filename string) bool {
-	var _arg0 *C.GdkTexture
-	var _arg1 *C.char
+	var _arg0 *C.GdkTexture // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GdkTexture)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_texture_save_to_png(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

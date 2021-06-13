@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -85,15 +85,15 @@ func marshalUnixSocketAddress(p uintptr) (interface{}, error) {
 
 // IsAbstract tests if @address is abstract.
 func (a unixSocketAddress) IsAbstract() bool {
-	var _arg0 *C.GUnixSocketAddress
+	var _arg0 *C.GUnixSocketAddress // out
 
 	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_unix_socket_address_get_is_abstract(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -109,15 +109,15 @@ func (a unixSocketAddress) IsAbstract() bool {
 // g_unix_socket_address_get_path_len() to get the true length of this
 // string.
 func (a unixSocketAddress) Path() string {
-	var _arg0 *C.GUnixSocketAddress
+	var _arg0 *C.GUnixSocketAddress // out
 
 	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_unix_socket_address_get_path(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -128,15 +128,15 @@ func (a unixSocketAddress) Path() string {
 //
 // For details, see g_unix_socket_address_get_path().
 func (a unixSocketAddress) PathLen() uint {
-	var _arg0 *C.GUnixSocketAddress
+	var _arg0 *C.GUnixSocketAddress // out
 
 	_arg0 = (*C.GUnixSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_unix_socket_address_get_path_len(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 

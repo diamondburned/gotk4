@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -93,15 +93,15 @@ func marshalColorButton(p uintptr) (interface{}, error) {
 
 // Alpha returns the current alpha value.
 func (b colorButton) Alpha() uint16 {
-	var _arg0 *C.GtkColorButton
+	var _arg0 *C.GtkColorButton // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
-	var _cret C.guint16
+	var _cret C.guint16 // in
 
 	_cret = C.gtk_color_button_get_alpha(_arg0)
 
-	var _guint16 uint16
+	var _guint16 uint16 // out
 
 	_guint16 = (uint16)(_cret)
 
@@ -110,7 +110,7 @@ func (b colorButton) Alpha() uint16 {
 
 // Color sets @color to be the current color in the ColorButton widget.
 func (b colorButton) Color() gdk.Color {
-	var _arg0 *C.GtkColorButton
+	var _arg0 *C.GtkColorButton // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
@@ -123,7 +123,7 @@ func (b colorButton) Color() gdk.Color {
 
 // RGBA sets @rgba to be the current color in the ColorButton widget.
 func (b colorButton) RGBA() gdk.RGBA {
-	var _arg0 *C.GtkColorButton
+	var _arg0 *C.GtkColorButton // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
@@ -136,15 +136,15 @@ func (b colorButton) RGBA() gdk.RGBA {
 
 // Title gets the title of the color selection dialog.
 func (b colorButton) Title() string {
-	var _arg0 *C.GtkColorButton
+	var _arg0 *C.GtkColorButton // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_color_button_get_title(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -153,15 +153,15 @@ func (b colorButton) Title() string {
 
 // UseAlpha does the color selection dialog use the alpha channel ?
 func (b colorButton) UseAlpha() bool {
-	var _arg0 *C.GtkColorButton
+	var _arg0 *C.GtkColorButton // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_button_get_use_alpha(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -172,8 +172,8 @@ func (b colorButton) UseAlpha() bool {
 
 // SetAlpha sets the current opacity to be @alpha.
 func (b colorButton) SetAlpha(alpha uint16) {
-	var _arg0 *C.GtkColorButton
-	var _arg1 C.guint16
+	var _arg0 *C.GtkColorButton // out
+	var _arg1 C.guint16         // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint16(alpha)
@@ -183,8 +183,8 @@ func (b colorButton) SetAlpha(alpha uint16) {
 
 // SetColor sets the current color to be @color.
 func (b colorButton) SetColor(color *gdk.Color) {
-	var _arg0 *C.GtkColorButton
-	var _arg1 *C.GdkColor
+	var _arg0 *C.GtkColorButton // out
+	var _arg1 *C.GdkColor       // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
@@ -194,8 +194,8 @@ func (b colorButton) SetColor(color *gdk.Color) {
 
 // SetRGBA sets the current color to be @rgba.
 func (b colorButton) SetRGBA(rgba *gdk.RGBA) {
-	var _arg0 *C.GtkColorButton
-	var _arg1 *C.GdkRGBA
+	var _arg0 *C.GtkColorButton // out
+	var _arg1 *C.GdkRGBA        // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
@@ -205,8 +205,8 @@ func (b colorButton) SetRGBA(rgba *gdk.RGBA) {
 
 // SetTitle sets the title for the color selection dialog.
 func (b colorButton) SetTitle(title string) {
-	var _arg0 *C.GtkColorButton
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkColorButton // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
@@ -218,8 +218,8 @@ func (b colorButton) SetTitle(title string) {
 // SetUseAlpha sets whether or not the color button should use the alpha
 // channel.
 func (b colorButton) SetUseAlpha(useAlpha bool) {
-	var _arg0 *C.GtkColorButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkColorButton // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkColorButton)(unsafe.Pointer(b.Native()))
 	if useAlpha {

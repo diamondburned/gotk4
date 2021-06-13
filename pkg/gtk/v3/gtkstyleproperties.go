@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -86,7 +86,7 @@ func marshalStyleProperties(p uintptr) (interface{}, error) {
 
 // Clear clears all style information from @props.
 func (p styleProperties) Clear() {
-	var _arg0 *C.GtkStyleProperties
+	var _arg0 *C.GtkStyleProperties // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 
@@ -97,22 +97,22 @@ func (p styleProperties) Clear() {
 // with @value, g_value_unset() needs to be called to free any allocated
 // memory.
 func (p styleProperties) Property(property string, state StateFlags) (*externglib.Value, bool) {
-	var _arg0 *C.GtkStyleProperties
-	var _arg1 *C.gchar
-	var _arg2 C.GtkStateFlags
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GtkStateFlags)(state)
 
-	var _arg3 C.GValue
-	var _cret C.gboolean
+	var _arg3 C.GValue   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_properties_get_property(_arg0, _arg1, _arg2, &_arg3)
 
-	var _value *externglib.Value
-	var _ok bool
+	var _value *externglib.Value // out
+	var _ok bool                 // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_value, func(v *externglib.Value) {
@@ -128,9 +128,9 @@ func (p styleProperties) Property(property string, state StateFlags) (*externgli
 // MapColor maps @color so it can be referenced by @name. See
 // gtk_style_properties_lookup_color()
 func (p styleProperties) MapColor(name string, color *SymbolicColor) {
-	var _arg0 *C.GtkStyleProperties
-	var _arg1 *C.gchar
-	var _arg2 *C.GtkSymbolicColor
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GtkSymbolicColor   // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -144,9 +144,9 @@ func (p styleProperties) MapColor(name string, color *SymbolicColor) {
 // @props_to_merge. If @replace is true, the values will be overwritten, if
 // it is false, the older values will prevail.
 func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
-	var _arg0 *C.GtkStyleProperties
-	var _arg1 *C.GtkStyleProperties
-	var _arg2 C.gboolean
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.GtkStyleProperties // out
+	var _arg2 C.gboolean            // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(propsToMerge.Native()))
@@ -159,10 +159,10 @@ func (p styleProperties) Merge(propsToMerge StyleProperties, replace bool) {
 
 // SetProperty sets a styling property in @props.
 func (p styleProperties) SetProperty(property string, state StateFlags, value **externglib.Value) {
-	var _arg0 *C.GtkStyleProperties
-	var _arg1 *C.gchar
-	var _arg2 C.GtkStateFlags
-	var _arg3 *C.GValue
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
+	var _arg3 *C.GValue             // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
@@ -175,9 +175,9 @@ func (p styleProperties) SetProperty(property string, state StateFlags, value **
 
 // UnsetProperty unsets a style property in @props.
 func (p styleProperties) UnsetProperty(property string, state StateFlags) {
-	var _arg0 *C.GtkStyleProperties
-	var _arg1 *C.gchar
-	var _arg2 C.GtkStateFlags
+	var _arg0 *C.GtkStyleProperties // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GtkStateFlags       // out
 
 	_arg0 = (*C.GtkStyleProperties)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
@@ -227,9 +227,9 @@ func (g *Gradient) Native() unsafe.Pointer {
 
 // AddColorStop adds a stop color to @gradient.
 func (g *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
-	var _arg0 *C.GtkGradient
-	var _arg1 C.gdouble
-	var _arg2 *C.GtkSymbolicColor
+	var _arg0 *C.GtkGradient      // out
+	var _arg1 C.gdouble           // out
+	var _arg2 *C.GtkSymbolicColor // out
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g.Native()))
 	_arg1 = C.gdouble(offset)
@@ -243,18 +243,18 @@ func (g *Gradient) AddColorStop(offset float64, color *SymbolicColor) {
 // Generally, if @gradient can’t be resolved, it is due to it being defined on
 // top of a named color that doesn't exist in @props.
 func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
-	var _arg0 *C.GtkGradient
-	var _arg1 *C.GtkStyleProperties
+	var _arg0 *C.GtkGradient        // out
+	var _arg1 *C.GtkStyleProperties // out
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	var _resolvedGradient *cairo.Pattern
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gradient_resolve(_arg0, _arg1, (**C.cairo_pattern_t)(unsafe.Pointer(&_resolvedGradient)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -266,15 +266,15 @@ func (g *Gradient) Resolve(props StyleProperties) (*cairo.Pattern, bool) {
 // String creates a string representation for @gradient that is suitable for
 // using in GTK CSS files.
 func (g *Gradient) String() string {
-	var _arg0 *C.GtkGradient
+	var _arg0 *C.GtkGradient // out
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_gradient_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -285,7 +285,7 @@ func (g *Gradient) String() string {
 // Unref decreases the reference count of @gradient, freeing its memory if the
 // reference count reaches 0.
 func (g *Gradient) Unref() {
-	var _arg0 *C.GtkGradient
+	var _arg0 *C.GtkGradient // out
 
 	_arg0 = (*C.GtkGradient)(unsafe.Pointer(g.Native()))
 
@@ -337,18 +337,18 @@ func (s *SymbolicColor) Native() unsafe.Pointer {
 // When @props is nil, resolving of named colors will fail, so if your @color is
 // or references such a color, this function will return false.
 func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
-	var _arg0 *C.GtkSymbolicColor
-	var _arg1 *C.GtkStyleProperties
+	var _arg0 *C.GtkSymbolicColor   // out
+	var _arg1 *C.GtkStyleProperties // out
 
 	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleProperties)(unsafe.Pointer(props.Native()))
 
 	var _resolvedColor gdk.RGBA
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_symbolic_color_resolve(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_resolvedColor)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -363,15 +363,15 @@ func (c *SymbolicColor) Resolve(props StyleProperties) (gdk.RGBA, bool) {
 // GTK css parser is able to read the string and create the same symbolic color
 // from it.
 func (c *SymbolicColor) String() string {
-	var _arg0 *C.GtkSymbolicColor
+	var _arg0 *C.GtkSymbolicColor // out
 
 	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_symbolic_color_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -382,7 +382,7 @@ func (c *SymbolicColor) String() string {
 // Unref decreases the reference count of @color, freeing its memory if the
 // reference count reaches 0.
 func (c *SymbolicColor) Unref() {
-	var _arg0 *C.GtkSymbolicColor
+	var _arg0 *C.GtkSymbolicColor // out
 
 	_arg0 = (*C.GtkSymbolicColor)(unsafe.Pointer(c.Native()))
 

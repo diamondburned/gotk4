@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -70,8 +70,8 @@ func marshalDBusInterface(p uintptr) (interface{}, error) {
 //
 // Note that @interface_ will hold a weak reference to @object.
 func (i dBusInterface) SetObject(object DBusObject) {
-	var _arg0 *C.GDBusInterface
-	var _arg1 *C.GDBusObject
+	var _arg0 *C.GDBusInterface // out
+	var _arg1 *C.GDBusObject    // out
 
 	_arg0 = (*C.GDBusInterface)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GDBusObject)(unsafe.Pointer(object.Native()))

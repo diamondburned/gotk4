@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -236,8 +236,8 @@ func marshalConstraintLayout(p uintptr) (interface{}, error) {
 // The @layout acquires the ownership of @constraint after calling this
 // function.
 func (l constraintLayout) AddConstraint(constraint Constraint) {
-	var _arg0 *C.GtkConstraintLayout
-	var _arg1 *C.GtkConstraint
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraint       // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
@@ -253,8 +253,8 @@ func (l constraintLayout) AddConstraint(constraint Constraint) {
 // The `layout` acquires the ownership of `guide` after calling this
 // function.
 func (l constraintLayout) AddGuide(guide ConstraintGuide) {
-	var _arg0 *C.GtkConstraintLayout
-	var _arg1 *C.GtkConstraintGuide
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraintGuide  // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))
@@ -264,7 +264,7 @@ func (l constraintLayout) AddGuide(guide ConstraintGuide) {
 
 // RemoveAllConstraints removes all constraints from the layout manager.
 func (l constraintLayout) RemoveAllConstraints() {
-	var _arg0 *C.GtkConstraintLayout
+	var _arg0 *C.GtkConstraintLayout // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 
@@ -274,8 +274,8 @@ func (l constraintLayout) RemoveAllConstraints() {
 // RemoveConstraint removes `constraint` from the layout manager, so that it
 // no longer influences the layout.
 func (l constraintLayout) RemoveConstraint(constraint Constraint) {
-	var _arg0 *C.GtkConstraintLayout
-	var _arg1 *C.GtkConstraint
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraint       // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkConstraint)(unsafe.Pointer(constraint.Native()))
@@ -286,8 +286,8 @@ func (l constraintLayout) RemoveConstraint(constraint Constraint) {
 // RemoveGuide removes `guide` from the layout manager, so that it no longer
 // influences the layout.
 func (l constraintLayout) RemoveGuide(guide ConstraintGuide) {
-	var _arg0 *C.GtkConstraintLayout
-	var _arg1 *C.GtkConstraintGuide
+	var _arg0 *C.GtkConstraintLayout // out
+	var _arg1 *C.GtkConstraintGuide  // out
 
 	_arg0 = (*C.GtkConstraintLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkConstraintGuide)(unsafe.Pointer(guide.Native()))

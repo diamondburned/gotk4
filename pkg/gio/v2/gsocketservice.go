@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -107,15 +107,15 @@ func marshalSocketService(p uintptr) (interface{}, error) {
 // will accept new clients that connect, while a non-active service will let
 // connecting clients queue up until the service is started.
 func (s socketService) IsActive() bool {
-	var _arg0 *C.GSocketService
+	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_socket_service_is_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -131,7 +131,7 @@ func (s socketService) IsActive() bool {
 // This call is thread-safe, so it may be called from a thread handling an
 // incoming client request.
 func (s socketService) Start() {
-	var _arg0 *C.GSocketService
+	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 
@@ -154,7 +154,7 @@ func (s socketService) Start() {
 // socket service will start accepting connections immediately when a new
 // socket is added.
 func (s socketService) Stop() {
-	var _arg0 *C.GSocketService
+	var _arg0 *C.GSocketService // out
 
 	_arg0 = (*C.GSocketService)(unsafe.Pointer(s.Native()))
 

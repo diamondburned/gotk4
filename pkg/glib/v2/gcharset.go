@@ -32,13 +32,13 @@ import "C"
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetCharset() (string, bool) {
-	var _arg1 **C.char
-	var _cret C.gboolean
+	var _arg1 **C.char   // in
+	var _cret C.gboolean // in
 
 	_cret = C.g_get_charset(_arg1)
 
-	var _charset string
-	var _ok bool
+	var _charset string // out
+	var _ok bool        // out
 
 	_charset = C.GoString(_arg1)
 	if _cret {
@@ -50,11 +50,11 @@ func GetCharset() (string, bool) {
 
 // GetCodeset gets the character set for the current locale.
 func GetCodeset() string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_codeset()
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -79,13 +79,13 @@ func GetCodeset() string {
 //
 // The string returned in @charset is not allocated, and should not be freed.
 func GetConsoleCharset() (string, bool) {
-	var _arg1 **C.char
-	var _cret C.gboolean
+	var _arg1 **C.char   // in
+	var _cret C.gboolean // in
 
 	_cret = C.g_get_console_charset(_arg1)
 
-	var _charset string
-	var _ok bool
+	var _charset string // out
+	var _ok bool        // out
 
 	_charset = C.GoString(_arg1)
 	if _cret {
@@ -144,7 +144,7 @@ func GetLanguageNames() []string {
 // g_get_language_names() returns
 // g_get_language_names_with_category("LC_MESSAGES").
 func GetLanguageNamesWithCategory(categoryName string) []string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(categoryName))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -192,7 +192,7 @@ func GetLanguageNamesWithCategory(categoryName string) []string {
 // If you need the list of variants for the current locale, use
 // g_get_language_names().
 func GetLocaleVariants(locale string) []string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(locale))
 	defer C.free(unsafe.Pointer(_arg1))

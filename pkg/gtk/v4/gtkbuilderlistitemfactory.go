@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -61,15 +61,15 @@ func marshalBuilderListItemFactory(p uintptr) (interface{}, error) {
 // Resource: if the data references a resource, gets the path of that
 // resource.
 func (s builderListItemFactory) Resource() string {
-	var _arg0 *C.GtkBuilderListItemFactory
+	var _arg0 *C.GtkBuilderListItemFactory // out
 
 	_arg0 = (*C.GtkBuilderListItemFactory)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_builder_list_item_factory_get_resource(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

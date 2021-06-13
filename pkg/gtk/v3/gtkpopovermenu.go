@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -135,8 +135,8 @@ func marshalPopoverMenu(p uintptr) (interface{}, error) {
 // ModelButton:menu-name property is set, so this function is only needed
 // when you are using other kinds of widgets to initiate menu changes.
 func (p popoverMenu) OpenSubmenu(name string) {
-	var _arg0 *C.GtkPopoverMenu
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkPopoverMenu // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkPopoverMenu)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))

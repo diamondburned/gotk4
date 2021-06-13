@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -93,15 +93,15 @@ func marshalLinkButton(p uintptr) (interface{}, error) {
 
 // URI retrieves the URI set using gtk_link_button_set_uri().
 func (l linkButton) URI() string {
-	var _arg0 *C.GtkLinkButton
+	var _arg0 *C.GtkLinkButton // out
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_link_button_get_uri(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -114,15 +114,15 @@ func (l linkButton) URI() string {
 //
 // The state may also be changed using gtk_link_button_set_visited().
 func (l linkButton) Visited() bool {
-	var _arg0 *C.GtkLinkButton
+	var _arg0 *C.GtkLinkButton // out
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_link_button_get_visited(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -134,8 +134,8 @@ func (l linkButton) Visited() bool {
 // SetURI sets @uri as the URI where the LinkButton points. As a side-effect
 // this unsets the “visited” state of the button.
 func (l linkButton) SetURI(uri string) {
-	var _arg0 *C.GtkLinkButton
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkLinkButton // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -147,8 +147,8 @@ func (l linkButton) SetURI(uri string) {
 // SetVisited sets the “visited” state of the URI where the LinkButton
 // points. See gtk_link_button_get_visited() for more details.
 func (l linkButton) SetVisited(visited bool) {
-	var _arg0 *C.GtkLinkButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkLinkButton // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GtkLinkButton)(unsafe.Pointer(l.Native()))
 	if visited {

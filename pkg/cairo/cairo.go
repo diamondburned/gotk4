@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: cairo-gobject gobject-introspection-1.0
+// #cgo pkg-config: cairo-gobject gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <cairo-gobject.h>
@@ -689,28 +689,28 @@ func (r *Rectangle) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (r *Rectangle) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(r.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (r *Rectangle) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(r.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (r *Rectangle) Width() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(r.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (r *Rectangle) Height() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(r.native.height)
 	return v
 }
@@ -741,28 +741,28 @@ func (r *RectangleInt) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (r *RectangleInt) X() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (r *RectangleInt) Y() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (r *RectangleInt) Width() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (r *RectangleInt) Height() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.height)
 	return v
 }

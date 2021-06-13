@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -70,10 +70,10 @@ func marshalLoadableIcon(p uintptr) (interface{}, error) {
 // g_loadable_icon_load_finish(). For the synchronous, blocking version of
 // this function, see g_loadable_icon_load().
 func (i loadableIcon) LoadAsync(size int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GLoadableIcon
-	var _arg1 C.int
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GLoadableIcon      // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GLoadableIcon)(unsafe.Pointer(i.Native()))

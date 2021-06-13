@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -74,15 +74,15 @@ func marshalPixbufAnimation(p uintptr) (interface{}, error) {
 
 // Height queries the height of the bounding box of a pixbuf animation.
 func (a pixbufAnimation) Height() int {
-	var _arg0 *C.GdkPixbufAnimation
+	var _arg0 *C.GdkPixbufAnimation // out
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_pixbuf_animation_get_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -91,15 +91,15 @@ func (a pixbufAnimation) Height() int {
 
 // Width queries the width of the bounding box of a pixbuf animation.
 func (a pixbufAnimation) Width() int {
-	var _arg0 *C.GdkPixbufAnimation
+	var _arg0 *C.GdkPixbufAnimation // out
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_pixbuf_animation_get_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -113,15 +113,15 @@ func (a pixbufAnimation) Width() int {
 // `TRUE`. Use gdk_pixbuf_animation_get_static_image() to retrieve the
 // image.
 func (a pixbufAnimation) IsStaticImage() bool {
-	var _arg0 *C.GdkPixbufAnimation
+	var _arg0 *C.GdkPixbufAnimation // out
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_animation_is_static_image(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -132,7 +132,7 @@ func (a pixbufAnimation) IsStaticImage() bool {
 
 // Unref removes a reference from an animation.
 func (a pixbufAnimation) Unref() {
-	var _arg0 *C.GdkPixbufAnimation
+	var _arg0 *C.GdkPixbufAnimation // out
 
 	_arg0 = (*C.GdkPixbufAnimation)(unsafe.Pointer(a.Native()))
 
@@ -226,17 +226,17 @@ func marshalPixbufAnimationIter(p uintptr) (interface{}, error) {
 // `TRUE`, you need to call gdk_pixbuf_animation_iter_get_pixbuf() and
 // update the display with the new pixbuf.
 func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
-	var _arg0 *C.GdkPixbufAnimationIter
-	var _arg1 *C.GTimeVal
+	var _arg0 *C.GdkPixbufAnimationIter // out
+	var _arg1 *C.GTimeVal               // out
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GTimeVal)(unsafe.Pointer(currentTime.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_animation_iter_advance(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -255,15 +255,15 @@ func (i pixbufAnimationIter) Advance(currentTime *glib.TimeVal) bool {
 // image file to avoid updates that are just too quick. The minimum timeout
 // for GIF images is currently 20 milliseconds.
 func (i pixbufAnimationIter) DelayTime() int {
-	var _arg0 *C.GdkPixbufAnimationIter
+	var _arg0 *C.GdkPixbufAnimationIter // out
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_pixbuf_animation_iter_get_delay_time(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -277,15 +277,15 @@ func (i pixbufAnimationIter) DelayTime() int {
 // streaming in to the loader. So if you're on the currently loading frame,
 // you will need to redraw the screen for the updated area.
 func (i pixbufAnimationIter) OnCurrentlyLoadingFrame() bool {
-	var _arg0 *C.GdkPixbufAnimationIter
+	var _arg0 *C.GdkPixbufAnimationIter // out
 
 	_arg0 = (*C.GdkPixbufAnimationIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_animation_iter_on_currently_loading_frame(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

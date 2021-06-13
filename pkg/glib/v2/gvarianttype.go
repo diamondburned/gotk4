@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -181,15 +181,15 @@ func (v *VariantType) Native() unsafe.Pointer {
 // @type. The returned string is nul-terminated. It is appropriate to call
 // g_free() on the return value.
 func (t *VariantType) DupString() string {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_variant_type_dup_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -208,17 +208,17 @@ func (t *VariantType) DupString() string {
 // with Table without function pointer casting. For both arguments, a valid Type
 // must be provided.
 func (t *VariantType) Equal(type2 VariantType) bool {
-	var _arg0 C.gpointer
-	var _arg1 C.gpointer
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(type2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -234,7 +234,7 @@ func (t *VariantType) Equal(type2 VariantType) bool {
 //
 // Since 2.24
 func (t *VariantType) Free() {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
@@ -245,15 +245,15 @@ func (t *VariantType) Free() {
 // @type. This function must be used to determine the valid extent of the memory
 // region returned by g_variant_type_peek_string().
 func (t *VariantType) StringLength() uint {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_variant_type_get_string_length(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -265,15 +265,15 @@ func (t *VariantType) StringLength() uint {
 // The argument type of @type is only #gconstpointer to allow use with Table
 // without function pointer casting. A valid Type must be provided.
 func (t *VariantType) Hash() uint {
-	var _arg0 C.gpointer
+	var _arg0 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_variant_type_hash(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -286,15 +286,15 @@ func (t *VariantType) Hash() uint {
 // This function returns true for any indefinite type for which every definite
 // subtype is an array type -- G_VARIANT_TYPE_ARRAY, for example.
 func (t *VariantType) IsArray() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_array(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -313,15 +313,15 @@ func (t *VariantType) IsArray() bool {
 // This function returns false for all indefinite types except
 // G_VARIANT_TYPE_BASIC.
 func (t *VariantType) IsBasic() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_basic(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -338,15 +338,15 @@ func (t *VariantType) IsBasic() bool {
 // This function returns true for any indefinite type for which every definite
 // subtype is a container -- G_VARIANT_TYPE_ARRAY, for example.
 func (t *VariantType) IsContainer() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_container(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -365,15 +365,15 @@ func (t *VariantType) IsContainer() bool {
 // being returned. Calling this function on an indefinite type like
 // G_VARIANT_TYPE_ARRAY, however, will result in false being returned.
 func (t *VariantType) IsDefinite() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_definite(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -388,15 +388,15 @@ func (t *VariantType) IsDefinite() bool {
 // This function returns true for any indefinite type for which every definite
 // subtype is a dictionary entry type -- G_VARIANT_TYPE_DICT_ENTRY, for example.
 func (t *VariantType) IsDictEntry() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_dict_entry(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -411,15 +411,15 @@ func (t *VariantType) IsDictEntry() bool {
 // This function returns true for any indefinite type for which every definite
 // subtype is a maybe type -- G_VARIANT_TYPE_MAYBE, for example.
 func (t *VariantType) IsMaybe() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_maybe(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -434,17 +434,17 @@ func (t *VariantType) IsMaybe() bool {
 // considered to be subtypes of themselves. Aside from that, only indefinite
 // types can have subtypes.
 func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
-	var _arg0 *C.GVariantType
-	var _arg1 *C.GVariantType
+	var _arg0 *C.GVariantType // out
+	var _arg1 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GVariantType)(unsafe.Pointer(supertype.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_subtype_of(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -459,15 +459,15 @@ func (t *VariantType) IsSubtypeOf(supertype *VariantType) bool {
 // This function returns true for any indefinite type for which every definite
 // subtype is a tuple type -- G_VARIANT_TYPE_TUPLE, for example.
 func (t *VariantType) IsTuple() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_tuple(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -478,15 +478,15 @@ func (t *VariantType) IsTuple() bool {
 
 // IsVariant determines if the given @type is the variant type.
 func (t *VariantType) IsVariant() bool {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_variant_type_is_variant(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -503,15 +503,15 @@ func (t *VariantType) IsVariant() bool {
 //
 // In the case of a dictionary entry type, this function will always return 2.
 func (t *VariantType) NItems() uint {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_variant_type_n_items(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -524,15 +524,15 @@ func (t *VariantType) NItems() uint {
 //
 // To get a nul-terminated string, see g_variant_type_dup_string().
 func (t *VariantType) PeekString() string {
-	var _arg0 *C.GVariantType
+	var _arg0 *C.GVariantType // out
 
 	_arg0 = (*C.GVariantType)(unsafe.Pointer(t.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_variant_type_peek_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

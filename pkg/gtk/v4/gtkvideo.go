@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -100,15 +100,15 @@ func marshalVideo(p uintptr) (interface{}, error) {
 
 // Autoplay returns true if videos have been set to loop.
 func (s video) Autoplay() bool {
-	var _arg0 *C.GtkVideo
+	var _arg0 *C.GtkVideo // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_video_get_autoplay(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -119,15 +119,15 @@ func (s video) Autoplay() bool {
 
 // Loop returns true if videos have been set to loop.
 func (s video) Loop() bool {
-	var _arg0 *C.GtkVideo
+	var _arg0 *C.GtkVideo // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_video_get_loop(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -139,8 +139,8 @@ func (s video) Loop() bool {
 // SetAutoplay sets whether @self automatically starts playback when it
 // becomes visible or when a new file gets loaded.
 func (s video) SetAutoplay(autoplay bool) {
-	var _arg0 *C.GtkVideo
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkVideo // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	if autoplay {
@@ -152,8 +152,8 @@ func (s video) SetAutoplay(autoplay bool) {
 
 // SetFile makes @self play the given @file.
 func (s video) SetFile(file gio.File) {
-	var _arg0 *C.GtkVideo
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkVideo // out
+	var _arg1 *C.GFile    // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
@@ -165,8 +165,8 @@ func (s video) SetFile(file gio.File) {
 //
 // This is a utility function that calls gtk_video_set_file(),
 func (s video) SetFilename(filename string) {
-	var _arg0 *C.GtkVideo
-	var _arg1 *C.char
+	var _arg0 *C.GtkVideo // out
+	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -177,8 +177,8 @@ func (s video) SetFilename(filename string) {
 
 // SetLoop sets whether new files loaded by @self should be set to loop.
 func (s video) SetLoop(loop bool) {
-	var _arg0 *C.GtkVideo
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkVideo // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	if loop {
@@ -197,8 +197,8 @@ func (s video) SetLoop(loop bool) {
 // If you want to display a file, consider using [method@Gtk.Video.set_file]
 // instead.
 func (s video) SetMediaStream(stream MediaStream) {
-	var _arg0 *C.GtkVideo
-	var _arg1 *C.GtkMediaStream
+	var _arg0 *C.GtkVideo       // out
+	var _arg1 *C.GtkMediaStream // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))
@@ -210,8 +210,8 @@ func (s video) SetMediaStream(stream MediaStream) {
 //
 // This is a utility function that calls [method@Gtk.Video.set_file].
 func (s video) SetResource(resourcePath string) {
-	var _arg0 *C.GtkVideo
-	var _arg1 *C.char
+	var _arg0 *C.GtkVideo // out
+	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkVideo)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))

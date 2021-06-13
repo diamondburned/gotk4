@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -79,17 +79,17 @@ func (c *ContentFormats) Native() unsafe.Pointer {
 
 // ContainGType checks if a given `GType` is part of the given @formats.
 func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
-	var _arg0 *C.GdkContentFormats
-	var _arg1 C.GType
+	var _arg0 *C.GdkContentFormats // out
+	var _arg1 C.GType              // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 	_arg1 = C.GType(typ)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_content_formats_contain_gtype(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -100,18 +100,18 @@ func (f *ContentFormats) ContainGType(typ externglib.Type) bool {
 
 // ContainMIMEType checks if a given mime type is part of the given @formats.
 func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
-	var _arg0 *C.GdkContentFormats
-	var _arg1 *C.char
+	var _arg0 *C.GdkContentFormats // out
+	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_content_formats_contain_mime_type(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -125,12 +125,12 @@ func (f *ContentFormats) ContainMIMEType(mimeType string) bool {
 // Note that @formats may not contain any #GTypes, in particular when they are
 // empty. In that case nil will be returned.
 func (f *ContentFormats) GTypes() []externglib.Type {
-	var _arg0 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var _cret *C.GType
-	var _arg1 *C.gsize
+	var _arg1 C.gsize // in
 
 	_cret = C.gdk_content_formats_get_gtypes(_arg0, &_arg1)
 
@@ -154,12 +154,12 @@ func (f *ContentFormats) GTypes() []externglib.Type {
 // Note that @formats may not contain any mime types, in particular when they
 // are empty. In that case nil will be returned.
 func (f *ContentFormats) MIMETypes() []string {
-	var _arg0 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
 	var _cret **C.char
-	var _arg1 *C.gsize
+	var _arg1 C.gsize // in
 
 	_cret = C.gdk_content_formats_get_mime_types(_arg0, &_arg1)
 
@@ -180,17 +180,17 @@ func (f *ContentFormats) MIMETypes() []string {
 
 // Match checks if @first and @second have any matching formats.
 func (f *ContentFormats) Match(second *ContentFormats) bool {
-	var _arg0 *C.GdkContentFormats
-	var _arg1 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormats // out
+	var _arg1 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_content_formats_match(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -204,17 +204,17 @@ func (f *ContentFormats) Match(second *ContentFormats) bool {
 //
 // If no matching `GType` is found, G_TYPE_INVALID is returned.
 func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
-	var _arg0 *C.GdkContentFormats
-	var _arg1 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormats // out
+	var _arg1 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
 
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.gdk_content_formats_match_gtype(_arg0, _arg1)
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -226,17 +226,17 @@ func (f *ContentFormats) MatchGType(second *ContentFormats) externglib.Type {
 //
 // If no matching mime type is found, nil is returned.
 func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
-	var _arg0 *C.GdkContentFormats
-	var _arg1 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormats // out
+	var _arg1 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(second.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_content_formats_match_mime_type(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -250,8 +250,8 @@ func (f *ContentFormats) MatchMIMEType(second *ContentFormats) string {
 // The form of the representation may change at any time and is not guaranteed
 // to stay identical.
 func (f *ContentFormats) Print(string *glib.String) {
-	var _arg0 *C.GdkContentFormats
-	var _arg1 *C.GString
+	var _arg0 *C.GdkContentFormats // out
+	var _arg1 *C.GString           // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
@@ -264,15 +264,15 @@ func (f *ContentFormats) Print(string *glib.String) {
 // This is a small wrapper around [method@Gdk.ContentFormats.print] to help when
 // debugging.
 func (f *ContentFormats) String() string {
-	var _arg0 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_content_formats_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -284,7 +284,7 @@ func (f *ContentFormats) String() string {
 //
 // If the resulting reference count is zero, frees the formats.
 func (f *ContentFormats) Unref() {
-	var _arg0 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormats // out
 
 	_arg0 = (*C.GdkContentFormats)(unsafe.Pointer(f.Native()))
 
@@ -318,21 +318,21 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 
 // Keycode gets the field inside the struct.
 func (k *KeymapKey) Keycode() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(k.native.keycode)
 	return v
 }
 
 // Group gets the field inside the struct.
 func (k *KeymapKey) Group() int {
-	var v int
+	var v int // out
 	v = (int)(k.native.group)
 	return v
 }
 
 // Level gets the field inside the struct.
 func (k *KeymapKey) Level() int {
-	var v int
+	var v int // out
 	v = (int)(k.native.level)
 	return v
 }
@@ -378,47 +378,47 @@ func (r *Rectangle) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (r *Rectangle) X() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (r *Rectangle) Y() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (r *Rectangle) Width() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (r *Rectangle) Height() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.height)
 	return v
 }
 
 // ContainsPoint returns UE if @rect contains the point described by @x and @y.
 func (r *Rectangle) ContainsPoint(x int, y int) bool {
-	var _arg0 *C.GdkRectangle
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 C.int           // out
+	var _arg2 C.int           // out
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r.Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rectangle_contains_point(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -429,17 +429,17 @@ func (r *Rectangle) ContainsPoint(x int, y int) bool {
 
 // Equal checks if the two given rectangles are equal.
 func (r *Rectangle) Equal(rect2 *Rectangle) bool {
-	var _arg0 *C.GdkRectangle
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rectangle_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -456,18 +456,18 @@ func (r *Rectangle) Equal(rect2 *Rectangle) bool {
 // rectangles intersect, but not in the intersecting area itself, pass nil for
 // @dest.
 func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
-	var _arg0 *C.GdkRectangle
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))
 
 	var _dest Rectangle
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rectangle_intersect(_arg0, _arg1, (*C.GdkRectangle)(unsafe.Pointer(&_dest)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -485,8 +485,8 @@ func (s *Rectangle) Intersect(src2 *Rectangle) (Rectangle, bool) {
 // Note that this function does not ignore 'empty' rectangles (ie. with zero
 // width or height).
 func (s *Rectangle) Union(src2 *Rectangle) Rectangle {
-	var _arg0 *C.GdkRectangle
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GdkRectangle // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GdkRectangle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(src2.Native()))

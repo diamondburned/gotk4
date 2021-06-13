@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -127,56 +127,56 @@ func (s *Scanner) Native() unsafe.Pointer {
 
 // UserData gets the field inside the struct.
 func (s *Scanner) UserData() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(s.native.user_data)
 	return v
 }
 
 // MaxParseErrors gets the field inside the struct.
 func (s *Scanner) MaxParseErrors() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.max_parse_errors)
 	return v
 }
 
 // ParseErrors gets the field inside the struct.
 func (s *Scanner) ParseErrors() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.parse_errors)
 	return v
 }
 
 // InputName gets the field inside the struct.
 func (s *Scanner) InputName() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.input_name)
 	return v
 }
 
 // Line gets the field inside the struct.
 func (s *Scanner) Line() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.line)
 	return v
 }
 
 // Position gets the field inside the struct.
 func (s *Scanner) Position() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.position)
 	return v
 }
 
 // NextLine gets the field inside the struct.
 func (s *Scanner) NextLine() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.next_line)
 	return v
 }
 
 // NextPosition gets the field inside the struct.
 func (s *Scanner) NextPosition() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.next_position)
 	return v
 }
@@ -184,15 +184,15 @@ func (s *Scanner) NextPosition() uint {
 // CurLine returns the current line in the input stream (counting from 1). This
 // is the line of the last token parsed via g_scanner_get_next_token().
 func (s *Scanner) CurLine() uint {
-	var _arg0 *C.GScanner
+	var _arg0 *C.GScanner // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_scanner_cur_line(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -203,15 +203,15 @@ func (s *Scanner) CurLine() uint {
 // 0). This is the position of the last token parsed via
 // g_scanner_get_next_token().
 func (s *Scanner) CurPosition() uint {
-	var _arg0 *C.GScanner
+	var _arg0 *C.GScanner // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_scanner_cur_position(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -220,7 +220,7 @@ func (s *Scanner) CurPosition() uint {
 
 // Destroy frees all memory used by the #GScanner.
 func (s *Scanner) Destroy() {
-	var _arg0 *C.GScanner
+	var _arg0 *C.GScanner // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
@@ -230,15 +230,15 @@ func (s *Scanner) Destroy() {
 // EOF returns true if the scanner has reached the end of the file or text
 // buffer.
 func (s *Scanner) EOF() bool {
-	var _arg0 *C.GScanner
+	var _arg0 *C.GScanner // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_scanner_eof(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -249,8 +249,8 @@ func (s *Scanner) EOF() bool {
 
 // InputFile prepares to scan a file.
 func (s *Scanner) InputFile(inputFd int) {
-	var _arg0 *C.GScanner
-	var _arg1 C.gint
+	var _arg0 *C.GScanner // out
+	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(inputFd)
@@ -260,9 +260,9 @@ func (s *Scanner) InputFile(inputFd int) {
 
 // InputText prepares to scan a text buffer.
 func (s *Scanner) InputText(text string, textLen uint) {
-	var _arg0 *C.GScanner
-	var _arg1 *C.gchar
-	var _arg2 C.guint
+	var _arg0 *C.GScanner // out
+	var _arg1 *C.gchar    // out
+	var _arg2 C.guint     // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -275,18 +275,18 @@ func (s *Scanner) InputText(text string, textLen uint) {
 // LookupSymbol looks up a symbol in the current scope and return its value. If
 // the symbol is not bound in the current scope, nil is returned.
 func (s *Scanner) LookupSymbol(symbol string) interface{} {
-	var _arg0 *C.GScanner
-	var _arg1 *C.gchar
+	var _arg0 *C.GScanner // out
+	var _arg1 *C.gchar    // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_scanner_lookup_symbol(_arg0, _arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -295,10 +295,10 @@ func (s *Scanner) LookupSymbol(symbol string) interface{} {
 
 // ScopeAddSymbol adds a symbol to the given scope.
 func (s *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value interface{}) {
-	var _arg0 *C.GScanner
-	var _arg1 C.guint
-	var _arg2 *C.gchar
-	var _arg3 C.gpointer
+	var _arg0 *C.GScanner // out
+	var _arg1 C.guint     // out
+	var _arg2 *C.gchar    // out
+	var _arg3 C.gpointer  // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(scopeId)
@@ -313,9 +313,9 @@ func (s *Scanner) ScopeAddSymbol(scopeId uint, symbol string, value interface{})
 // pairs in the given scope of the #GScanner. The function is passed the symbol
 // and value of each pair, and the given @user_data parameter.
 func (s *Scanner) ScopeForeachSymbol(scopeId uint, fn HFunc) {
-	var _arg0 *C.GScanner
-	var _arg1 C.guint
-	var _arg2 C.GHFunc
+	var _arg0 *C.GScanner // out
+	var _arg1 C.guint     // out
+	var _arg2 C.GHFunc    // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
@@ -329,20 +329,20 @@ func (s *Scanner) ScopeForeachSymbol(scopeId uint, fn HFunc) {
 // ScopeLookupSymbol looks up a symbol in a scope and return its value. If the
 // symbol is not bound in the scope, nil is returned.
 func (s *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) interface{} {
-	var _arg0 *C.GScanner
-	var _arg1 C.guint
-	var _arg2 *C.gchar
+	var _arg0 *C.GScanner // out
+	var _arg1 C.guint     // out
+	var _arg2 *C.gchar    // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(scopeId)
 	_arg2 = (*C.gchar)(C.CString(symbol))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_scanner_scope_lookup_symbol(_arg0, _arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -351,9 +351,9 @@ func (s *Scanner) ScopeLookupSymbol(scopeId uint, symbol string) interface{} {
 
 // ScopeRemoveSymbol removes a symbol from a scope.
 func (s *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
-	var _arg0 *C.GScanner
-	var _arg1 C.guint
-	var _arg2 *C.gchar
+	var _arg0 *C.GScanner // out
+	var _arg1 C.guint     // out
+	var _arg2 *C.gchar    // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(scopeId)
@@ -365,17 +365,17 @@ func (s *Scanner) ScopeRemoveSymbol(scopeId uint, symbol string) {
 
 // SetScope sets the current scope.
 func (s *Scanner) SetScope(scopeId uint) uint {
-	var _arg0 *C.GScanner
-	var _arg1 C.guint
+	var _arg0 *C.GScanner // out
+	var _arg1 C.guint     // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(scopeId)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_scanner_set_scope(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -386,7 +386,7 @@ func (s *Scanner) SetScope(scopeId uint) uint {
 // blows the file read ahead buffer. This is useful for third party uses of the
 // scanners filedescriptor, which hooks onto the current scanning position.
 func (s *Scanner) SyncFileOffset() {
-	var _arg0 *C.GScanner
+	var _arg0 *C.GScanner // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 
@@ -400,13 +400,13 @@ func (s *Scanner) SyncFileOffset() {
 // evaluates the scanner's current token (not the peeked token) to construct
 // part of the message.
 func (s *Scanner) UnexpToken(expectedToken TokenType, identifierSpec string, symbolSpec string, symbolName string, message string, isError int) {
-	var _arg0 *C.GScanner
-	var _arg1 C.GTokenType
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 *C.gchar
-	var _arg5 *C.gchar
-	var _arg6 C.gint
+	var _arg0 *C.GScanner  // out
+	var _arg1 C.GTokenType // out
+	var _arg2 *C.gchar     // out
+	var _arg3 *C.gchar     // out
+	var _arg4 *C.gchar     // out
+	var _arg5 *C.gchar     // out
+	var _arg6 C.gint       // out
 
 	_arg0 = (*C.GScanner)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GTokenType)(expectedToken)
@@ -452,28 +452,28 @@ func (s *ScannerConfig) Native() unsafe.Pointer {
 
 // CsetSkipCharacters gets the field inside the struct.
 func (s *ScannerConfig) CsetSkipCharacters() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.cset_skip_characters)
 	return v
 }
 
 // CsetIdentifierFirst gets the field inside the struct.
 func (s *ScannerConfig) CsetIdentifierFirst() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.cset_identifier_first)
 	return v
 }
 
 // CsetIdentifierNth gets the field inside the struct.
 func (s *ScannerConfig) CsetIdentifierNth() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.cset_identifier_nth)
 	return v
 }
 
 // CpairCommentSingle gets the field inside the struct.
 func (s *ScannerConfig) CpairCommentSingle() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.cpair_comment_single)
 	return v
 }

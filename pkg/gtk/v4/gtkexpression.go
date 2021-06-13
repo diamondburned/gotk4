@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -40,8 +40,8 @@ func gotk4_ExpressionNotify(arg0 C.gpointer) {
 //
 // The `GValue` will acquire a reference to the `expression`.
 func ValueSetExpression(value **externglib.Value, expression Expression) {
-	var _arg1 *C.GValue
-	var _arg2 *C.GtkExpression
+	var _arg1 *C.GValue        // out
+	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(value.GValue)
 	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
@@ -53,8 +53,8 @@ func ValueSetExpression(value **externglib.Value, expression Expression) {
 //
 // This function transfers the ownership of the `expression` to the `GValue`.
 func ValueTakeExpression(value **externglib.Value, expression Expression) {
-	var _arg1 *C.GValue
-	var _arg2 *C.GtkExpression
+	var _arg1 *C.GValue        // out
+	var _arg2 *C.GtkExpression // out
 
 	_arg1 = (*C.GValue)(value.GValue)
 	_arg2 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
@@ -96,17 +96,17 @@ func (e *ExpressionWatch) Native() unsafe.Pointer {
 // This is equivalent to calling [method@Gtk.Expression.evaluate] with the
 // expression and this pointer originally used to create `watch`.
 func (w *ExpressionWatch) Evaluate(value **externglib.Value) bool {
-	var _arg0 *C.GtkExpressionWatch
-	var _arg1 *C.GValue
+	var _arg0 *C.GtkExpressionWatch // out
+	var _arg1 *C.GValue             // out
 
 	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GValue)(value.GValue)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_expression_watch_evaluate(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -119,7 +119,7 @@ func (w *ExpressionWatch) Evaluate(value **externglib.Value) bool {
 //
 // If the reference was the last, the resources associated to `self` are freed.
 func (w *ExpressionWatch) Unref() {
-	var _arg0 *C.GtkExpressionWatch
+	var _arg0 *C.GtkExpressionWatch // out
 
 	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
 
@@ -130,7 +130,7 @@ func (w *ExpressionWatch) Unref() {
 //
 // See [method@Gtk.Expression.watch] for how the watch was established.
 func (w *ExpressionWatch) Unwatch() {
-	var _arg0 *C.GtkExpressionWatch
+	var _arg0 *C.GtkExpressionWatch // out
 
 	_arg0 = (*C.GtkExpressionWatch)(unsafe.Pointer(w.Native()))
 

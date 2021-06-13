@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -61,8 +61,8 @@ func marshalMultiSelection(p uintptr) (interface{}, error) {
 //
 // If @model is nil, @self will be empty.
 func (s multiSelection) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkMultiSelection
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkMultiSelection // out
+	var _arg1 *C.GListModel        // out
 
 	_arg0 = (*C.GtkMultiSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))

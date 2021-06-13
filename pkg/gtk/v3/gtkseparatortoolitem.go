@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -76,15 +76,15 @@ func marshalSeparatorToolItem(p uintptr) (interface{}, error) {
 // Draw returns whether @item is drawn as a line, or just blank. See
 // gtk_separator_tool_item_set_draw().
 func (i separatorToolItem) Draw() bool {
-	var _arg0 *C.GtkSeparatorToolItem
+	var _arg0 *C.GtkSeparatorToolItem // out
 
 	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_separator_tool_item_get_draw(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -97,8 +97,8 @@ func (i separatorToolItem) Draw() bool {
 // Setting this to false along with gtk_tool_item_set_expand() is useful to
 // create an item that forces following items to the end of the toolbar.
 func (i separatorToolItem) SetDraw(draw bool) {
-	var _arg0 *C.GtkSeparatorToolItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkSeparatorToolItem // out
+	var _arg1 C.gboolean              // out
 
 	_arg0 = (*C.GtkSeparatorToolItem)(unsafe.Pointer(i.Native()))
 	if draw {

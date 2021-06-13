@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -182,7 +182,7 @@ func marshalEntryCompletion(p uintptr) (interface{}, error) {
 // of the current list with completions, using the current key. The
 // completion list view will be updated accordingly.
 func (c entryCompletion) Complete() {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
@@ -194,18 +194,18 @@ func (c entryCompletion) Complete() {
 // returned. Note that a text column must have been set for this function to
 // work, see gtk_entry_completion_set_text_column() for details.
 func (c entryCompletion) ComputePrefix(key string) string {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 *C.char
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 *C.char               // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_entry_completion_compute_prefix(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -219,8 +219,8 @@ func (c entryCompletion) ComputePrefix(key string) string {
 // Note that @index_ is a relative position and the position of an action
 // may have changed since it was inserted.
 func (c entryCompletion) DeleteAction(index_ int) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gint
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gint                // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(index_)
@@ -231,15 +231,15 @@ func (c entryCompletion) DeleteAction(index_ int) {
 // CompletionPrefix: get the original text entered by the user that
 // triggered the completion or nil if there’s no completion ongoing.
 func (c entryCompletion) CompletionPrefix() string {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_entry_completion_get_completion_prefix(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -249,15 +249,15 @@ func (c entryCompletion) CompletionPrefix() string {
 // InlineCompletion returns whether the common prefix of the possible
 // completions should be automatically inserted in the entry.
 func (c entryCompletion) InlineCompletion() bool {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_completion_get_inline_completion(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -268,15 +268,15 @@ func (c entryCompletion) InlineCompletion() bool {
 
 // InlineSelection returns true if inline-selection mode is turned on.
 func (c entryCompletion) InlineSelection() bool {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_completion_get_inline_selection(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -287,15 +287,15 @@ func (c entryCompletion) InlineSelection() bool {
 
 // MinimumKeyLength returns the minimum key length as set for @completion.
 func (c entryCompletion) MinimumKeyLength() int {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_entry_completion_get_minimum_key_length(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -305,15 +305,15 @@ func (c entryCompletion) MinimumKeyLength() int {
 // PopupCompletion returns whether the completions should be presented in a
 // popup window.
 func (c entryCompletion) PopupCompletion() bool {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_completion_get_popup_completion(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -325,15 +325,15 @@ func (c entryCompletion) PopupCompletion() bool {
 // PopupSetWidth returns whether the completion popup window will be resized
 // to the width of the entry.
 func (c entryCompletion) PopupSetWidth() bool {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_completion_get_popup_set_width(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -345,15 +345,15 @@ func (c entryCompletion) PopupSetWidth() bool {
 // PopupSingleMatch returns whether the completion popup window will appear
 // even if there is only a single match.
 func (c entryCompletion) PopupSingleMatch() bool {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_completion_get_popup_single_match(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -365,15 +365,15 @@ func (c entryCompletion) PopupSingleMatch() bool {
 // TextColumn returns the column in the model of @completion to get strings
 // from.
 func (c entryCompletion) TextColumn() int {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_entry_completion_get_text_column(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -383,9 +383,9 @@ func (c entryCompletion) TextColumn() int {
 // InsertActionMarkup inserts an action in @completion’s action item list at
 // position @index_ with markup @markup.
 func (c entryCompletion) InsertActionMarkup(index_ int, markup string) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gint
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gint                // out
+	var _arg2 *C.gchar              // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(index_)
@@ -402,9 +402,9 @@ func (c entryCompletion) InsertActionMarkup(index_ int, markup string) {
 // Note that @index_ is a relative position in the list of actions and the
 // position of an action can change when deleting a different action.
 func (c entryCompletion) InsertActionText(index_ int, text string) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gint
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gint                // out
+	var _arg2 *C.gchar              // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(index_)
@@ -416,7 +416,7 @@ func (c entryCompletion) InsertActionText(index_ int, text string) {
 
 // InsertPrefix requests a prefix insertion.
 func (c entryCompletion) InsertPrefix() {
-	var _arg0 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 
@@ -426,8 +426,8 @@ func (c entryCompletion) InsertPrefix() {
 // SetInlineCompletion sets whether the common prefix of the possible
 // completions should be automatically inserted in the entry.
 func (c entryCompletion) SetInlineCompletion(inlineCompletion bool) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gboolean            // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if inlineCompletion {
@@ -440,8 +440,8 @@ func (c entryCompletion) SetInlineCompletion(inlineCompletion bool) {
 // SetInlineSelection sets whether it is possible to cycle through the
 // possible completions inside the entry.
 func (c entryCompletion) SetInlineSelection(inlineSelection bool) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gboolean            // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if inlineSelection {
@@ -456,8 +456,8 @@ func (c entryCompletion) SetInlineSelection(inlineSelection bool) {
 // using a small key takes a lot of time and will come up with meaningless
 // results anyway (ie, a too large dataset).
 func (c entryCompletion) SetMinimumKeyLength(length int) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gint
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gint                // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(length)
@@ -469,8 +469,8 @@ func (c entryCompletion) SetMinimumKeyLength(length int) {
 // a model set, it will remove it before setting the new model. If model is
 // nil, then it will unset the model.
 func (c entryCompletion) SetModel(model TreeModel) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 *C.GtkTreeModel
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 *C.GtkTreeModel       // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
@@ -481,8 +481,8 @@ func (c entryCompletion) SetModel(model TreeModel) {
 // SetPopupCompletion sets whether the completions should be presented in a
 // popup window.
 func (c entryCompletion) SetPopupCompletion(popupCompletion bool) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gboolean            // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if popupCompletion {
@@ -495,8 +495,8 @@ func (c entryCompletion) SetPopupCompletion(popupCompletion bool) {
 // SetPopupSetWidth sets whether the completion popup window will be resized
 // to be the same width as the entry.
 func (c entryCompletion) SetPopupSetWidth(popupSetWidth bool) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gboolean            // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if popupSetWidth {
@@ -511,8 +511,8 @@ func (c entryCompletion) SetPopupSetWidth(popupSetWidth bool) {
 // if you are using [inline
 // completion][GtkEntryCompletion--inline-completion].
 func (c entryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gboolean            // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	if popupSingleMatch {
@@ -533,8 +533,8 @@ func (c entryCompletion) SetPopupSingleMatch(popupSingleMatch bool) {
 // renderer, use g_object_set() to set the EntryCompletion:text-column
 // property directly.
 func (c entryCompletion) SetTextColumn(column int) {
-	var _arg0 *C.GtkEntryCompletion
-	var _arg1 C.gint
+	var _arg0 *C.GtkEntryCompletion // out
+	var _arg1 C.gint                // out
 
 	_arg0 = (*C.GtkEntryCompletion)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(column)

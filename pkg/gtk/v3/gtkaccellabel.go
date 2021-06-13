@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -106,15 +106,15 @@ func marshalAccelLabel(p uintptr) (interface{}, error) {
 // This is used by menus to align all of the MenuItem widgets, and shouldn't
 // be needed by applications.
 func (a accelLabel) AccelWidth() uint {
-	var _arg0 *C.GtkAccelLabel
+	var _arg0 *C.GtkAccelLabel // out
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_accel_label_get_accel_width(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -125,15 +125,15 @@ func (a accelLabel) AccelWidth() uint {
 // should not be needed since the string is automatically updated whenever
 // accelerators are added or removed from the associated widget.
 func (a accelLabel) Refetch() bool {
-	var _arg0 *C.GtkAccelLabel
+	var _arg0 *C.GtkAccelLabel // out
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_accel_label_refetch(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -150,9 +150,9 @@ func (a accelLabel) Refetch() bool {
 //
 // Providing an @accelerator_key of 0 removes the manual setting.
 func (a accelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierType) {
-	var _arg0 *C.GtkAccelLabel
-	var _arg1 C.guint
-	var _arg2 C.GdkModifierType
+	var _arg0 *C.GtkAccelLabel  // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 	_arg1 = C.guint(acceleratorKey)
@@ -165,8 +165,8 @@ func (a accelLabel) SetAccel(acceleratorKey uint, acceleratorMods gdk.ModifierTy
 // Passing nil for @accel_widget will dissociate @accel_label from its
 // current widget, if any.
 func (a accelLabel) SetAccelWidget(accelWidget Widget) {
-	var _arg0 *C.GtkAccelLabel
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkAccelLabel // out
+	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkAccelLabel)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(accelWidget.Native()))

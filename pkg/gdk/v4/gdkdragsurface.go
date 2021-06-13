@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -49,19 +49,19 @@ func marshalDragSurface(p uintptr) (interface{}, error) {
 
 // Present: present @drag_surface.
 func (d dragSurface) Present(width int, height int) bool {
-	var _arg0 *C.GdkDragSurface
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg0 *C.GdkDragSurface // out
+	var _arg1 C.int             // out
+	var _arg2 C.int             // out
 
 	_arg0 = (*C.GdkDragSurface)(unsafe.Pointer(d.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_drag_surface_present(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

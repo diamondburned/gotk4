@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -20,7 +20,7 @@ import "C"
 // gtk_test_register_all_types().
 func TestListAllTypes() []externglib.Type {
 	var _cret *C.GType
-	var _arg1 *C.guint
+	var _arg1 C.guint // in
 
 	_cret = C.gtk_test_list_all_types(&_arg1)
 
@@ -51,15 +51,15 @@ func TestRegisterAllTypes() {
 // anything between the lower and upper bounds of the adjustment belonging to
 // @widget, and is not a percentage as passed in to gtk_test_slider_set_perc().
 func TestSliderGetValue(widget Widget) float64 {
-	var _arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_test_slider_get_value(_arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -71,8 +71,8 @@ func TestSliderGetValue(widget Widget) float64 {
 // buttons. The adjustment value of these widgets is set to a value between the
 // lower and upper limits, according to the @percentage argument.
 func TestSliderSetPerc(widget Widget, percentage float64) {
-	var _arg1 *C.GtkWidget
-	var _arg2 C.double
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.double     // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.double(percentage)
@@ -84,9 +84,9 @@ func TestSliderSetPerc(widget Widget, percentage float64) {
 // upwards or downwards spin button arrow areas, usually leading to an increase
 // or decrease of spin button’s value.
 func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
-	var _arg1 *C.GtkSpinButton
-	var _arg2 C.guint
-	var _arg3 C.gboolean
+	var _arg1 *C.GtkSpinButton // out
+	var _arg2 C.guint          // out
+	var _arg3 C.gboolean       // out
 
 	_arg1 = (*C.GtkSpinButton)(unsafe.Pointer(spinner.Native()))
 	_arg2 = C.guint(button)
@@ -94,11 +94,11 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 		_arg3 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_spin_button_click(_arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -110,15 +110,15 @@ func TestSpinButtonClick(spinner SpinButton, button uint, upwards bool) bool {
 // TestTextGet: retrive the text string of @widget if it is a GtkLabel,
 // GtkEditable (entry and text widgets) or GtkTextView.
 func TestTextGet(widget Widget) string {
-	var _arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_test_text_get(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -129,8 +129,8 @@ func TestTextGet(widget Widget) string {
 // TestTextSet: set the text string of @widget to @string if it is a GtkLabel,
 // GtkEditable (entry and text widgets) or GtkTextView.
 func TestTextSet(widget Widget, string string) {
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.gchar
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.gchar     // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.gchar)(C.CString(string))
@@ -148,19 +148,19 @@ func TestTextSet(widget Widget, string string) {
 // mouse pointer is warped to the button click location, see
 // gdk_test_simulate_button() for details.
 func TestWidgetClick(widget Widget, button uint, modifiers gdk.ModifierType) bool {
-	var _arg1 *C.GtkWidget
-	var _arg2 C.guint
-	var _arg3 C.GdkModifierType
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.guint(button)
 	_arg3 = (C.GdkModifierType)(modifiers)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_widget_click(_arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -177,19 +177,19 @@ func TestWidgetClick(widget Widget, button uint, modifiers gdk.ModifierType) boo
 // considered when using this function, in particular because the mouse pointer
 // is warped to the key press location, see gdk_test_simulate_key() for details.
 func TestWidgetSendKey(widget Widget, keyval uint, modifiers gdk.ModifierType) bool {
-	var _arg1 *C.GtkWidget
-	var _arg2 C.guint
-	var _arg3 C.GdkModifierType
+	var _arg1 *C.GtkWidget      // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = C.guint(keyval)
 	_arg3 = (C.GdkModifierType)(modifiers)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_widget_send_key(_arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -205,7 +205,7 @@ func TestWidgetSendKey(widget Widget, keyval uint, modifiers gdk.ModifierType) b
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.
 func TestWidgetWaitForDraw(widget Widget) {
-	var _arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 

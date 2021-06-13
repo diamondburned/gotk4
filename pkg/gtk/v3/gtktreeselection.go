@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -109,15 +109,15 @@ func marshalTreeSelection(p uintptr) (interface{}, error) {
 // CountSelectedRows returns the number of rows that have been selected in
 // @tree.
 func (s treeSelection) CountSelectedRows() int {
-	var _arg0 *C.GtkTreeSelection
+	var _arg0 *C.GtkTreeSelection // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_tree_selection_count_selected_rows(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -126,15 +126,15 @@ func (s treeSelection) CountSelectedRows() int {
 
 // UserData returns the user data for the selection function.
 func (s treeSelection) UserData() interface{} {
-	var _arg0 *C.GtkTreeSelection
+	var _arg0 *C.GtkTreeSelection // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.gtk_tree_selection_get_user_data(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -143,17 +143,17 @@ func (s treeSelection) UserData() interface{} {
 
 // IterIsSelected returns true if the row at @iter is currently selected.
 func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreeIter
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreeIter      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_selection_iter_is_selected(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -165,17 +165,17 @@ func (s treeSelection) IterIsSelected(iter *TreeIter) bool {
 // PathIsSelected returns true if the row pointed to by @path is currently
 // selected. If @path does not point to a valid location, false is returned
 func (s treeSelection) PathIsSelected(path *TreePath) bool {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreePath
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreePath      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_selection_path_is_selected(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -187,7 +187,7 @@ func (s treeSelection) PathIsSelected(path *TreePath) bool {
 // SelectAll selects all the nodes. @selection must be set to
 // K_SELECTION_MULTIPLE mode.
 func (s treeSelection) SelectAll() {
-	var _arg0 *C.GtkTreeSelection
+	var _arg0 *C.GtkTreeSelection // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
@@ -196,8 +196,8 @@ func (s treeSelection) SelectAll() {
 
 // SelectIter selects the specified iterator.
 func (s treeSelection) SelectIter(iter *TreeIter) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreeIter
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreeIter      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
@@ -207,8 +207,8 @@ func (s treeSelection) SelectIter(iter *TreeIter) {
 
 // SelectPath: select the row at @path.
 func (s treeSelection) SelectPath(path *TreePath) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreePath
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreePath      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
@@ -219,9 +219,9 @@ func (s treeSelection) SelectPath(path *TreePath) {
 // SelectRange selects a range of nodes, determined by @start_path and
 // @end_path inclusive. @selection must be set to K_SELECTION_MULTIPLE mode.
 func (s treeSelection) SelectRange(startPath *TreePath, endPath *TreePath) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreePath
-	var _arg2 *C.GtkTreePath
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreePath      // out
+	var _arg2 *C.GtkTreePath      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(startPath.Native()))
@@ -234,8 +234,8 @@ func (s treeSelection) SelectRange(startPath *TreePath, endPath *TreePath) {
 // cannot modify the tree or selection from within this function. As a
 // result, gtk_tree_selection_get_selected_rows() might be more useful.
 func (s treeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 C.GtkTreeSelectionForeachFunc
+	var _arg0 *C.GtkTreeSelection           // out
+	var _arg1 C.GtkTreeSelectionForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
@@ -249,8 +249,8 @@ func (s treeSelection) SelectedForeach(fn TreeSelectionForeachFunc) {
 // was K_SELECTION_MULTIPLE, then the anchor is kept selected, if it was
 // previously selected.
 func (s treeSelection) SetMode(typ SelectionMode) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 C.GtkSelectionMode
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 C.GtkSelectionMode  // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkSelectionMode)(typ)
@@ -260,7 +260,7 @@ func (s treeSelection) SetMode(typ SelectionMode) {
 
 // UnselectAll unselects all the nodes.
 func (s treeSelection) UnselectAll() {
-	var _arg0 *C.GtkTreeSelection
+	var _arg0 *C.GtkTreeSelection // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 
@@ -269,8 +269,8 @@ func (s treeSelection) UnselectAll() {
 
 // UnselectIter unselects the specified iterator.
 func (s treeSelection) UnselectIter(iter *TreeIter) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreeIter
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreeIter      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
@@ -280,8 +280,8 @@ func (s treeSelection) UnselectIter(iter *TreeIter) {
 
 // UnselectPath unselects the row at @path.
 func (s treeSelection) UnselectPath(path *TreePath) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreePath
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreePath      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
@@ -292,9 +292,9 @@ func (s treeSelection) UnselectPath(path *TreePath) {
 // UnselectRange unselects a range of nodes, determined by @start_path and
 // @end_path inclusive.
 func (s treeSelection) UnselectRange(startPath *TreePath, endPath *TreePath) {
-	var _arg0 *C.GtkTreeSelection
-	var _arg1 *C.GtkTreePath
-	var _arg2 *C.GtkTreePath
+	var _arg0 *C.GtkTreeSelection // out
+	var _arg1 *C.GtkTreePath      // out
+	var _arg2 *C.GtkTreePath      // out
 
 	_arg0 = (*C.GtkTreeSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(startPath.Native()))

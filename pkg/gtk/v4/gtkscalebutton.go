@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -89,15 +89,15 @@ func marshalScaleButton(p uintptr) (interface{}, error) {
 
 // Value gets the current value of the scale button.
 func (b scaleButton) Value() float64 {
-	var _arg0 *C.GtkScaleButton
+	var _arg0 *C.GtkScaleButton // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_scale_button_get_value(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -109,8 +109,8 @@ func (b scaleButton) Value() float64 {
 //
 // See [method@Gtk.Range.set_adjustment] for details.
 func (b scaleButton) SetAdjustment(adjustment Adjustment) {
-	var _arg0 *C.GtkScaleButton
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkScaleButton // out
+	var _arg1 *C.GtkAdjustment  // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
@@ -120,7 +120,7 @@ func (b scaleButton) SetAdjustment(adjustment Adjustment) {
 
 // SetIcons sets the icons to be used by the scale button.
 func (b scaleButton) SetIcons(icons []string) {
-	var _arg0 *C.GtkScaleButton
+	var _arg0 *C.GtkScaleButton // out
 	var _arg1 **C.char
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
@@ -148,8 +148,8 @@ func (b scaleButton) SetIcons(icons []string) {
 // The scale button emits the [signal@Gtk.ScaleButton::value-changed] signal
 // if the value changes.
 func (b scaleButton) SetValue(value float64) {
-	var _arg0 *C.GtkScaleButton
-	var _arg1 C.double
+	var _arg0 *C.GtkScaleButton // out
+	var _arg1 C.double          // out
 
 	_arg0 = (*C.GtkScaleButton)(unsafe.Pointer(b.Native()))
 	_arg1 = C.double(value)

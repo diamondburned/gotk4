@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -182,10 +182,10 @@ func marshalScale(p uintptr) (interface{}, error) {
 //
 // To remove marks from a scale, use gtk_scale_clear_marks().
 func (s scale) AddMark(value float64, position PositionType, markup string) {
-	var _arg0 *C.GtkScale
-	var _arg1 C.gdouble
-	var _arg2 C.GtkPositionType
-	var _arg3 *C.gchar
+	var _arg0 *C.GtkScale       // out
+	var _arg1 C.gdouble         // out
+	var _arg2 C.GtkPositionType // out
+	var _arg3 *C.gchar          // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gdouble(value)
@@ -199,7 +199,7 @@ func (s scale) AddMark(value float64, position PositionType, markup string) {
 // ClearMarks removes any marks that have been added with
 // gtk_scale_add_mark().
 func (s scale) ClearMarks() {
-	var _arg0 *C.GtkScale
+	var _arg0 *C.GtkScale // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
@@ -208,15 +208,15 @@ func (s scale) ClearMarks() {
 
 // Digits gets the number of decimal places that are displayed in the value.
 func (s scale) Digits() int {
-	var _arg0 *C.GtkScale
+	var _arg0 *C.GtkScale // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_scale_get_digits(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -226,15 +226,15 @@ func (s scale) Digits() int {
 // DrawValue returns whether the current value is displayed as a string next
 // to the slider.
 func (s scale) DrawValue() bool {
-	var _arg0 *C.GtkScale
+	var _arg0 *C.GtkScale // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_scale_get_draw_value(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -245,15 +245,15 @@ func (s scale) DrawValue() bool {
 
 // HasOrigin returns whether the scale has an origin.
 func (s scale) HasOrigin() bool {
-	var _arg0 *C.GtkScale
+	var _arg0 *C.GtkScale // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_scale_get_has_origin(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -270,17 +270,17 @@ func (s scale) HasOrigin() bool {
 // If the Scale:draw-value property is false, the return values are
 // undefined.
 func (s scale) LayoutOffsets() (x int, y int) {
-	var _arg0 *C.GtkScale
+	var _arg0 *C.GtkScale // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
 
 	C.gtk_scale_get_layout_offsets(_arg0, &_arg1, &_arg2)
 
-	var _x int
-	var _y int
+	var _x int // out
+	var _y int // out
 
 	_x = (int)(_arg1)
 	_y = (int)(_arg2)
@@ -300,8 +300,8 @@ func (s scale) LayoutOffsets() (x int, y int) {
 // use the Scale::format-value signal to format the displayed value
 // yourself.
 func (s scale) SetDigits(digits int) {
-	var _arg0 *C.GtkScale
-	var _arg1 C.gint
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(digits)
@@ -312,8 +312,8 @@ func (s scale) SetDigits(digits int) {
 // SetDrawValue specifies whether the current value is displayed as a string
 // next to the slider.
 func (s scale) SetDrawValue(drawValue bool) {
-	var _arg0 *C.GtkScale
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 	if drawValue {
@@ -327,8 +327,8 @@ func (s scale) SetDrawValue(drawValue bool) {
 // will highlight the part of the trough between the origin (bottom or left
 // side) and the current value.
 func (s scale) SetHasOrigin(hasOrigin bool) {
-	var _arg0 *C.GtkScale
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkScale // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 	if hasOrigin {
@@ -340,8 +340,8 @@ func (s scale) SetHasOrigin(hasOrigin bool) {
 
 // SetValuePos sets the position in which the current value is displayed.
 func (s scale) SetValuePos(pos PositionType) {
-	var _arg0 *C.GtkScale
-	var _arg1 C.GtkPositionType
+	var _arg0 *C.GtkScale       // out
+	var _arg1 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkScale)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPositionType)(pos)

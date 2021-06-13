@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -48,42 +48,42 @@ func (a *Analysis) Native() unsafe.Pointer {
 
 // ShapeEngine gets the field inside the struct.
 func (a *Analysis) ShapeEngine() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(a.native.shape_engine)
 	return v
 }
 
 // LangEngine gets the field inside the struct.
 func (a *Analysis) LangEngine() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(a.native.lang_engine)
 	return v
 }
 
 // Level gets the field inside the struct.
 func (a *Analysis) Level() byte {
-	var v byte
+	var v byte // out
 	v = (byte)(a.native.level)
 	return v
 }
 
 // Gravity gets the field inside the struct.
 func (a *Analysis) Gravity() byte {
-	var v byte
+	var v byte // out
 	v = (byte)(a.native.gravity)
 	return v
 }
 
 // Flags gets the field inside the struct.
 func (a *Analysis) Flags() byte {
-	var v byte
+	var v byte // out
 	v = (byte)(a.native.flags)
 	return v
 }
 
 // Script gets the field inside the struct.
 func (a *Analysis) Script() byte {
-	var v byte
+	var v byte // out
 	v = (byte)(a.native.script)
 	return v
 }
@@ -118,21 +118,21 @@ func (i *Item) Native() unsafe.Pointer {
 
 // Offset gets the field inside the struct.
 func (i *Item) Offset() int {
-	var v int
+	var v int // out
 	v = (int)(i.native.offset)
 	return v
 }
 
 // Length gets the field inside the struct.
 func (i *Item) Length() int {
-	var v int
+	var v int // out
 	v = (int)(i.native.length)
 	return v
 }
 
 // NumChars gets the field inside the struct.
 func (i *Item) NumChars() int {
-	var v int
+	var v int // out
 	v = (int)(i.native.num_chars)
 	return v
 }
@@ -148,8 +148,8 @@ func (i *Item) NumChars() int {
 // advanced past it. This function is meant to be called in a loop over the
 // items resulting from itemization, while passing the iter to each call.
 func (i *Item) ApplyAttrs(iter *AttrIterator) {
-	var _arg0 *C.PangoItem
-	var _arg1 *C.PangoAttrIterator
+	var _arg0 *C.PangoItem         // out
+	var _arg1 *C.PangoAttrIterator // out
 
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.PangoAttrIterator)(unsafe.Pointer(iter.Native()))
@@ -159,7 +159,7 @@ func (i *Item) ApplyAttrs(iter *AttrIterator) {
 
 // Free: free a `PangoItem` and all associated memory.
 func (i *Item) Free() {
-	var _arg0 *C.PangoItem
+	var _arg0 *C.PangoItem // out
 
 	_arg0 = (*C.PangoItem)(unsafe.Pointer(i.Native()))
 

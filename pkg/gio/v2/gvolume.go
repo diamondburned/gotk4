@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -159,15 +159,15 @@ func marshalVolume(p uintptr) (interface{}, error) {
 
 // CanEject checks if a volume can be ejected.
 func (v volume) CanEject() bool {
-	var _arg0 *C.GVolume
+	var _arg0 *C.GVolume // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_volume_can_eject(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -178,15 +178,15 @@ func (v volume) CanEject() bool {
 
 // CanMount checks if a volume can be mounted.
 func (v volume) CanMount() bool {
-	var _arg0 *C.GVolume
+	var _arg0 *C.GVolume // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_volume_can_mount(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -199,10 +199,10 @@ func (v volume) CanMount() bool {
 // by calling g_volume_eject_finish() with the @volume and Result returned
 // in the @callback.
 func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume
-	var _arg1 C.GMountUnmountFlags
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GVolume            // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
@@ -218,17 +218,17 @@ func (v volume) Eject(flags MountUnmountFlags, cancellable Cancellable, callback
 // operation, @error will be set to contain the errors and false will be
 // returned.
 func (v volume) EjectFinish(result AsyncResult) error {
-	var _arg0 *C.GVolume
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_volume_eject_finish(_arg0, _arg1, _cerr)
+	C.g_volume_eject_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -239,11 +239,11 @@ func (v volume) EjectFinish(result AsyncResult) error {
 // and is finished by calling g_volume_eject_with_operation_finish() with
 // the @volume and Result data returned in the @callback.
 func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume
-	var _arg1 C.GMountUnmountFlags
-	var _arg2 *C.GMountOperation
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GVolume            // out
+	var _arg1 C.GMountUnmountFlags  // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
@@ -260,17 +260,17 @@ func (v volume) EjectWithOperation(flags MountUnmountFlags, mountOperation Mount
 // occurred during the operation, @error will be set to contain the errors
 // and false will be returned.
 func (v volume) EjectWithOperationFinish(result AsyncResult) error {
-	var _arg0 *C.GVolume
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_volume_eject_with_operation_finish(_arg0, _arg1, _cerr)
+	C.g_volume_eject_with_operation_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -281,7 +281,7 @@ func (v volume) EjectWithOperationFinish(result AsyncResult) error {
 // that @volume has. Use g_volume_get_identifier() to obtain the identifiers
 // themselves.
 func (v volume) EnumerateIdentifiers() []string {
-	var _arg0 *C.GVolume
+	var _arg0 *C.GVolume // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 
@@ -317,18 +317,18 @@ func (v volume) EnumerateIdentifiers() []string {
 // [introduction][volume-identifier] for more information about volume
 // identifiers.
 func (v volume) Identifier(kind string) string {
-	var _arg0 *C.GVolume
-	var _arg1 *C.char
+	var _arg0 *C.GVolume // out
+	var _arg1 *C.char    // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.char)(C.CString(kind))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_volume_get_identifier(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -338,15 +338,15 @@ func (v volume) Identifier(kind string) string {
 
 // Name gets the name of @volume.
 func (v volume) Name() string {
-	var _arg0 *C.GVolume
+	var _arg0 *C.GVolume // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_volume_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -356,15 +356,15 @@ func (v volume) Name() string {
 
 // SortKey gets the sort key for @volume, if any.
 func (v volume) SortKey() string {
-	var _arg0 *C.GVolume
+	var _arg0 *C.GVolume // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_volume_get_sort_key(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -375,15 +375,15 @@ func (v volume) SortKey() string {
 // the file system UUID for the volume in question and should be considered
 // an opaque string. Returns nil if there is no UUID available.
 func (v volume) UUID() string {
-	var _arg0 *C.GVolume
+	var _arg0 *C.GVolume // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_volume_get_uuid(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -395,11 +395,11 @@ func (v volume) UUID() string {
 // by calling g_volume_mount_finish() with the @volume and Result returned
 // in the @callback.
 func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GVolume
-	var _arg1 C.GMountMountFlags
-	var _arg2 *C.GMountOperation
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GVolume            // out
+	var _arg1 C.GMountMountFlags    // out
+	var _arg2 *C.GMountOperation    // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
@@ -420,17 +420,17 @@ func (v volume) Mount(flags MountMountFlags, mountOperation MountOperation, canc
 // guaranteed to return the mount right after calling this function; there's
 // no need to listen for the 'mount-added' signal on Monitor.
 func (v volume) MountFinish(result AsyncResult) error {
-	var _arg0 *C.GVolume
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GVolume      // out
+	var _arg1 *C.GAsyncResult // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_volume_mount_finish(_arg0, _arg1, _cerr)
+	C.g_volume_mount_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -440,15 +440,15 @@ func (v volume) MountFinish(result AsyncResult) error {
 // ShouldAutomount returns whether the volume should be automatically
 // mounted.
 func (v volume) ShouldAutomount() bool {
-	var _arg0 *C.GVolume
+	var _arg0 *C.GVolume // out
 
 	_arg0 = (*C.GVolume)(unsafe.Pointer(v.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_volume_should_automount(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

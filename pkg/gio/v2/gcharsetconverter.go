@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -71,15 +71,15 @@ func marshalCharsetConverter(p uintptr) (interface{}, error) {
 // NumFallbacks gets the number of fallbacks that @converter has applied so
 // far.
 func (c charsetConverter) NumFallbacks() uint {
-	var _arg0 *C.GCharsetConverter
+	var _arg0 *C.GCharsetConverter // out
 
 	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_charset_converter_get_num_fallbacks(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -88,15 +88,15 @@ func (c charsetConverter) NumFallbacks() uint {
 
 // UseFallback gets the Converter:use-fallback property.
 func (c charsetConverter) UseFallback() bool {
-	var _arg0 *C.GCharsetConverter
+	var _arg0 *C.GCharsetConverter // out
 
 	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_charset_converter_get_use_fallback(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -107,8 +107,8 @@ func (c charsetConverter) UseFallback() bool {
 
 // SetUseFallback sets the Converter:use-fallback property.
 func (c charsetConverter) SetUseFallback(useFallback bool) {
-	var _arg0 *C.GCharsetConverter
-	var _arg1 C.gboolean
+	var _arg0 *C.GCharsetConverter // out
+	var _arg1 C.gboolean           // out
 
 	_arg0 = (*C.GCharsetConverter)(unsafe.Pointer(c.Native()))
 	if useFallback {

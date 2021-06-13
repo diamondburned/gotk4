@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -60,15 +60,15 @@ func marshalGestureRotate(p uintptr) (interface{}, error) {
 // radians since the gesture was first recognized. If @gesture is not
 // active, 0 is returned.
 func (g gestureRotate) AngleDelta() float64 {
-	var _arg0 *C.GtkGestureRotate
+	var _arg0 *C.GtkGestureRotate // out
 
 	_arg0 = (*C.GtkGestureRotate)(unsafe.Pointer(g.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_gesture_rotate_get_angle_delta(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 

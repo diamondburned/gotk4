@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -50,8 +50,8 @@ func marshalSocketAccessible(p uintptr) (interface{}, error) {
 }
 
 func (s socketAccessible) Embed(path string) {
-	var _arg0 *C.GtkSocketAccessible
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkSocketAccessible // out
+	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GtkSocketAccessible)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))

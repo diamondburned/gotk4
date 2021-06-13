@@ -9,15 +9,15 @@ import "C"
 
 // X11DeviceGetID returns the device ID as seen by XInput2.
 func X11DeviceGetID(device X11DeviceXI2) int {
-	var _arg1 *C.GdkDevice
+	var _arg1 *C.GdkDevice // out
 
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_x11_device_get_id(_arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 

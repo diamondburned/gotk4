@@ -7,7 +7,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -59,11 +59,11 @@ const (
 )
 
 func AssertWarning(logDomain string, file string, line int, prettyFunction string, expression string) {
-	var _arg1 *C.char
-	var _arg2 *C.char
-	var _arg3 C.int
-	var _arg4 *C.char
-	var _arg5 *C.char
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+	var _arg3 C.int   // out
+	var _arg4 *C.char // out
+	var _arg5 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -103,10 +103,10 @@ func AssertWarning(logDomain string, file string, line int, prettyFunction strin
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string, unusedData interface{}) {
-	var _arg1 *C.gchar
-	var _arg2 C.GLogLevelFlags
-	var _arg3 *C.gchar
-	var _arg4 C.gpointer
+	var _arg1 *C.gchar         // out
+	var _arg2 C.GLogLevelFlags // out
+	var _arg3 *C.gchar         // out
+	var _arg4 C.gpointer       // out
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -123,8 +123,8 @@ func LogDefaultHandler(logDomain string, logLevel LogLevelFlags, message string,
 // This has no effect if structured logging is enabled; see [Using Structured
 // Logging][using-structured-logging].
 func LogRemoveHandler(logDomain string, handlerId uint) {
-	var _arg1 *C.gchar
-	var _arg2 C.guint
+	var _arg1 *C.gchar // out
+	var _arg2 C.guint  // out
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -143,7 +143,7 @@ func LogRemoveHandler(logDomain string, handlerId uint) {
 // This assumes that @log_level is already present in @fields (typically as the
 // `PRIORITY` field).
 func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
-	var _arg1 C.GLogLevelFlags
+	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField
 	var _arg3 C.gsize
 
@@ -172,9 +172,9 @@ func LogStructuredArray(logLevel LogLevelFlags, fields []LogField) {
 // For more details on its usage and about the parameters, see
 // g_log_structured().
 func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
-	var _arg1 *C.gchar
-	var _arg2 C.GLogLevelFlags
-	var _arg3 *C.GVariant
+	var _arg1 *C.gchar         // out
+	var _arg2 C.GLogLevelFlags // out
+	var _arg3 *C.GVariant      // out
 
 	_arg1 = (*C.gchar)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -198,7 +198,7 @@ func LogVariant(logDomain string, logLevel LogLevelFlags, fields *Variant) {
 // at the very start of a program, before creating any other threads or creating
 // objects that could create worker threads of their own.
 func LogWriterDefaultSetUseStderr(useStderr bool) {
-	var _arg1 C.gboolean
+	var _arg1 C.gboolean // out
 
 	if useStderr {
 		_arg1 = C.gboolean(1)
@@ -226,18 +226,18 @@ func LogWriterDefaultSetUseStderr(useStderr bool) {
 //          g_free (result);
 //        }
 func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
-	var _arg1 C.GLogLevelFlags
-	var _arg2 *C.char
+	var _arg1 C.GLogLevelFlags // out
+	var _arg2 *C.char          // out
 
 	_arg1 = (C.GLogLevelFlags)(logLevel)
 	_arg2 = (*C.char)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_log_writer_default_would_drop(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -256,10 +256,10 @@ func LogWriterDefaultWouldDrop(logLevel LogLevelFlags, logDomain string) bool {
 // encoded in the character set of the current locale, which is not necessarily
 // UTF-8.
 func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor bool) string {
-	var _arg1 C.GLogLevelFlags
+	var _arg1 C.GLogLevelFlags // out
 	var _arg2 *C.GLogField
 	var _arg3 C.gsize
-	var _arg4 C.gboolean
+	var _arg4 C.gboolean // out
 
 	_arg1 = (C.GLogLevelFlags)(logLevel)
 	_arg3 = C.gsize(len(fields))
@@ -268,11 +268,11 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 		_arg4 = C.gboolean(1)
 	}
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_log_writer_format_fields(_arg1, _arg2, _arg3, _arg4)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -289,15 +289,15 @@ func LogWriterFormatFields(logLevel LogLevelFlags, fields []LogField, useColor b
 //
 //    is_journald = g_log_writer_is_journald (fileno (stderr));
 func LogWriterIsJournald(outputFd int) bool {
-	var _arg1 C.gint
+	var _arg1 C.gint // out
 
 	_arg1 = C.gint(outputFd)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_log_writer_is_journald(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -310,15 +310,15 @@ func LogWriterIsJournald(outputFd int) bool {
 // supports ANSI color escape sequences. If so, they can safely be used when
 // formatting log messages.
 func LogWriterSupportsColor(outputFd int) bool {
-	var _arg1 C.gint
+	var _arg1 C.gint // out
 
 	_arg1 = C.gint(outputFd)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_log_writer_supports_color(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -330,9 +330,9 @@ func LogWriterSupportsColor(outputFd int) bool {
 // ReturnIfFailWarning: internal function used to print messages from the public
 // g_return_if_fail() and g_return_val_if_fail() macros.
 func ReturnIfFailWarning(logDomain string, prettyFunction string, expression string) {
-	var _arg1 *C.char
-	var _arg2 *C.char
-	var _arg3 *C.char
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+	var _arg3 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(logDomain))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -347,11 +347,11 @@ func ReturnIfFailWarning(logDomain string, prettyFunction string, expression str
 // WarnMessage: internal function used to print messages from the public
 // g_warn_if_reached() and g_warn_if_fail() macros.
 func WarnMessage(domain string, file string, line int, fn string, warnexpr string) {
-	var _arg1 *C.char
-	var _arg2 *C.char
-	var _arg3 C.int
-	var _arg4 *C.char
-	var _arg5 *C.char
+	var _arg1 *C.char // out
+	var _arg2 *C.char // out
+	var _arg3 C.int   // out
+	var _arg4 *C.char // out
+	var _arg5 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -399,21 +399,21 @@ func (l *LogField) Native() unsafe.Pointer {
 
 // Key gets the field inside the struct.
 func (l *LogField) Key() string {
-	var v string
+	var v string // out
 	v = C.GoString(l.native.key)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (l *LogField) Value() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(l.native.value)
 	return v
 }
 
 // Length gets the field inside the struct.
 func (l *LogField) Length() int {
-	var v int
+	var v int // out
 	v = (int)(l.native.length)
 	return v
 }

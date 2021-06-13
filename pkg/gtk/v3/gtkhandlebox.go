@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -93,15 +93,15 @@ func marshalHandleBox(p uintptr) (interface{}, error) {
 
 // ChildDetached: whether the handlebox’s child is currently detached.
 func (h handleBox) ChildDetached() bool {
-	var _arg0 *C.GtkHandleBox
+	var _arg0 *C.GtkHandleBox // out
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_handle_box_get_child_detached(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -113,8 +113,8 @@ func (h handleBox) ChildDetached() bool {
 // SetHandlePosition sets the side of the handlebox where the handle is
 // drawn.
 func (h handleBox) SetHandlePosition(position PositionType) {
-	var _arg0 *C.GtkHandleBox
-	var _arg1 C.GtkPositionType
+	var _arg0 *C.GtkHandleBox   // out
+	var _arg1 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 	_arg1 = (C.GtkPositionType)(position)
@@ -125,8 +125,8 @@ func (h handleBox) SetHandlePosition(position PositionType) {
 // SetShadowType sets the type of shadow to be drawn around the border of
 // the handle box.
 func (h handleBox) SetShadowType(typ ShadowType) {
-	var _arg0 *C.GtkHandleBox
-	var _arg1 C.GtkShadowType
+	var _arg0 *C.GtkHandleBox // out
+	var _arg1 C.GtkShadowType // out
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 	_arg1 = (C.GtkShadowType)(typ)
@@ -145,8 +145,8 @@ func (h handleBox) SetShadowType(typ ShadowType) {
 // GTK_POS_LEFT, then the snap edge will be GTK_POS_TOP, otherwise it will
 // be GTK_POS_LEFT.
 func (h handleBox) SetSnapEdge(edge PositionType) {
-	var _arg0 *C.GtkHandleBox
-	var _arg1 C.GtkPositionType
+	var _arg0 *C.GtkHandleBox   // out
+	var _arg1 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkHandleBox)(unsafe.Pointer(h.Native()))
 	_arg1 = (C.GtkPositionType)(edge)

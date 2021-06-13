@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -135,12 +135,12 @@ func marshalDropTarget(p uintptr) (interface{}, error) {
 //
 // If no type have been set, nil will be returned.
 func (s dropTarget) GTypes() []externglib.Type {
-	var _arg0 *C.GtkDropTarget
+	var _arg0 *C.GtkDropTarget // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
 	var _cret *C.GType
-	var _arg1 *C.gsize
+	var _arg1 C.gsize // in
 
 	_cret = C.gtk_drop_target_get_gtypes(_arg0, &_arg1)
 
@@ -161,15 +161,15 @@ func (s dropTarget) GTypes() []externglib.Type {
 
 // Preload gets whether data should be preloaded on hover.
 func (s dropTarget) Preload() bool {
-	var _arg0 *C.GtkDropTarget
+	var _arg0 *C.GtkDropTarget // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_target_get_preload(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -180,15 +180,15 @@ func (s dropTarget) Preload() bool {
 
 // Value gets the current drop data, as a `GValue`.
 func (s dropTarget) Value() **externglib.Value {
-	var _arg0 *C.GtkDropTarget
+	var _arg0 *C.GtkDropTarget // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.GValue
+	var _cret *C.GValue // in
 
 	_cret = C.gtk_drop_target_get_value(_arg0)
 
-	var _value **externglib.Value
+	var _value **externglib.Value // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 
@@ -203,7 +203,7 @@ func (s dropTarget) Value() **externglib.Value {
 // This function should be used when delaying the decision on whether to
 // accept a drag or not until after reading the data.
 func (s dropTarget) Reject() {
-	var _arg0 *C.GtkDropTarget
+	var _arg0 *C.GtkDropTarget // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 
@@ -212,8 +212,8 @@ func (s dropTarget) Reject() {
 
 // SetActions sets the actions that this drop target supports.
 func (s dropTarget) SetActions(actions gdk.DragAction) {
-	var _arg0 *C.GtkDropTarget
-	var _arg1 C.GdkDragAction
+	var _arg0 *C.GtkDropTarget // out
+	var _arg1 C.GdkDragAction  // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GdkDragAction)(actions)
@@ -223,7 +223,7 @@ func (s dropTarget) SetActions(actions gdk.DragAction) {
 
 // SetGTypes sets the supported `GTypes` for this drop target.
 func (s dropTarget) SetGTypes(types []externglib.Type) {
-	var _arg0 *C.GtkDropTarget
+	var _arg0 *C.GtkDropTarget // out
 	var _arg1 *C.GType
 	var _arg2 C.gsize
 
@@ -246,8 +246,8 @@ func (s dropTarget) SetGTypes(types []externglib.Type) {
 
 // SetPreload sets whether data should be preloaded on hover.
 func (s dropTarget) SetPreload(preload bool) {
-	var _arg0 *C.GtkDropTarget
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkDropTarget // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GtkDropTarget)(unsafe.Pointer(s.Native()))
 	if preload {

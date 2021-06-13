@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -65,15 +65,15 @@ func marshalToggleAction(p uintptr) (interface{}, error) {
 
 // Active returns the checked state of the toggle action.
 func (a toggleAction) Active() bool {
-	var _arg0 *C.GtkToggleAction
+	var _arg0 *C.GtkToggleAction // out
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_action_get_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -85,15 +85,15 @@ func (a toggleAction) Active() bool {
 // DrawAsRadio returns whether the action should have proxies like a radio
 // action.
 func (a toggleAction) DrawAsRadio() bool {
-	var _arg0 *C.GtkToggleAction
+	var _arg0 *C.GtkToggleAction // out
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_action_get_draw_as_radio(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -104,8 +104,8 @@ func (a toggleAction) DrawAsRadio() bool {
 
 // SetActive sets the checked state on the toggle action.
 func (a toggleAction) SetActive(isActive bool) {
-	var _arg0 *C.GtkToggleAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToggleAction // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 	if isActive {
@@ -118,8 +118,8 @@ func (a toggleAction) SetActive(isActive bool) {
 // SetDrawAsRadio sets whether the action should have proxies like a radio
 // action.
 func (a toggleAction) SetDrawAsRadio(drawAsRadio bool) {
-	var _arg0 *C.GtkToggleAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToggleAction // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 	if drawAsRadio {
@@ -131,7 +131,7 @@ func (a toggleAction) SetDrawAsRadio(drawAsRadio bool) {
 
 // Toggled emits the “toggled” signal on the toggle action.
 func (a toggleAction) Toggled() {
-	var _arg0 *C.GtkToggleAction
+	var _arg0 *C.GtkToggleAction // out
 
 	_arg0 = (*C.GtkToggleAction)(unsafe.Pointer(a.Native()))
 

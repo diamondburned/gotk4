@@ -2,7 +2,7 @@
 
 package gtk
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
@@ -28,19 +28,19 @@ import "C"
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK.
 func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
+	var _arg1 C.guint // out
+	var _arg2 C.guint // out
+	var _arg3 C.guint // out
 
 	_arg1 = C.guint(requiredMajor)
 	_arg2 = C.guint(requiredMinor)
 	_arg3 = C.guint(requiredMicro)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -51,11 +51,11 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 //
 // If `libtool` means nothing to you, don't worry about it.
 func GetBinaryAge() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_binary_age()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -66,11 +66,11 @@ func GetBinaryAge() uint {
 //
 // If `libtool` means nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_interface_age()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -86,11 +86,11 @@ func GetInterfaceAge() uint {
 // represents the major version of the GTK headers you have included when
 // compiling your code.
 func GetMajorVersion() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_major_version()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -106,11 +106,11 @@ func GetMajorVersion() uint {
 // represents the micro version of the GTK headers you have included when
 // compiling your code.
 func GetMicroVersion() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_micro_version()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -126,11 +126,11 @@ func GetMicroVersion() uint {
 // represents the minor version of the GTK headers you have included when
 // compiling your code.
 func GetMinorVersion() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_minor_version()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 

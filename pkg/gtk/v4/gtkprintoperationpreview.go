@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -80,7 +80,7 @@ func marshalPrintOperationPreview(p uintptr) (interface{}, error) {
 //
 // This function must be called to finish a custom print preview.
 func (p printOperationPreview) EndPreview() {
-	var _arg0 *C.GtkPrintOperationPreview
+	var _arg0 *C.GtkPrintOperationPreview // out
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
 
@@ -90,17 +90,17 @@ func (p printOperationPreview) EndPreview() {
 // IsSelected returns whether the given page is included in the set of pages
 // that have been selected for printing.
 func (p printOperationPreview) IsSelected(pageNr int) bool {
-	var _arg0 *C.GtkPrintOperationPreview
-	var _arg1 C.int
+	var _arg0 *C.GtkPrintOperationPreview // out
+	var _arg1 C.int                       // out
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
 	_arg1 = C.int(pageNr)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_print_operation_preview_is_selected(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -120,8 +120,8 @@ func (p printOperationPreview) IsSelected(pageNr int) bool {
 // Note that this function requires a suitable cairo context to be
 // associated with the print context.
 func (p printOperationPreview) RenderPage(pageNr int) {
-	var _arg0 *C.GtkPrintOperationPreview
-	var _arg1 C.int
+	var _arg0 *C.GtkPrintOperationPreview // out
+	var _arg1 C.int                       // out
 
 	_arg0 = (*C.GtkPrintOperationPreview)(unsafe.Pointer(p.Native()))
 	_arg1 = C.int(pageNr)

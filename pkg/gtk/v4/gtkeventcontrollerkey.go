@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -66,17 +66,17 @@ func marshalEventControllerKey(p uintptr) (interface{}, error) {
 // [signal@Gtk.EventControllerKey::key-released] or
 // [signal@Gtk.EventControllerKey::modifiers] signals.
 func (c eventControllerKey) Forward(widget Widget) bool {
-	var _arg0 *C.GtkEventControllerKey
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkEventControllerKey // out
+	var _arg1 *C.GtkWidget             // out
 
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_controller_key_forward(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -89,15 +89,15 @@ func (c eventControllerKey) Forward(widget Widget) bool {
 //
 // See [method@Gdk.KeyEvent.get_layout].
 func (c eventControllerKey) Group() uint {
-	var _arg0 *C.GtkEventControllerKey
+	var _arg0 *C.GtkEventControllerKey // out
 
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_event_controller_key_get_group(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -106,8 +106,8 @@ func (c eventControllerKey) Group() uint {
 
 // SetImContext sets the input method context of the key @controller.
 func (c eventControllerKey) SetImContext(imContext IMContext) {
-	var _arg0 *C.GtkEventControllerKey
-	var _arg1 *C.GtkIMContext
+	var _arg0 *C.GtkEventControllerKey // out
+	var _arg1 *C.GtkIMContext          // out
 
 	_arg0 = (*C.GtkEventControllerKey)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkIMContext)(unsafe.Pointer(imContext.Native()))

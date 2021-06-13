@@ -31,16 +31,16 @@ import "C"
 // `/run/bus-for-3A0`, which could be used in a D-Bus address like
 // `unix:nonce-tcp:host=127.0.0.1,port=42,noncefile=/run/bus-for-3A0`.
 func DBusAddressEscapeValue(string string) string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_address_escape_value(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -55,19 +55,19 @@ func DBusAddressEscapeValue(string string) string {
 // The returned address will be in the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string, error) {
-	var _arg1 C.GBusType
-	var _arg2 *C.GCancellable
+	var _arg1 C.GBusType      // out
+	var _arg2 *C.GCancellable // out
 
 	_arg1 = (C.GBusType)(busType)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cret *C.gchar
-	var _cerr *C.GError
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, _cerr)
+	_cret = C.g_dbus_address_get_for_bus_sync(_arg1, _arg2, &_cerr)
 
-	var _utf8 string
-	var _goerr error
+	var _utf8 string // out
+	var _goerr error // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -88,9 +88,9 @@ func DBusAddressGetForBusSync(busType BusType, cancellable Cancellable) (string,
 // This is an asynchronous failable function. See
 // g_dbus_address_get_stream_sync() for the synchronous version.
 func DBusAddressGetStream(address string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg1 *C.gchar
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg1 = (*C.gchar)(C.CString(address))
@@ -108,16 +108,16 @@ func DBusAddressGetStream(address string, cancellable Cancellable, callback Asyn
 // This doesn't check if @string is actually supported by BusServer or
 // BusConnection - use g_dbus_is_supported_address() to do more checks.
 func DBusIsAddress(string string) bool {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_dbus_is_address(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -131,16 +131,16 @@ func DBusIsAddress(string string) bool {
 // transport are valid. See the specification of the D-Bus address format
 // (https://dbus.freedesktop.org/doc/dbus-specification.html#addresses).
 func DBusIsSupportedAddress(string string) error {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_dbus_is_supported_address(_arg1, _cerr)
+	C.g_dbus_is_supported_address(_arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

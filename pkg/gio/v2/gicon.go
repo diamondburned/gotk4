@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -126,17 +126,17 @@ func marshalIcon(p uintptr) (interface{}, error) {
 
 // Equal checks if two icons are equal.
 func (i icon) Equal(icon2 Icon) bool {
-	var _arg0 *C.GIcon
-	var _arg1 *C.GIcon
+	var _arg0 *C.GIcon // out
+	var _arg1 *C.GIcon // out
 
 	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_icon_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -161,15 +161,15 @@ func (i icon) Equal(icon2 Icon) bool {
 // - If @icon is a Icon with exactly one name and no fallbacks, the encoding
 // is simply the name (such as `network-server`).
 func (i icon) String() string {
-	var _arg0 *C.GIcon
+	var _arg0 *C.GIcon // out
 
 	_arg0 = (*C.GIcon)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_icon_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -107,15 +107,15 @@ func marshalConstraint(p uintptr) (interface{}, error) {
 // Constant retrieves the constant factor added to the source attributes'
 // value.
 func (c constraint) Constant() float64 {
-	var _arg0 *C.GtkConstraint
+	var _arg0 *C.GtkConstraint // out
 
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_constraint_get_constant(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -125,15 +125,15 @@ func (c constraint) Constant() float64 {
 // Multiplier retrieves the multiplication factor applied to the source
 // attribute's value.
 func (c constraint) Multiplier() float64 {
-	var _arg0 *C.GtkConstraint
+	var _arg0 *C.GtkConstraint // out
 
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_constraint_get_multiplier(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -142,15 +142,15 @@ func (c constraint) Multiplier() float64 {
 
 // Strength retrieves the strength of the constraint.
 func (c constraint) Strength() int {
-	var _arg0 *C.GtkConstraint
+	var _arg0 *C.GtkConstraint // out
 
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_constraint_get_strength(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -160,15 +160,15 @@ func (c constraint) Strength() int {
 // IsAttached checks whether the constraint is attached to a
 // [class@Gtk.ConstraintLayout], and it is contributing to the layout.
 func (c constraint) IsAttached() bool {
-	var _arg0 *C.GtkConstraint
+	var _arg0 *C.GtkConstraint // out
 
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_constraint_is_attached(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -180,15 +180,15 @@ func (c constraint) IsAttached() bool {
 // IsConstant checks whether the constraint describes a relation between an
 // attribute on the [property@Gtk.Constraint:target] and a constant value.
 func (c constraint) IsConstant() bool {
-	var _arg0 *C.GtkConstraint
+	var _arg0 *C.GtkConstraint // out
 
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_constraint_is_constant(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -200,15 +200,15 @@ func (c constraint) IsConstant() bool {
 // IsRequired checks whether the constraint is a required relation for
 // solving the constraint layout.
 func (c constraint) IsRequired() bool {
-	var _arg0 *C.GtkConstraint
+	var _arg0 *C.GtkConstraint // out
 
 	_arg0 = (*C.GtkConstraint)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_constraint_is_required(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

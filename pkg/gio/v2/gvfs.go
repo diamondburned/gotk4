@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -67,7 +67,7 @@ func marshalVFS(p uintptr) (interface{}, error) {
 
 // SupportedURISchemes gets a list of URI schemes supported by @vfs.
 func (v vfS) SupportedURISchemes() []string {
-	var _arg0 *C.GVfs
+	var _arg0 *C.GVfs // out
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
@@ -100,15 +100,15 @@ func (v vfS) SupportedURISchemes() []string {
 
 // IsActive checks if the VFS is active.
 func (v vfS) IsActive() bool {
-	var _arg0 *C.GVfs
+	var _arg0 *C.GVfs // out
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_vfs_is_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -120,18 +120,18 @@ func (v vfS) IsActive() bool {
 // UnregisterURIScheme unregisters the URI handler for @scheme previously
 // registered with g_vfs_register_uri_scheme().
 func (v vfS) UnregisterURIScheme(scheme string) bool {
-	var _arg0 *C.GVfs
-	var _arg1 *C.char
+	var _arg0 *C.GVfs // out
+	var _arg1 *C.char // out
 
 	_arg0 = (*C.GVfs)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.char)(C.CString(scheme))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_vfs_unregister_uri_scheme(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

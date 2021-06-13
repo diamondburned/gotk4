@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -87,17 +87,17 @@ func marshalLayout(p uintptr) (interface{}, error) {
 // the total extents of the layout’s scrollbar area. See gtk_layout_set_size
 // ().
 func (l layout) Size() (width uint, height uint) {
-	var _arg0 *C.GtkLayout
+	var _arg0 *C.GtkLayout // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg1 C.guint // in
+	var _arg2 C.guint // in
 
 	C.gtk_layout_get_size(_arg0, &_arg1, &_arg2)
 
-	var _width uint
-	var _height uint
+	var _width uint  // out
+	var _height uint // out
 
 	_width = (uint)(_arg1)
 	_height = (uint)(_arg2)
@@ -107,10 +107,10 @@ func (l layout) Size() (width uint, height uint) {
 
 // Move moves a current child of @layout to a new position.
 func (l layout) Move(childWidget Widget, x int, y int) {
-	var _arg0 *C.GtkLayout
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GtkLayout // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
@@ -123,10 +123,10 @@ func (l layout) Move(childWidget Widget, x int, y int) {
 // Put adds @child_widget to @layout, at position (@x,@y). @layout becomes
 // the new parent container of @child_widget.
 func (l layout) Put(childWidget Widget, x int, y int) {
-	var _arg0 *C.GtkLayout
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GtkLayout // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(childWidget.Native()))
@@ -140,8 +140,8 @@ func (l layout) Put(childWidget Widget, x int, y int) {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 func (l layout) SetHAdjustment(adjustment Adjustment) {
-	var _arg0 *C.GtkLayout
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkLayout     // out
+	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
@@ -151,9 +151,9 @@ func (l layout) SetHAdjustment(adjustment Adjustment) {
 
 // SetSize sets the size of the scrollable area of the layout.
 func (l layout) SetSize(width uint, height uint) {
-	var _arg0 *C.GtkLayout
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkLayout // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = C.guint(width)
@@ -166,8 +166,8 @@ func (l layout) SetSize(width uint, height uint) {
 //
 // See ScrolledWindow, Scrollbar, Adjustment for details.
 func (l layout) SetVAdjustment(adjustment Adjustment) {
-	var _arg0 *C.GtkLayout
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkLayout     // out
+	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkLayout)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))

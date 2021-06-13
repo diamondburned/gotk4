@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -103,7 +103,7 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 // LoadFromData loads @data into @css_provider, and by doing so clears any
 // previously loaded information.
 func (c cssProvider) LoadFromData(data []byte) error {
-	var _arg0 *C.GtkCssProvider
+	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.gchar
 	var _arg2 C.gssize
 
@@ -111,11 +111,11 @@ func (c cssProvider) LoadFromData(data []byte) error {
 	_arg2 = C.gssize(len(data))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, _cerr)
+	C.gtk_css_provider_load_from_data(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -125,17 +125,17 @@ func (c cssProvider) LoadFromData(data []byte) error {
 // LoadFromFile loads the data contained in @file into @css_provider, making
 // it clear any previously loaded information.
 func (c cssProvider) LoadFromFile(file gio.File) error {
-	var _arg0 *C.GtkCssProvider
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.GFile          // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_css_provider_load_from_file(_arg0, _arg1, _cerr)
+	C.gtk_css_provider_load_from_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -145,18 +145,18 @@ func (c cssProvider) LoadFromFile(file gio.File) error {
 // LoadFromPath loads the data contained in @path into @css_provider, making
 // it clear any previously loaded information.
 func (c cssProvider) LoadFromPath(path string) error {
-	var _arg0 *C.GtkCssProvider
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_css_provider_load_from_path(_arg0, _arg1, _cerr)
+	C.gtk_css_provider_load_from_path(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -170,8 +170,8 @@ func (c cssProvider) LoadFromPath(path string) error {
 // To track errors while loading CSS, connect to the
 // CssProvider::parsing-error signal.
 func (c cssProvider) LoadFromResource(resourcePath string) {
-	var _arg0 *C.GtkCssProvider
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -186,15 +186,15 @@ func (c cssProvider) LoadFromResource(resourcePath string) {
 // function on a new provider created with gtk_css_provider_new() will
 // basically create a duplicate of this @provider.
 func (p cssProvider) String() string {
-	var _arg0 *C.GtkCssProvider
+	var _arg0 *C.GtkCssProvider // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

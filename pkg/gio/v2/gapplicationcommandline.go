@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -216,12 +216,12 @@ func marshalApplicationCommandLine(p uintptr) (interface{}, error) {
 // The return value is nil-terminated and should be freed using
 // g_strfreev().
 func (c applicationCommandLine) Arguments() []*string {
-	var _arg0 *C.GApplicationCommandLine
+	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
 	var _cret **C.gchar
-	var _arg1 *C.int
+	var _arg1 C.int // in
 
 	_cret = C.g_application_command_line_get_arguments(_arg0, &_arg1)
 
@@ -250,15 +250,15 @@ func (c applicationCommandLine) Arguments() []*string {
 // The return value should not be modified or freed and is valid for as long
 // as @cmdline exists.
 func (c applicationCommandLine) Cwd() *string {
-	var _arg0 *C.GApplicationCommandLine
+	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_application_command_line_get_cwd(_arg0)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -281,7 +281,7 @@ func (c applicationCommandLine) Cwd() *string {
 // See g_application_command_line_getenv() if you are only interested in the
 // value of a single environment variable.
 func (c applicationCommandLine) Environ() []*string {
-	var _arg0 *C.GApplicationCommandLine
+	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
@@ -315,15 +315,15 @@ func (c applicationCommandLine) Environ() []*string {
 // ExitStatus gets the exit status of @cmdline. See
 // g_application_command_line_set_exit_status() for more information.
 func (c applicationCommandLine) ExitStatus() int {
-	var _arg0 *C.GApplicationCommandLine
+	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.g_application_command_line_get_exit_status(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -332,15 +332,15 @@ func (c applicationCommandLine) ExitStatus() int {
 
 // IsRemote determines if @cmdline represents a remote invocation.
 func (c applicationCommandLine) IsRemote() bool {
-	var _arg0 *C.GApplicationCommandLine
+	var _arg0 *C.GApplicationCommandLine // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_application_command_line_get_is_remote(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -361,18 +361,18 @@ func (c applicationCommandLine) IsRemote() bool {
 // The return value should not be modified or freed and is valid for as long
 // as @cmdline exists.
 func (c applicationCommandLine) env(name *string) string {
-	var _arg0 *C.GApplicationCommandLine
-	var _arg1 *C.gchar
+	var _arg0 *C.GApplicationCommandLine // out
+	var _arg1 *C.gchar                   // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_application_command_line_getenv(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -401,8 +401,8 @@ func (c applicationCommandLine) env(name *string) string {
 // the application use count is zero, though, the exit status of the local
 // CommandLine is used.
 func (c applicationCommandLine) SetExitStatus(exitStatus int) {
-	var _arg0 *C.GApplicationCommandLine
-	var _arg1 C.int
+	var _arg0 *C.GApplicationCommandLine // out
+	var _arg1 C.int                      // out
 
 	_arg0 = (*C.GApplicationCommandLine)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(exitStatus)

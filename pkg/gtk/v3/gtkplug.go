@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -69,15 +69,15 @@ func marshalPlug(p uintptr) (interface{}, error) {
 
 // Embedded determines whether the plug is embedded in a socket.
 func (p plug) Embedded() bool {
-	var _arg0 *C.GtkPlug
+	var _arg0 *C.GtkPlug // out
 
 	_arg0 = (*C.GtkPlug)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_plug_get_embedded(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

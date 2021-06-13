@@ -25,6 +25,7 @@ type FileGenerator struct {
 
 	imports  map[string]string // optional alias value
 	imported []string          // keep track of side effects
+	packages []string
 
 	// Keep track of local callback declarations so we can reference them in the
 	// file.
@@ -126,7 +127,7 @@ func (fg *FileGenerator) generate() ([]byte, error) {
 		pen.EmptyLine()
 	}
 
-	pen.Words(append([]string{"// #cgo pkg-config:"}, fg.parent.pkgconfig()...)...)
+	pen.Words(append([]string{"// #cgo pkg-config:"}, fg.pkgconfig()...)...)
 	pen.Words("// #cgo CFLAGS: -Wno-deprecated-declarations")
 
 	for _, cIncl := range fg.includes {
@@ -204,6 +205,10 @@ func makeImport(importPath, alias string) string {
 	return alias + " " + strconv.Quote(importPath)
 }
 
+func (fg *FileGenerator) pkgconfig() []string {
+	return append(fg.parent.pkgconfig(), fg.packages...)
+}
+
 func (fg *FileGenerator) addMarshaler(glibGetType, goName string) {
 	fg.marshalers = append(fg.marshalers, fmt.Sprintf(
 		`{T: externglib.Type(C.%s()), F: marshal%s},`, glibGetType, goName,
@@ -224,6 +229,8 @@ func (fg *FileGenerator) needsGLibObject() {
 
 		// Need this for g_value_get_boxed.
 		fg.includes = append(fg.includes, "glib-object.h")
+		// Need tihs for the above header.
+		fg.packages = append(fg.packages, "glib-2.0")
 	}
 }
 

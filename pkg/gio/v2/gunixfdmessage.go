@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -105,17 +105,17 @@ func marshalUnixFDMessage(p uintptr) (interface{}, error) {
 // A possible cause of failure is exceeding the per-process or system-wide
 // file descriptor limit.
 func (m unixFDMessage) AppendFd(fd int) error {
-	var _arg0 *C.GUnixFDMessage
-	var _arg1 C.gint
+	var _arg0 *C.GUnixFDMessage // out
+	var _arg1 C.gint            // out
 
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(fd)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_unix_fd_message_append_fd(_arg0, _arg1, _cerr)
+	C.g_unix_fd_message_append_fd(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -138,12 +138,12 @@ func (m unixFDMessage) AppendFd(fd int) error {
 // This function never returns nil. In case there are no file descriptors
 // contained in @message, an empty array is returned.
 func (m unixFDMessage) StealFds() []int {
-	var _arg0 *C.GUnixFDMessage
+	var _arg0 *C.GUnixFDMessage // out
 
 	_arg0 = (*C.GUnixFDMessage)(unsafe.Pointer(m.Native()))
 
 	var _cret *C.gint
-	var _arg1 *C.gint
+	var _arg1 C.gint // in
 
 	_cret = C.g_unix_fd_message_steal_fds(_arg0, &_arg1)
 

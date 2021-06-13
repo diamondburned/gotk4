@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -94,10 +94,10 @@ func marshalFixed(p uintptr) (interface{}, error) {
 
 // Move moves a child of a Fixed container to the given position.
 func (f fixed) Move(widget Widget, x int, y int) {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -109,10 +109,10 @@ func (f fixed) Move(widget Widget, x int, y int) {
 
 // Put adds a widget to a Fixed container at the given position.
 func (f fixed) Put(widget Widget, x int, y int) {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
+	var _arg3 C.gint       // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -148,14 +148,14 @@ func (f *FixedChild) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (f *FixedChild) X() int {
-	var v int
+	var v int // out
 	v = (int)(f.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (f *FixedChild) Y() int {
-	var v int
+	var v int // out
 	v = (int)(f.native.y)
 	return v
 }

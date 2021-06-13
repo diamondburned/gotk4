@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -97,15 +97,15 @@ func marshalCheckMenuItem(p uintptr) (interface{}, error) {
 // Active returns whether the check menu item is active. See
 // gtk_check_menu_item_set_active ().
 func (c checkMenuItem) Active() bool {
-	var _arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_menu_item_get_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -116,15 +116,15 @@ func (c checkMenuItem) Active() bool {
 
 // DrawAsRadio returns whether @check_menu_item looks like a RadioMenuItem
 func (c checkMenuItem) DrawAsRadio() bool {
-	var _arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_menu_item_get_draw_as_radio(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -136,15 +136,15 @@ func (c checkMenuItem) DrawAsRadio() bool {
 // Inconsistent retrieves the value set by
 // gtk_check_menu_item_set_inconsistent().
 func (c checkMenuItem) Inconsistent() bool {
-	var _arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_menu_item_get_inconsistent(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -155,8 +155,8 @@ func (c checkMenuItem) Inconsistent() bool {
 
 // SetActive sets the active state of the menu item’s check box.
 func (c checkMenuItem) SetActive(isActive bool) {
-	var _arg0 *C.GtkCheckMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if isActive {
@@ -169,8 +169,8 @@ func (c checkMenuItem) SetActive(isActive bool) {
 // SetDrawAsRadio sets whether @check_menu_item is drawn like a
 // RadioMenuItem
 func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
-	var _arg0 *C.GtkCheckMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if drawAsRadio {
@@ -189,8 +189,8 @@ func (c checkMenuItem) SetDrawAsRadio(drawAsRadio bool) {
 // manually, gtk_check_menu_item_set_inconsistent() only affects visual
 // appearance, it doesn’t affect the semantics of the widget.
 func (c checkMenuItem) SetInconsistent(setting bool) {
-	var _arg0 *C.GtkCheckMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCheckMenuItem // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 	if setting {
@@ -202,7 +202,7 @@ func (c checkMenuItem) SetInconsistent(setting bool) {
 
 // Toggled emits the CheckMenuItem::toggled signal.
 func (c checkMenuItem) Toggled() {
-	var _arg0 *C.GtkCheckMenuItem
+	var _arg0 *C.GtkCheckMenuItem // out
 
 	_arg0 = (*C.GtkCheckMenuItem)(unsafe.Pointer(c.Native()))
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -70,15 +70,15 @@ func marshalAppChooserDialog(p uintptr) (interface{}, error) {
 
 // Heading returns the text to display at the top of the dialog.
 func (s appChooserDialog) Heading() string {
-	var _arg0 *C.GtkAppChooserDialog
+	var _arg0 *C.GtkAppChooserDialog // out
 
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_app_chooser_dialog_get_heading(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -88,8 +88,8 @@ func (s appChooserDialog) Heading() string {
 // SetHeading sets the text to display at the top of the dialog. If the
 // heading is not set, the dialog displays a default text.
 func (s appChooserDialog) SetHeading(heading string) {
-	var _arg0 *C.GtkAppChooserDialog
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAppChooserDialog // out
+	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GtkAppChooserDialog)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(heading))

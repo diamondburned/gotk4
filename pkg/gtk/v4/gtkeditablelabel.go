@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -91,15 +91,15 @@ func marshalEditableLabel(p uintptr) (interface{}, error) {
 
 // Editing returns whether the label is currently in “editing mode”.
 func (s editableLabel) Editing() bool {
-	var _arg0 *C.GtkEditableLabel
+	var _arg0 *C.GtkEditableLabel // out
 
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_editable_label_get_editing(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -110,7 +110,7 @@ func (s editableLabel) Editing() bool {
 
 // StartEditing switches the label into “editing mode”.
 func (s editableLabel) StartEditing() {
-	var _arg0 *C.GtkEditableLabel
+	var _arg0 *C.GtkEditableLabel // out
 
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 
@@ -124,8 +124,8 @@ func (s editableLabel) StartEditing() {
 // is discarded and the label will keep its previous
 // [property@Gtk.Editable:text] property value.
 func (s editableLabel) StopEditing(commit bool) {
-	var _arg0 *C.GtkEditableLabel
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEditableLabel // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkEditableLabel)(unsafe.Pointer(s.Native()))
 	if commit {

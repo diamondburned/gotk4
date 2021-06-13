@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -34,8 +34,8 @@ type Glyph uint32
 // touching-but-not-overlapping after rounding to device units, pass them in as
 // @nearest.
 func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
-	var _arg1 *C.PangoRectangle
-	var _arg2 *C.PangoRectangle
+	var _arg1 *C.PangoRectangle // out
+	var _arg2 *C.PangoRectangle // out
 
 	_arg1 = (*C.PangoRectangle)(unsafe.Pointer(inclusive.Native()))
 	_arg2 = (*C.PangoRectangle)(unsafe.Pointer(nearest.Native()))
@@ -48,15 +48,15 @@ func ExtentsToPixels(inclusive *Rectangle, nearest *Rectangle) {
 // The conversion is done by multiplying @d by PANGO_SCALE and rounding the
 // result to nearest integer.
 func UnitsFromDouble(d float64) int {
-	var _arg1 C.double
+	var _arg1 C.double // out
 
 	_arg1 = C.double(d)
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.pango_units_from_double(_arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -67,15 +67,15 @@ func UnitsFromDouble(d float64) int {
 //
 // The conversion is done by dividing @i by PANGO_SCALE.
 func UnitsToDouble(i int) float64 {
-	var _arg1 C.int
+	var _arg1 C.int // out
 
 	_arg1 = C.int(i)
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.pango_units_to_double(_arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -113,28 +113,28 @@ func (r *Rectangle) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (r *Rectangle) X() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (r *Rectangle) Y() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (r *Rectangle) Width() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (r *Rectangle) Height() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.height)
 	return v
 }

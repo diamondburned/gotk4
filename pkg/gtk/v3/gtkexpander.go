@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -144,15 +144,15 @@ func marshalExpander(p uintptr) (interface{}, error) {
 //
 // See gtk_expander_set_expanded().
 func (e expander) Expanded() bool {
-	var _arg0 *C.GtkExpander
+	var _arg0 *C.GtkExpander // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_expander_get_expanded(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -172,15 +172,15 @@ func (e expander) Expanded() bool {
 // mnemonics and Pango markup. This problem can be avoided by fetching the
 // label text directly from the label widget.
 func (e expander) Label() string {
-	var _arg0 *C.GtkExpander
+	var _arg0 *C.GtkExpander // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_expander_get_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -190,15 +190,15 @@ func (e expander) Label() string {
 // LabelFill returns whether the label widget will fill all available
 // horizontal space allocated to @expander.
 func (e expander) LabelFill() bool {
-	var _arg0 *C.GtkExpander
+	var _arg0 *C.GtkExpander // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_expander_get_label_fill(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -210,15 +210,15 @@ func (e expander) LabelFill() bool {
 // ResizeToplevel returns whether the expander will resize the toplevel
 // widget containing the expander upon resizing and collpasing.
 func (e expander) ResizeToplevel() bool {
-	var _arg0 *C.GtkExpander
+	var _arg0 *C.GtkExpander // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_expander_get_resize_toplevel(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -229,15 +229,15 @@ func (e expander) ResizeToplevel() bool {
 
 // Spacing gets the value set by gtk_expander_set_spacing().
 func (e expander) Spacing() int {
-	var _arg0 *C.GtkExpander
+	var _arg0 *C.GtkExpander // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_expander_get_spacing(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -248,15 +248,15 @@ func (e expander) Spacing() int {
 // with the [Pango text markup language][PangoMarkupFormat]. See
 // gtk_expander_set_use_markup().
 func (e expander) UseMarkup() bool {
-	var _arg0 *C.GtkExpander
+	var _arg0 *C.GtkExpander // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_expander_get_use_markup(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -268,15 +268,15 @@ func (e expander) UseMarkup() bool {
 // UseUnderline returns whether an embedded underline in the expander label
 // indicates a mnemonic. See gtk_expander_set_use_underline().
 func (e expander) UseUnderline() bool {
-	var _arg0 *C.GtkExpander
+	var _arg0 *C.GtkExpander // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_expander_get_use_underline(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -289,8 +289,8 @@ func (e expander) UseUnderline() bool {
 // child widget to be revealed, and false if you want the child widget to be
 // hidden.
 func (e expander) SetExpanded(expanded bool) {
-	var _arg0 *C.GtkExpander
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkExpander // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if expanded {
@@ -304,8 +304,8 @@ func (e expander) SetExpanded(expanded bool) {
 //
 // This will also clear any previously set labels.
 func (e expander) SetLabel(label string) {
-	var _arg0 *C.GtkExpander
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkExpander // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
@@ -319,8 +319,8 @@ func (e expander) SetLabel(label string) {
 //
 // Note that this function has no effect since 3.20.
 func (e expander) SetLabelFill(labelFill bool) {
-	var _arg0 *C.GtkExpander
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkExpander // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if labelFill {
@@ -333,8 +333,8 @@ func (e expander) SetLabelFill(labelFill bool) {
 // SetLabelWidget: set the label widget for the expander. This is the widget
 // that will appear embedded alongside the expander arrow.
 func (e expander) SetLabelWidget(labelWidget Widget) {
-	var _arg0 *C.GtkExpander
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkExpander // out
+	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))
@@ -345,8 +345,8 @@ func (e expander) SetLabelWidget(labelWidget Widget) {
 // SetResizeToplevel sets whether the expander will resize the toplevel
 // widget containing the expander upon resizing and collpasing.
 func (e expander) SetResizeToplevel(resizeToplevel bool) {
-	var _arg0 *C.GtkExpander
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkExpander // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if resizeToplevel {
@@ -359,8 +359,8 @@ func (e expander) SetResizeToplevel(resizeToplevel bool) {
 // SetSpacing sets the spacing field of @expander, which is the number of
 // pixels to place between expander and the child.
 func (e expander) SetSpacing(spacing int) {
-	var _arg0 *C.GtkExpander
-	var _arg1 C.gint
+	var _arg0 *C.GtkExpander // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	_arg1 = C.gint(spacing)
@@ -372,8 +372,8 @@ func (e expander) SetSpacing(spacing int) {
 // [Pango’s text markup language][PangoMarkupFormat]. See
 // gtk_label_set_markup().
 func (e expander) SetUseMarkup(useMarkup bool) {
-	var _arg0 *C.GtkExpander
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkExpander // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if useMarkup {
@@ -387,8 +387,8 @@ func (e expander) SetUseMarkup(useMarkup bool) {
 // indicates the next character should be used for the mnemonic accelerator
 // key.
 func (e expander) SetUseUnderline(useUnderline bool) {
-	var _arg0 *C.GtkExpander
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkExpander // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkExpander)(unsafe.Pointer(e.Native()))
 	if useUnderline {

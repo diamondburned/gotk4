@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -78,8 +78,8 @@ func marshalViewport(p uintptr) (interface{}, error) {
 
 // SetHAdjustment sets the horizontal adjustment of the viewport.
 func (v viewport) SetHAdjustment(adjustment Adjustment) {
-	var _arg0 *C.GtkViewport
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkViewport   // out
+	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
@@ -89,8 +89,8 @@ func (v viewport) SetHAdjustment(adjustment Adjustment) {
 
 // SetShadowType sets the shadow type of the viewport.
 func (v viewport) SetShadowType(typ ShadowType) {
-	var _arg0 *C.GtkViewport
-	var _arg1 C.GtkShadowType
+	var _arg0 *C.GtkViewport  // out
+	var _arg1 C.GtkShadowType // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 	_arg1 = (C.GtkShadowType)(typ)
@@ -100,8 +100,8 @@ func (v viewport) SetShadowType(typ ShadowType) {
 
 // SetVAdjustment sets the vertical adjustment of the viewport.
 func (v viewport) SetVAdjustment(adjustment Adjustment) {
-	var _arg0 *C.GtkViewport
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkViewport   // out
+	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkViewport)(unsafe.Pointer(v.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))

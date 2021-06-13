@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -99,15 +99,15 @@ func marshalBuildable(p uintptr) (interface{}, error) {
 // `GtkBuilder` sets the name based on the ID attribute of the <object> tag
 // used to construct the @buildable.
 func (b buildable) BuildableID() string {
-	var _arg0 *C.GtkBuildable
+	var _arg0 *C.GtkBuildable // out
 
 	_arg0 = (*C.GtkBuildable)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_buildable_get_buildable_id(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -145,15 +145,15 @@ func (b *BuildableParseContext) Native() unsafe.Pointer {
 // element_name as passed to those functions. For the parent elements, see
 // gtk_buildable_parse_context_get_element_stack().
 func (c *BuildableParseContext) Element() string {
-	var _arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext // out
 
 	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_buildable_parse_context_get_element(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -172,7 +172,7 @@ func (c *BuildableParseContext) Element() string {
 // handlers where gtk_buildable_parse_context_get_element() would merely return
 // the name of the element that is being processed.
 func (c *BuildableParseContext) ElementStack() []string {
-	var _arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext // out
 
 	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
@@ -208,17 +208,17 @@ func (c *BuildableParseContext) ElementStack() []string {
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages."
 func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
-	var _arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext // out
 
 	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg1 C.int // in
+	var _arg2 C.int // in
 
 	C.gtk_buildable_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
-	var _lineNumber int
-	var _charNumber int
+	var _lineNumber int // out
+	var _charNumber int // out
 
 	_lineNumber = (int)(_arg1)
 	_charNumber = (int)(_arg2)
@@ -239,15 +239,15 @@ func (c *BuildableParseContext) Position() (lineNumber int, charNumber int) {
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
 func (c *BuildableParseContext) Pop() interface{} {
-	var _arg0 *C.GtkBuildableParseContext
+	var _arg0 *C.GtkBuildableParseContext // out
 
 	_arg0 = (*C.GtkBuildableParseContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.gtk_buildable_parse_context_pop(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 

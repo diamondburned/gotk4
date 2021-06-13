@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -131,7 +131,7 @@ type GLArea interface {
 	// AutoRender returns whether the area is in auto render mode or not.
 	AutoRender() bool
 	// Error gets the current error set on the @area.
-	Error() *error
+	Error() error
 	// HasDepthBuffer returns whether the area has a depth buffer.
 	HasDepthBuffer() bool
 	// HasStencilBuffer returns whether the area has a stencil buffer.
@@ -178,7 +178,7 @@ type GLArea interface {
 	//
 	// This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
 	// context creation fails.
-	SetError(err *error)
+	SetError(err error)
 	// SetHasDepthBuffer sets whether the `GtkGLArea` should use a depth buffer.
 	//
 	// If @has_depth_buffer is true the widget will allocate and enable a depth
@@ -240,7 +240,7 @@ func marshalGLArea(p uintptr) (interface{}, error) {
 // [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
 // called by application code.
 func (a glArea) AttachBuffers() {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
@@ -249,15 +249,15 @@ func (a glArea) AttachBuffers() {
 
 // AutoRender returns whether the area is in auto render mode or not.
 func (a glArea) AutoRender() bool {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_auto_render(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -267,16 +267,16 @@ func (a glArea) AutoRender() bool {
 }
 
 // Error gets the current error set on the @area.
-func (a glArea) Error() *error {
-	var _arg0 *C.GtkGLArea
+func (a glArea) Error() error {
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.GError
+	var _cret *C.GError // in
 
 	_cret = C.gtk_gl_area_get_error(_arg0)
 
-	var _err *error
+	var _err error // out
 
 	_err = gerror.Take(unsafe.Pointer(_cret))
 
@@ -285,15 +285,15 @@ func (a glArea) Error() *error {
 
 // HasDepthBuffer returns whether the area has a depth buffer.
 func (a glArea) HasDepthBuffer() bool {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_has_depth_buffer(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -304,15 +304,15 @@ func (a glArea) HasDepthBuffer() bool {
 
 // HasStencilBuffer returns whether the area has a stencil buffer.
 func (a glArea) HasStencilBuffer() bool {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_has_stencil_buffer(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -325,17 +325,17 @@ func (a glArea) HasStencilBuffer() bool {
 //
 // See [method@Gtk.GLArea.set_required_version].
 func (a glArea) RequiredVersion() (major int, minor int) {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg1 C.int // in
+	var _arg2 C.int // in
 
 	C.gtk_gl_area_get_required_version(_arg0, &_arg1, &_arg2)
 
-	var _major int
-	var _minor int
+	var _major int // out
+	var _minor int // out
 
 	_major = (int)(_arg1)
 	_minor = (int)(_arg2)
@@ -347,15 +347,15 @@ func (a glArea) RequiredVersion() (major int, minor int) {
 //
 // See [method@Gtk.GLArea.set_use_es].
 func (a glArea) UseES() bool {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gl_area_get_use_es(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -371,7 +371,7 @@ func (a glArea) UseES() bool {
 // [signal@Gtk.GLArea::render] signal, and doesn't normally need to be
 // called by application code.
 func (a glArea) MakeCurrent() {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
@@ -388,7 +388,7 @@ func (a glArea) MakeCurrent() {
 // called with a false value. The default behaviour is to emit
 // [signal@Gtk.GLArea::render] on each draw.
 func (a glArea) QueueRender() {
-	var _arg0 *C.GtkGLArea
+	var _arg0 *C.GtkGLArea // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 
@@ -407,8 +407,8 @@ func (a glArea) QueueRender() {
 // [method@Gtk.GLArea.queue_render] must be called. This mode is useful when
 // the scene changes seldom, but takes a long time to redraw.
 func (a glArea) SetAutoRender(autoRender bool) {
-	var _arg0 *C.GtkGLArea
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 	if autoRender {
@@ -423,9 +423,9 @@ func (a glArea) SetAutoRender(autoRender bool) {
 //
 // This is useful in the [signal@Gtk.GLArea::create-context] signal if GL
 // context creation fails.
-func (a glArea) SetError(err *error) {
-	var _arg0 *C.GtkGLArea
-	var _arg1 *C.GError
+func (a glArea) SetError(err error) {
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 *C.GError    // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GError)(gerror.New(unsafe.Pointer(err)))
@@ -439,8 +439,8 @@ func (a glArea) SetError(err *error) {
 // If @has_depth_buffer is true the widget will allocate and enable a depth
 // buffer for the target framebuffer. Otherwise there will be none.
 func (a glArea) SetHasDepthBuffer(hasDepthBuffer bool) {
-	var _arg0 *C.GtkGLArea
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 	if hasDepthBuffer {
@@ -456,8 +456,8 @@ func (a glArea) SetHasDepthBuffer(hasDepthBuffer bool) {
 // If @has_stencil_buffer is true the widget will allocate and enable a
 // stencil buffer for the target framebuffer. Otherwise there will be none.
 func (a glArea) SetHasStencilBuffer(hasStencilBuffer bool) {
-	var _arg0 *C.GtkGLArea
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 	if hasStencilBuffer {
@@ -472,9 +472,9 @@ func (a glArea) SetHasStencilBuffer(hasStencilBuffer bool) {
 //
 // This function must be called before the area has been realized.
 func (a glArea) SetRequiredVersion(major int, minor int) {
-	var _arg0 *C.GtkGLArea
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 	_arg1 = C.int(major)
@@ -489,8 +489,8 @@ func (a glArea) SetRequiredVersion(major int, minor int) {
 // You should check the capabilities of the GLContext before drawing with
 // either API.
 func (a glArea) SetUseES(useEs bool) {
-	var _arg0 *C.GtkGLArea
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkGLArea // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkGLArea)(unsafe.Pointer(a.Native()))
 	if useEs {

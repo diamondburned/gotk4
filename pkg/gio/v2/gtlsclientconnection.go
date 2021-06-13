@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -140,8 +140,8 @@ func marshalTLSClientConnection(p uintptr) (interface{}, error) {
 // ticket reuse would be a privacy weakness. Using this function causes the
 // ticket to be copied without regard for privacy considerations.
 func (c tlsClientConnection) CopySessionState(source TLSClientConnection) {
-	var _arg0 *C.GTlsClientConnection
-	var _arg1 *C.GTlsClientConnection
+	var _arg0 *C.GTlsClientConnection // out
+	var _arg1 *C.GTlsClientConnection // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GTlsClientConnection)(unsafe.Pointer(source.Native()))
@@ -152,15 +152,15 @@ func (c tlsClientConnection) CopySessionState(source TLSClientConnection) {
 // UseSSL3: SSL 3.0 is no longer supported. See
 // g_tls_client_connection_set_use_ssl3() for details.
 func (c tlsClientConnection) UseSSL3() bool {
-	var _arg0 *C.GTlsClientConnection
+	var _arg0 *C.GTlsClientConnection // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_tls_client_connection_get_use_ssl3(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -174,8 +174,8 @@ func (c tlsClientConnection) UseSSL3() bool {
 // also to let @conn know what name to look for in the certificate when
 // performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 func (c tlsClientConnection) SetServerIdentity(identity SocketConnectable) {
-	var _arg0 *C.GTlsClientConnection
-	var _arg1 *C.GSocketConnectable
+	var _arg0 *C.GTlsClientConnection // out
+	var _arg1 *C.GSocketConnectable   // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
@@ -193,8 +193,8 @@ func (c tlsClientConnection) SetServerIdentity(identity SocketConnectable) {
 //
 // Since GLib 2.64, this function does nothing.
 func (c tlsClientConnection) SetUseSSL3(useSsl3 bool) {
-	var _arg0 *C.GTlsClientConnection
-	var _arg1 C.gboolean
+	var _arg0 *C.GTlsClientConnection // out
+	var _arg1 C.gboolean              // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 	if useSsl3 {
@@ -208,8 +208,8 @@ func (c tlsClientConnection) SetUseSSL3(useSsl3 bool) {
 // set of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
 func (c tlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
-	var _arg0 *C.GTlsClientConnection
-	var _arg1 C.GTlsCertificateFlags
+	var _arg0 *C.GTlsClientConnection // out
+	var _arg1 C.GTlsCertificateFlags  // out
 
 	_arg0 = (*C.GTlsClientConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GTlsCertificateFlags)(flags)

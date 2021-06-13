@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -69,8 +69,8 @@ func marshalEmblemedIcon(p uintptr) (interface{}, error) {
 
 // AddEmblem adds @emblem to the #GList of #GEmblems.
 func (e emblemedIcon) AddEmblem(emblem Emblem) {
-	var _arg0 *C.GEmblemedIcon
-	var _arg1 *C.GEmblem
+	var _arg0 *C.GEmblemedIcon // out
+	var _arg1 *C.GEmblem       // out
 
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GEmblem)(unsafe.Pointer(emblem.Native()))
@@ -80,7 +80,7 @@ func (e emblemedIcon) AddEmblem(emblem Emblem) {
 
 // ClearEmblems removes all the emblems from @icon.
 func (e emblemedIcon) ClearEmblems() {
-	var _arg0 *C.GEmblemedIcon
+	var _arg0 *C.GEmblemedIcon // out
 
 	_arg0 = (*C.GEmblemedIcon)(unsafe.Pointer(e.Native()))
 

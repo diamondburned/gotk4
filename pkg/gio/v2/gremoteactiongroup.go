@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -109,10 +109,10 @@ func marshalRemoteActionGroup(p uintptr) (interface{}, error) {
 // @platform_data must be non-nil and must have the type
 // G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
 func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib.Variant, platformData *glib.Variant) {
-	var _arg0 *C.GRemoteActionGroup
-	var _arg1 *C.gchar
-	var _arg2 *C.GVariant
-	var _arg3 *C.GVariant
+	var _arg0 *C.GRemoteActionGroup // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GVariant           // out
+	var _arg3 *C.GVariant           // out
 
 	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -133,10 +133,10 @@ func (r remoteActionGroup) ActivateActionFull(actionName string, parameter *glib
 // @platform_data must be non-nil and must have the type
 // G_VARIANT_TYPE_VARDICT. If it is floating, it will be consumed.
 func (r remoteActionGroup) ChangeActionStateFull(actionName string, value *glib.Variant, platformData *glib.Variant) {
-	var _arg0 *C.GRemoteActionGroup
-	var _arg1 *C.gchar
-	var _arg2 *C.GVariant
-	var _arg3 *C.GVariant
+	var _arg0 *C.GRemoteActionGroup // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GVariant           // out
+	var _arg3 *C.GVariant           // out
 
 	_arg0 = (*C.GRemoteActionGroup)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))

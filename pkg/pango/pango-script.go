@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -48,7 +48,7 @@ func (s *ScriptIter) Native() unsafe.Pointer {
 
 // Free frees a ScriptIter created with pango_script_iter_new().
 func (i *ScriptIter) Free() {
-	var _arg0 *C.PangoScriptIter
+	var _arg0 *C.PangoScriptIter // out
 
 	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
@@ -58,15 +58,15 @@ func (i *ScriptIter) Free() {
 // Next advances a ScriptIter to the next range. If @iter is already at the end,
 // it is left unchanged and false is returned.
 func (i *ScriptIter) Next() bool {
-	var _arg0 *C.PangoScriptIter
+	var _arg0 *C.PangoScriptIter // out
 
 	_arg0 = (*C.PangoScriptIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_script_iter_next(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

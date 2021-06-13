@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -115,15 +115,15 @@ func marshalAppChooserWidget(p uintptr) (interface{}, error) {
 // DefaultText returns the text that is shown if there are not applications
 // that can handle the content type.
 func (s appChooserWidget) DefaultText() string {
-	var _arg0 *C.GtkAppChooserWidget
+	var _arg0 *C.GtkAppChooserWidget // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_app_chooser_widget_get_default_text(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -133,15 +133,15 @@ func (s appChooserWidget) DefaultText() string {
 // ShowAll returns the current value of the AppChooserWidget:show-all
 // property.
 func (s appChooserWidget) ShowAll() bool {
-	var _arg0 *C.GtkAppChooserWidget
+	var _arg0 *C.GtkAppChooserWidget // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_all(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -153,15 +153,15 @@ func (s appChooserWidget) ShowAll() bool {
 // ShowDefault returns the current value of the
 // AppChooserWidget:show-default property.
 func (s appChooserWidget) ShowDefault() bool {
-	var _arg0 *C.GtkAppChooserWidget
+	var _arg0 *C.GtkAppChooserWidget // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_default(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -173,15 +173,15 @@ func (s appChooserWidget) ShowDefault() bool {
 // ShowFallback returns the current value of the
 // AppChooserWidget:show-fallback property.
 func (s appChooserWidget) ShowFallback() bool {
-	var _arg0 *C.GtkAppChooserWidget
+	var _arg0 *C.GtkAppChooserWidget // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_fallback(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -193,15 +193,15 @@ func (s appChooserWidget) ShowFallback() bool {
 // ShowOther returns the current value of the AppChooserWidget:show-other
 // property.
 func (s appChooserWidget) ShowOther() bool {
-	var _arg0 *C.GtkAppChooserWidget
+	var _arg0 *C.GtkAppChooserWidget // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_other(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -213,15 +213,15 @@ func (s appChooserWidget) ShowOther() bool {
 // ShowRecommended returns the current value of the
 // AppChooserWidget:show-recommended property.
 func (s appChooserWidget) ShowRecommended() bool {
-	var _arg0 *C.GtkAppChooserWidget
+	var _arg0 *C.GtkAppChooserWidget // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_app_chooser_widget_get_show_recommended(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -233,8 +233,8 @@ func (s appChooserWidget) ShowRecommended() bool {
 // SetDefaultText sets the text that is shown if there are not applications
 // that can handle the content type.
 func (s appChooserWidget) SetDefaultText(text string) {
-	var _arg0 *C.GtkAppChooserWidget
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAppChooserWidget // out
+	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -246,8 +246,8 @@ func (s appChooserWidget) SetDefaultText(text string) {
 // SetShowAll sets whether the app chooser should show all applications in a
 // flat list.
 func (s appChooserWidget) SetShowAll(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAppChooserWidget // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
@@ -260,8 +260,8 @@ func (s appChooserWidget) SetShowAll(setting bool) {
 // SetShowDefault sets whether the app chooser should show the default
 // handler for the content type in a separate section.
 func (s appChooserWidget) SetShowDefault(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAppChooserWidget // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
@@ -274,8 +274,8 @@ func (s appChooserWidget) SetShowDefault(setting bool) {
 // SetShowFallback sets whether the app chooser should show related
 // applications for the content type in a separate section.
 func (s appChooserWidget) SetShowFallback(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAppChooserWidget // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
@@ -288,8 +288,8 @@ func (s appChooserWidget) SetShowFallback(setting bool) {
 // SetShowOther sets whether the app chooser should show applications which
 // are unrelated to the content type.
 func (s appChooserWidget) SetShowOther(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAppChooserWidget // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {
@@ -302,8 +302,8 @@ func (s appChooserWidget) SetShowOther(setting bool) {
 // SetShowRecommended sets whether the app chooser should show recommended
 // applications for the content type in a separate section.
 func (s appChooserWidget) SetShowRecommended(setting bool) {
-	var _arg0 *C.GtkAppChooserWidget
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAppChooserWidget // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GtkAppChooserWidget)(unsafe.Pointer(s.Native()))
 	if setting {

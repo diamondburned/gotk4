@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -36,19 +36,19 @@ const (
 // through literally. Possible errors are those from the SHELL_ERROR domain.
 // Free the returned vector with g_strfreev().
 func ShellParseArgv(commandLine *string) ([]*string, error) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(commandLine))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _arg3 **C.gchar
-	var _arg2 *C.gint
-	var _cerr *C.GError
+	var _arg2 C.gint    // in
+	var _cerr *C.GError // in
 
-	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, _cerr)
+	C.g_shell_parse_argv(_arg1, &_arg2, &_arg3, &_cerr)
 
 	var _argvp []*string
-	var _goerr error
+	var _goerr error // out
 
 	{
 		var src []*C.gchar
@@ -71,16 +71,16 @@ func ShellParseArgv(commandLine *string) ([]*string, error) {
 // must be freed with g_free(). The quoting style used is undefined (single or
 // double quotes may be used).
 func ShellQuote(unquotedString *string) *string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(unquotedString))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_shell_quote(_arg1)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -107,18 +107,18 @@ func ShellQuote(unquotedString *string) *string {
 // quotes allow $, `, ", \, and newline to be escaped with backslash. Otherwise
 // double quotes preserve things literally.
 func ShellUnquote(quotedString *string) (*string, error) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(quotedString))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
-	var _cerr *C.GError
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_shell_unquote(_arg1, _cerr)
+	_cret = C.g_shell_unquote(_arg1, &_cerr)
 
-	var _filename *string
-	var _goerr error
+	var _filename *string // out
+	var _goerr error      // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

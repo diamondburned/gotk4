@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -83,8 +83,8 @@ func marshalThemedIcon(p uintptr) (interface{}, error) {
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
 func (i themedIcon) AppendName(iconname string) {
-	var _arg0 *C.GThemedIcon
-	var _arg1 *C.char
+	var _arg0 *C.GThemedIcon // out
+	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(iconname))
@@ -95,7 +95,7 @@ func (i themedIcon) AppendName(iconname string) {
 
 // Names gets the names of icons from within @icon.
 func (i themedIcon) Names() []string {
-	var _arg0 *C.GThemedIcon
+	var _arg0 *C.GThemedIcon // out
 
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 
@@ -131,8 +131,8 @@ func (i themedIcon) Names() []string {
 // Note that doing so invalidates the hash computed by prior calls to
 // g_icon_hash().
 func (i themedIcon) PrependName(iconname string) {
-	var _arg0 *C.GThemedIcon
-	var _arg1 *C.char
+	var _arg0 *C.GThemedIcon // out
+	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GThemedIcon)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.char)(C.CString(iconname))

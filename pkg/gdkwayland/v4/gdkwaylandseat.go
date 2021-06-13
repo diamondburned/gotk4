@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4
+// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
@@ -54,15 +54,15 @@ func marshalWaylandSeat(p uintptr) (interface{}, error) {
 
 // WlSeat returns the Wayland `wl_seat` of a `GdkSeat`.
 func (s waylandSeat) WlSeat() *interface{} {
-	var _arg0 *C.GdkSeat
+	var _arg0 *C.GdkSeat // out
 
 	_arg0 = (*C.GdkSeat)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.wl_seat
+	var _cret *C.wl_seat // in
 
 	_cret = C.gdk_wayland_seat_get_wl_seat(_arg0)
 
-	var _gpointer *interface{}
+	var _gpointer *interface{} // out
 
 	_gpointer = (*interface{})(_cret)
 

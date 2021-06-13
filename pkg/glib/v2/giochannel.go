@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -152,7 +152,7 @@ func (i *IOChannel) Native() unsafe.Pointer {
 // ignoring errors. The channel will not be freed until the last reference is
 // dropped using g_io_channel_unref().
 func (c *IOChannel) Close() {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
@@ -161,15 +161,15 @@ func (c *IOChannel) Close() {
 
 // BufferSize gets the buffer size.
 func (c *IOChannel) BufferSize() uint {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_io_channel_get_buffer_size(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -178,15 +178,15 @@ func (c *IOChannel) BufferSize() uint {
 
 // Buffered returns whether @channel is buffered.
 func (c *IOChannel) Buffered() bool {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_io_channel_get_buffered(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -200,15 +200,15 @@ func (c *IOChannel) Buffered() bool {
 // destroyed. The default value of this is true for channels created by
 // g_io_channel_new_file (), and false for all other channels.
 func (c *IOChannel) CloseOnUnref() bool {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_io_channel_get_close_on_unref(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -221,15 +221,15 @@ func (c *IOChannel) CloseOnUnref() bool {
 // encoding is always UTF-8. The encoding nil makes the channel safe for binary
 // data.
 func (c *IOChannel) Encoding() string {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_io_channel_get_encoding(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -239,17 +239,17 @@ func (c *IOChannel) Encoding() string {
 // LineTerm: this returns the string that OChannel uses to determine where in
 // the file a line break occurs. A value of nil indicates autodetection.
 func (c *IOChannel) LineTerm(length *int) string {
-	var _arg0 *C.GIOChannel
-	var _arg1 *C.gint
+	var _arg0 *C.GIOChannel // out
+	var _arg1 *C.gint       // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 	_arg1 = *C.gint(length)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_io_channel_get_line_term(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -262,7 +262,7 @@ func (c *IOChannel) LineTerm(length *int) string {
 // so is not often needed by the application programmer (unless you are creating
 // a new type of OChannel).
 func (c *IOChannel) Init() {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
@@ -271,8 +271,8 @@ func (c *IOChannel) Init() {
 
 // SetBufferSize sets the buffer size.
 func (c *IOChannel) SetBufferSize(size uint) {
-	var _arg0 *C.GIOChannel
-	var _arg1 C.gsize
+	var _arg0 *C.GIOChannel // out
+	var _arg1 C.gsize       // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gsize(size)
@@ -297,8 +297,8 @@ func (c *IOChannel) SetBufferSize(size uint) {
 //
 // The default state of the channel is buffered.
 func (c *IOChannel) SetBuffered(buffered bool) {
-	var _arg0 *C.GIOChannel
-	var _arg1 C.gboolean
+	var _arg0 *C.GIOChannel // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 	if buffered {
@@ -315,8 +315,8 @@ func (c *IOChannel) SetBuffered(buffered bool) {
 // Setting this flag to true for a channel you have already closed can cause
 // problems when the final reference to the OChannel is dropped.
 func (c *IOChannel) SetCloseOnUnref(doClose bool) {
-	var _arg0 *C.GIOChannel
-	var _arg1 C.gboolean
+	var _arg0 *C.GIOChannel // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 	if doClose {
@@ -329,9 +329,9 @@ func (c *IOChannel) SetCloseOnUnref(doClose bool) {
 // SetLineTerm: this sets the string that OChannel uses to determine where in
 // the file a line break occurs.
 func (c *IOChannel) SetLineTerm(lineTerm string, length int) {
-	var _arg0 *C.GIOChannel
-	var _arg1 *C.gchar
-	var _arg2 C.gint
+	var _arg0 *C.GIOChannel // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(lineTerm))
@@ -346,15 +346,15 @@ func (c *IOChannel) SetLineTerm(lineTerm string, length int) {
 // On Windows this function returns the file descriptor or socket of the
 // OChannel.
 func (c *IOChannel) UnixGetFd() int {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_io_channel_unix_get_fd(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -363,7 +363,7 @@ func (c *IOChannel) UnixGetFd() int {
 
 // Unref decrements the reference count of a OChannel.
 func (c *IOChannel) Unref() {
-	var _arg0 *C.GIOChannel
+	var _arg0 *C.GIOChannel // out
 
 	_arg0 = (*C.GIOChannel)(unsafe.Pointer(c.Native()))
 

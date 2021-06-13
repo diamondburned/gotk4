@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -57,19 +57,19 @@ func marshalGestureStylus(p uintptr) (interface{}, error) {
 // must be called from either the GestureStylus:down, GestureStylus:motion,
 // GestureStylus:up or GestureStylus:proximity signals.
 func (g gestureStylus) Axis(axis gdk.AxisUse) (float64, bool) {
-	var _arg0 *C.GtkGestureStylus
-	var _arg1 C.GdkAxisUse
+	var _arg0 *C.GtkGestureStylus // out
+	var _arg1 C.GdkAxisUse        // out
 
 	_arg0 = (*C.GtkGestureStylus)(unsafe.Pointer(g.Native()))
 	_arg1 = (C.GdkAxisUse)(axis)
 
-	var _arg2 C.gdouble
-	var _cret C.gboolean
+	var _arg2 C.gdouble  // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_stylus_get_axis(_arg0, _arg1, &_arg2)
 
-	var _value float64
-	var _ok bool
+	var _value float64 // out
+	var _ok bool       // out
 
 	_value = (float64)(_arg2)
 	if _cret {

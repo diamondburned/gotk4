@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -113,15 +113,15 @@ func marshalCellView(p uintptr) (interface{}, error) {
 // DrawSensitive gets whether @cell_view is configured to draw all of its
 // cells in a sensitive state.
 func (c cellView) DrawSensitive() bool {
-	var _arg0 *C.GtkCellView
+	var _arg0 *C.GtkCellView // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_view_get_draw_sensitive(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -133,15 +133,15 @@ func (c cellView) DrawSensitive() bool {
 // FitModel gets whether @cell_view is configured to request space to fit
 // the entire TreeModel.
 func (c cellView) FitModel() bool {
-	var _arg0 *C.GtkCellView
+	var _arg0 *C.GtkCellView // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_view_get_fit_model(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -153,18 +153,18 @@ func (c cellView) FitModel() bool {
 // SizeOfRow sets @requisition to the size needed by @cell_view to display
 // the model row pointed to by @path.
 func (c cellView) SizeOfRow(path *TreePath) (Requisition, bool) {
-	var _arg0 *C.GtkCellView
-	var _arg1 *C.GtkTreePath
+	var _arg0 *C.GtkCellView // out
+	var _arg1 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
 
 	var _requisition Requisition
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_view_get_size_of_row(_arg0, _arg1, (*C.GtkRequisition)(unsafe.Pointer(&_requisition)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -175,8 +175,8 @@ func (c cellView) SizeOfRow(path *TreePath) (Requisition, bool) {
 
 // SetBackgroundColor sets the background color of @view.
 func (c cellView) SetBackgroundColor(color *gdk.Color) {
-	var _arg0 *C.GtkCellView
-	var _arg1 *C.GdkColor
+	var _arg0 *C.GtkCellView // out
+	var _arg1 *C.GdkColor    // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
@@ -186,8 +186,8 @@ func (c cellView) SetBackgroundColor(color *gdk.Color) {
 
 // SetBackgroundRGBA sets the background color of @cell_view.
 func (c cellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
-	var _arg0 *C.GtkCellView
-	var _arg1 *C.GdkRGBA
+	var _arg0 *C.GtkCellView // out
+	var _arg1 *C.GdkRGBA     // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
@@ -201,8 +201,8 @@ func (c cellView) SetBackgroundRGBA(rgba *gdk.RGBA) {
 // may be a needed intermediate state if say, the model for the CellView
 // becomes temporarily empty.
 func (c cellView) SetDisplayedRow(path *TreePath) {
-	var _arg0 *C.GtkCellView
-	var _arg1 *C.GtkTreePath
+	var _arg0 *C.GtkCellView // out
+	var _arg1 *C.GtkTreePath // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTreePath)(unsafe.Pointer(path.Native()))
@@ -215,8 +215,8 @@ func (c cellView) SetDisplayedRow(path *TreePath) {
 // with insensitive cells that contain children appear sensitive in the
 // parent menu item.
 func (c cellView) SetDrawSensitive(drawSensitive bool) {
-	var _arg0 *C.GtkCellView
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCellView // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	if drawSensitive {
@@ -233,8 +233,8 @@ func (c cellView) SetDrawSensitive(drawSensitive bool) {
 // combo box’s button always gets enough space and does not resize when
 // selection changes.
 func (c cellView) SetFitModel(fitModel bool) {
-	var _arg0 *C.GtkCellView
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCellView // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	if fitModel {
@@ -248,8 +248,8 @@ func (c cellView) SetFitModel(fitModel bool) {
 // set, it will remove it before setting the new model. If @model is nil,
 // then it will unset the old model.
 func (c cellView) SetModel(model TreeModel) {
-	var _arg0 *C.GtkCellView
-	var _arg1 *C.GtkTreeModel
+	var _arg0 *C.GtkCellView  // out
+	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkCellView)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))

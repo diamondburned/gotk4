@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -105,17 +105,17 @@ func marshalTLSDatabase(p uintptr) (interface{}, error) {
 // and between applications. If a certificate is modified in the database,
 // then it is not guaranteed that this handle will continue to point to it.
 func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string {
-	var _arg0 *C.GTlsDatabase
-	var _arg1 *C.GTlsCertificate
+	var _arg0 *C.GTlsDatabase    // out
+	var _arg1 *C.GTlsCertificate // out
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certificate.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_tls_database_create_certificate_handle(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -127,12 +127,12 @@ func (s tlsDatabase) CreateCertificateHandle(certificate TLSCertificate) string 
 // its handle in the database. See
 // g_tls_database_lookup_certificate_for_handle() for more information.
 func (s tlsDatabase) LookupCertificateForHandleAsync(handle string, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsDatabase
-	var _arg1 *C.gchar
-	var _arg2 *C.GTlsInteraction
-	var _arg3 C.GTlsDatabaseLookupFlags
-	var _arg4 *C.GCancellable
-	var _arg5 C.GAsyncReadyCallback
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg1 *C.gchar                  // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg4 *C.GCancellable           // out
+	var _arg5 C.GAsyncReadyCallback     // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
@@ -151,12 +151,12 @@ func (s tlsDatabase) LookupCertificateForHandleAsync(handle string, interaction 
 // @certificate in the database. See
 // g_tls_database_lookup_certificate_issuer() for more information.
 func (s tlsDatabase) LookupCertificateIssuerAsync(certificate TLSCertificate, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsDatabase
-	var _arg1 *C.GTlsCertificate
-	var _arg2 *C.GTlsInteraction
-	var _arg3 C.GTlsDatabaseLookupFlags
-	var _arg4 *C.GCancellable
-	var _arg5 C.GAsyncReadyCallback
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg1 *C.GTlsCertificate        // out
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg4 *C.GCancellable           // out
+	var _arg5 C.GAsyncReadyCallback     // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
@@ -178,12 +178,12 @@ func (s tlsDatabase) LookupCertificateIssuerAsync(certificate TLSCertificate, in
 // the duration of of this asynchronous operation. The byte array should not
 // be modified during this time.
 func (s tlsDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, interaction TLSInteraction, flags TLSDatabaseLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsDatabase
+	var _arg0 *C.GTlsDatabase // out
 	var _arg1 *C.GByteArray
-	var _arg2 *C.GTlsInteraction
-	var _arg3 C.GTlsDatabaseLookupFlags
-	var _arg4 *C.GCancellable
-	var _arg5 C.GAsyncReadyCallback
+	var _arg2 *C.GTlsInteraction        // out
+	var _arg3 C.GTlsDatabaseLookupFlags // out
+	var _arg4 *C.GCancellable           // out
+	var _arg5 C.GAsyncReadyCallback     // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))
@@ -211,14 +211,14 @@ func (s tlsDatabase) LookupCertificatesIssuedByAsync(issuerRawDn []byte, interac
 // chain after looking up and adding any missing certificates to the chain.
 // See g_tls_database_verify_chain() for more information.
 func (s tlsDatabase) VerifyChainAsync(chain TLSCertificate, purpose string, identity SocketConnectable, interaction TLSInteraction, flags TLSDatabaseVerifyFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsDatabase
-	var _arg1 *C.GTlsCertificate
-	var _arg2 *C.gchar
-	var _arg3 *C.GSocketConnectable
-	var _arg4 *C.GTlsInteraction
-	var _arg5 C.GTlsDatabaseVerifyFlags
-	var _arg6 *C.GCancellable
-	var _arg7 C.GAsyncReadyCallback
+	var _arg0 *C.GTlsDatabase           // out
+	var _arg1 *C.GTlsCertificate        // out
+	var _arg2 *C.gchar                  // out
+	var _arg3 *C.GSocketConnectable     // out
+	var _arg4 *C.GTlsInteraction        // out
+	var _arg5 C.GTlsDatabaseVerifyFlags // out
+	var _arg6 *C.GCancellable           // out
+	var _arg7 C.GAsyncReadyCallback     // out
 	var _arg8 C.gpointer
 
 	_arg0 = (*C.GTlsDatabase)(unsafe.Pointer(s.Native()))

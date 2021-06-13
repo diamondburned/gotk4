@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -137,15 +137,15 @@ func marshalNamedAction(p uintptr) (interface{}, error) {
 
 // ActionName returns the name of the action that will be activated.
 func (s namedAction) ActionName() string {
-	var _arg0 *C.GtkNamedAction
+	var _arg0 *C.GtkNamedAction // out
 
 	_arg0 = (*C.GtkNamedAction)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_named_action_get_action_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -259,21 +259,21 @@ func marshalShortcutAction(p uintptr) (interface{}, error) {
 // not supported by the @widget, if the @args don't match the action or if
 // the activation otherwise had no effect, false will be returned.
 func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args *glib.Variant) bool {
-	var _arg0 *C.GtkShortcutAction
-	var _arg1 C.GtkShortcutActionFlags
-	var _arg2 *C.GtkWidget
-	var _arg3 *C.GVariant
+	var _arg0 *C.GtkShortcutAction     // out
+	var _arg1 C.GtkShortcutActionFlags // out
+	var _arg2 *C.GtkWidget             // out
+	var _arg3 *C.GVariant              // out
 
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkShortcutActionFlags)(flags)
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = (*C.GVariant)(unsafe.Pointer(args.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_shortcut_action_activate(_arg0, _arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -289,8 +289,8 @@ func (s shortcutAction) Activate(flags ShortcutActionFlags, widget Widget, args 
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
 func (s shortcutAction) Print(string *glib.String) {
-	var _arg0 *C.GtkShortcutAction
-	var _arg1 *C.GString
+	var _arg0 *C.GtkShortcutAction // out
+	var _arg1 *C.GString           // out
 
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
@@ -303,15 +303,15 @@ func (s shortcutAction) Print(string *glib.String) {
 // This is a small wrapper around [method@Gtk.ShortcutAction.print] to help
 // when debugging.
 func (s shortcutAction) String() string {
-	var _arg0 *C.GtkShortcutAction
+	var _arg0 *C.GtkShortcutAction // out
 
 	_arg0 = (*C.GtkShortcutAction)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_shortcut_action_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -353,15 +353,15 @@ func marshalSignalAction(p uintptr) (interface{}, error) {
 
 // SignalName returns the name of the signal that will be emitted.
 func (s signalAction) SignalName() string {
-	var _arg0 *C.GtkSignalAction
+	var _arg0 *C.GtkSignalAction // out
 
 	_arg0 = (*C.GtkSignalAction)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_signal_action_get_signal_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

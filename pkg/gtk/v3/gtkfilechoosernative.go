@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -229,15 +229,15 @@ func marshalFileChooserNative(p uintptr) (interface{}, error) {
 
 // AcceptLabel retrieves the custom label text for the accept button.
 func (s fileChooserNative) AcceptLabel() string {
-	var _arg0 *C.GtkFileChooserNative
+	var _arg0 *C.GtkFileChooserNative // out
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_file_chooser_native_get_accept_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -246,15 +246,15 @@ func (s fileChooserNative) AcceptLabel() string {
 
 // CancelLabel retrieves the custom label text for the cancel button.
 func (s fileChooserNative) CancelLabel() string {
-	var _arg0 *C.GtkFileChooserNative
+	var _arg0 *C.GtkFileChooserNative // out
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_file_chooser_native_get_cancel_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -269,8 +269,8 @@ func (s fileChooserNative) CancelLabel() string {
 // keyboard accelerator called a mnemonic. Pressing Alt and that key
 // activates the button.
 func (s fileChooserNative) SetAcceptLabel(acceptLabel string) {
-	var _arg0 *C.GtkFileChooserNative
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooserNative // out
+	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(acceptLabel))
@@ -287,8 +287,8 @@ func (s fileChooserNative) SetAcceptLabel(acceptLabel string) {
 // keyboard accelerator called a mnemonic. Pressing Alt and that key
 // activates the button.
 func (s fileChooserNative) SetCancelLabel(cancelLabel string) {
-	var _arg0 *C.GtkFileChooserNative
-	var _arg1 *C.char
+	var _arg0 *C.GtkFileChooserNative // out
+	var _arg1 *C.char                 // out
 
 	_arg0 = (*C.GtkFileChooserNative)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(cancelLabel))

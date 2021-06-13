@@ -2,7 +2,7 @@
 
 package glib
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -27,15 +27,15 @@ const (
 // allocation mechanism can be changed with the
 // [`G_SLICE=always-malloc`][G_SLICE] environment variable.
 func SliceAlloc(blockSize uint) interface{} {
-	var _arg1 C.gsize
+	var _arg1 C.gsize // out
 
 	_arg1 = C.gsize(blockSize)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_slice_alloc(_arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -47,15 +47,15 @@ func SliceAlloc(blockSize uint) interface{} {
 // can be changed with the [`G_SLICE=always-malloc`][G_SLICE] environment
 // variable.
 func SliceAlloc0(blockSize uint) interface{} {
-	var _arg1 C.gsize
+	var _arg1 C.gsize // out
 
 	_arg1 = C.gsize(blockSize)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_slice_alloc0(_arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -67,17 +67,17 @@ func SliceAlloc0(blockSize uint) interface{} {
 //
 // @mem_block must be non-nil if @block_size is non-zero.
 func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
-	var _arg1 C.gsize
-	var _arg2 C.gpointer
+	var _arg1 C.gsize    // out
+	var _arg2 C.gpointer // out
 
 	_arg1 = C.gsize(blockSize)
 	_arg2 = C.gpointer(memBlock)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_slice_copy(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -94,8 +94,8 @@ func SliceCopy(blockSize uint, memBlock interface{}) interface{} {
 //
 // If @mem_block is nil, this function does nothing.
 func SliceFree1(blockSize uint, memBlock interface{}) {
-	var _arg1 C.gsize
-	var _arg2 C.gpointer
+	var _arg1 C.gsize    // out
+	var _arg2 C.gpointer // out
 
 	_arg1 = C.gsize(blockSize)
 	_arg2 = C.gpointer(memBlock)
@@ -115,9 +115,9 @@ func SliceFree1(blockSize uint, memBlock interface{}) {
 //
 // If @mem_chain is nil, this function does nothing.
 func SliceFreeChainWithOffset(blockSize uint, memChain interface{}, nextOffset uint) {
-	var _arg1 C.gsize
-	var _arg2 C.gpointer
-	var _arg3 C.gsize
+	var _arg1 C.gsize    // out
+	var _arg2 C.gpointer // out
+	var _arg3 C.gsize    // out
 
 	_arg1 = C.gsize(blockSize)
 	_arg2 = C.gpointer(memChain)
@@ -127,15 +127,15 @@ func SliceFreeChainWithOffset(blockSize uint, memChain interface{}, nextOffset u
 }
 
 func SliceGetConfig(ckey SliceConfig) int64 {
-	var _arg1 C.GSliceConfig
+	var _arg1 C.GSliceConfig // out
 
 	_arg1 = (C.GSliceConfig)(ckey)
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.g_slice_get_config(_arg1)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -143,19 +143,19 @@ func SliceGetConfig(ckey SliceConfig) int64 {
 }
 
 func SliceGetConfigState(ckey SliceConfig, address int64, nValues *uint) *int64 {
-	var _arg1 C.GSliceConfig
-	var _arg2 C.gint64
-	var _arg3 *C.guint
+	var _arg1 C.GSliceConfig // out
+	var _arg2 C.gint64       // out
+	var _arg3 *C.guint       // out
 
 	_arg1 = (C.GSliceConfig)(ckey)
 	_arg2 = C.gint64(address)
 	_arg3 = *C.guint(nValues)
 
-	var _cret *C.gint64
+	var _cret *C.gint64 // in
 
 	_cret = C.g_slice_get_config_state(_arg1, _arg2, _arg3)
 
-	var _gint64 *int64
+	var _gint64 *int64 // out
 
 	_gint64 = (*int64)(_cret)
 
@@ -163,8 +163,8 @@ func SliceGetConfigState(ckey SliceConfig, address int64, nValues *uint) *int64 
 }
 
 func SliceSetConfig(ckey SliceConfig, value int64) {
-	var _arg1 C.GSliceConfig
-	var _arg2 C.gint64
+	var _arg1 C.GSliceConfig // out
+	var _arg2 C.gint64       // out
 
 	_arg1 = (C.GSliceConfig)(ckey)
 	_arg2 = C.gint64(value)

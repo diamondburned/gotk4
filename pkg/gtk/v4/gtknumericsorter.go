@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -68,8 +68,8 @@ func marshalNumericSorter(p uintptr) (interface{}, error) {
 // The expression must have a return type that can be compared numerically,
 // such as G_TYPE_INT or G_TYPE_DOUBLE.
 func (s numericSorter) SetExpression(expression Expression) {
-	var _arg0 *C.GtkNumericSorter
-	var _arg1 *C.GtkExpression
+	var _arg0 *C.GtkNumericSorter // out
+	var _arg1 *C.GtkExpression    // out
 
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
@@ -79,8 +79,8 @@ func (s numericSorter) SetExpression(expression Expression) {
 
 // SetSortOrder sets whether to sort smaller numbers before larger ones.
 func (s numericSorter) SetSortOrder(sortOrder SortType) {
-	var _arg0 *C.GtkNumericSorter
-	var _arg1 C.GtkSortType
+	var _arg0 *C.GtkNumericSorter // out
+	var _arg1 C.GtkSortType       // out
 
 	_arg0 = (*C.GtkNumericSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkSortType)(sortOrder)

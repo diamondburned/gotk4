@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -62,15 +62,15 @@ func marshalEventControllerFocus(p uintptr) (interface{}, error) {
 // ContainsFocus returns true if focus is within @self or one of its
 // children.
 func (s eventControllerFocus) ContainsFocus() bool {
-	var _arg0 *C.GtkEventControllerFocus
+	var _arg0 *C.GtkEventControllerFocus // out
 
 	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_controller_focus_contains_focus(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -82,15 +82,15 @@ func (s eventControllerFocus) ContainsFocus() bool {
 // IsFocus returns true if focus is within @self, but not one of its
 // children.
 func (s eventControllerFocus) IsFocus() bool {
-	var _arg0 *C.GtkEventControllerFocus
+	var _arg0 *C.GtkEventControllerFocus // out
 
 	_arg0 = (*C.GtkEventControllerFocus)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_controller_focus_is_focus(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

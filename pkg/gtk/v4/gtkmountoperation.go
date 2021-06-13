@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -71,15 +71,15 @@ func marshalMountOperation(p uintptr) (interface{}, error) {
 // IsShowing returns whether the `GtkMountOperation` is currently displaying
 // a window.
 func (o mountOperation) IsShowing() bool {
-	var _arg0 *C.GtkMountOperation
+	var _arg0 *C.GtkMountOperation // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_mount_operation_is_showing(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -91,8 +91,8 @@ func (o mountOperation) IsShowing() bool {
 // SetDisplay sets the display to show windows of the `GtkMountOperation`
 // on.
 func (o mountOperation) SetDisplay(display gdk.Display) {
-	var _arg0 *C.GtkMountOperation
-	var _arg1 *C.GdkDisplay
+	var _arg0 *C.GtkMountOperation // out
+	var _arg1 *C.GdkDisplay        // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
@@ -103,8 +103,8 @@ func (o mountOperation) SetDisplay(display gdk.Display) {
 // SetParent sets the transient parent for windows shown by the
 // `GtkMountOperation`.
 func (o mountOperation) SetParent(parent Window) {
-	var _arg0 *C.GtkMountOperation
-	var _arg1 *C.GtkWindow
+	var _arg0 *C.GtkMountOperation // out
+	var _arg1 *C.GtkWindow         // out
 
 	_arg0 = (*C.GtkMountOperation)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))

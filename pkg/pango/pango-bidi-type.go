@@ -2,7 +2,7 @@
 
 package pango
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango.h>
 import "C"
@@ -14,17 +14,17 @@ import "C"
 // Use g_unichar_get_mirror_char() instead; the docs for that function provide
 // full details.
 func GetMirrorChar(ch uint32, mirroredCh *uint32) bool {
-	var _arg1 C.gunichar
-	var _arg2 *C.gunichar
+	var _arg1 C.gunichar  // out
+	var _arg2 *C.gunichar // out
 
 	_arg1 = C.gunichar(ch)
 	_arg2 = *C.gunichar(mirroredCh)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_get_mirror_char(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

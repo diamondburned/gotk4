@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -116,8 +116,8 @@ func marshalStringList(p uintptr) (interface{}, error) {
 // The @string will be copied. See [method@Gtk.StringList.take] for a way to
 // avoid that.
 func (s stringList) Append(string string) {
-	var _arg0 *C.GtkStringList
-	var _arg1 *C.char
+	var _arg0 *C.GtkStringList // out
+	var _arg1 *C.char          // out
 
 	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(string))
@@ -133,17 +133,17 @@ func (s stringList) Append(string string) {
 // This function returns the const char *. To get the object wrapping it,
 // use g_list_model_get_item().
 func (s stringList) String(position uint) string {
-	var _arg0 *C.GtkStringList
-	var _arg1 C.guint
+	var _arg0 *C.GtkStringList // out
+	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_string_list_get_string(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -154,8 +154,8 @@ func (s stringList) String(position uint) string {
 //
 // @position must be smaller than the current length of the list.
 func (s stringList) Remove(position uint) {
-	var _arg0 *C.GtkStringList
-	var _arg1 C.guint
+	var _arg0 *C.GtkStringList // out
+	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)
@@ -176,9 +176,9 @@ func (s stringList) Remove(position uint) {
 // @n_removals must be less than or equal to the length of the list at the
 // time this function is called).
 func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
-	var _arg0 *C.GtkStringList
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkStringList // out
+	var _arg1 C.guint          // out
+	var _arg2 C.guint          // out
 	var _arg3 **C.char
 
 	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
@@ -207,8 +207,8 @@ func (s stringList) Splice(position uint, nRemovals uint, additions []string) {
 //
 // “`c gtk_string_list_take (self, g_strdup_print ("d dollars", lots)); “`
 func (s stringList) Take(string string) {
-	var _arg0 *C.GtkStringList
-	var _arg1 *C.char
+	var _arg0 *C.GtkStringList // out
+	var _arg1 *C.char          // out
 
 	_arg0 = (*C.GtkStringList)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(string))
@@ -250,15 +250,15 @@ func marshalStringObject(p uintptr) (interface{}, error) {
 
 // String returns the string contained in a `GtkStringObject`.
 func (s stringObject) String() string {
-	var _arg0 *C.GtkStringObject
+	var _arg0 *C.GtkStringObject // out
 
 	_arg0 = (*C.GtkStringObject)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_string_object_get_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

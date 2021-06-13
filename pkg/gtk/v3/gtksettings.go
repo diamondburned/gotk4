@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -98,8 +98,8 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // application-specific value for a setting. After this call, the setting
 // will again follow the session-wide value for this setting.
 func (s settings) ResetProperty(name string) {
-	var _arg0 *C.GtkSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkSettings // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -109,10 +109,10 @@ func (s settings) ResetProperty(name string) {
 }
 
 func (s settings) SetDoubleProperty(name string, vDouble float64, origin string) {
-	var _arg0 *C.GtkSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gdouble
-	var _arg3 *C.gchar
+	var _arg0 *C.GtkSettings // out
+	var _arg1 *C.gchar       // out
+	var _arg2 C.gdouble      // out
+	var _arg3 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -125,10 +125,10 @@ func (s settings) SetDoubleProperty(name string, vDouble float64, origin string)
 }
 
 func (s settings) SetLongProperty(name string, vLong int32, origin string) {
-	var _arg0 *C.GtkSettings
-	var _arg1 *C.gchar
-	var _arg2 C.glong
-	var _arg3 *C.gchar
+	var _arg0 *C.GtkSettings // out
+	var _arg1 *C.gchar       // out
+	var _arg2 C.glong        // out
+	var _arg3 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -141,9 +141,9 @@ func (s settings) SetLongProperty(name string, vLong int32, origin string) {
 }
 
 func (s settings) SetPropertyValue(name string, svalue *SettingsValue) {
-	var _arg0 *C.GtkSettings
-	var _arg1 *C.gchar
-	var _arg2 *C.GtkSettingsValue
+	var _arg0 *C.GtkSettings      // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GtkSettingsValue // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -154,10 +154,10 @@ func (s settings) SetPropertyValue(name string, svalue *SettingsValue) {
 }
 
 func (s settings) SetStringProperty(name string, vString string, origin string) {
-	var _arg0 *C.GtkSettings
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
+	var _arg0 *C.GtkSettings // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.gchar       // out
+	var _arg3 *C.gchar       // out
 
 	_arg0 = (*C.GtkSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -196,14 +196,14 @@ func (s *SettingsValue) Native() unsafe.Pointer {
 
 // Origin gets the field inside the struct.
 func (s *SettingsValue) Origin() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.origin)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (s *SettingsValue) Value() **externglib.Value {
-	var v **externglib.Value
+	var v **externglib.Value // out
 	v = externglib.ValueFromNative(unsafe.Pointer(s.native.value))
 	return v
 }

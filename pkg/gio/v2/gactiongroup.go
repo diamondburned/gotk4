@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -210,8 +210,8 @@ func marshalActionGroup(p uintptr) (interface{}, error) {
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionAdded(actionName string) {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -225,9 +225,9 @@ func (a actionGroup) ActionAdded(actionName string) {
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionEnabledChanged(actionName string, enabled bool) {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-	var _arg2 C.gboolean
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gboolean      // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -243,8 +243,8 @@ func (a actionGroup) ActionEnabledChanged(actionName string, enabled bool) {
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionRemoved(actionName string) {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -258,9 +258,9 @@ func (a actionGroup) ActionRemoved(actionName string) {
 //
 // This function should only be called by Group implementations.
 func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-	var _arg2 *C.GVariant
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariant     // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -301,9 +301,9 @@ func (a actionGroup) ActionStateChanged(actionName string, state *glib.Variant) 
 //
 //    exit (0);
 func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-	var _arg2 *C.GVariant
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariant     // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -325,9 +325,9 @@ func (a actionGroup) ActivateAction(actionName string, parameter *glib.Variant) 
 //
 // If the @value GVariant is floating, it is consumed.
 func (a actionGroup) ChangeActionState(actionName string, value *glib.Variant) {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
-	var _arg2 *C.GVariant
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
+	var _arg2 *C.GVariant     // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -343,18 +343,18 @@ func (a actionGroup) ChangeActionState(actionName string, value *glib.Variant) {
 // An action must be enabled in order to be activated or in order to have
 // its state changed from outside callers.
 func (a actionGroup) ActionEnabled(actionName string) bool {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_action_group_get_action_enabled(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -365,18 +365,18 @@ func (a actionGroup) ActionEnabled(actionName string) bool {
 
 // HasAction checks if the named action exists within @action_group.
 func (a actionGroup) HasAction(actionName string) bool {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_action_group_has_action(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -390,7 +390,7 @@ func (a actionGroup) HasAction(actionName string) bool {
 // The caller is responsible for freeing the list with g_strfreev() when it
 // is no longer required.
 func (a actionGroup) ListActions() []string {
-	var _arg0 *C.GActionGroup
+	var _arg0 *C.GActionGroup // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 
@@ -450,25 +450,25 @@ func (a actionGroup) ListActions() []string {
 // action doesn't exist, false is returned and the fields may or may not
 // have been modified.
 func (a actionGroup) QueryAction(actionName string) (enabled bool, parameterType *glib.VariantType, stateType *glib.VariantType, stateHint *glib.Variant, state *glib.Variant, ok bool) {
-	var _arg0 *C.GActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GActionGroup // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GActionGroup)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _arg2 C.gboolean
+	var _arg2 C.gboolean // in
 	var _parameterType *glib.VariantType
 	var _stateType *glib.VariantType
 	var _stateHint *glib.Variant
 	var _state *glib.Variant
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_action_group_query_action(_arg0, _arg1, &_arg2, (**C.GVariantType)(unsafe.Pointer(&_parameterType)), (**C.GVariantType)(unsafe.Pointer(&_stateType)), (**C.GVariant)(unsafe.Pointer(&_stateHint)), (**C.GVariant)(unsafe.Pointer(&_state)))
 
-	var _enabled bool
+	var _enabled bool // out
 
-	var _ok bool
+	var _ok bool // out
 
 	if _arg2 {
 		_enabled = true

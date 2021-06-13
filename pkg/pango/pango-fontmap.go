@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -76,7 +76,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // something applications won't do. Backends should call this function if
 // they have attached extra data to the context and such data is changed.
 func (f fontMap) Changed() {
-	var _arg0 *C.PangoFontMap
+	var _arg0 *C.PangoFontMap // out
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
@@ -96,15 +96,15 @@ func (f fontMap) Changed() {
 // This can be used to automatically detect changes to a `PangoFontMap`,
 // like in `PangoContext`.
 func (f fontMap) Serial() uint {
-	var _arg0 *C.PangoFontMap
+	var _arg0 *C.PangoFontMap // out
 
 	_arg0 = (*C.PangoFontMap)(unsafe.Pointer(f.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.pango_font_map_get_serial(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 

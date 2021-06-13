@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -228,15 +228,15 @@ func marshalComboBox(p uintptr) (interface{}, error) {
 // `gtk_tree_path_get_indices (path)[0]`, where `path` is the TreePath of
 // the active item.
 func (c comboBox) Active() int {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_combo_box_get_active(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -255,15 +255,15 @@ func (c comboBox) Active() int {
 // If the ComboBox:id-column property of @combo_box is not set, or if no row
 // is active, or if the active row has a nil ID value, then nil is returned.
 func (c comboBox) ActiveID() string {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_combo_box_get_active_id(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -273,16 +273,16 @@ func (c comboBox) ActiveID() string {
 // ActiveIter sets @iter to point to the currently active item, if any item
 // is active. Otherwise, @iter is left unchanged.
 func (c comboBox) ActiveIter() (TreeIter, bool) {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
 	var _iter TreeIter
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_get_active_iter(_arg0, (*C.GtkTreeIter)(unsafe.Pointer(&_iter)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -293,15 +293,15 @@ func (c comboBox) ActiveIter() (TreeIter, bool) {
 
 // AddTearoffs gets the current value of the :add-tearoffs property.
 func (c comboBox) AddTearoffs() bool {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_get_add_tearoffs(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -313,15 +313,15 @@ func (c comboBox) AddTearoffs() bool {
 // ColumnSpanColumn returns the column with column span information for
 // @combo_box.
 func (c comboBox) ColumnSpanColumn() int {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_combo_box_get_column_span_column(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -331,15 +331,15 @@ func (c comboBox) ColumnSpanColumn() int {
 // EntryTextColumn returns the column which @combo_box is using to get the
 // strings from to display in the internal entry.
 func (c comboBox) EntryTextColumn() int {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_combo_box_get_entry_text_column(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -349,15 +349,15 @@ func (c comboBox) EntryTextColumn() int {
 // FocusOnClick returns whether the combo box grabs focus when it is clicked
 // with the mouse. See gtk_combo_box_set_focus_on_click().
 func (c comboBox) FocusOnClick() bool {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_get_focus_on_click(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -368,15 +368,15 @@ func (c comboBox) FocusOnClick() bool {
 
 // HasEntry returns whether the combo box has an entry.
 func (c comboBox) HasEntry() bool {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_get_has_entry(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -388,15 +388,15 @@ func (c comboBox) HasEntry() bool {
 // IDColumn returns the column which @combo_box is using to get string IDs
 // for values from.
 func (c comboBox) IDColumn() int {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_combo_box_get_id_column(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -406,15 +406,15 @@ func (c comboBox) IDColumn() int {
 // PopupFixedWidth gets whether the popup uses a fixed width matching the
 // allocated width of the combo box.
 func (c comboBox) PopupFixedWidth() bool {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_get_popup_fixed_width(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -426,15 +426,15 @@ func (c comboBox) PopupFixedWidth() bool {
 // RowSpanColumn returns the column with row span information for
 // @combo_box.
 func (c comboBox) RowSpanColumn() int {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_combo_box_get_row_span_column(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -444,15 +444,15 @@ func (c comboBox) RowSpanColumn() int {
 // Title gets the current title of the menu in tearoff mode. See
 // gtk_combo_box_set_add_tearoffs().
 func (c comboBox) Title() string {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_combo_box_get_title(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -463,15 +463,15 @@ func (c comboBox) Title() string {
 // columns for the popup menu. If the wrap width is larger than 1, the combo
 // box is in table mode.
 func (c comboBox) WrapWidth() int {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_combo_box_get_wrap_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -483,7 +483,7 @@ func (c comboBox) WrapWidth() int {
 // This function is mostly intended for use by accessibility technologies;
 // applications should have little use for it.
 func (c comboBox) Popdown() {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
@@ -497,7 +497,7 @@ func (c comboBox) Popdown() {
 //
 // Before calling this, @combo_box must be mapped, or nothing will happen.
 func (c comboBox) Popup() {
-	var _arg0 *C.GtkComboBox
+	var _arg0 *C.GtkComboBox // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 
@@ -508,8 +508,8 @@ func (c comboBox) Popup() {
 // window will be grabbed so only @device and its associated
 // pointer/keyboard are the only Devices able to send events to it.
 func (c comboBox) PopupForDevice(device gdk.Device) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 *C.GdkDevice
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 *C.GdkDevice   // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -519,8 +519,8 @@ func (c comboBox) PopupForDevice(device gdk.Device) {
 
 // SetActive sets the active item of @combo_box to be the item at @index.
 func (c comboBox) SetActive(index_ int) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gint
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(index_)
@@ -535,18 +535,18 @@ func (c comboBox) SetActive(index_ int) {
 // If the ComboBox:id-column property of @combo_box is unset or if no row
 // has the given ID then the function does nothing and returns false.
 func (c comboBox) SetActiveID(activeId string) bool {
-	var _arg0 *C.GtkComboBox
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(activeId))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_combo_box_set_active_id(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -558,8 +558,8 @@ func (c comboBox) SetActiveID(activeId string) bool {
 // SetActiveIter sets the current active item to be the one referenced by
 // @iter, or unsets the active item if @iter is nil.
 func (c comboBox) SetActiveIter(iter *TreeIter) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 *C.GtkTreeIter
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 *C.GtkTreeIter // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTreeIter)(unsafe.Pointer(iter.Native()))
@@ -570,8 +570,8 @@ func (c comboBox) SetActiveIter(iter *TreeIter) {
 // SetAddTearoffs sets whether the popup menu should have a tearoff menu
 // item.
 func (c comboBox) SetAddTearoffs(addTearoffs bool) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	if addTearoffs {
@@ -586,8 +586,8 @@ func (c comboBox) SetAddTearoffs(addTearoffs bool) {
 // (GTK_SENSITIVITY_OFF) or only if there is at least one item to display
 // (GTK_SENSITIVITY_AUTO).
 func (c comboBox) SetButtonSensitivity(sensitivity SensitivityType) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.GtkSensitivityType
+	var _arg0 *C.GtkComboBox       // out
+	var _arg1 C.GtkSensitivityType // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkSensitivityType)(sensitivity)
@@ -599,8 +599,8 @@ func (c comboBox) SetButtonSensitivity(sensitivity SensitivityType) {
 // @combo_box to be @column_span. The column span column contains integers
 // which indicate how many columns an item should span.
 func (c comboBox) SetColumnSpanColumn(columnSpan int) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gint
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(columnSpan)
@@ -615,8 +615,8 @@ func (c comboBox) SetColumnSpanColumn(columnSpan int) {
 // This is only relevant if @combo_box has been created with
 // ComboBox:has-entry as true.
 func (c comboBox) SetEntryTextColumn(textColumn int) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gint
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(textColumn)
@@ -629,8 +629,8 @@ func (c comboBox) SetEntryTextColumn(textColumn int) {
 // places like toolbars where you don’t want the keyboard focus removed from
 // the main area of the application.
 func (c comboBox) SetFocusOnClick(focusOnClick bool) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	if focusOnClick {
@@ -644,8 +644,8 @@ func (c comboBox) SetFocusOnClick(focusOnClick bool) {
 // string IDs for values from. The column @id_column in the model of
 // @combo_box must be of type G_TYPE_STRING.
 func (c comboBox) SetIDColumn(idColumn int) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gint
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(idColumn)
@@ -661,8 +661,8 @@ func (c comboBox) SetIDColumn(idColumn int) {
 // call gtk_cell_layout_clear() yourself if you need to set up different
 // cell renderers for the new model.
 func (c comboBox) SetModel(model TreeModel) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 *C.GtkTreeModel
+	var _arg0 *C.GtkComboBox  // out
+	var _arg1 *C.GtkTreeModel // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(model.Native()))
@@ -673,8 +673,8 @@ func (c comboBox) SetModel(model TreeModel) {
 // SetPopupFixedWidth specifies whether the popup’s width should be a fixed
 // width matching the allocated width of the combo box.
 func (c comboBox) SetPopupFixedWidth(fixed bool) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	if fixed {
@@ -688,8 +688,8 @@ func (c comboBox) SetPopupFixedWidth(fixed bool) {
 // to be @row_span. The row span column contains integers which indicate how
 // many rows an item should span.
 func (c comboBox) SetRowSpanColumn(rowSpan int) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gint
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(rowSpan)
@@ -699,8 +699,8 @@ func (c comboBox) SetRowSpanColumn(rowSpan int) {
 
 // SetTitle sets the menu’s title in tearoff mode.
 func (c comboBox) SetTitle(title string) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))
@@ -713,8 +713,8 @@ func (c comboBox) SetTitle(title string) {
 // width is basically the preferred number of columns when you want the
 // popup to be layed out in a table.
 func (c comboBox) SetWrapWidth(width int) {
-	var _arg0 *C.GtkComboBox
-	var _arg1 C.gint
+	var _arg0 *C.GtkComboBox // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkComboBox)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(width)

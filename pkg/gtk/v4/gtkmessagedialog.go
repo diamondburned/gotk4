@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -107,8 +107,8 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 
 // SetMarkup sets the text of the message dialog.
 func (m messageDialog) SetMarkup(str string) {
-	var _arg0 *C.GtkMessageDialog
-	var _arg1 *C.char
+	var _arg0 *C.GtkMessageDialog // out
+	var _arg1 *C.char             // out
 
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.char)(C.CString(str))

@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -30,7 +30,7 @@ func gotk4_TranslateFunc(arg0 *C.gchar, arg1 C.gpointer) *C.gchar {
 		panic(`callback not found`)
 	}
 
-	var path string
+	var path string // out
 
 	path = C.GoString(arg0)
 
@@ -72,17 +72,17 @@ func StockAddStatic(items []StockItem) {
 // StockLookup fills @item with the registered values for @stock_id, returning
 // true if @stock_id was known.
 func StockLookup(stockId string) (StockItem, bool) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(stockId))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _item StockItem
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_stock_lookup(_arg1, (*C.GtkStockItem)(unsafe.Pointer(&_item)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -117,28 +117,28 @@ func (s *StockItem) Native() unsafe.Pointer {
 
 // StockID gets the field inside the struct.
 func (s *StockItem) StockID() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.stock_id)
 	return v
 }
 
 // Label gets the field inside the struct.
 func (s *StockItem) Label() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.label)
 	return v
 }
 
 // Keyval gets the field inside the struct.
 func (s *StockItem) Keyval() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(s.native.keyval)
 	return v
 }
 
 // TranslationDomain gets the field inside the struct.
 func (s *StockItem) TranslationDomain() string {
-	var v string
+	var v string // out
 	v = C.GoString(s.native.translation_domain)
 	return v
 }
@@ -147,7 +147,7 @@ func (s *StockItem) TranslationDomain() string {
 // gtk_stock_item_copy(). Also frees the fields inside the stock item, if they
 // are not nil.
 func (i *StockItem) Free() {
-	var _arg0 *C.GtkStockItem
+	var _arg0 *C.GtkStockItem // out
 
 	_arg0 = (*C.GtkStockItem)(unsafe.Pointer(i.Native()))
 

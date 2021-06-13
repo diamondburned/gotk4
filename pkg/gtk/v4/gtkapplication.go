@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -244,8 +244,8 @@ func marshalApplication(p uintptr) (interface{}, error) {
 //
 // GTK will keep the `application` running as long as it has any windows.
 func (a application) AddWindow(window Window) {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.GtkWindow
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
@@ -256,8 +256,8 @@ func (a application) AddWindow(window Window) {
 // AccelsForAction gets the accelerators that are currently associated with
 // the given action.
 func (a application) AccelsForAction(detailedActionName string) []string {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.char
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(detailedActionName))
@@ -309,8 +309,8 @@ func (a application) AccelsForAction(detailedActionName string) []string {
 //
 // If you are unsure, check it with [func@Gtk.accelerator_parse] first.
 func (a application) ActionsForAccel(accel string) []string {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.char
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.char)(C.CString(accel))
@@ -368,10 +368,10 @@ func (a application) ActionsForAccel(accel string) []string {
 // If `window` is given, the session manager may point the user to this
 // window to find out more about why the action is inhibited.
 func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reason string) uint {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.GtkWindow
-	var _arg2 C.GtkApplicationInhibitFlags
-	var _arg3 *C.char
+	var _arg0 *C.GtkApplication            // out
+	var _arg1 *C.GtkWindow                 // out
+	var _arg2 C.GtkApplicationInhibitFlags // out
+	var _arg3 *C.char                      // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
@@ -379,11 +379,11 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 	_arg3 = (*C.char)(C.CString(reason))
 	defer C.free(unsafe.Pointer(_arg3))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_application_inhibit(_arg0, _arg1, _arg2, _arg3)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -395,7 +395,7 @@ func (a application) Inhibit(window Window, flags ApplicationInhibitFlags, reaso
 //
 // See [method@Gtk.Application.set_accels_for_action].
 func (a application) ListActionDescriptions() []string {
-	var _arg0 *C.GtkApplication
+	var _arg0 *C.GtkApplication // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 
@@ -436,8 +436,8 @@ func (a application) ListActionDescriptions() []string {
 // The application may stop running as a result of a call to this function,
 // if `window` was the last window of the `application`.
 func (a application) RemoveWindow(window Window) {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.GtkWindow
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
@@ -457,8 +457,8 @@ func (a application) RemoveWindow(window Window) {
 // For the `detailed_action_name`, see `g_action_parse_detailed_name()` and
 // `g_action_print_detailed_name()`.
 func (a application) SetAccelsForAction(detailedActionName string, accels []string) {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.char
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.char           // out
 	var _arg2 **C.char
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
@@ -499,8 +499,8 @@ func (a application) SetAccelsForAction(detailedActionName string, accels []stri
 // Use the base `GActionMap` interface to add actions, to respond to the
 // user selecting these menu items.
 func (a application) SetMenubar(menubar gio.MenuModel) {
-	var _arg0 *C.GtkApplication
-	var _arg1 *C.GMenuModel
+	var _arg0 *C.GtkApplication // out
+	var _arg1 *C.GMenuModel     // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menubar.Native()))
@@ -514,8 +514,8 @@ func (a application) SetMenubar(menubar gio.MenuModel) {
 //
 // Inhibitors are also cleared when the application exits.
 func (a application) Uninhibit(cookie uint) {
-	var _arg0 *C.GtkApplication
-	var _arg1 C.guint
+	var _arg0 *C.GtkApplication // out
+	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkApplication)(unsafe.Pointer(a.Native()))
 	_arg1 = C.guint(cookie)

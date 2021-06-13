@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -57,7 +57,7 @@ func (f *FileAttributeInfo) Native() unsafe.Pointer {
 
 // Name gets the field inside the struct.
 func (f *FileAttributeInfo) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(f.native.name)
 	return v
 }
@@ -90,7 +90,7 @@ func (f *FileAttributeInfoList) Native() unsafe.Pointer {
 
 // NInfos gets the field inside the struct.
 func (f *FileAttributeInfoList) NInfos() int {
-	var v int
+	var v int // out
 	v = (int)(f.native.n_infos)
 	return v
 }
@@ -98,10 +98,10 @@ func (f *FileAttributeInfoList) NInfos() int {
 // Add adds a new attribute with @name to the @list, setting its @type and
 // @flags.
 func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags FileAttributeInfoFlags) {
-	var _arg0 *C.GFileAttributeInfoList
-	var _arg1 *C.char
-	var _arg2 C.GFileAttributeType
-	var _arg3 C.GFileAttributeInfoFlags
+	var _arg0 *C.GFileAttributeInfoList // out
+	var _arg1 *C.char                   // out
+	var _arg2 C.GFileAttributeType      // out
+	var _arg3 C.GFileAttributeInfoFlags // out
 
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(name))
@@ -115,7 +115,7 @@ func (l *FileAttributeInfoList) Add(name string, typ FileAttributeType, flags Fi
 // Unref removes a reference from the given @list. If the reference count falls
 // to zero, the @list is deleted.
 func (l *FileAttributeInfoList) Unref() {
-	var _arg0 *C.GFileAttributeInfoList
+	var _arg0 *C.GFileAttributeInfoList // out
 
 	_arg0 = (*C.GFileAttributeInfoList)(unsafe.Pointer(l.Native()))
 

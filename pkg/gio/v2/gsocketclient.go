@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -218,8 +218,8 @@ func marshalSocketClient(p uintptr) (interface{}, error) {
 // will be skipped. This is required to let the application do the proxy
 // specific handshake.
 func (c socketClient) AddApplicationProXY(protocol string) {
-	var _arg0 *C.GSocketClient
-	var _arg1 *C.gchar
+	var _arg0 *C.GSocketClient // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(protocol))
@@ -242,10 +242,10 @@ func (c socketClient) AddApplicationProXY(protocol string) {
 // When the operation is finished @callback will be called. You can then
 // call g_socket_client_connect_finish() to get the result of the operation.
 func (c socketClient) ConnectAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient
-	var _arg1 *C.GSocketConnectable
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GSocketClient      // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
@@ -264,11 +264,11 @@ func (c socketClient) ConnectAsync(connectable SocketConnectable, cancellable Ca
 // call g_socket_client_connect_to_host_finish() to get the result of the
 // operation.
 func (c socketClient) ConnectToHostAsync(hostAndPort string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient
-	var _arg1 *C.gchar
-	var _arg2 C.guint16
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GSocketClient      // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
@@ -285,11 +285,11 @@ func (c socketClient) ConnectToHostAsync(hostAndPort string, defaultPort uint16,
 // ConnectToServiceAsync: this is the asynchronous version of
 // g_socket_client_connect_to_service().
 func (c socketClient) ConnectToServiceAsync(domain string, service string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GSocketClient      // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
@@ -311,11 +311,11 @@ func (c socketClient) ConnectToServiceAsync(domain string, service string, cance
 // call g_socket_client_connect_to_uri_finish() to get the result of the
 // operation.
 func (c socketClient) ConnectToURIAsync(uri string, defaultPort uint16, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketClient
-	var _arg1 *C.gchar
-	var _arg2 C.guint16
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GSocketClient      // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.guint16             // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
@@ -332,15 +332,15 @@ func (c socketClient) ConnectToURIAsync(uri string, defaultPort uint16, cancella
 // EnableProXY gets the proxy enable state; see
 // g_socket_client_set_enable_proxy()
 func (c socketClient) EnableProXY() bool {
-	var _arg0 *C.GSocketClient
+	var _arg0 *C.GSocketClient // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_socket_client_get_enable_proxy(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -353,15 +353,15 @@ func (c socketClient) EnableProXY() bool {
 //
 // See g_socket_client_set_timeout() for details.
 func (c socketClient) Timeout() uint {
-	var _arg0 *C.GSocketClient
+	var _arg0 *C.GSocketClient // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_socket_client_get_timeout(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -371,15 +371,15 @@ func (c socketClient) Timeout() uint {
 // TLS gets whether @client creates TLS connections. See
 // g_socket_client_set_tls() for details.
 func (c socketClient) TLS() bool {
-	var _arg0 *C.GSocketClient
+	var _arg0 *C.GSocketClient // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_socket_client_get_tls(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -395,8 +395,8 @@ func (c socketClient) TLS() bool {
 //
 // See also g_socket_client_set_proxy_resolver().
 func (c socketClient) SetEnableProXY(enable bool) {
-	var _arg0 *C.GSocketClient
-	var _arg1 C.gboolean
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	if enable {
@@ -414,8 +414,8 @@ func (c socketClient) SetEnableProXY(enable bool) {
 // connection to be an ipv4 socket, even though the address might be an ipv6
 // mapped to ipv4 address.
 func (c socketClient) SetFamily(family SocketFamily) {
-	var _arg0 *C.GSocketClient
-	var _arg1 C.GSocketFamily
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.GSocketFamily  // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GSocketFamily)(family)
@@ -430,8 +430,8 @@ func (c socketClient) SetFamily(family SocketFamily) {
 // This is useful if you want to ensure that the local side of the
 // connection is on a specific port, or on a specific interface.
 func (c socketClient) SetLocalAddress(address SocketAddress) {
-	var _arg0 *C.GSocketClient
-	var _arg1 *C.GSocketAddress
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 *C.GSocketAddress // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GSocketAddress)(unsafe.Pointer(address.Native()))
@@ -445,8 +445,8 @@ func (c socketClient) SetLocalAddress(address SocketAddress) {
 // If @protocol is G_SOCKET_PROTOCOL_DEFAULT that means to use the default
 // protocol for the socket family and type.
 func (c socketClient) SetProtocol(protocol SocketProtocol) {
-	var _arg0 *C.GSocketClient
-	var _arg1 C.GSocketProtocol
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 C.GSocketProtocol // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GSocketProtocol)(protocol)
@@ -462,8 +462,8 @@ func (c socketClient) SetProtocol(protocol SocketProtocol) {
 // the setting of Client:enable-proxy, which is not changed by this function
 // (but which is true by default)
 func (c socketClient) SetProXYResolver(proxyResolver ProXYResolver) {
-	var _arg0 *C.GSocketClient
-	var _arg1 *C.GProxyResolver
+	var _arg0 *C.GSocketClient  // out
+	var _arg1 *C.GProxyResolver // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GProxyResolver)(unsafe.Pointer(proxyResolver.Native()))
@@ -477,8 +477,8 @@ func (c socketClient) SetProXYResolver(proxyResolver ProXYResolver) {
 // It doesn't make sense to specify a type of G_SOCKET_TYPE_DATAGRAM, as
 // GSocketClient is used for connection oriented services.
 func (c socketClient) SetSocketType(typ SocketType) {
-	var _arg0 *C.GSocketClient
-	var _arg1 C.GSocketType
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.GSocketType    // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GSocketType)(typ)
@@ -493,8 +493,8 @@ func (c socketClient) SetSocketType(typ SocketType) {
 // setting this may cause calls to g_socket_client_connect(), etc, to fail
 // with G_IO_ERROR_TIMED_OUT.
 func (c socketClient) SetTimeout(timeout uint) {
-	var _arg0 *C.GSocketClient
-	var _arg1 C.guint
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.guint          // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = C.guint(timeout)
@@ -519,8 +519,8 @@ func (c socketClient) SetTimeout(timeout uint) {
 // G_SOCKET_CLIENT_TLS_HANDSHAKING, which will give you a chance to see the
 // ClientConnection before the handshake starts.
 func (c socketClient) SetTLS(tls bool) {
-	var _arg0 *C.GSocketClient
-	var _arg1 C.gboolean
+	var _arg0 *C.GSocketClient // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	if tls {
@@ -534,8 +534,8 @@ func (c socketClient) SetTLS(tls bool) {
 // TLS connections via @client. The default value is
 // G_TLS_CERTIFICATE_VALIDATE_ALL.
 func (c socketClient) SetTLSValidationFlags(flags TLSCertificateFlags) {
-	var _arg0 *C.GSocketClient
-	var _arg1 C.GTlsCertificateFlags
+	var _arg0 *C.GSocketClient       // out
+	var _arg1 C.GTlsCertificateFlags // out
 
 	_arg0 = (*C.GSocketClient)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GTlsCertificateFlags)(flags)

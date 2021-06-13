@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -113,19 +113,19 @@ func marshalFixed(p uintptr) (interface{}, error) {
 //
 // See also: [method@Gtk.Fixed.get_child_transform].
 func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _arg2 C.double
-	var _arg3 C.double
+	var _arg2 C.double // in
+	var _arg3 C.double // in
 
 	C.gtk_fixed_get_child_position(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _x float64
-	var _y float64
+	var _x float64 // out
+	var _y float64 // out
 
 	_x = (float64)(_arg2)
 	_y = (float64)(_arg3)
@@ -136,10 +136,10 @@ func (f fixed) ChildPosition(widget Widget) (x float64, y float64) {
 // Move sets a translation transformation to the given @x and @y coordinates
 // to the child @widget of the `GtkFixed`.
 func (f fixed) Move(widget Widget, x float64, y float64) {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
-	var _arg2 C.double
-	var _arg3 C.double
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.double     // out
+	var _arg3 C.double     // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -151,10 +151,10 @@ func (f fixed) Move(widget Widget, x float64, y float64) {
 
 // Put adds a widget to a `GtkFixed` at the given position.
 func (f fixed) Put(widget Widget, x float64, y float64) {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
-	var _arg2 C.double
-	var _arg3 C.double
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.double     // out
+	var _arg3 C.double     // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -166,8 +166,8 @@ func (f fixed) Put(widget Widget, x float64, y float64) {
 
 // Remove removes a child from @fixed.
 func (f fixed) Remove(widget Widget) {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkFixed  // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -181,9 +181,9 @@ func (f fixed) Remove(widget Widget) {
 // [class@Gtk.FixedLayoutChild] instance associated to @widget and calls
 // [method@Gtk.FixedLayoutChild.set_transform].
 func (f fixed) SetChildTransform(widget Widget, transform *gsk.Transform) {
-	var _arg0 *C.GtkFixed
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.GskTransform
+	var _arg0 *C.GtkFixed     // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.GskTransform // out
 
 	_arg0 = (*C.GtkFixed)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))

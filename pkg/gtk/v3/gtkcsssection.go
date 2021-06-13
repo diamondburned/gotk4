@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -57,15 +57,15 @@ func (c *CSSSection) Native() unsafe.Pointer {
 // identical to the start position and line for sections which failed to parse
 // anything successfully.
 func (s *CSSSection) EndLine() uint {
-	var _arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_css_section_get_end_line(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -79,15 +79,15 @@ func (s *CSSSection) EndLine() uint {
 // position and line may be identical to the start position and line for
 // sections which failed to parse anything successfully.
 func (s *CSSSection) EndPosition() uint {
-	var _arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_css_section_get_end_position(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -97,15 +97,15 @@ func (s *CSSSection) EndPosition() uint {
 // StartLine returns the line in the CSS document where this section starts. The
 // line number is 0-indexed, so the first line of the document will return 0.
 func (s *CSSSection) StartLine() uint {
-	var _arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_css_section_get_start_line(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -115,15 +115,15 @@ func (s *CSSSection) StartLine() uint {
 // StartPosition returns the offset in bytes from the start of the current line
 // returned via gtk_css_section_get_start_line().
 func (s *CSSSection) StartPosition() uint {
-	var _arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_css_section_get_start_position(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -133,7 +133,7 @@ func (s *CSSSection) StartPosition() uint {
 // Unref decrements the reference count on @section, freeing the structure if
 // the reference count reaches 0.
 func (s *CSSSection) Unref() {
-	var _arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 

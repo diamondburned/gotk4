@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -73,15 +73,15 @@ func marshalTcpConnection(p uintptr) (interface{}, error) {
 // GracefulDisconnect checks if graceful disconnects are used. See
 // g_tcp_connection_set_graceful_disconnect().
 func (c tcpConnection) GracefulDisconnect() bool {
-	var _arg0 *C.GTcpConnection
+	var _arg0 *C.GTcpConnection // out
 
 	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_tcp_connection_get_graceful_disconnect(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -101,8 +101,8 @@ func (c tcpConnection) GracefulDisconnect() bool {
 // other side and for it to acknowledge this by closing the socket, which
 // may take a while. For this reason it is disabled by default.
 func (c tcpConnection) SetGracefulDisconnect(gracefulDisconnect bool) {
-	var _arg0 *C.GTcpConnection
-	var _arg1 C.gboolean
+	var _arg0 *C.GTcpConnection // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GTcpConnection)(unsafe.Pointer(c.Native()))
 	if gracefulDisconnect {

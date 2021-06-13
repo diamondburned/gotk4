@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
@@ -17,7 +17,7 @@ import "C"
 // gtk_test_register_all_types().
 func TestListAllTypes() []externglib.Type {
 	var _cret *C.GType
-	var _arg1 *C.guint
+	var _arg1 C.guint // in
 
 	_cret = C.gtk_test_list_all_types(&_arg1)
 
@@ -53,7 +53,7 @@ func TestRegisterAllTypes() {
 // This function is intended to be used for syncing with actions that depend on
 // @widget relayouting or on interaction with the display server.
 func TestWidgetWaitForDraw(widget Widget) {
-	var _arg1 *C.GtkWidget
+	var _arg1 *C.GtkWidget // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 

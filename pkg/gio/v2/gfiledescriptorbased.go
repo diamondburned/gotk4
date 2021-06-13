@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -69,15 +69,15 @@ func marshalFileDescriptorBased(p uintptr) (interface{}, error) {
 
 // Fd gets the underlying file descriptor.
 func (f fileDescriptorBased) Fd() int {
-	var _arg0 *C.GFileDescriptorBased
+	var _arg0 *C.GFileDescriptorBased // out
 
 	_arg0 = (*C.GFileDescriptorBased)(unsafe.Pointer(f.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.g_file_descriptor_based_get_fd(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -55,17 +55,17 @@ func (t *Transform) Native() unsafe.Pointer {
 
 // Equal checks two transforms for equality.
 func (f *Transform) Equal(second *Transform) bool {
-	var _arg0 *C.GskTransform
-	var _arg1 *C.GskTransform
+	var _arg0 *C.GskTransform // out
+	var _arg1 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GskTransform)(unsafe.Pointer(second.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gsk_transform_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -80,8 +80,8 @@ func (f *Transform) Equal(second *Transform) bool {
 // The result of this function can later be parsed with
 // [func@Gsk.Transform.parse].
 func (s *Transform) Print(string *glib.String) {
-	var _arg0 *C.GskTransform
-	var _arg1 *C.GString
+	var _arg0 *C.GskTransform // out
+	var _arg1 *C.GString      // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
@@ -101,25 +101,25 @@ func (s *Transform) Print(string *glib.String) {
 // This function can be used to convert between a `GskTransform` and a matrix
 // type from other 2D drawing libraries, in particular Cairo.
 func (s *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy float32, outDx float32, outDy float32) {
-	var _arg0 *C.GskTransform
+	var _arg0 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 
-	var _arg1 C.float
-	var _arg2 C.float
-	var _arg3 C.float
-	var _arg4 C.float
-	var _arg5 C.float
-	var _arg6 C.float
+	var _arg1 C.float // in
+	var _arg2 C.float // in
+	var _arg3 C.float // in
+	var _arg4 C.float // in
+	var _arg5 C.float // in
+	var _arg6 C.float // in
 
 	C.gsk_transform_to_2d(_arg0, &_arg1, &_arg2, &_arg3, &_arg4, &_arg5, &_arg6)
 
-	var _outXx float32
-	var _outYx float32
-	var _outXy float32
-	var _outYy float32
-	var _outDx float32
-	var _outDy float32
+	var _outXx float32 // out
+	var _outYx float32 // out
+	var _outXy float32 // out
+	var _outYy float32 // out
+	var _outDx float32 // out
+	var _outDy float32 // out
 
 	_outXx = (float32)(_arg1)
 	_outYx = (float32)(_arg2)
@@ -136,21 +136,21 @@ func (s *Transform) To2D() (outXx float32, outYx float32, outXy float32, outYy f
 // @self must be a 2D transformation. If you are not sure, use
 // gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_AFFINE to check.
 func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx float32, outDy float32) {
-	var _arg0 *C.GskTransform
+	var _arg0 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 
-	var _arg1 C.float
-	var _arg2 C.float
-	var _arg3 C.float
-	var _arg4 C.float
+	var _arg1 C.float // in
+	var _arg2 C.float // in
+	var _arg3 C.float // in
+	var _arg4 C.float // in
 
 	C.gsk_transform_to_affine(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
-	var _outScaleX float32
-	var _outScaleY float32
-	var _outDx float32
-	var _outDy float32
+	var _outScaleX float32 // out
+	var _outScaleY float32 // out
+	var _outDx float32     // out
+	var _outDy float32     // out
 
 	_outScaleX = (float32)(_arg1)
 	_outScaleY = (float32)(_arg2)
@@ -164,7 +164,7 @@ func (s *Transform) ToAffine() (outScaleX float32, outScaleY float32, outDx floa
 //
 // The previous value of @out_matrix will be ignored.
 func (s *Transform) ToMatrix() graphene.Matrix {
-	var _arg0 *C.GskTransform
+	var _arg0 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 
@@ -181,15 +181,15 @@ func (s *Transform) ToMatrix() graphene.Matrix {
 //
 // This is a wrapper around [method@Gsk.Transform.print].
 func (s *Transform) String() string {
-	var _arg0 *C.GskTransform
+	var _arg0 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gsk_transform_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -202,17 +202,17 @@ func (s *Transform) String() string {
 // @self must be a 2D transformation. If you are not sure, use
 // gsk_transform_get_category() >= GSK_TRANSFORM_CATEGORY_2D_TRANSLATE to check.
 func (s *Transform) ToTranslate() (outDx float32, outDy float32) {
-	var _arg0 *C.GskTransform
+	var _arg0 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 
-	var _arg1 C.float
-	var _arg2 C.float
+	var _arg1 C.float // in
+	var _arg2 C.float // in
 
 	C.gsk_transform_to_translate(_arg0, &_arg1, &_arg2)
 
-	var _outDx float32
-	var _outDy float32
+	var _outDx float32 // out
+	var _outDy float32 // out
 
 	_outDx = (float32)(_arg1)
 	_outDy = (float32)(_arg2)
@@ -225,8 +225,8 @@ func (s *Transform) ToTranslate() (outDx float32, outDy float32) {
 //
 // The result is the bounding box containing the coplanar quad.
 func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
-	var _arg0 *C.GskTransform
-	var _arg1 *C.graphene_rect_t
+	var _arg0 *C.GskTransform    // out
+	var _arg1 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
@@ -241,8 +241,8 @@ func (s *Transform) TransformBounds(rect *graphene.Rect) graphene.Rect {
 // TransformPoint transforms a `graphene_point_t` using the given transform
 // @self.
 func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
-	var _arg0 *C.GskTransform
-	var _arg1 *C.graphene_point_t
+	var _arg0 *C.GskTransform     // out
+	var _arg1 *C.graphene_point_t // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
@@ -259,7 +259,7 @@ func (s *Transform) TransformPoint(point *graphene.Point) graphene.Point {
 // If the reference was the last, the resources associated to the @self are
 // freed.
 func (s *Transform) Unref() {
-	var _arg0 *C.GskTransform
+	var _arg0 *C.GskTransform // out
 
 	_arg0 = (*C.GskTransform)(unsafe.Pointer(s.Native()))
 

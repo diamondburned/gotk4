@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -29,12 +29,12 @@ func init() {
 // style function but merely a convenience function for drawing the standard
 // cursor shape.
 func DrawInsertionCursor(widget Widget, cr *cairo.Context, location *gdk.Rectangle, isPrimary bool, direction TextDirection, drawArrow bool) {
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.cairo_t
-	var _arg3 *C.GdkRectangle
-	var _arg4 C.gboolean
-	var _arg5 C.GtkTextDirection
-	var _arg6 C.gboolean
+	var _arg1 *C.GtkWidget       // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 *C.GdkRectangle    // out
+	var _arg4 C.gboolean         // out
+	var _arg5 C.GtkTextDirection // out
+	var _arg6 C.gboolean         // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
@@ -53,13 +53,13 @@ func DrawInsertionCursor(widget Widget, cr *cairo.Context, location *gdk.Rectang
 // RenderInsertionCursor draws a text caret on @cr at the specified index of
 // @layout.
 func RenderInsertionCursor(context StyleContext, cr *cairo.Context, x float64, y float64, layout pango.Layout, index int, direction pango.Direction) {
-	var _arg1 *C.GtkStyleContext
-	var _arg2 *C.cairo_t
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
-	var _arg5 *C.PangoLayout
-	var _arg6 C.int
-	var _arg7 C.PangoDirection
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 *C.cairo_t         // out
+	var _arg3 C.gdouble          // out
+	var _arg4 C.gdouble          // out
+	var _arg5 *C.PangoLayout     // out
+	var _arg6 C.int              // out
+	var _arg7 C.PangoDirection   // out
 
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
@@ -405,8 +405,8 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 // While any widget defining a “search” class would be matched by: |[ <!--
 // language="CSS" --> .search { ... } ]|
 func (c styleContext) AddClass(className string) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(className))
@@ -425,9 +425,9 @@ func (c styleContext) AddClass(className string) {
 // function takes precedence over another added through
 // gtk_style_context_add_provider_for_screen().
 func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GtkStyleProvider
-	var _arg2 C.guint
+	var _arg0 *C.GtkStyleContext  // out
+	var _arg1 *C.GtkStyleProvider // out
+	var _arg2 C.guint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
@@ -454,9 +454,9 @@ func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 // Region names must only contain lowercase letters and “-”, starting always
 // with a lowercase letter.
 func (c styleContext) AddRegion(regionName string, flags RegionFlags) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
-	var _arg2 C.GtkRegionFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
+	var _arg2 C.GtkRegionFlags   // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(regionName))
@@ -475,8 +475,8 @@ func (c styleContext) AddRegion(regionName string, flags RegionFlags) {
 // circumstances you would expect all widget to be stopped, so this should
 // be only used in complex widgets with different animatable regions.
 func (c styleContext) CancelAnimations(regionId interface{}) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.gpointer
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gpointer(regionId)
@@ -497,8 +497,8 @@ func (c styleContext) CancelAnimations(regionId interface{}) {
 // use gtk_render_background() instead, along with CSS style classes to
 // modify the color to be rendered.
 func (c styleContext) BackgroundColor(state StateFlags) gdk.RGBA {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -515,8 +515,8 @@ func (c styleContext) BackgroundColor(state StateFlags) gdk.RGBA {
 // See gtk_style_context_get_property() and K_STYLE_PROPERTY_BORDER_WIDTH
 // for details.
 func (c styleContext) Border(state StateFlags) Border {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -530,8 +530,8 @@ func (c styleContext) Border(state StateFlags) Border {
 
 // BorderColor gets the border color for a given state.
 func (c styleContext) BorderColor(state StateFlags) gdk.RGBA {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -548,8 +548,8 @@ func (c styleContext) BorderColor(state StateFlags) gdk.RGBA {
 // See gtk_style_context_get_property() and K_STYLE_PROPERTY_COLOR for
 // details.
 func (c styleContext) Color(state StateFlags) gdk.RGBA {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -564,8 +564,8 @@ func (c styleContext) Color(state StateFlags) gdk.RGBA {
 // Margin gets the margin for a given state as a Border. See
 // gtk_style_property_get() and K_STYLE_PROPERTY_MARGIN for details.
 func (c styleContext) Margin(state StateFlags) Border {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -580,8 +580,8 @@ func (c styleContext) Margin(state StateFlags) Border {
 // Padding gets the padding for a given state as a Border. See
 // gtk_style_context_get() and K_STYLE_PROPERTY_PADDING for details.
 func (c styleContext) Padding(state StateFlags) Border {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -607,20 +607,20 @@ func (c styleContext) Padding(state StateFlags) Border {
 // When @value is no longer needed, g_value_unset() must be called to free
 // any allocated memory.
 func (c styleContext) Property(property string, state StateFlags) *externglib.Value {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
-	var _arg2 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
+	var _arg2 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GtkStateFlags)(state)
 
-	var _arg3 C.GValue
+	var _arg3 C.GValue // in
 
 	C.gtk_style_context_get_property(_arg0, _arg1, _arg2, &_arg3)
 
-	var _value *externglib.Value
+	var _value *externglib.Value // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_value, func(v *externglib.Value) {
@@ -632,15 +632,15 @@ func (c styleContext) Property(property string, state StateFlags) *externglib.Va
 
 // Scale returns the scale used for assets.
 func (c styleContext) Scale() int {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -652,9 +652,9 @@ func (c styleContext) Scale() int {
 // When @value is no longer needed, g_value_unset() must be called to free
 // any allocated memory.
 func (c styleContext) StyleProperty(propertyName string, value **externglib.Value) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
-	var _arg2 *C.GValue
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
+	var _arg2 *C.GValue          // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
@@ -667,18 +667,18 @@ func (c styleContext) StyleProperty(propertyName string, value **externglib.Valu
 // HasClass returns true if @context currently has defined the given class
 // name.
 func (c styleContext) HasClass(className string) bool {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -691,7 +691,7 @@ func (c styleContext) HasClass(className string) bool {
 // reconstructed again. It is useful if you modify the @context and need the
 // new information immediately.
 func (c styleContext) Invalidate() {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -700,19 +700,19 @@ func (c styleContext) Invalidate() {
 
 // LookupColor looks up and resolves a color name in the @context color map.
 func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _color gdk.RGBA
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -750,11 +750,11 @@ func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 // Note that @state is used when finding the transition parameters, which is
 // why the style places the transition under the :hover pseudo-class.
 func (c styleContext) NotifyStateChange(window gdk.Window, regionId interface{}, state StateType, stateValue bool) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gpointer
-	var _arg3 C.GtkStateType
-	var _arg4 C.gboolean
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GdkWindow       // out
+	var _arg2 C.gpointer         // out
+	var _arg3 C.GtkStateType     // out
+	var _arg4 C.gboolean         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
@@ -770,7 +770,7 @@ func (c styleContext) NotifyStateChange(window gdk.Window, regionId interface{},
 // PopAnimatableRegion pops an animatable region from @context. See
 // gtk_style_context_push_animatable_region().
 func (c styleContext) PopAnimatableRegion() {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -787,8 +787,8 @@ func (c styleContext) PopAnimatableRegion() {
 // The @region_id used must be unique in @context so the themes can uniquely
 // identify rendered elements subject to a state transition.
 func (c styleContext) PushAnimatableRegion(regionId interface{}) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.gpointer
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.gpointer         // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gpointer(regionId)
@@ -798,8 +798,8 @@ func (c styleContext) PushAnimatableRegion(regionId interface{}) {
 
 // RemoveClass removes @class_name from @context.
 func (c styleContext) RemoveClass(className string) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(className))
@@ -811,8 +811,8 @@ func (c styleContext) RemoveClass(className string) {
 // RemoveProvider removes @provider from the style providers list in
 // @context.
 func (c styleContext) RemoveProvider(provider StyleProvider) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GtkStyleProvider
+	var _arg0 *C.GtkStyleContext  // out
+	var _arg1 *C.GtkStyleProvider // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
@@ -822,8 +822,8 @@ func (c styleContext) RemoveProvider(provider StyleProvider) {
 
 // RemoveRegion removes a region from @context.
 func (c styleContext) RemoveRegion(regionName string) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(regionName))
@@ -835,7 +835,7 @@ func (c styleContext) RemoveRegion(regionName string) {
 // Restore restores @context state to a previous stage. See
 // gtk_style_context_save().
 func (c styleContext) Restore() {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -850,7 +850,7 @@ func (c styleContext) Restore() {
 // The matching call to gtk_style_context_restore() must be done before GTK
 // returns to the main loop.
 func (c styleContext) Save() {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -861,10 +861,10 @@ func (c styleContext) Save() {
 // should be called together with it so the invalidation areas for any
 // ongoing animation are scrolled together with it.
 func (c styleContext) ScrollAnimations(window gdk.Window, dx int, dy int) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GdkWindow       // out
+	var _arg2 C.gint             // out
+	var _arg3 C.gint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
@@ -877,8 +877,8 @@ func (c styleContext) ScrollAnimations(window gdk.Window, dx int, dy int) {
 // SetBackground sets the background of @window to the background pattern or
 // color specified in @context for its current state.
 func (c styleContext) SetBackground(window gdk.Window) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GdkWindow
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GdkWindow       // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
@@ -891,8 +891,8 @@ func (c styleContext) SetBackground(window gdk.Window) {
 // If you are using a StyleContext returned from
 // gtk_widget_get_style_context(), you do not need to call this yourself.
 func (c styleContext) SetDirection(direction TextDirection) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkTextDirection
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkTextDirection // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkTextDirection)(direction)
@@ -907,8 +907,8 @@ func (c styleContext) SetDirection(direction TextDirection) {
 // If you are using a StyleContext returned from
 // gtk_widget_get_style_context(), you do not need to call this yourself.
 func (c styleContext) SetFrameClock(frameClock gdk.FrameClock) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GdkFrameClock
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GdkFrameClock   // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkFrameClock)(unsafe.Pointer(frameClock.Native()))
@@ -925,8 +925,8 @@ func (c styleContext) SetFrameClock(frameClock gdk.FrameClock) {
 // their children, so it should not normally be necessary to call this
 // function manually.
 func (c styleContext) SetJunctionSides(sides JunctionSides) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkJunctionSides
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkJunctionSides // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkJunctionSides)(sides)
@@ -941,8 +941,8 @@ func (c styleContext) SetJunctionSides(sides JunctionSides) {
 // If you are using a StyleContext returned from
 // gtk_widget_get_style_context(), the parent will be set for you.
 func (c styleContext) SetParent(parent StyleContext) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(parent.Native()))
@@ -956,8 +956,8 @@ func (c styleContext) SetParent(parent StyleContext) {
 // If you are using a StyleContext returned from
 // gtk_widget_get_style_context(), you do not need to call this yourself.
 func (c styleContext) SetPath(path *WidgetPath) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GtkWidgetPath
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GtkWidgetPath   // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
@@ -967,8 +967,8 @@ func (c styleContext) SetPath(path *WidgetPath) {
 
 // SetScale sets the scale to use when getting image assets for the style.
 func (c styleContext) SetScale(scale int) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.gint
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.gint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(scale)
@@ -984,8 +984,8 @@ func (c styleContext) SetScale(scale int) {
 // If you are using a StyleContext returned from
 // gtk_widget_get_style_context(), you do not need to call this yourself.
 func (c styleContext) SetScreen(screen gdk.Screen) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GdkScreen
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GdkScreen       // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
@@ -995,8 +995,8 @@ func (c styleContext) SetScreen(screen gdk.Screen) {
 
 // SetState sets the state to be used for style matching.
 func (c styleContext) SetState(flags StateFlags) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(flags)
@@ -1012,19 +1012,19 @@ func (c styleContext) SetState(flags StateFlags) {
 // closest to being set. This means transition animation will run from 0 to
 // 1 when @state is being set and from 1 to 0 when it’s being unset.
 func (c styleContext) StateIsRunning(state StateType) (float64, bool) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateType
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateType     // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateType)(state)
 
-	var _arg2 C.gdouble
-	var _cret C.gboolean
+	var _arg2 C.gdouble  // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_context_state_is_running(_arg0, _arg1, &_arg2)
 
-	var _progress float64
-	var _ok bool
+	var _progress float64 // out
+	var _ok bool          // out
 
 	_progress = (float64)(_arg2)
 	if _cret {
@@ -1044,17 +1044,17 @@ func (c styleContext) StateIsRunning(state StateType) (float64, bool) {
 // implementation in GTK+. There are no guarantees about the format of the
 // returned string, it may change.
 func (c styleContext) String(flags StyleContextPrintFlags) string {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStyleContextPrintFlags
+	var _arg0 *C.GtkStyleContext          // out
+	var _arg1 C.GtkStyleContextPrintFlags // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStyleContextPrintFlags)(flags)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

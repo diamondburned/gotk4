@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangoft2 pango
+// #cgo pkg-config: pangoft2 pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangoft2.h>
@@ -68,9 +68,9 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // SetResolution sets the horizontal and vertical resolutions for the
 // fontmap.
 func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
-	var _arg0 *C.PangoFT2FontMap
-	var _arg1 C.double
-	var _arg2 C.double
+	var _arg0 *C.PangoFT2FontMap // out
+	var _arg1 C.double           // out
+	var _arg2 C.double           // out
 
 	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 	_arg1 = C.double(dpiX)
@@ -86,7 +86,7 @@ func (f fontMap) SetResolution(dpiX float64, dpiY float64) {
 // That is, if your substitution function will return different results for
 // the same input pattern, you must call this function.
 func (f fontMap) SubstituteChanged() {
-	var _arg0 *C.PangoFT2FontMap
+	var _arg0 *C.PangoFT2FontMap // out
 
 	_arg0 = (*C.PangoFT2FontMap)(unsafe.Pointer(f.Native()))
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
+// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
@@ -62,17 +62,17 @@ func (r *Ray) Native() unsafe.Pointer {
 
 // Equal checks whether the two given #graphene_ray_t are equal.
 func (a *Ray) Equal(b *Ray) bool {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t // out
+	var _arg1 *C.graphene_ray_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_ray_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_ray_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -83,7 +83,7 @@ func (a *Ray) Equal(b *Ray) bool {
 
 // Free frees the resources allocated by graphene_ray_alloc().
 func (r *Ray) Free() {
-	var _arg0 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
@@ -93,8 +93,8 @@ func (r *Ray) Free() {
 // ClosestPointToPoint computes the point on the given #graphene_ray_t that is
 // closest to the given point @p.
 func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_ray_t     // out
+	var _arg1 *C.graphene_point3d_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
@@ -108,7 +108,7 @@ func (r *Ray) ClosestPointToPoint(p *Point3D) Point3D {
 
 // Direction retrieves the direction of the given #graphene_ray_t.
 func (r *Ray) Direction() Vec3 {
-	var _arg0 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
@@ -124,17 +124,17 @@ func (r *Ray) Direction() Vec3 {
 //
 // If the ray does not intersect the plane, this function returns `INFINITY`.
 func (r *Ray) DistanceToPlane(p *Plane) float32 {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 *C.graphene_plane_t
+	var _arg0 *C.graphene_ray_t   // out
+	var _arg1 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	var _cret C.float
+	var _cret C.float // in
 
 	_cret = C.graphene_ray_get_distance_to_plane(_arg0, _arg1)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -147,17 +147,17 @@ func (r *Ray) DistanceToPlane(p *Plane) float32 {
 // The closest approach to a ray from a point is the distance between the point
 // and the projection of the point on the ray itself.
 func (r *Ray) DistanceToPoint(p *Point3D) float32 {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_ray_t     // out
+	var _arg1 *C.graphene_point3d_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(p.Native()))
 
-	var _cret C.float
+	var _cret C.float // in
 
 	_cret = C.graphene_ray_get_distance_to_point(_arg0, _arg1)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -166,7 +166,7 @@ func (r *Ray) DistanceToPoint(p *Point3D) float32 {
 
 // Origin retrieves the origin of the given #graphene_ray_t.
 func (r *Ray) Origin() Point3D {
-	var _arg0 *C.graphene_ray_t
+	var _arg0 *C.graphene_ray_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 
@@ -180,8 +180,8 @@ func (r *Ray) Origin() Point3D {
 // PositionAt retrieves the coordinates of a point at the distance @t along the
 // given #graphene_ray_t.
 func (r *Ray) PositionAt(t float32) Point3D {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 C.float
+	var _arg0 *C.graphene_ray_t // out
+	var _arg1 C.float           // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = C.float(t)
@@ -198,17 +198,17 @@ func (r *Ray) PositionAt(t float32) Point3D {
 //
 // See also: graphene_ray_intersect_box()
 func (r *Ray) IntersectsBox(b *Box) bool {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 *C.graphene_box_t
+	var _arg0 *C.graphene_ray_t // out
+	var _arg1 *C.graphene_box_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_ray_intersects_box(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -222,17 +222,17 @@ func (r *Ray) IntersectsBox(b *Box) bool {
 //
 // See also: graphene_ray_intersect_sphere()
 func (r *Ray) IntersectsSphere(s *Sphere) bool {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 *C.graphene_sphere_t
+	var _arg0 *C.graphene_ray_t    // out
+	var _arg1 *C.graphene_sphere_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(s.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_ray_intersects_sphere(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -246,17 +246,17 @@ func (r *Ray) IntersectsSphere(s *Sphere) bool {
 //
 // See also: graphene_ray_intersect_triangle()
 func (r *Ray) IntersectsTriangle(t *Triangle) bool {
-	var _arg0 *C.graphene_ray_t
-	var _arg1 *C.graphene_triangle_t
+	var _arg0 *C.graphene_ray_t      // out
+	var _arg1 *C.graphene_triangle_t // out
 
 	_arg0 = (*C.graphene_ray_t)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.graphene_triangle_t)(unsafe.Pointer(t.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_ray_intersects_triangle(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

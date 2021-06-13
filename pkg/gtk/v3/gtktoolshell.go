@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -74,15 +74,15 @@ func marshalToolShell(p uintptr) (interface{}, error) {
 // call this function directly, but rely on gtk_tool_item_get_icon_size()
 // instead.
 func (s toolShell) IconSize() int {
-	var _arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell // out
 
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var _cret C.GtkIconSize
+	var _cret C.GtkIconSize // in
 
 	_cret = C.gtk_tool_shell_get_icon_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -93,15 +93,15 @@ func (s toolShell) IconSize() int {
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_get_text_alignment() instead.
 func (s toolShell) TextAlignment() float32 {
-	var _arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell // out
 
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gfloat
+	var _cret C.gfloat // in
 
 	_cret = C.gtk_tool_shell_get_text_alignment(_arg0)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -116,7 +116,7 @@ func (s toolShell) TextAlignment() float32 {
 // Tool items must not call this function directly, but rely on
 // gtk_tool_item_rebuild_menu() instead.
 func (s toolShell) RebuildMenu() {
-	var _arg0 *C.GtkToolShell
+	var _arg0 *C.GtkToolShell // out
 
 	_arg0 = (*C.GtkToolShell)(unsafe.Pointer(s.Native()))
 

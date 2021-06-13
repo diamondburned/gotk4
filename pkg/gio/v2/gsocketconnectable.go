@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -131,15 +131,15 @@ func marshalSocketConnectable(p uintptr) (interface{}, error) {
 // If the Connectable implementation does not support string formatting, the
 // implementation’s type name will be returned as a fallback.
 func (c socketConnectable) String() string {
-	var _arg0 *C.GSocketConnectable
+	var _arg0 *C.GSocketConnectable // out
 
 	_arg0 = (*C.GSocketConnectable)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_socket_connectable_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

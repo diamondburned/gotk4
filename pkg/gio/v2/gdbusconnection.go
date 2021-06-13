@@ -10,7 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -34,9 +34,9 @@ import "C"
 // This is an asynchronous failable function. See g_bus_get_sync() for the
 // synchronous version.
 func BusGet(busType BusType, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg1 C.GBusType
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg1 C.GBusType            // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg1 = (C.GBusType)(busType)

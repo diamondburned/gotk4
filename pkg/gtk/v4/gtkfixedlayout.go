@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -106,8 +106,8 @@ func marshalFixedLayoutChild(p uintptr) (interface{}, error) {
 
 // SetTransform sets the transformation of the child of a `GtkFixedLayout`.
 func (c fixedLayoutChild) SetTransform(transform *gsk.Transform) {
-	var _arg0 *C.GtkFixedLayoutChild
-	var _arg1 *C.GskTransform
+	var _arg0 *C.GtkFixedLayoutChild // out
+	var _arg1 *C.GskTransform        // out
 
 	_arg0 = (*C.GtkFixedLayoutChild)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))

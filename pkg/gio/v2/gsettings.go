@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -620,7 +620,7 @@ func marshalSettings(p uintptr) (interface{}, error) {
 // g_settings_delay(). In the normal case settings are always applied
 // immediately.
 func (s settings) Apply() {
-	var _arg0 *C.GSettings
+	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
@@ -647,11 +647,11 @@ func (s settings) Apply() {
 // property twice on the same object, the second binding overrides the first
 // one.
 func (s settings) Bind(key string, object gextras.Objector, property string, flags SettingsBindFlags) {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gpointer
-	var _arg3 *C.gchar
-	var _arg4 C.GSettingsBindFlags
+	var _arg0 *C.GSettings         // out
+	var _arg1 *C.gchar             // out
+	var _arg2 C.gpointer           // out
+	var _arg3 *C.gchar             // out
+	var _arg4 C.GSettingsBindFlags // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -682,11 +682,11 @@ func (s settings) Bind(key string, object gextras.Objector, property string, fla
 // property twice on the same object, the second binding overrides the first
 // one.
 func (s settings) BindWritable(key string, object gextras.Objector, property string, inverted bool) {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gpointer
-	var _arg3 *C.gchar
-	var _arg4 C.gboolean
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gpointer   // out
+	var _arg3 *C.gchar     // out
+	var _arg4 C.gboolean   // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -705,7 +705,7 @@ func (s settings) BindWritable(key string, object gextras.Objector, property str
 // mode, changes to @settings are not immediately propagated to the backend,
 // but kept locally until g_settings_apply() is called.
 func (s settings) Delay() {
-	var _arg0 *C.GSettings
+	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
@@ -719,18 +719,18 @@ func (s settings) Delay() {
 // It is a programmer error to give a @key that isn't specified as having a
 // boolean type in the schema for @settings.
 func (s settings) Boolean(key string) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_get_boolean(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -746,18 +746,18 @@ func (s settings) Boolean(key string) bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // 'double' type in the schema for @settings.
 func (s settings) Double(key string) float64 {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.g_settings_get_double(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -776,18 +776,18 @@ func (s settings) Double(key string) float64 {
 // If the value stored in the configuration database is not a valid value
 // for the enumerated type then this function will return the default value.
 func (s settings) Enum(key string) int {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_settings_get_enum(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -806,18 +806,18 @@ func (s settings) Enum(key string) int {
 // If the value stored in the configuration database is not a valid value
 // for the flags type then this function will return the default value.
 func (s settings) Flags(key string) uint {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_settings_get_flags(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -827,15 +827,15 @@ func (s settings) Flags(key string) uint {
 // HasUnapplied returns whether the #GSettings object has any unapplied
 // changes. This can only be the case if it is in 'delayed-apply' mode.
 func (s settings) HasUnapplied() bool {
-	var _arg0 *C.GSettings
+	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_get_has_unapplied(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -851,18 +851,18 @@ func (s settings) HasUnapplied() bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // int32 type in the schema for @settings.
 func (s settings) Int(key string) int {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_settings_get_int(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -876,18 +876,18 @@ func (s settings) Int(key string) int {
 // It is a programmer error to give a @key that isn't specified as having a
 // int64 type in the schema for @settings.
 func (s settings) Int64(key string) int64 {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.g_settings_get_int64(_arg0, _arg1)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -922,9 +922,9 @@ func (s settings) Int64(key string) int64 {
 // returned by this function. nil is valid; it is returned just as any other
 // value would be.
 func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.GSettingsGetMapping
+	var _arg0 *C.GSettings          // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GSettingsGetMapping // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -933,11 +933,11 @@ func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
 	_arg2 = (*[0]byte)(C.gotk4_SettingsGetMapping)
 	_arg3 = C.gpointer(box.Assign(mapping))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_settings_get_mapped(_arg0, _arg1, _arg2, _arg3)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -951,18 +951,18 @@ func (s settings) Mapped(key string, mapping SettingsGetMapping) interface{} {
 // It is a programmer error to give a @key that isn't specified as having a
 // string type in the schema for @settings.
 func (s settings) String(key string) string {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_settings_get_string(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -975,8 +975,8 @@ func (s settings) String(key string) string {
 // It is a programmer error to give a @key that isn't specified as having an
 // array of strings type in the schema for @settings.
 func (s settings) Strv(key string) []string {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -1017,18 +1017,18 @@ func (s settings) Strv(key string) []string {
 // It is a programmer error to give a @key that isn't specified as having a
 // uint32 type in the schema for @settings.
 func (s settings) Uint(key string) uint {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_settings_get_uint(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -1042,18 +1042,18 @@ func (s settings) Uint(key string) uint {
 // It is a programmer error to give a @key that isn't specified as having a
 // uint64 type in the schema for @settings.
 func (s settings) Uint64(key string) uint64 {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.guint64
+	var _cret C.guint64 // in
 
 	_cret = C.g_settings_get_uint64(_arg0, _arg1)
 
-	var _guint64 uint64
+	var _guint64 uint64 // out
 
 	_guint64 = (uint64)(_cret)
 
@@ -1062,18 +1062,18 @@ func (s settings) Uint64(key string) uint64 {
 
 // IsWritable finds out if a key can be written or not
 func (s settings) IsWritable(name string) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_is_writable(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1094,7 +1094,7 @@ func (s settings) IsWritable(name string) bool {
 // You should free the return value with g_strfreev() when you are done with
 // it.
 func (s settings) ListChildren() []string {
-	var _arg0 *C.GSettings
+	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
@@ -1135,7 +1135,7 @@ func (s settings) ListChildren() []string {
 // You should free the return value with g_strfreev() when you are done with
 // it.
 func (s settings) ListKeys() []string {
-	var _arg0 *C.GSettings
+	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
@@ -1170,20 +1170,20 @@ func (s settings) ListKeys() []string {
 // RangeCheck checks if the given @value is of the correct type and within
 // the permitted range for @key.
 func (s settings) RangeCheck(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 *C.GVariant
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_range_check(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1198,8 +1198,8 @@ func (s settings) RangeCheck(key string, value *glib.Variant) bool {
 // might be the value specified in the schema or the one set by the
 // administrator.
 func (s settings) Reset(key string) {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -1215,7 +1215,7 @@ func (s settings) Reset(key string) {
 //
 // Change notifications will be emitted for affected keys.
 func (s settings) Revert() {
-	var _arg0 *C.GSettings
+	var _arg0 *C.GSettings // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 
@@ -1229,9 +1229,9 @@ func (s settings) Revert() {
 // It is a programmer error to give a @key that isn't specified as having a
 // boolean type in the schema for @settings.
 func (s settings) SetBoolean(key string, value bool) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gboolean
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -1240,11 +1240,11 @@ func (s settings) SetBoolean(key string, value bool) bool {
 		_arg2 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_boolean(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1260,20 +1260,20 @@ func (s settings) SetBoolean(key string, value bool) bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // 'double' type in the schema for @settings.
 func (s settings) SetDouble(key string, value float64) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gdouble
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gdouble    // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gdouble(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_double(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1292,20 +1292,20 @@ func (s settings) SetDouble(key string, value float64) bool {
 // After performing the write, accessing @key directly with
 // g_settings_get_string() will return the 'nick' associated with @value.
 func (s settings) SetEnum(key string, value int) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gint
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_enum(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1326,20 +1326,20 @@ func (s settings) SetEnum(key string, value int) bool {
 // g_settings_get_strv() will return an array of 'nicks'; one for each bit
 // in @value.
 func (s settings) SetFlags(key string, value uint) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.guint
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_flags(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1355,20 +1355,20 @@ func (s settings) SetFlags(key string, value uint) bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // int32 type in the schema for @settings.
 func (s settings) SetInt(key string, value int) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gint
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_int(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1384,20 +1384,20 @@ func (s settings) SetInt(key string, value int) bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // int64 type in the schema for @settings.
 func (s settings) SetInt64(key string, value int64) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.gint64
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.gint64     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gint64(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_int64(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1413,9 +1413,9 @@ func (s settings) SetInt64(key string, value int64) bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // string type in the schema for @settings.
 func (s settings) SetString(key string, value string) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.gchar     // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -1423,11 +1423,11 @@ func (s settings) SetString(key string, value string) bool {
 	_arg2 = (*C.gchar)(C.CString(value))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_string(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1444,8 +1444,8 @@ func (s settings) SetString(key string, value string) bool {
 // It is a programmer error to give a @key that isn't specified as having an
 // array of strings type in the schema for @settings.
 func (s settings) SetStrv(key string, value []string) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
 	var _arg2 **C.gchar
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
@@ -1464,11 +1464,11 @@ func (s settings) SetStrv(key string, value []string) bool {
 		}
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_strv(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1484,20 +1484,20 @@ func (s settings) SetStrv(key string, value []string) bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // uint32 type in the schema for @settings.
 func (s settings) SetUint(key string, value uint) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.guint
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_uint(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1513,20 +1513,20 @@ func (s settings) SetUint(key string, value uint) bool {
 // It is a programmer error to give a @key that isn't specified as having a
 // uint64 type in the schema for @settings.
 func (s settings) SetUint64(key string, value uint64) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 C.guint64
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 C.guint64    // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.guint64(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_uint64(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -1543,20 +1543,20 @@ func (s settings) SetUint64(key string, value uint64) bool {
 //
 // If @value is floating then this function consumes the reference.
 func (s settings) SetValue(key string, value *glib.Variant) bool {
-	var _arg0 *C.GSettings
-	var _arg1 *C.gchar
-	var _arg2 *C.GVariant
+	var _arg0 *C.GSettings // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.GVariant  // out
 
 	_arg0 = (*C.GSettings)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GVariant)(unsafe.Pointer(value.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_settings_set_value(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

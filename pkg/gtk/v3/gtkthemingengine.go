@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -90,8 +90,8 @@ func marshalThemingEngine(p uintptr) (interface{}, error) {
 
 // BackgroundColor gets the background color for a given state.
 func (e themingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -105,8 +105,8 @@ func (e themingEngine) BackgroundColor(state StateFlags) gdk.RGBA {
 
 // Border gets the border for a given state as a Border.
 func (e themingEngine) Border(state StateFlags) Border {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -120,8 +120,8 @@ func (e themingEngine) Border(state StateFlags) Border {
 
 // BorderColor gets the border color for a given state.
 func (e themingEngine) BorderColor(state StateFlags) gdk.RGBA {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -135,8 +135,8 @@ func (e themingEngine) BorderColor(state StateFlags) gdk.RGBA {
 
 // Color gets the foreground color for a given state.
 func (e themingEngine) Color(state StateFlags) gdk.RGBA {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -150,8 +150,8 @@ func (e themingEngine) Color(state StateFlags) gdk.RGBA {
 
 // Margin gets the margin for a given state as a Border.
 func (e themingEngine) Margin(state StateFlags) Border {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -165,8 +165,8 @@ func (e themingEngine) Margin(state StateFlags) Border {
 
 // Padding gets the padding for a given state as a Border.
 func (e themingEngine) Padding(state StateFlags) Border {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateFlags)(state)
@@ -181,20 +181,20 @@ func (e themingEngine) Padding(state StateFlags) Border {
 // Property gets a property value as retrieved from the style settings that
 // apply to the currently rendered element.
 func (e themingEngine) Property(property string, state StateFlags) *externglib.Value {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 *C.gchar
-	var _arg2 C.GtkStateFlags
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.GtkStateFlags     // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(property))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GtkStateFlags)(state)
 
-	var _arg3 C.GValue
+	var _arg3 C.GValue // in
 
 	C.gtk_theming_engine_get_property(_arg0, _arg1, _arg2, &_arg3)
 
-	var _value *externglib.Value
+	var _value *externglib.Value // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_arg3))
 	runtime.SetFinalizer(_value, func(v *externglib.Value) {
@@ -206,18 +206,18 @@ func (e themingEngine) Property(property string, state StateFlags) *externglib.V
 
 // StyleProperty gets the value for a widget style property.
 func (e themingEngine) StyleProperty(propertyName string) *externglib.Value {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(propertyName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _arg2 C.GValue
+	var _arg2 C.GValue // in
 
 	C.gtk_theming_engine_get_style_property(_arg0, _arg1, &_arg2)
 
-	var _value *externglib.Value
+	var _value *externglib.Value // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_arg2))
 
@@ -227,18 +227,18 @@ func (e themingEngine) StyleProperty(propertyName string) *externglib.Value {
 // HasClass returns true if the currently rendered contents have defined the
 // given class name.
 func (e themingEngine) HasClass(styleClass string) bool {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(styleClass))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_theming_engine_has_class(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -250,19 +250,19 @@ func (e themingEngine) HasClass(styleClass string) bool {
 // LookupColor looks up and resolves a color name in the current style’s
 // color map.
 func (e themingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.gchar)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _color gdk.RGBA
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_theming_engine_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -280,19 +280,19 @@ func (e themingEngine) LookupColor(colorName string) (gdk.RGBA, bool) {
 // to 1 when @state is being set to true and from 1 to 0 when it’s being set
 // to false.
 func (e themingEngine) StateIsRunning(state StateType) (float64, bool) {
-	var _arg0 *C.GtkThemingEngine
-	var _arg1 C.GtkStateType
+	var _arg0 *C.GtkThemingEngine // out
+	var _arg1 C.GtkStateType      // out
 
 	_arg0 = (*C.GtkThemingEngine)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkStateType)(state)
 
-	var _arg2 C.gdouble
-	var _cret C.gboolean
+	var _arg2 C.gdouble  // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_theming_engine_state_is_running(_arg0, _arg1, &_arg2)
 
-	var _progress float64
-	var _ok bool
+	var _progress float64 // out
+	var _ok bool          // out
 
 	_progress = (float64)(_arg2)
 	if _cret {

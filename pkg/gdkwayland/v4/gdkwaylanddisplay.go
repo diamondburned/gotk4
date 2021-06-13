@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4
+// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
@@ -81,15 +81,15 @@ func marshalWaylandDisplay(p uintptr) (interface{}, error) {
 // StartupNotificationID gets the startup notification ID for a Wayland
 // display, or nil if no ID has been defined.
 func (d waylandDisplay) StartupNotificationID() string {
-	var _arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_wayland_display_get_startup_notification_id(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -98,15 +98,15 @@ func (d waylandDisplay) StartupNotificationID() string {
 
 // WlCompositor returns the Wayland `wl_compositor` of a `GdkDisplay`.
 func (d waylandDisplay) WlCompositor() *interface{} {
-	var _arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var _cret *C.wl_compositor
+	var _cret *C.wl_compositor // in
 
 	_cret = C.gdk_wayland_display_get_wl_compositor(_arg0)
 
-	var _gpointer *interface{}
+	var _gpointer *interface{} // out
 
 	_gpointer = (*interface{})(_cret)
 
@@ -115,15 +115,15 @@ func (d waylandDisplay) WlCompositor() *interface{} {
 
 // WlDisplay returns the Wayland `wl_display` of a `GdkDisplay`.
 func (d waylandDisplay) WlDisplay() *interface{} {
-	var _arg0 *C.GdkDisplay
+	var _arg0 *C.GdkDisplay // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 
-	var _cret *C.wl_display
+	var _cret *C.wl_display // in
 
 	_cret = C.gdk_wayland_display_get_wl_display(_arg0)
 
-	var _gpointer *interface{}
+	var _gpointer *interface{} // out
 
 	_gpointer = (*interface{})(_cret)
 
@@ -133,18 +133,18 @@ func (d waylandDisplay) WlDisplay() *interface{} {
 // QueryRegistry returns true if the the interface was found in the display
 // `wl_registry.global` handler.
 func (d waylandDisplay) QueryRegistry(global string) bool {
-	var _arg0 *C.GdkDisplay
-	var _arg1 *C.char
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(global))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_wayland_display_query_registry(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -155,9 +155,9 @@ func (d waylandDisplay) QueryRegistry(global string) bool {
 
 // SetCursorTheme sets the cursor theme for the given @display.
 func (d waylandDisplay) SetCursorTheme(name string, size int) {
-	var _arg0 *C.GdkDisplay
-	var _arg1 *C.char
-	var _arg2 C.int
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.char       // out
+	var _arg2 C.int         // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(name))
@@ -177,8 +177,8 @@ func (d waylandDisplay) SetCursorTheme(name string, size int) {
 // complete (for example, when opening a window or when calling
 // [method@Gdk.Display.notify_startup_complete]).
 func (d waylandDisplay) SetStartupNotificationID(startupId string) {
-	var _arg0 *C.GdkDisplay
-	var _arg1 *C.char
+	var _arg0 *C.GdkDisplay // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GdkDisplay)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.char)(C.CString(startupId))

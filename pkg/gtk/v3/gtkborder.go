@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -50,35 +50,35 @@ func (b *Border) Native() unsafe.Pointer {
 
 // Left gets the field inside the struct.
 func (b *Border) Left() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(b.native.left)
 	return v
 }
 
 // Right gets the field inside the struct.
 func (b *Border) Right() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(b.native.right)
 	return v
 }
 
 // Top gets the field inside the struct.
 func (b *Border) Top() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(b.native.top)
 	return v
 }
 
 // Bottom gets the field inside the struct.
 func (b *Border) Bottom() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(b.native.bottom)
 	return v
 }
 
 // Free frees a Border-struct.
 func (b *Border) Free() {
-	var _arg0 *C.GtkBorder
+	var _arg0 *C.GtkBorder // out
 
 	_arg0 = (*C.GtkBorder)(unsafe.Pointer(b.Native()))
 

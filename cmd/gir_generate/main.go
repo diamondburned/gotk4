@@ -17,13 +17,15 @@ import (
 )
 
 var (
-	output string
-	module string
+	output  string
+	module  string
+	verbose bool
 )
 
 func init() {
 	flag.StringVar(&output, "o", "", "output directory to mkdir in")
 	flag.StringVar(&module, "m", "github.com/diamondburned/gotk4", "go module name")
+	flag.BoolVar(&verbose, "v", verbose, "log verbosely (debug mode)")
 	flag.Parse()
 
 	if output == "" {
@@ -70,8 +72,12 @@ func main() {
 	sema := make(chan struct{}, runtime.GOMAXPROCS(-1))
 
 	gen := girgen.NewGenerator(repos, modulePath)
-	gen.WithLogger(log.New(os.Stderr, "girgen: ", log.Lmsgprefix), true)
+	gen.Logger = log.New(os.Stderr, "girgen: ", log.Lmsgprefix)
 	gen.AddFilters(filters)
+
+	if verbose {
+		gen.LogLevel = girgen.LogDebug
+	}
 
 	// Do a clean-up of the target directory.
 	if err := os.RemoveAll(output); err != nil {

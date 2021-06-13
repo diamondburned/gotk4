@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -54,8 +54,8 @@ func (c *CSSSection) Native() unsafe.Pointer {
 // This is a form like `gtk.css:32:1-23` to denote line 32, characters 1 to 23
 // in the file `gtk.css`.
 func (s *CSSSection) Print(string *glib.String) {
-	var _arg0 *C.GtkCssSection
-	var _arg1 *C.GString
+	var _arg0 *C.GtkCssSection // out
+	var _arg1 *C.GString       // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
@@ -66,15 +66,15 @@ func (s *CSSSection) Print(string *glib.String) {
 // String prints the section into a human-readable text form using
 // [method@Gtk.CssSection.print].
 func (s *CSSSection) String() string {
-	var _arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_css_section_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -85,7 +85,7 @@ func (s *CSSSection) String() string {
 // Unref decrements the reference count on `section`, freeing the structure if
 // the reference count reaches 0.
 func (s *CSSSection) Unref() {
-	var _arg0 *C.GtkCssSection
+	var _arg0 *C.GtkCssSection // out
 
 	_arg0 = (*C.GtkCssSection)(unsafe.Pointer(s.Native()))
 

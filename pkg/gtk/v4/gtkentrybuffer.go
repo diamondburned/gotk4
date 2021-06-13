@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -118,19 +118,19 @@ func marshalEntryBuffer(p uintptr) (interface{}, error) {
 //
 // Note that the positions are specified in characters, not bytes.
 func (b entryBuffer) DeleteText(position uint, nChars int) uint {
-	var _arg0 *C.GtkEntryBuffer
-	var _arg1 C.guint
-	var _arg2 C.int
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 C.guint           // out
+	var _arg2 C.int             // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
 	_arg2 = C.int(nChars)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_entry_buffer_delete_text(_arg0, _arg1, _arg2)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -139,9 +139,9 @@ func (b entryBuffer) DeleteText(position uint, nChars int) uint {
 
 // EmitDeletedText: used when subclassing `GtkEntryBuffer`.
 func (b entryBuffer) EmitDeletedText(position uint, nChars uint) {
-	var _arg0 *C.GtkEntryBuffer
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 C.guint           // out
+	var _arg2 C.guint           // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
@@ -152,10 +152,10 @@ func (b entryBuffer) EmitDeletedText(position uint, nChars uint) {
 
 // EmitInsertedText: used when subclassing `GtkEntryBuffer`.
 func (b entryBuffer) EmitInsertedText(position uint, chars string, nChars uint) {
-	var _arg0 *C.GtkEntryBuffer
-	var _arg1 C.guint
-	var _arg2 *C.char
-	var _arg3 C.guint
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 C.guint           // out
+	var _arg2 *C.char           // out
+	var _arg3 C.guint           // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
@@ -170,15 +170,15 @@ func (b entryBuffer) EmitInsertedText(position uint, chars string, nChars uint) 
 //
 // See [method@Gtk.EntryBuffer.get_length].
 func (b entryBuffer) Bytes() uint {
-	var _arg0 *C.GtkEntryBuffer
+	var _arg0 *C.GtkEntryBuffer // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.gtk_entry_buffer_get_bytes(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -187,15 +187,15 @@ func (b entryBuffer) Bytes() uint {
 
 // Length retrieves the length in characters of the buffer.
 func (b entryBuffer) Length() uint {
-	var _arg0 *C.GtkEntryBuffer
+	var _arg0 *C.GtkEntryBuffer // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_entry_buffer_get_length(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -204,15 +204,15 @@ func (b entryBuffer) Length() uint {
 
 // MaxLength retrieves the maximum allowed length of the text in @buffer.
 func (b entryBuffer) MaxLength() int {
-	var _arg0 *C.GtkEntryBuffer
+	var _arg0 *C.GtkEntryBuffer // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_entry_buffer_get_max_length(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -224,15 +224,15 @@ func (b entryBuffer) MaxLength() int {
 // The memory pointer returned by this call will not change unless this
 // object emits a signal, or is finalized.
 func (b entryBuffer) Text() string {
-	var _arg0 *C.GtkEntryBuffer
+	var _arg0 *C.GtkEntryBuffer // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_entry_buffer_get_text(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -249,10 +249,10 @@ func (b entryBuffer) Text() string {
 //
 // Note that the position and length are in characters, not in bytes.
 func (b entryBuffer) InsertText(position uint, chars string, nChars int) uint {
-	var _arg0 *C.GtkEntryBuffer
-	var _arg1 C.guint
-	var _arg2 *C.char
-	var _arg3 C.int
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 C.guint           // out
+	var _arg2 *C.char           // out
+	var _arg3 C.int             // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(position)
@@ -260,11 +260,11 @@ func (b entryBuffer) InsertText(position uint, chars string, nChars int) uint {
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.int(nChars)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_entry_buffer_insert_text(_arg0, _arg1, _arg2, _arg3)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -277,8 +277,8 @@ func (b entryBuffer) InsertText(position uint, chars string, nChars int) uint {
 // If the current contents are longer than the given length, then they will
 // be truncated to fit.
 func (b entryBuffer) SetMaxLength(maxLength int) {
-	var _arg0 *C.GtkEntryBuffer
-	var _arg1 C.int
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 C.int             // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = C.int(maxLength)
@@ -294,9 +294,9 @@ func (b entryBuffer) SetMaxLength(maxLength int) {
 //
 // Note that @n_chars is in characters, not in bytes.
 func (b entryBuffer) SetText(chars string, nChars int) {
-	var _arg0 *C.GtkEntryBuffer
-	var _arg1 *C.char
-	var _arg2 C.int
+	var _arg0 *C.GtkEntryBuffer // out
+	var _arg1 *C.char           // out
+	var _arg2 C.int             // out
 
 	_arg0 = (*C.GtkEntryBuffer)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(chars))

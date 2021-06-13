@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -18,7 +18,7 @@ import "C"
 // macro). g_usleep() may have limited precision, depending on hardware and
 // operating system; don't rely on the exact length of the sleep.
 func Usleep(microseconds uint32) {
-	var _arg1 C.gulong
+	var _arg1 C.gulong // out
 
 	_arg1 = C.gulong(microseconds)
 
@@ -53,7 +53,7 @@ func (t *Timer) Native() unsafe.Pointer {
 // Continue resumes a timer that has previously been stopped with
 // g_timer_stop(). g_timer_stop() must be called before using this function.
 func (t *Timer) Continue() {
-	var _arg0 *C.GTimer
+	var _arg0 *C.GTimer // out
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
@@ -62,7 +62,7 @@ func (t *Timer) Continue() {
 
 // Destroy destroys a timer, freeing associated resources.
 func (t *Timer) Destroy() {
-	var _arg0 *C.GTimer
+	var _arg0 *C.GTimer // out
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
@@ -75,17 +75,17 @@ func (t *Timer) Destroy() {
 // is the number of seconds elapsed, including any fractional part. The
 // @microseconds out parameter is essentially useless.
 func (t *Timer) Elapsed(microseconds *uint32) float64 {
-	var _arg0 *C.GTimer
-	var _arg1 *C.gulong
+	var _arg0 *C.GTimer // out
+	var _arg1 *C.gulong // out
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 	_arg1 = *C.gulong(microseconds)
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.g_timer_elapsed(_arg0, _arg1)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -94,15 +94,15 @@ func (t *Timer) Elapsed(microseconds *uint32) float64 {
 
 // IsActive exposes whether the timer is currently active.
 func (t *Timer) IsActive() bool {
-	var _arg0 *C.GTimer
+	var _arg0 *C.GTimer // out
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_timer_is_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -115,7 +115,7 @@ func (t *Timer) IsActive() bool {
 // already-started timer to reset the start time, so g_timer_reset() serves no
 // purpose.
 func (t *Timer) Reset() {
-	var _arg0 *C.GTimer
+	var _arg0 *C.GTimer // out
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
@@ -127,7 +127,7 @@ func (t *Timer) Reset() {
 // marks the start time, so no need to call g_timer_start() immediately after
 // creating the timer.
 func (t *Timer) Start() {
-	var _arg0 *C.GTimer
+	var _arg0 *C.GTimer // out
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 
@@ -137,7 +137,7 @@ func (t *Timer) Start() {
 // Stop marks an end time, so calls to g_timer_elapsed() will return the
 // difference between this end time and the start time.
 func (t *Timer) Stop() {
-	var _arg0 *C.GTimer
+	var _arg0 *C.GTimer // out
 
 	_arg0 = (*C.GTimer)(unsafe.Pointer(t.Native()))
 

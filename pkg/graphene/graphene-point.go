@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
+// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
@@ -47,35 +47,35 @@ func (p *Point) Native() unsafe.Pointer {
 
 // X gets the field inside the struct.
 func (p *Point) X() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(p.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (p *Point) Y() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(p.native.y)
 	return v
 }
 
 // Distance computes the distance between @a and @b.
 func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
-	var _arg0 *C.graphene_point_t
-	var _arg1 *C.graphene_point_t
+	var _arg0 *C.graphene_point_t // out
+	var _arg1 *C.graphene_point_t // out
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
 
-	var _arg2 C.float
-	var _arg3 C.float
-	var _cret C.float
+	var _arg2 C.float // in
+	var _arg3 C.float // in
+	var _cret C.float // in
 
 	_cret = C.graphene_point_distance(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _dX float32
-	var _dY float32
-	var _gfloat float32
+	var _dX float32     // out
+	var _dY float32     // out
+	var _gfloat float32 // out
 
 	_dX = (float32)(_arg2)
 	_dY = (float32)(_arg3)
@@ -90,17 +90,17 @@ func (a *Point) Distance(b *Point) (dX float32, dY float32, gfloat float32) {
 // control the fuzziness of the match, you can use graphene_point_near()
 // instead.
 func (a *Point) Equal(b *Point) bool {
-	var _arg0 *C.graphene_point_t
-	var _arg1 *C.graphene_point_t
+	var _arg0 *C.graphene_point_t // out
+	var _arg1 *C.graphene_point_t // out
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_point_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -111,7 +111,7 @@ func (a *Point) Equal(b *Point) bool {
 
 // Free frees the resources allocated by graphene_point_alloc().
 func (p *Point) Free() {
-	var _arg0 *C.graphene_point_t
+	var _arg0 *C.graphene_point_t // out
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
@@ -121,9 +121,9 @@ func (p *Point) Free() {
 // Interpolate: linearly interpolates the coordinates of @a and @b using the
 // given @factor.
 func (a *Point) Interpolate(b *Point, factor float64) Point {
-	var _arg0 *C.graphene_point_t
-	var _arg1 *C.graphene_point_t
-	var _arg2 C.double
+	var _arg0 *C.graphene_point_t // out
+	var _arg1 *C.graphene_point_t // out
+	var _arg2 C.double            // out
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
@@ -139,19 +139,19 @@ func (a *Point) Interpolate(b *Point, factor float64) Point {
 // Near checks whether the two points @a and @b are within the threshold of
 // @epsilon.
 func (a *Point) Near(b *Point, epsilon float32) bool {
-	var _arg0 *C.graphene_point_t
-	var _arg1 *C.graphene_point_t
-	var _arg2 C.float
+	var _arg0 *C.graphene_point_t // out
+	var _arg1 *C.graphene_point_t // out
+	var _arg2 C.float             // out
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(b.Native()))
 	_arg2 = C.float(epsilon)
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_point_near(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -163,7 +163,7 @@ func (a *Point) Near(b *Point, epsilon float32) bool {
 // ToVec2 stores the coordinates of the given #graphene_point_t into a
 // #graphene_vec2_t.
 func (p *Point) ToVec2() Vec2 {
-	var _arg0 *C.graphene_point_t
+	var _arg0 *C.graphene_point_t // out
 
 	_arg0 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 

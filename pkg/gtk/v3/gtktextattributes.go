@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -48,7 +48,7 @@ func (t *TextAppearance) Native() unsafe.Pointer {
 
 // Rise gets the field inside the struct.
 func (t *TextAppearance) Rise() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.rise)
 	return v
 }
@@ -83,56 +83,56 @@ func (t *TextAttributes) Native() unsafe.Pointer {
 
 // FontScale gets the field inside the struct.
 func (t *TextAttributes) FontScale() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(t.native.font_scale)
 	return v
 }
 
 // LeftMargin gets the field inside the struct.
 func (t *TextAttributes) LeftMargin() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.left_margin)
 	return v
 }
 
 // RightMargin gets the field inside the struct.
 func (t *TextAttributes) RightMargin() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.right_margin)
 	return v
 }
 
 // Indent gets the field inside the struct.
 func (t *TextAttributes) Indent() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.indent)
 	return v
 }
 
 // PixelsAboveLines gets the field inside the struct.
 func (t *TextAttributes) PixelsAboveLines() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.pixels_above_lines)
 	return v
 }
 
 // PixelsBelowLines gets the field inside the struct.
 func (t *TextAttributes) PixelsBelowLines() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.pixels_below_lines)
 	return v
 }
 
 // PixelsInsideWrap gets the field inside the struct.
 func (t *TextAttributes) PixelsInsideWrap() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.pixels_inside_wrap)
 	return v
 }
 
 // LetterSpacing gets the field inside the struct.
 func (t *TextAttributes) LetterSpacing() int {
-	var v int
+	var v int // out
 	v = (int)(t.native.letter_spacing)
 	return v
 }
@@ -140,8 +140,8 @@ func (t *TextAttributes) LetterSpacing() int {
 // CopyValues copies the values from @src to @dest so that @dest has the same
 // values as @src. Frees existing values in @dest.
 func (s *TextAttributes) CopyValues(dest *TextAttributes) {
-	var _arg0 *C.GtkTextAttributes
-	var _arg1 *C.GtkTextAttributes
+	var _arg0 *C.GtkTextAttributes // out
+	var _arg1 *C.GtkTextAttributes // out
 
 	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTextAttributes)(unsafe.Pointer(dest.Native()))
@@ -152,7 +152,7 @@ func (s *TextAttributes) CopyValues(dest *TextAttributes) {
 // Unref decrements the reference count on @values, freeing the structure if the
 // reference count reaches 0.
 func (v *TextAttributes) Unref() {
-	var _arg0 *C.GtkTextAttributes
+	var _arg0 *C.GtkTextAttributes // out
 
 	_arg0 = (*C.GtkTextAttributes)(unsafe.Pointer(v.Native()))
 

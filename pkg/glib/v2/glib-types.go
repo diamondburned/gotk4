@@ -6,18 +6,18 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
 import "C"
 
 func StrvGetType() externglib.Type {
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_strv_get_type()
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -25,11 +25,11 @@ func StrvGetType() externglib.Type {
 }
 
 func VariantGetGType() externglib.Type {
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_variant_get_gtype()
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 

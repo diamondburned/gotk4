@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -84,15 +84,15 @@ func marshalEventController(p uintptr) (interface{}, error) {
 // CurrentEventTime returns the timestamp of the event that is currently
 // being handled by the controller, and 0 otherwise.
 func (c eventController) CurrentEventTime() uint32 {
-	var _arg0 *C.GtkEventController
+	var _arg0 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gtk_event_controller_get_current_event_time(_arg0)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -101,15 +101,15 @@ func (c eventController) CurrentEventTime() uint32 {
 
 // Name gets the name of @controller.
 func (c eventController) Name() string {
-	var _arg0 *C.GtkEventController
+	var _arg0 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_event_controller_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -118,7 +118,7 @@ func (c eventController) Name() string {
 
 // Reset resets the @controller to a clean state.
 func (c eventController) Reset() {
-	var _arg0 *C.GtkEventController
+	var _arg0 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
@@ -127,8 +127,8 @@ func (c eventController) Reset() {
 
 // SetName sets a name on the controller that can be used for debugging.
 func (c eventController) SetName(name string) {
-	var _arg0 *C.GtkEventController
-	var _arg1 *C.char
+	var _arg0 *C.GtkEventController // out
+	var _arg1 *C.char               // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(name))
@@ -144,8 +144,8 @@ func (c eventController) SetName(name string) {
 // events that are targeted at widgets on a different surface, such as
 // popovers.
 func (c eventController) SetPropagationLimit(limit PropagationLimit) {
-	var _arg0 *C.GtkEventController
-	var _arg1 C.GtkPropagationLimit
+	var _arg0 *C.GtkEventController // out
+	var _arg1 C.GtkPropagationLimit // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkPropagationLimit)(limit)
@@ -159,8 +159,8 @@ func (c eventController) SetPropagationLimit(limit PropagationLimit) {
 // If @phase is GTK_PHASE_NONE, no automatic event handling will be
 // performed, but other additional gesture maintenance will.
 func (c eventController) SetPropagationPhase(phase PropagationPhase) {
-	var _arg0 *C.GtkEventController
-	var _arg1 C.GtkPropagationPhase
+	var _arg0 *C.GtkEventController // out
+	var _arg1 C.GtkPropagationPhase // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkPropagationPhase)(phase)

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -84,8 +84,8 @@ func marshalEventControllerScroll(p uintptr) (interface{}, error) {
 
 // SetFlags sets the flags conditioning scroll controller behavior.
 func (c eventControllerScroll) SetFlags(flags EventControllerScrollFlags) {
-	var _arg0 *C.GtkEventControllerScroll
-	var _arg1 C.GtkEventControllerScrollFlags
+	var _arg0 *C.GtkEventControllerScroll     // out
+	var _arg1 C.GtkEventControllerScrollFlags // out
 
 	_arg0 = (*C.GtkEventControllerScroll)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkEventControllerScrollFlags)(flags)

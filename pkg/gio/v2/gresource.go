@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -31,20 +31,20 @@ import "C"
 //
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([]string, error) {
-	var _arg1 *C.char
-	var _arg2 C.GResourceLookupFlags
+	var _arg1 *C.char                // out
+	var _arg2 C.GResourceLookupFlags // out
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
 	var _cret **C.char
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	_cret = C.g_resources_enumerate_children(_arg1, _arg2, _cerr)
+	_cret = C.g_resources_enumerate_children(_arg1, _arg2, &_cerr)
 
 	var _utf8s []string
-	var _goerr error
+	var _goerr error // out
 
 	{
 		var length int
@@ -74,22 +74,22 @@ func ResourcesEnumerateChildren(path string, lookupFlags ResourceLookupFlags) ([
 //
 // @lookup_flags controls the behaviour of the lookup.
 func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint32, error) {
-	var _arg1 *C.char
-	var _arg2 C.GResourceLookupFlags
+	var _arg1 *C.char                // out
+	var _arg2 C.GResourceLookupFlags // out
 
 	_arg1 = (*C.char)(C.CString(path))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (C.GResourceLookupFlags)(lookupFlags)
 
-	var _arg3 C.gsize
-	var _arg4 C.guint32
-	var _cerr *C.GError
+	var _arg3 C.gsize   // in
+	var _arg4 C.guint32 // in
+	var _cerr *C.GError // in
 
-	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, _cerr)
+	C.g_resources_get_info(_arg1, _arg2, &_arg3, &_arg4, &_cerr)
 
-	var _size uint
-	var _flags uint32
-	var _goerr error
+	var _size uint    // out
+	var _flags uint32 // out
+	var _goerr error  // out
 
 	_size = (uint)(_arg3)
 	_flags = (uint32)(_arg4)
@@ -102,7 +102,7 @@ func ResourcesGetInfo(path string, lookupFlags ResourceLookupFlags) (uint, uint3
 // resources. Once a resource is registered the files in it can be accessed with
 // the global resource lookup functions like g_resources_lookup_data().
 func ResourcesRegister(resource *Resource) {
-	var _arg1 *C.GResource
+	var _arg1 *C.GResource // out
 
 	_arg1 = (*C.GResource)(unsafe.Pointer(resource.Native()))
 
@@ -112,7 +112,7 @@ func ResourcesRegister(resource *Resource) {
 // ResourcesUnregister unregisters the resource from the process-global set of
 // resources.
 func ResourcesUnregister(resource *Resource) {
-	var _arg1 *C.GResource
+	var _arg1 *C.GResource // out
 
 	_arg1 = (*C.GResource)(unsafe.Pointer(resource.Native()))
 
@@ -151,7 +151,7 @@ func (s *StaticResource) Native() unsafe.Pointer {
 // [glib-compile-resources][glib-compile-resources] and is not typically used by
 // other code.
 func (s *StaticResource) Fini() {
-	var _arg0 *C.GStaticResource
+	var _arg0 *C.GStaticResource // out
 
 	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
 
@@ -164,7 +164,7 @@ func (s *StaticResource) Fini() {
 // [glib-compile-resources][glib-compile-resources] and is not typically used by
 // other code.
 func (s *StaticResource) Init() {
-	var _arg0 *C.GStaticResource
+	var _arg0 *C.GStaticResource // out
 
 	_arg0 = (*C.GStaticResource)(unsafe.Pointer(s.Native()))
 

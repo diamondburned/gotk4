@@ -93,10 +93,14 @@ func NewThrowValue(in, out string) ValueProp {
 	return ValueProp{
 		InName:  in,
 		OutName: out,
+		Ownership: gir.TransferOwnership{
+			TransferOwnership: "full",
+		},
 		AnyType: gir.AnyType{
 			Type: &gir.Type{
-				Name:  "GLib.Error",
-				CType: "GError*",
+				Name: "GLib.Error",
+				// Function parameter type is technically a double-pointer here.
+				CType: "GError**",
 			},
 		},
 		AllowNone:         true,
@@ -399,7 +403,7 @@ func (value *ValueConverted) resolveType(conv *conversionTo, inputC bool) bool {
 
 	// If this is the output parameter, then the pointer count should be less.
 	// This only affects the Go type.
-	if value.ParameterIsOutput {
+	if inputC && value.ParameterIsOutput {
 		value.resolved.Ptr--
 	}
 
@@ -424,8 +428,8 @@ func (value *ValueConverted) resolveType(conv *conversionTo, inputC bool) bool {
 		value.InType = strings.TrimPrefix(value.InType, "*")
 	}
 
-	value.outDecl.Linef("var %s %s", value.OutName, value.OutType)
-	value.inDecl.Linef("var %s %s", value.InName, value.InType)
+	value.inDecl.Linef("var %s %s // in", value.InName, value.InType)
+	value.outDecl.Linef("var %s %s // out", value.OutName, value.OutType)
 
 	return true
 }

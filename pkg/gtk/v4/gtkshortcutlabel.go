@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -72,15 +72,15 @@ func marshalShortcutLabel(p uintptr) (interface{}, error) {
 
 // Accelerator retrieves the current accelerator of @self.
 func (s shortcutLabel) Accelerator() string {
-	var _arg0 *C.GtkShortcutLabel
+	var _arg0 *C.GtkShortcutLabel // out
 
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_shortcut_label_get_accelerator(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -90,15 +90,15 @@ func (s shortcutLabel) Accelerator() string {
 // DisabledText retrieves the text that is displayed when no accelerator is
 // set.
 func (s shortcutLabel) DisabledText() string {
-	var _arg0 *C.GtkShortcutLabel
+	var _arg0 *C.GtkShortcutLabel // out
 
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_shortcut_label_get_disabled_text(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -107,8 +107,8 @@ func (s shortcutLabel) DisabledText() string {
 
 // SetAccelerator sets the accelerator to be displayed by @self.
 func (s shortcutLabel) SetAccelerator(accelerator string) {
-	var _arg0 *C.GtkShortcutLabel
-	var _arg1 *C.char
+	var _arg0 *C.GtkShortcutLabel // out
+	var _arg1 *C.char             // out
 
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(accelerator))
@@ -120,8 +120,8 @@ func (s shortcutLabel) SetAccelerator(accelerator string) {
 // SetDisabledText sets the text to be displayed by @self when no
 // accelerator is set.
 func (s shortcutLabel) SetDisabledText(disabledText string) {
-	var _arg0 *C.GtkShortcutLabel
-	var _arg1 *C.char
+	var _arg0 *C.GtkShortcutLabel // out
+	var _arg1 *C.char             // out
 
 	_arg0 = (*C.GtkShortcutLabel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(disabledText))

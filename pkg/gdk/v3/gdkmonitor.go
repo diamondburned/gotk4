@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -104,7 +104,7 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 // the display coordinate space. The returned geometry is in ”application
 // pixels”, not in ”device pixels” (see gdk_monitor_get_scale_factor()).
 func (m monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -117,15 +117,15 @@ func (m monitor) Geometry() Rectangle {
 
 // HeightMm gets the height in millimeters of the monitor.
 func (m monitor) HeightMm() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -139,15 +139,15 @@ func (m monitor) HeightMm() int {
 //
 // PNP ID registry is located at https://uefi.org/pnp_id_list
 func (m monitor) Manufacturer() string {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_monitor_get_manufacturer(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -156,15 +156,15 @@ func (m monitor) Manufacturer() string {
 
 // Model gets the a string identifying the monitor model, if available.
 func (m monitor) Model() string {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_monitor_get_model(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -176,15 +176,15 @@ func (m monitor) Model() string {
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
 // 60000.
 func (m monitor) RefreshRate() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -199,15 +199,15 @@ func (m monitor) RefreshRate() int {
 // monitor, but most of the time you’re drawing to a window where it is
 // better to use gdk_window_get_scale_factor() instead.
 func (m monitor) ScaleFactor() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -216,15 +216,15 @@ func (m monitor) ScaleFactor() int {
 
 // WidthMm gets the width in millimeters of the monitor.
 func (m monitor) WidthMm() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -244,7 +244,7 @@ func (m monitor) WidthMm() int {
 // will return the monitor geometry if a workarea is not available, or does
 // not apply.
 func (m monitor) Workarea() Rectangle {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -258,15 +258,15 @@ func (m monitor) Workarea() Rectangle {
 // IsPrimary gets whether this monitor should be considered primary (see
 // gdk_display_get_primary_monitor()).
 func (m monitor) IsPrimary() bool {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_monitor_is_primary(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -73,8 +73,8 @@ func marshalActionBar(p uintptr) (interface{}, error) {
 // PackEnd adds @child to @action_bar, packed with reference to the end of
 // the @action_bar.
 func (a actionBar) PackEnd(child Widget) {
-	var _arg0 *C.GtkActionBar
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -85,8 +85,8 @@ func (a actionBar) PackEnd(child Widget) {
 // PackStart adds @child to @action_bar, packed with reference to the start
 // of the @action_bar.
 func (a actionBar) PackStart(child Widget) {
-	var _arg0 *C.GtkActionBar
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -96,8 +96,8 @@ func (a actionBar) PackStart(child Widget) {
 
 // SetCenterWidget sets the center widget for the ActionBar.
 func (a actionBar) SetCenterWidget(centerWidget Widget) {
-	var _arg0 *C.GtkActionBar
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkActionBar // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkActionBar)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(centerWidget.Native()))

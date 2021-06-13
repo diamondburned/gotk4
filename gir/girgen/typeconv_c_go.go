@@ -104,7 +104,7 @@ func (conv *TypeConversionToGo) arrayConverter(value *ValueConverted) bool {
 			return false
 		}
 
-		value.inDecl.Linef("var %s %s", length.InName, anyTypeCGo(length.AnyType))
+		value.inDecl.Linef("var %s %s // in", length.InName, length.InType)
 		// Length has no outDecl.
 
 		// If we're owning the new data, then we will directly use the backing

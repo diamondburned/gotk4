@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -183,9 +183,9 @@ func marshalSettingsBackend(p uintptr) (interface{}, error) {
 // g_settings_backend_write() then @origin_tag must be set to the same value
 // that was passed to that call.
 func (b settingsBackend) Changed(key string, originTag interface{}) {
-	var _arg0 *C.GSettingsBackend
-	var _arg1 *C.gchar
-	var _arg2 C.gpointer
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gpointer          // out
 
 	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))
@@ -199,9 +199,9 @@ func (b settingsBackend) Changed(key string, originTag interface{}) {
 // changes from @tree, computes the longest common prefix and calls
 // g_settings_backend_changed().
 func (b settingsBackend) ChangedTree(tree *glib.Tree, originTag interface{}) {
-	var _arg0 *C.GSettingsBackend
-	var _arg1 *C.GTree
-	var _arg2 C.gpointer
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.GTree            // out
+	var _arg2 C.gpointer          // out
 
 	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GTree)(unsafe.Pointer(tree.Native()))
@@ -231,10 +231,10 @@ func (b settingsBackend) ChangedTree(tree *glib.Tree, originTag interface{}) {
 // as long as possible (ie: the longest common prefix of all of the keys
 // that were changed) but this is not strictly required.
 func (b settingsBackend) KeysChanged(path string, items []string, originTag interface{}) {
-	var _arg0 *C.GSettingsBackend
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
 	var _arg2 **C.gchar
-	var _arg3 C.gpointer
+	var _arg3 C.gpointer // out
 
 	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
@@ -277,9 +277,9 @@ func (b settingsBackend) KeysChanged(path string, items []string, originTag inte
 // this function is called with the path of "/" then every single key in the
 // application will be notified of a possible change.
 func (b settingsBackend) PathChanged(path string, originTag interface{}) {
-	var _arg0 *C.GSettingsBackend
-	var _arg1 *C.gchar
-	var _arg2 C.gpointer
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
+	var _arg2 C.gpointer          // out
 
 	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
@@ -295,8 +295,8 @@ func (b settingsBackend) PathChanged(path string, originTag interface{}) {
 // Since GSettings performs no locking operations for itself, this call will
 // always be made in response to external events.
 func (b settingsBackend) PathWritableChanged(path string) {
-	var _arg0 *C.GSettingsBackend
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(path))
@@ -311,8 +311,8 @@ func (b settingsBackend) PathWritableChanged(path string) {
 // Since GSettings performs no locking operations for itself, this call will
 // always be made in response to external events.
 func (b settingsBackend) WritableChanged(key string) {
-	var _arg0 *C.GSettingsBackend
-	var _arg1 *C.gchar
+	var _arg0 *C.GSettingsBackend // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GSettingsBackend)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(key))

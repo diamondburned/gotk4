@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -71,8 +71,8 @@ func marshalWindowHandle(p uintptr) (interface{}, error) {
 
 // SetChild sets the child widget of @self.
 func (s windowHandle) SetChild(child Widget) {
-	var _arg0 *C.GtkWindowHandle
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkWindowHandle // out
+	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkWindowHandle)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))

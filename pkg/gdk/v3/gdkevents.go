@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -22,11 +22,11 @@ func init() {
 
 // EventsPending checks if any events are ready to be processed for any display.
 func EventsPending() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_events_pending()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -37,11 +37,11 @@ func EventsPending() bool {
 
 // GetShowEvents gets whether event debugging output is enabled.
 func GetShowEvents() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_get_show_events()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -54,7 +54,7 @@ func GetShowEvents() bool {
 // GTK+ must be compiled with debugging (that is, configured using the
 // `--enable-debug` option) to use this option.
 func SetShowEvents(showEvents bool) {
-	var _arg1 C.gboolean
+	var _arg1 C.gboolean // out
 
 	if showEvents {
 		_arg1 = C.gboolean(1)
@@ -66,18 +66,18 @@ func SetShowEvents(showEvents bool) {
 // SettingGet obtains a desktop-wide setting, such as the double-click time, for
 // the default screen. See gdk_screen_get_setting().
 func SettingGet(name string, value **externglib.Value) bool {
-	var _arg1 *C.gchar
-	var _arg2 *C.GValue
+	var _arg1 *C.gchar  // out
+	var _arg2 *C.GValue // out
 
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GValue)(value.GValue)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_setting_get(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -114,7 +114,7 @@ func (e *EventAny) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventAny) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
@@ -170,56 +170,56 @@ func (e *EventButton) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventButton) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventButton) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventButton) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventButton) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y)
 	return v
 }
 
 // Axes gets the field inside the struct.
 func (e *EventButton) Axes() *float64 {
-	var v *float64
+	var v *float64 // out
 	v = (*float64)(e.native.axes)
 	return v
 }
 
 // Button gets the field inside the struct.
 func (e *EventButton) Button() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.button)
 	return v
 }
 
 // XRoot gets the field inside the struct.
 func (e *EventButton) XRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventButton) YRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y_root)
 	return v
 }
@@ -251,35 +251,35 @@ func (e *EventConfigure) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventConfigure) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventConfigure) X() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventConfigure) Y() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.y)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (e *EventConfigure) Width() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (e *EventConfigure) Height() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.height)
 	return v
 }
@@ -311,49 +311,49 @@ func (e *EventCrossing) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventCrossing) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventCrossing) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventCrossing) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventCrossing) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y)
 	return v
 }
 
 // XRoot gets the field inside the struct.
 func (e *EventCrossing) XRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventCrossing) YRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y_root)
 	return v
 }
 
 // Focus gets the field inside the struct.
 func (e *EventCrossing) Focus() bool {
-	var v bool
+	var v bool // out
 	if e.native.focus {
 		v = true
 	}
@@ -387,28 +387,28 @@ func (e *EventDND) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventDND) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventDND) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // XRoot gets the field inside the struct.
 func (e *EventDND) XRoot() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventDND) YRoot() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(e.native.y_root)
 	return v
 }
@@ -441,14 +441,14 @@ func (e *EventExpose) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventExpose) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Count gets the field inside the struct.
 func (e *EventExpose) Count() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.count)
 	return v
 }
@@ -480,14 +480,14 @@ func (e *EventFocus) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventFocus) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // In gets the field inside the struct.
 func (e *EventFocus) In() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(e.native.in)
 	return v
 }
@@ -523,14 +523,14 @@ func (e *EventGrabBroken) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventGrabBroken) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Keyboard gets the field inside the struct.
 func (e *EventGrabBroken) Keyboard() bool {
-	var v bool
+	var v bool // out
 	if e.native.keyboard {
 		v = true
 	}
@@ -539,7 +539,7 @@ func (e *EventGrabBroken) Keyboard() bool {
 
 // Implicit gets the field inside the struct.
 func (e *EventGrabBroken) Implicit() bool {
-	var v bool
+	var v bool // out
 	if e.native.implicit {
 		v = true
 	}
@@ -573,49 +573,49 @@ func (e *EventKey) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventKey) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventKey) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // Keyval gets the field inside the struct.
 func (e *EventKey) Keyval() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.keyval)
 	return v
 }
 
 // Length gets the field inside the struct.
 func (e *EventKey) Length() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.length)
 	return v
 }
 
 // String gets the field inside the struct.
 func (e *EventKey) String() string {
-	var v string
+	var v string // out
 	v = C.GoString(e.native.string)
 	return v
 }
 
 // HardwareKeycode gets the field inside the struct.
 func (e *EventKey) HardwareKeycode() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(e.native.hardware_keycode)
 	return v
 }
 
 // Group gets the field inside the struct.
 func (e *EventKey) Group() byte {
-	var v byte
+	var v byte // out
 	v = (byte)(e.native.group)
 	return v
 }
@@ -647,56 +647,56 @@ func (e *EventMotion) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventMotion) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventMotion) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventMotion) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventMotion) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y)
 	return v
 }
 
 // Axes gets the field inside the struct.
 func (e *EventMotion) Axes() *float64 {
-	var v *float64
+	var v *float64 // out
 	v = (*float64)(e.native.axes)
 	return v
 }
 
 // IsHint gets the field inside the struct.
 func (e *EventMotion) IsHint() int16 {
-	var v int16
+	var v int16 // out
 	v = (int16)(e.native.is_hint)
 	return v
 }
 
 // XRoot gets the field inside the struct.
 func (e *EventMotion) XRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventMotion) YRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y_root)
 	return v
 }
@@ -730,21 +730,21 @@ func (e *EventOwnerChange) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventOwnerChange) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventOwnerChange) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // SelectionTime gets the field inside the struct.
 func (e *EventOwnerChange) SelectionTime() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.selection_time)
 	return v
 }
@@ -777,42 +777,42 @@ func (e *EventPadAxis) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventPadAxis) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventPadAxis) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // Group gets the field inside the struct.
 func (e *EventPadAxis) Group() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.group)
 	return v
 }
 
 // Index gets the field inside the struct.
 func (e *EventPadAxis) Index() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.index)
 	return v
 }
 
 // Mode gets the field inside the struct.
 func (e *EventPadAxis) Mode() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.mode)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (e *EventPadAxis) Value() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.value)
 	return v
 }
@@ -845,35 +845,35 @@ func (e *EventPadButton) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventPadButton) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventPadButton) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // Group gets the field inside the struct.
 func (e *EventPadButton) Group() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.group)
 	return v
 }
 
 // Button gets the field inside the struct.
 func (e *EventPadButton) Button() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.button)
 	return v
 }
 
 // Mode gets the field inside the struct.
 func (e *EventPadButton) Mode() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.mode)
 	return v
 }
@@ -906,28 +906,28 @@ func (e *EventPadGroupMode) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventPadGroupMode) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventPadGroupMode) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // Group gets the field inside the struct.
 func (e *EventPadGroupMode) Group() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.group)
 	return v
 }
 
 // Mode gets the field inside the struct.
 func (e *EventPadGroupMode) Mode() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(e.native.mode)
 	return v
 }
@@ -959,14 +959,14 @@ func (e *EventProperty) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventProperty) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventProperty) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
@@ -1006,14 +1006,14 @@ func (e *EventProximity) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventProximity) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventProximity) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
@@ -1051,56 +1051,56 @@ func (e *EventScroll) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventScroll) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventScroll) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventScroll) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventScroll) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y)
 	return v
 }
 
 // XRoot gets the field inside the struct.
 func (e *EventScroll) XRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventScroll) YRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y_root)
 	return v
 }
 
 // DeltaX gets the field inside the struct.
 func (e *EventScroll) DeltaX() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.delta_x)
 	return v
 }
 
 // DeltaY gets the field inside the struct.
 func (e *EventScroll) DeltaY() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.delta_y)
 	return v
 }
@@ -1133,14 +1133,14 @@ func (e *EventSelection) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventSelection) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventSelection) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
@@ -1196,14 +1196,14 @@ func (e *EventSetting) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventSetting) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Name gets the field inside the struct.
 func (e *EventSetting) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(e.native.name)
 	return v
 }
@@ -1243,42 +1243,42 @@ func (e *EventTouch) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventTouch) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventTouch) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventTouch) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventTouch) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y)
 	return v
 }
 
 // Axes gets the field inside the struct.
 func (e *EventTouch) Axes() *float64 {
-	var v *float64
+	var v *float64 // out
 	v = (*float64)(e.native.axes)
 	return v
 }
 
 // EmulatingPointer gets the field inside the struct.
 func (e *EventTouch) EmulatingPointer() bool {
-	var v bool
+	var v bool // out
 	if e.native.emulating_pointer {
 		v = true
 	}
@@ -1287,14 +1287,14 @@ func (e *EventTouch) EmulatingPointer() bool {
 
 // XRoot gets the field inside the struct.
 func (e *EventTouch) XRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventTouch) YRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y_root)
 	return v
 }
@@ -1326,84 +1326,84 @@ func (e *EventTouchpadPinch) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventTouchpadPinch) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Phase gets the field inside the struct.
 func (e *EventTouchpadPinch) Phase() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.phase)
 	return v
 }
 
 // NFingers gets the field inside the struct.
 func (e *EventTouchpadPinch) NFingers() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.n_fingers)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventTouchpadPinch) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventTouchpadPinch) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventTouchpadPinch) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y)
 	return v
 }
 
 // Dx gets the field inside the struct.
 func (e *EventTouchpadPinch) Dx() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.dx)
 	return v
 }
 
 // Dy gets the field inside the struct.
 func (e *EventTouchpadPinch) Dy() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.dy)
 	return v
 }
 
 // AngleDelta gets the field inside the struct.
 func (e *EventTouchpadPinch) AngleDelta() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.angle_delta)
 	return v
 }
 
 // Scale gets the field inside the struct.
 func (e *EventTouchpadPinch) Scale() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.scale)
 	return v
 }
 
 // XRoot gets the field inside the struct.
 func (e *EventTouchpadPinch) XRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventTouchpadPinch) YRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y_root)
 	return v
 }
@@ -1435,70 +1435,70 @@ func (e *EventTouchpadSwipe) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventTouchpadSwipe) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
 
 // Phase gets the field inside the struct.
 func (e *EventTouchpadSwipe) Phase() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.phase)
 	return v
 }
 
 // NFingers gets the field inside the struct.
 func (e *EventTouchpadSwipe) NFingers() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.n_fingers)
 	return v
 }
 
 // Time gets the field inside the struct.
 func (e *EventTouchpadSwipe) Time() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(e.native.time)
 	return v
 }
 
 // X gets the field inside the struct.
 func (e *EventTouchpadSwipe) X() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x)
 	return v
 }
 
 // Y gets the field inside the struct.
 func (e *EventTouchpadSwipe) Y() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y)
 	return v
 }
 
 // Dx gets the field inside the struct.
 func (e *EventTouchpadSwipe) Dx() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.dx)
 	return v
 }
 
 // Dy gets the field inside the struct.
 func (e *EventTouchpadSwipe) Dy() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.dy)
 	return v
 }
 
 // XRoot gets the field inside the struct.
 func (e *EventTouchpadSwipe) XRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.x_root)
 	return v
 }
 
 // YRoot gets the field inside the struct.
 func (e *EventTouchpadSwipe) YRoot() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(e.native.y_root)
 	return v
 }
@@ -1530,7 +1530,7 @@ func (e *EventVisibility) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventVisibility) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }
@@ -1562,7 +1562,7 @@ func (e *EventWindowState) Native() unsafe.Pointer {
 
 // SendEvent gets the field inside the struct.
 func (e *EventWindowState) SendEvent() int8 {
-	var v int8
+	var v int8 // out
 	v = (int8)(e.native.send_event)
 	return v
 }

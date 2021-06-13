@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -389,15 +389,15 @@ func marshalEntry(p uintptr) (interface{}, error) {
 // ActivatesDefault retrieves the value set by
 // gtk_entry_set_activates_default().
 func (e entry) ActivatesDefault() bool {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_get_activates_default(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -410,15 +410,15 @@ func (e entry) ActivatesDefault() bool {
 //
 // See also: [property@Gtk.Editable:xalign]
 func (e entry) Alignment() float32 {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.float
+	var _cret C.float // in
 
 	_cret = C.gtk_entry_get_alignment(_arg0)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -428,15 +428,15 @@ func (e entry) Alignment() float32 {
 // CurrentIconDragSource returns the index of the icon which is the source
 // of the current DND operation, or -1.
 func (e entry) CurrentIconDragSource() int {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_entry_get_current_icon_drag_source(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -445,15 +445,15 @@ func (e entry) CurrentIconDragSource() int {
 
 // HasFrame gets the value set by gtk_entry_set_has_frame().
 func (e entry) HasFrame() bool {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_get_has_frame(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -464,17 +464,17 @@ func (e entry) HasFrame() bool {
 
 // IconActivatable returns whether the icon is activatable.
 func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_get_icon_activatable(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -492,8 +492,8 @@ func (e entry) IconActivatable(iconPos EntryIconPosition) bool {
 // @icon_area is filled with zeros. Otherwise, @icon_area will be filled
 // with the icon's allocation, relative to @entry's allocation.
 func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -511,19 +511,19 @@ func (e entry) IconArea(iconPos EntryIconPosition) gdk.Rectangle {
 // If @x, @y doesn’t lie inside an icon, -1 is returned. This function is
 // intended for use in a [signal@Gtk.Widget::query-tooltip] signal handler.
 func (e entry) IconAtPos(x int, y int) int {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.int       // out
+	var _arg2 C.int       // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.int(x)
 	_arg2 = C.int(y)
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_entry_get_icon_at_pos(_arg0, _arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -535,17 +535,17 @@ func (e entry) IconAtPos(x int, y int) int {
 // nil is returned if there is no icon or if the icon was set by some other
 // method (e.g., by `GdkPaintable` or gicon).
 func (e entry) IconName(iconPos EntryIconPosition) string {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_entry_get_icon_name(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -554,17 +554,17 @@ func (e entry) IconName(iconPos EntryIconPosition) string {
 
 // IconSensitive returns whether the icon appears sensitive or insensitive.
 func (e entry) IconSensitive(iconPos EntryIconPosition) bool {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_get_icon_sensitive(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -576,17 +576,17 @@ func (e entry) IconSensitive(iconPos EntryIconPosition) bool {
 // IconTooltipMarkup gets the contents of the tooltip on the icon at the
 // specified position in @entry.
 func (e entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_entry_get_icon_tooltip_markup(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -597,17 +597,17 @@ func (e entry) IconTooltipMarkup(iconPos EntryIconPosition) string {
 // IconTooltipText gets the contents of the tooltip on the icon at the
 // specified position in @entry.
 func (e entry) IconTooltipText(iconPos EntryIconPosition) string {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_entry_get_icon_tooltip_text(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -618,15 +618,15 @@ func (e entry) IconTooltipText(iconPos EntryIconPosition) string {
 // InvisibleChar retrieves the character displayed in place of the actual
 // text in “password mode”.
 func (e entry) InvisibleChar() uint32 {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gunichar
+	var _cret C.gunichar // in
 
 	_cret = C.gtk_entry_get_invisible_char(_arg0)
 
-	var _gunichar uint32
+	var _gunichar uint32 // out
 
 	_gunichar = (uint32)(_cret)
 
@@ -637,15 +637,15 @@ func (e entry) InvisibleChar() uint32 {
 //
 // See [method@Gtk.Entry.set_max_length].
 func (e entry) MaxLength() int {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_entry_get_max_length(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -654,15 +654,15 @@ func (e entry) MaxLength() int {
 
 // OverwriteMode gets whether the `GtkEntry` is in overwrite mode.
 func (e entry) OverwriteMode() bool {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_get_overwrite_mode(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -674,15 +674,15 @@ func (e entry) OverwriteMode() bool {
 // PlaceholderText retrieves the text that will be displayed when @entry is
 // empty and unfocused
 func (e entry) PlaceholderText() string {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_entry_get_placeholder_text(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -694,15 +694,15 @@ func (e entry) PlaceholderText() string {
 //
 // See [method@Gtk.Entry.set_progress_fraction].
 func (e entry) ProgressFraction() float64 {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_entry_get_progress_fraction(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -712,15 +712,15 @@ func (e entry) ProgressFraction() float64 {
 // ProgressPulseStep retrieves the pulse step set with
 // gtk_entry_set_progress_pulse_step().
 func (e entry) ProgressPulseStep() float64 {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_entry_get_progress_pulse_step(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -732,15 +732,15 @@ func (e entry) ProgressPulseStep() float64 {
 // This is equivalent to getting @entry's `GtkEntryBuffer` and calling
 // [method@Gtk.EntryBuffer.get_length] on it.
 func (e entry) TextLength() uint16 {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.guint16
+	var _cret C.guint16 // in
 
 	_cret = C.gtk_entry_get_text_length(_arg0)
 
-	var _guint16 uint16
+	var _guint16 uint16 // out
 
 	_guint16 = (uint16)(_cret)
 
@@ -751,15 +751,15 @@ func (e entry) TextLength() uint16 {
 //
 // See [method@Gtk.Entry.set_visibility].
 func (e entry) Visibility() bool {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_get_visibility(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -775,15 +775,15 @@ func (e entry) Visibility() bool {
 // special entries which the user usually doesn't want to replace all text
 // in, such as search-as-you-type entries.
 func (e entry) GrabFocusWithoutSelecting() bool {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_entry_grab_focus_without_selecting(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -800,7 +800,7 @@ func (e entry) GrabFocusWithoutSelecting() bool {
 // causes the block to move by a little bit (the amount of movement per
 // pulse is determined by [method@Gtk.Entry.set_progress_pulse_step]).
 func (e entry) ProgressPulse() {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
@@ -812,7 +812,7 @@ func (e entry) ProgressPulse() {
 // This can be necessary in the case where modifying the buffer would
 // confuse on-going input method behavior.
 func (e entry) ResetImContext() {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 
@@ -825,8 +825,8 @@ func (e entry) ResetImContext() {
 // This usually means that the dialog containing the entry will be closed,
 // since the default widget is usually one of the dialog buttons.
 func (e entry) SetActivatesDefault(setting bool) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if setting {
@@ -843,8 +843,8 @@ func (e entry) SetActivatesDefault(setting bool) {
 //
 // See also: [property@Gtk.Editable:xalign]
 func (e entry) SetAlignment(xalign float32) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.float
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.float     // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.float(xalign)
@@ -859,8 +859,8 @@ func (e entry) SetAlignment(xalign float32) {
 // Since the attributes will be applies to text that changes as the user
 // types, it makes most sense to use attributes with unlimited extent.
 func (e entry) SetAttributes(attrs *pango.AttrList) {
-	var _arg0 *C.GtkEntry
-	var _arg1 *C.PangoAttrList
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(attrs.Native()))
@@ -871,8 +871,8 @@ func (e entry) SetAttributes(attrs *pango.AttrList) {
 // SetBuffer: set the `GtkEntryBuffer` object which holds the text for this
 // widget.
 func (e entry) SetBuffer(buffer EntryBuffer) {
-	var _arg0 *C.GtkEntry
-	var _arg1 *C.GtkEntryBuffer
+	var _arg0 *C.GtkEntry       // out
+	var _arg1 *C.GtkEntryBuffer // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GtkEntryBuffer)(unsafe.Pointer(buffer.Native()))
@@ -887,8 +887,8 @@ func (e entry) SetBuffer(buffer EntryBuffer) {
 // @completion using the `GtkEntryCompletion` API. Completion is disabled if
 // @completion is set to nil.
 func (e entry) SetCompletion(completion EntryCompletion) {
-	var _arg0 *C.GtkEntry
-	var _arg1 *C.GtkEntryCompletion
+	var _arg0 *C.GtkEntry           // out
+	var _arg1 *C.GtkEntryCompletion // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GtkEntryCompletion)(unsafe.Pointer(completion.Native()))
@@ -899,8 +899,8 @@ func (e entry) SetCompletion(completion EntryCompletion) {
 // SetExtraMenu sets a menu model to add when constructing the context menu
 // for @entry.
 func (e entry) SetExtraMenu(model gio.MenuModel) {
-	var _arg0 *C.GtkEntry
-	var _arg1 *C.GMenuModel
+	var _arg0 *C.GtkEntry   // out
+	var _arg1 *C.GMenuModel // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
@@ -910,8 +910,8 @@ func (e entry) SetExtraMenu(model gio.MenuModel) {
 
 // SetHasFrame sets whether the entry has a beveled frame around it.
 func (e entry) SetHasFrame(setting bool) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if setting {
@@ -923,9 +923,9 @@ func (e entry) SetHasFrame(setting bool) {
 
 // SetIconActivatable sets whether the icon is activatable.
 func (e entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 C.gboolean
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -941,10 +941,10 @@ func (e entry) SetIconActivatable(iconPos EntryIconPosition, activatable bool) {
 // This makes it so that GTK will start a drag operation when the user
 // clicks and drags the icon.
 func (e entry) SetIconDragSource(iconPos EntryIconPosition, provider gdk.ContentProvider, actions gdk.DragAction) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 *C.GdkContentProvider
-	var _arg3 C.GdkDragAction
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GdkContentProvider  // out
+	var _arg3 C.GdkDragAction        // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -961,9 +961,9 @@ func (e entry) SetIconDragSource(iconPos EntryIconPosition, provider gdk.Content
 //
 // If @icon is nil, no icon will be shown in the specified position.
 func (e entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Icon) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 *C.GIcon
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GIcon               // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -980,9 +980,9 @@ func (e entry) SetIconFromGIcon(iconPos EntryIconPosition, icon gio.Icon) {
 //
 // If @icon_name is nil, no icon will be shown in the specified position.
 func (e entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 *C.char
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.char                // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -997,9 +997,9 @@ func (e entry) SetIconFromIconName(iconPos EntryIconPosition, iconName string) {
 //
 // If @paintable is nil, no icon will be shown in the specified position.
 func (e entry) SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.Paintable) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 *C.GdkPaintable
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.GdkPaintable        // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -1010,9 +1010,9 @@ func (e entry) SetIconFromPaintable(iconPos EntryIconPosition, paintable gdk.Pai
 
 // SetIconSensitive sets the sensitivity for the specified icon.
 func (e entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 C.gboolean
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 C.gboolean             // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -1033,9 +1033,9 @@ func (e entry) SetIconSensitive(iconPos EntryIconPosition, sensitive bool) {
 // See also [method@Gtk.Widget.set_tooltip_markup] and
 // [method@Gtk.Entry.set_icon_tooltip_text].
 func (e entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 *C.char
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.char                // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -1061,9 +1061,9 @@ func (e entry) SetIconTooltipMarkup(iconPos EntryIconPosition, tooltip string) {
 // [property@Gtk.Widget:has-tooltip] back to true, or setting at least one
 // non-empty tooltip on any icon achieves the same result.
 func (e entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkEntryIconPosition
-	var _arg2 *C.char
+	var _arg0 *C.GtkEntry            // out
+	var _arg1 C.GtkEntryIconPosition // out
+	var _arg2 *C.char                // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkEntryIconPosition)(iconPos)
@@ -1076,8 +1076,8 @@ func (e entry) SetIconTooltipText(iconPos EntryIconPosition, tooltip string) {
 // SetInputHints: set additional hints which allow input methods to
 // fine-tune their behavior.
 func (e entry) SetInputHints(hints InputHints) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkInputHints
+	var _arg0 *C.GtkEntry     // out
+	var _arg1 C.GtkInputHints // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkInputHints)(hints)
@@ -1088,8 +1088,8 @@ func (e entry) SetInputHints(hints InputHints) {
 // SetInputPurpose sets the input purpose which can be used by input methods
 // to adjust their behavior.
 func (e entry) SetInputPurpose(purpose InputPurpose) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.GtkInputPurpose
+	var _arg0 *C.GtkEntry       // out
+	var _arg1 C.GtkInputPurpose // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (C.GtkInputPurpose)(purpose)
@@ -1106,8 +1106,8 @@ func (e entry) SetInputPurpose(purpose InputPurpose) {
 // font. If you set the invisible char to 0, then the user will get no
 // feedback at all; there will be no text on the screen as they type.
 func (e entry) SetInvisibleChar(ch uint32) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.gunichar
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gunichar  // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.gunichar(ch)
@@ -1124,8 +1124,8 @@ func (e entry) SetInvisibleChar(ch uint32) {
 // This is equivalent to getting @entry's `GtkEntryBuffer` and calling
 // [method@Gtk.EntryBuffer.set_max_length] on it.
 func (e entry) SetMaxLength(max int) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.int
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.int       // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.int(max)
@@ -1136,8 +1136,8 @@ func (e entry) SetMaxLength(max int) {
 // SetOverwriteMode sets whether the text is overwritten when typing in the
 // `GtkEntry`.
 func (e entry) SetOverwriteMode(overwrite bool) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if overwrite {
@@ -1152,8 +1152,8 @@ func (e entry) SetOverwriteMode(overwrite bool) {
 // This can be used to give a visual hint of the expected contents of the
 // `GtkEntry`.
 func (e entry) SetPlaceholderText(text string) {
-	var _arg0 *C.GtkEntry
-	var _arg1 *C.char
+	var _arg0 *C.GtkEntry // out
+	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.char)(C.CString(text))
@@ -1167,8 +1167,8 @@ func (e entry) SetPlaceholderText(text string) {
 //
 // The fraction should be between 0.0 and 1.0, inclusive.
 func (e entry) SetProgressFraction(fraction float64) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.double
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.double    // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.double(fraction)
@@ -1181,8 +1181,8 @@ func (e entry) SetProgressFraction(fraction float64) {
 //
 // Use [method@Gtk.Entry.progress_pulse] to pulse the progress.
 func (e entry) SetProgressPulseStep(fraction float64) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.double
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.double    // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = C.double(fraction)
@@ -1194,8 +1194,8 @@ func (e entry) SetProgressPulseStep(fraction float64) {
 //
 // The tabstops in the array are applied to the entry text.
 func (e entry) SetTabs(tabs *pango.TabArray) {
-	var _arg0 *C.GtkEntry
-	var _arg1 *C.PangoTabArray
+	var _arg0 *C.GtkEntry      // out
+	var _arg1 *C.PangoTabArray // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.PangoTabArray)(unsafe.Pointer(tabs.Native()))
@@ -1218,8 +1218,8 @@ func (e entry) SetTabs(tabs *pango.TabArray) {
 // methods about the purpose of this entry, in addition to setting
 // visibility to false.
 func (e entry) SetVisibility(visible bool) {
-	var _arg0 *C.GtkEntry
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEntry // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 	if visible {
@@ -1232,7 +1232,7 @@ func (e entry) SetVisibility(visible bool) {
 // UnsetInvisibleChar unsets the invisible char, so that the default
 // invisible char is used again. See [method@Gtk.Entry.set_invisible_char].
 func (e entry) UnsetInvisibleChar() {
-	var _arg0 *C.GtkEntry
+	var _arg0 *C.GtkEntry // out
 
 	_arg0 = (*C.GtkEntry)(unsafe.Pointer(e.Native()))
 

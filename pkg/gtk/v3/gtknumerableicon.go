@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -114,15 +114,15 @@ func marshalNumerableIcon(p uintptr) (interface{}, error) {
 // BackgroundIconName returns the icon name used as the base background
 // image, or nil if there’s none.
 func (s numerableIcon) BackgroundIconName() string {
-	var _arg0 *C.GtkNumerableIcon
+	var _arg0 *C.GtkNumerableIcon // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_numerable_icon_get_background_icon_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -131,15 +131,15 @@ func (s numerableIcon) BackgroundIconName() string {
 
 // Count returns the value currently displayed by @self.
 func (s numerableIcon) Count() int {
-	var _arg0 *C.GtkNumerableIcon
+	var _arg0 *C.GtkNumerableIcon // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_numerable_icon_get_count(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -148,15 +148,15 @@ func (s numerableIcon) Count() int {
 
 // Label returns the currently displayed label of the icon, or nil.
 func (s numerableIcon) Label() string {
-	var _arg0 *C.GtkNumerableIcon
+	var _arg0 *C.GtkNumerableIcon // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_numerable_icon_get_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -172,8 +172,8 @@ func (s numerableIcon) Label() string {
 // gtk_numerable_icon_set_background_gicon() and
 // gtk_numerable_icon_set_background_icon_name() has always priority.
 func (s numerableIcon) SetBackgroundGIcon(icon gio.Icon) {
-	var _arg0 *C.GtkNumerableIcon
-	var _arg1 *C.GIcon
+	var _arg0 *C.GtkNumerableIcon // out
+	var _arg1 *C.GIcon            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
@@ -191,8 +191,8 @@ func (s numerableIcon) SetBackgroundGIcon(icon gio.Icon) {
 // gtk_numerable_icon_set_background_icon_name() and
 // gtk_numerable_icon_set_background_gicon() has always priority.
 func (s numerableIcon) SetBackgroundIconName(iconName string) {
-	var _arg0 *C.GtkNumerableIcon
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkNumerableIcon // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
@@ -210,8 +210,8 @@ func (s numerableIcon) SetBackgroundIconName(iconName string) {
 // between gtk_numerable_icon_set_count() and gtk_numerable_icon_set_label()
 // has always priority.
 func (s numerableIcon) SetCount(count int) {
-	var _arg0 *C.GtkNumerableIcon
-	var _arg1 C.gint
+	var _arg0 *C.GtkNumerableIcon // out
+	var _arg1 C.gint              // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(count)
@@ -232,8 +232,8 @@ func (s numerableIcon) SetCount(count int) {
 // last method called between gtk_numerable_icon_set_label() and
 // gtk_numerable_icon_set_count() has always priority.
 func (s numerableIcon) SetLabel(label string) {
-	var _arg0 *C.GtkNumerableIcon
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkNumerableIcon // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
@@ -245,8 +245,8 @@ func (s numerableIcon) SetLabel(label string) {
 // SetStyleContext updates the icon to fetch theme information from the
 // given StyleContext.
 func (s numerableIcon) SetStyleContext(style StyleContext) {
-	var _arg0 *C.GtkNumerableIcon
-	var _arg1 *C.GtkStyleContext
+	var _arg0 *C.GtkNumerableIcon // out
+	var _arg1 *C.GtkStyleContext  // out
 
 	_arg0 = (*C.GtkNumerableIcon)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(style.Native()))

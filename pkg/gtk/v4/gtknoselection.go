@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -64,8 +64,8 @@ func marshalNoSelection(p uintptr) (interface{}, error) {
 //
 // If @model is nil, this model will be empty.
 func (s noSelection) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkNoSelection
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkNoSelection // out
+	var _arg1 *C.GListModel     // out
 
 	_arg0 = (*C.GtkNoSelection)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))

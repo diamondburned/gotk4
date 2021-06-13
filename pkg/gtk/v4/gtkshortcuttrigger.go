@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -88,15 +88,15 @@ func marshalKeyvalTrigger(p uintptr) (interface{}, error) {
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
 func (s keyvalTrigger) Keyval() uint {
-	var _arg0 *C.GtkKeyvalTrigger
+	var _arg0 *C.GtkKeyvalTrigger // out
 
 	_arg0 = (*C.GtkKeyvalTrigger)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_keyval_trigger_get_keyval(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -138,15 +138,15 @@ func marshalMnemonicTrigger(p uintptr) (interface{}, error) {
 
 // Keyval gets the keyval that must be pressed to succeed triggering @self.
 func (s mnemonicTrigger) Keyval() uint {
-	var _arg0 *C.GtkMnemonicTrigger
+	var _arg0 *C.GtkMnemonicTrigger // out
 
 	_arg0 = (*C.GtkMnemonicTrigger)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_mnemonic_trigger_get_keyval(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -278,17 +278,17 @@ func marshalShortcutTrigger(p uintptr) (interface{}, error) {
 //
 // They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
-	var _arg0 C.gpointer
-	var _arg1 C.gpointer
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_shortcut_trigger_compare(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -301,17 +301,17 @@ func (t shortcutTrigger) Compare(trigger2 ShortcutTrigger) int {
 // The types of @one and @two are #gconstpointer only to allow use of this
 // function with Table. They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
-	var _arg0 C.gpointer
-	var _arg1 C.gpointer
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(trigger2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_shortcut_trigger_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -330,15 +330,15 @@ func (t shortcutTrigger) Equal(trigger2 ShortcutTrigger) bool {
 // The types of @trigger is #gconstpointer only to allow use of this
 // function with Table. They must each be a `GtkShortcutTrigger`.
 func (t shortcutTrigger) Hash() uint {
-	var _arg0 C.gpointer
+	var _arg0 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(t.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_shortcut_trigger_hash(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -351,8 +351,8 @@ func (t shortcutTrigger) Hash() uint {
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
 func (s shortcutTrigger) Print(string *glib.String) {
-	var _arg0 *C.GtkShortcutTrigger
-	var _arg1 *C.GString
+	var _arg0 *C.GtkShortcutTrigger // out
+	var _arg1 *C.GString            // out
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GString)(unsafe.Pointer(string.Native()))
@@ -372,19 +372,19 @@ func (s shortcutTrigger) Print(string *glib.String) {
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
 func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bool {
-	var _arg0 *C.GtkShortcutTrigger
-	var _arg1 *C.GdkDisplay
-	var _arg2 *C.GString
+	var _arg0 *C.GtkShortcutTrigger // out
+	var _arg1 *C.GdkDisplay         // out
+	var _arg2 *C.GString            // out
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = (*C.GString)(unsafe.Pointer(string.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_shortcut_trigger_print_label(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -405,17 +405,17 @@ func (s shortcutTrigger) PrintLabel(display gdk.Display, string *glib.String) bo
 // The form of the representation may change at any time and is not
 // guaranteed to stay identical.
 func (s shortcutTrigger) ToLabel(display gdk.Display) string {
-	var _arg0 *C.GtkShortcutTrigger
-	var _arg1 *C.GdkDisplay
+	var _arg0 *C.GtkShortcutTrigger // out
+	var _arg1 *C.GdkDisplay         // out
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_shortcut_trigger_to_label(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -428,15 +428,15 @@ func (s shortcutTrigger) ToLabel(display gdk.Display) string {
 // This is a small wrapper around [method@Gtk.ShortcutTrigger.print] to help
 // when debugging.
 func (s shortcutTrigger) String() string {
-	var _arg0 *C.GtkShortcutTrigger
+	var _arg0 *C.GtkShortcutTrigger // out
 
 	_arg0 = (*C.GtkShortcutTrigger)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_shortcut_trigger_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

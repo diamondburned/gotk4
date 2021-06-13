@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -153,15 +153,15 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 // Returns true if the toggle button is pressed in and false if it is
 // raised.
 func (t toggleButton) Active() bool {
-	var _arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -178,8 +178,8 @@ func (t toggleButton) Active() bool {
 // If the status of the button changes, this action causes the
 // [signal@GtkToggleButton::toggled] signal to be emitted.
 func (t toggleButton) SetActive(isActive bool) {
-	var _arg0 *C.GtkToggleButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if isActive {
@@ -201,8 +201,8 @@ func (t toggleButton) SetActive(isActive bool) {
 // type and state type 's' for all buttons in the group, and giving each
 // button its own target value.
 func (t toggleButton) SetGroup(group ToggleButton) {
-	var _arg0 *C.GtkToggleButton
-	var _arg1 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton // out
+	var _arg1 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkToggleButton)(unsafe.Pointer(group.Native()))
@@ -214,7 +214,7 @@ func (t toggleButton) SetGroup(group ToggleButton) {
 //
 // There is no good reason for an application ever to call this function.
 func (t toggleButton) Toggled() {
-	var _arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 

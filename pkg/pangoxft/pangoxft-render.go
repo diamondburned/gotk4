@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangoxft pango
+// #cgo pkg-config: pangoxft pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangoxft.h>
@@ -52,8 +52,8 @@ func marshalRenderer(p uintptr) (interface{}, error) {
 
 // SetDefaultColor sets the default foreground color for a Renderer.
 func (x renderer) SetDefaultColor(defaultColor *pango.Color) {
-	var _arg0 *C.PangoXftRenderer
-	var _arg1 *C.PangoColor
+	var _arg0 *C.PangoXftRenderer // out
+	var _arg1 *C.PangoColor       // out
 
 	_arg0 = (*C.PangoXftRenderer)(unsafe.Pointer(x.Native()))
 	_arg1 = (*C.PangoColor)(unsafe.Pointer(defaultColor.Native()))

@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -125,21 +125,21 @@ func marshalResolver(p uintptr) (interface{}, error) {
 // If @cancellable is non-nil, it can be used to cancel the operation, in
 // which case @error (if non-nil) will be set to G_IO_ERROR_CANCELLED.
 func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) (string, error) {
-	var _arg0 *C.GResolver
-	var _arg1 *C.GInetAddress
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GResolver    // out
+	var _arg1 *C.GInetAddress // out
+	var _arg2 *C.GCancellable // out
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cret *C.gchar
-	var _cerr *C.GError
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_resolver_lookup_by_address(_arg0, _arg1, _arg2, &_cerr)
 
-	var _utf8 string
-	var _goerr error
+	var _utf8 string // out
+	var _goerr error // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -152,10 +152,10 @@ func (r resolver) LookupByAddress(address InetAddress, cancellable Cancellable) 
 // determine its associated hostname, and eventually calls @callback, which
 // must call g_resolver_lookup_by_address_finish() to get the final result.
 func (r resolver) LookupByAddressAsync(address InetAddress, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GResolver
-	var _arg1 *C.GInetAddress
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GResolver          // out
+	var _arg1 *C.GInetAddress       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
@@ -174,19 +174,19 @@ func (r resolver) LookupByAddressAsync(address InetAddress, cancellable Cancella
 // from Error. If the operation was cancelled, @error will be set to
 // G_IO_ERROR_CANCELLED.
 func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
-	var _arg0 *C.GResolver
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GResolver    // out
+	var _arg1 *C.GAsyncResult // out
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cret *C.gchar
-	var _cerr *C.GError
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, _cerr)
+	_cret = C.g_resolver_lookup_by_address_finish(_arg0, _arg1, &_cerr)
 
-	var _utf8 string
-	var _goerr error
+	var _utf8 string // out
+	var _goerr error // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -200,10 +200,10 @@ func (r resolver) LookupByAddressFinish(result AsyncResult) (string, error) {
 // call g_resolver_lookup_by_name_finish() to get the result. See
 // g_resolver_lookup_by_name() for more details.
 func (r resolver) LookupByNameAsync(hostname string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GResolver
-	var _arg1 *C.gchar
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GResolver          // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
@@ -221,11 +221,11 @@ func (r resolver) LookupByNameAsync(hostname string, cancellable Cancellable, ca
 // which must call g_resolver_lookup_by_name_with_flags_finish() to get the
 // result. See g_resolver_lookup_by_name() for more details.
 func (r resolver) LookupByNameWithFlagsAsync(hostname string, flags ResolverNameLookupFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GResolver
-	var _arg1 *C.gchar
-	var _arg2 C.GResolverNameLookupFlags
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GResolver               // out
+	var _arg1 *C.gchar                   // out
+	var _arg2 C.GResolverNameLookupFlags // out
+	var _arg3 *C.GCancellable            // out
+	var _arg4 C.GAsyncReadyCallback      // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
@@ -244,11 +244,11 @@ func (r resolver) LookupByNameWithFlagsAsync(hostname string, flags ResolverName
 // g_resolver_lookup_records_finish() to get the final result. See
 // g_resolver_lookup_records() for more details.
 func (r resolver) LookupRecordsAsync(rrname string, recordType ResolverRecordType, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GResolver
-	var _arg1 *C.gchar
-	var _arg2 C.GResolverRecordType
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GResolver          // out
+	var _arg1 *C.gchar              // out
+	var _arg2 C.GResolverRecordType // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
@@ -267,12 +267,12 @@ func (r resolver) LookupRecordsAsync(rrname string, recordType ResolverRecordTyp
 // calls @callback, which must call g_resolver_lookup_service_finish() to
 // get the final result. See g_resolver_lookup_service() for more details.
 func (r resolver) LookupServiceAsync(service string, protocol string, domain string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GResolver
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 *C.GCancellable
-	var _arg5 C.GAsyncReadyCallback
+	var _arg0 *C.GResolver          // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.gchar              // out
+	var _arg3 *C.gchar              // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
@@ -299,7 +299,7 @@ func (r resolver) LookupServiceAsync(service string, protocol string, domain str
 // cache policies on top of that, and then set itself as the default
 // resolver for all later code to use.
 func (r resolver) SetDefault() {
-	var _arg0 *C.GResolver
+	var _arg0 *C.GResolver // out
 
 	_arg0 = (*C.GResolver)(unsafe.Pointer(r.Native()))
 

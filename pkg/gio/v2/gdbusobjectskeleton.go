@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -94,8 +94,8 @@ func marshalDBusObjectSkeleton(p uintptr) (interface{}, error) {
 // Note that @object takes its own reference on @interface_ and holds it
 // until removed.
 func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
-	var _arg0 *C.GDBusObjectSkeleton
-	var _arg1 *C.GDBusInterfaceSkeleton
+	var _arg0 *C.GDBusObjectSkeleton    // out
+	var _arg1 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
@@ -107,7 +107,7 @@ func (o dBusObjectSkeleton) AddInterface(interface_ DBusInterfaceSkeleton) {
 // interfaces belonging to @object. See that method for when flushing is
 // useful.
 func (o dBusObjectSkeleton) Flush() {
-	var _arg0 *C.GDBusObjectSkeleton
+	var _arg0 *C.GDBusObjectSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 
@@ -116,8 +116,8 @@ func (o dBusObjectSkeleton) Flush() {
 
 // RemoveInterface removes @interface_ from @object.
 func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
-	var _arg0 *C.GDBusObjectSkeleton
-	var _arg1 *C.GDBusInterfaceSkeleton
+	var _arg0 *C.GDBusObjectSkeleton    // out
+	var _arg1 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(interface_.Native()))
@@ -131,8 +131,8 @@ func (o dBusObjectSkeleton) RemoveInterface(interface_ DBusInterfaceSkeleton) {
 // If no D-Bus interface of the given interface exists, this function does
 // nothing.
 func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
-	var _arg0 *C.GDBusObjectSkeleton
-	var _arg1 *C.gchar
+	var _arg0 *C.GDBusObjectSkeleton // out
+	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.gchar)(C.CString(interfaceName))
@@ -143,8 +143,8 @@ func (o dBusObjectSkeleton) RemoveInterfaceByName(interfaceName string) {
 
 // SetObjectPath sets the object path for @object.
 func (o dBusObjectSkeleton) SetObjectPath(objectPath string) {
-	var _arg0 *C.GDBusObjectSkeleton
-	var _arg1 *C.gchar
+	var _arg0 *C.GDBusObjectSkeleton // out
+	var _arg1 *C.gchar               // out
 
 	_arg0 = (*C.GDBusObjectSkeleton)(unsafe.Pointer(o.Native()))
 	_arg1 = (*C.gchar)(C.CString(objectPath))

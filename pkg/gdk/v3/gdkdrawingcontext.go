@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -58,15 +58,15 @@ func marshalDrawingContext(p uintptr) (interface{}, error) {
 
 // IsValid checks whether the given DrawingContext is valid.
 func (c drawingContext) IsValid() bool {
-	var _arg0 *C.GdkDrawingContext
+	var _arg0 *C.GdkDrawingContext // out
 
 	_arg0 = (*C.GdkDrawingContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_drawing_context_is_valid(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

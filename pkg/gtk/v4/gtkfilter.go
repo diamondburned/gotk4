@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -86,8 +86,8 @@ func marshalFilter(p uintptr) (interface{}, error) {
 // This function is intended for implementors of Filter subclasses and
 // should not be called from other functions.
 func (s filter) Changed(change FilterChange) {
-	var _arg0 *C.GtkFilter
-	var _arg1 C.GtkFilterChange
+	var _arg0 *C.GtkFilter      // out
+	var _arg1 C.GtkFilterChange // out
 
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkFilterChange)(change)
@@ -97,17 +97,17 @@ func (s filter) Changed(change FilterChange) {
 
 // Match checks if the given @item is matched by the filter or not.
 func (s filter) Match(item gextras.Objector) bool {
-	var _arg0 *C.GtkFilter
-	var _arg1 C.gpointer
+	var _arg0 *C.GtkFilter // out
+	var _arg1 C.gpointer   // out
 
 	_arg0 = (*C.GtkFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GObject)(unsafe.Pointer(item.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_filter_match(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

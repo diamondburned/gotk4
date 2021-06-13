@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -105,15 +105,15 @@ func marshalSortListModel(p uintptr) (interface{}, error) {
 //
 // See [method@Gtk.SortListModel.set_incremental].
 func (s sortListModel) Incremental() bool {
-	var _arg0 *C.GtkSortListModel
+	var _arg0 *C.GtkSortListModel // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_sort_list_model_get_incremental(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -137,15 +137,15 @@ func (s sortListModel) Incremental() bool {
 // [property@Gtk.SortListModel:incremental] is false - this function returns
 // 0.
 func (s sortListModel) Pending() uint {
-	var _arg0 *C.GtkSortListModel
+	var _arg0 *C.GtkSortListModel // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_sort_list_model_get_pending(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -169,8 +169,8 @@ func (s sortListModel) Pending() uint {
 // See [method@Gtk.SortListModel.get_pending] for progress information about
 // an ongoing incremental sorting operation.
 func (s sortListModel) SetIncremental(incremental bool) {
-	var _arg0 *C.GtkSortListModel
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkSortListModel // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 	if incremental {
@@ -184,8 +184,8 @@ func (s sortListModel) SetIncremental(incremental bool) {
 //
 // The @model's item type must conform to the item type of @self.
 func (s sortListModel) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkSortListModel
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkSortListModel // out
+	var _arg1 *C.GListModel       // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
@@ -195,8 +195,8 @@ func (s sortListModel) SetModel(model gio.ListModel) {
 
 // SetSorter sets a new sorter on @self.
 func (s sortListModel) SetSorter(sorter Sorter) {
-	var _arg0 *C.GtkSortListModel
-	var _arg1 *C.GtkSorter
+	var _arg0 *C.GtkSortListModel // out
+	var _arg1 *C.GtkSorter        // out
 
 	_arg0 = (*C.GtkSortListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))

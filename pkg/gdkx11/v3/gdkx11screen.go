@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdkx.h>
@@ -21,11 +21,11 @@ func init() {
 
 // X11GetDefaultScreen gets the default GTK+ screen number.
 func X11GetDefaultScreen() int {
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_x11_get_default_screen()
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -91,15 +91,15 @@ func marshalX11Screen(p uintptr) (interface{}, error) {
 // the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification.
 func (s x11Screen) CurrentDesktop() uint32 {
-	var _arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_screen_get_current_desktop(_arg0)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -111,15 +111,15 @@ func (s x11Screen) CurrentDesktop() uint32 {
 // described in the Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification.
 func (s x11Screen) NumberOfDesktops() uint32 {
-	var _arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_screen_get_number_of_desktops(_arg0)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -128,15 +128,15 @@ func (s x11Screen) NumberOfDesktops() uint32 {
 
 // ScreenNumber returns the index of a Screen.
 func (s x11Screen) ScreenNumber() int {
-	var _arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_x11_screen_get_screen_number(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -145,15 +145,15 @@ func (s x11Screen) ScreenNumber() int {
 
 // WindowManagerName returns the name of the window manager for @screen.
 func (s x11Screen) WindowManagerName() string {
-	var _arg0 *C.GdkScreen
+	var _arg0 *C.GdkScreen // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_x11_screen_get_window_manager_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -174,17 +174,17 @@ func (s x11Screen) WindowManagerName() string {
 // window_manager_changed signal on Screen to detect a window manager
 // change.
 func (s x11Screen) SupportsNetWmHint(property gdk.Atom) bool {
-	var _arg0 *C.GdkScreen
-	var _arg1 C.GdkAtom
+	var _arg0 *C.GdkScreen // out
+	var _arg1 C.GdkAtom    // out
 
 	_arg0 = (*C.GdkScreen)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_x11_screen_supports_net_wm_hint(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

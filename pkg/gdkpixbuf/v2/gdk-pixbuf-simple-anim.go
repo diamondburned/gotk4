@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -57,8 +57,8 @@ func marshalPixbufSimpleAnim(p uintptr) (interface{}, error) {
 // AddFrame adds a new frame to @animation. The @pixbuf must have the
 // dimensions specified when the animation was constructed.
 func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
-	var _arg0 *C.GdkPixbufSimpleAnim
-	var _arg1 *C.GdkPixbuf
+	var _arg0 *C.GdkPixbufSimpleAnim // out
+	var _arg1 *C.GdkPixbuf           // out
 
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -69,15 +69,15 @@ func (a pixbufSimpleAnim) AddFrame(pixbuf Pixbuf) {
 // Loop gets whether @animation should loop indefinitely when it reaches the
 // end.
 func (a pixbufSimpleAnim) Loop() bool {
-	var _arg0 *C.GdkPixbufSimpleAnim
+	var _arg0 *C.GdkPixbufSimpleAnim // out
 
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_pixbuf_simple_anim_get_loop(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -89,8 +89,8 @@ func (a pixbufSimpleAnim) Loop() bool {
 // SetLoop sets whether @animation should loop indefinitely when it reaches
 // the end.
 func (a pixbufSimpleAnim) SetLoop(loop bool) {
-	var _arg0 *C.GdkPixbufSimpleAnim
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkPixbufSimpleAnim // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GdkPixbufSimpleAnim)(unsafe.Pointer(a.Native()))
 	if loop {

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -66,8 +66,8 @@ func marshalWindowGroup(p uintptr) (interface{}, error) {
 
 // AddWindow adds a window to a `GtkWindowGroup`.
 func (w windowGroup) AddWindow(window Window) {
-	var _arg0 *C.GtkWindowGroup
-	var _arg1 *C.GtkWindow
+	var _arg0 *C.GtkWindowGroup // out
+	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))
@@ -77,8 +77,8 @@ func (w windowGroup) AddWindow(window Window) {
 
 // RemoveWindow removes a window from a `GtkWindowGroup`.
 func (w windowGroup) RemoveWindow(window Window) {
-	var _arg0 *C.GtkWindowGroup
-	var _arg1 *C.GtkWindow
+	var _arg0 *C.GtkWindowGroup // out
+	var _arg1 *C.GtkWindow      // out
 
 	_arg0 = (*C.GtkWindowGroup)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(window.Native()))

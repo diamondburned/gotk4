@@ -37,13 +37,27 @@ func builtinType(imp, typ string, girType gir.Type) *ResolvedType {
 		typ = pkg + "." + typ
 	}
 
+	ptr := countPtrs(girType, nil)
+
+	// These types are interfaces, so we subtract a pointer from them.,
+	goIfaces := []string{
+		"error",
+	}
+
+	for _, iface := range goIfaces {
+		if iface == typ {
+			ptr--
+			break
+		}
+	}
+
 	return &ResolvedType{
 		Builtin: &typ,
 		Import:  imp,
 		Package: pkg,
 		GType:   girType.Name,
 		CType:   ctypeFallback(girType.CType, girType.Name),
-		Ptr:     countPtrs(girType, nil),
+		Ptr:     ptr,
 	}
 }
 

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -203,9 +203,9 @@ func marshalDialog(p uintptr) (interface{}, error) {
 // If you want to add a non-activatable widget, simply pack it into the
 // @action_area field of the `GtkDialog` struct.
 func (d dialog) AddActionWidget(child Widget, responseId int) {
-	var _arg0 *C.GtkDialog
-	var _arg1 *C.GtkWidget
-	var _arg2 C.int
+	var _arg0 *C.GtkDialog // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -217,17 +217,17 @@ func (d dialog) AddActionWidget(child Widget, responseId int) {
 // ResponseForWidget gets the response id of a widget in the action area of
 // a dialog.
 func (d dialog) ResponseForWidget(widget Widget) int {
-	var _arg0 *C.GtkDialog
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkDialog // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -238,8 +238,8 @@ func (d dialog) ResponseForWidget(widget Widget) int {
 //
 // Used to indicate that the user has responded to the dialog in some way.
 func (d dialog) Response(responseId int) {
-	var _arg0 *C.GtkDialog
-	var _arg1 C.int
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.int(responseId)
@@ -252,8 +252,8 @@ func (d dialog) Response(responseId int) {
 //
 // Pressing “Enter” normally activates the default widget.
 func (d dialog) SetDefaultResponse(responseId int) {
-	var _arg0 *C.GtkDialog
-	var _arg1 C.int
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.int        // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.int(responseId)
@@ -267,9 +267,9 @@ func (d dialog) SetDefaultResponse(responseId int) {
 // Calls `gtk_widget_set_sensitive (widget, @setting)` for each widget in
 // the dialog’s action area with the given @response_id.
 func (d dialog) SetResponseSensitive(responseId int, setting bool) {
-	var _arg0 *C.GtkDialog
-	var _arg1 C.int
-	var _arg2 C.gboolean
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.int        // out
+	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.int(responseId)

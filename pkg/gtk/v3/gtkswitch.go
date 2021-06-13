@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -84,15 +84,15 @@ func marshalSwitch(p uintptr) (interface{}, error) {
 
 // Active gets whether the Switch is in its “on” or “off” state.
 func (s _switch) Active() bool {
-	var _arg0 *C.GtkSwitch
+	var _arg0 *C.GtkSwitch // out
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_switch_get_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -103,15 +103,15 @@ func (s _switch) Active() bool {
 
 // State gets the underlying state of the Switch.
 func (s _switch) State() bool {
-	var _arg0 *C.GtkSwitch
+	var _arg0 *C.GtkSwitch // out
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_switch_get_state(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -122,8 +122,8 @@ func (s _switch) State() bool {
 
 // SetActive changes the state of @sw to the desired one.
 func (s _switch) SetActive(isActive bool) {
-	var _arg0 *C.GtkSwitch
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkSwitch // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if isActive {
@@ -141,8 +141,8 @@ func (s _switch) SetActive(isActive bool) {
 //
 // See Switch::state-set for details.
 func (s _switch) SetState(state bool) {
-	var _arg0 *C.GtkSwitch
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkSwitch // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkSwitch)(unsafe.Pointer(s.Native()))
 	if state {

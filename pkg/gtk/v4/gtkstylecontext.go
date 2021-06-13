@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -177,8 +177,8 @@ func marshalStyleContext(p uintptr) (interface{}, error) {
 // While any widget defining a “search” class would be matched by: “`css
 // .search { ... } “`
 func (c styleContext) AddClass(className string) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.char
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(className))
@@ -198,9 +198,9 @@ func (c styleContext) AddClass(className string) {
 // this function takes precedence over another added through
 // [func@Gtk.StyleContext.add_provider_for_display].
 func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GtkStyleProvider
-	var _arg2 C.guint
+	var _arg0 *C.GtkStyleContext  // out
+	var _arg1 *C.GtkStyleProvider // out
+	var _arg2 C.guint             // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
@@ -211,7 +211,7 @@ func (c styleContext) AddProvider(provider StyleProvider, priority uint) {
 
 // Border gets the border for a given state as a `GtkBorder`.
 func (c styleContext) Border() Border {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -224,7 +224,7 @@ func (c styleContext) Border() Border {
 
 // Color gets the foreground color for a given state.
 func (c styleContext) Color() gdk.RGBA {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -237,7 +237,7 @@ func (c styleContext) Color() gdk.RGBA {
 
 // Margin gets the margin for a given state as a `GtkBorder`.
 func (c styleContext) Margin() Border {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -250,7 +250,7 @@ func (c styleContext) Margin() Border {
 
 // Padding gets the padding for a given state as a `GtkBorder`.
 func (c styleContext) Padding() Border {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -263,15 +263,15 @@ func (c styleContext) Padding() Border {
 
 // Scale returns the scale used for assets.
 func (c styleContext) Scale() int {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_style_context_get_scale(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -281,18 +281,18 @@ func (c styleContext) Scale() int {
 // HasClass returns true if @context currently has defined the given class
 // name.
 func (c styleContext) HasClass(className string) bool {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.char
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(className))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_context_has_class(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -303,19 +303,19 @@ func (c styleContext) HasClass(className string) bool {
 
 // LookupColor looks up and resolves a color name in the @context color map.
 func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.char
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(colorName))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _color gdk.RGBA
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_context_lookup_color(_arg0, _arg1, (*C.GdkRGBA)(unsafe.Pointer(&_color)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -326,8 +326,8 @@ func (c styleContext) LookupColor(colorName string) (gdk.RGBA, bool) {
 
 // RemoveClass removes @class_name from @context.
 func (c styleContext) RemoveClass(className string) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.char
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(className))
@@ -339,8 +339,8 @@ func (c styleContext) RemoveClass(className string) {
 // RemoveProvider removes @provider from the style providers list in
 // @context.
 func (c styleContext) RemoveProvider(provider StyleProvider) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GtkStyleProvider
+	var _arg0 *C.GtkStyleContext  // out
+	var _arg1 *C.GtkStyleProvider // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkStyleProvider)(unsafe.Pointer(provider.Native()))
@@ -352,7 +352,7 @@ func (c styleContext) RemoveProvider(provider StyleProvider) {
 //
 // See [method@Gtk.StyleContext.save].
 func (c styleContext) Restore() {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -370,7 +370,7 @@ func (c styleContext) Restore() {
 // The matching call to [method@Gtk.StyleContext.restore] must be done
 // before GTK returns to the main loop.
 func (c styleContext) Save() {
-	var _arg0 *C.GtkStyleContext
+	var _arg0 *C.GtkStyleContext // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 
@@ -386,8 +386,8 @@ func (c styleContext) Save() {
 // [method@Gtk.Widget.get_style_context], you do not need to call this
 // yourself.
 func (c styleContext) SetDisplay(display gdk.Display) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 *C.GdkDisplay
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 *C.GdkDisplay      // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
@@ -397,8 +397,8 @@ func (c styleContext) SetDisplay(display gdk.Display) {
 
 // SetScale sets the scale to use when getting image assets for the style.
 func (c styleContext) SetScale(scale int) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.int
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.int              // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(scale)
@@ -408,8 +408,8 @@ func (c styleContext) SetScale(scale int) {
 
 // SetState sets the state to be used for style matching.
 func (c styleContext) SetState(flags StateFlags) {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStateFlags
+	var _arg0 *C.GtkStyleContext // out
+	var _arg1 C.GtkStateFlags    // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStateFlags)(flags)
@@ -427,17 +427,17 @@ func (c styleContext) SetState(flags StateFlags) {
 // implementation in GTK. There are no guarantees about the format of the
 // returned string, it may change.
 func (c styleContext) String(flags StyleContextPrintFlags) string {
-	var _arg0 *C.GtkStyleContext
-	var _arg1 C.GtkStyleContextPrintFlags
+	var _arg0 *C.GtkStyleContext          // out
+	var _arg1 C.GtkStyleContextPrintFlags // out
 
 	_arg0 = (*C.GtkStyleContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkStyleContextPrintFlags)(flags)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_style_context_to_string(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

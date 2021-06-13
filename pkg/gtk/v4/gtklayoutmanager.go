@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -103,11 +103,11 @@ func marshalLayoutManager(p uintptr) (interface{}, error) {
 // and computes the position and sizes of the children of the @widget using
 // the layout management policy of @manager.
 func (m layoutManager) Allocate(widget Widget, width int, height int, baseline int) {
-	var _arg0 *C.GtkLayoutManager
-	var _arg1 *C.GtkWidget
-	var _arg2 C.int
-	var _arg3 C.int
-	var _arg4 C.int
+	var _arg0 *C.GtkLayoutManager // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _arg4 C.int               // out
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -123,7 +123,7 @@ func (m layoutManager) Allocate(widget Widget, width int, height int, baseline i
 // This function should be called by subclasses of `GtkLayoutManager` in
 // response to changes to their layout management policies.
 func (m layoutManager) LayoutChanged() {
-	var _arg0 *C.GtkLayoutManager
+	var _arg0 *C.GtkLayoutManager // out
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 
@@ -136,27 +136,27 @@ func (m layoutManager) LayoutChanged() {
 // See the [class@Gtk.Widget] documentation on layout management for more
 // details.
 func (m layoutManager) Measure(widget Widget, orientation Orientation, forSize int) (minimum int, natural int, minimumBaseline int, naturalBaseline int) {
-	var _arg0 *C.GtkLayoutManager
-	var _arg1 *C.GtkWidget
-	var _arg2 C.GtkOrientation
-	var _arg3 C.int
+	var _arg0 *C.GtkLayoutManager // out
+	var _arg1 *C.GtkWidget        // out
+	var _arg2 C.GtkOrientation    // out
+	var _arg3 C.int               // out
 
 	_arg0 = (*C.GtkLayoutManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (C.GtkOrientation)(orientation)
 	_arg3 = C.int(forSize)
 
-	var _arg4 C.int
-	var _arg5 C.int
-	var _arg6 C.int
-	var _arg7 C.int
+	var _arg4 C.int // in
+	var _arg5 C.int // in
+	var _arg6 C.int // in
+	var _arg7 C.int // in
 
 	C.gtk_layout_manager_measure(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5, &_arg6, &_arg7)
 
-	var _minimum int
-	var _natural int
-	var _minimumBaseline int
-	var _naturalBaseline int
+	var _minimum int         // out
+	var _natural int         // out
+	var _minimumBaseline int // out
+	var _naturalBaseline int // out
 
 	_minimum = (int)(_arg4)
 	_natural = (int)(_arg5)

@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangofc pango
+// #cgo pkg-config: pangofc pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangofc-fontmap.h>
@@ -72,17 +72,17 @@ func marshalFont(p uintptr) (interface{}, error) {
 // If you only want to determine whether the font has the glyph, use
 // [method@PangoFc.Font.has_char].
 func (f font) Glyph(wc uint32) uint {
-	var _arg0 *C.PangoFcFont
-	var _arg1 C.gunichar
+	var _arg0 *C.PangoFcFont // out
+	var _arg1 C.gunichar     // out
 
 	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gunichar(wc)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.pango_fc_font_get_glyph(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -91,17 +91,17 @@ func (f font) Glyph(wc uint32) uint {
 
 // HasChar determines whether @font has a glyph for the codepoint @wc.
 func (f font) HasChar(wc uint32) bool {
-	var _arg0 *C.PangoFcFont
-	var _arg1 C.gunichar
+	var _arg0 *C.PangoFcFont // out
+	var _arg1 C.gunichar     // out
 
 	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gunichar(wc)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_fc_font_has_char(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -115,8 +115,8 @@ func (f font) HasChar(wc uint32) bool {
 //
 // Since 1.44, it does nothing.
 func (f font) KernGlyphs(glyphs *pango.GlyphString) {
-	var _arg0 *C.PangoFcFont
-	var _arg1 *C.PangoGlyphString
+	var _arg0 *C.PangoFcFont      // out
+	var _arg1 *C.PangoGlyphString // out
 
 	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.PangoGlyphString)(unsafe.Pointer(glyphs.Native()))
@@ -127,7 +127,7 @@ func (f font) KernGlyphs(glyphs *pango.GlyphString) {
 // UnlockFace releases a font previously obtained with
 // [method@PangoFc.Font.lock_face].
 func (f font) UnlockFace() {
-	var _arg0 *C.PangoFcFont
+	var _arg0 *C.PangoFcFont // out
 
 	_arg0 = (*C.PangoFcFont)(unsafe.Pointer(f.Native()))
 

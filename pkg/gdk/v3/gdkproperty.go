@@ -16,13 +16,13 @@ import "C"
 
 // PropertyChange changes the contents of a property on a window.
 func PropertyChange(window Window, property Atom, typ Atom, format int, mode PropMode, data *byte, nelements int) {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.GdkAtom
-	var _arg3 C.GdkAtom
-	var _arg4 C.gint
-	var _arg5 C.GdkPropMode
-	var _arg6 *C.guchar
-	var _arg7 C.gint
+	var _arg1 *C.GdkWindow  // out
+	var _arg2 C.GdkAtom     // out
+	var _arg3 C.GdkAtom     // out
+	var _arg4 C.gint        // out
+	var _arg5 C.GdkPropMode // out
+	var _arg6 *C.guchar     // out
+	var _arg7 C.gint        // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
@@ -37,8 +37,8 @@ func PropertyChange(window Window, property Atom, typ Atom, format int, mode Pro
 
 // PropertyDelete deletes a property from a window.
 func PropertyDelete(window Window, property Atom) {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.GdkAtom
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.GdkAtom    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
@@ -58,12 +58,12 @@ func PropertyDelete(window Window, property Atom) {
 // XGetWindowProperty() directly until a replacement function for
 // gdk_property_get() is provided.
 func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length uint32, pdelete int) (Atom, int, []*byte, bool) {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.GdkAtom
-	var _arg3 C.GdkAtom
-	var _arg4 C.gulong
-	var _arg5 C.gulong
-	var _arg6 C.gint
+	var _arg1 *C.GdkWindow // out
+	var _arg2 C.GdkAtom    // out
+	var _arg3 C.GdkAtom    // out
+	var _arg4 C.gulong     // out
+	var _arg5 C.gulong     // out
+	var _arg6 C.gint       // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (C.GdkAtom)(unsafe.Pointer(property.Native()))
@@ -73,16 +73,16 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 	_arg6 = C.gint(pdelete)
 
 	var _actualPropertyType Atom
-	var _arg8 C.gint
+	var _arg8 C.gint // in
 	var _arg10 *C.guchar
-	var _arg9 *C.gint
-	var _cret C.gboolean
+	var _arg9 C.gint     // in
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_property_get(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, (*C.GdkAtom)(unsafe.Pointer(&_actualPropertyType)), &_arg8, &_arg9, &_arg10)
 
-	var _actualFormat int
+	var _actualFormat int // out
 	var _data []*byte
-	var _ok bool
+	var _ok bool // out
 
 	_actualFormat = (int)(_arg8)
 	ptr.SetSlice(unsafe.Pointer(&_data), unsafe.Pointer(_arg10), int(_arg9))
@@ -99,9 +99,9 @@ func PropertyGet(window Window, property Atom, typ Atom, offset uint32, length u
 // TextPropertyToUTF8ListForDisplay converts a text property in the given
 // encoding to a list of UTF-8 strings.
 func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int, text []byte) ([]*string, int) {
-	var _arg1 *C.GdkDisplay
-	var _arg2 C.GdkAtom
-	var _arg3 C.gint
+	var _arg1 *C.GdkDisplay // out
+	var _arg2 C.GdkAtom     // out
+	var _arg3 C.gint        // out
 	var _arg4 *C.guchar
 	var _arg5 C.gint
 
@@ -112,12 +112,12 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 	_arg4 = (*C.guchar)(unsafe.Pointer(&text[0]))
 
 	var _arg6 **C.gchar
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_text_property_to_utf8_list_for_display(_arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
 
 	var _list []*string
-	var _gint int
+	var _gint int // out
 
 	{
 		var length int
@@ -147,16 +147,16 @@ func TextPropertyToUTF8ListForDisplay(display Display, encoding Atom, format int
 // not specified; it may be as pseudo-escape sequences \x{ABCD}, or it may be in
 // some other form of approximation.
 func UTF8ToStringTarget(str string) string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gdk_utf8_to_string_target(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

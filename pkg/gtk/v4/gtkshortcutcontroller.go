@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -125,8 +125,8 @@ func marshalShortcutController(p uintptr) (interface{}, error) {
 // If this controller uses an external shortcut list, this function does
 // nothing.
 func (s shortcutController) AddShortcut(shortcut Shortcut) {
-	var _arg0 *C.GtkShortcutController
-	var _arg1 *C.GtkShortcut
+	var _arg0 *C.GtkShortcutController // out
+	var _arg1 *C.GtkShortcut           // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
@@ -140,8 +140,8 @@ func (s shortcutController) AddShortcut(shortcut Shortcut) {
 // If @shortcut had not been added to @controller or this controller uses an
 // external shortcut list, this function does nothing.
 func (s shortcutController) RemoveShortcut(shortcut Shortcut) {
-	var _arg0 *C.GtkShortcutController
-	var _arg1 *C.GtkShortcut
+	var _arg0 *C.GtkShortcutController // out
+	var _arg1 *C.GtkShortcut           // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkShortcut)(unsafe.Pointer(shortcut.Native()))
@@ -164,8 +164,8 @@ func (s shortcutController) RemoveShortcut(shortcut Shortcut) {
 // managed shortcut controllers will have their shortcuts activated from
 // other places which have their own modifiers for activating mnemonics.
 func (s shortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType) {
-	var _arg0 *C.GtkShortcutController
-	var _arg1 C.GdkModifierType
+	var _arg0 *C.GtkShortcutController // out
+	var _arg1 C.GdkModifierType        // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GdkModifierType)(modifiers)
@@ -182,8 +182,8 @@ func (s shortcutController) SetMnemonicsModifiers(modifiers gdk.ModifierType) {
 // With GTK_SHORTCUT_SCOPE_LOCAL, shortcuts will only be activated when the
 // widget has focus.
 func (s shortcutController) SetScope(scope ShortcutScope) {
-	var _arg0 *C.GtkShortcutController
-	var _arg1 C.GtkShortcutScope
+	var _arg0 *C.GtkShortcutController // out
+	var _arg1 C.GtkShortcutScope       // out
 
 	_arg0 = (*C.GtkShortcutController)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkShortcutScope)(scope)

@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -27,16 +27,16 @@ func init() {
 // If @string is not a valid mime type, nil is returned instead. See RFC 2048
 // for the syntax if mime types.
 func InternMIMEType(string string) string {
-	var _arg1 *C.char
+	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_intern_mime_type(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -72,8 +72,8 @@ func (c *ContentFormatsBuilder) Native() unsafe.Pointer {
 // AddFormats appends all formats from @formats to @builder, skipping those that
 // already exist.
 func (b *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
-	var _arg0 *C.GdkContentFormatsBuilder
-	var _arg1 *C.GdkContentFormats
+	var _arg0 *C.GdkContentFormatsBuilder // out
+	var _arg1 *C.GdkContentFormats        // out
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))
@@ -83,8 +83,8 @@ func (b *ContentFormatsBuilder) AddFormats(formats *ContentFormats) {
 
 // AddGType appends @type to @builder if it has not already been added.
 func (b *ContentFormatsBuilder) AddGType(typ externglib.Type) {
-	var _arg0 *C.GdkContentFormatsBuilder
-	var _arg1 C.GType
+	var _arg0 *C.GdkContentFormatsBuilder // out
+	var _arg1 C.GType                     // out
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = C.GType(typ)
@@ -94,8 +94,8 @@ func (b *ContentFormatsBuilder) AddGType(typ externglib.Type) {
 
 // AddMIMEType appends @mime_type to @builder if it has not already been added.
 func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
-	var _arg0 *C.GdkContentFormatsBuilder
-	var _arg1 *C.char
+	var _arg0 *C.GdkContentFormatsBuilder // out
+	var _arg1 *C.char                     // out
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(mimeType))
@@ -106,7 +106,7 @@ func (b *ContentFormatsBuilder) AddMIMEType(mimeType string) {
 
 // Unref releases a reference on the given @builder.
 func (b *ContentFormatsBuilder) Unref() {
-	var _arg0 *C.GdkContentFormatsBuilder
+	var _arg0 *C.GdkContentFormatsBuilder // out
 
 	_arg0 = (*C.GdkContentFormatsBuilder)(unsafe.Pointer(b.Native()))
 

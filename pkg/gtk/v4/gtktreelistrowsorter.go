@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -65,8 +65,8 @@ func marshalTreeListRowSorter(p uintptr) (interface{}, error) {
 // This sorter will be passed the [property@Gtk.TreeListRow:item] of the
 // tree list rows passed to @self.
 func (s treeListRowSorter) SetSorter(sorter Sorter) {
-	var _arg0 *C.GtkTreeListRowSorter
-	var _arg1 *C.GtkSorter
+	var _arg0 *C.GtkTreeListRowSorter // out
+	var _arg1 *C.GtkSorter            // out
 
 	_arg0 = (*C.GtkTreeListRowSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))

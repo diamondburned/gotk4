@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -35,19 +35,19 @@ func init() {
 // need to use g_poll() in code that has to run on Windows, the easiest solution
 // is to construct all of your FDs with g_io_channel_win32_make_pollfd().
 func Poll(fds *PollFD, nfds uint, timeout int) int {
-	var _arg1 *C.GPollFD
-	var _arg2 C.guint
-	var _arg3 C.gint
+	var _arg1 *C.GPollFD // out
+	var _arg2 C.guint    // out
+	var _arg3 C.gint     // out
 
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(fds.Native()))
 	_arg2 = C.guint(nfds)
 	_arg3 = C.gint(timeout)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_poll(_arg1, _arg2, _arg3)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -82,21 +82,21 @@ func (p *PollFD) Native() unsafe.Pointer {
 
 // Fd gets the field inside the struct.
 func (p *PollFD) Fd() int {
-	var v int
+	var v int // out
 	v = (int)(p.native.fd)
 	return v
 }
 
 // Events gets the field inside the struct.
 func (p *PollFD) Events() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(p.native.events)
 	return v
 }
 
 // Revents gets the field inside the struct.
 func (p *PollFD) Revents() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(p.native.revents)
 	return v
 }

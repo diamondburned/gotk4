@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -118,8 +118,8 @@ func marshalCenterBox(p uintptr) (interface{}, error) {
 // baseline is not allocated by the parent then @position is used to
 // allocate the baseline wrt. the extra space available.
 func (s centerBox) SetBaselinePosition(position BaselinePosition) {
-	var _arg0 *C.GtkCenterBox
-	var _arg1 C.GtkBaselinePosition
+	var _arg0 *C.GtkCenterBox       // out
+	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkBaselinePosition)(position)
@@ -131,8 +131,8 @@ func (s centerBox) SetBaselinePosition(position BaselinePosition) {
 //
 // To remove the existing center widget, pas nil.
 func (s centerBox) SetCenterWidget(child Widget) {
-	var _arg0 *C.GtkCenterBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterBox // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -144,8 +144,8 @@ func (s centerBox) SetCenterWidget(child Widget) {
 //
 // To remove the existing end widget, pass nil.
 func (s centerBox) SetEndWidget(child Widget) {
-	var _arg0 *C.GtkCenterBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterBox // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -157,8 +157,8 @@ func (s centerBox) SetEndWidget(child Widget) {
 //
 // To remove the existing start widget, pass nil.
 func (s centerBox) SetStartWidget(child Widget) {
-	var _arg0 *C.GtkCenterBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterBox // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkCenterBox)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -113,15 +113,15 @@ func marshalListItem(p uintptr) (interface{}, error) {
 // Activatable checks if a list item has been set to be activatable via
 // gtk_list_item_set_activatable().
 func (s listItem) Activatable() bool {
-	var _arg0 *C.GtkListItem
+	var _arg0 *C.GtkListItem // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_item_get_activatable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -134,15 +134,15 @@ func (s listItem) Activatable() bool {
 //
 // If @self is unbound, this function returns nil.
 func (s listItem) Item() gextras.Objector {
-	var _arg0 *C.GtkListItem
+	var _arg0 *C.GtkListItem // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.gtk_list_item_get_item(_arg0)
 
-	var _object gextras.Objector
+	var _object gextras.Objector // out
 
 	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
@@ -153,15 +153,15 @@ func (s listItem) Item() gextras.Objector {
 //
 // If @self is unbound, GTK_INVALID_LIST_POSITION is returned.
 func (s listItem) Position() uint {
-	var _arg0 *C.GtkListItem
+	var _arg0 *C.GtkListItem // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_list_item_get_position(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -173,15 +173,15 @@ func (s listItem) Position() uint {
 //
 // Do not confuse this function with [method@Gtk.ListItem.get_selected].
 func (s listItem) Selectable() bool {
-	var _arg0 *C.GtkListItem
+	var _arg0 *C.GtkListItem // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_item_get_selectable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -195,15 +195,15 @@ func (s listItem) Selectable() bool {
 // The selected state is maintained by the liste widget and its model and
 // cannot be set otherwise.
 func (s listItem) Selected() bool {
-	var _arg0 *C.GtkListItem
+	var _arg0 *C.GtkListItem // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_item_get_selected(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -221,8 +221,8 @@ func (s listItem) Selected() bool {
 //
 // By default, list items are activatable.
 func (s listItem) SetActivatable(activatable bool) {
-	var _arg0 *C.GtkListItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkListItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 	if activatable {
@@ -237,8 +237,8 @@ func (s listItem) SetActivatable(activatable bool) {
 // This function is typically called by applications when setting up a
 // listitem so that the widget can be reused when binding it multiple times.
 func (s listItem) SetChild(child Widget) {
-	var _arg0 *C.GtkListItem
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkListItem // out
+	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -259,8 +259,8 @@ func (s listItem) SetChild(child Widget) {
 // By default, list items are selectable. When rebinding them to a new item,
 // they will also be reset to be selectable by GTK.
 func (s listItem) SetSelectable(selectable bool) {
-	var _arg0 *C.GtkListItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkListItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkListItem)(unsafe.Pointer(s.Native()))
 	if selectable {

@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -35,7 +35,7 @@ func gotk4_FlowBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 		panic(`callback not found`)
 	}
 
-	var item gextras.Objector
+	var item gextras.Objector // out
 
 	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
 
@@ -129,7 +129,7 @@ func marshalFlowBoxChild(p uintptr) (interface{}, error) {
 // Another alternative is to call [method@Gtk.FlowBox.invalidate_sort] on
 // any model change, but that is more expensive.
 func (c flowBoxChild) Changed() {
-	var _arg0 *C.GtkFlowBoxChild
+	var _arg0 *C.GtkFlowBoxChild // out
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
@@ -138,15 +138,15 @@ func (c flowBoxChild) Changed() {
 
 // Index gets the current index of the @child in its `GtkFlowBox` container.
 func (c flowBoxChild) Index() int {
-	var _arg0 *C.GtkFlowBoxChild
+	var _arg0 *C.GtkFlowBoxChild // out
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_flow_box_child_get_index(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -156,15 +156,15 @@ func (c flowBoxChild) Index() int {
 // IsSelected returns whether the @child is currently selected in its
 // `GtkFlowBox` container.
 func (c flowBoxChild) IsSelected() bool {
-	var _arg0 *C.GtkFlowBoxChild
+	var _arg0 *C.GtkFlowBoxChild // out
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_flow_box_child_is_selected(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -175,8 +175,8 @@ func (c flowBoxChild) IsSelected() bool {
 
 // SetChild sets the child widget of @self.
 func (s flowBoxChild) SetChild(child Widget) {
-	var _arg0 *C.GtkFlowBoxChild
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkFlowBoxChild // out
+	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkFlowBoxChild)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))

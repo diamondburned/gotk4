@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -95,8 +95,8 @@ func marshalAccessible(p uintptr) (interface{}, error) {
 
 // ResetProperty resets the accessible @property to its default value.
 func (s accessible) ResetProperty(property AccessibleProperty) {
-	var _arg0 *C.GtkAccessible
-	var _arg1 C.GtkAccessibleProperty
+	var _arg0 *C.GtkAccessible        // out
+	var _arg1 C.GtkAccessibleProperty // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkAccessibleProperty)(property)
@@ -106,8 +106,8 @@ func (s accessible) ResetProperty(property AccessibleProperty) {
 
 // ResetRelation resets the accessible @relation to its default value.
 func (s accessible) ResetRelation(relation AccessibleRelation) {
-	var _arg0 *C.GtkAccessible
-	var _arg1 C.GtkAccessibleRelation
+	var _arg0 *C.GtkAccessible        // out
+	var _arg1 C.GtkAccessibleRelation // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkAccessibleRelation)(relation)
@@ -117,8 +117,8 @@ func (s accessible) ResetRelation(relation AccessibleRelation) {
 
 // ResetState resets the accessible @state to its default value.
 func (s accessible) ResetState(state AccessibleState) {
-	var _arg0 *C.GtkAccessible
-	var _arg1 C.GtkAccessibleState
+	var _arg0 *C.GtkAccessible     // out
+	var _arg1 C.GtkAccessibleState // out
 
 	_arg0 = (*C.GtkAccessible)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkAccessibleState)(state)
@@ -134,7 +134,7 @@ func (s accessible) ResetState(state AccessibleState) {
 //
 // This function is meant to be used by language bindings.
 func (s accessible) UpdatePropertyValue(properties []AccessibleProperty, values []**externglib.Value) {
-	var _arg0 *C.GtkAccessible
+	var _arg0 *C.GtkAccessible // out
 	var _arg2 *C.GtkAccessibleProperty
 	var _arg1 C.int
 	var _arg3 *C.GValue
@@ -177,7 +177,7 @@ func (s accessible) UpdatePropertyValue(properties []AccessibleProperty, values 
 //
 // This function is meant to be used by language bindings.
 func (s accessible) UpdateRelationValue(relations []AccessibleRelation, values []**externglib.Value) {
-	var _arg0 *C.GtkAccessible
+	var _arg0 *C.GtkAccessible // out
 	var _arg2 *C.GtkAccessibleRelation
 	var _arg1 C.int
 	var _arg3 *C.GValue
@@ -219,7 +219,7 @@ func (s accessible) UpdateRelationValue(relations []AccessibleRelation, values [
 //
 // This function is meant to be used by language bindings.
 func (s accessible) UpdateStateValue(states []AccessibleState, values []**externglib.Value) {
-	var _arg0 *C.GtkAccessible
+	var _arg0 *C.GtkAccessible // out
 	var _arg2 *C.GtkAccessibleState
 	var _arg1 C.int
 	var _arg3 *C.GValue

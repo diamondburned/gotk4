@@ -17,7 +17,7 @@ import "C"
 // provided list @envp.
 func EnvironGetenv(envp []*string, variable *string) *string {
 	var _arg1 **C.gchar
-	var _arg2 *C.gchar
+	var _arg2 *C.gchar // out
 
 	_arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -34,11 +34,11 @@ func EnvironGetenv(envp []*string, variable *string) *string {
 	_arg2 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_environ_getenv(_arg1, _arg2)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -49,9 +49,9 @@ func EnvironGetenv(envp []*string, variable *string) *string {
 // @envp to @value.
 func EnvironSetenv(envp []*string, variable *string, value *string, overwrite bool) []*string {
 	var _arg1 **C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 C.gboolean
+	var _arg2 *C.gchar   // out
+	var _arg3 *C.gchar   // out
+	var _arg4 C.gboolean // out
 
 	_arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
 	{
@@ -102,7 +102,7 @@ func EnvironSetenv(envp []*string, variable *string, value *string, overwrite bo
 // environment @envp.
 func EnvironUnsetenv(envp []*string, variable *string) []*string {
 	var _arg1 **C.gchar
-	var _arg2 *C.gchar
+	var _arg2 *C.gchar // out
 
 	_arg1 = (**C.gchar)(C.malloc((len(envp) + 1) * unsafe.Sizeof(int(0))))
 	{
@@ -190,16 +190,16 @@ func GetEnviron() []*string {
 // Windows, in case the environment variable's value contains references to
 // other environment variables, they are expanded.
 func Getenv(variable *string) *string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_getenv(_arg1)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -262,9 +262,9 @@ func Listenv() []*string {
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
 func Setenv(variable *string, value *string, overwrite bool) bool {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 C.gboolean
+	var _arg1 *C.gchar   // out
+	var _arg2 *C.gchar   // out
+	var _arg3 C.gboolean // out
 
 	_arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -274,11 +274,11 @@ func Setenv(variable *string, value *string, overwrite bool) bool {
 		_arg3 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_setenv(_arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -304,7 +304,7 @@ func Setenv(variable *string, value *string, overwrite bool) bool {
 // g_environ_setenv() and g_environ_unsetenv(), and then pass that array
 // directly to execvpe(), g_spawn_async(), or the like.
 func Unsetenv(variable *string) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(variable))
 	defer C.free(unsafe.Pointer(_arg1))

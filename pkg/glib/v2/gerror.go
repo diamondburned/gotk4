@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -24,11 +24,11 @@ func init() {
 // ClearError: if @err or *@err is nil, does nothing. Otherwise, calls
 // g_error_free() on *@err and sets *@err to nil.
 func ClearError() error {
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_clear_error(_cerr)
+	C.g_clear_error(&_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -43,16 +43,16 @@ func ClearError() error {
 // Note that @src is no longer valid after this call. If you want to keep using
 // the same GError*, you need to set it to nil after calling this function on
 // it.
-func PropagateError(src *error) *error {
-	var _arg2 *C.GError
+func PropagateError(src error) error {
+	var _arg2 *C.GError // out
 
 	_arg2 = (*C.GError)(gerror.New(unsafe.Pointer(src)))
 
-	var _arg1 *C.GError
+	var _arg1 *C.GError // in
 
 	C.g_propagate_error(_arg2, &_arg1)
 
-	var _dest *error
+	var _dest error // out
 
 	_dest = gerror.Take(unsafe.Pointer(_arg1))
 
@@ -87,30 +87,30 @@ func (e *Error) Native() unsafe.Pointer {
 
 // Code gets the field inside the struct.
 func (e *Error) Code() int {
-	var v int
+	var v int // out
 	v = (int)(e.native.code)
 	return v
 }
 
 // Message gets the field inside the struct.
 func (e *Error) Message() string {
-	var v string
+	var v string // out
 	v = C.GoString(e.native.message)
 	return v
 }
 
 // Copy makes a copy of @error.
-func (e *Error) Copy() *error {
-	var _arg0 *C.GError
+func (e *Error) Copy() error {
+	var _arg0 *C.GError // out
 
 	_arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
 	defer C.g_error_free(_arg0)
 
-	var _cret *C.GError
+	var _cret *C.GError // in
 
 	_cret = C.g_error_copy(_arg0)
 
-	var _err *error
+	var _err error // out
 
 	_err = gerror.Take(unsafe.Pointer(_cret))
 
@@ -119,7 +119,7 @@ func (e *Error) Copy() *error {
 
 // Free frees a #GError and associated resources.
 func (e *Error) Free() {
-	var _arg0 *C.GError
+	var _arg0 *C.GError // out
 
 	_arg0 = (*C.GError)(gerror.New(unsafe.Pointer(e)))
 	defer C.g_error_free(_arg0)

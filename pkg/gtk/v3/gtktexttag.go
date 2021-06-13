@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -85,8 +85,8 @@ func marshalTextTag(p uintptr) (interface{}, error) {
 // The signal is already emitted when setting a TextTag property. This
 // function is useful for a TextTag subclass.
 func (t textTag) Changed(sizeChanged bool) {
-	var _arg0 *C.GtkTextTag
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkTextTag // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
 	if sizeChanged {
@@ -98,15 +98,15 @@ func (t textTag) Changed(sizeChanged bool) {
 
 // Priority: get the tag priority.
 func (t textTag) Priority() int {
-	var _arg0 *C.GtkTextTag
+	var _arg0 *C.GtkTextTag // out
 
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_text_tag_get_priority(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -124,8 +124,8 @@ func (t textTag) Priority() int {
 // table, or created with gtk_text_buffer_create_tag(), which adds the tag
 // to the buffer’s table automatically.
 func (t textTag) SetPriority(priority int) {
-	var _arg0 *C.GtkTextTag
-	var _arg1 C.gint
+	var _arg0 *C.GtkTextTag // out
+	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GtkTextTag)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(priority)

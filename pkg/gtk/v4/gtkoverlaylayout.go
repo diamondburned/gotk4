@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -89,15 +89,15 @@ func marshalOverlayLayoutChild(p uintptr) (interface{}, error) {
 
 // ClipOverlay retrieves whether the child is clipped.
 func (c overlayLayoutChild) ClipOverlay() bool {
-	var _arg0 *C.GtkOverlayLayoutChild
+	var _arg0 *C.GtkOverlayLayoutChild // out
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_overlay_layout_child_get_clip_overlay(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -108,15 +108,15 @@ func (c overlayLayoutChild) ClipOverlay() bool {
 
 // Measure retrieves whether the child is measured.
 func (c overlayLayoutChild) Measure() bool {
-	var _arg0 *C.GtkOverlayLayoutChild
+	var _arg0 *C.GtkOverlayLayoutChild // out
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_overlay_layout_child_get_measure(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -127,8 +127,8 @@ func (c overlayLayoutChild) Measure() bool {
 
 // SetClipOverlay sets whether to clip this child.
 func (c overlayLayoutChild) SetClipOverlay(clipOverlay bool) {
-	var _arg0 *C.GtkOverlayLayoutChild
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkOverlayLayoutChild // out
+	var _arg1 C.gboolean               // out
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 	if clipOverlay {
@@ -140,8 +140,8 @@ func (c overlayLayoutChild) SetClipOverlay(clipOverlay bool) {
 
 // SetMeasure sets whether to measure this child.
 func (c overlayLayoutChild) SetMeasure(measure bool) {
-	var _arg0 *C.GtkOverlayLayoutChild
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkOverlayLayoutChild // out
+	var _arg1 C.gboolean               // out
 
 	_arg0 = (*C.GtkOverlayLayoutChild)(unsafe.Pointer(c.Native()))
 	if measure {

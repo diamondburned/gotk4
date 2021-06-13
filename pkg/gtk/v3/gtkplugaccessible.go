@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -50,15 +50,15 @@ func marshalPlugAccessible(p uintptr) (interface{}, error) {
 }
 
 func (p plugAccessible) ID() string {
-	var _arg0 *C.GtkPlugAccessible
+	var _arg0 *C.GtkPlugAccessible // out
 
 	_arg0 = (*C.GtkPlugAccessible)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_plug_accessible_get_id(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

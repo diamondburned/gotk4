@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -112,7 +112,7 @@ func marshalCSSProvider(p uintptr) (interface{}, error) {
 //
 // This clears any previously loaded information.
 func (c cssProvider) LoadFromData(data []byte) {
-	var _arg0 *C.GtkCssProvider
+	var _arg0 *C.GtkCssProvider // out
 	var _arg1 *C.char
 	var _arg2 C.gssize
 
@@ -127,8 +127,8 @@ func (c cssProvider) LoadFromData(data []byte) {
 //
 // This clears any previously loaded information.
 func (c cssProvider) LoadFromFile(file gio.File) {
-	var _arg0 *C.GtkCssProvider
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.GFile          // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
@@ -140,8 +140,8 @@ func (c cssProvider) LoadFromFile(file gio.File) {
 //
 // This clears any previously loaded information.
 func (c cssProvider) LoadFromPath(path string) {
-	var _arg0 *C.GtkCssProvider
-	var _arg1 *C.char
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(path))
@@ -155,8 +155,8 @@ func (c cssProvider) LoadFromPath(path string) {
 //
 // This clears any previously loaded information.
 func (c cssProvider) LoadFromResource(resourcePath string) {
-	var _arg0 *C.GtkCssProvider
-	var _arg1 *C.char
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))
@@ -171,9 +171,9 @@ func (c cssProvider) LoadFromResource(resourcePath string) {
 // but it is guaranteed that this function uses the same mechanism to load
 // the theme that GTK uses for loading its own theme.
 func (p cssProvider) LoadNamed(name string, variant string) {
-	var _arg0 *C.GtkCssProvider
-	var _arg1 *C.char
-	var _arg2 *C.char
+	var _arg0 *C.GtkCssProvider // out
+	var _arg1 *C.char           // out
+	var _arg2 *C.char           // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.char)(C.CString(name))
@@ -190,15 +190,15 @@ func (p cssProvider) LoadNamed(name string, variant string) {
 // this function on a new provider created with [ctor@Gtk.CssProvider.new]
 // will basically create a duplicate of this @provider.
 func (p cssProvider) String() string {
-	var _arg0 *C.GtkCssProvider
+	var _arg0 *C.GtkCssProvider // out
 
 	_arg0 = (*C.GtkCssProvider)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_css_provider_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -75,15 +75,15 @@ func marshalPopup(p uintptr) (interface{}, error) {
 
 // Autohide returns whether this popup is set to hide on outside clicks.
 func (p popup) Autohide() bool {
-	var _arg0 *C.GdkPopup
+	var _arg0 *C.GdkPopup // out
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_popup_get_autohide(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -94,15 +94,15 @@ func (p popup) Autohide() bool {
 
 // PositionX obtains the position of the popup relative to its parent.
 func (p popup) PositionX() int {
-	var _arg0 *C.GdkPopup
+	var _arg0 *C.GdkPopup // out
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_popup_get_position_x(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -111,15 +111,15 @@ func (p popup) PositionX() int {
 
 // PositionY obtains the position of the popup relative to its parent.
 func (p popup) PositionY() int {
-	var _arg0 *C.GdkPopup
+	var _arg0 *C.GdkPopup // out
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_popup_get_position_y(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -142,21 +142,21 @@ func (p popup) PositionY() int {
 // immediately hidden upon being presented. If presenting failed, the
 // [signal@Gdk.Surface::layout] signal will not me emitted.
 func (p popup) Present(width int, height int, layout *PopupLayout) bool {
-	var _arg0 *C.GdkPopup
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 *C.GdkPopupLayout
+	var _arg0 *C.GdkPopup       // out
+	var _arg1 C.int             // out
+	var _arg2 C.int             // out
+	var _arg3 *C.GdkPopupLayout // out
 
 	_arg0 = (*C.GdkPopup)(unsafe.Pointer(p.Native()))
 	_arg1 = C.int(width)
 	_arg2 = C.int(height)
 	_arg3 = (*C.GdkPopupLayout)(unsafe.Pointer(layout.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_popup_present(_arg0, _arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

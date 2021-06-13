@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -153,20 +153,20 @@ func marshalRecentManager(p uintptr) (interface{}, error) {
 // that is, should be displayed only by the applications that have
 // registered it.
 func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
-	var _arg0 *C.GtkRecentManager
-	var _arg1 *C.gchar
-	var _arg2 *C.GtkRecentData
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.GtkRecentData    // out
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GtkRecentData)(unsafe.Pointer(recentData.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_manager_add_full(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -185,18 +185,18 @@ func (m recentManager) AddFull(uri string, recentData *RecentData) bool {
 // See gtk_recent_manager_add_full() if you want to explicitly define the
 // metadata for the resource pointed by @uri.
 func (m recentManager) AddItem(uri string) bool {
-	var _arg0 *C.GtkRecentManager
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_manager_add_item(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -208,18 +208,18 @@ func (m recentManager) AddItem(uri string) bool {
 // HasItem checks whether there is a recently used resource registered with
 // @uri inside the recent manager.
 func (m recentManager) HasItem(uri string) bool {
-	var _arg0 *C.GtkRecentManager
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_manager_has_item(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -234,9 +234,9 @@ func (m recentManager) HasItem(uri string) bool {
 // Please note that this function will not affect the resource pointed by
 // the URIs, but only the URI used in the recently used resources list.
 func (m recentManager) MoveItem(uri string, newUri string) error {
-	var _arg0 *C.GtkRecentManager
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.gchar            // out
+	var _arg2 *C.gchar            // out
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -244,11 +244,11 @@ func (m recentManager) MoveItem(uri string, newUri string) error {
 	_arg2 = (*C.gchar)(C.CString(newUri))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, _cerr)
+	C.gtk_recent_manager_move_item(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -257,17 +257,17 @@ func (m recentManager) MoveItem(uri string, newUri string) error {
 
 // PurgeItems purges every item from the recently used resources list.
 func (m recentManager) PurgeItems() (int, error) {
-	var _arg0 *C.GtkRecentManager
+	var _arg0 *C.GtkRecentManager // out
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gint
-	var _cerr *C.GError
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
-	_cret = C.gtk_recent_manager_purge_items(_arg0, _cerr)
+	_cret = C.gtk_recent_manager_purge_items(_arg0, &_cerr)
 
-	var _gint int
-	var _goerr error
+	var _gint int    // out
+	var _goerr error // out
 
 	_gint = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -278,18 +278,18 @@ func (m recentManager) PurgeItems() (int, error) {
 // RemoveItem removes a resource pointed by @uri from the recently used
 // resources list handled by a recent manager.
 func (m recentManager) RemoveItem(uri string) error {
-	var _arg0 *C.GtkRecentManager
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentManager // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkRecentManager)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_recent_manager_remove_item(_arg0, _arg1, _cerr)
+	C.gtk_recent_manager_remove_item(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -324,35 +324,35 @@ func (r *RecentData) Native() unsafe.Pointer {
 
 // DisplayName gets the field inside the struct.
 func (r *RecentData) DisplayName() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.display_name)
 	return v
 }
 
 // Description gets the field inside the struct.
 func (r *RecentData) Description() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.description)
 	return v
 }
 
 // MIMEType gets the field inside the struct.
 func (r *RecentData) MIMEType() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.mime_type)
 	return v
 }
 
 // AppName gets the field inside the struct.
 func (r *RecentData) AppName() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.app_name)
 	return v
 }
 
 // AppExec gets the field inside the struct.
 func (r *RecentData) AppExec() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.app_exec)
 	return v
 }
@@ -382,7 +382,7 @@ func (r *RecentData) Groups() []string {
 
 // IsPrivate gets the field inside the struct.
 func (r *RecentData) IsPrivate() bool {
-	var v bool
+	var v bool // out
 	if r.native.is_private {
 		v = true
 	}
@@ -421,15 +421,15 @@ func (r *RecentInfo) Native() unsafe.Pointer {
 // Exists checks whether the resource pointed by @info still exists. At the
 // moment this check is done only on resources pointing to local files.
 func (i *RecentInfo) Exists() bool {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_info_exists(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -441,15 +441,15 @@ func (i *RecentInfo) Exists() bool {
 // Added gets the timestamp (seconds from system’s Epoch) when the resource was
 // added to the recently used resources list.
 func (i *RecentInfo) Added() int32 {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret C.time_t
+	var _cret C.time_t // in
 
 	_cret = C.gtk_recent_info_get_added(_arg0)
 
-	var _glong int32
+	var _glong int32 // out
 
 	_glong = (int32)(_cret)
 
@@ -459,15 +459,15 @@ func (i *RecentInfo) Added() int32 {
 // Age gets the number of days elapsed since the last update of the resource
 // pointed by @info.
 func (i *RecentInfo) Age() int {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_recent_info_get_age(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -480,24 +480,24 @@ func (i *RecentInfo) Age() int {
 // If the command line contains any escape characters defined inside the storage
 // specification, they will be expanded.
 func (i *RecentInfo) ApplicationInfo(appName string) (string, uint, int32, bool) {
-	var _arg0 *C.GtkRecentInfo
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(appName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _arg2 **C.gchar
-	var _arg3 C.guint
-	var _arg4 C.time_t
-	var _cret C.gboolean
+	var _arg2 **C.gchar  // in
+	var _arg3 C.guint    // in
+	var _arg4 C.time_t   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_info_get_application_info(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
-	var _appExec string
-	var _count uint
-	var _time_ int32
-	var _ok bool
+	var _appExec string // out
+	var _count uint     // out
+	var _time_ int32    // out
+	var _ok bool        // out
 
 	_appExec = C.GoString(_arg2)
 	_count = (uint)(_arg3)
@@ -512,12 +512,12 @@ func (i *RecentInfo) ApplicationInfo(appName string) (string, uint, int32, bool)
 // Applications retrieves the list of applications that have registered this
 // resource.
 func (i *RecentInfo) Applications() []string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
 	var _cret **C.gchar
-	var _arg1 *C.gsize
+	var _arg1 C.gsize // in
 
 	_cret = C.gtk_recent_info_get_applications(_arg0, &_arg1)
 
@@ -539,15 +539,15 @@ func (i *RecentInfo) Applications() []string {
 
 // Description gets the (short) description of the resource.
 func (i *RecentInfo) Description() string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_info_get_description(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -557,15 +557,15 @@ func (i *RecentInfo) Description() string {
 // DisplayName gets the name of the resource. If none has been defined, the
 // basename of the resource is obtained.
 func (i *RecentInfo) DisplayName() string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_info_get_display_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -576,12 +576,12 @@ func (i *RecentInfo) DisplayName() string {
 // array of returned group names will be nil terminated, so length might
 // optionally be nil.
 func (i *RecentInfo) Groups() []string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
 	var _cret **C.gchar
-	var _arg1 *C.gsize
+	var _arg1 C.gsize // in
 
 	_cret = C.gtk_recent_info_get_groups(_arg0, &_arg1)
 
@@ -603,15 +603,15 @@ func (i *RecentInfo) Groups() []string {
 
 // MIMEType gets the MIME type of the resource.
 func (i *RecentInfo) MIMEType() string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_info_get_mime_type(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -621,15 +621,15 @@ func (i *RecentInfo) MIMEType() string {
 // Modified gets the timestamp (seconds from system’s Epoch) when the meta-data
 // for the resource was last modified.
 func (i *RecentInfo) Modified() int32 {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret C.time_t
+	var _cret C.time_t // in
 
 	_cret = C.gtk_recent_info_get_modified(_arg0)
 
-	var _glong int32
+	var _glong int32 // out
 
 	_glong = (int32)(_cret)
 
@@ -640,15 +640,15 @@ func (i *RecentInfo) Modified() int32 {
 // used list that have this flag set to true should only be displayed by the
 // applications that have registered them.
 func (i *RecentInfo) PrivateHint() bool {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_info_get_private_hint(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -661,15 +661,15 @@ func (i *RecentInfo) PrivateHint() bool {
 // item in a menu or list. For example, calling this function on an item that
 // refers to “file:///foo/bar.txt” will yield “bar.txt”.
 func (i *RecentInfo) ShortName() string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_info_get_short_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -679,15 +679,15 @@ func (i *RecentInfo) ShortName() string {
 
 // URI gets the URI of the resource.
 func (i *RecentInfo) URI() string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_info_get_uri(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -698,15 +698,15 @@ func (i *RecentInfo) URI() string {
 // is local, it returns a local path; if the resource is not local, it returns
 // the UTF-8 encoded content of gtk_recent_info_get_uri().
 func (i *RecentInfo) URIDisplay() string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_info_get_uri_display(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -717,15 +717,15 @@ func (i *RecentInfo) URIDisplay() string {
 // Visited gets the timestamp (seconds from system’s Epoch) when the meta-data
 // for the resource was last visited.
 func (i *RecentInfo) Visited() int32 {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret C.time_t
+	var _cret C.time_t // in
 
 	_cret = C.gtk_recent_info_get_visited(_arg0)
 
-	var _glong int32
+	var _glong int32 // out
 
 	_glong = (int32)(_cret)
 
@@ -735,18 +735,18 @@ func (i *RecentInfo) Visited() int32 {
 // HasApplication checks whether an application registered this resource using
 // @app_name.
 func (i *RecentInfo) HasApplication(appName string) bool {
-	var _arg0 *C.GtkRecentInfo
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(appName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_info_has_application(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -758,18 +758,18 @@ func (i *RecentInfo) HasApplication(appName string) bool {
 // HasGroup checks whether @group_name appears inside the groups registered for
 // the recently used item @info.
 func (i *RecentInfo) HasGroup(groupName string) bool {
-	var _arg0 *C.GtkRecentInfo
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(groupName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_info_has_group(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -781,15 +781,15 @@ func (i *RecentInfo) HasGroup(groupName string) bool {
 // IsLocal checks whether the resource is local or not by looking at the scheme
 // of its URI.
 func (i *RecentInfo) IsLocal() bool {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_info_is_local(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -801,15 +801,15 @@ func (i *RecentInfo) IsLocal() bool {
 // LastApplication gets the name of the last application that have registered
 // the recently used resource represented by @info.
 func (i *RecentInfo) LastApplication() string {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_recent_info_last_application(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -819,17 +819,17 @@ func (i *RecentInfo) LastApplication() string {
 
 // Match checks whether two RecentInfo-struct point to the same resource.
 func (i *RecentInfo) Match(infoB *RecentInfo) bool {
-	var _arg0 *C.GtkRecentInfo
-	var _arg1 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
+	var _arg1 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkRecentInfo)(unsafe.Pointer(infoB.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_info_match(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -841,7 +841,7 @@ func (i *RecentInfo) Match(infoB *RecentInfo) bool {
 // Unref decreases the reference count of @info by one. If the reference count
 // reaches zero, @info is deallocated, and the memory freed.
 func (i *RecentInfo) Unref() {
-	var _arg0 *C.GtkRecentInfo
+	var _arg0 *C.GtkRecentInfo // out
 
 	_arg0 = (*C.GtkRecentInfo)(unsafe.Pointer(i.Native()))
 

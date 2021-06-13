@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -77,17 +77,17 @@ func marshalNative(p uintptr) (interface{}, error) {
 // This is the translation from @self's surface coordinates into @self's
 // widget coordinates.
 func (s native) SurfaceTransform() (x float64, y float64) {
-	var _arg0 *C.GtkNative
+	var _arg0 *C.GtkNative // out
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
-	var _arg1 C.double
-	var _arg2 C.double
+	var _arg1 C.double // in
+	var _arg2 C.double // in
 
 	C.gtk_native_get_surface_transform(_arg0, &_arg1, &_arg2)
 
-	var _x float64
-	var _y float64
+	var _x float64 // out
+	var _y float64 // out
 
 	_x = (float64)(_arg1)
 	_y = (float64)(_arg2)
@@ -99,7 +99,7 @@ func (s native) SurfaceTransform() (x float64, y float64) {
 //
 // This should only be used by subclasses.
 func (s native) Realize() {
-	var _arg0 *C.GtkNative
+	var _arg0 *C.GtkNative // out
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 
@@ -110,7 +110,7 @@ func (s native) Realize() {
 //
 // This should only be used by subclasses.
 func (s native) Unrealize() {
-	var _arg0 *C.GtkNative
+	var _arg0 *C.GtkNative // out
 
 	_arg0 = (*C.GtkNative)(unsafe.Pointer(s.Native()))
 

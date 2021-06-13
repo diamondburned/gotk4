@@ -12,7 +12,7 @@ import "C"
 // If @mem is nil it simply returns, so there is no need to check @mem against
 // nil before calling this function.
 func Free(mem interface{}) {
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // out
 
 	_arg1 = C.gpointer(mem)
 
@@ -21,15 +21,15 @@ func Free(mem interface{}) {
 
 // Malloc allocates @n_bytes bytes of memory. If @n_bytes is 0 it returns nil.
 func Malloc(nBytes uint) interface{} {
-	var _arg1 C.gsize
+	var _arg1 C.gsize // out
 
 	_arg1 = C.gsize(nBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_malloc(_arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -39,15 +39,15 @@ func Malloc(nBytes uint) interface{} {
 // Malloc0 allocates @n_bytes bytes of memory, initialized to 0's. If @n_bytes
 // is 0 it returns nil.
 func Malloc0(nBytes uint) interface{} {
-	var _arg1 C.gsize
+	var _arg1 C.gsize // out
 
 	_arg1 = C.gsize(nBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_malloc0(_arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -58,17 +58,17 @@ func Malloc0(nBytes uint) interface{} {
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
-	var _arg1 C.gsize
-	var _arg2 C.gsize
+	var _arg1 C.gsize // out
+	var _arg2 C.gsize // out
 
 	_arg1 = C.gsize(nBlocks)
 	_arg2 = C.gsize(nBlockBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_malloc0_n(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -79,17 +79,17 @@ func Malloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
-	var _arg1 C.gsize
-	var _arg2 C.gsize
+	var _arg1 C.gsize // out
+	var _arg2 C.gsize // out
 
 	_arg1 = C.gsize(nBlocks)
 	_arg2 = C.gsize(nBlockBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_malloc_n(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -102,11 +102,11 @@ func MallocN(nBlocks uint, nBlockBytes uint) interface{} {
 // This function is useful for avoiding an extra copy of allocated memory
 // returned by a non-GLib-based API.
 func MemIsSystemMalloc() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_mem_is_system_malloc()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -128,17 +128,17 @@ func MemProfile() {
 // zero-length. @n_bytes may be 0, in which case nil will be returned and @mem
 // will be freed unless it is nil.
 func Realloc(mem interface{}, nBytes uint) interface{} {
-	var _arg1 C.gpointer
-	var _arg2 C.gsize
+	var _arg1 C.gpointer // out
+	var _arg2 C.gsize    // out
 
 	_arg1 = C.gpointer(mem)
 	_arg2 = C.gsize(nBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_realloc(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -149,19 +149,19 @@ func Realloc(mem interface{}, nBytes uint) interface{} {
 // @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
-	var _arg1 C.gpointer
-	var _arg2 C.gsize
-	var _arg3 C.gsize
+	var _arg1 C.gpointer // out
+	var _arg2 C.gsize    // out
+	var _arg3 C.gsize    // out
 
 	_arg1 = C.gpointer(mem)
 	_arg2 = C.gsize(nBlocks)
 	_arg3 = C.gsize(nBlockBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_realloc_n(_arg1, _arg2, _arg3)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -171,15 +171,15 @@ func ReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
 // TryMalloc attempts to allocate @n_bytes, and returns nil on failure. Contrast
 // with g_malloc(), which aborts the program on failure.
 func TryMalloc(nBytes uint) interface{} {
-	var _arg1 C.gsize
+	var _arg1 C.gsize // out
 
 	_arg1 = C.gsize(nBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_try_malloc(_arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -189,15 +189,15 @@ func TryMalloc(nBytes uint) interface{} {
 // TryMalloc0 attempts to allocate @n_bytes, initialized to 0's, and returns nil
 // on failure. Contrast with g_malloc0(), which aborts the program on failure.
 func TryMalloc0(nBytes uint) interface{} {
-	var _arg1 C.gsize
+	var _arg1 C.gsize // out
 
 	_arg1 = C.gsize(nBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_try_malloc0(_arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -208,17 +208,17 @@ func TryMalloc0(nBytes uint) interface{} {
 // (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
 // overflow during multiplication.
 func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
-	var _arg1 C.gsize
-	var _arg2 C.gsize
+	var _arg1 C.gsize // out
+	var _arg2 C.gsize // out
 
 	_arg1 = C.gsize(nBlocks)
 	_arg2 = C.gsize(nBlockBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_try_malloc0_n(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -229,17 +229,17 @@ func TryMalloc0N(nBlocks uint, nBlockBytes uint) interface{} {
 // * @n_block_bytes) bytes, but care is taken to detect possible overflow during
 // multiplication.
 func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
-	var _arg1 C.gsize
-	var _arg2 C.gsize
+	var _arg1 C.gsize // out
+	var _arg2 C.gsize // out
 
 	_arg1 = C.gsize(nBlocks)
 	_arg2 = C.gsize(nBlockBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_try_malloc_n(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -251,17 +251,17 @@ func TryMallocN(nBlocks uint, nBlockBytes uint) interface{} {
 //
 // If @mem is nil, behaves the same as g_try_malloc().
 func TryRealloc(mem interface{}, nBytes uint) interface{} {
-	var _arg1 C.gpointer
-	var _arg2 C.gsize
+	var _arg1 C.gpointer // out
+	var _arg2 C.gsize    // out
 
 	_arg1 = C.gpointer(mem)
 	_arg2 = C.gsize(nBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_try_realloc(_arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -272,19 +272,19 @@ func TryRealloc(mem interface{}, nBytes uint) interface{} {
 // (@n_blocks * @n_block_bytes) bytes, but care is taken to detect possible
 // overflow during multiplication.
 func TryReallocN(mem interface{}, nBlocks uint, nBlockBytes uint) interface{} {
-	var _arg1 C.gpointer
-	var _arg2 C.gsize
-	var _arg3 C.gsize
+	var _arg1 C.gpointer // out
+	var _arg2 C.gsize    // out
+	var _arg3 C.gsize    // out
 
 	_arg1 = C.gpointer(mem)
 	_arg2 = C.gsize(nBlocks)
 	_arg3 = C.gsize(nBlockBytes)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_try_realloc_n(_arg1, _arg2, _arg3)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 

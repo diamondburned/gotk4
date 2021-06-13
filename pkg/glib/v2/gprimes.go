@@ -14,15 +14,15 @@ import "C"
 // The built-in array of primes ranges from 11 to 13845163 such that each prime
 // is approximately 1.5-2 times the previous prime.
 func SpacedPrimesClosest(num uint) uint {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(num)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_spaced_primes_closest(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -20,19 +20,19 @@ import "C"
 // BindingsActivate: find a key binding matching @keyval and @modifiers and
 // activate the binding on @object.
 func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.ModifierType) bool {
-	var _arg1 *C.GObject
-	var _arg2 C.guint
-	var _arg3 C.GdkModifierType
+	var _arg1 *C.GObject        // out
+	var _arg2 C.guint           // out
+	var _arg3 C.GdkModifierType // out
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 	_arg2 = C.guint(keyval)
 	_arg3 = (C.GdkModifierType)(modifiers)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bindings_activate(_arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -44,17 +44,17 @@ func BindingsActivate(object gextras.Objector, keyval uint, modifiers gdk.Modifi
 // BindingsActivateEvent looks up key bindings for @object to find one matching
 // @event, and if one was found, activate it.
 func BindingsActivateEvent(object gextras.Objector, event *gdk.EventKey) bool {
-	var _arg1 *C.GObject
-	var _arg2 *C.GdkEventKey
+	var _arg1 *C.GObject     // out
+	var _arg2 *C.GdkEventKey // out
 
 	_arg1 = (*C.GObject)(unsafe.Pointer(object.Native()))
 	_arg2 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bindings_activate_event(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -91,7 +91,7 @@ func (b *BindingArg) Native() unsafe.Pointer {
 
 // ArgType gets the field inside the struct.
 func (b *BindingArg) ArgType() externglib.Type {
-	var v externglib.Type
+	var v externglib.Type // out
 	v = externglib.Type(b.native.arg_type)
 	return v
 }
@@ -124,7 +124,7 @@ func (b *BindingEntry) Native() unsafe.Pointer {
 
 // Keyval gets the field inside the struct.
 func (b *BindingEntry) Keyval() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(b.native.keyval)
 	return v
 }
@@ -160,14 +160,14 @@ func (b *BindingSet) Native() unsafe.Pointer {
 
 // SetName gets the field inside the struct.
 func (b *BindingSet) SetName() string {
-	var v string
+	var v string // out
 	v = C.GoString(b.native.set_name)
 	return v
 }
 
 // Priority gets the field inside the struct.
 func (b *BindingSet) Priority() int {
-	var v int
+	var v int // out
 	v = (int)(b.native.priority)
 	return v
 }
@@ -175,21 +175,21 @@ func (b *BindingSet) Priority() int {
 // Activate: find a key binding matching @keyval and @modifiers within
 // @binding_set and activate the binding on @object.
 func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object gextras.Objector) bool {
-	var _arg0 *C.GtkBindingSet
-	var _arg1 C.guint
-	var _arg2 C.GdkModifierType
-	var _arg3 *C.GObject
+	var _arg0 *C.GtkBindingSet  // out
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
+	var _arg3 *C.GObject        // out
 
 	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(keyval)
 	_arg2 = (C.GdkModifierType)(modifiers)
 	_arg3 = (*C.GObject)(unsafe.Pointer(object.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_binding_set_activate(_arg0, _arg1, _arg2, _arg3)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -203,10 +203,10 @@ func (b *BindingSet) Activate(keyval uint, modifiers gdk.ModifierType, object ge
 //
 // In GTK+ 3, these match patterns are unused.
 func (b *BindingSet) AddPath(pathType PathType, pathPattern string, priority PathPriorityType) {
-	var _arg0 *C.GtkBindingSet
-	var _arg1 C.GtkPathType
-	var _arg2 *C.gchar
-	var _arg3 C.GtkPathPriorityType
+	var _arg0 *C.GtkBindingSet      // out
+	var _arg1 C.GtkPathType         // out
+	var _arg2 *C.gchar              // out
+	var _arg3 C.GtkPathPriorityType // out
 
 	_arg0 = (*C.GtkBindingSet)(unsafe.Pointer(b.Native()))
 	_arg1 = (C.GtkPathType)(pathType)
@@ -245,14 +245,14 @@ func (b *BindingSignal) Native() unsafe.Pointer {
 
 // SignalName gets the field inside the struct.
 func (b *BindingSignal) SignalName() string {
-	var v string
+	var v string // out
 	v = C.GoString(b.native.signal_name)
 	return v
 }
 
 // NArgs gets the field inside the struct.
 func (b *BindingSignal) NArgs() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(b.native.n_args)
 	return v
 }

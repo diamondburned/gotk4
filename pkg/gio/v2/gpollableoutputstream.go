@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -106,15 +106,15 @@ func marshalPollableOutputStream(p uintptr) (interface{}, error) {
 // For any given stream, the value returned by this method is constant; a
 // stream cannot switch from pollable to non-pollable or vice versa.
 func (s pollableOutputStream) CanPoll() bool {
-	var _arg0 *C.GPollableOutputStream
+	var _arg0 *C.GPollableOutputStream // out
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_pollable_output_stream_can_poll(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -131,15 +131,15 @@ func (s pollableOutputStream) CanPoll() bool {
 // you should always use g_pollable_output_stream_write_nonblocking(), which
 // will return a G_IO_ERROR_WOULD_BLOCK error rather than blocking.
 func (s pollableOutputStream) IsWritable() bool {
-	var _arg0 *C.GPollableOutputStream
+	var _arg0 *C.GPollableOutputStream // out
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_pollable_output_stream_is_writable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -164,23 +164,23 @@ func (s pollableOutputStream) IsWritable() bool {
 // transports like D/TLS require that you re-send the same @buffer and
 // @count in the next write call.
 func (s pollableOutputStream) WriteNonblocking(buffer []byte, cancellable Cancellable) (int, error) {
-	var _arg0 *C.GPollableOutputStream
+	var _arg0 *C.GPollableOutputStream // out
 	var _arg1 *C.void
 	var _arg2 C.gsize
-	var _arg3 *C.GCancellable
+	var _arg3 *C.GCancellable // out
 
 	_arg0 = (*C.GPollableOutputStream)(unsafe.Pointer(s.Native()))
 	_arg2 = C.gsize(len(buffer))
 	_arg1 = (*C.void)(unsafe.Pointer(&buffer[0]))
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cret C.gssize
-	var _cerr *C.GError
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, _arg1, _arg2, _arg3, _cerr)
+	_cret = C.g_pollable_output_stream_write_nonblocking(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
-	var _gssize int
-	var _goerr error
+	var _gssize int  // out
+	var _goerr error // out
 
 	_gssize = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

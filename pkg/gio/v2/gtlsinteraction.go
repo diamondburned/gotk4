@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -119,10 +119,10 @@ func marshalTLSInteraction(p uintptr) (interface{}, error) {
 //
 // Certain implementations may not support immediate cancellation.
 func (i tlsInteraction) AskPasswordAsync(password TLSPassword, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsInteraction
-	var _arg1 *C.GTlsPassword
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GTlsInteraction    // out
+	var _arg1 *C.GTlsPassword       // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))
@@ -145,11 +145,11 @@ func (i tlsInteraction) AskPasswordAsync(password TLSPassword, cancellable Cance
 // abort this certificate request, which will usually abort the TLS
 // connection.
 func (i tlsInteraction) RequestCertificateAsync(connection TLSConnection, flags TLSCertificateRequestFlags, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GTlsInteraction
-	var _arg1 *C.GTlsConnection
-	var _arg2 C.GTlsCertificateRequestFlags
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GTlsInteraction            // out
+	var _arg1 *C.GTlsConnection             // out
+	var _arg2 C.GTlsCertificateRequestFlags // out
+	var _arg3 *C.GCancellable               // out
+	var _arg4 C.GAsyncReadyCallback         // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GTlsInteraction)(unsafe.Pointer(i.Native()))

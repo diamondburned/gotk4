@@ -7,7 +7,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -33,19 +33,19 @@ import "C"
 // gtk_check_version(), but still get loaded into an application using a newer
 // version of GTK+.
 func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) string {
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
+	var _arg1 C.guint // out
+	var _arg2 C.guint // out
+	var _arg3 C.guint // out
 
 	_arg1 = C.guint(requiredMajor)
 	_arg2 = C.guint(requiredMinor)
 	_arg3 = C.guint(requiredMicro)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_check_version(_arg1, _arg2, _arg3)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -57,9 +57,9 @@ func CheckVersion(requiredMajor uint, requiredMinor uint, requiredMicro uint) st
 // @block_others parameter is true, any other devices will be unable to interact
 // with @widget during the grab.
 func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.GdkDevice
-	var _arg3 C.gboolean
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.GdkDevice // out
+	var _arg3 C.gboolean   // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -74,8 +74,8 @@ func DeviceGrabAdd(widget Widget, device gdk.Device, blockOthers bool) {
 //
 // You have to pair calls to gtk_device_grab_add() and gtk_device_grab_remove().
 func DeviceGrabRemove(widget Widget, device gdk.Device) {
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.GdkDevice
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.GdkDevice // out
 
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg2 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -108,11 +108,11 @@ func DisableSetlocale() {
 //
 //     // ...computation continued
 func EventsPending() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_events_pending()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -124,11 +124,11 @@ func EventsPending() bool {
 // False: analogical to gtk_true(), this function does nothing but always
 // returns false.
 func False() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_false()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -141,11 +141,11 @@ func False() bool {
 // GTK+ library the process is running against. If `libtool` means nothing to
 // you, don't worry about it.
 func GetBinaryAge() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_binary_age()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -155,11 +155,11 @@ func GetBinaryAge() uint {
 // GetCurrentEventTime: if there is a current event and it has a timestamp,
 // return that timestamp, otherwise return GDK_CURRENT_TIME.
 func GetCurrentEventTime() uint32 {
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gtk_get_current_event_time()
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -170,11 +170,11 @@ func GetCurrentEventTime() uint32 {
 // building the GTK+ library the process is running against. If `libtool` means
 // nothing to you, don't worry about it.
 func GetInterfaceAge() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_interface_age()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -189,11 +189,11 @@ func GetInterfaceAge() uint {
 // the major version of the GTK+ headers you have included when compiling your
 // code.
 func GetMajorVersion() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_major_version()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -208,11 +208,11 @@ func GetMajorVersion() uint {
 // represents the micro version of the GTK+ headers you have included when
 // compiling your code.
 func GetMicroVersion() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_micro_version()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -227,11 +227,11 @@ func GetMicroVersion() uint {
 // represents the minor version of the GTK+ headers you have included when
 // compiling your code.
 func GetMinorVersion() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_minor_version()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -241,17 +241,17 @@ func GetMinorVersion() uint {
 // KeySnooperInstall installs a key snooper function, which will get called on
 // all key events before delivering them normally.
 func KeySnooperInstall(snooper KeySnoopFunc) uint {
-	var _arg1 C.GtkKeySnoopFunc
+	var _arg1 C.GtkKeySnoopFunc // out
 	var _arg2 C.gpointer
 
 	_arg1 = (*[0]byte)(C.gotk4_KeySnoopFunc)
 	_arg2 = C.gpointer(box.Assign(snooper))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_key_snooper_install(_arg1, _arg2)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -260,7 +260,7 @@ func KeySnooperInstall(snooper KeySnoopFunc) uint {
 
 // KeySnooperRemove removes the key snooper function with the given id.
 func KeySnooperRemove(snooperHandlerId uint) {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(snooperHandlerId)
 
@@ -281,11 +281,11 @@ func Main() {
 // is noticed. If you don’t want to block look at gtk_main_iteration_do() or
 // check if any events are pending with gtk_events_pending() first.
 func MainIteration() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_main_iteration()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -297,17 +297,17 @@ func MainIteration() bool {
 // MainIterationDo runs a single iteration of the mainloop. If no events are
 // available either return or block depending on the value of @blocking.
 func MainIterationDo(blocking bool) bool {
-	var _arg1 C.gboolean
+	var _arg1 C.gboolean // out
 
 	if blocking {
 		_arg1 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_main_iteration_do(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -318,11 +318,11 @@ func MainIterationDo(blocking bool) bool {
 
 // MainLevel asks for the current nesting level of the main loop.
 func MainLevel() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_main_level()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -375,11 +375,11 @@ func MainQuit() {
 //      return 0;
 //    }
 func True() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_true()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

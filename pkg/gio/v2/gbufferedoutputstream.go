@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -84,15 +84,15 @@ func marshalBufferedOutputStream(p uintptr) (interface{}, error) {
 
 // AutoGrow checks if the buffer automatically grows as data is added.
 func (s bufferedOutputStream) AutoGrow() bool {
-	var _arg0 *C.GBufferedOutputStream
+	var _arg0 *C.GBufferedOutputStream // out
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_buffered_output_stream_get_auto_grow(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -103,15 +103,15 @@ func (s bufferedOutputStream) AutoGrow() bool {
 
 // BufferSize gets the size of the buffer in the @stream.
 func (s bufferedOutputStream) BufferSize() uint {
-	var _arg0 *C.GBufferedOutputStream
+	var _arg0 *C.GBufferedOutputStream // out
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_buffered_output_stream_get_buffer_size(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -123,8 +123,8 @@ func (s bufferedOutputStream) BufferSize() uint {
 // larger, and you must manually flush the buffer to actually write out the
 // data to the underlying stream.
 func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
-	var _arg0 *C.GBufferedOutputStream
-	var _arg1 C.gboolean
+	var _arg0 *C.GBufferedOutputStream // out
+	var _arg1 C.gboolean               // out
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 	if autoGrow {
@@ -136,8 +136,8 @@ func (s bufferedOutputStream) SetAutoGrow(autoGrow bool) {
 
 // SetBufferSize sets the size of the internal buffer to @size.
 func (s bufferedOutputStream) SetBufferSize(size uint) {
-	var _arg0 *C.GBufferedOutputStream
-	var _arg1 C.gsize
+	var _arg0 *C.GBufferedOutputStream // out
+	var _arg1 C.gsize                  // out
 
 	_arg0 = (*C.GBufferedOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gsize(size)

@@ -15,15 +15,15 @@ import "C"
 // this function on any slave devices (i.e. > those managed via XInput 1.x),
 // will return 0.
 func X11DeviceGetID(device X11DeviceCore) int {
-	var _arg1 *C.GdkDevice
+	var _arg1 *C.GdkDevice // out
 
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_x11_device_get_id(_arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 

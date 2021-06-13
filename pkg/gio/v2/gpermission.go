@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -159,17 +159,17 @@ func marshalPermission(p uintptr) (interface{}, error) {
 // interaction is required). See g_permission_acquire_async() for the
 // non-blocking version.
 func (p permission) Acquire(cancellable Cancellable) error {
-	var _arg0 *C.GPermission
-	var _arg1 *C.GCancellable
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_permission_acquire(_arg0, _arg1, _cerr)
+	C.g_permission_acquire(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -182,9 +182,9 @@ func (p permission) Acquire(cancellable Cancellable) error {
 // This is the first half of the asynchronous version of
 // g_permission_acquire().
 func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GPermission
-	var _arg1 *C.GCancellable
-	var _arg2 C.GAsyncReadyCallback
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
@@ -201,17 +201,17 @@ func (p permission) AcquireAsync(cancellable Cancellable, callback AsyncReadyCal
 // This is the second half of the asynchronous version of
 // g_permission_acquire().
 func (p permission) AcquireFinish(result AsyncResult) error {
-	var _arg0 *C.GPermission
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_permission_acquire_finish(_arg0, _arg1, _cerr)
+	C.g_permission_acquire_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -222,15 +222,15 @@ func (p permission) AcquireFinish(result AsyncResult) error {
 // if the caller currently has permission to perform the action that
 // @permission represents the permission to perform.
 func (p permission) Allowed() bool {
-	var _arg0 *C.GPermission
+	var _arg0 *C.GPermission // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_permission_get_allowed(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -243,15 +243,15 @@ func (p permission) Allowed() bool {
 // true if it is generally possible to acquire the permission by calling
 // g_permission_acquire().
 func (p permission) CanAcquire() bool {
-	var _arg0 *C.GPermission
+	var _arg0 *C.GPermission // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_permission_get_can_acquire(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -264,15 +264,15 @@ func (p permission) CanAcquire() bool {
 // true if it is generally possible to release the permission by calling
 // g_permission_release().
 func (p permission) CanRelease() bool {
-	var _arg0 *C.GPermission
+	var _arg0 *C.GPermission // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_permission_get_can_release(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -287,10 +287,10 @@ func (p permission) CanRelease() bool {
 //
 // GObject notify signals are generated, as appropriate.
 func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
-	var _arg0 *C.GPermission
-	var _arg1 C.gboolean
-	var _arg2 C.gboolean
-	var _arg3 C.gboolean
+	var _arg0 *C.GPermission // out
+	var _arg1 C.gboolean     // out
+	var _arg2 C.gboolean     // out
+	var _arg3 C.gboolean     // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	if allowed {
@@ -322,17 +322,17 @@ func (p permission) ImplUpdate(allowed bool, canAcquire bool, canRelease bool) {
 // interaction is required). See g_permission_release_async() for the
 // non-blocking version.
 func (p permission) Release(cancellable Cancellable) error {
-	var _arg0 *C.GPermission
-	var _arg1 *C.GCancellable
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GCancellable // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_permission_release(_arg0, _arg1, _cerr)
+	C.g_permission_release(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -345,9 +345,9 @@ func (p permission) Release(cancellable Cancellable) error {
 // This is the first half of the asynchronous version of
 // g_permission_release().
 func (p permission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GPermission
-	var _arg1 *C.GCancellable
-	var _arg2 C.GAsyncReadyCallback
+	var _arg0 *C.GPermission        // out
+	var _arg1 *C.GCancellable       // out
+	var _arg2 C.GAsyncReadyCallback // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
@@ -364,17 +364,17 @@ func (p permission) ReleaseAsync(cancellable Cancellable, callback AsyncReadyCal
 // This is the second half of the asynchronous version of
 // g_permission_release().
 func (p permission) ReleaseFinish(result AsyncResult) error {
-	var _arg0 *C.GPermission
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GPermission  // out
+	var _arg1 *C.GAsyncResult // out
 
 	_arg0 = (*C.GPermission)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_permission_release_finish(_arg0, _arg1, _cerr)
+	C.g_permission_release_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

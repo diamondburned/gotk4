@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <pango/pango.h>
 import "C"

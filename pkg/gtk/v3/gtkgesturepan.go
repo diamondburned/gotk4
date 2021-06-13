@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -62,8 +62,8 @@ func marshalGesturePan(p uintptr) (interface{}, error) {
 
 // SetOrientation sets the orientation to be expected on pan gestures.
 func (g gesturePan) SetOrientation(orientation Orientation) {
-	var _arg0 *C.GtkGesturePan
-	var _arg1 C.GtkOrientation
+	var _arg0 *C.GtkGesturePan // out
+	var _arg1 C.GtkOrientation // out
 
 	_arg0 = (*C.GtkGesturePan)(unsafe.Pointer(g.Native()))
 	_arg1 = (C.GtkOrientation)(orientation)

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -69,8 +69,8 @@ func marshalIMContextSimple(p uintptr) (interface{}, error) {
 
 // AddComposeFile adds an additional table from the X11 compose file.
 func (c imContextSimple) AddComposeFile(composeFile string) {
-	var _arg0 *C.GtkIMContextSimple
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkIMContextSimple // out
+	var _arg1 *C.gchar              // out
 
 	_arg0 = (*C.GtkIMContextSimple)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(composeFile))

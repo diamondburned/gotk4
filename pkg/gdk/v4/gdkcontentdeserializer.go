@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -26,12 +26,12 @@ import "C"
 // When the operation is finished, @callback will be called. You must then call
 // [func@content_deserialize_finish] to get the result of the operation.
 func ContentDeserializeAsync(stream gio.InputStream, mimeType string, typ externglib.Type, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg1 *C.GInputStream
-	var _arg2 *C.char
-	var _arg3 C.GType
-	var _arg4 C.int
-	var _arg5 *C.GCancellable
-	var _arg6 C.GAsyncReadyCallback
+	var _arg1 *C.GInputStream       // out
+	var _arg2 *C.char               // out
+	var _arg3 C.GType               // out
+	var _arg4 C.int                 // out
+	var _arg5 *C.GCancellable       // out
+	var _arg6 C.GAsyncReadyCallback // out
 	var _arg7 C.gpointer
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
@@ -48,17 +48,17 @@ func ContentDeserializeAsync(stream gio.InputStream, mimeType string, typ extern
 
 // ContentDeserializeFinish finishes a content deserialization operation.
 func ContentDeserializeFinish(result gio.AsyncResult, value **externglib.Value) error {
-	var _arg1 *C.GAsyncResult
-	var _arg2 *C.GValue
+	var _arg1 *C.GAsyncResult // out
+	var _arg2 *C.GValue       // out
 
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 	_arg2 = (*C.GValue)(value.GValue)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gdk_content_deserialize_finish(_arg1, _arg2, _cerr)
+	C.gdk_content_deserialize_finish(_arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

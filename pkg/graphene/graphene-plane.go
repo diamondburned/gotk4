@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
+// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
@@ -50,17 +50,17 @@ func (p *Plane) Native() unsafe.Pointer {
 
 // Distance computes the distance of @point from a #graphene_plane_t.
 func (p *Plane) Distance(point *Point3D) float32 {
-	var _arg0 *C.graphene_plane_t
-	var _arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_plane_t   // out
+	var _arg1 *C.graphene_point3d_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	var _cret C.float
+	var _cret C.float // in
 
 	_cret = C.graphene_plane_distance(_arg0, _arg1)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -69,17 +69,17 @@ func (p *Plane) Distance(point *Point3D) float32 {
 
 // Equal checks whether the two given #graphene_plane_t are equal.
 func (a *Plane) Equal(b *Plane) bool {
-	var _arg0 *C.graphene_plane_t
-	var _arg1 *C.graphene_plane_t
+	var _arg0 *C.graphene_plane_t // out
+	var _arg1 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_plane_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_plane_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -90,7 +90,7 @@ func (a *Plane) Equal(b *Plane) bool {
 
 // Free frees the resources allocated by graphene_plane_alloc().
 func (p *Plane) Free() {
-	var _arg0 *C.graphene_plane_t
+	var _arg0 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
@@ -100,15 +100,15 @@ func (p *Plane) Free() {
 // Constant retrieves the distance along the normal vector of the given
 // #graphene_plane_t from the origin.
 func (p *Plane) Constant() float32 {
-	var _arg0 *C.graphene_plane_t
+	var _arg0 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
-	var _cret C.float
+	var _cret C.float // in
 
 	_cret = C.graphene_plane_get_constant(_arg0)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -118,7 +118,7 @@ func (p *Plane) Constant() float32 {
 // Normal retrieves the normal vector pointing towards the origin of the given
 // #graphene_plane_t.
 func (p *Plane) Normal() Vec3 {
-	var _arg0 *C.graphene_plane_t
+	var _arg0 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
@@ -132,7 +132,7 @@ func (p *Plane) Normal() Vec3 {
 // Negate negates the normal vector and constant of a #graphene_plane_t,
 // effectively mirroring the plane across the origin.
 func (p *Plane) Negate() Plane {
-	var _arg0 *C.graphene_plane_t
+	var _arg0 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
@@ -146,7 +146,7 @@ func (p *Plane) Negate() Plane {
 // Normalize normalizes the vector of the given #graphene_plane_t, and adjusts
 // the constant accordingly.
 func (p *Plane) Normalize() Plane {
-	var _arg0 *C.graphene_plane_t
+	var _arg0 *C.graphene_plane_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 
@@ -165,9 +165,9 @@ func (p *Plane) Normalize() Plane {
 // same @matrix it's recommended to compute the normal matrix beforehand to
 // avoid incurring in the cost of recomputing it every time.
 func (p *Plane) Transform(matrix *Matrix, normalMatrix *Matrix) Plane {
-	var _arg0 *C.graphene_plane_t
-	var _arg1 *C.graphene_matrix_t
-	var _arg2 *C.graphene_matrix_t
+	var _arg0 *C.graphene_plane_t  // out
+	var _arg1 *C.graphene_matrix_t // out
+	var _arg2 *C.graphene_matrix_t // out
 
 	_arg0 = (*C.graphene_plane_t)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))

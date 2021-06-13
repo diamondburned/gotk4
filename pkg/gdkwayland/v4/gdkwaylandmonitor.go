@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4
+// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
@@ -54,15 +54,15 @@ func marshalWaylandMonitor(p uintptr) (interface{}, error) {
 
 // WlOutput returns the Wayland `wl_output` of a `GdkMonitor`.
 func (m waylandMonitor) WlOutput() *interface{} {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.wl_output
+	var _cret *C.wl_output // in
 
 	_cret = C.gdk_wayland_monitor_get_wl_output(_arg0)
 
-	var _gpointer *interface{}
+	var _gpointer *interface{} // out
 
 	_gpointer = (*interface{})(_cret)
 

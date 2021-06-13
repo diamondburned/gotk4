@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -74,15 +74,15 @@ func marshalToggleToolButton(p uintptr) (interface{}, error) {
 // Active queries a ToggleToolButton and returns its current state. Returns
 // true if the toggle button is pressed in and false if it is raised.
 func (b toggleToolButton) Active() bool {
-	var _arg0 *C.GtkToggleToolButton
+	var _arg0 *C.GtkToggleToolButton // out
 
 	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_tool_button_get_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -95,8 +95,8 @@ func (b toggleToolButton) Active() bool {
 // want the GtkToggleButton to be “pressed in”, and false to raise it. This
 // action causes the toggled signal to be emitted.
 func (b toggleToolButton) SetActive(isActive bool) {
-	var _arg0 *C.GtkToggleToolButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToggleToolButton // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GtkToggleToolButton)(unsafe.Pointer(b.Native()))
 	if isActive {

@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -325,12 +325,12 @@ func marshalCellArea(p uintptr) (interface{}, error) {
 // cell, however some subclasses which embed widgets in the area can also
 // activate a widget if it currently has the focus.
 func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, flags CellRendererState, editOnly bool) bool {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
-	var _arg3 *C.GdkRectangle
-	var _arg4 C.GtkCellRendererState
-	var _arg5 C.gboolean
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkRectangle        // out
+	var _arg4 C.GtkCellRendererState // out
+	var _arg5 C.gboolean             // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
@@ -341,11 +341,11 @@ func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk
 		_arg5 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_area_activate(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -358,12 +358,12 @@ func (a cellArea) Activate(context CellAreaContext, widget Widget, cellArea *gdk
 // activate cells, the base CellArea class activates cells for keyboard
 // events for free in its own GtkCellArea->activate() implementation.
 func (a cellArea) ActivateCell(widget Widget, renderer CellRenderer, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) bool {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.GtkCellRenderer
-	var _arg3 *C.GdkEvent
-	var _arg4 *C.GdkRectangle
-	var _arg5 C.GtkCellRendererState
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkWidget           // out
+	var _arg2 *C.GtkCellRenderer     // out
+	var _arg3 *C.GdkEvent            // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellRendererState // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -372,11 +372,11 @@ func (a cellArea) ActivateCell(widget Widget, renderer CellRenderer, event gdk.E
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 	_arg5 = (C.GtkCellRendererState)(flags)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_area_activate_cell(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -387,8 +387,8 @@ func (a cellArea) ActivateCell(widget Widget, renderer CellRenderer, event gdk.E
 
 // Add adds @renderer to @area with the default child cell properties.
 func (a cellArea) Add(renderer CellRenderer) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -403,9 +403,9 @@ func (a cellArea) Add(renderer CellRenderer) {
 // Events handled by focus siblings can also activate the given focusable
 // @renderer.
 func (a cellArea) AddFocusSibling(renderer CellRenderer, sibling CellRenderer) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -417,11 +417,11 @@ func (a cellArea) AddFocusSibling(renderer CellRenderer, sibling CellRenderer) {
 // ApplyAttributes applies any connected attributes to the renderers in
 // @area by pulling the values from @tree_model.
 func (a cellArea) ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpander bool, isExpanded bool) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkTreeModel
-	var _arg2 *C.GtkTreeIter
-	var _arg3 C.gboolean
-	var _arg4 C.gboolean
+	var _arg0 *C.GtkCellArea  // out
+	var _arg1 *C.GtkTreeModel // out
+	var _arg2 *C.GtkTreeIter  // out
+	var _arg3 C.gboolean      // out
+	var _arg4 C.gboolean      // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkTreeModel)(unsafe.Pointer(treeModel.Native()))
@@ -439,10 +439,10 @@ func (a cellArea) ApplyAttributes(treeModel TreeModel, iter *TreeIter, isExpande
 // AttributeConnect connects an @attribute to apply values from @column for
 // the TreeModel in use.
 func (a cellArea) AttributeConnect(renderer CellRenderer, attribute string, column int) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.char
-	var _arg3 C.int
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.char            // out
+	var _arg3 C.int              // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -456,9 +456,9 @@ func (a cellArea) AttributeConnect(renderer CellRenderer, attribute string, colu
 // AttributeDisconnect disconnects @attribute for the @renderer in @area so
 // that attribute will no longer be updated with values from the model.
 func (a cellArea) AttributeDisconnect(renderer CellRenderer, attribute string) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.char
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.char            // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -471,20 +471,20 @@ func (a cellArea) AttributeDisconnect(renderer CellRenderer, attribute string) {
 // AttributeGetColumn returns the model column that an attribute has been
 // mapped to, or -1 if the attribute is not mapped.
 func (a cellArea) AttributeGetColumn(renderer CellRenderer, attribute string) int {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.char
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.char            // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg2 = (*C.char)(C.CString(attribute))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_cell_area_attribute_get_column(_arg0, _arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -493,10 +493,10 @@ func (a cellArea) AttributeGetColumn(renderer CellRenderer, attribute string) in
 
 // CellGetProperty gets the value of a cell property for @renderer in @area.
 func (a cellArea) CellGetProperty(renderer CellRenderer, propertyName string, value **externglib.Value) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.char
-	var _arg3 *C.GValue
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.char            // out
+	var _arg3 *C.GValue          // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -509,10 +509,10 @@ func (a cellArea) CellGetProperty(renderer CellRenderer, propertyName string, va
 
 // CellSetProperty sets a cell property for @renderer in @area.
 func (a cellArea) CellSetProperty(renderer CellRenderer, propertyName string, value **externglib.Value) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.char
-	var _arg3 *C.GValue
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.char            // out
+	var _arg3 *C.GValue          // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -525,12 +525,12 @@ func (a cellArea) CellSetProperty(renderer CellRenderer, propertyName string, va
 
 // Event delegates event handling to a CellArea.
 func (a cellArea) Event(context CellAreaContext, widget Widget, event gdk.Event, cellArea *gdk.Rectangle, flags CellRendererState) int {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
-	var _arg3 *C.GdkEvent
-	var _arg4 *C.GdkRectangle
-	var _arg5 C.GtkCellRendererState
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkEvent            // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellRendererState // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
@@ -539,11 +539,11 @@ func (a cellArea) Event(context CellAreaContext, widget Widget, event gdk.Event,
 	_arg4 = (*C.GdkRectangle)(unsafe.Pointer(cellArea.Native()))
 	_arg5 = (C.GtkCellRendererState)(flags)
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_cell_area_event(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -557,17 +557,17 @@ func (a cellArea) Event(context CellAreaContext, widget Widget, event gdk.Event,
 // Implementing CellArea classes should implement this method to receive and
 // navigate focus in its own way particular to how it lays out cells.
 func (a cellArea) Focus(direction DirectionType) bool {
-	var _arg0 *C.GtkCellArea
-	var _arg1 C.GtkDirectionType
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 C.GtkDirectionType // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (C.GtkDirectionType)(direction)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_area_focus(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -578,8 +578,8 @@ func (a cellArea) Focus(direction DirectionType) bool {
 
 // Foreach calls @callback for every CellRenderer in @area.
 func (a cellArea) Foreach(callback CellCallback) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 C.GtkCellCallback
+	var _arg0 *C.GtkCellArea    // out
+	var _arg1 C.GtkCellCallback // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
@@ -592,12 +592,12 @@ func (a cellArea) Foreach(callback CellCallback) {
 // ForeachAlloc calls @callback for every CellRenderer in @area with the
 // allocated rectangle inside @cell_area.
 func (a cellArea) ForeachAlloc(context CellAreaContext, widget Widget, cellArea *gdk.Rectangle, backgroundArea *gdk.Rectangle, callback CellAllocCallback) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
-	var _arg3 *C.GdkRectangle
-	var _arg4 *C.GdkRectangle
-	var _arg5 C.GtkCellAllocCallback
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GdkRectangle        // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 C.GtkCellAllocCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
@@ -614,11 +614,11 @@ func (a cellArea) ForeachAlloc(context CellAreaContext, widget Widget, cellArea 
 // CellAllocation derives the allocation of @renderer inside @area if @area
 // were to be renderered in @cell_area.
 func (a cellArea) CellAllocation(context CellAreaContext, widget Widget, renderer CellRenderer, cellArea *gdk.Rectangle) gdk.Rectangle {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
-	var _arg3 *C.GtkCellRenderer
-	var _arg4 *C.GdkRectangle
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 *C.GtkCellRenderer    // out
+	var _arg4 *C.GdkRectangle       // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
@@ -638,15 +638,15 @@ func (a cellArea) CellAllocation(context CellAreaContext, widget Widget, rendere
 // gtk_cell_area_apply_attributes() is called and can be used to interact
 // with renderers from CellArea subclasses.
 func (a cellArea) CurrentPathString() string {
-	var _arg0 *C.GtkCellArea
+	var _arg0 *C.GtkCellArea // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_cell_area_get_current_path_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -662,21 +662,21 @@ func (a cellArea) CurrentPathString() string {
 // but rather to consult gtk_cell_area_context_get_preferred_height() after
 // a series of requests.
 func (a cellArea) PreferredHeight(context CellAreaContext, widget Widget) (minimumHeight int, naturalHeight int) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _arg3 C.int
-	var _arg4 C.int
+	var _arg3 C.int // in
+	var _arg4 C.int // in
 
 	C.gtk_cell_area_get_preferred_height(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
-	var _minimumHeight int
-	var _naturalHeight int
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
 	_minimumHeight = (int)(_arg3)
 	_naturalHeight = (int)(_arg4)
@@ -699,23 +699,23 @@ func (a cellArea) PreferredHeight(context CellAreaContext, widget Widget) (minim
 // full width of the requested rows checked again with
 // gtk_cell_area_context_get_preferred_width().
 func (a cellArea) PreferredHeightForWidth(context CellAreaContext, widget Widget, width int) (minimumHeight int, naturalHeight int) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
-	var _arg3 C.int
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 C.int                 // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = C.int(width)
 
-	var _arg4 C.int
-	var _arg5 C.int
+	var _arg4 C.int // in
+	var _arg5 C.int // in
 
 	C.gtk_cell_area_get_preferred_height_for_width(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
-	var _minimumHeight int
-	var _naturalHeight int
+	var _minimumHeight int // out
+	var _naturalHeight int // out
 
 	_minimumHeight = (int)(_arg4)
 	_naturalHeight = (int)(_arg5)
@@ -731,21 +731,21 @@ func (a cellArea) PreferredHeightForWidth(context CellAreaContext, widget Widget
 // rather to consult gtk_cell_area_context_get_preferred_width() after a
 // series of requests.
 func (a cellArea) PreferredWidth(context CellAreaContext, widget Widget) (minimumWidth int, naturalWidth int) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _arg3 C.int
-	var _arg4 C.int
+	var _arg3 C.int // in
+	var _arg4 C.int // in
 
 	C.gtk_cell_area_get_preferred_width(_arg0, _arg1, _arg2, &_arg3, &_arg4)
 
-	var _minimumWidth int
-	var _naturalWidth int
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
 	_minimumWidth = (int)(_arg3)
 	_naturalWidth = (int)(_arg4)
@@ -768,23 +768,23 @@ func (a cellArea) PreferredWidth(context CellAreaContext, widget Widget) (minimu
 // full height of the requested rows checked again with
 // gtk_cell_area_context_get_preferred_height().
 func (a cellArea) PreferredWidthForHeight(context CellAreaContext, widget Widget, height int) (minimumWidth int, naturalWidth int) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
-	var _arg3 C.int
+	var _arg0 *C.GtkCellArea        // out
+	var _arg1 *C.GtkCellAreaContext // out
+	var _arg2 *C.GtkWidget          // out
+	var _arg3 C.int                 // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg3 = C.int(height)
 
-	var _arg4 C.int
-	var _arg5 C.int
+	var _arg4 C.int // in
+	var _arg5 C.int // in
 
 	C.gtk_cell_area_get_preferred_width_for_height(_arg0, _arg1, _arg2, _arg3, &_arg4, &_arg5)
 
-	var _minimumWidth int
-	var _naturalWidth int
+	var _minimumWidth int // out
+	var _naturalWidth int // out
 
 	_minimumWidth = (int)(_arg4)
 	_naturalWidth = (int)(_arg5)
@@ -794,17 +794,17 @@ func (a cellArea) PreferredWidthForHeight(context CellAreaContext, widget Widget
 
 // HasRenderer checks if @area contains @renderer.
 func (a cellArea) HasRenderer(renderer CellRenderer) bool {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_area_has_renderer(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -818,9 +818,9 @@ func (a cellArea) HasRenderer(renderer CellRenderer) bool {
 // rendered. It removes any padding previously added by
 // gtk_cell_area_request_renderer().
 func (a cellArea) InnerCellArea(widget Widget, cellArea *gdk.Rectangle) gdk.Rectangle {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.GdkRectangle
+	var _arg0 *C.GtkCellArea  // out
+	var _arg1 *C.GtkWidget    // out
+	var _arg2 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -836,15 +836,15 @@ func (a cellArea) InnerCellArea(widget Widget, cellArea *gdk.Rectangle) gdk.Rect
 // IsActivatable returns whether the area can do anything when activated,
 // after applying new attributes to @area.
 func (a cellArea) IsActivatable() bool {
-	var _arg0 *C.GtkCellArea
+	var _arg0 *C.GtkCellArea // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_area_is_activatable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -856,19 +856,19 @@ func (a cellArea) IsActivatable() bool {
 // IsFocusSibling returns whether @sibling is one of @renderer’s focus
 // siblings (see gtk_cell_area_add_focus_sibling()).
 func (a cellArea) IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bool {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
 	_arg2 = (*C.GtkCellRenderer)(unsafe.Pointer(sibling.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_area_is_focus_sibling(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -879,8 +879,8 @@ func (a cellArea) IsFocusSibling(renderer CellRenderer, sibling CellRenderer) bo
 
 // Remove removes @renderer from @area.
 func (a cellArea) Remove(renderer CellRenderer) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -891,9 +891,9 @@ func (a cellArea) Remove(renderer CellRenderer) {
 // RemoveFocusSibling removes @sibling from @renderer’s focus sibling list
 // (see gtk_cell_area_add_focus_sibling()).
 func (a cellArea) RemoveFocusSibling(renderer CellRenderer, sibling CellRenderer) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -908,11 +908,11 @@ func (a cellArea) RemoveFocusSibling(renderer CellRenderer, sibling CellRenderer
 // gtk_cell_area_inner_cell_area() at render and event time since this
 // function will add padding around the cell for focus painting.
 func (a cellArea) RequestRenderer(renderer CellRenderer, orientation Orientation, widget Widget, forSize int) (minimumSize int, naturalSize int) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 C.GtkOrientation
-	var _arg3 *C.GtkWidget
-	var _arg4 C.int
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.GtkOrientation   // out
+	var _arg3 *C.GtkWidget       // out
+	var _arg4 C.int              // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -920,13 +920,13 @@ func (a cellArea) RequestRenderer(renderer CellRenderer, orientation Orientation
 	_arg3 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 	_arg4 = C.int(forSize)
 
-	var _arg5 C.int
-	var _arg6 C.int
+	var _arg5 C.int // in
+	var _arg6 C.int // in
 
 	C.gtk_cell_area_request_renderer(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
 
-	var _minimumSize int
-	var _naturalSize int
+	var _minimumSize int // out
+	var _naturalSize int // out
 
 	_minimumSize = (int)(_arg5)
 	_naturalSize = (int)(_arg6)
@@ -940,8 +940,8 @@ func (a cellArea) RequestRenderer(renderer CellRenderer, orientation Orientation
 // CellAreaClass.event(), however it can also be used to implement functions
 // such as gtk_tree_view_set_cursor_on_cell().
 func (a cellArea) SetFocusCell(renderer CellRenderer) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellRenderer
+	var _arg0 *C.GtkCellArea     // out
+	var _arg1 *C.GtkCellRenderer // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -952,14 +952,14 @@ func (a cellArea) SetFocusCell(renderer CellRenderer) {
 // Snapshot snapshots @area’s cells according to @area’s layout onto at the
 // given coordinates.
 func (a cellArea) Snapshot(context CellAreaContext, widget Widget, snapshot Snapshot, backgroundArea *gdk.Rectangle, cellArea *gdk.Rectangle, flags CellRendererState, paintFocus bool) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 *C.GtkCellAreaContext
-	var _arg2 *C.GtkWidget
-	var _arg3 *C.GtkSnapshot
-	var _arg4 *C.GdkRectangle
-	var _arg5 *C.GdkRectangle
-	var _arg6 C.GtkCellRendererState
-	var _arg7 C.gboolean
+	var _arg0 *C.GtkCellArea         // out
+	var _arg1 *C.GtkCellAreaContext  // out
+	var _arg2 *C.GtkWidget           // out
+	var _arg3 *C.GtkSnapshot         // out
+	var _arg4 *C.GdkRectangle        // out
+	var _arg5 *C.GdkRectangle        // out
+	var _arg6 C.GtkCellRendererState // out
+	var _arg7 C.gboolean             // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkCellAreaContext)(unsafe.Pointer(context.Native()))
@@ -983,8 +983,8 @@ func (a cellArea) Snapshot(context CellAreaContext, widget Widget, snapshot Snap
 //
 // See gtk_cell_area_get_edited_cell() and gtk_cell_area_get_edit_widget().
 func (a cellArea) StopEditing(canceled bool) {
-	var _arg0 *C.GtkCellArea
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCellArea // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkCellArea)(unsafe.Pointer(a.Native()))
 	if canceled {

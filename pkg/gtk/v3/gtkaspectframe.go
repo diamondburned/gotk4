@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -63,11 +63,11 @@ func marshalAspectFrame(p uintptr) (interface{}, error) {
 
 // Set: set parameters for an existing AspectFrame.
 func (a aspectFrame) Set(xalign float32, yalign float32, ratio float32, obeyChild bool) {
-	var _arg0 *C.GtkAspectFrame
-	var _arg1 C.gfloat
-	var _arg2 C.gfloat
-	var _arg3 C.gfloat
-	var _arg4 C.gboolean
+	var _arg0 *C.GtkAspectFrame // out
+	var _arg1 C.gfloat          // out
+	var _arg2 C.gfloat          // out
+	var _arg3 C.gfloat          // out
+	var _arg4 C.gboolean        // out
 
 	_arg0 = (*C.GtkAspectFrame)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gfloat(xalign)

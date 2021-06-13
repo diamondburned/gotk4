@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -130,15 +130,15 @@ func marshalButton(p uintptr) (interface{}, error) {
 
 // HasFrame returns whether the button has a frame.
 func (b button) HasFrame() bool {
-	var _arg0 *C.GtkButton
+	var _arg0 *C.GtkButton // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_button_get_has_frame(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -153,15 +153,15 @@ func (b button) HasFrame() bool {
 // the return value will be nil. This will be the case if you create an
 // empty button with [ctor@Gtk.Button.new] to use as a container.
 func (b button) IconName() string {
-	var _arg0 *C.GtkButton
+	var _arg0 *C.GtkButton // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_button_get_icon_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -174,15 +174,15 @@ func (b button) IconName() string {
 // return value will be nil. This will be the case if you create an empty
 // button with [ctor@Gtk.Button.new] to use as a container.
 func (b button) Label() string {
-	var _arg0 *C.GtkButton
+	var _arg0 *C.GtkButton // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_button_get_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -193,15 +193,15 @@ func (b button) Label() string {
 //
 // See [method@Gtk.Button.set_use_underline].
 func (b button) UseUnderline() bool {
-	var _arg0 *C.GtkButton
+	var _arg0 *C.GtkButton // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_button_get_use_underline(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -212,8 +212,8 @@ func (b button) UseUnderline() bool {
 
 // SetChild sets the child widget of @button.
 func (b button) SetChild(child Widget) {
-	var _arg0 *C.GtkButton
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkButton // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -225,8 +225,8 @@ func (b button) SetChild(child Widget) {
 //
 // Buttons can has a flat appearance or have a frame drawn around them.
 func (b button) SetHasFrame(hasFrame bool) {
-	var _arg0 *C.GtkButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkButton // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if hasFrame {
@@ -241,8 +241,8 @@ func (b button) SetHasFrame(hasFrame bool) {
 // If @button already contains a child widget, that child widget will be
 // removed and replaced with the image.
 func (b button) SetIconName(iconName string) {
-	var _arg0 *C.GtkButton
-	var _arg1 *C.char
+	var _arg0 *C.GtkButton // out
+	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(iconName))
@@ -255,8 +255,8 @@ func (b button) SetIconName(iconName string) {
 //
 // This will also clear any previously set labels.
 func (b button) SetLabel(label string) {
-	var _arg0 *C.GtkButton
-	var _arg1 *C.char
+	var _arg0 *C.GtkButton // out
+	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(label))
@@ -270,8 +270,8 @@ func (b button) SetLabel(label string) {
 // If true, an underline in the text of the button label indicates the next
 // character should be used for the mnemonic accelerator key.
 func (b button) SetUseUnderline(useUnderline bool) {
-	var _arg0 *C.GtkButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkButton // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkButton)(unsafe.Pointer(b.Native()))
 	if useUnderline {

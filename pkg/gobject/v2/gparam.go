@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -66,10 +66,10 @@ const (
 // See also g_value_type_transformable(), g_value_transform() and
 // g_param_value_validate().
 func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue **externglib.Value, strictValidation bool) bool {
-	var _arg1 *C.GParamSpec
-	var _arg2 *C.GValue
-	var _arg3 *C.GValue
-	var _arg4 C.gboolean
+	var _arg1 *C.GParamSpec // out
+	var _arg2 *C.GValue     // out
+	var _arg3 *C.GValue     // out
+	var _arg4 C.gboolean    // out
 
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 	_arg2 = (*C.GValue)(srcValue.GValue)
@@ -78,11 +78,11 @@ func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue *
 		_arg4 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_param_value_convert(_arg1, _arg2, _arg3, _arg4)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -94,17 +94,17 @@ func ParamValueConvert(pspec ParamSpec, srcValue **externglib.Value, destValue *
 // ParamValueDefaults checks whether @value contains the default value as
 // specified in @pspec.
 func ParamValueDefaults(pspec ParamSpec, value **externglib.Value) bool {
-	var _arg1 *C.GParamSpec
-	var _arg2 *C.GValue
+	var _arg1 *C.GParamSpec // out
+	var _arg2 *C.GValue     // out
 
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 	_arg2 = (*C.GValue)(value.GValue)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_param_value_defaults(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -115,8 +115,8 @@ func ParamValueDefaults(pspec ParamSpec, value **externglib.Value) bool {
 
 // ParamValueSetDefault sets @value to its default value as specified in @pspec.
 func ParamValueSetDefault(pspec ParamSpec, value **externglib.Value) {
-	var _arg1 *C.GParamSpec
-	var _arg2 *C.GValue
+	var _arg1 *C.GParamSpec // out
+	var _arg2 *C.GValue     // out
 
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 	_arg2 = (*C.GValue)(value.GValue)
@@ -130,17 +130,17 @@ func ParamValueSetDefault(pspec ParamSpec, value **externglib.Value) {
 // +42. If @value contains an integer outside of this range, it is modified
 // accordingly, so the resulting value will fit into the range -42 .. +42.
 func ParamValueValidate(pspec ParamSpec, value **externglib.Value) bool {
-	var _arg1 *C.GParamSpec
-	var _arg2 *C.GValue
+	var _arg1 *C.GParamSpec // out
+	var _arg2 *C.GValue     // out
 
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 	_arg2 = (*C.GValue)(value.GValue)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_param_value_validate(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -153,19 +153,19 @@ func ParamValueValidate(pspec ParamSpec, value **externglib.Value) bool {
 // -1, 0 or +1, if @value1 is found to be less than, equal to or greater than
 // @value2, respectively.
 func ParamValuesCmp(pspec ParamSpec, value1 **externglib.Value, value2 **externglib.Value) int {
-	var _arg1 *C.GParamSpec
-	var _arg2 *C.GValue
-	var _arg3 *C.GValue
+	var _arg1 *C.GParamSpec // out
+	var _arg2 *C.GValue     // out
+	var _arg3 *C.GValue     // out
 
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 	_arg2 = (*C.GValue)(value1.GValue)
 	_arg3 = (*C.GValue)(value2.GValue)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_param_values_cmp(_arg1, _arg2, _arg3)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -202,9 +202,9 @@ func (p *ParamSpecPool) Native() unsafe.Pointer {
 
 // Insert inserts a Spec in the pool.
 func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
-	var _arg0 *C.GParamSpecPool
-	var _arg1 *C.GParamSpec
-	var _arg2 C.GType
+	var _arg0 *C.GParamSpecPool // out
+	var _arg1 *C.GParamSpec     // out
+	var _arg2 C.GType           // out
 
 	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
@@ -215,8 +215,8 @@ func (p *ParamSpecPool) Insert(pspec ParamSpec, ownerType externglib.Type) {
 
 // Remove removes a Spec from the pool.
 func (p *ParamSpecPool) Remove(pspec ParamSpec) {
-	var _arg0 *C.GParamSpecPool
-	var _arg1 *C.GParamSpec
+	var _arg0 *C.GParamSpecPool // out
+	var _arg1 *C.GParamSpec     // out
 
 	_arg0 = (*C.GParamSpecPool)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
@@ -252,14 +252,14 @@ func (p *Parameter) Native() unsafe.Pointer {
 
 // Name gets the field inside the struct.
 func (p *Parameter) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(p.native.name)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (p *Parameter) Value() **externglib.Value {
-	var v **externglib.Value
+	var v **externglib.Value // out
 	v = externglib.ValueFromNative(unsafe.Pointer(p.native.value))
 	return v
 }

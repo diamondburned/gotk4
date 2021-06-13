@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -80,15 +80,15 @@ func marshalBoxLayout(p uintptr) (interface{}, error) {
 
 // Homogeneous returns whether the layout is set to be homogeneous.
 func (b boxLayout) Homogeneous() bool {
-	var _arg0 *C.GtkBoxLayout
+	var _arg0 *C.GtkBoxLayout // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_box_layout_get_homogeneous(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -99,15 +99,15 @@ func (b boxLayout) Homogeneous() bool {
 
 // Spacing returns the space that @box_layout puts between children.
 func (b boxLayout) Spacing() uint {
-	var _arg0 *C.GtkBoxLayout
+	var _arg0 *C.GtkBoxLayout // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_box_layout_get_spacing(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -122,8 +122,8 @@ func (b boxLayout) Spacing() uint {
 // @position is used to allocate the baseline within the extra space
 // available.
 func (b boxLayout) SetBaselinePosition(position BaselinePosition) {
-	var _arg0 *C.GtkBoxLayout
-	var _arg1 C.GtkBaselinePosition
+	var _arg0 *C.GtkBoxLayout       // out
+	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 	_arg1 = (C.GtkBaselinePosition)(position)
@@ -134,8 +134,8 @@ func (b boxLayout) SetBaselinePosition(position BaselinePosition) {
 // SetHomogeneous sets whether the box layout will allocate the same size to
 // all children.
 func (b boxLayout) SetHomogeneous(homogeneous bool) {
-	var _arg0 *C.GtkBoxLayout
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkBoxLayout // out
+	var _arg1 C.gboolean      // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 	if homogeneous {
@@ -147,8 +147,8 @@ func (b boxLayout) SetHomogeneous(homogeneous bool) {
 
 // SetSpacing sets how much spacing to put between children.
 func (b boxLayout) SetSpacing(spacing uint) {
-	var _arg0 *C.GtkBoxLayout
-	var _arg1 C.guint
+	var _arg0 *C.GtkBoxLayout // out
+	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkBoxLayout)(unsafe.Pointer(b.Native()))
 	_arg1 = C.guint(spacing)

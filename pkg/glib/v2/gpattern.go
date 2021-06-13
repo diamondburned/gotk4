@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -29,10 +29,10 @@ import "C"
 // any multibyte characters. GLib offers the g_utf8_strreverse() function to
 // reverse UTF-8 encoded strings.
 func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringReversed string) bool {
-	var _arg1 *C.GPatternSpec
-	var _arg2 C.guint
-	var _arg3 *C.gchar
-	var _arg4 *C.gchar
+	var _arg1 *C.GPatternSpec // out
+	var _arg2 C.guint         // out
+	var _arg3 *C.gchar        // out
+	var _arg4 *C.gchar        // out
 
 	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
 	_arg2 = C.guint(stringLength)
@@ -41,11 +41,11 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 	_arg4 = (*C.gchar)(C.CString(stringReversed))
 	defer C.free(unsafe.Pointer(_arg4))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_match(_arg1, _arg2, _arg3, _arg4)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -59,19 +59,19 @@ func PatternMatch(pspec *PatternSpec, stringLength uint, string string, stringRe
 // pattern once with g_pattern_spec_new() and call g_pattern_match_string()
 // repeatedly.
 func PatternMatchSimple(pattern string, string string) bool {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(pattern))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_match_simple(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -84,18 +84,18 @@ func PatternMatchSimple(pattern string, string string) bool {
 // is to be matched against more than one pattern, consider using
 // g_pattern_match() instead while supplying the reversed string.
 func PatternMatchString(pspec *PatternSpec, string string) bool {
-	var _arg1 *C.GPatternSpec
-	var _arg2 *C.gchar
+	var _arg1 *C.GPatternSpec // out
+	var _arg2 *C.gchar        // out
 
 	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec.Native()))
 	_arg2 = (*C.gchar)(C.CString(string))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_match_string(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -133,17 +133,17 @@ func (p *PatternSpec) Native() unsafe.Pointer {
 // Equal compares two compiled pattern specs and returns whether they will match
 // the same set of strings.
 func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
-	var _arg0 *C.GPatternSpec
-	var _arg1 *C.GPatternSpec
+	var _arg0 *C.GPatternSpec // out
+	var _arg1 *C.GPatternSpec // out
 
 	_arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GPatternSpec)(unsafe.Pointer(pspec2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_pattern_spec_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -154,7 +154,7 @@ func (p *PatternSpec) Equal(pspec2 *PatternSpec) bool {
 
 // Free frees the memory allocated for the Spec.
 func (p *PatternSpec) Free() {
-	var _arg0 *C.GPatternSpec
+	var _arg0 *C.GPatternSpec // out
 
 	_arg0 = (*C.GPatternSpec)(unsafe.Pointer(p.Native()))
 

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -70,15 +70,15 @@ func marshalInetSocketAddress(p uintptr) (interface{}, error) {
 // Flowinfo gets the `sin6_flowinfo` field from @address, which must be an
 // IPv6 address.
 func (a inetSocketAddress) Flowinfo() uint32 {
-	var _arg0 *C.GInetSocketAddress
+	var _arg0 *C.GInetSocketAddress // out
 
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.g_inet_socket_address_get_flowinfo(_arg0)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -87,15 +87,15 @@ func (a inetSocketAddress) Flowinfo() uint32 {
 
 // Port gets @address's port.
 func (a inetSocketAddress) Port() uint16 {
-	var _arg0 *C.GInetSocketAddress
+	var _arg0 *C.GInetSocketAddress // out
 
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret C.guint16
+	var _cret C.guint16 // in
 
 	_cret = C.g_inet_socket_address_get_port(_arg0)
 
-	var _guint16 uint16
+	var _guint16 uint16 // out
 
 	_guint16 = (uint16)(_cret)
 
@@ -105,15 +105,15 @@ func (a inetSocketAddress) Port() uint16 {
 // ScopeID gets the `sin6_scope_id` field from @address, which must be an
 // IPv6 address.
 func (a inetSocketAddress) ScopeID() uint32 {
-	var _arg0 *C.GInetSocketAddress
+	var _arg0 *C.GInetSocketAddress // out
 
 	_arg0 = (*C.GInetSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.g_inet_socket_address_get_scope_id(_arg0)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 

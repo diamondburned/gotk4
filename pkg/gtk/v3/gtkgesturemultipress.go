@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -76,16 +76,16 @@ func marshalGestureMultiPress(p uintptr) (interface{}, error) {
 // gtk_gesture_multi_press_set_area() for more details on what the press
 // area represents.
 func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkGestureMultiPress
+	var _arg0 *C.GtkGestureMultiPress // out
 
 	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
 
 	var _rect gdk.Rectangle
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_multi_press_get_area(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -102,8 +102,8 @@ func (g gestureMultiPress) Area() (gdk.Rectangle, bool) {
 // Note: The rectangle is only used to determine whether any non-first click
 // falls within the expected area. This is not akin to an input shape.
 func (g gestureMultiPress) SetArea(rect *gdk.Rectangle) {
-	var _arg0 *C.GtkGestureMultiPress
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GtkGestureMultiPress // out
+	var _arg1 *C.GdkRectangle         // out
 
 	_arg0 = (*C.GtkGestureMultiPress)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))

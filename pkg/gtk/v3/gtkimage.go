@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -149,7 +149,7 @@ func marshalImage(p uintptr) (interface{}, error) {
 
 // Clear resets the image to be empty.
 func (i image) Clear() {
-	var _arg0 *C.GtkImage
+	var _arg0 *C.GtkImage // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
@@ -161,17 +161,17 @@ func (i image) Clear() {
 // (see gtk_image_get_storage_type()). The returned string is owned by the
 // Image and should not be freed.
 func (i image) IconName() (string, int) {
-	var _arg0 *C.GtkImage
+	var _arg0 *C.GtkImage // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
-	var _arg1 **C.gchar
-	var _arg2 C.GtkIconSize
+	var _arg1 **C.gchar     // in
+	var _arg2 C.GtkIconSize // in
 
 	C.gtk_image_get_icon_name(_arg0, _arg1, &_arg2)
 
-	var _iconName string
-	var _size int
+	var _iconName string // out
+	var _size int        // out
 
 	_iconName = C.GoString(_arg1)
 	_size = (int)(_arg2)
@@ -181,15 +181,15 @@ func (i image) IconName() (string, int) {
 
 // PixelSize gets the pixel size used for named icons.
 func (i image) PixelSize() int {
-	var _arg0 *C.GtkImage
+	var _arg0 *C.GtkImage // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_image_get_pixel_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -201,17 +201,17 @@ func (i image) PixelSize() int {
 // gtk_image_get_storage_type()). The returned string is owned by the Image
 // and should not be freed.
 func (i image) Stock() (string, int) {
-	var _arg0 *C.GtkImage
+	var _arg0 *C.GtkImage // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 
-	var _arg1 **C.gchar
-	var _arg2 C.GtkIconSize
+	var _arg1 **C.gchar     // in
+	var _arg2 C.GtkIconSize // in
 
 	C.gtk_image_get_stock(_arg0, _arg1, &_arg2)
 
-	var _stockId string
-	var _size int
+	var _stockId string // out
+	var _size int       // out
 
 	_stockId = C.GoString(_arg1)
 	_size = (int)(_arg2)
@@ -222,8 +222,8 @@ func (i image) Stock() (string, int) {
 // SetFromAnimation causes the Image to display the given animation (or
 // display nothing, if you set the animation to nil).
 func (i image) SetFromAnimation(animation gdkpixbuf.PixbufAnimation) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.GdkPixbufAnimation
+	var _arg0 *C.GtkImage           // out
+	var _arg1 *C.GdkPixbufAnimation // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GdkPixbufAnimation)(unsafe.Pointer(animation.Native()))
@@ -233,8 +233,8 @@ func (i image) SetFromAnimation(animation gdkpixbuf.PixbufAnimation) {
 
 // SetFromFile: see gtk_image_new_from_file() for details.
 func (i image) SetFromFile(filename *string) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkImage // out
+	var _arg1 *C.gchar    // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
@@ -245,9 +245,9 @@ func (i image) SetFromFile(filename *string) {
 
 // SetFromGIcon: see gtk_image_new_from_gicon() for details.
 func (i image) SetFromGIcon(icon gio.Icon, size int) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.GIcon
-	var _arg2 C.GtkIconSize
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GIcon      // out
+	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
@@ -258,9 +258,9 @@ func (i image) SetFromGIcon(icon gio.Icon, size int) {
 
 // SetFromIconName: see gtk_image_new_from_icon_name() for details.
 func (i image) SetFromIconName(iconName string, size int) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.gchar
-	var _arg2 C.GtkIconSize
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
@@ -272,9 +272,9 @@ func (i image) SetFromIconName(iconName string, size int) {
 
 // SetFromIconSet: see gtk_image_new_from_icon_set() for details.
 func (i image) SetFromIconSet(iconSet *IconSet, size int) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.GtkIconSet
-	var _arg2 C.GtkIconSize
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.GtkIconSet // out
+	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkIconSet)(unsafe.Pointer(iconSet.Native()))
@@ -285,8 +285,8 @@ func (i image) SetFromIconSet(iconSet *IconSet, size int) {
 
 // SetFromPixbuf: see gtk_image_new_from_pixbuf() for details.
 func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.GdkPixbuf
+	var _arg0 *C.GtkImage  // out
+	var _arg1 *C.GdkPixbuf // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -296,8 +296,8 @@ func (i image) SetFromPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 
 // SetFromResource: see gtk_image_new_from_resource() for details.
 func (i image) SetFromResource(resourcePath string) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkImage // out
+	var _arg1 *C.gchar    // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(resourcePath))
@@ -308,9 +308,9 @@ func (i image) SetFromResource(resourcePath string) {
 
 // SetFromStock: see gtk_image_new_from_stock() for details.
 func (i image) SetFromStock(stockId string, size int) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.gchar
-	var _arg2 C.GtkIconSize
+	var _arg0 *C.GtkImage   // out
+	var _arg1 *C.gchar      // out
+	var _arg2 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
@@ -322,8 +322,8 @@ func (i image) SetFromStock(stockId string, size int) {
 
 // SetFromSurface: see gtk_image_new_from_surface() for details.
 func (i image) SetFromSurface(surface *cairo.Surface) {
-	var _arg0 *C.GtkImage
-	var _arg1 *C.cairo_surface_t
+	var _arg0 *C.GtkImage        // out
+	var _arg1 *C.cairo_surface_t // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
@@ -335,8 +335,8 @@ func (i image) SetFromSurface(surface *cairo.Surface) {
 // size is set to a value != -1, it is used instead of the icon size set by
 // gtk_image_set_from_icon_name().
 func (i image) SetPixelSize(pixelSize int) {
-	var _arg0 *C.GtkImage
-	var _arg1 C.gint
+	var _arg0 *C.GtkImage // out
+	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkImage)(unsafe.Pointer(i.Native()))
 	_arg1 = C.gint(pixelSize)

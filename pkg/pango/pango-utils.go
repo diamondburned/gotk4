@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -21,15 +21,15 @@ import "C"
 // as *bidi* formatting characters, and a few other ones. This is totally
 // different from g_unichar_iszerowidth() and is at best misnamed.
 func IsZeroWidth(ch uint32) bool {
-	var _arg1 C.gunichar
+	var _arg1 C.gunichar // out
 
 	_arg1 = C.gunichar(ch)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_is_zero_width(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -49,20 +49,20 @@ func IsZeroWidth(ch uint32) bool {
 // If the input base direction is a weak direction, the direction of the
 // characters in the text will determine the final resolved direction.
 func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *byte {
-	var _arg1 *C.gchar
-	var _arg2 C.int
-	var _arg3 *C.PangoDirection
+	var _arg1 *C.gchar          // out
+	var _arg2 C.int             // out
+	var _arg3 *C.PangoDirection // out
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.int(length)
 	_arg3 = (*C.PangoDirection)(pbaseDir)
 
-	var _cret *C.guint8
+	var _cret *C.guint8 // in
 
 	_cret = C.pango_log2vis_get_embedding_levels(_arg1, _arg2, _arg3)
 
-	var _guint8 *byte
+	var _guint8 *byte // out
 
 	_guint8 = (*byte)(_cret)
 
@@ -78,9 +78,9 @@ func Log2VisGetEmbeddingLevels(text string, length int, pbaseDir *Direction) *by
 // If failed and @possible_values is not nil, returned string should be freed
 // using g_free().
 func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
-	var _arg1 C.GType
-	var _arg2 *C.char
-	var _arg4 C.gboolean
+	var _arg1 C.GType    // out
+	var _arg2 *C.char    // out
+	var _arg4 C.gboolean // out
 
 	_arg1 = C.GType(typ)
 	_arg2 = (*C.char)(C.CString(str))
@@ -89,15 +89,15 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 		_arg4 = C.gboolean(1)
 	}
 
-	var _arg3 C.int
-	var _arg5 *C.char
-	var _cret C.gboolean
+	var _arg3 C.int      // in
+	var _arg5 *C.char    // in
+	var _cret C.gboolean // in
 
 	_cret = C.pango_parse_enum(_arg1, _arg2, _arg4, &_arg3, &_arg5)
 
-	var _value int
-	var _possibleValues string
-	var _ok bool
+	var _value int             // out
+	var _possibleValues string // out
+	var _ok bool               // out
 
 	_value = (int)(_arg3)
 	_possibleValues = C.GoString(_arg5)
@@ -120,17 +120,17 @@ func ParseEnum(typ externglib.Type, str string, warn bool) (int, string, bool) {
 // '\' proceeding a line delimiter combines adjacent lines. A '\' proceeding any
 // other character is ignored and written into the output buffer unmodified.
 func ReadLine(stream *interface{}, str *glib.String) int {
-	var _arg1 *C.FILE
-	var _arg2 *C.GString
+	var _arg1 *C.FILE    // out
+	var _arg2 *C.GString // out
 
 	_arg1 = *C.FILE(stream)
 	_arg2 = (*C.GString)(unsafe.Pointer(str.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.pango_read_line(_arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -140,7 +140,7 @@ func ReadLine(stream *interface{}, str *glib.String) int {
 // SplitFileList splits a G_SEARCHPATH_SEPARATOR-separated list of files,
 // stripping white space and substituting ~/ with $HOME/.
 func SplitFileList(str string) []string {
-	var _arg1 *C.char
+	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -175,16 +175,16 @@ func SplitFileList(str string) []string {
 
 // TrimString trims leading and trailing whitespace from a string.
 func TrimString(str string) string {
-	var _arg1 *C.char
+	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.pango_trim_string(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -198,11 +198,11 @@ func TrimString(str string) string {
 // encoded version available at compile-time. A version number can be encoded
 // into an integer using PANGO_VERSION_ENCODE().
 func Version() int {
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.pango_version()
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -226,19 +226,19 @@ func Version() int {
 //
 // For compile-time version checking use PANGO_VERSION_CHECK().
 func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) string {
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 C.int
+	var _arg1 C.int // out
+	var _arg2 C.int // out
+	var _arg3 C.int // out
 
 	_arg1 = C.int(requiredMajor)
 	_arg2 = C.int(requiredMinor)
 	_arg3 = C.int(requiredMicro)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.pango_version_check(_arg1, _arg2, _arg3)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -250,11 +250,11 @@ func VersionCheck(requiredMajor int, requiredMinor int, requiredMicro int) strin
 // This is similar to the macro PANGO_VERSION_STRING except that the macro
 // returns the version available at compile-time.
 func VersionString() string {
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.pango_version_string()
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

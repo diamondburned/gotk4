@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -77,11 +77,11 @@ func marshalProXY(p uintptr) (interface{}, error) {
 
 // ConnectAsync asynchronous version of g_proxy_connect().
 func (p proXY) ConnectAsync(connection IOStream, proxyAddress ProXYAddress, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GProxy
-	var _arg1 *C.GIOStream
-	var _arg2 *C.GProxyAddress
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GProxy             // out
+	var _arg1 *C.GIOStream          // out
+	var _arg2 *C.GProxyAddress      // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
@@ -102,15 +102,15 @@ func (p proXY) ConnectAsync(connection IOStream, proxyAddress ProXYAddress, canc
 // containing the stringified IP address to g_proxy_connect() or
 // g_proxy_connect_async().
 func (p proXY) SupportsHostname() bool {
-	var _arg0 *C.GProxy
+	var _arg0 *C.GProxy // out
 
 	_arg0 = (*C.GProxy)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_proxy_supports_hostname(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdkx.h>
@@ -59,17 +59,17 @@ func marshalX11Keymap(p uintptr) (interface{}, error) {
 // event. This is only needed for code processing raw X events, since
 // EventKey directly includes an is_modifier field.
 func (k x11Keymap) GroupForState(state uint) int {
-	var _arg0 *C.GdkKeymap
-	var _arg1 C.guint
+	var _arg0 *C.GdkKeymap // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	_arg1 = C.guint(state)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gdk_x11_keymap_get_group_for_state(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -82,17 +82,17 @@ func (k x11Keymap) GroupForState(state uint) int {
 // direct effect itself. This is only needed for code processing raw X
 // events, since EventKey directly includes an is_modifier field.
 func (k x11Keymap) KeyIsModifier(keycode uint) bool {
-	var _arg0 *C.GdkKeymap
-	var _arg1 C.guint
+	var _arg0 *C.GdkKeymap // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GdkKeymap)(unsafe.Pointer(k.Native()))
 	_arg1 = C.guint(keycode)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_x11_keymap_key_is_modifier(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

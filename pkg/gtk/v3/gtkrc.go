@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -28,7 +28,7 @@ func init() {
 // RCAddDefaultFile adds a file to the list of files to be parsed at the end of
 // gtk_init().
 func RCAddDefaultFile(filename *string) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -39,16 +39,16 @@ func RCAddDefaultFile(filename *string) {
 // RCFindModuleInPath searches for a theme engine in the GTK+ search path. This
 // function is not useful for applications and should not be used.
 func RCFindModuleInPath(moduleFile string) *string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(moduleFile))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_find_module_in_path(_arg1)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -60,20 +60,20 @@ func RCFindModuleInPath(moduleFile string) *string {
 // If the file is not found, it outputs a warning message using g_warning() and
 // returns nil.
 func RCFindPixmapInPath(settings Settings, scanner *glib.Scanner, pixmapFile string) *string {
-	var _arg1 *C.GtkSettings
-	var _arg2 *C.GScanner
-	var _arg3 *C.gchar
+	var _arg1 *C.GtkSettings // out
+	var _arg2 *C.GScanner    // out
+	var _arg3 *C.gchar       // out
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	_arg2 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	_arg3 = (*C.gchar)(C.CString(pixmapFile))
 	defer C.free(unsafe.Pointer(_arg3))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_find_pixmap_in_path(_arg1, _arg2, _arg3)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -115,11 +115,11 @@ func RCGetDefaultFiles() []*string {
 // documentation of the `GTK_IM_MODULE_FILE` environment variable for more
 // details.
 func RCGetImModuleFile() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_im_module_file()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -132,11 +132,11 @@ func RCGetImModuleFile() *string {
 // looking up modules. This function is useful solely for utilities supplied
 // with GTK+ and should not be used by applications under normal circumstances.
 func RCGetImModulePath() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_im_module_path()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -148,11 +148,11 @@ func RCGetImModulePath() *string {
 // full information about the search for theme engines, see the docs for
 // `GTK_PATH` in [Running GTK+ Applications][gtk-running].
 func RCGetModuleDir() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_module_dir()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -163,11 +163,11 @@ func RCGetModuleDir() *string {
 // RCGetThemeDir returns the standard directory in which themes should be
 // installed. (GTK+ does not actually use this directory itself.)
 func RCGetThemeDir() string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_rc_get_theme_dir()
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -177,7 +177,7 @@ func RCGetThemeDir() string {
 
 // RCParse parses a given resource file.
 func RCParse(filename string) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -190,16 +190,16 @@ func RCParse(filename string) {
 // Note that theme engines should use gtk_rc_parse_color_full() in order to
 // support symbolic colors.
 func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
-	var _arg1 *C.GScanner
+	var _arg1 *C.GScanner // out
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 
 	var _color gdk.Color
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_rc_parse_color(_arg1, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -210,18 +210,18 @@ func RCParseColor(scanner *glib.Scanner) (gdk.Color, uint) {
 // @style is not nil, it will be consulted to resolve references to symbolic
 // colors.
 func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
-	var _arg1 *C.GScanner
-	var _arg2 *C.GtkRcStyle
+	var _arg1 *C.GScanner   // out
+	var _arg2 *C.GtkRcStyle // out
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	_arg2 = (*C.GtkRcStyle)(unsafe.Pointer(style.Native()))
 
 	var _color gdk.Color
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_rc_parse_color_full(_arg1, _arg2, (*C.GdkColor)(unsafe.Pointer(&_color)))
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -231,17 +231,17 @@ func RCParseColorFull(scanner *glib.Scanner, style RCStyle) (gdk.Color, uint) {
 // RCParsePriority parses a PathPriorityType variable from the format expected
 // in a RC file.
 func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
-	var _arg1 *C.GScanner
-	var _arg2 *C.GtkPathPriorityType
+	var _arg1 *C.GScanner            // out
+	var _arg2 *C.GtkPathPriorityType // out
 
 	_arg1 = (*C.GScanner)(unsafe.Pointer(scanner.Native()))
 	_arg2 = (*C.GtkPathPriorityType)(priority)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_rc_parse_priority(_arg1, _arg2)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -250,7 +250,7 @@ func RCParsePriority(scanner *glib.Scanner, priority *PathPriorityType) uint {
 
 // RCParseString parses resource information directly from a string.
 func RCParseString(rcString string) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(rcString))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -262,11 +262,11 @@ func RCParseString(rcString string) {
 // default Settings has changed, discard all style information and then reread
 // all previously read RC files.
 func RCReparseAll() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_rc_reparse_all()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -279,19 +279,19 @@ func RCReparseAll() bool {
 // for the given Settings has changed, discard all style information and then
 // reread all previously read RC files.
 func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
-	var _arg1 *C.GtkSettings
-	var _arg2 C.gboolean
+	var _arg1 *C.GtkSettings // out
+	var _arg2 C.gboolean     // out
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 	if forceLoad {
 		_arg2 = C.gboolean(1)
 	}
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_rc_reparse_all_for_settings(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -309,7 +309,7 @@ func RCReparseAllForSettings(settings Settings, forceLoad bool) bool {
 // set by the operating system changes. Note that this function doesn’t affect
 // widgets that have a style set explicitly on them with gtk_widget_set_style().
 func RCResetStyles(settings Settings) {
-	var _arg1 *C.GtkSettings
+	var _arg1 *C.GtkSettings // out
 
 	_arg1 = (*C.GtkSettings)(unsafe.Pointer(settings.Native()))
 
@@ -416,14 +416,14 @@ func (r *RCProperty) Native() unsafe.Pointer {
 
 // Origin gets the field inside the struct.
 func (r *RCProperty) Origin() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.origin)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (r *RCProperty) Value() **externglib.Value {
-	var v **externglib.Value
+	var v **externglib.Value // out
 	v = externglib.ValueFromNative(unsafe.Pointer(r.native.value))
 	return v
 }

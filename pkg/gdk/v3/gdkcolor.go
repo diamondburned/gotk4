@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -48,45 +48,45 @@ func (c *Color) Native() unsafe.Pointer {
 
 // Pixel gets the field inside the struct.
 func (c *Color) Pixel() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(c.native.pixel)
 	return v
 }
 
 // Red gets the field inside the struct.
 func (c *Color) Red() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(c.native.red)
 	return v
 }
 
 // Green gets the field inside the struct.
 func (c *Color) Green() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(c.native.green)
 	return v
 }
 
 // Blue gets the field inside the struct.
 func (c *Color) Blue() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(c.native.blue)
 	return v
 }
 
 // Equal compares two colors.
 func (c *Color) Equal(colorb *Color) bool {
-	var _arg0 *C.GdkColor
-	var _arg1 *C.GdkColor
+	var _arg0 *C.GdkColor // out
+	var _arg1 *C.GdkColor // out
 
 	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkColor)(unsafe.Pointer(colorb.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_color_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -97,7 +97,7 @@ func (c *Color) Equal(colorb *Color) bool {
 
 // Free frees a Color created with gdk_color_copy().
 func (c *Color) Free() {
-	var _arg0 *C.GdkColor
+	var _arg0 *C.GdkColor // out
 
 	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
@@ -106,15 +106,15 @@ func (c *Color) Free() {
 
 // Hash: a hash function suitable for using for a hash table that stores Colors.
 func (c *Color) Hash() uint {
-	var _arg0 *C.GdkColor
+	var _arg0 *C.GdkColor // out
 
 	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gdk_color_hash(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -127,15 +127,15 @@ func (c *Color) Hash() uint {
 //
 // The returned string can be parsed by gdk_color_parse().
 func (c *Color) String() string {
-	var _arg0 *C.GdkColor
+	var _arg0 *C.GdkColor // out
 
 	_arg0 = (*C.GdkColor)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gdk_color_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

@@ -10,7 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixdata.h>
@@ -117,42 +117,42 @@ func (p *Pixdata) Native() unsafe.Pointer {
 
 // Magic gets the field inside the struct.
 func (p *Pixdata) Magic() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(p.native.magic)
 	return v
 }
 
 // Length gets the field inside the struct.
 func (p *Pixdata) Length() int32 {
-	var v int32
+	var v int32 // out
 	v = (int32)(p.native.length)
 	return v
 }
 
 // PixdataType gets the field inside the struct.
 func (p *Pixdata) PixdataType() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(p.native.pixdata_type)
 	return v
 }
 
 // Rowstride gets the field inside the struct.
 func (p *Pixdata) Rowstride() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(p.native.rowstride)
 	return v
 }
 
 // Width gets the field inside the struct.
 func (p *Pixdata) Width() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(p.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (p *Pixdata) Height() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(p.native.height)
 	return v
 }
@@ -170,7 +170,7 @@ func (p *Pixdata) Height() uint32 {
 // This function may fail with `GDK_PIXBUF_ERROR_CORRUPT_IMAGE` or
 // `GDK_PIXBUF_ERROR_UNKNOWN_TYPE`.
 func (p *Pixdata) Deserialize(stream []byte) error {
-	var _arg0 *C.GdkPixdata
+	var _arg0 *C.GdkPixdata // out
 	var _arg2 *C.guint8
 	var _arg1 C.guint
 
@@ -178,11 +178,11 @@ func (p *Pixdata) Deserialize(stream []byte) error {
 	_arg1 = C.guint(len(stream))
 	_arg2 = (*C.guint8)(unsafe.Pointer(&stream[0]))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gdk_pixdata_deserialize(_arg0, _arg1, _arg2, _cerr)
+	C.gdk_pixdata_deserialize(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -193,12 +193,12 @@ func (p *Pixdata) Deserialize(stream []byte) error {
 // consists of a straightforward writeout of the Pixdata fields in network byte
 // order, plus the @pixel_data bytes the structure points to.
 func (p *Pixdata) Serialize() []byte {
-	var _arg0 *C.GdkPixdata
+	var _arg0 *C.GdkPixdata // out
 
 	_arg0 = (*C.GdkPixdata)(unsafe.Pointer(p.Native()))
 
 	var _cret *C.guint8
-	var _arg1 *C.guint
+	var _arg1 C.guint // in
 
 	_cret = C.gdk_pixdata_serialize(_arg0, &_arg1)
 

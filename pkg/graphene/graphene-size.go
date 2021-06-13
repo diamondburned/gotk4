@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
+// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
@@ -47,31 +47,31 @@ func (s *Size) Native() unsafe.Pointer {
 
 // Width gets the field inside the struct.
 func (s *Size) Width() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(s.native.width)
 	return v
 }
 
 // Height gets the field inside the struct.
 func (s *Size) Height() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(s.native.height)
 	return v
 }
 
 // Equal checks whether the two give #graphene_size_t are equal.
 func (a *Size) Equal(b *Size) bool {
-	var _arg0 *C.graphene_size_t
-	var _arg1 *C.graphene_size_t
+	var _arg0 *C.graphene_size_t // out
+	var _arg1 *C.graphene_size_t // out
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_size_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -82,7 +82,7 @@ func (a *Size) Equal(b *Size) bool {
 
 // Free frees the resources allocated by graphene_size_alloc().
 func (s *Size) Free() {
-	var _arg0 *C.graphene_size_t
+	var _arg0 *C.graphene_size_t // out
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
 
@@ -92,9 +92,9 @@ func (s *Size) Free() {
 // Interpolate: linearly interpolates the two given #graphene_size_t using the
 // given interpolation @factor.
 func (a *Size) Interpolate(b *Size, factor float64) Size {
-	var _arg0 *C.graphene_size_t
-	var _arg1 *C.graphene_size_t
-	var _arg2 C.double
+	var _arg0 *C.graphene_size_t // out
+	var _arg1 *C.graphene_size_t // out
+	var _arg2 C.double           // out
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_size_t)(unsafe.Pointer(b.Native()))
@@ -109,8 +109,8 @@ func (a *Size) Interpolate(b *Size, factor float64) Size {
 
 // Scale scales the components of a #graphene_size_t using the given @factor.
 func (s *Size) Scale(factor float32) Size {
-	var _arg0 *C.graphene_size_t
-	var _arg1 C.float
+	var _arg0 *C.graphene_size_t // out
+	var _arg1 C.float            // out
 
 	_arg0 = (*C.graphene_size_t)(unsafe.Pointer(s.Native()))
 	_arg1 = C.float(factor)

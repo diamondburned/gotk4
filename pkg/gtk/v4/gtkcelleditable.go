@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -74,7 +74,7 @@ func marshalCellEditable(p uintptr) (interface{}, error) {
 
 // EditingDone emits the CellEditable::editing-done signal.
 func (c cellEditable) EditingDone() {
-	var _arg0 *C.GtkCellEditable
+	var _arg0 *C.GtkCellEditable // out
 
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 
@@ -83,7 +83,7 @@ func (c cellEditable) EditingDone() {
 
 // RemoveWidget emits the CellEditable::remove-widget signal.
 func (c cellEditable) RemoveWidget() {
-	var _arg0 *C.GtkCellEditable
+	var _arg0 *C.GtkCellEditable // out
 
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 
@@ -103,8 +103,8 @@ func (c cellEditable) RemoveWidget() {
 // its lifetime is temporary and does not persist across other edits and/or
 // cells.
 func (c cellEditable) StartEditing(event gdk.Event) {
-	var _arg0 *C.GtkCellEditable
-	var _arg1 *C.GdkEvent
+	var _arg0 *C.GtkCellEditable // out
+	var _arg1 *C.GdkEvent        // out
 
 	_arg0 = (*C.GtkCellEditable)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event.Native()))

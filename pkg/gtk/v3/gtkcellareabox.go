@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -87,15 +87,15 @@ func marshalCellAreaBox(p uintptr) (interface{}, error) {
 
 // Spacing gets the spacing added between cell renderers.
 func (b cellAreaBox) Spacing() int {
-	var _arg0 *C.GtkCellAreaBox
+	var _arg0 *C.GtkCellAreaBox // out
 
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_cell_area_box_get_spacing(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -107,11 +107,11 @@ func (b cellAreaBox) Spacing() int {
 // The @renderer is packed after (away from end of) any other CellRenderer
 // packed with reference to the end of @box.
 func (b cellAreaBox) PackEnd(renderer CellRenderer, expand bool, align bool, fixed bool) {
-	var _arg0 *C.GtkCellAreaBox
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 C.gboolean
-	var _arg3 C.gboolean
-	var _arg4 C.gboolean
+	var _arg0 *C.GtkCellAreaBox  // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gboolean         // out
+	var _arg3 C.gboolean         // out
+	var _arg4 C.gboolean         // out
 
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -134,11 +134,11 @@ func (b cellAreaBox) PackEnd(renderer CellRenderer, expand bool, align bool, fix
 // The @renderer is packed after any other CellRenderer packed with
 // reference to the start of @box.
 func (b cellAreaBox) PackStart(renderer CellRenderer, expand bool, align bool, fixed bool) {
-	var _arg0 *C.GtkCellAreaBox
-	var _arg1 *C.GtkCellRenderer
-	var _arg2 C.gboolean
-	var _arg3 C.gboolean
-	var _arg4 C.gboolean
+	var _arg0 *C.GtkCellAreaBox  // out
+	var _arg1 *C.GtkCellRenderer // out
+	var _arg2 C.gboolean         // out
+	var _arg3 C.gboolean         // out
+	var _arg4 C.gboolean         // out
 
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkCellRenderer)(unsafe.Pointer(renderer.Native()))
@@ -157,8 +157,8 @@ func (b cellAreaBox) PackStart(renderer CellRenderer, expand bool, align bool, f
 
 // SetSpacing sets the spacing to add between cell renderers in @box.
 func (b cellAreaBox) SetSpacing(spacing int) {
-	var _arg0 *C.GtkCellAreaBox
-	var _arg1 C.gint
+	var _arg0 *C.GtkCellAreaBox // out
+	var _arg1 C.gint            // out
 
 	_arg0 = (*C.GtkCellAreaBox)(unsafe.Pointer(b.Native()))
 	_arg1 = C.gint(spacing)

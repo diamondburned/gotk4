@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -120,8 +120,8 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 // If the @parameter GVariant is floating, it is consumed.
 func (a action) Activate(parameter *glib.Variant) {
-	var _arg0 *C.GAction
-	var _arg1 *C.GVariant
+	var _arg0 *C.GAction  // out
+	var _arg1 *C.GVariant // out
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(parameter.Native()))
@@ -140,8 +140,8 @@ func (a action) Activate(parameter *glib.Variant) {
 //
 // If the @value GVariant is floating, it is consumed.
 func (a action) ChangeState(value *glib.Variant) {
-	var _arg0 *C.GAction
-	var _arg1 *C.GVariant
+	var _arg0 *C.GAction  // out
+	var _arg1 *C.GVariant // out
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(value.Native()))
@@ -154,15 +154,15 @@ func (a action) ChangeState(value *glib.Variant) {
 // An action must be enabled in order to be activated or in order to have
 // its state changed from outside callers.
 func (a action) Enabled() bool {
-	var _arg0 *C.GAction
+	var _arg0 *C.GAction // out
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_action_get_enabled(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -173,15 +173,15 @@ func (a action) Enabled() bool {
 
 // Name queries the name of @action.
 func (a action) Name() string {
-	var _arg0 *C.GAction
+	var _arg0 *C.GAction // out
 
 	_arg0 = (*C.GAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_action_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

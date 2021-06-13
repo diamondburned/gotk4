@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -94,8 +94,8 @@ func marshalMenuToolButton(p uintptr) (interface{}, error) {
 // gtk_tool_item_set_tooltip_text() for setting a tooltip on the whole
 // MenuToolButton.
 func (b menuToolButton) SetArrowTooltipMarkup(markup string) {
-	var _arg0 *C.GtkMenuToolButton
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkMenuToolButton // out
+	var _arg1 *C.gchar             // out
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(markup))
@@ -108,8 +108,8 @@ func (b menuToolButton) SetArrowTooltipMarkup(markup string) {
 // arrow button which pops up the menu. See gtk_tool_item_set_tooltip_text()
 // for setting a tooltip on the whole MenuToolButton.
 func (b menuToolButton) SetArrowTooltipText(text string) {
-	var _arg0 *C.GtkMenuToolButton
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkMenuToolButton // out
+	var _arg1 *C.gchar             // out
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -121,8 +121,8 @@ func (b menuToolButton) SetArrowTooltipText(text string) {
 // SetMenu sets the Menu that is popped up when the user clicks on the
 // arrow. If @menu is NULL, the arrow button becomes insensitive.
 func (b menuToolButton) SetMenu(menu Widget) {
-	var _arg0 *C.GtkMenuToolButton
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuToolButton // out
+	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkMenuToolButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))

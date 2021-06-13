@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -110,15 +110,15 @@ func marshalImageMenuItem(p uintptr) (interface{}, error) {
 // AlwaysShowImage returns whether the menu item will ignore the
 // Settings:gtk-menu-images setting and always show the image, if available.
 func (i imageMenuItem) AlwaysShowImage() bool {
-	var _arg0 *C.GtkImageMenuItem
+	var _arg0 *C.GtkImageMenuItem // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_image_menu_item_get_always_show_image(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -130,15 +130,15 @@ func (i imageMenuItem) AlwaysShowImage() bool {
 // UseStock checks whether the label set in the menuitem is used as a stock
 // id to select the stock item for the item.
 func (i imageMenuItem) UseStock() bool {
-	var _arg0 *C.GtkImageMenuItem
+	var _arg0 *C.GtkImageMenuItem // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_image_menu_item_get_use_stock(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -155,8 +155,8 @@ func (i imageMenuItem) UseStock() bool {
 // If you want this menu item to have changeable accelerators then you
 // shouldnt need this (see gtk_image_menu_item_new_from_stock()).
 func (i imageMenuItem) SetAccelGroup(accelGroup AccelGroup) {
-	var _arg0 *C.GtkImageMenuItem
-	var _arg1 *C.GtkAccelGroup
+	var _arg0 *C.GtkImageMenuItem // out
+	var _arg1 *C.GtkAccelGroup    // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
@@ -170,8 +170,8 @@ func (i imageMenuItem) SetAccelGroup(accelGroup AccelGroup) {
 // Use this property if the menuitem would be useless or hard to use without
 // the image.
 func (i imageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
-	var _arg0 *C.GtkImageMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkImageMenuItem // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	if alwaysShow {
@@ -185,8 +185,8 @@ func (i imageMenuItem) SetAlwaysShowImage(alwaysShow bool) {
 // that it depends on the show-menu-images setting whether the image will be
 // displayed or not.
 func (i imageMenuItem) SetImage(image Widget) {
-	var _arg0 *C.GtkImageMenuItem
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkImageMenuItem // out
+	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
@@ -197,8 +197,8 @@ func (i imageMenuItem) SetImage(image Widget) {
 // SetUseStock: if true, the label set in the menuitem is used as a stock id
 // to select the stock item for the item.
 func (i imageMenuItem) SetUseStock(useStock bool) {
-	var _arg0 *C.GtkImageMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkImageMenuItem // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkImageMenuItem)(unsafe.Pointer(i.Native()))
 	if useStock {

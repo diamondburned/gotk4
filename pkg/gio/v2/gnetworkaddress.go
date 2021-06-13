@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -75,15 +75,15 @@ func marshalNetworkAddress(p uintptr) (interface{}, error) {
 // Hostname gets @addr's hostname. This might be either UTF-8 or
 // ASCII-encoded, depending on what @addr was created with.
 func (a networkAddress) Hostname() string {
-	var _arg0 *C.GNetworkAddress
+	var _arg0 *C.GNetworkAddress // out
 
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_network_address_get_hostname(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -92,15 +92,15 @@ func (a networkAddress) Hostname() string {
 
 // Port gets @addr's port number
 func (a networkAddress) Port() uint16 {
-	var _arg0 *C.GNetworkAddress
+	var _arg0 *C.GNetworkAddress // out
 
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret C.guint16
+	var _cret C.guint16 // in
 
 	_cret = C.g_network_address_get_port(_arg0)
 
-	var _guint16 uint16
+	var _guint16 uint16 // out
 
 	_guint16 = (uint16)(_cret)
 
@@ -109,15 +109,15 @@ func (a networkAddress) Port() uint16 {
 
 // Scheme gets @addr's scheme
 func (a networkAddress) Scheme() string {
-	var _arg0 *C.GNetworkAddress
+	var _arg0 *C.GNetworkAddress // out
 
 	_arg0 = (*C.GNetworkAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_network_address_get_scheme(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

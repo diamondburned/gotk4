@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -272,15 +272,15 @@ func (u *URI) Native() unsafe.Pointer {
 // Depending on the URI scheme, g_uri_parse_params() may be useful for further
 // parsing this information.
 func (u *URI) AuthParams() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_auth_params(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -290,15 +290,15 @@ func (u *URI) AuthParams() string {
 // Fragment gets @uri's fragment, which may contain `%`-encoding, depending on
 // the flags with which @uri was created.
 func (u *URI) Fragment() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_fragment(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -315,15 +315,15 @@ func (u *URI) Fragment() string {
 // the address. Eg, `fe80::1234%“em1` (or `fe80::1234%“25em1` if the string is
 // still encoded).
 func (u *URI) Host() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_host(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -334,15 +334,15 @@ func (u *URI) Host() string {
 // the flags with which @uri was created. (If @uri was not created with
 // G_URI_FLAGS_HAS_PASSWORD then this will be nil.)
 func (u *URI) Password() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_password(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -352,15 +352,15 @@ func (u *URI) Password() string {
 // Path gets @uri's path, which may contain `%`-encoding, depending on the flags
 // with which @uri was created.
 func (u *URI) Path() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_path(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -369,15 +369,15 @@ func (u *URI) Path() string {
 
 // Port gets @uri's port.
 func (u *URI) Port() int {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_uri_get_port(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -390,15 +390,15 @@ func (u *URI) Port() int {
 // For queries consisting of a series of `name=value` parameters, ParamsIter or
 // g_uri_parse_params() may be useful.
 func (u *URI) Query() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_query(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -408,15 +408,15 @@ func (u *URI) Query() string {
 // Scheme gets @uri's scheme. Note that this will always be all-lowercase,
 // regardless of the string or strings that @uri was created from.
 func (u *URI) Scheme() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_scheme(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -428,15 +428,15 @@ func (u *URI) Scheme() string {
 // not created with G_URI_FLAGS_HAS_PASSWORD or G_URI_FLAGS_HAS_AUTH_PARAMS,
 // this is the same as g_uri_get_userinfo().
 func (u *URI) User() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_user(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -446,15 +446,15 @@ func (u *URI) User() string {
 // Userinfo gets @uri's userinfo, which may contain `%`-encoding, depending on
 // the flags with which @uri was created.
 func (u *URI) Userinfo() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uri_get_userinfo(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -473,15 +473,15 @@ func (u *URI) Userinfo() string {
 // or private data in its query string, and the returned string is going to be
 // logged, then consider using g_uri_to_string_partial() to redact parts.
 func (u *URI) String() string {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_uri_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -492,17 +492,17 @@ func (u *URI) String() string {
 // ToStringPartial returns a string representing @uri, subject to the options in
 // @flags. See g_uri_to_string() and HideFlags for more details.
 func (u *URI) ToStringPartial(flags URIHideFlags) string {
-	var _arg0 *C.GUri
-	var _arg1 C.GUriHideFlags
+	var _arg0 *C.GUri         // out
+	var _arg1 C.GUriHideFlags // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 	_arg1 = (C.GUriHideFlags)(flags)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_uri_to_string_partial(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -515,7 +515,7 @@ func (u *URI) ToStringPartial(flags URIHideFlags) string {
 // When the reference count reaches zero, the resources allocated by @uri are
 // freed
 func (u *URI) Unref() {
-	var _arg0 *C.GUri
+	var _arg0 *C.GUri // out
 
 	_arg0 = (*C.GUri)(unsafe.Pointer(u.Native()))
 
@@ -588,11 +588,11 @@ func (u *URIParamsIter) Native() unsafe.Pointer {
 //    if (error)
 //      // handle parsing error
 func (i *URIParamsIter) Init(params string, length int, separators string, flags URIParamsFlags) {
-	var _arg0 *C.GUriParamsIter
-	var _arg1 *C.gchar
-	var _arg2 C.gssize
-	var _arg3 *C.gchar
-	var _arg4 C.GUriParamsFlags
+	var _arg0 *C.GUriParamsIter // out
+	var _arg1 *C.gchar          // out
+	var _arg2 C.gssize          // out
+	var _arg3 *C.gchar          // out
+	var _arg4 C.GUriParamsFlags // out
 
 	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.gchar)(C.CString(params))
@@ -614,19 +614,19 @@ func (i *URIParamsIter) Init(params string, length int, separators string, flags
 // Note that the same @attribute may be returned multiple times, since URIs
 // allow repeated attributes.
 func (i *URIParamsIter) Next() (attribute string, value string, goerr error) {
-	var _arg0 *C.GUriParamsIter
+	var _arg0 *C.GUriParamsIter // out
 
 	_arg0 = (*C.GUriParamsIter)(unsafe.Pointer(i.Native()))
 
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _cerr *C.GError
+	var _arg1 *C.gchar  // in
+	var _arg2 *C.gchar  // in
+	var _cerr *C.GError // in
 
-	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, _cerr)
+	C.g_uri_params_iter_next(_arg0, &_arg1, &_arg2, &_cerr)
 
-	var _attribute string
-	var _value string
-	var _goerr error
+	var _attribute string // out
+	var _value string     // out
+	var _goerr error      // out
 
 	_attribute = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))

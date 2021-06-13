@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -67,15 +67,15 @@ func marshalFilterOutputStream(p uintptr) (interface{}, error) {
 // CloseBaseStream returns whether the base stream will be closed when
 // @stream is closed.
 func (s filterOutputStream) CloseBaseStream() bool {
-	var _arg0 *C.GFilterOutputStream
+	var _arg0 *C.GFilterOutputStream // out
 
 	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_filter_output_stream_get_close_base_stream(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -87,8 +87,8 @@ func (s filterOutputStream) CloseBaseStream() bool {
 // SetCloseBaseStream sets whether the base stream will be closed when
 // @stream is closed.
 func (s filterOutputStream) SetCloseBaseStream(closeBase bool) {
-	var _arg0 *C.GFilterOutputStream
-	var _arg1 C.gboolean
+	var _arg0 *C.GFilterOutputStream // out
+	var _arg1 C.gboolean             // out
 
 	_arg0 = (*C.GFilterOutputStream)(unsafe.Pointer(s.Native()))
 	if closeBase {

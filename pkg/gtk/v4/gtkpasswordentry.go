@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -101,15 +101,15 @@ func marshalPasswordEntry(p uintptr) (interface{}, error) {
 // ShowPeekIcon returns whether the entry is showing an icon to reveal the
 // contents.
 func (e passwordEntry) ShowPeekIcon() bool {
-	var _arg0 *C.GtkPasswordEntry
+	var _arg0 *C.GtkPasswordEntry // out
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_password_entry_get_show_peek_icon(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -121,8 +121,8 @@ func (e passwordEntry) ShowPeekIcon() bool {
 // SetExtraMenu sets a menu model to add when constructing the context menu
 // for @entry.
 func (e passwordEntry) SetExtraMenu(model gio.MenuModel) {
-	var _arg0 *C.GtkPasswordEntry
-	var _arg1 *C.GMenuModel
+	var _arg0 *C.GtkPasswordEntry // out
+	var _arg1 *C.GMenuModel       // out
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
@@ -135,8 +135,8 @@ func (e passwordEntry) SetExtraMenu(model gio.MenuModel) {
 //
 // Setting this to false also hides the text again.
 func (e passwordEntry) SetShowPeekIcon(showPeekIcon bool) {
-	var _arg0 *C.GtkPasswordEntry
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPasswordEntry // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkPasswordEntry)(unsafe.Pointer(e.Native()))
 	if showPeekIcon {

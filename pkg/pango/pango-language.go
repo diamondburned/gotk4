@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -66,15 +66,15 @@ func (l *Language) Native() unsafe.Pointer {
 //
 // “` pango_language_get_sample_string (pango_language_from_string ("xx")) “`
 func (l *Language) SampleString() string {
-	var _arg0 *C.PangoLanguage
+	var _arg0 *C.PangoLanguage // out
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.pango_language_get_sample_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -92,17 +92,17 @@ func (l *Language) SampleString() string {
 //
 // This function uses [method@Pango.Language.get_scripts] internally.
 func (l *Language) IncludesScript(script Script) bool {
-	var _arg0 *C.PangoLanguage
-	var _arg1 C.PangoScript
+	var _arg0 *C.PangoLanguage // out
+	var _arg1 C.PangoScript    // out
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 	_arg1 = (C.PangoScript)(script)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_language_includes_script(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -118,18 +118,18 @@ func (l *Language) IncludesScript(script Script) bool {
 // '*', the range is exactly the tag, or the range is a prefix of the tag, and
 // the character after it in the tag is '-'.
 func (l *Language) Matches(rangeList string) bool {
-	var _arg0 *C.PangoLanguage
-	var _arg1 *C.char
+	var _arg0 *C.PangoLanguage // out
+	var _arg1 *C.char          // out
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.char)(C.CString(rangeList))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_language_matches(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -140,15 +140,15 @@ func (l *Language) Matches(rangeList string) bool {
 
 // String gets the RFC-3066 format string representing the given language tag.
 func (l *Language) String() string {
-	var _arg0 *C.PangoLanguage
+	var _arg0 *C.PangoLanguage // out
 
 	_arg0 = (*C.PangoLanguage)(unsafe.Pointer(l.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.pango_language_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

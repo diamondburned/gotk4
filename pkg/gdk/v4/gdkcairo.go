@@ -7,7 +7,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdkpixbuf/v2"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
@@ -30,15 +30,15 @@ import "C"
 //
 // Calling this may change the current GL context.
 func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkSurface
-	var _arg3 C.int
-	var _arg4 C.int
-	var _arg5 C.int
-	var _arg6 C.int
-	var _arg7 C.int
-	var _arg8 C.int
-	var _arg9 C.int
+	var _arg1 *C.cairo_t    // out
+	var _arg2 *C.GdkSurface // out
+	var _arg3 C.int         // out
+	var _arg4 C.int         // out
+	var _arg5 C.int         // out
+	var _arg6 C.int         // out
+	var _arg7 C.int         // out
+	var _arg8 C.int         // out
+	var _arg9 C.int         // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
@@ -55,8 +55,8 @@ func CairoDrawFromGL(cr *cairo.Context, surface Surface, source int, sourceType 
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkRectangle
+	var _arg1 *C.cairo_t      // out
+	var _arg2 *C.GdkRectangle // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle.Native()))
@@ -66,8 +66,8 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 
 // CairoRegion adds the given region to the current path of @cr.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.cairo_region_t
+	var _arg1 *C.cairo_t        // out
+	var _arg2 *C.cairo_region_t // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
@@ -80,10 +80,10 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkPixbuf
-	var _arg3 C.double
-	var _arg4 C.double
+	var _arg1 *C.cairo_t   // out
+	var _arg2 *C.GdkPixbuf // out
+	var _arg3 C.double     // out
+	var _arg4 C.double     // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -95,8 +95,8 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkRGBA
+	var _arg1 *C.cairo_t // out
+	var _arg2 *C.GdkRGBA // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))

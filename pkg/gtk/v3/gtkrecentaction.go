@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -70,15 +70,15 @@ func marshalRecentAction(p uintptr) (interface{}, error) {
 // ShowNumbers returns the value set by
 // gtk_recent_chooser_menu_set_show_numbers().
 func (a recentAction) ShowNumbers() bool {
-	var _arg0 *C.GtkRecentAction
+	var _arg0 *C.GtkRecentAction // out
 
 	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_recent_action_get_show_numbers(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -92,8 +92,8 @@ func (a recentAction) ShowNumbers() bool {
 // unique character for a mnemonic to be used inside the menu item's label.
 // Only the first ten items get a number to avoid clashes.
 func (a recentAction) SetShowNumbers(showNumbers bool) {
-	var _arg0 *C.GtkRecentAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkRecentAction // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkRecentAction)(unsafe.Pointer(a.Native()))
 	if showNumbers {

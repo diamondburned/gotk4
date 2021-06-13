@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangofc pango
+// #cgo pkg-config: pangofc pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangofc-fontmap.h>
@@ -87,7 +87,7 @@ func marshalFontMap(p uintptr) (interface{}, error) {
 // default_substitute() virtual function of the font map, or if fontconfig
 // has been reinitialized to new configuration.
 func (f fontMap) CacheClear() {
-	var _arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap // out
 
 	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
@@ -101,7 +101,7 @@ func (f fontMap) CacheClear() {
 // that list of fonts, etc will be regenerated using the updated
 // configuration.
 func (f fontMap) ConfigChanged() {
-	var _arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap // out
 
 	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
@@ -117,7 +117,7 @@ func (f fontMap) ConfigChanged() {
 // system for the font map exits. This function is only intended to be
 // called only for backend implementations deriving from `PangoFcFontMap`.
 func (f fontMap) Shutdown() {
-	var _arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap // out
 
 	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 
@@ -131,7 +131,7 @@ func (f fontMap) Shutdown() {
 // That is, if your substitution function will return different results for
 // the same input pattern, you must call this function.
 func (f fontMap) SubstituteChanged() {
-	var _arg0 *C.PangoFcFontMap
+	var _arg0 *C.PangoFcFontMap // out
 
 	_arg0 = (*C.PangoFcFontMap)(unsafe.Pointer(f.Native()))
 

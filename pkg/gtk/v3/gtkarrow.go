@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -72,9 +72,9 @@ func marshalArrow(p uintptr) (interface{}, error) {
 
 // Set sets the direction and style of the Arrow, @arrow.
 func (a arrow) Set(arrowType ArrowType, shadowType ShadowType) {
-	var _arg0 *C.GtkArrow
-	var _arg1 C.GtkArrowType
-	var _arg2 C.GtkShadowType
+	var _arg0 *C.GtkArrow     // out
+	var _arg1 C.GtkArrowType  // out
+	var _arg2 C.GtkShadowType // out
 
 	_arg0 = (*C.GtkArrow)(unsafe.Pointer(a.Native()))
 	_arg1 = (C.GtkArrowType)(arrowType)

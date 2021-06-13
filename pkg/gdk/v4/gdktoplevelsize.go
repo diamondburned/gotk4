@@ -8,18 +8,18 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
 import "C"
 
 func ToplevelSizeGetType() externglib.Type {
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.gdk_toplevel_size_get_type()
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -60,17 +60,17 @@ func (t *ToplevelSize) Native() unsafe.Pointer {
 // window is being presented on, or something else that limits the way a
 // toplevel can be presented.
 func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
-	var _arg0 *C.GdkToplevelSize
+	var _arg0 *C.GdkToplevelSize // out
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
 
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg1 C.int // in
+	var _arg2 C.int // in
 
 	C.gdk_toplevel_size_get_bounds(_arg0, &_arg1, &_arg2)
 
-	var _boundsWidth int
-	var _boundsHeight int
+	var _boundsWidth int  // out
+	var _boundsHeight int // out
 
 	_boundsWidth = (int)(_arg1)
 	_boundsHeight = (int)(_arg2)
@@ -88,9 +88,9 @@ func (s *ToplevelSize) Bounds() (boundsWidth int, boundsHeight int) {
 // The minimum size should be within the bounds (see
 // [method@Gdk.ToplevelSize.get_bounds]).
 func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
-	var _arg0 *C.GdkToplevelSize
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg0 *C.GdkToplevelSize // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(minWidth)
@@ -105,11 +105,11 @@ func (s *ToplevelSize) SetMinSize(minWidth int, minHeight int) {
 // would consist of the shadow margin surrounding the window, would there be
 // any.
 func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) {
-	var _arg0 *C.GdkToplevelSize
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 C.int
-	var _arg4 C.int
+	var _arg0 *C.GdkToplevelSize // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
+	var _arg3 C.int              // out
+	var _arg4 C.int              // out
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(left)
@@ -127,9 +127,9 @@ func (s *ToplevelSize) SetShadowWidth(left int, right int, top int, bottom int) 
 // hint, and should not be assumed to be respected by the windowing system, or
 // backend.
 func (s *ToplevelSize) SetSize(width int, height int) {
-	var _arg0 *C.GdkToplevelSize
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg0 *C.GdkToplevelSize // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
 
 	_arg0 = (*C.GdkToplevelSize)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(width)

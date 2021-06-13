@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -89,8 +89,8 @@ func marshalSorter(p uintptr) (interface{}, error) {
 // This function is intended for implementors of `GtkSorter` subclasses and
 // should not be called from other functions.
 func (s sorter) Changed(change SorterChange) {
-	var _arg0 *C.GtkSorter
-	var _arg1 C.GtkSorterChange
+	var _arg0 *C.GtkSorter      // out
+	var _arg1 C.GtkSorterChange // out
 
 	_arg0 = (*C.GtkSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkSorterChange)(change)

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -50,8 +50,8 @@ func marshalContainerCellAccessible(p uintptr) (interface{}, error) {
 }
 
 func (c containerCellAccessible) AddChild(child CellAccessible) {
-	var _arg0 *C.GtkContainerCellAccessible
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkContainerCellAccessible // out
+	var _arg1 *C.GtkCellAccessible          // out
 
 	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))
@@ -60,8 +60,8 @@ func (c containerCellAccessible) AddChild(child CellAccessible) {
 }
 
 func (c containerCellAccessible) RemoveChild(child CellAccessible) {
-	var _arg0 *C.GtkContainerCellAccessible
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkContainerCellAccessible // out
+	var _arg1 *C.GtkCellAccessible          // out
 
 	_arg0 = (*C.GtkContainerCellAccessible)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(child.Native()))

@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v3"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -24,20 +24,20 @@ import "C"
 // information for helpers to parent their dialog properly, when run from
 // sandboxed applications for example.
 func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
-	var _arg1 *C.GdkScreen
-	var _arg2 *C.gchar
-	var _arg3 C.guint32
+	var _arg1 *C.GdkScreen // out
+	var _arg2 *C.gchar     // out
+	var _arg3 C.guint32    // out
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 	_arg2 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_show_uri(_arg1, _arg2, _arg3, _cerr)
+	C.gtk_show_uri(_arg1, _arg2, _arg3, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -57,20 +57,20 @@ func ShowURI(screen gdk.Screen, uri string, timestamp uint32) error {
 // This is the recommended call to be used as it passes information necessary
 // for sandbox helpers to parent their dialogs properly.
 func ShowURIOnWindow(parent Window, uri string, timestamp uint32) error {
-	var _arg1 *C.GtkWindow
-	var _arg2 *C.char
-	var _arg3 C.guint32
+	var _arg1 *C.GtkWindow // out
+	var _arg2 *C.char      // out
+	var _arg3 C.guint32    // out
 
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
 	_arg2 = (*C.char)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg2))
 	_arg3 = C.guint32(timestamp)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gtk_show_uri_on_window(_arg1, _arg2, _arg3, _cerr)
+	C.gtk_show_uri_on_window(_arg1, _arg2, _arg3, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -73,17 +73,17 @@ func marshalInetAddressMask(p uintptr) (interface{}, error) {
 
 // Equal tests if @mask and @mask2 are the same mask.
 func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
-	var _arg0 *C.GInetAddressMask
-	var _arg1 *C.GInetAddressMask
+	var _arg0 *C.GInetAddressMask // out
+	var _arg1 *C.GInetAddressMask // out
 
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GInetAddressMask)(unsafe.Pointer(mask2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_inet_address_mask_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -94,15 +94,15 @@ func (m inetAddressMask) Equal(mask2 InetAddressMask) bool {
 
 // Length gets @mask's length
 func (m inetAddressMask) Length() uint {
-	var _arg0 *C.GInetAddressMask
+	var _arg0 *C.GInetAddressMask // out
 
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_inet_address_mask_get_length(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -111,17 +111,17 @@ func (m inetAddressMask) Length() uint {
 
 // Matches tests if @address falls within the range described by @mask.
 func (m inetAddressMask) Matches(address InetAddress) bool {
-	var _arg0 *C.GInetAddressMask
-	var _arg1 *C.GInetAddress
+	var _arg0 *C.GInetAddressMask // out
+	var _arg1 *C.GInetAddress     // out
 
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GInetAddress)(unsafe.Pointer(address.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_inet_address_mask_matches(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -132,15 +132,15 @@ func (m inetAddressMask) Matches(address InetAddress) bool {
 
 // String converts @mask back to its corresponding string form.
 func (m inetAddressMask) String() string {
-	var _arg0 *C.GInetAddressMask
+	var _arg0 *C.GInetAddressMask // out
 
 	_arg0 = (*C.GInetAddressMask)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_inet_address_mask_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

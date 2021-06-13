@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -148,15 +148,15 @@ func marshalApplicationWindow(p uintptr) (interface{}, error) {
 //
 //    If the window has not yet been added to a `GtkApplication`, returns `0`.
 func (w applicationWindow) ID() uint {
-	var _arg0 *C.GtkApplicationWindow
+	var _arg0 *C.GtkApplicationWindow // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_application_window_get_id(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -166,15 +166,15 @@ func (w applicationWindow) ID() uint {
 // ShowMenubar returns whether the window will display a menubar for the app
 // menu and menubar as needed.
 func (w applicationWindow) ShowMenubar() bool {
-	var _arg0 *C.GtkApplicationWindow
+	var _arg0 *C.GtkApplicationWindow // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_application_window_get_show_menubar(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -190,8 +190,8 @@ func (w applicationWindow) ShowMenubar() bool {
 //
 // @window takes responsibility for destroying @help_overlay.
 func (w applicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindow) {
-	var _arg0 *C.GtkApplicationWindow
-	var _arg1 *C.GtkShortcutsWindow
+	var _arg0 *C.GtkApplicationWindow // out
+	var _arg1 *C.GtkShortcutsWindow   // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.GtkShortcutsWindow)(unsafe.Pointer(helpOverlay.Native()))
@@ -202,8 +202,8 @@ func (w applicationWindow) SetHelpOverlay(helpOverlay ShortcutsWindow) {
 // SetShowMenubar sets whether the window will display a menubar for the app
 // menu and menubar as needed.
 func (w applicationWindow) SetShowMenubar(showMenubar bool) {
-	var _arg0 *C.GtkApplicationWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkApplicationWindow // out
+	var _arg1 C.gboolean              // out
 
 	_arg0 = (*C.GtkApplicationWindow)(unsafe.Pointer(w.Native()))
 	if showMenubar {

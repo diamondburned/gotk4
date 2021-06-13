@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -84,15 +84,15 @@ func marshalGestureSingle(p uintptr) (interface{}, error) {
 // Button returns the button number @gesture listens for, or 0 if @gesture
 // reacts to any button press.
 func (g gestureSingle) Button() uint {
-	var _arg0 *C.GtkGestureSingle
+	var _arg0 *C.GtkGestureSingle // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_gesture_single_get_button(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -102,15 +102,15 @@ func (g gestureSingle) Button() uint {
 // CurrentButton returns the button number currently interacting with
 // @gesture, or 0 if there is none.
 func (g gestureSingle) CurrentButton() uint {
-	var _arg0 *C.GtkGestureSingle
+	var _arg0 *C.GtkGestureSingle // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_gesture_single_get_current_button(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -120,15 +120,15 @@ func (g gestureSingle) CurrentButton() uint {
 // Exclusive gets whether a gesture is exclusive. For more information, see
 // gtk_gesture_single_set_exclusive().
 func (g gestureSingle) Exclusive() bool {
-	var _arg0 *C.GtkGestureSingle
+	var _arg0 *C.GtkGestureSingle // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_single_get_exclusive(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -139,15 +139,15 @@ func (g gestureSingle) Exclusive() bool {
 
 // TouchOnly returns true if the gesture is only triggered by touch events.
 func (g gestureSingle) TouchOnly() bool {
-	var _arg0 *C.GtkGestureSingle
+	var _arg0 *C.GtkGestureSingle // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_single_get_touch_only(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -160,8 +160,8 @@ func (g gestureSingle) TouchOnly() bool {
 // button press from a different button number will be ignored. Touch events
 // implicitly match with button 1.
 func (g gestureSingle) SetButton(button uint) {
-	var _arg0 *C.GtkGestureSingle
-	var _arg1 C.guint
+	var _arg0 *C.GtkGestureSingle // out
+	var _arg1 C.guint             // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 	_arg1 = C.guint(button)
@@ -173,8 +173,8 @@ func (g gestureSingle) SetButton(button uint) {
 // will only handle pointer and "pointer emulated" touch events, so at any
 // given time, there is only one sequence able to interact with those.
 func (g gestureSingle) SetExclusive(exclusive bool) {
-	var _arg0 *C.GtkGestureSingle
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkGestureSingle // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 	if exclusive {
@@ -188,8 +188,8 @@ func (g gestureSingle) SetExclusive(exclusive bool) {
 // type K_TOUCH_BEGIN, K_TOUCH_UPDATE or K_TOUCH_END. If false, mouse events
 // will be handled too.
 func (g gestureSingle) SetTouchOnly(touchOnly bool) {
-	var _arg0 *C.GtkGestureSingle
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkGestureSingle // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkGestureSingle)(unsafe.Pointer(g.Native()))
 	if touchOnly {

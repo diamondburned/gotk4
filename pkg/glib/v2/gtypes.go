@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -27,8 +27,8 @@ func gotk4_CompareDataFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.
 		panic(`callback not found`)
 	}
 
-	var a interface{}
-	var b interface{}
+	var a interface{} // out
+	var b interface{} // out
 
 	a = (interface{})(arg0)
 	b = (interface{})(arg1)
@@ -52,7 +52,7 @@ func gotk4_Func(arg0 C.gpointer, arg1 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var data interface{}
+	var data interface{} // out
 
 	data = (interface{})(arg0)
 
@@ -72,8 +72,8 @@ func gotk4_HFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var key interface{}
-	var value interface{}
+	var key interface{}   // out
+	var value interface{} // out
 
 	key = (interface{})(arg0)
 	value = (interface{})(arg1)
@@ -115,14 +115,14 @@ func (t *TimeVal) Native() unsafe.Pointer {
 
 // TvSec gets the field inside the struct.
 func (t *TimeVal) TvSec() int32 {
-	var v int32
+	var v int32 // out
 	v = (int32)(t.native.tv_sec)
 	return v
 }
 
 // TvUsec gets the field inside the struct.
 func (t *TimeVal) TvUsec() int32 {
-	var v int32
+	var v int32 // out
 	v = (int32)(t.native.tv_usec)
 	return v
 }
@@ -130,8 +130,8 @@ func (t *TimeVal) TvUsec() int32 {
 // Add adds the given number of microseconds to @time_. @microseconds can also
 // be negative to decrease the value of @time_.
 func (t *TimeVal) Add(microseconds int32) {
-	var _arg0 *C.GTimeVal
-	var _arg1 C.glong
+	var _arg0 *C.GTimeVal // out
+	var _arg1 C.glong     // out
 
 	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 	_arg1 = C.glong(microseconds)
@@ -171,15 +171,15 @@ func (t *TimeVal) Add(microseconds int32) {
 // The return value of g_time_val_to_iso8601() has been nullable since GLib
 // 2.54; before then, GLib would crash under the same conditions.
 func (t *TimeVal) ToISO8601() string {
-	var _arg0 *C.GTimeVal
+	var _arg0 *C.GTimeVal // out
 
 	_arg0 = (*C.GTimeVal)(unsafe.Pointer(t.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_time_val_to_iso8601(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

@@ -18,6 +18,7 @@ in unstable.mkShell {
 	buildInputs = with unstable; [
 		glib
 		graphene
+		gdk-pixbuf
 		gnome3.gtk
 		gtk4
 		vulkan-headers

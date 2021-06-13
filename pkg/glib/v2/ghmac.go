@@ -7,7 +7,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -18,7 +18,7 @@ import "C"
 //
 // The hexadecimal string returned will be in lower case.
 func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string {
-	var _arg1 C.GChecksumType
+	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar
 	var _arg3 C.gsize
 	var _arg4 *C.guchar
@@ -30,11 +30,11 @@ func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string
 	_arg5 = C.gsize(len(data))
 	_arg4 = (*C.guchar)(unsafe.Pointer(&data[0]))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_compute_hmac_for_data(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -46,11 +46,11 @@ func ComputeHMACForData(digestType ChecksumType, key []byte, data []byte) string
 //
 // The hexadecimal string returned will be in lower case.
 func ComputeHMACForString(digestType ChecksumType, key []byte, str string, length int) string {
-	var _arg1 C.GChecksumType
+	var _arg1 C.GChecksumType // out
 	var _arg2 *C.guchar
 	var _arg3 C.gsize
-	var _arg4 *C.gchar
-	var _arg5 C.gssize
+	var _arg4 *C.gchar // out
+	var _arg5 C.gssize // out
 
 	_arg1 = (C.GChecksumType)(digestType)
 	_arg3 = C.gsize(len(key))
@@ -59,11 +59,11 @@ func ComputeHMACForString(digestType ChecksumType, key []byte, str string, lengt
 	defer C.free(unsafe.Pointer(_arg4))
 	_arg5 = C.gssize(length)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_compute_hmac_for_string(_arg1, _arg2, _arg3, _arg4, _arg5)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -104,15 +104,15 @@ func (h *HMAC) Native() unsafe.Pointer {
 //
 // The hexadecimal characters will be lower case.
 func (h *HMAC) String() string {
-	var _arg0 *C.GHmac
+	var _arg0 *C.GHmac // out
 
 	_arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_hmac_get_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -125,7 +125,7 @@ func (h *HMAC) String() string {
 // all memory allocated by the hash table is released. This function is MT-safe
 // and may be called from any thread. Frees the memory allocated for @hmac.
 func (h *HMAC) Unref() {
-	var _arg0 *C.GHmac
+	var _arg0 *C.GHmac // out
 
 	_arg0 = (*C.GHmac)(unsafe.Pointer(h.Native()))
 
@@ -137,7 +137,7 @@ func (h *HMAC) Unref() {
 // The HMAC must still be open, that is g_hmac_get_string() or
 // g_hmac_get_digest() must not have been called on @hmac.
 func (h *HMAC) Update(data []byte) {
-	var _arg0 *C.GHmac
+	var _arg0 *C.GHmac // out
 	var _arg1 *C.guchar
 	var _arg2 C.gssize
 

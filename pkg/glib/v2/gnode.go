@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -88,7 +88,7 @@ func (n *Node) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (n *Node) Data() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(n.native.data)
 	return v
 }
@@ -96,17 +96,17 @@ func (n *Node) Data() interface{} {
 // ChildIndex gets the position of the first child of a #GNode which contains
 // the given data.
 func (n *Node) ChildIndex(data interface{}) int {
-	var _arg0 *C.GNode
-	var _arg1 C.gpointer
+	var _arg0 *C.GNode   // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 	_arg1 = C.gpointer(data)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_node_child_index(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -117,17 +117,17 @@ func (n *Node) ChildIndex(data interface{}) int {
 // @child must be a child of @node. The first child is numbered 0, the second 1,
 // and so on.
 func (n *Node) ChildPosition(child *Node) int {
-	var _arg0 *C.GNode
-	var _arg1 *C.GNode
+	var _arg0 *C.GNode // out
+	var _arg1 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GNode)(unsafe.Pointer(child.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_node_child_position(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -138,9 +138,9 @@ func (n *Node) ChildPosition(child *Node) int {
 // that it doesn't descend beneath the child nodes. @func must not do anything
 // that would modify the structure of the tree.
 func (n *Node) ChildrenForeach(flags TraverseFlags, fn NodeForeachFunc) {
-	var _arg0 *C.GNode
-	var _arg1 C.GTraverseFlags
-	var _arg2 C.GNodeForeachFunc
+	var _arg0 *C.GNode           // out
+	var _arg1 C.GTraverseFlags   // out
+	var _arg2 C.GNodeForeachFunc // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
@@ -156,15 +156,15 @@ func (n *Node) ChildrenForeach(flags TraverseFlags, fn NodeForeachFunc) {
 // If @node is nil the depth is 0. The root node has a depth of 1. For the
 // children of the root node the depth is 2. And so on.
 func (n *Node) Depth() uint {
-	var _arg0 *C.GNode
+	var _arg0 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_node_depth(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -174,7 +174,7 @@ func (n *Node) Depth() uint {
 // Destroy removes @root and its children from the tree, freeing any memory
 // allocated.
 func (r *Node) Destroy() {
-	var _arg0 *C.GNode
+	var _arg0 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
 
@@ -185,17 +185,17 @@ func (r *Node) Destroy() {
 // if node is the parent of @descendant, or if node is the grandparent of
 // @descendant etc.
 func (n *Node) IsAncestor(descendant *Node) bool {
-	var _arg0 *C.GNode
-	var _arg1 *C.GNode
+	var _arg0 *C.GNode // out
+	var _arg1 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GNode)(unsafe.Pointer(descendant.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_node_is_ancestor(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -210,15 +210,15 @@ func (n *Node) IsAncestor(descendant *Node) bool {
 // If @root is nil, 0 is returned. If @root has no children, 1 is returned. If
 // @root has children, 2 is returned. And so on.
 func (r *Node) MaxHeight() uint {
-	var _arg0 *C.GNode
+	var _arg0 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_node_max_height(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -227,15 +227,15 @@ func (r *Node) MaxHeight() uint {
 
 // NChildren gets the number of children of a #GNode.
 func (n *Node) NChildren() uint {
-	var _arg0 *C.GNode
+	var _arg0 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_node_n_children(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -244,17 +244,17 @@ func (n *Node) NChildren() uint {
 
 // NNodes gets the number of nodes in a tree.
 func (r *Node) NNodes(flags TraverseFlags) uint {
-	var _arg0 *C.GNode
-	var _arg1 C.GTraverseFlags
+	var _arg0 *C.GNode         // out
+	var _arg1 C.GTraverseFlags // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
 	_arg1 = (C.GTraverseFlags)(flags)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_node_n_nodes(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -264,7 +264,7 @@ func (r *Node) NNodes(flags TraverseFlags) uint {
 // ReverseChildren reverses the order of the children of a #GNode. (It doesn't
 // change the order of the grandchildren.)
 func (n *Node) ReverseChildren() {
-	var _arg0 *C.GNode
+	var _arg0 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 
@@ -276,11 +276,11 @@ func (n *Node) ReverseChildren() {
 // point by returning true from @func. @func must not do anything that would
 // modify the structure of the tree.
 func (r *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int, fn NodeTraverseFunc) {
-	var _arg0 *C.GNode
-	var _arg1 C.GTraverseType
-	var _arg2 C.GTraverseFlags
-	var _arg3 C.gint
-	var _arg4 C.GNodeTraverseFunc
+	var _arg0 *C.GNode            // out
+	var _arg1 C.GTraverseType     // out
+	var _arg2 C.GTraverseFlags    // out
+	var _arg3 C.gint              // out
+	var _arg4 C.GNodeTraverseFunc // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(r.Native()))
@@ -295,7 +295,7 @@ func (r *Node) Traverse(order TraverseType, flags TraverseFlags, maxDepth int, f
 
 // Unlink unlinks a #GNode from a tree, resulting in two separate trees.
 func (n *Node) Unlink() {
-	var _arg0 *C.GNode
+	var _arg0 *C.GNode // out
 
 	_arg0 = (*C.GNode)(unsafe.Pointer(n.Native()))
 

@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -52,20 +52,20 @@ func gotk4_AttrDataCopyFunc(arg0 C.gpointer) C.gpointer {
 // attributes and text out of the markup. This function will not free @context,
 // use g_markup_parse_context_free() to do so.
 func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, uint32, error) {
-	var _arg1 *C.GMarkupParseContext
+	var _arg1 *C.GMarkupParseContext // out
 
 	_arg1 = (*C.GMarkupParseContext)(unsafe.Pointer(context.Native()))
 
 	var _attrList *AttrList
-	var _arg3 *C.char
-	var _arg4 C.gunichar
-	var _cerr *C.GError
+	var _arg3 *C.char    // in
+	var _arg4 C.gunichar // in
+	var _cerr *C.GError  // in
 
-	C.pango_markup_parser_finish(_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg3, &_arg4, _cerr)
+	C.pango_markup_parser_finish(_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg3, &_arg4, &_cerr)
 
-	var _text string
-	var _accelChar uint32
-	var _goerr error
+	var _text string      // out
+	var _accelChar uint32 // out
+	var _goerr error      // out
 
 	_text = C.GoString(_arg3)
 	defer C.free(unsafe.Pointer(_arg3))
@@ -94,9 +94,9 @@ func MarkupParserFinish(context *glib.MarkupParseContext) (*AttrList, string, ui
 // If any error happens, none of the output arguments are touched except for
 // @error.
 func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, string, uint32, error) {
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 C.gunichar
+	var _arg1 *C.char    // out
+	var _arg2 C.int      // out
+	var _arg3 C.gunichar // out
 
 	_arg1 = (*C.char)(C.CString(markupText))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -104,15 +104,15 @@ func ParseMarkup(markupText string, length int, accelMarker uint32) (*AttrList, 
 	_arg3 = C.gunichar(accelMarker)
 
 	var _attrList *AttrList
-	var _arg5 *C.char
-	var _arg6 C.gunichar
-	var _cerr *C.GError
+	var _arg5 *C.char    // in
+	var _arg6 C.gunichar // in
+	var _cerr *C.GError  // in
 
-	C.pango_parse_markup(_arg1, _arg2, _arg3, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg5, &_arg6, _cerr)
+	C.pango_parse_markup(_arg1, _arg2, _arg3, (**C.PangoAttrList)(unsafe.Pointer(&_attrList)), &_arg5, &_arg6, &_cerr)
 
-	var _text string
-	var _accelChar uint32
-	var _goerr error
+	var _text string      // out
+	var _accelChar uint32 // out
+	var _goerr error      // out
 
 	_text = C.GoString(_arg5)
 	defer C.free(unsafe.Pointer(_arg5))
@@ -176,7 +176,7 @@ func (a *AttrFloat) Native() unsafe.Pointer {
 
 // Value gets the field inside the struct.
 func (a *AttrFloat) Value() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(a.native.value)
 	return v
 }
@@ -235,7 +235,7 @@ func (a *AttrFontFeatures) Native() unsafe.Pointer {
 
 // Features gets the field inside the struct.
 func (a *AttrFontFeatures) Features() string {
-	var v string
+	var v string // out
 	v = C.GoString(a.native.features)
 	return v
 }
@@ -268,7 +268,7 @@ func (a *AttrInt) Native() unsafe.Pointer {
 
 // Value gets the field inside the struct.
 func (a *AttrInt) Value() int {
-	var v int
+	var v int // out
 	v = (int)(a.native.value)
 	return v
 }
@@ -307,7 +307,7 @@ func (a *AttrIterator) Native() unsafe.Pointer {
 
 // Destroy: destroy a `PangoAttrIterator` and free all associated memory.
 func (i *AttrIterator) Destroy() {
-	var _arg0 *C.PangoAttrIterator
+	var _arg0 *C.PangoAttrIterator // out
 
 	_arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 
@@ -316,10 +316,10 @@ func (i *AttrIterator) Destroy() {
 
 // Font: get the font and other attributes at the current iterator position.
 func (i *AttrIterator) Font(desc *FontDescription, language **Language, extraAttrs **glib.SList) {
-	var _arg0 *C.PangoAttrIterator
-	var _arg1 *C.PangoFontDescription
-	var _arg2 **C.PangoLanguage
-	var _arg3 **C.GSList
+	var _arg0 *C.PangoAttrIterator    // out
+	var _arg1 *C.PangoFontDescription // out
+	var _arg2 **C.PangoLanguage       // out
+	var _arg3 **C.GSList              // out
 
 	_arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
@@ -331,15 +331,15 @@ func (i *AttrIterator) Font(desc *FontDescription, language **Language, extraAtt
 
 // Next: advance the iterator until the next change of style.
 func (i *AttrIterator) Next() bool {
-	var _arg0 *C.PangoAttrIterator
+	var _arg0 *C.PangoAttrIterator // out
 
 	_arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_attr_iterator_next(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -353,17 +353,17 @@ func (i *AttrIterator) Next() bool {
 // with this API oversight, stored return values that wouldn't fit into a signed
 // integer are clamped to G_MAXINT.
 func (i *AttrIterator) Range() (start int, end int) {
-	var _arg0 *C.PangoAttrIterator
+	var _arg0 *C.PangoAttrIterator // out
 
 	_arg0 = (*C.PangoAttrIterator)(unsafe.Pointer(i.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
 
 	C.pango_attr_iterator_range(_arg0, &_arg1, &_arg2)
 
-	var _start int
-	var _end int
+	var _start int // out
+	var _end int   // out
 
 	_start = (int)(_arg1)
 	_end = (int)(_arg2)
@@ -442,8 +442,8 @@ func (a *AttrList) Native() unsafe.Pointer {
 // [method@Pango.AttrList.insert] is not suitable for continually changing a set
 // of attributes since it never removes or combines existing attributes.
 func (l *AttrList) Change(attr *Attribute) {
-	var _arg0 *C.PangoAttrList
-	var _arg1 *C.PangoAttribute
+	var _arg0 *C.PangoAttrList  // out
+	var _arg1 *C.PangoAttribute // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr.Native()))
@@ -455,17 +455,17 @@ func (l *AttrList) Change(attr *Attribute) {
 // whether those attributes apply to the same ranges. Beware that this will
 // return wrong values if any list contains duplicates.
 func (l *AttrList) Equal(otherList *AttrList) bool {
-	var _arg0 *C.PangoAttrList
-	var _arg1 *C.PangoAttrList
+	var _arg0 *C.PangoAttrList // out
+	var _arg1 *C.PangoAttrList // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(otherList.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_attr_list_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -478,8 +478,8 @@ func (l *AttrList) Equal(otherList *AttrList) bool {
 //
 // It will be inserted after all other attributes with a matching @start_index.
 func (l *AttrList) Insert(attr *Attribute) {
-	var _arg0 *C.PangoAttrList
-	var _arg1 *C.PangoAttribute
+	var _arg0 *C.PangoAttrList  // out
+	var _arg1 *C.PangoAttribute // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr.Native()))
@@ -491,8 +491,8 @@ func (l *AttrList) Insert(attr *Attribute) {
 //
 // It will be inserted before all other attributes with a matching @start_index.
 func (l *AttrList) InsertBefore(attr *Attribute) {
-	var _arg0 *C.PangoAttrList
-	var _arg1 *C.PangoAttribute
+	var _arg0 *C.PangoAttrList  // out
+	var _arg1 *C.PangoAttribute // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr.Native()))
@@ -511,10 +511,10 @@ func (l *AttrList) InsertBefore(attr *Attribute) {
 // This operation proves useful for, for instance, inserting a pre-edit string
 // in the middle of an edit buffer.
 func (l *AttrList) Splice(other *AttrList, pos int, len int) {
-	var _arg0 *C.PangoAttrList
-	var _arg1 *C.PangoAttrList
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.PangoAttrList // out
+	var _arg1 *C.PangoAttrList // out
+	var _arg2 C.gint           // out
+	var _arg3 C.gint           // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	_arg1 = (*C.PangoAttrList)(unsafe.Pointer(other.Native()))
@@ -527,7 +527,7 @@ func (l *AttrList) Splice(other *AttrList, pos int, len int) {
 // Unref: decrease the reference count of the given attribute list by one. If
 // the result is zero, free the attribute list and the attributes it contains.
 func (l *AttrList) Unref() {
-	var _arg0 *C.PangoAttrList
+	var _arg0 *C.PangoAttrList // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 
@@ -549,10 +549,10 @@ func (l *AttrList) Unref() {
 // Attributes start and end positions are updated if they are behind @pos +
 // @remove.
 func (l *AttrList) Update(pos int, remove int, add int) {
-	var _arg0 *C.PangoAttrList
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 C.int
+	var _arg0 *C.PangoAttrList // out
+	var _arg1 C.int            // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
 
 	_arg0 = (*C.PangoAttrList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(pos)
@@ -590,7 +590,7 @@ func (a *AttrShape) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (a *AttrShape) Data() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(a.native.data)
 	return v
 }
@@ -623,7 +623,7 @@ func (a *AttrSize) Native() unsafe.Pointer {
 
 // Size gets the field inside the struct.
 func (a *AttrSize) Size() int {
-	var v int
+	var v int // out
 	v = (int)(a.native.size)
 	return v
 }
@@ -656,7 +656,7 @@ func (a *AttrString) Native() unsafe.Pointer {
 
 // Value gets the field inside the struct.
 func (a *AttrString) Value() string {
-	var v string
+	var v string // out
 	v = C.GoString(a.native.value)
 	return v
 }
@@ -695,21 +695,21 @@ func (a *Attribute) Native() unsafe.Pointer {
 
 // StartIndex gets the field inside the struct.
 func (a *Attribute) StartIndex() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(a.native.start_index)
 	return v
 }
 
 // EndIndex gets the field inside the struct.
 func (a *Attribute) EndIndex() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(a.native.end_index)
 	return v
 }
 
 // Destroy: destroy a `PangoAttribute` and free all associated memory.
 func (a *Attribute) Destroy() {
-	var _arg0 *C.PangoAttribute
+	var _arg0 *C.PangoAttribute // out
 
 	_arg0 = (*C.PangoAttribute)(unsafe.Pointer(a.Native()))
 
@@ -719,17 +719,17 @@ func (a *Attribute) Destroy() {
 // Equal: compare two attributes for equality. This compares only the actual
 // value of the two attributes and not the ranges that the attributes apply to.
 func (a *Attribute) Equal(attr2 *Attribute) bool {
-	var _arg0 *C.PangoAttribute
-	var _arg1 *C.PangoAttribute
+	var _arg0 *C.PangoAttribute // out
+	var _arg1 *C.PangoAttribute // out
 
 	_arg0 = (*C.PangoAttribute)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.PangoAttribute)(unsafe.Pointer(attr2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_attribute_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -766,28 +766,28 @@ func (c *Color) Native() unsafe.Pointer {
 
 // Red gets the field inside the struct.
 func (c *Color) Red() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(c.native.red)
 	return v
 }
 
 // Green gets the field inside the struct.
 func (c *Color) Green() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(c.native.green)
 	return v
 }
 
 // Blue gets the field inside the struct.
 func (c *Color) Blue() uint16 {
-	var v uint16
+	var v uint16 // out
 	v = (uint16)(c.native.blue)
 	return v
 }
 
 // Free frees a color allocated by pango_color_copy().
 func (c *Color) Free() {
-	var _arg0 *C.PangoColor
+	var _arg0 *C.PangoColor // out
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(c.Native()))
 
@@ -803,18 +803,18 @@ func (c *Color) Free() {
 // blue components of the color, respectively. (White in the four forms is
 // `#fff`, `#ffffff`, `#fffffffff` and `#ffffffffffff`.)
 func (c *Color) Parse(spec string) bool {
-	var _arg0 *C.PangoColor
-	var _arg1 *C.char
+	var _arg0 *C.PangoColor // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_color_parse(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -837,20 +837,20 @@ func (c *Color) Parse(spec string) bool {
 // specified by the hex digits for `a`. If no alpha component is found in @spec,
 // @alpha is set to 0xffff (for a solid color).
 func (c *Color) ParseWithAlpha(spec string) (uint16, bool) {
-	var _arg0 *C.PangoColor
-	var _arg2 *C.char
+	var _arg0 *C.PangoColor // out
+	var _arg2 *C.char       // out
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(c.Native()))
 	_arg2 = (*C.char)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _arg1 C.guint16
-	var _cret C.gboolean
+	var _arg1 C.guint16  // in
+	var _cret C.gboolean // in
 
 	_cret = C.pango_color_parse_with_alpha(_arg0, _arg2, &_arg1)
 
-	var _alpha uint16
-	var _ok bool
+	var _alpha uint16 // out
+	var _ok bool      // out
 
 	_alpha = (uint16)(_arg1)
 	if _cret {
@@ -865,15 +865,15 @@ func (c *Color) ParseWithAlpha(spec string) (uint16, bool) {
 // The string is in the hexadecimal form `#rrrrggggbbbb`, where `r`, `g` and `b`
 // are hex digits representing the red, green, and blue components respectively.
 func (c *Color) String() string {
-	var _arg0 *C.PangoColor
+	var _arg0 *C.PangoColor // out
 
 	_arg0 = (*C.PangoColor)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.pango_color_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

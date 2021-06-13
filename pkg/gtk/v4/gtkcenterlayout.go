@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -70,8 +70,8 @@ func marshalCenterLayout(p uintptr) (interface{}, error) {
 
 // SetBaselinePosition sets the new baseline position of @self
 func (s centerLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
-	var _arg0 *C.GtkCenterLayout
-	var _arg1 C.GtkBaselinePosition
+	var _arg0 *C.GtkCenterLayout    // out
+	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkBaselinePosition)(baselinePosition)
@@ -83,8 +83,8 @@ func (s centerLayout) SetBaselinePosition(baselinePosition BaselinePosition) {
 //
 // To remove the existing center widget, pass nil.
 func (s centerLayout) SetCenterWidget(widget Widget) {
-	var _arg0 *C.GtkCenterLayout
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterLayout // out
+	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -96,8 +96,8 @@ func (s centerLayout) SetCenterWidget(widget Widget) {
 //
 // To remove the existing center widget, pass nil.
 func (s centerLayout) SetEndWidget(widget Widget) {
-	var _arg0 *C.GtkCenterLayout
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterLayout // out
+	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -107,8 +107,8 @@ func (s centerLayout) SetEndWidget(widget Widget) {
 
 // SetOrientation sets the orientation of @self.
 func (s centerLayout) SetOrientation(orientation Orientation) {
-	var _arg0 *C.GtkCenterLayout
-	var _arg1 C.GtkOrientation
+	var _arg0 *C.GtkCenterLayout // out
+	var _arg1 C.GtkOrientation   // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkOrientation)(orientation)
@@ -120,8 +120,8 @@ func (s centerLayout) SetOrientation(orientation Orientation) {
 //
 // To remove the existing start widget, pass nil.
 func (s centerLayout) SetStartWidget(widget Widget) {
-	var _arg0 *C.GtkCenterLayout
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkCenterLayout // out
+	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkCenterLayout)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))

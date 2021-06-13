@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -72,8 +72,8 @@ func marshalWidgetPaintable(p uintptr) (interface{}, error) {
 
 // SetWidget sets the widget that should be observed.
 func (s widgetPaintable) SetWidget(widget Widget) {
-	var _arg0 *C.GtkWidgetPaintable
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkWidgetPaintable // out
+	var _arg1 *C.GtkWidget          // out
 
 	_arg0 = (*C.GtkWidgetPaintable)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))

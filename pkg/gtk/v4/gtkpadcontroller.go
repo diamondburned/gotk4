@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -113,12 +113,12 @@ func marshalPadController(p uintptr) (interface{}, error) {
 // internationalization rules apply. Some windowing systems may be able to
 // use those for user feedback.
 func (c padController) SetAction(typ PadActionType, index int, mode int, label string, actionName string) {
-	var _arg0 *C.GtkPadController
-	var _arg1 C.GtkPadActionType
-	var _arg2 C.int
-	var _arg3 C.int
-	var _arg4 *C.char
-	var _arg5 *C.char
+	var _arg0 *C.GtkPadController // out
+	var _arg1 C.GtkPadActionType  // out
+	var _arg2 C.int               // out
+	var _arg3 C.int               // out
+	var _arg4 *C.char             // out
+	var _arg5 *C.char             // out
 
 	_arg0 = (*C.GtkPadController)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkPadActionType)(typ)
@@ -138,7 +138,7 @@ func (c padController) SetAction(typ PadActionType, index int, mode int, label s
 // See [struct@Gtk.PadActionEntry] and
 // [method@Gtk.PadController.set_action].
 func (c padController) SetActionEntries(entries []PadActionEntry) {
-	var _arg0 *C.GtkPadController
+	var _arg0 *C.GtkPadController // out
 	var _arg1 *C.GtkPadActionEntry
 	var _arg2 C.int
 
@@ -176,28 +176,28 @@ func (p *PadActionEntry) Native() unsafe.Pointer {
 
 // Index gets the field inside the struct.
 func (p *PadActionEntry) Index() int {
-	var v int
+	var v int // out
 	v = (int)(p.native.index)
 	return v
 }
 
 // Mode gets the field inside the struct.
 func (p *PadActionEntry) Mode() int {
-	var v int
+	var v int // out
 	v = (int)(p.native.mode)
 	return v
 }
 
 // Label gets the field inside the struct.
 func (p *PadActionEntry) Label() string {
-	var v string
+	var v string // out
 	v = C.GoString(p.native.label)
 	return v
 }
 
 // ActionName gets the field inside the struct.
 func (p *PadActionEntry) ActionName() string {
-	var v string
+	var v string // out
 	v = C.GoString(p.native.action_name)
 	return v
 }

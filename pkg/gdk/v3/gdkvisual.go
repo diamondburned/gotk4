@@ -20,7 +20,7 @@ import "C"
 // The array returned by this function should not be freed.
 func QueryDepths() []*int {
 	var _arg1 *C.gint
-	var _arg2 *C.gint
+	var _arg2 C.gint // in
 
 	C.gdk_query_depths(&_arg1, &_arg2)
 

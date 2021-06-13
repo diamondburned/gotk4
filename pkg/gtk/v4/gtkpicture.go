@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -174,15 +174,15 @@ func marshalPicture(p uintptr) (interface{}, error) {
 // The returned string will be nil if the picture cannot be described
 // textually.
 func (s picture) AlternativeText() string {
-	var _arg0 *C.GtkPicture
+	var _arg0 *C.GtkPicture // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_picture_get_alternative_text(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -191,15 +191,15 @@ func (s picture) AlternativeText() string {
 
 // CanShrink returns whether the `GtkPicture` respects its contents size.
 func (s picture) CanShrink() bool {
-	var _arg0 *C.GtkPicture
+	var _arg0 *C.GtkPicture // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_picture_get_can_shrink(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -211,15 +211,15 @@ func (s picture) CanShrink() bool {
 // KeepAspectRatio returns whether the `GtkPicture` preserves its contents
 // aspect ratio.
 func (s picture) KeepAspectRatio() bool {
-	var _arg0 *C.GtkPicture
+	var _arg0 *C.GtkPicture // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_picture_get_keep_aspect_ratio(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -237,8 +237,8 @@ func (s picture) KeepAspectRatio() bool {
 //
 // If the picture cannot be described textually, set this property to nil.
 func (s picture) SetAlternativeText(alternativeText string) {
-	var _arg0 *C.GtkPicture
-	var _arg1 *C.char
+	var _arg0 *C.GtkPicture // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(alternativeText))
@@ -259,8 +259,8 @@ func (s picture) SetAlternativeText(alternativeText string) {
 // because the grow behavior can be controlled via
 // [method@Gtk.Widget.set_halign] and [method@Gtk.Widget.set_valign].
 func (s picture) SetCanShrink(canShrink bool) {
-	var _arg0 *C.GtkPicture
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPicture // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	if canShrink {
@@ -274,8 +274,8 @@ func (s picture) SetCanShrink(canShrink bool) {
 //
 // See [ctor@Gtk.Picture.new_for_file] for details.
 func (s picture) SetFile(file gio.File) {
-	var _arg0 *C.GtkPicture
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkPicture // out
+	var _arg1 *C.GFile      // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
@@ -287,8 +287,8 @@ func (s picture) SetFile(file gio.File) {
 //
 // This is a utility function that calls [method@Gtk.Picture.set_file].
 func (s picture) SetFilename(filename string) {
-	var _arg0 *C.GtkPicture
-	var _arg1 *C.char
+	var _arg0 *C.GtkPicture // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -306,8 +306,8 @@ func (s picture) SetFilename(filename string) {
 // If set to false or if the contents provide no aspect ratio, the contents
 // will be stretched over the picture's whole area.
 func (s picture) SetKeepAspectRatio(keepAspectRatio bool) {
-	var _arg0 *C.GtkPicture
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPicture // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	if keepAspectRatio {
@@ -323,8 +323,8 @@ func (s picture) SetKeepAspectRatio(keepAspectRatio bool) {
 //
 // See [ctor@Gtk.Picture.new_for_paintable] for details.
 func (s picture) SetPaintable(paintable gdk.Paintable) {
-	var _arg0 *C.GtkPicture
-	var _arg1 *C.GdkPaintable
+	var _arg0 *C.GtkPicture   // out
+	var _arg1 *C.GdkPaintable // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))
@@ -338,8 +338,8 @@ func (s picture) SetPaintable(paintable gdk.Paintable) {
 //
 // This is a utility function that calls [method@Gtk.Picture.set_paintable].
 func (s picture) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
-	var _arg0 *C.GtkPicture
-	var _arg1 *C.GdkPixbuf
+	var _arg0 *C.GtkPicture // out
+	var _arg1 *C.GdkPixbuf  // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -352,8 +352,8 @@ func (s picture) SetPixbuf(pixbuf gdkpixbuf.Pixbuf) {
 //
 // This is a utility function that calls [method@Gtk.Picture.set_file].
 func (s picture) SetResource(resourcePath string) {
-	var _arg0 *C.GtkPicture
-	var _arg1 *C.char
+	var _arg0 *C.GtkPicture // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GtkPicture)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))

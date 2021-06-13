@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-x11 gtk4
+// #cgo pkg-config: gtk4-x11 gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/x11/gdkx.h>
@@ -23,15 +23,15 @@ func init() {
 
 // X11GetServerTime: routine to get the current X server time stamp.
 func X11GetServerTime(surface X11Surface) uint32 {
-	var _arg1 *C.GdkSurface
+	var _arg1 *C.GdkSurface // out
 
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(surface.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -126,15 +126,15 @@ func marshalX11Surface(p uintptr) (interface{}, error) {
 
 // Desktop gets the number of the workspace @surface is on.
 func (s x11Surface) Desktop() uint32 {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_surface_get_desktop(_arg0)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -147,7 +147,7 @@ func (s x11Surface) Desktop() uint32 {
 // (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
 // anything if the surface is already on all workspaces.
 func (s x11Surface) MoveToCurrentDesktop() {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -159,8 +159,8 @@ func (s x11Surface) MoveToCurrentDesktop() {
 // Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification.
 func (s x11Surface) MoveToDesktop(desktop uint32) {
-	var _arg0 *C.GdkSurface
-	var _arg1 C.guint32
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint32(desktop)
@@ -176,8 +176,8 @@ func (s x11Surface) MoveToDesktop(desktop uint32) {
 // disabled. This is the case for a surface embedded via the XEMBED
 // protocol.
 func (s x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
-	var _arg0 *C.GdkSurface
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if frameSyncEnabled {
@@ -190,8 +190,8 @@ func (s x11Surface) SetFrameSyncEnabled(frameSyncEnabled bool) {
 // SetGroup sets the group leader of @surface to be @leader. See the ICCCM
 // for details.
 func (s x11Surface) SetGroup(leader gdk.Surface) {
-	var _arg0 *C.GdkSurface
-	var _arg1 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkSurface)(unsafe.Pointer(leader.Native()))
@@ -202,8 +202,8 @@ func (s x11Surface) SetGroup(leader gdk.Surface) {
 // SetSkipPagerHint sets a hint on @surface that pagers should not display
 // it. See the EWMH for details.
 func (s x11Surface) SetSkipPagerHint(skipsPager bool) {
-	var _arg0 *C.GdkSurface
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if skipsPager {
@@ -216,8 +216,8 @@ func (s x11Surface) SetSkipPagerHint(skipsPager bool) {
 // SetSkipTaskbarHint sets a hint on @surface that taskbars should not
 // display it. See the EWMH for details.
 func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
-	var _arg0 *C.GdkSurface
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if skipsTaskbar {
@@ -237,8 +237,8 @@ func (s x11Surface) SetSkipTaskbarHint(skipsTaskbar bool) {
 // should only be used by applications which do not use GTK to create
 // toplevel surfaces.
 func (s x11Surface) SetThemeVariant(variant string) {
-	var _arg0 *C.GdkSurface
-	var _arg1 *C.char
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.char       // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(variant))
@@ -250,8 +250,8 @@ func (s x11Surface) SetThemeVariant(variant string) {
 // SetUrgencyHint sets a hint on @surface that it needs user attention. See
 // the ICCCM for details.
 func (s x11Surface) SetUrgencyHint(urgent bool) {
-	var _arg0 *C.GdkSurface
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	if urgent {
@@ -274,8 +274,8 @@ func (s x11Surface) SetUrgencyHint(urgent bool) {
 // should only be used by applications which handle input events bypassing
 // GDK.
 func (s x11Surface) SetUserTime(timestamp uint32) {
-	var _arg0 *C.GdkSurface
-	var _arg1 C.guint32
+	var _arg0 *C.GdkSurface // out
+	var _arg1 C.guint32     // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint32(timestamp)
@@ -287,9 +287,9 @@ func (s x11Surface) SetUserTime(timestamp uint32) {
 // window property of type UTF8_STRING. If the given @surface is not a
 // toplevel surface, it is ignored.
 func (s x11Surface) SetUTF8Property(name string, value string) {
-	var _arg0 *C.GdkSurface
-	var _arg1 *C.char
-	var _arg2 *C.char
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.char       // out
+	var _arg2 *C.char       // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(name))

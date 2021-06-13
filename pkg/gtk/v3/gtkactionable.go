@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -116,15 +116,15 @@ func marshalActionable(p uintptr) (interface{}, error) {
 //
 // See gtk_actionable_set_action_name() for more information.
 func (a actionable) ActionName() string {
-	var _arg0 *C.GtkActionable
+	var _arg0 *C.GtkActionable // out
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_actionable_get_action_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -143,8 +143,8 @@ func (a actionable) ActionName() string {
 // This is the same form used for actions in the #GMenu associated with the
 // window.
 func (a actionable) SetActionName(actionName string) {
-	var _arg0 *C.GtkActionable
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkActionable // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))
@@ -171,8 +171,8 @@ func (a actionable) SetActionName(actionName string) {
 // the target value of the button, the button will now be rendered as active
 // (and the other buttons, with different targets, rendered inactive).
 func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
-	var _arg0 *C.GtkActionable
-	var _arg1 *C.GVariant
+	var _arg0 *C.GtkActionable // out
+	var _arg1 *C.GVariant      // out
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(targetValue.Native()))
@@ -191,8 +191,8 @@ func (a actionable) SetActionTargetValue(targetValue *glib.Variant) {
 // the form `"action::target"` where `action` is the action name and
 // `target` is the string to use as the target.)
 func (a actionable) SetDetailedActionName(detailedActionName string) {
-	var _arg0 *C.GtkActionable
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkActionable // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GtkActionable)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(detailedActionName))

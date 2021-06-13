@@ -28,16 +28,16 @@ import "C"
 // that for instance things like text files can be executables (i.e. scripts and
 // batch files).
 func ContentTypeCanBeExecutable(typ string) bool {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_can_be_executable(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -48,19 +48,19 @@ func ContentTypeCanBeExecutable(typ string) bool {
 
 // ContentTypeEquals compares two content types for equality.
 func ContentTypeEquals(type1 string, type2 string) bool {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(type1))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(type2))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_equals(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -72,16 +72,16 @@ func ContentTypeEquals(type1 string, type2 string) bool {
 // ContentTypeFromMIMEType tries to find a content type based on the mime type
 // name.
 func ContentTypeFromMIMEType(mimeType string) string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_from_mime_type(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -92,16 +92,16 @@ func ContentTypeFromMIMEType(mimeType string) string {
 // ContentTypeGetDescription gets the human readable description of the content
 // type.
 func ContentTypeGetDescription(typ string) string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_get_description(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -115,16 +115,16 @@ func ContentTypeGetDescription(typ string) string {
 // (http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec)
 // specification for more on the generic icon name.
 func ContentTypeGetGenericIconName(typ string) string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_get_generic_icon_name(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -165,16 +165,16 @@ func ContentTypeGetMIMEDirs() []string {
 // ContentTypeGetMIMEType gets the mime type for the content type, if one is
 // registered.
 func ContentTypeGetMIMEType(typ string) string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_content_type_get_mime_type(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -187,7 +187,7 @@ func ContentTypeGetMIMEType(typ string) string {
 // @filename or @data may be nil, in which case the guess will be based solely
 // on the other argument.
 func ContentTypeGuess(filename string, data []byte) (bool, string) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 *C.guchar
 	var _arg3 C.gsize
 
@@ -196,13 +196,13 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 	_arg3 = C.gsize(len(data))
 	_arg2 = (*C.guchar)(unsafe.Pointer(&data[0]))
 
-	var _arg4 C.gboolean
-	var _cret *C.gchar
+	var _arg4 C.gboolean // in
+	var _cret *C.gchar   // in
 
 	_cret = C.g_content_type_guess(_arg1, _arg2, _arg3, &_arg4)
 
-	var _resultUncertain bool
-	var _utf8 string
+	var _resultUncertain bool // out
+	var _utf8 string          // out
 
 	if _arg4 {
 		_resultUncertain = true
@@ -226,7 +226,7 @@ func ContentTypeGuess(filename string, data []byte) (bool, string) {
 // This function is useful in the implementation of
 // g_mount_guess_content_type().
 func ContentTypeGuessForTree(root File) []string {
-	var _arg1 *C.GFile
+	var _arg1 *C.GFile // out
 
 	_arg1 = (*C.GFile)(unsafe.Pointer(root.Native()))
 
@@ -260,19 +260,19 @@ func ContentTypeGuessForTree(root File) []string {
 
 // ContentTypeIsA determines if @type is a subset of @supertype.
 func ContentTypeIsA(typ string, supertype string) bool {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(supertype))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_is_a(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -284,19 +284,19 @@ func ContentTypeIsA(typ string, supertype string) bool {
 // ContentTypeIsMIMEType determines if @type is a subset of @mime_type.
 // Convenience wrapper around g_content_type_is_a().
 func ContentTypeIsMIMEType(typ string, mimeType string) bool {
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg1 *C.gchar // out
+	var _arg2 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.gchar)(C.CString(mimeType))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_is_mime_type(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -309,16 +309,16 @@ func ContentTypeIsMIMEType(typ string, mimeType string) bool {
 // type. On UNIX this is the "application/octet-stream" mimetype, while on win32
 // it is "*" and on OSX it is a dynamic type or octet-stream.
 func ContentTypeIsUnknown(typ string) bool {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(typ))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_content_type_is_unknown(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

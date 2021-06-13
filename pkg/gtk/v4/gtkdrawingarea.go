@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -148,15 +148,15 @@ func marshalDrawingArea(p uintptr) (interface{}, error) {
 
 // ContentHeight retrieves the content height of the `GtkDrawingArea`.
 func (s drawingArea) ContentHeight() int {
-	var _arg0 *C.GtkDrawingArea
+	var _arg0 *C.GtkDrawingArea // out
 
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_drawing_area_get_content_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -165,15 +165,15 @@ func (s drawingArea) ContentHeight() int {
 
 // ContentWidth retrieves the content width of the `GtkDrawingArea`.
 func (s drawingArea) ContentWidth() int {
-	var _arg0 *C.GtkDrawingArea
+	var _arg0 *C.GtkDrawingArea // out
 
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_drawing_area_get_content_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -190,8 +190,8 @@ func (s drawingArea) ContentWidth() int {
 //
 // If the height is set to 0 (the default), the drawing area may disappear.
 func (s drawingArea) SetContentHeight(height int) {
-	var _arg0 *C.GtkDrawingArea
-	var _arg1 C.int
+	var _arg0 *C.GtkDrawingArea // out
+	var _arg1 C.int             // out
 
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(height)
@@ -209,8 +209,8 @@ func (s drawingArea) SetContentHeight(height int) {
 //
 // If the width is set to 0 (the default), the drawing area may disappear.
 func (s drawingArea) SetContentWidth(width int) {
-	var _arg0 *C.GtkDrawingArea
-	var _arg1 C.int
+	var _arg0 *C.GtkDrawingArea // out
+	var _arg1 C.int             // out
 
 	_arg0 = (*C.GtkDrawingArea)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(width)

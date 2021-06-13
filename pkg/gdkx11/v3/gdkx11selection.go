@@ -18,7 +18,7 @@ import "C"
 // X11FreeCompoundText frees the data returned from
 // gdk_x11_display_string_to_compound_text().
 func X11FreeCompoundText(ctext *byte) {
-	var _arg1 *C.guchar
+	var _arg1 *C.guchar // out
 
 	_arg1 = *C.guchar(ctext)
 
@@ -28,7 +28,7 @@ func X11FreeCompoundText(ctext *byte) {
 // X11FreeTextList frees the array of strings created by
 // gdk_x11_display_text_property_to_text_list().
 func X11FreeTextList(list *string) {
-	var _arg1 **C.gchar
+	var _arg1 **C.gchar // out
 
 	_arg1 = (**C.gchar)(C.CString(list))
 	defer C.free(unsafe.Pointer(_arg1))

@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -40,7 +40,7 @@ func (c *CClosure) Native() unsafe.Pointer {
 
 // Callback gets the field inside the struct.
 func (c *CClosure) Callback() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(c.native.callback)
 	return v
 }
@@ -71,7 +71,7 @@ func (c *ClosureNotifyData) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (c *ClosureNotifyData) Data() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(c.native.data)
 	return v
 }

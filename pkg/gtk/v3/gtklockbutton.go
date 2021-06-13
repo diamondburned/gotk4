@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -90,8 +90,8 @@ func marshalLockButton(p uintptr) (interface{}, error) {
 
 // SetPermission sets the #GPermission object that controls @button.
 func (b lockButton) SetPermission(permission gio.Permission) {
-	var _arg0 *C.GtkLockButton
-	var _arg1 *C.GPermission
+	var _arg0 *C.GtkLockButton // out
+	var _arg1 *C.GPermission   // out
 
 	_arg0 = (*C.GtkLockButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GPermission)(unsafe.Pointer(permission.Native()))

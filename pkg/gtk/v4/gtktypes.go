@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -62,17 +62,17 @@ func (b *Bitset) Native() unsafe.Pointer {
 
 // Add adds @value to @self if it wasn't part of it before.
 func (s *Bitset) Add(value uint) bool {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_add(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -84,9 +84,9 @@ func (s *Bitset) Add(value uint) bool {
 // AddRange adds all values from @start (inclusive) to @start + @n_items
 // (exclusive) in @self.
 func (s *Bitset) AddRange(start uint, nItems uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(start)
@@ -98,9 +98,9 @@ func (s *Bitset) AddRange(start uint, nItems uint) {
 // AddRangeClosed adds the closed range [@first, @last], so @first, @last and
 // all values in between. @first must be smaller than @last.
 func (s *Bitset) AddRangeClosed(first uint, last uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(first)
@@ -113,11 +113,11 @@ func (s *Bitset) AddRangeClosed(first uint, last uint) {
 // given @stride and inside that grid, adds a rectangle with the given @width
 // and @height.
 func (s *Bitset) AddRectangle(start uint, width uint, height uint, stride uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
-	var _arg4 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _arg3 C.guint      // out
+	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(start)
@@ -130,17 +130,17 @@ func (s *Bitset) AddRectangle(start uint, width uint, height uint, stride uint) 
 
 // Contains checks if the given @value has been added to @self
 func (s *Bitset) Contains(value uint) bool {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_contains(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -158,8 +158,8 @@ func (s *Bitset) Contains(value uint) bool {
 // It is allowed for @self and @other to be the same bitset. The bitset will be
 // emptied in that case.
 func (s *Bitset) Difference(other *Bitset) {
-	var _arg0 *C.GtkBitset
-	var _arg1 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other.Native()))
@@ -169,17 +169,17 @@ func (s *Bitset) Difference(other *Bitset) {
 
 // Equals returns true if @self and @other contain the same values.
 func (s *Bitset) Equals(other *Bitset) bool {
-	var _arg0 *C.GtkBitset
-	var _arg1 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_equals(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -192,15 +192,15 @@ func (s *Bitset) Equals(other *Bitset) bool {
 //
 // If @self is empty, 0 is returned.
 func (s *Bitset) Maximum() uint {
-	var _arg0 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_bitset_get_maximum(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -211,15 +211,15 @@ func (s *Bitset) Maximum() uint {
 //
 // If @self is empty, `G_MAXUINT` is returned.
 func (s *Bitset) Minimum() uint {
-	var _arg0 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_bitset_get_minimum(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -230,17 +230,17 @@ func (s *Bitset) Minimum() uint {
 //
 // If @nth is >= the size of @self, 0 is returned.
 func (s *Bitset) Nth(nth uint) uint {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(nth)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_bitset_get_nth(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -255,15 +255,15 @@ func (s *Bitset) Nth(nth uint) uint {
 // the return value is `G_MAXUINT + 1`. Unless you are sure this cannot happen
 // (it can't with `GListModel`), be sure to use a 64bit type.
 func (s *Bitset) Size() uint64 {
-	var _arg0 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint64
+	var _cret C.guint64 // in
 
 	_cret = C.gtk_bitset_get_size(_arg0)
 
-	var _guint64 uint64
+	var _guint64 uint64 // out
 
 	_guint64 = (uint64)(_cret)
 
@@ -277,19 +277,19 @@ func (s *Bitset) Size() uint64 {
 // the return value is `G_MAXUINT + 1`. Unless you are sure this cannot happen
 // (it can't with `GListModel`), be sure to use a 64bit type.
 func (s *Bitset) SizeInRange(first uint, last uint) uint64 {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(first)
 	_arg2 = C.guint(last)
 
-	var _cret C.guint64
+	var _cret C.guint64 // in
 
 	_cret = C.gtk_bitset_get_size_in_range(_arg0, _arg1, _arg2)
 
-	var _guint64 uint64
+	var _guint64 uint64 // out
 
 	_guint64 = (uint64)(_cret)
 
@@ -303,8 +303,8 @@ func (s *Bitset) SizeInRange(first uint, last uint) uint64 {
 // It is allowed for @self and @other to be the same bitset. Nothing will happen
 // in that case.
 func (s *Bitset) Intersect(other *Bitset) {
-	var _arg0 *C.GtkBitset
-	var _arg1 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other.Native()))
@@ -314,15 +314,15 @@ func (s *Bitset) Intersect(other *Bitset) {
 
 // IsEmpty: check if no value is contained in bitset.
 func (s *Bitset) IsEmpty() bool {
-	var _arg0 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_is_empty(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -333,17 +333,17 @@ func (s *Bitset) IsEmpty() bool {
 
 // Remove removes @value from @self if it was part of it before.
 func (s *Bitset) Remove(value uint) bool {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(value)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_bitset_remove(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -354,7 +354,7 @@ func (s *Bitset) Remove(value uint) bool {
 
 // RemoveAll removes all values from the bitset so that it is empty again.
 func (s *Bitset) RemoveAll() {
-	var _arg0 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 
@@ -364,9 +364,9 @@ func (s *Bitset) RemoveAll() {
 // RemoveRange removes all values from @start (inclusive) to @start + @n_items
 // (exclusive) in @self.
 func (s *Bitset) RemoveRange(start uint, nItems uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(start)
@@ -378,9 +378,9 @@ func (s *Bitset) RemoveRange(start uint, nItems uint) {
 // RemoveRangeClosed removes the closed range [@first, @last], so @first, @last
 // and all values in between. @first must be smaller than @last.
 func (s *Bitset) RemoveRangeClosed(first uint, last uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(first)
@@ -393,11 +393,11 @@ func (s *Bitset) RemoveRangeClosed(first uint, last uint) {
 // the given @stride and inside that grid, removes a rectangle with the given
 // @width and @height.
 func (s *Bitset) RemoveRectangle(start uint, width uint, height uint, stride uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
-	var _arg4 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _arg3 C.guint      // out
+	var _arg4 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(start)
@@ -412,8 +412,8 @@ func (s *Bitset) RemoveRectangle(start uint, width uint, height uint, stride uin
 //
 // Values smaller than @amount are discarded.
 func (s *Bitset) ShiftLeft(amount uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(amount)
@@ -425,8 +425,8 @@ func (s *Bitset) ShiftLeft(amount uint) {
 //
 // Values that end up too large to be held in a #guint are discarded.
 func (s *Bitset) ShiftRight(amount uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(amount)
@@ -445,10 +445,10 @@ func (s *Bitset) ShiftRight(amount uint) {
 // @position by @added spaces to the right. This frees up space that can then be
 // filled.
 func (s *Bitset) Splice(position uint, removed uint, added uint) {
-	var _arg0 *C.GtkBitset
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
+	var _arg0 *C.GtkBitset // out
+	var _arg1 C.guint      // out
+	var _arg2 C.guint      // out
+	var _arg3 C.guint      // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)
@@ -465,8 +465,8 @@ func (s *Bitset) Splice(position uint, removed uint, added uint) {
 // It is allowed for @self and @other to be the same bitset. The bitset will be
 // emptied in that case.
 func (s *Bitset) Subtract(other *Bitset) {
-	var _arg0 *C.GtkBitset
-	var _arg1 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other.Native()))
@@ -481,8 +481,8 @@ func (s *Bitset) Subtract(other *Bitset) {
 // It is allowed for @self and @other to be the same bitset. Nothing will happen
 // in that case.
 func (s *Bitset) Union(other *Bitset) {
-	var _arg0 *C.GtkBitset
-	var _arg1 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
+	var _arg1 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkBitset)(unsafe.Pointer(other.Native()))
@@ -495,7 +495,7 @@ func (s *Bitset) Union(other *Bitset) {
 // If the reference was the last, the resources associated to the @self are
 // freed.
 func (s *Bitset) Unref() {
-	var _arg0 *C.GtkBitset
+	var _arg0 *C.GtkBitset // out
 
 	_arg0 = (*C.GtkBitset)(unsafe.Pointer(s.Native()))
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -147,7 +147,7 @@ func marshalNativeDialog(p uintptr) (interface{}, error) {
 // to destroying a GtkWindow) because there is no reference from the
 // windowing system to the NativeDialog.
 func (s nativeDialog) Destroy() {
-	var _arg0 *C.GtkNativeDialog
+	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
@@ -157,15 +157,15 @@ func (s nativeDialog) Destroy() {
 // Modal returns whether the dialog is modal. See
 // gtk_native_dialog_set_modal().
 func (s nativeDialog) Modal() bool {
-	var _arg0 *C.GtkNativeDialog
+	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_native_dialog_get_modal(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -176,15 +176,15 @@ func (s nativeDialog) Modal() bool {
 
 // Title gets the title of the NativeDialog.
 func (s nativeDialog) Title() string {
-	var _arg0 *C.GtkNativeDialog
+	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_native_dialog_get_title(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -193,15 +193,15 @@ func (s nativeDialog) Title() string {
 
 // Visible determines whether the dialog is visible.
 func (s nativeDialog) Visible() bool {
-	var _arg0 *C.GtkNativeDialog
+	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_native_dialog_get_visible(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -216,7 +216,7 @@ func (s nativeDialog) Visible() bool {
 //
 // If the dialog is not visible this does nothing.
 func (s nativeDialog) Hide() {
-	var _arg0 *C.GtkNativeDialog
+	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
@@ -252,15 +252,15 @@ func (s nativeDialog) Hide() {
 // IO channel watches, DND drops, etc, will be triggered during a
 // gtk_native_dialog_run() call.
 func (s nativeDialog) Run() int {
-	var _arg0 *C.GtkNativeDialog
+	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_native_dialog_run(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -274,8 +274,8 @@ func (s nativeDialog) Run() int {
 // the parent; most [window managers][gtk-X11-arch] will then disallow
 // lowering the dialog below the parent.
 func (s nativeDialog) SetModal(modal bool) {
-	var _arg0 *C.GtkNativeDialog
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkNativeDialog // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 	if modal {
@@ -287,8 +287,8 @@ func (s nativeDialog) SetModal(modal bool) {
 
 // SetTitle sets the title of the NativeDialog.
 func (s nativeDialog) SetTitle(title string) {
-	var _arg0 *C.GtkNativeDialog
-	var _arg1 *C.char
+	var _arg0 *C.GtkNativeDialog // out
+	var _arg1 *C.char            // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(title))
@@ -304,8 +304,8 @@ func (s nativeDialog) SetTitle(title string) {
 //
 // Passing nil for @parent unsets the current transient window.
 func (s nativeDialog) SetTransientFor(parent Window) {
-	var _arg0 *C.GtkNativeDialog
-	var _arg1 *C.GtkWindow
+	var _arg0 *C.GtkNativeDialog // out
+	var _arg1 *C.GtkWindow       // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWindow)(unsafe.Pointer(parent.Native()))
@@ -320,7 +320,7 @@ func (s nativeDialog) SetTransientFor(parent Window) {
 //
 // Multiple calls while the dialog is visible will be ignored.
 func (s nativeDialog) Show() {
-	var _arg0 *C.GtkNativeDialog
+	var _arg0 *C.GtkNativeDialog // out
 
 	_arg0 = (*C.GtkNativeDialog)(unsafe.Pointer(s.Native()))
 

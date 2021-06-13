@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -210,9 +210,9 @@ func marshalPopover(p uintptr) (interface{}, error) {
 // the name “mygroup” then you would use the action name “mygroup.quit” in
 // your Model.
 func (p popover) BindModel(model gio.MenuModel, actionNamespace string) {
-	var _arg0 *C.GtkPopover
-	var _arg1 *C.GMenuModel
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkPopover // out
+	var _arg1 *C.GMenuModel // out
+	var _arg2 *C.gchar      // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(model.Native()))
@@ -225,15 +225,15 @@ func (p popover) BindModel(model gio.MenuModel, actionNamespace string) {
 // Modal returns whether the popover is modal, see gtk_popover_set_modal to
 // see the implications of this.
 func (p popover) Modal() bool {
-	var _arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_popover_get_modal(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -246,16 +246,16 @@ func (p popover) Modal() bool {
 // return true and fill in @rect with such rectangle, otherwise it will
 // return false and fill in @rect with the attached widget coordinates.
 func (p popover) PointingTo() (gdk.Rectangle, bool) {
-	var _arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
 	var _rect gdk.Rectangle
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_popover_get_pointing_to(_arg0, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -267,15 +267,15 @@ func (p popover) PointingTo() (gdk.Rectangle, bool) {
 // TransitionsEnabled returns whether show/hide transitions are enabled on
 // this popover.
 func (p popover) TransitionsEnabled() bool {
-	var _arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_popover_get_transitions_enabled(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -288,7 +288,7 @@ func (p popover) TransitionsEnabled() bool {
 // call in that it shows the popover with a transition. If you want to hide
 // the popover without a transition, use gtk_widget_hide().
 func (p popover) Popdown() {
-	var _arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
@@ -299,7 +299,7 @@ func (p popover) Popdown() {
 // in that it shows the popover with a transition. If you want to show the
 // popover without a transition, use gtk_widget_show().
 func (p popover) Popup() {
-	var _arg0 *C.GtkPopover
+	var _arg0 *C.GtkPopover // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 
@@ -311,8 +311,8 @@ func (p popover) Popup() {
 // Note that not all platforms support placing popovers freely, and may
 // already impose constraints.
 func (p popover) SetConstrainTo(constraint PopoverConstraint) {
-	var _arg0 *C.GtkPopover
-	var _arg1 C.GtkPopoverConstraint
+	var _arg0 *C.GtkPopover          // out
+	var _arg1 C.GtkPopoverConstraint // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	_arg1 = (C.GtkPopoverConstraint)(constraint)
@@ -325,8 +325,8 @@ func (p popover) SetConstrainTo(constraint PopoverConstraint) {
 // remembers the previous default widget and reestablishes it when the
 // popover is dismissed.
 func (p popover) SetDefaultWidget(widget Widget) {
-	var _arg0 *C.GtkPopover
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkPopover // out
+	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
@@ -339,8 +339,8 @@ func (p popover) SetDefaultWidget(widget Widget) {
 // displayed. Clicking outside the popover area or pressing Esc will dismiss
 // the popover and ungrab input.
 func (p popover) SetModal(modal bool) {
-	var _arg0 *C.GtkPopover
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPopover // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if modal {
@@ -354,8 +354,8 @@ func (p popover) SetModal(modal bool) {
 // coordinate space of the widget @popover is attached to, see
 // gtk_popover_set_relative_to().
 func (p popover) SetPointingTo(rect *gdk.Rectangle) {
-	var _arg0 *C.GtkPopover
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GtkPopover   // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(rect.Native()))
@@ -370,8 +370,8 @@ func (p popover) SetPointingTo(rect *gdk.Rectangle) {
 // space (eg. if close to the window edges), the Popover may choose to
 // appear on the opposite side
 func (p popover) SetPosition(position PositionType) {
-	var _arg0 *C.GtkPopover
-	var _arg1 C.GtkPositionType
+	var _arg0 *C.GtkPopover     // out
+	var _arg1 C.GtkPositionType // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	_arg1 = (C.GtkPositionType)(position)
@@ -387,8 +387,8 @@ func (p popover) SetPosition(position PositionType) {
 // be detached from its previous widget, and consequently destroyed unless
 // extra references are kept.
 func (p popover) SetRelativeTo(relativeTo Widget) {
-	var _arg0 *C.GtkPopover
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkPopover // out
+	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(relativeTo.Native()))
@@ -399,8 +399,8 @@ func (p popover) SetRelativeTo(relativeTo Widget) {
 // SetTransitionsEnabled sets whether show/hide transitions are enabled on
 // this popover
 func (p popover) SetTransitionsEnabled(transitionsEnabled bool) {
-	var _arg0 *C.GtkPopover
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPopover // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkPopover)(unsafe.Pointer(p.Native()))
 	if transitionsEnabled {

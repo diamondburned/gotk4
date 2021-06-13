@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -39,7 +39,7 @@ func (d *Dir) Native() unsafe.Pointer {
 
 // Close closes the directory and deallocates all related resources.
 func (d *Dir) Close() {
-	var _arg0 *C.GDir
+	var _arg0 *C.GDir // out
 
 	_arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
 
@@ -59,15 +59,15 @@ func (d *Dir) Close() {
 // On Windows, as is true of all GLib functions which operate on filenames, the
 // returned name is in UTF-8.
 func (d *Dir) ReadName() *string {
-	var _arg0 *C.GDir
+	var _arg0 *C.GDir // out
 
 	_arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_dir_read_name(_arg0)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -77,7 +77,7 @@ func (d *Dir) ReadName() *string {
 // Rewind resets the given directory. The next call to g_dir_read_name() will
 // return the first entry again.
 func (d *Dir) Rewind() {
-	var _arg0 *C.GDir
+	var _arg0 *C.GDir // out
 
 	_arg0 = (*C.GDir)(unsafe.Pointer(d.Native()))
 

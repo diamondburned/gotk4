@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -175,19 +175,19 @@ func marshalIMContext(p uintptr) (interface{}, error) {
 // in the existing text in response to new input. It is not useful for
 // applications.
 func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
-	var _arg0 *C.GtkIMContext
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 C.gint          // out
+	var _arg2 C.gint          // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gint(offset)
 	_arg2 = C.gint(nChars)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_im_context_delete_surrounding(_arg0, _arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -200,17 +200,17 @@ func (c imContext) DeleteSurrounding(offset int, nChars int) bool {
 // release events. If this function returns true, then no further processing
 // should be done for this key event.
 func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
-	var _arg0 *C.GtkIMContext
-	var _arg1 *C.GdkEventKey
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.GdkEventKey  // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkEventKey)(unsafe.Pointer(event.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_im_context_filter_keypress(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -223,7 +223,7 @@ func (c imContext) FilterKeypress(event *gdk.EventKey) bool {
 // context corresponds has gained focus. The input method may, for example,
 // change the displayed feedback to reflect this change.
 func (c imContext) FocusIn() {
-	var _arg0 *C.GtkIMContext
+	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
@@ -235,7 +235,7 @@ func (c imContext) FocusIn() {
 // change the displayed feedback or reset the contexts state to reflect this
 // change.
 func (c imContext) FocusOut() {
-	var _arg0 *C.GtkIMContext
+	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
@@ -246,19 +246,19 @@ func (c imContext) FocusOut() {
 // and a list of attributes to apply to the string. This string should be
 // displayed inserted at the insertion point.
 func (c imContext) PreeditString() (string, *pango.AttrList, int) {
-	var _arg0 *C.GtkIMContext
+	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // in
 	var _attrs *pango.AttrList
-	var _arg3 C.gint
+	var _arg3 C.gint // in
 
 	C.gtk_im_context_get_preedit_string(_arg0, &_arg1, (**C.PangoAttrList)(unsafe.Pointer(&_attrs)), &_arg3)
 
-	var _str string
+	var _str string // out
 
-	var _cursorPos int
+	var _cursorPos int // out
 
 	_str = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
@@ -281,19 +281,19 @@ func (c imContext) PreeditString() (string, *pango.AttrList, int) {
 // widget to respond to the ::retrieve_surrounding signal, so input methods
 // must be prepared to function without context.
 func (c imContext) Surrounding() (string, int, bool) {
-	var _arg0 *C.GtkIMContext
+	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _cret C.gboolean
+	var _arg1 *C.gchar   // in
+	var _arg2 C.gint     // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_im_context_get_surrounding(_arg0, &_arg1, &_arg2)
 
-	var _text string
-	var _cursorIndex int
-	var _ok bool
+	var _text string     // out
+	var _cursorIndex int // out
+	var _ok bool         // out
 
 	_text = C.GoString(_arg1)
 	defer C.free(unsafe.Pointer(_arg1))
@@ -309,7 +309,7 @@ func (c imContext) Surrounding() (string, int, bool) {
 // position has been made. This will typically cause the input method to
 // clear the preedit state.
 func (c imContext) Reset() {
-	var _arg0 *C.GtkIMContext
+	var _arg0 *C.GtkIMContext // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 
@@ -321,8 +321,8 @@ func (c imContext) Reset() {
 // correctly position status windows, and may also be used for purposes
 // internal to the input method.
 func (c imContext) SetClientWindow(window gdk.Window) {
-	var _arg0 *C.GtkIMContext
-	var _arg1 *C.GdkWindow
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.GdkWindow    // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
@@ -333,8 +333,8 @@ func (c imContext) SetClientWindow(window gdk.Window) {
 // SetCursorLocation: notify the input method that a change in cursor
 // position has been made. The location is relative to the client window.
 func (c imContext) SetCursorLocation(area *gdk.Rectangle) {
-	var _arg0 *C.GtkIMContext
-	var _arg1 *C.GdkRectangle
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.GdkRectangle // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkRectangle)(unsafe.Pointer(area.Native()))
@@ -347,10 +347,10 @@ func (c imContext) SetCursorLocation(area *gdk.Rectangle) {
 // GtkIMContext::retrieve_surrounding signal, and will likely have no effect
 // if called at other times.
 func (c imContext) SetSurrounding(text string, len int, cursorIndex int) {
-	var _arg0 *C.GtkIMContext
-	var _arg1 *C.gchar
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 *C.gchar        // out
+	var _arg2 C.gint          // out
+	var _arg3 C.gint          // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -366,8 +366,8 @@ func (c imContext) SetSurrounding(text string, len int, cursorIndex int) {
 // IM context may use some other method to display feedback, such as
 // displaying it in a child of the root window.
 func (c imContext) SetUsePreedit(usePreedit bool) {
-	var _arg0 *C.GtkIMContext
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkIMContext // out
+	var _arg1 C.gboolean      // out
 
 	_arg0 = (*C.GtkIMContext)(unsafe.Pointer(c.Native()))
 	if usePreedit {

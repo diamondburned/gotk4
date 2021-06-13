@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -67,15 +67,15 @@ func marshalGestureLongPress(p uintptr) (interface{}, error) {
 
 // DelayFactor returns the delay factor.
 func (g gestureLongPress) DelayFactor() float64 {
-	var _arg0 *C.GtkGestureLongPress
+	var _arg0 *C.GtkGestureLongPress // out
 
 	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.gtk_gesture_long_press_get_delay_factor(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -87,8 +87,8 @@ func (g gestureLongPress) DelayFactor() float64 {
 // The default long press time will be multiplied by this value. Valid
 // values are in the range [0.5..2.0].
 func (g gestureLongPress) SetDelayFactor(delayFactor float64) {
-	var _arg0 *C.GtkGestureLongPress
-	var _arg1 C.double
+	var _arg0 *C.GtkGestureLongPress // out
+	var _arg1 C.double               // out
 
 	_arg0 = (*C.GtkGestureLongPress)(unsafe.Pointer(g.Native()))
 	_arg1 = C.double(delayFactor)

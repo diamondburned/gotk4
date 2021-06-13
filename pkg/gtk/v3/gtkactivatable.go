@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -343,8 +343,8 @@ func marshalActivatable(p uintptr) (interface{}, error) {
 // property, since this function uses > gtk_activatable_get_related_action()
 // to retrieve the > previous action.
 func (a activatable) DoSetRelatedAction(action Action) {
-	var _arg0 *C.GtkActivatable
-	var _arg1 *C.GtkAction
+	var _arg0 *C.GtkActivatable // out
+	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -356,15 +356,15 @@ func (a activatable) DoSetRelatedAction(action Action) {
 // and appearance when setting the related action or when the action changes
 // appearance.
 func (a activatable) UseActionAppearance() bool {
-	var _arg0 *C.GtkActivatable
+	var _arg0 *C.GtkActivatable // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_activatable_get_use_action_appearance(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -379,8 +379,8 @@ func (a activatable) UseActionAppearance() bool {
 // > property and call gtk_activatable_do_set_related_action() when it
 // changes.
 func (a activatable) SetRelatedAction(action Action) {
-	var _arg0 *C.GtkActivatable
-	var _arg1 *C.GtkAction
+	var _arg0 *C.GtkActivatable // out
+	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))
@@ -397,8 +397,8 @@ func (a activatable) SetRelatedAction(action Action) {
 // gtk_activatable_sync_action_properties() to update @activatable > if
 // needed.
 func (a activatable) SetUseActionAppearance(useAppearance bool) {
-	var _arg0 *C.GtkActivatable
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkActivatable // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	if useAppearance {
@@ -413,8 +413,8 @@ func (a activatable) SetUseActionAppearance(useAppearance bool) {
 // property is set or unset and by the implementing class when
 // Activatable:use-action-appearance changes.
 func (a activatable) SyncActionProperties(action Action) {
-	var _arg0 *C.GtkActivatable
-	var _arg1 *C.GtkAction
+	var _arg0 *C.GtkActivatable // out
+	var _arg1 *C.GtkAction      // out
 
 	_arg0 = (*C.GtkActivatable)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAction)(unsafe.Pointer(action.Native()))

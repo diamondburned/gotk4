@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -101,15 +101,15 @@ func marshalEventBox(p uintptr) (interface{}, error) {
 // AboveChild returns whether the event box window is above or below the
 // windows of its child. See gtk_event_box_set_above_child() for details.
 func (e eventBox) AboveChild() bool {
-	var _arg0 *C.GtkEventBox
+	var _arg0 *C.GtkEventBox // out
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_box_get_above_child(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -121,15 +121,15 @@ func (e eventBox) AboveChild() bool {
 // VisibleWindow returns whether the event box has a visible window. See
 // gtk_event_box_set_visible_window() for details.
 func (e eventBox) VisibleWindow() bool {
-	var _arg0 *C.GtkEventBox
+	var _arg0 *C.GtkEventBox // out
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_event_box_get_visible_window(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -146,8 +146,8 @@ func (e eventBox) VisibleWindow() bool {
 //
 // The default is to keep the window below the child.
 func (e eventBox) SetAboveChild(aboveChild bool) {
-	var _arg0 *C.GtkEventBox
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEventBox // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if aboveChild {
@@ -189,8 +189,8 @@ func (e eventBox) SetAboveChild(aboveChild bool) {
 // the event box window is actually the ancestor of the descendant windows,
 // not just at the same place on the screen.
 func (e eventBox) SetVisibleWindow(visibleWindow bool) {
-	var _arg0 *C.GtkEventBox
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkEventBox // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkEventBox)(unsafe.Pointer(e.Native()))
 	if visibleWindow {

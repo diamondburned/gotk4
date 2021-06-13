@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -132,15 +132,15 @@ func marshalHeaderBar(p uintptr) (interface{}, error) {
 // DecorationLayout gets the decoration layout set with
 // gtk_header_bar_set_decoration_layout().
 func (b headerBar) DecorationLayout() string {
-	var _arg0 *C.GtkHeaderBar
+	var _arg0 *C.GtkHeaderBar // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_header_bar_get_decoration_layout(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -150,15 +150,15 @@ func (b headerBar) DecorationLayout() string {
 // HasSubtitle retrieves whether the header bar reserves space for a
 // subtitle, regardless if one is currently set or not.
 func (b headerBar) HasSubtitle() bool {
-	var _arg0 *C.GtkHeaderBar
+	var _arg0 *C.GtkHeaderBar // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_header_bar_get_has_subtitle(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -170,15 +170,15 @@ func (b headerBar) HasSubtitle() bool {
 // ShowCloseButton returns whether this header bar shows the standard window
 // decorations.
 func (b headerBar) ShowCloseButton() bool {
-	var _arg0 *C.GtkHeaderBar
+	var _arg0 *C.GtkHeaderBar // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_header_bar_get_show_close_button(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -190,15 +190,15 @@ func (b headerBar) ShowCloseButton() bool {
 // Subtitle retrieves the subtitle of the header. See
 // gtk_header_bar_set_subtitle().
 func (b headerBar) Subtitle() string {
-	var _arg0 *C.GtkHeaderBar
+	var _arg0 *C.GtkHeaderBar // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_header_bar_get_subtitle(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -207,15 +207,15 @@ func (b headerBar) Subtitle() string {
 
 // Title retrieves the title of the header. See gtk_header_bar_set_title().
 func (b headerBar) Title() string {
-	var _arg0 *C.GtkHeaderBar
+	var _arg0 *C.GtkHeaderBar // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_header_bar_get_title(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -225,8 +225,8 @@ func (b headerBar) Title() string {
 // PackEnd adds @child to @bar, packed with reference to the end of the
 // @bar.
 func (b headerBar) PackEnd(child Widget) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -237,8 +237,8 @@ func (b headerBar) PackEnd(child Widget) {
 // PackStart adds @child to @bar, packed with reference to the start of the
 // @bar.
 func (b headerBar) PackStart(child Widget) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -256,8 +256,8 @@ func (b headerBar) PackStart(child Widget) {
 // You should set the custom title to nil, for the header title label to be
 // visible again.
 func (b headerBar) SetCustomTitle(titleWidget Widget) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.GtkWidget    // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(titleWidget.Native()))
@@ -281,8 +281,8 @@ func (b headerBar) SetCustomTitle(titleWidget Widget) {
 // For example, “menu:minimize,maximize,close” specifies a menu on the left,
 // and minimize, maximize and close buttons on the right.
 func (b headerBar) SetDecorationLayout(layout string) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(layout))
@@ -294,8 +294,8 @@ func (b headerBar) SetDecorationLayout(layout string) {
 // SetHasSubtitle sets whether the header bar should reserve space for a
 // subtitle, even if none is currently set.
 func (b headerBar) SetHasSubtitle(setting bool) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 C.gboolean      // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	if setting {
@@ -308,8 +308,8 @@ func (b headerBar) SetHasSubtitle(setting bool) {
 // SetShowCloseButton sets whether this header bar shows the standard window
 // decorations, including close, maximize, and minimize.
 func (b headerBar) SetShowCloseButton(setting bool) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 C.gboolean      // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	if setting {
@@ -326,8 +326,8 @@ func (b headerBar) SetShowCloseButton(setting bool) {
 // none is currently set. If this is not desired, set the
 // HeaderBar:has-subtitle property to false.
 func (b headerBar) SetSubtitle(subtitle string) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(subtitle))
@@ -340,8 +340,8 @@ func (b headerBar) SetSubtitle(subtitle string) {
 // identify the current view. A good title should not include the
 // application name.
 func (b headerBar) SetTitle(title string) {
-	var _arg0 *C.GtkHeaderBar
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkHeaderBar // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkHeaderBar)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(title))

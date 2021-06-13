@@ -20,16 +20,16 @@ import "C"
 // Note that hyphens are required within the UUID string itself, as per the
 // aforementioned RFC.
 func UUIDStringIsValid(str string) bool {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_uuid_string_is_valid(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -43,11 +43,11 @@ func UUIDStringIsValid(str string) bool {
 // cryptographic purposes such as key generation, nonces, salts or one-time
 // pads.
 func UUIDStringRandom() string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_uuid_string_random()
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

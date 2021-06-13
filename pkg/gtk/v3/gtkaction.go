@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -208,7 +208,7 @@ func marshalAction(p uintptr) (interface{}, error) {
 //
 // It can also be used to manually activate an action.
 func (a action) Activate() {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
@@ -222,7 +222,7 @@ func (a action) Activate() {
 // function to avoid recursing in those cases (updating toggle state for
 // instance).
 func (a action) BlockActivate() {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
@@ -238,7 +238,7 @@ func (a action) BlockActivate() {
 // been called and doesn’t remove the accelerator until
 // gtk_action_disconnect_accelerator() has been called as many times.
 func (a action) ConnectAccelerator() {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
@@ -248,7 +248,7 @@ func (a action) ConnectAccelerator() {
 // DisconnectAccelerator undoes the effect of one call to
 // gtk_action_connect_accelerator().
 func (a action) DisconnectAccelerator() {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
@@ -257,15 +257,15 @@ func (a action) DisconnectAccelerator() {
 
 // AccelPath returns the accel path for this action.
 func (a action) AccelPath() string {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_accel_path(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -275,15 +275,15 @@ func (a action) AccelPath() string {
 // AlwaysShowImage returns whether @action's menu item proxies will always
 // show their image, if available.
 func (a action) AlwaysShowImage() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_always_show_image(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -294,15 +294,15 @@ func (a action) AlwaysShowImage() bool {
 
 // IconName gets the icon name of @action.
 func (a action) IconName() string {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_icon_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -311,15 +311,15 @@ func (a action) IconName() string {
 
 // IsImportant checks whether @action is important or not
 func (a action) IsImportant() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_is_important(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -330,15 +330,15 @@ func (a action) IsImportant() bool {
 
 // Label gets the label text of @action.
 func (a action) Label() string {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -347,15 +347,15 @@ func (a action) Label() string {
 
 // Name returns the name of the action.
 func (a action) Name() string {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -366,15 +366,15 @@ func (a action) Name() string {
 // doesn’t necessarily mean effective sensitivity. See
 // gtk_action_is_sensitive() for that.
 func (a action) Sensitive() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_sensitive(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -385,15 +385,15 @@ func (a action) Sensitive() bool {
 
 // ShortLabel gets the short label text of @action.
 func (a action) ShortLabel() string {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_short_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -402,15 +402,15 @@ func (a action) ShortLabel() string {
 
 // StockID gets the stock id of @action.
 func (a action) StockID() string {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_stock_id(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -419,15 +419,15 @@ func (a action) StockID() string {
 
 // Tooltip gets the tooltip text of @action.
 func (a action) Tooltip() string {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_action_get_tooltip(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -438,15 +438,15 @@ func (a action) Tooltip() string {
 // doesn’t necessarily mean effective visibility. See
 // gtk_action_is_sensitive() for that.
 func (a action) Visible() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_visible(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -457,15 +457,15 @@ func (a action) Visible() bool {
 
 // VisibleHorizontal checks whether @action is visible when horizontal
 func (a action) VisibleHorizontal() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_visible_horizontal(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -476,15 +476,15 @@ func (a action) VisibleHorizontal() bool {
 
 // VisibleVertical checks whether @action is visible when horizontal
 func (a action) VisibleVertical() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_get_visible_vertical(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -495,15 +495,15 @@ func (a action) VisibleVertical() bool {
 
 // IsSensitive returns whether the action is effectively sensitive.
 func (a action) IsSensitive() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_is_sensitive(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -514,15 +514,15 @@ func (a action) IsSensitive() bool {
 
 // IsVisible returns whether the action is effectively visible.
 func (a action) IsVisible() bool {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_action_is_visible(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -534,8 +534,8 @@ func (a action) IsVisible() bool {
 // SetAccelGroup sets the AccelGroup in which the accelerator for this
 // action will be installed.
 func (a action) SetAccelGroup(accelGroup AccelGroup) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.GtkAccelGroup
+	var _arg0 *C.GtkAction     // out
+	var _arg1 *C.GtkAccelGroup // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkAccelGroup)(unsafe.Pointer(accelGroup.Native()))
@@ -551,8 +551,8 @@ func (a action) SetAccelGroup(accelGroup AccelGroup) {
 // you pass a static string, you can save some memory by interning it first
 // with g_intern_static_string().
 func (a action) SetAccelPath(accelPath string) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(accelPath))
@@ -568,8 +568,8 @@ func (a action) SetAccelPath(accelPath string) {
 // Use this if the menu item would be useless or hard to use without their
 // image.
 func (a action) SetAlwaysShowImage(alwaysShow bool) {
-	var _arg0 *C.GtkAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAction // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if alwaysShow {
@@ -581,8 +581,8 @@ func (a action) SetAlwaysShowImage(alwaysShow bool) {
 
 // SetGIcon sets the icon of @action.
 func (a action) SetGIcon(icon gio.Icon) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.GIcon
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.GIcon     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
@@ -592,8 +592,8 @@ func (a action) SetGIcon(icon gio.Icon) {
 
 // SetIconName sets the icon name on @action
 func (a action) SetIconName(iconName string) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(iconName))
@@ -605,8 +605,8 @@ func (a action) SetIconName(iconName string) {
 // SetIsImportant sets whether the action is important, this attribute is
 // used primarily by toolbar items to decide whether to show a label or not.
 func (a action) SetIsImportant(isImportant bool) {
-	var _arg0 *C.GtkAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAction // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if isImportant {
@@ -618,8 +618,8 @@ func (a action) SetIsImportant(isImportant bool) {
 
 // SetLabel sets the label of @action.
 func (a action) SetLabel(label string) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
@@ -632,8 +632,8 @@ func (a action) SetLabel(label string) {
 // Note that this doesn’t necessarily mean effective sensitivity. See
 // gtk_action_is_sensitive() for that.
 func (a action) SetSensitive(sensitive bool) {
-	var _arg0 *C.GtkAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAction // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if sensitive {
@@ -645,8 +645,8 @@ func (a action) SetSensitive(sensitive bool) {
 
 // SetShortLabel sets a shorter label text on @action.
 func (a action) SetShortLabel(shortLabel string) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(shortLabel))
@@ -657,8 +657,8 @@ func (a action) SetShortLabel(shortLabel string) {
 
 // SetStockID sets the stock id on @action
 func (a action) SetStockID(stockId string) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(stockId))
@@ -669,8 +669,8 @@ func (a action) SetStockID(stockId string) {
 
 // SetTooltip sets the tooltip text on @action
 func (a action) SetTooltip(tooltip string) {
-	var _arg0 *C.GtkAction
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkAction // out
+	var _arg1 *C.gchar     // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.gchar)(C.CString(tooltip))
@@ -683,8 +683,8 @@ func (a action) SetTooltip(tooltip string) {
 // that this doesn’t necessarily mean effective visibility. See
 // gtk_action_is_visible() for that.
 func (a action) SetVisible(visible bool) {
-	var _arg0 *C.GtkAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAction // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if visible {
@@ -696,8 +696,8 @@ func (a action) SetVisible(visible bool) {
 
 // SetVisibleHorizontal sets whether @action is visible when horizontal
 func (a action) SetVisibleHorizontal(visibleHorizontal bool) {
-	var _arg0 *C.GtkAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAction // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if visibleHorizontal {
@@ -709,8 +709,8 @@ func (a action) SetVisibleHorizontal(visibleHorizontal bool) {
 
 // SetVisibleVertical sets whether @action is visible when vertical
 func (a action) SetVisibleVertical(visibleVertical bool) {
-	var _arg0 *C.GtkAction
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkAction // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 	if visibleVertical {
@@ -722,7 +722,7 @@ func (a action) SetVisibleVertical(visibleVertical bool) {
 
 // UnblockActivate: reenable activation signals from the action
 func (a action) UnblockActivate() {
-	var _arg0 *C.GtkAction
+	var _arg0 *C.GtkAction // out
 
 	_arg0 = (*C.GtkAction)(unsafe.Pointer(a.Native()))
 

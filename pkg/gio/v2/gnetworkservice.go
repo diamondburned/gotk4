@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -82,15 +82,15 @@ func marshalNetworkService(p uintptr) (interface{}, error) {
 // Domain gets the domain that @srv serves. This might be either UTF-8 or
 // ASCII-encoded, depending on what @srv was created with.
 func (s networkService) Domain() string {
-	var _arg0 *C.GNetworkService
+	var _arg0 *C.GNetworkService // out
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_domain(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -99,15 +99,15 @@ func (s networkService) Domain() string {
 
 // Protocol gets @srv's protocol name (eg, "tcp").
 func (s networkService) Protocol() string {
-	var _arg0 *C.GNetworkService
+	var _arg0 *C.GNetworkService // out
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_protocol(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -117,15 +117,15 @@ func (s networkService) Protocol() string {
 // Scheme gets the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
 func (s networkService) Scheme() string {
-	var _arg0 *C.GNetworkService
+	var _arg0 *C.GNetworkService // out
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_scheme(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -134,15 +134,15 @@ func (s networkService) Scheme() string {
 
 // Service gets @srv's service name (eg, "ldap").
 func (s networkService) Service() string {
-	var _arg0 *C.GNetworkService
+	var _arg0 *C.GNetworkService // out
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_network_service_get_service(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -152,8 +152,8 @@ func (s networkService) Service() string {
 // SetScheme set's the URI scheme used to resolve proxies. By default, the
 // service name is used as scheme.
 func (s networkService) SetScheme(scheme string) {
-	var _arg0 *C.GNetworkService
-	var _arg1 *C.gchar
+	var _arg0 *C.GNetworkService // out
+	var _arg1 *C.gchar           // out
 
 	_arg0 = (*C.GNetworkService)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(scheme))

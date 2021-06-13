@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -29,19 +29,19 @@ func init() {
 // This assumes that both events have X/Y information. If not, this function
 // returns false.
 func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
-	var _arg1 *C.GdkEvent
-	var _arg2 *C.GdkEvent
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var _arg3 C.double
-	var _cret C.gboolean
+	var _arg3 C.double   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_events_get_angle(_arg1, _arg2, &_arg3)
 
-	var _angle float64
-	var _ok bool
+	var _angle float64 // out
+	var _ok bool       // out
 
 	_angle = (float64)(_arg3)
 	if _cret {
@@ -56,21 +56,21 @@ func EventsGetAngle(event1 Event, event2 Event) (float64, bool) {
 // This assumes that both events have X/Y information. If not, this function
 // returns false.
 func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool) {
-	var _arg1 *C.GdkEvent
-	var _arg2 *C.GdkEvent
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var _arg3 C.double
-	var _arg4 C.double
-	var _cret C.gboolean
+	var _arg3 C.double   // in
+	var _arg4 C.double   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_events_get_center(_arg1, _arg2, &_arg3, &_arg4)
 
-	var _x float64
-	var _y float64
-	var _ok bool
+	var _x float64 // out
+	var _y float64 // out
+	var _ok bool   // out
 
 	_x = (float64)(_arg3)
 	_y = (float64)(_arg4)
@@ -86,19 +86,19 @@ func EventsGetCenter(event1 Event, event2 Event) (x float64, y float64, ok bool)
 // This assumes that both events have X/Y information. If not, this function
 // returns false.
 func EventsGetDistance(event1 Event, event2 Event) (float64, bool) {
-	var _arg1 *C.GdkEvent
-	var _arg2 *C.GdkEvent
+	var _arg1 *C.GdkEvent // out
+	var _arg2 *C.GdkEvent // out
 
 	_arg1 = (*C.GdkEvent)(unsafe.Pointer(event1.Native()))
 	_arg2 = (*C.GdkEvent)(unsafe.Pointer(event2.Native()))
 
-	var _arg3 C.double
-	var _cret C.gboolean
+	var _arg3 C.double   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_events_get_distance(_arg1, _arg2, &_arg3)
 
-	var _distance float64
-	var _ok bool
+	var _distance float64 // out
+	var _ok bool          // out
 
 	_distance = (float64)(_arg3)
 	if _cret {

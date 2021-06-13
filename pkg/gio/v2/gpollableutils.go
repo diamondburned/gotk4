@@ -34,11 +34,11 @@ import "C"
 // undefined. If @blocking is true, then @stream does not need to be a
 // InputStream.
 func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
-	var _arg1 *C.GInputStream
+	var _arg1 *C.GInputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
-	var _arg4 C.gboolean
-	var _arg5 *C.GCancellable
+	var _arg4 C.gboolean      // out
+	var _arg5 *C.GCancellable // out
 
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -48,13 +48,13 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 	}
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cret C.gssize
-	var _cerr *C.GError
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_pollable_stream_read(_arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
+	_cret = C.g_pollable_stream_read(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _gssize int
-	var _goerr error
+	var _gssize int  // out
+	var _goerr error // out
 
 	_gssize = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -73,11 +73,11 @@ func PollableStreamRead(stream InputStream, buffer []byte, blocking bool, cancel
 // undefined. If @blocking is true, then @stream does not need to be a
 // OutputStream.
 func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (int, error) {
-	var _arg1 *C.GOutputStream
+	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
-	var _arg4 C.gboolean
-	var _arg5 *C.GCancellable
+	var _arg4 C.gboolean      // out
+	var _arg5 *C.GCancellable // out
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -87,13 +87,13 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 	}
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cret C.gssize
-	var _cerr *C.GError
+	var _cret C.gssize  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_pollable_stream_write(_arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
+	_cret = C.g_pollable_stream_write(_arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _gssize int
-	var _goerr error
+	var _gssize int  // out
+	var _goerr error // out
 
 	_gssize = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -118,11 +118,11 @@ func PollableStreamWrite(stream OutputStream, buffer []byte, blocking bool, canc
 // or else the behavior is undefined. If @blocking is true, then @stream does
 // not need to be a OutputStream.
 func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, cancellable Cancellable) (uint, error) {
-	var _arg1 *C.GOutputStream
+	var _arg1 *C.GOutputStream // out
 	var _arg2 *C.void
 	var _arg3 C.gsize
-	var _arg4 C.gboolean
-	var _arg6 *C.GCancellable
+	var _arg4 C.gboolean      // out
+	var _arg6 *C.GCancellable // out
 
 	_arg1 = (*C.GOutputStream)(unsafe.Pointer(stream.Native()))
 	_arg3 = C.gsize(len(buffer))
@@ -132,13 +132,13 @@ func PollableStreamWriteAll(stream OutputStream, buffer []byte, blocking bool, c
 	}
 	_arg6 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _arg5 C.gsize
-	var _cerr *C.GError
+	var _arg5 C.gsize   // in
+	var _cerr *C.GError // in
 
-	C.g_pollable_stream_write_all(_arg1, _arg2, _arg3, _arg4, _arg6, &_arg5, _cerr)
+	C.g_pollable_stream_write_all(_arg1, _arg2, _arg3, _arg4, _arg6, &_arg5, &_cerr)
 
-	var _bytesWritten uint
-	var _goerr error
+	var _bytesWritten uint // out
+	var _goerr error       // out
 
 	_bytesWritten = (uint)(_arg5)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -159,8 +159,8 @@ func marshalRadioButton(p uintptr) (interface{}, error) {
 //           last_button = radio_button;
 //        }
 func (r radioButton) JoinGroup(groupSource RadioButton) {
-	var _arg0 *C.GtkRadioButton
-	var _arg1 *C.GtkRadioButton
+	var _arg0 *C.GtkRadioButton // out
+	var _arg1 *C.GtkRadioButton // out
 
 	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GtkRadioButton)(unsafe.Pointer(groupSource.Native()))
@@ -173,8 +173,8 @@ func (r radioButton) JoinGroup(groupSource RadioButton) {
 // changing the group, it is likely you will need to re-arrange the user
 // interface to reflect these changes.
 func (r radioButton) SetGroup(group *glib.SList) {
-	var _arg0 *C.GtkRadioButton
-	var _arg1 *C.GSList
+	var _arg0 *C.GtkRadioButton // out
+	var _arg1 *C.GSList         // out
 
 	_arg0 = (*C.GtkRadioButton)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))

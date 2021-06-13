@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -35,8 +35,8 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean 
 		panic(`callback not found`)
 	}
 
-	var key interface{}
-	var value interface{}
+	var key interface{}   // out
+	var value interface{} // out
 
 	key = (interface{})(arg0)
 	value = (interface{})(arg1)
@@ -59,17 +59,17 @@ func gotk4_HRFunc(arg0 C.gpointer, arg1 C.gpointer, arg2 C.gpointer) C.gboolean 
 // This equality function is also appropriate for keys that are integers stored
 // in pointers, such as `GINT_TO_POINTER (n)`.
 func DirectEqual(v1 interface{}, v2 interface{}) bool {
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
 
 	_arg1 = C.gpointer(v1)
 	_arg2 = C.gpointer(v2)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_direct_equal(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -85,15 +85,15 @@ func DirectEqual(v1 interface{}, v2 interface{}) bool {
 // This hash function is also appropriate for keys that are integers stored in
 // pointers, such as `GINT_TO_POINTER (n)`.
 func DirectHash(v interface{}) uint {
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // out
 
 	_arg1 = C.gpointer(v)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_direct_hash(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -105,17 +105,17 @@ func DirectHash(v interface{}) uint {
 // @key_equal_func parameter, when using non-nil pointers to doubles as keys in
 // a Table.
 func DoubleEqual(v1 interface{}, v2 interface{}) bool {
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
 
 	_arg1 = C.gpointer(v1)
 	_arg2 = C.gpointer(v2)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_double_equal(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -129,15 +129,15 @@ func DoubleEqual(v1 interface{}, v2 interface{}) bool {
 // g_hash_table_new() as the @hash_func parameter, when using non-nil pointers
 // to doubles as keys in a Table.
 func DoubleHash(v interface{}) uint {
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // out
 
 	_arg1 = C.gpointer(v)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_double_hash(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -149,17 +149,17 @@ func DoubleHash(v interface{}) uint {
 // @key_equal_func parameter, when using non-nil pointers to 64-bit integers as
 // keys in a Table.
 func Int64Equal(v1 interface{}, v2 interface{}) bool {
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
 
 	_arg1 = C.gpointer(v1)
 	_arg2 = C.gpointer(v2)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_int64_equal(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -173,15 +173,15 @@ func Int64Equal(v1 interface{}, v2 interface{}) bool {
 // It can be passed to g_hash_table_new() as the @hash_func parameter, when
 // using non-nil pointers to 64-bit integer values as keys in a Table.
 func Int64Hash(v interface{}) uint {
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // out
 
 	_arg1 = C.gpointer(v)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_int64_hash(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -196,17 +196,17 @@ func Int64Hash(v interface{}) uint {
 // your hash table's keys are of the form `GINT_TO_POINTER (n)`, use
 // g_direct_equal() instead.
 func IntEqual(v1 interface{}, v2 interface{}) bool {
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
 
 	_arg1 = C.gpointer(v1)
 	_arg2 = C.gpointer(v2)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_int_equal(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -223,15 +223,15 @@ func IntEqual(v1 interface{}, v2 interface{}) bool {
 // your hash table's keys are of the form `GINT_TO_POINTER (n)`, use
 // g_direct_hash() instead.
 func IntHash(v interface{}) uint {
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // out
 
 	_arg1 = C.gpointer(v)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_int_hash(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -246,17 +246,17 @@ func IntHash(v interface{}) uint {
 // for general purpose comparisons of non-nil strings. For a nil-safe string
 // comparison function, see g_strcmp0().
 func StrEqual(v1 interface{}, v2 interface{}) bool {
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
 
 	_arg1 = C.gpointer(v1)
 	_arg2 = C.gpointer(v2)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_str_equal(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -278,15 +278,15 @@ func StrEqual(v1 interface{}, v2 interface{}) bool {
 // Note that this function may not be a perfect fit for all use cases. For
 // example, it produces some hash collisions with strings as short as 2.
 func StrHash(v interface{}) uint {
-	var _arg1 C.gpointer
+	var _arg1 C.gpointer // out
 
 	_arg1 = C.gpointer(v)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_str_hash(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -367,8 +367,8 @@ func (h *HashTableIter) Native() unsafe.Pointer {
 //        // do something with key and value
 //      }
 func (i *HashTableIter) Init(hashTable *HashTable) {
-	var _arg0 *C.GHashTableIter
-	var _arg1 *C.GHashTable
+	var _arg0 *C.GHashTableIter // out
+	var _arg1 *C.GHashTable     // out
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GHashTable)(unsafe.Pointer(hashTable.Native()))
@@ -380,19 +380,19 @@ func (i *HashTableIter) Init(hashTable *HashTable) {
 // to as a result of this advancement. If false is returned, @key and @value are
 // not set, and the iterator becomes invalid.
 func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
-	var _arg0 *C.GHashTableIter
+	var _arg0 *C.GHashTableIter // out
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
-	var _cret C.gboolean
+	var _arg1 C.gpointer // in
+	var _arg2 C.gpointer // in
+	var _cret C.gboolean // in
 
 	_cret = C.g_hash_table_iter_next(_arg0, &_arg1, &_arg2)
 
-	var _key interface{}
-	var _value interface{}
-	var _ok bool
+	var _key interface{}   // out
+	var _value interface{} // out
+	var _ok bool           // out
 
 	_key = (interface{})(_arg1)
 	_value = (interface{})(_arg2)
@@ -420,7 +420,7 @@ func (i *HashTableIter) Next() (key interface{}, value interface{}, ok bool) {
 //          g_hash_table_iter_remove (&iter);
 //      }
 func (i *HashTableIter) Remove() {
-	var _arg0 *C.GHashTableIter
+	var _arg0 *C.GHashTableIter // out
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 
@@ -434,8 +434,8 @@ func (i *HashTableIter) Remove() {
 // If you supplied a @value_destroy_func when creating the Table, the old value
 // is freed using that function.
 func (i *HashTableIter) Replace(value interface{}) {
-	var _arg0 *C.GHashTableIter
-	var _arg1 C.gpointer
+	var _arg0 *C.GHashTableIter // out
+	var _arg1 C.gpointer        // out
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 	_arg1 = C.gpointer(value)
@@ -448,7 +448,7 @@ func (i *HashTableIter) Replace(value interface{}) {
 // Can only be called after g_hash_table_iter_next() returned true, and cannot
 // be called more than once for the same key/value pair.
 func (i *HashTableIter) Steal() {
-	var _arg0 *C.GHashTableIter
+	var _arg0 *C.GHashTableIter // out
 
 	_arg0 = (*C.GHashTableIter)(unsafe.Pointer(i.Native()))
 

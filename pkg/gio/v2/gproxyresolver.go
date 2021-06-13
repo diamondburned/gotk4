@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -99,15 +99,15 @@ func marshalProXYResolver(p uintptr) (interface{}, error) {
 // internally; g_proxy_resolver_get_default() will only return a proxy
 // resolver that returns true for this method.)
 func (r proXYResolver) IsSupported() bool {
-	var _arg0 *C.GProxyResolver
+	var _arg0 *C.GProxyResolver // out
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_proxy_resolver_is_supported(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -129,9 +129,9 @@ func (r proXYResolver) IsSupported() bool {
 // `direct://` is used when no proxy is needed. Direct connection should not
 // be attempted unless it is part of the returned array of proxies.
 func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, error) {
-	var _arg0 *C.GProxyResolver
-	var _arg1 *C.gchar
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GProxyResolver // out
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.GCancellable   // out
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -139,12 +139,12 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
 	var _cret **C.gchar
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, _cerr)
+	_cret = C.g_proxy_resolver_lookup(_arg0, _arg1, _arg2, &_cerr)
 
 	var _utf8s []string
-	var _goerr error
+	var _goerr error // out
 
 	{
 		var length int
@@ -172,10 +172,10 @@ func (r proXYResolver) Lookup(uri string, cancellable Cancellable) ([]string, er
 // LookupAsync asynchronous lookup of proxy. See g_proxy_resolver_lookup()
 // for more details.
 func (r proXYResolver) LookupAsync(uri string, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GProxyResolver
-	var _arg1 *C.gchar
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GProxyResolver     // out
+	var _arg1 *C.gchar              // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
@@ -192,19 +192,19 @@ func (r proXYResolver) LookupAsync(uri string, cancellable Cancellable, callback
 // g_proxy_resolver_lookup_async() is complete. See
 // g_proxy_resolver_lookup() for more details.
 func (r proXYResolver) LookupFinish(result AsyncResult) ([]string, error) {
-	var _arg0 *C.GProxyResolver
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GProxyResolver // out
+	var _arg1 *C.GAsyncResult   // out
 
 	_arg0 = (*C.GProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
 	var _cret **C.gchar
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, _cerr)
+	_cret = C.g_proxy_resolver_lookup_finish(_arg0, _arg1, &_cerr)
 
 	var _utf8s []string
-	var _goerr error
+	var _goerr error // out
 
 	{
 		var length int

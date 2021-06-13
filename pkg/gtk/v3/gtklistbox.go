@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -41,7 +41,7 @@ func gotk4_ListBoxCreateWidgetFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GtkWidge
 		panic(`callback not found`)
 	}
 
-	var item gextras.Objector
+	var item gextras.Objector // out
 
 	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
 
@@ -191,8 +191,8 @@ func marshalListBox(p uintptr) (interface{}, error) {
 // The row will also be unhighlighted when the widget gets a drag leave
 // event.
 func (b listBox) DragHighlightRow(row ListBoxRow) {
-	var _arg0 *C.GtkListBox
-	var _arg1 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
@@ -203,7 +203,7 @@ func (b listBox) DragHighlightRow(row ListBoxRow) {
 // DragUnhighlightRow: if a row has previously been highlighted via
 // gtk_list_box_drag_highlight_row() it will have the highlight removed.
 func (b listBox) DragUnhighlightRow() {
-	var _arg0 *C.GtkListBox
+	var _arg0 *C.GtkListBox // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
@@ -212,15 +212,15 @@ func (b listBox) DragUnhighlightRow() {
 
 // ActivateOnSingleClick returns whether rows activate on single clicks.
 func (b listBox) ActivateOnSingleClick() bool {
-	var _arg0 *C.GtkListBox
+	var _arg0 *C.GtkListBox // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_box_get_activate_on_single_click(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -236,9 +236,9 @@ func (b listBox) ActivateOnSingleClick() bool {
 // If @position is -1, or larger than the total number of items in the @box,
 // then the @child will be appended to the end.
 func (b listBox) Insert(child Widget, position int) {
-	var _arg0 *C.GtkListBox
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gint
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -253,7 +253,7 @@ func (b listBox) Insert(child Widget, position int) {
 // looked for a specific search string and the entry with the search string
 // has changed.
 func (b listBox) InvalidateFilter() {
-	var _arg0 *C.GtkListBox
+	var _arg0 *C.GtkListBox // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
@@ -264,7 +264,7 @@ func (b listBox) InvalidateFilter() {
 // result of the header function on the @box is changed due to an external
 // factor.
 func (b listBox) InvalidateHeaders() {
-	var _arg0 *C.GtkListBox
+	var _arg0 *C.GtkListBox // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
@@ -274,7 +274,7 @@ func (b listBox) InvalidateHeaders() {
 // InvalidateSort: update the sorting for all rows. Call this when result of
 // the sort function on the @box is changed due to an external factor.
 func (b listBox) InvalidateSort() {
-	var _arg0 *C.GtkListBox
+	var _arg0 *C.GtkListBox // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
@@ -285,8 +285,8 @@ func (b listBox) InvalidateSort() {
 // widget will actually be inserted at the calculated position and this
 // function has the same effect of gtk_container_add().
 func (b listBox) Prepend(child Widget) {
-	var _arg0 *C.GtkListBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -296,7 +296,7 @@ func (b listBox) Prepend(child Widget) {
 
 // SelectAll: select all children of @box, if the selection mode allows it.
 func (b listBox) SelectAll() {
-	var _arg0 *C.GtkListBox
+	var _arg0 *C.GtkListBox // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
@@ -305,8 +305,8 @@ func (b listBox) SelectAll() {
 
 // SelectRow: make @row the currently selected row.
 func (b listBox) SelectRow(row ListBoxRow) {
-	var _arg0 *C.GtkListBox
-	var _arg1 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
@@ -318,8 +318,8 @@ func (b listBox) SelectRow(row ListBoxRow) {
 //
 // Note that the selection cannot be modified from within this function.
 func (b listBox) SelectedForeach(fn ListBoxForeachFunc) {
-	var _arg0 *C.GtkListBox
-	var _arg1 C.GtkListBoxForeachFunc
+	var _arg0 *C.GtkListBox           // out
+	var _arg1 C.GtkListBoxForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
@@ -332,8 +332,8 @@ func (b listBox) SelectedForeach(fn ListBoxForeachFunc) {
 // SetActivateOnSingleClick: if @single is true, rows will be activated when
 // you click on them, otherwise you need to double-click.
 func (b listBox) SetActivateOnSingleClick(single bool) {
-	var _arg0 *C.GtkListBox
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkListBox // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	if single {
@@ -351,8 +351,8 @@ func (b listBox) SetActivateOnSingleClick(single bool) {
 // adjustment from that will be picked up automatically, so there is no need
 // to manually do that.
 func (b listBox) SetAdjustment(adjustment Adjustment) {
-	var _arg0 *C.GtkListBox
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
@@ -363,8 +363,8 @@ func (b listBox) SetAdjustment(adjustment Adjustment) {
 // SetPlaceholder sets the placeholder widget that is shown in the list when
 // it doesn't display any visible children.
 func (b listBox) SetPlaceholder(placeholder Widget) {
-	var _arg0 *C.GtkListBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkListBox // out
+	var _arg1 *C.GtkWidget  // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(placeholder.Native()))
@@ -375,8 +375,8 @@ func (b listBox) SetPlaceholder(placeholder Widget) {
 // SetSelectionMode sets how selection works in the listbox. See
 // SelectionMode for details.
 func (b listBox) SetSelectionMode(mode SelectionMode) {
-	var _arg0 *C.GtkListBox
-	var _arg1 C.GtkSelectionMode
+	var _arg0 *C.GtkListBox      // out
+	var _arg1 C.GtkSelectionMode // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (C.GtkSelectionMode)(mode)
@@ -387,7 +387,7 @@ func (b listBox) SetSelectionMode(mode SelectionMode) {
 // UnselectAll: unselect all children of @box, if the selection mode allows
 // it.
 func (b listBox) UnselectAll() {
-	var _arg0 *C.GtkListBox
+	var _arg0 *C.GtkListBox // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 
@@ -397,8 +397,8 @@ func (b listBox) UnselectAll() {
 // UnselectRow unselects a single row of @box, if the selection mode allows
 // it.
 func (b listBox) UnselectRow(row ListBoxRow) {
-	var _arg0 *C.GtkListBox
-	var _arg1 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBox    // out
+	var _arg1 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkListBoxRow)(unsafe.Pointer(row.Native()))
@@ -489,7 +489,7 @@ func marshalListBoxRow(p uintptr) (interface{}, error) {
 // gtk_list_box_invalidate_sort() on any model change, but that is more
 // expensive.
 func (r listBoxRow) Changed() {
-	var _arg0 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
@@ -499,15 +499,15 @@ func (r listBoxRow) Changed() {
 // Activatable gets the value of the ListBoxRow:activatable property for
 // this row.
 func (r listBoxRow) Activatable() bool {
-	var _arg0 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_box_row_get_activatable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -518,15 +518,15 @@ func (r listBoxRow) Activatable() bool {
 
 // Index gets the current index of the @row in its ListBox container.
 func (r listBoxRow) Index() int {
-	var _arg0 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_list_box_row_get_index(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -536,15 +536,15 @@ func (r listBoxRow) Index() int {
 // Selectable gets the value of the ListBoxRow:selectable property for this
 // row.
 func (r listBoxRow) Selectable() bool {
-	var _arg0 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_box_row_get_selectable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -556,15 +556,15 @@ func (r listBoxRow) Selectable() bool {
 // IsSelected returns whether the child is currently selected in its ListBox
 // container.
 func (r listBoxRow) IsSelected() bool {
-	var _arg0 *C.GtkListBoxRow
+	var _arg0 *C.GtkListBoxRow // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_list_box_row_is_selected(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -575,8 +575,8 @@ func (r listBoxRow) IsSelected() bool {
 
 // SetActivatable: set the ListBoxRow:activatable property for this row.
 func (r listBoxRow) SetActivatable(activatable bool) {
-	var _arg0 *C.GtkListBoxRow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkListBoxRow // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	if activatable {
@@ -590,8 +590,8 @@ func (r listBoxRow) SetActivatable(activatable bool) {
 // called from a ListBoxUpdateHeaderFunc. It will replace any existing
 // header in the row, and be shown in front of the row in the listbox.
 func (r listBoxRow) SetHeader(header Widget) {
-	var _arg0 *C.GtkListBoxRow
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkListBoxRow // out
+	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(header.Native()))
@@ -601,8 +601,8 @@ func (r listBoxRow) SetHeader(header Widget) {
 
 // SetSelectable: set the ListBoxRow:selectable property for this row.
 func (r listBoxRow) SetSelectable(selectable bool) {
-	var _arg0 *C.GtkListBoxRow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkListBoxRow // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GtkListBoxRow)(unsafe.Pointer(r.Native()))
 	if selectable {

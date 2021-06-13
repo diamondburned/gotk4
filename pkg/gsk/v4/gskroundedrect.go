@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/graphene"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -53,17 +53,17 @@ func (r *RoundedRect) Native() unsafe.Pointer {
 
 // ContainsPoint checks if the given @point is inside the rounded rectangle.
 func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
-	var _arg0 *C.GskRoundedRect
-	var _arg1 *C.graphene_point_t
+	var _arg0 *C.GskRoundedRect   // out
+	var _arg1 *C.graphene_point_t // out
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_contains_point(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -75,17 +75,17 @@ func (s *RoundedRect) ContainsPoint(point *graphene.Point) bool {
 // ContainsRect checks if the given @rect is contained inside the rounded
 // rectangle.
 func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
-	var _arg0 *C.GskRoundedRect
-	var _arg1 *C.graphene_rect_t
+	var _arg0 *C.GskRoundedRect  // out
+	var _arg1 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_contains_rect(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -97,17 +97,17 @@ func (s *RoundedRect) ContainsRect(rect *graphene.Rect) bool {
 // IntersectsRect checks if part of the given @rect is contained inside the
 // rounded rectangle.
 func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
-	var _arg0 *C.GskRoundedRect
-	var _arg1 *C.graphene_rect_t
+	var _arg0 *C.GskRoundedRect  // out
+	var _arg1 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(rect.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_intersects_rect(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -122,15 +122,15 @@ func (s *RoundedRect) IntersectsRect(rect *graphene.Rect) bool {
 // This information can be used to decide if [ctor@Gsk.ClipNode.new] or
 // [ctor@Gsk.RoundedClipNode.new] should be called.
 func (s *RoundedRect) IsRectilinear() bool {
-	var _arg0 *C.GskRoundedRect
+	var _arg0 *C.GskRoundedRect // out
 
 	_arg0 = (*C.GskRoundedRect)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gsk_rounded_rect_is_rectilinear(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

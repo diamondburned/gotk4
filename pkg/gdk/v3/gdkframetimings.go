@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -59,15 +59,15 @@ func (f *FrameTimings) Native() unsafe.Pointer {
 // that no further values will become available and be stored in the
 // FrameTimings.
 func (t *FrameTimings) Complete() bool {
-	var _arg0 *C.GdkFrameTimings
+	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_frame_timings_get_complete(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -79,15 +79,15 @@ func (t *FrameTimings) Complete() bool {
 // FrameCounter gets the frame counter value of the FrameClock when this this
 // frame was drawn.
 func (t *FrameTimings) FrameCounter() int64 {
-	var _arg0 *C.GdkFrameTimings
+	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_frame_counter(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -98,15 +98,15 @@ func (t *FrameTimings) FrameCounter() int64 {
 // is typically used to time animations for the frame. See
 // gdk_frame_clock_get_frame_time().
 func (t *FrameTimings) FrameTime() int64 {
-	var _arg0 *C.GdkFrameTimings
+	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_frame_time(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -123,15 +123,15 @@ func (t *FrameTimings) FrameTime() int64 {
 // example, a movie player may want this information for Audio/Video
 // synchronization.
 func (t *FrameTimings) PredictedPresentationTime() int64 {
-	var _arg0 *C.GdkFrameTimings
+	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_predicted_presentation_time(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -141,15 +141,15 @@ func (t *FrameTimings) PredictedPresentationTime() int64 {
 // PresentationTime reurns the presentation time. This is the time at which the
 // frame became visible to the user.
 func (t *FrameTimings) PresentationTime() int64 {
-	var _arg0 *C.GdkFrameTimings
+	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_presentation_time(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -160,15 +160,15 @@ func (t *FrameTimings) PresentationTime() int64 {
 // display that this frame was displayed on. Frame presentation usually happens
 // during the “vertical blanking interval”.
 func (t *FrameTimings) RefreshInterval() int64 {
-	var _arg0 *C.GdkFrameTimings
+	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_timings_get_refresh_interval(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -178,7 +178,7 @@ func (t *FrameTimings) RefreshInterval() int64 {
 // Unref decreases the reference count of @timings. If @timings is no longer
 // referenced, it will be freed.
 func (t *FrameTimings) Unref() {
-	var _arg0 *C.GdkFrameTimings
+	var _arg0 *C.GdkFrameTimings // out
 
 	_arg0 = (*C.GdkFrameTimings)(unsafe.Pointer(t.Native()))
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -123,15 +123,15 @@ func marshalWindowControls(p uintptr) (interface{}, error) {
 
 // DecorationLayout gets the decoration layout of this `GtkWindowControls`.
 func (s windowControls) DecorationLayout() string {
-	var _arg0 *C.GtkWindowControls
+	var _arg0 *C.GtkWindowControls // out
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_window_controls_get_decoration_layout(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -140,15 +140,15 @@ func (s windowControls) DecorationLayout() string {
 
 // Empty gets whether the widget has any window buttons.
 func (s windowControls) Empty() bool {
-	var _arg0 *C.GtkWindowControls
+	var _arg0 *C.GtkWindowControls // out
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_window_controls_get_empty(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -172,8 +172,8 @@ func (s windowControls) Empty() bool {
 // If [property@Gtk.WindowControls:side] value is @GTK_PACK_START, @self
 // will display the part before the colon, otherwise after that.
 func (s windowControls) SetDecorationLayout(layout string) {
-	var _arg0 *C.GtkWindowControls
-	var _arg1 *C.char
+	var _arg0 *C.GtkWindowControls // out
+	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(layout))
@@ -187,8 +187,8 @@ func (s windowControls) SetDecorationLayout(layout string) {
 //
 // See [property@Gtk.WindowControls:decoration-layout].
 func (s windowControls) SetSide(side PackType) {
-	var _arg0 *C.GtkWindowControls
-	var _arg1 C.GtkPackType
+	var _arg0 *C.GtkWindowControls // out
+	var _arg1 C.GtkPackType        // out
 
 	_arg0 = (*C.GtkWindowControls)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPackType)(side)

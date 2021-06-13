@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk/gdk.h>
 import "C"
@@ -43,7 +43,7 @@ import "C"
 // [func@Gdk.Display.open], `gtk_init()`, or `gtk_init_check()` in order to take
 // effect.
 func SetAllowedBackends(backends string) {
-	var _arg1 *C.char
+	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(backends))
 	defer C.free(unsafe.Pointer(_arg1))

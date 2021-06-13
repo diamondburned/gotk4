@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
+// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
@@ -50,7 +50,7 @@ func (q *Quad) Native() unsafe.Pointer {
 
 // Bounds computes the bounding rectangle of @q and places it into @r.
 func (q *Quad) Bounds() Rect {
-	var _arg0 *C.graphene_quad_t
+	var _arg0 *C.graphene_quad_t // out
 
 	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 
@@ -64,17 +64,17 @@ func (q *Quad) Bounds() Rect {
 // Contains checks if the given #graphene_quad_t contains the given
 // #graphene_point_t.
 func (q *Quad) Contains(p *Point) bool {
-	var _arg0 *C.graphene_quad_t
-	var _arg1 *C.graphene_point_t
+	var _arg0 *C.graphene_quad_t  // out
+	var _arg1 *C.graphene_point_t // out
 
 	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(p.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_quad_contains(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -85,7 +85,7 @@ func (q *Quad) Contains(p *Point) bool {
 
 // Free frees the resources allocated by graphene_quad_alloc()
 func (q *Quad) Free() {
-	var _arg0 *C.graphene_quad_t
+	var _arg0 *C.graphene_quad_t // out
 
 	_arg0 = (*C.graphene_quad_t)(unsafe.Pointer(q.Native()))
 

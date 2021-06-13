@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -142,10 +142,10 @@ func marshalTypeModule(p uintptr) (interface{}, error) {
 // Since 2.56 if @module is nil this will call g_type_add_interface_static()
 // instead. This can be used when making a static build of the module.
 func (m typeModule) AddInterface(instanceType externglib.Type, interfaceType externglib.Type, interfaceInfo *InterfaceInfo) {
-	var _arg0 *C.GTypeModule
-	var _arg1 C.GType
-	var _arg2 C.GType
-	var _arg3 *C.GInterfaceInfo
+	var _arg0 *C.GTypeModule    // out
+	var _arg1 C.GType           // out
+	var _arg2 C.GType           // out
+	var _arg3 *C.GInterfaceInfo // out
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = C.GType(instanceType)
@@ -167,20 +167,20 @@ func (m typeModule) AddInterface(instanceType externglib.Type, interfaceType ext
 // Since 2.56 if @module is nil this will call g_type_register_static()
 // instead. This can be used when making a static build of the module.
 func (m typeModule) RegisterEnum(name string, constStaticValues *EnumValue) externglib.Type {
-	var _arg0 *C.GTypeModule
-	var _arg1 *C.gchar
-	var _arg2 *C.GEnumValue
+	var _arg0 *C.GTypeModule // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.GEnumValue  // out
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GEnumValue)(unsafe.Pointer(constStaticValues.Native()))
 
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_type_module_register_enum(_arg0, _arg1, _arg2)
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -198,20 +198,20 @@ func (m typeModule) RegisterEnum(name string, constStaticValues *EnumValue) exte
 // Since 2.56 if @module is nil this will call g_type_register_static()
 // instead. This can be used when making a static build of the module.
 func (m typeModule) RegisterFlags(name string, constStaticValues *FlagsValue) externglib.Type {
-	var _arg0 *C.GTypeModule
-	var _arg1 *C.gchar
-	var _arg2 *C.GFlagsValue
+	var _arg0 *C.GTypeModule // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.GFlagsValue // out
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GFlagsValue)(unsafe.Pointer(constStaticValues.Native()))
 
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_type_module_register_flags(_arg0, _arg1, _arg2)
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -233,11 +233,11 @@ func (m typeModule) RegisterFlags(name string, constStaticValues *FlagsValue) ex
 // Since 2.56 if @module is nil this will call g_type_register_static()
 // instead. This can be used when making a static build of the module.
 func (m typeModule) RegisterType(parentType externglib.Type, typeName string, typeInfo *TypeInfo, flags TypeFlags) externglib.Type {
-	var _arg0 *C.GTypeModule
-	var _arg1 C.GType
-	var _arg2 *C.gchar
-	var _arg3 *C.GTypeInfo
-	var _arg4 C.GTypeFlags
+	var _arg0 *C.GTypeModule // out
+	var _arg1 C.GType        // out
+	var _arg2 *C.gchar       // out
+	var _arg3 *C.GTypeInfo   // out
+	var _arg4 C.GTypeFlags   // out
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = C.GType(parentType)
@@ -246,11 +246,11 @@ func (m typeModule) RegisterType(parentType externglib.Type, typeName string, ty
 	_arg3 = (*C.GTypeInfo)(unsafe.Pointer(typeInfo.Native()))
 	_arg4 = (C.GTypeFlags)(flags)
 
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_type_module_register_type(_arg0, _arg1, _arg2, _arg3, _arg4)
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -259,8 +259,8 @@ func (m typeModule) RegisterType(parentType externglib.Type, typeName string, ty
 
 // SetName sets the name for a Module
 func (m typeModule) SetName(name string) {
-	var _arg0 *C.GTypeModule
-	var _arg1 *C.gchar
+	var _arg0 *C.GTypeModule // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))
@@ -274,7 +274,7 @@ func (m typeModule) SetName(name string) {
 // types associated with the Module are not unregistered. Once a Module is
 // initialized, it must exist forever.)
 func (m typeModule) Unuse() {
-	var _arg0 *C.GTypeModule
+	var _arg0 *C.GTypeModule // out
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 
@@ -285,15 +285,15 @@ func (m typeModule) Unuse() {
 // before, the plugin will be loaded. If loading the plugin fails, the use
 // count is reset to its prior value.
 func (m typeModule) Use() bool {
-	var _arg0 *C.GTypeModule
+	var _arg0 *C.GTypeModule // out
 
 	_arg0 = (*C.GTypeModule)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_type_module_use(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

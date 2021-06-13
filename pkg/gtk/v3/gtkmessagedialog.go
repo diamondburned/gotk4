@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -94,8 +94,8 @@ func marshalMessageDialog(p uintptr) (interface{}, error) {
 
 // SetImage sets the dialog’s image to @image.
 func (d messageDialog) SetImage(image Widget) {
-	var _arg0 *C.GtkMessageDialog
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkMessageDialog // out
+	var _arg1 *C.GtkWidget        // out
 
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(image.Native()))
@@ -106,8 +106,8 @@ func (d messageDialog) SetImage(image Widget) {
 // SetMarkup sets the text of the message dialog to be @str, which is marked
 // up with the [Pango text markup language][PangoMarkupFormat].
 func (m messageDialog) SetMarkup(str string) {
-	var _arg0 *C.GtkMessageDialog
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkMessageDialog // out
+	var _arg1 *C.gchar            // out
 
 	_arg0 = (*C.GtkMessageDialog)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(str))

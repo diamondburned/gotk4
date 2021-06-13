@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -78,19 +78,19 @@ func (t *TimeZone) Native() unsafe.Pointer {
 // 2010 in Toronto then this function would adjust @time_ to be 03:00 and return
 // the interval containing the adjusted time.
 func (t *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
-	var _arg0 *C.GTimeZone
-	var _arg1 C.GTimeType
-	var _arg2 *C.gint64
+	var _arg0 *C.GTimeZone // out
+	var _arg1 C.GTimeType  // out
+	var _arg2 *C.gint64    // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GTimeType)(typ)
 	_arg2 = *C.gint64(time_)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_time_zone_adjust_time(_arg0, _arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -114,19 +114,19 @@ func (t *TimeZone) AdjustTime(typ TimeType, time_ *int64) int {
 // 02:00 on March 14th 2010 does not exist (due to the leap forward to begin
 // daylight savings time). -1 is returned in that case.
 func (t *TimeZone) FindInterval(typ TimeType, time_ int64) int {
-	var _arg0 *C.GTimeZone
-	var _arg1 C.GTimeType
-	var _arg2 C.gint64
+	var _arg0 *C.GTimeZone // out
+	var _arg1 C.GTimeType  // out
+	var _arg2 C.gint64     // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GTimeType)(typ)
 	_arg2 = C.gint64(time_)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_time_zone_find_interval(_arg0, _arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -139,17 +139,17 @@ func (t *TimeZone) FindInterval(typ TimeType, time_ int64) int {
 // For example, in Toronto this is currently "EST" during the winter months and
 // "EDT" during the summer months when daylight savings time is in effect.
 func (t *TimeZone) Abbreviation(interval int) string {
-	var _arg0 *C.GTimeZone
-	var _arg1 C.gint
+	var _arg0 *C.GTimeZone // out
+	var _arg1 C.gint       // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(interval)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_time_zone_get_abbreviation(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -165,15 +165,15 @@ func (t *TimeZone) Abbreviation(interval int) string {
 // construction time: if provided as a time offset, that will be returned by
 // this function.
 func (t *TimeZone) Identifier() string {
-	var _arg0 *C.GTimeZone
+	var _arg0 *C.GTimeZone // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_time_zone_get_identifier(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -187,17 +187,17 @@ func (t *TimeZone) Identifier() string {
 // local time for @tz (ie: negative numbers for time zones west of GMT, positive
 // numbers for east).
 func (t *TimeZone) Offset(interval int) int32 {
-	var _arg0 *C.GTimeZone
-	var _arg1 C.gint
+	var _arg0 *C.GTimeZone // out
+	var _arg1 C.gint       // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(interval)
 
-	var _cret C.gint32
+	var _cret C.gint32 // in
 
 	_cret = C.g_time_zone_get_offset(_arg0, _arg1)
 
-	var _gint32 int32
+	var _gint32 int32 // out
 
 	_gint32 = (int32)(_cret)
 
@@ -207,17 +207,17 @@ func (t *TimeZone) Offset(interval int) int32 {
 // IsDst determines if daylight savings time is in effect during a particular
 // @interval of time in the time zone @tz.
 func (t *TimeZone) IsDst(interval int) bool {
-	var _arg0 *C.GTimeZone
-	var _arg1 C.gint
+	var _arg0 *C.GTimeZone // out
+	var _arg1 C.gint       // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(interval)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_time_zone_is_dst(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -228,7 +228,7 @@ func (t *TimeZone) IsDst(interval int) bool {
 
 // Unref decreases the reference count on @tz.
 func (t *TimeZone) Unref() {
-	var _arg0 *C.GTimeZone
+	var _arg0 *C.GTimeZone // out
 
 	_arg0 = (*C.GTimeZone)(unsafe.Pointer(t.Native()))
 

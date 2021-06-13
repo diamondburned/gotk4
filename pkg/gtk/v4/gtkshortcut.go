@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -67,8 +67,8 @@ func marshalShortcut(p uintptr) (interface{}, error) {
 
 // SetAction sets the new action for @self to be @action.
 func (s shortcut) SetAction(action ShortcutAction) {
-	var _arg0 *C.GtkShortcut
-	var _arg1 *C.GtkShortcutAction
+	var _arg0 *C.GtkShortcut       // out
+	var _arg1 *C.GtkShortcutAction // out
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkShortcutAction)(unsafe.Pointer(action.Native()))
@@ -78,8 +78,8 @@ func (s shortcut) SetAction(action ShortcutAction) {
 
 // SetArguments sets the arguments to pass when activating the shortcut.
 func (s shortcut) SetArguments(args *glib.Variant) {
-	var _arg0 *C.GtkShortcut
-	var _arg1 *C.GVariant
+	var _arg0 *C.GtkShortcut // out
+	var _arg1 *C.GVariant    // out
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GVariant)(unsafe.Pointer(args.Native()))
@@ -89,8 +89,8 @@ func (s shortcut) SetArguments(args *glib.Variant) {
 
 // SetTrigger sets the new trigger for @self to be @trigger.
 func (s shortcut) SetTrigger(trigger ShortcutTrigger) {
-	var _arg0 *C.GtkShortcut
-	var _arg1 *C.GtkShortcutTrigger
+	var _arg0 *C.GtkShortcut        // out
+	var _arg1 *C.GtkShortcutTrigger // out
 
 	_arg0 = (*C.GtkShortcut)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkShortcutTrigger)(unsafe.Pointer(trigger.Native()))

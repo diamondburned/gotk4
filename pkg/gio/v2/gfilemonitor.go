@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -81,15 +81,15 @@ func marshalFileMonitor(p uintptr) (interface{}, error) {
 
 // Cancel cancels a file monitor.
 func (m fileMonitor) Cancel() bool {
-	var _arg0 *C.GFileMonitor
+	var _arg0 *C.GFileMonitor // out
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_file_monitor_cancel(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -105,10 +105,10 @@ func (m fileMonitor) Cancel() bool {
 // [thread-default main context][g-main-context-push-thread-default] of the
 // thread that the monitor was created in.
 func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitorEvent) {
-	var _arg0 *C.GFileMonitor
-	var _arg1 *C.GFile
-	var _arg2 *C.GFile
-	var _arg3 C.GFileMonitorEvent
+	var _arg0 *C.GFileMonitor     // out
+	var _arg1 *C.GFile            // out
+	var _arg2 *C.GFile            // out
+	var _arg3 C.GFileMonitorEvent // out
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(child.Native()))
@@ -120,15 +120,15 @@ func (m fileMonitor) EmitEvent(child File, otherFile File, eventType FileMonitor
 
 // IsCancelled returns whether the monitor is canceled.
 func (m fileMonitor) IsCancelled() bool {
-	var _arg0 *C.GFileMonitor
+	var _arg0 *C.GFileMonitor // out
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_file_monitor_is_cancelled(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -140,8 +140,8 @@ func (m fileMonitor) IsCancelled() bool {
 // SetRateLimit sets the rate limit to which the @monitor will report
 // consecutive change events to the same file.
 func (m fileMonitor) SetRateLimit(limitMsecs int) {
-	var _arg0 *C.GFileMonitor
-	var _arg1 C.gint
+	var _arg0 *C.GFileMonitor // out
+	var _arg1 C.gint          // out
 
 	_arg0 = (*C.GFileMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(limitMsecs)

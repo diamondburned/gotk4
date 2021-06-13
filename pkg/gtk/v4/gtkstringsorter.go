@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -63,15 +63,15 @@ func marshalStringSorter(p uintptr) (interface{}, error) {
 
 // IgnoreCase gets whether the sorter ignores case differences.
 func (s stringSorter) IgnoreCase() bool {
-	var _arg0 *C.GtkStringSorter
+	var _arg0 *C.GtkStringSorter // out
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_string_sorter_get_ignore_case(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -85,8 +85,8 @@ func (s stringSorter) IgnoreCase() bool {
 //
 // The expression must have the type G_TYPE_STRING.
 func (s stringSorter) SetExpression(expression Expression) {
-	var _arg0 *C.GtkStringSorter
-	var _arg1 *C.GtkExpression
+	var _arg0 *C.GtkStringSorter // out
+	var _arg1 *C.GtkExpression   // out
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
@@ -96,8 +96,8 @@ func (s stringSorter) SetExpression(expression Expression) {
 
 // SetIgnoreCase sets whether the sorter will ignore case differences.
 func (s stringSorter) SetIgnoreCase(ignoreCase bool) {
-	var _arg0 *C.GtkStringSorter
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkStringSorter // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkStringSorter)(unsafe.Pointer(s.Native()))
 	if ignoreCase {

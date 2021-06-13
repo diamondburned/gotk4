@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -51,8 +51,8 @@ func (s *StrvBuilder) Native() unsafe.Pointer {
 //
 // Since 2.68
 func (b *StrvBuilder) Add(value string) {
-	var _arg0 *C.GStrvBuilder
-	var _arg1 *C.char
+	var _arg0 *C.GStrvBuilder // out
+	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GStrvBuilder)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(value))
@@ -65,7 +65,7 @@ func (b *StrvBuilder) Add(value string) {
 // string array. The returned value should be freed with g_strfreev() when no
 // longer needed.
 func (b *StrvBuilder) End() []string {
-	var _arg0 *C.GStrvBuilder
+	var _arg0 *C.GStrvBuilder // out
 
 	_arg0 = (*C.GStrvBuilder)(unsafe.Pointer(b.Native()))
 
@@ -102,7 +102,7 @@ func (b *StrvBuilder) End() []string {
 // In the event that there are no more references, releases all memory
 // associated with the Builder.
 func (b *StrvBuilder) Unref() {
-	var _arg0 *C.GStrvBuilder
+	var _arg0 *C.GStrvBuilder // out
 
 	_arg0 = (*C.GStrvBuilder)(unsafe.Pointer(b.Native()))
 

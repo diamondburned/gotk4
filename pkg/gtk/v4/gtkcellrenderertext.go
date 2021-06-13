@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -70,8 +70,8 @@ func marshalCellRendererText(p uintptr) (interface{}, error) {
 // then the fixed height is unset, and the height is determined by the
 // properties again.
 func (r cellRendererText) SetFixedHeightFromFont(numberOfRows int) {
-	var _arg0 *C.GtkCellRendererText
-	var _arg1 C.int
+	var _arg0 *C.GtkCellRendererText // out
+	var _arg1 C.int                  // out
 
 	_arg0 = (*C.GtkCellRendererText)(unsafe.Pointer(r.Native()))
 	_arg1 = C.int(numberOfRows)

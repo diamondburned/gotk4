@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -39,7 +39,7 @@ func (s *SList) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (s *SList) Data() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(s.native.data)
 	return v
 }

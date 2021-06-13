@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: pangoxft pango
+// #cgo pkg-config: pangoxft pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pangoxft.h>
@@ -70,17 +70,17 @@ func marshalFont(p uintptr) (interface{}, error) {
 //
 // Use pango_fc_font_get_glyph() instead.
 func (f font) Glyph(wc uint32) uint {
-	var _arg0 *C.PangoFont
-	var _arg1 C.gunichar
+	var _arg0 *C.PangoFont // out
+	var _arg1 C.gunichar   // out
 
 	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gunichar(wc)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.pango_xft_font_get_glyph(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -91,17 +91,17 @@ func (f font) Glyph(wc uint32) uint {
 //
 // Use pango_fc_font_has_char() instead.
 func (f font) HasChar(wc uint32) bool {
-	var _arg0 *C.PangoFont
-	var _arg1 C.gunichar
+	var _arg0 *C.PangoFont // out
+	var _arg1 C.gunichar   // out
 
 	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gunichar(wc)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_xft_font_has_char(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -115,7 +115,7 @@ func (f font) HasChar(wc uint32) bool {
 //
 // Use pango_fc_font_unlock_face() instead.
 func (f font) UnlockFace() {
-	var _arg0 *C.PangoFont
+	var _arg0 *C.PangoFont // out
 
 	_arg0 = (*C.PangoFont)(unsafe.Pointer(f.Native()))
 

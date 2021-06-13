@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -71,8 +71,8 @@ func marshalMultiSorter(p uintptr) (interface{}, error) {
 // @self will consult all existing sorters before it will sort with the
 // given @sorter.
 func (s multiSorter) Append(sorter Sorter) {
-	var _arg0 *C.GtkMultiSorter
-	var _arg1 *C.GtkSorter
+	var _arg0 *C.GtkMultiSorter // out
+	var _arg1 *C.GtkSorter      // out
 
 	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkSorter)(unsafe.Pointer(sorter.Native()))
@@ -85,8 +85,8 @@ func (s multiSorter) Append(sorter Sorter) {
 //
 // If @position is larger than the number of sorters, nothing happens.
 func (s multiSorter) Remove(position uint) {
-	var _arg0 *C.GtkMultiSorter
-	var _arg1 C.guint
+	var _arg0 *C.GtkMultiSorter // out
+	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkMultiSorter)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)

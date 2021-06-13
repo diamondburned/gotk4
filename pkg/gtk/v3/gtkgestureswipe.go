@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -64,19 +64,19 @@ func marshalGestureSwipe(p uintptr) (interface{}, error) {
 // fill in @velocity_x and @velocity_y with the recorded velocity, as per
 // the last event(s) processed.
 func (g gestureSwipe) Velocity() (velocityX float64, velocityY float64, ok bool) {
-	var _arg0 *C.GtkGestureSwipe
+	var _arg0 *C.GtkGestureSwipe // out
 
 	_arg0 = (*C.GtkGestureSwipe)(unsafe.Pointer(g.Native()))
 
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
-	var _cret C.gboolean
+	var _arg1 C.gdouble  // in
+	var _arg2 C.gdouble  // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_gesture_swipe_get_velocity(_arg0, &_arg1, &_arg2)
 
-	var _velocityX float64
-	var _velocityY float64
-	var _ok bool
+	var _velocityX float64 // out
+	var _velocityY float64 // out
+	var _ok bool           // out
 
 	_velocityX = (float64)(_arg1)
 	_velocityY = (float64)(_arg2)

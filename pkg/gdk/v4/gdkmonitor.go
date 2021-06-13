@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -96,15 +96,15 @@ func marshalMonitor(p uintptr) (interface{}, error) {
 
 // Connector gets the name of the monitor's connector, if available.
 func (m monitor) Connector() string {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_monitor_get_connector(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -117,7 +117,7 @@ func (m monitor) Connector() string {
 // The returned geometry is in ”application pixels”, not in ”device pixels”
 // (see [method@Gdk.Monitor.get_scale_factor]).
 func (m monitor) Geometry() Rectangle {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
@@ -130,15 +130,15 @@ func (m monitor) Geometry() Rectangle {
 
 // HeightMm gets the height in millimeters of the monitor.
 func (m monitor) HeightMm() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_height_mm(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -152,15 +152,15 @@ func (m monitor) HeightMm() int {
 // The PNP ID registry is located at https://uefi.org/pnp_id_list
 // (https://uefi.org/pnp_id_list).
 func (m monitor) Manufacturer() string {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_monitor_get_manufacturer(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -169,15 +169,15 @@ func (m monitor) Manufacturer() string {
 
 // Model gets the string identifying the monitor model, if available.
 func (m monitor) Model() string {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_monitor_get_model(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -189,15 +189,15 @@ func (m monitor) Model() string {
 // The value is in milli-Hertz, so a refresh rate of 60Hz is returned as
 // 60000.
 func (m monitor) RefreshRate() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_refresh_rate(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -214,15 +214,15 @@ func (m monitor) RefreshRate() int {
 // monitor, but most of the time you’re drawing to a surface where it is
 // better to use [method@Gdk.Surface.get_scale_factor] instead.
 func (m monitor) ScaleFactor() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_scale_factor(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -231,15 +231,15 @@ func (m monitor) ScaleFactor() int {
 
 // WidthMm gets the width in millimeters of the monitor.
 func (m monitor) WidthMm() int {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_monitor_get_width_mm(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -252,15 +252,15 @@ func (m monitor) WidthMm() int {
 // The @monitor becomes invalid when the physical monitor is unplugged or
 // removed.
 func (m monitor) IsValid() bool {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_monitor_is_valid(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

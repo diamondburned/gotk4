@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -139,17 +139,17 @@ func marshalFileEnumerator(p uintptr) (interface{}, error) {
 // you might want to call this function to make sure resources are released
 // as early as possible.
 func (e fileEnumerator) Close(cancellable Cancellable) error {
-	var _arg0 *C.GFileEnumerator
-	var _arg1 *C.GCancellable
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GCancellable    // out
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_file_enumerator_close(_arg0, _arg1, _cerr)
+	C.g_file_enumerator_close(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -163,10 +163,10 @@ func (e fileEnumerator) Close(cancellable Cancellable) error {
 // was cancelled, the error G_IO_ERROR_CANCELLED will be returned in
 // g_file_enumerator_close_finish().
 func (e fileEnumerator) CloseAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GFileEnumerator
-	var _arg1 C.int
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
@@ -191,17 +191,17 @@ func (e fileEnumerator) CloseAsync(ioPriority int, cancellable Cancellable, call
 // was cancelled, the error G_IO_ERROR_CANCELLED will be set, and false will
 // be returned.
 func (e fileEnumerator) CloseFinish(result AsyncResult) error {
-	var _arg0 *C.GFileEnumerator
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 *C.GAsyncResult    // out
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_file_enumerator_close_finish(_arg0, _arg1, _cerr)
+	C.g_file_enumerator_close_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -210,15 +210,15 @@ func (e fileEnumerator) CloseFinish(result AsyncResult) error {
 
 // HasPending checks if the file enumerator has pending operations.
 func (e fileEnumerator) HasPending() bool {
-	var _arg0 *C.GFileEnumerator
+	var _arg0 *C.GFileEnumerator // out
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_file_enumerator_has_pending(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -229,15 +229,15 @@ func (e fileEnumerator) HasPending() bool {
 
 // IsClosed checks if the file enumerator has been closed.
 func (e fileEnumerator) IsClosed() bool {
-	var _arg0 *C.GFileEnumerator
+	var _arg0 *C.GFileEnumerator // out
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_file_enumerator_is_closed(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -266,11 +266,11 @@ func (e fileEnumerator) IsClosed() bool {
 // will be executed before an outstanding request with lower priority.
 // Default priority is G_PRIORITY_DEFAULT.
 func (e fileEnumerator) NextFilesAsync(numFiles int, ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GFileEnumerator
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 *C.GCancellable
-	var _arg4 C.GAsyncReadyCallback
+	var _arg0 *C.GFileEnumerator    // out
+	var _arg1 C.int                 // out
+	var _arg2 C.int                 // out
+	var _arg3 *C.GCancellable       // out
+	var _arg4 C.GAsyncReadyCallback // out
 	var _arg5 C.gpointer
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
@@ -285,8 +285,8 @@ func (e fileEnumerator) NextFilesAsync(numFiles int, ioPriority int, cancellable
 
 // SetPending sets the file enumerator as having pending operations.
 func (e fileEnumerator) SetPending(pending bool) {
-	var _arg0 *C.GFileEnumerator
-	var _arg1 C.gboolean
+	var _arg0 *C.GFileEnumerator // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GFileEnumerator)(unsafe.Pointer(e.Native()))
 	if pending {

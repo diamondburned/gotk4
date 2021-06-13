@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -103,20 +103,20 @@ func marshalDBusInterfaceSkeleton(p uintptr) (interface{}, error) {
 //
 // Use g_dbus_interface_skeleton_unexport() to unexport the object.
 func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath string) error {
-	var _arg0 *C.GDBusInterfaceSkeleton
-	var _arg1 *C.GDBusConnection
-	var _arg2 *C.gchar
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _arg1 *C.GDBusConnection        // out
+	var _arg2 *C.gchar                  // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 	_arg2 = (*C.gchar)(C.CString(objectPath))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, _cerr)
+	C.g_dbus_interface_skeleton_export(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -131,7 +131,7 @@ func (i dBusInterfaceSkeleton) Export(connection DBusConnection, objectPath stri
 // later (e.g. in an idle handler). This technique is useful for collapsing
 // multiple property changes into one.
 func (i dBusInterfaceSkeleton) Flush() {
-	var _arg0 *C.GDBusInterfaceSkeleton
+	var _arg0 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
@@ -140,15 +140,15 @@ func (i dBusInterfaceSkeleton) Flush() {
 
 // ObjectPath gets the object path that @interface_ is exported on, if any.
 func (i dBusInterfaceSkeleton) ObjectPath() string {
-	var _arg0 *C.GDBusInterfaceSkeleton
+	var _arg0 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_interface_skeleton_get_object_path(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -157,17 +157,17 @@ func (i dBusInterfaceSkeleton) ObjectPath() string {
 
 // HasConnection checks if @interface_ is exported on @connection.
 func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
-	var _arg0 *C.GDBusInterfaceSkeleton
-	var _arg1 *C.GDBusConnection
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _arg1 *C.GDBusConnection        // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_dbus_interface_skeleton_has_connection(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -178,8 +178,8 @@ func (i dBusInterfaceSkeleton) HasConnection(connection DBusConnection) bool {
 
 // SetFlags sets flags describing what the behavior of @skeleton should be.
 func (i dBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
-	var _arg0 *C.GDBusInterfaceSkeleton
-	var _arg1 C.GDBusInterfaceSkeletonFlags
+	var _arg0 *C.GDBusInterfaceSkeleton     // out
+	var _arg1 C.GDBusInterfaceSkeletonFlags // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 	_arg1 = (C.GDBusInterfaceSkeletonFlags)(flags)
@@ -193,7 +193,7 @@ func (i dBusInterfaceSkeleton) SetFlags(flags DBusInterfaceSkeletonFlags) {
 // To unexport @interface_ from only a single connection, use
 // g_dbus_interface_skeleton_unexport_from_connection()
 func (i dBusInterfaceSkeleton) Unexport() {
-	var _arg0 *C.GDBusInterfaceSkeleton
+	var _arg0 *C.GDBusInterfaceSkeleton // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 
@@ -205,8 +205,8 @@ func (i dBusInterfaceSkeleton) Unexport() {
 // To stop exporting on all connections the interface is exported on, use
 // g_dbus_interface_skeleton_unexport().
 func (i dBusInterfaceSkeleton) UnexportFromConnection(connection DBusConnection) {
-	var _arg0 *C.GDBusInterfaceSkeleton
-	var _arg1 *C.GDBusConnection
+	var _arg0 *C.GDBusInterfaceSkeleton // out
+	var _arg1 *C.GDBusConnection        // out
 
 	_arg0 = (*C.GDBusInterfaceSkeleton)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GDBusConnection)(unsafe.Pointer(connection.Native()))

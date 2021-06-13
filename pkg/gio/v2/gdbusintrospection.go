@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -64,21 +64,21 @@ func (d *DBusAnnotationInfo) Native() unsafe.Pointer {
 
 // RefCount gets the field inside the struct.
 func (d *DBusAnnotationInfo) RefCount() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.ref_count)
 	return v
 }
 
 // Key gets the field inside the struct.
 func (d *DBusAnnotationInfo) Key() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.key)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (d *DBusAnnotationInfo) Value() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.value)
 	return v
 }
@@ -87,7 +87,7 @@ func (d *DBusAnnotationInfo) Value() string {
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
 func (i *DBusAnnotationInfo) Unref() {
-	var _arg0 *C.GDBusAnnotationInfo
+	var _arg0 *C.GDBusAnnotationInfo // out
 
 	_arg0 = (*C.GDBusAnnotationInfo)(unsafe.Pointer(i.Native()))
 
@@ -121,21 +121,21 @@ func (d *DBusArgInfo) Native() unsafe.Pointer {
 
 // RefCount gets the field inside the struct.
 func (d *DBusArgInfo) RefCount() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.ref_count)
 	return v
 }
 
 // Name gets the field inside the struct.
 func (d *DBusArgInfo) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.name)
 	return v
 }
 
 // Signature gets the field inside the struct.
 func (d *DBusArgInfo) Signature() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.signature)
 	return v
 }
@@ -144,7 +144,7 @@ func (d *DBusArgInfo) Signature() string {
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
 func (i *DBusArgInfo) Unref() {
-	var _arg0 *C.GDBusArgInfo
+	var _arg0 *C.GDBusArgInfo // out
 
 	_arg0 = (*C.GDBusArgInfo)(unsafe.Pointer(i.Native()))
 
@@ -178,14 +178,14 @@ func (d *DBusInterfaceInfo) Native() unsafe.Pointer {
 
 // RefCount gets the field inside the struct.
 func (d *DBusInterfaceInfo) RefCount() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.ref_count)
 	return v
 }
 
 // Name gets the field inside the struct.
 func (d *DBusInterfaceInfo) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.name)
 	return v
 }
@@ -200,7 +200,7 @@ func (d *DBusInterfaceInfo) Name() string {
 // Note that @info cannot be modified until
 // g_dbus_interface_info_cache_release() is called.
 func (i *DBusInterfaceInfo) CacheBuild() {
-	var _arg0 *C.GDBusInterfaceInfo
+	var _arg0 *C.GDBusInterfaceInfo // out
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 
@@ -211,7 +211,7 @@ func (i *DBusInterfaceInfo) CacheBuild() {
 // g_dbus_interface_info_cache_build() (if any) and frees the resources used by
 // the cache if the usage count drops to zero.
 func (i *DBusInterfaceInfo) CacheRelease() {
-	var _arg0 *C.GDBusInterfaceInfo
+	var _arg0 *C.GDBusInterfaceInfo // out
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 
@@ -225,9 +225,9 @@ func (i *DBusInterfaceInfo) CacheRelease() {
 // run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
 // method.
 func (i *DBusInterfaceInfo) GenerateXML(indent uint, stringBuilder *glib.String) {
-	var _arg0 *C.GDBusInterfaceInfo
-	var _arg1 C.guint
-	var _arg2 *C.GString
+	var _arg0 *C.GDBusInterfaceInfo // out
+	var _arg1 C.guint               // out
+	var _arg2 *C.GString            // out
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = C.guint(indent)
@@ -240,7 +240,7 @@ func (i *DBusInterfaceInfo) GenerateXML(indent uint, stringBuilder *glib.String)
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
 func (i *DBusInterfaceInfo) Unref() {
-	var _arg0 *C.GDBusInterfaceInfo
+	var _arg0 *C.GDBusInterfaceInfo // out
 
 	_arg0 = (*C.GDBusInterfaceInfo)(unsafe.Pointer(i.Native()))
 
@@ -274,14 +274,14 @@ func (d *DBusMethodInfo) Native() unsafe.Pointer {
 
 // RefCount gets the field inside the struct.
 func (d *DBusMethodInfo) RefCount() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.ref_count)
 	return v
 }
 
 // Name gets the field inside the struct.
 func (d *DBusMethodInfo) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.name)
 	return v
 }
@@ -290,7 +290,7 @@ func (d *DBusMethodInfo) Name() string {
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
 func (i *DBusMethodInfo) Unref() {
-	var _arg0 *C.GDBusMethodInfo
+	var _arg0 *C.GDBusMethodInfo // out
 
 	_arg0 = (*C.GDBusMethodInfo)(unsafe.Pointer(i.Native()))
 
@@ -324,14 +324,14 @@ func (d *DBusNodeInfo) Native() unsafe.Pointer {
 
 // RefCount gets the field inside the struct.
 func (d *DBusNodeInfo) RefCount() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.ref_count)
 	return v
 }
 
 // Path gets the field inside the struct.
 func (d *DBusNodeInfo) Path() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.path)
 	return v
 }
@@ -343,9 +343,9 @@ func (d *DBusNodeInfo) Path() string {
 // run-time for handling the `org.freedesktop.DBus.Introspectable.Introspect`
 // method.
 func (i *DBusNodeInfo) GenerateXML(indent uint, stringBuilder *glib.String) {
-	var _arg0 *C.GDBusNodeInfo
-	var _arg1 C.guint
-	var _arg2 *C.GString
+	var _arg0 *C.GDBusNodeInfo // out
+	var _arg1 C.guint          // out
+	var _arg2 *C.GString       // out
 
 	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
 	_arg1 = C.guint(indent)
@@ -358,7 +358,7 @@ func (i *DBusNodeInfo) GenerateXML(indent uint, stringBuilder *glib.String) {
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
 func (i *DBusNodeInfo) Unref() {
-	var _arg0 *C.GDBusNodeInfo
+	var _arg0 *C.GDBusNodeInfo // out
 
 	_arg0 = (*C.GDBusNodeInfo)(unsafe.Pointer(i.Native()))
 
@@ -392,21 +392,21 @@ func (d *DBusPropertyInfo) Native() unsafe.Pointer {
 
 // RefCount gets the field inside the struct.
 func (d *DBusPropertyInfo) RefCount() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.ref_count)
 	return v
 }
 
 // Name gets the field inside the struct.
 func (d *DBusPropertyInfo) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.name)
 	return v
 }
 
 // Signature gets the field inside the struct.
 func (d *DBusPropertyInfo) Signature() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.signature)
 	return v
 }
@@ -415,7 +415,7 @@ func (d *DBusPropertyInfo) Signature() string {
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
 func (i *DBusPropertyInfo) Unref() {
-	var _arg0 *C.GDBusPropertyInfo
+	var _arg0 *C.GDBusPropertyInfo // out
 
 	_arg0 = (*C.GDBusPropertyInfo)(unsafe.Pointer(i.Native()))
 
@@ -449,14 +449,14 @@ func (d *DBusSignalInfo) Native() unsafe.Pointer {
 
 // RefCount gets the field inside the struct.
 func (d *DBusSignalInfo) RefCount() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.ref_count)
 	return v
 }
 
 // Name gets the field inside the struct.
 func (d *DBusSignalInfo) Name() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.name)
 	return v
 }
@@ -465,7 +465,7 @@ func (d *DBusSignalInfo) Name() string {
 // the reference count of @info. When its reference count drops to 0, the memory
 // used is freed.
 func (i *DBusSignalInfo) Unref() {
-	var _arg0 *C.GDBusSignalInfo
+	var _arg0 *C.GDBusSignalInfo // out
 
 	_arg0 = (*C.GDBusSignalInfo)(unsafe.Pointer(i.Native()))
 

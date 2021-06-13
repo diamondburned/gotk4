@@ -26,7 +26,7 @@ import "C"
 // memory leaks through callbacks queued on the Context after it’s stopped being
 // iterated.
 func BusUnwatchName(watcherId uint) {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(watcherId)
 

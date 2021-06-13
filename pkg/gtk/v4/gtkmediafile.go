@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -84,7 +84,7 @@ func marshalMediaFile(p uintptr) (interface{}, error) {
 
 // Clear resets the media file to be empty.
 func (s mediaFile) Clear() {
-	var _arg0 *C.GtkMediaFile
+	var _arg0 *C.GtkMediaFile // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
 
@@ -95,8 +95,8 @@ func (s mediaFile) Clear() {
 //
 // If any file is still playing, stop playing it.
 func (s mediaFile) SetFile(file gio.File) {
-	var _arg0 *C.GtkMediaFile
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.GFile        // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
@@ -109,8 +109,8 @@ func (s mediaFile) SetFile(file gio.File) {
 // This is a utility function that converts the given @filename to a `GFile`
 // and calls [method@Gtk.MediaFile.set_file].
 func (s mediaFile) SetFilename(filename string) {
-	var _arg0 *C.GtkMediaFile
-	var _arg1 *C.char
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(filename))
@@ -126,8 +126,8 @@ func (s mediaFile) SetFilename(filename string) {
 // Full control about the @stream is assumed for the duration of playback.
 // The stream will not be closed.
 func (s mediaFile) SetInputStream(stream gio.InputStream) {
-	var _arg0 *C.GtkMediaFile
-	var _arg1 *C.GInputStream
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.GInputStream // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GInputStream)(unsafe.Pointer(stream.Native()))
@@ -140,8 +140,8 @@ func (s mediaFile) SetInputStream(stream gio.InputStream) {
 // This is a utility function that converts the given @resource_path to a
 // `GFile` and calls [method@Gtk.MediaFile.set_file].
 func (s mediaFile) SetResource(resourcePath string) {
-	var _arg0 *C.GtkMediaFile
-	var _arg1 *C.char
+	var _arg0 *C.GtkMediaFile // out
+	var _arg1 *C.char         // out
 
 	_arg0 = (*C.GtkMediaFile)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(resourcePath))

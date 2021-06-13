@@ -126,7 +126,6 @@ func (ng *NamespaceGenerator) pkgconfig() []string {
 	for _, pkg := range ng.current.Repository.Packages {
 		if pkg.Name == ng.current.Repository.Pkg {
 			foundRoot = true
-			continue
 		}
 
 		pkgs = append(pkgs, pkg.Name)

@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -81,9 +81,9 @@ func marshalSocketAddressEnumerator(p uintptr) (interface{}, error) {
 // It is an error to call this multiple times before the previous callback
 // has finished.
 func (e socketAddressEnumerator) NextAsync(cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GSocketAddressEnumerator
-	var _arg1 *C.GCancellable
-	var _arg2 C.GAsyncReadyCallback
+	var _arg0 *C.GSocketAddressEnumerator // out
+	var _arg1 *C.GCancellable             // out
+	var _arg2 C.GAsyncReadyCallback       // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GSocketAddressEnumerator)(unsafe.Pointer(e.Native()))

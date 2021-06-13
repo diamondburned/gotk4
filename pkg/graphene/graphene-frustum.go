@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
+// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
@@ -51,17 +51,17 @@ func (f *Frustum) Native() unsafe.Pointer {
 // ContainsPoint checks whether a point is inside the volume defined by the
 // given #graphene_frustum_t.
 func (f *Frustum) ContainsPoint(point *Point3D) bool {
-	var _arg0 *C.graphene_frustum_t
-	var _arg1 *C.graphene_point3d_t
+	var _arg0 *C.graphene_frustum_t // out
+	var _arg1 *C.graphene_point3d_t // out
 
 	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_frustum_contains_point(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -72,17 +72,17 @@ func (f *Frustum) ContainsPoint(point *Point3D) bool {
 
 // Equal checks whether the two given #graphene_frustum_t are equal.
 func (a *Frustum) Equal(b *Frustum) bool {
-	var _arg0 *C.graphene_frustum_t
-	var _arg1 *C.graphene_frustum_t
+	var _arg0 *C.graphene_frustum_t // out
+	var _arg1 *C.graphene_frustum_t // out
 
 	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_frustum_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_frustum_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -93,7 +93,7 @@ func (a *Frustum) Equal(b *Frustum) bool {
 
 // Free frees the resources allocated by graphene_frustum_alloc().
 func (f *Frustum) Free() {
-	var _arg0 *C.graphene_frustum_t
+	var _arg0 *C.graphene_frustum_t // out
 
 	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
 
@@ -103,17 +103,17 @@ func (f *Frustum) Free() {
 // IntersectsBox checks whether the given @box intersects a plane of a
 // #graphene_frustum_t.
 func (f *Frustum) IntersectsBox(box *Box) bool {
-	var _arg0 *C.graphene_frustum_t
-	var _arg1 *C.graphene_box_t
+	var _arg0 *C.graphene_frustum_t // out
+	var _arg1 *C.graphene_box_t     // out
 
 	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.graphene_box_t)(unsafe.Pointer(box.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_frustum_intersects_box(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -125,17 +125,17 @@ func (f *Frustum) IntersectsBox(box *Box) bool {
 // IntersectsSphere checks whether the given @sphere intersects a plane of a
 // #graphene_frustum_t.
 func (f *Frustum) IntersectsSphere(sphere *Sphere) bool {
-	var _arg0 *C.graphene_frustum_t
-	var _arg1 *C.graphene_sphere_t
+	var _arg0 *C.graphene_frustum_t // out
+	var _arg1 *C.graphene_sphere_t  // out
 
 	_arg0 = (*C.graphene_frustum_t)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.graphene_sphere_t)(unsafe.Pointer(sphere.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_frustum_intersects_sphere(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

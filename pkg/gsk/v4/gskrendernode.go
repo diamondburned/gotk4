@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gsk/gsk.h>
@@ -39,7 +39,7 @@ func (c *ColorStop) Native() unsafe.Pointer {
 
 // Offset gets the field inside the struct.
 func (c *ColorStop) Offset() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(c.native.offset)
 	return v
 }
@@ -71,35 +71,35 @@ func (p *ParseLocation) Native() unsafe.Pointer {
 
 // Bytes gets the field inside the struct.
 func (p *ParseLocation) Bytes() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(p.native.bytes)
 	return v
 }
 
 // Chars gets the field inside the struct.
 func (p *ParseLocation) Chars() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(p.native.chars)
 	return v
 }
 
 // Lines gets the field inside the struct.
 func (p *ParseLocation) Lines() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(p.native.lines)
 	return v
 }
 
 // LineBytes gets the field inside the struct.
 func (p *ParseLocation) LineBytes() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(p.native.line_bytes)
 	return v
 }
 
 // LineChars gets the field inside the struct.
 func (p *ParseLocation) LineChars() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(p.native.line_chars)
 	return v
 }
@@ -131,21 +131,21 @@ func (s *Shadow) Native() unsafe.Pointer {
 
 // Dx gets the field inside the struct.
 func (s *Shadow) Dx() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(s.native.dx)
 	return v
 }
 
 // Dy gets the field inside the struct.
 func (s *Shadow) Dy() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(s.native.dy)
 	return v
 }
 
 // Radius gets the field inside the struct.
 func (s *Shadow) Radius() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(s.native.radius)
 	return v
 }

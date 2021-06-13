@@ -31,15 +31,15 @@ import "C"
 //
 // Calling this may change the current GL context.
 func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType int, bufferScale int, x int, y int, width int, height int) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkWindow
-	var _arg3 C.int
-	var _arg4 C.int
-	var _arg5 C.int
-	var _arg6 C.int
-	var _arg7 C.int
-	var _arg8 C.int
-	var _arg9 C.int
+	var _arg1 *C.cairo_t   // out
+	var _arg2 *C.GdkWindow // out
+	var _arg3 C.int        // out
+	var _arg4 C.int        // out
+	var _arg5 C.int        // out
+	var _arg6 C.int        // out
+	var _arg7 C.int        // out
+	var _arg8 C.int        // out
+	var _arg9 C.int        // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
@@ -58,16 +58,16 @@ func CairoDrawFromGL(cr *cairo.Context, window Window, source int, sourceType in
 // cairo_clip_extents(). It rounds the clip extents to integer coordinates and
 // returns a boolean indicating if a clip area exists.
 func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
-	var _arg1 *C.cairo_t
+	var _arg1 *C.cairo_t // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 
 	var _rect Rectangle
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_cairo_get_clip_rectangle(_arg1, (*C.GdkRectangle)(unsafe.Pointer(&_rect)))
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -78,8 +78,8 @@ func CairoGetClipRectangle(cr *cairo.Context) (Rectangle, bool) {
 
 // CairoRectangle adds the given rectangle to the current path of @cr.
 func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkRectangle
+	var _arg1 *C.cairo_t      // out
+	var _arg2 *C.GdkRectangle // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkRectangle)(unsafe.Pointer(rectangle.Native()))
@@ -89,8 +89,8 @@ func CairoRectangle(cr *cairo.Context, rectangle *Rectangle) {
 
 // CairoRegion adds the given region to the current path of @cr.
 func CairoRegion(cr *cairo.Context, region *cairo.Region) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.cairo_region_t
+	var _arg1 *C.cairo_t        // out
+	var _arg2 *C.cairo_region_t // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
@@ -100,8 +100,8 @@ func CairoRegion(cr *cairo.Context, region *cairo.Region) {
 
 // CairoSetSourceColor sets the specified Color as the source color of @cr.
 func CairoSetSourceColor(cr *cairo.Context, color *Color) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkColor
+	var _arg1 *C.cairo_t  // out
+	var _arg2 *C.GdkColor // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkColor)(unsafe.Pointer(color.Native()))
@@ -114,10 +114,10 @@ func CairoSetSourceColor(cr *cairo.Context, color *Color) {
 // The pattern has an extend mode of CAIRO_EXTEND_NONE and is aligned so that
 // the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
 func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX float64, pixbufY float64) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkPixbuf
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
+	var _arg1 *C.cairo_t   // out
+	var _arg2 *C.GdkPixbuf // out
+	var _arg3 C.gdouble    // out
+	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -129,8 +129,8 @@ func CairoSetSourcePixbuf(cr *cairo.Context, pixbuf gdkpixbuf.Pixbuf, pixbufX fl
 
 // CairoSetSourceRGBA sets the specified RGBA as the source color of @cr.
 func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkRGBA
+	var _arg1 *C.cairo_t // out
+	var _arg2 *C.GdkRGBA // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkRGBA)(unsafe.Pointer(rgba.Native()))
@@ -147,10 +147,10 @@ func CairoSetSourceRGBA(cr *cairo.Context, rgba *RGBA) {
 // Note that the contents of @window are undefined outside of the visible part
 // of @window, so use this function with care.
 func CairoSetSourceWindow(cr *cairo.Context, window Window, x float64, y float64) {
-	var _arg1 *C.cairo_t
-	var _arg2 *C.GdkWindow
-	var _arg3 C.gdouble
-	var _arg4 C.gdouble
+	var _arg1 *C.cairo_t   // out
+	var _arg2 *C.GdkWindow // out
+	var _arg3 C.gdouble    // out
+	var _arg4 C.gdouble    // out
 
 	_arg1 = (*C.cairo_t)(unsafe.Pointer(cr.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))

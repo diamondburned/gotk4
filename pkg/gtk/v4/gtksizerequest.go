@@ -7,7 +7,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -20,7 +20,7 @@ import "C"
 // `GtkRequestedSize` struct. If all sizes reach their natural size then the
 // remaining space is returned.
 func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
-	var _arg1 C.int
+	var _arg1 C.int // out
 	var _arg3 *C.GtkRequestedSize
 	var _arg2 C.guint
 
@@ -28,11 +28,11 @@ func DistributeNaturalAllocation(extraSpace int, sizes []RequestedSize) int {
 	_arg2 = C.guint(len(sizes))
 	_arg3 = (*C.GtkRequestedSize)(unsafe.Pointer(&sizes[0]))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_distribute_natural_allocation(_arg1, _arg2, _arg3)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -68,21 +68,21 @@ func (r *RequestedSize) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (r *RequestedSize) Data() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(r.native.data)
 	return v
 }
 
 // MinimumSize gets the field inside the struct.
 func (r *RequestedSize) MinimumSize() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.minimum_size)
 	return v
 }
 
 // NaturalSize gets the field inside the struct.
 func (r *RequestedSize) NaturalSize() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.natural_size)
 	return v
 }

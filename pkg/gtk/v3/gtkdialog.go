@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -34,15 +34,15 @@ func init() {
 // associated to @screen, in order to be notified if the button order setting
 // changes.
 func AlternativeDialogButtonOrder(screen gdk.Screen) bool {
-	var _arg1 *C.GdkScreen
+	var _arg1 *C.GdkScreen // out
 
 	_arg1 = (*C.GdkScreen)(unsafe.Pointer(screen.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_alternative_dialog_button_order(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -275,9 +275,9 @@ func marshalDialog(p uintptr) (interface{}, error) {
 // non-activatable widget, simply pack it into the @action_area field of the
 // Dialog struct.
 func (d dialog) AddActionWidget(child Widget, responseId int) {
-	var _arg0 *C.GtkDialog
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gint
+	var _arg0 *C.GtkDialog // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gint       // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -289,17 +289,17 @@ func (d dialog) AddActionWidget(child Widget, responseId int) {
 // ResponseForWidget gets the response id of a widget in the action area of
 // a dialog.
 func (d dialog) ResponseForWidget(widget Widget) int {
-	var _arg0 *C.GtkDialog
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkDialog // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_dialog_get_response_for_widget(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -311,8 +311,8 @@ func (d dialog) ResponseForWidget(widget Widget) int {
 // typically either you or gtk_dialog_run() will be monitoring the
 // ::response signal and take appropriate action.
 func (d dialog) Response(responseId int) {
-	var _arg0 *C.GtkDialog
-	var _arg1 C.gint
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.gint       // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.gint(responseId)
@@ -365,15 +365,15 @@ func (d dialog) Response(responseId int) {
 // IO channel watches, DND drops, etc, will be triggered during a
 // gtk_dialog_run() call.
 func (d dialog) Run() int {
-	var _arg0 *C.GtkDialog
+	var _arg0 *C.GtkDialog // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_dialog_run(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -389,7 +389,7 @@ func (d dialog) Run() int {
 //
 // This function is for use by language bindings.
 func (d dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
-	var _arg0 *C.GtkDialog
+	var _arg0 *C.GtkDialog // out
 	var _arg2 *C.gint
 	var _arg1 C.gint
 
@@ -404,8 +404,8 @@ func (d dialog) SetAlternativeButtonOrderFromArray(newOrder []int) {
 // the given @response_id as the default widget for the dialog. Pressing
 // “Enter” normally activates the default widget.
 func (d dialog) SetDefaultResponse(responseId int) {
-	var _arg0 *C.GtkDialog
-	var _arg1 C.gint
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.gint       // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.gint(responseId)
@@ -417,9 +417,9 @@ func (d dialog) SetDefaultResponse(responseId int) {
 // for each widget in the dialog’s action area with the given @response_id.
 // A convenient way to sensitize/desensitize dialog buttons.
 func (d dialog) SetResponseSensitive(responseId int, setting bool) {
-	var _arg0 *C.GtkDialog
-	var _arg1 C.gint
-	var _arg2 C.gboolean
+	var _arg0 *C.GtkDialog // out
+	var _arg1 C.gint       // out
+	var _arg2 C.gboolean   // out
 
 	_arg0 = (*C.GtkDialog)(unsafe.Pointer(d.Native()))
 	_arg1 = C.gint(responseId)

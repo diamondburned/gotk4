@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -139,15 +139,15 @@ func marshalDBusObjectManagerClient(p uintptr) (interface{}, error) {
 // Name gets the name that @manager is for, or nil if not a message bus
 // connection.
 func (m dBusObjectManagerClient) Name() string {
-	var _arg0 *C.GDBusObjectManagerClient
+	var _arg0 *C.GDBusObjectManagerClient // out
 
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_object_manager_client_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -159,15 +159,15 @@ func (m dBusObjectManagerClient) Name() string {
 // #GObject::notify signal to track changes to the
 // BusObjectManagerClient:name-owner property.
 func (m dBusObjectManagerClient) NameOwner() string {
-	var _arg0 *C.GDBusObjectManagerClient
+	var _arg0 *C.GDBusObjectManagerClient // out
 
 	_arg0 = (*C.GDBusObjectManagerClient)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_dbus_object_manager_client_get_name_owner(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

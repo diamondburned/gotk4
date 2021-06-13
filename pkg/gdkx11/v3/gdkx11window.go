@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-x11-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdkx.h>
@@ -23,15 +23,15 @@ func init() {
 
 // X11GetServerTime: routine to get the current X server time stamp.
 func X11GetServerTime(window X11Window) uint32 {
-	var _arg1 *C.GdkWindow
+	var _arg1 *C.GdkWindow // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_get_server_time(_arg1)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -123,15 +123,15 @@ func marshalX11Window(p uintptr) (interface{}, error) {
 
 // Desktop gets the number of the workspace @window is on.
 func (w x11Window) Desktop() uint32 {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gdk_x11_window_get_desktop(_arg0)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -144,7 +144,7 @@ func (w x11Window) Desktop() uint32 {
 // (http://www.freedesktop.org/Standards/wm-spec) specification. Will not do
 // anything if the window is already on all workspaces.
 func (w x11Window) MoveToCurrentDesktop() {
-	var _arg0 *C.GdkWindow
+	var _arg0 *C.GdkWindow // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 
@@ -156,8 +156,8 @@ func (w x11Window) MoveToCurrentDesktop() {
 // Extended Window Manager Hints
 // (http://www.freedesktop.org/Standards/wm-spec) specification.
 func (w x11Window) MoveToDesktop(desktop uint32) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.guint32
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.guint32(desktop)
@@ -168,11 +168,11 @@ func (w x11Window) MoveToDesktop(desktop uint32) {
 // SetFrameExtents: this is the same as gdk_window_set_shadow_width() but it
 // only works on GdkX11Window.
 func (w x11Window) SetFrameExtents(left int, right int, top int, bottom int) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 C.int
-	var _arg4 C.int
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.int        // out
+	var _arg2 C.int        // out
+	var _arg3 C.int        // out
+	var _arg4 C.int        // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.int(left)
@@ -190,8 +190,8 @@ func (w x11Window) SetFrameExtents(left int, right int, top int, bottom int) {
 // by the window manager, then frame synchronziation may need to be
 // disabled. This is the case for a window embedded via the XEMBED protocol.
 func (w x11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if frameSyncEnabled {
@@ -209,8 +209,8 @@ func (w x11Window) SetFrameSyncEnabled(frameSyncEnabled bool) {
 // function should only be used by applications which do not use GTK+ to
 // create toplevel windows.
 func (w x11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	if hideTitlebarWhenMaximized {
@@ -230,8 +230,8 @@ func (w x11Window) SetHideTitlebarWhenMaximized(hideTitlebarWhenMaximized bool) 
 // function should only be used by applications which do not use GTK+ to
 // create toplevel windows.
 func (w x11Window) SetThemeVariant(variant string) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.char
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.char      // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.char)(C.CString(variant))
@@ -252,8 +252,8 @@ func (w x11Window) SetThemeVariant(variant string) {
 // should only be used by applications which handle input events bypassing
 // GDK.
 func (w x11Window) SetUserTime(timestamp uint32) {
-	var _arg0 *C.GdkWindow
-	var _arg1 C.guint32
+	var _arg0 *C.GdkWindow // out
+	var _arg1 C.guint32    // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = C.guint32(timestamp)
@@ -265,9 +265,9 @@ func (w x11Window) SetUserTime(timestamp uint32) {
 // window property of type UTF8_STRING. If the given @window is not a
 // toplevel window, it is ignored.
 func (w x11Window) SetUTF8Property(name string, value string) {
-	var _arg0 *C.GdkWindow
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GdkWindow // out
+	var _arg1 *C.gchar     // out
+	var _arg2 *C.gchar     // out
 
 	_arg0 = (*C.GdkWindow)(unsafe.Pointer(w.Native()))
 	_arg1 = (*C.gchar)(C.CString(name))

@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -139,19 +139,19 @@ func marshalUnixFDList(p uintptr) (interface{}, error) {
 // index with g_unix_fd_list_get() then you will receive back a duplicated
 // copy of the same file descriptor.
 func (l unixFDList) Append(fd int) (int, error) {
-	var _arg0 *C.GUnixFDList
-	var _arg1 C.gint
+	var _arg0 *C.GUnixFDList // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(fd)
 
-	var _cret C.gint
-	var _cerr *C.GError
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_unix_fd_list_append(_arg0, _arg1, _cerr)
+	_cret = C.g_unix_fd_list_append(_arg0, _arg1, &_cerr)
 
-	var _gint int
-	var _goerr error
+	var _gint int    // out
+	var _goerr error // out
 
 	_gint = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -171,19 +171,19 @@ func (l unixFDList) Append(fd int) (int, error) {
 // A possible cause of failure is exceeding the per-process or system-wide
 // file descriptor limit.
 func (l unixFDList) Get(index_ int) (int, error) {
-	var _arg0 *C.GUnixFDList
-	var _arg1 C.gint
+	var _arg0 *C.GUnixFDList // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 	_arg1 = C.gint(index_)
 
-	var _cret C.gint
-	var _cerr *C.GError
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_unix_fd_list_get(_arg0, _arg1, _cerr)
+	_cret = C.g_unix_fd_list_get(_arg0, _arg1, &_cerr)
 
-	var _gint int
-	var _goerr error
+	var _gint int    // out
+	var _goerr error // out
 
 	_gint = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -194,15 +194,15 @@ func (l unixFDList) Get(index_ int) (int, error) {
 // Length gets the length of @list (ie: the number of file descriptors
 // contained within).
 func (l unixFDList) Length() int {
-	var _arg0 *C.GUnixFDList
+	var _arg0 *C.GUnixFDList // out
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_unix_fd_list_get_length(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -222,12 +222,12 @@ func (l unixFDList) Length() int {
 // This function never returns nil. In case there are no file descriptors
 // contained in @list, an empty array is returned.
 func (l unixFDList) PeekFds() []int {
-	var _arg0 *C.GUnixFDList
+	var _arg0 *C.GUnixFDList // out
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 
 	var _cret *C.gint
-	var _arg1 *C.gint
+	var _arg1 C.gint // in
 
 	_cret = C.g_unix_fd_list_peek_fds(_arg0, &_arg1)
 
@@ -263,12 +263,12 @@ func (l unixFDList) PeekFds() []int {
 // This function never returns nil. In case there are no file descriptors
 // contained in @list, an empty array is returned.
 func (l unixFDList) StealFds() []int {
-	var _arg0 *C.GUnixFDList
+	var _arg0 *C.GUnixFDList // out
 
 	_arg0 = (*C.GUnixFDList)(unsafe.Pointer(l.Native()))
 
 	var _cret *C.gint
-	var _arg1 *C.gint
+	var _arg1 C.gint // in
 
 	_cret = C.g_unix_fd_list_steal_fds(_arg0, &_arg1)
 

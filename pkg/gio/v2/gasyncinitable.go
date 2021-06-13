@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -242,10 +242,10 @@ func marshalAsyncInitable(p uintptr) (interface{}, error) {
 // threads, just implement the Initable interface without overriding any
 // interface methods.
 func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GAsyncInitable
-	var _arg1 C.int
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GAsyncInitable     // out
+	var _arg1 C.int                 // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
@@ -260,17 +260,17 @@ func (i asyncInitable) InitAsync(ioPriority int, cancellable Cancellable, callba
 // InitFinish finishes asynchronous initialization and returns the result.
 // See g_async_initable_init_async().
 func (i asyncInitable) InitFinish(res AsyncResult) error {
-	var _arg0 *C.GAsyncInitable
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GAsyncInitable // out
+	var _arg1 *C.GAsyncResult   // out
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_async_initable_init_finish(_arg0, _arg1, _cerr)
+	C.g_async_initable_init_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -280,19 +280,19 @@ func (i asyncInitable) InitFinish(res AsyncResult) error {
 // NewFinish finishes the async construction for the various
 // g_async_initable_new calls, returning the created object or nil on error.
 func (i asyncInitable) NewFinish(res AsyncResult) (gextras.Objector, error) {
-	var _arg0 *C.GAsyncInitable
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GAsyncInitable // out
+	var _arg1 *C.GAsyncResult   // out
 
 	_arg0 = (*C.GAsyncInitable)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(res.Native()))
 
-	var _cret *C.GObject
-	var _cerr *C.GError
+	var _cret *C.GObject // in
+	var _cerr *C.GError  // in
 
-	_cret = C.g_async_initable_new_finish(_arg0, _arg1, _cerr)
+	_cret = C.g_async_initable_new_finish(_arg0, _arg1, &_cerr)
 
-	var _object gextras.Objector
-	var _goerr error
+	var _object gextras.Objector // out
+	var _goerr error             // out
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

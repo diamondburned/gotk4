@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -136,7 +136,7 @@ func marshalDragSource(p uintptr) (interface{}, error) {
 
 // DragCancel cancels a currently ongoing drag operation.
 func (s dragSource) DragCancel() {
-	var _arg0 *C.GtkDragSource
+	var _arg0 *C.GtkDragSource // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 
@@ -153,8 +153,8 @@ func (s dragSource) DragCancel() {
 // This function can be called before a drag is started, or in a handler for
 // the [signal@Gtk.DragSource::prepare] signal.
 func (s dragSource) SetActions(actions gdk.DragAction) {
-	var _arg0 *C.GtkDragSource
-	var _arg1 C.GdkDragAction
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 C.GdkDragAction  // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GdkDragAction)(actions)
@@ -173,8 +173,8 @@ func (s dragSource) SetActions(actions gdk.DragAction) {
 // You may consider setting the content provider back to nil in a
 // [signal@Gtk.DragSource::drag-end] signal handler.
 func (s dragSource) SetContent(content gdk.ContentProvider) {
-	var _arg0 *C.GtkDragSource
-	var _arg1 *C.GdkContentProvider
+	var _arg0 *C.GtkDragSource      // out
+	var _arg1 *C.GdkContentProvider // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkContentProvider)(unsafe.Pointer(content.Native()))
@@ -193,10 +193,10 @@ func (s dragSource) SetContent(content gdk.ContentProvider) {
 // [signal@Gtk.DragSource::prepare] or [signal@Gtk.DragSource::drag-begin]
 // signal handler.
 func (s dragSource) SetIcon(paintable gdk.Paintable, hotX int, hotY int) {
-	var _arg0 *C.GtkDragSource
-	var _arg1 *C.GdkPaintable
-	var _arg2 C.int
-	var _arg3 C.int
+	var _arg0 *C.GtkDragSource // out
+	var _arg1 *C.GdkPaintable  // out
+	var _arg2 C.int            // out
+	var _arg3 C.int            // out
 
 	_arg0 = (*C.GtkDragSource)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkPaintable)(unsafe.Pointer(paintable.Native()))

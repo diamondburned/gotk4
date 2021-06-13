@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -222,21 +222,21 @@ func marshalDatagramBased(p uintptr) (interface{}, error) {
 // is reached before the condition is met, then false is returned and @error
 // is set appropriately (G_IO_ERROR_CANCELLED or G_IO_ERROR_TIMED_OUT).
 func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, cancellable Cancellable) error {
-	var _arg0 *C.GDatagramBased
-	var _arg1 C.GIOCondition
-	var _arg2 C.gint64
-	var _arg3 *C.GCancellable
+	var _arg0 *C.GDatagramBased // out
+	var _arg1 C.GIOCondition    // out
+	var _arg2 C.gint64          // out
+	var _arg3 *C.GCancellable   // out
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg1 = (C.GIOCondition)(condition)
 	_arg2 = C.gint64(timeout)
 	_arg3 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, _cerr)
+	C.g_datagram_based_condition_wait(_arg0, _arg1, _arg2, _arg3, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -294,12 +294,12 @@ func (d datagramBased) ConditionWait(condition glib.IOCondition, timeout int64, 
 // @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 // other error.
 func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
-	var _arg0 *C.GDatagramBased
+	var _arg0 *C.GDatagramBased // out
 	var _arg1 *C.GInputMessage
 	var _arg2 C.guint
-	var _arg3 C.gint
-	var _arg4 C.gint64
-	var _arg5 *C.GCancellable
+	var _arg3 C.gint          // out
+	var _arg4 C.gint64        // out
+	var _arg5 *C.GCancellable // out
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
@@ -308,13 +308,13 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 	_arg4 = C.gint64(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cret C.gint
-	var _cerr *C.GError
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
+	_cret = C.g_datagram_based_receive_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _gint int
-	var _goerr error
+	var _gint int    // out
+	var _goerr error // out
 
 	_gint = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -367,12 +367,12 @@ func (d datagramBased) ReceiveMessages(messages []InputMessage, flags int, timeo
 // @cancellable is cancelled, G_IO_ERROR_CANCELLED is returned as with any
 // other error.
 func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout int64, cancellable Cancellable) (int, error) {
-	var _arg0 *C.GDatagramBased
+	var _arg0 *C.GDatagramBased // out
 	var _arg1 *C.GOutputMessage
 	var _arg2 C.guint
-	var _arg3 C.gint
-	var _arg4 C.gint64
-	var _arg5 *C.GCancellable
+	var _arg3 C.gint          // out
+	var _arg4 C.gint64        // out
+	var _arg5 *C.GCancellable // out
 
 	_arg0 = (*C.GDatagramBased)(unsafe.Pointer(d.Native()))
 	_arg2 = C.guint(len(messages))
@@ -381,13 +381,13 @@ func (d datagramBased) SendMessages(messages []OutputMessage, flags int, timeout
 	_arg4 = C.gint64(timeout)
 	_arg5 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cret C.gint
-	var _cerr *C.GError
+	var _cret C.gint    // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
+	_cret = C.g_datagram_based_send_messages(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _gint int
-	var _goerr error
+	var _gint int    // out
+	var _goerr error // out
 
 	_gint = (int)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -69,18 +69,18 @@ func marshalFilenameCompleter(p uintptr) (interface{}, error) {
 
 // CompletionSuffix obtains a completion for @initial_text from @completer.
 func (c filenameCompleter) CompletionSuffix(initialText string) string {
-	var _arg0 *C.GFilenameCompleter
-	var _arg1 *C.char
+	var _arg0 *C.GFilenameCompleter // out
+	var _arg1 *C.char               // out
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.g_filename_completer_get_completion_suffix(_arg0, _arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -90,8 +90,8 @@ func (c filenameCompleter) CompletionSuffix(initialText string) string {
 
 // Completions gets an array of completion strings for a given initial text.
 func (c filenameCompleter) Completions(initialText string) []string {
-	var _arg0 *C.GFilenameCompleter
-	var _arg1 *C.char
+	var _arg0 *C.GFilenameCompleter // out
+	var _arg1 *C.char               // out
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(initialText))
@@ -128,8 +128,8 @@ func (c filenameCompleter) Completions(initialText string) []string {
 // SetDirsOnly: if @dirs_only is true, @completer will only complete
 // directory names, and not file names.
 func (c filenameCompleter) SetDirsOnly(dirsOnly bool) {
-	var _arg0 *C.GFilenameCompleter
-	var _arg1 C.gboolean
+	var _arg0 *C.GFilenameCompleter // out
+	var _arg1 C.gboolean            // out
 
 	_arg0 = (*C.GFilenameCompleter)(unsafe.Pointer(c.Native()))
 	if dirsOnly {

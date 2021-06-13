@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -128,8 +128,8 @@ func marshalBox(p uintptr) (interface{}, error) {
 
 // Append adds @child as the last child to @box.
 func (b box) Append(child Widget) {
-	var _arg0 *C.GtkBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkBox    // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -140,15 +140,15 @@ func (b box) Append(child Widget) {
 // Homogeneous returns whether the box is homogeneous (all children are the
 // same size).
 func (b box) Homogeneous() bool {
-	var _arg0 *C.GtkBox
+	var _arg0 *C.GtkBox // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_box_get_homogeneous(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -159,15 +159,15 @@ func (b box) Homogeneous() bool {
 
 // Spacing gets the value set by gtk_box_set_spacing().
 func (b box) Spacing() int {
-	var _arg0 *C.GtkBox
+	var _arg0 *C.GtkBox // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_box_get_spacing(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -179,9 +179,9 @@ func (b box) Spacing() int {
 //
 // If @sibling is nil, insert @child at the first position.
 func (b box) InsertChildAfter(child Widget, sibling Widget) {
-	var _arg0 *C.GtkBox
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.GtkWidget
+	var _arg0 *C.GtkBox    // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -192,8 +192,8 @@ func (b box) InsertChildAfter(child Widget, sibling Widget) {
 
 // Prepend adds @child as the first child to @box.
 func (b box) Prepend(child Widget) {
-	var _arg0 *C.GtkBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkBox    // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -206,8 +206,8 @@ func (b box) Prepend(child Widget) {
 // The child must have been added before with [method@Gtk.Box.append],
 // [method@Gtk.Box.prepend], or [method@Gtk.Box.insert_child_after].
 func (b box) Remove(child Widget) {
-	var _arg0 *C.GtkBox
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkBox    // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -220,9 +220,9 @@ func (b box) Remove(child Widget) {
 //
 // If @sibling is nil, move @child to the first position.
 func (b box) ReorderChildAfter(child Widget, sibling Widget) {
-	var _arg0 *C.GtkBox
-	var _arg1 *C.GtkWidget
-	var _arg2 *C.GtkWidget
+	var _arg0 *C.GtkBox    // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -238,8 +238,8 @@ func (b box) ReorderChildAfter(child Widget, sibling Widget) {
 // baseline is not allocated by the parent then @position is used to
 // allocate the baseline with respect to the extra space available.
 func (b box) SetBaselinePosition(position BaselinePosition) {
-	var _arg0 *C.GtkBox
-	var _arg1 C.GtkBaselinePosition
+	var _arg0 *C.GtkBox             // out
+	var _arg1 C.GtkBaselinePosition // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = (C.GtkBaselinePosition)(position)
@@ -250,8 +250,8 @@ func (b box) SetBaselinePosition(position BaselinePosition) {
 // SetHomogeneous sets whether or not all children of @box are given equal
 // space in the box.
 func (b box) SetHomogeneous(homogeneous bool) {
-	var _arg0 *C.GtkBox
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkBox  // out
+	var _arg1 C.gboolean // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	if homogeneous {
@@ -263,8 +263,8 @@ func (b box) SetHomogeneous(homogeneous bool) {
 
 // SetSpacing sets the number of pixels to place between children of @box.
 func (b box) SetSpacing(spacing int) {
-	var _arg0 *C.GtkBox
-	var _arg1 C.int
+	var _arg0 *C.GtkBox // out
+	var _arg1 C.int     // out
 
 	_arg0 = (*C.GtkBox)(unsafe.Pointer(b.Native()))
 	_arg1 = C.int(spacing)

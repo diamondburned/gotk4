@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -63,23 +63,23 @@ func marshalStyleProvider(p uintptr) (interface{}, error) {
 // StyleProperty looks up a widget style property as defined by @provider
 // for the widget represented by @path.
 func (p styleProvider) StyleProperty(path *WidgetPath, state StateFlags, pspec gobject.ParamSpec) (*externglib.Value, bool) {
-	var _arg0 *C.GtkStyleProvider
-	var _arg1 *C.GtkWidgetPath
-	var _arg2 C.GtkStateFlags
-	var _arg3 *C.GParamSpec
+	var _arg0 *C.GtkStyleProvider // out
+	var _arg1 *C.GtkWidgetPath    // out
+	var _arg2 C.GtkStateFlags     // out
+	var _arg3 *C.GParamSpec       // out
 
 	_arg0 = (*C.GtkStyleProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidgetPath)(unsafe.Pointer(path.Native()))
 	_arg2 = (C.GtkStateFlags)(state)
 	_arg3 = (*C.GParamSpec)(unsafe.Pointer(pspec.Native()))
 
-	var _arg4 C.GValue
-	var _cret C.gboolean
+	var _arg4 C.GValue   // in
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_style_provider_get_style_property(_arg0, _arg1, _arg2, _arg3, &_arg4)
 
-	var _value *externglib.Value
-	var _ok bool
+	var _value *externglib.Value // out
+	var _ok bool                 // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_arg4))
 	if _cret {

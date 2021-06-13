@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -62,8 +62,8 @@ func marshalSelectionFilterModel(p uintptr) (interface{}, error) {
 // type of @self. It assumes that the caller knows what they are doing and
 // have set up an appropriate filter to ensure that item types match.
 func (s selectionFilterModel) SetModel(model SelectionModel) {
-	var _arg0 *C.GtkSelectionFilterModel
-	var _arg1 *C.GtkSelectionModel
+	var _arg0 *C.GtkSelectionFilterModel // out
+	var _arg1 *C.GtkSelectionModel       // out
 
 	_arg0 = (*C.GtkSelectionFilterModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkSelectionModel)(unsafe.Pointer(model.Native()))

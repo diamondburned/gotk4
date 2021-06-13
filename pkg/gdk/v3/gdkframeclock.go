@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -118,7 +118,7 @@ func marshalFrameClock(p uintptr) (interface{}, error) {
 // function may be called multiple times and frames will be requested until
 // gdk_frame_clock_end_updating() is called the same number of times.
 func (f frameClock) BeginUpdating() {
-	var _arg0 *C.GdkFrameClock
+	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
@@ -128,7 +128,7 @@ func (f frameClock) BeginUpdating() {
 // EndUpdating stops updates for an animation. See the documentation for
 // gdk_frame_clock_begin_updating().
 func (f frameClock) EndUpdating() {
-	var _arg0 *C.GdkFrameClock
+	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
@@ -138,15 +138,15 @@ func (f frameClock) EndUpdating() {
 // FrameCounter: a FrameClock maintains a 64-bit counter that increments for
 // each frame drawn.
 func (f frameClock) FrameCounter() int64 {
-	var _arg0 *C.GdkFrameClock
+	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_clock_get_frame_counter(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -159,15 +159,15 @@ func (f frameClock) FrameCounter() int64 {
 // time of the conceptual “previous frame,” which may be either the actual
 // previous frame time, or if that’s too old, an updated time.
 func (f frameClock) FrameTime() int64 {
-	var _arg0 *C.GdkFrameClock
+	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_clock_get_frame_time(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -180,15 +180,15 @@ func (f frameClock) FrameTime() int64 {
 // the counter values given by gdk_frame_clock_get_history_start() and
 // gdk_frame_clock_get_frame_counter(), inclusive.
 func (f frameClock) HistoryStart() int64 {
-	var _arg0 *C.GdkFrameClock
+	var _arg0 *C.GdkFrameClock // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 
-	var _cret C.gint64
+	var _cret C.gint64 // in
 
 	_cret = C.gdk_frame_clock_get_history_start(_arg0)
 
-	var _gint64 int64
+	var _gint64 int64 // out
 
 	_gint64 = (int64)(_cret)
 
@@ -201,19 +201,19 @@ func (f frameClock) HistoryStart() int64 {
 // presentation time that is a multiple of the refresh interval after the
 // last presentation time, and later than @base_time.
 func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, presentationTimeReturn int64) {
-	var _arg0 *C.GdkFrameClock
-	var _arg1 C.gint64
+	var _arg0 *C.GdkFrameClock // out
+	var _arg1 C.gint64         // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 	_arg1 = C.gint64(baseTime)
 
-	var _arg2 C.gint64
-	var _arg3 C.gint64
+	var _arg2 C.gint64 // in
+	var _arg3 C.gint64 // in
 
 	C.gdk_frame_clock_get_refresh_info(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _refreshIntervalReturn int64
-	var _presentationTimeReturn int64
+	var _refreshIntervalReturn int64  // out
+	var _presentationTimeReturn int64 // out
 
 	_refreshIntervalReturn = (int64)(_arg2)
 	_presentationTimeReturn = (int64)(_arg3)
@@ -230,8 +230,8 @@ func (f frameClock) RefreshInfo(baseTime int64) (refreshIntervalReturn int64, pr
 // gdk_frame_clock_begin_updating() instead, since this allows GTK+ to
 // adjust system parameters to get maximally smooth animations.
 func (f frameClock) RequestPhase(phase FrameClockPhase) {
-	var _arg0 *C.GdkFrameClock
-	var _arg1 C.GdkFrameClockPhase
+	var _arg0 *C.GdkFrameClock     // out
+	var _arg1 C.GdkFrameClockPhase // out
 
 	_arg0 = (*C.GdkFrameClock)(unsafe.Pointer(f.Native()))
 	_arg1 = (C.GdkFrameClockPhase)(phase)

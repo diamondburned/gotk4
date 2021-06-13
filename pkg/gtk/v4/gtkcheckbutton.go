@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -155,15 +155,15 @@ func marshalCheckButton(p uintptr) (interface{}, error) {
 
 // Active returns whether the check button is active.
 func (s checkButton) Active() bool {
-	var _arg0 *C.GtkCheckButton
+	var _arg0 *C.GtkCheckButton // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_button_get_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -175,15 +175,15 @@ func (s checkButton) Active() bool {
 // Inconsistent returns whether the check button is in an inconsistent
 // state.
 func (c checkButton) Inconsistent() bool {
-	var _arg0 *C.GtkCheckButton
+	var _arg0 *C.GtkCheckButton // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_button_get_inconsistent(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -194,15 +194,15 @@ func (c checkButton) Inconsistent() bool {
 
 // Label returns the label of the check button.
 func (s checkButton) Label() string {
-	var _arg0 *C.GtkCheckButton
+	var _arg0 *C.GtkCheckButton // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_check_button_get_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -211,15 +211,15 @@ func (s checkButton) Label() string {
 
 // UseUnderline returns whether underlines in the label indicate mnemonics.
 func (s checkButton) UseUnderline() bool {
-	var _arg0 *C.GtkCheckButton
+	var _arg0 *C.GtkCheckButton // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_check_button_get_use_underline(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -230,8 +230,8 @@ func (s checkButton) UseUnderline() bool {
 
 // SetActive changes the check buttons active state.
 func (s checkButton) SetActive(setting bool) {
-	var _arg0 *C.GtkCheckButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCheckButton // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 	if setting {
@@ -257,8 +257,8 @@ func (s checkButton) SetActive(setting bool) {
 // type and state type 's' for all buttons in the group, and giving each
 // button its own target value.
 func (s checkButton) SetGroup(group CheckButton) {
-	var _arg0 *C.GtkCheckButton
-	var _arg1 *C.GtkCheckButton
+	var _arg0 *C.GtkCheckButton // out
+	var _arg1 *C.GtkCheckButton // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkCheckButton)(unsafe.Pointer(group.Native()))
@@ -271,8 +271,8 @@ func (s checkButton) SetGroup(group CheckButton) {
 // You shoud turn off the inconsistent state again if the user checks the
 // check button. This has to be done manually.
 func (c checkButton) SetInconsistent(inconsistent bool) {
-	var _arg0 *C.GtkCheckButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCheckButton // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(c.Native()))
 	if inconsistent {
@@ -288,8 +288,8 @@ func (c checkButton) SetInconsistent(inconsistent bool) {
 // @label is interpreted as mnemonic indicator, see
 // [method@Gtk.CheckButton.set_use_underline] for details on this behavior.
 func (s checkButton) SetLabel(label string) {
-	var _arg0 *C.GtkCheckButton
-	var _arg1 *C.char
+	var _arg0 *C.GtkCheckButton // out
+	var _arg1 *C.char           // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(label))
@@ -304,8 +304,8 @@ func (s checkButton) SetLabel(label string) {
 // mnemonic accelerator key. This behavior is similar to
 // [property@Gtk.Label:use-underline].
 func (s checkButton) SetUseUnderline(setting bool) {
-	var _arg0 *C.GtkCheckButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkCheckButton // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkCheckButton)(unsafe.Pointer(s.Native()))
 	if setting {

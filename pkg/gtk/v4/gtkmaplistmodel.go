@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -37,7 +37,7 @@ func gotk4_MapListModelMapFunc(arg0 C.gpointer, arg1 C.gpointer) C.gpointer {
 		panic(`callback not found`)
 	}
 
-	var item gextras.Objector
+	var item gextras.Objector // out
 
 	item = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
 
@@ -108,15 +108,15 @@ func marshalMapListModel(p uintptr) (interface{}, error) {
 
 // HasMap checks if a map function is currently set on @self.
 func (s mapListModel) HasMap() bool {
-	var _arg0 *C.GtkMapListModel
+	var _arg0 *C.GtkMapListModel // out
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_map_list_model_has_map(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -131,8 +131,8 @@ func (s mapListModel) HasMap() bool {
 // expected by the map function. It assumes that the caller knows what they
 // are doing and have set up an appropriate map function.
 func (s mapListModel) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkMapListModel
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkMapListModel // out
+	var _arg1 *C.GListModel      // out
 
 	_arg0 = (*C.GtkMapListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))

@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -74,15 +74,15 @@ func marshalSliceListModel(p uintptr) (interface{}, error) {
 
 // Offset gets the offset set via gtk_slice_list_model_set_offset().
 func (s sliceListModel) Offset() uint {
-	var _arg0 *C.GtkSliceListModel
+	var _arg0 *C.GtkSliceListModel // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_slice_list_model_get_offset(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -91,15 +91,15 @@ func (s sliceListModel) Offset() uint {
 
 // Size gets the size set via gtk_slice_list_model_set_size().
 func (s sliceListModel) Size() uint {
-	var _arg0 *C.GtkSliceListModel
+	var _arg0 *C.GtkSliceListModel // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_slice_list_model_get_size(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -110,8 +110,8 @@ func (s sliceListModel) Size() uint {
 //
 // The model's item type must conform to @self's item type.
 func (s sliceListModel) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkSliceListModel
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkSliceListModel // out
+	var _arg1 *C.GListModel        // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
@@ -123,8 +123,8 @@ func (s sliceListModel) SetModel(model gio.ListModel) {
 //
 // If the offset is too large for the sliced model, @self will end up empty.
 func (s sliceListModel) SetOffset(offset uint) {
-	var _arg0 *C.GtkSliceListModel
-	var _arg1 C.guint
+	var _arg0 *C.GtkSliceListModel // out
+	var _arg1 C.guint              // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(offset)
@@ -138,8 +138,8 @@ func (s sliceListModel) SetOffset(offset uint) {
 // It can however have fewer items if the offset is too large or the model
 // sliced from doesn't have enough items.
 func (s sliceListModel) SetSize(size uint) {
-	var _arg0 *C.GtkSliceListModel
-	var _arg1 C.guint
+	var _arg0 *C.GtkSliceListModel // out
+	var _arg1 C.guint              // out
 
 	_arg0 = (*C.GtkSliceListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(size)

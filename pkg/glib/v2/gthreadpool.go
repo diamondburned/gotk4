@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/gerror"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -44,14 +44,14 @@ func (t *ThreadPool) Native() unsafe.Pointer {
 
 // UserData gets the field inside the struct.
 func (t *ThreadPool) UserData() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(t.native.user_data)
 	return v
 }
 
 // Exclusive gets the field inside the struct.
 func (t *ThreadPool) Exclusive() bool {
-	var v bool
+	var v bool // out
 	if t.native.exclusive {
 		v = true
 	}
@@ -71,9 +71,9 @@ func (t *ThreadPool) Exclusive() bool {
 //
 // After calling this function @pool must not be used anymore.
 func (p *ThreadPool) Free(immediate bool, wait_ bool) {
-	var _arg0 *C.GThreadPool
-	var _arg1 C.gboolean
-	var _arg2 C.gboolean
+	var _arg0 *C.GThreadPool // out
+	var _arg1 C.gboolean     // out
+	var _arg2 C.gboolean     // out
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	if immediate {
@@ -88,15 +88,15 @@ func (p *ThreadPool) Free(immediate bool, wait_ bool) {
 
 // MaxThreads returns the maximal number of threads for @pool.
 func (p *ThreadPool) MaxThreads() int {
-	var _arg0 *C.GThreadPool
+	var _arg0 *C.GThreadPool // out
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_thread_pool_get_max_threads(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -105,15 +105,15 @@ func (p *ThreadPool) MaxThreads() int {
 
 // NumThreads returns the number of threads currently running in @pool.
 func (p *ThreadPool) NumThreads() uint {
-	var _arg0 *C.GThreadPool
+	var _arg0 *C.GThreadPool // out
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_thread_pool_get_num_threads(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -123,17 +123,17 @@ func (p *ThreadPool) NumThreads() uint {
 // MoveToFront moves the item to the front of the queue of unprocessed items, so
 // that it will be processed next.
 func (p *ThreadPool) MoveToFront(data interface{}) bool {
-	var _arg0 *C.GThreadPool
-	var _arg1 C.gpointer
+	var _arg0 *C.GThreadPool // out
+	var _arg1 C.gpointer     // out
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	_arg1 = C.gpointer(data)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_thread_pool_move_to_front(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -155,17 +155,17 @@ func (p *ThreadPool) MoveToFront(data interface{}) bool {
 //
 // Before version 2.32, this function did not return a success status.
 func (p *ThreadPool) Push(data interface{}) error {
-	var _arg0 *C.GThreadPool
-	var _arg1 C.gpointer
+	var _arg0 *C.GThreadPool // out
+	var _arg1 C.gpointer     // out
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	_arg1 = C.gpointer(data)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_thread_pool_push(_arg0, _arg1, _cerr)
+	C.g_thread_pool_push(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -191,17 +191,17 @@ func (p *ThreadPool) Push(data interface{}) error {
 //
 // Before version 2.32, this function did not return a success status.
 func (p *ThreadPool) SetMaxThreads(maxThreads int) error {
-	var _arg0 *C.GThreadPool
-	var _arg1 C.gint
+	var _arg0 *C.GThreadPool // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 	_arg1 = C.gint(maxThreads)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_thread_pool_set_max_threads(_arg0, _arg1, _cerr)
+	C.g_thread_pool_set_max_threads(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -217,8 +217,8 @@ func (p *ThreadPool) SetMaxThreads(maxThreads int) error {
 // operating system and are executed at random. It cannot be assumed that
 // threads are executed in the order they are created.
 func (p *ThreadPool) SetSortFunction(fn CompareDataFunc) {
-	var _arg0 *C.GThreadPool
-	var _arg1 C.GCompareDataFunc
+	var _arg0 *C.GThreadPool     // out
+	var _arg1 C.GCompareDataFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
@@ -230,15 +230,15 @@ func (p *ThreadPool) SetSortFunction(fn CompareDataFunc) {
 
 // Unprocessed returns the number of tasks still unprocessed in @pool.
 func (p *ThreadPool) Unprocessed() uint {
-	var _arg0 *C.GThreadPool
+	var _arg0 *C.GThreadPool // out
 
 	_arg0 = (*C.GThreadPool)(unsafe.Pointer(p.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_thread_pool_unprocessed(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 

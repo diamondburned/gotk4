@@ -37,8 +37,9 @@ type Generator struct {
 	ModPath ModulePathFunc
 	Filters []FilterMatcher
 
-	Logger *log.Logger
-	color  bool
+	Logger   *log.Logger
+	LogLevel LogLevel
+	Color    bool
 }
 
 // ModulePathFunc returns the Go module import path from the given namespace.
@@ -67,6 +68,7 @@ func NewGenerator(repos gir.Repositories, modPath ModulePathFunc) *Generator {
 			// glib:get-type).
 			AbsoluteFilter("C.intern"),
 		},
+		LogLevel: LogUnsupported,
 	}
 }
 
@@ -87,12 +89,6 @@ func (g *Generator) UseNamespace(namespace, version string) *NamespaceGenerator 
 		gen:     g,
 		current: res,
 	}
-}
-
-// WithLogger sets the generator's Logger.
-func (g *Generator) WithLogger(Logger *log.Logger, color bool) {
-	g.Logger = Logger
-	g.color = color
 }
 
 type LogLevel uint8
@@ -164,13 +160,13 @@ var (
 
 // Logln Logs using the Logger.
 func (g *Generator) Logln(level LogLevel, v ...interface{}) {
-	if g.Logger == nil {
+	if g.Logger == nil || g.LogLevel > level {
 		return
 	}
 
 	prefix := level.prefix()
 	if prefix != "" {
-		if g.color {
+		if g.Color {
 			prefix = level.colorf(prefix)
 		}
 		v = append([]interface{}{prefix}, v...)

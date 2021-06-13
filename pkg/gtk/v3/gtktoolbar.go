@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -138,19 +138,19 @@ func marshalToolbar(p uintptr) (interface{}, error) {
 //
 // @x and @y are in @toolbar coordinates.
 func (t toolbar) DropIndex(x int, y int) int {
-	var _arg0 *C.GtkToolbar
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg0 *C.GtkToolbar // out
+	var _arg1 C.gint        // out
+	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(x)
 	_arg2 = C.gint(y)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_toolbar_get_drop_index(_arg0, _arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -160,17 +160,17 @@ func (t toolbar) DropIndex(x int, y int) int {
 // ItemIndex returns the position of @item on the toolbar, starting from 0.
 // It is an error if @item is not a child of the toolbar.
 func (t toolbar) ItemIndex(item ToolItem) int {
-	var _arg0 *C.GtkToolbar
-	var _arg1 *C.GtkToolItem
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_toolbar_get_item_index(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -179,15 +179,15 @@ func (t toolbar) ItemIndex(item ToolItem) int {
 
 // NItems returns the number of items on the toolbar.
 func (t toolbar) NItems() int {
-	var _arg0 *C.GtkToolbar
+	var _arg0 *C.GtkToolbar // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_toolbar_get_n_items(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -197,15 +197,15 @@ func (t toolbar) NItems() int {
 // ShowArrow returns whether the toolbar has an overflow menu. See
 // gtk_toolbar_set_show_arrow().
 func (t toolbar) ShowArrow() bool {
-	var _arg0 *C.GtkToolbar
+	var _arg0 *C.GtkToolbar // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toolbar_get_show_arrow(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -218,9 +218,9 @@ func (t toolbar) ShowArrow() bool {
 // the item is prepended to the start of the toolbar. If @pos is negative,
 // the item is appended to the end of the toolbar.
 func (t toolbar) Insert(item ToolItem, pos int) {
-	var _arg0 *C.GtkToolbar
-	var _arg1 *C.GtkToolItem
-	var _arg2 C.gint
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 *C.GtkToolItem // out
+	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(item.Native()))
@@ -238,9 +238,9 @@ func (t toolbar) Insert(item ToolItem, pos int) {
 // hierarchy. When an item is set as drop highlight item it can not added to
 // any widget hierarchy or used as highlight item for another toolbar.
 func (t toolbar) SetDropHighlightItem(toolItem ToolItem, index_ int) {
-	var _arg0 *C.GtkToolbar
-	var _arg1 *C.GtkToolItem
-	var _arg2 C.gint
+	var _arg0 *C.GtkToolbar  // out
+	var _arg1 *C.GtkToolItem // out
+	var _arg2 C.gint         // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkToolItem)(unsafe.Pointer(toolItem.Native()))
@@ -257,8 +257,8 @@ func (t toolbar) SetDropHighlightItem(toolItem ToolItem, index_ int) {
 // This should only be used for special-purpose toolbars, normal application
 // toolbars should respect the user preferences for the size of icons.
 func (t toolbar) SetIconSize(iconSize IconSize) {
-	var _arg0 *C.GtkToolbar
-	var _arg1 C.GtkIconSize
+	var _arg0 *C.GtkToolbar // out
+	var _arg1 C.GtkIconSize // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GtkIconSize)(iconSize)
@@ -274,8 +274,8 @@ func (t toolbar) SetIconSize(iconSize IconSize) {
 // button. If false, @toolbar will request enough size to fit all of its
 // child items without any overflow.
 func (t toolbar) SetShowArrow(showArrow bool) {
-	var _arg0 *C.GtkToolbar
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToolbar // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	if showArrow {
@@ -288,8 +288,8 @@ func (t toolbar) SetShowArrow(showArrow bool) {
 // SetStyle alters the view of @toolbar to display either icons only, text
 // only, or both.
 func (t toolbar) SetStyle(style ToolbarStyle) {
-	var _arg0 *C.GtkToolbar
-	var _arg1 C.GtkToolbarStyle
+	var _arg0 *C.GtkToolbar     // out
+	var _arg1 C.GtkToolbarStyle // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 	_arg1 = (C.GtkToolbarStyle)(style)
@@ -301,7 +301,7 @@ func (t toolbar) SetStyle(style ToolbarStyle) {
 // gtk_toolbar_set_icon_size(), so that user preferences will be used to
 // determine the icon size.
 func (t toolbar) UnsetIconSize() {
-	var _arg0 *C.GtkToolbar
+	var _arg0 *C.GtkToolbar // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 
@@ -311,7 +311,7 @@ func (t toolbar) UnsetIconSize() {
 // UnsetStyle unsets a toolbar style set with gtk_toolbar_set_style(), so
 // that user preferences will be used to determine the toolbar style.
 func (t toolbar) UnsetStyle() {
-	var _arg0 *C.GtkToolbar
+	var _arg0 *C.GtkToolbar // out
 
 	_arg0 = (*C.GtkToolbar)(unsafe.Pointer(t.Native()))
 

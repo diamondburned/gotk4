@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-x11 gtk4
+// #cgo pkg-config: gtk4-x11 gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/x11/gdkx.h>
@@ -57,7 +57,7 @@ func marshalX11Monitor(p uintptr) (interface{}, error) {
 // ”application pixels”, not in ”device pixels” (see
 // gdk_monitor_get_scale_factor()).
 func (m x11Monitor) Workarea() gdk.Rectangle {
-	var _arg0 *C.GdkMonitor
+	var _arg0 *C.GdkMonitor // out
 
 	_arg0 = (*C.GdkMonitor)(unsafe.Pointer(m.Native()))
 

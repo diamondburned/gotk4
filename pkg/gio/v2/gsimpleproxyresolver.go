@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -93,8 +93,8 @@ func marshalSimpleProXYResolver(p uintptr) (interface{}, error) {
 // If @default_proxy starts with "socks://", ProxyResolver will treat it as
 // referring to all three of the socks5, socks4a, and socks4 proxy types.
 func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
-	var _arg0 *C.GSimpleProxyResolver
-	var _arg1 *C.gchar
+	var _arg0 *C.GSimpleProxyResolver // out
+	var _arg1 *C.gchar                // out
 
 	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(defaultProxy))
@@ -108,8 +108,8 @@ func (r simpleProXYResolver) SetDefaultProXY(defaultProxy string) {
 // See ProxyResolver:ignore-hosts for more details on how the @ignore_hosts
 // argument is interpreted.
 func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
-	var _arg0 *C.GSimpleProxyResolver
-	var _arg1 **C.gchar
+	var _arg0 *C.GSimpleProxyResolver // out
+	var _arg1 **C.gchar               // out
 
 	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (**C.gchar)(C.CString(ignoreHosts))
@@ -126,9 +126,9 @@ func (r simpleProXYResolver) SetIgnoreHosts(ignoreHosts *string) {
 // ProxyResolver will treat it as referring to all three of the socks5,
 // socks4a, and socks4 proxy types.
 func (r simpleProXYResolver) SetURIProXY(uriScheme string, proxy string) {
-	var _arg0 *C.GSimpleProxyResolver
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GSimpleProxyResolver // out
+	var _arg1 *C.gchar                // out
+	var _arg2 *C.gchar                // out
 
 	_arg0 = (*C.GSimpleProxyResolver)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.gchar)(C.CString(uriScheme))

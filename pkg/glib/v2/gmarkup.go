@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -119,18 +119,18 @@ const (
 // carriage return. The character references in this range are not valid XML
 // 1.0, but they are valid XML 1.1 and will be accepted by the GMarkup parser.
 func MarkupEscapeText(text string, length int) string {
-	var _arg1 *C.gchar
-	var _arg2 C.gssize
+	var _arg1 *C.gchar // out
+	var _arg2 C.gssize // out
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(length)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_markup_escape_text(_arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -172,15 +172,15 @@ func (m *MarkupParseContext) Native() unsafe.Pointer {
 // This function reports an error if the document isn't complete, for example if
 // elements are still open.
 func (c *MarkupParseContext) EndParse() error {
-	var _arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_markup_parse_context_end_parse(_arg0, _cerr)
+	C.g_markup_parse_context_end_parse(_arg0, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -192,7 +192,7 @@ func (c *MarkupParseContext) EndParse() error {
 // This function can't be called from inside one of the Parser functions or
 // while a subparser is pushed.
 func (c *MarkupParseContext) Free() {
-	var _arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
@@ -205,15 +205,15 @@ func (c *MarkupParseContext) Free() {
 // element_name as passed to those functions. For the parent elements, see
 // g_markup_parse_context_get_element_stack().
 func (c *MarkupParseContext) Element() string {
-	var _arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_markup_parse_context_get_element(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -225,17 +225,17 @@ func (c *MarkupParseContext) Element() string {
 // for what constitutes the "current" line number other than "the best number we
 // could come up with for error messages."
 func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
-	var _arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
 
 	C.g_markup_parse_context_get_position(_arg0, &_arg1, &_arg2)
 
-	var _lineNumber int
-	var _charNumber int
+	var _lineNumber int // out
+	var _charNumber int // out
 
 	_lineNumber = (int)(_arg1)
 	_charNumber = (int)(_arg2)
@@ -249,15 +249,15 @@ func (c *MarkupParseContext) Position() (lineNumber int, charNumber int) {
 // g_markup_parse_context_new() or to the most recent call of
 // g_markup_parse_context_push().
 func (c *MarkupParseContext) UserData() interface{} {
-	var _arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_markup_parse_context_get_user_data(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -274,20 +274,20 @@ func (c *MarkupParseContext) UserData() interface{} {
 // error is reported, no further data may be fed to the ParseContext; all errors
 // are fatal.
 func (c *MarkupParseContext) Parse(text string, textLen int) error {
-	var _arg0 *C.GMarkupParseContext
-	var _arg1 *C.gchar
-	var _arg2 C.gssize
+	var _arg0 *C.GMarkupParseContext // out
+	var _arg1 *C.gchar               // out
+	var _arg2 C.gssize               // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = C.gssize(textLen)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, _cerr)
+	C.g_markup_parse_context_parse(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -307,15 +307,15 @@ func (c *MarkupParseContext) Parse(text string, textLen int) error {
 // invoking subparsers. Instead, it is intended to be used by the subparsers
 // themselves to implement a higher-level interface.
 func (c *MarkupParseContext) Pop() interface{} {
-	var _arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_markup_parse_context_pop(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -325,7 +325,7 @@ func (c *MarkupParseContext) Pop() interface{} {
 // Unref decreases the reference count of @context. When its reference count
 // drops to 0, it is freed.
 func (c *MarkupParseContext) Unref() {
-	var _arg0 *C.GMarkupParseContext
+	var _arg0 *C.GMarkupParseContext // out
 
 	_arg0 = (*C.GMarkupParseContext)(unsafe.Pointer(c.Native()))
 

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -57,15 +57,15 @@ func marshalGestureZoom(p uintptr) (interface{}, error) {
 // difference since the gesture was recognized (hence the starting point is
 // considered 1:1). If @gesture is not active, 1 is returned.
 func (g gestureZoom) ScaleDelta() float64 {
-	var _arg0 *C.GtkGestureZoom
+	var _arg0 *C.GtkGestureZoom // out
 
 	_arg0 = (*C.GtkGestureZoom)(unsafe.Pointer(g.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_gesture_zoom_get_scale_delta(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 

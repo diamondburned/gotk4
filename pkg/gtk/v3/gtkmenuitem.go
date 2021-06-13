@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -142,7 +142,7 @@ func marshalMenuItem(p uintptr) (interface{}, error) {
 
 // Activate emits the MenuItem::activate signal on the given item
 func (m menuItem) Activate() {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
@@ -151,7 +151,7 @@ func (m menuItem) Activate() {
 
 // Deselect emits the MenuItem::deselect signal on the given item.
 func (m menuItem) Deselect() {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
@@ -163,15 +163,15 @@ func (m menuItem) Deselect() {
 //
 // See gtk_menu_item_set_accel_path() for details.
 func (m menuItem) AccelPath() string {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_menu_item_get_accel_path(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -180,15 +180,15 @@ func (m menuItem) AccelPath() string {
 
 // Label sets @text on the @menu_item label
 func (m menuItem) Label() string {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_menu_item_get_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -198,15 +198,15 @@ func (m menuItem) Label() string {
 // ReserveIndicator returns whether the @menu_item reserves space for the
 // submenu indicator, regardless if it has a submenu or not.
 func (m menuItem) ReserveIndicator() bool {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_item_get_reserve_indicator(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -218,15 +218,15 @@ func (m menuItem) ReserveIndicator() bool {
 // RightJustified gets whether the menu item appears justified at the right
 // side of the menu bar.
 func (m menuItem) RightJustified() bool {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_item_get_right_justified(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -238,15 +238,15 @@ func (m menuItem) RightJustified() bool {
 // UseUnderline checks if an underline in the text indicates the next
 // character should be used for the mnemonic accelerator key.
 func (m menuItem) UseUnderline() bool {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_item_get_use_underline(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -257,7 +257,7 @@ func (m menuItem) UseUnderline() bool {
 
 // Select emits the MenuItem::select signal on the given item.
 func (m menuItem) Select() {
-	var _arg0 *C.GtkMenuItem
+	var _arg0 *C.GtkMenuItem // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 
@@ -283,8 +283,8 @@ func (m menuItem) Select() {
 // you pass a static string, you can save some memory by interning it first
 // with g_intern_static_string().
 func (m menuItem) SetAccelPath(accelPath string) {
-	var _arg0 *C.GtkMenuItem
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(accelPath))
@@ -295,8 +295,8 @@ func (m menuItem) SetAccelPath(accelPath string) {
 
 // SetLabel sets @text on the @menu_item label
 func (m menuItem) SetLabel(label string) {
-	var _arg0 *C.GtkMenuItem
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.gchar)(C.CString(label))
@@ -310,8 +310,8 @@ func (m menuItem) SetLabel(label string) {
 //
 // There should be little need for applications to call this functions.
 func (m menuItem) SetReserveIndicator(reserve bool) {
-	var _arg0 *C.GtkMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	if reserve {
@@ -327,8 +327,8 @@ func (m menuItem) SetReserveIndicator(reserve bool) {
 // reversed for a right-to-left language like Hebrew or Arabic,
 // right-justified-menu-items appear at the left.)
 func (m menuItem) SetRightJustified(rightJustified bool) {
-	var _arg0 *C.GtkMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	if rightJustified {
@@ -341,8 +341,8 @@ func (m menuItem) SetRightJustified(rightJustified bool) {
 // SetSubmenu sets or replaces the menu item’s submenu, or removes it when a
 // nil submenu is passed.
 func (m menuItem) SetSubmenu(submenu Menu) {
-	var _arg0 *C.GtkMenuItem
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(submenu.Native()))
@@ -353,8 +353,8 @@ func (m menuItem) SetSubmenu(submenu Menu) {
 // SetUseUnderline: if true, an underline in the text indicates the next
 // character should be used for the mnemonic accelerator key.
 func (m menuItem) SetUseUnderline(setting bool) {
-	var _arg0 *C.GtkMenuItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	if setting {
@@ -367,8 +367,8 @@ func (m menuItem) SetUseUnderline(setting bool) {
 // ToggleSizeAllocate emits the MenuItem::toggle-size-allocate signal on the
 // given item.
 func (m menuItem) ToggleSizeAllocate(allocation int) {
-	var _arg0 *C.GtkMenuItem
-	var _arg1 C.gint
+	var _arg0 *C.GtkMenuItem // out
+	var _arg1 C.gint         // out
 
 	_arg0 = (*C.GtkMenuItem)(unsafe.Pointer(m.Native()))
 	_arg1 = C.gint(allocation)

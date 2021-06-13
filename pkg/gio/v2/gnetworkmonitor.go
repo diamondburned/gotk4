@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -122,19 +122,19 @@ func marshalNetworkMonitor(p uintptr) (interface{}, error) {
 // DNS on the local network), so if you do not want to block, you should use
 // g_network_monitor_can_reach_async().
 func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Cancellable) error {
-	var _arg0 *C.GNetworkMonitor
-	var _arg1 *C.GSocketConnectable
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GNetworkMonitor    // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg2 *C.GCancellable       // out
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(connectable.Native()))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, _cerr)
+	C.g_network_monitor_can_reach(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -151,10 +151,10 @@ func (m networkMonitor) CanReach(connectable SocketConnectable, cancellable Canc
 // call g_network_monitor_can_reach_finish() to get the result of the
 // operation.
 func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable Cancellable, callback AsyncReadyCallback) {
-	var _arg0 *C.GNetworkMonitor
-	var _arg1 *C.GSocketConnectable
-	var _arg2 *C.GCancellable
-	var _arg3 C.GAsyncReadyCallback
+	var _arg0 *C.GNetworkMonitor    // out
+	var _arg1 *C.GSocketConnectable // out
+	var _arg2 *C.GCancellable       // out
+	var _arg3 C.GAsyncReadyCallback // out
 	var _arg4 C.gpointer
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
@@ -169,17 +169,17 @@ func (m networkMonitor) CanReachAsync(connectable SocketConnectable, cancellable
 // CanReachFinish finishes an async network connectivity test. See
 // g_network_monitor_can_reach_async().
 func (m networkMonitor) CanReachFinish(result AsyncResult) error {
-	var _arg0 *C.GNetworkMonitor
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GNetworkMonitor // out
+	var _arg1 *C.GAsyncResult    // out
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_network_monitor_can_reach_finish(_arg0, _arg1, _cerr)
+	C.g_network_monitor_can_reach_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -191,15 +191,15 @@ func (m networkMonitor) CanReachFinish(result AsyncResult) error {
 // IPv4 or IPv6. It does not necessarily imply that the public Internet is
 // reachable. See Monitor:network-available for more details.
 func (m networkMonitor) NetworkAvailable() bool {
-	var _arg0 *C.GNetworkMonitor
+	var _arg0 *C.GNetworkMonitor // out
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_network_monitor_get_network_available(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -211,15 +211,15 @@ func (m networkMonitor) NetworkAvailable() bool {
 // NetworkMetered checks if the network is metered. See
 // Monitor:network-metered for more details.
 func (m networkMonitor) NetworkMetered() bool {
-	var _arg0 *C.GNetworkMonitor
+	var _arg0 *C.GNetworkMonitor // out
 
 	_arg0 = (*C.GNetworkMonitor)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_network_monitor_get_network_metered(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

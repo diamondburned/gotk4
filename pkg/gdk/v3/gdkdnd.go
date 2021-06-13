@@ -14,8 +14,8 @@ import "C"
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
 func DragAbort(context DragContext, time_ uint32) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 C.guint32
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.guint32(time_)
@@ -30,8 +30,8 @@ func DragAbort(context DragContext, time_ uint32) {
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
 func DragDrop(context DragContext, time_ uint32) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 C.guint32
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = C.guint32(time_)
@@ -49,8 +49,8 @@ func DragDrop(context DragContext, time_ uint32) {
 // effective, if this function is called multiple times, all subsequent calls
 // will be ignored.
 func DragDropDone(context DragContext, success bool) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 C.gboolean
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.gboolean        // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
@@ -64,15 +64,15 @@ func DragDropDone(context DragContext, success bool) {
 // transferred. This function is intended to be used while handling a
 // GDK_DROP_FINISHED event, its return value is meaningless at other times.
 func DragDropSucceeded(context DragContext) bool {
-	var _arg1 *C.GdkDragContext
+	var _arg1 *C.GdkDragContext // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_drag_drop_succeeded(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -89,14 +89,14 @@ func DragDropSucceeded(context DragContext) bool {
 // This function does not need to be called in managed drag and drop operations.
 // See gdk_drag_context_manage_dnd() for more information.
 func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, xRoot int, yRoot int, suggestedAction DragAction, possibleActions DragAction, time_ uint32) bool {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.GdkWindow
-	var _arg3 C.GdkDragProtocol
-	var _arg4 C.gint
-	var _arg5 C.gint
-	var _arg6 C.GdkDragAction
-	var _arg7 C.GdkDragAction
-	var _arg8 C.guint32
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.GdkWindow      // out
+	var _arg3 C.GdkDragProtocol // out
+	var _arg4 C.gint            // out
+	var _arg5 C.gint            // out
+	var _arg6 C.GdkDragAction   // out
+	var _arg7 C.GdkDragAction   // out
+	var _arg8 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkWindow)(unsafe.Pointer(destWindow.Native()))
@@ -107,11 +107,11 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 	_arg7 = (C.GdkDragAction)(possibleActions)
 	_arg8 = C.guint32(time_)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_drag_motion(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6, _arg7, _arg8)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -125,9 +125,9 @@ func DragMotion(context DragContext, destWindow Window, protocol DragProtocol, x
 // This function is called by the drag destination in response to
 // gdk_drag_motion() called by the drag source.
 func DragStatus(context DragContext, action DragAction, time_ uint32) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 C.GdkDragAction
-	var _arg3 C.guint32
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.GdkDragAction   // out
+	var _arg3 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (C.GdkDragAction)(action)
@@ -140,9 +140,9 @@ func DragStatus(context DragContext, action DragAction, time_ uint32) {
 //
 // This function is called by the drag destination.
 func DropFinish(context DragContext, success bool, time_ uint32) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 C.gboolean
-	var _arg3 C.guint32
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.gboolean        // out
+	var _arg3 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
@@ -158,9 +158,9 @@ func DropFinish(context DragContext, success bool, time_ uint32) {
 // This function is called by the drag destination in response to a drop
 // initiated by the drag source.
 func DropReply(context DragContext, accepted bool, time_ uint32) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 C.gboolean
-	var _arg3 C.guint32
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.gboolean        // out
+	var _arg3 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if accepted {

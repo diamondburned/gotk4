@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -67,7 +67,7 @@ func marshalSpinner(p uintptr) (interface{}, error) {
 
 // Start starts the animation of the spinner.
 func (s spinner) Start() {
-	var _arg0 *C.GtkSpinner
+	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 
@@ -76,7 +76,7 @@ func (s spinner) Start() {
 
 // Stop stops the animation of the spinner.
 func (s spinner) Stop() {
-	var _arg0 *C.GtkSpinner
+	var _arg0 *C.GtkSpinner // out
 
 	_arg0 = (*C.GtkSpinner)(unsafe.Pointer(s.Native()))
 

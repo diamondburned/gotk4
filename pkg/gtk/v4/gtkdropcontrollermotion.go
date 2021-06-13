@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -61,15 +61,15 @@ func marshalDropControllerMotion(p uintptr) (interface{}, error) {
 // ContainsPointer returns if a Drag-and-Drop operation is within the widget
 // @self or one of its children.
 func (s dropControllerMotion) ContainsPointer() bool {
-	var _arg0 *C.GtkDropControllerMotion
+	var _arg0 *C.GtkDropControllerMotion // out
 
 	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_controller_motion_contains_pointer(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -81,15 +81,15 @@ func (s dropControllerMotion) ContainsPointer() bool {
 // IsPointer returns if a Drag-and-Drop operation is within the widget
 // @self, not one of its children.
 func (s dropControllerMotion) IsPointer() bool {
-	var _arg0 *C.GtkDropControllerMotion
+	var _arg0 *C.GtkDropControllerMotion // out
 
 	_arg0 = (*C.GtkDropControllerMotion)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_controller_motion_is_pointer(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -155,15 +155,15 @@ func marshalListModel(p uintptr) (interface{}, error) {
 //
 // The item type of a Model can not change during the life of the model.
 func (l listModel) ItemType() externglib.Type {
-	var _arg0 *C.GListModel
+	var _arg0 *C.GListModel // out
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
-	var _cret C.GType
+	var _cret C.GType // in
 
 	_cret = C.g_list_model_get_item_type(_arg0)
 
-	var _gType externglib.Type
+	var _gType externglib.Type // out
 
 	_gType = externglib.Type(_cret)
 
@@ -176,15 +176,15 @@ func (l listModel) ItemType() externglib.Type {
 // efficient than iterating the list with increasing values for @position
 // until g_list_model_get_item() returns nil.
 func (l listModel) NItems() uint {
-	var _arg0 *C.GListModel
+	var _arg0 *C.GListModel // out
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_list_model_get_n_items(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -197,17 +197,17 @@ func (l listModel) NItems() uint {
 // nil is never returned for an index that is smaller than the length of the
 // list. See g_list_model_get_n_items().
 func (l listModel) Object(position uint) gextras.Objector {
-	var _arg0 *C.GListModel
-	var _arg1 C.guint
+	var _arg0 *C.GListModel // out
+	var _arg1 C.guint       // out
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 	_arg1 = C.guint(position)
 
-	var _cret *C.GObject
+	var _cret *C.GObject // in
 
 	_cret = C.g_list_model_get_object(_arg0, _arg1)
 
-	var _object gextras.Objector
+	var _object gextras.Objector // out
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
@@ -234,10 +234,10 @@ func (l listModel) Object(position uint) gextras.Objector {
 // and without calling other code, will continue to view the same contents
 // of the model.
 func (l listModel) ItemsChanged(position uint, removed uint, added uint) {
-	var _arg0 *C.GListModel
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
+	var _arg0 *C.GListModel // out
+	var _arg1 C.guint       // out
+	var _arg2 C.guint       // out
+	var _arg3 C.guint       // out
 
 	_arg0 = (*C.GListModel)(unsafe.Pointer(l.Native()))
 	_arg1 = C.guint(position)

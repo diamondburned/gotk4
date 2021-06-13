@@ -2,7 +2,7 @@
 
 package gdkpixbuf
 
-// #cgo pkg-config:
+// #cgo pkg-config: gdk-pixbuf-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gdk-pixbuf/gdk-pixbuf.h>
 import "C"

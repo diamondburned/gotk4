@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -108,9 +108,9 @@ func marshalColorChooser(p uintptr) (interface{}, error) {
 //
 // If @colors is nil, removes all previously added palettes.
 func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, colors []gdk.RGBA) {
-	var _arg0 *C.GtkColorChooser
-	var _arg1 C.GtkOrientation
-	var _arg2 C.int
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 C.GtkOrientation   // out
+	var _arg2 C.int              // out
 	var _arg4 *C.GdkRGBA
 	var _arg3 C.int
 
@@ -125,7 +125,7 @@ func (c colorChooser) AddPalette(orientation Orientation, colorsPerLine int, col
 
 // RGBA gets the currently-selected color.
 func (c colorChooser) RGBA() gdk.RGBA {
-	var _arg0 *C.GtkColorChooser
+	var _arg0 *C.GtkColorChooser // out
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
@@ -138,15 +138,15 @@ func (c colorChooser) RGBA() gdk.RGBA {
 
 // UseAlpha returns whether the color chooser shows the alpha channel.
 func (c colorChooser) UseAlpha() bool {
-	var _arg0 *C.GtkColorChooser
+	var _arg0 *C.GtkColorChooser // out
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_color_chooser_get_use_alpha(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -157,8 +157,8 @@ func (c colorChooser) UseAlpha() bool {
 
 // SetRGBA sets the color.
 func (c colorChooser) SetRGBA(color *gdk.RGBA) {
-	var _arg0 *C.GtkColorChooser
-	var _arg1 *C.GdkRGBA
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 *C.GdkRGBA         // out
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
@@ -169,8 +169,8 @@ func (c colorChooser) SetRGBA(color *gdk.RGBA) {
 // SetUseAlpha sets whether or not the color chooser should use the alpha
 // channel.
 func (c colorChooser) SetUseAlpha(useAlpha bool) {
-	var _arg0 *C.GtkColorChooser
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkColorChooser // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkColorChooser)(unsafe.Pointer(c.Native()))
 	if useAlpha {

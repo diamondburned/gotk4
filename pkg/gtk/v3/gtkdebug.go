@@ -2,7 +2,7 @@
 
 package gtk
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -14,11 +14,11 @@ import "C"
 // This function is intended for GTK+ modules that want to adjust their debug
 // output based on GTK+ debug flags.
 func GetDebugFlags() uint {
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_get_debug_flags()
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -27,7 +27,7 @@ func GetDebugFlags() uint {
 
 // SetDebugFlags sets the GTK+ debug flags.
 func SetDebugFlags(flags uint) {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(flags)
 

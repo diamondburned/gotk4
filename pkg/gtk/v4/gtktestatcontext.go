@@ -6,20 +6,20 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
 
 func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn string, expr string, accessible Accessible, expectedRole AccessibleRole, actualRole AccessibleRole) {
-	var _arg1 *C.char
-	var _arg2 *C.char
-	var _arg3 C.int
-	var _arg4 *C.char
-	var _arg5 *C.char
-	var _arg6 *C.GtkAccessible
-	var _arg7 C.GtkAccessibleRole
-	var _arg8 C.GtkAccessibleRole
+	var _arg1 *C.char             // out
+	var _arg2 *C.char             // out
+	var _arg3 C.int               // out
+	var _arg4 *C.char             // out
+	var _arg5 *C.char             // out
+	var _arg6 *C.GtkAccessible    // out
+	var _arg7 C.GtkAccessibleRole // out
+	var _arg8 C.GtkAccessibleRole // out
 
 	_arg1 = (*C.char)(C.CString(domain))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -39,17 +39,17 @@ func TestAccessibleAssertionMessageRole(domain string, file string, line int, fn
 
 // TestAccessibleHasProperty checks whether the Accessible has @property set.
 func TestAccessibleHasProperty(accessible Accessible, property AccessibleProperty) bool {
-	var _arg1 *C.GtkAccessible
-	var _arg2 C.GtkAccessibleProperty
+	var _arg1 *C.GtkAccessible        // out
+	var _arg2 C.GtkAccessibleProperty // out
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleProperty)(property)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_property(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -60,17 +60,17 @@ func TestAccessibleHasProperty(accessible Accessible, property AccessiblePropert
 
 // TestAccessibleHasRelation checks whether the Accessible has @relation set.
 func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelation) bool {
-	var _arg1 *C.GtkAccessible
-	var _arg2 C.GtkAccessibleRelation
+	var _arg1 *C.GtkAccessible        // out
+	var _arg2 C.GtkAccessibleRelation // out
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleRelation)(relation)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_relation(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -82,17 +82,17 @@ func TestAccessibleHasRelation(accessible Accessible, relation AccessibleRelatio
 // TestAccessibleHasRole checks whether the Accessible:accessible-role of the
 // accessible is @role.
 func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
-	var _arg1 *C.GtkAccessible
-	var _arg2 C.GtkAccessibleRole
+	var _arg1 *C.GtkAccessible    // out
+	var _arg2 C.GtkAccessibleRole // out
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleRole)(role)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_role(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -103,17 +103,17 @@ func TestAccessibleHasRole(accessible Accessible, role AccessibleRole) bool {
 
 // TestAccessibleHasState checks whether the Accessible has @state set.
 func TestAccessibleHasState(accessible Accessible, state AccessibleState) bool {
-	var _arg1 *C.GtkAccessible
-	var _arg2 C.GtkAccessibleState
+	var _arg1 *C.GtkAccessible     // out
+	var _arg2 C.GtkAccessibleState // out
 
 	_arg1 = (*C.GtkAccessible)(unsafe.Pointer(accessible.Native()))
 	_arg2 = (C.GtkAccessibleState)(state)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_test_accessible_has_state(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

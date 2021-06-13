@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -63,8 +63,8 @@ func marshalIMMulticontext(p uintptr) (interface{}, error) {
 // menu; the menuitems, when selected, will switch the input method for the
 // context and the global default input method.
 func (c imMulticontext) AppendMenuitems(menushell MenuShell) {
-	var _arg0 *C.GtkIMMulticontext
-	var _arg1 *C.GtkMenuShell
+	var _arg0 *C.GtkIMMulticontext // out
+	var _arg1 *C.GtkMenuShell      // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkMenuShell)(unsafe.Pointer(menushell.Native()))
@@ -74,15 +74,15 @@ func (c imMulticontext) AppendMenuitems(menushell MenuShell) {
 
 // ContextID gets the id of the currently active slave of the @context.
 func (c imMulticontext) ContextID() string {
-	var _arg0 *C.GtkIMMulticontext
+	var _arg0 *C.GtkIMMulticontext // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_im_multicontext_get_context_id(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -94,8 +94,8 @@ func (c imMulticontext) ContextID() string {
 // This causes the currently active slave of @context to be replaced by the
 // slave corresponding to the new context id.
 func (c imMulticontext) SetContextID(contextId string) {
-	var _arg0 *C.GtkIMMulticontext
-	var _arg1 *C.char
+	var _arg0 *C.GtkIMMulticontext // out
+	var _arg1 *C.char              // out
 
 	_arg0 = (*C.GtkIMMulticontext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.char)(C.CString(contextId))

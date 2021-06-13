@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -92,8 +92,8 @@ func marshalDropTargetAsync(p uintptr) (interface{}, error) {
 // This function should be used when delaying the decision on whether to
 // accept a drag or not until after reading the data.
 func (s dropTargetAsync) RejectDrop(drop gdk.Drop) {
-	var _arg0 *C.GtkDropTargetAsync
-	var _arg1 *C.GdkDrop
+	var _arg0 *C.GtkDropTargetAsync // out
+	var _arg1 *C.GdkDrop            // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkDrop)(unsafe.Pointer(drop.Native()))
@@ -103,8 +103,8 @@ func (s dropTargetAsync) RejectDrop(drop gdk.Drop) {
 
 // SetActions sets the actions that this drop target supports.
 func (s dropTargetAsync) SetActions(actions gdk.DragAction) {
-	var _arg0 *C.GtkDropTargetAsync
-	var _arg1 C.GdkDragAction
+	var _arg0 *C.GtkDropTargetAsync // out
+	var _arg1 C.GdkDragAction       // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GdkDragAction)(actions)
@@ -114,8 +114,8 @@ func (s dropTargetAsync) SetActions(actions gdk.DragAction) {
 
 // SetFormats sets the data formats that this drop target will accept.
 func (s dropTargetAsync) SetFormats(formats *gdk.ContentFormats) {
-	var _arg0 *C.GtkDropTargetAsync
-	var _arg1 *C.GdkContentFormats
+	var _arg0 *C.GtkDropTargetAsync // out
+	var _arg1 *C.GdkContentFormats  // out
 
 	_arg0 = (*C.GtkDropTargetAsync)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkContentFormats)(unsafe.Pointer(formats.Native()))

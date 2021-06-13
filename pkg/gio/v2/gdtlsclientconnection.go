@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -72,8 +72,8 @@ func marshalDTLSClientConnection(p uintptr) (interface{}, error) {
 // also to let @conn know what name to look for in the certificate when
 // performing G_TLS_CERTIFICATE_BAD_IDENTITY validation, if enabled.
 func (c dtlsClientConnection) SetServerIdentity(identity SocketConnectable) {
-	var _arg0 *C.GDtlsClientConnection
-	var _arg1 *C.GSocketConnectable
+	var _arg0 *C.GDtlsClientConnection // out
+	var _arg1 *C.GSocketConnectable    // out
 
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GSocketConnectable)(unsafe.Pointer(identity.Native()))
@@ -85,8 +85,8 @@ func (c dtlsClientConnection) SetServerIdentity(identity SocketConnectable) {
 // set of checks performed when validating a server certificate. By default,
 // G_TLS_CERTIFICATE_VALIDATE_ALL is used.
 func (c dtlsClientConnection) SetValidationFlags(flags TLSCertificateFlags) {
-	var _arg0 *C.GDtlsClientConnection
-	var _arg1 C.GTlsCertificateFlags
+	var _arg0 *C.GDtlsClientConnection // out
+	var _arg1 C.GTlsCertificateFlags   // out
 
 	_arg0 = (*C.GDtlsClientConnection)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GTlsCertificateFlags)(flags)

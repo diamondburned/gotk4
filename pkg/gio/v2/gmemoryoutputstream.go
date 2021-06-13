@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -100,15 +100,15 @@ func marshalMemoryOutputStream(p uintptr) (interface{}, error) {
 // Note that the returned pointer may become invalid on the next write or
 // truncate operation on the stream.
 func (o memoryOutputStream) Data() interface{} {
-	var _arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream // out
 
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_memory_output_stream_get_data(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -118,15 +118,15 @@ func (o memoryOutputStream) Data() interface{} {
 // DataSize returns the number of bytes from the start up to including the
 // last byte written in the stream that has not been truncated away.
 func (o memoryOutputStream) DataSize() uint {
-	var _arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream // out
 
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_memory_output_stream_get_data_size(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -148,15 +148,15 @@ func (o memoryOutputStream) DataSize() uint {
 // In any case, if you want the number of bytes currently written to the
 // stream, use g_memory_output_stream_get_data_size().
 func (o memoryOutputStream) Size() uint {
-	var _arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream // out
 
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_memory_output_stream_get_size(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -170,15 +170,15 @@ func (o memoryOutputStream) Size() uint {
 //
 // @ostream must be closed before calling this function.
 func (o memoryOutputStream) StealData() interface{} {
-	var _arg0 *C.GMemoryOutputStream
+	var _arg0 *C.GMemoryOutputStream // out
 
 	_arg0 = (*C.GMemoryOutputStream)(unsafe.Pointer(o.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_memory_output_stream_steal_data(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 

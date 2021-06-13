@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -90,17 +90,17 @@ func marshalTextTagTable(p uintptr) (interface{}, error) {
 // @tag must not be in a tag table already, and may not have the same name
 // as an already-added tag.
 func (t textTagTable) Add(tag TextTag) bool {
-	var _arg0 *C.GtkTextTagTable
-	var _arg1 *C.GtkTextTag
+	var _arg0 *C.GtkTextTagTable // out
+	var _arg1 *C.GtkTextTag      // out
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_tag_table_add(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -113,8 +113,8 @@ func (t textTagTable) Add(tag TextTag) bool {
 // that the table may not be modified while iterating over it (you can’t
 // add/remove tags).
 func (t textTagTable) Foreach(fn TextTagTableForeach) {
-	var _arg0 *C.GtkTextTagTable
-	var _arg1 C.GtkTextTagTableForeach
+	var _arg0 *C.GtkTextTagTable       // out
+	var _arg1 C.GtkTextTagTableForeach // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
@@ -126,15 +126,15 @@ func (t textTagTable) Foreach(fn TextTagTableForeach) {
 
 // Size returns the size of the table (number of tags)
 func (t textTagTable) Size() int {
-	var _arg0 *C.GtkTextTagTable
+	var _arg0 *C.GtkTextTagTable // out
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_text_tag_table_get_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -146,8 +146,8 @@ func (t textTagTable) Size() int {
 // the tag is removed, so the tag will end up destroyed if you don’t have a
 // reference to it.
 func (t textTagTable) Remove(tag TextTag) {
-	var _arg0 *C.GtkTextTagTable
-	var _arg1 *C.GtkTextTag
+	var _arg0 *C.GtkTextTagTable // out
+	var _arg1 *C.GtkTextTag      // out
 
 	_arg0 = (*C.GtkTextTagTable)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.GtkTextTag)(unsafe.Pointer(tag.Native()))

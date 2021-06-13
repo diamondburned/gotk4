@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -106,18 +106,18 @@ func marshalStatusbar(p uintptr) (interface{}, error) {
 // ContextID returns a new context identifier, given a description of the
 // actual context. Note that the description is not shown in the UI.
 func (s statusbar) ContextID(contextDescription string) uint {
-	var _arg0 *C.GtkStatusbar
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkStatusbar // out
+	var _arg1 *C.gchar        // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(contextDescription))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_statusbar_get_context_id(_arg0, _arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -130,8 +130,8 @@ func (s statusbar) ContextID(contextDescription string) uint {
 // Note that this may not change the displayed message, if the message at
 // the top of the stack has a different context id.
 func (s statusbar) Pop(contextId uint) {
-	var _arg0 *C.GtkStatusbar
-	var _arg1 C.guint
+	var _arg0 *C.GtkStatusbar // out
+	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(contextId)
@@ -141,20 +141,20 @@ func (s statusbar) Pop(contextId uint) {
 
 // Push pushes a new message onto a statusbar’s stack.
 func (s statusbar) Push(contextId uint, text string) uint {
-	var _arg0 *C.GtkStatusbar
-	var _arg1 C.guint
-	var _arg2 *C.gchar
+	var _arg0 *C.GtkStatusbar // out
+	var _arg1 C.guint         // out
+	var _arg2 *C.gchar        // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(contextId)
 	_arg2 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_statusbar_push(_arg0, _arg1, _arg2)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -164,9 +164,9 @@ func (s statusbar) Push(contextId uint, text string) uint {
 // Remove forces the removal of a message from a statusbar’s stack. The
 // exact @context_id and @message_id must be specified.
 func (s statusbar) Remove(contextId uint, messageId uint) {
-	var _arg0 *C.GtkStatusbar
-	var _arg1 C.guint
-	var _arg2 C.guint
+	var _arg0 *C.GtkStatusbar // out
+	var _arg1 C.guint         // out
+	var _arg2 C.guint         // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(contextId)
@@ -178,8 +178,8 @@ func (s statusbar) Remove(contextId uint, messageId uint) {
 // RemoveAll forces the removal of all messages from a statusbar's stack
 // with the exact @context_id.
 func (s statusbar) RemoveAll(contextId uint) {
-	var _arg0 *C.GtkStatusbar
-	var _arg1 C.guint
+	var _arg0 *C.GtkStatusbar // out
+	var _arg1 C.guint         // out
 
 	_arg0 = (*C.GtkStatusbar)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(contextId)

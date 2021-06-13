@@ -9,7 +9,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -70,17 +70,17 @@ const (
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the 0th bit, set @nth_bit to -1.
 func BitNthLsf(mask uint32, nthBit int) int {
-	var _arg1 C.gulong
-	var _arg2 C.gint
+	var _arg1 C.gulong // out
+	var _arg2 C.gint   // out
 
 	_arg1 = C.gulong(mask)
 	_arg2 = C.gint(nthBit)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_bit_nth_lsf(_arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -92,17 +92,17 @@ func BitNthLsf(mask uint32, nthBit int) int {
 // significant) to sizeof(#gulong) * 8 - 1 (31 or 63, usually). To start
 // searching from the last bit, set @nth_bit to -1 or GLIB_SIZEOF_LONG * 8.
 func BitNthMsf(mask uint32, nthBit int) int {
-	var _arg1 C.gulong
-	var _arg2 C.gint
+	var _arg1 C.gulong // out
+	var _arg2 C.gint   // out
 
 	_arg1 = C.gulong(mask)
 	_arg2 = C.gint(nthBit)
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_bit_nth_msf(_arg1, _arg2)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -112,15 +112,15 @@ func BitNthMsf(mask uint32, nthBit int) int {
 // BitStorage gets the number of bits used to hold @number, e.g. if @number is
 // 4, 3 bits are needed.
 func BitStorage(number uint32) uint {
-	var _arg1 C.gulong
+	var _arg1 C.gulong // out
 
 	_arg1 = C.gulong(number)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_bit_storage(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -142,16 +142,16 @@ func BitStorage(number uint32) uint {
 // the `PATH` environment variable. If the program is found, the return value
 // contains the full name including the type suffix.
 func FindProgramInPath(program *string) *string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(program))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_find_program_in_path(_arg1)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -173,15 +173,15 @@ func FindProgramInPath(program *string) *string {
 // See g_format_size_full() for more options about how the size might be
 // formatted.
 func FormatSize(size uint64) string {
-	var _arg1 C.guint64
+	var _arg1 C.guint64 // out
 
 	_arg1 = C.guint64(size)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_format_size(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -198,15 +198,15 @@ func FormatSize(size uint64) string {
 //
 // This string should be freed with g_free() when not needed any longer.
 func FormatSizeForDisplay(size int64) string {
-	var _arg1 C.goffset
+	var _arg1 C.goffset // out
 
 	_arg1 = C.goffset(size)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_format_size_for_display(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -219,17 +219,17 @@ func FormatSizeForDisplay(size int64) string {
 // This function is similar to g_format_size() but allows for flags that modify
 // the output. See SizeFlags.
 func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
-	var _arg1 C.guint64
-	var _arg2 C.GFormatSizeFlags
+	var _arg1 C.guint64          // out
+	var _arg2 C.GFormatSizeFlags // out
 
 	_arg1 = C.guint64(size)
 	_arg2 = (C.GFormatSizeFlags)(flags)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_format_size_full(_arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -244,11 +244,11 @@ func FormatSizeFull(size uint64, flags FormatSizeFlags) string {
 // the result of g_get_prgname() (which may be nil if g_set_prgname() has also
 // not been called).
 func GetApplicationName() string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_application_name()
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -276,11 +276,11 @@ func GetApplicationName() string {
 // the `HOME` environment variable yourself or unset it before calling any
 // functions in GLib.
 func GetHomeDir() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_home_dir()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -300,11 +300,11 @@ func GetHomeDir() *string {
 //
 // The encoding of the returned string is UTF-8.
 func GetHostName() string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_host_name()
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -320,16 +320,16 @@ func GetHostName() string {
 // may be useful. No key is guaranteed to be provided, so the caller should
 // always check if the result is nil.
 func GetOsInfo(keyName string) string {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(keyName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_os_info(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -345,11 +345,11 @@ func GetOsInfo(keyName string) string {
 // called by gtk_init() and the Application::startup handler. The program name
 // is found by taking the last component of @argv[0].
 func GetPrgname() string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_prgname()
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -361,11 +361,11 @@ func GetPrgname() string {
 // system-defined. (On Windows, it is, however, always UTF-8.) If the real user
 // name cannot be determined, the string "Unknown" is returned.
 func GetRealName() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_real_name()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -490,11 +490,11 @@ func GetSystemDataDirs() []*string {
 // The encoding of the returned string is system-defined. On Windows, it is
 // always UTF-8. The return value is never nil or the empty string.
 func GetTmpDir() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_tmp_dir()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -519,11 +519,11 @@ func GetTmpDir() *string {
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
 func GetUserCacheDir() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_cache_dir()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -549,11 +549,11 @@ func GetUserCacheDir() *string {
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
 func GetUserConfigDir() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_config_dir()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -579,11 +579,11 @@ func GetUserConfigDir() *string {
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
 func GetUserDataDir() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_data_dir()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -595,11 +595,11 @@ func GetUserDataDir() *string {
 // name encoding, or something else, and there is no guarantee that it is even
 // consistent on a machine. On Windows, it is always UTF-8.
 func GetUserName() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_name()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -618,11 +618,11 @@ func GetUserName() *string {
 // The return value is cached and modifying it at runtime is not supported, as
 // it’s not thread-safe to modify environment variables at runtime.
 func GetUserRuntimeDir() *string {
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_runtime_dir()
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -640,15 +640,15 @@ func GetUserRuntimeDir() *string {
 // special directory without requiring the session to restart; GLib will not
 // reflect any change once the special directories are loaded.
 func GetUserSpecialDir(directory UserDirectory) *string {
-	var _arg1 C.GUserDirectory
+	var _arg1 C.GUserDirectory // out
 
 	_arg1 = (C.GUserDirectory)(directory)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_get_user_special_dir(_arg1)
 
-	var _filename *string
+	var _filename *string // out
 
 	_filename = C.GoString(_cret)
 
@@ -657,7 +657,7 @@ func GetUserSpecialDir(directory UserDirectory) *string {
 
 // NullifyPointer: set the pointer at the specified location to nil.
 func NullifyPointer(nullifyLocation *interface{}) {
-	var _arg1 *C.gpointer
+	var _arg1 *C.gpointer // out
 
 	_arg1 = *C.gpointer(nullifyLocation)
 
@@ -675,7 +675,7 @@ func NullifyPointer(nullifyLocation *interface{}) {
 // If @string is equal to "help", all the available keys in @keys are printed
 // out to standard error.
 func ParseDebugString(string string, keys []DebugKey) uint {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 	var _arg2 *C.GDebugKey
 	var _arg3 C.guint
 
@@ -684,11 +684,11 @@ func ParseDebugString(string string, keys []DebugKey) uint {
 	_arg3 = C.guint(len(keys))
 	_arg2 = (*C.GDebugKey)(unsafe.Pointer(&keys[0]))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.g_parse_debug_string(_arg1, _arg2, _arg3)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -718,7 +718,7 @@ func ReloadUserSpecialDirsCache() {
 // The application name will be used in contexts such as error messages, or when
 // displaying an application's name in the task list.
 func SetApplicationName(applicationName string) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(applicationName))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -736,7 +736,7 @@ func SetApplicationName(applicationName string) {
 //
 // Note that for thread-safety reasons this function can only be called once.
 func SetPrgname(prgname string) {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(prgname))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -771,14 +771,14 @@ func (d *DebugKey) Native() unsafe.Pointer {
 
 // Key gets the field inside the struct.
 func (d *DebugKey) Key() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.key)
 	return v
 }
 
 // Value gets the field inside the struct.
 func (d *DebugKey) Value() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(d.native.value)
 	return v
 }

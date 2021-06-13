@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -57,8 +57,8 @@ func marshalOrientable(p uintptr) (interface{}, error) {
 
 // SetOrientation sets the orientation of the @orientable.
 func (o orientable) SetOrientation(orientation Orientation) {
-	var _arg0 *C.GtkOrientable
-	var _arg1 C.GtkOrientation
+	var _arg0 *C.GtkOrientable // out
+	var _arg1 C.GtkOrientation // out
 
 	_arg0 = (*C.GtkOrientable)(unsafe.Pointer(o.Native()))
 	_arg1 = (C.GtkOrientation)(orientation)

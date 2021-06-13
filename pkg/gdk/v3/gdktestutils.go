@@ -13,7 +13,7 @@ import "C"
 // This function is intended to be used to synchronize with rendering pipelines,
 // to benchmark windowing system rendering operations.
 func TestRenderSync(window Window) {
-	var _arg1 *C.GdkWindow
+	var _arg1 *C.GdkWindow // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 
@@ -32,12 +32,12 @@ func TestRenderSync(window Window) {
 // will generate a button press event followed by its accompanying button
 // release event.
 func TestSimulateButton(window Window, x int, y int, button uint, modifiers ModifierType, buttonPressrelease EventType) bool {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.guint
-	var _arg5 C.GdkModifierType
-	var _arg6 C.GdkEventType
+	var _arg1 *C.GdkWindow      // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
+	var _arg4 C.guint           // out
+	var _arg5 C.GdkModifierType // out
+	var _arg6 C.GdkEventType    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.gint(x)
@@ -46,11 +46,11 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 	_arg5 = (C.GdkModifierType)(modifiers)
 	_arg6 = (C.GdkEventType)(buttonPressrelease)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_test_simulate_button(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -74,12 +74,12 @@ func TestSimulateButton(window Window, x int, y int, button uint, modifiers Modi
 // which will generate a key press event followed by its accompanying key
 // release event.
 func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers ModifierType, keyPressrelease EventType) bool {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.gint
-	var _arg3 C.gint
-	var _arg4 C.guint
-	var _arg5 C.GdkModifierType
-	var _arg6 C.GdkEventType
+	var _arg1 *C.GdkWindow      // out
+	var _arg2 C.gint            // out
+	var _arg3 C.gint            // out
+	var _arg4 C.guint           // out
+	var _arg5 C.GdkModifierType // out
+	var _arg6 C.GdkEventType    // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = C.gint(x)
@@ -88,11 +88,11 @@ func TestSimulateKey(window Window, x int, y int, keyval uint, modifiers Modifie
 	_arg5 = (C.GdkModifierType)(modifiers)
 	_arg6 = (C.GdkEventType)(keyPressrelease)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_test_simulate_key(_arg1, _arg2, _arg3, _arg4, _arg5, _arg6)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -42,28 +42,28 @@ func (f *FileFilterInfo) Native() unsafe.Pointer {
 
 // Filename gets the field inside the struct.
 func (f *FileFilterInfo) Filename() string {
-	var v string
+	var v string // out
 	v = C.GoString(f.native.filename)
 	return v
 }
 
 // URI gets the field inside the struct.
 func (f *FileFilterInfo) URI() string {
-	var v string
+	var v string // out
 	v = C.GoString(f.native.uri)
 	return v
 }
 
 // DisplayName gets the field inside the struct.
 func (f *FileFilterInfo) DisplayName() string {
-	var v string
+	var v string // out
 	v = C.GoString(f.native.display_name)
 	return v
 }
 
 // MIMEType gets the field inside the struct.
 func (f *FileFilterInfo) MIMEType() string {
-	var v string
+	var v string // out
 	v = C.GoString(f.native.mime_type)
 	return v
 }

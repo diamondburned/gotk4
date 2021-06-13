@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -117,15 +117,15 @@ func marshalDropDown(p uintptr) (interface{}, error) {
 
 // EnableSearch returns whether search is enabled.
 func (s dropDown) EnableSearch() bool {
-	var _arg0 *C.GtkDropDown
+	var _arg0 *C.GtkDropDown // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_drop_down_get_enable_search(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -136,15 +136,15 @@ func (s dropDown) EnableSearch() bool {
 
 // Selected gets the position of the selected item.
 func (s dropDown) Selected() uint {
-	var _arg0 *C.GtkDropDown
+	var _arg0 *C.GtkDropDown // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_drop_down_get_selected(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -154,15 +154,15 @@ func (s dropDown) Selected() uint {
 // SelectedItem gets the selected item. If no item is selected, nil is
 // returned.
 func (s dropDown) SelectedItem() gextras.Objector {
-	var _arg0 *C.GtkDropDown
+	var _arg0 *C.GtkDropDown // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.gtk_drop_down_get_selected_item(_arg0)
 
-	var _object gextras.Objector
+	var _object gextras.Objector // out
 
 	_object = gextras.CastObject(externglib.Take(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
@@ -175,8 +175,8 @@ func (s dropDown) SelectedItem() gextras.Objector {
 // Note that [property@Gtk.DropDown:expression] must be set for search to
 // work.
 func (s dropDown) SetEnableSearch(enableSearch bool) {
-	var _arg0 *C.GtkDropDown
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkDropDown // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	if enableSearch {
@@ -192,8 +192,8 @@ func (s dropDown) SetEnableSearch(enableSearch bool) {
 // This is used for search in the popup. The expression must have a value
 // type of G_TYPE_STRING.
 func (s dropDown) SetExpression(expression Expression) {
-	var _arg0 *C.GtkDropDown
-	var _arg1 *C.GtkExpression
+	var _arg0 *C.GtkDropDown   // out
+	var _arg1 *C.GtkExpression // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkExpression)(unsafe.Pointer(expression.Native()))
@@ -204,8 +204,8 @@ func (s dropDown) SetExpression(expression Expression) {
 // SetFactory sets the `GtkListItemFactory` to use for populating list
 // items.
 func (s dropDown) SetFactory(factory ListItemFactory) {
-	var _arg0 *C.GtkDropDown
-	var _arg1 *C.GtkListItemFactory
+	var _arg0 *C.GtkDropDown        // out
+	var _arg1 *C.GtkListItemFactory // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
@@ -216,8 +216,8 @@ func (s dropDown) SetFactory(factory ListItemFactory) {
 // SetListFactory sets the `GtkListItemFactory` to use for populating list
 // items in the popup.
 func (s dropDown) SetListFactory(factory ListItemFactory) {
-	var _arg0 *C.GtkDropDown
-	var _arg1 *C.GtkListItemFactory
+	var _arg0 *C.GtkDropDown        // out
+	var _arg1 *C.GtkListItemFactory // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkListItemFactory)(unsafe.Pointer(factory.Native()))
@@ -227,8 +227,8 @@ func (s dropDown) SetListFactory(factory ListItemFactory) {
 
 // SetModel sets the `GListModel` to use.
 func (s dropDown) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkDropDown
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkDropDown // out
+	var _arg1 *C.GListModel  // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))
@@ -238,8 +238,8 @@ func (s dropDown) SetModel(model gio.ListModel) {
 
 // SetSelected selects the item at the given position.
 func (s dropDown) SetSelected(position uint) {
-	var _arg0 *C.GtkDropDown
-	var _arg1 C.guint
+	var _arg0 *C.GtkDropDown // out
+	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GtkDropDown)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)

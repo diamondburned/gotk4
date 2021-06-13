@@ -16,10 +16,10 @@ import "C"
 //
 // This is guaranteed to be a stable sort since version 2.32.
 func QsortWithData(pbase interface{}, totalElems int, size uint, compareFunc CompareDataFunc) {
-	var _arg1 C.gpointer
-	var _arg2 C.gint
-	var _arg3 C.gsize
-	var _arg4 C.GCompareDataFunc
+	var _arg1 C.gpointer         // out
+	var _arg2 C.gint             // out
+	var _arg3 C.gsize            // out
+	var _arg4 C.GCompareDataFunc // out
 	var _arg5 C.gpointer
 
 	_arg1 = C.gpointer(pbase)

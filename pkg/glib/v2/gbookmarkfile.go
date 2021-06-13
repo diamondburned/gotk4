@@ -10,7 +10,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -85,10 +85,10 @@ func (b *BookmarkFile) Native() unsafe.Pointer {
 //
 // If no bookmark for @uri is found, one is created.
 func (b *BookmarkFile) AddApplication(uri string, name string, exec string) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
+	var _arg3 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -106,9 +106,9 @@ func (b *BookmarkFile) AddApplication(uri string, name string, exec string) {
 //
 // If no bookmark for @uri is found then it is created.
 func (b *BookmarkFile) AddGroup(uri string, group string) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -121,7 +121,7 @@ func (b *BookmarkFile) AddGroup(uri string, group string) {
 
 // Free frees a File.
 func (b *BookmarkFile) Free() {
-	var _arg0 *C.GBookmarkFile
+	var _arg0 *C.GBookmarkFile // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 
@@ -133,20 +133,20 @@ func (b *BookmarkFile) Free() {
 // In the event the URI cannot be found, -1 is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) Added(uri string) (int32, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.time_t
-	var _cerr *C.GError
+	var _cret C.time_t  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_added(_arg0, _arg1, _cerr)
+	_cret = C.g_bookmark_file_get_added(_arg0, _arg1, &_cerr)
 
-	var _glong int32
-	var _goerr error
+	var _glong int32 // out
+	var _goerr error // out
 
 	_glong = (int32)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -167,9 +167,9 @@ func (b *BookmarkFile) Added(uri string) (int32, error) {
 // the command line fails, an error of the SHELL_ERROR domain is set and false
 // is returned.
 func (b *BookmarkFile) AppInfo(uri string, name string) (string, uint, int32, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -177,17 +177,17 @@ func (b *BookmarkFile) AppInfo(uri string, name string) (string, uint, int32, er
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _arg3 *C.gchar
-	var _arg4 C.guint
-	var _arg5 C.time_t
-	var _cerr *C.GError
+	var _arg3 *C.gchar  // in
+	var _arg4 C.guint   // in
+	var _arg5 C.time_t  // in
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_get_app_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, _cerr)
+	C.g_bookmark_file_get_app_info(_arg0, _arg1, _arg2, &_arg3, &_arg4, &_arg5, &_cerr)
 
-	var _exec string
-	var _count uint
-	var _stamp int32
-	var _goerr error
+	var _exec string // out
+	var _count uint  // out
+	var _stamp int32 // out
+	var _goerr error // out
 
 	_exec = C.GoString(_arg3)
 	defer C.free(unsafe.Pointer(_arg3))
@@ -204,21 +204,21 @@ func (b *BookmarkFile) AppInfo(uri string, name string) (string, uint, int32, er
 // In the event the URI cannot be found, nil is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) Applications(uri string) ([]string, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _cret **C.gchar
-	var _arg2 *C.gsize
-	var _cerr *C.GError
+	var _arg2 C.gsize   // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_applications(_arg0, _arg1, &_arg2, _cerr)
+	_cret = C.g_bookmark_file_get_applications(_arg0, _arg1, &_arg2, &_cerr)
 
 	var _utf8s []string
-	var _goerr error
+	var _goerr error // out
 
 	{
 		var src []*C.gchar
@@ -240,20 +240,20 @@ func (b *BookmarkFile) Applications(uri string) ([]string, error) {
 // In the event the URI cannot be found, nil is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) Description(uri string) (string, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
-	var _cerr *C.GError
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_description(_arg0, _arg1, _cerr)
+	_cret = C.g_bookmark_file_get_description(_arg0, _arg1, &_cerr)
 
-	var _utf8 string
-	var _goerr error
+	var _utf8 string // out
+	var _goerr error // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -269,21 +269,21 @@ func (b *BookmarkFile) Description(uri string) (string, error) {
 //
 // The returned array is nil terminated, so @length may optionally be nil.
 func (b *BookmarkFile) Groups(uri string) ([]string, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _cret **C.gchar
-	var _arg2 *C.gsize
-	var _cerr *C.GError
+	var _arg2 C.gsize   // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_groups(_arg0, _arg1, &_arg2, _cerr)
+	_cret = C.g_bookmark_file_get_groups(_arg0, _arg1, &_arg2, &_cerr)
 
 	var _utf8s []string
-	var _goerr error
+	var _goerr error // out
 
 	{
 		var src []*C.gchar
@@ -305,22 +305,22 @@ func (b *BookmarkFile) Groups(uri string) ([]string, error) {
 // In the event the URI cannot be found, false is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) Icon(uri string) (href string, mimeType string, goerr error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _cerr *C.GError
+	var _arg2 *C.gchar  // in
+	var _arg3 *C.gchar  // in
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_get_icon(_arg0, _arg1, &_arg2, &_arg3, _cerr)
+	C.g_bookmark_file_get_icon(_arg0, _arg1, &_arg2, &_arg3, &_cerr)
 
-	var _href string
-	var _mimeType string
-	var _goerr error
+	var _href string     // out
+	var _mimeType string // out
+	var _goerr error     // out
 
 	_href = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
@@ -338,18 +338,18 @@ func (b *BookmarkFile) Icon(uri string) (href string, mimeType string, goerr err
 // be found, false is returned and @error is set to
 // BOOKMARK_FILE_ERROR_INVALID_VALUE.
 func (b *BookmarkFile) IsPrivate(uri string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_get_is_private(_arg0, _arg1, _cerr)
+	C.g_bookmark_file_get_is_private(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -363,20 +363,20 @@ func (b *BookmarkFile) IsPrivate(uri string) error {
 // found, nil is returned and @error is set to
 // BOOKMARK_FILE_ERROR_INVALID_VALUE.
 func (b *BookmarkFile) MIMEType(uri string) (string, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
-	var _cerr *C.GError
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_mime_type(_arg0, _arg1, _cerr)
+	_cret = C.g_bookmark_file_get_mime_type(_arg0, _arg1, &_cerr)
 
-	var _utf8 string
-	var _goerr error
+	var _utf8 string // out
+	var _goerr error // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -390,20 +390,20 @@ func (b *BookmarkFile) MIMEType(uri string) (string, error) {
 // In the event the URI cannot be found, -1 is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) Modified(uri string) (int32, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.time_t
-	var _cerr *C.GError
+	var _cret C.time_t  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_modified(_arg0, _arg1, _cerr)
+	_cret = C.g_bookmark_file_get_modified(_arg0, _arg1, &_cerr)
 
-	var _glong int32
-	var _goerr error
+	var _glong int32 // out
+	var _goerr error // out
 
 	_glong = (int32)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -413,15 +413,15 @@ func (b *BookmarkFile) Modified(uri string) (int32, error) {
 
 // Size gets the number of bookmarks inside @bookmark.
 func (b *BookmarkFile) Size() int {
-	var _arg0 *C.GBookmarkFile
+	var _arg0 *C.GBookmarkFile // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_bookmark_file_get_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -435,20 +435,20 @@ func (b *BookmarkFile) Size() int {
 // In the event the URI cannot be found, nil is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) Title(uri string) (string, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret *C.gchar
-	var _cerr *C.GError
+	var _cret *C.gchar  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_title(_arg0, _arg1, _cerr)
+	_cret = C.g_bookmark_file_get_title(_arg0, _arg1, &_cerr)
 
-	var _utf8 string
-	var _goerr error
+	var _utf8 string // out
+	var _goerr error // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -461,12 +461,12 @@ func (b *BookmarkFile) Title(uri string) (string, error) {
 // array of returned URIs will be nil-terminated, so @length may optionally be
 // nil.
 func (b *BookmarkFile) Uris() []string {
-	var _arg0 *C.GBookmarkFile
+	var _arg0 *C.GBookmarkFile // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 
 	var _cret **C.gchar
-	var _arg1 *C.gsize
+	var _arg1 C.gsize // in
 
 	_cret = C.g_bookmark_file_get_uris(_arg0, &_arg1)
 
@@ -491,20 +491,20 @@ func (b *BookmarkFile) Uris() []string {
 // In the event the URI cannot be found, -1 is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) Visited(uri string) (int32, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.time_t
-	var _cerr *C.GError
+	var _cret C.time_t  // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_get_visited(_arg0, _arg1, _cerr)
+	_cret = C.g_bookmark_file_get_visited(_arg0, _arg1, &_cerr)
 
-	var _glong int32
-	var _goerr error
+	var _glong int32 // out
+	var _goerr error // out
 
 	_glong = (int32)(_cret)
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
@@ -518,9 +518,9 @@ func (b *BookmarkFile) Visited(uri string) (int32, error) {
 // In the event the URI cannot be found, false is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) HasApplication(uri string, name string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -528,11 +528,11 @@ func (b *BookmarkFile) HasApplication(uri string, name string) error {
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_has_application(_arg0, _arg1, _arg2, _cerr)
+	C.g_bookmark_file_has_application(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -545,9 +545,9 @@ func (b *BookmarkFile) HasApplication(uri string, name string) error {
 // In the event the URI cannot be found, false is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) HasGroup(uri string, group string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -555,11 +555,11 @@ func (b *BookmarkFile) HasGroup(uri string, group string) error {
 	_arg2 = (*C.gchar)(C.CString(group))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_has_group(_arg0, _arg1, _arg2, _cerr)
+	C.g_bookmark_file_has_group(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -569,18 +569,18 @@ func (b *BookmarkFile) HasGroup(uri string, group string) error {
 // HasItem looks whether the desktop bookmark has an item with its URI set to
 // @uri.
 func (b *BookmarkFile) HasItem(uri string) bool {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_bookmark_file_has_item(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -592,7 +592,7 @@ func (b *BookmarkFile) HasItem(uri string) bool {
 // LoadFromData loads a bookmark file from memory into an empty File structure.
 // If the object cannot be created then @error is set to a FileError.
 func (b *BookmarkFile) LoadFromData(data []byte) error {
-	var _arg0 *C.GBookmarkFile
+	var _arg0 *C.GBookmarkFile // out
 	var _arg1 *C.gchar
 	var _arg2 C.gsize
 
@@ -600,11 +600,11 @@ func (b *BookmarkFile) LoadFromData(data []byte) error {
 	_arg2 = C.gsize(len(data))
 	_arg1 = (*C.gchar)(unsafe.Pointer(&data[0]))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_load_from_data(_arg0, _arg1, _arg2, _cerr)
+	C.g_bookmark_file_load_from_data(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -617,20 +617,20 @@ func (b *BookmarkFile) LoadFromData(data []byte) error {
 // file's full path in @full_path. If the file could not be loaded then @error
 // is set to either a Error or FileError.
 func (b *BookmarkFile) LoadFromDataDirs(file *string) (*string, error) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(file))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _arg2 *C.gchar
-	var _cerr *C.GError
+	var _arg2 *C.gchar  // in
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_load_from_data_dirs(_arg0, _arg1, &_arg2, _cerr)
+	C.g_bookmark_file_load_from_data_dirs(_arg0, _arg1, &_arg2, &_cerr)
 
-	var _fullPath *string
-	var _goerr error
+	var _fullPath *string // out
+	var _goerr error      // out
 
 	_fullPath = C.GoString(_arg2)
 	defer C.free(unsafe.Pointer(_arg2))
@@ -643,18 +643,18 @@ func (b *BookmarkFile) LoadFromDataDirs(file *string) (*string, error) {
 // the file could not be loaded then @error is set to either a Error or
 // FileError.
 func (b *BookmarkFile) LoadFromFile(filename *string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_load_from_file(_arg0, _arg1, _cerr)
+	C.g_bookmark_file_load_from_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -668,9 +668,9 @@ func (b *BookmarkFile) LoadFromFile(filename *string) error {
 // In the event the URI cannot be found, false is returned and @error is set to
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND.
 func (b *BookmarkFile) MoveItem(oldUri string, newUri string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(oldUri))
@@ -678,11 +678,11 @@ func (b *BookmarkFile) MoveItem(oldUri string, newUri string) error {
 	_arg2 = (*C.gchar)(C.CString(newUri))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_move_item(_arg0, _arg1, _arg2, _cerr)
+	C.g_bookmark_file_move_item(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -697,9 +697,9 @@ func (b *BookmarkFile) MoveItem(oldUri string, newUri string) error {
 // @app_name has registered a bookmark for @uri, false is returned and error is
 // set to BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED.
 func (b *BookmarkFile) RemoveApplication(uri string, name string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -707,11 +707,11 @@ func (b *BookmarkFile) RemoveApplication(uri string, name string) error {
 	_arg2 = (*C.gchar)(C.CString(name))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_remove_application(_arg0, _arg1, _arg2, _cerr)
+	C.g_bookmark_file_remove_application(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -725,9 +725,9 @@ func (b *BookmarkFile) RemoveApplication(uri string, name string) error {
 // BOOKMARK_FILE_ERROR_URI_NOT_FOUND. In the event no group was defined, false
 // is returned and @error is set to BOOKMARK_FILE_ERROR_INVALID_VALUE.
 func (b *BookmarkFile) RemoveGroup(uri string, group string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -735,11 +735,11 @@ func (b *BookmarkFile) RemoveGroup(uri string, group string) error {
 	_arg2 = (*C.gchar)(C.CString(group))
 	defer C.free(unsafe.Pointer(_arg2))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_remove_group(_arg0, _arg1, _arg2, _cerr)
+	C.g_bookmark_file_remove_group(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -748,18 +748,18 @@ func (b *BookmarkFile) RemoveGroup(uri string, group string) error {
 
 // RemoveItem removes the bookmark for @uri from the bookmark file @bookmark.
 func (b *BookmarkFile) RemoveItem(uri string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_remove_item(_arg0, _arg1, _cerr)
+	C.g_bookmark_file_remove_item(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -770,9 +770,9 @@ func (b *BookmarkFile) RemoveItem(uri string) error {
 //
 // If no bookmark for @uri is found then it is created.
 func (b *BookmarkFile) SetAdded(uri string, added int32) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 C.time_t
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 C.time_t         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -787,9 +787,9 @@ func (b *BookmarkFile) SetAdded(uri string, added int32) {
 //
 // If no bookmark for @uri is found then it is created.
 func (b *BookmarkFile) SetAddedDateTime(uri string, added *DateTime) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.char
-	var _arg2 *C.GDateTime
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.char          // out
+	var _arg2 *C.GDateTime     // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -824,12 +824,12 @@ func (b *BookmarkFile) SetAddedDateTime(uri string, added *DateTime) {
 // error is set to BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED. Otherwise, if no
 // bookmark for @uri is found, one is created.
 func (b *BookmarkFile) SetAppInfo(uri string, name string, exec string, count int, stamp int32) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
-	var _arg4 C.gint
-	var _arg5 C.time_t
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
+	var _arg3 *C.gchar         // out
+	var _arg4 C.gint           // out
+	var _arg5 C.time_t         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -841,11 +841,11 @@ func (b *BookmarkFile) SetAppInfo(uri string, name string, exec string, count in
 	_arg4 = C.gint(count)
 	_arg5 = C.time_t(stamp)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_set_app_info(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
+	C.g_bookmark_file_set_app_info(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -876,12 +876,12 @@ func (b *BookmarkFile) SetAppInfo(uri string, name string, exec string, count in
 // error is set to BOOKMARK_FILE_ERROR_APP_NOT_REGISTERED. Otherwise, if no
 // bookmark for @uri is found, one is created.
 func (b *BookmarkFile) SetApplicationInfo(uri string, name string, exec string, count int, stamp *DateTime) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.char
-	var _arg2 *C.char
-	var _arg3 *C.char
-	var _arg4 C.int
-	var _arg5 *C.GDateTime
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.char          // out
+	var _arg2 *C.char          // out
+	var _arg3 *C.char          // out
+	var _arg4 C.int            // out
+	var _arg5 *C.GDateTime     // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -893,11 +893,11 @@ func (b *BookmarkFile) SetApplicationInfo(uri string, name string, exec string, 
 	_arg4 = C.int(count)
 	_arg5 = (*C.GDateTime)(unsafe.Pointer(stamp.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_set_application_info(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, _cerr)
+	C.g_bookmark_file_set_application_info(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -910,9 +910,9 @@ func (b *BookmarkFile) SetApplicationInfo(uri string, name string, exec string, 
 //
 // If a bookmark for @uri cannot be found then it is created.
 func (b *BookmarkFile) SetDescription(uri string, description string) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -928,8 +928,8 @@ func (b *BookmarkFile) SetDescription(uri string, description string) {
 //
 // If @uri cannot be found then an item for it is created.
 func (b *BookmarkFile) SetGroups(uri string, groups []string) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 	var _arg2 **C.gchar
 	var _arg3 C.gsize
 
@@ -959,10 +959,10 @@ func (b *BookmarkFile) SetGroups(uri string, groups []string) {
 //
 // If no bookmark for @uri is found one is created.
 func (b *BookmarkFile) SetIcon(uri string, href string, mimeType string) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
-	var _arg3 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
+	var _arg3 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -979,9 +979,9 @@ func (b *BookmarkFile) SetIcon(uri string, href string, mimeType string) {
 //
 // If a bookmark for @uri cannot be found then it is created.
 func (b *BookmarkFile) SetIsPrivate(uri string, isPrivate bool) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 C.gboolean
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 C.gboolean       // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -997,9 +997,9 @@ func (b *BookmarkFile) SetIsPrivate(uri string, isPrivate bool) {
 //
 // If a bookmark for @uri cannot be found then it is created.
 func (b *BookmarkFile) SetMIMEType(uri string, mimeType string) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -1019,9 +1019,9 @@ func (b *BookmarkFile) SetMIMEType(uri string, mimeType string) {
 // changes the modification time, except for
 // g_bookmark_file_set_visited_date_time().
 func (b *BookmarkFile) SetModified(uri string, modified int32) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 C.time_t
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 C.time_t         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -1041,9 +1041,9 @@ func (b *BookmarkFile) SetModified(uri string, modified int32) {
 // changes the modification time, except for
 // g_bookmark_file_set_visited_date_time().
 func (b *BookmarkFile) SetModifiedDateTime(uri string, modified *DateTime) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.char
-	var _arg2 *C.GDateTime
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.char          // out
+	var _arg2 *C.GDateTime     // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -1060,9 +1060,9 @@ func (b *BookmarkFile) SetModifiedDateTime(uri string, modified *DateTime) {
 //
 // If a bookmark for @uri cannot be found then it is created.
 func (b *BookmarkFile) SetTitle(uri string, title string) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -1083,9 +1083,9 @@ func (b *BookmarkFile) SetTitle(uri string, title string) {
 // g_bookmark_file_get_mime_type(). Changing the "visited" time does not affect
 // the "modified" time.
 func (b *BookmarkFile) SetVisited(uri string, visited int32) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
-	var _arg2 C.time_t
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
+	var _arg2 C.time_t         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(uri))
@@ -1105,9 +1105,9 @@ func (b *BookmarkFile) SetVisited(uri string, visited int32) {
 // g_bookmark_file_get_mime_type(). Changing the "visited" time does not affect
 // the "modified" time.
 func (b *BookmarkFile) SetVisitedDateTime(uri string, visited *DateTime) {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.char
-	var _arg2 *C.GDateTime
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.char          // out
+	var _arg2 *C.GDateTime     // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.char)(C.CString(uri))
@@ -1119,18 +1119,18 @@ func (b *BookmarkFile) SetVisitedDateTime(uri string, visited *DateTime) {
 
 // ToData: this function outputs @bookmark as a string.
 func (b *BookmarkFile) ToData() ([]byte, error) {
-	var _arg0 *C.GBookmarkFile
+	var _arg0 *C.GBookmarkFile // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 
 	var _cret *C.gchar
-	var _arg1 *C.gsize
-	var _cerr *C.GError
+	var _arg1 C.gsize   // in
+	var _cerr *C.GError // in
 
-	_cret = C.g_bookmark_file_to_data(_arg0, &_arg1, _cerr)
+	_cret = C.g_bookmark_file_to_data(_arg0, &_arg1, &_cerr)
 
 	var _guint8s []byte
-	var _goerr error
+	var _goerr error // out
 
 	ptr.SetSlice(unsafe.Pointer(&_guint8s), unsafe.Pointer(_cret), int(_arg1))
 	runtime.SetFinalizer(&_guint8s, func(v *[]byte) {
@@ -1144,18 +1144,18 @@ func (b *BookmarkFile) ToData() ([]byte, error) {
 // ToFile: this function outputs @bookmark into a file. The write process is
 // guaranteed to be atomic by using g_file_set_contents() internally.
 func (b *BookmarkFile) ToFile(filename *string) error {
-	var _arg0 *C.GBookmarkFile
-	var _arg1 *C.gchar
+	var _arg0 *C.GBookmarkFile // out
+	var _arg1 *C.gchar         // out
 
 	_arg0 = (*C.GBookmarkFile)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.gchar)(C.CString(filename))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_bookmark_file_to_file(_arg0, _arg1, _cerr)
+	C.g_bookmark_file_to_file(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

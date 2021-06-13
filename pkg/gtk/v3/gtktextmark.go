@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -94,15 +94,15 @@ func marshalTextMark(p uintptr) (interface{}, error) {
 // gtk_text_buffer_delete_mark(). See gtk_text_buffer_add_mark() for a way
 // to add it to a buffer again.
 func (m textMark) Deleted() bool {
-	var _arg0 *C.GtkTextMark
+	var _arg0 *C.GtkTextMark // out
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_mark_get_deleted(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -113,15 +113,15 @@ func (m textMark) Deleted() bool {
 
 // LeftGravity determines whether the mark has left gravity.
 func (m textMark) LeftGravity() bool {
-	var _arg0 *C.GtkTextMark
+	var _arg0 *C.GtkTextMark // out
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_mark_get_left_gravity(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -132,15 +132,15 @@ func (m textMark) LeftGravity() bool {
 
 // Name returns the mark name; returns NULL for anonymous marks.
 func (m textMark) Name() string {
-	var _arg0 *C.GtkTextMark
+	var _arg0 *C.GtkTextMark // out
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gtk_text_mark_get_name(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -150,15 +150,15 @@ func (m textMark) Name() string {
 // Visible returns true if the mark is visible (i.e. a cursor is displayed
 // for it).
 func (m textMark) Visible() bool {
-	var _arg0 *C.GtkTextMark
+	var _arg0 *C.GtkTextMark // out
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_mark_get_visible(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -173,8 +173,8 @@ func (m textMark) Visible() bool {
 // dragging-and-dropping text. Most other marks are not visible. Marks are
 // not visible by default.
 func (m textMark) SetVisible(setting bool) {
-	var _arg0 *C.GtkTextMark
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkTextMark // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkTextMark)(unsafe.Pointer(m.Native()))
 	if setting {

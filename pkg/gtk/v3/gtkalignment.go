@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -79,21 +79,21 @@ func marshalAlignment(p uintptr) (interface{}, error) {
 // Padding gets the padding on the different sides of the widget. See
 // gtk_alignment_set_padding ().
 func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
-	var _arg0 *C.GtkAlignment
+	var _arg0 *C.GtkAlignment // out
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
-	var _arg4 C.guint
+	var _arg1 C.guint // in
+	var _arg2 C.guint // in
+	var _arg3 C.guint // in
+	var _arg4 C.guint // in
 
 	C.gtk_alignment_get_padding(_arg0, &_arg1, &_arg2, &_arg3, &_arg4)
 
-	var _paddingTop uint
-	var _paddingBottom uint
-	var _paddingLeft uint
-	var _paddingRight uint
+	var _paddingTop uint    // out
+	var _paddingBottom uint // out
+	var _paddingLeft uint   // out
+	var _paddingRight uint  // out
 
 	_paddingTop = (uint)(_arg1)
 	_paddingBottom = (uint)(_arg2)
@@ -105,11 +105,11 @@ func (a alignment) Padding() (paddingTop uint, paddingBottom uint, paddingLeft u
 
 // Set sets the Alignment values.
 func (a alignment) Set(xalign float32, yalign float32, xscale float32, yscale float32) {
-	var _arg0 *C.GtkAlignment
-	var _arg1 C.gfloat
-	var _arg2 C.gfloat
-	var _arg3 C.gfloat
-	var _arg4 C.gfloat
+	var _arg0 *C.GtkAlignment // out
+	var _arg1 C.gfloat        // out
+	var _arg2 C.gfloat        // out
+	var _arg3 C.gfloat        // out
+	var _arg4 C.gfloat        // out
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gfloat(xalign)
@@ -125,11 +125,11 @@ func (a alignment) Set(xalign float32, yalign float32, xscale float32, yscale fl
 // can be used to indent the child widget towards the right by adding
 // padding on the left.
 func (a alignment) SetPadding(paddingTop uint, paddingBottom uint, paddingLeft uint, paddingRight uint) {
-	var _arg0 *C.GtkAlignment
-	var _arg1 C.guint
-	var _arg2 C.guint
-	var _arg3 C.guint
-	var _arg4 C.guint
+	var _arg0 *C.GtkAlignment // out
+	var _arg1 C.guint         // out
+	var _arg2 C.guint         // out
+	var _arg3 C.guint         // out
+	var _arg4 C.guint         // out
 
 	_arg0 = (*C.GtkAlignment)(unsafe.Pointer(a.Native()))
 	_arg1 = C.guint(paddingTop)

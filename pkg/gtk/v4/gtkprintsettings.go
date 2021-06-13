@@ -11,7 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/glib/v2"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -26,8 +26,8 @@ func gotk4_PrintSettingsFunc(arg0 *C.char, arg1 *C.char, arg2 C.gpointer) {
 		panic(`callback not found`)
 	}
 
-	var key string
-	var value string
+	var key string   // out
+	var value string // out
 
 	key = C.GoString(arg0)
 	value = C.GoString(arg1)
@@ -65,14 +65,14 @@ func (p *PageRange) Native() unsafe.Pointer {
 
 // Start gets the field inside the struct.
 func (p *PageRange) Start() int {
-	var v int
+	var v int // out
 	v = (int)(p.native.start)
 	return v
 }
 
 // End gets the field inside the struct.
 func (p *PageRange) End() int {
-	var v int
+	var v int // out
 	v = (int)(p.native.end)
 	return v
 }

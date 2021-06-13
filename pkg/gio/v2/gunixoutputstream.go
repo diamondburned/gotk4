@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -79,15 +79,15 @@ func marshalUnixOutputStream(p uintptr) (interface{}, error) {
 // CloseFd returns whether the file descriptor of @stream will be closed
 // when the stream is closed.
 func (s unixOutputStream) CloseFd() bool {
-	var _arg0 *C.GUnixOutputStream
+	var _arg0 *C.GUnixOutputStream // out
 
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_unix_output_stream_get_close_fd(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -98,15 +98,15 @@ func (s unixOutputStream) CloseFd() bool {
 
 // Fd: return the UNIX file descriptor that the stream writes to.
 func (s unixOutputStream) Fd() int {
-	var _arg0 *C.GUnixOutputStream
+	var _arg0 *C.GUnixOutputStream // out
 
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_unix_output_stream_get_fd(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -116,8 +116,8 @@ func (s unixOutputStream) Fd() int {
 // SetCloseFd sets whether the file descriptor of @stream shall be closed
 // when the stream is closed.
 func (s unixOutputStream) SetCloseFd(closeFd bool) {
-	var _arg0 *C.GUnixOutputStream
-	var _arg1 C.gboolean
+	var _arg0 *C.GUnixOutputStream // out
+	var _arg1 C.gboolean           // out
 
 	_arg0 = (*C.GUnixOutputStream)(unsafe.Pointer(s.Native()))
 	if closeFd {

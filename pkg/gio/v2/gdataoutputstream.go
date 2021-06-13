@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -82,19 +82,19 @@ func marshalDataOutputStream(p uintptr) (interface{}, error) {
 
 // PutByte puts a byte into the output stream.
 func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.guchar
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 C.guchar             // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guchar(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_byte(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_byte(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -103,19 +103,19 @@ func (s dataOutputStream) PutByte(data byte, cancellable Cancellable) error {
 
 // PutInt16 puts a signed 16-bit integer into the output stream.
 func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.gint16
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 C.gint16             // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint16(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_int16(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_int16(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -124,19 +124,19 @@ func (s dataOutputStream) PutInt16(data int16, cancellable Cancellable) error {
 
 // PutInt32 puts a signed 32-bit integer into the output stream.
 func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.gint32
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 C.gint32             // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint32(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_int32(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_int32(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -145,19 +145,19 @@ func (s dataOutputStream) PutInt32(data int32, cancellable Cancellable) error {
 
 // PutInt64 puts a signed 64-bit integer into the stream.
 func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.gint64
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 C.gint64             // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint64(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_int64(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_int64(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -166,20 +166,20 @@ func (s dataOutputStream) PutInt64(data int64, cancellable Cancellable) error {
 
 // PutString puts a string into the output stream.
 func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 *C.char
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 *C.char              // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(str))
 	defer C.free(unsafe.Pointer(_arg1))
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_string(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_string(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -188,19 +188,19 @@ func (s dataOutputStream) PutString(str string, cancellable Cancellable) error {
 
 // PutUint16 puts an unsigned 16-bit integer into the output stream.
 func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.guint16
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 C.guint16            // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint16(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_uint16(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_uint16(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -209,19 +209,19 @@ func (s dataOutputStream) PutUint16(data uint16, cancellable Cancellable) error 
 
 // PutUint32 puts an unsigned 32-bit integer into the stream.
 func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.guint32
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 C.guint32            // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint32(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_uint32(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_uint32(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -230,19 +230,19 @@ func (s dataOutputStream) PutUint32(data uint32, cancellable Cancellable) error 
 
 // PutUint64 puts an unsigned 64-bit integer into the stream.
 func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.guint64
-	var _arg2 *C.GCancellable
+	var _arg0 *C.GDataOutputStream // out
+	var _arg1 C.guint64            // out
+	var _arg2 *C.GCancellable      // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint64(data)
 	_arg2 = (*C.GCancellable)(unsafe.Pointer(cancellable.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_data_output_stream_put_uint64(_arg0, _arg1, _arg2, _cerr)
+	C.g_data_output_stream_put_uint64(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -251,8 +251,8 @@ func (s dataOutputStream) PutUint64(data uint64, cancellable Cancellable) error 
 
 // SetByteOrder sets the byte order of the data output stream to @order.
 func (s dataOutputStream) SetByteOrder(order DataStreamByteOrder) {
-	var _arg0 *C.GDataOutputStream
-	var _arg1 C.GDataStreamByteOrder
+	var _arg0 *C.GDataOutputStream   // out
+	var _arg1 C.GDataStreamByteOrder // out
 
 	_arg0 = (*C.GDataOutputStream)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GDataStreamByteOrder)(order)

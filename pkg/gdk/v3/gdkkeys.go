@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gdk-3.0 gtk+-3.0
+// #cgo pkg-config: gdk-3.0 gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -15,17 +15,17 @@ import "C"
 // KeyvalConvertCase obtains the upper- and lower-case versions of the keyval
 // @symbol. Examples of keyvals are K_KEY_a, K_KEY_Enter, K_KEY_F1, etc.
 func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(symbol)
 
-	var _arg2 C.guint
-	var _arg3 C.guint
+	var _arg2 C.guint // in
+	var _arg3 C.guint // in
 
 	C.gdk_keyval_convert_case(_arg1, &_arg2, &_arg3)
 
-	var _lower uint
-	var _upper uint
+	var _lower uint // out
+	var _upper uint // out
 
 	_lower = (uint)(_arg2)
 	_upper = (uint)(_arg3)
@@ -38,16 +38,16 @@ func KeyvalConvertCase(symbol uint) (lower uint, upper uint) {
 // The names are the same as those in the `gdk/gdkkeysyms.h` header file but
 // without the leading “GDK_KEY_”.
 func KeyvalFromName(keyvalName string) uint {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(keyvalName))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gdk_keyval_from_name(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -56,15 +56,15 @@ func KeyvalFromName(keyvalName string) uint {
 
 // KeyvalIsLower returns true if the given key value is in lower case.
 func KeyvalIsLower(keyval uint) bool {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(keyval)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_keyval_is_lower(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -75,15 +75,15 @@ func KeyvalIsLower(keyval uint) bool {
 
 // KeyvalIsUpper returns true if the given key value is in upper case.
 func KeyvalIsUpper(keyval uint) bool {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(keyval)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_keyval_is_upper(_arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -97,15 +97,15 @@ func KeyvalIsUpper(keyval uint) bool {
 // The names are the same as those in the `gdk/gdkkeysyms.h` header file but
 // without the leading “GDK_KEY_”.
 func KeyvalName(keyval uint) string {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(keyval)
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.gdk_keyval_name(_arg1)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -114,15 +114,15 @@ func KeyvalName(keyval uint) string {
 
 // KeyvalToLower converts a key value to lower case, if applicable.
 func KeyvalToLower(keyval uint) uint {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(keyval)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gdk_keyval_to_lower(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -132,15 +132,15 @@ func KeyvalToLower(keyval uint) uint {
 // KeyvalToUnicode: convert from a GDK key symbol to the corresponding ISO10646
 // (Unicode) character.
 func KeyvalToUnicode(keyval uint) uint32 {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(keyval)
 
-	var _cret C.guint32
+	var _cret C.guint32 // in
 
 	_cret = C.gdk_keyval_to_unicode(_arg1)
 
-	var _guint32 uint32
+	var _guint32 uint32 // out
 
 	_guint32 = (uint32)(_cret)
 
@@ -149,15 +149,15 @@ func KeyvalToUnicode(keyval uint) uint32 {
 
 // KeyvalToUpper converts a key value to upper case, if applicable.
 func KeyvalToUpper(keyval uint) uint {
-	var _arg1 C.guint
+	var _arg1 C.guint // out
 
 	_arg1 = C.guint(keyval)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gdk_keyval_to_upper(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -166,15 +166,15 @@ func KeyvalToUpper(keyval uint) uint {
 
 // UnicodeToKeyval: convert from a ISO10646 character to a key symbol.
 func UnicodeToKeyval(wc uint32) uint {
-	var _arg1 C.guint32
+	var _arg1 C.guint32 // out
 
 	_arg1 = C.guint32(wc)
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gdk_unicode_to_keyval(_arg1)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -208,21 +208,21 @@ func (k *KeymapKey) Native() unsafe.Pointer {
 
 // Keycode gets the field inside the struct.
 func (k *KeymapKey) Keycode() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(k.native.keycode)
 	return v
 }
 
 // Group gets the field inside the struct.
 func (k *KeymapKey) Group() int {
-	var v int
+	var v int // out
 	v = (int)(k.native.group)
 	return v
 }
 
 // Level gets the field inside the struct.
 func (k *KeymapKey) Level() int {
-	var v int
+	var v int // out
 	v = (int)(k.native.level)
 	return v
 }

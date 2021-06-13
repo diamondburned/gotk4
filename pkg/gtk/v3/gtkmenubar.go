@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -64,8 +64,8 @@ func marshalMenuBar(p uintptr) (interface{}, error) {
 // SetChildPackDirection sets how widgets should be packed inside the
 // children of a menubar.
 func (m menuBar) SetChildPackDirection(childPackDir PackDirection) {
-	var _arg0 *C.GtkMenuBar
-	var _arg1 C.GtkPackDirection
+	var _arg0 *C.GtkMenuBar      // out
+	var _arg1 C.GtkPackDirection // out
 
 	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 	_arg1 = (C.GtkPackDirection)(childPackDir)
@@ -75,8 +75,8 @@ func (m menuBar) SetChildPackDirection(childPackDir PackDirection) {
 
 // SetPackDirection sets how items should be packed inside a menubar.
 func (m menuBar) SetPackDirection(packDir PackDirection) {
-	var _arg0 *C.GtkMenuBar
-	var _arg1 C.GtkPackDirection
+	var _arg0 *C.GtkMenuBar      // out
+	var _arg1 C.GtkPackDirection // out
 
 	_arg0 = (*C.GtkMenuBar)(unsafe.Pointer(m.Native()))
 	_arg1 = (C.GtkPackDirection)(packDir)

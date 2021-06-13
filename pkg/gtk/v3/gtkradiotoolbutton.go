@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -74,8 +74,8 @@ func marshalRadioToolButton(p uintptr) (interface{}, error) {
 // SetGroup adds @button to @group, removing it from the group it belonged
 // to before.
 func (b radioToolButton) SetGroup(group *glib.SList) {
-	var _arg0 *C.GtkRadioToolButton
-	var _arg1 *C.GSList
+	var _arg0 *C.GtkRadioToolButton // out
+	var _arg1 *C.GSList             // out
 
 	_arg0 = (*C.GtkRadioToolButton)(unsafe.Pointer(b.Native()))
 	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -60,7 +60,7 @@ func marshalGLTexture(p uintptr) (interface{}, error) {
 // [method@Gdk.Texture.download] function, after this function has been
 // called.
 func (s glTexture) Release() {
-	var _arg0 *C.GdkGLTexture
+	var _arg0 *C.GdkGLTexture // out
 
 	_arg0 = (*C.GdkGLTexture)(unsafe.Pointer(s.Native()))
 

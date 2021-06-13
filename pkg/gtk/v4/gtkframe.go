@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -112,15 +112,15 @@ func marshalFrame(p uintptr) (interface{}, error) {
 //
 // If the frame's label widget is not a `GtkLabel`, nil is returned.
 func (f frame) Label() string {
-	var _arg0 *C.GtkFrame
+	var _arg0 *C.GtkFrame // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_frame_get_label(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -129,15 +129,15 @@ func (f frame) Label() string {
 
 // LabelAlign retrieves the X alignment of the frame’s label.
 func (f frame) LabelAlign() float32 {
-	var _arg0 *C.GtkFrame
+	var _arg0 *C.GtkFrame // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 
-	var _cret C.float
+	var _cret C.float // in
 
 	_cret = C.gtk_frame_get_label_align(_arg0)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -146,8 +146,8 @@ func (f frame) LabelAlign() float32 {
 
 // SetChild sets the child widget of @frame.
 func (f frame) SetChild(child Widget) {
-	var _arg0 *C.GtkFrame
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkFrame  // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -158,8 +158,8 @@ func (f frame) SetChild(child Widget) {
 // SetLabel creates a new `GtkLabel` with the @label and sets it as the
 // frame's label widget.
 func (f frame) SetLabel(label string) {
-	var _arg0 *C.GtkFrame
-	var _arg1 *C.char
+	var _arg0 *C.GtkFrame // out
+	var _arg1 *C.char     // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.char)(C.CString(label))
@@ -172,8 +172,8 @@ func (f frame) SetLabel(label string) {
 //
 // The default value for a newly created frame is 0.0.
 func (f frame) SetLabelAlign(xalign float32) {
-	var _arg0 *C.GtkFrame
-	var _arg1 C.float
+	var _arg0 *C.GtkFrame // out
+	var _arg1 C.float     // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	_arg1 = C.float(xalign)
@@ -186,8 +186,8 @@ func (f frame) SetLabelAlign(xalign float32) {
 // This is the widget that will appear embedded in the top edge of the frame
 // as a title.
 func (f frame) SetLabelWidget(labelWidget Widget) {
-	var _arg0 *C.GtkFrame
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkFrame  // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkFrame)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(labelWidget.Native()))

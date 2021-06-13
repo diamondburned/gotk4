@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -191,15 +191,15 @@ func marshalMenuButton(p uintptr) (interface{}, error) {
 // UsePopover returns whether a Popover or a Menu will be constructed from
 // the menu model.
 func (m menuButton) UsePopover() bool {
-	var _arg0 *C.GtkMenuButton
+	var _arg0 *C.GtkMenuButton // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_menu_button_get_use_popover(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -217,8 +217,8 @@ func (m menuButton) UsePopover() bool {
 // Note that this property is only used with menus currently, and not for
 // popovers.
 func (m menuButton) SetAlignWidget(alignWidget Widget) {
-	var _arg0 *C.GtkMenuButton
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(alignWidget.Native()))
@@ -236,8 +236,8 @@ func (m menuButton) SetAlignWidget(alignWidget Widget) {
 // If you pass GTK_ARROW_NONE for a @direction, the popup will behave as if
 // you passed GTK_ARROW_DOWN (although you won’t see any arrows).
 func (m menuButton) SetDirection(direction ArrowType) {
-	var _arg0 *C.GtkMenuButton
-	var _arg1 C.GtkArrowType
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 C.GtkArrowType   // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 	_arg1 = (C.GtkArrowType)(direction)
@@ -257,8 +257,8 @@ func (m menuButton) SetDirection(direction ArrowType) {
 // are dissociated from the @menu_button, and those properties are set to
 // nil.
 func (m menuButton) SetMenuModel(menuModel gio.MenuModel) {
-	var _arg0 *C.GtkMenuButton
-	var _arg1 *C.GMenuModel
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 *C.GMenuModel    // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GMenuModel)(unsafe.Pointer(menuModel.Native()))
@@ -273,8 +273,8 @@ func (m menuButton) SetMenuModel(menuModel gio.MenuModel) {
 // If MenuButton:menu-model or MenuButton:popup are set, those objects are
 // dissociated from the @menu_button, and those properties are set to nil.
 func (m menuButton) SetPopover(popover Widget) {
-	var _arg0 *C.GtkMenuButton
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(popover.Native()))
@@ -288,8 +288,8 @@ func (m menuButton) SetPopover(popover Widget) {
 // If MenuButton:menu-model or MenuButton:popover are set, those objects are
 // dissociated from the @menu_button, and those properties are set to nil.
 func (m menuButton) SetPopup(menu Widget) {
-	var _arg0 *C.GtkMenuButton
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 *C.GtkWidget     // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(menu.Native()))
@@ -301,8 +301,8 @@ func (m menuButton) SetPopup(menu Widget) {
 // gtk_menu_button_set_menu_model() is called. Note that this property is
 // only consulted when a new menu model is set.
 func (m menuButton) SetUsePopover(usePopover bool) {
-	var _arg0 *C.GtkMenuButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkMenuButton // out
+	var _arg1 C.gboolean       // out
 
 	_arg0 = (*C.GtkMenuButton)(unsafe.Pointer(m.Native()))
 	if usePopover {

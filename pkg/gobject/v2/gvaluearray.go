@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gobject-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib-object.h>
@@ -47,21 +47,21 @@ func (v *ValueArray) Native() unsafe.Pointer {
 
 // NValues gets the field inside the struct.
 func (v *ValueArray) NValues() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(v.native.n_values)
 	return v
 }
 
 // Values gets the field inside the struct.
 func (v *ValueArray) Values() **externglib.Value {
-	var v **externglib.Value
+	var v **externglib.Value // out
 	v = externglib.ValueFromNative(unsafe.Pointer(v.native.values))
 	return v
 }
 
 // Free: free a Array including its contents.
 func (v *ValueArray) Free() {
-	var _arg0 *C.GValueArray
+	var _arg0 *C.GValueArray // out
 
 	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
 
@@ -70,17 +70,17 @@ func (v *ValueArray) Free() {
 
 // Nth: return a pointer to the value at @index_ containd in @value_array.
 func (v *ValueArray) Nth(index_ uint) **externglib.Value {
-	var _arg0 *C.GValueArray
-	var _arg1 C.guint
+	var _arg0 *C.GValueArray // out
+	var _arg1 C.guint        // out
 
 	_arg0 = (*C.GValueArray)(unsafe.Pointer(v.Native()))
 	_arg1 = C.guint(index_)
 
-	var _cret *C.GValue
+	var _cret *C.GValue // in
 
 	_cret = C.g_value_array_get_nth(_arg0, _arg1)
 
-	var _value **externglib.Value
+	var _value **externglib.Value // out
 
 	_value = externglib.ValueFromNative(unsafe.Pointer(_cret))
 

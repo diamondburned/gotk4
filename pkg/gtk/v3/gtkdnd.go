@@ -11,7 +11,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk-a11y.h>
 // #include <gtk/gtk.h>
@@ -30,7 +30,7 @@ import "C"
 // If a drag is cancelled in this way, the @result argument of
 // Widget::drag-failed is set to @GTK_DRAG_RESULT_ERROR.
 func DragCancel(context gdk.DragContext) {
-	var _arg1 *C.GdkDragContext
+	var _arg1 *C.GdkDragContext // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
@@ -40,10 +40,10 @@ func DragCancel(context gdk.DragContext) {
 // DragFinish informs the drag source that the drop is finished, and that the
 // data of the drag will no longer be required.
 func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 C.gboolean
-	var _arg3 C.gboolean
-	var _arg4 C.guint32
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 C.gboolean        // out
+	var _arg3 C.gboolean        // out
+	var _arg4 C.guint32         // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	if success {
@@ -59,7 +59,7 @@ func DragFinish(context gdk.DragContext, success bool, del bool, time_ uint32) {
 
 // DragSetIconDefault sets the icon for a particular drag to the default icon.
 func DragSetIconDefault(context gdk.DragContext) {
-	var _arg1 *C.GdkDragContext
+	var _arg1 *C.GdkDragContext // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 
@@ -70,10 +70,10 @@ func DragSetIconDefault(context gdk.DragContext) {
 // documentation for gtk_drag_set_icon_name() for more details about using icons
 // in drag and drop.
 func DragSetIconGIcon(context gdk.DragContext, icon gio.Icon, hotX int, hotY int) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.GIcon
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.GIcon          // out
+	var _arg3 C.gint            // out
+	var _arg4 C.gint            // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GIcon)(unsafe.Pointer(icon.Native()))
@@ -88,10 +88,10 @@ func DragSetIconGIcon(context gdk.DragContext, icon gio.Icon, hotX int, hotY int
 // depends on the icon theme (the icon is loaded at the symbolic size
 // K_ICON_SIZE_DND), thus @hot_x and @hot_y have to be used with care.
 func DragSetIconName(context gdk.DragContext, iconName string, hotX int, hotY int) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.gchar
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.gchar          // out
+	var _arg3 C.gint            // out
+	var _arg4 C.gint            // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.gchar)(C.CString(iconName))
@@ -104,10 +104,10 @@ func DragSetIconName(context gdk.DragContext, iconName string, hotX int, hotY in
 
 // DragSetIconPixbuf sets @pixbuf as the icon for a given drag.
 func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX int, hotY int) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.GdkPixbuf
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.GdkPixbuf      // out
+	var _arg3 C.gint            // out
+	var _arg4 C.gint            // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GdkPixbuf)(unsafe.Pointer(pixbuf.Native()))
@@ -119,10 +119,10 @@ func DragSetIconPixbuf(context gdk.DragContext, pixbuf gdkpixbuf.Pixbuf, hotX in
 
 // DragSetIconStock sets the icon for a given drag from a stock ID.
 func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY int) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.gchar
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.gchar          // out
+	var _arg3 C.gint            // out
+	var _arg4 C.gint            // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.gchar)(C.CString(stockId))
@@ -141,8 +141,8 @@ func DragSetIconStock(context gdk.DragContext, stockId string, hotX int, hotY in
 // cairo_surface_set_device_offset() on @surface. The mouse cursor will be
 // positioned at the (0,0) coordinate of the surface.
 func DragSetIconSurface(context gdk.DragContext, surface *cairo.Surface) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.cairo_surface_t
+	var _arg1 *C.GdkDragContext  // out
+	var _arg2 *C.cairo_surface_t // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.cairo_surface_t)(unsafe.Pointer(surface.Native()))
@@ -154,10 +154,10 @@ func DragSetIconSurface(context gdk.DragContext, surface *cairo.Surface) {
 // will not destroy the widget, so if you don’t want it to persist, you should
 // connect to the “drag-end” signal and destroy it yourself.
 func DragSetIconWidget(context gdk.DragContext, widget Widget, hotX int, hotY int) {
-	var _arg1 *C.GdkDragContext
-	var _arg2 *C.GtkWidget
-	var _arg3 C.gint
-	var _arg4 C.gint
+	var _arg1 *C.GdkDragContext // out
+	var _arg2 *C.GtkWidget      // out
+	var _arg3 C.gint            // out
+	var _arg4 C.gint            // out
 
 	_arg1 = (*C.GdkDragContext)(unsafe.Pointer(context.Native()))
 	_arg2 = (*C.GtkWidget)(unsafe.Pointer(widget.Native()))

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -50,7 +50,7 @@ func (m *MappedFile) Native() unsafe.Pointer {
 // Free: this call existed before File had refcounting and is currently exactly
 // the same as g_mapped_file_unref().
 func (f *MappedFile) Free() {
-	var _arg0 *C.GMappedFile
+	var _arg0 *C.GMappedFile // out
 
 	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
@@ -64,15 +64,15 @@ func (f *MappedFile) Free() {
 //
 // If the file is empty then nil is returned.
 func (f *MappedFile) Contents() string {
-	var _arg0 *C.GMappedFile
+	var _arg0 *C.GMappedFile // out
 
 	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_mapped_file_get_contents(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -82,15 +82,15 @@ func (f *MappedFile) Contents() string {
 
 // Length returns the length of the contents of a File.
 func (f *MappedFile) Length() uint {
-	var _arg0 *C.GMappedFile
+	var _arg0 *C.GMappedFile // out
 
 	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 
-	var _cret C.gsize
+	var _cret C.gsize // in
 
 	_cret = C.g_mapped_file_get_length(_arg0)
 
-	var _gsize uint
+	var _gsize uint // out
 
 	_gsize = (uint)(_cret)
 
@@ -104,7 +104,7 @@ func (f *MappedFile) Length() uint {
 //
 // Since 2.22
 func (f *MappedFile) Unref() {
-	var _arg0 *C.GMappedFile
+	var _arg0 *C.GMappedFile // out
 
 	_arg0 = (*C.GMappedFile)(unsafe.Pointer(f.Native()))
 

@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -112,15 +112,15 @@ func marshalTreeExpander(p uintptr) (interface{}, error) {
 // “`c gtk_tree_list_row_get_item (gtk_tree_expander_get_list_row (@self));
 // “`
 func (s treeExpander) Item() gextras.Objector {
-	var _arg0 *C.GtkTreeExpander
+	var _arg0 *C.GtkTreeExpander // out
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.gtk_tree_expander_get_item(_arg0)
 
-	var _object gextras.Objector
+	var _object gextras.Objector // out
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
@@ -129,8 +129,8 @@ func (s treeExpander) Item() gextras.Objector {
 
 // SetChild sets the content widget to display.
 func (s treeExpander) SetChild(child Widget) {
-	var _arg0 *C.GtkTreeExpander
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkTreeExpander // out
+	var _arg1 *C.GtkWidget       // out
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -140,8 +140,8 @@ func (s treeExpander) SetChild(child Widget) {
 
 // SetListRow sets the tree list row that this expander should manage.
 func (s treeExpander) SetListRow(listRow TreeListRow) {
-	var _arg0 *C.GtkTreeExpander
-	var _arg1 *C.GtkTreeListRow
+	var _arg0 *C.GtkTreeExpander // out
+	var _arg1 *C.GtkTreeListRow  // out
 
 	_arg0 = (*C.GtkTreeExpander)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkTreeListRow)(unsafe.Pointer(listRow.Native()))

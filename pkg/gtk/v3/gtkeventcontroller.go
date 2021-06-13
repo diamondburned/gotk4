@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -64,7 +64,7 @@ func marshalEventController(p uintptr) (interface{}, error) {
 // controller did through EventController::handle-event will be dropped at
 // this point.
 func (c eventController) Reset() {
-	var _arg0 *C.GtkEventController
+	var _arg0 *C.GtkEventController // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 
@@ -78,8 +78,8 @@ func (c eventController) Reset() {
 // performed, but other additional gesture maintenance will. In that phase,
 // the events can be managed by calling gtk_event_controller_handle_event().
 func (c eventController) SetPropagationPhase(phase PropagationPhase) {
-	var _arg0 *C.GtkEventController
-	var _arg1 C.GtkPropagationPhase
+	var _arg0 *C.GtkEventController // out
+	var _arg1 C.GtkPropagationPhase // out
 
 	_arg0 = (*C.GtkEventController)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.GtkPropagationPhase)(phase)

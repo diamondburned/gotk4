@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -63,8 +63,8 @@ func marshalFontset(p uintptr) (interface{}, error) {
 //
 // If @func returns true, that stops the iteration.
 func (f fontset) Foreach(fn FontsetForeachFunc) {
-	var _arg0 *C.PangoFontset
-	var _arg1 C.PangoFontsetForeachFunc
+	var _arg0 *C.PangoFontset           // out
+	var _arg1 C.PangoFontsetForeachFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.PangoFontset)(unsafe.Pointer(f.Native()))
@@ -111,8 +111,8 @@ func marshalFontsetSimple(p uintptr) (interface{}, error) {
 
 // Append adds a font to the fontset.
 func (f fontsetSimple) Append(font Font) {
-	var _arg0 *C.PangoFontsetSimple
-	var _arg1 *C.PangoFont
+	var _arg0 *C.PangoFontsetSimple // out
+	var _arg1 *C.PangoFont          // out
 
 	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
@@ -122,15 +122,15 @@ func (f fontsetSimple) Append(font Font) {
 
 // Size returns the number of fonts in the fontset.
 func (f fontsetSimple) Size() int {
-	var _arg0 *C.PangoFontsetSimple
+	var _arg0 *C.PangoFontsetSimple // out
 
 	_arg0 = (*C.PangoFontsetSimple)(unsafe.Pointer(f.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.pango_fontset_simple_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 

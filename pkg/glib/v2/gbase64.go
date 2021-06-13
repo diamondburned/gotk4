@@ -18,13 +18,13 @@ import "C"
 // Note that the returned binary data is not necessarily zero-terminated, so it
 // should not be used as a character string.
 func Base64Decode(text string) []byte {
-	var _arg1 *C.gchar
+	var _arg1 *C.gchar // out
 
 	_arg1 = (*C.gchar)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
 
 	var _cret *C.guchar
-	var _arg2 *C.gsize
+	var _arg2 C.gsize // in
 
 	_cret = C.g_base64_decode(_arg1, &_arg2)
 
@@ -47,11 +47,11 @@ func Base64Encode(data []byte) string {
 	_arg2 = C.gsize(len(data))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&data[0]))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_base64_encode(_arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

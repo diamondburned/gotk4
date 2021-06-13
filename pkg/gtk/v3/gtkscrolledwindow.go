@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -273,8 +273,8 @@ func marshalScrolledWindow(p uintptr) (interface{}, error) {
 // A widget supports scrolling natively if it implements the Scrollable
 // interface.
 func (s scrolledWindow) AddWithViewport(child Widget) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 *C.GtkWidget         // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -285,15 +285,15 @@ func (s scrolledWindow) AddWithViewport(child Widget) {
 // CaptureButtonPress: return whether button presses are captured during
 // kinetic scrolling. See gtk_scrolled_window_set_capture_button_press().
 func (s scrolledWindow) CaptureButtonPress() bool {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_scrolled_window_get_capture_button_press(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -304,15 +304,15 @@ func (s scrolledWindow) CaptureButtonPress() bool {
 
 // KineticScrolling returns the specified kinetic scrolling behavior.
 func (s scrolledWindow) KineticScrolling() bool {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_scrolled_window_get_kinetic_scrolling(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -323,15 +323,15 @@ func (s scrolledWindow) KineticScrolling() bool {
 
 // MaxContentHeight returns the maximum content height set.
 func (s scrolledWindow) MaxContentHeight() int {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_scrolled_window_get_max_content_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -340,15 +340,15 @@ func (s scrolledWindow) MaxContentHeight() int {
 
 // MaxContentWidth returns the maximum content width set.
 func (s scrolledWindow) MaxContentWidth() int {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_scrolled_window_get_max_content_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -358,15 +358,15 @@ func (s scrolledWindow) MaxContentWidth() int {
 // MinContentHeight gets the minimal content height of @scrolled_window, or
 // -1 if not set.
 func (s scrolledWindow) MinContentHeight() int {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_scrolled_window_get_min_content_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -376,15 +376,15 @@ func (s scrolledWindow) MinContentHeight() int {
 // MinContentWidth gets the minimum content width of @scrolled_window, or -1
 // if not set.
 func (s scrolledWindow) MinContentWidth() int {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_scrolled_window_get_min_content_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -394,15 +394,15 @@ func (s scrolledWindow) MinContentWidth() int {
 // OverlayScrolling returns whether overlay scrolling is enabled for this
 // scrolled window.
 func (s scrolledWindow) OverlayScrolling() bool {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_scrolled_window_get_overlay_scrolling(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -415,15 +415,15 @@ func (s scrolledWindow) OverlayScrolling() bool {
 // will be calculated and propagated through the scrolled window’s requested
 // natural height.
 func (s scrolledWindow) PropagateNaturalHeight() bool {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_scrolled_window_get_propagate_natural_height(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -436,15 +436,15 @@ func (s scrolledWindow) PropagateNaturalHeight() bool {
 // be calculated and propagated through the scrolled window’s requested
 // natural width.
 func (s scrolledWindow) PropagateNaturalWidth() bool {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_scrolled_window_get_propagate_natural_width(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -466,8 +466,8 @@ func (s scrolledWindow) PropagateNaturalWidth() bool {
 //
 // This setting only has an effect if kinetic scrolling is enabled.
 func (s scrolledWindow) SetCaptureButtonPress(captureButtonPress bool) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if captureButtonPress {
@@ -479,8 +479,8 @@ func (s scrolledWindow) SetCaptureButtonPress(captureButtonPress bool) {
 
 // SetHAdjustment sets the Adjustment for the horizontal scrollbar.
 func (s scrolledWindow) SetHAdjustment(hadjustment Adjustment) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 *C.GtkAdjustment     // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(hadjustment.Native()))
@@ -491,8 +491,8 @@ func (s scrolledWindow) SetHAdjustment(hadjustment Adjustment) {
 // SetKineticScrolling turns kinetic scrolling on or off. Kinetic scrolling
 // only applies to devices with source GDK_SOURCE_TOUCHSCREEN.
 func (s scrolledWindow) SetKineticScrolling(kineticScrolling bool) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if kineticScrolling {
@@ -509,8 +509,8 @@ func (s scrolledWindow) SetKineticScrolling(kineticScrolling bool) {
 // It is a programming error to set the maximum content height to a value
 // smaller than ScrolledWindow:min-content-height.
 func (s scrolledWindow) SetMaxContentHeight(height int) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gint
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(height)
@@ -525,8 +525,8 @@ func (s scrolledWindow) SetMaxContentHeight(height int) {
 // It is a programming error to set the maximum content width to a value
 // smaller than ScrolledWindow:min-content-width.
 func (s scrolledWindow) SetMaxContentWidth(width int) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gint
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(width)
@@ -541,8 +541,8 @@ func (s scrolledWindow) SetMaxContentWidth(width int) {
 // It is a programming error to set the minimum content height to a value
 // greater than ScrolledWindow:max-content-height.
 func (s scrolledWindow) SetMinContentHeight(height int) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gint
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(height)
@@ -557,8 +557,8 @@ func (s scrolledWindow) SetMinContentHeight(height int) {
 // It is a programming error to set the minimum content width to a value
 // greater than ScrolledWindow:max-content-width.
 func (s scrolledWindow) SetMinContentWidth(width int) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gint
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gint               // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(width)
@@ -569,8 +569,8 @@ func (s scrolledWindow) SetMinContentWidth(width int) {
 // SetOverlayScrolling enables or disables overlay scrolling for this
 // scrolled window.
 func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if overlayScrolling {
@@ -591,8 +591,8 @@ func (s scrolledWindow) SetOverlayScrolling(overlayScrolling bool) {
 // See also gtk_scrolled_window_get_placement() and
 // gtk_scrolled_window_unset_placement().
 func (s scrolledWindow) SetPlacement(windowPlacement CornerType) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.GtkCornerType
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.GtkCornerType      // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkCornerType)(windowPlacement)
@@ -610,9 +610,9 @@ func (s scrolledWindow) SetPlacement(windowPlacement CornerType) {
 // if the slider part of the bar would be smaller than the trough — the
 // display is larger than the page size).
 func (s scrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy PolicyType) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.GtkPolicyType
-	var _arg2 C.GtkPolicyType
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.GtkPolicyType      // out
+	var _arg2 C.GtkPolicyType      // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkPolicyType)(hscrollbarPolicy)
@@ -625,8 +625,8 @@ func (s scrolledWindow) SetPolicy(hscrollbarPolicy PolicyType, vscrollbarPolicy 
 // should be calculated and propagated through the scrolled window’s
 // requested natural height.
 func (s scrolledWindow) SetPropagateNaturalHeight(propagate bool) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if propagate {
@@ -640,8 +640,8 @@ func (s scrolledWindow) SetPropagateNaturalHeight(propagate bool) {
 // should be calculated and propagated through the scrolled window’s
 // requested natural width.
 func (s scrolledWindow) SetPropagateNaturalWidth(propagate bool) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.gboolean           // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	if propagate {
@@ -654,8 +654,8 @@ func (s scrolledWindow) SetPropagateNaturalWidth(propagate bool) {
 // SetShadowType changes the type of shadow drawn around the contents of
 // @scrolled_window.
 func (s scrolledWindow) SetShadowType(typ ShadowType) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 C.GtkShadowType
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 C.GtkShadowType      // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GtkShadowType)(typ)
@@ -665,8 +665,8 @@ func (s scrolledWindow) SetShadowType(typ ShadowType) {
 
 // SetVAdjustment sets the Adjustment for the vertical scrollbar.
 func (s scrolledWindow) SetVAdjustment(vadjustment Adjustment) {
-	var _arg0 *C.GtkScrolledWindow
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkScrolledWindow // out
+	var _arg1 *C.GtkAdjustment     // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(vadjustment.Native()))
@@ -681,7 +681,7 @@ func (s scrolledWindow) SetVAdjustment(vadjustment Adjustment) {
 // See also gtk_scrolled_window_set_placement() and
 // gtk_scrolled_window_get_placement().
 func (s scrolledWindow) UnsetPlacement() {
-	var _arg0 *C.GtkScrolledWindow
+	var _arg0 *C.GtkScrolledWindow // out
 
 	_arg0 = (*C.GtkScrolledWindow)(unsafe.Pointer(s.Native()))
 

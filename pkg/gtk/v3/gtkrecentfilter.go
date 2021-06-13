@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/ptr"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -44,21 +44,21 @@ func (r *RecentFilterInfo) Native() unsafe.Pointer {
 
 // URI gets the field inside the struct.
 func (r *RecentFilterInfo) URI() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.uri)
 	return v
 }
 
 // DisplayName gets the field inside the struct.
 func (r *RecentFilterInfo) DisplayName() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.display_name)
 	return v
 }
 
 // MIMEType gets the field inside the struct.
 func (r *RecentFilterInfo) MIMEType() string {
-	var v string
+	var v string // out
 	v = C.GoString(r.native.mime_type)
 	return v
 }
@@ -111,7 +111,7 @@ func (r *RecentFilterInfo) Groups() []string {
 
 // Age gets the field inside the struct.
 func (r *RecentFilterInfo) Age() int {
-	var v int
+	var v int // out
 	v = (int)(r.native.age)
 	return v
 }

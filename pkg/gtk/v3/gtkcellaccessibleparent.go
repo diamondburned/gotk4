@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -68,8 +68,8 @@ func marshalCellAccessibleParent(p uintptr) (interface{}, error) {
 }
 
 func (p cellAccessibleParent) Activate(cell CellAccessible) {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
@@ -78,8 +78,8 @@ func (p cellAccessibleParent) Activate(cell CellAccessible) {
 }
 
 func (p cellAccessibleParent) Edit(cell CellAccessible) {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
@@ -88,8 +88,8 @@ func (p cellAccessibleParent) Edit(cell CellAccessible) {
 }
 
 func (p cellAccessibleParent) ExpandCollapse(cell CellAccessible) {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
@@ -98,8 +98,8 @@ func (p cellAccessibleParent) ExpandCollapse(cell CellAccessible) {
 }
 
 func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
@@ -112,19 +112,19 @@ func (p cellAccessibleParent) CellArea(cell CellAccessible) gdk.Rectangle {
 }
 
 func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column int) {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	var _arg2 C.gint
-	var _arg3 C.gint
+	var _arg2 C.gint // in
+	var _arg3 C.gint // in
 
 	C.gtk_cell_accessible_parent_get_cell_position(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _row int
-	var _column int
+	var _row int    // out
+	var _column int // out
 
 	_row = (int)(_arg2)
 	_column = (int)(_arg3)
@@ -133,17 +133,17 @@ func (p cellAccessibleParent) CellPosition(cell CellAccessible) (row int, column
 }
 
 func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_cell_accessible_parent_get_child_index(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -151,17 +151,17 @@ func (p cellAccessibleParent) ChildIndex(cell CellAccessible) int {
 }
 
 func (p cellAccessibleParent) GrabFocus(cell CellAccessible) bool {
-	var _arg0 *C.GtkCellAccessibleParent
-	var _arg1 *C.GtkCellAccessible
+	var _arg0 *C.GtkCellAccessibleParent // out
+	var _arg1 *C.GtkCellAccessible       // out
 
 	_arg0 = (*C.GtkCellAccessibleParent)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkCellAccessible)(unsafe.Pointer(cell.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_cell_accessible_parent_grab_focus(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -178,7 +178,7 @@ func marshalCancellable(p uintptr) (interface{}, error) {
 // operation's ReadyCallback will not be invoked until the application
 // returns to the main loop.
 func (c cancellable) Cancel() {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
@@ -197,8 +197,8 @@ func (c cancellable) Cancel() {
 //
 // If @cancellable is nil or @handler_id is `0` this function does nothing.
 func (c cancellable) Disconnect(handlerId uint32) {
-	var _arg0 *C.GCancellable
-	var _arg1 C.gulong
+	var _arg0 *C.GCancellable // out
+	var _arg1 C.gulong        // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 	_arg1 = C.gulong(handlerId)
@@ -220,15 +220,15 @@ func (c cancellable) Disconnect(handlerId uint32) {
 //
 // See also g_cancellable_make_pollfd().
 func (c cancellable) Fd() int {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.g_cancellable_get_fd(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -237,15 +237,15 @@ func (c cancellable) Fd() int {
 
 // IsCancelled checks if a cancellable job has been cancelled.
 func (c cancellable) IsCancelled() bool {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_cancellable_is_cancelled(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -272,17 +272,17 @@ func (c cancellable) IsCancelled() bool {
 // readable status. Reading to unset the readable status is done with
 // g_cancellable_reset().
 func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
-	var _arg0 *C.GCancellable
-	var _arg1 *C.GPollFD
+	var _arg0 *C.GCancellable // out
+	var _arg1 *C.GPollFD      // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GPollFD)(unsafe.Pointer(pollfd.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_cancellable_make_pollfd(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -294,7 +294,7 @@ func (c cancellable) MakePollfd(pollfd *glib.PollFD) bool {
 // PopCurrent pops @cancellable off the cancellable stack (verifying that
 // @cancellable is on the top of the stack).
 func (c cancellable) PopCurrent() {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
@@ -310,7 +310,7 @@ func (c cancellable) PopCurrent() {
 // This is typically called automatically by e.g. #GFile operations, so you
 // rarely have to call this yourself.
 func (c cancellable) PushCurrent() {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
@@ -327,7 +327,7 @@ func (c cancellable) PushCurrent() {
 // This can cause the application to run out of file descriptors when many
 // #GCancellables are used at the same time.
 func (c cancellable) ReleaseFd() {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
@@ -346,7 +346,7 @@ func (c cancellable) ReleaseFd() {
 // outstanding async operations. You should create a fresh cancellable for
 // further async operations.
 func (c cancellable) Reset() {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
@@ -356,15 +356,15 @@ func (c cancellable) Reset() {
 // SetErrorIfCancelled: if the @cancellable is cancelled, sets the error to
 // notify that the operation was cancelled.
 func (c cancellable) SetErrorIfCancelled() error {
-	var _arg0 *C.GCancellable
+	var _arg0 *C.GCancellable // out
 
 	_arg0 = (*C.GCancellable)(unsafe.Pointer(c.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_cancellable_set_error_if_cancelled(_arg0, _cerr)
+	C.g_cancellable_set_error_if_cancelled(_arg0, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

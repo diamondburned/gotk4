@@ -8,9 +8,9 @@ package gdk
 import "C"
 
 func SynthesizeWindowState(window Window, unsetFlags WindowState, setFlags WindowState) {
-	var _arg1 *C.GdkWindow
-	var _arg2 C.GdkWindowState
-	var _arg3 C.GdkWindowState
+	var _arg1 *C.GdkWindow     // out
+	var _arg2 C.GdkWindowState // out
+	var _arg3 C.GdkWindowState // out
 
 	_arg1 = (*C.GdkWindow)(unsafe.Pointer(window.Native()))
 	_arg2 = (C.GdkWindowState)(unsetFlags)

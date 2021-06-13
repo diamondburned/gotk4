@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -74,15 +74,15 @@ func marshalSocketAddress(p uintptr) (interface{}, error) {
 // NativeSize gets the size of @address's native struct sockaddr. You can
 // use this to allocate memory to pass to g_socket_address_to_native().
 func (a socketAddress) NativeSize() int {
-	var _arg0 *C.GSocketAddress
+	var _arg0 *C.GSocketAddress // out
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gssize
+	var _cret C.gssize // in
 
 	_cret = C.g_socket_address_get_native_size(_arg0)
 
-	var _gssize int
+	var _gssize int // out
 
 	_gssize = (int)(_cret)
 
@@ -96,19 +96,19 @@ func (a socketAddress) NativeSize() int {
 // returned. If the address type is not known on the system then a
 // G_IO_ERROR_NOT_SUPPORTED error is returned.
 func (a socketAddress) ToNative(dest interface{}, destlen uint) error {
-	var _arg0 *C.GSocketAddress
-	var _arg1 C.gpointer
-	var _arg2 C.gsize
+	var _arg0 *C.GSocketAddress // out
+	var _arg1 C.gpointer        // out
+	var _arg2 C.gsize           // out
 
 	_arg0 = (*C.GSocketAddress)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gpointer(dest)
 	_arg2 = C.gsize(destlen)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.g_socket_address_to_native(_arg0, _arg1, _arg2, _cerr)
+	C.g_socket_address_to_native(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

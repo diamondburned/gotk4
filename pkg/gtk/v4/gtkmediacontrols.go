@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -62,8 +62,8 @@ func marshalMediaControls(p uintptr) (interface{}, error) {
 
 // SetMediaStream sets the stream that is controlled by @controls.
 func (c mediaControls) SetMediaStream(stream MediaStream) {
-	var _arg0 *C.GtkMediaControls
-	var _arg1 *C.GtkMediaStream
+	var _arg0 *C.GtkMediaControls // out
+	var _arg1 *C.GtkMediaStream   // out
 
 	_arg0 = (*C.GtkMediaControls)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GtkMediaStream)(unsafe.Pointer(stream.Native()))

@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -57,8 +57,8 @@ func marshalFlattenListModel(p uintptr) (interface{}, error) {
 
 // SetModel sets a new model to be flattened.
 func (s flattenListModel) SetModel(model gio.ListModel) {
-	var _arg0 *C.GtkFlattenListModel
-	var _arg1 *C.GListModel
+	var _arg0 *C.GtkFlattenListModel // out
+	var _arg1 *C.GListModel          // out
 
 	_arg0 = (*C.GtkFlattenListModel)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GListModel)(unsafe.Pointer(model.Native()))

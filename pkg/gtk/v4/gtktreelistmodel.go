@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -40,7 +40,7 @@ func gotk4_TreeListModelCreateModelFunc(arg0 C.gpointer, arg1 C.gpointer) *C.GLi
 		panic(`callback not found`)
 	}
 
-	var item gextras.Objector
+	var item gextras.Objector // out
 
 	item = gextras.CastObject(externglib.Take(unsafe.Pointer(arg0.Native()))).(gextras.Objector)
 
@@ -112,15 +112,15 @@ func marshalTreeListModel(p uintptr) (interface{}, error) {
 // This can be either rows added by changes to the underlying models or via
 // [method@Gtk.TreeListRow.set_expanded].
 func (s treeListModel) Autoexpand() bool {
-	var _arg0 *C.GtkTreeListModel
+	var _arg0 *C.GtkTreeListModel // out
 
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_list_model_get_autoexpand(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -140,15 +140,15 @@ func (s treeListModel) Autoexpand() bool {
 // original state. You then need to call [method@Gtk.TreeListModel.get_row]
 // to get the custom `GtkTreeListRow`s.
 func (s treeListModel) Passthrough() bool {
-	var _arg0 *C.GtkTreeListModel
+	var _arg0 *C.GtkTreeListModel // out
 
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_list_model_get_passthrough(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -163,8 +163,8 @@ func (s treeListModel) Passthrough() bool {
 // to the model. This can be either rows added by changes to the underlying
 // models or via [method@Gtk.TreeListRow.set_expanded].
 func (s treeListModel) SetAutoexpand(autoexpand bool) {
-	var _arg0 *C.GtkTreeListModel
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkTreeListModel // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkTreeListModel)(unsafe.Pointer(s.Native()))
 	if autoexpand {
@@ -254,15 +254,15 @@ func marshalTreeListRow(p uintptr) (interface{}, error) {
 //
 // The depth of a row never changes until the row is destroyed.
 func (s treeListRow) Depth() uint {
-	var _arg0 *C.GtkTreeListRow
+	var _arg0 *C.GtkTreeListRow // out
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_tree_list_row_get_depth(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -271,15 +271,15 @@ func (s treeListRow) Depth() uint {
 
 // Expanded gets if a row is currently expanded.
 func (s treeListRow) Expanded() bool {
-	var _arg0 *C.GtkTreeListRow
+	var _arg0 *C.GtkTreeListRow // out
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_list_row_get_expanded(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -293,15 +293,15 @@ func (s treeListRow) Expanded() bool {
 // The value returned by this function never changes until the row is
 // destroyed.
 func (s treeListRow) Item() gextras.Objector {
-	var _arg0 *C.GtkTreeListRow
+	var _arg0 *C.GtkTreeListRow // out
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.gtk_tree_list_row_get_item(_arg0)
 
-	var _object gextras.Objector
+	var _object gextras.Objector // out
 
 	_object = gextras.CastObject(externglib.AssumeOwnership(unsafe.Pointer(_cret.Native()))).(gextras.Objector)
 
@@ -311,15 +311,15 @@ func (s treeListRow) Item() gextras.Objector {
 // Position returns the position in the `GtkTreeListModel` that @self
 // occupies at the moment.
 func (s treeListRow) Position() uint {
-	var _arg0 *C.GtkTreeListRow
+	var _arg0 *C.GtkTreeListRow // out
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gtk_tree_list_row_get_position(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -333,15 +333,15 @@ func (s treeListRow) Position() uint {
 //
 // If a row is expandable never changes until the row is destroyed.
 func (s treeListRow) IsExpandable() bool {
-	var _arg0 *C.GtkTreeListRow
+	var _arg0 *C.GtkTreeListRow // out
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tree_list_row_is_expandable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -359,8 +359,8 @@ func (s treeListRow) IsExpandable() bool {
 //
 // If the row is not expandable, this function does nothing.
 func (s treeListRow) SetExpanded(expanded bool) {
-	var _arg0 *C.GtkTreeListRow
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkTreeListRow // out
+	var _arg1 C.gboolean        // out
 
 	_arg0 = (*C.GtkTreeListRow)(unsafe.Pointer(s.Native()))
 	if expanded {

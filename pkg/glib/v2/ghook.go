@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -54,35 +54,35 @@ func (h *Hook) Native() unsafe.Pointer {
 
 // Data gets the field inside the struct.
 func (h *Hook) Data() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(h.native.data)
 	return v
 }
 
 // RefCount gets the field inside the struct.
 func (h *Hook) RefCount() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(h.native.ref_count)
 	return v
 }
 
 // HookID gets the field inside the struct.
 func (h *Hook) HookID() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(h.native.hook_id)
 	return v
 }
 
 // Flags gets the field inside the struct.
 func (h *Hook) Flags() uint {
-	var v uint
+	var v uint // out
 	v = (uint)(h.native.flags)
 	return v
 }
 
 // Func gets the field inside the struct.
 func (h *Hook) Func() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(h.native._func)
 	return v
 }
@@ -90,17 +90,17 @@ func (h *Hook) Func() interface{} {
 // CompareIds compares the ids of two #GHook elements, returning a negative
 // value if the second id is greater than the first.
 func (n *Hook) CompareIds(sibling *Hook) int {
-	var _arg0 *C.GHook
-	var _arg1 *C.GHook
+	var _arg0 *C.GHook // out
+	var _arg1 *C.GHook // out
 
 	_arg0 = (*C.GHook)(unsafe.Pointer(n.Native()))
 	_arg1 = (*C.GHook)(unsafe.Pointer(sibling.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_hook_compare_ids(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -134,14 +134,14 @@ func (h *HookList) Native() unsafe.Pointer {
 
 // SeqID gets the field inside the struct.
 func (h *HookList) SeqID() uint32 {
-	var v uint32
+	var v uint32 // out
 	v = (uint32)(h.native.seq_id)
 	return v
 }
 
 // Dummy3 gets the field inside the struct.
 func (h *HookList) Dummy3() interface{} {
-	var v interface{}
+	var v interface{} // out
 	v = (interface{})(h.native.dummy3)
 	return v
 }
@@ -155,7 +155,7 @@ func (h *HookList) Dummy() [2]interface{} {
 
 // Clear removes all the #GHook elements from a List.
 func (h *HookList) Clear() {
-	var _arg0 *C.GHookList
+	var _arg0 *C.GHookList // out
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 
@@ -164,8 +164,8 @@ func (h *HookList) Clear() {
 
 // Init initializes a List. This must be called before the List is used.
 func (h *HookList) Init(hookSize uint) {
-	var _arg0 *C.GHookList
-	var _arg1 C.guint
+	var _arg0 *C.GHookList // out
+	var _arg1 C.guint      // out
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 	_arg1 = C.guint(hookSize)
@@ -175,8 +175,8 @@ func (h *HookList) Init(hookSize uint) {
 
 // Invoke calls all of the #GHook functions in a List.
 func (h *HookList) Invoke(mayRecurse bool) {
-	var _arg0 *C.GHookList
-	var _arg1 C.gboolean
+	var _arg0 *C.GHookList // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 	if mayRecurse {
@@ -189,8 +189,8 @@ func (h *HookList) Invoke(mayRecurse bool) {
 // InvokeCheck calls all of the #GHook functions in a List. Any function which
 // returns false is removed from the List.
 func (h *HookList) InvokeCheck(mayRecurse bool) {
-	var _arg0 *C.GHookList
-	var _arg1 C.gboolean
+	var _arg0 *C.GHookList // out
+	var _arg1 C.gboolean   // out
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
 	if mayRecurse {
@@ -202,9 +202,9 @@ func (h *HookList) InvokeCheck(mayRecurse bool) {
 
 // Marshal calls a function on each valid #GHook.
 func (h *HookList) Marshal(mayRecurse bool, marshaller HookMarshaller) {
-	var _arg0 *C.GHookList
-	var _arg1 C.gboolean
-	var _arg2 C.GHookMarshaller
+	var _arg0 *C.GHookList      // out
+	var _arg1 C.gboolean        // out
+	var _arg2 C.GHookMarshaller // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))
@@ -220,9 +220,9 @@ func (h *HookList) Marshal(mayRecurse bool, marshaller HookMarshaller) {
 // MarshalCheck calls a function on each valid #GHook and destroys it if the
 // function returns false.
 func (h *HookList) MarshalCheck(mayRecurse bool, marshaller HookCheckMarshaller) {
-	var _arg0 *C.GHookList
-	var _arg1 C.gboolean
-	var _arg2 C.GHookCheckMarshaller
+	var _arg0 *C.GHookList           // out
+	var _arg1 C.gboolean             // out
+	var _arg2 C.GHookCheckMarshaller // out
 	var _arg3 C.gpointer
 
 	_arg0 = (*C.GHookList)(unsafe.Pointer(h.Native()))

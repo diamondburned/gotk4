@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -172,15 +172,15 @@ func marshalRange(p uintptr) (interface{}, error) {
 
 // FillLevel gets the current position of the fill level indicator.
 func (r _range) FillLevel() float64 {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_range_get_fill_level(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -189,15 +189,15 @@ func (r _range) FillLevel() float64 {
 
 // Flippable gets the value set by gtk_range_set_flippable().
 func (r _range) Flippable() bool {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_range_get_flippable(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -208,15 +208,15 @@ func (r _range) Flippable() bool {
 
 // Inverted gets the value set by gtk_range_set_inverted().
 func (r _range) Inverted() bool {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_range_get_inverted(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -229,15 +229,15 @@ func (r _range) Inverted() bool {
 //
 // See gtk_range_set_min_slider_size().
 func (r _range) MinSliderSize() int {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_range_get_min_slider_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -249,7 +249,7 @@ func (r _range) MinSliderSize() int {
 //
 // This function is useful mainly for Range subclasses.
 func (r _range) RangeRect() gdk.Rectangle {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
@@ -263,15 +263,15 @@ func (r _range) RangeRect() gdk.Rectangle {
 // RestrictToFillLevel gets whether the range is restricted to the fill
 // level.
 func (r _range) RestrictToFillLevel() bool {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_range_get_restrict_to_fill_level(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -283,15 +283,15 @@ func (r _range) RestrictToFillLevel() bool {
 // RoundDigits gets the number of digits to round the value to when it
 // changes. See Range::change-value.
 func (r _range) RoundDigits() int {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_range_get_round_digits(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -300,15 +300,15 @@ func (r _range) RoundDigits() int {
 
 // ShowFillLevel gets whether the range displays the fill level graphically.
 func (r _range) ShowFillLevel() bool {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_range_get_show_fill_level(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -322,17 +322,17 @@ func (r _range) ShowFillLevel() bool {
 //
 // This function is useful mainly for Range subclasses.
 func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _arg1 C.gint
-	var _arg2 C.gint
+	var _arg1 C.gint // in
+	var _arg2 C.gint // in
 
 	C.gtk_range_get_slider_range(_arg0, &_arg1, &_arg2)
 
-	var _sliderStart int
-	var _sliderEnd int
+	var _sliderStart int // out
+	var _sliderEnd int   // out
 
 	_sliderStart = (int)(_arg1)
 	_sliderEnd = (int)(_arg2)
@@ -344,15 +344,15 @@ func (r _range) SliderRange() (sliderStart int, sliderEnd int) {
 //
 // See gtk_range_set_slider_size_fixed().
 func (r _range) SliderSizeFixed() bool {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_range_get_slider_size_fixed(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -363,15 +363,15 @@ func (r _range) SliderSizeFixed() bool {
 
 // Value gets the current value of the range.
 func (r _range) Value() float64 {
-	var _arg0 *C.GtkRange
+	var _arg0 *C.GtkRange // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gdouble
+	var _cret C.gdouble // in
 
 	_cret = C.gtk_range_get_value(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -386,8 +386,8 @@ func (r _range) Value() float64 {
 // visible area of the widget being scrolled. The page size affects the size
 // of the scrollbar slider.
 func (r _range) SetAdjustment(adjustment Adjustment) {
-	var _arg0 *C.GtkRange
-	var _arg1 *C.GtkAdjustment
+	var _arg0 *C.GtkRange      // out
+	var _arg1 *C.GtkAdjustment // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.GtkAdjustment)(unsafe.Pointer(adjustment.Native()))
@@ -412,8 +412,8 @@ func (r _range) SetAdjustment(adjustment Adjustment) {
 // values which are smaller than the fill level. This is controller by
 // gtk_range_set_restrict_to_fill_level() and is by default enabled.
 func (r _range) SetFillLevel(fillLevel float64) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gdouble
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gdouble   // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = C.gdouble(fillLevel)
@@ -426,8 +426,8 @@ func (r _range) SetFillLevel(fillLevel float64) {
 //
 // See gtk_widget_get_direction().
 func (r _range) SetFlippable(flippable bool) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if flippable {
@@ -442,9 +442,9 @@ func (r _range) SetFlippable(flippable bool) {
 // arrow keys. The page size is used for example when moving via Page Up or
 // Page Down keys.
 func (r _range) SetIncrements(step float64, page float64) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gdouble   // out
+	var _arg2 C.gdouble   // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = C.gdouble(step)
@@ -458,8 +458,8 @@ func (r _range) SetIncrements(step float64, page float64) {
 // higher values at the top or on the right rather than on the bottom or
 // left.
 func (r _range) SetInverted(setting bool) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if setting {
@@ -472,8 +472,8 @@ func (r _range) SetInverted(setting bool) {
 // SetLowerStepperSensitivity sets the sensitivity policy for the stepper
 // that points to the 'lower' end of the GtkRange’s adjustment.
 func (r _range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.GtkSensitivityType
+	var _arg0 *C.GtkRange          // out
+	var _arg1 C.GtkSensitivityType // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = (C.GtkSensitivityType)(sensitivity)
@@ -485,8 +485,8 @@ func (r _range) SetLowerStepperSensitivity(sensitivity SensitivityType) {
 //
 // This function is useful mainly for Range subclasses.
 func (r _range) SetMinSliderSize(minSize int) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gint
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = C.gint(minSize)
@@ -498,9 +498,9 @@ func (r _range) SetMinSliderSize(minSize int) {
 // value to be between @min and @max. (If the range has a non-zero page
 // size, it is clamped between @min and @max - page-size.)
 func (r _range) SetRange(min float64, max float64) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gdouble
-	var _arg2 C.gdouble
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gdouble   // out
+	var _arg2 C.gdouble   // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = C.gdouble(min)
@@ -513,8 +513,8 @@ func (r _range) SetRange(min float64, max float64) {
 // level. See gtk_range_set_fill_level() for a general description of the
 // fill level concept.
 func (r _range) SetRestrictToFillLevel(restrictToFillLevel bool) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if restrictToFillLevel {
@@ -527,8 +527,8 @@ func (r _range) SetRestrictToFillLevel(restrictToFillLevel bool) {
 // SetRoundDigits sets the number of digits to round the value to when it
 // changes. See Range::change-value.
 func (r _range) SetRoundDigits(roundDigits int) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gint
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = C.gint(roundDigits)
@@ -540,8 +540,8 @@ func (r _range) SetRoundDigits(roundDigits int) {
 // trough. See gtk_range_set_fill_level() for a general description of the
 // fill level concept.
 func (r _range) SetShowFillLevel(showFillLevel bool) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if showFillLevel {
@@ -556,8 +556,8 @@ func (r _range) SetShowFillLevel(showFillLevel bool) {
 //
 // This function is useful mainly for Range subclasses.
 func (r _range) SetSliderSizeFixed(sizeFixed bool) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	if sizeFixed {
@@ -570,8 +570,8 @@ func (r _range) SetSliderSizeFixed(sizeFixed bool) {
 // SetUpperStepperSensitivity sets the sensitivity policy for the stepper
 // that points to the 'upper' end of the GtkRange’s adjustment.
 func (r _range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.GtkSensitivityType
+	var _arg0 *C.GtkRange          // out
+	var _arg1 C.GtkSensitivityType // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = (C.GtkSensitivityType)(sensitivity)
@@ -583,8 +583,8 @@ func (r _range) SetUpperStepperSensitivity(sensitivity SensitivityType) {
 // minimum or maximum range values, it will be clamped to fit inside them.
 // The range emits the Range::value-changed signal if the value changes.
 func (r _range) SetValue(value float64) {
-	var _arg0 *C.GtkRange
-	var _arg1 C.gdouble
+	var _arg0 *C.GtkRange // out
+	var _arg1 C.gdouble   // out
 
 	_arg0 = (*C.GtkRange)(unsafe.Pointer(r.Native()))
 	_arg1 = C.gdouble(value)

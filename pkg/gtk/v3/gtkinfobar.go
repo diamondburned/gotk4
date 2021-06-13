@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -163,9 +163,9 @@ func marshalInfoBar(p uintptr) (interface{}, error) {
 // signal on the message area when the widget is activated. The widget is
 // appended to the end of the message areas action area.
 func (i infoBar) AddActionWidget(child Widget, responseId int) {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gint
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 *C.GtkWidget  // out
+	var _arg2 C.gint        // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -175,15 +175,15 @@ func (i infoBar) AddActionWidget(child Widget, responseId int) {
 }
 
 func (i infoBar) Revealed() bool {
-	var _arg0 *C.GtkInfoBar
+	var _arg0 *C.GtkInfoBar // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_info_bar_get_revealed(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -195,15 +195,15 @@ func (i infoBar) Revealed() bool {
 // ShowCloseButton returns whether the widget will display a standard close
 // button.
 func (i infoBar) ShowCloseButton() bool {
-	var _arg0 *C.GtkInfoBar
+	var _arg0 *C.GtkInfoBar // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_info_bar_get_show_close_button(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -214,8 +214,8 @@ func (i infoBar) ShowCloseButton() bool {
 
 // Response emits the “response” signal with the given @response_id.
 func (i infoBar) Response(responseId int) {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 C.gint
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = C.gint(responseId)
@@ -230,8 +230,8 @@ func (i infoBar) Response(responseId int) {
 // Note that this function currently requires @info_bar to be added to a
 // widget hierarchy.
 func (i infoBar) SetDefaultResponse(responseId int) {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 C.gint
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.gint        // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = C.gint(responseId)
@@ -243,8 +243,8 @@ func (i infoBar) SetDefaultResponse(responseId int) {
 //
 // GTK+ uses this type to determine how the message is displayed.
 func (i infoBar) SetMessageType(messageType MessageType) {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 C.GtkMessageType
+	var _arg0 *C.GtkInfoBar    // out
+	var _arg1 C.GtkMessageType // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = (C.GtkMessageType)(messageType)
@@ -256,9 +256,9 @@ func (i infoBar) SetMessageType(messageType MessageType) {
 // each widget in the info bars’s action area with the given response_id. A
 // convenient way to sensitize/desensitize dialog buttons.
 func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 C.gint
-	var _arg2 C.gboolean
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.gint        // out
+	var _arg2 C.gboolean    // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	_arg1 = C.gint(responseId)
@@ -275,8 +275,8 @@ func (i infoBar) SetResponseSensitive(responseId int, setting bool) {
 // Note that this property does not automatically show @info_bar and thus
 // won’t have any effect if it is invisible.
 func (i infoBar) SetRevealed(revealed bool) {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	if revealed {
@@ -289,8 +289,8 @@ func (i infoBar) SetRevealed(revealed bool) {
 // SetShowCloseButton: if true, a standard close button is shown. When
 // clicked it emits the response GTK_RESPONSE_CLOSE.
 func (i infoBar) SetShowCloseButton(setting bool) {
-	var _arg0 *C.GtkInfoBar
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkInfoBar // out
+	var _arg1 C.gboolean    // out
 
 	_arg0 = (*C.GtkInfoBar)(unsafe.Pointer(i.Native()))
 	if setting {

@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -927,8 +927,8 @@ func marshalCoverage(p uintptr) (interface{}, error) {
 // value of the current coverage for the index and the coverage for the
 // corresponding index in @other.
 func (c coverage) Max(other Coverage) {
-	var _arg0 *C.PangoCoverage
-	var _arg1 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage // out
+	var _arg1 *C.PangoCoverage // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoCoverage)(unsafe.Pointer(other.Native()))
@@ -938,9 +938,9 @@ func (c coverage) Max(other Coverage) {
 
 // Set: modify a particular index within @coverage
 func (c coverage) Set(index_ int, level CoverageLevel) {
-	var _arg0 *C.PangoCoverage
-	var _arg1 C.int
-	var _arg2 C.PangoCoverageLevel
+	var _arg0 *C.PangoCoverage     // out
+	var _arg1 C.int                // out
+	var _arg2 C.PangoCoverageLevel // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 	_arg1 = C.int(index_)
@@ -951,12 +951,12 @@ func (c coverage) Set(index_ int, level CoverageLevel) {
 
 // ToBytes: convert a `PangoCoverage` structure into a flat binary format.
 func (c coverage) ToBytes() []byte {
-	var _arg0 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 
 	var _arg1 *C.guchar
-	var _arg2 *C.int
+	var _arg2 C.int // in
 
 	C.pango_coverage_to_bytes(_arg0, &_arg1, &_arg2)
 
@@ -974,7 +974,7 @@ func (c coverage) ToBytes() []byte {
 //
 // If the result is zero, free the coverage and all associated memory.
 func (c coverage) Unref() {
-	var _arg0 *C.PangoCoverage
+	var _arg0 *C.PangoCoverage // out
 
 	_arg0 = (*C.PangoCoverage)(unsafe.Pointer(c.Native()))
 

@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -44,10 +44,10 @@ type GlyphUnit int32
 // need to subtract the item offset from their indices before calling
 // [func@shape].
 func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 *C.PangoAnalysis
-	var _arg4 *C.PangoGlyphString
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 *C.PangoGlyphString // out
 
 	_arg1 = (*C.char)(C.CString(text))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -75,12 +75,12 @@ func Shape(text string, length int, analysis *Analysis, glyphs *GlyphString) {
 // do not pass the full paragraph text as @paragraph_text, you need to subtract
 // the item offset from their indices before calling [func@shape_full].
 func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString) {
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 *C.char
-	var _arg4 C.int
-	var _arg5 *C.PangoAnalysis
-	var _arg6 *C.PangoGlyphString
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.char             // out
+	var _arg4 C.int               // out
+	var _arg5 *C.PangoAnalysis    // out
+	var _arg6 *C.PangoGlyphString // out
 
 	_arg1 = (*C.char)(C.CString(itemText))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -108,13 +108,13 @@ func ShapeFull(itemText string, itemLength int, paragraphText string, paragraphL
 // do not pass the full paragraph text as @paragraph_text, you need to subtract
 // the item offset from their indices before calling [func@shape_with_flags].
 func ShapeWithFlags(itemText string, itemLength int, paragraphText string, paragraphLength int, analysis *Analysis, glyphs *GlyphString, flags ShapeFlags) {
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 *C.char
-	var _arg4 C.int
-	var _arg5 *C.PangoAnalysis
-	var _arg6 *C.PangoGlyphString
-	var _arg7 C.PangoShapeFlags
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.char             // out
+	var _arg4 C.int               // out
+	var _arg5 *C.PangoAnalysis    // out
+	var _arg6 *C.PangoGlyphString // out
+	var _arg7 C.PangoShapeFlags   // out
 
 	_arg1 = (*C.char)(C.CString(itemText))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -212,14 +212,14 @@ func (g *GlyphString) Native() unsafe.Pointer {
 
 // NumGlyphs gets the field inside the struct.
 func (g *GlyphString) NumGlyphs() int {
-	var v int
+	var v int // out
 	v = (int)(g.native.num_glyphs)
 	return v
 }
 
 // LogClusters gets the field inside the struct.
 func (g *GlyphString) LogClusters() *int {
-	var v *int
+	var v *int // out
 	v = (*int)(g.native.log_clusters)
 	return v
 }
@@ -233,8 +233,8 @@ func (g *GlyphString) LogClusters() *int {
 //
 // ! (rects1.png) ! (rects2.png)
 func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoGlyphString
-	var _arg1 *C.PangoFont
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.PangoFont        // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.PangoFont)(unsafe.Pointer(font.Native()))
@@ -253,10 +253,10 @@ func (g *GlyphString) Extents(font Font) (inkRect Rectangle, logicalRect Rectang
 // of their coordinate system is at the start of the range, not at the start of
 // the entire glyph string).
 func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Rectangle, logicalRect Rectangle) {
-	var _arg0 *C.PangoGlyphString
-	var _arg1 C.int
-	var _arg2 C.int
-	var _arg3 *C.PangoFont
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 C.int               // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoFont        // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
 	_arg1 = C.int(start)
@@ -273,7 +273,7 @@ func (g *GlyphString) ExtentsRange(start int, end int, font Font) (inkRect Recta
 
 // Free: free a glyph string and associated storage.
 func (s *GlyphString) Free() {
-	var _arg0 *C.PangoGlyphString
+	var _arg0 *C.PangoGlyphString // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
 
@@ -287,15 +287,15 @@ func (s *GlyphString) Free() {
 // convenience function that computes the sum of @geometry.width for each glyph
 // in the @glyphs.
 func (g *GlyphString) Width() int {
-	var _arg0 *C.PangoGlyphString
+	var _arg0 *C.PangoGlyphString // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.pango_glyph_string_get_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -307,12 +307,12 @@ func (g *GlyphString) Width() int {
 // The X position is measured from the left edge of the run. Character positions
 // are computed by dividing up each cluster into equal portions.
 func (g *GlyphString) IndexToX(text string, length int, analysis *Analysis, index_ int, trailing bool) int {
-	var _arg0 *C.PangoGlyphString
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 *C.PangoAnalysis
-	var _arg4 C.int
-	var _arg5 C.gboolean
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 C.int               // out
+	var _arg5 C.gboolean          // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.char)(C.CString(text))
@@ -324,11 +324,11 @@ func (g *GlyphString) IndexToX(text string, length int, analysis *Analysis, inde
 		_arg5 = C.gboolean(1)
 	}
 
-	var _arg6 C.int
+	var _arg6 C.int // in
 
 	C.pango_glyph_string_index_to_x(_arg0, _arg1, _arg2, _arg3, _arg4, _arg5, &_arg6)
 
-	var _xPos int
+	var _xPos int // out
 
 	_xPos = (int)(_arg6)
 
@@ -337,8 +337,8 @@ func (g *GlyphString) IndexToX(text string, length int, analysis *Analysis, inde
 
 // SetSize: resize a glyph string to the given length.
 func (s *GlyphString) SetSize(newLen int) {
-	var _arg0 *C.PangoGlyphString
-	var _arg1 C.gint
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 C.gint              // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(s.Native()))
 	_arg1 = C.gint(newLen)
@@ -354,11 +354,11 @@ func (s *GlyphString) SetSize(newLen int) {
 // must combine the result with the logical attributes for the text to compute
 // the valid cursor position.
 func (g *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos int) (index_ int, trailing int) {
-	var _arg0 *C.PangoGlyphString
-	var _arg1 *C.char
-	var _arg2 C.int
-	var _arg3 *C.PangoAnalysis
-	var _arg4 C.int
+	var _arg0 *C.PangoGlyphString // out
+	var _arg1 *C.char             // out
+	var _arg2 C.int               // out
+	var _arg3 *C.PangoAnalysis    // out
+	var _arg4 C.int               // out
 
 	_arg0 = (*C.PangoGlyphString)(unsafe.Pointer(g.Native()))
 	_arg1 = (*C.char)(C.CString(text))
@@ -367,13 +367,13 @@ func (g *GlyphString) XToIndex(text string, length int, analysis *Analysis, xPos
 	_arg3 = (*C.PangoAnalysis)(unsafe.Pointer(analysis.Native()))
 	_arg4 = C.int(xPos)
 
-	var _arg5 C.int
-	var _arg6 C.int
+	var _arg5 C.int // in
+	var _arg6 C.int // in
 
 	C.pango_glyph_string_x_to_index(_arg0, _arg1, _arg2, _arg3, _arg4, &_arg5, &_arg6)
 
-	var _index_ int
-	var _trailing int
+	var _index_ int   // out
+	var _trailing int // out
 
 	_index_ = (int)(_arg5)
 	_trailing = (int)(_arg6)

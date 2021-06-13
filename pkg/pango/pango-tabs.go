@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -50,7 +50,7 @@ func (t *TabArray) Native() unsafe.Pointer {
 
 // Free frees a tab array and associated resources.
 func (t *TabArray) Free() {
-	var _arg0 *C.PangoTabArray
+	var _arg0 *C.PangoTabArray // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 
@@ -60,15 +60,15 @@ func (t *TabArray) Free() {
 // PositionsInPixels returns true if the tab positions are in pixels, false if
 // they are in Pango units.
 func (t *TabArray) PositionsInPixels() bool {
-	var _arg0 *C.PangoTabArray
+	var _arg0 *C.PangoTabArray // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_tab_array_get_positions_in_pixels(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -79,15 +79,15 @@ func (t *TabArray) PositionsInPixels() bool {
 
 // Size gets the number of tab stops in @tab_array.
 func (t *TabArray) Size() int {
-	var _arg0 *C.PangoTabArray
+	var _arg0 *C.PangoTabArray // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.pango_tab_array_get_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -99,8 +99,8 @@ func (t *TabArray) Size() int {
 // You must subsequently initialize any tabs that were added as a result of
 // growing the array.
 func (t *TabArray) Resize(newSize int) {
-	var _arg0 *C.PangoTabArray
-	var _arg1 C.gint
+	var _arg0 *C.PangoTabArray // out
+	var _arg1 C.gint           // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(newSize)
@@ -112,10 +112,10 @@ func (t *TabArray) Resize(newSize int) {
 //
 // @alignment must always be PANGO_TAB_LEFT in the current implementation.
 func (t *TabArray) SetTab(tabIndex int, alignment TabAlign, location int) {
-	var _arg0 *C.PangoTabArray
-	var _arg1 C.gint
-	var _arg2 C.PangoTabAlign
-	var _arg3 C.gint
+	var _arg0 *C.PangoTabArray // out
+	var _arg1 C.gint           // out
+	var _arg2 C.PangoTabAlign  // out
+	var _arg3 C.gint           // out
 
 	_arg0 = (*C.PangoTabArray)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gint(tabIndex)

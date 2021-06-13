@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -82,8 +82,8 @@ func marshalSimpleActionGroup(p uintptr) (interface{}, error) {
 //
 // The action group takes its own reference on @action.
 func (s simpleActionGroup) Insert(action Action) {
-	var _arg0 *C.GSimpleActionGroup
-	var _arg1 *C.GAction
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.GAction            // out
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GAction)(unsafe.Pointer(action.Native()))
@@ -95,8 +95,8 @@ func (s simpleActionGroup) Insert(action Action) {
 //
 // If no action of this name is in the group then nothing happens.
 func (s simpleActionGroup) Remove(actionName string) {
-	var _arg0 *C.GSimpleActionGroup
-	var _arg1 *C.gchar
+	var _arg0 *C.GSimpleActionGroup // out
+	var _arg1 *C.gchar              // out
 
 	_arg0 = (*C.GSimpleActionGroup)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(actionName))

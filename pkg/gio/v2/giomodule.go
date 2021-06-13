@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -36,7 +36,7 @@ import "C"
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectory(dirname *string) {
-	var _arg1 *C.char
+	var _arg1 *C.char // out
 
 	_arg1 = (*C.char)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -56,8 +56,8 @@ func IOModulesScanAllInDirectory(dirname *string) {
 // If you need to guarantee that all types are loaded in all the modules, use
 // g_io_modules_load_all_in_directory().
 func IOModulesScanAllInDirectoryWithScope(dirname *string, scope *IOModuleScope) {
-	var _arg1 *C.gchar
-	var _arg2 *C.GIOModuleScope
+	var _arg1 *C.gchar          // out
+	var _arg2 *C.GIOModuleScope // out
 
 	_arg1 = (*C.gchar)(C.CString(dirname))
 	defer C.free(unsafe.Pointer(_arg1))
@@ -99,8 +99,8 @@ func (i *IOModuleScope) Native() unsafe.Pointer {
 // scope is used with g_io_modules_scan_all_in_directory_with_scope() or
 // g_io_modules_load_all_in_directory_with_scope().
 func (s *IOModuleScope) Block(basename string) {
-	var _arg0 *C.GIOModuleScope
-	var _arg1 *C.gchar
+	var _arg0 *C.GIOModuleScope // out
+	var _arg1 *C.gchar          // out
 
 	_arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.gchar)(C.CString(basename))
@@ -111,7 +111,7 @@ func (s *IOModuleScope) Block(basename string) {
 
 // Free: free a module scope.
 func (s *IOModuleScope) Free() {
-	var _arg0 *C.GIOModuleScope
+	var _arg0 *C.GIOModuleScope // out
 
 	_arg0 = (*C.GIOModuleScope)(unsafe.Pointer(s.Native()))
 

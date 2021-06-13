@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -144,15 +144,15 @@ func marshalToolItem(p uintptr) (interface{}, error) {
 // Expand returns whether @tool_item is allocated extra space. See
 // gtk_tool_item_set_expand().
 func (t toolItem) Expand() bool {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_item_get_expand(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -164,15 +164,15 @@ func (t toolItem) Expand() bool {
 // Homogeneous returns whether @tool_item is the same size as other
 // homogeneous items. See gtk_tool_item_set_homogeneous().
 func (t toolItem) Homogeneous() bool {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_item_get_homogeneous(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -185,15 +185,15 @@ func (t toolItem) Homogeneous() bool {
 // ToolItem should call this function to find out what size icons they
 // should use.
 func (t toolItem) IconSize() int {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.GtkIconSize
+	var _cret C.GtkIconSize // in
 
 	_cret = C.gtk_tool_item_get_icon_size(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -203,15 +203,15 @@ func (t toolItem) IconSize() int {
 // IsImportant returns whether @tool_item is considered important. See
 // gtk_tool_item_set_is_important()
 func (t toolItem) IsImportant() bool {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_item_get_is_important(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -224,15 +224,15 @@ func (t toolItem) IsImportant() bool {
 // subclasses of ToolItem should call this function to find out how text
 // should be aligned.
 func (t toolItem) TextAlignment() float32 {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gfloat
+	var _cret C.gfloat // in
 
 	_cret = C.gtk_tool_item_get_text_alignment(_arg0)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -242,15 +242,15 @@ func (t toolItem) TextAlignment() float32 {
 // UseDragWindow returns whether @tool_item has a drag window. See
 // gtk_tool_item_set_use_drag_window().
 func (t toolItem) UseDragWindow() bool {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_item_get_use_drag_window(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -262,15 +262,15 @@ func (t toolItem) UseDragWindow() bool {
 // VisibleHorizontal returns whether the @tool_item is visible on toolbars
 // that are docked horizontally.
 func (t toolItem) VisibleHorizontal() bool {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_item_get_visible_horizontal(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -282,15 +282,15 @@ func (t toolItem) VisibleHorizontal() bool {
 // VisibleVertical returns whether @tool_item is visible when the toolbar is
 // docked vertically. See gtk_tool_item_set_visible_vertical().
 func (t toolItem) VisibleVertical() bool {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_tool_item_get_visible_vertical(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -306,7 +306,7 @@ func (t toolItem) VisibleVertical() bool {
 // The function must be called when the tool item changes what it will do in
 // response to the ToolItem::create-menu-proxy signal.
 func (t toolItem) RebuildMenu() {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 
@@ -318,8 +318,8 @@ func (t toolItem) RebuildMenu() {
 // the item gets bigger when the toolbar gets bigger and smaller when the
 // toolbar gets smaller.
 func (t toolItem) SetExpand(expand bool) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if expand {
@@ -333,8 +333,8 @@ func (t toolItem) SetExpand(expand bool) {
 // as other homogeneous items. The effect is that all homogeneous items will
 // have the same width as the widest of the items.
 func (t toolItem) SetHomogeneous(homogeneous bool) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if homogeneous {
@@ -350,8 +350,8 @@ func (t toolItem) SetHomogeneous(homogeneous bool) {
 // result is that only tool buttons with the “is_important” property set
 // have labels, an effect known as “priority text”
 func (t toolItem) SetIsImportant(isImportant bool) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if isImportant {
@@ -367,9 +367,9 @@ func (t toolItem) SetIsImportant(isImportant bool) {
 //
 // See also ToolItem::create-menu-proxy.
 func (t toolItem) SetProXYMenuItem(menuItemId string, menuItem Widget) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 *C.gchar
-	var _arg2 *C.GtkWidget
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 *C.gchar       // out
+	var _arg2 *C.GtkWidget   // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(menuItemId))
@@ -382,8 +382,8 @@ func (t toolItem) SetProXYMenuItem(menuItemId string, menuItem Widget) {
 // SetTooltipMarkup sets the markup text to be displayed as tooltip on the
 // item. See gtk_widget_set_tooltip_markup().
 func (t toolItem) SetTooltipMarkup(markup string) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(markup))
@@ -395,8 +395,8 @@ func (t toolItem) SetTooltipMarkup(markup string) {
 // SetTooltipText sets the text to be displayed as tooltip on the item. See
 // gtk_widget_set_tooltip_text().
 func (t toolItem) SetTooltipText(text string) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 *C.gchar
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 *C.gchar       // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.gchar)(C.CString(text))
@@ -410,8 +410,8 @@ func (t toolItem) SetTooltipText(text string) {
 // @tool_item has a drag window it will intercept all events, even those
 // that would otherwise be sent to a child of @tool_item.
 func (t toolItem) SetUseDragWindow(useDragWindow bool) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if useDragWindow {
@@ -424,8 +424,8 @@ func (t toolItem) SetUseDragWindow(useDragWindow bool) {
 // SetVisibleHorizontal sets whether @tool_item is visible when the toolbar
 // is docked horizontally.
 func (t toolItem) SetVisibleHorizontal(visibleHorizontal bool) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if visibleHorizontal {
@@ -440,8 +440,8 @@ func (t toolItem) SetVisibleHorizontal(visibleHorizontal bool) {
 // be useful on a vertically docked toolbar. If @visible_vertical is false
 // @tool_item will not appear on toolbars that are docked vertically.
 func (t toolItem) SetVisibleVertical(visibleVertical bool) {
-	var _arg0 *C.GtkToolItem
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToolItem // out
+	var _arg1 C.gboolean     // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 	if visibleVertical {
@@ -455,7 +455,7 @@ func (t toolItem) SetVisibleVertical(visibleVertical bool) {
 // @tool_item. Toolbar and other ToolShell implementations use this function
 // to notify children, when some aspect of their configuration changes.
 func (t toolItem) ToolbarReconfigured() {
-	var _arg0 *C.GtkToolItem
+	var _arg0 *C.GtkToolItem // out
 
 	_arg0 = (*C.GtkToolItem)(unsafe.Pointer(t.Native()))
 

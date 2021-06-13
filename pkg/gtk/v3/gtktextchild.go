@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -61,15 +61,15 @@ func marshalTextChildAnchor(p uintptr) (interface{}, error) {
 // g_object_ref()) if you plan to use this function — otherwise all deleted
 // child anchors will also be finalized.
 func (a textChildAnchor) Deleted() bool {
-	var _arg0 *C.GtkTextChildAnchor
+	var _arg0 *C.GtkTextChildAnchor // out
 
 	_arg0 = (*C.GtkTextChildAnchor)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_text_child_anchor_get_deleted(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

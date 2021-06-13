@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -59,7 +59,7 @@ type DirectoryList interface {
 	//
 	// An error being set does not mean that no files were loaded, and all
 	// successfully queried files will remain in the list.
-	Error() *error
+	Error() error
 	// IOPriority gets the IO priority set via
 	// gtk_directory_list_set_io_priority().
 	IOPriority() int
@@ -127,15 +127,15 @@ func marshalDirectoryList(p uintptr) (interface{}, error) {
 
 // Attributes gets the attributes queried on the children.
 func (s directoryList) Attributes() string {
-	var _arg0 *C.GtkDirectoryList
+	var _arg0 *C.GtkDirectoryList // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_directory_list_get_attributes(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -150,16 +150,16 @@ func (s directoryList) Attributes() string {
 //
 // An error being set does not mean that no files were loaded, and all
 // successfully queried files will remain in the list.
-func (s directoryList) Error() *error {
-	var _arg0 *C.GtkDirectoryList
+func (s directoryList) Error() error {
+	var _arg0 *C.GtkDirectoryList // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.GError
+	var _cret *C.GError // in
 
 	_cret = C.gtk_directory_list_get_error(_arg0)
 
-	var _err *error
+	var _err error // out
 
 	_err = gerror.Take(unsafe.Pointer(_cret))
 
@@ -169,15 +169,15 @@ func (s directoryList) Error() *error {
 // IOPriority gets the IO priority set via
 // gtk_directory_list_set_io_priority().
 func (s directoryList) IOPriority() int {
-	var _arg0 *C.GtkDirectoryList
+	var _arg0 *C.GtkDirectoryList // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gtk_directory_list_get_io_priority(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -187,15 +187,15 @@ func (s directoryList) IOPriority() int {
 // Monitored returns whether the directory list is monitoring the directory
 // for changes.
 func (s directoryList) Monitored() bool {
-	var _arg0 *C.GtkDirectoryList
+	var _arg0 *C.GtkDirectoryList // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_directory_list_get_monitored(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -210,15 +210,15 @@ func (s directoryList) Monitored() bool {
 // Files will be added to @self from time to time while loading is going on.
 // The order in which are added is undefined and may change in between runs.
 func (s directoryList) IsLoading() bool {
-	var _arg0 *C.GtkDirectoryList
+	var _arg0 *C.GtkDirectoryList // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_directory_list_is_loading(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -233,8 +233,8 @@ func (s directoryList) IsLoading() bool {
 // If @attributes is nil, no attributes will be queried, but a list of
 // `GFileInfo`s will still be created.
 func (s directoryList) SetAttributes(attributes string) {
-	var _arg0 *C.GtkDirectoryList
-	var _arg1 *C.char
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 *C.char             // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.char)(C.CString(attributes))
@@ -247,8 +247,8 @@ func (s directoryList) SetAttributes(attributes string) {
 //
 // If @file is nil, the result will be an empty list.
 func (s directoryList) SetFile(file gio.File) {
-	var _arg0 *C.GtkDirectoryList
-	var _arg1 *C.GFile
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 *C.GFile            // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GFile)(unsafe.Pointer(file.Native()))
@@ -266,8 +266,8 @@ func (s directoryList) SetFile(file gio.File) {
 // lowering it to something like G_PRIORITY_DEFAULT_IDLE may increase
 // responsiveness.
 func (s directoryList) SetIOPriority(ioPriority int) {
-	var _arg0 *C.GtkDirectoryList
-	var _arg1 C.int
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 C.int               // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	_arg1 = C.int(ioPriority)
@@ -283,8 +283,8 @@ func (s directoryList) SetIOPriority(ioPriority int) {
 // list, the directory is reloaded to avoid missing files that appeared
 // between the initial loading and when monitoring was turned on.
 func (s directoryList) SetMonitored(monitored bool) {
-	var _arg0 *C.GtkDirectoryList
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkDirectoryList // out
+	var _arg1 C.gboolean          // out
 
 	_arg0 = (*C.GtkDirectoryList)(unsafe.Pointer(s.Native()))
 	if monitored {

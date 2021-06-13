@@ -9,7 +9,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -54,7 +54,7 @@ func (t *Tree) Native() unsafe.Pointer {
 // In the latter case the destroy functions you supplied will be called on all
 // keys and values before destroying the #GTree.
 func (t *Tree) Destroy() {
-	var _arg0 *C.GTree
+	var _arg0 *C.GTree // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
@@ -70,8 +70,8 @@ func (t *Tree) Destroy() {
 // to a list in your Func as you walk over the tree, then walk the list and
 // remove each item.
 func (t *Tree) Foreach(fn TraverseFunc) {
-	var _arg0 *C.GTree
-	var _arg1 C.GTraverseFunc
+	var _arg0 *C.GTree        // out
+	var _arg1 C.GTraverseFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
@@ -90,8 +90,8 @@ func (t *Tree) Foreach(fn TraverseFunc) {
 // to a list in your Func as you walk over the tree, then walk the list and
 // remove each item.
 func (t *Tree) ForeachNode(fn TraverseNodeFunc) {
-	var _arg0 *C.GTree
-	var _arg1 C.GTraverseNodeFunc
+	var _arg0 *C.GTree            // out
+	var _arg1 C.GTraverseNodeFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
@@ -107,15 +107,15 @@ func (t *Tree) ForeachNode(fn TraverseNodeFunc) {
 // one root node the height is 1. If the root node has children the height is 2,
 // etc.
 func (t *Tree) Height() int {
-	var _arg0 *C.GTree
+	var _arg0 *C.GTree // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_tree_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -127,9 +127,9 @@ func (t *Tree) Height() int {
 // Inserts a new key and value into a #GTree as g_tree_insert_node() does, only
 // this function does not return the inserted or set node.
 func (t *Tree) Insert(key interface{}, value interface{}) {
-	var _arg0 *C.GTree
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gpointer(key)
@@ -142,17 +142,17 @@ func (t *Tree) Insert(key interface{}, value interface{}) {
 // automatically balanced as key/value pairs are added, key lookup is O(log n)
 // (where n is the number of key/value pairs in the tree).
 func (t *Tree) Lookup(key interface{}) interface{} {
-	var _arg0 *C.GTree
-	var _arg1 C.gpointer
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gpointer(key)
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_tree_lookup(_arg0, _arg1)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -163,21 +163,21 @@ func (t *Tree) Lookup(key interface{}) interface{} {
 // the associated value. This is useful if you need to free the memory allocated
 // for the original key, for example before calling g_tree_remove().
 func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value interface{}, ok bool) {
-	var _arg0 *C.GTree
-	var _arg1 C.gpointer
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gpointer(lookupKey)
 
-	var _arg2 C.gpointer
-	var _arg3 C.gpointer
-	var _cret C.gboolean
+	var _arg2 C.gpointer // in
+	var _arg3 C.gpointer // in
+	var _cret C.gboolean // in
 
 	_cret = C.g_tree_lookup_extended(_arg0, _arg1, &_arg2, &_arg3)
 
-	var _origKey interface{}
-	var _value interface{}
-	var _ok bool
+	var _origKey interface{} // out
+	var _value interface{}   // out
+	var _ok bool             // out
 
 	_origKey = (interface{})(_arg2)
 	_value = (interface{})(_arg3)
@@ -190,15 +190,15 @@ func (t *Tree) LookupExtended(lookupKey interface{}) (origKey interface{}, value
 
 // Nnodes gets the number of nodes in a #GTree.
 func (t *Tree) Nnodes() int {
-	var _arg0 *C.GTree
+	var _arg0 *C.GTree // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_tree_nnodes(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -215,17 +215,17 @@ func (t *Tree) Nnodes() int {
 // The cost of maintaining a balanced tree while removing a key/value result in
 // a O(n log(n)) operation where most of the other operations are O(log(n)).
 func (t *Tree) Remove(key interface{}) bool {
-	var _arg0 *C.GTree
-	var _arg1 C.gpointer
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gpointer(key)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_tree_remove(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -237,9 +237,9 @@ func (t *Tree) Remove(key interface{}) bool {
 // Replace inserts a new key and value into a #GTree as g_tree_replace_node()
 // does, only this function does not return the inserted or set node.
 func (t *Tree) Replace(key interface{}, value interface{}) {
-	var _arg0 *C.GTree
-	var _arg1 C.gpointer
-	var _arg2 C.gpointer
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
+	var _arg2 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gpointer(key)
@@ -257,19 +257,19 @@ func (t *Tree) Replace(key interface{}, value interface{}) {
 // key/value pairs that have a smaller key; if @search_func returns 1, searching
 // will proceed among the key/value pairs that have a larger key.
 func (t *Tree) Search(searchFunc CompareFunc) interface{} {
-	var _arg0 *C.GTree
-	var _arg1 C.GCompareFunc
+	var _arg0 *C.GTree       // out
+	var _arg1 C.GCompareFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_CompareFunc)
 	_arg2 = C.gpointer(box.Assign(searchFunc))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_tree_search(_arg0, _arg1, _arg2)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -281,17 +281,17 @@ func (t *Tree) Search(searchFunc CompareFunc) interface{} {
 //
 // If the key does not exist in the #GTree, the function does nothing.
 func (t *Tree) Steal(key interface{}) bool {
-	var _arg0 *C.GTree
-	var _arg1 C.gpointer
+	var _arg0 *C.GTree   // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = C.gpointer(key)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_tree_steal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -302,10 +302,10 @@ func (t *Tree) Steal(key interface{}) bool {
 
 // Traverse calls the given function for each node in the #GTree.
 func (t *Tree) Traverse(traverseFunc TraverseFunc, traverseType TraverseType) {
-	var _arg0 *C.GTree
-	var _arg1 C.GTraverseFunc
+	var _arg0 *C.GTree        // out
+	var _arg1 C.GTraverseFunc // out
 	var _arg3 C.gpointer
-	var _arg2 C.GTraverseType
+	var _arg2 C.GTraverseType // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 	_arg1 = (*[0]byte)(C.gotk4_TraverseFunc)
@@ -321,7 +321,7 @@ func (t *Tree) Traverse(traverseFunc TraverseFunc, traverseType TraverseType) {
 //
 // It is safe to call this function from any thread.
 func (t *Tree) Unref() {
-	var _arg0 *C.GTree
+	var _arg0 *C.GTree // out
 
 	_arg0 = (*C.GTree)(unsafe.Pointer(t.Native()))
 
@@ -355,15 +355,15 @@ func (t *TreeNode) Native() unsafe.Pointer {
 
 // Key gets the key stored at a particular tree node.
 func (n *TreeNode) Key() interface{} {
-	var _arg0 *C.GTreeNode
+	var _arg0 *C.GTreeNode // out
 
 	_arg0 = (*C.GTreeNode)(unsafe.Pointer(n.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_tree_node_key(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 
@@ -372,15 +372,15 @@ func (n *TreeNode) Key() interface{} {
 
 // Value gets the value stored at a particular tree node.
 func (n *TreeNode) Value() interface{} {
-	var _arg0 *C.GTreeNode
+	var _arg0 *C.GTreeNode // out
 
 	_arg0 = (*C.GTreeNode)(unsafe.Pointer(n.Native()))
 
-	var _cret C.gpointer
+	var _cret C.gpointer // in
 
 	_cret = C.g_tree_node_value(_arg0)
 
-	var _gpointer interface{}
+	var _gpointer interface{} // out
 
 	_gpointer = (interface{})(_cret)
 

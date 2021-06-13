@@ -6,7 +6,7 @@ import (
 	"unsafe"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -49,14 +49,14 @@ func (d *DBusErrorEntry) Native() unsafe.Pointer {
 
 // ErrorCode gets the field inside the struct.
 func (d *DBusErrorEntry) ErrorCode() int {
-	var v int
+	var v int // out
 	v = (int)(d.native.error_code)
 	return v
 }
 
 // DBusErrorName gets the field inside the struct.
 func (d *DBusErrorEntry) DBusErrorName() string {
-	var v string
+	var v string // out
 	v = C.GoString(d.native.dbus_error_name)
 	return v
 }

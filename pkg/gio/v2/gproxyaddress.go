@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -81,15 +81,15 @@ func marshalProXYAddress(p uintptr) (interface{}, error) {
 // of the host that will be connected to via the proxy, not the name of the
 // proxy itself.
 func (p proXYAddress) DestinationHostname() string {
-	var _arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress // out
 
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_proxy_address_get_destination_hostname(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -100,15 +100,15 @@ func (p proXYAddress) DestinationHostname() string {
 // destination host that will be connected to via the proxy, not the port
 // number of the proxy itself.
 func (p proXYAddress) DestinationPort() uint16 {
-	var _arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress // out
 
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var _cret C.guint16
+	var _cret C.guint16 // in
 
 	_cret = C.g_proxy_address_get_destination_port(_arg0)
 
-	var _guint16 uint16
+	var _guint16 uint16 // out
 
 	_guint16 = (uint16)(_cret)
 
@@ -118,15 +118,15 @@ func (p proXYAddress) DestinationPort() uint16 {
 // DestinationProtocol gets the protocol that is being spoken to the
 // destination server; eg, "http" or "ftp".
 func (p proXYAddress) DestinationProtocol() string {
-	var _arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress // out
 
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_proxy_address_get_destination_protocol(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -135,15 +135,15 @@ func (p proXYAddress) DestinationProtocol() string {
 
 // Password gets @proxy's password.
 func (p proXYAddress) Password() string {
-	var _arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress // out
 
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_proxy_address_get_password(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -152,15 +152,15 @@ func (p proXYAddress) Password() string {
 
 // Protocol gets @proxy's protocol. eg, "socks" or "http"
 func (p proXYAddress) Protocol() string {
-	var _arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress // out
 
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_proxy_address_get_protocol(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -169,15 +169,15 @@ func (p proXYAddress) Protocol() string {
 
 // URI gets the proxy URI that @proxy was constructed from.
 func (p proXYAddress) URI() string {
-	var _arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress // out
 
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_proxy_address_get_uri(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 
@@ -186,15 +186,15 @@ func (p proXYAddress) URI() string {
 
 // Username gets @proxy's username.
 func (p proXYAddress) Username() string {
-	var _arg0 *C.GProxyAddress
+	var _arg0 *C.GProxyAddress // out
 
 	_arg0 = (*C.GProxyAddress)(unsafe.Pointer(p.Native()))
 
-	var _cret *C.gchar
+	var _cret *C.gchar // in
 
 	_cret = C.g_proxy_address_get_username(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 

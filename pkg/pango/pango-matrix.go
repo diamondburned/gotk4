@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -54,42 +54,42 @@ func (m *Matrix) Native() unsafe.Pointer {
 
 // XX gets the field inside the struct.
 func (m *Matrix) XX() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(m.native.xx)
 	return v
 }
 
 // XY gets the field inside the struct.
 func (m *Matrix) XY() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(m.native.xy)
 	return v
 }
 
 // YX gets the field inside the struct.
 func (m *Matrix) YX() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(m.native.yx)
 	return v
 }
 
 // YY gets the field inside the struct.
 func (m *Matrix) YY() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(m.native.yy)
 	return v
 }
 
 // X0 gets the field inside the struct.
 func (m *Matrix) X0() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(m.native.x0)
 	return v
 }
 
 // Y0 gets the field inside the struct.
 func (m *Matrix) Y0() float64 {
-	var v float64
+	var v float64 // out
 	v = (float64)(m.native.y0)
 	return v
 }
@@ -98,8 +98,8 @@ func (m *Matrix) Y0() float64 {
 // transformation given by first applying transformation given by @new_matrix
 // then applying the original transformation.
 func (m *Matrix) Concat(newMatrix *Matrix) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 *C.PangoMatrix
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 *C.PangoMatrix // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(newMatrix.Native()))
@@ -109,7 +109,7 @@ func (m *Matrix) Concat(newMatrix *Matrix) {
 
 // Free: free a `PangoMatrix`.
 func (m *Matrix) Free() {
-	var _arg0 *C.PangoMatrix
+	var _arg0 *C.PangoMatrix // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
@@ -123,15 +123,15 @@ func (m *Matrix) Free() {
 // the X coordinate is mapped to. If the scale in the X coordinate is needed as
 // well, use [method@Pango.Matrix.get_font_scale_factors].
 func (m *Matrix) FontScaleFactor() float64 {
-	var _arg0 *C.PangoMatrix
+	var _arg0 *C.PangoMatrix // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	var _cret C.double
+	var _cret C.double // in
 
 	_cret = C.pango_matrix_get_font_scale_factor(_arg0)
 
-	var _gdouble float64
+	var _gdouble float64 // out
 
 	_gdouble = (float64)(_cret)
 
@@ -147,17 +147,17 @@ func (m *Matrix) FontScaleFactor() float64 {
 //
 // Note that output numbers will always be non-negative.
 func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
-	var _arg0 *C.PangoMatrix
+	var _arg0 *C.PangoMatrix // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 
-	var _arg1 C.double
-	var _arg2 C.double
+	var _arg1 C.double // in
+	var _arg2 C.double // in
 
 	C.pango_matrix_get_font_scale_factors(_arg0, &_arg1, &_arg2)
 
-	var _xscale float64
-	var _yscale float64
+	var _xscale float64 // out
+	var _yscale float64 // out
 
 	_xscale = (float64)(_arg1)
 	_yscale = (float64)(_arg2)
@@ -169,8 +169,8 @@ func (m *Matrix) FontScaleFactors() (xscale float64, yscale float64) {
 // transformation given by first rotating by @degrees degrees counter-clockwise
 // then applying the original transformation.
 func (m *Matrix) Rotate(degrees float64) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 C.double
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	_arg1 = C.double(degrees)
@@ -182,9 +182,9 @@ func (m *Matrix) Rotate(degrees float64) {
 // transformation given by first scaling by @sx in the X direction and @sy in
 // the Y direction then applying the original transformation.
 func (m *Matrix) Scale(scaleX float64, scaleY float64) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 C.double
-	var _arg2 C.double
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // out
+	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	_arg1 = C.double(scaleX)
@@ -197,9 +197,9 @@ func (m *Matrix) Scale(scaleX float64, scaleY float64) {
 // transformation given by first translating by (@tx, @ty) then applying the
 // original transformation.
 func (m *Matrix) Translate(tx float64, ty float64) {
-	var _arg0 *C.PangoMatrix
-	var _arg1 C.double
-	var _arg2 C.double
+	var _arg0 *C.PangoMatrix // out
+	var _arg1 C.double       // out
+	var _arg2 C.double       // out
 
 	_arg0 = (*C.PangoMatrix)(unsafe.Pointer(m.Native()))
 	_arg1 = C.double(tx)

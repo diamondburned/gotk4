@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -154,15 +154,15 @@ func marshalToggleButton(p uintptr) (interface{}, error) {
 // Active queries a ToggleButton and returns its current state. Returns true
 // if the toggle button is pressed in and false if it is raised.
 func (t toggleButton) Active() bool {
-	var _arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_active(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -173,15 +173,15 @@ func (t toggleButton) Active() bool {
 
 // Inconsistent gets the value set by gtk_toggle_button_set_inconsistent().
 func (t toggleButton) Inconsistent() bool {
-	var _arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_inconsistent(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -193,15 +193,15 @@ func (t toggleButton) Inconsistent() bool {
 // Mode retrieves whether the button is displayed as a separate indicator
 // and label. See gtk_toggle_button_set_mode().
 func (t toggleButton) Mode() bool {
-	var _arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_toggle_button_get_mode(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -215,8 +215,8 @@ func (t toggleButton) Mode() bool {
 // action causes the ToggleButton::toggled signal and the Button::clicked
 // signal to be emitted.
 func (t toggleButton) SetActive(isActive bool) {
-	var _arg0 *C.GtkToggleButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if isActive {
@@ -235,8 +235,8 @@ func (t toggleButton) SetActive(isActive bool) {
 // manually, gtk_toggle_button_set_inconsistent() only affects visual
 // appearance, it doesn’t affect the semantics of the button.
 func (t toggleButton) SetInconsistent(setting bool) {
-	var _arg0 *C.GtkToggleButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if setting {
@@ -257,8 +257,8 @@ func (t toggleButton) SetInconsistent(setting bool) {
 // RadioButton that derive from ToggleButton, not instances of ToggleButton
 // itself.
 func (t toggleButton) SetMode(drawIndicator bool) {
-	var _arg0 *C.GtkToggleButton
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkToggleButton // out
+	var _arg1 C.gboolean         // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 	if drawIndicator {
@@ -271,7 +271,7 @@ func (t toggleButton) SetMode(drawIndicator bool) {
 // Toggled emits the ToggleButton::toggled signal on the ToggleButton. There
 // is no good reason for an application ever to call this function.
 func (t toggleButton) Toggled() {
-	var _arg0 *C.GtkToggleButton
+	var _arg0 *C.GtkToggleButton // out
 
 	_arg0 = (*C.GtkToggleButton)(unsafe.Pointer(t.Native()))
 

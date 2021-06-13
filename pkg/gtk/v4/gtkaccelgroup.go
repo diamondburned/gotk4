@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/pkg/gdk/v4"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
@@ -16,17 +16,17 @@ import "C"
 // AcceleratorGetLabel converts an accelerator keyval and modifier mask into a
 // string which can be used to represent the accelerator to the user.
 func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
-	var _arg1 C.guint
-	var _arg2 C.GdkModifierType
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
 
 	_arg1 = C.guint(acceleratorKey)
 	_arg2 = (C.GdkModifierType)(acceleratorMods)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_accelerator_get_label(_arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -45,21 +45,21 @@ func AcceleratorGetLabel(acceleratorKey uint, acceleratorMods gdk.ModifierType) 
 // This is only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
 func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
-	var _arg1 *C.GdkDisplay
-	var _arg2 C.guint
-	var _arg3 C.guint
-	var _arg4 C.GdkModifierType
+	var _arg1 *C.GdkDisplay     // out
+	var _arg2 C.guint           // out
+	var _arg3 C.guint           // out
+	var _arg4 C.GdkModifierType // out
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
 	_arg4 = (C.GdkModifierType)(acceleratorMods)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_accelerator_get_label_with_keycode(_arg1, _arg2, _arg3, _arg4)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -76,17 +76,17 @@ func AcceleratorGetLabelWithKeycode(display gdk.Display, acceleratorKey uint, ke
 // If you need to display accelerators in the user interface, see
 // [func@Gtk.accelerator_get_label].
 func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) string {
-	var _arg1 C.guint
-	var _arg2 C.GdkModifierType
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
 
 	_arg1 = C.guint(acceleratorKey)
 	_arg2 = (C.GdkModifierType)(acceleratorMods)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_accelerator_name(_arg1, _arg2)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -101,21 +101,21 @@ func AcceleratorName(acceleratorKey uint, acceleratorMods gdk.ModifierType) stri
 // only useful for system-level components, applications should use
 // gtk_accelerator_parse() instead.
 func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycode uint, acceleratorMods gdk.ModifierType) string {
-	var _arg1 *C.GdkDisplay
-	var _arg2 C.guint
-	var _arg3 C.guint
-	var _arg4 C.GdkModifierType
+	var _arg1 *C.GdkDisplay     // out
+	var _arg2 C.guint           // out
+	var _arg3 C.guint           // out
+	var _arg4 C.GdkModifierType // out
 
 	_arg1 = (*C.GdkDisplay)(unsafe.Pointer(display.Native()))
 	_arg2 = C.guint(acceleratorKey)
 	_arg3 = C.guint(keycode)
 	_arg4 = (C.GdkModifierType)(acceleratorMods)
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gtk_accelerator_name_with_keycode(_arg1, _arg2, _arg3, _arg4)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))
@@ -130,17 +130,17 @@ func AcceleratorNameWithKeycode(display gdk.Display, acceleratorKey uint, keycod
 // matches the “Ctrl+a” accelerator. But, you can't, for instance, use the
 // GDK_KEY_Control_L keyval as an accelerator.
 func AcceleratorValid(keyval uint, modifiers gdk.ModifierType) bool {
-	var _arg1 C.guint
-	var _arg2 C.GdkModifierType
+	var _arg1 C.guint           // out
+	var _arg2 C.GdkModifierType // out
 
 	_arg1 = C.guint(keyval)
 	_arg2 = (C.GdkModifierType)(modifiers)
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_accelerator_valid(_arg1, _arg2)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

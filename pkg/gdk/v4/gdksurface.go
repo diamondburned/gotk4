@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -167,7 +167,7 @@ func marshalSurface(p uintptr) (interface{}, error) {
 // If the display of @surface does not support per-surface beeps, emits a
 // short beep on the display just as [method@Gdk.Display.beep].
 func (s surface) Beep() {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -184,7 +184,7 @@ func (s surface) Beep() {
 // reference count reaches zero. You must call this function yourself before
 // that happens.
 func (s surface) Destroy() {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -196,15 +196,15 @@ func (s surface) Destroy() {
 // Surface size is reported in ”application pixels”, not ”device pixels”
 // (see [method@Gdk.Surface.get_scale_factor]).
 func (s surface) Height() int {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_surface_get_height(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -216,15 +216,15 @@ func (s surface) Height() int {
 // A surface is mapped with [method@Gdk.Toplevel.present] or
 // [method@Gdk.Popup.present].
 func (s surface) Mapped() bool {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_surface_get_mapped(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -245,15 +245,15 @@ func (s surface) Mapped() bool {
 //
 // The scale of a surface may change during runtime.
 func (s surface) ScaleFactor() int {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_surface_get_scale_factor(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -265,15 +265,15 @@ func (s surface) ScaleFactor() int {
 // Surface size is reported in ”application pixels”, not ”device pixels”
 // (see [method@Gdk.Surface.get_scale_factor]).
 func (s surface) Width() int {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var _cret C.int
+	var _cret C.int // in
 
 	_cret = C.gdk_surface_get_width(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -287,7 +287,7 @@ func (s surface) Width() int {
 // displayed. Normally done automatically as part of
 // [method@Gtk.Widget.hide].
 func (s surface) Hide() {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -296,15 +296,15 @@ func (s surface) Hide() {
 
 // IsDestroyed: check to see if a surface is destroyed.
 func (s surface) IsDestroyed() bool {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_surface_is_destroyed(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -319,7 +319,7 @@ func (s surface) IsDestroyed() bool {
 // This function is useful for implementations that track invalid regions on
 // their own.
 func (s surface) QueueRender() {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -330,7 +330,7 @@ func (s surface) QueueRender() {
 //
 // See [method@Gdk.FrameClock.request_phase].
 func (s surface) RequestLayout() {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
@@ -346,8 +346,8 @@ func (s surface) RequestLayout() {
 // Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
 // to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
 func (s surface) SetCursor(cursor Cursor) {
-	var _arg0 *C.GdkSurface
-	var _arg1 *C.GdkCursor
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.GdkCursor  // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkCursor)(unsafe.Pointer(cursor.Native()))
@@ -364,9 +364,9 @@ func (s surface) SetCursor(cursor Cursor) {
 // Use [ctor@Gdk.Cursor.new_from_name] or [ctor@Gdk.Cursor.new_from_texture]
 // to create the cursor. To make the cursor invisible, use GDK_BLANK_CURSOR.
 func (s surface) SetDeviceCursor(device Device, cursor Cursor) {
-	var _arg0 *C.GdkSurface
-	var _arg1 *C.GdkDevice
-	var _arg2 *C.GdkCursor
+	var _arg0 *C.GdkSurface // out
+	var _arg1 *C.GdkDevice  // out
+	var _arg2 *C.GdkCursor  // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkDevice)(unsafe.Pointer(device.Native()))
@@ -389,8 +389,8 @@ func (s surface) SetDeviceCursor(device Device, cursor Cursor) {
 // Use [method@Gdk.Display.supports_input_shapes] to find out if a
 // particular backend supports input regions.
 func (s surface) SetInputRegion(region *cairo.Region) {
-	var _arg0 *C.GdkSurface
-	var _arg1 *C.cairo_region_t
+	var _arg0 *C.GdkSurface     // out
+	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))
@@ -413,8 +413,8 @@ func (s surface) SetInputRegion(region *cairo.Region) {
 // background is not opaque, please update this property in your
 // WidgetClass.css_changed() handler.
 func (s surface) SetOpaqueRegion(region *cairo.Region) {
-	var _arg0 *C.GdkSurface
-	var _arg1 *C.cairo_region_t
+	var _arg0 *C.GdkSurface     // out
+	var _arg1 *C.cairo_region_t // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.cairo_region_t)(unsafe.Pointer(region.Native()))

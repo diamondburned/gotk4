@@ -8,7 +8,7 @@ import (
 	"github.com/diamondburned/gotk4/internal/box"
 )
 
-// #cgo pkg-config: glib-2.0 gobject-introspection-1.0
+// #cgo pkg-config: glib-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <glib.h>
@@ -43,8 +43,8 @@ func (s *Sequence) Native() unsafe.Pointer {
 // Foreach calls @func for each item in the sequence passing @user_data to the
 // function. @func must not modify the sequence itself.
 func (s *Sequence) Foreach(fn Func) {
-	var _arg0 *C.GSequence
-	var _arg1 C.GFunc
+	var _arg0 *C.GSequence // out
+	var _arg1 C.GFunc      // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
@@ -57,7 +57,7 @@ func (s *Sequence) Foreach(fn Func) {
 // Free frees the memory allocated for @seq. If @seq has a data destroy function
 // associated with it, that function is called on all items in @seq.
 func (s *Sequence) Free() {
-	var _arg0 *C.GSequence
+	var _arg0 *C.GSequence // out
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
@@ -68,15 +68,15 @@ func (s *Sequence) Free() {
 // O(h) where `h' is the height of the tree. It is thus more efficient to use
 // g_sequence_is_empty() when comparing the length to zero.
 func (s *Sequence) Length() int {
-	var _arg0 *C.GSequence
+	var _arg0 *C.GSequence // out
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_sequence_get_length(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -89,15 +89,15 @@ func (s *Sequence) Length() int {
 // g_sequence_get_length() being equal to zero. However this function is
 // implemented in O(1) running time.
 func (s *Sequence) IsEmpty() bool {
-	var _arg0 *C.GSequence
+	var _arg0 *C.GSequence // out
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_sequence_is_empty(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -112,8 +112,8 @@ func (s *Sequence) IsEmpty() bool {
 // a negative value if the first comes before the second, and a positive value
 // if the second comes before the first.
 func (s *Sequence) Sort(cmpFunc CompareDataFunc) {
-	var _arg0 *C.GSequence
-	var _arg1 C.GCompareDataFunc
+	var _arg0 *C.GSequence       // out
+	var _arg1 C.GCompareDataFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
@@ -131,8 +131,8 @@ func (s *Sequence) Sort(cmpFunc CompareDataFunc) {
 // before the second, and a positive value if the second iterator comes before
 // the first.
 func (s *Sequence) SortIter(cmpFunc SequenceIterCompareFunc) {
-	var _arg0 *C.GSequence
-	var _arg1 C.GSequenceIterCompareFunc
+	var _arg0 *C.GSequence               // out
+	var _arg1 C.GSequenceIterCompareFunc // out
 	var _arg2 C.gpointer
 
 	_arg0 = (*C.GSequence)(unsafe.Pointer(s.Native()))
@@ -173,17 +173,17 @@ func (s *SequenceIter) Native() unsafe.Pointer {
 //
 // The @a and @b iterators must point into the same sequence.
 func (a *SequenceIter) Compare(b *SequenceIter) int {
-	var _arg0 *C.GSequenceIter
-	var _arg1 *C.GSequenceIter
+	var _arg0 *C.GSequenceIter // out
+	var _arg1 *C.GSequenceIter // out
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GSequenceIter)(unsafe.Pointer(b.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_sequence_iter_compare(_arg0, _arg1)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -192,15 +192,15 @@ func (a *SequenceIter) Compare(b *SequenceIter) int {
 
 // Position returns the position of @iter
 func (i *SequenceIter) Position() int {
-	var _arg0 *C.GSequenceIter
+	var _arg0 *C.GSequenceIter // out
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.g_sequence_iter_get_position(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -209,15 +209,15 @@ func (i *SequenceIter) Position() int {
 
 // IsBegin returns whether @iter is the begin iterator
 func (i *SequenceIter) IsBegin() bool {
-	var _arg0 *C.GSequenceIter
+	var _arg0 *C.GSequenceIter // out
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_sequence_iter_is_begin(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -228,15 +228,15 @@ func (i *SequenceIter) IsBegin() bool {
 
 // IsEnd returns whether @iter is the end iterator
 func (i *SequenceIter) IsEnd() bool {
-	var _arg0 *C.GSequenceIter
+	var _arg0 *C.GSequenceIter // out
 
 	_arg0 = (*C.GSequenceIter)(unsafe.Pointer(i.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_sequence_iter_is_end(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

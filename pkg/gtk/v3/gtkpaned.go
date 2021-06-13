@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -112,8 +112,8 @@ func marshalPaned(p uintptr) (interface{}, error) {
 // Add1 adds a child to the top or left pane with default parameters. This
 // is equivalent to `gtk_paned_pack1 (paned, child, FALSE, TRUE)`.
 func (p paned) Add1(child Widget) {
-	var _arg0 *C.GtkPaned
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkPaned  // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -124,8 +124,8 @@ func (p paned) Add1(child Widget) {
 // Add2 adds a child to the bottom or right pane with default parameters.
 // This is equivalent to `gtk_paned_pack2 (paned, child, TRUE, TRUE)`.
 func (p paned) Add2(child Widget) {
-	var _arg0 *C.GtkPaned
-	var _arg1 *C.GtkWidget
+	var _arg0 *C.GtkPaned  // out
+	var _arg1 *C.GtkWidget // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -135,15 +135,15 @@ func (p paned) Add2(child Widget) {
 
 // Position obtains the position of the divider between the two panes.
 func (p paned) Position() int {
-	var _arg0 *C.GtkPaned
+	var _arg0 *C.GtkPaned // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_paned_get_position(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -152,15 +152,15 @@ func (p paned) Position() int {
 
 // WideHandle gets the Paned:wide-handle property.
 func (p paned) WideHandle() bool {
-	var _arg0 *C.GtkPaned
+	var _arg0 *C.GtkPaned // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_paned_get_wide_handle(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -171,10 +171,10 @@ func (p paned) WideHandle() bool {
 
 // Pack1 adds a child to the top or left pane.
 func (p paned) Pack1(child Widget, resize bool, shrink bool) {
-	var _arg0 *C.GtkPaned
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gboolean
-	var _arg3 C.gboolean
+	var _arg0 *C.GtkPaned  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gboolean   // out
+	var _arg3 C.gboolean   // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -190,10 +190,10 @@ func (p paned) Pack1(child Widget, resize bool, shrink bool) {
 
 // Pack2 adds a child to the bottom or right pane.
 func (p paned) Pack2(child Widget, resize bool, shrink bool) {
-	var _arg0 *C.GtkPaned
-	var _arg1 *C.GtkWidget
-	var _arg2 C.gboolean
-	var _arg3 C.gboolean
+	var _arg0 *C.GtkPaned  // out
+	var _arg1 *C.GtkWidget // out
+	var _arg2 C.gboolean   // out
+	var _arg3 C.gboolean   // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GtkWidget)(unsafe.Pointer(child.Native()))
@@ -209,8 +209,8 @@ func (p paned) Pack2(child Widget, resize bool, shrink bool) {
 
 // SetPosition sets the position of the divider between the two panes.
 func (p paned) SetPosition(position int) {
-	var _arg0 *C.GtkPaned
-	var _arg1 C.gint
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gint      // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	_arg1 = C.gint(position)
@@ -220,8 +220,8 @@ func (p paned) SetPosition(position int) {
 
 // SetWideHandle sets the Paned:wide-handle property.
 func (p paned) SetWideHandle(wide bool) {
-	var _arg0 *C.GtkPaned
-	var _arg1 C.gboolean
+	var _arg0 *C.GtkPaned // out
+	var _arg1 C.gboolean  // out
 
 	_arg0 = (*C.GtkPaned)(unsafe.Pointer(p.Native()))
 	if wide {

@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -135,8 +135,8 @@ func marshalMultiFilter(p uintptr) (interface{}, error) {
 
 // Append adds a @filter to @self to use for matching.
 func (s multiFilter) Append(filter Filter) {
-	var _arg0 *C.GtkMultiFilter
-	var _arg1 *C.GtkFilter
+	var _arg0 *C.GtkMultiFilter // out
+	var _arg1 *C.GtkFilter      // out
 
 	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkFilter)(unsafe.Pointer(filter.Native()))
@@ -150,8 +150,8 @@ func (s multiFilter) Append(filter Filter) {
 // If @position is larger than the number of filters, nothing happens and
 // the function returns.
 func (s multiFilter) Remove(position uint) {
-	var _arg0 *C.GtkMultiFilter
-	var _arg1 C.guint
+	var _arg0 *C.GtkMultiFilter // out
+	var _arg1 C.guint           // out
 
 	_arg0 = (*C.GtkMultiFilter)(unsafe.Pointer(s.Native()))
 	_arg1 = C.guint(position)

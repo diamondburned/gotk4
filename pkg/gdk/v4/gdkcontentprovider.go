@@ -11,7 +11,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -88,7 +88,7 @@ func marshalContentProvider(p uintptr) (interface{}, error) {
 
 // ContentChanged emits the ::content-changed signal.
 func (p contentProvider) ContentChanged() {
-	var _arg0 *C.GdkContentProvider
+	var _arg0 *C.GdkContentProvider // out
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 
@@ -103,17 +103,17 @@ func (p contentProvider) ContentChanged() {
 // given `GType` is not supported, this operation can fail and
 // IO_ERROR_NOT_SUPPORTED will be reported.
 func (p contentProvider) Value(value **externglib.Value) error {
-	var _arg0 *C.GdkContentProvider
-	var _arg1 *C.GValue
+	var _arg0 *C.GdkContentProvider // out
+	var _arg1 *C.GValue             // out
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GValue)(value.GValue)
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gdk_content_provider_get_value(_arg0, _arg1, _cerr)
+	C.gdk_content_provider_get_value(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -133,12 +133,12 @@ func (p contentProvider) Value(value **externglib.Value) error {
 //
 // The given @stream will not be closed.
 func (p contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputStream, ioPriority int, cancellable gio.Cancellable, callback gio.AsyncReadyCallback) {
-	var _arg0 *C.GdkContentProvider
-	var _arg1 *C.char
-	var _arg2 *C.GOutputStream
-	var _arg3 C.int
-	var _arg4 *C.GCancellable
-	var _arg5 C.GAsyncReadyCallback
+	var _arg0 *C.GdkContentProvider // out
+	var _arg1 *C.char               // out
+	var _arg2 *C.GOutputStream      // out
+	var _arg3 C.int                 // out
+	var _arg4 *C.GCancellable       // out
+	var _arg5 C.GAsyncReadyCallback // out
 	var _arg6 C.gpointer
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
@@ -157,17 +157,17 @@ func (p contentProvider) WriteMIMETypeAsync(mimeType string, stream gio.OutputSt
 //
 // See [method@Gdk.ContentProvider.write_mime_type_async].
 func (p contentProvider) WriteMIMETypeFinish(result gio.AsyncResult) error {
-	var _arg0 *C.GdkContentProvider
-	var _arg1 *C.GAsyncResult
+	var _arg0 *C.GdkContentProvider // out
+	var _arg1 *C.GAsyncResult       // out
 
 	_arg0 = (*C.GdkContentProvider)(unsafe.Pointer(p.Native()))
 	_arg1 = (*C.GAsyncResult)(unsafe.Pointer(result.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, _cerr)
+	C.gdk_content_provider_write_mime_type_finish(_arg0, _arg1, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

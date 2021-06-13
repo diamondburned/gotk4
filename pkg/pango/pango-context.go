@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: pango glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <pango/pango.h>
@@ -135,7 +135,7 @@ func marshalContext(p uintptr) (interface{}, error) {
 // something applications won't do. Backends should call this function if
 // they have attached extra data to the context and such data is changed.
 func (c context) Changed() {
-	var _arg0 *C.PangoContext
+	var _arg0 *C.PangoContext // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
@@ -145,15 +145,15 @@ func (c context) Changed() {
 // RoundGlyphPositions returns whether font rendering with this context
 // should round glyph positions and widths.
 func (c context) RoundGlyphPositions() bool {
-	var _arg0 *C.PangoContext
+	var _arg0 *C.PangoContext // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.pango_context_get_round_glyph_positions(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -175,15 +175,15 @@ func (c context) RoundGlyphPositions() bool {
 // is only useful when implementing objects that need update when their
 // `PangoContext` changes, like `PangoLayout`.
 func (c context) Serial() uint {
-	var _arg0 *C.PangoContext
+	var _arg0 *C.PangoContext // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.pango_context_get_serial(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -199,8 +199,8 @@ func (c context) Serial() uint {
 // PANGO_DIRECTION_WEAK_LTR or PANGO_DIRECTION_WEAK_RTL is used only for
 // paragraphs that do not contain any strong characters themselves.
 func (c context) SetBaseDir(direction Direction) {
-	var _arg0 *C.PangoContext
-	var _arg1 C.PangoDirection
+	var _arg0 *C.PangoContext  // out
+	var _arg1 C.PangoDirection // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.PangoDirection)(direction)
@@ -212,8 +212,8 @@ func (c context) SetBaseDir(direction Direction) {
 //
 // The base gravity is used in laying vertical text out.
 func (c context) SetBaseGravity(gravity Gravity) {
-	var _arg0 *C.PangoContext
-	var _arg1 C.PangoGravity
+	var _arg0 *C.PangoContext // out
+	var _arg1 C.PangoGravity  // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.PangoGravity)(gravity)
@@ -223,8 +223,8 @@ func (c context) SetBaseGravity(gravity Gravity) {
 
 // SetFontDescription: set the default font description for the context
 func (c context) SetFontDescription(desc *FontDescription) {
-	var _arg0 *C.PangoContext
-	var _arg1 *C.PangoFontDescription
+	var _arg0 *C.PangoContext         // out
+	var _arg1 *C.PangoFontDescription // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoFontDescription)(unsafe.Pointer(desc.Native()))
@@ -239,8 +239,8 @@ func (c context) SetFontDescription(desc *FontDescription) {
 // obtained via one of the recommended methods should already have a
 // suitable font map.
 func (c context) SetFontMap(fontMap FontMap) {
-	var _arg0 *C.PangoContext
-	var _arg1 *C.PangoFontMap
+	var _arg0 *C.PangoContext // out
+	var _arg1 *C.PangoFontMap // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoFontMap)(unsafe.Pointer(fontMap.Native()))
@@ -255,8 +255,8 @@ func (c context) SetFontMap(fontMap FontMap) {
 // [method@Pango.Context.get_gravity] is set to PANGO_GRAVITY_EAST or
 // PANGO_GRAVITY_WEST.
 func (c context) SetGravityHint(hint GravityHint) {
-	var _arg0 *C.PangoContext
-	var _arg1 C.PangoGravityHint
+	var _arg0 *C.PangoContext    // out
+	var _arg1 C.PangoGravityHint // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (C.PangoGravityHint)(hint)
@@ -269,8 +269,8 @@ func (c context) SetGravityHint(hint GravityHint) {
 // The default language for the locale of the running process can be found
 // using [type_func@Pango.Language.get_default].
 func (c context) SetLanguage(language *Language) {
-	var _arg0 *C.PangoContext
-	var _arg1 *C.PangoLanguage
+	var _arg0 *C.PangoContext  // out
+	var _arg1 *C.PangoLanguage // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoLanguage)(unsafe.Pointer(language.Native()))
@@ -287,8 +287,8 @@ func (c context) SetLanguage(language *Language) {
 // they may change slightly for different matrices, depending on how the
 // text is fit to the pixel grid.
 func (c context) SetMatrix(matrix *Matrix) {
-	var _arg0 *C.PangoContext
-	var _arg1 *C.PangoMatrix
+	var _arg0 *C.PangoContext // out
+	var _arg1 *C.PangoMatrix  // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.PangoMatrix)(unsafe.Pointer(matrix.Native()))
@@ -306,8 +306,8 @@ func (c context) SetMatrix(matrix *Matrix) {
 // The default value is to round glyph positions, to remain compatible with
 // previous Pango behavior.
 func (c context) SetRoundGlyphPositions(roundPositions bool) {
-	var _arg0 *C.PangoContext
-	var _arg1 C.gboolean
+	var _arg0 *C.PangoContext // out
+	var _arg1 C.gboolean      // out
 
 	_arg0 = (*C.PangoContext)(unsafe.Pointer(c.Native()))
 	if roundPositions {

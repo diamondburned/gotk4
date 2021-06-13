@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk+-3.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk-a11y.h>
@@ -83,15 +83,15 @@ func marshalRadioAction(p uintptr) (interface{}, error) {
 // CurrentValue obtains the value property of the currently active member of
 // the group to which @action belongs.
 func (a radioAction) CurrentValue() int {
-	var _arg0 *C.GtkRadioAction
+	var _arg0 *C.GtkRadioAction // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 
-	var _cret C.gint
+	var _cret C.gint // in
 
 	_cret = C.gtk_radio_action_get_current_value(_arg0)
 
-	var _gint int
+	var _gint int // out
 
 	_gint = (int)(_cret)
 
@@ -117,8 +117,8 @@ func (a radioAction) CurrentValue() int {
 //          last_action = action;
 //       }
 func (a radioAction) JoinGroup(groupSource RadioAction) {
-	var _arg0 *C.GtkRadioAction
-	var _arg1 *C.GtkRadioAction
+	var _arg0 *C.GtkRadioAction // out
+	var _arg1 *C.GtkRadioAction // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GtkRadioAction)(unsafe.Pointer(groupSource.Native()))
@@ -129,8 +129,8 @@ func (a radioAction) JoinGroup(groupSource RadioAction) {
 // SetCurrentValue sets the currently active group member to the member with
 // value property @current_value.
 func (a radioAction) SetCurrentValue(currentValue int) {
-	var _arg0 *C.GtkRadioAction
-	var _arg1 C.gint
+	var _arg0 *C.GtkRadioAction // out
+	var _arg1 C.gint            // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 	_arg1 = C.gint(currentValue)
@@ -140,8 +140,8 @@ func (a radioAction) SetCurrentValue(currentValue int) {
 
 // SetGroup sets the radio group for the radio action object.
 func (a radioAction) SetGroup(group *glib.SList) {
-	var _arg0 *C.GtkRadioAction
-	var _arg1 *C.GSList
+	var _arg0 *C.GtkRadioAction // out
+	var _arg1 *C.GSList         // out
 
 	_arg0 = (*C.GtkRadioAction)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.GSList)(unsafe.Pointer(group.Native()))

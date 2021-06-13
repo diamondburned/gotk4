@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0
+// #cgo pkg-config: graphene-gobject-1.0 graphene-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <graphene-gobject.h>
@@ -50,8 +50,8 @@ func (q *Quaternion) Native() unsafe.Pointer {
 
 // Add adds two #graphene_quaternion_t @a and @b.
 func (a *Quaternion) Add(b *Quaternion) Quaternion {
-	var _arg0 *C.graphene_quaternion_t
-	var _arg1 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
@@ -65,17 +65,17 @@ func (a *Quaternion) Add(b *Quaternion) Quaternion {
 
 // Dot computes the dot product of two #graphene_quaternion_t.
 func (a *Quaternion) Dot(b *Quaternion) float32 {
-	var _arg0 *C.graphene_quaternion_t
-	var _arg1 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C.float
+	var _cret C.float // in
 
 	_cret = C.graphene_quaternion_dot(_arg0, _arg1)
 
-	var _gfloat float32
+	var _gfloat float32 // out
 
 	_gfloat = (float32)(_cret)
 
@@ -84,17 +84,17 @@ func (a *Quaternion) Dot(b *Quaternion) float32 {
 
 // Equal checks whether the given quaternions are equal.
 func (a *Quaternion) Equal(b *Quaternion) bool {
-	var _arg0 *C.graphene_quaternion_t
-	var _arg1 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
 
-	var _cret C._Bool
+	var _cret C._Bool // in
 
 	_cret = C.graphene_quaternion_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -105,7 +105,7 @@ func (a *Quaternion) Equal(b *Quaternion) bool {
 
 // Free releases the resources allocated by graphene_quaternion_alloc().
 func (q *Quaternion) Free() {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
@@ -115,7 +115,7 @@ func (q *Quaternion) Free() {
 // Invert inverts a #graphene_quaternion_t, and returns the conjugate quaternion
 // of @q.
 func (q *Quaternion) Invert() Quaternion {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
@@ -128,8 +128,8 @@ func (q *Quaternion) Invert() Quaternion {
 
 // Multiply multiplies two #graphene_quaternion_t @a and @b.
 func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
-	var _arg0 *C.graphene_quaternion_t
-	var _arg1 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
@@ -143,7 +143,7 @@ func (a *Quaternion) Multiply(b *Quaternion) Quaternion {
 
 // Normalize normalizes a #graphene_quaternion_t.
 func (q *Quaternion) Normalize() Quaternion {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
@@ -157,8 +157,8 @@ func (q *Quaternion) Normalize() Quaternion {
 // Scale scales all the elements of a #graphene_quaternion_t @q using the given
 // scalar factor.
 func (q *Quaternion) Scale(factor float32) Quaternion {
-	var _arg0 *C.graphene_quaternion_t
-	var _arg1 C.float
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 C.float                  // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 	_arg1 = C.float(factor)
@@ -174,9 +174,9 @@ func (q *Quaternion) Scale(factor float32) Quaternion {
 // interpolation, or SLERP (http://en.wikipedia.org/wiki/Slerp), using the given
 // interpolation @factor.
 func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
-	var _arg0 *C.graphene_quaternion_t
-	var _arg1 *C.graphene_quaternion_t
-	var _arg2 C.float
+	var _arg0 *C.graphene_quaternion_t // out
+	var _arg1 *C.graphene_quaternion_t // out
+	var _arg2 C.float                  // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(a.Native()))
 	_arg1 = (*C.graphene_quaternion_t)(unsafe.Pointer(b.Native()))
@@ -191,16 +191,16 @@ func (a *Quaternion) Slerp(b *Quaternion, factor float32) Quaternion {
 
 // ToAngleVec3 converts a quaternion into an @angle, @axis pair.
 func (q *Quaternion) ToAngleVec3() (float32, Vec3) {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	var _arg1 C.float
+	var _arg1 C.float // in
 	var _axis Vec3
 
 	C.graphene_quaternion_to_angle_vec3(_arg0, &_arg1, (*C.graphene_vec3_t)(unsafe.Pointer(&_axis)))
 
-	var _angle float32
+	var _angle float32 // out
 
 	_angle = (float32)(_arg1)
 
@@ -210,19 +210,19 @@ func (q *Quaternion) ToAngleVec3() (float32, Vec3) {
 // ToAngles converts a #graphene_quaternion_t to its corresponding rotations on
 // the Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
 func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	var _arg1 C.float
-	var _arg2 C.float
-	var _arg3 C.float
+	var _arg1 C.float // in
+	var _arg2 C.float // in
+	var _arg3 C.float // in
 
 	C.graphene_quaternion_to_angles(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _degX float32
-	var _degY float32
-	var _degZ float32
+	var _degX float32 // out
+	var _degY float32 // out
+	var _degZ float32 // out
 
 	_degX = (float32)(_arg1)
 	_degY = (float32)(_arg2)
@@ -234,7 +234,7 @@ func (q *Quaternion) ToAngles() (degX float32, degY float32, degZ float32) {
 // ToMatrix converts a quaternion into a transformation matrix expressing the
 // rotation defined by the #graphene_quaternion_t.
 func (q *Quaternion) ToMatrix() Matrix {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
@@ -248,19 +248,19 @@ func (q *Quaternion) ToMatrix() Matrix {
 // ToRadians converts a #graphene_quaternion_t to its corresponding rotations on
 // the Euler angles (http://en.wikipedia.org/wiki/Euler_angles) on each axis.
 func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 
-	var _arg1 C.float
-	var _arg2 C.float
-	var _arg3 C.float
+	var _arg1 C.float // in
+	var _arg2 C.float // in
+	var _arg3 C.float // in
 
 	C.graphene_quaternion_to_radians(_arg0, &_arg1, &_arg2, &_arg3)
 
-	var _radX float32
-	var _radY float32
-	var _radZ float32
+	var _radX float32 // out
+	var _radY float32 // out
+	var _radZ float32 // out
 
 	_radX = (float32)(_arg1)
 	_radY = (float32)(_arg2)
@@ -272,7 +272,7 @@ func (q *Quaternion) ToRadians() (radX float32, radY float32, radZ float32) {
 // ToVec4 copies the components of a #graphene_quaternion_t into a
 // #graphene_vec4_t.
 func (q *Quaternion) ToVec4() Vec4 {
-	var _arg0 *C.graphene_quaternion_t
+	var _arg0 *C.graphene_quaternion_t // out
 
 	_arg0 = (*C.graphene_quaternion_t)(unsafe.Pointer(q.Native()))
 

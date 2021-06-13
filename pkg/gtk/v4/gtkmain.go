@@ -2,7 +2,7 @@
 
 package gtk
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <gtk/gtk.h>
 import "C"
@@ -46,11 +46,11 @@ func Init() {
 // This way the application can fall back to some other means of communication
 // with the user - for example a curses or command line interface.
 func InitCheck() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_init_check()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -62,11 +62,11 @@ func InitCheck() bool {
 // IsInitialized: use this function to check if GTK has been initialized with
 // gtk_init() or gtk_init_check().
 func IsInitialized() bool {
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gtk_is_initialized()
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true

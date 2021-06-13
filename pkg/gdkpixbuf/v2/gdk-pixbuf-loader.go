@@ -10,7 +10,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gdk-pixbuf-2.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -137,15 +137,15 @@ func marshalPixbufLoader(p uintptr) (interface{}, error) {
 // Remember that this function does not release a reference on the loader,
 // so you will need to explicitly release any reference you hold.
 func (l pixbufLoader) Close() error {
-	var _arg0 *C.GdkPixbufLoader
+	var _arg0 *C.GdkPixbufLoader // out
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gdk_pixbuf_loader_close(_arg0, _cerr)
+	C.gdk_pixbuf_loader_close(_arg0, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 
@@ -161,9 +161,9 @@ func (l pixbufLoader) Close() error {
 // Attempts to set the desired image size are ignored after the emission of
 // the ::size-prepared signal.
 func (l pixbufLoader) SetSize(width int, height int) {
-	var _arg0 *C.GdkPixbufLoader
-	var _arg1 C.int
-	var _arg2 C.int
+	var _arg0 *C.GdkPixbufLoader // out
+	var _arg1 C.int              // out
+	var _arg2 C.int              // out
 
 	_arg0 = (*C.GdkPixbufLoader)(unsafe.Pointer(l.Native()))
 	_arg1 = C.int(width)
@@ -174,7 +174,7 @@ func (l pixbufLoader) SetSize(width int, height int) {
 
 // Write parses the next `count` bytes in the given image buffer.
 func (l pixbufLoader) Write(buf []byte) error {
-	var _arg0 *C.GdkPixbufLoader
+	var _arg0 *C.GdkPixbufLoader // out
 	var _arg1 *C.guchar
 	var _arg2 C.gsize
 
@@ -182,11 +182,11 @@ func (l pixbufLoader) Write(buf []byte) error {
 	_arg2 = C.gsize(len(buf))
 	_arg1 = (*C.guchar)(unsafe.Pointer(&buf[0]))
 
-	var _cerr *C.GError
+	var _cerr *C.GError // in
 
-	C.gdk_pixbuf_loader_write(_arg0, _arg1, _arg2, _cerr)
+	C.gdk_pixbuf_loader_write(_arg0, _arg1, _arg2, &_cerr)
 
-	var _goerr error
+	var _goerr error // out
 
 	_goerr = gerror.Take(unsafe.Pointer(_cerr))
 

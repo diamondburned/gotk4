@@ -13,7 +13,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gtk/gtk.h>
@@ -233,8 +233,8 @@ func marshalSnapshot(p uintptr) (interface{}, error) {
 //
 // The four sides of the border can have different widths and colors.
 func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32, borderColor [4]gdk.RGBA) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GskRoundedRect
+	var _arg0 *C.GtkSnapshot    // out
+	var _arg1 *C.GskRoundedRect // out
 	var _arg2 *C.float
 	var _arg3 *C.GdkRGBA
 
@@ -251,9 +251,9 @@ func (s snapshot) AppendBorder(outline *gsk.RoundedRect, borderWidth [4]float32,
 //
 // You should try to avoid calling this function if @color is transparent.
 func (s snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GdkRGBA
-	var _arg2 *C.graphene_rect_t
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GdkRGBA         // out
+	var _arg2 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkRGBA)(unsafe.Pointer(color.Native()))
@@ -265,10 +265,10 @@ func (s snapshot) AppendColor(color *gdk.RGBA, bounds *graphene.Rect) {
 // AppendConicGradient appends a conic gradient node with the given stops to
 // @snapshot.
 func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Point, rotation float32, stops []gsk.ColorStop) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
-	var _arg2 *C.graphene_point_t
-	var _arg3 C.float
+	var _arg0 *C.GtkSnapshot      // out
+	var _arg1 *C.graphene_rect_t  // out
+	var _arg2 *C.graphene_point_t // out
+	var _arg3 C.float             // out
 	var _arg4 *C.GskColorStop
 	var _arg5 C.gsize
 
@@ -284,13 +284,13 @@ func (s snapshot) AppendConicGradient(bounds *graphene.Rect, center *graphene.Po
 
 // AppendInsetShadow appends an inset shadow into the box given by @outline.
 func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GskRoundedRect
-	var _arg2 *C.GdkRGBA
-	var _arg3 C.float
-	var _arg4 C.float
-	var _arg5 C.float
-	var _arg6 C.float
+	var _arg0 *C.GtkSnapshot    // out
+	var _arg1 *C.GskRoundedRect // out
+	var _arg2 *C.GdkRGBA        // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+	var _arg6 C.float           // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline.Native()))
@@ -304,9 +304,9 @@ func (s snapshot) AppendInsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, d
 }
 
 func (s snapshot) AppendLayout(layout pango.Layout, color *gdk.RGBA) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.PangoLayout
-	var _arg2 *C.GdkRGBA
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 *C.PangoLayout // out
+	var _arg2 *C.GdkRGBA     // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.PangoLayout)(unsafe.Pointer(layout.Native()))
@@ -318,10 +318,10 @@ func (s snapshot) AppendLayout(layout pango.Layout, color *gdk.RGBA) {
 // AppendLinearGradient appends a linear gradient node with the given stops
 // to @snapshot.
 func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
-	var _arg2 *C.graphene_point_t
-	var _arg3 *C.graphene_point_t
+	var _arg0 *C.GtkSnapshot      // out
+	var _arg1 *C.graphene_rect_t  // out
+	var _arg2 *C.graphene_point_t // out
+	var _arg3 *C.graphene_point_t // out
 	var _arg4 *C.GskColorStop
 	var _arg5 C.gsize
 
@@ -341,8 +341,8 @@ func (s snapshot) AppendLinearGradient(bounds *graphene.Rect, startPoint *graphe
 // If @snapshot does not have a current node yet, @node will become the
 // initial node.
 func (s snapshot) AppendNode(node gsk.RenderNode) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GskRenderNode
+	var _arg0 *C.GtkSnapshot   // out
+	var _arg1 *C.GskRenderNode // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRenderNode)(unsafe.Pointer(node.Native()))
@@ -353,13 +353,13 @@ func (s snapshot) AppendNode(node gsk.RenderNode) {
 // AppendOutsetShadow appends an outset shadow node around the box given by
 // @outline.
 func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, dx float32, dy float32, spread float32, blurRadius float32) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GskRoundedRect
-	var _arg2 *C.GdkRGBA
-	var _arg3 C.float
-	var _arg4 C.float
-	var _arg5 C.float
-	var _arg6 C.float
+	var _arg0 *C.GtkSnapshot    // out
+	var _arg1 *C.GskRoundedRect // out
+	var _arg2 *C.GdkRGBA        // out
+	var _arg3 C.float           // out
+	var _arg4 C.float           // out
+	var _arg5 C.float           // out
+	var _arg6 C.float           // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(outline.Native()))
@@ -375,13 +375,13 @@ func (s snapshot) AppendOutsetShadow(outline *gsk.RoundedRect, color *gdk.RGBA, 
 // AppendRadialGradient appends a radial gradient node with the given stops
 // to @snapshot.
 func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
-	var _arg2 *C.graphene_point_t
-	var _arg3 C.float
-	var _arg4 C.float
-	var _arg5 C.float
-	var _arg6 C.float
+	var _arg0 *C.GtkSnapshot      // out
+	var _arg1 *C.graphene_rect_t  // out
+	var _arg2 *C.graphene_point_t // out
+	var _arg3 C.float             // out
+	var _arg4 C.float             // out
+	var _arg5 C.float             // out
+	var _arg6 C.float             // out
 	var _arg7 *C.GskColorStop
 	var _arg8 C.gsize
 
@@ -401,10 +401,10 @@ func (s snapshot) AppendRadialGradient(bounds *graphene.Rect, center *graphene.P
 // AppendRepeatingLinearGradient appends a repeating linear gradient node
 // with the given stops to @snapshot.
 func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoint *graphene.Point, endPoint *graphene.Point, stops []gsk.ColorStop) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
-	var _arg2 *C.graphene_point_t
-	var _arg3 *C.graphene_point_t
+	var _arg0 *C.GtkSnapshot      // out
+	var _arg1 *C.graphene_rect_t  // out
+	var _arg2 *C.graphene_point_t // out
+	var _arg3 *C.graphene_point_t // out
 	var _arg4 *C.GskColorStop
 	var _arg5 C.gsize
 
@@ -421,13 +421,13 @@ func (s snapshot) AppendRepeatingLinearGradient(bounds *graphene.Rect, startPoin
 // AppendRepeatingRadialGradient appends a repeating radial gradient node
 // with the given stops to @snapshot.
 func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *graphene.Point, hradius float32, vradius float32, start float32, end float32, stops []gsk.ColorStop) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
-	var _arg2 *C.graphene_point_t
-	var _arg3 C.float
-	var _arg4 C.float
-	var _arg5 C.float
-	var _arg6 C.float
+	var _arg0 *C.GtkSnapshot      // out
+	var _arg1 *C.graphene_rect_t  // out
+	var _arg2 *C.graphene_point_t // out
+	var _arg3 C.float             // out
+	var _arg4 C.float             // out
+	var _arg5 C.float             // out
+	var _arg6 C.float             // out
 	var _arg7 *C.GskColorStop
 	var _arg8 C.gsize
 
@@ -447,9 +447,9 @@ func (s snapshot) AppendRepeatingRadialGradient(bounds *graphene.Rect, center *g
 // AppendTexture creates a new render node drawing the @texture into the
 // given @bounds and appends it to the current render node of @snapshot.
 func (s snapshot) AppendTexture(texture gdk.Texture, bounds *graphene.Rect) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GdkTexture
-	var _arg2 *C.graphene_rect_t
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GdkTexture      // out
+	var _arg2 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GdkTexture)(unsafe.Pointer(texture.Native()))
@@ -464,7 +464,7 @@ func (s snapshot) AppendTexture(texture gdk.Texture, bounds *graphene.Rect) {
 // This must be called the same number of times as the number of textures is
 // needed for the shader in [method@Gtk.Snapshot.push_gl_shader].
 func (s snapshot) GLShaderPopTexture() {
-	var _arg0 *C.GtkSnapshot
+	var _arg0 *C.GtkSnapshot // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
@@ -475,8 +475,8 @@ func (s snapshot) GLShaderPopTexture() {
 //
 // See [method@Gsk.Transform.perspective] for a discussion on the details.
 func (s snapshot) Perspective(depth float32) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.float
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.float(depth)
@@ -487,7 +487,7 @@ func (s snapshot) Perspective(depth float32) {
 // Pop removes the top element from the stack of render nodes, and appends
 // it to the node underneath it.
 func (s snapshot) Pop() {
-	var _arg0 *C.GtkSnapshot
+	var _arg0 *C.GtkSnapshot // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
@@ -504,8 +504,8 @@ func (s snapshot) Pop() {
 // Calling this function requires two subsequent calls to
 // [method@Gtk.Snapshot.pop].
 func (s snapshot) PushBlend(blendMode gsk.BlendMode) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.GskBlendMode
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.GskBlendMode // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (C.GskBlendMode)(blendMode)
@@ -517,8 +517,8 @@ func (s snapshot) PushBlend(blendMode gsk.BlendMode) {
 //
 // The image is recorded until the next call to [method@Gtk.Snapshot.pop].
 func (s snapshot) PushBlur(radius float64) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.double
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.double(radius)
@@ -530,8 +530,8 @@ func (s snapshot) PushBlur(radius float64) {
 //
 // The image is recorded until the next call to [method@Gtk.Snapshot.pop].
 func (s snapshot) PushClip(bounds *graphene.Rect) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
@@ -544,9 +544,9 @@ func (s snapshot) PushClip(bounds *graphene.Rect) {
 //
 // The image is recorded until the next call to [method@Gtk.Snapshot.pop].
 func (s snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *graphene.Vec4) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_matrix_t
-	var _arg2 *C.graphene_vec4_t
+	var _arg0 *C.GtkSnapshot       // out
+	var _arg1 *C.graphene_matrix_t // out
+	var _arg2 *C.graphene_vec4_t   // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(colorMatrix.Native()))
@@ -565,8 +565,8 @@ func (s snapshot) PushColorMatrix(colorMatrix *graphene.Matrix, colorOffset *gra
 // Calling this function requires two subsequent calls to
 // [method@Gtk.Snapshot.pop].
 func (s snapshot) PushCrossFade(progress float64) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.double
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.double(progress)
@@ -578,8 +578,8 @@ func (s snapshot) PushCrossFade(progress float64) {
 //
 // The image is recorded until the next call to [method@Gtk.Snapshot.pop].
 func (s snapshot) PushOpacity(opacity float64) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.double
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.double       // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.double(opacity)
@@ -591,9 +591,9 @@ func (s snapshot) PushOpacity(opacity float64) {
 //
 // The child is recorded until the next call to [method@Gtk.Snapshot.pop].
 func (s snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_rect_t
-	var _arg2 *C.graphene_rect_t
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.graphene_rect_t // out
+	var _arg2 *C.graphene_rect_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_rect_t)(unsafe.Pointer(bounds.Native()))
@@ -606,8 +606,8 @@ func (s snapshot) PushRepeat(bounds *graphene.Rect, childBounds *graphene.Rect) 
 //
 // The image is recorded until the next call to [method@Gtk.Snapshot.pop].
 func (s snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GskRoundedRect
+	var _arg0 *C.GtkSnapshot    // out
+	var _arg1 *C.GskRoundedRect // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskRoundedRect)(unsafe.Pointer(bounds.Native()))
@@ -619,9 +619,9 @@ func (s snapshot) PushRoundedClip(bounds *gsk.RoundedRect) {
 //
 // The image is recorded until the next call to [method@Gtk.Snapshot.pop].
 func (s snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GskShadow
-	var _arg2 C.gsize
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 *C.GskShadow   // out
+	var _arg2 C.gsize        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskShadow)(unsafe.Pointer(shadow.Native()))
@@ -634,12 +634,12 @@ func (s snapshot) PushShadow(shadow *gsk.Shadow, nShadows uint) {
 // to @context, and appends it to the current node of @snapshot, without
 // changing the current node.
 func (s snapshot) RenderBackground(context StyleContext, x float64, y float64, width float64, height float64) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GtkStyleContext
-	var _arg2 C.double
-	var _arg3 C.double
-	var _arg4 C.double
-	var _arg5 C.double
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
@@ -655,12 +655,12 @@ func (s snapshot) RenderBackground(context StyleContext, x float64, y float64, w
 // @context, and appends it to the current node of @snapshot, without
 // changing the current node.
 func (s snapshot) RenderFocus(context StyleContext, x float64, y float64, width float64, height float64) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GtkStyleContext
-	var _arg2 C.double
-	var _arg3 C.double
-	var _arg4 C.double
-	var _arg5 C.double
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
@@ -676,12 +676,12 @@ func (s snapshot) RenderFocus(context StyleContext, x float64, y float64, width 
 // @context, and appends it to the current node of @snapshot, without
 // changing the current node.
 func (s snapshot) RenderFrame(context StyleContext, x float64, y float64, width float64, height float64) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GtkStyleContext
-	var _arg2 C.double
-	var _arg3 C.double
-	var _arg4 C.double
-	var _arg5 C.double
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
+	var _arg4 C.double           // out
+	var _arg5 C.double           // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
@@ -696,13 +696,13 @@ func (s snapshot) RenderFrame(context StyleContext, x float64, y float64, width 
 // RenderInsertionCursor draws a text caret using @snapshot at the specified
 // index of @layout.
 func (s snapshot) RenderInsertionCursor(context StyleContext, x float64, y float64, layout pango.Layout, index int, direction pango.Direction) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GtkStyleContext
-	var _arg2 C.double
-	var _arg3 C.double
-	var _arg4 *C.PangoLayout
-	var _arg5 C.int
-	var _arg6 C.PangoDirection
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
+	var _arg4 *C.PangoLayout     // out
+	var _arg5 C.int              // out
+	var _arg6 C.PangoDirection   // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
@@ -719,11 +719,11 @@ func (s snapshot) RenderInsertionCursor(context StyleContext, x float64, y float
 // style information in @context, and appends it to the current node of
 // @snapshot, without changing the current node.
 func (s snapshot) RenderLayout(context StyleContext, x float64, y float64, layout pango.Layout) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GtkStyleContext
-	var _arg2 C.double
-	var _arg3 C.double
-	var _arg4 *C.PangoLayout
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 *C.GtkStyleContext // out
+	var _arg2 C.double           // out
+	var _arg3 C.double           // out
+	var _arg4 *C.PangoLayout     // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GtkStyleContext)(unsafe.Pointer(context.Native()))
@@ -738,7 +738,7 @@ func (s snapshot) RenderLayout(context StyleContext, x float64, y float64, layou
 // gtk_snapshot_save() and removes that state from the stack of saved
 // states.
 func (s snapshot) Restore() {
-	var _arg0 *C.GtkSnapshot
+	var _arg0 *C.GtkSnapshot // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
@@ -750,8 +750,8 @@ func (s snapshot) Restore() {
 //
 // To rotate around other axes, use [method@Gsk.Transform.rotate_3d].
 func (s snapshot) Rotate(angle float32) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.float
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.float(angle)
@@ -764,9 +764,9 @@ func (s snapshot) Rotate(angle float32) {
 //
 // For a rotation in 2D space, use [method@Gsk.Transform.rotate].
 func (s snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.float
-	var _arg2 *C.graphene_vec3_t
+	var _arg0 *C.GtkSnapshot     // out
+	var _arg1 C.float            // out
+	var _arg2 *C.graphene_vec3_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.float(angle)
@@ -786,7 +786,7 @@ func (s snapshot) Rotate3D(angle float32, axis *graphene.Vec3) {
 // It is necessary to clear all saved states with corresponding calls to
 // gtk_snapshot_restore().
 func (s snapshot) Save() {
-	var _arg0 *C.GtkSnapshot
+	var _arg0 *C.GtkSnapshot // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 
@@ -798,9 +798,9 @@ func (s snapshot) Save() {
 //
 // Use [method@Gtk.Snapshot.scale_3d] to scale in all 3 dimensions.
 func (s snapshot) Scale(factorX float32, factorY float32) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.float
-	var _arg2 C.float
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.float        // out
+	var _arg2 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.float(factorX)
@@ -811,10 +811,10 @@ func (s snapshot) Scale(factorX float32, factorY float32) {
 
 // Scale3D scales @snapshot's coordinate system by the given factors.
 func (s snapshot) Scale3D(factorX float32, factorY float32, factorZ float32) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 C.float
-	var _arg2 C.float
-	var _arg3 C.float
+	var _arg0 *C.GtkSnapshot // out
+	var _arg1 C.float        // out
+	var _arg2 C.float        // out
+	var _arg3 C.float        // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = C.float(factorX)
@@ -827,8 +827,8 @@ func (s snapshot) Scale3D(factorX float32, factorY float32, factorZ float32) {
 // Transform transforms @snapshot's coordinate system with the given
 // @transform.
 func (s snapshot) Transform(transform *gsk.Transform) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.GskTransform
+	var _arg0 *C.GtkSnapshot  // out
+	var _arg1 *C.GskTransform // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.GskTransform)(unsafe.Pointer(transform.Native()))
@@ -839,8 +839,8 @@ func (s snapshot) Transform(transform *gsk.Transform) {
 // TransformMatrix transforms @snapshot's coordinate system with the given
 // @matrix.
 func (s snapshot) TransformMatrix(matrix *graphene.Matrix) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_matrix_t
+	var _arg0 *C.GtkSnapshot       // out
+	var _arg1 *C.graphene_matrix_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_matrix_t)(unsafe.Pointer(matrix.Native()))
@@ -851,8 +851,8 @@ func (s snapshot) TransformMatrix(matrix *graphene.Matrix) {
 // Translate translates @snapshot's coordinate system by @point in
 // 2-dimensional space.
 func (s snapshot) Translate(point *graphene.Point) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_point_t
+	var _arg0 *C.GtkSnapshot      // out
+	var _arg1 *C.graphene_point_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point_t)(unsafe.Pointer(point.Native()))
@@ -862,8 +862,8 @@ func (s snapshot) Translate(point *graphene.Point) {
 
 // Translate3D translates @snapshot's coordinate system by @point.
 func (s snapshot) Translate3D(point *graphene.Point3D) {
-	var _arg0 *C.GtkSnapshot
-	var _arg1 *C.graphene_point3d_t
+	var _arg0 *C.GtkSnapshot        // out
+	var _arg1 *C.graphene_point3d_t // out
 
 	_arg0 = (*C.GtkSnapshot)(unsafe.Pointer(s.Native()))
 	_arg1 = (*C.graphene_point3d_t)(unsafe.Pointer(point.Native()))

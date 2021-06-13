@@ -7,7 +7,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gtk4-wayland gtk4
+// #cgo pkg-config: gtk4-wayland gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/wayland/gdkwayland.h>
@@ -82,15 +82,15 @@ func marshalWaylandSurface(p uintptr) (interface{}, error) {
 
 // WlSurface returns the Wayland `wl_surface` of a `GdkSurface`.
 func (s waylandSurface) WlSurface() *interface{} {
-	var _arg0 *C.GdkSurface
+	var _arg0 *C.GdkSurface // out
 
 	_arg0 = (*C.GdkSurface)(unsafe.Pointer(s.Native()))
 
-	var _cret *C.wl_surface
+	var _cret *C.wl_surface // in
 
 	_cret = C.gdk_wayland_surface_get_wl_surface(_arg0)
 
-	var _gpointer *interface{}
+	var _gpointer *interface{} // out
 
 	_gpointer = (*interface{})(_cret)
 
@@ -152,8 +152,8 @@ func marshalWaylandToplevel(p uintptr) (interface{}, error) {
 
 // SetApplicationID sets the application id on a `GdkToplevel`.
 func (t waylandToplevel) SetApplicationID(applicationId string) {
-	var _arg0 *C.GdkToplevel
-	var _arg1 *C.char
+	var _arg0 *C.GdkToplevel // out
+	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(applicationId))
@@ -172,18 +172,18 @@ func (t waylandToplevel) SetApplicationID(applicationId string) {
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
 func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
-	var _arg0 *C.GdkToplevel
-	var _arg1 *C.char
+	var _arg0 *C.GdkToplevel // out
+	var _arg1 *C.char        // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 	_arg1 = (*C.char)(C.CString(parentHandleStr))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_wayland_toplevel_set_transient_for_exported(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -201,7 +201,7 @@ func (t waylandToplevel) SetTransientForExported(parentHandleStr string) bool {
 // Note that this API depends on an unstable Wayland protocol, and thus may
 // require changes in the future.
 func (t waylandToplevel) UnexportHandle() {
-	var _arg0 *C.GdkToplevel
+	var _arg0 *C.GdkToplevel // out
 
 	_arg0 = (*C.GdkToplevel)(unsafe.Pointer(t.Native()))
 

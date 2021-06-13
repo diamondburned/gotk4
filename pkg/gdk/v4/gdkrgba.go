@@ -8,7 +8,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config:
+// #cgo pkg-config: gtk4 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gdk/gdk.h>
@@ -54,45 +54,45 @@ func (r *RGBA) Native() unsafe.Pointer {
 
 // Red gets the field inside the struct.
 func (r *RGBA) Red() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(r.native.red)
 	return v
 }
 
 // Green gets the field inside the struct.
 func (r *RGBA) Green() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(r.native.green)
 	return v
 }
 
 // Blue gets the field inside the struct.
 func (r *RGBA) Blue() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(r.native.blue)
 	return v
 }
 
 // Alpha gets the field inside the struct.
 func (r *RGBA) Alpha() float32 {
-	var v float32
+	var v float32 // out
 	v = (float32)(r.native.alpha)
 	return v
 }
 
 // Equal compares two `GdkRGBA` colors.
 func (p *RGBA) Equal(p2 RGBA) bool {
-	var _arg0 C.gpointer
-	var _arg1 C.gpointer
+	var _arg0 C.gpointer // out
+	var _arg1 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
 	_arg1 = (C.gpointer)(unsafe.Pointer(p2.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rgba_equal(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -103,7 +103,7 @@ func (p *RGBA) Equal(p2 RGBA) bool {
 
 // Free frees a `GdkRGBA`.
 func (r *RGBA) Free() {
-	var _arg0 *C.GdkRGBA
+	var _arg0 *C.GdkRGBA // out
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
@@ -113,15 +113,15 @@ func (r *RGBA) Free() {
 // Hash: a hash function suitable for using for a hash table that stores
 // `GdkRGBA`s.
 func (p *RGBA) Hash() uint {
-	var _arg0 C.gpointer
+	var _arg0 C.gpointer // out
 
 	_arg0 = (C.gpointer)(unsafe.Pointer(p.Native()))
 
-	var _cret C.guint
+	var _cret C.guint // in
 
 	_cret = C.gdk_rgba_hash(_arg0)
 
-	var _guint uint
+	var _guint uint // out
 
 	_guint = (uint)(_cret)
 
@@ -132,15 +132,15 @@ func (p *RGBA) Hash() uint {
 //
 // That is, drawing with the value would not produce any change.
 func (r *RGBA) IsClear() bool {
-	var _arg0 *C.GdkRGBA
+	var _arg0 *C.GdkRGBA // out
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rgba_is_clear(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -154,15 +154,15 @@ func (r *RGBA) IsClear() bool {
 // That is, drawing with the value will not retain any results from previous
 // contents.
 func (r *RGBA) IsOpaque() bool {
-	var _arg0 *C.GdkRGBA
+	var _arg0 *C.GdkRGBA // out
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rgba_is_opaque(_arg0)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -186,18 +186,18 @@ func (r *RGBA) IsOpaque() bool {
 // the range 0 to 255 or percentage values in the range 0% to 100%, and a is a
 // floating point value in the range 0 to 1.
 func (r *RGBA) Parse(spec string) bool {
-	var _arg0 *C.GdkRGBA
-	var _arg1 *C.char
+	var _arg0 *C.GdkRGBA // out
+	var _arg1 *C.char    // out
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 	_arg1 = (*C.char)(C.CString(spec))
 	defer C.free(unsafe.Pointer(_arg1))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.gdk_rgba_parse(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
@@ -219,15 +219,15 @@ func (r *RGBA) Parse(spec string) bool {
 // and “b” are represented as 8-bit integers. If this is a concern, you should
 // use a different representation.
 func (r *RGBA) String() string {
-	var _arg0 *C.GdkRGBA
+	var _arg0 *C.GdkRGBA // out
 
 	_arg0 = (*C.GdkRGBA)(unsafe.Pointer(r.Native()))
 
-	var _cret *C.char
+	var _cret *C.char // in
 
 	_cret = C.gdk_rgba_to_string(_arg0)
 
-	var _utf8 string
+	var _utf8 string // out
 
 	_utf8 = C.GoString(_cret)
 	defer C.free(unsafe.Pointer(_cret))

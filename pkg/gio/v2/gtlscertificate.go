@@ -6,7 +6,7 @@ import (
 	externglib "github.com/gotk3/gotk3/glib"
 )
 
-// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0
+// #cgo pkg-config: gio-2.0 gio-unix-2.0 gobject-introspection-1.0 glib-2.0
 // #cgo CFLAGS: -Wno-deprecated-declarations
 // #include <glib-object.h>
 // #include <gio/gdesktopappinfo.h>
@@ -70,17 +70,17 @@ func marshalTLSCertificate(p uintptr) (interface{}, error) {
 // Certificate:issuer, Certificate:private-key, or
 // Certificate:private-key-pem properties differ.
 func (c tlsCertificate) IsSame(certTwo TLSCertificate) bool {
-	var _arg0 *C.GTlsCertificate
-	var _arg1 *C.GTlsCertificate
+	var _arg0 *C.GTlsCertificate // out
+	var _arg1 *C.GTlsCertificate // out
 
 	_arg0 = (*C.GTlsCertificate)(unsafe.Pointer(c.Native()))
 	_arg1 = (*C.GTlsCertificate)(unsafe.Pointer(certTwo.Native()))
 
-	var _cret C.gboolean
+	var _cret C.gboolean // in
 
 	_cret = C.g_tls_certificate_is_same(_arg0, _arg1)
 
-	var _ok bool
+	var _ok bool // out
 
 	if _cret {
 		_ok = true
